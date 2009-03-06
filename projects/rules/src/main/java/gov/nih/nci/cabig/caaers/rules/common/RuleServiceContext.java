@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import java.rmi.RemoteException;
-
 import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
+
+import java.rmi.RemoteException;
 
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;

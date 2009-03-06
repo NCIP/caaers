@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.runtime;
 
-import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
-
 import java.util.List;
 
 public interface BusinessRulesExecutionService {

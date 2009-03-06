@@ -4,8 +4,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
 import java.util.Hashtable;
 
-import javax.rules.admin.RuleExecutionSet;
-
 public class RulesCache implements RuleSetModificationListener,
                 RuleExecutionSetModificationListener {
     private static RulesCache instance = null;

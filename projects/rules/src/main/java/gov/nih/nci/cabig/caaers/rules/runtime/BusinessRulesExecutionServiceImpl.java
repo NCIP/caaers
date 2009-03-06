@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.rules.ConfigurationException;
-import javax.rules.InvalidRuleSessionException;
 import javax.rules.RuleExecutionSetNotFoundException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;

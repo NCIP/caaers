@@ -1,17 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.Dose;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
     String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section";

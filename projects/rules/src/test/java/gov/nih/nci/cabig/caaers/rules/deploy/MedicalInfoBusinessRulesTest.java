@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
 import org.apache.commons.lang.StringUtils;
 
 public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {

@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.NullValueInNestedPathException;
 
 public class NullSafeFieldExtractor {

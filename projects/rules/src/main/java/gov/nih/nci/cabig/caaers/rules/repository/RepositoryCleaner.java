@@ -3,12 +3,6 @@ package gov.nih.nci.cabig.caaers.rules.repository;
 import java.io.File;
 import java.net.URL;
 
-/**
- * This bean when startup will delete the workspace directory of Rules. 
- * Note:- The cleaning of repository will be done only once.
- * @author admin
- *
- */
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

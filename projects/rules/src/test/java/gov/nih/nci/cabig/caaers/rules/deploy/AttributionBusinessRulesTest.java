@@ -1,9 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
@@ -13,6 +9,9 @@ import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribut
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
     @Override

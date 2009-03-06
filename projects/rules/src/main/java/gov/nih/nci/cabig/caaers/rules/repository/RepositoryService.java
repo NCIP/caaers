@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 import org.drools.repository.RulesRepository;

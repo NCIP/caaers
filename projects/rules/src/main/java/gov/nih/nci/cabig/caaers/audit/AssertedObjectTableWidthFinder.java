@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.audit;
 
-import java.util.List;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import java.util.List;
 
 public class AssertedObjectTableWidthFinder {
 

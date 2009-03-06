@@ -4,8 +4,6 @@ import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
 import java.util.Properties;
 
-import org.apache.jackrabbit.core.fs.db.DbFileSystem;
-
 public class RulesDBFileSystem extends DbFileSystem {
 
     public RulesDBFileSystem() {

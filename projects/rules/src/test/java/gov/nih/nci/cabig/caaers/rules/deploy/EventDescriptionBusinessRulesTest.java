@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import java.util.Date;
-
 import edu.nwu.bioinformatics.commons.DateUtils;
-
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.util.Date;
 
 public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
     String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_description_section";

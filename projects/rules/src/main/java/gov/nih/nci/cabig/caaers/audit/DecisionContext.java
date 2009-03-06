@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.audit;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class DecisionContext {

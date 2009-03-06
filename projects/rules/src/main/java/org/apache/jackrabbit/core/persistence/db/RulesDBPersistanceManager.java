@@ -4,8 +4,6 @@ import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
 import java.util.Properties;
 
-import org.apache.jackrabbit.core.persistence.db.SimpleDbPersistenceManager;
-
 public class RulesDBPersistanceManager extends SimpleDbPersistenceManager {
 
     public RulesDBPersistanceManager() {

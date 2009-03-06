@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import java.util.Date;
-
 import edu.nwu.bioinformatics.commons.DateUtils;
-
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.util.Date;
 
 public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 

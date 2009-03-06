@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.Date;
