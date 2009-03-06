@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * 

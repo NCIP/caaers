@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @Entity
 @Table(name = "report_contents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_contents_id") })

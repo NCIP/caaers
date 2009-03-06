@@ -7,11 +7,12 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Sujith Vellat Thayyilthodi

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
@@ -22,7 +23,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
-import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -222,5 +222,41 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
     	System.out.println(cnt);
     	assertEquals(0, cnt.intValue());
+    }
+    
+    public void testGetAllByOrganizationId(){
+    	List<ReportDefinition> actual = getDao().getAll(-1001);
+    	assertEquals("Wrong number found", 2, actual.size());
+        assertEquals("Wrong one", -221, (int) actual.get(0).getId());
+    	
+    }
+    
+    public void testGetAllByNameAndOrganizationId(){
+    	ReportDefinition actual = getDao().getByName("RCT-222",-1001);
+    	assertEquals("TestDescription", actual.getDescription());
+    }
+    
+    public void testReassociate(){
+    	 ReportDefinition rct = null;
+    	 
+    	{
+    		 String name = "RCT-222";
+    	   	 rct =  rctDao.getByName(name);
+    	     assertNotNull(rct);
+    	}
+    	interruptSession();
+    	{
+    		try{
+    			rct.getMandatoryFields().size();
+    			fail("should throw lazy exception");
+    		}catch(Exception e) {
+    			
+    		}
+    		
+    		rctDao.reassociate(rct);
+    		int size = rct.getMandatoryFields().size();
+    		assertEquals(3, size);
+    	}
+    	
     }
 }

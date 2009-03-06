@@ -1,17 +1,6 @@
 package gov.nih.nci.cabig.caaers.audit;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.InvalidPropertyException;
-
-import java.util.List;
-import java.util.Map;
 
 public class AdverseEventHistoryIntegrationTest extends CaaersDbTestCase {
 

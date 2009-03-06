@@ -1,11 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.math.BigDecimal;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * @author Kulasekaran

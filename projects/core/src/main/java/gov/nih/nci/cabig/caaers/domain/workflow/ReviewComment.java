@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
-import java.util.Date;
-
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;

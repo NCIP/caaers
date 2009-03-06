@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
+
+import java.util.List;
 
 public class LabCategoryDaoTest extends DaoTestCase<LabCategoryDao> {
 

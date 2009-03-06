@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+
 import org.springframework.transaction.annotation.Transactional;
 
 /**

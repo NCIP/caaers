@@ -1,15 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.springframework.beans.BeanUtils;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Date;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.springframework.beans.BeanUtils;
 
 /**
  * This class represents the RadiationIntervention domain object associated with the Adverse event

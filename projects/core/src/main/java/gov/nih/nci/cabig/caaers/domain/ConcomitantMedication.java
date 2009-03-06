@@ -1,10 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
-
-import javax.persistence.*;
 
 /**
  * This class represents the ConcomitantMedication domain object associated with the Adverse event

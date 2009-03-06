@@ -1,6 +1,12 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+
+import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -11,10 +17,6 @@ import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.context.ApplicationContext;
-
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

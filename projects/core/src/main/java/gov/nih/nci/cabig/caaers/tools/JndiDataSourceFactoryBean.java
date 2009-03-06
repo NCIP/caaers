@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.tools;
 
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.jndi.JndiTemplate;
+import gov.nih.nci.cabig.ctms.tools.DatabaseConfigurationAccessor;
+
+import javax.naming.NameNotFoundException;
+import javax.sql.DataSource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.sql.DataSource;
-import javax.naming.NameNotFoundException;
-
-import gov.nih.nci.cabig.ctms.tools.DatabaseConfigurationAccessor;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.jndi.JndiTemplate;
 
 /**
  * @author Rhett Sutphin

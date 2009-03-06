@@ -5,8 +5,6 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
-
 /**
  * @author Saurabh Agrawal
  */

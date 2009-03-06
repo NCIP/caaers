@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.tools.configuration;
 
-import org.springframework.core.io.ClassPathResource;
-
-import gov.nih.nci.cabig.ctms.tools.configuration.DatabaseBackedConfiguration;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperties;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+import gov.nih.nci.cabig.ctms.tools.configuration.DatabaseBackedConfiguration;
+
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Rhett Sutphin

@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the StudyInvestigator domain object associated with the Adverse event

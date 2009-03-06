@@ -1,17 +1,29 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.apache.commons.collections.functors.InstantiateFactory;
-import org.apache.commons.collections.list.LazyList;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-import org.springframework.beans.BeanUtils;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.collections.functors.InstantiateFactory;
+import org.apache.commons.collections.list.LazyList;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 /**
  * This class represents the TreatmentInformation domain object associated with the Adverse event

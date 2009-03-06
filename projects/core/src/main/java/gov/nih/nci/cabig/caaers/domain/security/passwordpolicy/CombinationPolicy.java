@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
-import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 
 @Embeddable
 public class CombinationPolicy {

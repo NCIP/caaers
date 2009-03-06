@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-/*
-import gov.nih.nci.cabig.caaers.domain.Study;
-import org.springframework.context.ApplicationContext;
-*/
 
 
 public class T1 {

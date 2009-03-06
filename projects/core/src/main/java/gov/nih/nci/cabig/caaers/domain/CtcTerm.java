@@ -2,20 +2,19 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Column;
-import javax.persistence.Transient;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import java.util.List;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * This class represents the CtcTerm domain object associated with the Adverse event report.

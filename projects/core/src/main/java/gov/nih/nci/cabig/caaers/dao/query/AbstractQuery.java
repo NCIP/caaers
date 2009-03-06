@@ -116,6 +116,20 @@ public class AbstractQuery {
     protected void andWhere(final String condition) {
         andConditions.add(condition);
     }
+    
+    /**
+     * add the 'Where' condition to the existing Query String.
+     * <p>
+     * For example if for the queryString is "Select * from Article a order by a.id";
+     * andWhere("a.name=:name") will append queryString to "Select * from Article a WHERE
+     * a.name=:name order by a.id"
+     * </p>
+     *
+     * @param condition the condition
+     */
+    protected void orWhere(final String condition) {
+        orConditions.add(condition);
+    }
 
     public Map<String, Object> getParameterMap() {
         return queryParameterMap;

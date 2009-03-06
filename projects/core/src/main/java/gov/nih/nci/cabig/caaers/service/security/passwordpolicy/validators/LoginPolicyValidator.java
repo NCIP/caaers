@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+
 import org.springframework.beans.factory.annotation.Required;
 
 /**

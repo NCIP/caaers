@@ -1,15 +1,11 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import groovy.util.MapEntry;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 /**
  * This is a set implementation that allows duplicate, entry only if the addAll call has duplicate items in it.

@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
@@ -15,6 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 	Study dbStudy;

@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -15,8 +17,6 @@ import javax.persistence.Transient;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * 

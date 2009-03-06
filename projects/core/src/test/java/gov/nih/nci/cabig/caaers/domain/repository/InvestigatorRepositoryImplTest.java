@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;

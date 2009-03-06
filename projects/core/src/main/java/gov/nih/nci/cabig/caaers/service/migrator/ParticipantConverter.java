@@ -15,11 +15,7 @@ import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignmen
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Identifiers;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**

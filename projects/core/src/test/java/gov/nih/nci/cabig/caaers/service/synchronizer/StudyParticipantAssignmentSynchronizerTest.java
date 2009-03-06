@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecurityTestCase {

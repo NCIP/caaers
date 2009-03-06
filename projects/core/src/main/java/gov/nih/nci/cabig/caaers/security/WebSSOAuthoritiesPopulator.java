@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.io.StringReader;
-
 import gov.nih.nci.cagrid.common.Utils;
+
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
 import org.acegisecurity.userdetails.UserDetails;
@@ -16,11 +17,6 @@ import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.globus.gsi.GlobusCredential;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Will create a WebSSOUser object from CAS assertion <p/> Created by IntelliJ IDEA. User: kherm

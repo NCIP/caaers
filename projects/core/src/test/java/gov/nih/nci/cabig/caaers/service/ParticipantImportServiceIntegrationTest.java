@@ -1,21 +1,29 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import static org.easymock.EasyMock.isA;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator;
-import static org.easymock.EasyMock.isA;
-import org.easymock.classextension.EasyMock;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * @author Biju Joseph

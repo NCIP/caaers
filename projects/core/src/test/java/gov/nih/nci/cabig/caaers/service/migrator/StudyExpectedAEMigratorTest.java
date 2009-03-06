@@ -1,10 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -17,7 +12,11 @@ import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyExpectedAEMigrator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 public class StudyExpectedAEMigratorTest extends AbstractTestCase{
 

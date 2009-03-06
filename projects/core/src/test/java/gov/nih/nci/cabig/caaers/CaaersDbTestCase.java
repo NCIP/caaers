@@ -11,23 +11,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.acegisecurity.afterinvocation.AfterInvocationProviderManager;
-import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
 
@@ -36,11 +31,8 @@ import edu.nwu.bioinformatics.commons.StringUtils;
 import edu.nwu.bioinformatics.commons.testing.DbTestCase;
 import edu.nwu.bioinformatics.commons.testing.HsqlDataTypeFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
-import gov.nih.nci.cabig.caaers.security.stub.AspectJSecurityInterceptorStub;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
-import gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect;
 
 /**
  * @author Rhett Sutphin

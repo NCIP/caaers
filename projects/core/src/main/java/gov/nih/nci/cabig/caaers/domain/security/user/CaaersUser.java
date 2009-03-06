@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain.security.user;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Column;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;

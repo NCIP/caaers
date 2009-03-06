@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.rmi.RemoteException;
 import java.util.Date;
 
 import javax.jms.Connection;

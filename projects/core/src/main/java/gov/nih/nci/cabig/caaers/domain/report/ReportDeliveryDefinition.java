@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -7,8 +9,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
-
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 @Entity
 @Table(name = "report_delivery_defs")

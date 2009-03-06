@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+
+import java.util.List;
 
 public class ScheduledNotificationDaoStub extends ScheduledNotificationDao {
     @Override

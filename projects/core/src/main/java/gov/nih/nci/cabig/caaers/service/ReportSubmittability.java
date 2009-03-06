@@ -2,10 +2,10 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.List;
-import java.util.LinkedList;
 
 public class ReportSubmittability {
     private Map<ExpeditedReportSection, List<Message>> messages;

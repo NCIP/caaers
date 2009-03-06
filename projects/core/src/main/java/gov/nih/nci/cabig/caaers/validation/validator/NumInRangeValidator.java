@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.validation.validator;
 
-import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
-
 import gov.nih.nci.cabig.caaers.validation.CaaersValidationException;
+import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 
 /**
  * @author Jared Flatow

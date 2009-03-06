@@ -5,10 +5,6 @@ import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.acegisecurity.AccessDeniedException;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.ConfigAttribute;
-import org.acegisecurity.ConfigAttributeDefinition;
 import org.acegisecurity.afterinvocation.AfterInvocationProvider;
 /**
  * 

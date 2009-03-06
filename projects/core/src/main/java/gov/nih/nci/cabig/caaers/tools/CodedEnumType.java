@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.tools;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.apache.commons.lang.StringUtils;
 
 public class CodedEnumType extends gov.nih.nci.cabig.ctms.tools.hibernate.CodedEnumType{
 	 @Override

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
 import org.springframework.transaction.annotation.Transactional;
 
 /**

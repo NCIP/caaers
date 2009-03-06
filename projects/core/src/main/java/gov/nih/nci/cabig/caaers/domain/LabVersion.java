@@ -2,15 +2,15 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
+import java.util.List;
+
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import java.util.List;
 
 /**
  * This class represents the LabVersion domain object associated with the Adverse event report.

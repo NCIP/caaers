@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.validator;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;

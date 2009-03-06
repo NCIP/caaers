@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.utils;
 
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,5 +40,46 @@ public class DateUtils {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     public static String formatDate(Date d){
     	return dateFormat.format(d);
+    }
+    
+    public static DateValue parseDateString(String dateString){
+    	if(dateString == null) return null;
+    	DateValue dv = new DateValue();
+    	
+    	if(dateString.length() == 4){
+    		dv.setYearString(dateString);
+    		return dv;
+    	}
+    	
+    	if(dateString.indexOf('/') < 0)  
+    		throw new RuntimeException("Unknown format, expected format is 'mm/dd/yyyy' or 'mm/yyyy' or 'yyyy'");
+    	 
+    	String[] dateParts = dateString.split("/");
+    	int size = dateParts.length;
+    	//validate year
+    	if(dateParts[size - 1].length() != 4) 
+    		throw new RuntimeException("Unknown format, expected format is 'mm/dd/yyyy' or 'mm/yyyy' or 'yyyy'");
+    	
+    	if(size == 2){
+    		 if(dateParts[0].length() != 2)
+    			 throw new RuntimeException("Unknown format, expected format is 'mm/dd/yyyy' or 'mm/yyyy' or 'yyyy'");
+    		
+    		 dv.setMonthString(dateParts[0]);
+    		 dv.setYearString(dateParts[1]);
+    		 
+    	}else if (size == 3){
+    		if(dateParts[0].length() != 2)
+   			 	throw new RuntimeException("Unknown format, expected format is 'mm/dd/yyyy' or 'mm/yyyy' or 'yyyy'");
+    		if(dateParts[1].length() != 2)
+   			 	throw new RuntimeException("Unknown format, expected format is 'mm/dd/yyyy' or 'mm/yyyy' or 'yyyy'");
+    		
+    		dv.setMonthString(dateParts[0]);
+    		dv.setDayString(dateParts[1]);
+   		 	dv.setYearString(dateParts[2]);
+    	}else {
+    		return null;
+    	}
+    	
+    	return dv;
     }
 }

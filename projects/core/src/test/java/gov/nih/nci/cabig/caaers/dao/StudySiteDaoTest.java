@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;

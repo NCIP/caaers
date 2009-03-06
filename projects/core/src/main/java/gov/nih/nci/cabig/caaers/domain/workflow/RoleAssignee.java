@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
-
-import gov.nih.nci.cabig.caaers.domain.PersonRole;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 /**
  * Assignee of this type will be associated to a Role.

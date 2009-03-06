@@ -1,15 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.validation.annotation.Validatable;
-import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.AttributeOverride;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;

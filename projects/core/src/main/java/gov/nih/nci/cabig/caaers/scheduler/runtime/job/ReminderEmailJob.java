@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 

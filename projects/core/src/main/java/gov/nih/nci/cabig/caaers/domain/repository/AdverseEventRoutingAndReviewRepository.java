@@ -10,8 +10,6 @@ import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 
 import java.util.List;
-
-import org.jbpm.graph.exe.ProcessInstance;
 /**
  * This interface has methods to save and retrieve the {@link ReviewComment}s, and to change the review state of {@link Report} and {@link AdverseEventReportingPeriod} 
  * 

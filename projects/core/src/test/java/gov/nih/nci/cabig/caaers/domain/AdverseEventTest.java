@@ -1,10 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.attribution.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.Calendar;

@@ -3,13 +3,13 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.dao.query.AdverseEventExistQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.sql.Timestamp;
@@ -246,5 +246,35 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     	boolean result = getDao().isAdverseEventPresent(ae1);
     	assertFalse(result);
     	
+    }
+    
+    public void testReassociate(){
+    	AdverseEventReportingPeriod rp = null;
+    	{
+    		rp = getDao().getById(1005);
+    	}
+    	interruptSession();
+    	{
+    		try{
+    			rp.getAdverseEvents().size();
+    			fail("Should throw lazy exception");
+    		}catch(Exception e){
+    			
+    		}
+    		getDao().reassociate(rp);
+    		try{
+    			rp.getAdverseEvents().size();
+    			assertTrue(true);
+    		}catch(Exception e){
+    			fail("Should not throw lazy exception");
+    		}
+    	}
+    }
+    
+    public void testGetByStudyParticipantAssignment(){
+    	StudyParticipantAssignment assignment = new StudyParticipantAssignment();
+    	assignment.setId(-17);
+    	 List<AdverseEventReportingPeriod> rps = getDao().getByAssignment(assignment);
+    	 assertEquals(2, rps.size());
     }
 }

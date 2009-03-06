@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;

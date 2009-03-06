@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 /**

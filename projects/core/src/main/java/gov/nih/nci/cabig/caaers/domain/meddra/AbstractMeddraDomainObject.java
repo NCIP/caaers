@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import javax.persistence.Column;

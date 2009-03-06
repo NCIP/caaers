@@ -10,8 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**

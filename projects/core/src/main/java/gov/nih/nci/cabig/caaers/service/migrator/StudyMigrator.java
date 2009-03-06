@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 public class StudyMigrator extends CompositeMigrator<Study> {
 	
 	public StudyMigrator(List<Migrator<Study>> migrators) {

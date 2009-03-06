@@ -1,12 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import static org.easymock.EasyMock.isA;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
@@ -17,7 +11,11 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
-import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * 

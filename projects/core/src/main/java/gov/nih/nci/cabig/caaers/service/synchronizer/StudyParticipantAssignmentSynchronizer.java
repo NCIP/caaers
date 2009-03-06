@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class StudyParticipantAssignmentSynchronizer implements Migrator<Participant>{

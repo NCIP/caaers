@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,8 +12,6 @@ import java.util.Map;
 
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 /**
  * This class implements the Data access related operations for the RoutineAdverseEventReport domain

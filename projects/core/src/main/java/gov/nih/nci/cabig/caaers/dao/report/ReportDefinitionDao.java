@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.dao.report;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -58,14 +57,6 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
         getHibernateTemplate().saveOrUpdate(rpDef);
     }
 
-    /**
-     * TODO kkk
-     * 
-     * @return
-     */
-    public Session getHibernateSession() {
-        return getSession();
-    }
 
     /**
      * Get the list of all report definitions.
@@ -121,38 +112,8 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
                         new Object[] { orgId, name }));
     }
 
-    /**
-     * Deelte the report definition specified by report id.
-     * 
-     * @param id
-     *                The report id.
-     * @return True if report definition is successfully deleted. False otherwise.
-     */
-    public boolean deleteById(int id) {
-        int count = getHibernateTemplate().bulkUpdate("delete ReportDefinition t where t.id=?",
-                        new Object[] { id });
-        return count >= 1;
-    }
+   
 
-    /**
-     * Delete report definition from db.
-     * 
-     * @param rs
-     *                The report definition object to be deleted.
-     */
-    public void delete(ReportDefinition rpDef) {
-        getHibernateTemplate().delete(rpDef);
-    }
-
-    /**
-     * Delete multiple report definitions.
-     * 
-     * @param c
-     *                The report definition collection.
-     */
-    public void delete(Collection<ReportDefinition> c) {
-        getHibernateTemplate().deleteAll(c);
-    }
 
     // because PlannedNotifications require a transaction, we have reassociate using
     // lock.

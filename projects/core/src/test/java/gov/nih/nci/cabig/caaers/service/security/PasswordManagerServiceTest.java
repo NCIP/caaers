@@ -2,10 +2,6 @@ package gov.nih.nci.cabig.caaers.service.security;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
@@ -18,6 +14,9 @@ import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jared Flatow

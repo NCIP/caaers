@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,11 +25,9 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
-import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 public class MessageNotificationService {
     protected Configuration configuration;

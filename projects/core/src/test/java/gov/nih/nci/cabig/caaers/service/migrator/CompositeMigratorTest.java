@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
-import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import junit.framework.TestCase;
 
 public class CompositeMigratorTest extends TestCase {

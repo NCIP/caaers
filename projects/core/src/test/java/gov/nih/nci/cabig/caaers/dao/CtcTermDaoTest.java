@@ -7,8 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-
 import java.util.List;
 
 /**

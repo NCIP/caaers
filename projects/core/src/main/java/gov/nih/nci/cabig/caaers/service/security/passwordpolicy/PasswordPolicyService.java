@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
 public interface PasswordPolicyService {

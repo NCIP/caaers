@@ -1,11 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;

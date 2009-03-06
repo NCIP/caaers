@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.apache.commons.lang.StringUtils;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
-import java.util.GregorianCalendar;
-import java.util.Calendar;
-import java.util.Date;
-import java.text.ParseException;
+import org.apache.commons.lang.StringUtils;
 
 @Embeddable
 public class DateValue implements Comparable<DateValue> {

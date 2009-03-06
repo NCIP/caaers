@@ -31,7 +31,6 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.math.BigDecimal;

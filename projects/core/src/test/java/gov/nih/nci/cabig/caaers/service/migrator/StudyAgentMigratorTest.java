@@ -1,10 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
@@ -15,7 +10,11 @@ import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 public class StudyAgentMigratorTest extends AbstractTestCase {
 	

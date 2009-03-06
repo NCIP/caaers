@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.workflow.handler;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.List;

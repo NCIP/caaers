@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao.MedDRA;
@@ -12,7 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 

@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 

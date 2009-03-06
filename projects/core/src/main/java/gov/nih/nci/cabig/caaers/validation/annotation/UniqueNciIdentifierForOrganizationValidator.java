@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Biju Joseph, Created on December,6th, 2007

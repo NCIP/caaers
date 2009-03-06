@@ -1,16 +1,6 @@
 package gov.nih.nci.cabig.caaers.tools.mail;
 
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-
-import java.util.Date;
-
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import junit.framework.TestCase;
-
-import org.easymock.classextension.EasyMock;
 
 public class CaaersJavaMailSenderTest extends TestCase {
 

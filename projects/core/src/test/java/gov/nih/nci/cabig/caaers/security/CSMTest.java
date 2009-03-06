@@ -3,17 +3,14 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
-import com.mchange.v2.c3p0.DriverManagerDataSource;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
+
 import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.aspectj.lang.Aspects;
 import org.springframework.context.ApplicationContext;
+
+import com.mchange.v2.c3p0.DriverManagerDataSource;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

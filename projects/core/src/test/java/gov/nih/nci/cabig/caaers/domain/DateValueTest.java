@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Calendar;
+import edu.nwu.bioinformatics.commons.DateUtils;
+
 import java.util.Date;
 
-import edu.nwu.bioinformatics.commons.DateUtils;
 import junit.framework.TestCase;
 
 public class DateValueTest extends TestCase {

@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.acegi.csm.authorization.CSMPrivilegeGenerator;
 

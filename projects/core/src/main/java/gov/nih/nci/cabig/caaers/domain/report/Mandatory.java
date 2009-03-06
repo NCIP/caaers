@@ -4,7 +4,6 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.toStringHelper;
 import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 	public enum Mandatory implements CodedEnum<Integer> {

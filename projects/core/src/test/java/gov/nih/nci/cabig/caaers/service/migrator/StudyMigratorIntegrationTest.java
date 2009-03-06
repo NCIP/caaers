@@ -2,8 +2,6 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
 
 import java.util.List;
 

@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.tools.spring;
 
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationContext;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * This class iterates over a list of bean names, attempting to load each one from the application

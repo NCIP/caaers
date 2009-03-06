@@ -1,16 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
-import java.util.List;
-
-import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "meddra_soc")

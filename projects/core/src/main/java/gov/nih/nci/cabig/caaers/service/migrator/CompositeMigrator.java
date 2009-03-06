@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

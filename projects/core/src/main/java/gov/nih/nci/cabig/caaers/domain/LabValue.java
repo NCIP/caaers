@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import javax.persistence.Embeddable;
 
 import org.apache.commons.lang.StringUtils;
-
-import java.util.Date;
 
 /**
  * This class represents the LabValue domain object associated with the Adverse event report.

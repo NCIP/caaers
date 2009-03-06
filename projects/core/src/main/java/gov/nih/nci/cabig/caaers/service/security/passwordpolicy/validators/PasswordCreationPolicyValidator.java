@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
 public class PasswordCreationPolicyValidator implements PasswordPolicyValidator {

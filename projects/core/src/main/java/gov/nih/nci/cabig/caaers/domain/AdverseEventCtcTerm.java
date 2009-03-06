@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import javax.persistence.*;
 
 /**
  * This class represents the CTC terminology associated to the adverse event.

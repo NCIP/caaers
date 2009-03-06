@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import org.springframework.beans.BeanUtils;
-
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
+import org.springframework.beans.BeanUtils;
 
 public class TreatmentAssignmentMigrator implements Migrator<gov.nih.nci.cabig.caaers.domain.Study> {
 	

@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.not;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -8,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import static org.easymock.EasyMock.*;
 
 /**
  * @author Jared Flatow

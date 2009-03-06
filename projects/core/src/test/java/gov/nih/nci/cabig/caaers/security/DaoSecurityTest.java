@@ -4,24 +4,10 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
-import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.util.Calendar;
-
-import org.acegisecurity.AccessDeniedException;
 
 /**
  * @author joshua

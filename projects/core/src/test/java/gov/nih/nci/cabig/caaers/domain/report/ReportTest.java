@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+
 import java.util.List;
 
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import junit.framework.TestCase;
 
 /** 

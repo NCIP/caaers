@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Column;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the PreExistingCondition domain object associated with the Adverse event

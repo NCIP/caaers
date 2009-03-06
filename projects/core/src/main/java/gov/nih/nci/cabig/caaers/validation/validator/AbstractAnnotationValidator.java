@@ -3,17 +3,17 @@ package gov.nih.nci.cabig.caaers.validation.validator;
 import gov.nih.nci.cabig.caaers.validation.CaaersValidationException;
 import gov.nih.nci.cabig.caaers.validation.annotation.Validatable;
 
-import org.springframework.validation.Validator;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Errors;
-import org.springframework.beans.BeanUtils;
-
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.logging.Logger;
+
 import javax.persistence.Embedded;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 /**
  * @author Jared Flatow

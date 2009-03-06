@@ -1,22 +1,6 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
 
 public class CaaersAdeersSATestCase extends CaaersTestCase {
 	

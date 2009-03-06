@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin

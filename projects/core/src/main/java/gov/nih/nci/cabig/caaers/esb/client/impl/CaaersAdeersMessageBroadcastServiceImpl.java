@@ -2,14 +2,10 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 import java.util.Vector;
 
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 /**
  * 

@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;

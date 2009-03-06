@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import edu.nwu.bioinformatics.commons.StringUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -80,13 +78,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
-    private void buildSubQuery(String subname, StringBuilder query, List<Object> params, String substringMatchProperties) {
-        query.append('(');
-        String prop = substringMatchProperties;
-        query.append("LOWER(").append(prop).append(") LIKE ?");
-        params.add('%' + subname.toLowerCase() + '%');
-        query.append(')');
-    }
+   
 
     /**
      * A query builder for use by subclass DAOs. It makes it easy to match a fragment of a name or

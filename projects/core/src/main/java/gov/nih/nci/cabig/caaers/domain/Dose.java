@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.springframework.beans.BeanUtils;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-import java.math.BigDecimal;
+
+import org.springframework.beans.BeanUtils;
 
 /**
  * This class represents the Dose domain object associated with the Adverse event report.

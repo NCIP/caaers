@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -30,26 +31,11 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 
     /** The Constant JOINS. */
     private static final String JOINS = " join o.adverseEventTerm as aeCtcTerm join aeCtcTerm.term as ctcTerm join ctcTerm.category as ctcCategory  "
-                    + "  join o.report as expeditedReport "
-                    + " join expeditedReport.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier"
-                    + " join spa.participant as p join p.identifiersInternal as pIdentifier";
+                    + "  join o.reportingPeriod as rp "
+                    + " join rp.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier"
+                    + " join spa.participant as p join p.identifiers as pIdentifier";
 
-    /**
-     * Get list of Adverse events with supplied criteria.
-     * 
-     * @param subnames
-     *                The name fragments to search on.
-     * @param subStringMatchProperties
-     *                A list of properties of the implementing object which should be matched as
-     *                case-insensitive substrings
-     * @see findBySubname {@link CaaersDao#findBySubname(String[], String, List, List, List)}
-     * @return
-     */
-    public List<AdverseEvent> getByCriteria(final String[] subnames,
-                    final List<String> subStringMatchProperties) {
-        return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
-    }
-
+   
     /**
      * Save the Adverse Event.
      * 
@@ -77,13 +63,6 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
         StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
                         domainClass().getName()).append(" o ").append(JOINS);
 
-        if (props.get("notimplemented") != null) {
-            // queryBuf.append(firstClause ? " where " : " and ");
-            // queryBuf.append("LOWER(").append("sIdentifier.value").append(") LIKE ?");
-            // String p = (String)props.get("studyIdentifier");
-            // params.add('%' + p.toLowerCase() + '%');
-            // firstClause = false;
-        }
 
         if (true) {
             queryBuf.append(firstClause ? " where " : " and ");
@@ -122,7 +101,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
         }
         if (props.get("ctcMeddra") != null) {
             queryBuf.append(firstClause ? " where " : " and ");
-            queryBuf.append("LOWER(").append("ctcTerm.ctepCode").append(") LIKE ?");
+            queryBuf.append("LOWER(").append("o.lowLevelTerm.meddraCode").append(") LIKE ?");
             String p = (String) props.get("ctcMeddra");
             params.add('%' + p.toLowerCase() + '%');
             firstClause = false;
@@ -172,11 +151,30 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
         }
 
         if (props.get("participantDateOfBirth") != null) {
-            queryBuf.append(firstClause ? " where " : " and ");
-            queryBuf.append(" p.dateOfBirth").append(" = ? ");
+            
             String p = (String) props.get("participantDateOfBirth");
-            params.add(stringToDate(p));
-            firstClause = false;
+            DateValue dob = DateUtils.parseDateString(p);
+            
+            if(dob != null){
+            	if(dob.getDay() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.day").append(" = ? ");
+                    params.add(dob.getDay());
+                    firstClause = false;
+            	}
+            	if(dob.getMonth() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.month").append(" = ? ");
+                    params.add(dob.getMonth());
+                    firstClause = false;
+            	}
+            	if(dob.getYear() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.year").append(" = ? ");
+                    params.add(dob.getYear());
+                    firstClause = false;
+            	}
+            }
         }
 
         log.debug("::: " + queryBuf.toString());
@@ -245,14 +243,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		//}
 		return getHibernateTemplate().findByCriteria(criteria);			
 	}
-/*
-	public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
-		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
-		criteria.createCriteria("reportingPeriod").createCriteria("assignment")
-		.add(Example.create(studyParticipantAssignment));
-		return getHibernateTemplate().findByCriteria(criteria);	
-	}
-*/	
+
 	private Example getParticipantExample(Participant participant) {
 		return addOptions(Example.create(participant));
 	}

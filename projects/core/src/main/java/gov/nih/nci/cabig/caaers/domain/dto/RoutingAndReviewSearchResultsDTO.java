@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
 /**
  * 
  * @author biju

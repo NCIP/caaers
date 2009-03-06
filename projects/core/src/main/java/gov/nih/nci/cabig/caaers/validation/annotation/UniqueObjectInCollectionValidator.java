@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by IntelliJ IDEA. User: admin Date: Dec 17, 2007 Time: 5:29:22 PM To change this template

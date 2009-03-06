@@ -37,7 +37,6 @@ import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
-import org.springframework.mail.MailSendException;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
 /**
  * 

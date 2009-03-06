@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.List;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
@@ -11,6 +8,11 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public class IdentifierMigrator<E extends AbstractIdentifiableDomainObject>
 implements Migrator<E> {

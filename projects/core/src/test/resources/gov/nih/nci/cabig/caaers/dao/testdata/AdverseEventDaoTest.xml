@@ -36,21 +36,40 @@
             ctep_code="10043882"
             other_required="0"
             />
-    <ctc_grades/>
-    <!-- to delete in case of existing refs -->
-
-    <participant_assignments
-            id="-6"
-            participant_id="-4"
-            study_site_id="-4"
-            date_of_enrollment="2004-01-05"
-            load_status="1"
-            />
     <agents id="-101"/>
-    <agents id="-102"/>
-    <studies id="-100" short_title="Min"
-             load_status="1"/>
+    <agents id="-102"/>            
+            
+     <ORGANIZATIONS
+            id="-1003"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="DEFAULT"
+            /> 
+            
+     <studies id="-100" short_title="Min"  load_status="1" />        
+           
+     <STUDIES id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title"
+            long_title="Long Title"
+            description="Description"
+            grid_id=""
+            load_status="1" />
 
+            
+    <STUDY_ORGANIZATIONS
+            id="-1000"
+            version="1"
+            status_code="active"
+            start_date="01-01-2001"
+            end_date="01-01-2002"
+            study_id="-2"
+            site_id="-1003"
+            type="SST" />        
+            
+    
+            
     <TERMINOLOGIES
             id="-11"
             term_code="1"
@@ -64,7 +83,66 @@
             order_no="1"
             study_id="-100"
             />
-
+	
+	<PARTICIPANTS
+        id="-3"
+        instituitional_patient_number="P00X"
+        institution="Hospital"
+        first_name="XXX"
+        last_name="YYY"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" />
+        
+        
+	<PARTICIPANTS
+        id="-4"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" />
+    
+    
+    <IDENTIFIERS
+            id="-200"
+            participant_id="-3"
+            stu_id="-2"
+            value="13js77"
+            type="MRN"
+            system_name="system name"
+            organization_id="-1003"
+            discriminator_column="1"/>    
+  	<IDENTIFIERS
+        id="-201"
+        value="11112"
+        type="MRN"
+        participant_id="-4"
+        system_name="system name"
+        discriminator_column="2"/>      
+        
+        
+    <participant_assignments
+            id="-6"
+            participant_id="-4"
+            study_site_id="-1000"
+            date_of_enrollment="2004-01-05"   load_status="1" />
+            
+            
     <TREATMENT_ASSIGNMENT
             id="1001"
             code="adverseEventReportingPeriodCode"
@@ -111,6 +189,7 @@
             attribution_summary_code="3"
             expected="1"
             comments="That was some big AE"
+            low_level_term_id="-11"
             />
 
     <AE_TERMS
@@ -119,9 +198,7 @@
             term_id="-11"
             term_type="meddra"
             />
-    id="-21"
-    report_id="-19"
-    />
+   
 
     <MEDDRA_LLT
             id="-11"
@@ -153,7 +230,7 @@
             hospitalization_code="0"
             attribution_summary_code="3"
             expected="1"
-            comments="That was some big AE"
+            comments="That was some other big AE"
             start_date="2007-09-12 21:43:56.987"
             end_date="2007-09-12 21:43:56.987"
             reporting_period_id="1002"
@@ -162,13 +239,37 @@
             event_time_zone="1"
             />
 
-
     <AE_TERMS
             id="-8"
             adverse_event_id="-2"
             term_id="3012"
             term_type="ctep"
             />
+            
+ 
+    <ADVERSE_EVENTS
+            id="-5"
+            report_id="-17"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1002"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            low_level_term_id="-11"
+            />
+
+    <AE_TERMS
+            id="-91"
+            adverse_event_id="-5"
+            term_id="3007"
+            term_type="ctep"
+            />           
 
     <COURSE_AGENTS
             id="-23"
@@ -301,6 +402,7 @@
             />
 
     <!--  referenced tables -->
+    <ctc_grades/>
     <ae_labs/>
     <participant_histories/>
 

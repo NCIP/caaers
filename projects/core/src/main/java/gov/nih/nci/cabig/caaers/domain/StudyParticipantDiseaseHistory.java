@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +23,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the StudyParticipantDiseaseHistory domain object associated with the StudyParticipantAssignment.

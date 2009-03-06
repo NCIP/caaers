@@ -2,19 +2,16 @@ package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.sql.Timestamp;
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Jared Flatow

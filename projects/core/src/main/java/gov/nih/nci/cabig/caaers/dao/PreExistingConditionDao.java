@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 
 import java.util.Arrays;

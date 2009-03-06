@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query.ajax;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Study;
+
 import org.apache.commons.lang.StringUtils;
 
 /**

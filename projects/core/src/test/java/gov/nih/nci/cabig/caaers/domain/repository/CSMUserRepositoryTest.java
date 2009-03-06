@@ -1,16 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static org.easymock.EasyMock.expect;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
@@ -20,6 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jared Flatow

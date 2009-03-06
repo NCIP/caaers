@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.springframework.beans.BeanUtils;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 /**
  * This class represents the OtherCause domain object associated with the Adverse event report.

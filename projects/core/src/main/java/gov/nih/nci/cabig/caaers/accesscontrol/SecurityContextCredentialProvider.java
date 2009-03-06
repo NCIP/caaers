@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import edu.duke.cabig.c3pr.esb.DelegatedCredential;
-import edu.duke.cabig.c3pr.esb.DelegatedCredentialProvider;
-import edu.duke.cabig.c3pr.esb.impl.DelegatedCredentialImpl;
-import gov.nih.nci.cabig.caaers.security.WebSSOUser;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.cas.CasAuthenticationToken;
 import org.apache.log4j.Logger;
+
+import edu.duke.cabig.c3pr.esb.DelegatedCredential;
+import edu.duke.cabig.c3pr.esb.DelegatedCredentialProvider;
+import edu.duke.cabig.c3pr.esb.impl.DelegatedCredentialImpl;
+import gov.nih.nci.cabig.caaers.security.WebSSOUser;
 
 /**
  * Acts a credential provider and will provide the grid credential saved in the session by Acegi.

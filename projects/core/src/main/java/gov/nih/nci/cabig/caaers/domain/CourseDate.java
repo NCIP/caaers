@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Embeddable;
 import java.util.Date;
+
+import javax.persistence.Embeddable;
 
 /**
  * This class represents the CourseDate domain object associated with the Adverse event report.

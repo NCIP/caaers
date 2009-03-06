@@ -1,15 +1,14 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.taskmgmt.exe.TaskInstance;
-
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 
 public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersDbTestCase {
 	WorkflowServiceImpl wfService;

@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
+
+import java.util.List;
 /**
  * 
  * @author Biju

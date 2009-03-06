@@ -11,7 +11,6 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 public class MailerStub extends CaaersJavaMailSender {

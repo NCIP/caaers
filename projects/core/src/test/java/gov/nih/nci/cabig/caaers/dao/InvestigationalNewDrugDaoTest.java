@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
-
-import java.util.HashMap;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
@@ -12,6 +8,9 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+
+import java.util.HashMap;
+import java.util.List;
 
 @CaaersUseCases( { CREATE_STUDY })
 public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNewDrugDao> {

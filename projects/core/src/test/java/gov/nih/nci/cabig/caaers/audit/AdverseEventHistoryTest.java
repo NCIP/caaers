@@ -8,15 +8,16 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue;
 import gov.nih.nci.cabig.ctms.audit.domain.Operation;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.InvalidPropertyException;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class AdverseEventHistoryTest extends AbstractTestCase {
     protected final Log log = LogFactory.getLog(getClass());

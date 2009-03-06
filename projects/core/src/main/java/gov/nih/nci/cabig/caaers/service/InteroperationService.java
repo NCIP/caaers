@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 /**
  * This service class is used to send AE reports to the study calendar.

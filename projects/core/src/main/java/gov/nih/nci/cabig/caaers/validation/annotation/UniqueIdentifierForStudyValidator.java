@@ -1,17 +1,16 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
-import java.util.List;
-
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Required;
-
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+
+import java.util.List;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdentifierForStudy> {
     private String message;

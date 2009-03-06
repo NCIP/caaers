@@ -1,22 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
-import org.jbpm.JbpmConfiguration;
-import org.jbpm.graph.def.Node;
-import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;

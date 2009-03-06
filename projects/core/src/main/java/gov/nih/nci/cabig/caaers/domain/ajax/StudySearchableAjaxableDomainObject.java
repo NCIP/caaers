@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-
 import java.util.ArrayList;
 import java.util.List;
 

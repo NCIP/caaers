@@ -1,16 +1,7 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
-import static org.easymock.classextension.EasyMock.*;
-
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
@@ -20,6 +11,15 @@ import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 /**
  * 
  * @author Biju Joseph

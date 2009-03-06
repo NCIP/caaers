@@ -1,13 +1,8 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;

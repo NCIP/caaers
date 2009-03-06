@@ -1,16 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao.workflow;
 
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 
 /**

@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
-import org.apache.commons.lang.StringUtils;
-
 import junit.framework.TestCase;
+
+import org.apache.commons.lang.StringUtils;
 
 public class ReviewCommentTest extends TestCase {
 	ReviewComment comment;

@@ -3,9 +3,6 @@ package gov.nih.nci.cabig.caaers.dao.report;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.transaction.annotation.Transactional;
 
 /**

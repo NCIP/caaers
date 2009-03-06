@@ -1,34 +1,13 @@
 package gov.nih.nci.cabig.caaers.workflow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
-import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler;
 
-import org.easymock.classextension.EasyMock;
-import org.hibernate.SessionFactory;
 import org.jbpm.JbpmConfiguration;
-import org.jbpm.JbpmContext;
-import org.jbpm.context.exe.ContextInstance;
-import org.jbpm.graph.def.Action;
-import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
-import org.jbpm.graph.exe.ExecutionContext;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.graph.exe.Token;
 import org.springframework.context.ApplicationContext;
-import org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean;
-import static org.easymock.EasyMock.isA;
 /**
  * 
  * @author Biju Joseph

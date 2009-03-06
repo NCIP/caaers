@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+
+import java.util.List;
 
 public class ParticipantSynchronizer extends CompositeMigrator<Participant>{
 

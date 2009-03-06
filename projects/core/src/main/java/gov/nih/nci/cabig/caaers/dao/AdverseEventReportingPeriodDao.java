@@ -1,20 +1,16 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.LockModeType;
-
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventExistQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;

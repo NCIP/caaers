@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
-
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
+
+import java.util.List;
 
 /**
  * @author Krikor Krumlian

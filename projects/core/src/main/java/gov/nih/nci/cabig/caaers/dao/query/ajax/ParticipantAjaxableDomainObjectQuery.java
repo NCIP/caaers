@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao.query.ajax;
 
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+
 import java.text.ParseException;
 import java.util.Map;
-
-import gov.nih.nci.cabig.caaers.domain.DateValue;
 
 import org.apache.commons.lang.StringUtils;
 

@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.ArrayList;
-
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
+
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
 public class StudyMigratorTest extends TestCase {

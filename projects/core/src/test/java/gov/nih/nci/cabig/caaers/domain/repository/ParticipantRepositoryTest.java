@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+
 import org.easymock.classextension.EasyMock;
 
 /**

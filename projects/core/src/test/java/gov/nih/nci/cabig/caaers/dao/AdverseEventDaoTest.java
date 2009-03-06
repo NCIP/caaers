@@ -3,20 +3,50 @@ package gov.nih.nci.cabig.caaers.dao;
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.attribution.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
+import java.text.ParseException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
-public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
+public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
+	
+	private StudyDao studyDao;
+	private ParticipantDao participantDao;
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
+		participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
+	}
 
     public void testCopyBasicProperties() throws Exception {
         AdverseEvent copiedAdverseEvent = copyAdverseEvent();
@@ -30,7 +60,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong hosp.", Hospitalization.NONE, copiedAdverseEvent.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, copiedAdverseEvent.getExpected());
         assertEquals("Wrong attrib summary", Attribution.POSSIBLE, copiedAdverseEvent.getAttributionSummary());
-        assertEquals("Wrong comments", "That was some big AE", copiedAdverseEvent.getComments());
+        assertEquals("Wrong comments", "That was some other big AE", copiedAdverseEvent.getComments());
         assertTrue("Wrong time zone", copiedAdverseEvent.getEventApproximateTime().isPM());
         assertEquals("Wrong time", Integer.valueOf(3), copiedAdverseEvent.getEventApproximateTime().getMinute());
         assertEquals("Wrong time", Integer.valueOf(12), copiedAdverseEvent.getEventApproximateTime().getHour());
@@ -190,7 +220,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong hosp.", Hospitalization.NONE, loaded.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, loaded.getExpected());
         assertEquals("Wrong attrib summary", Attribution.POSSIBLE, loaded.getAttributionSummary());
-        assertEquals("Wrong comments", "That was some big AE", loaded.getComments());
+        assertEquals("Wrong comments", "That was some other big AE", loaded.getComments());
 
 
     }
@@ -300,10 +330,9 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testFindAll() throws Exception {
 
         List aeList = getDao().findAll(null);
-        System.out.println(aeList);
         assertNotNull(aeList);
         assertTrue(aeList.size() > 0);
-        assertSame(2, aeList.size());
+        assertSame(3, aeList.size());
     }
     
     public void testUpdateRequiresReporting() throws Exception {
@@ -314,5 +343,122 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     	loaded = getDao().getById(-3);
     	assertTrue(loaded.getRequiresReporting());
     }
-
+    
+    public void testSearchAdverseEvents(){
+    	Map<String, Object> props = new HashMap<String, Object>();
+    	props.put("studyIdentifier", "13js77");
+    	props.put("studyShortTitle", "Short");
+    	props.put("ctcCategory", "auditory/ear");
+    	props.put("ctcTerm", "Tinnitus");
+    	props.put("grade", "5");
+    	props.put("participantIdentifier", "11112");
+    	props.put("participantFirstName", "Dilbert");
+    	props.put("participantLastName", "Scott");
+    	props.put("participantEthnicity", "ethnicity");
+    	props.put("participantGender", "Female");
+    	props.put("participantDateOfBirth", "01/02/2006");
+    	
+    	try {
+    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
+    		assertNotNull(aes);
+    		assertEquals(1, aes.size());
+    		assertEquals(new Integer(-2), aes.get(0).getId());
+    		
+    		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("should not throw exception");
+		}
+    }
+    
+    public void testSearchAdverseEventsHavingOtherMeddra(){
+    	Map<String, Object> props = new HashMap<String, Object>();
+    	props.put("studyIdentifier", "13js77");
+    	props.put("studyShortTitle", "Short");
+    	props.put("grade", "5");
+    	props.put("participantIdentifier", "11112");
+    	props.put("participantFirstName", "Dilbert");
+    	props.put("participantLastName", "Scott");
+    	props.put("participantEthnicity", "ethnicity");
+    	props.put("participantGender", "Female");
+    	props.put("participantDateOfBirth", "01/02/2006");
+    	props.put("ctcMeddra", "2");
+    	
+    	try {
+    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
+    		assertNotNull(aes);
+    		assertEquals(1, aes.size());
+    		assertEquals(new Integer(-5), aes.get(0).getId());
+    		
+    		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("should not throw exception");
+		}
+    }
+    
+    public void testSearchAdverseEventsBasedOnParticipant(){
+    	Map<String, Object> props = new HashMap<String, Object>();
+    	props.put("participantIdentifier", "11112");
+    	props.put("participantFirstName", "Dilbert");
+    	props.put("participantLastName", "Scott");
+    	props.put("participantEthnicity", "ethnicity");
+    	props.put("participantGender", "Female");
+    	props.put("participantDateOfBirth", "01/02/2006");
+    	
+    	try {
+    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
+    		assertNotNull(aes);
+    		assertEquals(2, aes.size());
+    		assertEquals(new Integer(-5), aes.get(0).getId());
+    		
+    		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail("should not throw exception");
+		}
+    }
+    
+    public void testGetByStudy(){
+    	Study s = studyDao.getById(-2);
+    	
+    	List<AdverseEvent> aes = getDao().getByStudy(s);
+    	assertEquals(3, aes.size());
+    	
+    }
+    
+    public void testGetByStudyAndAE(){
+    	Study s = studyDao.getById(-2);
+        AdverseEvent ae = getDao().getById(-2);
+        List<AdverseEvent> aes = getDao().getByStudy(s, ae);
+    	assertEquals(2, aes.size());
+    }
+    
+    public void testGetByParticipant(){
+    	Participant p = participantDao.getById(-4);
+    	List<AdverseEvent> aes = getDao().getByParticipant(p);
+    	assertEquals(3, aes.size());
+    }
+    
+    public void testGetByParticipantHavingNoAssingment(){
+    	Participant p = participantDao.getById(-3);
+    	List<AdverseEvent> aes = getDao().getByParticipant(p);
+    	assertEquals(0, aes.size());
+    }
+    
+    public void testGetByParticipantAndAE(){
+    	Participant p = participantDao.getById(-4);
+    	AdverseEvent ae = getDao().getById(-2);
+    	List<AdverseEvent> aes = getDao().getByParticipant(p, ae);
+    	assertEquals(2, aes.size());
+    }
+    
+    
+    public AdverseEventDao getDao(){
+    	return (AdverseEventDao) getDeployedApplicationContext().getBean("adverseEventDao");
+    }
+    
 }

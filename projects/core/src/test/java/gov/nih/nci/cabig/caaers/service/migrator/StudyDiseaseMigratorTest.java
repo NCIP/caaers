@@ -1,10 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
@@ -15,11 +10,13 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyDiseaseMigrator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 public class StudyDiseaseMigratorTest extends
 		gov.nih.nci.cabig.caaers.AbstractTestCase {

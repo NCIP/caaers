@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.domain.Condition;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;

@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.BeanWrapperImpl;
-
 import java.util.List;
+
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.MutablePropertyValues;
 
 /**
  * @author Rhett Sutphin
