@@ -549,6 +549,7 @@
 			<cobertura-instrument todir="${instrumented.classes.dir}" datafile="${cobertura.report.dir}/cobertura.ser">
 			    <fileset dir="${classes.dir}">
 			        <include name="**/*.class"/>
+			    	<exclude name="**/*$Ajc*.class"/>
 			    </fileset>
 			</cobertura-instrument>
 	</target>
