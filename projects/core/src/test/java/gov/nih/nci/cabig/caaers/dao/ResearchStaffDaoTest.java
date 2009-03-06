@@ -4,15 +4,17 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+
+import java.util.List;
 
 /**
  * @author Kulasekaran
  */
 @CaaersUseCases( { CREATE_STUDY, STUDY_ABSTRACTION })
 public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao> {
-    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-                    "organizationDao");
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
     @Override
     protected void setUp() throws Exception {
@@ -31,6 +33,21 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
     	ResearchStaff researchStaff = getDao().getByLoginId("abcd");
     	assertNotNull(researchStaff);
     	assertEquals("Bill", researchStaff.getFirstName());
+    }
+
+    public void testGetByNciIdentifier(){
+    	List<ResearchStaff> researchStaffs = getDao().getByNciIdentifier(new String[] {"nci id"}, -1000);
+    	assertNotNull(researchStaffs);
+        assertEquals(4, researchStaffs.size());
+    }
+
+    public void testFindResearchStaff() {
+        ResearchStaffQuery rsq = new ResearchStaffQuery();
+        rsq.filterByLastName("Kennedy");
+        List<ResearchStaff> researchStaffs = getDao().findResearchStaff(rsq);
+        assertNotNull(researchStaffs);
+        assertEquals(1, researchStaffs.size());
+        assertEquals("JF", researchStaffs.get(0).getFirstName());
     }
 
     public void testSaveNewResearchStaff() throws Exception {
