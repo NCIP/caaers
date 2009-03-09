@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 /**
  * @author Saurabh Agrawal
+ * @author Biju Joseph
  */
 public class ResearchStaffQuery extends AbstractQuery {
 
@@ -17,7 +18,6 @@ public class ResearchStaffQuery extends AbstractQuery {
     private static String LOGIN_ID = "loginId";
 
     private static String NCI_IDENTIFIER = "nciIdentifier";
-    private static final String RS_ID = "rsId";
 
     public ResearchStaffQuery() {
 
@@ -48,11 +48,6 @@ public class ResearchStaffQuery extends AbstractQuery {
         setParameter(EMAIL_ADDRESS, searchString);
     }
 
-    public void excludeHavingId(final Integer id) {
-        andWhere("rs.id != :" + RS_ID);
-        setParameter(RS_ID, id);
-
-    }
 
     public void filterByLoginId(final String loginId) {
         String searchString = "%" + loginId.trim().toLowerCase() + "%";

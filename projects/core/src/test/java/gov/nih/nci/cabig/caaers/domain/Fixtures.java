@@ -473,4 +473,12 @@ public class Fixtures {
 	   reviewComment.setId(id);
 	   return reviewComment;
    }
+   
+   public static Epoch createEpoch(int id, String name){
+	   Epoch e = new Epoch();
+	   e.setId(5);
+	   e.setName(name);
+	   e.setArms(new ArrayList<Arm>());
+	   return e;
+   }
 }

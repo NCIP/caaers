@@ -86,15 +86,4 @@ public class ResearchStaffQueryTest extends TestCase {
                 researchStaffQuery.getQueryString());
     }
     
-    public void testExcudeHavingId() throws Exception{
-    	ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-    	researchStaffQuery.excludeHavingId(1);
-    	assertEquals("wrong number of parameters", researchStaffQuery.getParameterMap().size(), 1);
-    	assertTrue("missing paramenter name", researchStaffQuery.getParameterMap().containsKey(
-        "rsId"));
-    	assertEquals("wrong parameter value", 1, researchStaffQuery.getParameterMap().get("rsId"));
-    	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE rs.id != :rsId order by rs.id",
-                researchStaffQuery.getQueryString());
-    }
 }
