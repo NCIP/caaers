@@ -71,9 +71,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	private UserDao userDao;
 	
 	private Configuration configuration;
+    private static final String viewName = "ae/createReportingPeriod";
 
     public CreateReportingPeriodController() {
-        setFormView("ae/createReportingPeriod");
+        setFormView(viewName);
     }
 
     /**
@@ -121,7 +122,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors) throws Exception {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
-        refDataMap.put("fieldGroups", createFieldGroups(command));
+        Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
+        populateHelpAttributeOnFields(groupMap);
+
+        refDataMap.put("fieldGroups", groupMap);
         refDataMap.put("treatmentAssignments", fetchTreatmentAssignmentOptions(command));
         return refDataMap;
     }
@@ -396,7 +400,33 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	public Configuration getConfiguration() {
 		return configuration;
 	}
+
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+
+    // 
+    protected void populateHelpAttributeOnFields(Map<String, InputFieldGroup> groupMap) {
+
+        if (groupMap == null || groupMap.isEmpty()) return;
+        for (InputFieldGroup group : groupMap.values()) {
+            for (InputField field : group.getFields()) {
+                setHelpKeyAttribute(field);
+            }
+        }
+    }
+
+    final protected void setHelpKeyAttribute(InputField field) {
+        System.out.println("name=" + field.getDisplayName());
+        String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
+        String[] nameSubset = null;
+        nameSubset = field.getPropertyName().split("\\.");
+        System.out.println("helpKey = " + helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
+        field.getAttributes().put(InputField.HELP, helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
 }

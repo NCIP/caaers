@@ -28,6 +28,7 @@
         }
         
     </style>
+    
     <c:if test="${empty tab}">
         <tags:stylesheetLink name="tabbedflow"/>
         <tags:javascriptLink name="tabbedflow"/>

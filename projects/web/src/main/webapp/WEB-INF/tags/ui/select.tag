@@ -15,15 +15,15 @@
 <%@attribute name="size" description="Specifies the display size of the text field" %>
 <%@attribute name="options" type="java.util.Map" description="The select options that is to be displayed" required="true"%>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
+<%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
+
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
 <jsp:attribute name="field">
-<form:select path="${path}" 
-	items="${options}" 
-	disabled="${disabled}" 
-	title="${title}" 
-	size="${empty size ? '1' : size}"
-	cssClass="${validationCss} ${cssClass}"/>
+    <form:select path="${path}" items="${options}" disabled="${disabled}" title="${title}" size="${empty size ? '1' : size}" cssClass="${validationCss} ${cssClass}"/>
+    <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
+        <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
+    </c:if>
 </jsp:attribute>
 </ui:fieldWrapper>

@@ -208,8 +208,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     @SuppressWarnings( { "unchecked", "RawUseOfParameterizedType" })
-    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
-                    throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
     	
     	log.debug("In referenceData");
     	
@@ -299,8 +298,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     }
 
     @Override
-    protected ExpeditedAdverseEventReport getPrimaryDomainObject(
-                    ExpeditedAdverseEventInputCommand command) {
+    protected ExpeditedAdverseEventReport getPrimaryDomainObject(ExpeditedAdverseEventInputCommand command) {
         return command.getAeReport();
     }
 

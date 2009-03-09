@@ -19,17 +19,17 @@
 
         <ui:row path="assignment.startDateOfFirstCourse">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[0]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" field="${fieldGroups.ReportingPeriod.fields[0]}"/></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.startDate">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[1]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" field="${fieldGroups.ReportingPeriod.fields[1]}"/></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.endDate">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[2]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="reportingPeriod.endDate" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.endDate" field="${fieldGroups.ReportingPeriod.fields[2]}" /></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.endDate">
@@ -39,12 +39,12 @@
 
         <ui:row path="reportingPeriod.epoch">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[3]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:select path="${fieldGroups.ReportingPeriod.fields[3].propertyName}" options="${fieldGroups.ReportingPeriod.fields[3].attributes.options}"/></jsp:attribute>
+             <jsp:attribute name="value"><ui:select path="${fieldGroups.ReportingPeriod.fields[3].propertyName}" options="${fieldGroups.ReportingPeriod.fields[3].attributes.options}" field="${fieldGroups.ReportingPeriod.fields[3]}" /></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.cycleNumber">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[4]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" field="${fieldGroups.ReportingPeriod.fields[4]}"/></jsp:attribute>
         </ui:row>
 
         <tags:table bgColor="#cccccc" contentID="_ta">

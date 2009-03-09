@@ -37,8 +37,7 @@ public class DescriptionTab extends AeTab {
 
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
-        statusOpts.putAll(WebUtils.collectOptions(Arrays.asList(PostAdverseEventStatus.values()), null,
-                "displayName"));
+        statusOpts.putAll(WebUtils.collectOptions(Arrays.asList(PostAdverseEventStatus.values()), null, "displayName"));
 
         InputField removedDateField = createPastDateField(baseProp + ".dateRemovedFromProtocol",
                 "Date removed from protocol", false);

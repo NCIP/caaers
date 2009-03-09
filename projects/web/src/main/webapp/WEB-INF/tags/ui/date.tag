@@ -4,6 +4,7 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 
 <%@attribute name="path" description="The path to bind" required="true"%>
+<%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="cssClass" description="The 'class' attribute in HTML" %>
 <%@attribute name="validationJSClass" description="The classes required for validation framework" %>
 <%@attribute name="readonly" description="Specifies the readonly attribute" type="java.lang.Boolean" %>
@@ -11,10 +12,14 @@
 <%@attribute name="displayNamePath" description="This path is used to display the text, when the field is readOnly, if not specified 'path' is used as default " %>
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
-<ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
+
+<ui:fieldWrapper path="${path}" cssClass="${cssClass}"
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="date">
 <jsp:attribute name="field">
 <tags:dateInput path="${path}" cssClass="${validationCss} ${cssClass}" title="${title}" />
+    <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
+        <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
+    </c:if>
 </jsp:attribute>
 </ui:fieldWrapper>
