@@ -44,6 +44,11 @@
             width: 30em;
         }
     </style>
+	<style>
+		#main {
+			top:55px;
+		}
+	</style>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10othercauses">

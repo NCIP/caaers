@@ -259,7 +259,7 @@ a.omnipotent-button.small.orange:active .right {
 button.omnipotent-button {
 	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 31px;
-	padding:3px 6px;
+	padding:4px 6px 2px 6px;
 	background-image:url(../images/buttons/buttons-bg-sprite.png);
 	background-repeat:no-repeat;
 	border:none;
@@ -269,6 +269,7 @@ button.omnipotent-button {
 	color:white;
 	text-decoration:none;
 } 
+button::-moz-focus-inner { border: none;} 
 button.omnipotent-button.red[disabled], button.omnipotent-button.red[disabled] .right,
 button.omnipotent-button.red[disabled]:hover, button.omnipotent-button.red[disabled]:hover .right,
 button.omnipotent-button.red[disabled]:active, button.omnipotent-button.red[disabled]:active .right,
@@ -303,9 +304,10 @@ button.omnipotent-button .right {
 }
 button.omnipotent-button .right, x:-moz-any-link {
 	right:-9px;
+	top:-4px;
 }
 button.omnipotent-button .right, x:-moz-any-link, x:default {
-	right:9px;
+	right:8px;
 	top:-5px;
 }
 button.omnipotent-button img {
@@ -408,7 +410,7 @@ button.omnipotent-button.orange:active .right, button.omnipotent-button.orange.a
 button.omnipotent-button.small {
 	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 20px;
-	padding:1px 5px;
+	padding:2px 5px 1px 5px;
 	background-image:url(../images/buttons/buttons-small-bg-sprite.png);
 	background-repeat:no-repeat;
 	border:none;
@@ -436,9 +438,10 @@ button.omnipotent-button.small .right {
 }
 button.omnipotent-button.small .right, x:-moz-any-link {
 	right:-8px;
+	top:-2px;
 }
 button.omnipotent-button.small .right, x:-moz-any-link, x:default {
-	right:8px;
+	right:7px;
 }
 /* END omnipotent-button type="button" size="small" core CSS*/
 
