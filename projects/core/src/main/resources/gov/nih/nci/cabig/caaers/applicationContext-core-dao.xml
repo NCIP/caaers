@@ -454,7 +454,6 @@ This applicationContext contains the definition of the DAOs
     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
     <bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
     <bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
-    <bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
     <bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
     <bean id="meddraStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao"/>
     <bean id="studyConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyConditionDao"/>
