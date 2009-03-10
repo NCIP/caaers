@@ -8,7 +8,7 @@ public class DateValidator extends FieldValidator {
 
     @Override
     public boolean isValid(Object fieldValue) {
-        return fieldValue instanceof Date || fieldValue instanceof DateValue ? true : false;
+        return fieldValue == null || fieldValue instanceof Date || fieldValue instanceof DateValue ? true : false;
     }
 
     @Override

@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -141,11 +142,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course/cycle", true));
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course/cycle associated with this AE report", true));
-        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course/cycle", true);
+        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course/cycle", false);
         endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
-        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", true);
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
         
@@ -153,18 +154,55 @@ public class CreateReportingPeriodController extends SimpleFormController {
         return fieldMap;
     }
 
-
+    /**
+     * Validates the reporting period create/edit business rules. 
+     * 1. Should have all the field level validations met
+     * 2. Should be associated to Treatment assignment
+     * 3. Only one basline reporting period is allowed
+     * 4. Validation on Datest @see {@link CreateReportingPeriodController#validateRepPeriodDates(AdverseEventReportingPeriod, List, Errors)}
+     */
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
         super.onBindAndValidate(request, command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
         Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
+        
+        //do all field level validation
         for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 field.validate(commandBean, errors);
             }
         }
-        validateRepPeriodDates((ReportingPeriodCommand) command, fieldGroups, errors);
+        
+        
+        ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
+        AdverseEventReportingPeriod rPeriod = rpCommand.getReportingPeriod();
+        List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getReportingPeriods();
+        
+       
+        if (rPeriod.getEpoch() == null) {
+            return;
+        }
+        
+        //check the treatment assignment.
+        if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
+            errors.reject("", "Select the Treatment Assignment.");
+            return;
+        }
+        
+        // Check for duplicate baseline Reporting Periods.
+        if (rPeriod.getEpoch().getName().equals("Baseline")) {
+            for (AdverseEventReportingPeriod aerp : rPeriodList) {
+                if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
+                    InputField epochField = fieldGroups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
+                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline treatment type already exists");
+                    return;
+                }
+            }
+        }
+        
+        //validate the date related logic.
+        if(!errors.hasErrors())  validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), errors);
     }
 
     /**
@@ -219,48 +257,29 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
     /**
      * This method validates the dates of the reporting period created/edited.
-     *
+     *	1. EndDate cannot be earlier than start date.
+     *  2. For Non-Baseline reporting period, startdate and enddate must not be same.
+     *  3. No other existing reporting period start date should fall within the start date and end date of the new reporting period.
+     *  4. Newly created start date should not fall within any of the existing reporting period start and end dates.
      * @param cmd
      * @return
      */
-    protected void validateRepPeriodDates(ReportingPeriodCommand command, Map<String, InputFieldGroup> groups, BindException errors) {
+    protected void validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList,Errors errors) {
 
-        AdverseEventReportingPeriod rPeriod = command.getReportingPeriod();
-        List<AdverseEventReportingPeriod> rPeriodList = command.getAssignment().getReportingPeriods();
         Date startDate = rPeriod.getStartDate();
         Date endDate = rPeriod.getEndDate();
-        InputField endDateField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(2);
-
-        // Check for duplicate baseline Reporting Periods.
-        if (rPeriod.getEpoch() == null) {
-            return;
-        }
-
-        if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
-            errors.reject("", "Select the Treatment Assignment.");
-            return;
-        }
-
-        if (rPeriod.getEpoch().getName().equals("Baseline")) {
-            for (AdverseEventReportingPeriod aerp : rPeriodList) {
-                if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
-                    InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
-                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline treatment type already exists");
-                    return;
-                }
-            }
-        }
+      
 
         // Check if the start date is equal to or before the end date.
         if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
-            errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "End date cannot be earlier than Start date");
+            errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "End date cannot be earlier than Start date");
         }
 
         // Check if the start date is equal to end date.
         // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
         if (!rPeriod.getEpoch().getName().equals("Baseline")) {
-            if (startDate.equals(endDate)) {
-                errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "For Non-Baseline treatment type Start date cannot be equal to End date");
+            if (endDate != null && startDate.equals(endDate)) {
+                errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "For Non-Baseline treatment type Start date cannot be equal to End date");
             }
 
         }
@@ -268,41 +287,54 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // Check if the start date - end date for the reporting Period overlaps with the
         // date range of an existing Reporting Period.
         for (AdverseEventReportingPeriod aerp : rPeriodList) {
+        	Date sDate = aerp.getStartDate();
+            Date eDate = aerp.getEndDate();
+            
             if (!aerp.getId().equals(rPeriod.getId())) {
-                Date sDate = aerp.getStartDate();
-                Date eDate = aerp.getEndDate();
-                if (((sDate.getTime() - startDate.getTime() < 0) && startDate.getTime() - eDate.getTime() < 0) ||
-                        ((sDate.getTime() - endDate.getTime() < 0) && (endDate.getTime() - eDate.getTime() < 0)) ||
-                        ((startDate.getTime() - sDate.getTime() < 0) && (eDate.getTime() - endDate.getTime() < 0)) ||
-                        (sDate.compareTo(startDate) == 0 && eDate.compareTo(endDate) == 0)) {
-                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
-                    break;
+                
+                //we should make sure that no existing Reporting Period, start date falls, in-between these dates.
+                if(startDate != null && endDate != null){
+                	if(DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0){
+                		errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		break;
+                	}
+                }else if(startDate != null && DateUtils.compareDate(sDate, startDate) == 0){
+                		errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		break;
+                }
+                
+                //newly created reporting period start date, should not fall within any other existing reporting periods
+                if(sDate != null && eDate != null){
+                	if(DateUtils.compareDate(sDate, startDate) <=0 && DateUtils.compareDate(startDate, eDate) < 0){
+                		errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		break;
+                	}
+                }else if(sDate != null && DateUtils.compareDate(sDate, startDate) == 0){
+                	errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+            		break;
                 }
             }
-        }
-
-        // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
-        // reportingPeriod of
-        for (AdverseEventReportingPeriod aerp : rPeriodList) {
-            Date sDate = aerp.getStartDate();
-            Date eDate = aerp.getEndDate();
+            
+            // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
             if (rPeriod.getEpoch().getName().equals("Baseline")) {
                 if (!aerp.getEpoch().getName().equals("Baseline")) {
-                    if (sDate.getTime() - startDate.getTime() < 0) {
-                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
+                    if (DateUtils.compareDate(sDate, startDate) < 0) {
+                        errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
                         return;
                     }
                 }
             } else {
                 if (aerp.getEpoch().getName().equals("Baseline")) {
-                    if (startDate.getTime() - sDate.getTime() < 0) {
-                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
+                    if (DateUtils.compareDate(startDate, sDate) < 0) {
+                        errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
                         return;
                     }
                 }
             }
+            
         }
 
+      
     }
 
 
