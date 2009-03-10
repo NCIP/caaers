@@ -17,11 +17,13 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -424,6 +426,16 @@ public class Fixtures {
     	rp.setAssignment(assignment);
     	return rp;
     }
+    
+    public static AdverseEventReportingPeriod createReportingPeriod(Integer id, String startDate, String endDate ){
+		Date stDate = (startDate == null)? null: DateUtils.parseDateString(startDate).toDate();
+		Date enDate = (endDate == null) ? null : DateUtils.parseDateString(endDate).toDate();
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		rp.setId(id);
+		rp.setStartDate(stDate);
+		rp.setEndDate(enDate);
+		return rp;
+	}
     
     public static Organization createOrganization(final String name, final String nciInstituteCode) {
         Organization organization = new Organization();
