@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,11 +57,11 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 	 AdverseEventReportingPeriod reportingPeriod;
 	 Configuration configuration;
 	 StudySite studySite;
-	 
-	 protected BindException errors;
-	 
-	 
-	protected void setUp() throws Exception {
+
+    protected BindException errors;
+    protected ReportingPeriodCommand command;
+
+    protected void setUp() throws Exception {
 		super.setUp();
 		
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
@@ -566,4 +567,34 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		assertEquals(msg, error.getDefaultMessage());
 	}
 
+    public void testRefferenceData() throws Exception {
+
+        List<Epoch> epochs = new ArrayList<Epoch>();
+        List<TreatmentAssignment> tas = new ArrayList<TreatmentAssignment>();
+
+        expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
+        expect(studySite.getStudy()).andReturn(study).anyTimes();
+        expect(assignment.getParticipant()).andReturn(participant).anyTimes();
+        expect(study.getEpochs()).andReturn(epochs).anyTimes();
+        expect(study.getTreatmentAssignments()).andReturn(tas).anyTimes();
+
+        replayMocks();
+
+        command = new ReportingPeriodCommand(assignment, reportingPeriod, "");
+        errors = new BindException(command, "command");
+
+        Map refData  = controller.referenceData(request, command, errors);
+
+        verifyMocks();
+
+        assertNotNull(refData);
+        assertEquals(2, refData.size());
+        Map<String, DefaultInputFieldGroup> map = (Map)refData.get("fieldGroups");
+        DefaultInputFieldGroup fg = map.get("ReportingPeriod");
+
+        assertEquals(1, map.size());
+        assertEquals(5, fg.getFields().size());
+        assertEquals("assignment.startDateOfFirstCourse", fg.getFields().get(0).getPropertyName());
+    }
+    
 }

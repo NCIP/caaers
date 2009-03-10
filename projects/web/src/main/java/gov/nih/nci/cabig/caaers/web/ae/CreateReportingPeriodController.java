@@ -449,11 +449,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
     }
 
     final protected void setHelpKeyAttribute(InputField field) {
-        System.out.println("name=" + field.getDisplayName());
         String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
         String[] nameSubset = null;
         nameSubset = field.getPropertyName().split("\\.");
-        System.out.println("helpKey = " + helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
         field.getAttributes().put(InputField.HELP, helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
     }
 
