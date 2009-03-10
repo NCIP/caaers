@@ -207,7 +207,7 @@
 
 <chrome:box title="Find &amp; Add AEs" noBackground="${noBackground}">
   		<div style="display:inline;">
-  			<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/>
+  			<tags:autocompleter displayName="abcd" propertyName="termCode" size="70" initialDisplayValue="Begin typing here"/>
 			<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
   		</div>
 		<div style="margin:0 20px; display:inline;">or</div>
