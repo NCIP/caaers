@@ -13,6 +13,7 @@
 
 <%@attribute name="value" description="The default value for this radio button" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
+<%@attribute name="onclick" description="The onClick javascript function" %>
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="none">
@@ -20,6 +21,6 @@
 <form:radiobutton path="${path}" 
 	disabled="${disabled}" 
 	cssClass="${validationCss} ${cssClass}" 
-	value="${value}" title="${title}"/>
+	value="${value}" title="${title}" onclick="${onclick}" />
 </jsp:attribute>
 </ui:fieldWrapper>
