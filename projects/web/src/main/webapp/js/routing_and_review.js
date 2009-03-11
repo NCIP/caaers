@@ -93,6 +93,40 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		sb.enable();	
 		sbIndicator.style.display='none';
 	},
+	validateAndAdvanceWorkflow: function(){
+		var sbox = $('sliderWFAction');
+		if(sbox.value == '') return;
+		
+		this.ajaxFacade.validateAndAdvanceWorkflow(sbox.value, function(ajaxOutput){
+			if(ajaxOutput.objectContent){
+				var i = 0;
+				var popupContent = '';
+				for(i = 0; i< ajaxOutput.objectContent.length; i++){
+					var error = ajaxOutput.objectContent[i];
+					popupContent = popupContent + '<tr><td width="10%"/><td width="80%" align="left">' + error + '</td><td width="10%"/></tr>';
+				}
+				popupContent = popupContent + '<tr><tr><tr><td width="10%"/><td align="left" width="80%"><font color="red">Note: Please save if you have unsaved data.</font></td><td width="10%"/></tr>';
+				$('validation-table').innerHTML = popupContent;
+				var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"validation-popup-id", width:500,  height:230, top: 330, left: 500});
+        		contentWin.setContent( 'reportingPeriod-validation-errors-popup' );
+        		contentWin.showCenter(true);
+        		contentWin.setZIndex(1000);
+        			popupObserver = {
+ 		     			onDestroy: function(eventName, win) {
+      						if (win == contentWin) {
+      							$('reportingPeriod-validation-errors-popup').style.display='none';
+		      					contentWin = null;
+      							Windows.removeObserver(this);
+      							sbox.selectedIndex = 0;
+      						}
+      					}
+      				}
+			        Windows.addObserver(popupObserver);
+			}else{
+				this.advanceWorkflow();
+			}
+		}.bind(this));
+	},
 	advanceWorkflow: function(){
 		var sbox = $('sliderWFAction');
 		if(sbox.value == '') return;

@@ -2,6 +2,7 @@
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <div>
 	<div id="collapse-all-comments">
 		<a name="allBtnCtrl"></a>
@@ -30,7 +31,7 @@
 			</div>
 			<div id="wf-action-value">
 			&nbsp;&nbsp;
-			<select id="sliderWFAction" onChange="routingHelper.advanceWorkflow();">
+			<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow();">
 				<option value="">Please select</option>
 			</select>
 			<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
@@ -40,6 +41,18 @@
 		</div>
 	</div>
 </div>
+<div id="reportingPeriod-validation-errors-popup" style="display:none" >
+		<chrome:box title="Validation Errors">
+			<table width="100%" height="100%">
+				<tr>
+					<td align="center" style="vertical-align:middle">
+						<table id="validation-table" width="100%" height="100%">
+						</table>
+					</td>
+				</tr>
+			</table>
+		</chrome:box>
+	</div>
 
 <script language="JavaScript1.2">
 	 

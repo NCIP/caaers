@@ -93,28 +93,84 @@ color:#0033FF;
 		var sb = $(selectBox);
 		var newStatus = sb.value;
 		sb.disable();
-		var indicatorId = entityType + '-' + entityId + '-indicator';
-		$(indicatorId).style.display='';
-		routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
-			
-			if(output.objectContent){
-					sb.options.length = 0;
-					var pleaseSelectOpt = new Option('Please Select', 'Please Select');
-					sb.options.add(pleaseSelectOpt);
-					var i = 0;
-					for(i = 0; i< output.objectContent.length; i++){
-						var status = output.objectContent[i];
-						var opt = new Option(status, status);
-						
-						sb.options.add(opt);
-					}
-					sb.enable();	
-					$(indicatorId).style.display='none';
-					var entityStatusId = entityType + '-' + entityId + '-status';
-					$(entityStatusId).innerHTML = output.htmlContent;
-			}
-		});
 		
+		if(entityType == 'aeReport'){
+			var indicatorId = entityType + '-' + entityId + '-indicator';
+					$(indicatorId).style.display='';
+					routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
+			
+						if(output.objectContent){
+							sb.options.length = 0;
+							var pleaseSelectOpt = new Option('Please Select', 'Please Select');
+							sb.options.add(pleaseSelectOpt);
+							var i = 0;
+							for(i = 0; i< output.objectContent.length; i++){
+								var status = output.objectContent[i];
+								var opt = new Option(status, status);
+								
+								sb.options.add(opt);
+							}
+							$(indicatorId).style.display='none';
+							var entityStatusId = entityType + '-' + entityId + '-status';
+							$(entityStatusId).innerHTML = output.htmlContent;
+						}
+					});
+		}
+		
+		// First we need to check if the entity type is "reportingPeriod"
+		// Incase its reportingPeriod its validated
+		// Only if the validation passes, the workflow is advanced
+		// Otherwise a popup is displayed with the errors occured during validation.
+		if(entityType == 'reportingPeriod'){
+			routingAndReview.validateTransition(entityId, newStatus, function(output){
+				if(output.objectContent){
+					var i = 0;
+					var popupContent = '';
+					for(i = 0; i< output.objectContent.length; i++){
+						var error = output.objectContent[i];
+						popupContent = popupContent + '<tr><td width="10%"/><td width="80%" align="left">' + error + '</td><td width="10%"/></tr>';
+					}
+					popupContent = popupContent + '<tr><tr><tr><td width="10%"/><td align="left" width="80%"><font color="red">Note: Please save if you have unsaved data.</font></td><td width="10%"/></tr>';
+					$('validation-table').innerHTML = popupContent;
+					var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"validation-popup-id", width:500,  height:230, top: 330, left: 500});
+        			contentWin.setContent( 'reportingPeriod-validation-errors-popup' );
+        			contentWin.showCenter(true);
+        			popupObserver = {
+ 		     			onDestroy: function(eventName, win) {
+      						if (win == contentWin) {
+      							$('reportingPeriod-validation-errors-popup').style.display='none';
+		      					contentWin = null;
+      							Windows.removeObserver(this);
+      							sb.selectedIndex = 0;
+      						}
+      					}
+      				}
+			        Windows.addObserver(popupObserver);
+				}else{
+					var indicatorId = entityType + '-' + entityId + '-indicator';
+					$(indicatorId).style.display='';
+					routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
+			
+						if(output.objectContent){
+							sb.options.length = 0;
+							var pleaseSelectOpt = new Option('Please Select', 'Please Select');
+							sb.options.add(pleaseSelectOpt);
+							var i = 0;
+							for(i = 0; i< output.objectContent.length; i++){
+								var status = output.objectContent[i];
+								var opt = new Option(status, status);
+								
+								sb.options.add(opt);
+							}
+							$(indicatorId).style.display='none';
+							var entityStatusId = entityType + '-' + entityId + '-status';
+							$(entityStatusId).innerHTML = output.htmlContent;
+						}
+					});
+				}
+			});
+		}
+		sb.enable();
 	}
 	
 </script>
@@ -150,6 +206,18 @@ color:#0033FF;
   <c:if test="${command.searchResultsDTO.resultCount lt 1}">
 		No result found!
   </c:if>
+</div>
+<div id="reportingPeriod-validation-errors-popup" style="display:none" >
+	<chrome:box title="Validation Errors">
+		<table width="100%" height="100%">
+			<tr>
+				<td align="center" style="vertical-align:middle">
+					<table id="validation-table" width="100%" height="100%">
+					</table>
+				</td>
+			</tr>
+		</table>
+	</chrome:box>
 </div>
 </body>
 </html>
