@@ -10,10 +10,11 @@
 <%@attribute name="required" type="java.lang.Boolean" description="Tells that this field is a required (red asterisk)"%>
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
-
 <%@attribute name="value" description="The default value for this radio button" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
 <%@attribute name="onclick" description="The onClick javascript function" %>
+<%@attribute name="id" type="java.lang.String"  %>
+
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="none">
@@ -21,6 +22,6 @@
 <form:radiobutton path="${path}" 
 	disabled="${disabled}" 
 	cssClass="${validationCss} ${cssClass}" 
-	value="${value}" title="${title}" onclick="${onclick}" />
+	value="${value}" title="${title}" onclick="${onclick}" id="${id}"/>
 </jsp:attribute>
 </ui:fieldWrapper>
