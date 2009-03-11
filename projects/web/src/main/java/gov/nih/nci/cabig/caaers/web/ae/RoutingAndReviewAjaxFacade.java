@@ -3,11 +3,16 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
+import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.acegisecurity.context.SecurityContext;
@@ -16,6 +21,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 
 public class RoutingAndReviewAjaxFacade {
 	
@@ -25,8 +34,7 @@ public class RoutingAndReviewAjaxFacade {
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 
 	 private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	 
-	 
+	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 
 	 protected Object extractCommand() {
@@ -66,6 +74,25 @@ public class RoutingAndReviewAjaxFacade {
 		return output;
 	}
 	
+	public AjaxOutput validateTransition(Integer reportingPeriodId, String toTransition){
+		AdverseEventReportingPeriod adverseEventReportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
+		AjaxOutput output = new AjaxOutput();
+		Errors errors = new BindException(adverseEventReportingPeriod, "adverseEventReportingPeriod");
+		
+		if(toTransition.equals("Submit to Data Coordinator")){
+			adverseEventReportingPeriodValidator.validate(adverseEventReportingPeriod, errors);
+			if(errors.hasErrors()){
+				List<String> errorsList = new ArrayList<String>();
+				for(Object error: errors.getAllErrors()){
+					ObjectError objError = (ObjectError) error;
+					errorsList.add(objError.getCode());
+				}
+				output.setObjectContent(errorsList);
+			}
+		}
+		return output;
+	}
+	
 	protected WebContext getWebContext(){
     	return WebContextFactory.get();
     }
@@ -99,5 +126,13 @@ public class RoutingAndReviewAjaxFacade {
 	
 	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao(){
 		return expeditedAdverseEventReportDao;
+	}
+	
+	public void setAdverseEventReportingPeriodValidator(AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator){
+		this.adverseEventReportingPeriodValidator = adverseEventReportingPeriodValidator;
+	}
+	
+	public AdverseEventReportingPeriodValidator getAdverseEventReportingPeriodValidator(){
+		return adverseEventReportingPeriodValidator;
 	}
 }
