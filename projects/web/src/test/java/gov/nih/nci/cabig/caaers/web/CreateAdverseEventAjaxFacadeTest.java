@@ -35,6 +35,7 @@ import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController;
 import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
 import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 
 import java.util.ArrayList;
@@ -319,6 +320,17 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertIndexChange(1, 0, actual.get(1));
         assertIndexChange(2, 1, actual.get(2));
         assertIndexChange(3, 2, actual.get(3));
+    }
+    
+    /**
+     * Currently there is no validation for AeReport. So this method simply returns a new (empty) AjaxOutput object.
+     * If there are validations to be done, this is the method where the logic should go and the unit-test needs to be updated.
+     * @throws Exception
+     */
+    public void testValidateAndAdvanceWorkflow() throws Exception {
+    	AjaxOutput output = facade.validateAndAdvanceWorkflow("testTransition");
+    	assertNotNull("Null output object is returned incorrectly.", output);
+    	assertNull("There no validations for aeReport workflow so null object was expected here.", output.getObjectContent());
     }
 
     public void testReorderMoveToBeginning() throws Exception {

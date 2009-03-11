@@ -18,7 +18,10 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
+import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,7 @@ import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.userdetails.User;
 import org.easymock.EasyMock;
+import org.springframework.validation.Errors;
 
 public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	
@@ -39,6 +43,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	private EvaluationService evaluationService;
 	private StudySite  studySite;
 	private Study study;
+	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
 	
 	
 	@Override
@@ -153,6 +158,54 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         facade.addReviewComment("test Comment");
         verifyMocks();
     }
+	
+	/**
+	 * This method tests the case when there is a validation error.
+	 * The adverseEventReportingPeriodValidator injected into the facade is an instance of the inner Validator class that creates
+	 * an error in its validate() method.
+	 * The test method checks the AjaxOutput method and confirms that it has an error populated in it correctly.
+	 * @throws Exception
+	 */
+	public void testValidateAndAdvanceWorkflowWithErrors() throws Exception{
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
+			public void validate(Object obj, Errors e) {
+				AdverseEventReportingPeriod adverseEventReportingPeriod = (AdverseEventReportingPeriod) obj;
+				e.reject("test error");
+			}
+		};
+		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
+		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
+		studyDao.lock(command.getStudy());
+		replayMocks();
+		AjaxOutput output = facade.validateAndAdvanceWorkflow("Submit to Data Coordinator");
+		assertNotNull("AjaxOutput not populated with errors", output);
+		ArrayList<String> errorList = (ArrayList<String>)output.getObjectContent();
+		assertEquals("Incorrect number of errors populated in the ajaxOutput object", 1, errorList.size());
+		verifyMocks();
+	}
+	
+	/**
+	 * This method tests the case when there is no validation error.
+	 * The adverseEventReportingPeriodValidator injected into the facade is an instance of the inner Validator class that returns 
+	 * no error in its validate() method.
+	 * The test method checks that the objectContent attribute of the AjaxOutput object returned is null.
+	 * @throws Exception
+	 */
+	public void testValidateAndAdvanceWorkflowWithNoErros() throws Exception{
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
+			public void validate(Object obj, Errors e) {
+			}
+		};
+		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
+		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
+		studyDao.lock(command.getStudy());
+		replayMocks();
+		AjaxOutput output = facade.validateAndAdvanceWorkflow("Submit to Data Coordinator");
+		assertNull("ObjectContent populated incorrectly when there were no errors", output.getObjectContent());
+		verifyMocks();
+	}
 	
 	public void testEditReviewComment() throws Exception{
 		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
