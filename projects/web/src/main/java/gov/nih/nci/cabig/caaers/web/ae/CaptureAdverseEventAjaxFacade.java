@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
+import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,18 +29,30 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 
 	 private static final Log log = LogFactory.getLog(CaptureAdverseEventAjaxFacade.class);
 	 @Override
 	public Class<?>[] controllers() {
 		return CONTROLLERS;
 	}
+	 
+	 public AdverseEventReportingPeriodValidator getAdverseEventReportingPeriodValidator(){
+		 return adverseEventReportingPeriodValidator;
+	 }
+	 
+	 public void setAdverseEventReportingPeriodValidator(AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator){
+		 this.adverseEventReportingPeriodValidator = adverseEventReportingPeriodValidator;
+	 }
 	 
 	 public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
 			return adverseEventRoutingAndReviewRepository;
@@ -252,6 +265,27 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
+    	return output;
+    }
+    
+    public AjaxOutput validateAndAdvanceWorkflow(String transitionToTake){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	AjaxOutput output = new AjaxOutput();
+    	Errors errors = new BindException(command.getAdverseEventReportingPeriod(), "adverseEventReportingPeriod");
+		
+		if(transitionToTake.equals("Submit to Data Coordinator")){
+			adverseEventReportingPeriodValidator.validate(command.getAdverseEventReportingPeriod(), errors);
+			if(errors.hasErrors()){
+				List<String> errorsList = new ArrayList<String>();
+				for(Object error: errors.getAllErrors()){
+					ObjectError objError = (ObjectError) error;
+					errorsList.add(objError.getCode());
+				}
+				output.setObjectContent(errorsList);
+			}
+		}
+    	
     	return output;
     }
     

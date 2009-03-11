@@ -937,6 +937,17 @@ public class CreateAdverseEventAjaxFacade {
     	output.setObjectContent(transitions.toArray());
     	return output;
     }
+
+    /**
+     * Currently there is no validation for AeReport.
+     * So we are returning an empty AjaxOutput. But this is the place to call a validator incase some validation needs to be
+     * done before we do transition in ExpeditedAdverseEventReport workflow.
+     * @param transitionToTake
+     * @return
+     */
+    public AjaxOutput validateAndAdvanceWorkflow(String transitionToTake){
+    	return new AjaxOutput();
+    }
     
     protected String renderCommentsAjaxView(Map<String, String> params){
     	WebContext webContext = getWebContext();
