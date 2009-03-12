@@ -11,6 +11,7 @@
 <%@attribute name="callbackFunctionName" required="true" description="The call back function in the parent page, that will be invoked with the selected terms"%>
 <%@attribute name="ignoreOtherSpecify" type="java.lang.Boolean" description="Must be true if we need to ignore other specify" %>
 <%@attribute name="localButtons" fragment="true" description="Extra content to be display in the control area, by default an Add Terms button will be displayed"%>
+<%@attribute name="ctcCategories" type="java.util.List" description="The ctc categories that should be displayed within the category box of the popup" %>
 <%@attribute name="title" required="false" %> 
 <%@attribute name="noBackground" required="false" type="java.lang.Boolean" %>
 
@@ -225,7 +226,7 @@
 			<jsp:attribute name="value">
 			  <div id="categories-div-id" class="categories-div" onScroll="catSel.OnDivScroll('categories');" >
 			    <select name="categories" id="categories" style="width:500px; height:175px;" onChange="catSel.showTerms('categories', catSel.ignoreOtherSpecify);" onFocus="catSel.onSelectFocus('categories');" class="categories" multiple >
-				  <c:forEach var="cat" items="${command.study.ctcCategories}">
+				  <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				  </c:forEach>
 			    </select>

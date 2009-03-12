@@ -452,7 +452,13 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertNotMoved(command);
         assertEquals(0, actual.size());
     }
-
+    
+    public void testAddAdverseEventWithTermId(){
+    	fail("to do");
+    }
+    public void testAddNewAdverseEvent(){
+    	fail("to do");
+    }
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
                                           IndexChange actual) {

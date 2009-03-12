@@ -609,14 +609,18 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public String addAdverseEvent( int index, Integer aeReportId ){
-    	return addNewAdverseEvent("adverseEventFormSection", index, aeReportId);
+    	return addNewAdverseEvent("adverseEventFormSection", index, aeReportId, true, null);
+    }
+    
+    public String addAdverseEventWithTerms( int index, Integer aeReportId , Integer termId){
+    	return addNewAdverseEvent("adverseEventFormSection", index, aeReportId, true, termId);
     }
     
     public String addAdverseEventMeddra(int index, Integer aeReportId){
-    	return addNewAdverseEvent("adverseEventMeddraFormSection", index, aeReportId);
+    	return addNewAdverseEvent("adverseEventMeddraFormSection", index, aeReportId,false, null);
     }
     
-    public String addNewAdverseEvent(String section, int index, Integer aeReportId){
+    public String addNewAdverseEvent(String section, int index, Integer aeReportId, boolean isCTC, Integer aeTermId){
     	try {
 			Object cmd = extractCommand();
 			ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
@@ -628,6 +632,18 @@ public class CreateAdverseEventAjaxFacade {
 			ae.setReport(command.getAeReport());
 			command.getAeReport().getReportingPeriod().addAdverseEvent(ae);
 			command.getAeReport().addAdverseEvent(ae);
+			
+			//set the ae term
+			if(aeTermId != null){
+				if(isCTC){
+					CtcTerm term = ctcTermDao.getById(aeTermId);
+					ae.getAdverseEventCtcTerm().setTerm(term);
+				}else{
+					LowLevelTerm term = lowLevelTermDao.getById(aeTermId);
+					ae.getAdverseEventMeddraLowLevelTerm().setTerm(term);
+				}
+			}
+			
 			
 			command.updateOutcomes();
 			command.saveReportingPeriod();
