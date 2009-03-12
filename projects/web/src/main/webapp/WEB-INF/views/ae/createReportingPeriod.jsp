@@ -39,10 +39,12 @@
              <jsp:attribute name="value"><ui:date path="reportingPeriod.endDate" field="${fieldGroups.ReportingPeriod.fields[2]}" /></jsp:attribute>
         </ui:row>
 
+<%--
         <ui:row path="reportingPeriod.endDate">
              <jsp:attribute name="label"></jsp:attribute>
              <jsp:attribute name="value"><span style="font-size:8pt;"><b>Note:</b> Enter estimated end date if course/cycle is in-progress.</span></jsp:attribute>
         </ui:row>
+--%>
 
         <ui:row path="reportingPeriod.epoch">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[3]}" /></jsp:attribute>

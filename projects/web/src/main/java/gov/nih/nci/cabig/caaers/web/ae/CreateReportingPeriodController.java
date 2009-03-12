@@ -120,10 +120,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of this course/cycle", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course/cycle associated with this AE report", true));
-        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course/cycle", false);
-        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course/cycle", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of this course/cycle", true));
+        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of this course/cycle", false);
+//        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
         InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", false);

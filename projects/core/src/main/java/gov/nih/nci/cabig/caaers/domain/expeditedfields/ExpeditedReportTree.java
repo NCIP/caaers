@@ -157,10 +157,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                             property("treatmentInformation",
                                 property("treatmentAssignment","Treatment assignment code"),
 								property("treatmentAssignmentDescription","Description of treatment assignment or dose level"),
-								property("firstCourseDate","Start date of first course"),
-								property("adverseEventCourse",
-                                        property("date","Start date of course associated with expedited report"),
-                                        property("number","Course number on which event occurred")),
+								property("firstCourseDate", "Start date of first course/cycle"),
+								property("adverseEventCourse", property("date","Start date of this course/cycle"), property("number","Course number on which event occurred")),
 								property("totalCourses","Total number of courses to date")
 							)
 						), 
