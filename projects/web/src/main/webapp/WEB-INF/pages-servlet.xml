@@ -303,7 +303,7 @@
   <!-- Validators -->
 
   <bean id="numInRangeValidator" class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator" autowire-candidate="false"/>
-
+  
 
   <!--  PARTICIPANT   -->
   
@@ -377,6 +377,7 @@
   <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
   
   <bean name="/ae/reviewEvaluationPeriod" id="reviewEvaluationPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodController"/>
+  <bean name="/ae/reviewAeReport" id="reviewAeReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportController"/>
   <bean name="/ae/reviewResolver" id="reviewResolverController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewResolverController"/>	
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
   <bean name="/ae/create" id="createAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController" p:task-ref="aeCreateTask"/>

@@ -4,19 +4,14 @@
 <%@attribute name="index" type="java.lang.Integer" description="The index of the expedited adverse event"%>
 <%@attribute name="aeReport" type="gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO" description="The expedited adverse event report DTO that is printed by this row." %>
 <c:set var="aeReportPageURL"
-	value="/pages/ae/reviewResolver?aeReport=${aeReport.id}" />
+	value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true" />
 <tr class="report-row">
 	<td colspan=3>
 		<table width="100%">
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
 			<tr>
 				<td align="left" width="50%">
-					<c:if test="${enableReportLink == true }">
-						<a href="<c:url value="${aeReportPageURL}"/>">${report.name}</a>
-					</c:if>
-					<c:if test="${enableReportLink == false }">
-						${report.name }
-					</c:if>
+					<a href="<c:url value="${aeReportPageURL}"/>">${report.name}</a>
 				</td>
 				<td width="25%">
 					<%-- <SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')"> --%>

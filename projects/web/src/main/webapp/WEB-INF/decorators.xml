@@ -27,6 +27,7 @@
         <pattern>/pages/ae/submitReport</pattern>
         <pattern>/pages/ae/sample</pattern>
         <pattern>/pages/ae/reviewEvaluationPeriod</pattern>
+        <pattern>/pages/ae/reviewAeReport</pattern>
         <pattern>/pages/rule/create</pattern>
         <pattern>/pages/rule/notification/create</pattern>
 		<pattern>/pages/rule/notification/edit</pattern>

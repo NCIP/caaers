@@ -25,7 +25,9 @@
     <bean id="reviewRpAjaxFacade" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodAjaxFacade" parent="captureAeAjaxFacade">
    	</bean>
-
+   	<bean id="reviewAeReportAjaxFacade" autowire="byType"
+   		  class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportAjaxFacade" parent="createAeAjaxFacade">
+	</bean>
     <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>

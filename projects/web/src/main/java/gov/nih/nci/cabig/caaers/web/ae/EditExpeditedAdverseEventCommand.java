@@ -36,7 +36,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     // //// LOGIC
 
-
+    public EditExpeditedAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao){
+    	this.assignmentDao = assignmentDao;
+    }
+    
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
             ReportDefinitionDao reportDefinitionDao,
             StudyParticipantAssignmentDao assignmentDao,

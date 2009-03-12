@@ -53,6 +53,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/reviewEvaluationPeriod"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+		<entry key="/pages/ae/reviewAeReport"
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createReportingPeriod"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createAeReportingPeriod"
