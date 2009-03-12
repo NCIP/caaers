@@ -10,6 +10,13 @@
 	 	div.row div.value, div.row div.extra { margin-left: 13em; }
         div.hr {font-size:1px; height: 1px;}
 	</style>
+     <script>
+         Event.observe(window, "load", function() {
+            if ($('reportingPeriod.treatmentAssignmentDescription').value != '')
+                $('otherTA').checked = true;
+         })
+     </script>
+    <%--<tags:javascriptLink name="prototype"/>--%>
 </head>
 <body>
 
@@ -59,7 +66,10 @@
                         <td>${ta.escapedDescription}
                     </tr>
                 </c:forEach>
-                
+                <tr bgcolor="white">
+                    <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA"/>&nbsp;Other
+                    <td><ui:textarea rows="1" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea>
+                </tr>
             </table>
         </tags:table>
     </jsp:attribute>

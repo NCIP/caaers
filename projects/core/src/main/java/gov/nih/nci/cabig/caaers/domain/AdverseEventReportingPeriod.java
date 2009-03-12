@@ -43,33 +43,19 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
 	
 	private String description;
-	
 	private Integer cycleNumber;
-	
 	private Integer workflowId;
-	
 	private ReviewStatus reviewStatus;
-	
-	//private ExpeditedAdverseEventReport expeditedAdverseEventReport;
-	
 	private TreatmentAssignment treatmentAssignment;
-	
+	private String treatmentAssignmentDescription;
 	private Epoch epoch;
-	
 	private Date startDate;
-	
 	private Date endDate;
-	
 	private StudyParticipantAssignment assignment;
-	
 	private List<AdverseEvent> adverseEvents;
-	
 	private List<ExpeditedAdverseEventReport> aeReports;
-	
 	private String name;
-	
 	private SimpleDateFormat formatter;
-	
 	private boolean baselineReportingType;
 	
 	// This holds the total number of reports within all the ExpeditedReport generated in this reporting period
@@ -421,5 +407,13 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     		if(ae.getAdverseEventTerm().equals(otherAE.getAdverseEventTerm())) return true;
     	}
     	return false;
+    }
+
+    public String getTreatmentAssignmentDescription() {
+        return treatmentAssignmentDescription;
+    }
+
+    public void setTreatmentAssignmentDescription(String treatmentAssignmentDescription) {
+        this.treatmentAssignmentDescription = treatmentAssignmentDescription;
     }
 }

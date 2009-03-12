@@ -317,9 +317,16 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     			rpAjaxable.setStartDate(rp.getStartDate());
     			rpAjaxable.setEndDate(rp.getEndDate());
     			rpAjaxable.setEpochName(rp.getEpoch().getName());
-    			rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
-    			rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
-    			courses.add(rpAjaxable);
+
+                // TA can be null because of the "Other TA" field in the "Create RP" Popup
+                if (rp.getTreatmentAssignment() != null) {
+                    rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
+                    rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
+                } else if (!StringUtils.isEmpty(rp.getTreatmentAssignmentDescription())) {
+                    rpAjaxable.setTacDescription(rp.getTreatmentAssignmentDescription());
+                }
+
+                courses.add(rpAjaxable);
     		}
     	}
     	AjaxOutput output = new AjaxOutput();
@@ -335,10 +342,15 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	rpAjaxable.setEndDate(rp.getEndDate());
     	rpAjaxable.setEpochName(rp.getEpoch().getName());
     	rpAjaxable.setCycleNumber(rp.getCycleNumber());
-    	rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
+
+        if (rp.getTreatmentAssignment() != null) {
+        rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
     	rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
-    	
-    	AjaxOutput output = new AjaxOutput();
+        } else if (!StringUtils.isEmpty(rp.getTreatmentAssignmentDescription())) {
+            rpAjaxable.setTacDescription(rp.getTreatmentAssignmentDescription());
+        }
+        
+        AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(rpAjaxable);
     	return output;
     }

@@ -1,33 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.EpochDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Date;
@@ -39,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
@@ -106,7 +87,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
         ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, mode);
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
         return command;
-
     }
 
     @Override
@@ -186,8 +166,12 @@ public class CreateReportingPeriodController extends SimpleFormController {
         
         //check the treatment assignment.
         if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
-            errors.reject("", "Select the Treatment Assignment.");
-            return;
+            if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
+                errors.reject("", "Select the Treatment Assignment.");
+                return;
+            }
+        } else {
+            rPeriod.setTreatmentAssignmentDescription("");
         }
         
         // Check for duplicate baseline Reporting Periods.
