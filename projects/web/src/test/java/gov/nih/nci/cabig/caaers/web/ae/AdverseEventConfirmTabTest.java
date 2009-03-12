@@ -86,8 +86,8 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		
 		List<InputField> fields = tab.createCustomFieldGroup(ae, 0, true);
 		assertNotNull(fields);
-		assertEquals(6, fields.size());
-		assertFieldProperyNames(fields, "adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
+		assertEquals(7, fields.size());
+		assertFieldProperyNames(fields, "selectedAesMap[5]","adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displayGrade",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displaySerious",
