@@ -620,11 +620,21 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public Map<ReportDefinition, List<AdverseEvent>> getRequiredReportDefinitionsMap() {
 		return requiredReportDefinitionsMap;
 	}
+    public void setRequiredReportDefinitionsMap(Map<ReportDefinition, List<AdverseEvent>> map){
+    	this.requiredReportDefinitionsMap = map;
+    }
+    
     public Map<Integer, String> getReportStatusMap() {
 		return reportStatusMap;
 	}
+    public void setReportStatusMap(Map<Integer, String> map) {
+		reportStatusMap = map;
+	}
     public Map<Integer, Boolean> getRequiredReportDefinitionIndicatorMap() {
 		return requiredReportDefinitionIndicatorMap;
+	}
+    public void setRequiredReportDefinitionIndicatorMap(Map<Integer, Boolean> map) {
+		requiredReportDefinitionIndicatorMap = map;
 	}
     public Map<Integer, Boolean> getReportDefinitionMap() {
 		return reportDefinitionMap;
@@ -700,4 +710,5 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setReportingMethod(String reportingMethod) {
 		this.reportingMethod = reportingMethod;
 	}
+    
 }

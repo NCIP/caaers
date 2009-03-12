@@ -244,7 +244,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		String action = (String)findInRequest(request, "_action");
 		String aeReportIdString = (String)findInRequest(request, "_reportId");
 		Integer aeReportId;
-		Integer reportId;
 		
 		// Set the parameters in the session.
 		if(!action.equals(CREATE_NEW_TASK)){
@@ -252,10 +251,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 			session.setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
 			model.put("aeReport", aeReportId);
 		}
-		if(action.equals(AMEND_REPORT)){
-			reportId = Integer.parseInt(aeReportIdString);
-			session.setAttribute(AE_REPORT_ID_PARAMETER, reportId);
-		}
+		
 		session.setAttribute(ACTION_PARAMETER, action);
 		session.setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
 		session.setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
