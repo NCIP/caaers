@@ -47,7 +47,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		}.bind(this));
 	},
 	editComment:function(){
-		captureAE.editReviewComment($('enter-comment-text').value, $('edit_comment_id').value, function(ajaxOutput){
+		this.ajaxFacade.editReviewComment($('enter-comment-text').value, $('edit_comment_id').value, function(ajaxOutput){
 			this.updateCommentElementContent(ajaxOutput.htmlContent);
 			this.disableEditMode();
 		}.bind(this));
