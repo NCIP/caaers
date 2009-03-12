@@ -593,7 +593,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
                 new String[]{"id", "gridId", "outcomes", "version", "report",
                         "deviceAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
                         , "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
-                        "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm"});
+                        "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm", "startDateAsString"});
 
         //outcomes object must not be same. i.e. they should refer to different objects;
         for (Outcome outcome : getOutcomes()) {
