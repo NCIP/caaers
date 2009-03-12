@@ -206,9 +206,9 @@ background-color:#e5e8ff;
   	<script>
   	Event.observe(window, "load", function() {
   	  	//if there are no existing reports, createNew should be the default action.
-  	  	 var action = "${aeReportsLength gt 0 ? '' : 'createNew'}";
+  	  	 var defaultAction = "${aeReportsLength gt 0 ? command._action : 'createNew'}";
   		 //this function will allow the "Select Adverse Events To Report", to maintain its previous state.
-	     selectReport('${command._action}','${command.reportingMethod}','${command.primaryAdverseEventId}');
+	     selectReport(defaultAction,'${command.reportingMethod}','${command.primaryAdverseEventId}');
   	});
   	</script>
   
