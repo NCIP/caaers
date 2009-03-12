@@ -139,11 +139,31 @@ public class AdverseEventTest extends AbstractTestCase {
 
 
     }
-
+    
     public void testDefaultExpectedness() throws Exception {
         adverseEvent = new AdverseEvent();
         assertNull(adverseEvent.getExpected());
     }
+    
+    public void testGetStartDateAsString(){
+    	assertEquals("11/02/2008", adverseEvent.getStartDateAsString());
+    }
+    
+    public void testSetDateAsString(){
+    	adverseEvent.setStartDateAsString("x");
+    	assertEquals("11/02/2008", adverseEvent.getStartDateAsString());
+    }
+    
+    public void testGetStartDateAsStringWhenDateIsNull(){
+    	adverseEvent.setStartDate(null);
+    	try{
+    		adverseEvent.getStartDateAsString();
+    		fail("should throw Exception");
+    	}catch(Exception e){
+    		
+    	}
+    }
+    
 //
 //    public void testCopyAdverseEventTerm() {
 //

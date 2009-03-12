@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -368,6 +369,15 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+    
+    @Transient
+    public String getStartDateAsString(){
+    	return DateUtils.formatDate(startDate);
+    }
+    @Transient
+    public void setStartDateAsString(String startDate) {
+    }
+    
 
     public Date getEndDate() {
         return endDate;

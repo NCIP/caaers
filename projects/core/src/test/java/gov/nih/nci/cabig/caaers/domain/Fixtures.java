@@ -437,6 +437,15 @@ public class Fixtures {
 		return rp;
 	}
     
+    public static AdverseEvent createAdverseEvent(int id, Grade grade){
+    	CtcTerm ctcTerm = Fixtures.createCtcTerm("abcd", "123");
+		AdverseEvent ae = new AdverseEvent();
+		ae.setId(id);
+		ae.setGrade(grade);
+		Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
+		return ae;
+    }
+    
     public static Organization createOrganization(final String name, final String nciInstituteCode) {
         Organization organization = new Organization();
         organization.setName(name);

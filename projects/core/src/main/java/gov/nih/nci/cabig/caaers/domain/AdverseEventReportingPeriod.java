@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
@@ -35,6 +37,7 @@ import org.hibernate.annotations.Type;
  * This class represents the Reporting Period associated to StudyParticipant Associations
  *
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "ae_reporting_periods")
@@ -66,12 +69,6 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
 	
 	// This gives the Report Status for the reporting Period
 	private String reportStatus;
-	
-	// Evaluated adverse Events
-	private List<AdverseEvent> evaluatedAdverseEvents;
-	
-	// Reportable adverse Events (not associated to any report)
-	private List<AdverseEvent> reportableAdverseEvents;
 	
 	private List<ReportingPeriodReviewComment> reviewComments;
 	
@@ -150,17 +147,24 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     
     @Transient
     public List<AdverseEvent> getEvaluatedAdverseEvents(){
-    	evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
+    	List<AdverseEvent> evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: this.getAdverseEvents()){
     		if(ae.getGrade() != null && !(ae.getGrade().equals(Grade.NOT_EVALUATED)))
     			evaluatedAdverseEvents.add(ae);
     	}
+    	//sort the list
+    	Collections.sort(evaluatedAdverseEvents, AdverseEventComprator.DEFAULT_ADVERSE_EVENT_COMPARATOR);
     	return evaluatedAdverseEvents;
     }
     
+    /**
+     * This method will return a a sorted list containing the evaluated adverse events.
+     * @see AdverseEventComprator#compare(AdverseEvent, AdverseEvent)
+     * @return
+     */
     @Transient
     public List<AdverseEvent> getReportableAdverseEvents(){
-    	reportableAdverseEvents = new ArrayList<AdverseEvent>();
+    	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getEvaluatedAdverseEvents()){
     		if(ae.getReport() == null)
     			reportableAdverseEvents.add(ae);
