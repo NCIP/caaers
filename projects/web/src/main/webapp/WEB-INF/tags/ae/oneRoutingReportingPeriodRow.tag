@@ -49,21 +49,18 @@
 						<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
 							<tr>
 								<td>
-									<%-- <div class="eXtremeTable" > --%>
-										<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
-											<thead>
-												<tr class="label">
-													<td class="tableHeader" width="30%">Report Name</td>
-													<td class="centerTableHeader" width="15%">Format</td>
-													<td class="centerTableHeader" width="15%">Submission Status</td>
-													<td class="centerTableHeader" width="10%">Review Status</td>
-													<td class="centerTableHeader" width="5%">Comments</td>
-													<td class="centerTableHeader" width="25%">Action</td>
-												</tr>						
-											</thead>
-												<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
-										</table>
-									<%-- </div> --%>
+									<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
+										<thead>
+											<tr class="label">
+												<td class="tableHeader" width="36%">Report Name</td>
+												<td class="centerTableHeader" width="24%">Submission Status</td>
+												<td class="centerTableHeader" width="10%">Review Status</td>
+												<td class="centerTableHeader" width="5%">Comments</td>
+												<td class="centerTableHeader" width="25%">Action</td>
+											</tr>						
+										</thead>
+											<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
+									</table>
 								</td>
 							</tr>
 						</table>

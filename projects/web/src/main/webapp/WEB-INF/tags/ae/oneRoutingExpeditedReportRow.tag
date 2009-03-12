@@ -6,38 +6,14 @@
 <c:set var="aeReportPageURL"
 	value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true" />
 <tr class="report-row">
-	<td colspan=3>
+	<td colspan=2>
 		<table width="100%">
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
 			<tr>
-				<td align="left" width="50%">
+				<td align="left" width="60%">
 					<a href="<c:url value="${aeReportPageURL}"/>">${report.name}</a>
 				</td>
-				<td width="25%">
-					<%-- <SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')"> --%>
-					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${aeReport.id}'/>')">
-	     				<OPTION selected label="none" value="none">None</OPTION>
-	     				<c:if test="${command.study.caaersXMLType}">
-	     					<OPTION label="xml" value="xml">caAERS XML</OPTION>
-	     				</c:if>
-	     				<c:if test="${command.study.adeersPDFType}">
-	     					<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
-	     				</c:if>
-	     				<c:if test="${command.study.medwatchPDFType}">
-	    			 		<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
-	    			 	</c:if>
-	     				<c:if test="${command.study.dcpSAEPDFType}">
-	    			 		<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
-	    			 	</c:if>
-	    		 		<c:if test="${command.study.ciomsPDFType}">
-	     					<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
-	     				</c:if>
-	    			 	<c:if test="${command.study.ciomsSaePDFType}">
-	     					<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
-	     				</c:if>
-	 				</SELECT>
-				</td>
-				<td align="center" width="25%" id="report-${reportingPeriod.id}-status">
+				<td align="center" width="40%" id="report-${reportingPeriod.id}-status">
 					${report.status.displayName }
 				</td>
 			</tr>
