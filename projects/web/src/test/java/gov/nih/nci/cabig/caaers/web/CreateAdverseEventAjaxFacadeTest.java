@@ -7,6 +7,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isNull;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -28,6 +30,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -47,6 +50,7 @@ import java.util.Map;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private CreateAdverseEventAjaxFacade facade;
@@ -58,6 +62,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private CtcDao ctcDao;
 
     private CtcTermDao ctcTermDao;
+    
+    private LowLevelTermDao lowLevelTermDao;
 
     private ExpeditedAdverseEventReportDao aeReportDao;
 
@@ -70,6 +76,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private StudyParticipantAssignment assignment;
 
     private StudySite studySite;
+    
+    private AdverseEventReportingPeriodDao reportingPeriodDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -81,9 +89,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         interoperationService = registerMockFor(InteroperationService.class);
         treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class);
+        reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         assignment = registerMockFor(StudyParticipantAssignment.class);
         studySite = registerMockFor(StudySite.class);
+        lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -92,6 +102,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setCtcTermDao(ctcTermDao);
         facade.setAeReportDao(aeReportDao);
         facade.setTreatmentAssignmentDao(treatmentAssignmentDao);
+        facade.setLowLevelTermDao(lowLevelTermDao);
         facade.setInteroperationService(interoperationService);
         facade.setExpeditedReportTree(new ExpeditedReportTree());
 
@@ -453,11 +464,55 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals(0, actual.size());
     }
     
-    public void testAddAdverseEventWithTermId(){
-    	fail("to do");
+    public void testAddAdverseEventWithTermId() throws Exception{
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	Integer aeTermId = 5;
+    	 CtcTerm term = registerMockFor(CtcTerm.class);
+        // mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(ctcTermDao.getById(aeTermId)).andReturn(term);
+        reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventFormSection")).andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addAdverseEventWithTerms( 1, 12, aeTermId));
+        verifyMocks();
+        
     }
-    public void testAddNewAdverseEvent(){
-    	fail("to do");
+    
+    public void testAddNewAdverseEvent_CTCTerm() throws Exception{
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	Integer aeTermId = 5;
+    	 CtcTerm term = registerMockFor(CtcTerm.class);
+        // mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(ctcTermDao.getById(aeTermId)).andReturn(term);
+        reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventFormSection")).andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addNewAdverseEvent("adverseEventFormSection", 1, 12, true, aeTermId));
+        verifyMocks();
+        
+    }
+    
+    public void testAddNewAdverseEvent_MeddraTerm() throws Exception{
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	Integer aeTermId = 5;
+    	 LowLevelTerm term = registerMockFor(LowLevelTerm.class);
+        // mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(lowLevelTermDao.getById(aeTermId)).andReturn(term);
+        reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventFormSection")).andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addNewAdverseEvent("adverseEventFormSection", 1, 12, false, aeTermId));
+        verifyMocks();
+        
     }
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
@@ -492,7 +547,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
 
         EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(null, null,
-                assignmentDao, null, null, null, null);
+                assignmentDao, reportingPeriodDao, null, null, null);
 
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.addAdverseEvent(setId(0, new AdverseEvent()));
