@@ -499,5 +499,28 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void deleteAttribution(DomainObject o){
     	reportDao.cascaeDeleteToAttributions(o, getAeReport());
     }
+    
+    /**
+     * This method will make the adverse event identified by primaryAdverseEventId, the first one in the report.
+     * @param primaryAdverseEventId
+     */
+    public void makeAdverseEventPrimary(Integer primaryAdverseEventId){
+    	if(primaryAdverseEventId == null) return;
+    	if(aeReport == null) return;
+    	AdverseEvent newPrimaryAE = null;
+    	List<AdverseEvent> aeList = aeReport.getAdverseEvents();
+    	int size = aeList.size();
+    	for(int i = 1; i < size; i++){
+    		if(aeList.get(i).getId().equals(primaryAdverseEventId)){
+    			newPrimaryAE = aeList.get(i);
+    			break;
+    		}
+    	}
+    	
+    	if(newPrimaryAE != null){
+    		aeList.remove(newPrimaryAE);
+    		aeList.add(0, newPrimaryAE);
+    	}
+    }
        
 }

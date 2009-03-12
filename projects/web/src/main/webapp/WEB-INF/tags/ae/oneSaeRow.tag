@@ -14,6 +14,9 @@
 <%@attribute name="renderNotes" type="java.lang.Boolean" required="true" description="Display the render Notes section if this is set to true" %>
 <%@attribute name="renderSubmittedFlag" type="java.lang.Boolean" required="true" description="Determines whether to display the image indicating the adverse event has been successfully submitted" %>
 <%@attribute name="showRequiresReporting" type="java.lang.Boolean"%>
+<%@attribute name="cssClass"  description="The css classes that should be associated to the TR tag"%>
+<%@attribute name="style" description="The style associated to the TR tag" %>
+<%@attribute name="editableDisplay" required="true"  type="java.lang.Boolean" description="Tells whether the display is editable, if true it will put additional java scripts, to enable large dropdowns"%>
 
 <c:set var="mainGroup">main${index}</c:set>
     	<%--
@@ -21,7 +24,7 @@
     			  : For Solicited AE, both Verbatim and Other specify will not be there.
     			  So the Term column will have 3 fields when the term is OtherSpecify (for observed AE)  
     	--%>
-<tr class="ae-section ${index % 2 gt 0 ? 'odd' : 'even'}" id="ae-section-${index}" >
+<tr class="ae-section ${index % 2 gt 0 ? 'odd' : 'even'} ${cssClass}" id="ae-section-${index}" style="${style}" >
 
 <c:if test="${aeTermIndex gt 0}">
 	<td align="center"><center><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></center></td>
@@ -33,7 +36,7 @@
 		<td><img id="ae-section-${index}-submitted-image" src="<chrome:imageUrl name="../aeSubmitted.png" />" alt="This adverse event has already been reported. An ammendment will be required if a change is made to this adverse event." title="Submitted" style="border:0" /></td>
 	</c:if>
 	<c:if test="${adverseEvent.submitted == false}">
-		<td/>
+		<td></td>
 	</c:if>
 </c:if>
 
@@ -46,6 +49,7 @@
         <c:if test="${not isSolicitedAE}">
             <tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
             <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
+            <c:if test="${editableDisplay}">
             <script>
                 if(${adverseEvent.lowLevelTerm != null})
                     $('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.meddraTerm}';
@@ -59,6 +63,7 @@
                 function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
 
             </script>
+            </c:if>
         </c:if>
         <%-- <c:if test="${isSolicitedAE}">
             <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeTerm"/>
@@ -74,6 +79,7 @@
             <td>
                 <div class="${lpIdx.index gt 3 ? 'shortselectdiv' : 'selectdiv'}">
                     <tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}" />
+                <c:if test="${editableDisplay}">
                 <script>
                     Element.observe('${field.propertyName}', 'blur' ,function(evt){
                         hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true)
@@ -88,6 +94,7 @@
                         showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false)
                     } );
                 </script>
+                </c:if>
 
                 </div>
             </td>
@@ -110,6 +117,7 @@
 			<td>
                 <div class="${lpIdx.index gt 2 ? 'shortselectdiv' : 'selectdiv'}">
 					<tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}"/>
+					<c:if test="${editableDisplay}">
 					<script>
 						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
 							hideBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", true) 
@@ -124,6 +132,7 @@
 							showBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", false) 
 						});
 					</script>
+					</c:if>
 
 				</div>
 			</td>

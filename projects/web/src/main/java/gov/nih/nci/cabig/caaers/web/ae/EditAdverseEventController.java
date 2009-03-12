@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -44,6 +45,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
     private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
     private static final String REPORT_ID_PARAMETER = "reportId";
+    private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
     
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
@@ -91,30 +93,19 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @Override
     protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
         super.onBindOnNewForm(request, cmd);
+        
+        HttpSession session = request.getSession();
+        
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
         
+        
         String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
-        List<AdverseEvent> aeList = (List<AdverseEvent>) request.getSession().getAttribute(AE_LIST_PARAMETER);
-        if(StringUtils.equals("createNew", action)){
-        	// Sort the aeList based on grade.
-        	// So that the ae with the highest grade is the primary ae of the aeReport created.
-        	if(aeList != null && aeList.size() > 0){
-        		Collections.sort(aeList, new Comparator(){
-        			public int compare(Object o1, Object o2) {
-                        AdverseEvent ae1 = (AdverseEvent) o1;
-                        AdverseEvent ae2 = (AdverseEvent) o2;
-                        if(ae1.getGrade().getCode() > ae2.getGrade().getCode())
-                        	return -1;
-                        else if(ae1.getGrade().getCode() < ae2.getGrade().getCode())
-                        	return 1;
-                        else
-                        	return 0;
-                    }
-        		});
-        	}
-        }
-        AdverseEventReportingPeriod reportingPeriod = (AdverseEventReportingPeriod) request.getSession().getAttribute(REPORTING_PERIOD_PARAMETER);
-        List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
+        List<AdverseEvent> aeList = (List<AdverseEvent>) session.getAttribute(AE_LIST_PARAMETER);
+        Integer primaryAdverseEventId = (Integer) session.getAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER);
+        
+        
+        AdverseEventReportingPeriod reportingPeriod = (AdverseEventReportingPeriod) session.getAttribute(REPORTING_PERIOD_PARAMETER);
+        List<ReportDefinition> rdList = (List<ReportDefinition>) session.getAttribute(REPORT_DEFN_LIST_PARAMETER);
         
         
         // This is to handle the case where the report is amended to add AEs. There is no new reportDefinition selected.
@@ -134,6 +125,10 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     			command.getAeReport().addAdverseEvent(ae);
     		}
         }
+        
+        //modify the primary ae if necessary
+        command.makeAdverseEventPrimary(primaryAdverseEventId);
+        
         if(rdList != null){
         	command.setSelectedReportDefinitions(rdList);
         }
@@ -149,10 +144,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
            
         }
         
-        request.getSession().removeAttribute(AE_LIST_PARAMETER);
-        request.getSession().removeAttribute(AE_REPORT_ID_PARAMETER);
-        request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);
-        request.getSession().removeAttribute(REPORT_DEFN_LIST_PARAMETER);
+        session.removeAttribute(AE_LIST_PARAMETER);
+        session.removeAttribute(AE_REPORT_ID_PARAMETER);
+        session.removeAttribute(REPORTING_PERIOD_PARAMETER);
+        session.removeAttribute(REPORT_DEFN_LIST_PARAMETER);
+        session.removeAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER);
         
         // Check whether the request is coming from ManageReports and is to amend a report
         String pramAction = request.getParameter(ACTION_PARAMETER);
@@ -160,7 +156,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
         	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
         	String reportId = request.getParameter(REPORT_ID_PARAMETER);
-        	request.getSession().setAttribute(ACTION_PARAMETER, pramAction);
+        	session.setAttribute(ACTION_PARAMETER, pramAction);
         	if(reportId != null){
         		List<Report> amendReportList = new ArrayList();
         		for(Report report: command.getAeReport().getReports()){

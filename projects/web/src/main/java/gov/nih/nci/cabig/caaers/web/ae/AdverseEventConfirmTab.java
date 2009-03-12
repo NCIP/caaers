@@ -38,12 +38,11 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	@Override
     public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand command) {
-		final boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 		final boolean isBaseline = command.getAdverseEventReportingPeriod().isBaselineReportingType();
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		
 		//create fields for AEs
-		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getReportableAdverseEvents();
+		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getEvaluatedAdverseEvents();
 		if(adverseEvents != null){
 			int size = adverseEvents.size();
 			for(int i = 0; i < size; i++){
@@ -51,7 +50,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 				final int j = i;
 				InputFieldGroup fieldGroup = new InputFieldGroup(){
 					public List<InputField> getFields() {
-						return createCustomFieldGroup(adverseEvents.get(j),j, isMeddraStudy, isBaseline);
+						return createCustomFieldGroup(adverseEvents.get(j),j, isBaseline);
 					}
 					public String getDisplayName() {
 						return "";
@@ -64,39 +63,45 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			}
 		}
 		
-		
-		if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null){
-			
-		}
-		
-
 		return map;
     }
 	
-	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy, boolean isBaseline){
-		//only non-baseline, grade != NOT_EVALUATED is selectable, or can be opted as primary
-		boolean isModifiable = ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
+	/**
+	 * This method will create the fields (list of fileds) that need to be painted in a row on the review page.
+	 * The propery each field is bound-to is more defined by the parameters like <code>isMeddraStudy</code> or <code>isBaseline</code>.
+	 * @param ae
+	 * @param i
+	 * @param isMeddraStudy
+	 * @param isBaseline
+	 * @return
+	 */
+	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isBaseline){
+		//only not-associated-to-aereprot , non-baseline, and graded is selectable
+		boolean notAssociatedToReport = ae.getReport() == null;
+		boolean graded = ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
 		
 		List<InputField> fields= new ArrayList<InputField>();
-		if(isModifiable){
+		if(notAssociatedToReport && graded && !isBaseline){
 			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
-		}else if(!isBaseline){
+		}else {
 			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
 		}
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
-		//if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].lowLevelTerm", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].detailsForOther", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayGrade", ""));
-		String attributionFieldName = (ae.getAttributionSummary() != null)? "attributionSummary.displayName" : "attributionSummary";
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + attributionFieldName, ""));
-		String hospitalizationFieldName = (ae.getHospitalization() != null)? "hospitalization.displayName" : "hospitalization";
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + hospitalizationFieldName, ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displaySerious", ""));
-		//if(isModifiable){
-		//	fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
-		//}else{
-		//	fields.add(InputFieldFactory.createImageField("primaryAdverseEventId", "", ""));
-		//}
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].detailsForOther", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].displayGrade", ""));
+
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].displaySerious", ""));
+		InputField startDateField = null;
+		if(ae.getStartDate() != null){
+			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].startDateAsString", "", false);
+		}else{
+			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].startDate","", false);
+		}
+		
+		fields.add(startDateField);
+		InputField selectPrimaryField = InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString());
+		fields.add(selectPrimaryField);
+		
 		return fields;
 	}
 	
@@ -190,7 +195,12 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		return refdata;
 	}
 	
-	
+	/**
+	 * This method will verify the following
+	 * 1. Makessure that atleast one AE is selected, when there is a report selected.
+	 * 2. Primary AE is mentioned.
+	 * 3. Start date of the primary AE is mentioned.
+	 */
 	@Override
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
                     Map<String, InputFieldGroup> fieldGroups, Errors errors) {
@@ -204,10 +214,20 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 					noAeSelected = false;
 			}
 			if(noAeSelected)
-				errors.reject("AT_LEAST_ONE_AE","A report cannot be selected without selecting atleast one adverse event.");
+				errors.reject("CAE_001","A report cannot be selected without selecting atleast one adverse event.");
+		}
+		//verify whether primary ae and start date is mentioned.
+		if(command.getPrimaryAdverseEventId() == null){
+			errors.reject("CAE_002", "A primary adverse event must be selected inorder to continue expedited reporting");
+		}else{
+			for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
+				if(ae.getId().equals(command.getPrimaryAdverseEventId()) && ae.getStartDate() == null){
+					errors.reject("CAE_003", "Start Date of the primary adverse event must be specified");
+				}
+			}
 		}
 		
-		
+				
 	}
 	
 	@Override

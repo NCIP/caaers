@@ -34,6 +34,7 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -50,16 +51,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	private static final int ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER = 2;
 	private static final String AE_REPORT_ID_PARAMETER = "aeReportId";
-	private static final String REPORT_ID_PARAMETER = "reportId";
 	private static final String ACTION_PARAMETER = "action";
 	private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
 	private static final String AE_LIST_PARAMETER = "adverseEventList";
 	private static final String CREATE_NEW_TASK = "createNew";
 	private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
 	private static final String AMEND_REPORT = "amendReport";
-	
+	 private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
 	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
@@ -174,10 +173,12 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
 		super.onBind(request, command, errors); //binding is done.
+		CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
+		cmd.set_action(request.getParameter("_action"));
+		
         boolean fromListPage =  request.getParameterMap().keySet().contains("displayReportingPeriod");
-
         if (fromListPage) {
-            CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
+          
             AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
             
             if (reportingPeriod != null) {
@@ -223,17 +224,18 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         //hide for non DCP-AdEERS reporting enabled study
         if(!command.isDCPNonAdeersStudy()){
         	renderDecisionManager.conceal("adverseEvents[].serious");
-        	renderDecisionManager.conceal("adverseEventReportingPeriod.reportableAdverseEvents[].displaySerious");
+        	renderDecisionManager.conceal("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious");
         }else{
         	renderDecisionManager.reveal("adverseEvents[].serious");
-        	renderDecisionManager.reveal("adverseEventReportingPeriod.reportableAdverseEvents[].displaySerious");
+        	renderDecisionManager.reveal("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious");
         }
 		return referenceData;
 	}
 	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
-
+		HttpSession session = request.getSession();
+		
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
@@ -241,24 +243,24 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		
 		String action = (String)findInRequest(request, "_action");
 		String aeReportIdString = (String)findInRequest(request, "_reportId");
-		String reportIdString = (String)findInRequest(request, "_repId");
 		Integer aeReportId;
 		Integer reportId;
 		
 		// Set the parameters in the session.
 		if(!action.equals(CREATE_NEW_TASK)){
 			aeReportId = Integer.parseInt(aeReportIdString);
-			request.getSession().setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
+			session.setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
 			model.put("aeReport", aeReportId);
 		}
 		if(action.equals(AMEND_REPORT)){
 			reportId = Integer.parseInt(aeReportIdString);
-			request.getSession().setAttribute(AE_REPORT_ID_PARAMETER, reportId);
+			session.setAttribute(AE_REPORT_ID_PARAMETER, reportId);
 		}
-		request.getSession().setAttribute(ACTION_PARAMETER, action);
-		request.getSession().setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
-		request.getSession().setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
-		request.getSession().setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
+		session.setAttribute(ACTION_PARAMETER, action);
+		session.setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
+		session.setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
+		session.setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
+		session.setAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER, command.getPrimaryAdverseEventId());
 		
 	    return new ModelAndView("redirectToExpeditedAeEdit", model);
 	}

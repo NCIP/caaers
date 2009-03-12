@@ -37,13 +37,42 @@
 	     enableReportsInPopup();
 	});
 
-		function selectReport(task, reportId){
+		function selectReport(task, reportId, primaryAEId){
 			var form = document.getElementById('command')
 			form._action.value=task;
 			form._reportId.value=reportId;
+			showAEsOfReport(reportId);
+			selectPrimaryAdverseEvent(primaryAEId);
 		}
-	
 		
+		//=============================================================================================
+		//will show in "Select Adverse Events To Report", the AEs beloging to the reportId
+		function showAEsOfReport(reportId){
+			//hide all reported AEs
+			$$('.reported').each(function(el){
+				el.hide();
+			});
+
+			//show the one associated with report.
+			if(reportId){
+				$$('.rp' + reportId).each(function (el){
+					Effect.Appear(el);
+				})
+			}
+		}
+		//=============================================================================================
+		//This method will pick the correct primary AE radio.
+		function selectPrimaryAdverseEvent(primaryAEId){
+				$("seriousTable").select('input[type="radio"]').each(function(el){
+					if(el.value == primaryAEId){
+						el.checked = true;
+					}else{
+						el.checked = false;
+					}
+				});
+			
+		}
+		//=============================================================================================
 		function forwardControl(){
 			var form = document.getElementById('command')
 			
@@ -111,8 +140,8 @@
 		function displayCreateNewReportTable(){
 			$('create-new-report-table').style.display = '';
 			$('create-new-report-statement').style.display = 'none';
-			selectReport('createNew','');
-			$('create-new-radio-button-id').checked = true;
+			selectReport('createNew','', '');
+			$$('.newRadio')[0].checked = true;
 		}
 		
 		function checkIfReportSelected(){
@@ -168,11 +197,19 @@ margin-top:0px;
 padding:2px;
 background-color:#e5e8ff;
 }
+
 </style>
 </head>
 <body>
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
   <tags:noform>
+  	<script>
+  	Event.observe(window, "load", function() {
+  		 //this function will allow the "Select Adverse Events To Report", to maintain its previous state.
+	     selectReport('${command._action}','${command.reportingMethod}','${command.primaryAdverseEventId}');
+  	});
+  	</script>
+  
     <table class="tablecontent">
       <tr>
         <th>Required</th>
@@ -270,10 +307,10 @@ background-color:#e5e8ff;
              <tr id="existing-reports-row" class="${ ((statusAeReport.index % 2 ) gt 0 )? 'odd' : 'even'  }">
                <td width="5%" align="left">
                	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
- 	                 		<input type="radio" value="Amend" name="report-radio"  onClick="javascript:selectReport('amendReport','${aeReport.id}');"/>&nbsp;Amend
+               		<ui:radio path="reportingMethod" onclick="javascript:selectReport('amendReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');" value="${aeReport.id}"/>&nbsp;Amend
                 </c:if>
                 <c:if test="${aeReport.allSponsorReportsCompleted == false}">
-                  		<input type="radio" value="Edit"  name="report-radio" onClick="javascript:selectReport('editReport','${aeReport.id}');"/>&nbsp;Edit
+                  	<ui:radio path="reportingMethod" value="${aeReport.id}"  onclick="javascript:selectReport('editReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');"/>&nbsp;Edit
                 </c:if>
               	</td>
               	<td width="95%"><div class="eXtremeTable" >
@@ -303,7 +340,7 @@ background-color:#e5e8ff;
       	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;display:none" id="create-new-report-table">
       	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
       	 		<td width="10%" align="left">
-          			<input id="create-new-radio-button-id" type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
+          			<ui:radio path="reportingMethod" value="" onclick="javascript:selectReport('createNew','','');" cssClass="newRadio"/>&nbsp;Create
           		</td>
         		<td>
 			        <div class="eXtremeTable">
@@ -330,8 +367,6 @@ background-color:#e5e8ff;
       	         
         </chrome:box>
       <div id="div-aes">
-       
-		
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
        	
        	<c:if test="${!displayReportableAeTable}">
@@ -345,44 +380,23 @@ background-color:#e5e8ff;
                 <th scope="col" align="center" style="text-align:center;">Requires expedited reporting?</th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
-                <th scope="col" align="left"><b>Attribution</b> </th>
-                <th scope="col" align="left"><b>Hospitalization</b> </th>
                 <caaers:renderFilter elementID="adverseEvents[].serious">
                   <th scope="col" align="left"><b>Serious</b> </th>
                 </caaers:renderFilter>
+                <th scope="col" align="left"><b>Start Date</b> </th>
+                <th scope="col" align="left"><b>Select Primary</b> </th>
               </tr>
               
               
-        <!--  begin serious aes -->
-          <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
-              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-                <c:if test="${ae.requiresReporting}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
-                </c:if>
+        <!--  begin reportable aes -->
+          <c:if test='${command.adverseEventReportingPeriod != null }'>
+              <c:forEach items="${command.adverseEventReportingPeriod.evaluatedAdverseEvents}" varStatus="status" var="ae">
+                  <ae:oneSaeRow editableDisplay="false" index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" 
+                  aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true" cssClass="rp${not empty ae.report ? ae.report.id : ''} ${not empty ae.report ? 'reported' : '' }" style="${not empty ae.report ? 'display:none' : ''}"/>
               </c:forEach>
           </c:if>
-         <!--  end serious aes --> 
-         <!--  begin observed aes -->  
-          <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
-              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-                <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
-                </c:if>
-              </c:forEach>
-          </c:if>
-        <!--  end observed aes -->
+         <!--  end reportable aes --> 
         
-        <!--  begin solicied aes -->
-        <c:if test="${command.havingSolicitedAEs}">
-          <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
-              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-                <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
-                </c:if>
-              </c:forEach>
-          </c:if>
-        </c:if>
-        <!--  end solicited aes -->
         </table>
        </c:if>
        </chrome:box>

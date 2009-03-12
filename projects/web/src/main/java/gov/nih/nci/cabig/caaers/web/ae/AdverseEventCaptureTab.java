@@ -56,7 +56,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         MultipleFieldGroupFactory mainFieldFactory;
-        List<SolicitedAdverseEvent> saeList;
 
         //create the fields, consisting of reporting period details.
         if (cmd.getAdverseEventReportingPeriod() != null) {

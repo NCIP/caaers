@@ -34,6 +34,12 @@ import java.util.TreeSet;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
+/**
+ * @author Sameer Sawanth
+ * @author Biju Joseph
+ *
+ */
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
 	private StudyParticipantAssignment assignment;
@@ -69,9 +75,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	private Ctc ctcVersion;
 	
-	private Set<AdverseEvent> seriousAdverseEvents;
-	
 	private boolean workflowEnabled = false;
+	
+	private String _action;
+	
+	private String reportingMethod;
+	
 	
 	public CaptureAdverseEventInputCommand(){
 	}
@@ -95,19 +104,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
         
         
-        this.seriousAdverseEvents = new TreeSet<AdverseEvent>(new Comparator<AdverseEvent>(){
-        	public int compare(AdverseEvent o1, AdverseEvent o2) {
-        		if(o1 == null && o2 == null) return 0;
-        		if(o1 == null || o1.getGrade() == null) return 1;
-        		if(o2 == null || o2.getGrade() == null) return -1;
-        		
-        		if(o1.getGrade().getCode() > o2.getGrade().getCode()) return -1;
-        		if(o1.getGrade().getCode() < o2.getGrade().getCode()) return 1;
-        		
-        		return 0;
-        		
-        	}
-        });
 	}
 	
 	/**
@@ -247,20 +243,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
     }
     
-//    public void initializeObjectsInCommand(){
-//    	if(study == null) return;
-//    	 if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
-//         boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
-//         if (isCTCStudy){
-//        	 List<AdverseEvent> aes = getAdverseEvents();
-//        	 if(aes != null){
-//        		 for (AdverseEvent ae: aes) {
-//                     
-//                 }
-//        	 }
-//         }
-//             
-//    }
     
     /**
      * This method will find all avaliable report definitions for all the StudyOrganizations. 
@@ -281,8 +263,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	//if already available return that, as we will take care of clearing it when we quit this tab.
     	if(requiredReportDefinitionsMap.isEmpty() && !adverseEventReportingPeriod.isBaselineReportingType()){
     		this.requiredReportDefinitionsMap = evaluationService.findRequiredReportDefinitions(this.adverseEventReportingPeriod);
-    		//refresh the serious AE list here
-    		refreshSeriousAdverseEvents();
     	}
     	return new ArrayList<ReportDefinition>(requiredReportDefinitionsMap.keySet());
     }
@@ -392,17 +372,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
 	}
     
-	/**
-	 * The list of serious adverse events is refreshed here.
-	 */
-	public void refreshSeriousAdverseEvents(){
-		seriousAdverseEvents.clear();
-		for(List<AdverseEvent> aes : requiredReportDefinitionsMap.values()){
-			for(AdverseEvent ae : aes){
-				seriousAdverseEvents.add(ae);
-			}
-		}
-	}
 	
 	/**
 	 * Find primary adverse event.
@@ -413,16 +382,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	//}
 	
 	
-	/**
-	 * Updates the requires reporting indicator of this AE.
-	 * @param ae
-	 */
-	public void updateRequiresReportingFlag(AdverseEvent ae){
-		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty())return;
-		ae.setRequiresReporting(seriousAdverseEvents.contains(ae));
-		
-	}
-	
+
 	/**
 	 * This method will set the seriousness (outcome) on every adverse event, by reading the non-hospitalization and non-death outcome indicators,
 	 * preference is given to the first satisfied one. (Note:- In Expedited flow, the user may select multiple outcome(s). 
@@ -681,17 +641,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.primaryAdverseEventId = primaryAdverseEventId;
 	}
     
+	/**
+	 * Returns the {@link AdverseEvent}s selected in the page. With primary being the first one.
+	 * @return
+	 */
     public List<AdverseEvent> getSelectedAesList() {
-		List selectedAesList = new ArrayList<AdverseEvent>();
-    	Map<Integer, AdverseEvent> aeObjectMap = new HashMap<Integer, AdverseEvent>();
+		List<AdverseEvent> selectedAesList = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: adverseEvents){
-    		if(!aeObjectMap.containsKey(ae.getId()))
-    			aeObjectMap.put(ae.getId(), ae);
+    		
+    		if(BooleanUtils.isTrue(getSelectedAesMap().get(ae.getId()))){
+    			if(primaryAdverseEventId != null && ae.getId().equals(primaryAdverseEventId)){
+    				selectedAesList.add(0, ae);
+    			}else{
+    				selectedAesList.add(ae);
+    			}
+    		}
     	}
-    	for(Integer id: getSelectedAesMap().keySet()){
-			if(getSelectedAesMap().get(id).equals(Boolean.TRUE))
-				selectedAesList.add(aeObjectMap.get(id));
-		}
+    	
     	return selectedAesList;
 	}
     
@@ -720,4 +686,18 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		if(ae.getSolicited()) return true;
     	return false;
     }
+    
+    public String get_action() {
+		return _action;
+	}
+    public void set_action(String _action) {
+		this._action = _action;
+	}
+    
+    public String getReportingMethod() {
+		return reportingMethod;
+	}
+    public void setReportingMethod(String reportingMethod) {
+		this.reportingMethod = reportingMethod;
+	}
 }

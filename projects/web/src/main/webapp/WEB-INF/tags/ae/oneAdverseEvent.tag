@@ -24,46 +24,24 @@
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
-        <div class="row">
-           <div class="label">CTC version</div>
-           <div class="value">${command.assignment.studySite.study.aeTerminology.ctcVersion.name}</div>
-        </div>
-        <div class="row">
+  
+        <div class="row" style="display:none;">
             <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
             <div class="value">
 
               <div class="ctcCategoryValueDiv">
                 <select id="aeReport.adverseEvents[${index}].ctc-category" class="ctcCategoryClass" onchange="javascript:enableDisableAjaxTable(${index})" >
                     <option value="">Any</option>
-                    <c:forEach items="${ctcCategories}" var="cat">
-                        <option value="${cat.id}">${cat.name}</option>
-                    </c:forEach>
                 </select>
 
               </div>
             </div>
         </div>
 
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
-        
-		<div id="table${index}-outer" style="position: absolute; display: none;width:400px; left: 520px; z-index:999;">
-		<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
-		<tbody>
-            <tr class="titleRow">
-              <td align="left" class="title">Select CTC term:</td><td width="20px"><a href="javascript:hideShowAllTable('table${index}-outer')">
-                   <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
-                  </a>
-              </td>
-            </tr>
-            <tr><td colspan="2"><div id="table${index}" /></td></tr>
-		</tbody>
-		</table>
-		</div>
-
+        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">
             <label>
-                <%--<input id="select-meddra-${index}" namatchLowLevelTermsByCodeme="meddraOrVerbatim${index}" type="radio"/>--%>
                 ${fieldGroups[ctcOtherGroup].fields[0].displayName}
             </label>
         </jsp:attribute>
@@ -72,7 +50,17 @@
 
     <div id="main-fields-${index}" class="main-fields">
 		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
-        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="0" end="${len - 2}">
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+		<table border="0">
+			<tr>
+			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" /></td>
+			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" /></td>
+			</tr>
+		</table>
+			
+			
+        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="4" end="${len - 2}">
             <tags:renderRow field="${field}"/>
         </c:forEach>
 		<ae:oneOutcome index="${index}" />

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
@@ -59,12 +60,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		
 		aes = new ArrayList<AdverseEvent>();
 		for(int i = 0; i < 3; i++){
-			
-			CtcTerm ctcTerm = Fixtures.createCtcTerm("abc", "ef");
-			
-			AdverseEvent ae = new AdverseEvent();
-			Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
-			ae.setId(i + 1);
+			AdverseEvent ae = Fixtures.createAdverseEvent(i+1, Grade.NORMAL);
 			aes.add(ae);
 		}
 		reportingPeriod.setId(5);
@@ -97,6 +93,20 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		command = new CaptureAdverseEventInputCommand();
 		command.setAdverseEventReportingPeriod(reportingPeriod);
 		assertTrue(command.isHavingSolicitedAEs());
+		
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#getSelectedAesList()}
+	 */
+	public void testGetSelectedAesList(){
+		//refresh the selected ae map.
+		command.getSelectedAesMap().put(1, false);
+		command.getSelectedAesMap().put(2, true);
+		List<AdverseEvent> aeList = command.getSelectedAesList();
+		System.out.println(aeList);
+		assertEquals(1, aeList.size());
+		assertEquals(new Integer(2), aeList.get(0).getId());
 		
 	}
 	

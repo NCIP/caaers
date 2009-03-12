@@ -40,7 +40,7 @@ import java.util.List;
 
 /**
  * @author Sameer Work
- *
+ * @author Biju Joseph
  */
 public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTestCase {
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
@@ -160,6 +160,53 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		report.addReportVersion(reportVersion);
     		command.getAeReport().addReport(report);
     	}
+    }
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#makeAdverseEventPrimary(Integer)}
+     */
+    public void testMakeAdverseEventPrimary(){
+    	List<AdverseEvent> aeList = command.getAeReport().getAdverseEvents();
+    	//makesure 4  aes
+    	for(int i = 0; i < 4 ; i++){
+    		aeList.get(i).setId(i);
+    	}
+    	
+    	command.makeAdverseEventPrimary(2);
+    	assertEquals(new Integer(2), command.getAeReport().getAdverseEvents().get(0).getId());
+    	assertEquals(new Integer(0), command.getAeReport().getAdverseEvents().get(1).getId());
+    	assertEquals(4, command.getAeReport().getAdverseEvents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#makeAdverseEventPrimary(Integer)}
+     */
+    public void testMakeAdverseEventPrimary_NothingChangedWhenPrimaryAEIdIsNull(){
+    	List<AdverseEvent> aeList = command.getAeReport().getAdverseEvents();
+    	//makesure 4  aes
+    	for(int i = 0; i < 4 ; i++){
+    		aeList.get(i).setId(i);
+    	}
+    	
+    	command.makeAdverseEventPrimary(null);
+    	assertEquals(new Integer(0), command.getAeReport().getAdverseEvents().get(0).getId());
+    	assertEquals(new Integer(1), command.getAeReport().getAdverseEvents().get(1).getId());
+    	assertEquals(4, command.getAeReport().getAdverseEvents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#makeAdverseEventPrimary(Integer)}
+     */
+    public void testMakeAdverseEventPrimary_NothingChangedWhenPrimaryAEIdIsZERO(){
+    	List<AdverseEvent> aeList = command.getAeReport().getAdverseEvents();
+    	//makesure 4  aes
+    	for(int i = 0; i < 4 ; i++){
+    		aeList.get(i).setId(i);
+    	}
+    	
+    	command.makeAdverseEventPrimary(0);
+    	assertEquals(new Integer(0), command.getAeReport().getAdverseEvents().get(0).getId());
+    	assertEquals(new Integer(1), command.getAeReport().getAdverseEvents().get(1).getId());
+    	assertEquals(4, command.getAeReport().getAdverseEvents().size());
     }
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
