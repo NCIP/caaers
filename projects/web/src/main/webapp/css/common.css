@@ -420,6 +420,13 @@ ul.tabs li {
 	padding-left: 20px;
 	font-weight:normal;
 }
+h2.title {
+	color: #333366;
+	margin: 0;
+	font-size: 1.7em;
+	padding-left: 10px;
+	font-weight:normal;
+}
 .box .header .background-L { background: url(../images/blue/box_header_bg_l.jpg) no-repeat top left; }
 .box .header .background-R { background: url(../images/blue/box_header_bg_r.jpg) no-repeat top right; }
 .border-T { }

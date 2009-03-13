@@ -16,6 +16,7 @@
 <%@attribute name="noBackground" required="false" type="java.lang.Boolean" %>
 
 <tags:dwrJavascriptLink objects="createAE"/>
+
 <script type="text/javascript">
 
  	//This object will store the reference of the Window, will also contains function
@@ -30,7 +31,8 @@
 			this.isMeddra = meddra;
 			this.version = ver;
 			this.ignoreOtherSpecify = ignoreOtherSpecify;
-		},
+            this.termList = new Array();
+        },
 		
 		showWindow:function(wUrl, wTitle, wWidth, wHeight){
 			win = new Window({
@@ -50,7 +52,8 @@
 			win.setContent('chooseCategory');
             win.showCenter(true);
 		},
-		initializeAutoCompleter: function() {
+         
+        initializeAutoCompleter: function() {
 
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
@@ -90,7 +93,8 @@
             		{categorySelector:this}
             	);
 		},
-		finishSingleTermSelection:function(){
+
+        finishSingleTermSelection:function(){
 			var selTermMap = new Hash();
 			var termElement = $('termCode');
 			var termElementInput = $('termCode-input');
@@ -103,94 +107,114 @@
 			${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
 			
 		},
-		finishMultiTermsSelection:function() {
-			var terms = $('terms');
-			var categories = $('categories');
-			
-			var opts = terms.options;
-			
-			var selTermMap = new Hash();
-			//each over iterator is not working, dont know why.
-			if(opts.length > 0) {
-				for(i = 0; i< opts.length; i++){
-					if(opts[i].selected) selTermMap.set(opts[i].value, opts[i].title);
-				}
-			}
-			Windows.close(this.win.getId());
-			//reset the category and terms
-			terms.options.length=0;
-			categories.selectedIndex = -1;
-			//call the call back
-			${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
-		},
-		cancelTermsSelection:function(){
-			Windows.close(this.win.getId());
-			//reset the category and terms
-			terms.options.length=0;
-			categories.selectedIndex = -1;
-		},
-		beforeShow : function(){
-			
-		},
-		show: function(){
-			
-		},
-		showTerms: function(el, ignoreOtherSpecify){
-			catIds = $(el).getValue();
-			var terms = $('terms');
-			terms.options.length=0;
-			
-			/* BiJu : Optimize this to make single call instead of multiple */
-			
-			catIds.each(function(catId){
-				 createAE.getTermsByCategory(catId, function(ctcTerms) {
-				 	ctcTerms.each(function(ctcTerm) {
-				 		if(!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify')  > 0) ){
-				 		
-				 		  var ctcFullName = (ctcTerm.fullName.length > 70 ? ctcTerm.fullName.substring(0,70)+"..." :ctcTerm.fullName );
-                       		var opt = new Option(ctcFullName , ctcTerm.id)
-                       		opt.title=ctcTerm.fullName;
-                       		terms.options.add(opt);
-				 		}
-                   })
-				 });		
-			});
-			
-			
-		},
-		showCategoryBox:function(){
-	 			this.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 700, 530 );
-	 	},
-	 	onDivScroll:function(selectBoxId)	{
-			if(basename == '') return ;
-			
-	 		var selectBox = $(selectBoxId);
-	 	    //a) On horizontal scrolling: To avoid vertical
-	 	    //b) On vertical scrolling: To view all the items in selectbox
-	 	    if (selectBox.options.length > 5)  	
-	 	 	    selectBox.size=selectBox.options.length;
-	 	    else 	
-	 	 	    selectBox.size=5;
-	 	},
-		
-	 	onSelectFocus:function(selectBoxId)	{
-	 	 	var outerDiv = $(selectBoxId + '-div-id');
-	 	 	var selectBox = $(selectBoxId);
-	 	 	
-	 	    //adjust the scrolling position, so that the content (with less length) is visible
 
-	 	    if (outerDiv.scrollLeft != 0)   outerDiv.scrollLeft = 0;
-	 	   //Adjust the selected item, so that on pressing of downarrow key or uparrowkey,the selected item should also scroll up or down as expected.
-			if(selectBox.options.length > 5){
-				selectBox.focus();
-				selectBox.size = 5;
-			}
-	 	   
-	 	    
+        finishMultiTermsSelection:function() {
+
+            var selTermMap = new Hash();
+            var selectedTerms = $$('input.AddedTermXYZ');
+            selectedTerms.each(function(el) {
+                if (el.checked) //alert(el.name);
+                selTermMap.set(el.value, el.name);
+            });
+            Windows.close(this.win.getId());
+            ${callbackFunctionName}(selTermMap);
+
+            catSel.termList = new Array();
+            $('ae-terms').innerHTML = "";
+            $('ae-added-terms').innerHTML = "";
+            
+            return;
+		},
+         
+        cancelTermsSelection:function(){
+			Windows.close(this.win.getId());
+			//reset the category and terms
+			terms.options.length=0;
+			categories.selectedIndex = -1;
+		},
+
+        beforeShow : function(){
+		},
+
+        show: function(){
+		},
+
+        addTerm: function(ulID, termID, termText) {
+            if (catSel.termList[termID]) {
+                return;
+            }
+            ul = document.getElementById(ulID);
+            
+            checkbox = document.createElement("input");
+            checkbox.type = 'checkbox';
+            checkbox.name = termText;
+            checkbox.defaultChecked = true;
+            checkbox.value = termID;
+            checkbox.id = "chkID" + termID;
+            checkbox.setAttribute("id", "chk" + termID);
+
+            a = document.createElement("a");
+            a.appendChild(document.createTextNode(termText));
+
+            a.id = "addedTerm" + termID;
+            a.setAttribute("id", "addedTerm" + termID);
+
+            li = document.createElement("li");
+            li.appendChild(checkbox);
+            li.appendChild(a);
+            ul.appendChild(li)
+
+            catSel.termList[termID] = true;
+            $("liTerm" + termID).addClassName("ae-disabled");
+            $("addedTerm" + termID).addClassName("ae-added-terms");
+            $("chk" + termID).addClassName("AddedTermXYZ");
+            
+        },
+
+        addLIToUL: function(ulID, ilID, ilText) {
+            ul = document.getElementById(ulID);
+            a = document.createElement("a");
+            a.appendChild(document.createTextNode(ilText));
+
+            a.setAttribute("onClick", "catSel.addTerm('ae-added-terms', " + ilID + ", '" + ilText + "')");
+            a.onclick = function() {
+                eval("catSel.addTerm('ae-added-terms', " + ilID + ", '" + ilText + "')");
+            }
+
+            a.setAttribute("id", "liTerm" + ilID);
+            a.id = "liTerm" + ilID;
+            
+            li = document.createElement("li");
+            li.appendChild(a);
+            ul.appendChild(li);
+
+            // setting the styles
+            $("liTerm" + ilID).addClassName("ae-category");
+            if (catSel.termList[ilID]) {
+                $("liTerm" + ilID).addClassName("ae-disabled");
+            }
+        },
+
+        showTerms: function(id, ignoreOtherSpecify, el){
+
+            $('ae-terms').innerHTML = "";
+
+            catId = id; //$(el).getValue();
+            createAE.getTermsByCategory(catId, function(ctcTerms) {
+                ctcTerms.each(function(ctcTerm) {
+                    if (!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify') > 0)) {
+                        var ctcFullName = (ctcTerm.fullName.length > 70 ? ctcTerm.fullName.substring(0, 70) + "..." : ctcTerm.fullName );
+                        catSel.addLIToUL("ae-terms", ctcTerm.id, ctcFullName);
+                    }
+                })
+            });
+
+            return;
+		},
+
+        showCategoryBox:function(){
+	 			this.showWindow('', '${title}', 850, 530 );
 	 	}
-	 	
-		
-		
  	});
 	
 	function initalizeCategorySelector(){
@@ -216,45 +240,103 @@
   			<tags:button size="small" type="button" color="blue" icon="window" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   		</c:if>
   	</chrome:box>
-  	<!-- the hidden window for category popup -->
+
+
+
+      <!-- the hidden window for category popup -->
   	<div style="display:none">
 	<c:if test="${not isMeddra}">
-	<div id="chooseCategory">
-  	<chrome:box title="Choose CTC term(s):" autopad="true">
-		<ui:row path="dummyPath">
-			<jsp:attribute name="label">CTC category(s)</jsp:attribute>
-			<jsp:attribute name="value">
-			  <div id="categories-div-id" class="categories-div" onScroll="catSel.OnDivScroll('categories');" >
-			    <select name="categories" id="categories" style="width:500px; height:175px;" onChange="catSel.showTerms('categories', catSel.ignoreOtherSpecify);" onFocus="catSel.onSelectFocus('categories');" class="categories" multiple >
-				  <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
-					<option value="${cat.id}">${cat.name}</option>
-				  </c:forEach>
-			    </select>
-			  </div>
-			</jsp:attribute>
-		</ui:row>
-		<ui:row path="dummyPath2">
-			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
-			<jsp:attribute name="value">
-				<div id="terms-div-id" class="terms-div" onScroll="catSel.OnDivScroll('terms');">
-				  <select name="terms" id="terms" size="5" class="terms" multiple style="width:500px; height:225px;" onFocus="catSel.onSelectFocus('terms');">
-					<option value="" > Please select a CTC term first </option>
-				  </select>
-				</div>
-			</jsp:attribute>
-		</ui:row>
-		<hr />
-		<div class="aeTermQuery-buttons">
-			<c:if test="${empty localButtons}">
-			<input id="addTermsBtn" type="button" value="Add Terms" onClick="catSel.finishMultiTermsSelection();" />
-			</c:if>
-			 <jsp:invoke fragment="localButtons"/>
-		</div>
-	</chrome:box>
-	</div>
+
+    <div id="chooseCategory">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="5">
+        <tr bgcolor="#E4E4E4">
+            <td align="left" width="35%"><h2 class="title">Categories</h2></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="35%"><h2 class="title">Terms&nbsp;<span style='font-size:12px;'>(Click to add)</span></h2></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="30%">&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="left" valign="top">
+                <ul class="ae-category">
+                    <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
+                        <li><a onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
+                    </c:forEach>
+                </ul>
+            </td>
+            <td align="left" bgcolor="gray"></td>
+            <td align="left" valign="top">
+                <ul id="ae-terms" class="ae-category"></ul>
+            </td>
+            <td align="left" bgcolor="gray"></td>
+            <td align="left" valign="top"><ul id="ae-added-terms" class="ae-category"></ul></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:right;">
+            </td>
+            <td colspan="1" style="text-align:center;">
+                    <c:if test="${empty localButtons}">
+                        <tags:button color="green" value="Add Terms" icon="add" onclick="catSel.finishMultiTermsSelection()" />
+                    </c:if>
+                     <jsp:invoke fragment="localButtons"/>
+            </td>
+        </tr>
+        </table>
+        
+    </div>
 	</c:if>
-	<c:if test="${isMeddra}">
+          
+    <c:if test="${isMeddra}">
 		<p>Addition of multiple terms is only supported for CTC terminology</p>
 	</c:if>
   	
 	</div>
+<!-- the hidden window for category popup -->
+
+<style>
+    ul.ae-category {
+        cursor:pointer;
+        margin: 5px;
+        padding-left: 12px;
+    }
+
+    a.ae-category {
+        font-size:8pt;
+        cursor:pointer;
+        color:black;
+    }
+
+    a.ae-category:hover {
+        font-size:8pt;
+        cursor:pointer;
+        color:blue;
+    }
+
+    ul.ae-added-terms, a.ae-added-terms {
+        font-size:8pt;
+        cursor:pointer;
+        margin: 0px;
+        padding-left: 5px;
+    }
+
+    a.ae-added-terms:hover {
+        font-size:8pt;
+        cursor:pointer;
+        color: blue;
+        margin: 0px;
+        padding-left: 5px;
+    }
+
+    a.ae-disabled {
+        font-size:8pt;
+        color:#cccccc;
+        cursor:pointer;
+    }
+
+    a.ae-disabled:hover {
+        font-size:8pt;
+        color:#cccccc;
+        cursor:pointer;
+    }
+</style>
