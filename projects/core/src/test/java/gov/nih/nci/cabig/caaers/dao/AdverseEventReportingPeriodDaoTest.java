@@ -77,6 +77,38 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
         CoreTestCase.assertEquals(1, p.getAdverseEvents().size());
     }
     
+    public void testSaveWithoutEndDate() throws Exception {
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setDescription("Save this reportingPeriod");
+    	reportingPeriod.setStartDate(new Timestamp(DateUtils.createDate(2008, Calendar.MAY, 23)
+                .getTime() + 600000));
+    	
+    	reportingPeriod.setTreatmentAssignment(treatmentAssignmentDao.getById(1001));
+    	reportingPeriod.setEpoch(epochDao.getById(-1010));
+    	reportingPeriod.setAssignment(assignmentDao.getById(-14));
+    	
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setSolicited(true);
+    	ae.setRequiresReporting(true);
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3007);
+    	
+    	ae.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(ae, term));
+    	
+    	
+    	reportingPeriod.addAdverseEvent(ae);
+    	getDao().save(reportingPeriod);
+        assertNotNull("No ID for new report", reportingPeriod.getId());
+        int saveId = reportingPeriod.getId();
+        interruptSession();
+        AdverseEventReportingPeriod p = getDao().getById(saveId);
+        p.getAdverseEvents().size();
+        CoreTestCase.assertEquals("Save this reportingPeriod", p.getDescription());
+        CoreTestCase.assertDayOfDate("Wrong start date", 2008, Calendar.MAY, 23, p.getStartDate());
+        assertNull(p.getEndDate());
+        CoreTestCase.assertEquals(1, p.getAdverseEvents().size());
+    }
+    
     public void testFindAdverseEventReportingPeriods() {
     	AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
     	query.filterByParticipant(1006);
