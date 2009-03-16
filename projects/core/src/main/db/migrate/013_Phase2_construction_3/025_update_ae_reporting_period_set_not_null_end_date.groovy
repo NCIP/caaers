@@ -1,7 +1,7 @@
 class updateAETreatmentAssignment extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
 		if (databaseMatches('oracle')) {
-			execute("ALTER TABLE ae_reporting_periods MODIFY end_date NULL");
+			execute("ALTER TABLE ae_reporting_periods MODIFY end_date DROP NOT NULL");
 		}
 
 		if (databaseMatches('postgres')) {
