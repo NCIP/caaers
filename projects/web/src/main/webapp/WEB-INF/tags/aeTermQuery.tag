@@ -197,6 +197,12 @@
 
         showTerms: function(id, ignoreOtherSpecify, el){
 
+            var selectedCategories = $$('a.ae-category-selected');
+            selectedCategories.each(function(el) {
+                el.removeClassName("ae-category-selected");
+            });
+
+            $("category_" + id).addClassName("ae-category-selected");
             $('ae-terms').innerHTML = "";
 
             catId = id; //$(el).getValue();
@@ -261,7 +267,7 @@
             <td align="left" valign="top">
                 <ul class="ae-category">
                     <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
-                        <li><a onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
+                        <li><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
                     </c:forEach>
                 </ul>
             </td>
@@ -305,6 +311,13 @@
         font-size:8pt;
         cursor:pointer;
         color:black;
+    }
+
+    a.ae-category-selected {
+        font-size:8pt;
+        cursor:pointer;
+        color:green;
+        font-weight:bold;
     }
 
     a.ae-category:hover {
