@@ -219,7 +219,7 @@
 		},
 
         showCategoryBox:function(){
-	 			this.showWindow('', '${title}', 850, 530 );
+	 			this.showWindow('', 'Select Adverse Event Terms (AE coding terminology replacement variable)', 850, 530 );
 	 	}
  	});
 	
@@ -257,11 +257,11 @@
 
         <table width="100%" border="0" cellspacing="0" cellpadding="5">
         <tr bgcolor="#E4E4E4">
-            <td align="left" width="35%"><h2 class="title">Categories</h2></td>
+            <td align="left" width="35%"><h2 class="title">AE Categories</h2></td>
             <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
-            <td align="left" width="35%"><h2 class="title">Terms&nbsp;<span style='font-size:12px;'>(Click to add)</span></h2></td>
+            <td align="left" width="35%"><h2 class="title">AE Terms&nbsp;<span style='font-size:12px;'>(Click to add)</span></h2></td>
             <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
-            <td align="left" width="30%">&nbsp;</td>
+            <td align="left" width="30%"><h2 class="title">Selected Terms</h2></td>
         </tr>
         <tr>
             <td align="left" valign="top">
