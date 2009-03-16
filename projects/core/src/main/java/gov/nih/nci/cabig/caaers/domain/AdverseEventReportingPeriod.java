@@ -413,6 +413,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	return false;
     }
 
+    @Column(name = "treatment_assignment_desc")
     public String getTreatmentAssignmentDescription() {
         return treatmentAssignmentDescription;
     }
