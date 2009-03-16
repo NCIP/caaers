@@ -65,7 +65,7 @@ public class ReviewAeReportController extends SimpleFormController{
 	
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		ReviewAeReportCommand command = new ReviewAeReportCommand(assignmentDao);
+		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao);
 		String aeReportId = request.getParameter("aeReport");
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
 		command.setAeReport(aeReport);
