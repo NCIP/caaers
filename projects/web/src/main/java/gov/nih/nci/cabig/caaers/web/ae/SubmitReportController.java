@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -44,7 +45,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
                         getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao,
-                        expeditedReportTree, renderDecisionManager, reportRepository);
+                        expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));

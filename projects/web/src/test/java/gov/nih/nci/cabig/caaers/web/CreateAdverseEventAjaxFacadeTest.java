@@ -31,6 +31,8 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -78,6 +80,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private StudySite studySite;
     
     private AdverseEventReportingPeriodDao reportingPeriodDao;
+    
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
     @Override
     protected void setUp() throws Exception {
@@ -94,6 +98,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assignment = registerMockFor(StudyParticipantAssignment.class);
         studySite = registerMockFor(StudySite.class);
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
+        adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -547,7 +552,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
 
         EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(null, null,
-                assignmentDao, reportingPeriodDao, null, null, null);
+                assignmentDao, reportingPeriodDao, null, null, null, null);
 
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.addAdverseEvent(setId(0, new AdverseEvent()));

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
@@ -28,8 +29,9 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
                     ReportDefinitionDao reportDefinitionDao,
                     StudyParticipantAssignmentDao assignmentDao,
                     AdverseEventReportingPeriodDao reportingPeriodDao,
-                    ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
-        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
+                    ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
+                    AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
     }
 
     @Override

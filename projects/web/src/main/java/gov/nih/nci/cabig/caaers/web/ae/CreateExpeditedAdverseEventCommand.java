@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
@@ -55,9 +56,10 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	public CreateExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, 
 			AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, 
-			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao, StudyParticipantAssignmentDao assignmentDao) {
+			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao, StudyParticipantAssignmentDao assignmentDao,
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		
-		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, assignmentDao);
+		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
 
         this.setAeReport(new ExpeditedAdverseEventReport());
         this.evaluationService = evaluationService;

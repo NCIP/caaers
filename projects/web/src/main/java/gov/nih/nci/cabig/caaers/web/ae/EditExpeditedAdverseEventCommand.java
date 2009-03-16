@@ -5,12 +5,14 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
@@ -36,8 +38,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     // //// LOGIC
 
-    public EditExpeditedAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao){
-    	this.assignmentDao = assignmentDao;
+    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao reportDao){
+    	this.reportDao = reportDao;
     }
     
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
@@ -45,8 +47,9 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             StudyParticipantAssignmentDao assignmentDao,
             AdverseEventReportingPeriodDao reportingPeriodDao,
             ExpeditedReportTree expeditedReportTree, 
-            RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
-    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao);
+            RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
+            AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
     }
 
     @Override
@@ -123,6 +126,21 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		// and just incremented for the 1st one in the list.
     		useDefaultVersion = true;
     	}
+    	
+    	if(this.getWorkflowEnabled() && this.isAssociatedToWorkflow()){
+    		if(amendReportList.size() > 0)
+    			enactWorkflow(amendReportList.get(0).getAeReport());
+    	}
+    }
+    
+    
+    /**
+     * This method will spawn the workflow for newly created reports
+     * @param newlyCreatedReports
+     */
+    public void enactWorkflow(ExpeditedAdverseEventReport aeReport){
+    	adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
+    	
     }
     
     /**

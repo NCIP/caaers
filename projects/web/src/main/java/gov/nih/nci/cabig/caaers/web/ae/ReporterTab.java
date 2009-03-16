@@ -275,7 +275,8 @@ public class ReporterTab extends AeTab {
         	newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
         	command.save();
         	//call workflow
-        	if(command.getWorkflowEnabled())   	enactWorkflow(command.getAeReport());
+        	if(command.getWorkflowEnabled())   	
+        		command.enactWorkflow(command.getAeReport());
         }
         //figureout the mandatory sections
         refreshMandatorySectionsAndProperties(command);
@@ -301,15 +302,6 @@ public class ReporterTab extends AeTab {
         return map;
     }
     
-    /**
-     * This method will spawn the workflow for newly created reports
-     * @param newlyCreatedReports
-     */
-    public void enactWorkflow(ExpeditedAdverseEventReport aeReport){
-    	adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
-    	
-    }
-
     @Required
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;

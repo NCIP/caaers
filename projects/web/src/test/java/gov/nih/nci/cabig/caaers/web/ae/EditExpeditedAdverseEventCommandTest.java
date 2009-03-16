@@ -27,6 +27,8 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
@@ -37,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static org.easymock.EasyMock.expect;
 
 /**
  * @author Sameer Work
@@ -55,6 +59,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     private RenderDecisionManager renderDecisionManager;
     protected StaticNowFactory nowFactory;
     private ReportRepository reportRepository;
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -69,6 +74,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepositoryImpl.class);
+		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
 		nowFactory = new StaticNowFactory();
         nowFactory.setNowTimestamp(NOW);
         
@@ -146,6 +152,95 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	assertFalse(command.isNewlySelectedReportEarlier());
     }
     
+   /* public List<Report> createReportList(){
+    	List<Report> reportList = new ArrayList<Report>();
+    	for(int i = 0; i < 4; i++){
+    		Report report = new Report();
+    		report.setId(i);
+    		ReportDefinition reportDefinition = new ReportDefinition();
+    		reportDefinition.setAmendable(true);
+    		reportDefinition.setExpedited(false);
+    		reportDefinition.setName("repDefn " + i);
+    		report.setReportDefinition(reportDefinition);
+    		ReportVersion reportVersion= new ReportVersion();
+    		reportVersion.setReportStatus(ReportStatus.PENDING);
+    		report.addReportVersion(reportVersion);
+    		reportList.add(report);
+    	}
+    	return reportList;
+    }*/
+    
+    /**
+     * This method tests the amendReports method in the command when the Workflow is enabled in the 
+     * admin page.
+     * @throws Exception
+     */
+    public void testAmendReportsWorkflowEnabled() throws Exception{
+    	addReportsToAeReport();
+    	
+    	command.getAeReport().setWorkflowId(1);
+    	command.setWorkflowEnabled(true);
+    	// Make the reports amendable.
+    	for(Report report: command.getAeReport().getReports())
+    		report.getReportDefinition().setAmendable(true);
+    	
+    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
+    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
+    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
+    	
+    	expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(command.getAeReport())).andReturn(new Long(1)).times(1);
+    
+    	replayMocks();
+    	command.amendReports(command.getAeReport().getReports());
+    	verifyMocks();
+    }
+    
+    /**
+     * This method tests the amendReports method in the command when the Workflow is disabled in the
+     * admin page.
+     * @throws Exception
+     */
+    public void testAmendReportsWorkflowDisabled() throws Exception{
+    	addReportsToAeReport();
+    	
+    	command.getAeReport().setWorkflowId(1);
+    	command.setWorkflowEnabled(false);
+    	// Make the reports amendable.
+    	for(Report report: command.getAeReport().getReports())
+    		report.getReportDefinition().setAmendable(true);
+    	
+    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
+    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
+    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
+    	
+    	replayMocks();
+    	command.amendReports(command.getAeReport().getReports());
+    	verifyMocks();
+    }
+    
+    /**
+     * This method tests the amendReports method in the command, when the reports being amended don't
+     * have any workflow associated to them.
+     * @throws Exception
+     */
+    public void testAmendReportsNotAssociatedWithWorkflow() throws Exception{
+    	addReportsToAeReport();
+    	
+    	command.setWorkflowEnabled(true);
+    	// Make the reports amendable.
+    	for(Report report: command.getAeReport().getReports())
+    		report.getReportDefinition().setAmendable(true);
+    	
+    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
+    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
+    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
+    	
+    	replayMocks();
+    	command.amendReports(command.getAeReport().getReports());
+    	verifyMocks();
+
+    }
+    
     public void addReportsToAeReport(){
     	for(int i = 0; i < 4; i++){
     		Report report = new Report();
@@ -211,7 +306,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
         return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, 
-        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
+        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
     }
     
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
@@ -250,6 +345,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 
         // CheckpointTab
         c.setNextPage(5);
+        c.setWorkflowEnabled(true);
         return c;
     }
 }

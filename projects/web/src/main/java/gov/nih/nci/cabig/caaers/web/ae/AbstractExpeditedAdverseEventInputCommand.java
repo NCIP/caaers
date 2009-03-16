@@ -29,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
@@ -84,7 +85,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected List<ReportDefinition> selectedReportDefinitions;
     private boolean workflowEnabled;
     protected RenderDecisionManager renderDecisionManager;
-    
+    protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     private AnatomicSite metastaticDiseaseSite;
     private PreExistingCondition preExistingCondition;
@@ -106,7 +107,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, 
     		ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, 
     		ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
-    		StudyParticipantAssignmentDao assignmentDao) {
+    		StudyParticipantAssignmentDao assignmentDao, AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
     	this.assignmentDao = assignmentDao;
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
@@ -114,6 +115,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.expeditedReportTree = expeditedReportTree;
         this.renderDecisionManager = renderDecisionManager;
         this.reportRepository = reportRepository;
+        this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
         
         this.outcomeOtherDetails = new ArrayList<String>();
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
@@ -498,6 +500,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	}
     public void deleteAttribution(DomainObject o){
     	reportDao.cascaeDeleteToAttributions(o, getAeReport());
+    }
+    
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository(){
+    	return adverseEventRoutingAndReviewRepository;
+    }
+    
+    public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository){
+    	this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
     }
     
     /**

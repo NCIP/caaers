@@ -53,7 +53,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
            request.getSession().removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command.to-replace");
 
            RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-           CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, evaluationService, reportRepository, studyDao, assignmentDao);
+           CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, evaluationService, reportRepository, studyDao, assignmentDao, adverseEventRoutingAndReviewRepository);
            command.getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
            command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
            return command;

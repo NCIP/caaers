@@ -33,6 +33,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -131,6 +132,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected UserDao userDao;
     
     private Configuration configuration;
+    
+    protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -486,5 +489,13 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 	}
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
+	}
+	
+	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository(){
+		return adverseEventRoutingAndReviewRepository;
+	}
+	
+	public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository){
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
 }
