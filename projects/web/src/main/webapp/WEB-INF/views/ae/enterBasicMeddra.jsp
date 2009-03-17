@@ -28,6 +28,7 @@
     
     <tags:javascriptLink name="routing_and_review" />
 	<tags:stylesheetLink name="slider" />
+	<tags:stylesheetLink name="aeTermQuery_box" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
@@ -46,44 +47,17 @@
      	var routingHelper = new RoutingAndReviewHelper(createAE);
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
-        var LowLevelTerm = Class.create()
-        Object.extend(LowLevelTerm.prototype, {
-            initialize: function(index, lowLevelTermCode) {
-                this.index = index
-                var cmProperty = "aeReport.adverseEvents[" + index + "]";
-                this.lowLevelTermProperty = cmProperty + ".adverseEventMeddraLowLevelTerm.lowLevelTerm"
-                this.otherProperty = cmProperty + ".other"
-
-                if (lowLevelTermCode) $(this.lowLevelTermProperty + "-input").value = lowLevelTermCode
-
-      
-                AE.createStandardAutocompleter(
-                    this.lowLevelTermProperty, this.termPopulator.bind(this),
-                    function(lowLevelTerm) { return lowLevelTerm.fullName })
-
-                //this.initializePriorTherapyOrOther()
-            },
-
-            termPopulator: function(autocompleter, text) {
-			    createAE.matchLowLevelTermsByCode(${command.assignment.studySite.study.aeTerminology.meddraVersion.id},text, function(values) {
-                    autocompleter.setChoices(values);
-                })
-            }
-
-        })
-
+		
+		var aesEditor;
+		 
         Element.observe(window, "load", function() {
-            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="aeLowLevelTerm">
-            new LowLevelTerm(${status.index}, '${aeLowLevelTerm.adverseEventMeddraLowLevelTerm.lowLevelTerm.fullName}')
-            </c:forEach>
             
-             new ListEditor("ae-section", createAE, "AdverseEventMeddra", {
+            aesEditor = new ListEditor("ae-section", createAE, "AdverseEventMeddra", {
                 addParameters: [aeReportId],
                 reorderable: true,
                 deletable: true,
                 minimizeable: false,
                 addCallback: function(nextIndex) {
-                    new LowLevelTerm(nextIndex);
                 },
                 reorderCallback : function(original, target){
                     $$('span.primary-indicator').each(function(el, indx){
@@ -99,19 +73,33 @@
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
             }
         }) 
+      //==================================================================================================
+       function addAdverseEvents(selectedTerms){
+            var termId = selectedTerms.keys()[0];
+             
+           // var newIndex = $$(".ae-section").length;
+			var externalFunction = createAE['addAdverseEventWithTermsMeddra'];
+            var externalArgs = [termId];
+			aesEditor.add(externalFunction,externalArgs);
+       }
+     //==================================================================================================      
     </script>
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
-    	<jsp:attribute name="additionalTitle">
-        	<c:if test="${command.additionAllowed}">
-   				 <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/> 
-  			</c:if>
-  		</jsp:attribute>
         <jsp:attribute name="instructions">
            <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">
+        <tags:aeTermQuery isMeddra="true"
+  						hideAddMultiple="true"
+                       	noBackground="true"
+                       	callbackFunctionName="addAdverseEvents"
+                       	ignoreOtherSpecify="false"
+                       	isAjaxable="true"
+                       	version="${command.assignment.studySite.study.aeTerminology.meddraVersion.id}"
+                       	title="Select New Adverse Event Terms">
+    	</tags:aeTermQuery>
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
                 <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}"/>
             </c:forEach>

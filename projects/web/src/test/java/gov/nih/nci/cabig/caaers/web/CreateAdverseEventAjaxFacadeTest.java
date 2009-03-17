@@ -512,12 +512,30 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         expect(lowLevelTermDao.getById(aeTermId)).andReturn(term);
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
-        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventFormSection")).andReturn("The HTML");
+        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventMeddraFormSection")).andReturn("The HTML");
 
         replayMocks();
-        assertEquals("The HTML", facade.addNewAdverseEvent("adverseEventFormSection", 1, 12, false, aeTermId));
+        assertEquals("The HTML", facade.addNewAdverseEvent("adverseEventMeddraFormSection", 1, 12, false, aeTermId));
         verifyMocks();
         
+    }
+    /**
+     * This function tests the {@link CreateAdverseEventAjaxFacade#addAdverseEventWithTermsMeddra(int, Integer, Integer)}
+     */
+    public void testAddAdverseEventWithTermsMeddra() throws Exception{
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	Integer aeTermId = 5;
+    	 LowLevelTerm term = registerMockFor(LowLevelTerm.class);
+        // mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(lowLevelTermDao.getById(aeTermId)).andReturn(term);
+        reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventMeddraFormSection")).andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addAdverseEventWithTermsMeddra( 1, 12, aeTermId));
+        verifyMocks();
     }
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,

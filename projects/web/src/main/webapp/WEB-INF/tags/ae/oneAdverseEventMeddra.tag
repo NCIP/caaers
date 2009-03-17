@@ -18,13 +18,7 @@
 
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
 <chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${!empties[v]}">
-    <div class="row">
-      <div class="label">MedDRA Version</div>
-      <div class="value">${command.assignment.studySite.study.aeTerminology.meddraVersion.name}</div>
-    </div>
-    <div id="ctc-details-${index}" class="ctc-details">
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-    </div>
+
     <div id="main-fields-${index}" class="main-fields">
 		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="0" end="${len - 2}">

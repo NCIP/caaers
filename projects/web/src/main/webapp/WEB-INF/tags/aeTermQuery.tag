@@ -6,6 +6,7 @@
 
 <%@attribute name="isAjaxable" type="java.lang.Boolean" description="Should be set to true, if this tag is included in the response of an AJAX call, this ensures that the javascript objects defined here are properly enabled" %>
 <%@attribute name="isMeddra" required="true" type="java.lang.Boolean" description="Will tell whether the autocompleter should look for MedDRA or CTC" %>
+<%@attribute name="hideAddMultiple" type="java.lang.Boolean" description="Will tell whether the add multiple should be hidden" %>
 <%@attribute name="version" required="true" type="java.lang.Integer" description="Will tell the version of ctc or meddra to use" %>
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="callbackFunctionName" required="true" description="The call back function in the parent page, that will be invoked with the selected terms"%>
@@ -247,7 +248,7 @@
   			<tags:autocompleter displayName="abcd" propertyName="termCode" size="70" initialDisplayValue="Begin typing here"/>
 			<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
   		</div>
-  		<c:if test="${not isMeddra}">
+  		<c:if test="${not isMeddra and not hideAddMultiple}">
   			<div style="margin:0 20px; display:inline;">or</div>
   			<tags:button size="small" type="button" color="blue" icon="window" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   		</c:if>

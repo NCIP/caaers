@@ -237,10 +237,15 @@ Object.extend(ListEditor.prototype, {
         
     },
 
-    add: function() {
-        // fn resolution:  If there's a fn named add${basename}, use that
+    add: function(externalFun, externalArgs) {
+    	 // fn resolution:  If there's a fn named add${basename}, use that
         var specificFnName = "add" + this.basenameUC;
-        var addFn = this.dwrNS[specificFnName]
+        var addFn = externalFun;
+    	//otherwise....
+    	if(!addFn){
+        	addFn = this.dwrNS[specificFnName]
+    	}
+    	
         // otherwise ...
         if (!addFn) {
             var parameterizedFnName = "addFormSection";
@@ -259,7 +264,11 @@ Object.extend(ListEditor.prototype, {
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
-        var args = [nextIndex].concat(this.options.addParameters).concat([
+        var args = [nextIndex].concat(this.options.addParameters);
+        if(externalArgs){
+        	args = args.concat(externalArgs);
+        }
+        args = args.concat([
             function(html) {
                 var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
                 new Insertion.After(after, html)

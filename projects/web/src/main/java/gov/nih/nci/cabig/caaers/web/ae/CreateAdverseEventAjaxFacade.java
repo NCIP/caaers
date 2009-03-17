@@ -620,6 +620,14 @@ public class CreateAdverseEventAjaxFacade {
     	return addNewAdverseEvent("adverseEventMeddraFormSection", index, aeReportId,false, null);
     }
     
+    /**
+     * This method will generate the HTML that is to be rendered for a MedDRA form section.
+     * Used by the Add AE functionality, in enterBasicsMeddra.jsp
+     */
+    public String addAdverseEventWithTermsMeddra( int index, Integer aeReportId , Integer termId){
+    	return addNewAdverseEvent("adverseEventMeddraFormSection", index, aeReportId, false, termId);
+    }
+    
     public String addNewAdverseEvent(String section, int index, Integer aeReportId, boolean isCTC, Integer aeTermId){
     	try {
 			Object cmd = extractCommand();

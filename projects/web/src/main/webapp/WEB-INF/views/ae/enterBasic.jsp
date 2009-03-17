@@ -386,9 +386,12 @@ div.row div.value, div.row div.extra {
 
         function addAdverseEvents(selectedTerms){
             var termId = selectedTerms.keys()[0];
-            alert("termId :" + termId);
              
-            var newIndex = $$(".ae-section").length;
+           // var newIndex = $$(".ae-section").length;
+			var externalFunction = createAE['addAdverseEventWithTerms'];
+            var externalArgs = [termId];
+			aesEditor.add(externalFunction,externalArgs);
+            /*
             createAE.addAdverseEventWithTerms(newIndex, aeReportId, termId, function(html){
             	 var after =  $$(".ae-section").last();
             	 new Insertion.After(after, html)
@@ -396,6 +399,7 @@ div.row div.value, div.row div.extra {
                  AE.slideAndShow(newId);
                  new AESection(newId);
             });
+            */
         }
 
 </script>
@@ -403,22 +407,18 @@ div.row div.value, div.row div.extra {
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
-  <jsp:attribute name="additionalTitle">
-        <c:if test="${command.additionAllowed}">
-   			<tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>
-  		</c:if>
-  </jsp:attribute>
   <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_enterBasics" />
   </jsp:attribute>
   <jsp:attribute name="repeatingFields">
-  	<tags:aeTermQuery	isMeddra="${not empty command.assignment.studySite.study.aeTerminology.meddraVersion}"
+  	<tags:aeTermQuery	isMeddra="false"
+  						hideAddMultiple="true"
                        	noBackground="true"
                        	callbackFunctionName="addAdverseEvents"
                        	ignoreOtherSpecify="false"
                        	isAjaxable="true"
                        	ctcCategories="${ctcCategories}"
-                       	version="${not empty command.assignment.studySite.study.aeTerminology.meddraVersion ? command.assignment.studySite.study.aeTerminology.meddraVersion.id : command.assignment.studySite.study.aeTerminology.ctcVersion.id}"
+                       	version="${command.assignment.studySite.study.aeTerminology.ctcVersion.id}"
                        	title="Select New Adverse Event Terms">
     </tags:aeTermQuery>    
     <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
