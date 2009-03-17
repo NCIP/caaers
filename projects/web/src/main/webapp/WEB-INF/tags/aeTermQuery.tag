@@ -202,7 +202,13 @@
                 el.removeClassName("ae-category-selected");
             });
 
+            var selectedCategories = $$('li.li-category-selected');
+            selectedCategories.each(function(el) {
+                el.removeClassName("li-category-selected");
+            });
+
             $("category_" + id).addClassName("ae-category-selected");
+            $("li_" + id).addClassName("li-category-selected");
             $('ae-terms').innerHTML = "";
 
             catId = id; //$(el).getValue();
@@ -267,7 +273,7 @@
             <td align="left" valign="top">
                 <ul class="ae-category">
                     <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
-                        <li><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
+                        <li id="li_${cat.id}"><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
                     </c:forEach>
                 </ul>
             </td>
@@ -285,7 +291,7 @@
                     <c:if test="${empty localButtons}">
                         <tags:button color="green" value="Add Terms" icon="add" onclick="catSel.finishMultiTermsSelection()" />
                     </c:if>
-                     <jsp:invoke fragment="localButtons"/>
+                    <jsp:invoke fragment="localButtons"/>
             </td>
         </tr>
         </table>
@@ -316,8 +322,18 @@
     a.ae-category-selected {
         font-size:8pt;
         cursor:pointer;
-        color:green;
+        color:blue;
         font-weight:bold;
+        padding-left:5px;
+        padding-right:5px;
+        width: 300pt;
+    }
+
+    li.li-category-selected {
+        background-color:#bbbbbb;
+    }
+
+    li.li-category {
     }
 
     a.ae-category:hover {
