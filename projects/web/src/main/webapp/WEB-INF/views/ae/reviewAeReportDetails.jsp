@@ -11,11 +11,36 @@
     <script>
 	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport);
 	    
-	    //Event.observe(window, "load", function(){
-	    //	if(${command.workflowEnabled}){
-         //   	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
- 		//	}
-	    //});
+	    function addComment(){
+			routingHelper.addComment();
+		}
+	
+		function editComment(id){
+			routingHelper.enableEditMode(id);
+		}
+	
+		function cancelEdit(){
+			routingHelper.disableEditMode();
+		}
+		
+		function saveEditedComment(){
+			routingHelper.editComment();
+		}
+		
+		function collapseAllComments(){
+			routingHelper.collapseAllComments();
+		}
+
+		function expandAllComments(){
+			routingHelper.expandAllComments();
+		}
+	    
+	    
+	    Event.observe(window, "load", function(){
+	    	if(${command.workflowEnabled}){
+            	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+ 			}
+	    });
 	</script>
 	<style>
 		#scrollbar_content {
@@ -41,7 +66,7 @@
 	 	
 	 </applet>
 	    		
-	<%--  <chrome:box title="Enter comments">
+	<chrome:box title="Enter comments">
 		<chrome:division>
 			<form:form commandName="command">
 				<table width="100%">
@@ -63,13 +88,6 @@
 						<td valign="top" align="right">
 							<textarea id="enter-comment-text"></textarea>
 							<input type="hidden" id="edit_comment_id" name="edit_comment_id" value="" />
-							<b>Next Action</b>&nbsp;&nbsp;
-							<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow();">
-								<option value="">Please select</option>
-							</select>
-							<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			
 							<a href="javascript:addComment();" id="add-btn">
 								<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" />
 							</a>
@@ -78,7 +96,14 @@
 							</a>
 							<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none">
 								<img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" />
-							</a>
+							</a><br><br>
+							<b>Next Action</b>&nbsp;&nbsp;
+							<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow();">
+								<option value="">Please select</option>
+							</select>
+							<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+			
+							
 						</td>
 					</tr>
 					<tr>
@@ -91,6 +116,6 @@
 				<div id="entire-slider"/>
 			</form:form>
 		</chrome:division>
-	</chrome:box> --%> 		
+	</chrome:box> 		
 </body>
 </html>

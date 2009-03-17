@@ -60,15 +60,10 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
 		String redirectUrl = "edit?aeReport=" + aeReportId;
-		String view = (String) request.getParameter("viewOnly");
-		if(view != null && view.equals("true")){
-			redirectUrl = "reviewAeReport?aeReport=" + aeReportId;
-		}else{
-			if(!csmUserRepository.isSuperUser(userId)){
-				User user = csmUserRepository.getUserByName(userId);
-				if(user.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
-					redirectUrl = "reviewAeReport?aeReport=" + aeReportId;
-				}
+		if(!csmUserRepository.isSuperUser(userId)){
+			User user = csmUserRepository.getUserByName(userId);
+			if(user.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
+				redirectUrl = "reviewAeReport?aeReport=" + aeReportId;
 			}
 		}
 		ModelAndView mv = new ModelAndView(new RedirectView(redirectUrl));

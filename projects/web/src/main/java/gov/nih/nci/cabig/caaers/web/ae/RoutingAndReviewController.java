@@ -135,49 +135,14 @@ public class RoutingAndReviewController extends SimpleFormController{
     		errors.reject("RAR_002", "Missing study site information");
     		return;
     	}
-    	
-    	
     }
     
-
-
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(HttpServletRequest request, Object cmd, Errors errors)
                     throws Exception {
     	return null;
-//    	RoutingAndReviewCommand command = (RoutingAndReviewCommand) cmd;
-//        Map<String, Object> refdata = new HashMap<String, Object>();
-//        Map<Integer, List<String>> reportingPeriodMap = new HashMap<Integer, List<String>>();
-//        Map<Integer, List<String>> reportMap = new HashMap<Integer, List<String>>();
-//        if(command.getParticipant() != null && command.getStudy() != null)
-//        	refdata.put("singleAssignment", Boolean.TRUE);
-//        else if(command.getParticipant() != null)
-//        	refdata.put("singleParticipant", Boolean.TRUE);
-//        else if(command.getStudy() != null)
-//        	refdata.put("singleStudy", Boolean.TRUE);
-//        if(!command.getAssignmentList().isEmpty()){
-//        	for(StudyParticipantAssignment assignment: command.getAssignmentList()){
-//        		if(!assignment.getReportingPeriods().isEmpty()){
-//        			for(AdverseEventReportingPeriod reportingPeriod: assignment.getReportingPeriods()){
-//        				if(reportingPeriod.getWorkflowId() != null){
-//        					List<String> states = workflowService.nextTransitions( reportingPeriod.getWorkflowId());
-//        					if(!reportingPeriodMap.containsKey(reportingPeriod.getId()))
-//        						reportingPeriodMap.put(reportingPeriod.getId(), states);
-//        				}
-//        			}
-//        		}
-//        	}
-//        }
-//        refdata.put("reviewStatusOptions", initializeReviewStatusOptions());
-//        refdata.put("pageTitle", "Routing & Review || Enter Search Parameters");
-//        refdata.put("bodyTitle", "Routing & Review: Enter Search Parameters");
-//        refdata.put("instructions","Please enter the search parameters (Update this instruction).");
-//        return refdata;
     }
-    
-    
-   
     
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
