@@ -391,15 +391,7 @@ div.row div.value, div.row div.extra {
 			var externalFunction = createAE['addAdverseEventWithTerms'];
             var externalArgs = [termId];
 			aesEditor.add(externalFunction,externalArgs);
-            /*
-            createAE.addAdverseEventWithTerms(newIndex, aeReportId, termId, function(html){
-            	 var after =  $$(".ae-section").last();
-            	 new Insertion.After(after, html)
-                 var newId =  "ae-section-" + newIndex;
-                 AE.slideAndShow(newId);
-                 new AESection(newId);
-            });
-            */
+      
         }
 
 </script>
