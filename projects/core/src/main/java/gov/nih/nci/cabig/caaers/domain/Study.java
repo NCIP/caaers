@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -1020,15 +1021,23 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         	
         return true;
     }
-
-    public boolean hasCTCTerm(CtcTerm ast) {
-    	if(ast == null) return false;
-    	
-        List<ExpectedAECtcTerm> expectedAECtcTerms = this.getExpectedAECtcTerms();
-        for (ExpectedAECtcTerm expectedAECtcTerm : expectedAECtcTerms) {
-            if (expectedAECtcTerm.getTerm().getId().intValue() == ast.getId().intValue()) return true;
-        }
-        return false;
+    
+    /**
+     * This method checks against the ASAEL, and tells whether the AE term is 
+     * expected.
+     * @param aeTerm
+     * @return true , if expected term, false otherwise.
+     */
+    public boolean isExpectedAdverseEventTerm(DomainObject aeTerm) {
+    	//CTC terminology is only supported currently
+    	if(aeTerm != null && aeTerm instanceof CtcTerm){
+    		List<ExpectedAECtcTerm> expectedAECtcTerms = this.getExpectedAECtcTerms();
+            for (ExpectedAECtcTerm expectedAECtcTerm : expectedAECtcTerms) {
+            	if(expectedAECtcTerm.getTerm().getId().equals(aeTerm.getId())) return true;
+            }
+    	}
+    	//not expected.
+    	return false; 
     }
 
     public AbstractExpectedAE checkExpectedAEUniqueness() {

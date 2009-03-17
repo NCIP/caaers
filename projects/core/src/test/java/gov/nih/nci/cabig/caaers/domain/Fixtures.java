@@ -502,4 +502,19 @@ public class Fixtures {
 	   e.setArms(new ArrayList<Arm>());
 	   return e;
    }
+   
+   public static ExpectedAECtcTerm createExpectedAECtcTerm(int id, final String ctepTerm, final String ctepCode){
+	   CtcTerm ctcTerm = createCtcTerm(ctepTerm, ctepCode);
+	   ctcTerm.setId(id);
+	   ExpectedAECtcTerm eTerm = new ExpectedAECtcTerm();
+	   eTerm.setCtcTerm(ctcTerm);
+	   return eTerm;
+   }
+   
+   public static Outcome createOutcome(int id, OutcomeType type){
+	 Outcome o = new Outcome();
+	 o.setId(id);
+	 o.setOutcomeType(type);
+	 return o;
+   }
 }
