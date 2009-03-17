@@ -115,7 +115,7 @@ public class ReviewEvaluationPeriodController extends SimpleFormController{
                 AdverseEvent ae = reportingPeriod.getAdverseEvents().get(i);
                 if (ae == null) continue;
 
-                if (ae.getExpected() == null) if (study.hasCTCTerm(ae.getAdverseEventCtcTerm().getCtcTerm())) ae.setExpected(true);
+                if (ae.getExpected() == null) if (study.isExpectedAdverseEventTerm(ae.getAdverseEventCtcTerm().getCtcTerm())) ae.setExpected(true);
                 mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term")); //Term
 
                 if (!ae.getSolicited()) {

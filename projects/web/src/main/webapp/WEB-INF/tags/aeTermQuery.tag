@@ -247,8 +247,8 @@
   			<tags:autocompleter displayName="abcd" propertyName="termCode" size="70" initialDisplayValue="Begin typing here"/>
 			<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
   		</div>
-		<div style="margin:0 20px; display:inline;">or</div>
   		<c:if test="${not isMeddra}">
+  			<div style="margin:0 20px; display:inline;">or</div>
   			<tags:button size="small" type="button" color="blue" icon="window" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   		</c:if>
   	</chrome:box>

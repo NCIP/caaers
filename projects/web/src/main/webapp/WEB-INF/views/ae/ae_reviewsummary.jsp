@@ -376,6 +376,7 @@ background-color:#e5e8ff;
         </c:if>
          <c:if test="${displayReportableAeTable}">
          <p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
+         </c:if>
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="center" style="text-align:center;"><b>Select</b></th>
@@ -400,7 +401,7 @@ background-color:#e5e8ff;
          <!--  end reportable aes --> 
         
         </table>
-       </c:if>
+       
        </chrome:box>
        
       </div>

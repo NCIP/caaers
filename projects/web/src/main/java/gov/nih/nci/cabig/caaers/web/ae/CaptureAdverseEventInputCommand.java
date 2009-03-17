@@ -5,10 +5,12 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -27,6 +29,7 @@ import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +62,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	private IndexFixedList<AdverseEvent> adverseEvents;
 	
+	private List<Map<Integer, Boolean>> outcomes;
+    private List<String> outcomeOtherDetails;
+	
 	// Added for Post processing in Confirmation page
 	private List<ReportDefinition> allReportDefinitions;
 	private Map<ReportDefinition, List<AdverseEvent>> requiredReportDefinitionsMap;
@@ -83,18 +89,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	
 	public CaptureAdverseEventInputCommand(){
-	}
-	
-	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
-				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
-		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-		this.assignmentDao = assignmentDao;
-		this.evaluationService = evaluationService;
-		this.reportDefinitionDao = reportDefinitionDao;
-		this.studyDao = studyDao;
-		this.aeReportDao = aeReportDao;
-		
-		
+
 		this.selectedAesMap = new HashMap<Integer, Boolean>();
         this.allReportDefinitions = new ArrayList<ReportDefinition>();
         this.requiredReportDefinitionsMap = new HashMap<ReportDefinition, List<AdverseEvent>>();
@@ -102,8 +97,21 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
-        
-        
+        this.outcomes = new ArrayList<Map<Integer,Boolean>>();
+        this.outcomeOtherDetails = new ArrayList<String>();
+	}
+	
+	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
+				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
+		
+		this();
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+		this.assignmentDao = assignmentDao;
+		this.evaluationService = evaluationService;
+		this.reportDefinitionDao = reportDefinitionDao;
+		this.studyDao = studyDao;
+		this.aeReportDao = aeReportDao;
+		
 	}
 	
 	/**
@@ -239,10 +247,24 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			if(this.assignment != null){
 				if(assignment.getParticipant() != null)	this.assignment.getParticipant().getIdentifiers();
 			}
-				
+			
+			//initialize the expectedness on adverse events.
+			initializeExpectednessOnAdverseEvents();
 		}
     }
     
+    /**
+     * There is a requirement to pre set the exptectedness based on Adverse Event Expected List , captured at the study.
+     * This method performs, that. 
+     */
+    public void initializeExpectednessOnAdverseEvents(){
+    	if(this.adverseEvents == null) return;
+    	for(AdverseEvent ae : adverseEvents){
+    		if(ae.getAdverseEventTerm() == null) continue;
+    		if(adverseEventReportingPeriod.getStudy().isExpectedAdverseEventTerm(ae.getAdverseEventTerm().getTerm()))
+    			ae.setExpected(true);
+    	}
+    }
     
     /**
      * This method will find all avaliable report definitions for all the StudyOrganizations. 
@@ -373,31 +395,38 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
     
 	
-	/**
-	 * Find primary adverse event.
-	 */
-	//public void findPrimaryAdverseEvent(){
-	//	if(adverseEventReportingPeriod.getAeReports().size() == 0)
-	//		if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
-	//}
-	
 	
 
 	/**
-	 * This method will set the seriousness (outcome) on every adverse event, by reading the non-hospitalization and non-death outcome indicators,
-	 * preference is given to the first satisfied one. (Note:- In Expedited flow, the user may select multiple outcome(s). 
+	 * This method will initialize the outcomes and outcomeOtherDetails, in the command. 
 	 */
-	public void initializeOutcome(){
-		if(this.adverseEvents == null) return;
-		
-		for(AdverseEvent ae : adverseEvents.getInternalList()){
-			ae.setSerious(null);
-			for(Outcome o: ae.getOutcomes()){
-				if(o.getOutcomeType().equals(OutcomeType.HOSPITALIZATION) || o.getOutcomeType().equals(OutcomeType.DEATH)) continue;
-				ae.setSerious(o.getOutcomeType());
-				break;
-			}
-		}
+	public void initializeOutcomes(){
+		outcomeOtherDetails.clear();
+    	outcomes.clear();
+    	int i = 0;
+    	//This method will populate the outcome map and the outcomeSerious details map.
+    	for(AdverseEvent ae : getAdverseEvents()){
+    	
+    		//update the command bounded variables with default values
+    		outcomeOtherDetails.add("");
+    		LinkedHashMap<Integer, Boolean> oneOutcomeMap = new LinkedHashMap<Integer, Boolean>();
+    		outcomes.add(oneOutcomeMap);
+    	
+    		//in this pass we will initialize all the outcomes to default 'FALSE' and other details to empty string.
+    		for(OutcomeType outcomeType : OutcomeType.values()){
+    			oneOutcomeMap.put(outcomeType.getCode(), Boolean.FALSE);
+    		}
+        
+    		//in this pass we will update the outcome details based on the OUTCOME db values
+    		for(Outcome outcome : ae.getOutcomes()){
+    			oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
+    			if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
+    				outcomeOtherDetails.set(i, outcome.getOther());
+    			}
+    		}
+        
+    		i++;
+    	}
 	}
 	
 	/**
@@ -408,52 +437,59 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 *   Remove all the other outcomes present in the list (means user deselected a previously selected one)
 	 */
 	public void synchronizeOutcome(){
-		for(AdverseEvent ae : adverseEvents.getInternalList()){
-			//if grade is 5 make sure we have OutcomeType.DEATH
+		int size = (adverseEvents == null) ? 0 : adverseEvents.size();
+		
+		for(int i = 0; i < size; i++){
+			AdverseEvent ae = adverseEvents.get(i);
+			if(ae == null) continue;
+			
+			//update the other outcomes based on the user selection
+			Map<Integer, Boolean> outcomeMap = getOutcomes().get(i);
+            for (Map.Entry<Integer, Boolean> entry : outcomeMap.entrySet()) {
+                if (entry.getValue()) {
+                	OutcomeType outcomeType = OutcomeType.getByCode(entry.getKey());
+                	if(!isOutcomePresent(OutcomeType.getByCode(entry.getKey()), ae.getOutcomes())){
+                		Outcome newOutcome = new Outcome();
+    					newOutcome.setOutcomeType(outcomeType);
+    					if(outcomeType == OutcomeType.OTHER_SERIOUS) newOutcome.setOther(getOutcomeOtherDetails().get(i));
+    					ae.addOutcome(newOutcome);
+                	}
+                } else {
+                	OutcomeType outcomeType = OutcomeType.getByCode(entry.getKey());
+                	removeOutcomeIfPresent(outcomeType, ae.getOutcomes());
+                }
+            }
+            
+            //special cases, add DEATH and HOSPITALIZATION
+            //if grade is 5 make sure we have OutcomeType.DEATH
 			if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)){
 				if(!isOutcomePresent(OutcomeType.DEATH, ae.getOutcomes())){
 					Outcome newOutcome = new Outcome();
 					newOutcome.setOutcomeType(OutcomeType.DEATH);
 					ae.addOutcome(newOutcome);
+				}else{
+					removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
 				}
-			}else{
-				removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
 			}
-			
 			//if hospitalized, make sure we have OutcomeType.HOSPITALIZATION 
 			if(ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)){
 				if(!isOutcomePresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes())){
 					Outcome newOutcome = new  Outcome();
 					newOutcome.setOutcomeType(OutcomeType.HOSPITALIZATION);
 					ae.addOutcome(newOutcome);
-				}
-			}else {
-				removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
-			}
-			
-			//update the selected seriousness outcome 
-			if(ae.getSerious() != null){
-				if(!isOutcomePresent(ae.getSerious(), ae.getOutcomes())){
-					Outcome newOutcome = new Outcome();
-					newOutcome.setOutcomeType(ae.getSerious());
-					ae.addOutcome(newOutcome);
+				}else{
+					removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
 				}
 			}
-			
-			//remove the rest of the outcomes
-			for(OutcomeType outcomeType : OutcomeType.values()){
-				if(outcomeType.equals(OutcomeType.HOSPITALIZATION) || outcomeType.equals(OutcomeType.DEATH)) continue;
-				if(ae.getSerious() != null && outcomeType.equals(ae.getSerious()) ) continue;
-				removeOutcomeIfPresent(outcomeType, ae.getOutcomes());
-			}
-			
 		}
+		
 	}
+	
 	
 	/**
 	 * Returns true, if an Outcome of a specific type is present in the list of outcomes
 	 */
-	private boolean isOutcomePresent(OutcomeType type, List<Outcome> outcomes){
+	public boolean isOutcomePresent(OutcomeType type, List<Outcome> outcomes){
 		if(outcomes == null || outcomes.isEmpty()) return false;
 		for(Outcome o : outcomes){
 			if(o.getOutcomeType() == type) return true;
@@ -709,6 +745,19 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
     public void setReportingMethod(String reportingMethod) {
 		this.reportingMethod = reportingMethod;
+	}
+    
+    public List<Map<Integer, Boolean>> getOutcomes() {
+		return outcomes;
+	}
+    public void setOutcomes(List<Map<Integer, Boolean>> outcomes) {
+		this.outcomes = outcomes;
+	}
+    public List<String> getOutcomeOtherDetails() {
+		return outcomeOtherDetails;
+	}
+    public void setOutcomeOtherDetails(List<String> outcomeOtherDetails) {
+		this.outcomeOtherDetails = outcomeOtherDetails;
 	}
     
 }

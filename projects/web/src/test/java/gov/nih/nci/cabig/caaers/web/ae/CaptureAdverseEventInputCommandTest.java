@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -9,8 +9,13 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
@@ -19,10 +24,10 @@ import java.util.List;
 
 /**
  * 
- * @author biju
+ * @author Biju Joseph
  *
  */
-public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestCase {
+public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 	
 	CaptureAdverseEventInputCommand command;
 	
@@ -61,6 +66,14 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		aes = new ArrayList<AdverseEvent>();
 		for(int i = 0; i < 3; i++){
 			AdverseEvent ae = Fixtures.createAdverseEvent(i+1, Grade.NORMAL);
+			//add couple of outcomes
+			Outcome o1 = Fixtures.createOutcome(i*3 +10,OutcomeType.LIFE_THREATENING);
+			Outcome o2 = Fixtures.createOutcome(i*3 +11,OutcomeType.DISABILITY);
+			Outcome o3 = Fixtures.createOutcome(i*3 +12,OutcomeType.OTHER_SERIOUS);
+			o3.setOther("abcd");
+			ae.addOutcome(o1);
+			ae.addOutcome(o2);
+			ae.addOutcome(o3);
 			aes.add(ae);
 		}
 		reportingPeriod.setId(5);
@@ -108,6 +121,136 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		assertEquals(1, aeList.size());
 		assertEquals(new Integer(2), aeList.get(0).getId());
 		
+	}
+	
+	public void testInitializeExpectednessOnAdverseEvents(){
+		//set some expected aes in study
+		ExpectedAECtcTerm expectedAECtcTerm = Fixtures.createExpectedAECtcTerm(2, "abcd", "efg");
+	
+		command.getAdverseEventReportingPeriod().getStudy().addExpectedAECtcTerm(expectedAECtcTerm);
+		for(AdverseEvent ae: command.getAdverseEvents()){
+			assertNull(ae.getExpected());
+		}
+		
+		//update the ctcterm Id of the second AE
+		command.getAdverseEvents().get(1).getAdverseEventCtcTerm().getTerm().setId(2);
+		
+		command.initializeExpectednessOnAdverseEvents();
+		
+		assertNull(command.getAdverseEvents().get(0).getExpected());
+		assertTrue(command.getAdverseEvents().get(1).getExpected());
+		assertNull(command.getAdverseEvents().get(2).getExpected());
+	}
+	
+	
+	public void testInitializeExpectednessOnMedDRAAdverseEvents(){
+		//set some expected aes in study
+		ExpectedAECtcTerm expectedAECtcTerm = Fixtures.createExpectedAECtcTerm(2, "abcd", "efg");
+	
+		command.getAdverseEventReportingPeriod().getStudy().addExpectedAECtcTerm(expectedAECtcTerm);
+		for(AdverseEvent ae: command.getAdverseEvents()){
+			ae.setAdverseEventCtcTerm(null);
+			ae.getAdverseEventMeddraLowLevelTerm().setTerm(new LowLevelTerm());
+		}
+		
+		//update the ctcterm Id of the second AE
+		command.getAdverseEvents().get(1).getAdverseEventTerm().getTerm().setId(2);
+		
+		command.initializeExpectednessOnAdverseEvents();
+		
+		assertNull(command.getAdverseEvents().get(0).getExpected());
+		assertNull(command.getAdverseEvents().get(1).getExpected());
+		assertNull(command.getAdverseEvents().get(2).getExpected());
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#initializeOutcomes()}
+	 */
+	public void testInitializeOutcomes(){
+		command.initializeOutcomes();
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.DISABILITY.getCode()));
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.LIFE_THREATENING.getCode()));
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.OTHER_SERIOUS.getCode()));
+		assertFalse(command.getOutcomes().get(0).get(OutcomeType.DEATH.getCode()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
+		
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.DISABILITY.getCode()));
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.LIFE_THREATENING.getCode()));
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.OTHER_SERIOUS.getCode()));
+		assertFalse(command.getOutcomes().get(2).get(OutcomeType.DEATH.getCode()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(2));
+	}
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#synchronizeOutcome()}
+	 */
+	public void testSynchronizeOutcome(){
+		command.initializeOutcomes();
+		//make uncheck the Disability
+		command.getOutcomes().get(0).put(OutcomeType.DISABILITY.getCode(), false);
+		command.getAdverseEvents().get(0).setGrade(Grade.DEATH);
+		command.synchronizeOutcome();
+		
+		//make sure that ae has death outcome
+		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
+		//make sure, ae got rid of disablity
+		assertFalse(command.isOutcomePresent(OutcomeType.DISABILITY, command.getAdverseEvents().get(0).getOutcomes()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
+		
+		
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#synchronizeOutcome()}
+	 */
+	public void testSynchronizeOutcomeMakeSureDEATHOutcomeIsRemoved(){
+		command.initializeOutcomes();
+		//make uncheck the Disability
+		command.getOutcomes().get(0).put(OutcomeType.DISABILITY.getCode(), false);
+		command.getAdverseEvents().get(0).setGrade(Grade.DEATH);
+		command.synchronizeOutcome();
+		
+		//make sure that ae has death outcome
+		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
+		//make sure, ae got rid of disablity
+		assertFalse(command.isOutcomePresent(OutcomeType.DISABILITY, command.getAdverseEvents().get(0).getOutcomes()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
+		
+		command.initializeOutcomes(); //to make sure death is there in the outcome map.
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.DEATH.getCode()));
+		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
+		//update the ae grade to something else
+		command.getAdverseEvents().get(0).setGrade(Grade.MILD);
+		command.getOutcomes().get(0).put(OutcomeType.DEATH.getCode(), false);
+		command.synchronizeOutcome();
+		assertFalse(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#synchronizeOutcome()}
+	 */
+	public void testSynchronizeOutcomeMakeSureHospitalizationOutcomeIsRemoved(){
+		//add hospitalization outcome to AE 0
+		command.getAdverseEvents().get(0).setHospitalization(Hospitalization.YES);
+		Outcome o1 = new Outcome();
+		o1.setOutcomeType(OutcomeType.HOSPITALIZATION);
+		command.getAdverseEvents().get(0).addOutcome(o1);
+		
+		command.initializeOutcomes();
+		//make sure hospitaliztion is present
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.HOSPITALIZATION.getCode()));
+		//make uncheck the Disability
+		command.getOutcomes().get(0).put(OutcomeType.HOSPITALIZATION.getCode(), false);
+		//update the ae HOspitalization to something else
+		command.getAdverseEvents().get(0).setHospitalization(Hospitalization.NO);
+		command.synchronizeOutcome();
+		assertFalse(command.isOutcomePresent(OutcomeType.HOSPITALIZATION, command.getAdverseEvents().get(0).getOutcomes()));
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#initialize()}
+	 */
+	public void testInitialize(){
+		fail("to do");
 	}
 	
 	@Override

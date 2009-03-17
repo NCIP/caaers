@@ -223,11 +223,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         //hide for non DCP-AdEERS reporting enabled study
         if(!command.isDCPNonAdeersStudy()){
-        	renderDecisionManager.conceal("adverseEvents[].serious");
-        	renderDecisionManager.conceal("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious");
+        	renderDecisionManager.conceal("outcomes", "adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
         }else{
-        	renderDecisionManager.reveal("adverseEvents[].serious");
-        	renderDecisionManager.reveal("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious");
+        	renderDecisionManager.reveal("outcomes", "adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
         }
 		return referenceData;
 	}

@@ -34,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController {
 

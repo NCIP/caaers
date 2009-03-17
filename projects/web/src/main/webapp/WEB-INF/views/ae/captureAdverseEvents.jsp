@@ -1,7 +1,4 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
-<%@ page import = "java.util.ArrayList" %>
-
 <html>
  <head>
     <tags:includePrototypeWindow />
@@ -19,44 +16,11 @@
     	</jsp:attribute>
     </tags:slider>
 	
-    <style type="text/css">
-        .selectdiv { width: 170px; overflow: hidden; }
-        .shortselectdiv { width: 115px; overflow: hidden; }
-        .selectbox { width: 165px; }
-        .shortselectbox { width: 110px; }
-        .selectboxClick { width: 750px; }
-        .divNotes, .divOtherMeddra { font-size: 8pt; margin-top: 5px; float: left; }
-        div.row div.value { font-weight: normal; white-space: normal; margin-left: 13em; }
-        div.row div.label { width: 12em; }
-        .reportingPeriodSelector {}
-        .ae-section { padding-top: 5px; }
-        #contentOf-observedID .even { background-color: #e8e8ff; }
-        #contentOf-solicitatedID .odd { background-color: #ffe2ff; }
-        .thterm { position: absolute; left: 10px; top: 10px; }
-        #boxholder { position: relative; height: 210px; width: 100%; border-top: 1px solid #0066ff; padding-top: 10px; }
-        #gradehead { position: absolute; left: 10px; top: 75px; }
-        #attributionhead { position: absolute; left: 350px; top: 75px; }
-        #hospitalizationhead { position: absolute; left: 500px; top: 75px; }
-        #expectedhead { position: absolute; left: 10px; top: 145px; }
-        #serioushead { position: absolute; left: 180px; top: 145px; }
-        /*Grade*/
-        .selectbox0 { position: absolute; left: 10px; top: 95px; max-width: 300px; }
-        /*Attribution*/
-        .selectbox1 { position: absolute; left: 350px; top: 95px; }
-        /*Hospitalization*/
-        .selectbox2 { position: absolute; left: 500px; top: 95px; }
-        /*Expected*/
-        .selectbox3 { position: absolute; left: 10px; top: 165px; }
-        /*Serious*/
-        .selectbox4 { position: absolute; left: 180px; top: 165px; }
-        .delete { position: absolute; right: 20px; }
-    </style>
- 
- <script>
+ <script><!--
+ 	var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
 	var catSel = null;
 	var RPCreatorClass = Class.create();
 	var deleteIndex = 0;
-    var hasChanges = false;
 
     var oldSignatures = new Array();
     var routingHelper = new RoutingAndReviewHelper(captureAE);
@@ -80,8 +44,7 @@
             var notAddedTerms = new Array();
             captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput) {
                 $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
-                if ($('observedEmptyRow')) $('observedEmptyRow').remove();
-                this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
+               
             }.bind(this));
         },
 
@@ -93,12 +56,7 @@
             return false;
         },
 
-        initializeOtherMeddraAutoCompleters: function(listOfTermIDs) {
-            listOfTermIDs.each(function(aTermId) {
-                var acEls = $$('om' + aTermId);
-            }.bind(this));
-        },
-
+       
         deleteAdverseEvent:function(indx) {
             var repIdArr = new Array();
             var listOfAEIndexes = $$('.submittedAERow');
@@ -147,12 +105,24 @@
 			stripped_url = url.substr(0,index);
 			document.addRoutineAeForm.action = stripped_url;
 		}
+		
  		rpCreator = new RPCreatorClass('detailSection');
 
  		//Check if reportingPeriod is selected and enable the slider.
  		if(${command.workflowEnabled}){
             routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  		}
+
+
+ 		// Reset the value of flag AE.checkForModification to false.
+        oldSignatures = getSignatures('.ae-section');
+        
+        Event.observe(window, "beforeunload", function(e) {
+            if (checkForModificationsOnPage(e)) {
+                e.returnValue = "You have unsaved information.";
+            }
+        });
+        
  	});
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -194,7 +164,6 @@
             var oldSignatureId = 'ae-section-' + listOfAEIndexes[i].value + '-signature';
             var oldSignature = document.getElementById(oldSignatureId).value;
             if (signature != oldSignature) {
-                hasChanges = true;
                 // The ae was modified.
                 var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
                 reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
@@ -216,14 +185,14 @@
 
         var otherMeddraId = 'adverseEvents[' + index + '].lowLevelTerm-input';
 		var verbatimId = 'adverseEvents[' + index + '].detailsForOther';
-		var gradeId = 'adverseEvents[' + index + '].grade';
+		
 		var attributionId = 'adverseEvents[' + index + '].attributionSummary';
 		var hospitalizationId = 'adverseEvents[' + index + '].hospitalization';
 		var expectedId = 'adverseEvents[' + index + '].expected';
 		var seriousId = 'adverseEvents[' + index + '].serious';
 
 		signature = $(verbatimId).value + '$$' + // verbatim input
-					document.getElementById(gradeId).value + '$$' + // grade input
+					findGradeForAE(index) + '$$' + // grade input
 					document.getElementById(attributionId).value + '$$' + // attribution input
 					document.getElementById(hospitalizationId).value + '$$' + // hospitalization input
 					document.getElementById(expectedId).value; // expected input
@@ -254,14 +223,17 @@
 			form.submit();
 		}else if(form._action.value == 'deleteAE'){
 			captureAE.deleteAdverseEvent(deleteIndex, document.getElementById('command')._amendReportIds.value, function(ajaxOutput){
-					//alert('Entered callback method');
+
+					//Remove the row that is deleted
  	 	 			$('ae-section-' + deleteIndex).remove();
- 	 	 			if($('ae-section-' + deleteIndex + '-submittedAERow'))
-	 	 	 			$('ae-section-' + deleteIndex + '-submittedAERow').remove();
- 	 	 			var repId = document.getElementById('command')._amendReportIds.value;
- 	 	 			// Remove the image and .submittedAERow where repId is the one of the AE deleted. 
- 	 	 			// This is needed to avoid re-amendment of the same report.
+
+ 	 	 			//Remove the following from other Adverse Events associated with the same Expedited Report, 
+ 	 	 			// this is to avoid re-ammendment of the same report. 
+
+ 	 	 		
  	 	 			// First determine all the indexes that have the reportId = repId
+ 	 	 			var repId = document.getElementById('command')._amendReportIds.value;
+ 	 	 			
  	 	 			var handleAeArr = new Array();
  	 	 			var c = 0;
  	 	 			var listOfAEIndexes = $$('.submittedAERow');
@@ -271,12 +243,15 @@
 						if(document.getElementById(repIdElement).value == repId)
 							handleAeArr[c++] = listOfAEIndexes[i].value;
 					}
+					
 					// Remove the image and ".submittedAERow" elements for all the indexes in handleAeArr array.
-					//alert('Number of aes to be handles  = ' + handleAeArr.length); 
 					for(var j = 0; j < handleAeArr.length; j++)
 					{
-						$('ae-section-' + handleAeArr[j] + '-submitted-image').remove();
-						$('ae-section-' + handleAeArr[j] + '-submittedAERow').remove();
+
+					    //Uncomment the below image hiding lines, after fixing the image correctly.
+						
+					   //$('ae-section-' + handleAeArr[j] + '-submitted-image').remove();
+					   //$('ae-section-' + handleAeArr[j] + '-submittedAERow').remove();
 					}
  	 	 			
  	 		});
@@ -319,24 +294,23 @@
         Windows.addObserver(popupObserver);
 	}
 	
-
+    // ----------------------------------------------------------------------------------------------------------------	
+	//findGradeForAE : This function will find the selected grade value, for an adverse event identified by index
+	function findGradeForAE(index){
+		var gradeRowId = 'adverseEvents[' + index + '].grade-row';
+		var gradeValue = '';
+		$(gradeRowId).select("input[type='radio']").each(function(el){
+			if(el.checked) gradeValue = el.value;
+		});
+		return gradeValue;
+    }
     // ----------------------------------------------------------------------------------------------------------------
-
-    Event.observe(window, "load", function(e) {
-        // Reset the value of flag AE.checkForModification to false.
-        oldSignatures = getSignatures('.ae-section');
-        
-        Event.observe(window, "beforeunload", function(e) {
-            if (checkForModificationsOnPage(e)) {
-                e.returnValue = "You have unsaved information.";
-            }
-        });
-        
-    });
-
-    // ----------------------------------------------------------------------------------------------------------------
-
- </script>
+	//javascript:fireAction(index,section-id,sectionCSS) : This function will be called when the delete button on the AE is clicked.;
+	function fireAction(index, sectionId, sectionCSS) {
+		rpCreator.deleteAdverseEvent(index);
+	}
+	// ----------------------------------------------------------------------------------------------------------------
+ --></script>
  
 </head>
  <body>
@@ -349,7 +323,104 @@
 			
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
-					<ae:reportingPeriodAEDetails />
+				
+				
+					<%--  Begining Of Observed AE section --%>
+					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
+					 
+						<p><tags:instructions code="instruction_ae_oae"/></p>
+ 						<tags:aeTermQuery
+                       			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+                       			noBackground="true"
+                       			callbackFunctionName="rpCreator.addAdverseEvents"
+                       			ignoreOtherSpecify="false"
+                       			isAjaxable="true"
+                       			version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
+                       		title="">
+            			</tags:aeTermQuery>
+
+            			<span id="observedBlankRow"></span>
+            			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
+            				<c:if test="${not ae.solicited}">
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="true" />
+            				</c:if> 
+            			</c:forEach>   
+					</chrome:box>
+					<%-- End of Observed AE section --%>
+					
+					<%-- Begining of Solicited AE section --%>
+					<c:if test="${command.havingSolicitedAEs}">
+						<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID" autopad="true">
+							<p><tags:instructions code="instruction_ae_sae"/></p>
+							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
+            				<c:if test="${ae.solicited}">
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="false" />
+            				</c:if> 
+            			</c:forEach>   
+ 						</chrome:box>
+					</c:if>
+					<%--  End of Solicited AE section --%>
+					
+					<%-- Begin : Sections that will be displayed in Amend PopUp --%>
+					<div id="display_amend_popup" style="display:none;text-align:left" >
+				    	<chrome:box title="Amendments Required" id="popupId">
+				    		<c:if test="${not empty command.participant}">
+				      			<div align="left">
+				        			<div class="row">
+				          				<div class="summarylabel">Subject</div>
+				          				<div class="summaryvalue">${command.participant.fullName}</div>
+				        			</div>
+				        			<div class="row">
+				          				<div class="summarylabel">Study</div>
+				          				<div class="summaryvalue">${command.study.longTitle}</div>
+				        			</div>
+				        			<div class="row">
+				          				<div class="summarylabel">Course</div>
+				          				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
+				        			</div>
+				      			</div>
+				    		</c:if>
+				    		<div id="div-reports-to-be-amended" style="text-align:left;">
+				      			<hr/>
+				      			<p>
+				        			<tags:instructions code="instruction_ae_amendments_required"/>
+				      			</p>
+				      			<chrome:division title="Reports that will be Amended" id="div-selected-reports" collapsable="false">
+				      				<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+				      					<div class="eXtremeTable" id="amend-aeReport-${aeReport.id}" style="display:none;text-align:left">
+				                    		<table width="100%" border="0" cellspacing="0" class="tableRegion">
+				                      			<thead>
+				                        			<tr align="center" class="label">
+				                          				<td width="5%"/>
+				                          				<td class="tableHeader" width="15%">Report Type</td>
+				                          				<td class="centerTableHeader" width="10%">Report Version</td>
+				                          				<td class="centerTableHeader" width="10%"># of AEs</td>
+				                          				<td class="tableHeader" width="20%">Data Entry Status</td>
+				                          				<td class="tableHeader" width="20%">Submission Status</td>
+				                       				</tr>
+				                      			</thead>
+				                      			<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
+				                      		</table>
+				        		        </div>
+				              		</c:forEach>
+				              		<br><br>
+				                      		<table width="100%">	
+				                      			<tr>
+				                      				<td align="left">
+				                      					<input type="submit" value="Amend" id="amendment-required-yes" onClick="javascript:window.parent.deleteOrAmendAndSubmit();"/>
+				                      				</td>
+				                      				<td align="right">
+					                      				<input type="submit" value="Don't Amend" id="amendment-required-no" onClick="javascript:window.parent.Windows.close('amend-popup-id');"/>
+				                      				</td>
+				                      			</tr>	
+						                    </table>
+				      			</chrome:division>
+      						</div>
+    					</chrome:box>	
+    				</div>
+					<%-- End : Sections displayed in amend popup --%>
+					
+					
 				</c:if>
 			</div>
       		

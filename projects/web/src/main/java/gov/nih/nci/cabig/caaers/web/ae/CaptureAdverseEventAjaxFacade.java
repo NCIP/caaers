@@ -141,7 +141,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
                 aeCtc.setCtcTerm(ctc);
                 ae.setAdverseEventCtcTerm(aeCtc);
                 aeCtc.setAdverseEvent(ae);
-                if (command.getAdverseEventReportingPeriod().getStudy().hasCTCTerm(ctc)) {
+                if (command.getAdverseEventReportingPeriod().getStudy().isExpectedAdverseEventTerm(ctc)) {
                     ae.setExpected(new Boolean(Boolean.TRUE));
                 }
             }

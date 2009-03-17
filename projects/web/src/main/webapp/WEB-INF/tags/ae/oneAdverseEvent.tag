@@ -1,3 +1,8 @@
+<%-- 
+	This page is used by Expedited AE flow. 
+	Author : Biju Joseph
+--%>
+
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
@@ -52,19 +57,22 @@
 		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+		
 		<table border="0">
 			<tr>
 			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" /></td>
 			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" /></td>
 			</tr>
+			<tr>
+			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" /></td>
+			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/></td>
+			</tr>
 		</table>
-			
-			
-        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="4" end="${len - 2}">
+		
+		 <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="5" end="${len - 2}">
             <tags:renderRow field="${field}"/>
         </c:forEach>
 		<ae:oneOutcome index="${index}" />
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
     </div>
     </jsp:body>
 </chrome:division>

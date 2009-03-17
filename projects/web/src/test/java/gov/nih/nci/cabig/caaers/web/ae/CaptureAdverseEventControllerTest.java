@@ -155,8 +155,9 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 		
 		Map refDataMap = controller.referenceData(request, command, errors, 2);
 		assertNotNull(refDataMap);
-		assertFalse(renderDecisionManager.canRenderField("adverseEvents[].serious", request, response));
-		assertFalse(renderDecisionManager.canRenderField("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious", request, response));
+		assertFalse(renderDecisionManager.canRenderField("outcomes", request, response));
+		assertFalse(renderDecisionManager.canRenderField( "adverseEvents[].eventLocation", request, response));
+		assertFalse(renderDecisionManager.canRenderField("adverseEvents[].eventApproximateTime", request, response));
 		verifyMocks();
 	}
 	/**
@@ -183,8 +184,9 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 		
 		Map refDataMap = controller.referenceData(request, command, errors, 2);
 		assertNotNull(refDataMap);
-		assertTrue(renderDecisionManager.canRenderField("adverseEvents[].serious", request, response));
-		assertTrue(renderDecisionManager.canRenderField("adverseEventReportingPeriod.evaluatedAdverseEvents[].displaySerious", request, response));
+		assertTrue(renderDecisionManager.canRenderField("outcomes", request, response));
+		assertTrue(renderDecisionManager.canRenderField( "adverseEvents[].eventLocation", request, response));
+		assertTrue(renderDecisionManager.canRenderField("adverseEvents[].eventApproximateTime", request, response));
 		verifyMocks();
 	}
 	

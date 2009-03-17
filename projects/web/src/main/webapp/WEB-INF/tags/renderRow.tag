@@ -12,7 +12,6 @@
 <%@attribute name="label" fragment="true" %>
 <%@attribute name="value" fragment="true" %>
 <%@attribute name="deleteParams" %>
-<!-- |  ${field.propertyName} | -->
 <caaers:renderFilter elementID="${field.propertyName}">
 <div class="row ${cssClass}" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label">

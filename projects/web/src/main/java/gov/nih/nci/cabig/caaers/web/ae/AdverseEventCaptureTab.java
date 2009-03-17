@@ -2,22 +2,27 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +37,12 @@ import org.springframework.validation.Errors;
  * @author Biju Joseph
  */
 public class AdverseEventCaptureTab extends AdverseEventTab {
-
+	
+	// The names of the field groups
     private static final String MAIN_FIELD_GROUP = "main";
+    private static final String OUTCOME_FIELD_GROUP ="outcomes";
+    
+    //max characters allowed for Verbatim
     private static final Integer VERBATIM_MAX_SIZE = 65;
 
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -45,74 +54,121 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     /**
      * This method will create the fields to be displayed on the screen.
-     * Notes<br>
-     * 1. For solicited adverse events, the "Notes/Verbatim", "Other Meddra" will added to the fields.
-     * 2. If Study is MedDRA, the "Other MedDRA", will not be added in the fields.
-     * 3. We should run the adverse events against the index fixed list, since that list will have null items in it, we should skip if 'AdverseEvent' is null.
+     *  For CTC/MedDRA Study the following fields will be created:
+     *    0. Other(MedDRA) - [conditional, only appear for CTC studies, if term is otherspecify].
+     *    1. Verbatim
+     *    2. Grade
+     *    3. StartDate
+     *    4. End Date
+     *    5. Attribution To Study
+     *    6. Time Of Event
+     *    7. Event Location
+     *    8. Hospitalization
+     *    9. Expectedness
+     *   10. Outcome
+     *   
+     * Note:- We should run the adverse events against the index fixed list, since that list will have null items in it, we should skip if 'AdverseEvent' is null.
      */
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand cmd) {
 
-        InputFieldGroupMap map = new InputFieldGroupMap();
+        InputFieldGroupMap fieldGrpMap = new InputFieldGroupMap();
         MultipleFieldGroupFactory mainFieldFactory;
-
-        //create the fields, consisting of reporting period details.
-        if (cmd.getAdverseEventReportingPeriod() != null) {
-            /*
-             * AdversEvent related field groups,
-             *  the fields are different for Meddra study, Ctc study and Observed AEs
-             */
-
-            Study study = cmd.getAdverseEventReportingPeriod().getStudy();
-
+        
+        if(cmd.getAdverseEventReportingPeriod() != null){
+        	
+        	Study study = cmd.getAdverseEventReportingPeriod().getStudy();
+        	boolean isMeddraStudy = study.getAeTerminology().getTerm() == Term.MEDDRA;
+        	int size = cmd.getAdverseEvents().size();
+        	
+        	//create one field group - One row of main groups
             mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEvents");
-            boolean isMeddraStudy = study.getAeTerminology().getTerm() == Term.MEDDRA;
-
-            int size = cmd.getAdverseEvents().size();
-            for (int i = 0; i < size; i++) {
+            
+        	for (int i = 0; i < size; i++) {
+        		
                 AdverseEvent ae = cmd.getAdverseEvents().get(i);
                 if (ae == null) continue;
-
-                if (ae.getExpected() == null) if (study.hasCTCTerm(ae.getAdverseEventCtcTerm().getCtcTerm())) ae.setExpected(true);
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
-
-                if (!ae.getSolicited()) {
-                    if (!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) {//only if other is requrired
-                    	InputField otherMeddraField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true);
-                    	InputFieldAttributes.setSize(otherMeddraField, 25);
-                    	mainFieldFactory.addField(otherMeddraField);
-                        //mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
-                    }
-                }else{
-                	if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){
-                		mainFieldFactory.addField(InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", true));
-                	}
+        		
+                //other MedDRA
+        		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false) :
+        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true);
+        		//only add otherMedDRA on non MedDRA and otherRequired=true
+                if(ae.getAdverseEventTerm().isOtherRequired()){
+                	mainFieldFactory.addField(otherMeddraField);
                 }
-                InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
-                InputFieldAttributes.setSize(notesField, 25);
-                mainFieldFactory.addField(notesField); //Notes
-
+                
+            	//verbatim
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
+                InputFieldAttributes.setSize(verbatimField, 25);
+                mainFieldFactory.addField(verbatimField);
+                
                 //grade
-                if (isMeddraStudy) {
-                    mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Meddra")));
-                } else {
-                    mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Ctc")));
-                }
-
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization", "Hospitalization", false, createHospitalizationOptions()));
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false, createExpectedOptions()));
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("serious", "Serious", false, createSeriousOptions()));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", false, createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                mainFieldFactory.addField(gradeField);
+                
+                //startDate
+                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", false);
+                mainFieldFactory.addField(startDateField);
+                
+                //endDate
+                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", false);
+                mainFieldFactory.addField(endDateField);
+                
+                //attribution
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions());
+                mainFieldFactory.addField(attributionField);
+                
+                //Event time
+                InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
+            	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
+            	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
+            	amPmOption.put("0", "AM");
+            	amPmOption.put("1", "PM");
+            	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
+            	InputFieldAttributes.setSize(hrField, 2);
+            	InputFieldAttributes.setSize(mmField, 2);
+            	InputField timeOfEventField =  new CompositeField("eventApproximateTime", 
+            			new DefaultInputFieldGroup(null,"Event time").addField(hrField).addField(mmField).addField(amPmField));
+            	mainFieldFactory.addField(timeOfEventField);
+            	
+            	//EventLocation
+                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?");
+                mainFieldFactory.addField(eventLocationField);
+                
+                //Hospitalization
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Hospitalization", false, createHospitalizationOptions());
+                mainFieldFactory.addField(hospitalizationField);
+                
+                //expectedness
+                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", false, createExpectedOptions());
+                mainFieldFactory.addField(expectednessField);
+                
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
                 mainFieldFactory.addFieldGroup(fieldGroup);
                 mainFieldFactory.clearFields();
+                
+                //now add the fields related to outcomes
+                InputFieldGroup outcomeFieldGrp = new DefaultInputFieldGroup(OUTCOME_FIELD_GROUP + i);
+                List<InputField> outcomeFields = outcomeFieldGrp.getFields();
+                Map<Integer, Boolean> oneOutcomeMap = cmd.getOutcomes().get(i);
 
-            }
-            map.addMultipleFieldGroupFactory(mainFieldFactory);
+                for (Integer code : oneOutcomeMap.keySet()) {
+                    OutcomeType outcomeType = OutcomeType.getByCode(code);
+
+                    outcomeFields.add(InputFieldFactory.createCheckboxField("outcomes[" + i + "][" + code + "]", outcomeType.getDisplayName()));
+
+                    if (outcomeType == OutcomeType.OTHER_SERIOUS) {
+                        outcomeFields.add(InputFieldFactory.createTextField("outcomeOtherDetails[" + i + "]", ""));
+                    }
+                }
+                fieldGrpMap.addInputFieldGroup(outcomeFieldGrp);
+        	}
+        	
+        	 fieldGrpMap.addMultipleFieldGroupFactory(mainFieldFactory);
         }
-
-        return map;
+        
+        return fieldGrpMap;
     }
 
     @Override
@@ -121,10 +177,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         command.reassociate();
     }
 
-
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-        // Setup the categories list for aeTermQuery tag.
+    public Map<String, Object> referenceData(CaptureAdverseEventInputCommand command) {
+    	 // Setup the categories list for aeTermQuery tag.
         boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
 
         // initialize lazy
@@ -142,16 +197,19 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         }
 
         //initalize the seriousness outcome indicators
-        command.initializeOutcome();
+        command.initializeOutcomes();
         
-        return super.referenceData(request, command);
-
+    	return super.referenceData(command);
     }
+
+    
 
     @Override
     public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
-        if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null)
+        if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors())
             return; //ignore if this is an ajax request
+        
+        
         //sync the seriousness outcomes
         command.synchronizeOutcome();
         
