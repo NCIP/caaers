@@ -216,7 +216,7 @@ background-color:#e5e8ff;
       <tr>
         <th>Required</th>
         <th>Report</th>
-        <th>Status</th>
+        <th>Due</th>
       </tr>
       <c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
         <tr>
@@ -254,7 +254,7 @@ background-color:#e5e8ff;
                 <tr>
                   <th>Required</th>
                   <th>Report</th>
-                  <th>Status</th>
+                  <th>Due</th>
                 </tr>
                 <c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
                   <tr>
@@ -284,7 +284,7 @@ background-color:#e5e8ff;
               <tr>
                 <th>Required</th>
                 <th>Report</th>
-                <th>Status</th>
+                <th>Due</th>
               </tr>
               <tr>
                 <td align="left" colspan="3">No reports required.</td>
