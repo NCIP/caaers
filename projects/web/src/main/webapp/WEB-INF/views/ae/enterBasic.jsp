@@ -390,7 +390,7 @@ div.row div.value, div.row div.extra {
            // var newIndex = $$(".ae-section").length;
 			var externalFunction = createAE['addAdverseEventWithTerms'];
             var externalArgs = [termId];
-			aesEditor.add(externalFunction,externalArgs);
+			aesEditor.add('', externalFunction,externalArgs);
       
         }
 

@@ -80,7 +80,7 @@
            // var newIndex = $$(".ae-section").length;
 			var externalFunction = createAE['addAdverseEventWithTermsMeddra'];
             var externalArgs = [termId];
-			aesEditor.add(externalFunction,externalArgs);
+			aesEditor.add('', externalFunction,externalArgs);
        }
      //==================================================================================================      
     </script>

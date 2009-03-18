@@ -237,7 +237,7 @@ Object.extend(ListEditor.prototype, {
         
     },
 
-    add: function(externalFun, externalArgs) {
+    add: function(evt, externalFun, externalArgs) {
     	 // fn resolution:  If there's a fn named add${basename}, use that
         var specificFnName = "add" + this.basenameUC;
         var addFn = externalFun;
