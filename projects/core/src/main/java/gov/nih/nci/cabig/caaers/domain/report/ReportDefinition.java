@@ -352,10 +352,53 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     
     @Transient
     public String getExpectedDisplayDueDate(){
-    	Calendar today = GregorianCalendar.getInstance();
-    	today.add(timeScaleUnitType.getCalendarTypeCode(), duration);
-    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
-    	return "Expected Due Date " + formatter.format(today.getTime());
+    	String expectedDisplayDueDate = "Due in ";
+    	String unitTypeString = "";
+    	switch(timeScaleUnitType.getCode()){
+    		case 1:
+    			if(duration.equals(1))
+    				unitTypeString = "second";
+    			else
+    				unitTypeString = "seconds";
+    			break;
+    		case 2: 
+    			if(duration.equals(1))
+    				unitTypeString = "minute";
+    			else
+    				unitTypeString = "minutes";
+    			break;
+    		case 3: 
+    			if(duration.equals(1))
+    				unitTypeString = "hour";
+    			else
+    				unitTypeString = "hours";
+    			break;
+    		case 4: 
+    			if(duration.equals(1))
+    				unitTypeString = "day";
+    			else
+    				unitTypeString = "days";
+    			break;
+    		case 5:
+    			if(duration.equals(1))
+    				unitTypeString = "week";
+    			else
+    				unitTypeString = "weeks";
+    			break;
+    		case 6: 
+    			if(duration.equals(1))
+    				unitTypeString = "month";
+    			else
+    				unitTypeString = "months";
+    			break;
+    		default: 
+    			if(duration.equals(1))
+    				unitTypeString = "day";
+    			else
+    				unitTypeString = "days";
+    	}
+    	
+    	return expectedDisplayDueDate + duration + " " + unitTypeString;
     }
     
     @Transient
