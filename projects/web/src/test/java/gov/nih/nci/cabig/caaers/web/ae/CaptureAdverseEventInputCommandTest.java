@@ -79,7 +79,6 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		reportingPeriod.setId(5);
 		reportingPeriod.setAdverseEvents(aes);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
-		command.setAdverseEventReportingPeriod(reportingPeriod);
 	}
 	
 	public void testIsHavingSolicitedAEs(){
@@ -250,7 +249,8 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	 * This method tests {@link CaptureAdverseEventInputCommand#initialize()}
 	 */
 	public void testInitialize(){
-		fail("to do");
+		command.initialize();
+		assertNotNull(command.getAdverseEvents());
 	}
 	
 	@Override
