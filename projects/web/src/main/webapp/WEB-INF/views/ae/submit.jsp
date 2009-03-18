@@ -198,7 +198,7 @@
 						<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
 							<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 								<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-										<a href="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
+										<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
 										<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
 								</c:if>
 							
