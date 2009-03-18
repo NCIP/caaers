@@ -244,7 +244,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		List<String> transitionsNames = impl.advanceReportWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
-		
+		assertEquals("A review comment for the action of advancing workflow was not added", 1, r.getReviewComments().size());
 		
 	}
 	
@@ -265,7 +265,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		List<String> transitionNames = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
-		
+		assertEquals("A review comment for the action of advancing workflow was not added", 1, rp.getReviewComments().size());
 	}
 	
 	public void testEnactReportingPeriodWorkflow() {
