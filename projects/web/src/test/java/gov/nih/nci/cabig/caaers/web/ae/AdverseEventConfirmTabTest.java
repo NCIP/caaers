@@ -40,12 +40,11 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
 		List<InputField> fields = tab.createCustomFieldGroup(ae, 0, true);
 		assertNotNull(fields);
-		assertEquals(7, fields.size());
+		assertEquals(6, fields.size());
 		assertFieldProperyNames(fields,"selectedAesMap[5]",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displayGrade",
-				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displaySerious",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].startDate",
 				"primaryAdverseEventId");
 	}
@@ -63,12 +62,11 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		List<InputField> fields = tab.createCustomFieldGroup(ae, 0, false);
 		assertEquals(InputField.Category.IMAGE, fields.get(0).getCategory());
 		assertNotNull(fields);
-		assertEquals(7, fields.size());
+		assertEquals(6, fields.size());
 		assertFieldProperyNames(fields,"selectedAesMap[5]",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displayGrade",
-				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displaySerious",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].startDate",
 				"primaryAdverseEventId");
 	}
@@ -86,11 +84,10 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		
 		List<InputField> fields = tab.createCustomFieldGroup(ae, 0, true);
 		assertNotNull(fields);
-		assertEquals(7, fields.size());
+		assertEquals(6, fields.size());
 		assertFieldProperyNames(fields, "selectedAesMap[5]","adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displayGrade",
-				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displaySerious",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].startDate",
 				"primaryAdverseEventId");
 	}
@@ -111,7 +108,6 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displayGrade",
-				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].displaySerious",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[0].startDate",
 				"primaryAdverseEventId");
 		group = fieldGrpMap.get("main1");
@@ -119,7 +115,6 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[1].adverseEventTerm.universalTerm",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[1].detailsForOther",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[1].displayGrade",
-				"adverseEventReportingPeriod.evaluatedAdverseEvents[1].displaySerious",
 				"adverseEventReportingPeriod.evaluatedAdverseEvents[1].startDate",
 				"primaryAdverseEventId");
 		

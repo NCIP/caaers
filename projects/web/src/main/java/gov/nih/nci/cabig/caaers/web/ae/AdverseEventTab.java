@@ -101,7 +101,6 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	protected Map<Object, Object> createGradeOptions(AdverseEvent ae, String terminology) {
 		Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
-        gradeOptions.put("", "Please select");
         
         //for solicited AEs always add NotEvaluated and Normal/Evaluated
         if(ae.getSolicited()){

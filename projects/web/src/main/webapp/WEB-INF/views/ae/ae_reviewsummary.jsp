@@ -383,9 +383,6 @@ background-color:#e5e8ff;
                 <th scope="col" align="center" style="text-align:center;">Requires expedited reporting?</th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
-                <caaers:renderFilter elementID="adverseEvents[].serious">
-                  <th scope="col" align="left"><b>Serious</b> </th>
-                </caaers:renderFilter>
                 <th scope="col" align="left"><b>Start Date</b> </th>
                 <th scope="col" align="left"><b>Select Primary</b> </th>
               </tr>

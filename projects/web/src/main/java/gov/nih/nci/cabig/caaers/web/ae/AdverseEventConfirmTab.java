@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -90,7 +91,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].detailsForOther", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].displayGrade", ""));
 
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].displaySerious", ""));
 		InputField startDateField = null;
 		if(ae.getStartDate() != null){
 			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].startDateAsString", "", false);
@@ -206,7 +206,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
                     Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		
 		// Check if there is a report selected with no aes selected.
-		if(command.getSelectedReportDefinitions().size() > 0){
+		if(StringUtils.equals(command.get_action(), "createNew") && command.getSelectedReportDefinitions().size() > 0){
 			//Iterate over the selectedAes map to check if atleast one is true. Otherwise throw an error.
 			Boolean noAeSelected = true;
 			for(Integer id: command.getSelectedAesMap().keySet()){

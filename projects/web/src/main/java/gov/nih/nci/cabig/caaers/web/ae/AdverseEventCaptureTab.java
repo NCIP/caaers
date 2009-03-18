@@ -104,7 +104,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(verbatimField);
                 
                 //grade
-                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", false, createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", !ae.getSolicited(), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
                 
                 //startDate
@@ -137,7 +137,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(eventLocationField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Hospitalization", false, createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?", false, createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
@@ -209,6 +209,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors())
             return; //ignore if this is an ajax request
         
+        //reset the reporting method and action
+        command.set_action(null);
+        command.setReportingMethod(null);
+        command.setPrimaryAdverseEventId(null);
         
         //sync the seriousness outcomes
         command.synchronizeOutcome();
