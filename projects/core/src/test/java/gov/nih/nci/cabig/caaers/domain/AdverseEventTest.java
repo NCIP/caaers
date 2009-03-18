@@ -156,12 +156,7 @@ public class AdverseEventTest extends AbstractTestCase {
     
     public void testGetStartDateAsStringWhenDateIsNull(){
     	adverseEvent.setStartDate(null);
-    	try{
-    		adverseEvent.getStartDateAsString();
-    		fail("should throw Exception");
-    	}catch(Exception e){
-    		
-    	}
+    	adverseEvent.getStartDateAsString();
     }
     
 //

@@ -372,7 +372,11 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     
     @Transient
     public String getStartDateAsString(){
-    	return DateUtils.formatDate(startDate);
+    	try {
+			return DateUtils.formatDate(startDate);
+		} catch (Exception e) {
+			return null;
+		}
     }
     @Transient
     public void setStartDateAsString(String startDate) {
