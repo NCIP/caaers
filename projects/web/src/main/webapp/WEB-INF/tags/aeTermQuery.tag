@@ -169,7 +169,7 @@
             $("liTerm" + termID).addClassName("ae-disabled");
             $("addedTerm" + termID).addClassName("ae-added-terms");
             $("chk" + termID).addClassName("AddedTermXYZ");
-            
+
         },
 
         addLIToUL: function(ulID, ilID, ilText) {
@@ -226,7 +226,7 @@
 		},
 
         showCategoryBox:function(){
-	 			this.showWindow('', 'Select Adverse Event Terms (AE coding terminology replacement variable)', 850, 530 );
+	 			this.showWindow('', '', 850, 580 );
 	 	}
  	});
 	
@@ -261,6 +261,7 @@
 	<c:if test="${not isMeddra}">
 
     <div id="chooseCategory">
+        <chrome:box title="${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name}">
 
         <table width="100%" border="0" cellspacing="0" cellpadding="5">
         <tr bgcolor="#E4E4E4">
@@ -297,8 +298,9 @@
         </tr>
         </table>
         
+        </chrome:box>
     </div>
-	</c:if>
+    </c:if>
           
     <c:if test="${isMeddra}">
 		<p>Addition of multiple terms is only supported for CTC terminology</p>
@@ -315,13 +317,13 @@
     }
 
     a.ae-category {
-        font-size:8pt;
+        font-size:9pt;
         cursor:pointer;
         color:black;
     }
 
     a.ae-category-selected {
-        font-size:8pt;
+        font-size:9pt;
         cursor:pointer;
         color:blue;
         font-weight:bold;
@@ -338,20 +340,24 @@
     }
 
     a.ae-category:hover {
-        font-size:8pt;
+        font-size:9pt;
         cursor:pointer;
         color:blue;
     }
 
     ul.ae-added-terms, a.ae-added-terms {
-        font-size:8pt;
+        font-size:9pt;
         cursor:pointer;
         margin: 0px;
         padding-left: 5px;
     }
 
+    #ae-added-terms {
+        list-style-type: none;
+    }
+
     a.ae-added-terms:hover {
-        font-size:8pt;
+        font-size:9pt;
         cursor:pointer;
         color: blue;
         margin: 0px;
@@ -359,13 +365,13 @@
     }
 
     a.ae-disabled {
-        font-size:8pt;
+        font-size:9pt;
         color:#cccccc;
         cursor:pointer;
     }
 
     a.ae-disabled:hover {
-        font-size:8pt;
+        font-size:9pt;
         color:#cccccc;
         cursor:pointer;
     }
