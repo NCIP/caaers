@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -20,7 +21,7 @@ import static gov.nih.nci.cabig.caaers.domain.OutcomeType.*;
  * @author Biju Joseph
  *
  */
-public class AdverseEventCaptureTabTest extends TestCase {
+public class AdverseEventCaptureTabTest extends AbstractNoSecurityTestCase {
 	
 	AdverseEventCaptureTab tab;
 	CaptureAdverseEventInputCommand command;
