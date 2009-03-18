@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author Biju Joseph
  *
  */
-public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
+public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestCase {
 	
 	CaptureAdverseEventInputCommand command;
 	
