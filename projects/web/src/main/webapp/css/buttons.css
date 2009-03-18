@@ -356,7 +356,7 @@ button.omnipotent-button.green:hover, button.omnipotent-button.green.hover {
 button.omnipotent-button.green:hover .right, button.omnipotent-button.green.hover .right {
 	background-position:-547px -124px;
 }
-button.omnipotent-button.green:active,button.omnipotent-button.green.active {
+button.omnipotent-button.green:active, button.omnipotent-button.green.active {
 	background-position:0 -155px;
 }
 button.omnipotent-button.green:active .right, button.omnipotent-button.green.active .right {

@@ -273,9 +273,9 @@
         </tr>
         <tr>
             <td align="left" valign="top">
-                <ul class="ae-category">
+                <ul id="categories" class="ae-category">
                     <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
-                        <li id="li_${cat.id}"><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a><br>
+                        <li id="li_${cat.id}"><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a>
                     </c:forEach>
                 </ul>
             </td>
@@ -313,9 +313,14 @@
     ul.ae-category {
         cursor:pointer;
         margin: 5px;
-        padding-left: 12px;
+        padding-left: 0px;
+		list-style-type:none;
     }
-
+	
+	ul#categories li a {
+		margin-left:5px;
+	}
+	
     a.ae-category {
         font-size:9pt;
         cursor:pointer;
@@ -325,15 +330,12 @@
     a.ae-category-selected {
         font-size:9pt;
         cursor:pointer;
-        color:blue;
-        font-weight:bold;
-        padding-left:5px;
-        padding-right:5px;
-        width: 300pt;
+        line-height:26px;
     }
 
     li.li-category-selected {
-        background-color:#bbbbbb;
+        background-image:url(/caaers/images/chrome/ae-cat-arrow.png);
+		background-repeat:no-repeat;
     }
 
     li.li-category {
@@ -343,6 +345,7 @@
         font-size:9pt;
         cursor:pointer;
         color:blue;
+		text-decoration:underline;
     }
 
     ul.ae-added-terms, a.ae-added-terms {
@@ -357,11 +360,7 @@
     }
 
     a.ae-added-terms:hover {
-        font-size:9pt;
         cursor:pointer;
-        color: blue;
-        margin: 0px;
-        padding-left: 5px;
     }
 
     a.ae-disabled {

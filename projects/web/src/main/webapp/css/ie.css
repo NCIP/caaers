@@ -88,23 +88,7 @@ div.row, build-name, main {
 	height: 180px;
 }
 
-/* Buttons */
-button.omnipotent-button {
-	padding:2px 0 0 0;
-	margin-left:5px;
-}
-button.omnipotent-button .right {
-	right:0px;
-	top:0px;
-}
-button.omnipotent-button.small .right {
-	right:0;
-	top:0px;
-}
-button.omnipotent-button.small.no-icon {
-	padding:1px 5px 1px;
-}
-td button.omnipotent-button.fix-ie {
-	position:absolute;
-	height:31px;
+.omnipotent-button, .omnipotent-button img {
+	vertical-align:middle;
+	padding-top:2px;
 }
