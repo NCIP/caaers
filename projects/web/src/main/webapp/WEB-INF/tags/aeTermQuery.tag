@@ -226,7 +226,7 @@
 		},
 
         showCategoryBox:function(){
-	 			this.showWindow('', '', 850, 580 );
+	 			this.showWindow('', '', 1000, 580 );
 	 	}
  	});
 	
