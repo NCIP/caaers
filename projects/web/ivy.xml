@@ -6,7 +6,7 @@
           	status="integration"/>
         
         <configurations>
-        	<conf name="default" visibility="public" extends="publish,runtime" 
+        	<conf name="default" visibility="public" extends="publish,build" 
         		description="Dependencies needed for default setting"  />
         	<conf name="build" visibility="public" 
         		description="Dependencies required for build time, all classpath should have this"/>
@@ -29,7 +29,12 @@
   		</publications>
         
         <!-- dependencies for the web module -->
-        <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
+        <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
+        	<!--  JSP-API-* should be excluded -->
+        	<exclude conf="runtime,dist,distGrid" name="jsp-api" />
+        	<exclude conf="runtime,dist,distGrid" name="jstl"  />
+        	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
+        	<exclude conf="runtime,dist,distGrid" name="standard"  />
         	
 			<!--  caAERS other modules -->
 	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
