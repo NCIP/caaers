@@ -67,7 +67,7 @@
                 title:"",
                 url: url,
                 width: 900,
-                height: 450,
+                height: 500,
                 recenterAuto:true});
             this.win.showCenter(true);
         },

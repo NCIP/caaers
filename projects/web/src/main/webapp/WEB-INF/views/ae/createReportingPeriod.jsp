@@ -6,8 +6,8 @@
 	<tags:stylesheetLink name="standard-form" />
 	<style type="text/css">
 		body {background: none; text-align:left;}
-		div.row div.label {width: 12em;}
-	 	div.row div.value, div.row div.extra { margin-left: 13em; }
+		div.row div.label {width: 16em;}
+	 	div.row div.value, div.row div.extra { margin-left: 17em; }
         div.hr {font-size:1px; height: 1px;}
 	</style>
      <script>
@@ -55,7 +55,7 @@
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[4]}" /></jsp:attribute>
              <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" field="${fieldGroups.ReportingPeriod.fields[4]}"/></jsp:attribute>
         </ui:row>
-
+<center>
         <tags:table bgColor="#cccccc" contentID="_ta">
             <table width="100%" cellspacing="1" cellpadding="2" style="font-size:10pt;">
                 <tr bgcolor="#E4E4E4">
@@ -74,6 +74,8 @@
                 </tr>
             </table>
         </tags:table>
+</center>
+        <br>
     </jsp:attribute>
     <jsp:attribute name="navButtons"><div align="right"><input type="image" src="<c:url value="/images/blue/save_btn.png" />" id="flow-update" class="tab${tabNumber}" value="Save" alt="Save"/></div></jsp:attribute>
 
