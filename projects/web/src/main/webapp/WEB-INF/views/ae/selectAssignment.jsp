@@ -66,7 +66,7 @@
                 destroyOnClose:true,
                 title:"",
                 url: url,
-                width: 700,
+                width: 900,
                 height: 450,
                 recenterAuto:true});
             this.win.showCenter(true);
