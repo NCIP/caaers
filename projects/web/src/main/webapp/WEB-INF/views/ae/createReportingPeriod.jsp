@@ -70,7 +70,7 @@
                 </c:forEach>
                 <tr bgcolor="white">
                     <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA"/>&nbsp;Other
-                    <td><ui:textarea rows="1" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea>
+                    <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea>
                 </tr>
             </table>
         </tags:table>
