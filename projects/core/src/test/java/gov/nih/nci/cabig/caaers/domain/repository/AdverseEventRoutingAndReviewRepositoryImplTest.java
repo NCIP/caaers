@@ -142,6 +142,38 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewComments().get(1).getUserComment());
 	}
 	
+	public void testDeleteReportingPeriodReviewComment(){
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		ArrayList<ReportingPeriodReviewComment> commentsList = new ArrayList<ReportingPeriodReviewComment>();
+		commentsList.add(Fixtures.createReportingPeriodReviewComment(1, "comment 1"));
+		commentsList.add(Fixtures.createReportingPeriodReviewComment(2, "comment 2"));
+		commentsList.add(Fixtures.createReportingPeriodReviewComment(3, "comment 3"));
+		rp.setReviewComments(commentsList);
+		rp.setId(1);
+		EasyMock.expect(rpDao.getById(1)).andReturn(rp);
+		rpDao.save(rp);
+		replayMocks();
+		impl.deleteReportingPeriodReviewComment(1, 2);
+		verifyMocks();
+		assertEquals("Comment not deleted from comments list", 2, rp.getReviewComments().size());
+	}
+	
+	public void testDeleteReportReviewComment(){
+		ExpeditedAdverseEventReport r = Fixtures.createSavableExpeditedReport();
+		ArrayList<ReportReviewComment> commentsList = new ArrayList<ReportReviewComment>();
+		commentsList.add(Fixtures.createReportReviewComment(1, "comment 1"));
+		commentsList.add(Fixtures.createReportReviewComment(2, "comment 2"));
+		commentsList.add(Fixtures.createReportReviewComment(3, "comment 3"));
+		r.setReviewComments(commentsList);
+		r.setId(1);
+		EasyMock.expect(rDao.getById(1)).andReturn(r);
+		rDao.save(r);
+		replayMocks();
+		impl.deleteReportReviewComment(1, 2);
+		verifyMocks();
+		assertEquals("Comment not deleted from comments list", 2, r.getReviewComments().size());
+ 	}
+	
 	public void testEditReportingPeriodReviewCommentWithId(){
 		Integer reportingPeriodId = 5;
 		String newComment = "new Comment";

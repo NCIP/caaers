@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
@@ -490,6 +491,13 @@ public class Fixtures {
    
    public static ReportingPeriodReviewComment createReportingPeriodReviewComment(Integer id, String comment){
 	   ReportingPeriodReviewComment reviewComment = new ReportingPeriodReviewComment();
+	   reviewComment.setUserComment(comment);
+	   reviewComment.setId(id);
+	   return reviewComment;
+   }
+   
+   public static ReportReviewComment createReportReviewComment(Integer id, String comment){
+	   ReportReviewComment reviewComment = new ReportReviewComment();
 	   reviewComment.setUserComment(comment);
 	   reviewComment.setId(id);
 	   return reviewComment;

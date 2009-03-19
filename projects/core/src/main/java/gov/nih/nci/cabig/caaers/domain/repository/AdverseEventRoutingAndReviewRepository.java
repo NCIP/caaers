@@ -101,6 +101,33 @@ public interface AdverseEventRoutingAndReviewRepository {
 	public void editReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId, Integer commentId);
 	
 	/**
+	 * Will delete a review comment with commentId passed to the method.
+	 * @param reportId
+	 * @param commentId
+	 */
+	public void deleteReportReviewComment(Integer reportId, Integer commentId);
+	
+	/**
+	 * Will delete a review comment with commentId passed to the method.
+	 * @param aeReport
+	 * @param commentId
+	 */
+	public void deleteReportReviewComment(ExpeditedAdverseEventReport aeReport, Integer commentId);
+	
+	/**
+	 * Will delete a review comment with commentId passed to the method.
+	 * @param reportingPeriodId
+	 * @param commentId
+	 */
+	public void deleteReportingPeriodReviewComment(Integer reportingPeriodId, Integer commentId);
+	
+	/**
+	 * Will delete a review comment with commentId passed to the method.
+	 * @param reportingPeriod
+	 * @param commentId
+	 */
+	public void deleteReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, Integer commentId);
+	/**
 	 * Will advance the workflow to its next step, for the Report
 	 * @param workflowId
 	 * @param transition

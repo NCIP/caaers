@@ -157,6 +157,36 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		expeditedAdverseEventReportDao.save(aeReport);
 	}
 	
+	public void deleteReportReviewComment(Integer aeReportId, Integer commentId){
+		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(aeReportId);
+		deleteReportReviewComment(aeReport, commentId);
+	}
+	
+	public void deleteReportReviewComment(ExpeditedAdverseEventReport aeReport, Integer commentId){
+		for(ReportReviewComment reviewComment: aeReport.getReviewComments()){
+			if(reviewComment.getId().equals(commentId)){
+				aeReport.getReviewComments().remove(reviewComment);
+				break;
+			}
+		}
+		expeditedAdverseEventReportDao.save(aeReport);
+	}
+	
+	public void deleteReportingPeriodReviewComment(Integer reportingPeriodId, Integer commentId){
+		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
+		deleteReportingPeriodReviewComment(reportingPeriod, commentId);
+	}
+	
+	public void deleteReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, Integer commentId){
+		for(ReportingPeriodReviewComment reviewComment: reportingPeriod.getReviewComments()){
+			if(reviewComment.getId().equals(commentId)){
+				reportingPeriod.getReviewComments().remove(reviewComment);
+				break;
+			}
+		}
+		adverseEventReportingPeriodDao.save(reportingPeriod);
+	}
+	
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
 		this.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
