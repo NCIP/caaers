@@ -261,7 +261,7 @@
 	<c:if test="${not isMeddra}">
 
     <div id="chooseCategory">
-        <chrome:box title="${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name}">
+        <chrome:box title="Select Adverse Event Terms (${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name})">
 
         <table width="100%" border="0" cellspacing="0" cellpadding="5">
         <tr bgcolor="#E4E4E4">
@@ -273,18 +273,22 @@
         </tr>
         <tr>
             <td align="left" valign="top">
+                <div style="overflow:auto; height:460px;">
                 <ul id="categories" class="ae-category">
                     <c:forEach var="cat" items="${empty ctcCategories ? command.study.ctcCategories : ctcCategories}">
                         <li id="li_${cat.id}"><a id="category_${cat.id}" onclick='catSel.showTerms(${cat.id}, catSel.ignoreOtherSpecify);' class='ae-category' title="${cat.name}">${cat.name}</a>
                     </c:forEach>
                 </ul>
+                </div>
             </td>
             <td align="left" bgcolor="gray"></td>
             <td align="left" valign="top">
+                <div style="overflow:auto; height:460px;">
                 <ul id="ae-terms" class="ae-category"></ul>
+                </div>
             </td>
             <td align="left" bgcolor="gray"></td>
-            <td align="left" valign="top"><ul id="ae-added-terms" class="ae-category"></ul></td>
+            <td align="left" valign="top"><div style="overflow:auto; height:460px;"><ul id="ae-added-terms" class="ae-category"></ul></div></td>
         </tr>
         <tr>
             <td colspan="4" style="text-align:right;">
