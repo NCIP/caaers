@@ -111,8 +111,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 		int i = 0;
 		
-		//Call the super class referenceData, so that the createFieldGroup is executed
-		Map<String, Object> refdata = super.referenceData(request, command);
+		
 		
 		//if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
 		//	return refdata;
@@ -140,6 +139,9 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		//find primary AE
 		//command.findPrimaryAdverseEvent();
 		
+		//Call the super class referenceData, so that the createFieldGroup is executed
+		Map<String, Object> refdata = super.referenceData(request, command);
+		
 		//create the 3 column display for all report definitions.
 		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
 		Map<String, ReportDefinitionDisplayTable> selectedReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
@@ -163,33 +165,14 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
 		
 		
-		// Add some flags refdata (displaySeriousTable, displayObservedTable, displaySolicitedTable) to determine if to display
 		// these tables or statement saying no rows to render.
-		Boolean displaySeriousTable = false; // For Serious Adverse Events table
-		Boolean displayObservedTable = false; // For Observed Adverse Events table
-		Boolean displaySolicitedTable = false; // For Solicited Adverse Events table
 		Boolean displayReportableAeTable = false; // For "Select Adverse Events To Report" table.
 		
-		if(command.getAdverseEventReportingPeriod().getReportableAdverseEvents().size() > 0)
-			displayReportableAeTable = true;
+		List<AdverseEvent> reportableAdverseEvents = command.getAdverseEventReportingPeriod().getReportableAdverseEvents();
 		
-		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(BooleanUtils.isTrue(ae.getRequiresReporting()))
-				displaySeriousTable = true;
-		}
 		
-		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(!ae.getSolicited() && BooleanUtils.isNotTrue(ae.getRequiresReporting()))
-				displayObservedTable = true;
-		}
+		if(reportableAdverseEvents.size() > 0)	displayReportableAeTable = true;
 		
-		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(ae.getSolicited() && BooleanUtils.isNotTrue(ae.getRequiresReporting()))
-				displaySolicitedTable = true;
-		}
-		refdata.put("displaySeriousTable", displaySeriousTable);
-		refdata.put("displayObservedTable", displayObservedTable);
-		refdata.put("displaySolicitedTable", displaySolicitedTable);
 		refdata.put("displayReportableAeTable", displayReportableAeTable);
 		
 		return refdata;
