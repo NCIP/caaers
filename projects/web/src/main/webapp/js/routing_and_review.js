@@ -52,6 +52,12 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			this.disableEditMode();
 		}.bind(this));
 	},
+	deleteComment:function(id){
+		this.ajaxFacade.deleteReviewComment(id, function(ajaxOutput){
+			this.updateCommentElementContent(ajaxOutput.htmlContent);
+			this.disableEditMode();
+		}.bind(this));
+	},
 	retrieveReviewComments : function(){
 		this.ajaxFacade.retrieveReviewComments(function(ajaxOutput){
 			this.updateCommentElementContent(ajaxOutput.htmlContent);

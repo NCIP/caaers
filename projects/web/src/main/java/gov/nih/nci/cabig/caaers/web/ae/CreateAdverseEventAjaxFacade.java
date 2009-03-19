@@ -914,6 +914,14 @@ public class CreateAdverseEventAjaxFacade {
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
     }
     
+    public AjaxOutput deleteReviewComment(Integer commentId){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(command.getAeReport(), commentId);
+    	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
+    }
+    
     public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
 		Map params = new HashMap<String, String>();
 		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "aeReport");

@@ -233,6 +233,15 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
     }
     
+    public AjaxOutput deleteReviewComment(Integer commentId){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.deleteReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), commentId);
+    	
+    	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
+    }
+    
     public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
 		Map params = new HashMap<String, String>();
 		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "reportingPeriod");

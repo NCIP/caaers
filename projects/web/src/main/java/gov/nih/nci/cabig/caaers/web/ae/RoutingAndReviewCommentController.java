@@ -128,6 +128,15 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 				// Fetch the new list of comments again and set it up in the command.
 				cmd.setComment("");
 				populatePreviousComments(entity, id, cmd);
+			}else if(action.equals("deletePopupComment")){
+				Integer commentId = cmd.getCommentId();
+				if("aeReport".equals(entity)){
+					adverseEventRoutingAndReviewRepository.deleteReportReviewComment(id, commentId);
+				}else if("reportingPeriod".equals(entity)){
+					adverseEventRoutingAndReviewRepository.deleteReportingPeriodReviewComment(id, commentId);
+				}
+				cmd.setComment("");
+				populatePreviousComments(entity, id, cmd);
 			}
 			else{
 				Object ajaxSubview = findInRequest(request, AJAX_SUBVIEW_PARAMETER);

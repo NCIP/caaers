@@ -231,4 +231,28 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         verifyMocks();
 
 	}
+	
+	public void testDeleteReviewComment() throws Exception{
+		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
+		SecurityContext context = registerMockFor(SecurityContext.class);
+		Authentication auth =  registerMockFor(Authentication.class);
+        User user = registerMockFor(User.class);
+        AdverseEventRoutingAndReviewRepository repository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
+        CaptureAdverseEventAjaxFacade facadeMock = registerMockFor(CaptureAdverseEventAjaxFacade.class);
+        session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
+        session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
+        facade.setAdverseEventRoutingAndReviewRepository(repository);
+        studyDao.lock(command.getStudy());
+        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
+        expect(context.getAuthentication()).andReturn(auth).anyTimes();
+        expect(auth.getPrincipal()).andReturn(user).anyTimes();
+        expect(user.getUsername()).andReturn("SYSTEM_ADMIN").anyTimes();
+        expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
+        repository.deleteReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), 1);
+        expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
+       
+        replayMocks();
+        facade.deleteReviewComment(1);
+        verifyMocks();
+	}
 }

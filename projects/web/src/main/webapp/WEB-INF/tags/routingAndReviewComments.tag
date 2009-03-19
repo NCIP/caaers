@@ -80,5 +80,9 @@
 		routingHelper.expandAllComments();
 	}
 	
+	function deleteComment(id){
+		routingHelper.deleteComment(id);
+	}
+	
 </script>
 

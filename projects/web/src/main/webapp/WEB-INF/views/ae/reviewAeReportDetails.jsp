@@ -18,6 +18,10 @@
 		function editComment(id){
 			routingHelper.enableEditMode(id);
 		}
+		
+		function deleteComment(id){
+			routingHelper.deleteComment(id);
+		}
 	
 		function cancelEdit(){
 			routingHelper.disableEditMode();
