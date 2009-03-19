@@ -250,7 +250,7 @@
   		</div>
   		<c:if test="${not isMeddra and not hideAddMultiple}">
   			<div style="margin:0 20px; display:inline;">or</div>
-  			<tags:button size="small" type="button" color="blue" icon="window" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
+  			<tags:button size="small" type="button" color="blue" icon="add multiple" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   		</c:if>
   	</chrome:box>
 

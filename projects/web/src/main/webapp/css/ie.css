@@ -88,7 +88,9 @@ div.row, build-name, main {
 	height: 180px;
 }
 
-.omnipotent-button, .omnipotent-button img {
-	vertical-align:middle;
-	padding-top:2px;
+button.omnipotent-button {
+	margin:0 -25px;
+} 
+button.omnipotent-button.small {
+	margin:0;
 }
