@@ -159,6 +159,14 @@ public class AdverseEventTest extends AbstractTestCase {
     	adverseEvent.getStartDateAsString();
     }
     
+    public void testToString(){
+    	assertEquals("{id :null, Grade : null, Hospitalization: null, attribution : null, expected : null}",new AdverseEvent().toString());
+    	AdverseEvent e = new AdverseEvent();
+    	e.setId(5);
+    	assertEquals("{id :5, Grade : null, Hospitalization: null, attribution : null, expected : null}",e.toString());
+    	
+    }
+    
 //
 //    public void testCopyAdverseEventTerm() {
 //

@@ -688,4 +688,17 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     	sb.append(serious == null ? "" : serious.getName());
     	return sb.toString();
     }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("{")
+    	.append("id :" + String.valueOf(getId()))
+    	.append(", Grade : " + String.valueOf(grade))
+    	.append(", Hospitalization: " + String.valueOf(hospitalization))
+    	.append(", attribution : " + String.valueOf(attributionSummary))
+    	.append(", expected : " + String.valueOf(expected))
+    	.append("}");
+    	return sb.toString();
+    }
 }
