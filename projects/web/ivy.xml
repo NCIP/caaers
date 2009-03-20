@@ -33,7 +33,6 @@
         	<!--  JSP-API-* should be excluded -->
         	<exclude conf="runtime,dist,distGrid" name="jsp-api" />
         	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
-        	<exclude conf="runtime,dist,distGrid" name="standard"  />
         	
 			<!--  caAERS other modules -->
 	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
@@ -78,8 +77,8 @@
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 			
 			<!--  Build Only Dependencies -->
-			<dependency org="javax.servlet" name="jstl" rev="1.1.2" conf="build->default(*)" />
-			<dependency org="taglibs" name="standard" rev="1.1.2" conf="build->default(*)" />
+			<dependency org="javax.servlet" name="jstl" rev="1.1.2" conf="build->default(*);dist->default(*);distGrid->default(*)" />
+			<dependency org="taglibs" name="standard" rev="1.1.2" conf="build->default(*);dist->default(*);distGrid->default(*)" />
 			
 			<!-- Jaxen XPATH -->
 			<dependency org="jaxen" name="jaxen" rev="1.1" />
