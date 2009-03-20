@@ -57,17 +57,14 @@
 		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
-		
-		<table border="0">
-			<tr>
-			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" /></td>
-			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" /></td>
-			</tr>
-			<tr>
-			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" /></td>
-			<td><tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/></td>
-			</tr>
-		</table>
+		<div class="leftpanel">
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
+		</div>
+		<div class="rightpanel">
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
+		</div>
 		
 		 <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="5" end="${len - 2}">
             <tags:renderRow field="${field}"/>
