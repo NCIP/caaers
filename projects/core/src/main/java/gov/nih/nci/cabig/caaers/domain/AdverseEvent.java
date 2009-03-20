@@ -663,29 +663,56 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     	StringBuffer sb = new StringBuffer("");
     	// verbatim value
     	sb.append(detailsForOther == null ? "" : detailsForOther.toString());
+    	
     	sb.append("$$");
+    	
     	// grade value
     	sb.append(grade == null ? "" : grade.getName()); // grade value
+    	
     	sb.append("$$");
+    	
     	// attribution value
     	sb.append(attributionSummary == null ? "" : attributionSummary.getName());
+    	
     	sb.append("$$");
+    	
     	// hospitalization value
     	if(hospitalization == null)
     		sb.append("");
     	else
     		sb.append(hospitalization.getName().equals("NONE") ? "" : hospitalization.getName());
+    	
     	sb.append("$$");
+    	
     	// expected
     	sb.append(expected == null ? "" : expected);
     	sb.append("$$");
+    	
     	if(!getSolicited() && getAdverseEventCtcTerm() != null && getAdverseEventCtcTerm().getTerm() != null){
     		if(getAdverseEventCtcTerm().getTerm().isOtherRequired()){
     			sb.append(lowLevelTerm == null ? "" : lowLevelTerm.getFullName());
     		}
     	}
+    	
     	sb.append("$$");
-    	sb.append(serious == null ? "" : serious.getName());
+    	
+    	//startdate
+    	sb.append(startDate == null ? "" : DateUtils.formatDate(startDate)).append("$$");
+    	
+    	//enddate
+    	sb.append(endDate == null ? "" : DateUtils.formatDate(endDate)).append("$$");
+    	
+    	//eventTime
+    	if(eventApproximateTime == null){
+    		sb.append("$$$$"); //for hour and minute
+    	}else{
+    		sb.append(eventApproximateTime.getHour() == null ? "" : eventApproximateTime.getHourString()).append("$$");
+    		sb.append(eventApproximateTime.getMinute() == null ? "" : eventApproximateTime.getMinuteString()).append("$$");
+    	}
+    	    	
+    	//eventLocation
+    	sb.append(eventLocation == null ? "" : eventLocation ).append("$$");
+    	
     	return sb.toString();
     }
     

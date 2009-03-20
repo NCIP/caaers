@@ -167,6 +167,13 @@ public class AdverseEventTest extends AbstractTestCase {
     	
     }
     
+    
+    public void testGetSignature(){
+    	AdverseEvent ae = new AdverseEvent();
+    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$", ae.getSignature());
+    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getSignature());
+    }
+    
 //
 //    public void testCopyAdverseEventTerm() {
 //

@@ -154,6 +154,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	}
     	//sort the list
     	Collections.sort(evaluatedAdverseEvents, AdverseEventComprator.DEFAULT_ADVERSE_EVENT_COMPARATOR);
+    	
     	return evaluatedAdverseEvents;
     }
     
