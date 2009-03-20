@@ -590,14 +590,12 @@ img.indicator { visibility: hidden; }
 .rightpanel {
 	float:right;
 	width:46%;
-	padding: 5px;
 	clear:none;
 }
 .leftpanel {
 	float: left;
 	clear:none;
 	width:46%;
-	padding: 5px;
 }
 /*
   Styles for Table Data 

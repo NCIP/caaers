@@ -66,46 +66,26 @@
 				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:" + grades.indexOf(val);
 			});
 		</script>
-		
-		<%-- Div to show Start Date and End Date--%>
-		<div class="row">
-			<div class="leftpanel">
-				<%-- Start Date --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />	
-			</div>
-			<div class="rightpanel">
-				<%-- End Date --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
-			</div>
-		</div>
-		
-		<%-- Div to show Attribution and Expectedness --%>
-		<div class="row">
-			<div class="leftpanel">
-				<%-- Attribution --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />	
-			</div>
-			<div class="rightpanel">
-				<%-- Expectedness --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
-			</div>
-		</div>
-		
-		<%-- Div to show Time of Event and Location --%>
-		<div class="row">
-			<div class="leftpanel">
-				<%-- Time Of Event --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
-			</div>
-			<div class="rightpanel">
-				<%-- Event Location --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
-			</div>
-		</div>
-		<%-- Hospitalization --%>
+		<div class="leftpanel">
+			<%-- Start Date --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
+			<%-- Attribution --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
+			<%-- Time Of Event --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
+			<%-- Hospitalization --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
-		<%-- Outcome--%>
-		<ae:oneOutcome index="${index}" isRoutineFlow="true" />
+		</div>
+		<div class="rightpanel">
+			<%-- End Date --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
+			<%-- Expectedness --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
+			<%-- Event Location --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
+			<%-- Outcome--%>
+			<ae:oneOutcome index="${index}" isRoutineFlow="true" />
+		</div>
 
 		<!--  field to store the sig -->
 		<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>

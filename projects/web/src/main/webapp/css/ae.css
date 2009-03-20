@@ -1,47 +1,40 @@
-/* TODO: some of these may be moved up to common */
+/* TODO: some of these may be moved up to common */ 
 .border-BR div.row .summaryvalue {
-  font-weight: normal;
-  margin-left: 11em;	
+    font-weight: normal;
+    margin-left: 11em;
 }
-div.row div.label {
-    width: 9em;
-}
-
-div.row div.value, div.row div.extra { margin-left: 11em; }
 div.row div.extra {
     padding-top: 0.3em;
-}
-
+} 
 .main-fields {
     float: left;
     width: 60em;
     margin-bottom: 0.5em;
-}
-
+} 
 .ctc-details {
     padding-right: 1.2em;
     width: 60em;
 }
-
 /* summary panel */
 div.row div.summarylabel {
-  font-weight: bold;
-  float: left;
-  margin-left: 0.3em;
-  text-align: right;
-  width: 5em;
+    font-weight: bold;
+    float: left;
+    margin-left: 0.3em;
+    text-align: right;
+    width: 5em;
 }
+
 /* TODO : In case if summary other than AE is to be displayed using this,
  * we need to move this up to common location.
  */
 div.row div.summaryvalue {
-  font-weight: normal;
-  margin-left: 6em;	
-}
+    font-weight: normal;
+    margin-left: 6em;
+} 
 .border-BR .summarylabel {
-float:left;
-font-weight:bold;
-margin-left:0.3em;
-text-align:right;
-width:6em;
+    float: left;
+    font-weight: bold;
+    margin-left: 0.3em;
+    text-align: right;
+    width: 6em;
 }
