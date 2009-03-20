@@ -32,7 +32,6 @@
         <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
         	<!--  JSP-API-* should be excluded -->
         	<exclude conf="runtime,dist,distGrid" name="jsp-api" />
-        	<exclude conf="runtime,dist,distGrid" name="jstl"  />
         	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
         	<exclude conf="runtime,dist,distGrid" name="standard"  />
         	
