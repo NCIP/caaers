@@ -183,33 +183,57 @@
     function createSignature(index){
 		var signature = '';
 
-        var otherMeddraId = 'adverseEvents[' + index + '].lowLevelTerm-input';
+		var inputOtherMeddra = $('adverseEvents[' + index + '].lowLevelTerm-input');
+		var inputStartDate = $('adverseEvents[' + index + '].startDate');
+		var inputEndDate = $('adverseEvents[' + index + '].endDate');
+		var inputEventHour = $('adverseEvents[' + index + '].eventApproximateTime.hour');
+		var inputEventMinute = $('adverseEvents[' + index + '].eventApproximateTime.minute');
+		var inputEventLocation = $('adverseEvents[' + index + '].eventLocation');
+		
 		var verbatimId = 'adverseEvents[' + index + '].detailsForOther';
 		
 		var attributionId = 'adverseEvents[' + index + '].attributionSummary';
 		var hospitalizationId = 'adverseEvents[' + index + '].hospitalization';
 		var expectedId = 'adverseEvents[' + index + '].expected';
-		var seriousId = 'adverseEvents[' + index + '].serious';
 
 		signature = $(verbatimId).value + '$$' + // verbatim input
 					findGradeForAE(index) + '$$' + // grade input
 					document.getElementById(attributionId).value + '$$' + // attribution input
 					document.getElementById(hospitalizationId).value + '$$' + // hospitalization input
-					document.getElementById(expectedId).value; // expected input
+					document.getElementById(expectedId).value + '$$'; // expected input
 
         // If otherMeddraId element exists append otherMeddra Value to the signature.
-		if(document.getElementById(otherMeddraId) != null)
-			signature = signature + '$$' + document.getElementById(otherMeddraId).value;// otherMeddra input
-		else
-			signature = signature + '$$';
-		
-		
-		// If seriousId element exists append serious Value to the signature.
-		if(document.getElementById(seriousId) != null)
-			signature = signature + '$$' + document.getElementById(seriousId).value;
-		else
-			signature = signature + '$$';	
+        if(inputOtherMeddra){
+        	signature = signature + inputOtherMeddra.value;
+        }
+        signature = signature + '$$';
 
+        //startDate
+		if(inputStartDate){
+			signature = signature + inputStartDate.value;
+		}
+		signature = signature + '$$';
+		//endDate
+		if(inputEndDate){
+			signature = signature + inputEndDate.value;
+		}
+		signature = signature + '$$';
+		//event hour
+		if(inputEventHour){
+			signature = signature + inputEventHour.value;
+		}
+		signature = signature + '$$';
+		//event minute
+		if(inputEventMinute){
+			signature = signature + inputEventMinute.value;
+		}
+		signature = signature + '$$';
+		//event location
+		if(inputEventLocation){
+			signature = signature + inputEventLocation.value;
+		}
+		signature = signature + '$$';
+		
         return signature;
 	}
 
@@ -307,6 +331,7 @@
     // ----------------------------------------------------------------------------------------------------------------
 	//javascript:fireAction(index,section-id,sectionCSS) : This function will be called when the delete button on the AE is clicked.;
 	function fireAction(index, sectionId, sectionCSS) {
+		//AE.checkForModification = false; //tell app,not to complain about page modification event. 
 		rpCreator.deleteAdverseEvent(index);
 	}
 	// ----------------------------------------------------------------------------------------------------------------
