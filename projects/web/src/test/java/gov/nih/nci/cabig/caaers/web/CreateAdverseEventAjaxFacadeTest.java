@@ -365,7 +365,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderReturnsFalseWhenTargetOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 1, 4).getChanges();
         verifyMocks();
@@ -376,7 +376,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testReorderReturnsFalseWhenObjectOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        assignmentDao.reassociate(command.getAeReport().getAssignment());
         replayMocks();
         List<IndexChange> actual = facade.reorder("aeReport.adverseEvents", 4, 1).getChanges();
         verifyMocks();

@@ -684,6 +684,9 @@ public class CreateAdverseEventAjaxFacade {
     	try {
     	Object cmd = extractCommand();
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+    	
+    	command.reassociate();
+    	
         list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (targetIndex >= list.size()) {
             log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
@@ -702,7 +705,8 @@ public class CreateAdverseEventAjaxFacade {
             return new AjaxOutput();
         }
         
-        command.reassociate();
+      
+       
         
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
