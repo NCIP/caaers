@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static org.easymock.EasyMock.expect;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
@@ -21,7 +22,9 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -39,8 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import static org.easymock.EasyMock.expect;
 
 /**
  * @author Sameer Work
@@ -71,7 +72,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
+		expeditedReportTree = new ExpeditedReportTree();
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepositoryImpl.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
@@ -302,6 +303,53 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	assertEquals(new Integer(0), command.getAeReport().getAdverseEvents().get(0).getId());
     	assertEquals(new Integer(1), command.getAeReport().getAdverseEvents().get(1).getId());
     	assertEquals(4, command.getAeReport().getAdverseEvents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#initializeMandatorySectionFields()}
+     */
+    public void testInitializeMandatorySectionFields(){
+    	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+    	sections.add(ExpeditedReportSection.LABS_SECTION);
+    	command.setMandatorySections(sections);
+    	
+    	assertEquals(0, command.getAeReport().getLabs().size());
+    	
+    	command.initializeMandatorySectionFields();
+    	assertEquals(1, command.getAeReport().getLabs().size());
+    	
+    	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#initializeMandatorySectionFields()}
+     */
+    public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatory(){
+    	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+    	sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
+    	command.setMandatorySections(sections);
+    	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	command.initializeMandatorySectionFields();
+    	
+    	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#initializeMandatorySectionFields()}
+     */
+    public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatoryAndStudyHasIND(){
+    	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+    	sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
+    	command.setMandatorySections(sections);
+    	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	
+    	StudyAgent studyAgent = Fixtures.createStudyAgent("test");
+    	studyAgent.setPartOfLeadIND(true);
+    	command.getAeReport().getStudy().getStudyAgents().add(studyAgent);
+    	
+    	command.initializeMandatorySectionFields();
+    	assertEquals(1, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	
     }
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {

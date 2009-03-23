@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
@@ -20,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -219,7 +221,29 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
                     wrapper.getPropertyValue(node.getPropertyName() + "[0]");
                 }
             }
+            
+
+            // special case, when TreatmentInformation (course&agents tab) is mandatory.
+            // All StudyAgents associated with lead IND should be pre-initialized.
+            if (ExpeditedReportSection.STUDY_INTERVENTIONS.equals(section) || ExpeditedReportSection.AGENTS_INTERVENTION_SECTION.equals(section)) {
+            	TreeNode agentSectionNode = expeditedReportTree.getNodeForSection(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper.getPropertyValue(agentSectionNode.getChildren().get(0).getPropertyName() + ".courseAgents");
+                if (courseAgents.size() <= 0) {
+                    // first time, the user did not override system pre selection.
+                    int i = 0;
+
+                    for (StudyAgent agent : getAeReport().getStudy().getStudyAgents()) {
+                    	if (agent.getPartOfLeadIND() != null && agent.getPartOfLeadIND()) {
+                    		CourseAgent courseAgent = courseAgents.get(i); //pre intialize the agent
+                    		i++;
+                    	}
+                    }
+                    
+                }
+            }
         }
+        
+
 
     }
 
