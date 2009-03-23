@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
@@ -14,11 +15,25 @@ import java.util.List;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
-
+/**
+ * This filter, will filter the {@link Participant} or {@link ParticipantAjaxableDomainObject} (<i>or collection containing them</i>) based on the 
+ * logged in user role. 
+ * 
+ * @author Srini Akkala 
+ * @author Biju Joseph
+ *
+ */
 public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
 	
 	private UserDao userDao;
-
+	/**
+	 * 1. A SUPER USER should be able to see everything, so no filtering is applied. 
+	 * 2. Site Coordinator and Physician should be able to see everything, so no filtering is applied. 
+	 * 3. For all the other roles, apply study level filtering.
+	 *   i.e. Filter those {@link Participant}s from the search result, that are not assigned studies belonging to
+	 *    logged-in user's organization.
+	 * 
+	 */
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		//get user
 		String userName = getUserName(authentication);

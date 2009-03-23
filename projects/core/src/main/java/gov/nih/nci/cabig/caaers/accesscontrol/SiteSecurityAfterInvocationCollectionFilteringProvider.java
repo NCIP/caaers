@@ -71,6 +71,9 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
         DomainObjectSecurityFilterer auth = (DomainObjectSecurityFilterer) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
         .get(searchedObject.getClass().getName());
         
+        //no filtering is required if a filterer is not configured.
+        if(auth == null) return filterer.getFilteredObject();
+        
         return auth.filter(authentication, "ACCESS", filterer);
         //return filteredResults.getFilteredObject();
     }

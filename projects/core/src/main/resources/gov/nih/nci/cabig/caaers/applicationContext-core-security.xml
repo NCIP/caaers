@@ -137,7 +137,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.dao.ParticipantDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.OrganizationDao+.restrict*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
@@ -384,8 +383,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
                value-ref="studySiteSecurityFilterer"/>
+        <!--        
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
+        -->       
         <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
                value-ref="organizationSecurityFilterer"/>  
         <entry key="gov.nih.nci.cabig.caaers.domain.ResearchStaff"

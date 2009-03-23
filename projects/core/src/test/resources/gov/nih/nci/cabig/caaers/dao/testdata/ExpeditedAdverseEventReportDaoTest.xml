@@ -117,10 +117,10 @@
     <CONCOMITANT_MEDICATIONS id="-30" list_index="1"
                              report_id="-1" start_date_day="10" start_date_month="10" start_date_year="2002"
                              start_date_zone="0" end_date_day="10" end_date_month="10" end_date_year="2004"
-                             end_date_zone="0" still_taking_medications="1"/>
+                             end_date_zone="0" still_taking_medications="1" version="0"/>
     <CONCOMITANT_MEDICATIONS id="-31" list_index="0"
                              report_id="-1" agent_name="agent_name1" start_date_month="11" start_date_year="2003"
-                             start_date_zone="0" end_date_zone="0"/>
+                             start_date_zone="0" end_date_zone="0" version="0"/>
     <OTHER_CAUSES id="-82" report_id="-1" list_index="2"
                   cause_text="Tire fire"/>
     <OTHER_CAUSES id="-81" report_id="-1" list_index="0"
