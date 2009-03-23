@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -7,8 +8,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
-
-import junit.framework.TestCase;
 
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.Unmarshaller;
@@ -18,7 +17,7 @@ import org.exolab.castor.xml.Unmarshaller;
  * @author Biju Joseph
  *
  */
-public class AdverseEventReportSerializerTest extends TestCase {
+public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase {
 	AdverseEventReportSerializer serializer;
 	
 	protected void setUp() throws Exception {
