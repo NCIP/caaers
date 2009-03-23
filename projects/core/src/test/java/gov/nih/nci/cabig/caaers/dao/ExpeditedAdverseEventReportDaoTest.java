@@ -282,11 +282,89 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
             }
         });
     }
+    
+    
+    public void testSaveBasicsWithReordering() throws Exception {
+    	Integer reportId = null;
+    	{
+    	 ExpeditedAdverseEventReport report = createMinimalAeReport();
+    	 CtcTerm term = ctcTermDao.getById(3012);
+         AdverseEvent event0 = new AdverseEvent();
+         event0.setGrade(Grade.MILD);
+         event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
+         event0.setExpected(Boolean.FALSE);
+         event0.setHospitalization(Hospitalization.NO);
+         event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
+                         .getTime() + 600000));
+         report.getReportingPeriod().addAdverseEvent(event0);
+
+         AdverseEvent event1 = new AdverseEvent();
+         event1.setGrade(Grade.SEVERE);
+         event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event1, term));
+         event1.setExpected(Boolean.FALSE);
+         event1.setHospitalization(Hospitalization.YES);
+         report.getReportingPeriod().addAdverseEvent(event1);
+         
+         AdverseEvent event2 = new AdverseEvent();
+         event2.setGrade(Grade.DEATH);
+         event2.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event2, term));
+         event2.setExpected(Boolean.FALSE);
+         event2.setHospitalization(Hospitalization.YES);
+         report.getReportingPeriod().addAdverseEvent(event2);
+
+         report.getAdverseEvents().clear();
+         report.addAdverseEvent(event0);
+         report.addAdverseEvent(event1);
+         report.addAdverseEvent(event2);
+         
+         getDao().save(report);
+         reportId = report.getId();
+         assertNotNull(reportId);
+         
+    	}
+    	interruptSession();
+    	{
+    		ExpeditedAdverseEventReport loaded = getDao().getById(reportId);
+    		assertNotNull(loaded);
+            assertEquals("Wrong number of AEs", 3, loaded.getAdverseEvents().size());
+            AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
+            assertNotNull("Cascaded AE not found", loadedEvent0);
+            assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
+            assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
+            assertEquals("Wrong grade", Grade.SEVERE, loaded.getAdverseEvents().get(1).getGrade());
+            assertNotNull("Third cascaded AE not found", loaded.getAdverseEvents().get(2));
+            assertEquals("Wrong grade", Grade.DEATH, loaded.getAdverseEvents().get(2).getGrade());
+            
+            
+            //reorder
+            loaded.getAdverseEvents().remove(loadedEvent0);
+            loaded.getAdverseEvents().add(1, loadedEvent0);
+            getDao().save(loaded);
+            
+    	}
+    	interruptSession();
+    	{
+    		ExpeditedAdverseEventReport loaded = getDao().getById(reportId);
+    		assertNotNull(loaded);
+            assertEquals("Wrong number of AEs", 3, loaded.getAdverseEvents().size());
+            AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
+            assertNotNull("Cascaded AE not found", loadedEvent0);
+            assertEquals("Wrong grade", Grade.SEVERE, loadedEvent0.getGrade());
+            assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
+            assertEquals("Wrong grade", Grade.MILD, loaded.getAdverseEvents().get(1).getGrade());
+            assertNotNull("Third cascaded AE not found", loaded.getAdverseEvents().get(2));
+            assertEquals("Wrong grade", Grade.DEATH, loaded.getAdverseEvents().get(2).getGrade());
+    	}
+    	
+    }
+
 
     public void testSaveNewReportWithConMedWithAttribution() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
                 ConcomitantMedication conMed = report.getConcomitantMedications().get(0);
+                conMed.setId(-30);
+                conMed.setVersion(0);
                 conMed.setAgentName("agentName");
                 AdverseEvent ae0 = report.getAdverseEvents().get(0);
                 report.getAdverseEvents().get(0).getConcomitantMedicationAttributions().add(
