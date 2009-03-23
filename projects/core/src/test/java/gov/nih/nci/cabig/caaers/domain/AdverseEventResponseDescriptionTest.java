@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
 
@@ -46,7 +47,7 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        description = new AdverseEventResponseDescription();
+       
         eventDescription = "event desc";
         presentStatus = PostAdverseEventStatus.DEAD;
         recoveryDate = new Date();
@@ -64,26 +65,9 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         primaryTreatment = "primaryTreatment";
         primaryTreatmentApproximateTime = new TimeValue();
         primaryTreatmentApproximateTime.setHour(2);
-        description.setAutopsyPerformed(autopsyPerformed);
-        description.setBlindBroken(blindBroken);
-        description.setCauseOfDeath(causeOfDeath);
-        description.setDateRemovedFromProtocol(dateRemovedFromProtocol);
-        description.setDaysNotGiven(daysNotGiven);
-        description.setEventAbate(eventAbate);
-        description.setEventDescription(eventDescription);
-        description.setEventReappear(eventReappear);
-        description.setGridId("grid id");
-        description.setId(2);
-        description.setPresentStatus(presentStatus);
-        description.setRecoveryDate(recoveryDate);
-        description.setReducedDate(reducedDate);
-        description.setReducedDose(reducedDose);
-        description.setRetreated(retreated);
-        description.setReport(new ExpeditedAdverseEventReport());
-        description.setStudyDrugInterrupted(studyDrugInterrupted);
-        description.setVersion(3);
-        description.setPrimaryTreatment(primaryTreatment);
-        description.setPrimaryTreatmentApproximateTime(primaryTreatmentApproximateTime);
+        
+        description = Fixtures.createAdverseEventResponseDescription();
+       
     }
 
     public void testCopy() {
@@ -98,7 +82,8 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         assertEquals(autopsyPerformed, adverseEventResponseDescription.getAutopsyPerformed());
         assertEquals(blindBroken, adverseEventResponseDescription.getBlindBroken());
         assertEquals(causeOfDeath, adverseEventResponseDescription.getCauseOfDeath());
-        assertEquals(dateRemovedFromProtocol, adverseEventResponseDescription.getDateRemovedFromProtocol());
+        
+        assertEquals(DateUtils.formatDate(dateRemovedFromProtocol), DateUtils.formatDate(adverseEventResponseDescription.getDateRemovedFromProtocol()));
         assertEquals(daysNotGiven, adverseEventResponseDescription.getDaysNotGiven());
         assertEquals(eventAbate, adverseEventResponseDescription.getEventAbate());
         assertEquals(eventDescription, adverseEventResponseDescription.getEventDescription());
@@ -129,7 +114,9 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     public void testCopyPrimaryTreatmentApproximateTime() {
     	 AdverseEventResponseDescription adverseEventResponseDescription = description.copy();
 
-        assertSame("primaryTreatmentApproximateTime must  be refer same objects", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+        assertEquals("primaryTreatmentApproximateTime must  be refer same objects", 
+        		primaryTreatmentApproximateTime, 
+        		adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
 
         assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
 

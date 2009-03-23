@@ -64,41 +64,18 @@ public class AdverseEventReportSerializer {
 	    * @throws Exception
 	    */
 	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
-		   String xml = "";
-			XmlMarshaller marshaller = new XmlMarshaller();
-
-			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,0);
-			xml = marshaller.toXML(aer,getMappingFile());
-		
-
-			return xml;
+		   return this.serialize(adverseEventReportDataObject, 0);
 	   }
 
-	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,int reportId) throws Exception{
+	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,int reportId) throws Exception{
 		   String xml = "";
 			XmlMarshaller marshaller = new XmlMarshaller();
-
 			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,reportId);
 			xml = marshaller.toXML(aer,getMappingFile());
 		
-			System.out.println(xml);
 			return xml;
 	   }
 	   
-	   /**
-	    *
-	    * @param adverseEventReportId
-	    * @return
-	    * @throws Exception
-	    */
-	   public String serialize (int adverseEventReportId) throws Exception{
-		   //BJ : Unused method , so will be deleted in next release;
-		   if(true) throw new UnsupportedOperationException("This should not be used as the AdverseEventReportDao was not properly initialized");
-//		   ExpeditedAdverseEventReport adverseEventReportDataObject = getAdverseEventReportDao().getById(adverseEventReportId);
-//		   return serialize(adverseEventReportDataObject);
-		   return "";
-	   }
-
 	  
 
 	   /**

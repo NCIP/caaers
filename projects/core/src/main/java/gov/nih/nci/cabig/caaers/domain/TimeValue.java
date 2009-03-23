@@ -74,4 +74,40 @@ public class TimeValue {
     }
 
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((hour == null) ? 0 : hour.hashCode());
+		result = prime * result + ((minute == null) ? 0 : minute.hashCode());
+		result = prime * result + type;
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TimeValue other = (TimeValue) obj;
+		if (hour == null) {
+			if (other.hour != null)
+				return false;
+		} else if (!hour.equals(other.hour))
+			return false;
+		if (minute == null) {
+			if (other.minute != null)
+				return false;
+		} else if (!minute.equals(other.minute))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+    
+
 }

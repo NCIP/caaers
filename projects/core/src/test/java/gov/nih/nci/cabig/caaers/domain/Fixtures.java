@@ -525,4 +525,48 @@ public class Fixtures {
 	 o.setOutcomeType(type);
 	 return o;
    }
+   
+   public static TreatmentInformation createTreatmentInformation(int id){
+	   TreatmentInformation ti = new TreatmentInformation();
+	   ti.setId(id);
+	   return ti;
+   }
+   
+   public static AdverseEventResponseDescription createAdverseEventResponseDescription(){
+	   AdverseEventResponseDescription description = new AdverseEventResponseDescription();
+       TimeValue primaryTreatmentApproximateTime = new TimeValue();
+       primaryTreatmentApproximateTime.setHour(2);
+       description.setAutopsyPerformed(true);
+       description.setBlindBroken(true);
+       description.setCauseOfDeath("cause of death");
+       description.setDateRemovedFromProtocol(new Date());
+       description.setDaysNotGiven(2);
+       description.setEventAbate(true);
+       description.setEventDescription("event desc");
+       description.setEventReappear(true);
+       description.setGridId("grid id");
+       description.setId(2);
+       description.setPresentStatus(PostAdverseEventStatus.DEAD);
+       description.setRecoveryDate( new Date());
+       description.setReducedDate( new Date());
+       description.setReducedDose("reduce dose");
+       description.setRetreated(true);
+       description.setReport(new ExpeditedAdverseEventReport());
+       description.setStudyDrugInterrupted(true);
+       description.setVersion(3);
+       description.setPrimaryTreatment("primaryTreatment");
+       description.setPrimaryTreatmentApproximateTime(primaryTreatmentApproximateTime);   
+       return description;
+   }
+   
+   public static DiseaseHistory createDiseaseHistory(){
+	   
+	   DiseaseHistory diseaseHistory = new DiseaseHistory();
+	   diseaseHistory.setId(4);
+	   diseaseHistory.setDiagnosisDate(new Date());
+       diseaseHistory.setOtherPrimaryDisease("Other primary");
+       
+       return diseaseHistory;
+  }
+   
 }

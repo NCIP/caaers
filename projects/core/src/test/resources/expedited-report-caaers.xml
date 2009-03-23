@@ -1,0 +1,379 @@
+<AdverseEventReport>
+	<id>9</id>
+	<createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:type="java:java.lang.String">2008-10-01 11:35:16.921</createdAt>
+	<status xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:type="java:java.lang.String">PENDING</status>
+	<AdverseEventResponseDescription>
+		<eventDescription>abc</eventDescription>
+		<presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="java:java.lang.String">INTERVENTION_CONTINUES</presentStatus>
+		<retreated>false</retreated>
+		<autopsyPerformed>false</autopsyPerformed>
+		<primaryTreatmentApproximateTime>
+			<type>0</type>
+		</primaryTreatmentApproximateTime>
+	</AdverseEventResponseDescription>
+	<Physician>
+		<firstName>Jan</firstName>
+		<lastName>Buckner</lastName>
+		<title>reporter</title>
+		<address>
+			<city>dulles</city>
+			<state>va</state>
+			<street>100 anywhere</street>
+			<zip>20111</zip>
+		</address>
+		
+	</Physician>
+	<Reporter>
+		<firstName>Jan</firstName>
+		<lastName>Buckner</lastName>
+		<title>reporter</title>
+		<address>
+			<city>dulles</city>
+			<state>va</state>
+			<street>100 anywhere</street>
+			<zip>20111</zip>
+		</address>
+		
+	</Reporter>
+	<DiseaseHistory>
+		<diagnosisDate />
+		<CtepStudyDisease>
+			<id>67</id>
+			<leadDisease>false</leadDisease>
+			<DiseaseTerm>
+				<id>182</id>
+				<term>Metastases to bone, NOS</term>
+				<ctepTerm>Metastases to bone, NOS</ctepTerm>
+				<DiseaseCategory>
+					<id>93</id>
+					<name>Metastases, Distant (excluding specified site of
+						origin)</name>
+				</DiseaseCategory>
+			</DiseaseTerm>
+		</CtepStudyDisease>
+		<AnatomicSite>
+			<id>4</id>
+			<name>Brainstem</name>
+			<category>Central Nervous System</category>
+		</AnatomicSite>
+	</DiseaseHistory>
+	<ParticipantHistory>
+		<height>
+			<quantity>500</quantity>
+			<unit>Centimeter</unit>
+		</height>
+		<weight>
+			<quantity>55</quantity>
+			<unit>Kilogram</unit>
+		</weight>
+		<baselinePerformanceStatus>0 = Normal Activity, asymptomatic
+		</baselinePerformanceStatus>
+	</ParticipantHistory>
+	<!-- 
+	<StudyParticipantAssignment>
+		<dateOfEnrollment>2008-09-29T00:00:00.000-04:00
+		</dateOfEnrollment>
+		<StudySite>
+			<Study>
+				<id>27</id>
+				<multiInstitutionIndicator>false</multiInstitutionIndicator>
+				<shortTitle>Phase III Cryoablation vs Radiation (CCOPS)
+				</shortTitle>
+				<longTitle>A Phase III Randomized Trial of Cryoablation vs.
+					Radiation for the Palliation of Painful Bone Metastases</longTitle>
+				<phaseCode>Phase III Trial</phaseCode>
+				<primarySponsorCode>DCP</primarySponsorCode>
+				<status>Active - Trial is open to accrual</status>
+				<Ctc>
+					<id>3</id>
+					<name>CTCAE v3.0</name>
+				</Ctc>
+				<Identifier>
+					<type>Protocol Authority Identifier</type>
+					<value>NCCTG N06C6</value>
+					<primaryIndicator>false</primaryIndicator>
+				</Identifier>
+				<Identifier>
+					<type>Coordinating Center Identifier</type>
+					<value>NCCTG N06C6</value>
+					<primaryIndicator>true</primaryIndicator>
+				</Identifier>
+				<design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:type="java:java.lang.String">OPEN_UNBLIND</design>
+				<CtepStudyDisease>
+					<id>74</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>190</id>
+						<term>Solid tumor, NOS</term>
+						<ctepTerm>Solid tumor, NOS</ctepTerm>
+						<DiseaseCategory>
+							<id>95</id>
+							<name>Solid Tumor, Miscellaneous</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<CtepStudyDisease>
+					<id>73</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>98</id>
+						<term>Hematopoietic malignancy, NOS</term>
+						<ctepTerm>Hematopoietic malignancy, NOS</ctepTerm>
+						<DiseaseCategory>
+							<id>59</id>
+							<name>Hematopoietic Neoplasm, Miscellaneous</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<CtepStudyDisease>
+					<id>67</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>182</id>
+						<term>Metastases to bone, NOS</term>
+						<ctepTerm>Metastases to bone, NOS</ctepTerm>
+						<DiseaseCategory>
+							<id>93</id>
+							<name>Metastases, Distant (excluding specified site of
+								origin)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+			</Study>
+			<Organization>
+				<id>10010</id>
+				<name>North Central Cancer Treatment Group</name>
+				<nciInstituteCode>NCCTG</nciInstituteCode>
+				<descriptionText>200 First Street SW Rochester MN 55905
+				</descriptionText>
+				<SiteInvestigator>
+					<id>129</id>
+					<Investigator>
+						<id>30012</id>
+						<firstName>Jan</firstName>
+						<lastName>Buckner</lastName>
+						<nciIdentifier>15027</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>130</id>
+					<Investigator>
+						<id>30122</id>
+						<firstName>Francois</firstName>
+						<lastName>Geoffroy</lastName>
+						<nciIdentifier>22256</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>131</id>
+					<Investigator>
+						<id>30123</id>
+						<firstName>Robert</firstName>
+						<lastName>Arusell</lastName>
+						<nciIdentifier>24427</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>132</id>
+					<Investigator>
+						<id>30124</id>
+						<firstName>Paul</firstName>
+						<lastName>Brown</lastName>
+						<nciIdentifier>31966</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>507-284-5280</phoneNumber>
+						<faxNumber>507-284-3559</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>134</id>
+					<Investigator>
+						<id>30126</id>
+						<firstName>Jann</firstName>
+						<lastName>Sarkaria</lastName>
+						<nciIdentifier>26048</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(507) 284-5280</phoneNumber>
+						<faxNumber>(507) 284-3559</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+			</Organization>
+		</StudySite>
+		<Participant>
+			<firstName>Kristopher</firstName>
+			<lastName>Cane</lastName>
+			<dateOfBirth>
+				<monthString>01</monthString>
+				<yearString>1963</yearString>
+			</dateOfBirth>
+			<gender>Male</gender>
+			<race>Not Reported</race>
+			<ethnicity>Hispanic or Latino</ethnicity>
+			<Identifier>
+				<type>MRN</type>
+				<value>id-1</value>
+				<primaryIndicator>true</primaryIndicator>
+			</Identifier>
+			<Identifier>
+				<type>MRN</type>
+				<value>aaa</value>
+				<primaryIndicator>false</primaryIndicator>
+			</Identifier>
+		</Participant>
+		<studySubjectIdentifier>ccops-id</studySubjectIdentifier>
+	</StudyParticipantAssignment>
+	 -->
+	<ConcomitantMedication>
+		<name>aspirin</name>
+		<startDate>
+			<monthString>01</monthString>
+			<yearString>2007</yearString>
+		</startDate>
+		<endDate />
+		<stillTakingMedications>true</stillTakingMedications>
+	</ConcomitantMedication>
+	<AdverseEvent>
+		<gridId>PRYfba07ffb-84b8-435a-82f2-8ae0cc25259c
+		</gridId>
+		<startDate>2008-08-05T00:00:00.000-04:00
+		</startDate>
+		<endDate>2008-08-07T00:00:00.000-04:00
+		</endDate>
+		<expected>false</expected>
+		<ConcomitantMedicationAttribution>
+			<id>29</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="java:java.lang.String">POSSIBLE</attribution>
+			<ConcomitantMedication>
+				<name>aspirin</name>
+				<startDate>
+					<monthString>01</monthString>
+					<yearString>2007</yearString>
+				</startDate>
+				<endDate />
+				<stillTakingMedications>true</stillTakingMedications>
+			</ConcomitantMedication>
+		</ConcomitantMedicationAttribution>
+		<DiseaseAttribution>
+			<id>30</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="java:java.lang.String">POSSIBLE</attribution>
+			<DiseaseHistory>
+				<id>5</id>
+				<diagnosisDate />
+				<CtepStudyDisease>
+					<id>67</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>182</id>
+						<term>Metastases to bone, NOS</term>
+						<ctepTerm>Metastases to bone, NOS</ctepTerm>
+						<DiseaseCategory>
+							<id>93</id>
+							<name>Metastases, Distant (excluding specified site of
+								origin)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>2</id>
+					<name>Bone Marrow</name>
+					<category>Bone Marrow</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="false"
+			med-dRA="false">
+			<ctc-term>
+				<id>3142</id>
+				<term>Dehydration</term>
+				<ctepTerm>Dehydration</ctepTerm>
+				<ctepCode>10012174</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Dehydration</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="CtcTerm">
+				<id>3142</id>
+				<term>Dehydration</term>
+				<ctepTerm>Dehydration</ctepTerm>
+				<ctepCode>10012174</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</term>
+			<full-name>Dehydration</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm />
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="java:java.lang.String">POSSIBLE</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="java:java.lang.String">LIFE_THREATENING</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="java:java.lang.String">NO</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+	</AdverseEvent>
+	<SAEReportPriorTherapy>
+		<id>6</id>
+		<PriorTherapy>
+			<id>19</id>
+			<text>Vaccine</text>
+			<meddraTerm>10021430</meddraTerm>
+			<meddraCode>Immunisation</meddraCode>
+		</PriorTherapy>
+		<other>for flu</other>
+		<startDate />
+		<endDate />
+	</SAEReportPriorTherapy>
+	
+	<TreatmentInformation>
+		<TreatmentAssignment>
+			<code>TAC1</code>
+			<description>Cryoablation</description>
+		</TreatmentAssignment>
+		<AdverseEventCourse />
+	</TreatmentInformation>
+	<SAEReportPreExistingCondition>
+		<id>4</id>
+		<PreExistingCondition>
+			<id>14</id>
+			<text>Skin disorder</text>
+		</PreExistingCondition>
+	</SAEReportPreExistingCondition>
+	<AdditionalInformation>
+		<id>9</id>
+		<autopsyReport>false</autopsyReport>
+		<consults>false</consults>
+		<dischargeSummary>false</dischargeSummary>
+		<flowCharts>false</flowCharts>
+		<labReports>false</labReports>
+		<obaForm>false</obaForm>
+		<other>false</other>
+		<pathologyReport>false</pathologyReport>
+		<progressNotes>false</progressNotes>
+		<radiologyReports>false</radiologyReports>
+		<referralLetters>false</referralLetters>
+		<irbReport>false</irbReport>
+	</AdditionalInformation>
+</AdverseEventReport>
