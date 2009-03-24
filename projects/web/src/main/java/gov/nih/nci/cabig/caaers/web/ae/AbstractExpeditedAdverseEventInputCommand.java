@@ -89,13 +89,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected RenderDecisionManager renderDecisionManager;
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
-    private AnatomicSite metastaticDiseaseSite;
-    private PreExistingCondition preExistingCondition;
-    private PriorTherapy priorTherapy;
+//    private AnatomicSite metastaticEditExpeditedAdverseEventCommandDiseaseSite;
+//    private PreExistingCondition preExistingCondition;
+//    private PriorTherapy priorTherapy; 
     private List<String> chemoAgents;
-    private ChemoAgent chemoAgent;
-    private String concomitantMedication;
-    
+//    private ChemoAgent chemoAgent;
+//    private String concomitantMedication;
+
     private Term studyTerminologyTerm;
     
     private Map<Object, Object> studyDiseasesMap;
@@ -435,44 +435,12 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
     }
     
-    
-    public AnatomicSite getMetastaticDiseaseSite() {
-		return metastaticDiseaseSite;
-	}
-    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
-		this.metastaticDiseaseSite = metastaticDiseaseSite;
-	}
-    public PreExistingCondition getPreExistingCondition() {
-		return preExistingCondition;
-	}
-    public void setPreExistingCondition(PreExistingCondition preExistingCondition) {
-		this.preExistingCondition = preExistingCondition;
-	}
-    public PriorTherapy getPriorTherapy() {
-		return priorTherapy;
-	}
-    public void setPriorTherapy(PriorTherapy priorTherapy) {
-		this.priorTherapy = priorTherapy;
-	}
     public List<String> getPriorTherapyAgents() {
 		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
 	}
+
     public void setPriorTherapyAgents(List<String> chemoAgents) {
 		this.chemoAgents = chemoAgents;
-	}
-    
-    public String getConcomitantMedication() {
-		return concomitantMedication;
-	}
-    public void setConcomitantMedication(String concomitantMedication) {
-		this.concomitantMedication = concomitantMedication;
-	}
-    
-    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
-		this.chemoAgent = chemoAgent;
-	}
-    public ChemoAgent getPriorTherapyAgent() {
-		return chemoAgent;
 	}
     
     public Term getStudyTerminologyTerm() {

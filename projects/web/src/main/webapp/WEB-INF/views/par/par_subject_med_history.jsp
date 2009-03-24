@@ -98,48 +98,49 @@
 
 			//--for metastatic diseases button 
 			Element.observe('metastatic-diseases-btn', 'click', function(e){
-				var inField = $('metastaticDiseaseSite');
-				if(inField.value == '') {
-                    alert('Select a value first.');
-                    return
-                };
-			 	this.addDetails('metastaticDiseaseSite', e.element(), inField.value, 'anchorMetastaticDiseases');
+			 	this.addDetails('metastaticDiseaseSite', e.element(), null, 'anchorMetastaticDiseases');
 
 			 	//clear the fields
-			 	AE.resetAutocompleter('metastaticDiseaseSite');
+//			 	AE.resetAutocompleter('metastaticDiseaseSite');
 		 	}.bind(mHistory));
 
 			//--for pre-existing condition button
 		 	Element.observe('pre-cond-btn', 'click', function(e){
+/*
 			 	var preCondField = $('preExistingCondition');
 			    if(preCondField.selectedIndex < 1) {
                     alert('Select a value first.');
                     return
                 }
-			    this.addDetails('preExistingCondition', e.element(), preCondField.value, 'anchorPreExistingCondition');
+*/
+			    this.addDetails('preExistingCondition', e.element(), null, 'anchorPreExistingCondition');
 			    preCondField.selectedIndex = 0;
 			 	
 		 	}.bind(mHistory));
 		 	//-- for concomitant medication
 		 	Element.observe('concomitantMedication-btn', 'click', function(e){
+/*
 			 	var conMedField = $('concomitantMedication');
 			 	if(conMedField.value == '') {
                      alert('Type a value first.');
                      return
                  }
-			 	this.addDetails('concomitantMedication', e.element(), conMedField.value, 'anchorConcomitantMedication');
+*/
+			 	this.addDetails('concomitantMedication', e.element(), null, 'anchorConcomitantMedication');
 			 	conMedField.value = '';
 		 	}.bind(mHistory));
 		 	
 			//-- for prior therapy button
 		 	Element.observe('priortherapy-btn','click', function(e){
+/*
 			 	var priorTherapyField = $('priorTherapy');
 			 	if(priorTherapyField.selectedIndex < 1) {
                      alert('Select a value first.');
                      return
                  }
-			 	this.addDetails('priorTherapy', e.element(), priorTherapyField.value, 'anchorPriorTherapy');
-			 	priorTherapyField.selectedIndex = 0;
+*/
+			 	this.addDetails('priorTherapy', e.element(), pnull, 'anchorPriorTherapy');
+			 	// priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
 
 		 	Event.observe('command', 'submit', function(e){
@@ -147,7 +148,7 @@
 				/* Below is a very ugly tweak did for IE7 if priorTherapyAgents[i]-input='begin', the value of priorTherapyAgents[i], is assumed by spring as its value 
 				  But only happens in IE7
 				  */
-				AE.resetAutocompleter('metastaticDiseaseSite');
+				// AE.resetAutocompleter('metastaticDiseaseSite');
 				var i = 0;
 				for(i = 0; i < 15; i++){
 					var el = 	$('priorTherapyAgents[' + i + ']');
@@ -385,27 +386,13 @@
 	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
     <p><tags:instructions code="instruction_subject_enter.medhist.meta"/></p>
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
-		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
+		
 		<table class="tablecontent" width="80%" style="padding-left:50px;">
 			<tr>
 				<td style="padding-left:50px;">
-					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
-						<jsp:attribute name="populatorJS">
-							function(autocompleter, text) {
-                				createAE.matchAnatomicSite(text, function(values) {
-                    				autocompleter.setChoices(values)
-                				})
-							}	
-						</jsp:attribute>
-						<jsp:attribute name="selectorJS">
-							function (obj) {   
-								return obj.name;  
-							}
-						</jsp:attribute>
-					</ui:autocompleter>
                     &nbsp;
                     <input id="metastatic-diseases-btn" type="button" value="Add"/>
-                    <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a>
+                    <%--<a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a>--%>
                 </td>
 				<td></td>
 			</tr>
@@ -417,7 +404,7 @@
 						<c:forEach items="${command.assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
 							<c:set var="newIndex" value="${size - (status.index + 1)}" />
 							<c:set var="mSite" value="${command.assignment.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
-							<par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" />
+							<par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
 						</c:forEach>
 					</div>
                 </td>
@@ -428,11 +415,9 @@
 	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
     <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
-		<tags:hasErrorsMessage path="preExistingCondition" />
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%" style="padding-left:50px;">
-					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
                     &nbsp;
                     <input id="pre-cond-btn" type="button" value="Add"/>
                 </td>
@@ -463,7 +448,6 @@
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%" style="padding-left:50px;">
-					<ui:text path="concomitantMedication" size="50" />
                     &nbsp;
                     <input id="concomitantMedication-btn" type="button" value="Add"/>
                 </td>
@@ -490,22 +474,15 @@
 	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
     <p><tags:instructions code="instruction_subject_enter.medhist.pt"/></p>
 		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
+<%--
 		<tags:hasErrorsMessage path="priorTherapyAgents" />
 		<tags:hasErrorsMessage path="priorTherapy" />
-	
+--%>
+
 		<table class="tablecontent" width="80%">
 			<tr>
-				<td width="90%" style="padding-left:50px;">
-					<ui:select options="${priorTherapyOptions}" path="priorTherapy" />
-                    &nbsp;
-                    <input id="priortherapy-btn" type="button" value="Add"/>
-                </td>
-				<td width="10%">
-
-				</td>
-			</tr>
-			<tr>
 				<td colspan="2" style="padding-left:50px;">
+                    <input id="priortherapy-btn" type="button" value="Add"/>
 					<a name="anchorPriorTherapy" />
 					<div id="anchorPriorTherapy">
 						<c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />

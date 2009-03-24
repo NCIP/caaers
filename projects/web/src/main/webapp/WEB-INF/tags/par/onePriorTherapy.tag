@@ -8,11 +8,14 @@
 <%@attribute name="index" required="true" %>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
+
 <div>
  <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true"
   deleteParams="'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
-	<ui:row path="assignment.priorTherapies[${index}].other">
+     <ui:select options="${priorTherapyOptions}" path="assignment.priorTherapies[${index}].priorTherapy" />
+     
+    <ui:row path="assignment.priorTherapies[${index}].other">
 	 <jsp:attribute name="label">
 		<ui:label path="assignment.priorTherapies[${index}].other" text="Comments" />
 	 </jsp:attribute>
@@ -47,35 +50,19 @@
 	 <jsp:attribute name="value">
 	   <table class="tablecontent" width="95%">
 			<tr>
-				<td width="70%">
-					<ui:autocompleter path="priorTherapyAgents[${index}]" >
-						<jsp:attribute name="populatorJS">
-							function(autocompleter, text){
-								createAE.matchChemoAgents(text, function(values) {
-        							autocompleter.setChoices(values)
-    							})
-							}
-						</jsp:attribute>
-						<jsp:attribute name="selectorJS">
-							function(agent) {
-            					return agent.name
-        					}
-						</jsp:attribute>
-					</ui:autocompleter>
-				</td>
 				<td width="10%">
 					<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>
                 </td>
-                <td width="20%"><a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a></td>
+                <%--<td width="20%"><a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a></td>--%>
             </tr>
 			<tr>
 				<td colspan="3">
 					<a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
 					<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
 						<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
-						<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status">
+						<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status" var="agent">
 							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<par:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" />
+							<par:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" agent="${agent}" />
 						</c:forEach>
 					</div>
 				</td>
@@ -92,9 +79,7 @@ function initializePriorTherapy(){
 	if($('priortherapy[${index}].agent-btn')){
 		
 		Element.observe('priortherapy[${index}].agent-btn', 'click', function(evt){
-			var inField = $('priorTherapyAgents[${index}]');
-			if(inField.value == '') return;
-		 	mHistory.addDetails('priorTherapyAgent', evt.element(), inField.value, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
+		 	mHistory.addDetails('priorTherapyAgent', evt.element(), null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
 		 	
 		 	//clear the fields
 		 	AE.resetAutocompleter('priorTherapyAgents[${index}]');

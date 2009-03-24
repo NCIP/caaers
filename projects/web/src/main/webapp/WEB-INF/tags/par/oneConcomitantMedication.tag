@@ -6,37 +6,53 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication" required="true" %>
-<chrome:division title="${not empty concomitantMedication.agentName ? concomitantMedication.agentName : 'Incorrect name - sync from Expedited Adverse Event Report issue'}" 
-	id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
- enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
 
-	<ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">
-		<jsp:attribute name="label">
-			<ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?" />
-		</jsp:attribute>
-		<jsp:attribute name="value">
-			<ui:checkbox path="assignment.concomitantMedications[${index}].stillTakingMedications" />
-		</jsp:attribute>
-	</ui:row>
+<c:set var="mainGroup">conmed${index}</c:set>
 
-	<ui:row path="assignment.concomitantMedications[${index}].startDate">
-		<jsp:attribute name="label">
-			<ui:label path="assignment.concomitantMedications[${index}].startDate" text="Start date" />
-		</jsp:attribute>
-		<jsp:attribute name="value">
-			<ui:splitDate path="assignment.concomitantMedications[${index}].startDate" />
-		</jsp:attribute>
-	</ui:row>
+<chrome:division title="${not empty concomitantMedication.agentName ? concomitantMedication.agentName : 'new ConMed '}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}" enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
 
-	<ui:row path="assignment.concomitantMedications[${index}].endDate">
-		<jsp:attribute name="label">
-			<ui:label path="assignment.concomitantMedications[${index}].endDate" text="End date" />
-		</jsp:attribute>
-		<jsp:attribute name="value">
-			<ui:splitDate path="assignment.concomitantMedications[${index}].endDate" />
-		</jsp:attribute>
-	</ui:row>
-	
+    <table border="0" width="100%">
+        <tr>
+            <td>
+                        <ui:row path="assignment.concomitantMedications[${index}].agentName">
+                            <jsp:attribute name="label">
+                                <ui:label path="assignment.concomitantMedications[${index}].agentName" text="Medication name" />
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <ui:text path="assignment.concomitantMedications[${index}].agentName" />
+                            </jsp:attribute>
+                        </ui:row>
+                            
+                        <ui:row path="assignment.concomitantMedications[${index}].startDate">
+                            <jsp:attribute name="label">
+                                <ui:label path="assignment.concomitantMedications[${index}].startDate" text="Start date" />
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <ui:splitDate path="assignment.concomitantMedications[${index}].startDate" />
+                            </jsp:attribute>
+                        </ui:row>
+            <td>
+                        <ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">
+                            <jsp:attribute name="label">
+                                <ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?" />
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <ui:checkbox path="assignment.concomitantMedications[${index}].stillTakingMedications" />
+                            </jsp:attribute>
+                        </ui:row>
+
+
+                        <ui:row path="assignment.concomitantMedications[${index}].endDate">
+                            <jsp:attribute name="label">
+                                <ui:label path="assignment.concomitantMedications[${index}].endDate" text="End date" />
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <ui:splitDate path="assignment.concomitantMedications[${index}].endDate" />
+                            </jsp:attribute>
+                        </ui:row>
+
+    </table>
+
 	<script>
 	 function initializeConMed_${index}(){
 		 $('assignment.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){

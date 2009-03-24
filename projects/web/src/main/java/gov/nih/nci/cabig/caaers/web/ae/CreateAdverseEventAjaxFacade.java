@@ -160,10 +160,8 @@ public class CreateAdverseEventAjaxFacade {
             Column columnTerm = model.getColumnInstance();
             columnTerm.setProperty("name");
             columnTerm.setTitle("Primary site of disease");
-            columnTerm
-                    .setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
+            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
             model.addColumn(columnTerm);
-
 
             return model.assemble().toString();
 

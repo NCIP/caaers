@@ -57,12 +57,12 @@ public class ParticipantInputCommand {
     private Integer index; //corresponds to the index of the item (eg: conmed[3])
     private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
     
-    private AnatomicSite metastaticDiseaseSite;
-    private PreExistingCondition preExistingCondition;
-    private PriorTherapy priorTherapy;
+//    private AnatomicSite metastaticDiseaseSite;
+//    private PreExistingCondition preExistingCondition;
+//    private PriorTherapy priorTherapy;
     
     private List<String> chemoAgents;
-    private ChemoAgent chemoAgent;
+//    private ChemoAgent chemoAgent;
     
     private String concomitantMedication;
 
@@ -267,37 +267,12 @@ public class ParticipantInputCommand {
 		return parentIndex;
 	}
     
-    public AnatomicSite getMetastaticDiseaseSite() {
-		return metastaticDiseaseSite;
-	}
-    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
-		this.metastaticDiseaseSite = metastaticDiseaseSite;
-	}
-    public PreExistingCondition getPreExistingCondition() {
-		return preExistingCondition;
-	}
-    public void setPreExistingCondition(
-			PreExistingCondition preExistingCondition) {
-		this.preExistingCondition = preExistingCondition;
-	}
-    public PriorTherapy getPriorTherapy() {
-		return priorTherapy;
-	}
-    public void setPriorTherapy(PriorTherapy priorTherapy) {
-		this.priorTherapy = priorTherapy;
-	}
-    
     public List<String> getPriorTherapyAgents() {
 		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
 	}
+
     public void setPriorTherapyAgents(List<String> chemoAgents) {
 		this.chemoAgents = chemoAgents;
-	}
-    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
-		this.chemoAgent = chemoAgent;
-	}
-    public ChemoAgent getPriorTherapyAgent() {
-		return chemoAgent;
 	}
     
     public String getConcomitantMedication() {

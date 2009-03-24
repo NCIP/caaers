@@ -3,70 +3,69 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+
 <%@attribute name="index" required="true"%>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" required="true" %>
+
 <c:set var="mainGroup">conmed${index}</c:set>
-<chrome:division  id="aeReport.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
- enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
-		<jsp:attribute name="titleFragment">
-			${concomitantMedication.agentName}
-			<c:if test="${empty concomitantMedication.agentName}">
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}" />
-			</c:if>
-		</jsp:attribute>
-		<jsp:body>
-	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
-		<tags:renderRow field="${field}" />
-	</c:forEach>
-	<script>
-	 function initializeConMed_${index}(){
-		 if($('aeReport.concomitantMedications[${index}].stillTakingMedications')){
-			 $('aeReport.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){
-				 	//the code to clear end-date and make it a readonly field.
-				 	var edYrField = $('aeReport.concomitantMedications[${index}].endDate.yearString')
-					if(edYrField){
+<c:set var="conMedField" value="${fieldGroups[mainGroup].fields[0]}" />
 
-						var edDdField = $('aeReport.concomitantMedications[${index}].endDate.dayString');
-						var edMmField = $('aeReport.concomitantMedications[${index}].endDate.monthString');
-						if(evt.element().value){
-							edYrField.value = '';
-							edDdField.value = '';
-							edMmField.value = '';
-							edYrField.readOnly = true;
-							edDdField.readOnly = true;
-							edMmField.readOnly =  true;
-						}else{
-							edYrField.readOnly = false;
-							edDdField.readOnly = false;
-							edMmField.readOnly =  false;
-						}
-						
-					}
-			  });	
-			 AE.registerCalendarPopups();
-		 }
+<div>
+<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" enableDelete="true" deleteParams="'concomitantMedication', ${index}, '_conMeds'" id="aeReport.concomitantMedications[${index}]">
 
-	 }
-	 initializeConMed_${index}.defer();
-	</script>
-		
-		</jsp:body>
-</chrome:division>
-<%--
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%--<ui:row path="aeReport.concomitantMedications[${index}]">
+    <jsp:attribute name="label">${fieldGroups[mainGroup].fields[0].displayName}</jsp:attribute>
+    <jsp:attribute name="value"><ui:text path="aeReport.concomitantMedications[${index}].agentName" /></jsp:attribute>
+</ui:row>--%>
 
-<%@attribute name="index" required="true" type="java.lang.Integer" %>
-<%@attribute name="style"%>
+<table >
+    <tr>
+        <td>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
+        <td>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 
-<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" style="${style}">
-    <tags:errors path="aeReport.concomitantMedications[${index}]"/>
-	<c:forEach items="${fieldGroup.fields}" var="field">
-	<tags:renderRow field="${field}" />
-	</c:forEach>
-    
+</table>    
+
 </ae:fieldGroupDivision>
---%>
+
+
+
+<script>
+
+    function setFields_${index}(checked) {
+        var edYrField = $('aeReport.concomitantMedications[${index}].endDate.yearString')
+        var edDdField = $('aeReport.concomitantMedications[${index}].endDate.dayString');
+        var edMmField = $('aeReport.concomitantMedications[${index}].endDate.monthString');
+
+        if ($('aeReport.concomitantMedications[${index}].stillTakingMedications').checked) {
+            edYrField.value = '';
+            edDdField.value = '';
+            edMmField.value = '';
+            edYrField.clear(); edYrField.readOnly = true; edYrField.disable();
+            edDdField.clear(); edDdField.readOnly = true; edDdField.disable();
+            edMmField.clear(); edMmField.readOnly = true; edMmField.disable();
+        } else {
+            edYrField.readOnly = false; edYrField.enable();
+            edDdField.readOnly = false; edDdField.enable();
+            edMmField.readOnly = false; edMmField.enable();
+        }
+    }
+    
+    function initializeConMed_${index}() {
+        if ($('aeReport.concomitantMedications[${index}].stillTakingMedications')) { // if the control is on the page
+            $('aeReport.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt) {
+                setFields_${index}();
+            });
+            AE.registerCalendarPopups();
+        }
+
+    }
+    setFields_${index}.defer();
+    initializeConMed_${index}.defer();
+</script>
+

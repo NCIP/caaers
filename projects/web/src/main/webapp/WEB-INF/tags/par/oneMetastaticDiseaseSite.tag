@@ -5,14 +5,29 @@
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <%@attribute name="index" required="true"%>
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
+
 <div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
   				<td width="99%">
-					<ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" readonly="true" 
-						displayNamePath="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite.name" />
-					<c:if test="${anatomicSite.id eq 110}">
-					<%-- Other, Specify--%>
+                    <c:set var="initValue" value="${not empty anatomicSite ? anatomicSite.name : 'Begin typing here...'}"/>
+                      <ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" initialDisplayValue="${initValue}" size="50">
+                          <jsp:attribute name="populatorJS">
+                              function(autocompleter, text) {
+                                  createAE.matchAnatomicSite(text, function(values) {
+                                      autocompleter.setChoices(values)
+                                  })
+                              }
+                          </jsp:attribute>
+                          <jsp:attribute name="selectorJS">
+                              function (obj) {
+                                  return obj.name;
+                              }
+                          </jsp:attribute>
+                      </ui:autocompleter>
+                      
+
+                    <c:if test="${anatomicSite.id eq 110}">
 					<ui:text path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="true"/>
 					</c:if>
   				</td>

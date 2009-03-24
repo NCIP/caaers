@@ -33,12 +33,10 @@ import org.springframework.beans.BeanUtils;
 @DiscriminatorValue("ABSTRACT_BASE")
 // should be ignored
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_attributions_id")})
-public abstract class AdverseEventAttribution<T extends DomainObject> extends
-        AbstractMutableDomainObject {
+public abstract class AdverseEventAttribution<T extends DomainObject> extends AbstractMutableDomainObject {
+
     private T cause;
-
     private Attribution attribution;
-
     private AdverseEvent adverseEvent;
 
     // //// BEAN PROPERTIES

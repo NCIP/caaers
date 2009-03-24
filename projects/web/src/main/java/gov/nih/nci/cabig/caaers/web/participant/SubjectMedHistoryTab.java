@@ -112,11 +112,11 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	Integer[] indexes = new Integer[]{size};
     	modelAndView.getModel().put("indexes", indexes);
     	
-    	AnatomicSite site = command.getMetastaticDiseaseSite();
+    	// AnatomicSite site = command.getMetastaticDiseaseSite();
     	StudyParticipantMetastaticDiseaseSite metastaticSite = new StudyParticipantMetastaticDiseaseSite();
-    	metastaticSite.setCodedSite(site);
+    	// metastaticSite.setCodedSite(site);
     	command.getAssignment().getDiseaseHistory().addMetastaticDiseaseSite(metastaticSite);
-    	command.setMetastaticDiseaseSite(null);
+    	// command.setMetastaticDiseaseSite(null);
     	
     	return modelAndView;
     }
@@ -150,9 +150,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	modelAndView.getModel().put("indexes", indexes);
     	
     	StudyParticipantPreExistingCondition preCondition = new StudyParticipantPreExistingCondition();
-    	preCondition.setPreExistingCondition(command.getPreExistingCondition());
+    	//preCondition.setPreExistingCondition(command.getPreExistingCondition());
     	command.getAssignment().addPreExistingCondition(preCondition);
-    	command.setPreExistingCondition(null);
+    	//command.setPreExistingCondition(null);
     	
     	return modelAndView;
     }
@@ -229,12 +229,12 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	modelAndView.getModel().put("indexes", indexes);
     	
     	StudyParticipantPriorTherapy priorTherapy = new StudyParticipantPriorTherapy();
-    	priorTherapy.setPriorTherapy(command.getPriorTherapy());
+    	// priorTherapy.setPriorTherapy(command.getPriorTherapy());
     	priorTherapy.setStartDate(new DateValue());
     	priorTherapy.setEndDate(new DateValue());
     	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
     	command.getAssignment().addPriorTherapy(priorTherapy);
-    	command.setPriorTherapy(null);
+    	// command.setPriorTherapy(null);
     	command.getPriorTherapyAgents().add(null); //increment the element size
     	
     	return modelAndView;
@@ -273,9 +273,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	modelAndView.getModel().put("indexes", indexes);
     	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this goof-up in obtaining the chemoagent.
     	StudyParticipantPriorTherapyAgent agent = new StudyParticipantPriorTherapyAgent();
-    	agent.setChemoAgent(command.getPriorTherapyAgent());
+    	// agent.setChemoAgent(command.getPriorTherapyAgent());
     	priorTherapy.addPriorTherapyAgent(agent);
-    	command.setPriorTherapyAgent( null);
+    	// u command.setPriorTherapyAgent( null);
     	
     	return modelAndView;
     }

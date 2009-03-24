@@ -30,7 +30,8 @@
  		Object.extend(mHistoryClass.prototype, {
  	 		initialize: function(){ 
  	 		},
- 	 		addDetails : function(itemType, src, val, loc, options){
+             
+              addDetails : function(itemType, src, val, loc, options){
  	 	 		
  	 	 		src.disable();
 				this.showIndicator(src.id + "-indicator");	 	 		
@@ -42,7 +43,7 @@
  	 	 		if(options){
  	 	 			paramHash.set('parentIndex', options.parentIndex);
  	 	 		}
- 	 	 		paramHash.set(itemType,val);
+ 	 	 		paramHash.set(itemType, val);
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
@@ -51,20 +52,23 @@
 						this.hideIndicator(src.id + "-indicator");
 						}.bind(this));
  	 		},
- 	 		removeDetails :function(itemType,index, loc, options){
+             
+              removeDetails :function(itemType,index, loc, options){
  	 	 		if(index < 0) return;
-
 				
 				var confirmation = confirm("Do you really want to delete?");
 				if(!confirmation) return; //return if not agreed.
 				this.showIndicator(itemType+"-indicator");				
 				var container = $(loc);
-				
-				var paramHash = new Hash(); //parameters to post to server
+                  
+                var paramHash = new Hash(); //parameters to post to server
  	 	 		paramHash.set('task', 'remove');
  	 	 		paramHash.set('currentItem', itemType);
  	 	 		paramHash.set('index', index);
- 	 	 		//add extra options to the parameter list
+
+//                  alert(itemType);
+
+                //add extra options to the parameter list
  	 	 		if(options){
  	 	 	 		if(options.parentIndex >= 0) paramHash.set('parentIndex', options.parentIndex);
  	 	 		}
@@ -73,13 +77,14 @@
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
  	 	 		var newLoc = replaceHtml($(loc) , '');
-				this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
+
+                this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
 					this.hideIndicator(itemType + "-indicator");
-				}.bind(this));				
-				
+				}.bind(this));
  	 	 		
  	 		},
- 	 		populateDeafultParameters : function(itemType, paramHash){
+
+             populateDeafultParameters : function(itemType, paramHash){
  				//will populate the default parameters, to support ajax communication
  				var page = ${tab.number};
  				var target = '_target' + ${tab.number}; 
@@ -88,13 +93,16 @@
  				paramHash.set('_asynchronous', true);
  				paramHash.set('decorator', 'nullDecorator');
  			},
- 			insertContent : function(aContainer, url, params, onCompleteCallBack){
+
+             insertContent : function(aContainer, url, params, onCompleteCallBack){
  				//helper method to insert content in a DIV
- 				new Ajax.Updater(aContainer, url, {
- 					parameters: params.toQueryString() , onComplete: onCompleteCallBack ,insertion: Insertion.Top, evalScripts : true
+                 // alert(params.toQueryString());
+                 new Ajax.Updater(aContainer, url, {
+ 					parameters: params.toQueryString(), onComplete: onCompleteCallBack, insertion: Insertion.Top, evalScripts : true
  				});
  			},
- 			showIndicator :  function(name){
+             
+             showIndicator :  function(name){
  				var idiv = $(name); 
  	 	 		if(idiv) idiv.removeClassName('indicator');
  			},
@@ -127,47 +135,22 @@
 
 			//--for metastatic diseases button 
 			Element.observe('metastatic-diseases-btn', 'click', function(e){
-				var inField = $('metastaticDiseaseSite');
-				if(inField.value == '') {
-                    alert('Select a value first.');
-                    return
-                };
-			 	this.addDetails('metastaticDiseaseSite', e.element(), inField.value, 'anchorMetastaticDiseases');
+			 	this.addDetails('metastaticDiseaseSite', e.element(), null, 'anchorMetastaticDiseases');
+		 	}.bind(mHistory));
 
-			 	//clear the fields
-			 	AE.resetAutocompleter('metastaticDiseaseSite');
-		 	}.bind(mHistory));
-			//--for pre-existing condition button
+            //--for pre-existing condition button
 		 	Element.observe('pre-cond-btn', 'click', function(e){
-			 	var preCondField = $('preExistingCondition');
-			    if(preCondField.selectedIndex < 1) {
-                    alert('Select a value first.');
-                    return
-                }
-			    this.addDetails('preExistingCondition', e.element(), preCondField.value, 'anchorPreExistingCondition');
-			    preCondField.selectedIndex = 0;
-			 	
+			    this.addDetails('preExistingCondition', e.element(), null, 'anchorPreExistingCondition');
 		 	}.bind(mHistory));
-			//-- for concomitant medication
+            
+            //-- for concomitant medication
 		 	Element.observe('concomitantMedication-btn', 'click', function(e){
-			 	var conMedField = $('concomitantMedication');
-			 	if(conMedField.value == '') {
-                     alert('Type a value first.');
-                     return
-                 }
-			 	this.addDetails('concomitantMedication', e.element(), conMedField.value, 'anchorConcomitantMedication');
-			 	conMedField.value = '';
+			 	this.addDetails('concomitantMedication', e.element(), null, 'anchorConcomitantMedication');
 		 	}.bind(mHistory));
 		 	
 			//-- for prior therapy button
 		 	Element.observe('priortherapy-btn','click', function(e){
-			 	var priorTherapyField = $('priorTherapy');
-			 	if(priorTherapyField.selectedIndex < 1) {
-                     alert('Select a value first.');
-                     return
-                 }
-			 	this.addDetails('priorTherapy', e.element(), priorTherapyField.value, 'anchorPriorTherapy');
-			 	priorTherapyField.selectedIndex = 0;
+			 	this.addDetails('priorTherapy', e.element(), null , 'anchorPriorTherapy');
 		 	}.bind(mHistory));
 
 			Event.observe('command', 'submit', function(e){
@@ -188,7 +171,7 @@
 		 	findBSA();
 		}
 		function fireAction(type, index, loc, options, id){
-			mHistory.removeDetails(type, index, loc, options);
+            mHistory.removeDetails(type, index, loc, options);
 		}
 
 	   function findBSA(){
@@ -205,8 +188,8 @@
         function showShowAllTable(el, baseName) {
 
             var parameterMap = getParameterMap('command');
-            
-            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
+
+            if (baseName.search("metastaticDiseaseSite")>=0 || baseName == 'codedPrimaryDiseaseSite') {
                     createAE.buildAnatomicSiteTable(el, parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
 //                    $('showAllDropDown').style.position = 'absolute';
@@ -244,7 +227,7 @@
                 baseName = 'aeReport.diseaseHistory.codedPrimaryDiseaseSite'
             }
 
-            if (baseName.indexOf('priorTherapyAgents') >= 0) {
+            if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite")>=0) {
                 baseName = baseName.replace("__", "[") ;
                 baseName = baseName.replace("_", "]") ;
             }
@@ -257,7 +240,7 @@
 
 	   function fillChemoAgentAutoCompletor(val, baseName, text) {
 
-            if (baseName.indexOf('priorTherapyAgents') >= 0) {
+            if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite") >=0) {
                 baseName = baseName.replace("__", "[") ;
                 baseName = baseName.replace("_", "]") ;
             }
@@ -281,9 +264,8 @@
 </style>
 </head>
 <body>
-<p>
-  <tags:instructions code="instruction_ae_patientdetails"/>
-</p>
+<p><tags:instructions code="instruction_ae_patientdetails"/></p>
+
 <form:form id="command">
 <chrome:flashMessage/>
   <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
@@ -370,7 +352,8 @@
 	</chrome:box>
 	  
 
-	<chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
+
+    <chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
       <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
     <a name="anchorDiseaseInfo"></a>
     <div id="anchorDiseaseInfo">
@@ -435,126 +418,127 @@
     </div>
     
   </chrome:box>
+
+
+
+
+
   <a name="anchorMetastaticDiseasesSection" />
-  <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
-    <p>
-      <tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/>
-    </p>
-    
-    <tags:hasErrorsMessage path="metastaticDiseaseSite" />
-    <table class="tablecontent" width="80%">
-      <tr>
-        <td><ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
-            <jsp:attribute name="populatorJS"> function(autocompleter, text) {
-              createAE.matchAnatomicSite(text, function(values) {
-              autocompleter.setChoices(values)
-              })
-              } </jsp:attribute>
-            <jsp:attribute name="selectorJS"> function (obj) {   
-              return obj.name;  
-              } </jsp:attribute>
-          </ui:autocompleter>
-            &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a> &nbsp;
-          <input id="metastatic-diseases-btn" type="button" value="Add"/>
-		  <tags:indicator id="metastatic-diseases-btn-indicator" />
-        </td>
-      </tr>
-      <tr>
-        <td><a name="anchorMetastaticDiseases" />
-		  <tags:indicator id="metastaticDiseaseSite-indicator" />
-          <div id="anchorMetastaticDiseases">
-            <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}" />
-            <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
-              <c:set var="newIndex" value="${size - (status.index + 1)}" />
-              <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
-              <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" />
-            </c:forEach>
-          </div></td>
-      </tr>
-    </table>
+  <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true" >
+      <jsp:body>
+        <p><tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/></p>
+
+          <div style="padding-left:20px;">
+          <div id="_metastatic">
+              <input id="metastatic-diseases-btn" type="button" value="Add"/>
+              <tags:indicator id="metastatic-diseases-btn-indicator" />
+
+              <a name="anchorMetastaticDiseases"/>
+              <tags:indicator id="metastaticDiseaseSite-indicator"/>
+              <div id="anchorMetastaticDiseases">
+                  <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}"/>
+                  <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
+                      <c:set var="newIndex" value="${size - (status.index + 1)}"/>
+                      <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}"/>
+                      <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
+                  </c:forEach>
+              </div>
+          </div>
+          </div>
+
+      </jsp:body>
   </chrome:box>
+
+
+
+
+
+
   <chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-existing Conditions" collapsable="true">
-    <p>
-      <tags:instructions code="instruction_ae_patientdetails_precond"/>
-    </p>
-   
-   
-    <table class="tablecontent" width="80%">
-      <tr>
-        <td width="90%"><ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
-          &nbsp;
-          <input id="pre-cond-btn" type="button" value="Add"/>
-		   <tags:indicator id="pre-cond-btn-indicator" />
-        </td>
-      </tr>
-      <tr>
-        <td><a name="anchorPreExistingCondition" />
-		  <tags:indicator id="preExistingCondition-indicator" />
-          <div id="anchorPreExistingCondition">
-            <c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
-            <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
-              <c:set var="newIndex" value="${size - (status.index + 1)}" />
-              <c:set var="pCond" value="${command.aeReport.saeReportPreExistingConditions[newIndex]}" />
-              <ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
-            </c:forEach>
-          </div></td>
-      </tr>
-    </table>
+        <jsp:body>
+            <p><tags:instructions code="instruction_ae_patientdetails_precond"/></p>
+            <div style="padding-left:20px;">
+            <div id="_preExistingConditions">
+                <input id="pre-cond-btn" type="button" value="Add"/>
+                <tags:indicator id="pre-cond-btn-indicator" />
+
+                <a name="anchorPreExistingCondition"/>
+                <tags:indicator id="preExistingCondition-indicator"/>
+                <div id="anchorPreExistingCondition">
+                    <c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
+                    <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
+                      <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                      <c:set var="pCond" value="${command.aeReport.saeReportPreExistingConditions[newIndex]}" />
+                      <ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
+                    </c:forEach>
+                </div>
+            </div>
+            </div>
+
+      </jsp:body>
   </chrome:box>
+
+
+
+
+
+
   <chrome:box id="aeReport.concomitantMedications" title="ConMeds" collapsable="true">
-    <p>
-      <tags:instructions code="instruction_ae_patientdetails_conmeds"/>
-    </p>
+      <jsp:body>
 
-    <table class="tablecontent" width="80%">
-      <tr>
-        <td width="90%"><ui:text path="concomitantMedication" size="50" />
-          &nbsp;
+  <p><tags:instructions code="instruction_ae_patientdetails_conmeds"/></p>
+
+      <div style="padding-left:20px;">
+      <div id="conmed">
           <input id="concomitantMedication-btn" type="button" value="Add"/>
-		  <tags:indicator id="concomitantMedication-btn-indicator" />
-        </td>
-      </tr>
-      <tr>
-        <td><a name="anchorConcomitantMedication" />
- 		  <tags:indicator id="concomitantMedication-indicator" />
-          <div id="anchorConcomitantMedication">
-            <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
-            <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
-              <c:set var="newIndex" value="${size - (status.index + 1)}" />
-              <c:set var="conMed" value="${command.aeReport.concomitantMedications[newIndex]}" />
-              <ae:oneConMed index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
-            </c:forEach>
-          </div></td>
-      </tr>
-    </table>
-  </chrome:box>
-  <chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
-    <p>
-      <tags:instructions code="instruction_ae_patientdetails_priortherapies"/>
-    </p>
+          <tags:indicator id="concomitantMedication-btn-indicator"/>
 
-    <table class="tablecontent" width="80%">
-      <tr>
-        <td width="90%"><ui:select options="${priorTherapyOptions}" path="priorTherapy" />
-          &nbsp;
-          <input id="priortherapy-btn" type="button" value="Add"/>
-		  <tags:indicator id="priortherapy-btn-indicator" />
-        </td>
-      </tr>
-      <tr>
-        <td><a name="anchorPriorTherapy" />
-		  <tags:indicator id="priorTherapy-indicator" />
-          <div id="anchorPriorTherapy">
+          <a name="anchorConcomitantMedication"/>
+          <tags:indicator id="preExistingCondition-indicator"/>
+          <div id="_conMeds">
+              <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
+              <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
+                  <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                  <c:set var="conMed" value="${command.aeReport.concomitantMedications[newIndex]}" />
+                  <ae:oneConMed index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
+              </c:forEach>
+          </div>
+      </div>
+      </div>
+          
+      </jsp:body>
+  </chrome:box>
+
+
+
+
+
+<chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
+    <jsp:body>
+
+    <p><tags:instructions code="instruction_ae_patientdetails_priortherapies"/></p>
+
+    <div style="padding-left:20px;">
+    <div id="priorTherapy">
+        <input id="priortherapy-btn" type="button" value="Add"/>
+        <tags:indicator id="priortherapy-btn-indicator" />
+
+        <a name="anchorPriorTherapy"/>
+        <tags:indicator id="priorTherapy-indicator" />
+        <div id="anchorPriorTherapy">
             <c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
             <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
               <c:set var="newIndex" value="${size - (status.index + 1)}" />
               <c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}" />
               <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
             </c:forEach>
-          </div></td>
-      </tr>
-    </table>
-  </chrome:box>
+        </div>
+    </div>
+    </div>
+
+    </jsp:body>
+</chrome:box>
+
   <tags:tabControls flow="${flow}" tab="${tab}" />
 </form:form>
 </body>

@@ -201,15 +201,12 @@ public class PatientDetailsTab extends AeTab {
      * 
      */
     private void createConcomitantMedicationFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
-        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Information about concomitant medication", false);
+        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Medication name", false);
         InputFieldAttributes.setSize(agentNameField, 50);
-
         InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Start date", false, false, false, false);
         InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "End date", false, false, false, false);
-        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Continued?");
-
-        creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), 
-        		agentNameField,stillTakingMedicationField, startDateField, endDateField);
+        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Still taking?");
+        creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), agentNameField,stillTakingMedicationField, startDateField, endDateField);
     }
     
     /**
@@ -252,14 +249,16 @@ public class PatientDetailsTab extends AeTab {
     // ---------------- validation on individual items -------------------------
     
     protected void validateDiseaseInformation(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-    	
     }
+
     protected void validateMetastaticDiseases(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	//aeReport.diseaseHistory.metastaticDiseaseSites[1].otherSite
     	int i =0;
     	Set<MetastaticDiseaseSite> set = new HashSet<MetastaticDiseaseSite>();
     	for(MetastaticDiseaseSite mSite : command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites()){
-    		if(mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())){
+            if (mSite.getCodedSite() == null || mSite.getCodedSite().getId() == null) continue;
+            
+            if(mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())){
     			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014","Missing other metastatic site information");
     		}
     		if(!set.add(mSite)){
@@ -293,12 +292,17 @@ public class PatientDetailsTab extends AeTab {
     		if(!set.add(conMed)){
     			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
-    		
-    		if(BooleanUtils.isTrue(conMed.getStillTakingMedications()) && !conMed.getEndDate().isNull()){
-    			errors.rejectValue(propertyName, "SAE_018", "End date not allowed when continuing medication");
-    		}
-    		
-    	}
+
+            if (BooleanUtils.isTrue(conMed.getStillTakingMedications()) && !conMed.getEndDate().isNull()) {
+                conMed.getEndDate().setDay(null);
+                conMed.getEndDate().setMonth(null);
+                conMed.getEndDate().setYear(null);
+                // errors.rejectValue(propertyName, "SAE_018", "End date not allowed when continuing medication");
+            } else {
+                // here goes the end date validation
+            }
+
+        }
     }
     
     protected void validatePriorTherapies(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
@@ -316,11 +320,11 @@ public class PatientDetailsTab extends AeTab {
     	Integer[] indexes = new Integer[]{size};
     	modelAndView.getModel().put("indexes", indexes);
     	
-    	AnatomicSite site = command.getMetastaticDiseaseSite();
+//    	AnatomicSite site = command.getMetastaticDiseaseSite();
     	MetastaticDiseaseSite metastaticSite = new MetastaticDiseaseSite();
-    	metastaticSite.setCodedSite(site);
+//    	metastaticSite.setCodedSite(site);
     	command.getAeReport().getDiseaseHistory().addMetastaticDiseaseSite(metastaticSite);
-    	command.setMetastaticDiseaseSite(null);
+//    	command.setMetastaticDiseaseSite(null);
     	
     	return modelAndView;
     }
@@ -353,9 +357,9 @@ public class PatientDetailsTab extends AeTab {
     	modelAndView.getModel().put("indexes", indexes);
     	
     	SAEReportPreExistingCondition preCondition = new SAEReportPreExistingCondition();
-    	preCondition.setPreExistingCondition(command.getPreExistingCondition());
+//    	preCondition.setPreExistingCondition(command.getPreExistingCondition());
     	command.getAeReport().addSaeReportPreExistingCondition(preCondition);
-    	command.setPreExistingCondition(null);
+//    	command.setPreExistingCondition(null);
     	
     	return modelAndView;
     }
@@ -390,11 +394,9 @@ public class PatientDetailsTab extends AeTab {
     	modelAndView.getModel().put("indexes", indexes);
     	
     	ConcomitantMedication conmed = new ConcomitantMedication();
-    	conmed.setAgentName(command.getConcomitantMedication());
     	conmed.setStartDate(new DateValue());
     	conmed.setEndDate(new DateValue());
     	command.getAeReport().addConcomitantMedication(conmed);
-    	command.setConcomitantMedication(null);
     	
     	return modelAndView;
     }
@@ -402,7 +404,7 @@ public class PatientDetailsTab extends AeTab {
     public ModelAndView removeConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
     	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<ConcomitantMedication> conmeds = command.getAeReport().getConcomitantMedications();
-    	ConcomitantMedication conMed =conmeds.get(command.getIndex()); 
+    	ConcomitantMedication conMed = conmeds.get(command.getIndex()); 
     	command.deleteAttribution(conMed);
     	conmeds.remove(conMed); //remove the element
     	
@@ -431,12 +433,12 @@ public class PatientDetailsTab extends AeTab {
     	modelAndView.getModel().put("indexes", indexes);
     	
     	SAEReportPriorTherapy priorTherapy = new SAEReportPriorTherapy();
-    	priorTherapy.setPriorTherapy(command.getPriorTherapy());
+    	// priorTherapy.setPriorTherapy(command.getPriorTherapy());
     	priorTherapy.setStartDate(new DateValue());
     	priorTherapy.setEndDate(new DateValue());
     	priorTherapy.setPriorTherapyAgentsInternal(new ArrayList<PriorTherapyAgent>());
     	command.getAeReport().addSaeReportPriorTherapies(priorTherapy);
-    	command.setPriorTherapy(null);
+    	// command.setPriorTherapy(null);
     	command.getPriorTherapyAgents().add(null); //increment the element size
     	
     	return modelAndView;
@@ -476,8 +478,8 @@ public class PatientDetailsTab extends AeTab {
     	
     	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this goof-up in obtaining the chemoagent.
     	PriorTherapyAgent agent = new PriorTherapyAgent();
-    	ChemoAgent chemoAgent = command.getPriorTherapyAgent();
-    	command.setPriorTherapyAgent(null);
+//    	ChemoAgent chemoAgent = command.getPriorTherapyAgent();
+//    	command.setPriorTherapyAgent(null);
     	/*
     	 * I dont know why ajax calls strip off array parameter - priorTherapyAgents[x]
     	 * 
@@ -486,7 +488,7 @@ public class PatientDetailsTab extends AeTab {
     		command.getPriorTherapyAgents().set(command.getParentIndex(), null);
     	}
     	*/
-    	agent.setChemoAgent(chemoAgent);
+//    	agent.setChemoAgent(chemoAgent);
     	priorTherapy.addPriorTherapyAgent(agent);
     	
     	return modelAndView;
