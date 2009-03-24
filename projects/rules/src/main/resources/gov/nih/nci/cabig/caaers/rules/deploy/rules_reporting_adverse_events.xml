@@ -30,7 +30,7 @@
 						for(AdverseEvent ae : aeReport.getAdverseEvents()){
 						
 							if(
-							   (ae.getGrade() != null) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MODERATE.getCode() )
+							   (ae.getGrade() != null) &amp;&amp; (!Grade.NOT_EVALUATED.equals(ae.getGrade())) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MODERATE.getCode() )
 							   &amp;&amp; 
 							   ((ae.getHospitalization() == null) || (ae.getHospitalization().getCode() == Hospitalization.NONE.getCode())  ) 
 							  ){
@@ -141,5 +141,32 @@
 			<!-- Populate Error Message-->
 			errors.addValidationError("AER_PRESENT_ERR","Atleast one adverse event must be present");
 		</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : "AER_GRADE_CHK"
+	Logic : All adverse events must have a valid grade.
+	Error Code : AER_GRADE_ERR
+	Error Message :  All adverse events must have a valid grade
+	============================================================================= -->
+	<rule name="AER_GRADE_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(AdverseEvent ae : aeReport.getAdverseEvents()){
+						i++;
+						if(ae.getGrade() == null || Grade.NOT_EVALUATED.equals(ae.getGrade())){
+							errors.addValidationError("AER_GRADE_ERR","Adverse event must have a valid grade", i);
+						}
+					}
+					return false;
+				}
+		  	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
 	</rule>
 </package>

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
@@ -34,7 +35,11 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         }
 
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When no grade and no hospitalization");
+        for(ValidationError error : errors.getErrors()){
+        	if(error.getCode().equals("AER_BR3_ERR")){
+        		fail("No Hospitalization related error, when not graded");
+        	}
+        }
     }
 
     /**
@@ -50,7 +55,11 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         }
 
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When no grade and  hospitalization is NONE");
+        for(ValidationError error : errors.getErrors()){
+        	if(error.getCode().equals("AER_BR3_ERR")){
+        		fail("No Hospitalization related error, when not graded");
+        	}
+        }
     }
 
     /**
@@ -289,5 +298,47 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
     	ValidationErrors errors = fireRules(aeReport);
     	assertSameErrorCount(errors, 1);
     	assertCorrectErrorCode(errors, "AER_PRESENT_ERR");
+    }
+    /**
+     * RuleName : "AER_GRADE_CHK"
+	Logic : All adverse events must have a valid grade.
+	Error Code : AER_GRADE_ERR
+	Error Message :  All adverse events must have a valid grade
+     */
+    public void testAllAesGraded() throws Exception{
+    	  ExpeditedAdverseEventReport aeReport = createAEReport();	
+    	  ValidationErrors errors = fireRules(aeReport);
+      	  assertNoErrors(errors, "AeReport has multiple adverse events");
+    }
+    
+    /**
+     * RuleName : "AER_GRADE_CHK"
+	Logic : All adverse events must have a valid grade.
+	Error Code : AER_GRADE_ERR
+	Error Message :  All adverse events must have a valid grade
+     */
+    public void testOneAeNotGraded() throws Exception{
+    	  ExpeditedAdverseEventReport aeReport = createAEReport();	
+    	  
+    	  aeReport.getAdverseEvents().get(0).setGrade(Grade.NOT_EVALUATED);
+    	  ValidationErrors errors = fireRules(aeReport);
+    	  System.out.println(errors);
+    	  assertSameErrorCount(errors, 1, "When 1 of the AEs 1 is not graded");
+    	  assertCorrectErrorCode(errors, "AER_GRADE_ERR","When  grade not provided");
+    }
+    
+    /**
+     * RuleName : "AER_GRADE_CHK"
+	Logic : All adverse events must have a valid grade.
+	Error Code : AER_GRADE_ERR
+	Error Message :  All adverse events must have a valid grade
+     */
+    public void testOneAeGradeIsNull() throws Exception{
+    	  ExpeditedAdverseEventReport aeReport = createAEReport();	
+    	  
+    	  aeReport.getAdverseEvents().get(0).setGrade(null);
+    	  ValidationErrors errors = fireRules(aeReport);
+    	  assertSameErrorCount(errors, 1, "When 1 of the AEs 1 is not graded");
+    	  assertCorrectErrorCode(errors, "AER_GRADE_ERR","When  grade not provided");
     }
 }
