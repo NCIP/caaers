@@ -139,7 +139,7 @@
                 <xs:sequence>
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="middleName" type="CustomStringType"/>
+                    <xs:element name="middleName" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -158,7 +158,7 @@
             <xs:extension base="PersonType">
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="faxNumber" type="CustomStringType"/>
+                    <xs:element name="faxNumber" type="xs:string"/>
                     <xs:element name="nciIdentifier" type="CustomStringType"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
@@ -192,7 +192,7 @@
             <xs:extension base="PersonType">
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="faxNumber" type="CustomStringType"/>
+                    <xs:element name="faxNumber" type="xs:string"/>
                     <xs:element name="nciIdentifier" type="CustomStringType"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
