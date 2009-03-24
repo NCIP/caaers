@@ -348,7 +348,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public int getNumberOfReports(){
     	int count = 0;
     	for(ExpeditedAdverseEventReport report: this.getAeReports()){
-    		count += report.getReports().size();
+    		for(Report r: report.getReports()){
+    			if(!r.getStatus().equals(ReportStatus.REPLACED))
+    				count++;
+    		}
     	}
     	return count;
     }

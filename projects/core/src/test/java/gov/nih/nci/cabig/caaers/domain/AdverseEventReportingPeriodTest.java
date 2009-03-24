@@ -129,4 +129,16 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		assertSame(ae1, aeList.get(3));
 		assertSame(ae4, aeList.get(7));
 	}
+	
+	public void testGetNumberOfReports() throws Exception{
+		reportingPeriod1.addAeReport(new ExpeditedAdverseEventReport());
+		reportingPeriod1.getAeReports().get(0).addReport(Fixtures.createReport("5 day report"));
+		reportingPeriod1.getAeReports().get(0).addReport(Fixtures.createReport("24 hr report"));
+		reportingPeriod1.addAeReport(new ExpeditedAdverseEventReport());
+		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("10 day report"));
+		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("24 hr report"));
+		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("5 day report"));
+		reportingPeriod1.getAeReports().get(1).getReports().get(2).setStatus(ReportStatus.REPLACED);
+		assertEquals("Number of reports computed incorrectly", 4, reportingPeriod1.getNumberOfReports());
+	}
 }
