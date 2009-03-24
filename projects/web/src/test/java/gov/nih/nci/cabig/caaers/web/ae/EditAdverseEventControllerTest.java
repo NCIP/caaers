@@ -37,7 +37,7 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		assignment = registerMockFor(StudyParticipantAssignment.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		command = new EditExpeditedAdverseEventCommand(null, null, assignmentDao, null, 
-								new ExpeditedReportTree(),renderDecisionManager, null, null );
+								new ExpeditedReportTree(),renderDecisionManager, null, null, null );
 		//Setup the command 
 		ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
 	     report.addAdverseEvent(setId(0, new AdverseEvent()));

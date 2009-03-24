@@ -24,6 +24,10 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
+import gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
@@ -59,6 +63,8 @@ public abstract class AeWebTestCase extends WebTestCase {
 
     protected ExpeditedReportTree expeditedReportTree;
     protected RenderDecisionManager renderDecisionManager;
+    protected ReportRepository reportRepository;
+    protected EvaluationService evaluationService;
     
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
@@ -76,6 +82,8 @@ public abstract class AeWebTestCase extends WebTestCase {
         reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
         renderDecisionManager = registerMockFor(RenderDecisionManager.class);
         adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
+        reportRepository = registerMockFor(ReportRepositoryImpl.class);
+        evaluationService = registerMockFor(EvaluationServiceImpl.class);
         command = createCommand();
 
         errors = new BindException(command, "command");
@@ -84,11 +92,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract EditExpeditedAdverseEventCommand createCommand();
 
     protected final EditExpeditedAdverseEventCommand createRealCommand() {
-    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, null, adverseEventRoutingAndReviewRepository);
+    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
 
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, null, adverseEventRoutingAndReviewRepository);
+        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
 
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {

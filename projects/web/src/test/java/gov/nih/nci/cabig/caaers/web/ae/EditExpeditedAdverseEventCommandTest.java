@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Sameer Work
@@ -250,6 +251,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		reportDefinition.setAmendable(false);
     		reportDefinition.setExpedited(false);
     		reportDefinition.setName("repDefn " + i);
+    		reportDefinition.setId(i);
     		report.setReportDefinition(reportDefinition);
     		ReportVersion reportVersion= new ReportVersion();
     		reportVersion.setReportStatus(ReportStatus.PENDING);
@@ -354,7 +356,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
         return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, 
-        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
+        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
     }
     
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
@@ -395,5 +397,67 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
         c.setNextPage(5);
         c.setWorkflowEnabled(true);
         return c;
+    }
+    
+    public void testInitializeExistingReportMap() throws Exception{
+    	addReportsToAeReport();
+    	command.getAeReport().getReports().get(1).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	command.getAeReport().getReports().get(3).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	
+    	command.initializeExistingReportMap();
+    	assertEquals(4, command.getExistingReportMap().size());
+    }
+    
+    public void testAmendReportsWithWorkflowEnabled() throws Exception{
+    	addReportsToAeReport();
+    	command.setWorkflowEnabled(true);
+    	command.getAeReport().setWorkflowId(1);
+    	// setup the arraylist- reportListForAmendment
+    	command.getReportListForAmendment().add(command.getAeReport().getReports().get(0));
+    	
+    	reportRepository.amendReport(command.getReportListForAmendment().get(0), false);
+    	expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(command.getAeReport())).andReturn(new Long(1));
+    	replayMocks();
+    	command.amendReports();
+    	verifyMocks();
+    }
+    
+    public void testAmendReportsWithWorkflowDisabled() throws Exception{
+    	addReportsToAeReport();
+    	command.setWorkflowEnabled(false);
+    	command.getReportListForAmendment().add(command.getAeReport().getReports().get(0));
+    	
+    	reportRepository.amendReport(command.getReportListForAmendment().get(0), false);
+    	replayMocks();
+    	command.amendReports();
+    	verifyMocks();
+    }
+    
+    public void testPopulateCreationAndAmendmentList() throws Exception{
+    	addReportsToAeReport();
+    	command.getAeReport().getReports().get(0).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	command.getAeReport().getReports().get(1).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
+    	
+    	//Setup new reportDefinitions in newSelectedReportDefs.
+    	//existing one (should cause amendment)
+    	ReportDefinition reportDefinition = new ReportDefinition();
+		reportDefinition.setAmendable(true);
+		reportDefinition.setExpedited(true);
+		reportDefinition.setName("repDefn 1");
+		reportDefinition.setId(1);
+    	command.getNewlySelectedDefs().add(reportDefinition);
+    	
+    	//new one (should cause creation)
+    	reportDefinition = new ReportDefinition();
+		reportDefinition.setAmendable(false);
+		reportDefinition.setExpedited(false);
+		reportDefinition.setId(5);
+		command.getNewlySelectedDefs().add(reportDefinition);
+		
+    	command.initializeExistingReportMap();
+    	command.populateCreationAndAmendmentList();
+    	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
+    	assertEquals("Incorrect number of reports for amendment", 1, command.getReportListForAmendment().size());
     }
 }

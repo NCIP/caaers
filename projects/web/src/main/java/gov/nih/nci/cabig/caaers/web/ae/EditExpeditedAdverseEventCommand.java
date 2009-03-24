@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -14,10 +15,13 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -28,14 +32,19 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
    
-    
+    private EvaluationService evaluationService;
    
     
     private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
     private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>();
     List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
-
+    List<ReportDefinition> reportDefinitionListForCreation = new ArrayList<ReportDefinition>();
+    List<Report> reportListForAmendment = new ArrayList<Report>();
+    List<Report> reportListForWithdrawal = new ArrayList<Report>();
+    
+    Map<ReportDefinition, ReportStatus> existingReportMap = new HashMap<ReportDefinition, ReportStatus>();
+    
     // //// LOGIC
 
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao reportDao){
@@ -48,8 +57,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             AdverseEventReportingPeriodDao reportingPeriodDao,
             ExpeditedReportTree expeditedReportTree, 
             RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
-            AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+            AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository,
+            EvaluationService evaluationService) {
     	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
+    		this.evaluationService = evaluationService;
     }
 
     @Override
@@ -73,6 +84,20 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
    
+    /**
+     * It creates a map with the reportDefinitons of the "command.aeReport.reports" as the key
+     * and "command.aeReport.report.lastVersion.reportStatus" as the value.
+     * It is needed as helper data structure to implement the create/amend-report logic.
+     *
+     * @param command
+     * @return
+     */
+    public void initializeExistingReportMap() {
+        for (Report report : getAeReport().getReports()) {
+            if (!existingReportMap.containsKey(report.getReportDefinition()))
+                existingReportMap.put(report.getReportDefinition(), report.getLastVersion().getReportStatus());
+        }
+    }
     
     /**
      * This method classifies the newly selected reportDefinitions into 2 lists.
@@ -90,6 +115,31 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     			otherSelectedReports.add(reportDefinition);
     	}
     }
+    
+    public void populateCreationAndAmendmentList(){
+    	// For Sponsor/amendable newlySelectedReport take the following action
+    	//        - create New report if it doesnt exist
+    	//        - amend if it exists (also instantiate Notifications)
+
+    	// For other reports take the following action
+    	//         - create New report if it doesnt exist
+    	//         - amend if it exists and has status = SUBMITTED/WITHDRAWN
+    	//         - ignore if it exists and the status = PENDING.
+    	for (ReportDefinition reportDefinition : getNewlySelectedDefs()) {
+    		if (!existingReportMap.containsKey(reportDefinition))
+    			reportDefinitionListForCreation.add(reportDefinition);
+    		else {
+    			if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+    					existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+    				for (Report report : getAeReport().getReports()) {
+    					if (report.getReportDefinition().equals(reportDefinition))
+    						reportListForAmendment.add(report);
+    				}
+    		}
+    	}
+    }
+    
+    
     
     /**
      * This method returns a boolean. Its true if the earliest sponsor/amendable report selected is expected to be scheduled before the 
@@ -115,8 +165,12 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     
     /**
-     * This method amends the reports in the list passed as a parameter to this method.
+     * This method amends the reports in the list reportListForAmendment.
      */
+    public void amendReports(){
+    	amendReports(reportListForAmendment);
+    }
+    
     public void amendReports(List<Report> amendReportList){
     	// Set useDefaultVersion to false so that for the first report the reportVersionId is correctly incremented by 1.
     	Boolean useDefaultVersion = false;
@@ -132,6 +186,17 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     			enactWorkflow(amendReportList.get(0).getAeReport());
     	}
     }
+
+    /**
+     * This method sets the MandatorySections and refreshes the ManadatoryProperties of the command.
+     */
+    public void refreshMandatorySectionsAndProperties() {
+    	// find the new mandatory sections
+        setMandatorySections(evaluationService.mandatorySections(getAeReport()));
+
+        // refresh the mandatory fields
+        refreshMandatoryProperties();
+    }
     
     
     /**
@@ -144,10 +209,20 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
     /**
-     * This method withdraws the reports in the list passed as a parameter to this method.
+     * This method creates the reports in the list - reportDefinitionListForCreation.
+     * @param - boolean (useDefaultVersion)
      */
-    public void withdrawReports(List<Report> withdrawReportList){
-    	for(Report report: withdrawReportList){
+    public void createReports(Boolean useDefaultVersion){
+    	if(reportDefinitionListForCreation != null && reportDefinitionListForCreation.size() > 0){
+    		List<Report> newlyCreatedReports = evaluationService.addOptionalReports(getAeReport(), reportDefinitionListForCreation, useDefaultVersion);
+    	}
+    }
+    
+    /**
+     * This method withdraws the reports in the list reportListForWithdrawal.
+     */
+    public void withdrawReports(){
+    	for(Report report: reportListForWithdrawal){
     		reportRepository.replaceReport(report);
     	}
     }
@@ -234,4 +309,39 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		return null;
 	}
 	
+    public List<ReportDefinition> getReportDefinitionListForCreation(){
+    	return reportDefinitionListForCreation;
+    }
+    
+    public void setReportDefinitionListForCreation(List<ReportDefinition> reportDefinitionListForCreation){
+    	this.reportDefinitionListForCreation = reportDefinitionListForCreation;
+    }
+    
+    public List<Report> getReportListForAmendment(){
+    	return reportListForAmendment;
+    }
+    
+    public void setReportListForAmendment(List<Report> reportListForAmendment){
+    	this.reportListForAmendment = reportListForAmendment;
+    }
+    
+    public List<Report> getReportListForWithdrawal(){
+    	return reportListForWithdrawal;
+    }
+    
+    public void setReportListForWithdrawal(List<Report> reportListForWithdralwal){
+    	this.reportListForWithdrawal = reportListForWithdralwal;
+    }
+    
+    public Map<ReportDefinition, ReportStatus> getExistingReportMap(){
+    	return existingReportMap;
+    }
+    
+    public void setExistingReportMap(Map<ReportDefinition, ReportStatus> existingReportMap){
+    	this.existingReportMap = existingReportMap;
+    }
+
+    public EvaluationService getEvaluationService(){
+    	return evaluationService;
+    }
 }

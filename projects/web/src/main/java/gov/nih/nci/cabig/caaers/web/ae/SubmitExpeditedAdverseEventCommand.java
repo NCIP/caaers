@@ -31,7 +31,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
                     AdverseEventReportingPeriodDao reportingPeriodDao,
                     ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
                     AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
+        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
     }
 
     @Override
