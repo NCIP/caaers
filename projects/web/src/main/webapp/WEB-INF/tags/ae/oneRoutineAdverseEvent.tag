@@ -66,6 +66,7 @@
 				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:" + grades.indexOf(val);
 			});
 		</script>
+		<div class="row">
 		<div class="leftpanel">
 			<%-- Start Date --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
@@ -86,7 +87,7 @@
 			<%-- Outcome--%>
 			<ae:oneOutcome index="${index}" isRoutineFlow="true" />
 		</div>
-
+</div>
 		<!--  field to store the sig -->
 		<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>
 		<c:if test="${adverseEvent.submitted == true}">
