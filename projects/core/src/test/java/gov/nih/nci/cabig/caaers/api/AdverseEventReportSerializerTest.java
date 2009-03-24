@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -96,6 +99,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 
 		public void run() {
 			try {
+				SecurityTestUtils.switchToSuperuser();
 				Thread.sleep(sleep);
 				String xml = serializer.serialize(aeReport);
 				//System.out.println(worker.getName() + " ::: " + xml);
