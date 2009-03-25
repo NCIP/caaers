@@ -1,0 +1,1021 @@
+
+<AdverseEventReport>
+	<id>79</id>
+	<createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2009-02-23 11:30:19.916</createdAt>
+	<status xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">PENDING</status>
+	<AdverseEventResponseDescription>
+		<eventDescription>test</eventDescription>
+		<presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">RECOVERING</presentStatus>
+		<retreated>false</retreated>
+		<autopsyPerformed>false</autopsyPerformed>
+		<primaryTreatmentApproximateTime>
+			<type>0</type>
+		</primaryTreatmentApproximateTime>
+	</AdverseEventResponseDescription>
+	<Physician>
+		<firstName>Judith</firstName>
+		<lastName>Karp</lastName>
+		<address/>
+		<ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem">
+			<key xsi:type="java:java.lang.String">phone</key>
+			<value xsi:type="java:java.lang.String">(000)000-0000</value>
+		</ContactMechanism>
+		<ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem">
+			<key xsi:type="java:java.lang.String">e-mail</key>
+			<value xsi:type="java:java.lang.String">default@abc.com</value>
+		</ContactMechanism>
+	</Physician>
+	<Reporter>
+		<firstName>Judith</firstName>
+		<lastName>Karp</lastName>
+		<address/>
+		<ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem">
+			<key xsi:type="java:java.lang.String">phone</key>
+			<value xsi:type="java:java.lang.String">(000)000-0000</value>
+		</ContactMechanism>
+		<ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem">
+			<key xsi:type="java:java.lang.String">fax</key>
+			<value xsi:type="java:java.lang.String">(000)000-0000</value>
+		</ContactMechanism>
+		<ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem">
+			<key xsi:type="java:java.lang.String">e-mail</key>
+			<value xsi:type="java:java.lang.String">default@abc.com</value>
+		</ContactMechanism>
+	</Reporter>
+	<DiseaseHistory>
+		<diagnosisDate>
+			<monthString>10</monthString>
+			<yearString>2006</yearString>
+		</diagnosisDate>
+		<CtepStudyDisease>
+			<id>57</id>
+			<leadDisease>false</leadDisease>
+			<DiseaseTerm>
+				<id>204</id>
+				<term>Primary peritoneal carcinoma</term>
+				<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+				<DiseaseCategory>
+					<id>104</id>
+					<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+				</DiseaseCategory>
+			</DiseaseTerm>
+		</CtepStudyDisease>
+		<AnatomicSite>
+			<id>39</id>
+			<name>Ovary</name>
+			<category>Genitourinary</category>
+		</AnatomicSite>
+	</DiseaseHistory>
+	<ParticipantHistory>
+		<height>
+			<quantity>150</quantity>
+			<unit>Centimeter</unit>
+		</height>
+		<weight>
+			<quantity>100</quantity>
+			<unit>Kilogram</unit>
+		</weight>
+		<baselinePerformanceStatus>0 = Normal Activity, asymptomatic</baselinePerformanceStatus>
+	</ParticipantHistory>
+	<StudyParticipantAssignment>
+		<dateOfEnrollment>2009-02-23T00:00:00.000-05:00</dateOfEnrollment>
+		<StudySite>
+			<StudyInvestigator>
+				<id>195</id>
+				<roleCode>Site Investigator</roleCode>
+				<statusCode>Active</statusCode>
+				<SiteInvestigator>
+					<id>75</id>
+					<Investigator>
+						<id>30071</id>
+						<firstName>Ross</firstName>
+						<lastName>Donehower</lastName>
+						<nciIdentifier>9973</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+			</StudyInvestigator>
+			<StudyInvestigator>
+				<id>169</id>
+				<roleCode>Site Investigator</roleCode>
+				<statusCode>Active</statusCode>
+				<SiteInvestigator>
+					<id>19</id>
+					<Investigator>
+						<id>30019</id>
+						<firstName>Manuel</firstName>
+						<lastName>Hidalgo</lastName>
+						<nciIdentifier>26783</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+			</StudyInvestigator>
+			<Study>
+				<id>22</id>
+				<multiInstitutionIndicator>true</multiInstitutionIndicator>
+				<shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</shortTitle>
+				<longTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</longTitle>
+				<description>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</description>
+				<phaseCode>Phase II Trial</phaseCode>
+				<primarySponsorCode>CTEP</primarySponsorCode>
+				<status>Active - Trial is open to accrual</status>
+				<Ctc>
+					<id>3</id>
+					<name>CTCAE v3.0</name>
+				</Ctc>
+				<Identifier>
+					<type>Protocol Authority Identifier</type>
+					<value>5876</value>
+					<primaryIndicator>true</primaryIndicator>
+				</Identifier>
+				<Identifier>
+					<type>Coordinating Center Identifier</type>
+					<value>MC0261</value>
+					<primaryIndicator>false</primaryIndicator>
+				</Identifier>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+				<CtepStudyDisease>
+					<id>56</id>
+					<leadDisease>true</leadDisease>
+					<DiseaseTerm>
+						<id>201</id>
+						<term>Ovarian epithelial cancer</term>
+						<ctepTerm>Ovarian epithelial cancer</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+			</Study>
+			<Organization>
+				<id>104094</id>
+				<name>Johns Hopkins University</name>
+				<nciInstituteCode>MD017</nciInstituteCode>
+				<SiteInvestigator>
+					<id>48</id>
+					<Investigator>
+						<id>30048</id>
+						<firstName>Judith</firstName>
+						<lastName>Karp</lastName>
+						<nciIdentifier>8140</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>60</id>
+					<Investigator>
+						<id>30057</id>
+						<firstName>Steven</firstName>
+						<lastName>Gore</lastName>
+						<nciIdentifier>15984</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(410) 614-1005</phoneNumber>
+						<faxNumber>(410)955-8781</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>68</id>
+					<Investigator>
+						<id>30065</id>
+						<firstName>Roberto</firstName>
+						<lastName>Pili</lastName>
+						<nciIdentifier>31509</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>75</id>
+					<Investigator>
+						<id>30071</id>
+						<firstName>Ross</firstName>
+						<lastName>Donehower</lastName>
+						<nciIdentifier>9973</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+				<SiteInvestigator>
+					<id>19</id>
+					<Investigator>
+						<id>30019</id>
+						<firstName>Manuel</firstName>
+						<lastName>Hidalgo</lastName>
+						<nciIdentifier>26783</nciIdentifier>
+						<emailAddress>default@abc.com</emailAddress>
+						<phoneNumber>(000)000-0000</phoneNumber>
+						<faxNumber>(000)000-0000</faxNumber>
+					</Investigator>
+				</SiteInvestigator>
+			</Organization>
+		</StudySite>
+		<Participant>
+			<firstName>Pat</firstName>
+			<lastName>Little</lastName>
+			<dateOfBirth>
+				<dayString>12</dayString>
+				<monthString>12</monthString>
+				<yearString>1940</yearString>
+			</dateOfBirth>
+			<gender>Female</gender>
+			<race>Unknown</race>
+			<ethnicity>Unknown</ethnicity>
+			<Identifier>
+				<type>CC</type>
+				<value>PL-113</value>
+				<primaryIndicator>true</primaryIndicator>
+			</Identifier>
+		</Participant>
+		<studySubjectIdentifier>PL-113</studySubjectIdentifier>
+	</StudyParticipantAssignment>
+	<AdverseEvent>
+		<gridId>PRY1962e8f6-aa73-40ac-94e6-af6ebcfd9619</gridId>
+		<startDate>2009-03-02T00:00:00.000-05:00</startDate>
+		<CourseAgentAttribution>
+			<id>289</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>299</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>290</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Unlikely</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="false" med-dRA="false">
+			<ctc-term>
+				<id>3101</id>
+				<term>Dry skin</term>
+				<ctepTerm>Dry skin</ctepTerm>
+				<ctepCode>10013786</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>309</id>
+					<name>DERMATOLOGY/SKIN</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Dry skin</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3101</id>
+				<term>Dry skin</term>
+				<ctepTerm>Dry skin</ctepTerm>
+				<ctepCode>10013786</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>309</id>
+					<name>DERMATOLOGY/SKIN</name>
+				</CtcCategory>
+			</term>
+			<full-name>Dry skin</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+		<Outcome>
+			<id>259</id>
+			<OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">HOSPITALIZATION</OutcomeType>
+		</Outcome>
+	</AdverseEvent>
+	<AdverseEvent>
+		<gridId>PRNc0c93f5e-fd4c-4b8f-99c7-0da23dc4edd6</gridId>
+		<CourseAgentAttribution>
+			<id>291</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Unlikely</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>300</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>292</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="false" med-dRA="false">
+			<ctc-term>
+				<id>3099</id>
+				<term>Cheilitis</term>
+				<ctepTerm>Cheilitis</ctepTerm>
+				<ctepCode>10008417</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>309</id>
+					<name>DERMATOLOGY/SKIN</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Cheilitis</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3099</id>
+				<term>Cheilitis</term>
+				<ctepTerm>Cheilitis</ctepTerm>
+				<ctepCode>10008417</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>309</id>
+					<name>DERMATOLOGY/SKIN</name>
+				</CtcCategory>
+			</term>
+			<full-name>Cheilitis</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+		<Outcome>
+			<id>260</id>
+			<OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">HOSPITALIZATION</OutcomeType>
+		</Outcome>
+	</AdverseEvent>
+	<AdverseEvent>
+		<gridId>PRN33dfbffc-fc34-4bbe-8860-3a29a81b8743</gridId>
+		<CourseAgentAttribution>
+			<id>293</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>301</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>294</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="false" med-dRA="false">
+			<ctc-term>
+				<id>3277</id>
+				<term>Vomiting</term>
+				<ctepTerm>Vomiting</ctepTerm>
+				<ctepCode>10047700</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Vomiting</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3277</id>
+				<term>Vomiting</term>
+				<ctepTerm>Vomiting</ctepTerm>
+				<ctepCode>10047700</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</term>
+			<full-name>Vomiting</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Unlikely</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: No</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+	</AdverseEvent>
+	<AdverseEvent>
+		<gridId>PRN80543925-e1ad-4b40-a56e-0bc8f176b52a</gridId>
+		<startDate>2008-12-03T00:00:00.000-05:00</startDate>
+		<detailsForOther>sick to stomach</detailsForOther>
+		<CourseAgentAttribution>
+			<id>295</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>302</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>296</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="false" med-dRA="false">
+			<ctc-term>
+				<id>3207</id>
+				<term>Nausea</term>
+				<ctepTerm>Nausea</ctepTerm>
+				<ctepCode>10028813</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Nausea: sick to stomach</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3207</id>
+				<term>Nausea</term>
+				<ctepTerm>Nausea</ctepTerm>
+				<ctepCode>10028813</ctepCode>
+				<otherRequired>false</otherRequired>
+				<CtcCategory>
+					<id>311</id>
+					<name>GASTROINTESTINAL</name>
+				</CtcCategory>
+			</term>
+			<full-name>Nausea</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: No</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+	</AdverseEvent>
+	<AdverseEvent>
+		<gridId>PRNf64bdc95-c659-4a17-8efd-198058d1e227</gridId>
+		<CourseAgentAttribution>
+			<id>297</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>303</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>298</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Unlikely</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="true" med-dRA="false">
+			<ctc-term>
+				<id>3007</id>
+				<term>Auditory/Ear - Other (Specify, __)</term>
+				<ctepTerm>Ear disorder</ctepTerm>
+				<ctepCode>10014004</ctepCode>
+				<otherRequired>true</otherRequired>
+				<CtcCategory>
+					<id>302</id>
+					<name>AUDITORY/EAR</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Auditory/Ear - Other: Tinnitus</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3007</id>
+				<term>Auditory/Ear - Other (Specify, __)</term>
+				<ctepTerm>Ear disorder</ctepTerm>
+				<ctepCode>10014004</ctepCode>
+				<otherRequired>true</otherRequired>
+				<CtcCategory>
+					<id>302</id>
+					<name>AUDITORY/EAR</name>
+				</CtcCategory>
+			</term>
+			<full-name>Auditory/Ear - Other (Specify, __)</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<LowLevelTerm>
+			<id>10105116</id>
+			<meddraCode>10043882</meddraCode>
+			<meddraTerm>Tinnitus</meddraTerm>
+			<fullName>10043882 - Tinnitus</fullName>
+		</LowLevelTerm>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Possible</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: No</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+	</AdverseEvent>
+	<AdverseEvent>
+		<gridId>PRN1012106d-94b3-43ca-8498-cd7c296401f9</gridId>
+		<detailsForOther>test verbatim</detailsForOther>
+		<expected>false</expected>
+		<CourseAgentAttribution>
+			<id>430</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Unlikely</attribution>
+			<CourseAgent>
+				<id>82</id>
+				<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>100</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>443</id>
+						<name>Alvocidib (flavopiridol)</name>
+						<nscNumber>649890</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<CourseAgentAttribution>
+			<id>431</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4: Probable</attribution>
+			<CourseAgent>
+				<id>83</id>
+				<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+				<Dose>
+					<amount>60</amount>
+					<units>mg</units>
+				</Dose>
+				<StudyAgent>
+					<Agent>
+						<id>240</id>
+						<name>CISplatin</name>
+						<nscNumber>119875</nscNumber>
+					</Agent>
+					<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+				</StudyAgent>
+			</CourseAgent>
+		</CourseAgentAttribution>
+		<DiseaseAttribution>
+			<id>432</id>
+			<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Unrelated</attribution>
+			<DiseaseHistory>
+				<id>79</id>
+				<diagnosisDate>
+					<monthString>10</monthString>
+					<yearString>2006</yearString>
+				</diagnosisDate>
+				<CtepStudyDisease>
+					<id>57</id>
+					<leadDisease>false</leadDisease>
+					<DiseaseTerm>
+						<id>204</id>
+						<term>Primary peritoneal carcinoma</term>
+						<ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+						<DiseaseCategory>
+							<id>104</id>
+							<name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+						</DiseaseCategory>
+					</DiseaseTerm>
+				</CtepStudyDisease>
+				<AnatomicSite>
+					<id>39</id>
+					<name>Ovary</name>
+					<category>Genitourinary</category>
+				</AnatomicSite>
+			</DiseaseHistory>
+		</DiseaseAttribution>
+		<AdverseEventCtcTerm other-required="true" med-dRA="false">
+			<ctc-term>
+				<id>3003</id>
+				<term>Allergy/Immunology - Other (Specify, __)</term>
+				<ctepTerm>Immune system disorder</ctepTerm>
+				<ctepCode>10021425</ctepCode>
+				<otherRequired>true</otherRequired>
+				<CtcCategory>
+					<id>301</id>
+					<name>ALLERGY/IMMUNOLOGY</name>
+				</CtcCategory>
+			</ctc-term>
+			<universal-term>Allergy/Immunology - Other: test verbatim</universal-term>
+			<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+				<id>3003</id>
+				<term>Allergy/Immunology - Other (Specify, __)</term>
+				<ctepTerm>Immune system disorder</ctepTerm>
+				<ctepCode>10021425</ctepCode>
+				<otherRequired>true</otherRequired>
+				<CtcCategory>
+					<id>301</id>
+					<name>ALLERGY/IMMUNOLOGY</name>
+				</CtcCategory>
+			</term>
+			<full-name>Allergy/Immunology - Other (Specify, __)</full-name>
+		</AdverseEventCtcTerm>
+		<AdverseEventMeddraLowLevelTerm/>
+		<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Unrelated</attributionSummary>
+		<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe</grade>
+		<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes</hospitalization>
+		<eventApproximateTime>
+			<type>0</type>
+		</eventApproximateTime>
+		<Outcome>
+			<id>262</id>
+			<OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">HOSPITALIZATION</OutcomeType>
+		</Outcome>
+	</AdverseEvent>
+	<SAEReportPriorTherapy>
+		<id>111</id>
+		<PriorTherapy>
+			<id>17</id>
+			<text>Surgery</text>
+			<meddraTerm>10042609</meddraTerm>
+			<meddraCode>Surgery</meddraCode>
+		</PriorTherapy>
+		<other>resection</other>
+		<startDate>
+			<monthString>10</monthString>
+			<yearString>2006</yearString>
+		</startDate>
+		<endDate>
+			<monthString>10</monthString>
+			<yearString>2006</yearString>
+		</endDate>
+	</SAEReportPriorTherapy>
+	<Summary id="Participant">
+		<value>Pat Little (PL-113)</value>
+	</Summary>
+	<Summary id="Study">
+		<value>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas (5876)</value>
+	</Summary>
+	<Summary id="Report created at">
+		<value>2009-02-23 11:30:19.916</value>
+	</Summary>
+	<Summary id="Primary AE">
+		<value>Dry skin</value>
+	</Summary>
+	<Summary id="AE count">
+		<value>6</value>
+	</Summary>
+	<Summary id="Public identifier">
+		<value>MD017-MD017</value>
+	</Summary>
+	<Summary id="Ticket number"/>
+	<Summary id="Next report due"/>
+	<Summary id="Course">
+		<value/>
+	</Summary>
+	<TreatmentInformation>
+		<firstCourseDate>2008-12-01T00:00:00.000-05:00</firstCourseDate>
+		<TreatmentAssignment>
+			<code>A</code>
+			<description>(Cycle= 3 Weeks): Cisplatin 60 mg/m2 IV on day 1 Flavopiridol 100 mg/m2 CIV over 24 hours on day 1</description>
+		</TreatmentAssignment>
+		<totalCourses>1</totalCourses>
+		<AdverseEventCourse>
+			<number>1</number>
+			<date>2008-12-01T00:00:00.000-05:00</date>
+		</AdverseEventCourse>
+		<CourseAgent>
+			<id>82</id>
+			<lastAdministeredDate>2008-12-01T00:00:00.000-05:00</lastAdministeredDate>
+			<Dose>
+				<amount>100</amount>
+				<units>mg</units>
+			</Dose>
+			<StudyAgent>
+				<Agent>
+					<id>443</id>
+					<name>Alvocidib (flavopiridol)</name>
+					<nscNumber>649890</nscNumber>
+				</Agent>
+				<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND</INDType>
+			</StudyAgent>
+		</CourseAgent>
+		<CourseAgent>
+			<id>83</id>
+			<lastAdministeredDate>2008-12-04T00:00:00.000-05:00</lastAdministeredDate>
+			<Dose>
+				<amount>60</amount>
+				<units>mg</units>
+			</Dose>
+			<StudyAgent>
+				<Agent>
+					<id>240</id>
+					<name>CISplatin</name>
+					<nscNumber>119875</nscNumber>
+				</Agent>
+				<INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA_COMMERCIAL</INDType>
+			</StudyAgent>
+		</CourseAgent>
+	</TreatmentInformation>
+	<AdditionalInformation>
+		<id>79</id>
+		<autopsyReport>false</autopsyReport>
+		<consults>false</consults>
+		<dischargeSummary>false</dischargeSummary>
+		<flowCharts>false</flowCharts>
+		<labReports>false</labReports>
+		<obaForm>false</obaForm>
+		<other>false</other>
+		<pathologyReport>true</pathologyReport>
+		<progressNotes>true</progressNotes>
+		<radiologyReports>false</radiologyReports>
+		<referralLetters>false</referralLetters>
+		<irbReport>false</irbReport>
+	</AdditionalInformation>
+</AdverseEventReport>
