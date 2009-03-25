@@ -175,7 +175,8 @@
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" />
 			
-						
+			<!-- Rules Jar -->
+			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
 			
 			<!-- Apache POI dependencies -->
 			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>

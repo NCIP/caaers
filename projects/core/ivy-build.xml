@@ -160,6 +160,7 @@
             	<include name="AENotification.xsd"/>
             	<include name="Investigator.xsd"/>
             	<include name="ResearchStaff.xsd"/>
+            	<include name="Facts.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 
