@@ -3,10 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -16,6 +13,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
 
 /**
  * This tab will display all the Rules. User will be crreating / editing / deleting rules from this
@@ -83,7 +84,7 @@ public class RuleTab extends DefaultTab {
         // Retrieve RuleSet based on the one choosen by the user
         try {
             System.out.println("----- LEVEL in RuleTab ----" + createRuleCommand.getLevel());
-            RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
+            CaaersRulesEngineService rulesEngineService = createRuleCommand.getCaaersRulesEngineService();
 
             if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel())) {
                 System.out.println("Getting sponsor level rules ....");

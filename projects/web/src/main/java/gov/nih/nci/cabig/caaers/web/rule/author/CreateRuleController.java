@@ -5,8 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 
 import java.util.HashMap;
@@ -17,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.semanticbits.rules.api.RuleAuthoringService;
 
 /**
  * 
@@ -34,7 +35,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     private OrganizationDao organizationDao;
 
-    private RulesEngineService rulesEngineService;
+    private CaaersRulesEngineService caaersRulesEngineService;
 
     private CtcDao ctcDao;
 
@@ -65,7 +66,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
-        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
     }
 
     @Override
@@ -102,12 +103,12 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         this.studyDao = studyDao;
     }
 
-    public RulesEngineService getRulesEngineService() {
-        return rulesEngineService;
+    public CaaersRulesEngineService getCaaersRulesEngineService() {
+        return caaersRulesEngineService;
     }
 
-    public void setRulesEngineService(RulesEngineService rulesEngineService) {
-        this.rulesEngineService = rulesEngineService;
+    public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
+        this.caaersRulesEngineService = caaersRulesEngineService;
     }
 
     public ReportDefinitionDao getReportDefinitionDao() {

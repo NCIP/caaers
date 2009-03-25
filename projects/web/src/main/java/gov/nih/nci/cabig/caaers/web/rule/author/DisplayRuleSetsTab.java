@@ -1,12 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -19,6 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
+
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.ReadableRule;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.utils.RuleUtil;
 
 /*
  * This class is used for displaying the rule sets avaiable based on the user selection. User can choose sponsor, intitution or study.
@@ -105,22 +106,22 @@ public class DisplayRuleSetsTab extends DefaultTab {
 
         try {
 
-            RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
+            CaaersRulesEngineService caaersRulesEngineService = createRuleCommand.getCaaersRulesEngineService();
 
             if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel())) {
-                ruleSets = rulesEngineService.getAllRuleSetsForSponsor(createRuleCommand
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsor(createRuleCommand
                                 .getSponsorName());
             } else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand
                             .getLevel())) {
-                ruleSets = rulesEngineService.getAllRuleSetsForSponsorDefinedStudy(
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsorDefinedStudy(
                                 createRuleCommand.getCategoryIdentifier(), createRuleCommand
                                                 .getSponsorName());
             } else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equals(createRuleCommand.getLevel())) {
-                ruleSets = rulesEngineService.getAllRuleSetsForInstitution(createRuleCommand
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitution(createRuleCommand
                                 .getInstitutionName());
             } else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand
                             .getLevel())) {
-                ruleSets = rulesEngineService.getAllRuleSetsForInstitutionDefinedStudy(
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitutionDefinedStudy(
                                 createRuleCommand.getCategoryIdentifier(), createRuleCommand
                                                 .getInstitutionName());
             }

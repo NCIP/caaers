@@ -10,19 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
-import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
-import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
-import gov.nih.nci.cabig.caaers.rules.ui.Field;
-import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.io.InputStream;
@@ -34,6 +23,18 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.FieldConstraint;
+import com.semanticbits.rules.brxml.LiteralRestriction;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.ui.DomainObject;
+import com.semanticbits.rules.ui.Field;
+import com.semanticbits.rules.ui.RuleUi;
+import com.semanticbits.rules.utils.BRXMLHelper;
+import com.semanticbits.rules.utils.RuleUtil;
 
 /**
  * Command Object holding information for Rule authoring
@@ -56,7 +57,7 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     private RuleAuthoringService ruleAuthoringService;
 
-    private RulesEngineService rulesEngineService;
+    private CaaersRulesEngineService caaersRulesEngineService;
 
     private NotificationDao notificationDao;
 
@@ -105,13 +106,13 @@ public class CreateRuleCommand implements RuleInputCommand {
     }
 
     public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao,
-                    NotificationDao notificationDao, RulesEngineService rulesEngineService,
+                    NotificationDao notificationDao, CaaersRulesEngineService caaersRulesEngineService,
                     ReportDefinitionDao reportDefinitionDao, OrganizationDao organizationDao,
                     CtcDao ctcDao) {
         setRuleAuthoringService(ruleAuthoringService);
         setStudyDao(studyDao);
         setNotificationDao(notificationDao);
-        setRulesEngineService(rulesEngineService);
+        setCaaersRulesEngineService(caaersRulesEngineService);
         ruleSet = new RuleSet();
         existingRuleSets = new ArrayList<RuleSet>();
         setReportDefinitionDao(reportDefinitionDao);
@@ -247,17 +248,17 @@ public class CreateRuleCommand implements RuleInputCommand {
             }
 
             if (CreateRuleCommand.SPONSOR_LEVEL.equalsIgnoreCase(this.getLevel())) {
-                rulesEngineService.saveRulesForSponsor(ruleSet, sponsorName);
+            	caaersRulesEngineService.saveRulesForSponsor(ruleSet, sponsorName);
             } else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equalsIgnoreCase(this.getLevel())) {
-                rulesEngineService.saveRulesForInstitution(ruleSet, institutionName);
+            	caaersRulesEngineService.saveRulesForInstitution(ruleSet, institutionName);
             } else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this
                             .getLevel())) {
-                rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, categoryIdentifier,
+            	caaersRulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, categoryIdentifier,
                                 sponsorName);
 
             } else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this
                             .getLevel())) {
-                rulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, categoryIdentifier,
+            	caaersRulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, categoryIdentifier,
                                 institutionName);
 
             }
@@ -442,12 +443,12 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     }
 
-    public RulesEngineService getRulesEngineService() {
-        return rulesEngineService;
+    public CaaersRulesEngineService getCaaersRulesEngineService() {
+        return caaersRulesEngineService;
     }
 
-    public void setRulesEngineService(RulesEngineService rulesEngineService) {
-        this.rulesEngineService = rulesEngineService;
+    public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
+        this.caaersRulesEngineService = caaersRulesEngineService;
     }
 
     public boolean isDataChanged() {
@@ -556,7 +557,7 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     private Column createCriteriaForFactResolver() {
         Column column = BRXMLHelper.newColumn();
-        column.setObjectType("gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver");
+        column.setObjectType("com.semanticbits.rules.objectgraph.FactResolver");
         column.setIdentifier("factResolver");
 
         return column;
@@ -571,7 +572,7 @@ public class CreateRuleCommand implements RuleInputCommand {
 
         Unmarshaller unmarshaller;
         try {
-            unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.ui")
+            unmarshaller = JAXBContext.newInstance("com.semanticbits.rules.ui")
                             .createUnmarshaller();
             ruleUi = (RuleUi) unmarshaller.unmarshal(inputStream);
         } catch (Exception e) {

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 
 import java.io.EOFException;
 import java.io.File;
@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class ImportRuleController extends SimpleFormController {
-
+	
+	private CaaersRulesEngineService caaersRulesEngineService;
+	
     public ImportRuleController() {
         setCommandClass(ImportRuleCommand.class);
         setBindOnNewForm(true);
@@ -39,15 +41,13 @@ public class ImportRuleController extends SimpleFormController {
 
         ImportRuleCommand importRuleCommand = (ImportRuleCommand) command;
         importRuleCommand.setUpdated(true);
-        RulesEngineService rulesEngineService = (RulesEngineService) getApplicationContext()
-                        .getBean("ruleEngineService");
         if (validate(importRuleCommand)) {
             File ruleSetFile1 = File.createTempFile("ruleset", "import.xml");
             FileCopyUtils.copy(importRuleCommand.getRuleSetFile1().getInputStream(),
                             new FileOutputStream(ruleSetFile1));
             StringBuffer sb = new StringBuffer();
             try {
-                List<String> rds = rulesEngineService.importRules(ruleSetFile1.getAbsolutePath());
+                List<String> rds = caaersRulesEngineService.importRules(ruleSetFile1.getAbsolutePath());
                 if (rds.size() > 0) {
 
                     sb
@@ -113,5 +113,14 @@ public class ImportRuleController extends SimpleFormController {
         return !isEmpty;
 
     }
+
+	public CaaersRulesEngineService getCaaersRulesEngineService() {
+		return caaersRulesEngineService;
+	}
+
+	public void setCaaersRulesEngineService(
+			CaaersRulesEngineService caaersRulesEngineService) {
+		this.caaersRulesEngineService = caaersRulesEngineService;
+	}
 
 }

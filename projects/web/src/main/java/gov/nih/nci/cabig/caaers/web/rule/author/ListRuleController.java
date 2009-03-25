@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import com.semanticbits.rules.api.RuleAuthoringService;
 
 /**
  * 

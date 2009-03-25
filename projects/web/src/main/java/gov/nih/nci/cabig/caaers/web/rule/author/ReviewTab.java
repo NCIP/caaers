@@ -1,17 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.ReadableRule;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.utils.RuleUtil;
 
 public class ReviewTab extends DefaultTab {
 

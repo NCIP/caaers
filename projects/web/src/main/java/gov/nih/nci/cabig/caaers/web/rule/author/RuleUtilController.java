@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
+
+import com.semanticbits.rules.api.RulesEngineService;
 
 public class RuleUtilController extends AbstractCommandController {
 

@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
@@ -9,6 +7,9 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
+
+import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.brxml.RuleSet;
 
 /**
  * 

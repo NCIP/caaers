@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.brxml.Category;
-import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+import com.semanticbits.rules.brxml.Category;
+import com.semanticbits.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 
