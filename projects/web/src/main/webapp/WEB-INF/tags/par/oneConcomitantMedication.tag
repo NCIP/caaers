@@ -54,35 +54,36 @@
     </table>
 
 	<script>
-	 function initializeConMed_${index}(){
-		 $('assignment.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){
-				//the code to clear end-date and make it a readonly field.
-				
-			 	
-			 	var edYrField = $('assignment.concomitantMedications[${index}].endDate.year')
-				if(edYrField){
 
-					var edDdField = $('assignment.concomitantMedications[${index}].endDate.day');
-					var edMmField = $('assignment.concomitantMedications[${index}].endDate.month');
-					if(evt.element().value){
-						edYrField.value = '';
-						edDdField.value = '';
-						edMmField.value = '';
-						edYrField.readonly = true;
-						edDdField.readonly = true;
-						edMmField.value =  true;
-					}else{
-						edYrField.readonly = false;
-						edDdField.readonly = false;
-						edMmField.value =  false;
-					}
-					
-				}
+        function setFields_${index}() {
+                   var edYrField = $('assignment.concomitantMedications[${index}].endDate.yearString')
+                   if(edYrField) {
+                       var edDdField = $('assignment.concomitantMedications[${index}].endDate.dayString');
+                       var edMmField = $('assignment.concomitantMedications[${index}].endDate.monthString');
 
-				
-		  });	
-		 AE.registerCalendarPopups();
-	 }
+                       if ($('assignment.concomitantMedications[${index}].stillTakingMedications').checked) {
+                           edYrField.value = '';
+                           edDdField.value = '';
+                           edMmField.value = '';
+                           edYrField.clear(); edYrField.readonly = true; edYrField.disable();
+                           edDdField.clear(); edDdField.readonly = true; edDdField.disable();
+                           edMmField.clear(); edMmField.readonly = true; edMmField.disable();
+                       } else {
+                           edYrField.readonly = false; edYrField.enable();
+                           edDdField.readonly = false; edDdField.enable();
+                           edMmField.readonly = false; edMmField.enable();
+                       }
+
+                   }
+        }
+        
+     function initializeConMed_${index}(){
+         $('assignment.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){
+             setFields_${index}.defer();
+         });
+         AE.registerCalendarPopups();
+         setFields_${index}.defer();
+     }
 	 initializeConMed_${index}.defer();
 	</script>
 </chrome:division>
