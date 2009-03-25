@@ -536,6 +536,8 @@
 
   <bean name="/rule/import" id="importRuleController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleController">
+	
+	<property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
   </bean>	
   
   <bean name="/rule/create" id="createRuleController" autowire="byType"

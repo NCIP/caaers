@@ -22,7 +22,6 @@
         <param-value>
             classpath*:gov/nih/nci/cabig/caaers/applicationContext*.xml
             /WEB-INF/applicationContext-acegi-security.xml
-			classpath:config/spring/applicationContext-rules-services.xml
         </param-value>
     </context-param>
 

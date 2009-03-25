@@ -73,7 +73,7 @@
         </create>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.domain.*"/>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.web.*"/>
-        <convert converter="bean" match="gov.nih.nci.cabig.caaers.rules.ui.*"/>
+        <convert converter="bean" match="com.semanticbits.rules.ui.*"/>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.utils.Lov"/>
     </allow>
 </dwr>
