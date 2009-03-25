@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd"
+	name="gov.nih.nci.cabig.caaers.rules.reporting_basics_section">
+
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="java.util.HashSet" />
+	<import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="com.semanticbits.rules.utils.NumberUtil" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	<import name="com.semanticbits.rules.utils.DateUtil" />
+	
+	<global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
+	<global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	
+	<!-- ==========================================================================
+	RuleName : AER_BR3_CHK
+	Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
+	Error Code : AER_BR3_ERR
+	Error Message : HOSPITALIZATION must be provided if GRADE is greater than or equal to 3
+	============================================================================= -->
+	<rule name="AER_BR3_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+						int i = 1;
+						for(AdverseEvent ae : aeReport.getAdverseEvents()){
+						
+							if(
+							   (ae.getGrade() != null) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MODERATE.getCode() )
+							   &amp;&amp; 
+							   ((ae.getHospitalization() == null) || (ae.getHospitalization().getCode() == Hospitalization.NONE.getCode())  ) 
+							  ){
+								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than 2", i);
+							}
+							
+							i++;
+						}
+						return false;
+					}
+					
+				  }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : AER_BR4_CHK
+	Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is 'Yes'"
+	Error Code : AER_BR4_ERR
+	Error Message :  AE_START_DATE Date must be provided if IS_PRIMARY_AE is "Yes"
+	============================================================================= 
+	<rule name="AER_BR4_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"adverseEvents[0].startDate") == null</eval>
+		</lhs>
+		<rhs>
+			errors.addValidationError("AER_BR4_ERR","'Start date' must be provided for the primary adverse event", 1);
+       	</rhs>
+	</rule>
+	-->
+	<!-- ==========================================================================
+	RuleName : AER_BR5_CHK
+	Logic : "'End date' must be greater than or equal to 'Start date' for adverse event"
+	Error Code : AER_BR5_ERR
+	Error Message :  AE_END_DATE must be later than OR equal to AE_START_DATE
+	============================================================================= -->
+	<rule name="AER_BR5_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+						int i = 0;
+						for(AdverseEvent ae : aeReport.getAdverseEvents()){
+							i++;
+							if(ae.getEndDate() == null) continue;
+							if(DateUtil.compare(ae.getStartDate(), ae.getEndDate()) &lt; 0){
+							  errors.addValidationError("AER_BR5_ERR","'End date' must be greater than or equal to 'Start date' for adverse event", i);
+							}							
+						}
+						return false;
+					}
+					
+				  }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : "AER_UK_CHK"
+	Logic : Adverse Events CTC must be unique
+	Error Code : AER_UK_ERR
+	Error Message :  ADVERSE_EVENT_CTC must be unique
+	============================================================================= -->
+	<rule name="AER_UK_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					HashSet hSet = new HashSet();
+					for(AdverseEvent ae : aeReport.getAdverseEvents()){
+						i++;
+						if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm ){
+							if(!hSet.add(ae.getAdverseEventCtcTerm().getCtcTerm().getId())){
+							 errors.addValidationError("AER_UK_ERR","Adverse Events CTC must be unique", i, ae.getAdverseEventCtcTerm().getCtcTerm().getFullName());
+							}
+						}
+					}
+					return false;
+				}
+		  	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : "AER_PRESENT_CHK"
+	Logic : Atleast one adverse event must be present
+	Error Code : AER_PRESENT_ERR
+	Error Message :  Atleast one adverse event must be present
+	============================================================================= -->
+	<rule name="AER_PRESENT_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>NullSafeFieldExtractor.extractFieldLength(aeReport, "adverseEvents") == 0</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("AER_PRESENT_ERR","Atleast one adverse event must be present");
+		</rhs>
+	</rule>
+</package>

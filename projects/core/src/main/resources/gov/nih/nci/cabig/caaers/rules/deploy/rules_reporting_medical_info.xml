@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="gov.nih.nci.cabig.caaers.rules.reporting_medical_info_section" xmlns="http://drools.org/drools-4.0"
+         xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
+    <global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
+    <global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+    <import name="gov.nih.nci.cabig.caaers.domain.*"/>
+    <import name="gov.nih.nci.cabig.caaers.validation.*"/>
+    <import name="com.semanticbits.rules.utils.DateUtil"/>
+    <import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor"/>
+    <import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator"/>
+    <import name="org.apache.commons.lang.ObjectUtils"/>
+    <import name="org.apache.commons.lang.StringUtils"/>
+    <import name="java.util.List"/>
+
+    <import name="com.semanticbits.rules.utils.NumberUtil"/>
+    <import name="org.apache.commons.lang.ArrayUtils"/>
+    <import name="java.util.HashSet"/>
+
+
+    <!-- ==========================================================================
+   RuleName : PAT_BR2A_CHK
+   Rule : Disease Name Not Listed must not be null if Disease Name is  'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS'.
+   Error Code : PAT_BR2A_ERR
+   Error Message : DISEASE_NAME_NOT_LISTED must be provided if DISEASE_NAME is "Solid tumor, NOS" or "Hematopoietic malignancy, NOS".
+   ============================================================================= -->
+    <rule name="PAT_BR2A_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <or-conditional-element>
+                <eval>
+                    StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
+                    "Solid tumor, NOS")
+                </eval>
+                <eval>
+                    StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
+                    "Hematopoietic malignancy, NOS")
+                </eval>
+            </or-conditional-element>
+            <eval>NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDisease") == null</eval>
+        </lhs>
+        <rhs>
+            <!-- Populate Error Message-->
+            errors.addValidationError("PAT_BR2A_ERR","Disease Name Not Listed must not be null if Disease Name is 'Solid
+            tumor, NOS' or 'Hematopoietic malignancy, NOS'");
+        </rhs>
+    </rule>
+
+    <!-- ==========================================================================
+     RuleName : PAT_BR2B_CHK
+     Rule : Disease Name Not Listed must not be provided where Disease Name is not 'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS'.
+     Error Code : PAT_BR2B_ERR
+     Error Message : DISEASE_NAME_NOT_LISTED must not be provided if DISEASE_NAME is not " Solid tumor, NOS" or " Hematopoietic malignancy, NOS".
+     ============================================================================= -->
+    <rule name="PAT_BR2B_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>
+                !StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
+                "Solid tumor, NOS")
+            </eval>
+            <eval>
+                !StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
+                "Hematopoietic malignancy, NOS")
+            </eval>
+            <eval>NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDisease") != null</eval>
+        </lhs>
+        <rhs>
+            <!-- Populate Error Message-->
+            errors.addValidationError("PAT_BR2B_ERR","Disease Name Not Listed must not be provided where Disease Name is
+            not 'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS'");
+        </rhs>
+    </rule>
+    <!-- ==========================================================================
+     RuleName : PAT_BR3_CHK
+     Rule : "'Other Primary Site of Disease'  must not be provided if 'Primary Site of Disease' is provided and vice-versa.
+     Error Code : PAT_BR3B_ERR
+     Error Message :  Either and only PRIMARY_SITE_OF_DISEASE or OTHER_PRIMARY_SITE_OF_DISEASE must be provided.
+     ============================================================================= -->
+    <rule name="PAT_BR3_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>!(
+                "null".equals(NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"))
+                ||
+                StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"),
+                "Other, specify") )
+            </eval>
+            <eval>NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDiseaseSite")!= null</eval>
+        </lhs>
+        <rhs>
+            <!-- Populate Error Message-->
+            errors.addValidationError("PAT_BR3B_ERR","Either and only 'Primary site of disease' or 'Other primary site
+            of disease' must be provided");
+        </rhs>
+    </rule>
+    <!-- ==========================================================================
+     RuleName : SMD_BR1_CHK
+     Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+     Error Code : SMD_BR1_ERR
+     Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+     ============================================================================= -->
+    <rule name="SMD_BR1_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                int i = 0;
+                if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
+                for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()){
+                i++;
+                if( (ds.getCodedSite() != null &amp;&amp; !"Other, specify".equals(ds.getCodedSite().getName())) &amp;&amp;
+                ds.getOtherSite() != null){
+                errors.addValidationError("SMD_BR1_ERR", "'Sites of Metastatic Disease' must not be provided if 'Other
+                Sites of Metastatic Disease' is provided and vice-versa.", i);
+                }
+                }
+                return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+                }.validate(aeReport, errors)
+            </eval>
+        </lhs>
+        <rhs>
+            <!-- Already Populated Error Message-->
+        </rhs>
+    </rule>
+</package>

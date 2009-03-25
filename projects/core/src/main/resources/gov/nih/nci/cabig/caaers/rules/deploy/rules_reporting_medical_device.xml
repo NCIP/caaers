@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_medical_device_section"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
+
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="java.util.List" />
+	<import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="com.semanticbits.rules.utils.NumberUtil" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	
+	<global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
+	<global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	
+	<!-- ==========================================================================
+	RuleName : SME_BR1_CHK
+	Logic : Either 'Brand name' or 'Common name' must be provided
+	Error Code : SME_BR1_ERR
+	Error Message : Either BRAND_NAME or COMMON_NAME must be provided
+	============================================================================= -->
+	<rule name="SME_BR1_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].brandName") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].commonName") == null</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SME_BR1_ERR","Either 'Brand name' or 'Common name' must be provided");
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : SME_BR2_CHK
+	Logic : Either 'Model#', 'Serial#', 'Catalog#'  or 'Lot#' must be provided
+	Error Code : SME_BR2_ERR
+	Error Message : Either MODEL_NUMBER, SERIAL_NUMBER, CATALOG_NUMBER  or LOT_NUMBER must be provided.
+	============================================================================= -->
+	<rule name="SME_BR2_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].modelNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].catalogNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].lotNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].serialNumber") == null</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SME_BR2_ERR","Either 'Model#', 'Serial#', 'Catalog#'  or 'Lot#' must be provided");
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : ADO_BR1_CHK
+	Logic : 'Device Operator Description' must be provided if 'Device Operator' is 'Other'
+	Error Code : ADO_BR1_ERR
+	Error Message : DEVICE_OPERATOR_DESCRIPTION must be provided if (and only if) DEVICE_OPERATOR is "Other"
+	============================================================================= -->
+	<rule name="ADO_BR1_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<or-conditional-element>
+			 <and-conditional-element>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") == null</eval>
+			 </and-conditional-element>
+			 <and-conditional-element>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; !NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") != null</eval>
+			 </and-conditional-element>
+			</or-conditional-element>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("ADO_BR1_ERR","'Device Operator Description' must be provided if (and only if) 'Device Operator' is 'Other'");
+       	</rhs>
+	</rule>
+	
+</package>
