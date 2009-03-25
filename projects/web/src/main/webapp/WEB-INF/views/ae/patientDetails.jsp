@@ -489,13 +489,13 @@
   <p><tags:instructions code="instruction_ae_patientdetails_conmeds"/></p>
 
       <div style="padding-left:20px;">
-      <div id="conmed">
+      <div id="">
           <input id="concomitantMedication-btn" type="button" value="Add"/>
           <tags:indicator id="concomitantMedication-btn-indicator"/>
 
           <a name="anchorConcomitantMedication"/>
           <tags:indicator id="preExistingCondition-indicator"/>
-          <div id="_conMeds">
+          <div id="anchorConcomitantMedication">
               <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
               <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
                   <c:set var="newIndex" value="${size - (status.index + 1)}" />

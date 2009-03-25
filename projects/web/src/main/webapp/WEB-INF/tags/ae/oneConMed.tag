@@ -13,7 +13,7 @@
 <c:set var="conMedField" value="${fieldGroups[mainGroup].fields[0]}" />
 
 <div>
-<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" enableDelete="true" deleteParams="'concomitantMedication', ${index}, '_conMeds'" id="aeReport.concomitantMedications[${index}]">
+<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" enableDelete="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication'" id="aeReport.concomitantMedications[${index}]">
 
 <%--<ui:row path="aeReport.concomitantMedications[${index}]">
     <jsp:attribute name="label">${fieldGroups[mainGroup].fields[0].displayName}</jsp:attribute>
