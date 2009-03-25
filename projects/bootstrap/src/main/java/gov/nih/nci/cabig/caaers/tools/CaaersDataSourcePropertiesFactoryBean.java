@@ -124,9 +124,9 @@ public class CaaersDataSourcePropertiesFactoryBean extends
     private String selectRulesDBConfiguration(){
     	String db = selectSchema();
         if (db != null && db.contains("oracle")) {
-        	return "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-oracle.xml";
+        	return "classpath:db/jackrabbit-repo-oracle.xml";
         }
-    	return "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-database.xml";
+    	return "classpath:db/jackrabbit-repo-database.xml";
     }
 
     /**
