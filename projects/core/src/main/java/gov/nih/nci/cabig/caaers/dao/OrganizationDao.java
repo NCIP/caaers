@@ -114,7 +114,8 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * @return List of matching organizations.
      */
     public List<Organization> restrictBySubnames(final String[] subnames) {
-        return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	return getBySubnames(subnames);
+        //return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
     
     /**

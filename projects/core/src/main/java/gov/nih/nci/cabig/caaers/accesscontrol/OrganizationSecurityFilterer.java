@@ -37,6 +37,7 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
         
 		gov.nih.nci.cabig.caaers.domain.User caaersUser = getCaaersUser(userName,userDao);
 		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
+		// get assigned studies 
 
         
 		Filterer filterer = (Filterer)returnObject;
