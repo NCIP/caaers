@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<rule-ui xmlns="http://caaers.cabig.nci.nih.gov/rules/ui">
+<rule-ui xmlns="http://semanticbits.com/rules/ui">
 	<condition>
 		<domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
 			<field name="grade" display-uri="Grade" >
