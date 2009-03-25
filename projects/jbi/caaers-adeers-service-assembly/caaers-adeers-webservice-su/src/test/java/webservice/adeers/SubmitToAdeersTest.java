@@ -30,6 +30,10 @@ public class SubmitToAdeersTest extends BaseCaller {
 		String caaersXMLFile = "Study-N027D-radiation.xml"; 		
 		transformAndSubmitSuccessPath(caaersXMLFile);
 	}
+	public void testVerbatimOtherAE() throws Exception {
+		String caaersXMLFile = "verbatim-other-ae.xml"; 		
+		transformAndSubmitSuccessPath(caaersXMLFile);
+	}
 	
 	private void transformAndSubmitSuccessPath(String caaersXMLFile) throws Exception {
     	String detachedXML = "";
