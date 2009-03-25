@@ -258,4 +258,12 @@ This applicationContext contains the definition of the concrete services
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
 	<bean id="freeMarkerService" class="gov.nih.nci.cabig.caaers.service.FreeMarkerService"/>
+	
+	<bean id="caaersRulesEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService">
+		<property name="ruleEngineService" ref="ruleEngineService"/>
+		<property name="ruleAuthoringService" ref="ruleAuthoringService"/>
+		<property name="repositoryService" ref="jcrService"/>
+		<property name="reportDefinitionDao" ref="reportDefinitionDao"/>
+		<property name="organizationDao" ref="organizationDao"/>
+	</bean>
 </beans>
