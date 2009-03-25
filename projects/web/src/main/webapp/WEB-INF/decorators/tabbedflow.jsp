@@ -22,7 +22,7 @@
     <decorator:head/>
 </head>
 <body>
-
+<div class="wide-header"></div>
 <!-- ALL DIV start -->
 
 <div id="all">

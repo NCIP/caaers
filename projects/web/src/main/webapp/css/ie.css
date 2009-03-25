@@ -1,5 +1,5 @@
 body {
-	background: url( ../images/blue/bg_ie.jpg ) repeat-y center #314993;
+	background: url( ../images/blue/bg_ie.png) repeat-y center #314993;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #000000;
@@ -21,6 +21,9 @@ width:951px;
 	/* Fix the issue of summary not aligned properly */
     clear: both;
 }
+.wide-header {
+	background:transparent url(../images/blue/wide_header_bg_ie.png) no-repeat scroll center center;
+	}
 #taskbar {
 	background: transparent url( ../images/blue/taskbar_BG.png ) repeat-x scroll center top;
 	color: #FFFFFF;
@@ -51,6 +54,7 @@ div.row, build-name, main {
 	text-align:left;
 	position:relative;
 }
+/*
 #header {
 	width: 100%;
 	position: relative;
@@ -58,6 +62,7 @@ div.row, build-name, main {
 	background-image: url(../images/blue/header_bg.jpg);
 	background-position: top;
 }
+*/
 
 .overlay_dialog {
 	filter:alpha(opacity=60);

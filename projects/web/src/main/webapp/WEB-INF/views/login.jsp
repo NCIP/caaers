@@ -47,6 +47,9 @@
         #header {
             visibility: hidden
         }
+		.wide-header {
+			display:none;
+		}
 
         #taskbar {
             width: 10px;
@@ -160,7 +163,7 @@
 		<div>We cannot guarantee that caAERS will function completely in this browser.</div>
 		<div>Please upgrade (or ask your systems administrator to upgrade) to one of the following FREE browsers:</div>
 		<a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="/caaers/images/blue/FF3-logo.png" alt="" />Firefox 3</a>
-		<a href="http://www.microsoft.com/windows/downloads/ie/getitnow.mspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="/caaers/images/blue/ie7-logo.png" alt="" />Internet Explorer 7</a>
+		<a href="http://www.microsoft.com/windows/downloads/ie/getitnow.mspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="/caaers/images/blue/ie7-logo.png" alt="" />Internet Explorer 8</a>
 	</div>
 	<img src="/caaers/images/blue/ie-warning-BL.png" alt="" style="position:absolute; bottom:-1px; left:0;">
 	<img src="/caaers/images/blue/ie-warning-BR.png" alt="" style="position:absolute; bottom:-1px; right:0;">

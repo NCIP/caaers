@@ -12,6 +12,7 @@
 <decorator:head/>
 </head>
 <body>
+	<div class="wide-header"></div>
 <div id="all">
 <standard:header/>
 
