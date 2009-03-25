@@ -195,7 +195,7 @@
 <script>
     Event.observe(window, "load", function(){
         buildTable('assembler', false);
-        var _ss = ${command.studySite.id};
+        var _ss =  ${command.studySite.id}0 / 10;
         if (_ss > 0) {
             resetStudyAndSitesById(_ss);
         }
