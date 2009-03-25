@@ -139,7 +139,7 @@
                      return
                  }
 */
-			 	this.addDetails('priorTherapy', e.element(), pnull, 'anchorPriorTherapy');
+			 	this.addDetails('priorTherapy', e.element(), null, 'anchorPriorTherapy');
 			 	// priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
 

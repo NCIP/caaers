@@ -24,7 +24,8 @@
 	 </jsp:attribute>
 	</ui:row>
 
-	<ui:row path="assignment.priorTherapies[${index}].startDate">
+     <div id="dates${index}" style="display:${priorTherapy.name eq 'No prior therapy' ? 'none;' : 'inline;'}">
+    <ui:row path="assignment.priorTherapies[${index}].startDate">
 	 <jsp:attribute name="label">
 		<ui:label path="assignment.priorTherapies[${index}].startDate" text="Therapy start Date" />
 	 </jsp:attribute>
@@ -43,8 +44,9 @@
 	 </jsp:attribute>
 	 
 	</ui:row>
-    
-	<c:if test="${priorTherapy.priorTherapy.agentsPossible}">
+    </div>
+     
+    <c:if test="${priorTherapy.priorTherapy.agentsPossible}">
     <ui:row path="assignment.priorTherapies[${index}]">
 	 <jsp:attribute name="label">Prior Therapy Agents</jsp:attribute>
 	 <jsp:attribute name="value">
@@ -74,6 +76,21 @@
  </chrome:division>
 </div>
 <script type="text/javascript">
+    Event.observe($('assignment.priorTherapies[${index}].priorTherapy'), 'change' , function(evt) {
+    var ptVal = evt.element().value;
+    if(ptVal == 3 || ptVal == 4 || ptVal == 5 ||ptVal == 7 || ptVal == 8 || ptVal == 11){
+        //$('aeReport.saeReportPriorTherapies[${index}]-row').show();
+    } else{
+        // $('aeReport.saeReportPriorTherapies[${index}]-row').hide();
+    }
+    if (ptVal == 13) {
+        $('dates${index}').hide();
+    } else {
+        $('dates${index}').show();
+    }
+});
+    
+
 function initializePriorTherapy(){
 	
 	if($('priortherapy[${index}].agent-btn')){
@@ -93,3 +110,4 @@ function initializePriorTherapy(){
 
 initializePriorTherapy.defer();
 </script>
+
