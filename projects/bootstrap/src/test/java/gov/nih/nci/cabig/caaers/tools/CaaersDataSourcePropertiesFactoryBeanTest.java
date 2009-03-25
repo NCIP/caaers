@@ -66,6 +66,6 @@ public class CaaersDataSourcePropertiesFactoryBeanTest extends TestCase {
     
     public void testSelectRulesDBConfig() throws Exception {
     	Properties props = getActualProperties();
-    	assertEquals(props.get("rules.dbfile"), "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-oracle.xml");
+    	assertEquals(props.get("rules.dbfile"), "classpath:db/jackrabbit-repo-oracle.xml");
     }
 }
