@@ -53,8 +53,14 @@
         <property name="studySearchableAjaxableDomainObjectRepository"
                   ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
-    <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade"/>
-    <bean id="meddraAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade"/>
+    <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade">
+    	<property name="repositoryService" ref="jcrService" />
+    </bean>
+    
+    <bean id="meddraAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade">
+    	<property name="transactionManager" ref="transactionManager"/>
+    </bean>
+    
     <bean id="searchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade">
         <property name="studySearchableAjaxableDomainObjectRepository"
                   ref="studySearchableAjaxableDomainObjectRepository"/>
