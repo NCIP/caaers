@@ -139,6 +139,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.OrganizationDao+.restrict*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ResearchStaffDao+.find*(..))
                               "/>
@@ -220,6 +221,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
  
          <entry key="execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao+.restrict*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+               
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
                                             
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>               
@@ -270,6 +274,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.dao.OrganizationDao.restrict*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getOrganizationsHavingStudySites=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 
             </value>
