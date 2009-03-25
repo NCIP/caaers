@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
 
 import java.io.BufferedWriter;
@@ -22,6 +21,8 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
+
+import com.semanticbits.rules.utils.RuleUtil;
 
 
 public class ExportReportDefinitionController extends AbstractCommandController{
@@ -81,7 +82,7 @@ public class ExportReportDefinitionController extends AbstractCommandController{
             outputStream.flush();
             outputStream.close();
             fileIn.close();
-            FileUtils.deleteQuietly(file);
+            //FileUtils.deleteQuietly(file);
         
 		}catch (Exception e) {
 		
