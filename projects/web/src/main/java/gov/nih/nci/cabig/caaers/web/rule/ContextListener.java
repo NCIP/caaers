@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
 
 import java.io.InputStream;
 
@@ -10,6 +9,8 @@ import javax.servlet.ServletContextListener;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
+import com.semanticbits.rules.ui.RuleUi;
 
 public class ContextListener implements ServletContextListener {
 
@@ -23,7 +24,7 @@ public class ContextListener implements ServletContextListener {
                         .getResourceAsStream("rules-ui.xml");
         try {
             Unmarshaller unmarshaller = JAXBContext
-                            .newInstance("gov.nih.nci.cabig.caaers.rules.ui").createUnmarshaller();
+                            .newInstance("com.semanticbits.rules.ui").createUnmarshaller();
             RuleUi ruleUi = (RuleUi) unmarshaller.unmarshal(inputStream);
             servletContextEvent.getServletContext().setAttribute("ruleUi", ruleUi);
         } catch (JAXBException e) {

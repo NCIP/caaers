@@ -17,26 +17,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.brxml.Action;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
-import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
-import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
-import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
-import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
-import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
-import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
-import gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
-import gov.nih.nci.cabig.caaers.rules.ui.Field;
-import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
@@ -60,6 +42,23 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
+import com.semanticbits.rules.api.BusinessRulesExecutionService;
+import com.semanticbits.rules.api.RepositoryService;
+import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.api.RuleDeploymentService;
+import com.semanticbits.rules.api.RulesEngineService;
+import com.semanticbits.rules.brxml.Action;
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.Condition;
+import com.semanticbits.rules.brxml.FieldConstraint;
+import com.semanticbits.rules.brxml.LiteralRestriction;
+import com.semanticbits.rules.brxml.MetaData;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.ui.DomainObject;
+import com.semanticbits.rules.ui.Field;
+import com.semanticbits.rules.ui.RuleUi;
+
 /**
  * All the DWR methods specific to rules will be here
  * 
@@ -72,11 +71,13 @@ public class RuleAjaxFacade {
 
     private RuleAuthoringService ruleAuthoringService;
 
-    private RuleExecutionService ruleExecutionService;
+    private BusinessRulesExecutionService businessRulesExecutionService;
 
     private RulesEngineService rulesEngineService;
 
     private RuleDeploymentService ruleDeploymentService;
+    
+    private RepositoryService repositoryService;
 
     private ConfigProperty configurationProperty;
 
@@ -378,9 +379,6 @@ public class RuleAjaxFacade {
 
         }
         getRuleDeploymentService().deregisterRuleSet(bindUri);
-
-        RepositoryService repositoryService = (RepositoryServiceImpl) RuleServiceContext
-                        .getInstance().repositoryService;
         PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
         item.updateCoverage("Not Enabled");
         repositoryService.getRulesRepository().save();
@@ -398,9 +396,6 @@ public class RuleAjaxFacade {
 
         try {
             getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-
-            RepositoryService repositoryService = (RepositoryServiceImpl) RuleServiceContext
-                            .getInstance().repositoryService;
             PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
             item.updateCoverage("Enabled");
             repositoryService.getRulesRepository().save();
@@ -487,9 +482,11 @@ public class RuleAjaxFacade {
     }
 
     public void fireRules(String bindUri, String mode) throws RemoteException {
+    	List<Object> list = new ArrayList<Object>();
         StudySDO study = new StudySDO();
         study.setShortTitle("AML/MDS 9911");
-        List<AdverseEventSDO> list = new ArrayList();
+        list.add(study);
+        
         if ("1".equals(mode)) {
             list.add(getSuccessful());
         } else if ("2".equals(mode)) {
@@ -497,15 +494,17 @@ public class RuleAjaxFacade {
         } else if ("3".equals(mode)) {
             list.add(getSuccessfulAgain());
         }
-
-        getRuleExecutionService().fireRules(bindUri, study, list);
+        
+        
+        
+        businessRulesExecutionService.fireRules(bindUri, list);
     }
 
     public void fireAERules() throws RemoteException {
         String bindUri = "CAAERS_AE_RULES";
         ExpeditedAdverseEventReport adverseEventReport = null;
         StudySDO studySDO = null;
-        ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
+        ArrayList<Object> list = new ArrayList<Object>();
 
         // XXX: there's no way this code could work -- adverseEventReport is never initialized.
         AdverseEvent adverseEvent = adverseEventReport.getAdverseEvents().get(0);
@@ -515,7 +514,7 @@ public class RuleAjaxFacade {
             studySDO = new StudySDO();
             Study study = adverseEventReport.getAssignment().getStudySite().getStudy();
             studySDO.setShortTitle(study.getShortTitle());
-
+            list.add(studySDO);
             AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
 
             // ATTRIBUTION
@@ -551,7 +550,7 @@ public class RuleAjaxFacade {
 
             adverseEventSDO.setHospitalization(isHospitalization.toString());
         }
-        getRuleExecutionService().fireRules(bindUri, studySDO, list);
+        businessRulesExecutionService.fireRules(bindUri, list);
     }
 
     private AdverseEventSDO getSuccessful() {
@@ -656,13 +655,7 @@ public class RuleAjaxFacade {
         this.ruleDeploymentService = ruleDeploymentService;
     }
 
-    public RuleExecutionService getRuleExecutionService() {
-        return ruleExecutionService;
-    }
-
-    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-        this.ruleExecutionService = ruleExecutionService;
-    }
+ 
 
     /*
      * !REVISIT This method is added to render valid values for the attributes selected on the
@@ -808,4 +801,21 @@ public class RuleAjaxFacade {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
 
+	public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
+
+	public BusinessRulesExecutionService getBusinessRulesExecutionService() {
+		return businessRulesExecutionService;
+	}
+
+	public void setBusinessRulesExecutionService(
+			BusinessRulesExecutionService businessRulesExecutionService) {
+		this.businessRulesExecutionService = businessRulesExecutionService;
+	}
+    
 }
