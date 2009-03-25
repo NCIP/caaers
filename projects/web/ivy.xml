@@ -39,8 +39,6 @@
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid"/>
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-rules" rev="latest.integration" 
-				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
         	
         	<!--  Spring framework -->
         	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
@@ -72,6 +70,9 @@
 			
 			<!--  CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"/>
+			
+			<!-- Rules Jar -->
+			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
 			
 			<!--  Standalone (dist) dependencies,which are not to be included in Grid distribution -->
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
