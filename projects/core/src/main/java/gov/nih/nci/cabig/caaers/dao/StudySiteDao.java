@@ -28,7 +28,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
      */
     public StudySite matchByStudyAndOrg(final String organizationName,
                     final String identifierValue, final String identifierType) {
-    	System.out.println("Hitting matchByStudyAndOrg");
+ 
         String joins = " join o.study as study join study.identifiers as identifier ";
 
         List<Object> params = new ArrayList<Object>();
@@ -57,7 +57,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
 
     public StudySite matchByStudyAndOrgNciId(final String organizationNciId,
             final String identifierValue, final String identifierType) {
-    	System.out.println("Hitting matchByStudyAndOrgNciId");
+    	
 		String joins = " join o.study as study join study.identifiers as identifier ";
 		
 		List<Object> params = new ArrayList<Object>();
