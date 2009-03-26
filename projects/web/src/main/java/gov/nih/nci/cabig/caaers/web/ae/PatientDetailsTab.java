@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -287,11 +288,17 @@ public class PatientDetailsTab extends AeTab {
     	int i = 0;
     	Set<ConcomitantMedication> set = new HashSet<ConcomitantMedication>();
     	String propertyName = null;
-    	for(ConcomitantMedication conMed : command.getAeReport().getConcomitantMedications()){
+        
+        for(ConcomitantMedication conMed : command.getAeReport().getConcomitantMedications()){
     		propertyName = String.format("aeReport.concomitantMedications[%d]", i);
     		if(!set.add(conMed)){
     			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
+
+            if (conMed.getStartDate().compareTo(conMed.getEndDate()) < 0) {
+                propertyName = String.format("aeReport.concomitantMedications[%d].", i);
+                errors.rejectValue(propertyName, "SAE_024", new Object[]{conMed.getName()}, "The 'End date' can not be before the 'Start Date'");
+            }
 
             if (BooleanUtils.isTrue(conMed.getStillTakingMedications()) && !conMed.getEndDate().isNull()) {
                 conMed.getEndDate().setDay(null);
