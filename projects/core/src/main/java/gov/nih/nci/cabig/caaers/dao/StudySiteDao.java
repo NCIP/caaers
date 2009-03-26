@@ -28,7 +28,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
      */
     public StudySite matchByStudyAndOrg(final String organizationName,
                     final String identifierValue, final String identifierType) {
-
+    	System.out.println("Hitting matchByStudyAndOrg");
         String joins = " join o.study as study join study.identifiers as identifier ";
 
         List<Object> params = new ArrayList<Object>();
@@ -47,13 +47,42 @@ public class StudySiteDao extends CaaersDao<StudySite> {
         queryBuf.append("LOWER(").append("o.organization.name").append(") = ? ");
         params.add(organizationName.toLowerCase());
 
-        log.debug("matchStudyByParticipant : " + queryBuf.toString());
+        log.debug("matchByStudyAndOrg : " + queryBuf.toString());
         getHibernateTemplate().setMaxResults(5);
         List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
                         params.toArray());
         getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
     }
+
+    public StudySite matchByStudyAndOrgNciId(final String organizationNciId,
+            final String identifierValue, final String identifierType) {
+    	System.out.println("Hitting matchByStudyAndOrgNciId");
+		String joins = " join o.study as study join study.identifiers as identifier ";
+		
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
+		                domainClass().getName()).append(" o ").append(joins);
+		
+		queryBuf.append(" where ");
+		queryBuf.append("LOWER(").append("identifier.value").append(") = ? ");
+		params.add(identifierValue.toLowerCase());
+		
+		queryBuf.append(" and ");
+		queryBuf.append("LOWER(").append("identifier.type").append(") = ? ");
+		params.add(identifierType.toLowerCase());
+		
+		queryBuf.append(" and ");
+		queryBuf.append("LOWER(").append("o.organization.nciInstituteCode").append(") = ? ");
+		params.add(organizationNciId.toLowerCase());
+		
+		log.debug("matchByStudyAndOrgNciId : " + queryBuf.toString());
+		getHibernateTemplate().setMaxResults(5);
+		List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
+		                params.toArray());
+		getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+		return studySites.size() == 1 ? studySites.get(0) : null;
+}
     
     /*
      * @See ParticipantService
