@@ -75,7 +75,7 @@
 	
 	<bean id="rulesPropertiesFileLoader"
 				class="com.semanticbits.rules.utils.RulesPropertiesFileLoader">
-		<property name="databaseConfigurationName" value="datasource" />
+		<property name="databaseConfigurationName" value="@databaseConfigurationName@" />
 		<property name="applicationDirectoryName" value="caaers" />
 	</bean>
 	
