@@ -379,6 +379,7 @@
           }
           }); </jsp:attribute>
       </ui:row>
+
       <tags:renderRow field="${fieldGroups['disease'].fields[1]}" style="display: none" />
       <c:set var="cpsField" value="${fieldGroups['disease'].fields[2]}" />
       <c:set var="opsField" value="${fieldGroups['disease'].fields[3]}" />
@@ -388,7 +389,7 @@
         </jsp:attribute>
         <jsp:attribute name="value">
           <ui:autocompleter path="${cpsField.propertyName}"
-					  initialDisplayValue="${empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}">
+					  initialDisplayValue="${empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
             <jsp:attribute name="populatorJS"> function(autocompleter, text) {
               createAE.matchAnatomicSite(text, function(values) {
               autocompleter.setChoices(values)
