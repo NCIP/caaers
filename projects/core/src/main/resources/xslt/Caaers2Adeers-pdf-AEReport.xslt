@@ -571,8 +571,9 @@
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
+      							<xsl:variable name="statusVar" select="AdverseEventReport/ParticipantHistory/baselinePerformanceStatus"/>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/ParticipantHistory/baselinePerformanceStatus"/>
+						  			<xsl:value-of select="substring($statusVar,1,1)"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>	  		
@@ -1608,7 +1609,7 @@
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code : 
 				 <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> 
-				 <xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
+				 <xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
 				 </fo:block>
 				
 		  		<fo:table>
@@ -1698,7 +1699,14 @@
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+					                <xsl:choose>
+					                    <xsl:when test="administrationDelayAmount">
+					                        Yes
+					                    </xsl:when>
+					                    <xsl:otherwise>
+					                        No
+					                    </xsl:otherwise>
+					                </xsl:choose>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1763,8 +1771,8 @@
 
 		  		<fo:table>
 					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="15%"/>
-					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="5%"/>
 					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
@@ -1793,23 +1801,41 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Hospitalization or Prolongation of Hospitalization 
+						  			Hospitalization/ 
 						  		</fo:block>      							
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Prolongation of 
+						  		</fo:block> 
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Hospitalization 
+						  		</fo:block> 
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Start Date
+						  			Start Date 
+						  		</fo:block> 
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			of AE
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
 						  			End Date
-						  		</fo:block>      							
+						  		</fo:block>  
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			of AE
+						  		</fo:block>						  		    							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Is Primary AE?
+						  			Is
 						  		</fo:block>      							
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Primary
+						  		</fo:block> 
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			AE?
+						  		</fo:block> 						  		
       						</fo:table-cell> 
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
@@ -1828,18 +1854,37 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+						  			<xsl:if test="LowLevelTerm/fullName != ''">
+						  				: <xsl:value-of select="LowLevelTerm/fullName"/>
+						  			</xsl:if>
+									<xsl:choose>     
+						         		<xsl:when test="LowLevelTerm/fullName">  
+						                </xsl:when>
+						                
+						                <xsl:otherwise>
+						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">
+						                        : <xsl:value-of select="detailsForOther"/>
+						                    </xsl:if>
+						                </xsl:otherwise>
+								 	</xsl:choose>								  			
+						  			
+						  			<!--
 						  			<xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
-						  			<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+						  			<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/> 
+						  			-->
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
+      							<xsl:variable name="gradeVar0" select="grade"/>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="grade"/>
+						  			<xsl:value-of select="substring($gradeVar0,1,1)"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
+      							<xsl:variable name="hospitalizationVar" select="hospitalization"/>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="hospitalization"/>
+						  			<xsl:value-of select="substring($hospitalizationVar,4,10)"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1870,7 +1915,7 @@
       						</fo:table-cell>  
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="comments"/>
+						  			<xsl:value-of select="detailsForOther"/>
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
@@ -1902,8 +1947,13 @@
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
+	      							<xsl:variable name="gradeVar" select="grade"/>
+	      						
 							  		<fo:block xsl:use-attribute-sets="label" > 
-							  			<xsl:value-of select="grade"/><xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
+							  		
+							  			Gr.<xsl:value-of select="substring($gradeVar,1,1)"/>
+							  			
+							  			<xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text><xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 			  			    </fo:table-row>
@@ -1937,8 +1987,9 @@
 								  		</fo:block>      							
 		      						</fo:table-cell>
 		      						<fo:table-cell>
+		      							<xsl:variable name="attributionVar1" select="attribution"/>
 								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:value-of select="attribution"/>
+								  			<xsl:value-of select="substring($attributionVar1,4,20)"/>
 								  		</fo:block>      							
 		      						</fo:table-cell>
 				  			    </fo:table-row>
@@ -1964,8 +2015,9 @@
 								  		</fo:block>      							
 		      						</fo:table-cell>
 		      						<fo:table-cell>
+		      							<xsl:variable name="attributionVar2" select="attribution"/>
 								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:value-of select="attribution"/>
+								  			<xsl:value-of select="substring($attributionVar2,4,20)"/>
 								  		</fo:block>      							
 		      						</fo:table-cell>
 				  			    </fo:table-row>
@@ -1992,8 +2044,9 @@
 								  		</fo:block>      							
 		      						</fo:table-cell>
 		      						<fo:table-cell>
+		      							<xsl:variable name="attributionVar3" select="attribution"/>
 								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:value-of select="attribution"/>
+								  			<xsl:value-of select="substring($attributionVar3,4,20)"/>
 								  		</fo:block>      							
 		      						</fo:table-cell>
 				  			    </fo:table-row>
@@ -2020,8 +2073,9 @@
 								  		</fo:block>      							
 		      						</fo:table-cell>
 		      						<fo:table-cell>
+		      							<xsl:variable name="attributionVar4" select="attribution"/>
 								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:value-of select="attribution"/>
+								  			<xsl:value-of select="substring($attributionVar4,4,20)"/>
 								  		</fo:block>      							
 		      						</fo:table-cell>
 				  			    </fo:table-row>
