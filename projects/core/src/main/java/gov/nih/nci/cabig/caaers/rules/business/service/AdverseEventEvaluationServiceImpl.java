@@ -31,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.semanticbits.rules.api.BusinessRulesExecutionService;
-import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.exception.RuleException;
 import com.semanticbits.rules.exception.RuleSetNotFoundException;
@@ -580,13 +579,14 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         this.businessRulesExecutionService = businessRulesExecutionService;
     }
 
-    public CaaersRulesEngineService getCaaersRulesEngineService() {
-        return caaersRulesEngineService;
-    }
-
     @Required
-    public void setRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
-        this.caaersRulesEngineService = caaersRulesEngineService;
-    }
+	public CaaersRulesEngineService getCaaersRulesEngineService() {
+		return caaersRulesEngineService;
+	}
+
+	public void setCaaersRulesEngineService(
+			CaaersRulesEngineService caaersRulesEngineService) {
+		this.caaersRulesEngineService = caaersRulesEngineService;
+	}
 
 }
