@@ -295,8 +295,8 @@ public class PatientDetailsTab extends AeTab {
     			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
 
-            if (conMed.getStartDate().compareTo(conMed.getEndDate()) < 0) {
-                propertyName = String.format("aeReport.concomitantMedications[%d].", i);
+            if (!conMed.getStillTakingMedications() && conMed.getStartDate().compareTo(conMed.getEndDate()) > 0) {
+                propertyName = String.format("aeReport.concomitantMedications[%d].endDate", i);
                 errors.rejectValue(propertyName, "SAE_024", new Object[]{conMed.getName()}, "The 'End date' can not be before the 'Start Date'");
             }
 
@@ -309,6 +309,7 @@ public class PatientDetailsTab extends AeTab {
                 // here goes the end date validation
             }
 
+            i++;
         }
     }
     

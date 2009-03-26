@@ -422,11 +422,21 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         // check ConMeds duplicates
         list = command.getAssignment().getConcomitantMedications();
         set = new HashSet();
+        byte i = 0;
         for (Object object : list) {
             StudyParticipantConcomitantMedication pt = (StudyParticipantConcomitantMedication)object;
             if (pt != null)
                 if (!set.add(pt.getName())) errors.reject("PT_006", new Object[] {pt.getName()}, "Duplicate Concomitant Medication");
+
+            String propertyName = String.format("assignment.concomitantMedications[%d].endDate", i);
+
+            if (!pt.getStillTakingMedications() && pt.getStartDate().compareTo(pt.getEndDate()) > 0) {
+                errors.rejectValue(propertyName, "SAE_024", new Object[]{pt.getName()}, "The 'End date' can not be before the 'Start Date'");
+            }
+
+            i++;
         }
+
 
 
         // check MetaStaticDisease duplicates
@@ -434,7 +444,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         set = new HashSet();
         for (Object object : list) {
             StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
-            if (pt != null)
+            if (pt != null && pt.getCodedSite() != null)
                 if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
         }
 
