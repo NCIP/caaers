@@ -19,7 +19,11 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 		assertNotNull(site);
 	}
 	
-
+	public void testMatchByStudyAndOrgNciId() {
+		StudySite site = getDao().matchByStudyAndOrgNciId("NCI", "1138-43", "local");
+		assertNotNull(site);
+	}
+	
 	public void testFindByStudyAndOrganization() {
 		StudySite site = getDao().findByStudyAndOrganization(-2, -1001);
 		assertNotNull(site);
