@@ -29,8 +29,7 @@
                               }
                           </jsp:attribute>
                       </ui:autocompleter>
-
-                    <%--<ui:text path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].name" readonly="true"/>--%>
+                      <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c3_${parentIndex}_${index}" onclick="showShowAllTable('_c3_${parentIndex}_${index}', 'assignmentDOTpriorTherapiesOPEN${parentIndex}CLOSEDOTpriorTherapyAgentsOPEN${index}CLOSEDOTchemoAgent')">Show All</a>
   				</td>
   				<td>
 					<a href="#anchorPriorTherapies[${parentIndex}].priorTherapyAgents" onClick="mHistory.removeDetails('priorTherapyAgent', ${index}, 'anchorPriorTherapies[${parentIndex}].priorTherapyAgents', {parentIndex : ${parentIndex} })">

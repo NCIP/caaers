@@ -25,8 +25,8 @@
                               }
                           </jsp:attribute>
                       </ui:autocompleter>
+                      <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c2_${index}" onclick="showShowAllTable('_c2_${index}', 'assignmentDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')">Show All</a>
                       
-
                     <c:if test="${anatomicSite.id eq 110}">
 					<ui:text path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="true"/>
 					</c:if>

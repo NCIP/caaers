@@ -27,7 +27,7 @@
              }
             </jsp:attribute>
         </ui:autocompleter>
-        <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite')" id="_c2_${index}">Show All</a>
+        <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
     </jsp:attribute>
 </ui:row>
 </ae:fieldGroupDivision>

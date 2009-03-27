@@ -199,13 +199,13 @@
         
         function fillDiseaseSiteAutoCompletor(val,baseName, text){
             if (baseName == 'codedPrimaryDiseaseSite') {
-
                 baseName = 'assignment.diseaseHistory.codedPrimaryDiseaseSite'
             }
 
-            if (baseName.indexOf('priorTherapyAgents') >= 0) {
-                baseName = baseName.replace("__", "[") ;
-                baseName = baseName.replace("_", "]") ;
+            if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite")>=0) {
+                baseName = baseName.replace(/DOT/g, ".") ;
+                baseName = baseName.replace(/OPEN/g, "[") ;
+                baseName = baseName.replace(/CLOSE/g, "]") ;
             }
 
             $(baseName).value = val;
@@ -215,9 +215,10 @@
 	   }
 
 	   function fillChemoAgentAutoCompletor(val, baseName, text){
-	   		if (baseName.indexOf('priorTherapyAgents') >= 0) {
-                baseName = baseName.replace("__", "[") ;
-                baseName = baseName.replace("_", "]") ;
+	   		if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite") >= 0) {
+                   baseName = baseName.replace(/DOT/g, ".") ;
+                   baseName = baseName.replace(/OPEN/g, "[") ;
+                   baseName = baseName.replace(/CLOSE/g, "]") ;
             }
 	   		
 	        $(baseName).value = val;

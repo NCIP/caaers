@@ -228,21 +228,24 @@
             }
 
             if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite")>=0) {
-                baseName = baseName.replace("__", "[") ;
-                baseName = baseName.replace("_", "]") ;
+                baseName = baseName.replace(/DOT/g, ".") ;
+                baseName = baseName.replace(/OPEN/g, "[") ;
+                baseName = baseName.replace(/CLOSE/g, "]") ;
             }
 
             $(baseName).value = val;
 		    $(baseName+ "-input").value = text;
 		    $(baseName+ "-input").removeClassName('pending-search');
-		    hideShowAllTable();
+            
+            hideShowAllTable();
 	   }
 
 	   function fillChemoAgentAutoCompletor(val, baseName, text) {
 
             if (baseName.indexOf('priorTherapyAgents') >= 0 || baseName.search("metastaticDiseaseSite") >=0) {
-                baseName = baseName.replace("__", "[") ;
-                baseName = baseName.replace("_", "]") ;
+                baseName = baseName.replace(/DOT/g, ".") ;
+                baseName = baseName.replace(/OPEN/g, "[") ;
+                baseName = baseName.replace(/CLOSE/g, "]") ;
             }
 
            $(baseName+ "-input").value = text;
@@ -411,7 +414,7 @@
               }
               } </jsp:attribute>
           </ui:autocompleter>
-          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
+          <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
 
       </ui:row>
       <tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
