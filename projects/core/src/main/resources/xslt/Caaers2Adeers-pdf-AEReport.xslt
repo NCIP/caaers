@@ -58,8 +58,6 @@
 				<fo:table-column column-width="25%"/>
 				<fo:table-column column-width="50%"/>
 				<fo:table-column column-width="25%"/>
-				
-
 				<fo:table-body>
 				  <fo:table-row>
 				    <fo:table-cell>
@@ -953,8 +951,9 @@
 				<fo:block>
 					<fo:leader leader-length="95%" leader-pattern="rule"/>
 				</fo:block>
-
-  				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
+				
+				
+  				<!-- break-before="page" --> <fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Radiation Intervention
 		  		</fo:block>
 		  		
@@ -1176,7 +1175,7 @@
 				
 				</xsl:if>
 				
-  				<fo:block break-before="page" /> 
+  				<!-- break-before="page" -->
 
 		  		
 		  		<xsl:if test="AdverseEventReport/MedicalDevice">
@@ -1603,7 +1602,7 @@
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
 
-  				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
+  				<!-- break-before="page" --><fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Protocol Agents
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
