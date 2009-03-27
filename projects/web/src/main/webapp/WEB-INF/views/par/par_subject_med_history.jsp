@@ -164,7 +164,7 @@
 		        function showShowAllTable(el, baseName) {
 
             var parameterMap = getParameterMap('command');
-            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
+            if (baseName.search("metastaticDiseaseSite")>=0  || baseName == 'codedPrimaryDiseaseSite') {
                 createAE.buildAnatomicSiteTable(el, parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
 //                    $('showAllDropDown').style.position = 'absolute';
