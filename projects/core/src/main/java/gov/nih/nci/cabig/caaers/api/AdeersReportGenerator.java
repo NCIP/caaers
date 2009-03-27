@@ -148,8 +148,7 @@ public class AdeersReportGenerator {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader(
-                            "/Users/sakkala/tech/caaers/dcp/ae.xml");
+            FileReader input = new FileReader("/Users/sakkala/tech/adeers/expeditedAdverseEventReport-79.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -159,7 +158,7 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/caaers/dcp/myMedWatch.pdf");
+            aeg.generatePdf(str1, "/Users/sakkala/tech/adeers/caaers.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
