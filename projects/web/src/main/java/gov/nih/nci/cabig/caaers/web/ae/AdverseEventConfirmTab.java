@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -19,7 +18,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -43,7 +41,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		
 		//create fields for AEs
-		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getEvaluatedAdverseEvents();
+		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getAllReportedAndReportableAdverseEvents();
 		if(adverseEvents != null){
 			int size = adverseEvents.size();
 			for(int i = 0; i < size; i++){
@@ -87,15 +85,15 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		}else {
 			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
 		}
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].detailsForOther", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].displayGrade", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].detailsForOther", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].displayGrade", ""));
 
 		InputField startDateField = null;
 		if(ae.getStartDate() != null){
-			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].startDateAsString", "", false);
+			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDateAsString", "", false);
 		}else{
-			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.evaluatedAdverseEvents[" + i + "].startDate","", false);
+			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDate","", false);
 		}
 		
 		fields.add(startDateField);

@@ -390,7 +390,7 @@ background-color:#e5e8ff;
               
         <!--  begin reportable aes -->
           <c:if test='${command.adverseEventReportingPeriod != null }'>
-              <c:forEach items="${command.adverseEventReportingPeriod.evaluatedAdverseEvents}" varStatus="status" var="ae">
+              <c:forEach items="${command.adverseEventReportingPeriod.allReportedAndReportableAdverseEvents}" varStatus="status" var="ae">
                   <ae:oneSaeRow editableDisplay="false" index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" 
                   aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true" cssClass="rp${not empty ae.report ? ae.report.id : ''} ${not empty ae.report ? 'reported' : '' }" style="${not empty ae.report ? 'display:none' : ''}"/>
               </c:forEach>

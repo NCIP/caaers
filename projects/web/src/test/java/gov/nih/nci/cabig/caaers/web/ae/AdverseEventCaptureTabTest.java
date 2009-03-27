@@ -1,12 +1,25 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.CONGENITAL_ANOMALY;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.DEATH;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.DISABILITY;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.LIFE_THREATENING;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS;
+import static gov.nih.nci.cabig.caaers.domain.OutcomeType.REQUIRED_INTERVENTION;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -14,17 +27,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
-import static gov.nih.nci.cabig.caaers.domain.OutcomeType.*;
+import org.easymock.classextension.EasyMock;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 /**
  * 
  * @author Biju Joseph
  *
  */
-public class AdverseEventCaptureTabTest extends AbstractNoSecurityTestCase {
+public class AdverseEventCaptureTabTest extends WebTestCase {
 	
 	AdverseEventCaptureTab tab;
 	CaptureAdverseEventInputCommand command;
+	Errors errors;
+	ExpeditedAdverseEventReportDao reportDao;
+	ReportRepository reportRepository;
+	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -34,9 +52,18 @@ public class AdverseEventCaptureTabTest extends AbstractNoSecurityTestCase {
 		List<AdverseEvent> aeList = createAdverseEventList();
 		reportingPeriod.setAdverseEvents(aeList);
 		Fixtures.createCtcV3Terminology(reportingPeriod.getStudy());
+		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		reportRepository = registerMockFor(ReportRepository.class);
+		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 		
-		command = new CaptureAdverseEventInputCommand();
+		command = new CaptureAdverseEventInputCommand(null, null, null, null, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
+		
+	
+		errors = new BindException(command, "command");
+		
+		tab.setReportRepository(reportRepository);
+		tab.setAdverseEventRoutingAndReviewRepository(adverseEventRoutingAndReviewRepository);
 	}
 	
 	public List<AdverseEvent> createAdverseEventList(){
@@ -117,6 +144,89 @@ public class AdverseEventCaptureTabTest extends AbstractNoSecurityTestCase {
 				"eventLocation",
 				"hospitalization",
 				"expected");
+	}
+	
+	public void testPostprocess(){
+		command.initializeOutcomes();
+		
+		command.set_action("joel");
+	    command.setReportingMethod("joel");
+	    command.setPrimaryAdverseEventId(3);
+		
+	    request.setAttribute("_action", "test");
+		tab.postProcess(request, command, errors);
+		
+		assertNull(command.get_action());
+		assertNull(command.getReportingMethod());
+		assertNull(command.getPrimaryAdverseEventId());
+		
+	}
+	
+	public void testPostprocessWhenActionIsAmmend(){
+		command.initializeOutcomes();
+		
+		command.set_action("joel");
+	    command.setReportingMethod("joel");
+	    command.setPrimaryAdverseEventId(3);
+	    
+	    //add one expedited report with id=1 in the reporting period, so that it will be ammended.
+	    ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	    aeReport.setId(1);
+	    Report report = Fixtures.createReport("test");
+	    report.setId(4);
+	    report.getReportDefinition().setAmendable(true);
+	    aeReport.addReport(report);
+	    command.getAdverseEventReportingPeriod().addAeReport(aeReport);
+		
+	    request.setAttribute("_action", "amendmentRequired");
+	    request.setAttribute("_amendReportIds", "1");
+	    
+	    reportDao.reassociate(command.getAdverseEventReportingPeriod().getAeReports().get(0));
+	    reportRepository.amendReport(report, false);
+	    replayMocks();
+		tab.postProcess(request, command, errors);
+		
+		assertNull(command.get_action());
+		assertNull(command.getReportingMethod());
+		assertNull(command.getPrimaryAdverseEventId());
+		
+		verifyMocks();
+		
+	}
+	
+	public void testPostprocessWhenActionIsAmmendAndWorkflowEnabled(){
+		command.initializeOutcomes();
+		
+		command.set_action("joel");
+	    command.setReportingMethod("joel");
+	    command.setPrimaryAdverseEventId(3);
+	    command.setWorkflowEnabled(true);
+	    command.getAdverseEventReportingPeriod().setWorkflowId(3);
+	    
+	    //add one expedited report with id=1 in the reporting period, so that it will be ammended.
+	    ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	    aeReport.setId(1);
+	    Report report = Fixtures.createReport("test");
+	    report.setId(4);
+	    report.getReportDefinition().setAmendable(true);
+	    aeReport.addReport(report);
+	    command.getAdverseEventReportingPeriod().addAeReport(aeReport);
+		
+	    request.setAttribute("_action", "amendmentRequired");
+	    request.setAttribute("_amendReportIds", "1");
+	    
+	    reportDao.reassociate(command.getAdverseEventReportingPeriod().getAeReports().get(0));
+	    reportRepository.amendReport(report, false);
+	    EasyMock.expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport)).andReturn(3L);
+	    replayMocks();
+		tab.postProcess(request, command, errors);
+		
+		assertNull(command.get_action());
+		assertNull(command.getReportingMethod());
+		assertNull(command.getPrimaryAdverseEventId());
+		
+		verifyMocks();
+		
 	}
 	
 	public void assertCorrectOutcomeFieldNames(InputFieldGroup fieldGrp, String...propertyNames){
