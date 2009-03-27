@@ -141,8 +141,7 @@ public class Fixtures {
     public static ReportDefinition createReportDefinition(String name) {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
-        Organization org = new Organization();
-        org.setName("Test");
+        Organization org = Fixtures.createOrganization("Test", "test");
         def.setOrganization(org);
         def.addPlannedNotification(createPlannedEmailNotification());
         return def;
@@ -166,6 +165,7 @@ public class Fixtures {
         ReportDefinition def = createReportDefinition(name);
         Report rep = new Report();
         rep.setReportDefinition(def);
+        Fixtures.createReportVersion(rep);
         rep.addScheduledNotification(createScheduledEmailNotification());
         return rep;
     }
@@ -183,6 +183,7 @@ public class Fixtures {
 
     public static void createReportVersion(final Report report) {
         ReportVersion reportVersion = new ReportVersion();
+        reportVersion.setReportVersionId("5");
         reportVersion.setCreatedOn(new Timestamp(106));
         reportVersion.setReportStatus(ReportStatus.PENDING);
         report.addReportVersion(reportVersion);

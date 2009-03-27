@@ -159,6 +159,40 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     }
     
     /**
+     * This method returns all the adverse events that are graded properly (ie. Not (NOT_EVALUATED, or NORMAL). 
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getGradedAdverseEvents(){
+    	List<AdverseEvent> gradedAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getEvaluatedAdverseEvents()){
+    		if(!Grade.NORMAL.equals(ae.getGrade())) gradedAdverseEvents.add(ae);
+    	}
+    	return gradedAdverseEvents;
+    }
+    
+    /**
+     * This method will return all the aes associated with expedited report + the ones 
+     * that are graded and not associated to any other report.
+     */
+    @Transient
+    public List<AdverseEvent>  getAllReportedAndReportableAdverseEvents(){
+    	List<AdverseEvent> events = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		//this is already associated with expedited report
+    		if(ae.getReport() != null) {
+    			events.add(ae); 
+    		}else if((ae.getGrade() != null) && !(Grade.NORMAL.equals(ae.getGrade())||  Grade.NOT_EVALUATED.equals(ae.getGrade()))		){
+    			//this is a graded AE, not associated to any other expedited report. 
+    			events.add(ae);
+    		}
+    	}
+    	//sort the list
+    	Collections.sort(events, AdverseEventComprator.DEFAULT_ADVERSE_EVENT_COMPARATOR);
+    	return events;
+    }
+    
+    /**
      * This method will return a a sorted list containing the evaluated adverse events.
      * @see AdverseEventComprator#compare(AdverseEvent, AdverseEvent)
      * @return
@@ -166,9 +200,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getReportableAdverseEvents(){
     	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae: getEvaluatedAdverseEvents()){
-    		if(ae.getReport() == null)
-    			reportableAdverseEvents.add(ae);
+    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    		if(ae.getReport() == null) reportableAdverseEvents.add(ae);
     	}
     	return reportableAdverseEvents;
     }

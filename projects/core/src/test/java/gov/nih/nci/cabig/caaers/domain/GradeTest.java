@@ -6,6 +6,9 @@ import static gov.nih.nci.cabig.caaers.domain.Grade.MILD;
 import static gov.nih.nci.cabig.caaers.domain.Grade.MODERATE;
 import static gov.nih.nci.cabig.caaers.domain.Grade.SEVERE;
 import static gov.nih.nci.cabig.caaers.domain.Grade.getByCode;
+
+import org.apache.commons.lang.NumberUtils;
+
 import junit.framework.TestCase;
 
 /**
@@ -27,5 +30,9 @@ public class GradeTest extends TestCase {
         assertEquals(MODERATE, getByCode(2));
         assertEquals(MILD, getByCode(1));
         assertNotNull(Grade.getByCode(0));
+        assertEquals(Grade.NOT_EVALUATED, Grade.getByCode(-1));
+        
+        System.out.println(NumberUtils.isNumber(null));
     }
+   
 }

@@ -157,5 +157,8 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 		this.internalList = internalList;
 	}
 
-	
+	@Override
+	public String toString() {
+		return tempList.toString();
+	}
 }

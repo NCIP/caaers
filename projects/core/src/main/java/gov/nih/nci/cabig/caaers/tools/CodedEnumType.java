@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 public class CodedEnumType extends gov.nih.nci.cabig.ctms.tools.hibernate.CodedEnumType{
 	 @Override
@@ -22,7 +23,7 @@ public class CodedEnumType extends gov.nih.nci.cabig.ctms.tools.hibernate.CodedE
         String s = rs.getString(colname);
         if (s == null) return null;
         else {
-            if (StringUtils.isNumeric(s)) return Integer.parseInt(s);
+            if (NumberUtils.isNumber(s)) return Integer.parseInt(s);
             return s;
         }
     }
