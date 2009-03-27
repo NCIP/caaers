@@ -34,6 +34,7 @@ import com.semanticbits.rules.api.BusinessRulesExecutionService;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.exception.RuleException;
 import com.semanticbits.rules.exception.RuleSetNotFoundException;
+import com.semanticbits.rules.impl.RuleEvaluationResult;
 import com.semanticbits.rules.objectgraph.FactResolver;
 import com.semanticbits.rules.utils.RuleUtil;
 
@@ -530,13 +531,17 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             evaluationForSponsor.setMessage("no_rules_found");
             return evaluationForSponsor;
         }
-        for (Iterator<Object> it = outputObjects.iterator(); it.hasNext();) {
-            Object o = it.next();
-            if (o instanceof AdverseEventEvaluationResult) return (AdverseEventEvaluationResult) o;
+        
+        //populate the correct message.
+        for(Object o : outputObjects) {
+            if (o instanceof RuleEvaluationResult){
+            	evaluationForSponsor.setMessage(((RuleEvaluationResult)o).getMessage());
+            	break;
+            }
 
         }
 
-        // return the empty AdverseEventEvaluationResult.
+        // return AdverseEventEvaluationResult.
         return evaluationForSponsor;
 
     }
