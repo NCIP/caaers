@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.security.util.StringUtilities;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,10 +24,15 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 log.debug("Size of identifiers : " + studyParticipantAssignment.getStudySite().getStudy().getIdentifiers());
                 String identifierValue = identifier.getValue();
                 String organizationName = studyParticipantAssignment.getStudySite().getOrganization().getName();
+                String organizationNciInstituteCode = studyParticipantAssignment.getStudySite().getOrganization().getNciInstituteCode();
                 String identifierType = identifier.getType();
+                StudySite studySite = null;
+                if (StringUtilities.isBlank(organizationNciInstituteCode)) {
+                	studySite = studySiteDao.matchByStudyAndOrg(organizationName, identifierValue, identifierType);
+                } else {
+                	studySite = studySiteDao.matchByStudyAndOrgNciId(organizationNciInstituteCode, identifierValue, identifierType);
+                }
 
-                StudySite studySite = studySiteDao.matchByStudyAndOrg(organizationName, identifierValue, identifierType);
-                
                 StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);
                 studParticipantAssignment.setStudySubjectIdentifier(studyParticipantAssignment.getStudySubjectIdentifier());
                 
