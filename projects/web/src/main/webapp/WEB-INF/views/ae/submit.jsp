@@ -40,6 +40,20 @@
         document.viewReport.submit();
     }
     
+    	function withdrawReport(aeReportId, reportId){
+		    createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+	           	//AE.hideIndicator("notify-indicator-" + aeReportId)
+	           	var statusColumn = $('report-status')
+	     		var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+	      
+	      		var optionColumn = $('report-action')
+	      		optionColumnData = '';
+	      
+	      		Element.update(statusColumn, statusColumnData)
+	      		Element.update(optionColumn, optionColumnData)
+	        });
+	     }
+    
     Event.observe(window, "load", function() {
     	 $('flow-next').value="Go to Manage Reports ";	 
     	 
@@ -152,7 +166,7 @@
                         </c:choose>
 						
                     </td>
-            		<td>
+            		<td id="report-status">
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 							<span class="dueOn" >
 								<c:if test="${not empty report.lastVersion.dueOn}" >
@@ -165,7 +179,7 @@
             			</c:if>
             			<c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}" >
 							<span class="submittedOn" >
-            						<i>Withdrawn</i>
+            						<i>Withdrawn</i><br> <b><tags:formatDate value="${report.lastVersion.withdrawnOn}" /></b>
             				</span>
             			</c:if>
             			<c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}" >
@@ -194,13 +208,13 @@
             			</c:if>
             			--%>
             		</td>
-            		<td>
+            		<td id="report-action">
 
 						<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
 							<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 								<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 										<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
-										<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
+										<br><a href="javascript:withdrawReport(${report.aeReport.id },${report.id});">Withdraw</a>
 								</c:if>
 							
 								<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
