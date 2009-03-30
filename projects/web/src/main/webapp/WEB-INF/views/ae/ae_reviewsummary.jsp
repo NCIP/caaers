@@ -209,6 +209,11 @@ background-color:#e5e8ff;
   	  	 var defaultAction = "${aeReportsLength gt 0 ? command._action : 'createNew'}";
   		 //this function will allow the "Select Adverse Events To Report", to maintain its previous state.
 	     selectReport(defaultAction,'${command.reportingMethod}','${command.primaryAdverseEventId}');
+	     //check if there are already active reports existing. If thats the case then the first radio option is selected.
+	     if(${fn:length(command.adverseEventReportingPeriod.activeAeReports) > 0}){
+		     $('report-input-0').checked=true;
+	    	 $('report-input-0').click();
+	     }
   	});
   	</script>
   
@@ -309,10 +314,10 @@ background-color:#e5e8ff;
              <tr id="existing-reports-row" class="${ ((statusAeReport.index % 2 ) gt 0 )? 'odd' : 'even'  }">
                <td width="5%" align="left">
                	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
-               		<ui:radio path="reportingMethod" onclick="javascript:selectReport('amendReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');" value="${aeReport.id}"/>&nbsp;Amend
+               		<ui:radio id="report-input-${statusAeReport.index }" path="reportingMethod" onclick="javascript:selectReport('amendReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');" value="${aeReport.id}"/>&nbsp;Amend
                 </c:if>
                 <c:if test="${aeReport.allSponsorReportsCompleted == false}">
-                  	<ui:radio path="reportingMethod" value="${aeReport.id}"  onclick="javascript:selectReport('editReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');"/>&nbsp;Edit
+                  	<ui:radio id="report-input-${statusAeReport.index }" path="reportingMethod" value="${aeReport.id}"  onclick="javascript:selectReport('editReport','${aeReport.id}', '${aeReport.adverseEvents[0].id}');"/>&nbsp;Edit
                 </c:if>
               	</td>
               	<td width="95%"><div class="eXtremeTable" >
