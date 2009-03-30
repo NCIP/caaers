@@ -224,9 +224,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-                                            
+        <!--                                    
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>               
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>  -->             
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
@@ -268,12 +268,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="objectDefinitionSource">
             <value>
                 gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.StudyDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.OrganizationDao.restrict*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getOrganizationsHavingStudySites=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
