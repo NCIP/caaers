@@ -48,42 +48,17 @@ public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implem
     		}			
 		}
         // get research staff and associated organization.
-		//ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-    	//rsQuery.filterByLoginId(user.getUsername());
-    	//List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);        
+      
 		gov.nih.nci.cabig.caaers.domain.User caaersUser = getCaaersUser(userName,userDao);
 		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
                 
-		//StudySiteAjaxableDomainObject researchStaffOrganization = new StudySiteAjaxableDomainObject();
-		//researchStaffOrganization.setNciInstituteCode(organization.getNciInstituteCode());
-        /*
-        boolean studyFilteringRequired = false ; 
-        //boolean isSiteCoodinator = false;
-        //check if user is AE Coordinator or Subject Coordinator  or study coo...
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") 
-        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
-        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd")) {
-        		studyFilteringRequired = true;
-        		break;
-        	}
-        }	
-        */
+
 		
 	    //study filtering is required only for ROLE_caaers_participant_cd , ROLE_caaers_study_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
        String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_physician.getSecurityRoleName()};
        List<String> rolesToExclude = Arrays.asList(roles);
         boolean studyFilteringRequired = studyFilteringRequired(grantedAuthorities, rolesToExclude);
 
-        /*
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_site_cd")) {
-        		isSiteCoodinator = true;
-        		break;
-        	}
-        }*/
 
 		if (returnObject instanceof ParticipantAjaxableDomainObject) {
 			ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject)returnObject;
