@@ -59,7 +59,40 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             fail("Error running test: " + e.getMessage());
         }
     }
+    
+    public void testCreateParticipant() {
+    	Participant createdParticipant = null;
+    	try {
 
+            createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
+
+            SecurityTestUtils.switchToSuperuser();
+
+            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
+          //  System.out.println("size is " + matches.size());
+            assertEquals(1, matches.size());
+            createdParticipant= matches.get(0);
+            assertEquals("Herd", createdParticipant.getLastName());
+            assertEquals("maidenName", createdParticipant.getMaidenName());
+            assertEquals("Leing", createdParticipant.getMiddleName());
+            assertEquals(new DateValue(1, 1, 2001), createdParticipant.getDateOfBirth());
+            assertEquals("Male", createdParticipant.getGender());
+            assertEquals("Asian", createdParticipant.getRace());
+            assertEquals("Hispanic or Latino", createdParticipant.getEthnicity());
+            //}
+            //}
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } finally {
+            if (createdParticipant != null) {
+                participantDao.delete(createdParticipant);
+            }
+        }
+    }
+    
     public void testUpdateParticipantForUpdateAttr() {
 
         try {
