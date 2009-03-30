@@ -612,7 +612,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
         fieldMap.addInputFieldGroup(g1);
         controller.populateHelpAttributeOnFields(fieldMap);
 
-        assertEquals("ae.createReportingPeriod.f1", fieldMap.get(0).getFields().get(0).getAttributes().get(InputField.HELP));
-        assertEquals("ae.createReportingPeriod.f2", fieldMap.get(0).getFields().get(1).getAttributes().get(InputField.HELP));
+        assertEquals("ae.createReportingPeriod.f1", fieldMap.get("groupOne").getFields().get(0).getAttributes().get(InputField.HELP));
+        assertEquals("ae.createReportingPeriod.f2", fieldMap.get("groupOne").getFields().get(1).getAttributes().get(InputField.HELP));
     }
 }
