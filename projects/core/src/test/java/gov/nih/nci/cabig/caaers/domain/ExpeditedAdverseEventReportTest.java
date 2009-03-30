@@ -551,6 +551,35 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         assertEquals(2, report.getSponsorDefinedReports().size());
 
     }
+    
+    public void testGetAllSponsorReportsCompletedWithReplacedReports() throws Exception{
+    	Report rep = new Report();
+        Fixtures.createReportVersion(rep);
+        rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+
+        rep = new Report();
+        Fixtures.createReportVersion(rep);
+        rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+        reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+
+        Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        Study study = Fixtures.createStudy("El Study");
+        Organization org = Fixtures.createOrganization("test Org");
+        org.setNciInstituteCode("NCI-CODE1");
+        StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(org);
+        sponsor.setPrimary(true);
+        study.addStudyFundingSponsor(sponsor);
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
+
+        assertTrue(report.getAllSponsorReportsCompleted());
+    }
 
     public void testGetAllSponsorReportsCompleted() throws Exception {
         Report rep = new Report();

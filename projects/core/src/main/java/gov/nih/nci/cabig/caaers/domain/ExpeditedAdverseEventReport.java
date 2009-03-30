@@ -188,14 +188,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	Boolean completed = true;
     	for(Report report: getSponsorDefinedReports()){
     		if(report.getReportDefinition().getExpedited() && report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED &&
-    				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
+    				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN && report.getLastVersion().getReportStatus() != ReportStatus.REPLACED)
     			completed = false;
     	}
     	
     	// Handle the case where there are no expedited / amendable reports.
     	if(!getHasAmendableReport()){
     		for(Report report: getSponsorDefinedReports()){
-    			if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED && report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
+    			if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED && report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN
+    					&& report.getLastVersion().getReportStatus() != ReportStatus.REPLACED)
     				completed = false;
     		}
     	}
