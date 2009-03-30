@@ -87,4 +87,26 @@ public class TabWithFieldsTest extends AbstractTestCase {
             this.string = string;
         }
     }
+
+    public void testSetHelpKeyAttribute() throws Exception {
+        InputField _if = InputFieldFactory.createEmailField("email", "emailName", true);
+        tab.setAutoPopulateHelpKey(true);
+        tab.setHelpKeyAttribute(_if);
+        assertEquals("dc.email", _if.getAttributes().get(InputField.HELP));
+    }
+
+    public void testPopulateHelpAttributeOnFields() {
+        InputFieldGroupMap fieldMap = new InputFieldGroupMap();
+        InputFieldGroup g1 = new DefaultInputFieldGroup("groupOne");
+
+        g1.getFields().add(InputFieldFactory.createDateField("f1", "name one", true));
+        g1.getFields().add(InputFieldFactory.createDateField("f2", "name two", true));
+
+        fieldMap.addInputFieldGroup(g1);
+        tab.setAutoPopulateHelpKey(true);
+        tab.populateHelpAttributeOnFields(fieldMap);
+
+        assertEquals("dc.f1", fieldMap.get("groupOne").getFields().get(0).getAttributes().get(InputField.HELP));
+        assertEquals("dc.f2", fieldMap.get("groupOne").getFields().get(1).getAttributes().get(InputField.HELP));
+    }
 }

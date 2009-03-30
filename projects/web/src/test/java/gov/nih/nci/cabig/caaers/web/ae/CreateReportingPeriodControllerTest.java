@@ -21,8 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -596,5 +595,24 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
         assertEquals(5, fg.getFields().size());
         assertEquals("assignment.startDateOfFirstCourse", fg.getFields().get(0).getPropertyName());
     }
-    
+
+    public void testSetHelpKeyAttribute() throws Exception {
+        InputField _if = InputFieldFactory.createEmailField("email", "emailName", true);
+        controller.setHelpKeyAttribute(_if);
+        assertEquals("ae.createReportingPeriod.email", _if.getAttributes().get(InputField.HELP));
+    }
+
+    public void testPopulateHelpAttributeOnFields() {
+        InputFieldGroupMap fieldMap = new InputFieldGroupMap();
+        InputFieldGroup g1 = new DefaultInputFieldGroup("groupOne");
+
+        g1.getFields().add(InputFieldFactory.createDateField("f1", "name one", true));
+        g1.getFields().add(InputFieldFactory.createDateField("f2", "name two", true));
+
+        fieldMap.addInputFieldGroup(g1);
+        controller.populateHelpAttributeOnFields(fieldMap);
+
+        assertEquals("ae.createReportingPeriod.f1", fieldMap.get(0).getFields().get(0).getAttributes().get(InputField.HELP));
+        assertEquals("ae.createReportingPeriod.f2", fieldMap.get(0).getFields().get(1).getAttributes().get(InputField.HELP));
+    }
 }

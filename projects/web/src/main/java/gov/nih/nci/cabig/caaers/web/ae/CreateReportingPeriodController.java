@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
@@ -39,9 +41,10 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class CreateReportingPeriodController extends SimpleFormController {
 
+    private Logger log = Logger.getLogger(CreateReportingPeriodController.class);
+
     private static final String REPORTINGPERIOD_FIELD_GROUP = "ReportingPeriod";
     private InputFieldGroup reportingPeriodFieldGroup;
-
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
@@ -436,7 +439,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
         String[] nameSubset = null;
         nameSubset = field.getPropertyName().split("\\.");
-        field.getAttributes().put(InputField.HELP, helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
+        field.getAttributes().put(InputField.HELP, helpKeyPrefix + "." + field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
     }
 
     public String getViewName() {
