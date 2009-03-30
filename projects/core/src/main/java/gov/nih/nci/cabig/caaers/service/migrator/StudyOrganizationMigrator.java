@@ -18,7 +18,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.List;
 
@@ -52,13 +54,29 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 			for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
 				if(studyOrganization instanceof StudySite){
 					Organization organization = null;
-					if(studyOrganization.getOrganization().getNciInstituteCode() != null && studyOrganization.getOrganization().getNciInstituteCode().length() > 0){
-						String nciInstituteCode = studyOrganization.getOrganization().getNciInstituteCode();
+					Organization inStreamOrganization = studyOrganization.getOrganization();
+					String nciInstituteCode = inStreamOrganization.getNciInstituteCode();
+					String orgName = inStreamOrganization.getName();
+					//if(studyOrganization.getOrganization().getNciInstituteCode() != null && studyOrganization.getOrganization().getNciInstituteCode().length() > 0){
+					if (!StringUtilities.isBlank(nciInstituteCode)) {
 				        organization = fetchOrganization(nciInstituteCode);
 					}else{
-						String orgName = studyOrganization.getOrganization().getName();
 				        organization = organizationDao.getByName(orgName);
 					}
+					
+					// create organization if it does not exist.
+					/*
+					if (organization == null) {
+						organizationRepository.create(inStreamOrganization);
+						if (!StringUtilities.isBlank(nciInstituteCode)) {							
+							organization = fetchOrganization(nciInstituteCode);
+						} else {
+							organization = organizationDao.getByName(orgName);
+						}
+					}*/
+					
+					
+					
 			        outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, 
 					"The organization specified in studySite is invalid");
 			        studyOrganization.setOrganization(organization);
@@ -233,4 +251,6 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
+
+    
 }
