@@ -122,6 +122,7 @@
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
     			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
+    			<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED'}">
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.label}</div></td>
             		<c:if test="${report.reportDefinition.amendable == true}">
@@ -212,6 +213,7 @@
 						</c:if>
             		</td>
     			</tr>
+    			</c:if>
     			</c:forEach>    						
     	</table>		
     	<p>&nbsp;</p>

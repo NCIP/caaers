@@ -151,13 +151,15 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        if (aeReport.getTreatmentInformation() == null) {
-            aeReport.setTreatmentInformation(new TreatmentInformation());
-        }
-        if(aeReport.getReporter() == null) aeReport.setReporter(new Reporter());
-        if(aeReport.getPhysician() == null) aeReport.setPhysician(new Physician());
+    	if(aeReport != null){
+    		if (aeReport.getTreatmentInformation() == null) {
+    			aeReport.setTreatmentInformation(new TreatmentInformation());
+    		}
+    		if(aeReport.getReporter() == null) aeReport.setReporter(new Reporter());
+    		if(aeReport.getPhysician() == null) aeReport.setPhysician(new Physician());
+    		this.attributionMap = new AttributionMap(aeReport);
+    	}
         this.aeReport = aeReport;
-        this.attributionMap = new AttributionMap(aeReport);
     }
 
 

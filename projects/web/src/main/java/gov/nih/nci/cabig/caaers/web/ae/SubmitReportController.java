@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Map;
 
@@ -55,6 +56,42 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     }
     
     @Override
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+    	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
+    	/*if(!command.getReportSubmitted()){
+    		log.debug("In currentFormObject :" + oCommand );
+    		((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
+    		log.debug("After calling reassociate");
+    		oCommand = super.currentFormObject(request, oCommand);
+    		log.debug("After calling super class currentFormObject :" + oCommand);
+    	}else{
+    		ExpeditedAdverseEventReport aeReport = reportDao.getById(command.getAeReport().getId());
+    		(SubmitExpeditedAdverseEventCommand)
+    	}*/
+    	if(!command.getReportSubmitted()){
+    		log.debug("In currentFormObject :" + command);
+    		command.reassociate();
+    		log.debug("After calling reassociate");
+    		command = (SubmitExpeditedAdverseEventCommand)super.currentFormObject(request, command);
+    		log.debug("After calling super class currentFormObject : " + command);
+    	}else{
+    		//ExpeditedAdverseEventReport aeReport = reportDao.getById(command.getAeReport().getId());
+    		//command.setLastVersion(aeReport.getReports().get(Integer.parseInt(command.getReportIndex())).getLastVersion());
+    		//Report report = reportDao.getById(command.getAeReport().getReports().get(Integer.parseInt(command.getReportIndex())).getId());
+		 	//command.setLastVersion(report.getLastVersion());
+    	}
+        return command;
+    }
+    
+    @Override
+	protected boolean shouldSave(HttpServletRequest request,ExpeditedAdverseEventInputCommand oCommand,Tab<ExpeditedAdverseEventInputCommand> tab) {
+    	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
+    	if(command.getReportSubmitted())
+    		return false;
+    	return true;
+    }
+    
+    @Override
     protected ExpeditedAdverseEventInputCommand save(ExpeditedAdverseEventInputCommand command, Errors errors) {
     	log.debug("In overriden save");
     	command.save();
@@ -66,26 +103,10 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
     	log.debug("In processFinish");
         SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
-        Integer reportIndex = Integer.valueOf(command.getReportIndex());
-
-        log.debug("Report Index :" + reportIndex.intValue());
-        ExpeditedAdverseEventReport aeReport = command.getAeReport();
-        Report report = aeReport.getReports().get(((int) reportIndex));
-
-        reportSubmissionService.submitReport(report);
-        
         ModelAndView modelAndView;
-        if (command.getFrom() != null && command.getFrom().equals("list")) {
-            Map<String, Object> model = new ModelMap("participant", command.getParticipant()
-                            .getId());
-            model.put("study", command.getStudy().getId());
-            modelAndView = new ModelAndView("redirectToAeList", model);
-        } else {
-            Map<String, Object> model = new ModelMap("aeReport", aeReport.getId());
-            model.put("action", "reportSubmission");
-            modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
-        }
-
+        Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
+        model.put("study", command.getStudy().getId());
+        modelAndView = new ModelAndView("redirectToAeList", model);
         log.debug("Returning the viewname as :" + modelAndView.getViewName());
         return modelAndView;
     }

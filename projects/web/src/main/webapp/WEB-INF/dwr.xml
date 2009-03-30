@@ -6,6 +6,9 @@
         <create creator="spring" javascript="createAE">
             <param name="beanName" value="createAeAjaxFacade"/>
         </create>
+        <create creator="spring" javascript="submitReport">
+        	<param name="beanName" value="submitReportAjaxFacade"/>
+        </create>
         <create creator="spring" javascript="routingAndReview">
             <param name="beanName" value="routingAndReviewAjaxFacade"/>
         </create>

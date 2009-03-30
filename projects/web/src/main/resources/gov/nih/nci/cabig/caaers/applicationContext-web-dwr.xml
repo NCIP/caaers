@@ -16,6 +16,8 @@
         <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
 	
+	<bean id="submitReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportAjaxFacade"
+		parent="createAeAjaxFacade"/>
 	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade">
 	</bean>
     <bean id="captureAeAjaxFacade" autowire="byType"

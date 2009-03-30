@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -11,8 +14,13 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
 /**
@@ -20,6 +28,9 @@ import org.springframework.validation.Errors;
  */
 public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 
+	protected final Log log = LogFactory.getLog(getClass());
+	protected ReportSubmissionService reportSubmissionService;
+	
     public SubmitReportTab() {
         super("Submission", "Submit Report", "ae/submitReport");
 
@@ -69,4 +80,25 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         return EmailValidator.getInstance().isValid(trimmedEmail);
     }
 
+    @Override
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
+    	log.debug("In postProcess");
+        SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) cmd;
+        Integer reportIndex = Integer.valueOf(command.getReportIndex());
+
+        log.debug("Report Index :" + reportIndex.intValue());
+        ExpeditedAdverseEventReport aeReport = command.getAeReport();
+        Report report = aeReport.getReports().get(((int) reportIndex));
+        if(!command.getReportSubmitted())
+        	reportSubmissionService.submitReport(report);
+    }
+    
+    public ReportSubmissionService getReportSubmissionService() {
+ 	   return reportSubmissionService;
+    }
+   
+    @Required
+    public void setReportSubmissionService(ReportSubmissionService reportSubmissionService) {
+ 	   this.reportSubmissionService = reportSubmissionService;
+    }
 }

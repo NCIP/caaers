@@ -23,66 +23,66 @@
     	
     	<p> The <b>${command.aeReport.reports[command.reportIndex].reportDefinition.name} </b> will be sent to the following preconfigured recipient(s) .<br /></p>
     	
-    	<table class="tablecontent">
+    		<table class="tablecontent">
     		
-    	<tr>
+    			<tr>
     			
-    		<th scope="col" align="left"><b>Recipient(s)</b></th>
-    	</tr>
+    				<th scope="col" align="left"><b>Recipient(s)</b></th>
+    			</tr>
     	
     	
-    	<c:forEach items="${command.aeReport.reports[command.reportIndex].reportDeliveries}" varStatus="status" var="report">
+		    	<c:forEach items="${command.aeReport.reports[command.reportIndex].reportDeliveries}" varStatus="status" var="report">
     		
-    		<tr>
+    				<tr>
+    				
+    					<td><div class="label">
+    						${report.reportDeliveryDefinition.entityType eq 1 ? report.reportDeliveryDefinition.entityName : report.endPoint }
+    						 <c:if test="${report.reportDeliveryDefinition.entityType ne 1}">
+   					 			 (${report.reportDeliveryDefinition.entityName})
+    						 </c:if>
+    						 </div></td>
     			
-    			<td><div class="label">
-    			${report.reportDeliveryDefinition.entityType eq 1 ? report.reportDeliveryDefinition.entityName : report.endPoint }
-    			 <c:if test="${report.reportDeliveryDefinition.entityType ne 1}">
-    			 (${report.reportDeliveryDefinition.entityName})
-    			 </c:if>
-    			 </div></td>
-    		
-    		</tr>
-    	</c:forEach>
+    				</tr>
+		   	 	</c:forEach>
 
     		    	
     	    	
-    	</table>
+    		</table>
 
-    	<br>
+    		<br>
     	    	
     
-    <chrome:division title="Cc details">
+    		<chrome:division title="Cc details">
     		
-    	<p>To send this report to others, enter the email addresses in the field below.<br />
+    			<p>To send this report to others, enter the email addresses in the field below.<br />
     		
-    	Multiple email addresses can be entered separated by a comma.</p>
+    				Multiple email addresses can be entered separated by a comma.</p>
 
             
     	
-    	<c:forEach items="${fieldGroups['ccReport'].fields}" var="field">
+		    	<c:forEach items="${fieldGroups['ccReport'].fields}" var="field">
                 
-    		<tags:renderRow field="${field}"/>
+    				<tags:renderRow field="${field}"/>
             
-    	</c:forEach>
+    			</c:forEach>
         
-    </chrome:division>
+   			 </chrome:division>
     
-    <input type="hidden" name="_finish"/>
     </jsp:attribute>
 		
 	<jsp:attribute name="tabControls">
-	<div class="content buttons autoclear">
-		<div class="local-buttons"></div>
+		<div class="content buttons autoclear">
+			<div class="local-buttons">
+			</div>
 	    	<div class="flow-buttons">
-		<span class="prev">       
-	            <input type="image" alt="« Save &amp; Back" value="« saveback" class="tab0" id="flow-prev" src="/caaers/images/blue/saveback_btn.png"/>
-	        </span>	        
-		<span class="next">
-				<input type="image" alt="submit report »" value="Submit Report " id="flow-next" src="<c:url value="/images/blue/submit_btn.png" />"/>
-	        </span>
+				<span class="prev">       
+	            	<input type="image" alt="« Save &amp; Back" value="« saveback" class="tab0" id="flow-prev" src="/caaers/images/blue/saveback_btn.png"/>
+	        	</span>	        
+				<span class="next">
+					<input type="image" alt="submit report »" value="Submit Report " id="flow-next" src="<c:url value="/images/blue/submit_btn.png" />"/>
+	       		</span>
+			</div>
 		</div>
-	</div>
 	</jsp:attribute>
 
 </tags:tabForm>

@@ -24,7 +24,7 @@ public class SubmitReportFlowFactory implements FlowFactory<ExpeditedAdverseEven
     protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new SubmitterTab());
         flow.addTab(new SubmitReportTab());
-
+        flow.addTab(new SubmitReportResultTab());
     }
 
     public Flow<ExpeditedAdverseEventInputCommand> createFlow(
