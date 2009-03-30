@@ -188,10 +188,8 @@ color:#0033FF;
 		$(elId).hide();
 	}
 	
-	function doAction(action, aeReportId,reportId) {
-
-		if(action == 'withdraw'){
-			//AE.showIndicator("notify-indicator-" + aeReportId)
+	function doAction(action, aeReportId, reportId) {
+        if(action == 'withdraw'){
 	        createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
 	           	//AE.hideIndicator("notify-indicator-" + aeReportId)
 	           	var statusColumn = $("status"+reportId)
@@ -203,24 +201,28 @@ color:#0033FF;
 	      		Element.update(statusColumn, statusColumnData)
 	      		Element.update(optionColumn, optionColumnData)
 	        });
-	        
-		}else if(action =='submit'){
-			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
+		} else if(action =='submit') {
+            var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
 			window.location = url;
-			
-		}else if(action =='amend'){
-			var url = '<c:url value="/pages/ae/edit"/>' +'?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
+		} else if(action =='amend') {
+            var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
 			window.location = url; 
 		}
         
     }  
     
-    function executeAction(reportId,url){
-    	var actions = $("actions-"+reportId)
-    	for ( i=0; i < actions.length; i++)
-        {
-        	if (actions.options[i].selected && actions.options[i].value != "none") {
-            	window.open(url + "&format="+ actions.options[i].value,"_self")
+    function executeAction(reportId, url, aeReportId, submissionUrl){
+        var actions = $("actions-" + reportId);
+    	for ( i=0; i < actions.length; i++) {
+            if (actions.options[i].selected && actions.options[i].value != "none") {
+                switch (actions.options[i].value) {
+                    case "notifyPSC": notifyPsc(aeReportId); break;
+                    case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
+                    case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  break;
+                    case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
+                    case "adeers": window.open(submissionUrl, "_blank");  break;
+                    default: window.open(url + "&format="+ actions.options[i].value,"_self");
+                }
             }
          }
      }
@@ -256,24 +258,6 @@ color:#0033FF;
             })
         }
         
-       Event.observe(window, "load", function() {
-
-            $$("a.notify").each(function(a) {
-                Event.observe(a, "click", function(e) {
-                    Event.stop(e);
-                    var aeReportId = Event.element(e).id.substring(7)
-                    notifyPsc(aeReportId)
-                })
-            })
-
-            $$("a.notify-routine").each(function(a) {
-                Event.observe(a, "click", function(e) {
-                    Event.stop(e);
-                    var roReportId = Event.element(e).id.substring(14)
-                    notifyPscRoutineEvent(roReportId)
-                })
-            })
-        })    
     </script>
 </head>
 <body>
@@ -296,11 +280,11 @@ color:#0033FF;
 
 
 <c:if test="${not empty configuration.map.pscBaseUrl}">
-<p>
-    View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="psc">study calendar</a>.
-</p>
+    <p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="psc">study calendar</a>.</p>
 </c:if>
+
 <div class="eXtremeTable" >
+
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
     <thead>
       <tr align="center" class="label">
@@ -321,6 +305,7 @@ color:#0033FF;
   </table>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
   <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No course have been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
+    
 </div>
 </body>
 </html>

@@ -3,23 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The course that is being rendered" %>
 
 <c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
-<c:set var="reportingPeriodPageURL" 
-	value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
+<c:set var="reportingPeriodPageURL" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
 
 <tr align="center" id="${index}" class="${currClass}">
-	<td>
-		<chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/>
-	</td>
-	<td width="15%" align="left">
-		<a href="<c:url value="${reportingPeriodPageURL}"/>">
-			${reportingPeriod.name}
-		</a>
-	</td>
+	<td><chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/></td>
+	<td width="15%" align="left"><a href="<c:url value="${reportingPeriodPageURL}"/>">${reportingPeriod.name}</a></td>
 	<td width="10%">${reportingPeriod.numberOfReports}</td>
 	<td width="10%">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
 	<td align="left">${reportingPeriod.dataEntryStatus}</td>

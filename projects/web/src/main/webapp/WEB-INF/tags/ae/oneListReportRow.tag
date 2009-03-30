@@ -40,55 +40,56 @@
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
 			
-			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')">
-		     	<OPTION selected value="none">None</OPTION>
+			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
+		     	<OPTION selected value="none">Please select</OPTION>
 		     	<c:if test="${command.study.caaersXMLType}">
-		     		<OPTION value="xml">caAERS XML</OPTION>
+		     		<OPTION value="xml">Export caAERS XML</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.adeersPDFType}">
-		     		<OPTION value="pdf">AdEERS PDF</OPTION>
+		     		<OPTION value="pdf">Export AdEERS PDF</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.medwatchPDFType}">
-		     		<OPTION value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+		     		<OPTION value="medwatchpdf">Export MedWatch 3500A PDF</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.dcpSAEPDFType}">
-		     		<OPTION value="dcp">DCP SAE PDF</OPTION>
+		     		<OPTION value="dcp">Export DCP SAE PDF</OPTION>
 		     	</c:if>
-		     		<c:if test="${command.study.ciomsPDFType}">
-		     	<OPTION value="cioms">CIOMS PDF</OPTION>
-		     		</c:if>
+                <c:if test="${command.study.ciomsPDFType}">
+                    <OPTION value="cioms">Export CIOMS PDF</OPTION>
+                </c:if>
 		     	<c:if test="${command.study.ciomsSaePDFType}">
-		     		<OPTION value="ciomssae">DCP Safety Report PDF</OPTION>
+		     		<OPTION value="ciomssae">Export DCP Safety Report PDF</OPTION>
 		     	</c:if>
-	 		</SELECT>
-			
-	 		<br>
-	 		<c:if test="${report.aeReport.notificationMessagePossible}">
-	   	     <span class="notify-unit" id="notify-unit-${report.aeReport.id}">
-	   	          <a id="notify-${report.aeReport.id}" class="notify" href="#">notify PSC</a>
-	   	     <tags:indicator id="notify-indicator-${report.aeReport.id}"/>
-	   	 </span>
-	   	 </c:if>
-			<c:if test="${command.reportsSubmittable[report.id]}">
-				<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}"> 
-					<c:choose>
-						<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
-							<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a><br>
-							<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
-						</c:when>
-						<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
-							<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a> <br>
-							<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
-						</c:when>
-						<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
-							<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
-						</c:when>
-						<c:when test="${reportStatus eq 'INPROGRESS'}">
-							<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
-						</c:when>
-					</c:choose>
-			  	</c:if>
-			</c:if>
+		     	<c:if test="${report.aeReport.notificationMessagePossible}">
+		     		<OPTION value="notifyPSC">Notify PSC</OPTION>
+		     	</c:if>
+
+                <c:if test="${command.reportsSubmittable[report.id]}">
+                    <c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
+                        <c:choose>
+                            <c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
+                                <OPTION value="submit">Submit</OPTION>
+                                <OPTION value="withdraw">Withdraw</OPTION>
+                            </c:when>
+                            <c:when test="${reportStatus eq 'PENDING' and (not empty lastVersion.submissionUrl)}">
+                                <OPTION value="adeers">View in AdEERS</OPTION>
+                                <OPTION value="amend">Amend</OPTION>
+                            </c:when>
+                            <c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
+                                <OPTION value="amend">Amend</OPTION>
+                            </c:when>
+                            <c:when test="${reportStatus eq 'INPROGRESS'}">
+                                <OPTION value="submit">Submit</OPTION>
+                            </c:when>
+                        </c:choose>
+                      </c:if>
+                </c:if>
+
+             </SELECT>
+           
+             <br>
+	 		<c:if test="${report.aeReport.notificationMessagePossible}"><span class="notify-unit" id="notify-unit-${report.aeReport.id}"><tags:indicator id="notify-indicator-${report.aeReport.id}"/></span></c:if>
+            
 		</td>
 	</tr>
 	<tr id="reptable${report.id}" style="display:none;">
