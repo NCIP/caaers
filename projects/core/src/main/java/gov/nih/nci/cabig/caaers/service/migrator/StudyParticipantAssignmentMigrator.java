@@ -28,8 +28,10 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 String identifierType = identifier.getType();
                 StudySite studySite = null;
                 if (StringUtilities.isBlank(organizationNciInstituteCode)) {
+                	//System.out.println("looking by name");
                 	studySite = studySiteDao.matchByStudyAndOrg(organizationName, identifierValue, identifierType);
                 } else {
+                	//System.out.println("looking by id");
                 	studySite = studySiteDao.matchByStudyAndOrgNciId(organizationNciInstituteCode, identifierValue, identifierType);
                 }
 
