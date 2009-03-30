@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Status;
@@ -23,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -137,11 +139,22 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			// StudySite
 			for (Identifier identifier : studyParticipantAssignment
 					.getStudySite().getStudy().getIdentifiers()) {
-
+				
+				Organization organization = studyParticipantAssignment.getStudySite().getOrganization();
+				String nciInstituteCode = organization.getNciInstituteCode();
+				String orgName = organization.getName();
+				
+				if (!StringUtilities.isBlank(nciInstituteCode)) {
+					studySite = studySiteDao.matchByStudyAndOrgNciId(nciInstituteCode, identifier.getValue(),identifier.getType());
+				}else{
+					studySite = studySiteDao.matchByStudyAndOrg(orgName, identifier.getValue(),identifier.getType());
+				}
+				
+				/*
 				studySite = studySiteDao.matchByStudyAndOrg(
 						studyParticipantAssignment.getStudySite()
 								.getOrganization().getName(), identifier
-								.getValue(),identifier.getType());
+								.getValue(),identifier.getType());*/
 
 				if (studySite != null) {
 					log.debug("StudySite id : " + studySite.getId());
