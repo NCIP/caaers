@@ -40,7 +40,7 @@
           </p:study>
           <p:organization>
             <name>Duke University Comprehensive Cancer Center</name>
-            <nciInstituteCode/>
+            <nciInstituteCode>DEFAULT</nciInstituteCode>
           </p:organization>
         </p:studySite>
       </p:assignment>
