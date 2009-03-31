@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ruleSet xmlns="http://caaers.cabig.nci.nih.gov/rules/brxml">
+<ruleSet xmlns="http://semanticbits.com/rules/brxml">
     <id>2b3b7f03-f85c-475f-984b-dd233006bde5</id>
     <name>gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules</name>
     <description>Mandatory Sections Rules</description>

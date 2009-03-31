@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_attribution_section"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
+	
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="java.util.HashSet" />
+	<import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="gov.nih.nci.cabig.ctms.domain.DomainObject" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	
+	<global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
+	<global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	
+	<!-- ==========================================================================
+	RuleName : AER_BR7_CHK
+	Logic : "At least one attribution with one of the following values should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’. AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to meet this specification.
+	Error Code : AER_BR7_ERR
+	Error Message : At least one ATTRIBUTION with one of the following values should present for every AE (except AEs reported on "DEATH" category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+	============================================================================= -->
+	<rule name="AER_BR7_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				
+				if(!aeReport.isAttributionRequired()) return SUCCESS;
+				
+				int i = 0;
+				for(AdverseEvent ae : aeReport.getAdverseEvents()){
+					i++;
+					if(!(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm)) continue;
+					if(ae.getGrade().equals(Grade.DEATH)) continue;
+					if(!ae.isAttributedWith(new Attribution[]{Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE})){
+						errors.addValidationError("AER_BR7_ERR", 
+								"At least one attribution with one of the following values should present for every AE entered on the report i.e. 'Possible', 'Probable' and 'Definite'. AEs reported on the 'DEATH' category are considered as an exception and are not required to meet this specification",
+								i);
+					}
+				}
+				return errors.getErrorCount() > 0 ? FAIL : SUCCESS;
+			}
+		}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	
+	
+</package>
