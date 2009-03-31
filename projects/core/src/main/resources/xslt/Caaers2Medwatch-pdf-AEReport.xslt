@@ -544,8 +544,8 @@
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 													<fo:block>
 														<xsl:variable name="iter" select="$iter+1"/>
-														<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>
-														<fo:inline font-size="6.5pt" text-decoration="underline">  
+														<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/> </fo:inline>
+														<fo:inline font-size="6.5pt" >  
 															<xsl:value-of select="StudyAgent/Agent/name"/>
 															<xsl:value-of select="StudyAgent/otherAgent"/>
 														</fo:inline>
@@ -575,8 +575,8 @@
 													</fo:block>
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 														<fo:block>
-															<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/></fo:inline>
-															<fo:inline font-size="6.5pt" text-decoration="underline">  
+															<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/></fo:inline>
+															<fo:inline font-size="6.5pt" >  
 																	<xsl:call-template name="standard_date">
 																	        <xsl:with-param name="date" select="../firstCourseDate"/>
 											   						</xsl:call-template>
@@ -603,14 +603,19 @@
 														<fo:inline xsl:use-attribute-sets="label">Diagnosis for Use </fo:inline>
 														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
 													</fo:block>
-													<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">
-													<fo:block>
-														<!--<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>-->
-														<fo:inline font-size="6.5pt">  
-															<xsl:value-of select="DiseaseTerm/ctepTerm"/>
-														</fo:inline>
-													</fo:block>
-													</xsl:for-each>
+													<!--<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">-->
+														<fo:block>
+															<!--<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>-->
+															<!--
+															<fo:inline font-size="6.5pt">  
+																<xsl:value-of select="DiseaseTerm/ctepTerm"/>
+															</fo:inline>
+															-->
+															<fo:inline font-size="6.5pt">  
+																<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+															</fo:inline>
+														</fo:block>
+													<!--</xsl:for-each>-->
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
 													<fo:block font-size="6.5pt" font-weight="bold">
@@ -673,8 +678,10 @@
 													<fo:block/>
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">										
 														<fo:block>
-															<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
-															<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+															<xsl:if test="lotNumber">
+																<fo:inline font-size="6.5pt" ># <xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
+																<fo:inline width="10mm" font-size="6.5pt" >  </fo:inline>
+															</xsl:if>
 														</fo:block>
 													</xsl:for-each>
 												</fo:table-cell>
