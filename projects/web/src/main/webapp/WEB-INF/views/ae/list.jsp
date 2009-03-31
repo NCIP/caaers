@@ -210,7 +210,22 @@ color:#0033FF;
 		}
         
     }  
-    
+
+    function updateDropDownAfterWithdraw(reportId) {
+        var select = $('actions-' + reportId);
+        
+        for (var i = (select.options.length-1); i>=0; i--) {
+            var o = select.options[i];
+            if ((select.options[i].value == 'submit')) {
+                select.options[i].value = "amend";
+                select.options[i].text = "Amend";
+            }
+            if ((select.options[i].value == 'withdraw')) {
+                select.options[i] = null;
+            }
+        }
+    }
+
     function executeAction(reportId, url, aeReportId, submissionUrl){
         var actions = $("actions-" + reportId);
     	for ( i=0; i < actions.length; i++) {
@@ -218,7 +233,7 @@ color:#0033FF;
                 switch (actions.options[i].value) {
                     case "notifyPSC": notifyPsc(aeReportId); break;
                     case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
-                    case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  break;
+                    case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  updateDropDownAfterWithdraw(reportId); break;
                     case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
                     case "adeers": window.open(submissionUrl, "_blank");  break;
                     default: window.open(url + "&format="+ actions.options[i].value,"_self");
