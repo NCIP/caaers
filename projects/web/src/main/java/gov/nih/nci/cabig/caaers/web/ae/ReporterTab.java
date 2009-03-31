@@ -179,13 +179,6 @@ public class ReporterTab extends AeTab {
     }
     
     
-    public void refreshMandatorySectionsAndProperties(EditExpeditedAdverseEventCommand command) {
-    	// find the new mandatory sections
-        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-
-        // refresh the mandatory fields
-        command.refreshMandatoryProperties();
-    }
     
     /**
      * This method takes care of extra-processing incase of Amend-Report flow.

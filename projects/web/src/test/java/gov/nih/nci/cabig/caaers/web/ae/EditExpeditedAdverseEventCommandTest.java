@@ -6,6 +6,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static org.easymock.EasyMock.expect;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -26,8 +27,10 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
@@ -48,7 +51,7 @@ import java.util.Map;
  * @author Sameer Work
  * @author Biju Joseph
  */
-public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTestCase {
+public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 	protected StudyParticipantAssignment assignment;
 	private EditExpeditedAdverseEventCommand command;
@@ -248,6 +251,11 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		Report report = new Report();
     		report.setId(i);
     		ReportDefinition reportDefinition = new ReportDefinition();
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].grade",Mandatory.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].startDate",Mandatory.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("responseDescription.presentStatus",Mandatory.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("treatmentInformation.treatmentAssignment",Mandatory.MANDATORY));
+    		
     		reportDefinition.setAmendable(false);
     		reportDefinition.setExpedited(false);
     		reportDefinition.setName("repDefn " + i);
@@ -459,5 +467,35 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.populateCreationAndAmendmentList();
     	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
     	assertEquals("Incorrect number of reports for amendment", 1, command.getReportListForAmendment().size());
+    }
+    
+    public void testRefreshMandatoryProperties(){
+    	addReportsToAeReport();
+    	command.refreshMandatoryProperties();
+    	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
+    	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
+    }
+    
+    public void testRefreshMandatoryPropertiesWhenSomeReportsAreInactive(){
+    	addReportsToAeReport();
+    	command.getAeReport().getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(2).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(3).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(1).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("concomitantMedications[].agentName", 
+    			Mandatory.MANDATORY));
+    	command.refreshMandatoryProperties();
+    	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
+    	assertTrue(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
+    }
+    
+    public void testRefreshMandatoryPropertiesWhenAllReportsAreInactive(){
+    	addReportsToAeReport();
+    	command.getAeReport().getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(1).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(2).setStatus(ReportStatus.WITHDRAWN);
+    	command.getAeReport().getReports().get(3).setStatus(ReportStatus.WITHDRAWN);
+    	command.refreshMandatoryProperties();
+    	assertFalse(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
+    	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
     }
 }

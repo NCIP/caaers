@@ -21,7 +21,7 @@ public class ValueTag extends AbstractDataBoundFormElementTag {
 		try {
 			pageContext.getOut().write(getDisplayString(getBoundValue(), getPropertyEditor()));
 		} catch (IOException e) {
-			throw new JspTagException(e.getMessage(),e);
+			throw new JspTagException(e.getMessage());
 		}
 		return EVAL_PAGE;
 	}
