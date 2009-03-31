@@ -176,7 +176,6 @@
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" />
 			
 			<!-- Rules Jar -->
-			<dependency org="org.codehaus.mvel" name="mvel" rev="1.2.25-java1.4" force="true"/>
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
 			
 			<!-- Apache POI dependencies -->
