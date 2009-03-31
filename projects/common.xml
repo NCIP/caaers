@@ -304,6 +304,10 @@
     <target name="compile-test" depends="resolve-test" unless="no.compile-test"
     		description="--> compile the test classes of this project">
     	<echo message="Executing in ${ant.project.name}" />
+    	<copy todir="${test.classes.dir}">
+    		<fileset dir="${main.src.resources}" includes="**/rules_reporting*.xml">
+    		</fileset>
+    	</copy>
     	<copy-resources src="${test.src.resources}" dest="${test.classes.dir}" filter="true"/>
         <javac srcdir="${test.src}" destdir="${test.classes.dir}" classpathref="test.classpath" 
         	   debug="true" source="1.5"  target="1.5" />
