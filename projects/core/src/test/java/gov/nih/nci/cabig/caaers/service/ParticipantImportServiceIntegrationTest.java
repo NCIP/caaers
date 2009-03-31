@@ -65,7 +65,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
         xstreamParticipant = Fixtures.createParticipant("first", "last");
         systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
-        organization = Fixtures.createOrganization("org name");
+        organization = Fixtures.createOrganization("org name",null);
         organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("org value", organization);
         study = Fixtures.createStudy("short study");
         study.setId(1);
@@ -121,10 +121,10 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
         xstreamParticipant.addIdentifier(systemAssignedIdentifier);
 
-        List<Organization> organizations = new ArrayList<Organization>();
-        organizations.add(organization);
+      //  List<Organization> organizations = new ArrayList<Organization>();
+        //organizations.add(organization);
 
-        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
         replayMocks();
 
@@ -155,6 +155,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
     }
 
+    
     public void testImportParticipantForNoErrors() {
         xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
         xstreamParticipant.addIdentifier(systemAssignedIdentifier);
@@ -168,11 +169,11 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(studySite);
         //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
-        List<Organization> organizations = new ArrayList<Organization>();
-        organizations.add(organization);
+       // List<Organization> organizations = new ArrayList<Organization>();
+        //organizations.add(organization);
 
-        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
-
+       // EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         replayMocks();
 
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
