@@ -32,7 +32,6 @@ public class GradeTest extends TestCase {
         assertNotNull(Grade.getByCode(0));
         assertEquals(Grade.NOT_EVALUATED, Grade.getByCode(-1));
         
-        System.out.println(NumberUtils.isNumber(null));
     }
    
 }
