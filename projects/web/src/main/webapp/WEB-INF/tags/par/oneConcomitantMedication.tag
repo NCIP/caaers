@@ -9,7 +9,7 @@
 
 <c:set var="mainGroup">conmed${index}</c:set>
 
-<chrome:division title="${not empty concomitantMedication.agentName ? concomitantMedication.agentName : 'new ConMed '}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}" enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
+<chrome:division title="${not empty concomitantMedication.agentName ? concomitantMedication.agentName : 'new ConMed '}" id="assignment.concomitantMedications[${index}]" collapsable="false" collapsed="${collapsed}" enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
 
     <table border="0" width="100%">
         <tr>

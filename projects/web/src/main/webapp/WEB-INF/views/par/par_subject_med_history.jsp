@@ -416,9 +416,9 @@
 	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
     <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
-		<table class="tablecontent" width="80%">
+		<table width="100%">
 			<tr>
-				<td width="90%" style="padding-left:50px;">
+				<td width="100%" style="padding-left:50px;">
                     &nbsp;
                     <input id="pre-cond-btn" type="button" value="Add"/>
                 </td>

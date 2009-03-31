@@ -462,10 +462,10 @@
         <jsp:body>
             <p><tags:instructions code="instruction_ae_patientdetails_precond"/></p>
             <div style="padding-left:20px;">
-            <div id="_preExistingConditions">
                 <input id="pre-cond-btn" type="button" value="Add"/>
                 <tags:indicator id="pre-cond-btn-indicator" />
 
+            <div id="_preExistingConditions">
                 <a name="anchorPreExistingCondition"/>
                 <tags:indicator id="preExistingCondition-indicator"/>
                 <div id="anchorPreExistingCondition">

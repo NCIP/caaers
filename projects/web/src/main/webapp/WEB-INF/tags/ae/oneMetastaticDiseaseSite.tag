@@ -10,7 +10,14 @@
 <c:set var="mainGroup">metastatic${index}</c:set>
 <c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="metastatic" index="${index}" enableDelete="true" deleteParams="'metastaticDiseaseSite', ${index}, '_metastatic'">
+<chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, '_metastatic', {}" enableDelete="true" collapsed="false">
+
+    <jsp:attribute name="titleFragment">
+		${anatomicSite.name}
+	</jsp:attribute>
+
+    <jsp:body>
+
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
     <jsp:attribute name="label">${siteField.displayName}</jsp:attribute>
     <jsp:attribute name="value">
@@ -30,8 +37,10 @@
         <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
     </jsp:attribute>
 </ui:row>
-</ae:fieldGroupDivision>
 
+    </jsp:body>
+    
+</chrome:division>
 
 
 <%--

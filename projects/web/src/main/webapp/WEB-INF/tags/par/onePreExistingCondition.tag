@@ -6,8 +6,8 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="preExistingCondition" type="gov.nih.nci.cabig.caaers.domain.PreExistingCondition"%>
 
-<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
-		<table width="100%">
+<chrome:division id="assignment.preExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}" enableDelete="false" collapsed="false">
+        <table width="100%" border="0">
  			<tr>
   				<td width="99%">
                       <ui:select options="${preExistingConditionOptions}" path="assignment.preExistingConditions[${index}].preExistingCondition"></ui:select>
@@ -31,5 +31,4 @@
                 $('other_${index}').hide();
         })
     </script>
-
-</div>
+</chrome:division>

@@ -12,8 +12,16 @@
 <c:set var="mainGroup">conmed${index}</c:set>
 <c:set var="conMedField" value="${fieldGroups[mainGroup].fields[0]}" />
 
+<chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="false">
+
+    <jsp:attribute name="titleFragment">
+		${anatomicSite.name}
+	</jsp:attribute>
+
+    <jsp:body>
+
 <div>
-<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" enableDelete="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication'" id="aeReport.concomitantMedications[${index}]">
+<%--<ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" enableDelete="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication'" id="aeReport.concomitantMedications[${index}]">--%>
 
 <%--<ui:row path="aeReport.concomitantMedications[${index}]">
     <jsp:attribute name="label">${fieldGroups[mainGroup].fields[0].displayName}</jsp:attribute>
@@ -31,7 +39,7 @@
 
 </table>    
 
-</ae:fieldGroupDivision>
+<%--</ae:fieldGroupDivision>--%>
 
 
 
@@ -69,3 +77,5 @@
     initializeConMed_${index}.defer();
 </script>
 
+    </jsp:body>
+</chrome:division>

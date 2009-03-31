@@ -6,6 +6,14 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
 
+<chrome:division id="assignment.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
+
+    <jsp:attribute name="titleFragment">
+		${anatomicSite.name}
+	</jsp:attribute>
+
+    <jsp:body>
+
 <div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
@@ -31,11 +39,16 @@
 					<ui:text path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="true"/>
 					</c:if>
   				</td>
+<%--
   				<td>
 					<a href="#anchorMetastaticDiseases" onClick="mHistory.removeDetails('metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases')">
   					<img src="<chrome:imageUrl name="../checkno.gif" />" />
 					</a>
 				</td>
+--%>
  			</tr>
 		</table> 
 </div>
+
+        </jsp:body>
+</chrome:division>    

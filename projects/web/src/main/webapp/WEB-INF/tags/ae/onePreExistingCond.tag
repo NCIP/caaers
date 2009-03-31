@@ -10,7 +10,15 @@
 <c:set var="mainGroup">preExistingCondition${index}</c:set>
 <c:set var="preCondField" value="${fieldGroups[mainGroup].fields[0]}" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="preExistingCondition" index="${index}" enableDelete="true" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions'">
+<chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions', {}" enableDelete="true" collapsed="false">
+
+    <jsp:attribute name="titleFragment">
+		${anatomicSite.name}
+	</jsp:attribute>
+
+    <jsp:body>
+
+<%--<ae:fieldGroupDivision fieldGroupFactoryName="preExistingCondition" index="${index}" enableDelete="true" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions'">--%>
 <ui:row path="aeReport.saeReportPreExistingConditions[${index}]">
     <jsp:attribute name="label">${preCondField.displayName}</jsp:attribute>
     <jsp:attribute name="value">
@@ -23,7 +31,7 @@
             </span>
     </jsp:attribute>
 </ui:row>
-</ae:fieldGroupDivision>
+<%--</ae:fieldGroupDivision>--%>
 
 <script language="JavaScript">
     Event.observe("aeReport.saeReportPreExistingConditions[${index}].preExistingCondition", "change", function() {
@@ -33,3 +41,6 @@
             $('other_${index}').hide();
     })
 </script>
+
+</jsp:body>
+</chrome:division>    
