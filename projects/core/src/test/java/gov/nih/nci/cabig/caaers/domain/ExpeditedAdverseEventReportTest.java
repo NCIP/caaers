@@ -19,6 +19,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT})
 public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase {
@@ -655,4 +656,103 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
 
         assertEquals(report.getReports().get(2), report.getEarliestPendingSponsorReport());
     }
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenNoReports(){
+    	assertTrue(report.getReports().isEmpty());
+    	assertFalse(report.isAttributionRequired());
+    }
+    
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenAllReportsInactive(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.WITHDRAWN);
+    	report.addReport(rep);
+    	
+    	assertFalse(report.getReports().isEmpty());
+    	assertFalse(report.isAttributionRequired());
+    }
+    
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenAllReportsActiveAndAttribution_NO(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(false);
+    	rep.setStatus(ReportStatus.PENDING);
+    	report.addReport(rep);
+    	
+    	assertFalse(report.getReports().isEmpty());
+    	assertFalse(report.isAttributionRequired());
+    }
+    
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenAllReportsActiveAndAttribution_YES(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.PENDING);
+    	report.addReport(rep);
+    	
+    	rep = Fixtures.createReport("test2");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.COMPLETED);
+    	report.addReport(rep);
+    	
+    	assertFalse(report.getReports().isEmpty());
+    	assertTrue(report.isAttributionRequired());
+    }
+    
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenAllActiveReportsHaveAttribution_YES(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.PENDING);
+    	report.addReport(rep);
+    	
+    	rep = Fixtures.createReport("test2");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.COMPLETED);
+    	report.addReport(rep);
+    	
+    	rep = Fixtures.createReport("test3");
+    	rep.getReportDefinition().setAttributionRequired(false);
+    	rep.setStatus(ReportStatus.REPLACED);
+    	report.addReport(rep);
+    	
+    	assertFalse(report.getReports().isEmpty());
+    	assertTrue(report.isAttributionRequired());
+    }
+    
+    /**
+     * This method tests {@link ExpeditedAdverseEventReport#isAttributionRequired()}
+     */
+    public void testIsAttributionRequired_WhenSomeActiveReportsHaveAttribution_YES(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.PENDING);
+    	report.addReport(rep);
+    	
+    	rep = Fixtures.createReport("test2");
+    	rep.getReportDefinition().setAttributionRequired(false);
+    	rep.setStatus(ReportStatus.COMPLETED);
+    	report.addReport(rep);
+    	
+    	rep = Fixtures.createReport("test3");
+    	rep.getReportDefinition().setAttributionRequired(false);
+    	rep.setStatus(ReportStatus.REPLACED);
+    	report.addReport(rep);
+    	
+    	assertFalse(report.getReports().isEmpty());
+    	assertFalse(report.isAttributionRequired());
+    }
+    
+   
 }

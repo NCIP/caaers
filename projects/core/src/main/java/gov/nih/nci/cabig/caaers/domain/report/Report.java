@@ -408,6 +408,25 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     		return true;
     	return false;
     }
+    
+    /**
+     * All the reports, which can be submitted or ammended(re-submitted) are considered active. 
+     * The reports in {@link ReportStatus#WITHDRAWN} or {@link ReportStatus#REPLACED} are considered inactive. 
+     * @return
+     */
+    @Transient
+    public boolean isActive(){
+    	return !( ReportStatus.WITHDRAWN.equals(status) || ReportStatus.REPLACED.equals(status) ); 
+    }
+    
+    /**
+     * Returns the attribution required flag, associated to the {@link ReportDefinition}
+     * @return
+     */
+    @Transient
+    public boolean isAttributionRequired(){
+    	return reportDefinition.getAttributionRequired();
+    }
    
    
 }

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -243,8 +244,43 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
     	assertSameErrorCount(errors, 2);
     }
     
+    /**
+     * 	RuleName : ATT_BR1_CHK
+	Logic : ATTRIBUTION_FOR_AE  to all possible causes not provided
+	Error Code : ATT_BR1_ERR
+	Error Message : AE must be attributed to all CAUSAL factors on report
+
+     */
+    public void testAllAttributable_NotAttributed_NoActiveReports() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getReports().get(0).setStatus(ReportStatus.REPLACED);
+    	
+    	List<CourseAgentAttribution> courseAgentAttributions = new ArrayList<CourseAgentAttribution>();
+    	
+    	CourseAgentAttribution ca = new CourseAgentAttribution();
+    	ca.setCause(aeReport.getTreatmentInformation().getCourseAgents().get(0));
+    	ca.setAttribution(null);
+    	courseAgentAttributions.add(ca);
+
+    	
+    	CourseAgentAttribution ca2 = new CourseAgentAttribution();
+    	ca2.setCause(aeReport.getTreatmentInformation().getCourseAgents().get(1));
+    	ca2.setAttribution(null);
+    	courseAgentAttributions.add(ca2);
+    	
+    	for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+    		ca.setAdverseEvent(ae);
+    		ca2.setAdverseEvent(ae);
+            ae.setCourseAgentAttributions(courseAgentAttributions);
+        }
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+    	assertNoErrors(errors, "No active reports and not attributed no errors should be there");
+    }
     
     
+    
+    /*
     public void printLogs(ExpeditedAdverseEventReport aeReport){
     	
     	System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -296,5 +332,5 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
     	
     	System.out.println("-----------------");
     		
-    }
+    }*/
 }

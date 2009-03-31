@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,15 +11,16 @@ import junit.framework.TestCase;
 import org.springframework.core.io.ClassPathResource;
 
 import com.semanticbits.rules.utils.RepositoryCleaner;
+import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
 
 public abstract class RulesTestCase extends AbstractNoSecurityTestCase {
-    CaaersDataSourcePropertiesFactoryBean propertiesBean;
+	RulesPropertiesFileLoader propertiesBean;
 
     
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        propertiesBean = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
+        propertiesBean = RulesPropertiesFileLoader.getLoadedInstance();
         String url = propertiesBean.getProperties().getProperty("rules.repository");
         new RepositoryCleaner(url);
     }
@@ -28,7 +28,6 @@ public abstract class RulesTestCase extends AbstractNoSecurityTestCase {
     public abstract Class<? extends TestCase> getTestClass();
 
     public String getFileContext(String fileName) throws Exception {
-    	
         File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/rules/deploy/" + fileName).getFile();
         BufferedReader ds = new BufferedReader(new FileReader(testFile));
         String line = null;

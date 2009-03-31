@@ -98,7 +98,12 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         report.setStatus(ReportStatus.PENDING);
         return report;
     }
-
+    
+    public void addReportMandatoryFieldDefinition(ReportMandatoryFieldDefinition mandatoryField){
+    	if(mandatoryFields == null) mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
+    	mandatoryFields.add(mandatoryField);
+    }
+    
     /**
      * This method will return the details of the reminder(PlannedNotification) configured at the
      * specific index (represented by indexOnScale) of the this ReportDefinition

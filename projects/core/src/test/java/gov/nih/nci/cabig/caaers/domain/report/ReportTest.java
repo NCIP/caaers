@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
 import java.util.List;
 
@@ -16,11 +17,10 @@ public class ReportTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+		r = Fixtures.createReport("joel");
 		
 	}
 	public void testHasSystemDeliveries() {
-		Report r = Fixtures.createReport("biju");
 		ReportDeliveryDefinition rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_URL, ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM);
 		r.addReportDelivery(rdd.createReportDelivery());
 		rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL, ReportDeliveryDefinition.ENTITY_TYPE_PERSON);
@@ -30,7 +30,6 @@ public class ReportTest extends TestCase {
 	}
 	
 	public void testHasDeliveriesButNoSystemDelivery() {
-		Report r = Fixtures.createReport("biju");
 		ReportDeliveryDefinition rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_FAX, ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM);
 		r.addReportDelivery(rdd.createReportDelivery());
 		rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL, ReportDeliveryDefinition.ENTITY_TYPE_PERSON);
@@ -40,7 +39,6 @@ public class ReportTest extends TestCase {
 	}
 	
 	public void testGetExternalSystemDeliveries(){
-		Report r = Fixtures.createReport("biju");
 		ReportDeliveryDefinition rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_URL, ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM);
 		r.addReportDelivery(rdd.createReportDelivery());
 		rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL, ReportDeliveryDefinition.ENTITY_TYPE_PERSON);
@@ -50,7 +48,6 @@ public class ReportTest extends TestCase {
 	}
 	
 	public void testGetEmailRecipients(){
-		Report r = Fixtures.createReport("biju");
 		ReportDeliveryDefinition rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_URL, ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM);
 		r.addReportDelivery(rdd.createReportDelivery());
 		
@@ -66,6 +63,18 @@ public class ReportTest extends TestCase {
 		List<String> emails = r.getEmailRecipients();
 		System.out.println(emails);
 		assertEquals(3,emails.size());
+	}
+	/**
+	 * This method tests {@link Report#isActive()}
+	 */
+	public void testIsActive(){
+		assertTrue(r.isActive());
+		r.setStatus(ReportStatus.WITHDRAWN);
+		assertFalse(r.isActive());
+		r.setStatus(ReportStatus.REPLACED);
+		assertFalse(r.isActive());
+		r.setStatus(ReportStatus.FAILED);
+		assertTrue(r.isActive());
 	}
 
 }

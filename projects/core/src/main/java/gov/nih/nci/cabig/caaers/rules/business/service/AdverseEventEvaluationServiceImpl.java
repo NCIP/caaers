@@ -191,7 +191,13 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
         return sectionNamesToSections(sections);
     }
-
+    
+    /**
+     * This method will find the mandatory sections defined, in the mandatory-section-rules, for a given report definition. 
+     * Case 1:  If report definitions is empy, the {@link ExpeditedAdverseEventReport} is scanned for active {@link Report}s, the {@link ReportDefinition} associated
+     * to each such report is considered. 
+     * Case 2: If {@link ReportDefinition}s are passed explicitly, then will work against the report definitions instead. 
+     */
     public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport aeReport, ReportDefinition... reportDefinitions) throws Exception {
         Set<ExpeditedReportSection> sections = new LinkedHashSet<ExpeditedReportSection>();
         if(reportDefinitions != null && reportDefinitions.length > 0){
@@ -200,7 +206,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         	}
         }else{
         	for (Report report : aeReport.getReports()) {
-                sections.addAll( mandatorySectionsForReport(aeReport, report.getReportDefinition()));
+        		if(report.isActive()) sections.addAll( mandatorySectionsForReport(aeReport, report.getReportDefinition()));
             }	
         }
 

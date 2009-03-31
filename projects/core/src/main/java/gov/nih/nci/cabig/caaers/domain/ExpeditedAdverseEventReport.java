@@ -1021,4 +1021,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 			List<ReportReviewComment> reviewComments) {
 		this.reviewComments = reviewComments;
 	}
+    
+    /**
+     * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.  
+     * @return
+     */
+    @Transient
+    public boolean isAttributionRequired(){
+    	boolean attributionRequired = true;
+    	int activeCount = 0; 
+    	for(Report report : getReports()){
+    		if(!report.isActive()) continue;
+    		activeCount++;
+    		attributionRequired &= report.isAttributionRequired();
+    	}
+    	return activeCount > 0 && attributionRequired;
+    	
+    }
 }

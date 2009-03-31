@@ -57,29 +57,12 @@
             <value>true</value>
         </property>
     </bean>
-
-    <bean id="rulesPropertyConfigurer"
-          class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
-        <property name="properties">
-            <bean
-                    class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
-                <property name="databaseConfigurationName">
-                    <value>test</value>
-                </property>
-            </bean>
-        </property>
-        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
-              at build time -->
-        <property name="placeholderPrefix">
-            <value>s[</value>
-        </property>
-        <property name="placeholderSuffix">
-            <value>]</value>
-        </property>
-        <property name="useNullForUnresolvablePlaceholders">
-            <value>true</value>
-        </property>
-    </bean>
+	<bean id="rulesPropertiesFileLoader"
+				class="com.semanticbits.rules.utils.RulesPropertiesFileLoader">
+		<property name="databaseConfigurationName" value="test" />
+		<property name="applicationDirectoryName" value="caaers" />
+	</bean>
+   
 
     <!-- Unable to load study participant assignment -->
     <bean id="studyParticipantAssignmentAspect"

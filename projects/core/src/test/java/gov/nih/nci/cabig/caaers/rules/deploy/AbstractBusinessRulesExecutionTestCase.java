@@ -25,6 +25,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -33,6 +34,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -283,7 +285,13 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         t2.setTerm("LabName2");
         l2.setLabTerm(t2);
         aeReport.addLab(l2);
-
+        
+        //add reports.
+        Report rep = Fixtures.createReport("test");
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getReportDefinition().setAttributionRequired(true);
+        aeReport.addReport(rep);
+        
         return aeReport;
     }
 

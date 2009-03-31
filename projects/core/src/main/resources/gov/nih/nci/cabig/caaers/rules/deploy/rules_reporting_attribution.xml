@@ -24,6 +24,9 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				
+				if(!aeReport.isAttributionRequired()) return SUCCESS;
+				
 				int i = 0;
 				for(AdverseEvent ae : aeReport.getAdverseEvents()){
 					i++;
@@ -57,6 +60,9 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				
+				if(!aeReport.isAttributionRequired()) return SUCCESS;
+				
 				int i = 0;
 				for(AdverseEvent ae : aeReport.getAdverseEvents()){
 					i++;
