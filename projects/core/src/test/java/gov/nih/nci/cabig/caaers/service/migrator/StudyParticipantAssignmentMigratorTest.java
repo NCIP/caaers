@@ -33,7 +33,7 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 		 
 		 xstreamParticipant = Fixtures.createParticipant("first", "last");
 		 systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
-		 organization = Fixtures.createOrganization("org name");
+		 organization = Fixtures.createOrganization("org name",null);
 		 organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("org value", organization);
 		 study = Fixtures.createStudy("short study");
 		 study.setId(1);
