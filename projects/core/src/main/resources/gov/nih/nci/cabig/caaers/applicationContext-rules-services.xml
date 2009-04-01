@@ -35,7 +35,8 @@
     </bean>
 
     <bean id="rulesLoader" class="com.semanticbits.rules.impl.SystemRulesDeployer">
-        <constructor-arg ref="ruleDeploymentService"/>
+        <constructor-arg ref="ruleDeploymentService" index="0"/>
+        <constructor-arg value="gov.nih.nci.cabig.caaers.rules.deploy" index="1"/>
     </bean>
 
 	<bean id="ruleServiceContext" class="com.semanticbits.rules.impl.RuleServiceContext">
