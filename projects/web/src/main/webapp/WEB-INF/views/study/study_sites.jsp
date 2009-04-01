@@ -60,7 +60,7 @@
 
         Event.observe(window, "load", function() {
         <c:forEach varStatus="status" items="${command.study.studySites}" var="ss">
-            new jsStudySite(${status.index}, '${ss.organization.fullName}');
+            new jsStudySite(${status.index}, "${ss.organization.fullName}");
         </c:forEach>
             addSiteEditor = new ListEditor('ss-section', createStudy, "StudySite", {
                 addFirstAfter: "ss-table-head",
