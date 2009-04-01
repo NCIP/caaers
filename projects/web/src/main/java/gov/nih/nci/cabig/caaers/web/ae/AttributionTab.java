@@ -91,16 +91,16 @@ public class AttributionTab extends AeTab {
 
             if (accessor.getDisplayName(causes.get(c)) == CauseAndAttributionAccessor.DEFAULT_NAME) continue;
             for (int a = 0; a < report.getAdverseEvents().size(); a++) {
-                newGroup.getFields().add(createAttributionField(accessor.getKey(), a, c));
+                newGroup.getFields().add(createAttributionField(accessor.getKey(), a, c, report.isAttributionRequired()));
             }
             groups.add(newGroup);
         }
         return groups;
     }
 
-    private static InputField createAttributionField(String groupKey, int aeIndex, int causeIndex) {
+    private static InputField createAttributionField(String groupKey, int aeIndex, int causeIndex, boolean required) {
         String propertyName = new StringBuilder().append("attributionMap[").append(groupKey).append("][").append(aeIndex).append("][").append(causeIndex).append(']').toString();
-        return InputFieldFactory.createSelectField(propertyName, " ", true, ATTRIBUTION_OPTIONS);
+        return InputFieldFactory.createSelectField(propertyName, " ", required, ATTRIBUTION_OPTIONS);
     }
 
     private static Map<Object, Object> collectAttributionOptions() {
@@ -121,7 +121,7 @@ public class AttributionTab extends AeTab {
     	if(command.getAeReport().getId() != null && (request.getParameter("subview") == null)){
     		try {
 				ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
-				hasEmptyFields |= validationErrors.containsErrorWithCode("ATT_BR1_ERR");
+				hasEmptyFields |= (validationErrors.containsErrorWithCode("ATT_BR1_ERR") || validationErrors.containsErrorWithCode("AER_BR7_ERR"));
 			} catch (Exception e) {
 				
 			}
