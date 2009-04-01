@@ -334,14 +334,29 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
     /**
      * This method tests {@link AbstractExpeditedAdverseEventInputCommand#initializeMandatorySectionFields()}
      */
-    public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatory(){
+    public void testInitializeMandatorySectionFieldsWhenAgentInterventionIsNotMandatory(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
     	sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
     	command.setMandatorySections(sections);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	command.getAeReport().getStudy().getStudyAgents().clear(); //emptyout the study agents
     	command.initializeMandatorySectionFields();
     	
+    	assertEquals(1, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    }
+    
+    /**
+     * This method tests {@link AbstractExpeditedAdverseEventInputCommand#initializeMandatorySectionFields()}
+     */
+    public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatory(){
+    	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+    	sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
+    	command.setMandatorySections(sections);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	command.getAeReport().getStudy().getStudyAgents().clear(); //emptyout the study agents
+    	command.initializeMandatorySectionFields();
+    	
+    	assertEquals(1, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     }
     
     /**
@@ -349,7 +364,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
      */
     public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatoryAndStudyHasIND(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
-    	sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
+    	sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
     	command.setMandatorySections(sections);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     	
