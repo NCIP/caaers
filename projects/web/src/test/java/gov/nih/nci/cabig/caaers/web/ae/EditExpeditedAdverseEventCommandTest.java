@@ -342,7 +342,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.getAeReport().getStudy().getStudyAgents().clear(); //emptyout the study agents
     	command.initializeMandatorySectionFields();
     	
-    	assertEquals(1, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
+    	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     }
     
     /**
