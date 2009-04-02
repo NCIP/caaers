@@ -51,7 +51,7 @@ import java.util.Map;
  * @author Sameer Work
  * @author Biju Joseph
  */
-public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
+public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTestCase {
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 	protected StudyParticipantAssignment assignment;
 	private EditExpeditedAdverseEventCommand command;
