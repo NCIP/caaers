@@ -24,7 +24,7 @@
 
 
 <chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:${title_grade}" id="ae-section-${index}" cssClass="ae-section" style="${style}" 
-	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${collapsed}">
+	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${adverseEvent.grade != null && (adverseEvent.grade != null && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true))}">
 	<jsp:body>	
 	
 		<%-- Other MedDRA --%>
