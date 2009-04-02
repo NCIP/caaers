@@ -68,9 +68,7 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     public void testCopyPrimaryTreatmentApproximateTime() {
     	 AdverseEventResponseDescription adverseEventResponseDescription = description.copy();
 
-        assertEquals("primaryTreatmentApproximateTime must  be refer same objects", 
-        		description.getPrimaryTreatmentApproximateTime(), 
-        		adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+        assertEquals("primaryTreatmentApproximateTime must  be refer same objects", description.getPrimaryTreatmentApproximateTime(), adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
 
 
     }
