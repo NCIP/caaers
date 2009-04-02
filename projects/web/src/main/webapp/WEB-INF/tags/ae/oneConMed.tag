@@ -14,8 +14,11 @@
 
 <chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="false">
 
+    <jsp:attribute name="title">
+		${concomitantMedication.agentName}
+	</jsp:attribute>
+
     <jsp:attribute name="titleFragment">
-		${anatomicSite.name}
 	</jsp:attribute>
 
     <jsp:body>
@@ -30,11 +33,14 @@
 
 <table >
     <tr>
-        <td>
+        <td colspan="3">
                 <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+    <tr>
+        <td>
                 <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
         <td>
                 <tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+        <td>
                 <tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 
 </table>    
@@ -75,6 +81,18 @@
     }
     setFields_${index}.defer();
     initializeConMed_${index}.defer();
+
+    function setTitleCM_${index}() {
+        var titleID = $('titleOf_aeReport.concomitantMedications[${index}]');
+        var name = $("aeReport.concomitantMedications[${index}].agentName");
+        var value = name.value;
+        $(titleID).innerHTML = value;
+    }
+
+    Event.observe($("aeReport.concomitantMedications[${index}].agentName"), "keyup", function() {
+        setTitleCM_${index}();
+    });
+
 </script>
 
     </jsp:body>

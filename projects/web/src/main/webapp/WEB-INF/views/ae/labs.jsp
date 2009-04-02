@@ -173,8 +173,8 @@
 		</c:if>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
-        <c:forEach items="${command.aeReport.labs}" varStatus="status">
-            <ae:oneLab index="${status.index}"/>
+        <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
+            <ae:oneLab index="${status.index}" lab="${lab}"/>
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">

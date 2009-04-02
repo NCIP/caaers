@@ -15,8 +15,11 @@
  <c:set var="mainGroup">priorTherapy${index}</c:set>
  <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${!empties[v]}" collapsable="true" deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
-	<jsp:attribute name="titleFragment">
+	<jsp:attribute name="title">
 		${priorTherapy.name}
+	</jsp:attribute>
+
+	<jsp:attribute name="titleFragment">
 	</jsp:attribute>
 
     <jsp:body>
@@ -98,8 +101,19 @@ function initializePriorTherapy(){
 }
 
 function checkNoPriorTherapy_${index}() {
-
 }
+
+function setTitlePT_${index}() {
+    var titleID = $('titleOf_aeReport.saeReportPriorTherapies[${index}]');
+    var select = $("aeReport.saeReportPriorTherapies[${index}].priorTherapy");
+    var value = select.options[select.selectedIndex].text;
+    $(titleID).innerHTML = value;
+}
+
+Event.observe($("aeReport.saeReportPriorTherapies[${index}].priorTherapy"), "change", function() {
+    setTitlePT_${index}();
+});
+
 
     initializePriorTherapy.defer();
 </script>

@@ -10,18 +10,14 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  */
 public class OtherCausesTab extends AeTab {
     public OtherCausesTab() {
-        super("Other contributing causes", ExpeditedReportSection.OTHER_CAUSE_SECTION
-                        .getDisplayName(), "ae/other");
+        super("Other contributing causes", ExpeditedReportSection.OTHER_CAUSE_SECTION.getDisplayName(), "ae/other");
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                    ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField otherField = InputFieldFactory.createTextArea("text", "Cause", false);
         InputFieldAttributes.setColumns(otherField, 50);
-
-        creator.createRepeatingFieldGroup("otherCause", "otherCauses",
-                        new SimpleNumericDisplayNameCreator("Other Cause"), otherField);
+        creator.createRepeatingFieldGroup("otherCause", "otherCauses", new SimpleNumericDisplayNameCreator("Other Cause"), otherField);
     }
 
     @Override

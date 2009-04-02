@@ -2,13 +2,19 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
+<%@attribute name="lab" type="gov.nih.nci.cabig.caaers.domain.Lab" %>
 
 <c:set var="v" value="aeReport.labs[${index}]" />
-<ae:fieldGroupDivision fieldGroupFactoryName="lab" index="${index}" style="${style}" collapsed="${!empties[v]}">
-	
+
+<c:set var="fieldGroupName">lab${index}</c:set>
+<c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
+
+<chrome:division title="&nbsp;${lab.labTerm.term}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="false">
+<%--<ae:fieldGroupDivision fieldGroupFactoryName="lab" index="${index}" style="${style}" collapsed="${!empties[v]}">--%>
+
 	 <div class="row">
             <div class="label"><label for="aeReport.labs[${index}].lab-category">Lab category</label></div>
             <div class="value">
@@ -63,4 +69,20 @@
     <tags:renderRow field="${fieldGroup.fields[11]}" />        
     </div>
     
-</ae:fieldGroupDivision>
+<%--</ae:fieldGroupDivision>--%>
+</chrome:division>
+
+
+
+<script>
+function setTitleLab_${index}() {
+    var titleID = $('titleOf_lab-${index}');
+    var select = $("aeReport.labs[${index}].labTerm");
+    var value = select.options[select.selectedIndex].text;
+    $(titleID).innerHTML = value;
+}
+
+Event.observe($("aeReport.labs[${index}].labTerm"), "change", function() {
+    setTitleLab_${index}();
+});
+</script>

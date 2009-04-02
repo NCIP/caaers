@@ -21,30 +21,26 @@ import javax.servlet.http.HttpServletRequest;
  * @author Rhett Sutphin
  */
 public class LabsTab extends AeTab {
+    
     private ConfigProperty configurationProperty;
-
     private LabCategoryDao labCategoryDao;
-
     private LabTermDao labTermDao;
 
     public LabsTab() {
         super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION.getDisplayName(), "ae/labs");
     }
 
-    private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName,
-                                   String displayName) {
+    private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName, String displayName) {
         fieldFactory.addField(createLabValueField(propName, displayName));
         fieldFactory.addField(createLabDateField(propName, displayName));
     }
 
     private InputField createLabDateField(String propName, String displayName) {
-        return InputFieldFactory.createPastDateField(propName + ".date", displayName + " date",
-                false);
+        return InputFieldFactory.createPastDateField(propName + ".date", displayName + " date", false);
     }
 
     private InputField createLabValueField(String propName, String displayName) {
-        return InputFieldFactory
-                .createTextField(propName + ".value", displayName + " value", false);
+        return InputFieldFactory.createTextField(propName + ".value", displayName + " value", false);
     }
 
     @Override

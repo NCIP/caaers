@@ -12,8 +12,10 @@
 
 <chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions', {}" enableDelete="true" collapsed="false">
 
+    <jsp:attribute name="title">
+		${preExistingCondition.text}
+	</jsp:attribute>
     <jsp:attribute name="titleFragment">
-		${anatomicSite.name}
 	</jsp:attribute>
 
     <jsp:body>
@@ -41,6 +43,20 @@
             $('other_${index}').hide();
     })
 </script>
+
+<script>
+
+    function setTitlePEC_${index}() {
+        var titleID = $('titleOf_aeReport.saeReportPreExistingConditions[${index}]');
+        var select = $("aeReport.saeReportPreExistingConditions[${index}].preExistingCondition");
+        var value = select.options[select.selectedIndex].text;
+        $(titleID).innerHTML = value;
+    }
+
+    Event.observe($("aeReport.saeReportPreExistingConditions[${index}].preExistingCondition"), "change", function() {
+        setTitlePEC_${index}();
+    });
+</script>        
 
 </jsp:body>
 </chrome:division>    
