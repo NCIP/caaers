@@ -22,9 +22,10 @@
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
 
+<c:set var="collapsedCheck" value="${adverseEvent.grade != null && (adverseEvent.grade != null && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true))}" />
 
 <chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:${title_grade}" id="ae-section-${index}" cssClass="ae-section" style="${style}" 
-	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${adverseEvent.grade != null && (adverseEvent.grade != null && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true))}">
+	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${collapsedCheck}">
 	<jsp:body>	
 	
 		<%-- Other MedDRA --%>
