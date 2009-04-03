@@ -14,6 +14,9 @@
 <%@attribute name="autopad" required="false" %>
 <%@attribute name="collapsable" required="false" %>
 
+<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td>
 
 <c:if test="${noBackground}">
 <div class=" ${cssClass}"
@@ -58,3 +61,7 @@
 </div>
 <!-- end box -->
 </c:if>
+
+</td>
+</tr>
+</table>

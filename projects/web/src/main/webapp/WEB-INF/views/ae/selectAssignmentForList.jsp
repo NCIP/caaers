@@ -97,8 +97,13 @@
 </p>
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
-    <div class="autoclear">
-        <chrome:box title="Select subject" id="participant-entry" cssClass="paired" autopad="true">
+
+<table width="100%" border="0">
+<tr>
+<td width="50%" valign="top">
+
+    <!--<div class="autoclear">-->
+        <chrome:box title="Select subject" id="participant-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
@@ -107,11 +112,11 @@
             <tags:indicator id="participant-indicator"/>
             <div id="participant-choices" class="autocomplete"></div>
             <tags:errors path="participant"/>
-            <p id="participant-selected" style="display: none">
-                You have selected the subject <span id="participant-selected-name"></span>.
-            </p>
+            <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
         </chrome:box>
-        <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
+ </td>
+ <td width="50%" valign="top">
+        <chrome:box title="Select study" id="study-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_study"/></p>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
@@ -120,11 +125,12 @@
             <tags:indicator id="study-indicator"/>
             <tags:errors path="study"/>
             <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">
-                You have selected the study <span id="study-selected-name"></span>.
-            </p>
+            <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
         </chrome:box>
-    </div>
+</td>
+</tr>
+</table>
+    <!--</div>-->
     <c:choose>
         <c:when test="${empty tab}">
             <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
