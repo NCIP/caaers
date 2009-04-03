@@ -5,14 +5,13 @@ import static gov.nih.nci.cabig.caaers.domain.Grade.LIFE_THREATENING;
 import static gov.nih.nci.cabig.caaers.domain.Grade.MILD;
 import static gov.nih.nci.cabig.caaers.domain.Grade.MODERATE;
 import static gov.nih.nci.cabig.caaers.domain.Grade.SEVERE;
+import static gov.nih.nci.cabig.caaers.domain.Grade.NORMAL;
 import static gov.nih.nci.cabig.caaers.domain.Grade.getByCode;
-
-import org.apache.commons.lang.NumberUtils;
-
 import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class GradeTest extends TestCase {
     public void testToString() throws Exception {
@@ -21,6 +20,7 @@ public class GradeTest extends TestCase {
         assertEquals("3: Severe", SEVERE.toString());
         assertEquals("2: Moderate", MODERATE.toString());
         assertEquals("1: Mild", MILD.toString());
+        assertEquals("0: Normal", NORMAL.toString());
     }
 
     public void testFromCode() throws Exception {
