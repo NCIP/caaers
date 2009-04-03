@@ -479,9 +479,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         reportingPeriodDao.save(command.getAeReport().getReportingPeriod());
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
         expect(webContext.forwardToString("/pages/ae/edit?index=1&aeReport=12&subview=adverseEventFormSection")).andReturn("The HTML");
-
+        
         replayMocks();
         assertEquals("The HTML", facade.addAdverseEventWithTerms( 1, 12, aeTermId));
+        int lastAEIndex = command.getAeReport().getAdverseEvents().size() - 1;
+        assertNotNull(command.getAeReport().getAdverseEvents().get(lastAEIndex).getGradedDate());
         verifyMocks();
         
     }

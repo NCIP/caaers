@@ -38,6 +38,7 @@ import java.util.TreeSet;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.springframework.ui.context.Theme;
 /**
  * @author Sameer Sawanth
  * @author Biju Joseph
@@ -122,15 +123,17 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(study == null) return false;
 		return (!study.getAdeersReporting()) && study.getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
 	}
-	
+	/**
+	 * This method will save the {@link AdverseEventReportingPeriod}.
+	 */
 	public void save() {
-//		AdverseEventReportingPeriod mergedReportingPeriod;
-//	
-//		if(this.getAdverseEventReportingPeriod() != null){
-//			mergedReportingPeriod = adverseEventReportingPeriodDao.merge(this.getAdverseEventReportingPeriod());
-//			this.setAdverseEventReportingPeriod(mergedReportingPeriod);
-//		}
-		if(this.getAdverseEventReportingPeriod() != null) adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
+		if(this.getAdverseEventReportingPeriod() != null){
+			//initialize the graded date. 
+			for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
+				ae.initailzeGradedDate();
+			}
+			adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
+		}
 	}
 	
 	public void reassociate(ExpeditedAdverseEventReport aeReport){
@@ -412,19 +415,22 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		LinkedHashMap<Integer, Boolean> oneOutcomeMap = new LinkedHashMap<Integer, Boolean>();
     		outcomes.add(oneOutcomeMap);
     	
-    		//in this pass we will initialize all the outcomes to default 'FALSE' and other details to empty string.
-    		for(OutcomeType outcomeType : OutcomeType.values()){
-    			oneOutcomeMap.put(outcomeType.getCode(), Boolean.FALSE);
-    		}
         
     		//in this pass we will update the outcome details based on the OUTCOME db values
-    		for(Outcome outcome : ae.getOutcomes()){
-    			oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
-    			if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
-    				outcomeOtherDetails.set(i, outcome.getOther());
-    			}
+    		if(ae != null){
+
+        		//in this pass we will initialize all the outcomes to default 'FALSE' and other details to empty string.
+        		for(OutcomeType outcomeType : OutcomeType.values()){
+        			oneOutcomeMap.put(outcomeType.getCode(), Boolean.FALSE);
+        		}
+    			for(Outcome outcome : ae.getOutcomes()){
+        			oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
+        			if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
+        				outcomeOtherDetails.set(i, outcome.getOther());
+        			}
+        		}
     		}
-        
+    		        
     		i++;
     	}
 	}

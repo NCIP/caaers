@@ -71,6 +71,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -99,6 +100,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class CreateAdverseEventAjaxFacade {
 
@@ -636,6 +638,7 @@ public class CreateAdverseEventAjaxFacade {
 			//create a new adverse event. 
 			AdverseEvent ae = new AdverseEvent();
 			ae.setReport(command.getAeReport());
+			ae.setGradedDate(new Date());
 			command.getAeReport().getReportingPeriod().addAdverseEvent(ae);
 			command.getAeReport().addAdverseEvent(ae);
 			

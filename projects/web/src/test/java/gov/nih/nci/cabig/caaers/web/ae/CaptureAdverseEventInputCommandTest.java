@@ -22,7 +22,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/**h
  * 
  * @author Biju Joseph
  *
@@ -172,6 +172,29 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		assertTrue(command.getOutcomes().get(0).get(OutcomeType.OTHER_SERIOUS.getCode()));
 		assertFalse(command.getOutcomes().get(0).get(OutcomeType.DEATH.getCode()));
 		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
+		assertFalse(command.getOutcomes().get(1).isEmpty());
+		
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.DISABILITY.getCode()));
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.LIFE_THREATENING.getCode()));
+		assertTrue(command.getOutcomes().get(2).get(OutcomeType.OTHER_SERIOUS.getCode()));
+		assertFalse(command.getOutcomes().get(2).get(OutcomeType.DEATH.getCode()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(2));
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#initializeOutcomes()}
+	 */
+	public void testInitializeOutcomesAfterDelete(){
+		command.getAdverseEvents().remove(1); 
+		command.initializeOutcomes();
+		System.out.println(command.getOutcomes());
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.DISABILITY.getCode()));
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.LIFE_THREATENING.getCode()));
+		assertTrue(command.getOutcomes().get(0).get(OutcomeType.OTHER_SERIOUS.getCode()));
+		assertFalse(command.getOutcomes().get(0).get(OutcomeType.DEATH.getCode()));
+		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
+		
+		assertTrue(command.getOutcomes().get(1).isEmpty());
 		
 		assertTrue(command.getOutcomes().get(2).get(OutcomeType.DISABILITY.getCode()));
 		assertTrue(command.getOutcomes().get(2).get(OutcomeType.LIFE_THREATENING.getCode()));
