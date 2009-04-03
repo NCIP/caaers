@@ -115,7 +115,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to protocol treatment", false, createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Event time
