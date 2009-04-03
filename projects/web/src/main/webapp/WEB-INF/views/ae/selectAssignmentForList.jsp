@@ -100,10 +100,10 @@
 
 <table width="100%" border="0">
 <tr>
-<td width="450" valign="top">
+<td  valign="top">
 
     <!--<div class="autoclear">-->
-        <chrome:box title="Select subject" id="participant-entry" autopad="true">
+        <chrome:box title="Select subject" id="participant-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
@@ -115,8 +115,8 @@
             <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
         </chrome:box>
  </td>
- <td width="450" valign="top">
-        <chrome:box title="Select study" id="study-entry" autopad="true">
+ <td width="50%" valign="top">
+        <chrome:box title="Select study" id="study-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_study"/></p>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
