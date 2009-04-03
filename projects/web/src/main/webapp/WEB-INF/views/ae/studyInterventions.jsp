@@ -196,11 +196,10 @@ function closeAll() {
     
     <c:if test="${hasAgent}">
         <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">
-            <jsp:attribute name="additionalTitle">
-                    <input type="button" value="Add Agent" id="btn-add-agent" >
-            </jsp:attribute>
+            <jsp:attribute name="additionalTitle" />
             <jsp:body>
                 <div style="padding-left:20px;">
+                    <input type="button" value="Add Agent" id="btn-add-agent" >
                 <div id="_agents">
 
                     <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
@@ -217,9 +216,10 @@ function closeAll() {
 
     <c:if test="${hasDevice}">
         <chrome:box title="${ (deviceMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Device" collapsable="true">
-            <jsp:attribute name="additionalTitle"><input type="button" value="Add Device" id="btn-add-device"></jsp:attribute>
+            <jsp:attribute name="additionalTitle" />
             <jsp:body>
                 <div style="padding-left:20px;">
+                    <input type="button" value="Add Device" id="btn-add-device">
                 <div id="_devices">
                 <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
                 <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
@@ -234,9 +234,10 @@ function closeAll() {
 
     <c:if test="${hasRadiation}">
         <chrome:box title="${ (radiationMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Radiation" collapsable="true">
-            <jsp:attribute name="additionalTitle"><input type="button" value="Add Radiation" id="btn-add-radiation"></jsp:attribute>
+            <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
+                    <input type="button" value="Add Radiation" id="btn-add-radiation">
                 <div id="_radiations">
                     <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
                     <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
@@ -251,9 +252,10 @@ function closeAll() {
 
     <c:if test="${hasSurgery}">
         <chrome:box title="${ (surgeryMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Surgery" collapsable="true">
-            <jsp:attribute name="additionalTitle"><input type="button" value="Add Surgery" id="btn-add-surgery"></jsp:attribute>
+            <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
+                    <input type="button" value="Add Surgery" id="btn-add-surgery">
                 <div id="_surgeries">
                     <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
                     <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
