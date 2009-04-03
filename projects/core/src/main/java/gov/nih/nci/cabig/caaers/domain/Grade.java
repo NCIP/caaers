@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Rhett Sutphin
  */
 public enum Grade implements CodedEnum<Integer>, CodedGrade {
-    NOT_EVALUATED(-1,"Not evaluated"), NORMAL(0, "Normal or Evaluated"), MILD(1), MODERATE(2), SEVERE(3), LIFE_THREATENING(4, "Life-threatening or disabling"), DEATH(5);
+    NOT_EVALUATED(-1,"Not evaluated"), NORMAL(0, "Normal"), MILD(1), MODERATE(2), SEVERE(3), LIFE_THREATENING(4, "Life-threatening or disabling"), DEATH(5);
 
     private Integer code;
 
