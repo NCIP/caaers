@@ -442,7 +442,7 @@
 		</table>
 	</chrome:box>
 
-	<chrome:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
+	<chrome:box id="assignment.concomitantMedications" title="Concomitant Medications" collapsable="true">
     <p><tags:instructions code="instruction_subject_enter.medhist.conmeds"/></p>
 		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
 		<tags:hasErrorsMessage path="concomitantMedication" />

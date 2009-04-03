@@ -487,7 +487,7 @@
 
 
 
-  <chrome:box id="aeReport.concomitantMedications" title="ConMeds" collapsable="true">
+  <chrome:box id="aeReport.concomitantMedications" title="Concomitant Medications" collapsable="true">
       <jsp:body>
 
   <p><tags:instructions code="instruction_ae_patientdetails_conmeds"/></p>
