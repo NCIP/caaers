@@ -37,14 +37,10 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup physicianSignoff = new DefaultInputFieldGroup("physicianSignoff");
-        physicianSignoff.getFields().add(
-                        InputFieldFactory.createSelectField("aeReport.reports[" + reportIndex
-                                        + "].lastVersion.physicianSignoff", "Physician sign-off",
-                                        true, createExpectedOptions()));
+        physicianSignoff.getFields().add(InputFieldFactory.createSelectField("aeReport.reports[" + reportIndex + "].lastVersion.physicianSignoff", "Physician sign-off", true, createExpectedOptions()));
         map.addInputFieldGroup(physicianSignoff);
         map.addInputFieldGroup(createPersonGroup("reporter", null));
-        map.addInputFieldGroup(createPersonGroup("reports[" + reportIndex
-                        + "].lastVersion.submitter", "submitter"));
+        map.addInputFieldGroup(createPersonGroup("reports[" + reportIndex + "].lastVersion.submitter", "submitter"));
         return map;
     }
 
@@ -54,18 +50,13 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
                         .capitalize(person)
                         + " details");
         String base = "aeReport." + person + '.';
-        group.getFields().add(
-                        InputFieldFactory.createTextField(base + "firstName", "First name", true));
-        group.getFields()
-                        .add(
-                                        InputFieldFactory.createTextField(base + "middleName",
-                                                        "Middle name", false));
-        group.getFields().add(
-                        InputFieldFactory.createTextField(base + "lastName", "Last name", true));
+        group.getFields().add(InputFieldFactory.createTextField(base + "firstName", "First name", true));
+        group.getFields().add(InputFieldFactory.createTextField(base + "middleName","Middle name", false));
+        group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));
         group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", true));
-        InputField phoneField = createContactField(base, ReportPerson.PHONE);
+        InputField phoneField = createContactField(base, ReportPerson.PHONE, null, true);
         phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
-        InputField faxField = createContactField(base, ReportPerson.FAX);
+        InputField faxField = createContactField(base, ReportPerson.FAX, null, true);
         faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         
         group.getFields().add(phoneField);
