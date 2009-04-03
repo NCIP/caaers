@@ -29,8 +29,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -102,6 +105,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private TimeValue eventApproximateTime;
 
     private String eventLocation;
+    
+    private Date gradedDate;
     
     public AdverseEvent() {
         solicited = false;
@@ -590,8 +595,28 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     public void setSerious(OutcomeType serious) {
         this.serious = serious;
     }
+    
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getGradedDate() {
+		return gradedDate;
+	}
 
-    public AdverseEvent copy() {
+	public void setGradedDate(Date gradedDate) {
+		this.gradedDate = gradedDate;
+	}
+	
+	/**
+	 * This method will set the graded, date if gradedDate is empty, and grade is set, and is not {@link Grade#NOT_EVALUATED} or 
+	 * {@link Grade#NORMAL}.
+	 */
+	public void initailzeGradedDate(){
+		if(gradedDate == null && grade != null && grade.getCode() > Grade.NORMAL.getCode()){
+			gradedDate = new Date();
+		}
+	}
+
+	public AdverseEvent copy() {
         AdverseEvent adverseEvent = new AdverseEvent();
         org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
                 new String[]{"id", "gridId", "outcomes", "version", "report",

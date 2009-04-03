@@ -174,6 +174,25 @@ public class AdverseEventTest extends AbstractTestCase {
     	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getSignature());
     }
     
+    public void testInitializeGradedDate(){
+    	AdverseEvent ae = new AdverseEvent();
+    	assertNull(ae.getGradedDate());
+    	ae.initailzeGradedDate();
+    	assertNull(ae.getGradedDate());
+    }
+    
+    public void testInitializeGradedDate_WhenGraded(){
+    	assertNull(adverseEvent.getGradedDate());
+    	adverseEvent.initailzeGradedDate();
+    	assertNotNull(adverseEvent.getGradedDate());
+    }
+    
+    public void testInitializeGradedDate_WhenGradedNotEvaluated(){
+    	assertNull(adverseEvent.getGradedDate());
+    	adverseEvent.setGrade(Grade.NOT_EVALUATED);
+    	adverseEvent.initailzeGradedDate();
+    	assertNull(adverseEvent.getGradedDate());
+    }
 //
 //    public void testCopyAdverseEventTerm() {
 //
