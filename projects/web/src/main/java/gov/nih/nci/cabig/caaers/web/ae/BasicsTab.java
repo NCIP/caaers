@@ -59,7 +59,7 @@ public abstract class BasicsTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
 
-        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions());
+        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to protocol treatment", false, createAttributionOptions());
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
         InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", false);
