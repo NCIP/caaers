@@ -491,6 +491,7 @@ h2.title {
 .box.pairedLong {
 	margin: 1em;
 	float:left;
+    width: 90%;
 }
 .box.paired {
 	width: 45%;
