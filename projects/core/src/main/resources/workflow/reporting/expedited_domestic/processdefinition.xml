@@ -36,7 +36,8 @@
 				</factoryKey>
 			</action>
 		</event>
-		<transition to="Physician Review" name="Submit For Physician Review"></transition>
+		<transition to="Physician Review" name="Send to Physician for Review"></transition>
+		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
 	</node>
 
 	<node name="Physician Review">
@@ -112,7 +113,7 @@
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Physician Review" name="Submit For Physician Review"></transition>
+		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 
 	<node name="Central Office SAE Coordinator Review">
@@ -137,8 +138,8 @@
 				</factoryKey>
 			</action>
 		</event>	
-		<transition to="Submit Report To Sponsor" name="Approve Report"></transition>	
 		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
+		<transition to="End Expedited Domestic Flow" name="Approve Report"></transition>
 		
 	</node>
 
@@ -165,32 +166,7 @@
 			</action>
 		</event>		
 		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
-		<transition to="Physician Review" name="Submit for Physician Review"></transition>
-	</node>
-
-	<node name="Submit Report To Sponsor">
-		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
-			<targetBean>
-				nodeSkipActionHandler
-			</targetBean>
-			<factoryKey>
-				jbpmConfiguration
-			</factoryKey>
-		</action>
-		<description>
-			This task is assigned to a personel at central office, the report has to be submitted to AdEERS.
-		</description>
-		<event type="node-leave">
-			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
-				<targetBean>
-					taskCloseActionHandler
-				</targetBean>
-				<factoryKey>
-					jbpmConfiguration
-				</factoryKey>
-			</action>
-		</event>		
-		<transition to="End Expedited Domestic Flow" name="Submit Report to Sponsor"></transition>
+		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 
 
