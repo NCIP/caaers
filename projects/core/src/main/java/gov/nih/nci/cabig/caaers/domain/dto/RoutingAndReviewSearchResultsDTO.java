@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 /**
@@ -17,7 +18,9 @@ public class RoutingAndReviewSearchResultsDTO {
 	private String header;
 	private boolean studyCentric;
 	
+	
 	Map<Integer, RoutingAndReviewSearchResultDTO> resultMap;
+	Map<Integer, RoutingAndReviewSearchResultDTO> filteredResultMap;
 
 	public RoutingAndReviewSearchResultsDTO(boolean studyCentric, Participant participant, Study study, List<AdverseEventReportingPeriodDTO> list) {
 		super();
@@ -31,7 +34,8 @@ public class RoutingAndReviewSearchResultsDTO {
 			this.header = participant.getFullName() + ", "  + participant.getPrimaryIdentifierValue();
 		}
 		
-		resultMap = new HashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		resultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		filteredResultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
 		populateResults(list);
 	}
 	
@@ -64,6 +68,29 @@ public class RoutingAndReviewSearchResultsDTO {
 				}
 				
 				resultDto.addResult(rpDTO);
+			}
+		}
+	}
+	
+	public void filterResultMap(int startIndex, int endIndex){
+		int i = 0;
+		filteredResultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		for(Integer id: resultMap.keySet()){
+			RoutingAndReviewSearchResultDTO resultsDto = resultMap.get(id);
+			for(AdverseEventReportingPeriodDTO dto : resultsDto.getResults()){
+				if(i >= startIndex && i <= endIndex){
+					RoutingAndReviewSearchResultDTO filteredResultDto = null;
+					if(filteredResultMap.containsKey(id)){
+						filteredResultDto = filteredResultMap.get(id);
+					}else {
+						filteredResultDto = new RoutingAndReviewSearchResultDTO();
+						String strHeader = dto.getParticipant().getFullName() + ", " + dto.getParticipant().getPrimaryIdentifierValue();
+						filteredResultDto.setHeader(strHeader);
+						filteredResultMap.put(id, filteredResultDto); //add it to the map
+					}
+					filteredResultDto.addResult(dto);
+				}
+				if (++i > endIndex) break;
 			}
 		}
 	}
@@ -108,8 +135,26 @@ public class RoutingAndReviewSearchResultsDTO {
 		this.resultMap = resultMap;
 	}
 	
+	public Map<Integer, RoutingAndReviewSearchResultDTO> getFilteredResultMap(){
+		return filteredResultMap;
+	}
+	
+	public void setFilteredResultMap(Map<Integer, RoutingAndReviewSearchResultDTO> filteredResultMap){
+		this.filteredResultMap = filteredResultMap;
+	}
+	
 	public int getResultCount(){
 		return resultMap.size();
+	}
+	
+	public int getTotalResultCount(){
+		int totalNumberOfResult = 0;
+		if(resultMap != null){
+			for(Integer id: resultMap.keySet()){
+				totalNumberOfResult += resultMap.get(id).getResults().size();
+			}
+		}
+		return totalNumberOfResult;
 	}
 	
 }
