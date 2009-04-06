@@ -16,6 +16,9 @@
 		${anatomicSite.name}
 	</jsp:attribute>
 
+    <jsp:attribute name="titleFragment">
+	</jsp:attribute>
+
     <jsp:body>
 
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">

@@ -43,7 +43,7 @@
  	 	 		if(options){
  	 	 			paramHash.set('parentIndex', options.parentIndex);
  	 	 		}
- 	 	 		paramHash.set(itemType, val);
+ 	 	 		// paramHash.set(itemType, val);
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
@@ -437,7 +437,7 @@
               <input id="metastatic-diseases-btn" type="button" value="Add"/>
               <tags:indicator id="metastatic-diseases-btn-indicator" />
 
-              <a name="anchorMetastaticDiseases"/>
+              <!--<a name="anchorMetastaticDiseases"/>-->
               <tags:indicator id="metastaticDiseaseSite-indicator"/>
               <div id="anchorMetastaticDiseases">
                   <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}"/>
