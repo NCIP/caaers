@@ -189,7 +189,8 @@
             <tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
         </c:otherwise>
     </c:choose>
-		
+	<input type="hidden" name="paginationAction" value="firstPage"/>
+	<input type="hidden" name="numberOfResultsPerPage" value="15"/>
 	</jsp:attribute>
 </tags:standardForm>
 

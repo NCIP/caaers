@@ -28,7 +28,7 @@ public class RoutingAndReviewCommand{
     
     private HashMap<Object, Object> reviewStatusOptionsMap = new LinkedHashMap<Object,Object>();
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
-        
+    
     private RoutingAndReviewSearchResultsDTO searchResultsDTO; 
     
     public RoutingAndReviewCommand() {

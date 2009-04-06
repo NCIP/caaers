@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +57,10 @@ public class RoutingAndReviewController extends SimpleFormController{
 
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
+    private static final String PAGINATION_ACTION = "paginationAction";
+    
+    private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
+    
     static{
     	REVIEW_STATUS.addAll(Arrays.asList(ReviewStatus.values()));
     }
@@ -83,7 +88,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     }
     
     /**
-     * It is a form submission, if participant, or (study & study site) is available 
+     * It is a form submission, if participant, or study is available 
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -94,7 +99,9 @@ public class RoutingAndReviewController extends SimpleFormController{
     	boolean hasParticipant = paramNames.contains("participant");
         boolean hasStudy = paramNames.contains("study");
         boolean hasStudySite = paramNames.contains("studySite");
-        return (hasParticipant) || (hasParticipant && hasStudy) || (hasStudy && hasStudySite);
+        String paginationAction = (String)findInRequest(request, PAGINATION_ACTION);
+        
+        return hasParticipant || hasStudy || paginationAction != null;
     }
     
    
@@ -104,13 +111,32 @@ public class RoutingAndReviewController extends SimpleFormController{
 
     	SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
+		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
     		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), userId);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
+        	String action = (String) findInRequest(request, PAGINATION_ACTION);
+        	processPaginationSubmission(request, cmd, modelAndView);
+        	
+        	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    		if(numberOfResultsPerPage == null)
+    			modelAndView.getModel().put("numberOfResultsPerPage", 5);
+    		else
+    			modelAndView.getModel().put("numberOfResultsPerPage", Integer.parseInt(numberOfResultsPerPage));
+    		
+    		Integer currentPageNumber = (Integer) request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+    		if(currentPageNumber.equals(1))
+    			modelAndView.getModel().put("isFirstPage", true);
+    		else
+    			modelAndView.getModel().put("isFirstPage", false);
+    		if(isLastPage(request, cmd))
+    			modelAndView.getModel().put("isLastPage", true);
+    		else
+    			modelAndView.getModel().put("isLastPage", false);
     	}
     	
-    	ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
+    	
     	modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
 		if(!csmUserRepository.isSuperUser(userId)){
 			User user = csmUserRepository.getUserByName(userId);
@@ -118,23 +144,86 @@ public class RoutingAndReviewController extends SimpleFormController{
 				modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
 			}
 		}
-    	
+		
+		
+		
     	return modelAndView;
+    }
+    
+    protected void processPaginationSubmission(HttpServletRequest request, RoutingAndReviewCommand command, ModelAndView modelAndView){
+    	String action = (String) findInRequest(request, PAGINATION_ACTION);
+    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	Integer currPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+    	if(currPageNumber == null)
+    		currPageNumber = 1;
+    	Integer newPageNumber = 0;
+    	if(action.equals("nextPage")){
+    		newPageNumber = ++currPageNumber;
+    	}else if(action.equals("prevPage")){
+    		newPageNumber = --currPageNumber;
+    	}else if(action.equals("lastPage")){
+    		Float newPageNumberFloat = command.getSearchResultsDTO().getTotalResultCount() / Float.parseFloat(numberOfResultsPerPage);
+    		newPageNumber = newPageNumberFloat.intValue();
+    		if(command.getSearchResultsDTO().getTotalResultCount() % Integer.parseInt(numberOfResultsPerPage) > 0)
+    			newPageNumber++;
+    	}else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
+    		newPageNumber = 1;
+    	}
     	
+    	
+    	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
+		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
+		if(endIndex > command.getSearchResultsDTO().getTotalResultCount())
+			endIndex = command.getSearchResultsDTO().getTotalResultCount() - 1;
+		command.getSearchResultsDTO().filterResultMap(startIndex, endIndex);
+		request.getSession().setAttribute(CURRENT_PAGE_NUMBER, newPageNumber);
+		modelAndView.getModel().put("totalResults", command.getSearchResultsDTO().getTotalResultCount());
+		modelAndView.getModel().put("startIndex", startIndex + 1);
+		modelAndView.getModel().put("endIndex", endIndex + 1);
+    }
+    
+    protected boolean isLastPage(HttpServletRequest request, RoutingAndReviewCommand command){
+    	String action = (String) findInRequest(request, PAGINATION_ACTION);
+    	if(action != null && action.equals("lastPage"))
+    		return true;
+    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	Integer currentPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+    	if(currentPageNumber * Integer.parseInt(numberOfResultsPerPage) > command.getSearchResultsDTO().getTotalResultCount())
+    		return true;
+    	
+    	return false;
     }
     
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
-    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy() ){
-    		errors.reject("RAR_001", "Missing study and participant information");
+    	
+    	if(cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy() && !cmd.criteriaHasSite()){
+    		errors.reject("RAR_004", "Missing study or study site information");
     		return;
     	}
     	
-    	if(!cmd.criteriaHasParticipant() && cmd.criteriaHasStudy() && !cmd.criteriaHasSite()){
-    		errors.reject("RAR_002", "Missing study site information");
+    	if(cmd.criteriaHasSite() && !cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy()){
+    		errors.reject("RAR_005", "Missing study or subject information");
+    	}
+    	
+    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasSite() && !cmd.criteriaHasStudy()){
+    		errors.reject("RAR_006", "Missing study or subject or study site information");
     		return;
     	}
+    }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
+
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
     }
     
     @Override
