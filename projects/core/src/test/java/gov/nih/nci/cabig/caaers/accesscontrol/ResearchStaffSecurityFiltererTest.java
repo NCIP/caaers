@@ -41,7 +41,7 @@ public class ResearchStaffSecurityFiltererTest extends DaoTestCase {
 		disableAuthorization();
 		ResearchStaffQuery query = new ResearchStaffQuery();
 		List<ResearchStaff> researchStaffs = researchStaffDao.findResearchStaff(query);
-		assertEquals(13,researchStaffs.size());
+		assertEquals(4,researchStaffs.size());
 		
 		//enable security 
 		enableAuthorization();		
