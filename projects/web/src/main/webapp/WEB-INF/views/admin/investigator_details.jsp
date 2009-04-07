@@ -105,7 +105,12 @@ Event.observe(window, "load", function() {
 	 willSave="false">
 
 	<jsp:attribute name="singleFields">
-	<div><input type="hidden" name="_action" id="_action" value="">
+	<div>
+	<c:if test="${(command.externalId != null)}"> <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/> </c:if>
+
+	
+	
+	<input type="hidden" name="_action" id="_action" value="">
 	<input type="hidden" name="_selected" id="_selected" value="-1">
 	    <c:if test="${(empty id) or ( id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
 	</div>
@@ -115,9 +120,10 @@ Event.observe(window, "load", function() {
             <p>
         <tags:instructions code="investigatordetails" />
         </p>
-    
+		
+    	
     	<chrome:division title="Investigator Details" id="investigator">
-
+    	
 		<div class="leftpanel">
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
                <tags:renderRow field="${field}"  />

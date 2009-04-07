@@ -40,12 +40,14 @@
    	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="organizationDao" ref="organizationDao" />
+		<property name="organizationRepository" ref="organizationRepository" />
 	</bean>
 	
 	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">
 		<property name="researchStaffDao" ref="researchStaffDao" />
 		<property name="organizationDao" ref="organizationDao" />	
 		<property name="researchStaffRepository" ref="researchStaffRepository" />
+		<property name="organizationRepository" ref="organizationRepository" />
 	</bean> 
     
    <bean id="studyProcessorImpl" class="gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl">

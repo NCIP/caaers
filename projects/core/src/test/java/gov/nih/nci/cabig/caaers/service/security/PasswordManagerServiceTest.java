@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
@@ -48,7 +48,7 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
         super.setUp();
 
         userName = "user@domain";
-        user = new ResearchStaff();
+        user = new LocalResearchStaff();
         user.setEmailAddress(userName);
         user.setLoginId(userName);
 

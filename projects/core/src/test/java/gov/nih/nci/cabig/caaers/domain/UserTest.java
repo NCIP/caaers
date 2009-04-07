@@ -12,7 +12,7 @@ public class UserTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        user = new ResearchStaff();
+        user = new LocalResearchStaff();
     }
 
     public void testAddPasswordToHistory() throws Exception {

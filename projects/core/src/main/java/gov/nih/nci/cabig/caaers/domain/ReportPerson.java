@@ -10,9 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -62,11 +62,22 @@ public abstract class ReportPerson extends PersonContact {
         this.expeditedReport = expeditedReport;
     }
     
-    @ManyToOne
-    @JoinColumn(name="user_id")
+    
+    /*
+     * Please Uncomment Commented for COPPA Changes 
+     */
+    
+//    @ManyToOne
+//    @JoinColumn(name="user_id")
+//    public User getUser() {
+//		return user;
+//	}
+    
+    @Transient
     public User getUser() {
 		return user;
-	}
+    }
+    
     public void setUser(User user) {
 		this.user = user;
 	}

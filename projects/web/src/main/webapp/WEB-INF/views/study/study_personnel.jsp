@@ -52,7 +52,14 @@
         	},
         	
         	sitePersonnelSelector: function(sPersonnel) { 
-        		return sPersonnel.fullName
+        	 	  var image;
+        	 	  if(sPersonnel.externalId != null){
+                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                  } else {
+                          image = '';
+                  }
+               //  alert (image);
+        		return (image + "" + sPersonnel.fullName)
         	}
         	
      });
@@ -97,6 +104,7 @@ margin:5px;
 </head>
 
 <body>
+
 <study:summary />
 <p><tags:instructions code="study.study_personnel.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="form" willSave="${not empty command.study.id}">

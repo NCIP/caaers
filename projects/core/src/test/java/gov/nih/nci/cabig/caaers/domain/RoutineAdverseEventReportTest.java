@@ -118,7 +118,7 @@ public class RoutineAdverseEventReportTest extends CaaersNoSecurityTestCase {
     public void testSummaryIncludesStudy() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new LocalOrganization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("El Study", summary.get("Study"));
     }
@@ -128,7 +128,7 @@ public class RoutineAdverseEventReportTest extends CaaersNoSecurityTestCase {
         Study study = Fixtures.createStudy("El Study");
         study.addIdentifier(Identifier.createTemplate("1845"));
         study.getIdentifiers().get(0).setPrimaryIndicator(true);
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new LocalOrganization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("El Study (1845)", summary.get("Study"));
     }

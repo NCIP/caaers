@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
@@ -45,24 +45,24 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
     public void testValidation() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id1");
         sp.getResearchStaff().setLoginId("Id1");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id2");
         sp.getResearchStaff().setLoginId("Id2");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id3");
         sp.getResearchStaff().setLoginId("Id3");
         so.addStudyPersonnel(sp);
@@ -82,24 +82,24 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
     public void testPostProcess() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id1");
         sp.getResearchStaff().setLoginId("Id1");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id2");
         sp.getResearchStaff().setLoginId("Id2");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id3");
         sp.getResearchStaff().setLoginId("Id3");
         so.addStudyPersonnel(sp);
@@ -122,24 +122,24 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
     public void testCreateFieldGroups() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id1");
         sp.getResearchStaff().setLoginId("Id1");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id2");
         sp.getResearchStaff().setLoginId("Id2");
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new ResearchStaff());
+        sp.setResearchStaff(new LocalResearchStaff());
         sp.getResearchStaff().setNciIdentifier("Id3");
         sp.getResearchStaff().setLoginId("Id3");
         so.addStudyPersonnel(sp);

@@ -290,4 +290,9 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
     	assertSameErrorCount(errors, 1);
     	assertCorrectErrorCode(errors, "AER_PRESENT_ERR");
     }
+
+    public void testFieldNames() throws Exception {
+        
+    }
+    
 }

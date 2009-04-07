@@ -68,6 +68,21 @@ public class Participant extends Person {
         dateOfBirth = new DateValue();
 
     }
+    
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+    
+    @Override
+    public String getMiddleName() {
+        return middleName;
+    }
 
     // //// LOGIC
     @Transient

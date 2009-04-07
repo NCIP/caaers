@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.validator;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
@@ -18,7 +19,7 @@ public class ResearchStaffDomainObjectValidatorTest extends CaaersDbTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		rStaff = new ResearchStaff();
+		rStaff = new LocalResearchStaff();
 		organization = Fixtures.createOrganization("NCI");
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
@@ -18,6 +19,7 @@ public class IdentifierMigrator<E extends AbstractIdentifiableDomainObject>
 implements Migrator<E> {
 
 	private OrganizationDao organizationDao;
+	private OrganizationRepository organizationRepository;
 
 	/**
 	 * Will migrate the identifiers from source to destination
@@ -100,8 +102,7 @@ implements Migrator<E> {
 		if (StringUtils.isNotEmpty(nciInstituteCode)) {
 			orgQuery.filterByNciCodeExactMatch(nciInstituteCode);
 		}
-		List<Organization> orgList = organizationDao
-		.searchOrganization(orgQuery);
+		List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 		if (orgList == null || orgList.isEmpty()) {
 			return null;
 		}
@@ -116,6 +117,16 @@ implements Migrator<E> {
 	@Required
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+	
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 
 }

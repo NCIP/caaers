@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class StudyOrganizationMigrator implements Migrator<Study>{
 	
 	  private OrganizationDao organizationDao;
+	  private OrganizationRepository organizationRepository;
 	  private SiteInvestigatorDao siteInvestigatorDao;
 	  private ResearchStaffDao researchStaffDao;
 	  
@@ -223,7 +224,7 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
             orgQuery.filterByNciCodeExactMatch(nciInstituteCode);
         }
 
-        List<Organization> orgList = organizationDao.searchOrganization(orgQuery);
+        List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 
         if (orgList == null || orgList.isEmpty()) {
             return null;
@@ -251,6 +252,16 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	}
 
     
 }

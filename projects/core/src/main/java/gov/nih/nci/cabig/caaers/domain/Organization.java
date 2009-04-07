@@ -8,9 +8,11 @@ import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -21,6 +23,9 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.semanticbits.coppa.domain.annotations.RemoteProperty;
+import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
+
 /**
  * This class represents the Organization domain object associated with the Adverse event report.
  * 
@@ -29,30 +34,36 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name = "organizations")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
-public class Organization extends AbstractMutableDomainObject {
+public abstract class Organization extends AbstractMutableDomainObject {
     public static final String DEFAULT_SITE_NAME = "default";
 
-    private String name;
+    protected String name;
 
-    private String nciInstituteCode;
+    protected String nciInstituteCode;
 
-    private String descriptionText;
+    protected String descriptionText;
 
-    private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+    protected List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
 
-    private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
+    protected List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
 
-    private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
+    protected List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
 
-    private List<ReportDefinition> reportDefinitions;
+    protected List<ReportDefinition> reportDefinitions;
+    
+    protected List<Organization> externalOrganizations;
 
-    private String city;
+    protected String city;
 
-    private String state;
+    protected String state;
 
-    private String country;
-
+    protected String country;
+    
+    protected String externalId;
+	
     // //// LOGIC
 
     /*
@@ -88,8 +99,16 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     // //// BEAN PROPERTIES
+    @Transient
+    public String getExternalId() {
+		return externalId;
+	}
+    
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 
-    @Column(name = "name")
+    @Transient
     public String getName() {
         return name;
     }
@@ -98,7 +117,7 @@ public class Organization extends AbstractMutableDomainObject {
         this.name = name;
     }
 
-    @Column(name = "city")
+    @Transient
     public String getCity() {
         return city;
     }
@@ -107,7 +126,7 @@ public class Organization extends AbstractMutableDomainObject {
         this.city = city;
     }
 
-    @Column(name = "country")
+    @Transient
     public String getCountry() {
         return country;
     }
@@ -116,7 +135,7 @@ public class Organization extends AbstractMutableDomainObject {
         this.country = country;
     }
 
-    @Column(name = "state")
+    @Transient
     public String getState() {
         return state;
     }
@@ -193,6 +212,7 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     @UniqueNciIdentifierForOrganization(message = "Nci  Identifier already exits in the datbase...!")
+    
     public String getNciInstituteCode() {
         return nciInstituteCode;
     }
@@ -200,6 +220,16 @@ public class Organization extends AbstractMutableDomainObject {
     public void setNciInstituteCode(String nciInstituteCode) {
         this.nciInstituteCode = nciInstituteCode;
     }
+    
+    @Transient
+	public List<Organization> getExternalOrganizations() {
+		return externalOrganizations;
+	}
+
+	public void setExternalOrganizations(List<Organization> externalOrganizations) {
+		this.externalOrganizations = externalOrganizations;
+	}
+    
 
     @Override
     public boolean equals(Object o) {
@@ -208,7 +238,7 @@ public class Organization extends AbstractMutableDomainObject {
 
         Organization organization = (Organization) o;
 
-        if (!ComparisonTools.nullSafeEquals(getName(), organization.getName())) return false;
+        if (!ComparisonTools.nullSafeEquals(getNciInstituteCode(), organization.getNciInstituteCode())) return false;
 
         return true;
     }
@@ -222,4 +252,5 @@ public class Organization extends AbstractMutableDomainObject {
     public String toString() {
         return name;
     }
+
 }

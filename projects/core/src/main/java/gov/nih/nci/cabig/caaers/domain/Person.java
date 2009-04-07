@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.domain;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.semanticbits.coppa.domain.annotations.RemoteProperty;
+
 /**
  * @author Kulasekaran
  */
@@ -10,13 +12,13 @@ import javax.persistence.Transient;
 public abstract class Person extends AbstractIdentifiableDomainObject {
 	private String title;
 	
-    private String firstName;
+    protected String firstName;
 
-    private String middleName;
+    protected String middleName;
 
-    private String lastName;
+    protected String lastName;
     
-
+    @Transient
     public String getFirstName() {
         return firstName;
     }
@@ -24,7 +26,8 @@ public abstract class Person extends AbstractIdentifiableDomainObject {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    
+    @Transient
     public String getLastName() {
         return lastName;
     }
@@ -32,7 +35,8 @@ public abstract class Person extends AbstractIdentifiableDomainObject {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    
+    @Transient
     public String getMiddleName() {
         return middleName;
     }

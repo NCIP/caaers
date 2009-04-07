@@ -85,4 +85,20 @@ public abstract class PersonContact extends Person {
 		// TODO Auto-generated method stub
 		super.setTitle(title);
 	}
+	
+    @Override
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+    
+    @Override
+    public String getMiddleName() {
+        return middleName;
+    }
+    
 }

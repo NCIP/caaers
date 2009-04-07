@@ -3,8 +3,14 @@ package gov.nih.nci.cabig.caaers.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -13,6 +19,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the ResearchStaff domain object associated with the Adverse event report.
@@ -21,14 +29,33 @@ import org.hibernate.annotations.CascadeType;
  * @author Kulasekaran
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "research_staffs")
-public class ResearchStaff extends User {
+@DiscriminatorColumn(name="type")
+@GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
+public abstract class ResearchStaff extends User {
+	
+	protected Integer id;
+	
+    protected String nciIdentifier;
 
-    private String nciIdentifier;
+    protected List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    	
+    protected List<ResearchStaff> externalResearchStaff = new ArrayList<ResearchStaff>();
 
-    private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    protected Organization organization;
+    
+    protected String externalId;
+    
+  @Id 
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
+  public Integer getId() {
+      return id;
+  }
 
-    private Organization organization;
+  public void setId(Integer id) {
+      this.id = id;
+  }
 
     // LOGIC
     @Transient
@@ -69,8 +96,8 @@ public class ResearchStaff extends User {
 
         ResearchStaff that = (ResearchStaff) o;
 
-        if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier)
-                        : that.nciIdentifier != null) return false;
+        if (emailAddress != null ? !emailAddress.equals(that.emailAddress)
+                        : that.emailAddress != null) return false;
 
         return true;
     }
@@ -80,7 +107,8 @@ public class ResearchStaff extends User {
         result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
         return result;
     }
-
+    
+    @Transient
     public String getNciIdentifier() {
         return nciIdentifier;
     }
@@ -88,5 +116,25 @@ public class ResearchStaff extends User {
     public void setNciIdentifier(final String nciIdentifier) {
         this.nciIdentifier = nciIdentifier;
     }
+    
+    @Transient
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+	
+	@Transient
+	public List<ResearchStaff> getExternalResearchStaff() {
+		return externalResearchStaff;
+	}
+
+	public void setExternalResearchStaff(List<ResearchStaff> externalResearchStaff) {
+		this.externalResearchStaff = externalResearchStaff;
+	}
+	
+	
 
 }

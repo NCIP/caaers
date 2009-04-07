@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -133,8 +134,8 @@ public class StudyDetailsTabTestCase extends AbstractStudyWebTestCase {
         List<Identifier> studyIdentifiers = new ArrayList<Identifier>();
         studyIdentifiers.add(new OrganizationAssignedIdentifier());
         studyIdentifiers.add(new OrganizationAssignedIdentifier());
-        ((OrganizationAssignedIdentifier)studyIdentifiers.get(0)).setOrganization(new Organization());
-        ((OrganizationAssignedIdentifier)studyIdentifiers.get(1)).setOrganization(new Organization());
+        ((OrganizationAssignedIdentifier)studyIdentifiers.get(0)).setOrganization(new LocalOrganization());
+        ((OrganizationAssignedIdentifier)studyIdentifiers.get(1)).setOrganization(new LocalOrganization());
         study.setIdentifiers(studyIdentifiers);
 
         studyIdentifiers.get(0).setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
@@ -142,7 +143,7 @@ public class StudyDetailsTabTestCase extends AbstractStudyWebTestCase {
 
         study.setStudyOrganizations(new ArrayList<StudyOrganization>());
         study.getStudyOrganizations().add(new StudyCoordinatingCenter());
-        study.getStudyCoordinatingCenter().setOrganization(new Organization());
+        study.getStudyCoordinatingCenter().setOrganization(new LocalOrganization());
         
         replayMocks();
         tab.postProcess(request, command, errors);

@@ -19,6 +19,8 @@ import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
@@ -148,7 +150,7 @@ public class ExcelProcessor {
 
         FundingSponsor fs = new FundingSponsor();
         StudyFundingSponsor sfs = new StudyFundingSponsor();
-        Organization fo = new Organization();
+        Organization fo = new LocalOrganization();
         fo.setName("Cancer Therapy Evaluation Program");
         sfs.setOrganization(fo);
         fs.setStudyFundingSponsor(sfs);
@@ -314,7 +316,7 @@ public class ExcelProcessor {
                 leadOrg = getCellData(ORG_SHEET_NAME, orgRow,
                         orgInfoSheet.getRow(orgRow).getCell((short) 1))
                         .equalsIgnoreCase("Lead") ? true : false;
-                organization = new Organization();
+                organization = new LocalOrganization();
                 organization.setName(getCellData(ORG_SHEET_NAME, orgRow,
                         orgInfoSheet.getRow(orgRow).getCell((short) 2)));
                 organization.setNciInstituteCode(formatNCIcode(getCellData(
@@ -323,7 +325,7 @@ public class ExcelProcessor {
                 if (leadOrg) {
                     CoordinatingCenter cc = new CoordinatingCenter();
                     StudyCoordinatingCenter scc = new StudyCoordinatingCenter();
-                    Organization cco = new Organization();
+                    Organization cco = new LocalOrganization();
                     cco.setName(getCellData(ORG_SHEET_NAME, orgRow,
                             orgInfoSheet.getRow(orgRow).getCell((short) 2)));
                     cco.setNciInstituteCode(formatNCIcode(getCellData(
@@ -507,7 +509,7 @@ public class ExcelProcessor {
 
             if (invList.size() == 0) {
             	statusMessage=" Created in caAERS.";
-                inv = new Investigator();
+                inv = new LocalInvestigator();
                 inv.setNciIdentifier(invNciId);
                 inv
                         .setLastName(getCellData(INVESTIGATOR_SHEET_NAME,
@@ -590,7 +592,7 @@ public class ExcelProcessor {
             if (invStudyId.equalsIgnoreCase(primaryIdentifierString)
                     && invOrgId.equalsIgnoreCase(so.getOrganization()
                     .getNciInstituteCode())) {
-                investigator = new Investigator();
+                investigator = new LocalInvestigator();
                 investigator.setFirstName(getCellData(INVESTIGATOR_SHEET_NAME,
                         invRow, investigatorInfoSheet.getRow(invRow).getCell(
                                 (short) 5)));

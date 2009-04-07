@@ -19,9 +19,26 @@ This applicationContext contains the definition of the DAOs
         </property>
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
     </bean>
+    
+    <bean id="remoteSession" class="com.semanticbits.coppa.infrastructure.RemoteSession" init-method="init">
+         <property name="remoteEntities">
+            <list>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
+            </list>
+         </property>    
+         <property name="remoteResolvers">
+            <list>
+                <ref bean="organizationResolver"/>
+                <ref bean="researchStaffResolver"/>
+                <ref bean="investigatorResolver"/>
+            </list>
+         </property> 
+     </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
-
+    
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
         <property name="mappingLocations">
             <list>
@@ -47,6 +64,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
@@ -74,9 +93,12 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
-                <value>gov.nih.nci.cabig.caaers.domain.User</value>
-                <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
@@ -206,10 +228,11 @@ This applicationContext contains the definition of the DAOs
             <list>
                 <ref local="gridIdentifierInterceptor"/>
                 <ref local="auditInterceptor"/>
+                <ref local="remoteEntityInterceptor"/>
             </list>
         </property>
     </bean>
-
+	<bean id="remoteEntityInterceptor" class="com.semanticbits.coppa.infrastructure.hibernate.RemoteEntityInterceptor" autowire="byName"/>
     <bean id="auditInterceptor" class="gov.nih.nci.cabig.ctms.audit.AuditInterceptorImpl" autowire="byType">
         <property name="dataAuditRepository" ref="dataAuditRepository"></property>
         <property name="auditableEntities">
@@ -225,6 +248,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
@@ -244,9 +269,12 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
-                <value>gov.nih.nci.cabig.caaers.domain.User</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
@@ -418,6 +446,51 @@ This applicationContext contains the definition of the DAOs
     <bean id="configuration" parent="daoTemplate"
           class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration"/>
 
+
+	<!--  Another Session Factory for Local to Remote Entity Conversion -->
+	<!-- Start -->
+	<bean id="converterSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+    	<property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy">
+            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
+        </property>
+        <property name="annotatedClasses">
+        	<list>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterOrganization</value>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff</value>
+        	</list>
+        </property>
+    </bean>
+    
+    <bean id="converterHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="checkWriteOperations">
+            <value>false</value>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="converterSessionFactory"/>
+        </property>
+    </bean>
+	
+	<bean id="converterDaoTemplate" abstract="true">
+        <property name="hibernateTemplate">
+            <ref local="converterHibernateTemplate"/>
+        </property>
+    </bean>
+	
+	<!-- DAOs -->
+	
+	<bean id="organizationConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao"/>
+	<bean id="researchStaffConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao"/>
+	
+	<!-- End -->
+	
+	
+
+
     <!--- ACTUAL DAOS -->
 
     <tx:annotation-driven proxy-target-class="true"/>
@@ -436,10 +509,19 @@ This applicationContext contains the definition of the DAOs
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
-    <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
-    <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
+    <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao">
+    	<property name="organizationDao" ref="organizationDao"/>
+    	<property name="remoteSession" ref="remoteSession"/>
+    </bean>
+    <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao">
+    	<property name="researchStaffDao" ref="researchStaffDao"/>
+    	<property name="investigatorDao" ref="investigatorDao"/>
+    </bean>
+    
     <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
-    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
+    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao">
+    	<property name="remoteSession" ref="remoteSession"/>
+    </bean>
     <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
     <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
     <bean id="interventionSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InterventionSiteDao"/>
@@ -451,8 +533,18 @@ This applicationContext contains the definition of the DAOs
     <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
 
 
-    <bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
-    <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
+    <bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao">
+    	<property name="remoteSession" ref="remoteSession"/>
+    	<property name="organizationDao" ref="organizationDao"/>
+    </bean>
+     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao">
+    	<property name="remoteInvestigatorDaoHelper" ref="remoteInvestigatorDaoHelper"/>
+    </bean>
+     <bean id="remoteInvestigatorDaoHelper" class="gov.nih.nci.cabig.caaers.dao.RemoteInvestigatorDaoHelper">
+    	<property name="investigatorDao" ref="investigatorDao"/>
+    	<property name="organizationDao" ref="organizationDao"/>
+    	<property name="remoteSession" ref="remoteSession"/>
+    </bean>    
     <bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
     <bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
     <bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
@@ -481,6 +573,7 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="uniqueNciIdentifierForOrganizationValidator" class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
         <property name="organizationDao" ref="organizationDao"/>
+        <property name="organizationRepository" ref="organizationRepository"/>
     </bean>
 
     <bean id="uniqueIdentifierValidator"
@@ -543,6 +636,8 @@ This applicationContext contains the definition of the DAOs
         <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="authenticationMode" ref="authenticationMode"/>
+        <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
+        <property name="organizationConverterDao" ref="organizationConverterDao"/>
     </bean>
 	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
 		<property name="authenticationMode" ref="authenticationMode"/>

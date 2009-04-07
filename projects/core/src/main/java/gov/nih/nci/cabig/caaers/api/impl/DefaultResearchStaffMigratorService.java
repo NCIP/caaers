@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -74,7 +75,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
 			researchStaffImportOutcome.setImportedDomainObject(researchStaff);
 		} catch (CaaersSystemException e) {
-			researchStaff = new ResearchStaff();
+			researchStaff = new LocalResearchStaff();
 			researchStaff.setNciIdentifier(xmlResearchStaff.getNciIdentifier());
 			researchStaff.setFirstName(xmlResearchStaff.getFirstName());
 			researchStaff.setLastName(xmlResearchStaff.getLastName());
@@ -103,7 +104,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
     			researchStaffImportOutcome.setImportedDomainObject(researchStaff);
     		} catch (CaaersSystemException e) {
-    			researchStaff = new ResearchStaff();
+    			researchStaff = new LocalResearchStaff();
     			researchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
     			researchStaff.setFirstName(researchStaffType.getFirstName());
     			researchStaff.setLastName(researchStaffType.getLastName());
@@ -134,7 +135,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               ResearchStaff researchStaff = fetchResearchStaff(email);
               if (researchStaff == null ) {
               	// build new 
-              	researchStaff = new ResearchStaff();
+              	researchStaff = new LocalResearchStaff();
               	researchStaff.setNciIdentifier(nciIdentifier);
               	researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
               	researchStaff.setLoginId(researchStaffDto.getEmailAddress());

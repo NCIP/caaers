@@ -56,8 +56,8 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         if (searchtext != null && type != null && !searchtext.equals("")) {
             participantCommand.setStudies(new ArrayList<Study>());
             StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
-            query.filterByStudySiteName(participantCommand.getOrganization().getName());
-
+            //query.filterByStudySiteName(participantCommand.getOrganization().getName());
+            query.filterByStudySiteNciInstituteCode(participantCommand.getOrganization().getNciInstituteCode());
             if ("st".equals(type)) {
                 query.filterByStudyShortTile(searchtext);
             } else if ("idtf".equals(type)) {

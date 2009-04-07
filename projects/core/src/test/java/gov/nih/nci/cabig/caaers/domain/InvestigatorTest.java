@@ -13,7 +13,7 @@ public class InvestigatorTest extends TestCase {
 	protected void setUp() throws Exception {
 		// TODO Auto-generated method stub
 		super.setUp();
-		inv = new  Investigator();
+		inv = new  LocalInvestigator();
 		inv.setEmailAddress("joel.biju@kk.com");
 		inv.setFirstName("Joel");
 		inv.setLastName("Joseph");
@@ -25,7 +25,7 @@ public class InvestigatorTest extends TestCase {
 	}
 
 	public void testEqualsObject() {
-		Investigator inv2 = new  Investigator();
+		Investigator inv2 = new  LocalInvestigator();
 		inv2.setEmailAddress("joel.biju@kk.com");
 		inv2.setFirstName("Joel");
 		inv2.setLastName("Joseph");

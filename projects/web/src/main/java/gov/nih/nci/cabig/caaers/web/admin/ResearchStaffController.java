@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author Saurabh
  */
-public abstract class ResearchStaffController<C extends ResearchStaff> extends AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
+public abstract class ResearchStaffController<C extends ResearchStaff> extends
+        AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
 
@@ -77,34 +80,54 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends A
     protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
-    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request,
+                              final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
+
     }
 
-    @Override
-    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
-        ResearchStaff researchStaff = (ResearchStaff) command;
+    @SuppressWarnings("unchecked")
+	@Override
+    protected ModelAndView processFinish(final HttpServletRequest request,
+                                         final HttpServletResponse response, final Object command,
+                                         final BindException errors) throws Exception {
 
+        ResearchStaff researchStaff = (ResearchStaff) command;
+        ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
         String emailSendingErrorMessage = "";
         try {
-            researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+        	if("saveRemoteRs".equals(request.getParameter("_action"))){
+        		
+        		ResearchStaff remoteRStoSave = researchStaff.getExternalResearchStaff().get(Integer.parseInt(request.getParameter("_selected")));
+        		remoteRStoSave.setOrganization(researchStaff.getOrganization());
+        		researchStaff.setEmailAddress(remoteRStoSave.getEmailAddress());
+        		researchStaff.setFirstName(remoteRStoSave.getFirstName());
+        		researchStaff.setLastName(remoteRStoSave.getLastFirst());
+        		researchStaff.setPhoneNumber(remoteRStoSave.getPhoneNumber());
+        		researchStaff.setFaxNumber(remoteRStoSave.getFaxNumber());
+        		researchStaffRepository.save(remoteRStoSave, ResetPasswordController.getURL(request
+                        .getScheme(), request.getServerName(), request.getServerPort(), request
+                        .getContextPath()));
+        	}else{
+        		researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
+                        .getScheme(), request.getServerName(), request.getServerPort(), request
+                        .getContextPath()));
+        	}
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
         }
         if (!errors.hasErrors()) {
-            String statusMessage = "Research staff saved successfully.";
-
+            String statusMessage = "Successfully created ResearchStaff.";
+            
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
             }
             request.setAttribute("statusMessage", statusMessage);
+            modelAndView.getModel().put("flashMessage", statusMessage);
         }
-
-
-        ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
         return modelAndView;
@@ -115,7 +138,24 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends A
     protected void onBindAndValidate(HttpServletRequest request, Object command,
                                      BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
-        webControllerValidator.validate(request, command, errors);
+        //webControllerValidator.validate(request, command, errors);
+        ResearchStaff researchStaff = (ResearchStaff) command;
+        if(researchStaff.getId() == null){
+    		if(!"saveRemoteRs".equals(request.getParameter("_action"))){
+    			ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+    			researchStaffQuery.filterByLoginId(researchStaff.getEmailAddress());
+    			List<ResearchStaff> localRs = researchStaffRepository.getResearchStaff(researchStaffQuery);
+    			if(localRs != null && localRs.size() > 0){
+    				errors.reject("LOCAL_RS_EXISTS","ResearchStaff with EmailAddress " +researchStaff.getEmailAddress()+ " already exisits");
+    				return;
+    			}
+        		List<ResearchStaff> remoteRs = researchStaffRepository.getRemoteResearchStaff(researchStaff);
+        		if(remoteRs != null && remoteRs.size() > 0){
+        			researchStaff.setExternalResearchStaff(remoteRs);
+        			errors.reject("REMOTE_RS_EXISTS","ResearchStaff with EmailAddress " +researchStaff.getEmailAddress()+ " exisits in external system");
+        		}
+        	}
+        }
     }
 
     @Required

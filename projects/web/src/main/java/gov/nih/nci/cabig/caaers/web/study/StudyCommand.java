@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.web.remote.RemoteObjectBinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +68,10 @@ public class StudyCommand {
     private List<Epoch> epochs=new ArrayList<Epoch>();
     
     private boolean workflowEnabled;
+    private RemoteObjectBinder remoteObjectBinder;
 
     public StudyCommand() {
+    	
     }
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
@@ -167,7 +170,9 @@ public class StudyCommand {
     }
 
     public void setStudy(Study study) {
-        this.study = study;
+    	this.study= study;
+    	//this.study=remoteObjectBinder.bindStudy(study);
+
     }
 
     @Transient
@@ -217,6 +222,11 @@ public class StudyCommand {
     public boolean isWorkflowEnabled() {
 		return workflowEnabled;
 	}
+
+	public void setRemoteObjectBinder(RemoteObjectBinder remoteObjectBinder) {
+		this.remoteObjectBinder = remoteObjectBinder;
+    }
+    
     public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;
 	}

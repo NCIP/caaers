@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -96,7 +97,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final Investigator command) {
-
+    	boolean remoteEntity = false;
+    	if (command instanceof RemoteInvestigator) {
+    		remoteEntity = true;
+    	}
+    	
         InputFieldGroup investigatorFieldGroup = null;
         RepeatingFieldGroupFactory rfgFactory = null;
 
@@ -118,32 +123,66 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
                 collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
 
         investigatorFieldGroup = new DefaultInputFieldGroup(INVESTIGATOR_FIELD_GROUP);
-        investigatorFieldGroup.getFields().add(
-                InputFieldFactory.createTextField("firstName", "First Name", true));
-
-        investigatorFieldGroup.getFields().add(
+        
+        if (!remoteEntity) {
+        	investigatorFieldGroup.getFields().add(InputFieldFactory.createTextField("firstName", "First Name", true));
+        } else {
+        	investigatorFieldGroup.getFields().add(InputFieldFactory.createLabelField("firstName", "First Name", true));
+        }
+        if (!remoteEntity) {
+        	investigatorFieldGroup.getFields().add(
                 InputFieldFactory.createTextField("middleName", "Middle Name", false));
-        investigatorFieldGroup.getFields().add(
+        } else {
+        	investigatorFieldGroup.getFields().add(
+                    InputFieldFactory.createLabelField("middleName", "Middle Name", false));
+        }
+        if (!remoteEntity) {
+        	investigatorFieldGroup.getFields().add(
                 InputFieldFactory.createTextField("lastName", "Last Name", true));
-        investigatorFieldGroup.getFields().add(
+        } else {
+        	investigatorFieldGroup.getFields().add(
+                    InputFieldFactory.createLabelField("lastName", "Last Name", true));
+        }
+        if (!remoteEntity) {
+        	investigatorFieldGroup.getFields().add(
                 InputFieldFactory.createTextField("nciIdentifier", "Investigator number",
                         false));
-
-        InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress",
+        } else {
+        	investigatorFieldGroup.getFields().add(
+                    InputFieldFactory.createLabelField("nciIdentifier", "Investigator number",
+                            false));
+        }
+        InputField emailAddressField = null;
+        if (!remoteEntity) {
+        	emailAddressField = InputFieldFactory.createEmailField("emailAddress",
                 "Email address", true);
+        } else {
+        	emailAddressField = InputFieldFactory.createLabelField("emailAddress",
+                    "Email address", true);
+        }
         // InputFieldAttributes.setSize(emailAddressField, 30);
-
         investigatorFieldGroup.getFields().add(emailAddressField);
-
-        InputField phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone",
-                true);
-        phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
+        InputField phoneNumberField = null;
+        if (!remoteEntity) {
+        	phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
+        	phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        } else {
+        	phoneNumberField = InputFieldFactory.createLabelField("phoneNumber", "Phone", true);
+        }                
         // InputFieldAttributes.setSize(phoneNumberField, 30);
         investigatorFieldGroup.getFields().add(phoneNumberField);
-
-        InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
+        
+        InputField faxNumberField = null;
+        if (!remoteEntity) {
+        	faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
                 FieldValidator.PHONE_VALIDATOR);
-        faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        	faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        } else {
+        	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",
+                    FieldValidator.PHONE_VALIDATOR);
+        }
+        
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -85,7 +86,7 @@ public class ParticipantConverter {
 			List<OrganizationAssignedIdentifierType> orgAssignedIdList = identifiers.getOrganizationAssignedIdentifier();
 			if(orgAssignedIdList != null && !orgAssignedIdList.isEmpty()){
 				OrganizationAssignedIdentifier orgIdentifier;
-				Organization organization = new Organization();
+				Organization organization = new LocalOrganization();
 				for(OrganizationAssignedIdentifierType organizationAssignedIdentifierType : orgAssignedIdList){
 					orgIdentifier = new OrganizationAssignedIdentifier();
 					orgIdentifier.setType(organizationAssignedIdentifierType.getType().value());
@@ -120,7 +121,7 @@ public class ParticipantConverter {
 				studySite = new StudySite();
 				study = new Study();
 				identifier = new Identifier();
-				organization = new Organization();
+				organization = new LocalOrganization();
 				
 				identifier.setType(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getType().value());
 				identifier.setValue(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getValue());

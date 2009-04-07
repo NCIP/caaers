@@ -6,8 +6,8 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -44,7 +44,7 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
         csmUserRepository.setUserProvisioningManager(userProvisioningManager);
 
         userName = "somebody@betterbethere.com";
-        user = new ResearchStaff();
+        user = new LocalResearchStaff();
         user.setEmailAddress(userName);
         user.setLoginId(userName);
 

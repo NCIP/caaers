@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -33,11 +34,22 @@ public class OrganizationTab extends TabWithFields<Organization> {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final Organization command) {
+    	boolean remoteEntity = false;
+    	if (command instanceof RemoteOrganization) {
+    		remoteEntity = true;
+    	}
+    	
         InputFieldGroup organizationFieldGroup;
 
         organizationFieldGroup = new DefaultInputFieldGroup(ORGANIZATION_FIELD_GROUP);
 
-        InputField nameField = InputFieldFactory.createTextField("name", "Name", true);
+        InputField nameField = null;
+        if (!remoteEntity) {
+        	nameField = InputFieldFactory.createTextField("name", "Name", true);
+        } else {
+        	nameField = InputFieldFactory.createLabelField("name", "Name", true);
+        }
+        
         InputFieldAttributes.setSize(nameField, 80);
 
         organizationFieldGroup.getFields().add(nameField);
@@ -49,8 +61,14 @@ public class OrganizationTab extends TabWithFields<Organization> {
 
         organizationFieldGroup.getFields().add(descriptionField);
 
-        InputField nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode",
+        InputField nciInstituteField = null;
+        if (!remoteEntity) {
+        	nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode",
                         "NCI Identifier", true);
+        } else {
+        	nciInstituteField = InputFieldFactory.createLabelField("nciInstituteCode",
+                    "NCI Identifier", true);
+        }
         InputFieldAttributes.setSize(nciInstituteField, 40);
 
         organizationFieldGroup.getFields().add(nciInstituteField);

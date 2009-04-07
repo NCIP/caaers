@@ -17,7 +17,7 @@ public class StudyOrganizationTest extends CoreTestCase {
     protected void setUp() throws Exception {
 
         studyOrganization = new StudySite();
-        researchStaff = new ResearchStaff();
+        researchStaff = new LocalResearchStaff();
 
         studyPersonnel1 = new StudyPersonnel();
         studyPersonnel1.setRoleCode("role code");

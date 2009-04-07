@@ -53,7 +53,14 @@
         	},
         	
         	siteInvestigagorSelector: function(sInvestigator) { 
-        		return sInvestigator.investigator.fullName;
+        			var image;
+        	 	  if(sInvestigator.investigator.externalId != null){
+                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                  } else {
+                          image = '';
+                  }
+                  
+        		return (image + "" + sInvestigator.investigator.fullName);
         	}
         	
   });

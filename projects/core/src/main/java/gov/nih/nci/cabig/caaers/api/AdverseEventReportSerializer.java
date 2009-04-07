@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -610,7 +611,7 @@ public class AdverseEventReportSerializer {
 	    	return studyAgent;
 	    }
 	    private Organization getOrganization(Organization org) {
-	    	Organization organization = new Organization();
+	    	Organization organization = new LocalOrganization();
 	    	organization.setId(org.getId());
 	    	organization.setName(org.getName());
 	    	organization.setNciInstituteCode(org.getNciInstituteCode());

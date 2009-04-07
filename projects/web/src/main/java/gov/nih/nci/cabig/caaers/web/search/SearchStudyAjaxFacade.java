@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
@@ -65,7 +66,7 @@ public class SearchStudyAjaxFacade {
     private ParticipantDao participantDao;
 
     private OrganizationDao organizationDao;
-
+    private OrganizationRepository organizationRepository;
     private InvestigatorDao investigatorDao;
 
     private ResearchStaffDao researchStaffDao;
@@ -751,7 +752,7 @@ public class SearchStudyAjaxFacade {
         }
 
         try {
-            organizations = organizationDao.searchOrganization(organizationQuery);
+            organizations = organizationRepository.searchOrganization(organizationQuery);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
@@ -1406,6 +1407,15 @@ public class SearchStudyAjaxFacade {
 	public void setParticipantAjaxableDomainObjectRepository(
 			ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
 		this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+	}
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 }
 

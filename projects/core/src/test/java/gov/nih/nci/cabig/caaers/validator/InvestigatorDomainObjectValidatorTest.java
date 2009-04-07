@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.validator;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class InvestigatorDomainObjectValidatorTest  extends CaaersTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		investigator = new Investigator();
+		investigator = new LocalInvestigator();
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");
 	}

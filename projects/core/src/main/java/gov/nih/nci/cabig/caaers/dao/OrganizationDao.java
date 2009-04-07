@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -13,8 +15,11 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.semanticbits.coppa.infrastructure.RemoteSession;
 
 /**
  * This class implements the Data access related operations for the Organization domain object.
@@ -22,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Padmaja Vedula
  * @author Rhett Sutphin
  */
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class OrganizationDao extends GridIdentifiableDao<Organization> implements
                 MutableDomainObjectDao<Organization> {
 
@@ -30,12 +35,15 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
     
+    private RemoteSession remoteSession;
+    
     public void initialize(Organization org){
     	getHibernateTemplate().initialize(org);
     }
     public void lock(Organization org){
     	getHibernateTemplate().lock(org, LockMode.NONE);
     }
+    
     /**
      * Get the Class representation of the domain object that this DAO is representing.
      * 
@@ -51,10 +59,10 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * 
      * @return The default organization.
      */
-    public Organization getDefaultOrganization() {
-        List<Organization> results = getHibernateTemplate().find("from Organization where name=?",
-                        Organization.DEFAULT_SITE_NAME);
-        if (results.size() > 0) {
+    @SuppressWarnings("unchecked")
+	public Organization getDefaultOrganization() {
+        List<Organization> results = getHibernateTemplate().find("from Organization where name=?",Organization.DEFAULT_SITE_NAME);
+        if (results != null && !results.isEmpty()) {
         	return results.get(0);
         }
         return null;
@@ -65,8 +73,11 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * 
      * @return return the list of organizations.
      */
+    @SuppressWarnings("unchecked")
     public List<Organization> getAll() {
-        return getHibernateTemplate().find("from Organization");
+        //return getHibernateTemplate().find("from Organization");
+    	List<Organization> organizations = getHibernateTemplate().find("from Organization");
+    	return organizations;
     }
 
     /**
@@ -76,10 +87,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      *                The name of the organization.
      * @return The organization.
      */
-    public Organization getByName(final String name) {
-        List<Organization> results = getHibernateTemplate().find("from Organization where name= ?",
-                        name);
-        return results.size() > 0 ? results.get(0) : null;
+    @SuppressWarnings("unchecked")
+	public Organization getByName(final String name) {
+        List<Organization> results = getHibernateTemplate().find("from Organization where name= ?", name);
+        if (results != null && !results.isEmpty()) {
+        	return results.get(0);
+        }
+        return null;
     }
     
     /**
@@ -89,10 +103,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      *                The name of the organization.
      * @return The organization.
      */
-    public Organization getByNCIcode(final String code) {
-        List<Organization> results = getHibernateTemplate().find("from Organization where nci_institute_code = ?",
-                        code);
-        return results.size() > 0 ? results.get(0) : null;
+    @SuppressWarnings("unchecked")
+	public Organization getByNCIcode(final String code) {
+        List<Organization> results = getHibernateTemplate().find("from Organization where nci_institute_code = ?",code);
+        if (results != null && !results.isEmpty()) {
+        	return results.get(0);
+        }
+        return null;
     }
     
     /**
@@ -102,31 +119,33 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      *                the name fragments to search on.
      * @return List of matching organizations.
      */
+    @SuppressWarnings("unchecked")
     public List<Organization> getBySubnames(final String[] subnames) {
-        return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	// get local organizations and remote objects(stored locally)
+    	List<Organization> organizations = findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	return organizations;
+
     }
 
-    /**
-     * Get the list of organizations matching the name fragments.
-     * 
-     * @param subnames
-     *                the name fragments to search on.
-     * @return List of matching organizations.
-     */
-    public List<Organization> restrictBySubnames(final String[] subnames) {
-    	return getBySubnames(subnames);
-        //return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-    }
-    
     /**
      * Save or update the organization in the db.
      * 
      * @param organization
      *                the organization
      */
-    @Transactional(readOnly = false)
+    @SuppressWarnings("unchecked")
     public void save(final Organization organization) {
-        getHibernateTemplate().saveOrUpdate(organization);
+    	if(organization.getId() == null && organization instanceof LocalOrganization){
+    		Organization searchCriteria = new RemoteOrganization();
+    		searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
+    		List<Organization> remoteOrganizations = (List)remoteSession.find(searchCriteria);
+    		if(remoteOrganizations != null && remoteOrganizations.size() > 0){
+    			logger.error("Organization exists in external system");
+    			throw new RuntimeException("Organization exists in external system");
+    		}
+    	}else{
+    		getHibernateTemplate().saveOrUpdate(organization);
+    	}
     }
 
     /**
@@ -136,22 +155,20 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
     public List<Organization> getOrganizationsHavingStudySites() {
-
         return getHibernateTemplate().find("select distinct ss.organization from StudySite ss order by ss.organization.name");
     }
-
+    
     /**
-     * Search for organizations using query
-     * 
+     * This method queries caAERS DB to get all the Organizations which have a matching
+     * provided in the query.
      * @param query
-     *                The query for finding organizations.
-     * @return The list of organizations.
+     * @return
      */
-    @SuppressWarnings( { "unchecked" })
-    public List<Organization> searchOrganization(final OrganizationQuery query) {
-        String queryString = query.getQueryString();
+    @SuppressWarnings("unchecked")
+	public List<Organization> getLocalOrganizations(final OrganizationQuery query){
+    	String queryString = query.getQueryString();
         log.debug("::: " + queryString);
-        return (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
+        List localOrganizations =  (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException,
                             SQLException {
@@ -160,13 +177,23 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
                     hiberanteQuery.setParameter(key, value);
-
                 }
                 return hiberanteQuery.list();
             }
-
         });
-
+        return localOrganizations;
     }
+    
+    @SuppressWarnings("unchecked")
+	public List<Organization> getRemoteOrganizations(Organization organization){
+    	Organization searchCriteria = new RemoteOrganization();
+    	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
+    	return (List)remoteSession.find(searchCriteria);
+    }
+
+	@Required
+	public void setRemoteSession(RemoteSession remoteSession) {
+		this.remoteSession = remoteSession;
+	}
 
 }

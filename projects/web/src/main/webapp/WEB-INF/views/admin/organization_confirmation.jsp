@@ -19,9 +19,6 @@
 
 <chrome:division id="single-fields">
       <div class="content">
-           <div class="row">
-               <div>You have successfully created Organization with:- </div>
-           </div>
             <div class="row">
               <div class="label">Name:</div>
               <div class="value">${command.name}</div>

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
@@ -53,7 +54,7 @@ public class CreateParticipantAjaxFacade {
     private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
 
     private OrganizationDao organizationDao;
-
+    private OrganizationRepository organizationRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 
     /*
@@ -243,7 +244,7 @@ public class CreateParticipantAjaxFacade {
 
     public List<Organization> matchOrganization(final String text) {
         //List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
-    	List<Organization> orgs = organizationDao.restrictBySubnames(extractSubnames(text));
+    	List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
 
@@ -321,6 +322,16 @@ public class CreateParticipantAjaxFacade {
 	public void setParticipantAjaxableDomainObjectRepository(
 			ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
 		this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+	}
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+	
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 
 

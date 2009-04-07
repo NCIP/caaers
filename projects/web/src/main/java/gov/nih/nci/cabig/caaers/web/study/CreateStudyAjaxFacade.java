@@ -20,7 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -33,6 +33,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -83,6 +84,7 @@ public class CreateStudyAjaxFacade {
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
     private OrganizationDao organizationDao;
+    private OrganizationRepository organizationRepository;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private StudyDao studyDao;
     protected LowLevelTermDao lowLevelTermDao;
@@ -99,9 +101,9 @@ public class CreateStudyAjaxFacade {
         return ObjectTools.reduceAll(siteInvestigators,
                         new ObjectTools.Initializer<SiteInvestigator>() {
                             public void initialize(final SiteInvestigator instance) {
-                                instance.setInvestigator(new Investigator());
+                                instance.setInvestigator(new LocalInvestigator());
                             }
-                        }, "id", "investigator.firstName", "investigator.lastName");
+                        }, "id", "investigator.firstName", "investigator.lastName", "investigator.externalId");
     }
 
     public List<ResearchStaff> matchResearch(final String text, final int indexId) {
@@ -109,7 +111,7 @@ public class CreateStudyAjaxFacade {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text }, siteId);
-        return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName");
+        return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
     }
 
     private StudyCommand getStudyFromSession(final HttpServletRequest request) {
@@ -196,13 +198,13 @@ public class CreateStudyAjaxFacade {
      * added this method to call this wherever any security filtering on organization is required
      */
     public List<Organization> restrictOrganizations(final String text) {
-        List<Organization> orgs = organizationDao.restrictBySubnames(extractSubnames(text));
+        List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
     
     public List<Organization> matchOrganization(final String text) {
         List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
-        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
 
     private String[] extractSubnames(final String text) {
@@ -703,4 +705,13 @@ public class CreateStudyAjaxFacade {
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
     }
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	}
 }

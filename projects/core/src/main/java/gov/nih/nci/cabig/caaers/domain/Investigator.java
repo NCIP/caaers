@@ -4,8 +4,14 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.util.List;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -13,6 +19,11 @@ import javax.persistence.Transient;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import com.semanticbits.coppa.domain.annotations.RemoteProperty;
+import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
 
 /**
  * This class represents the Investigator domain object associated with the Adverse event report.
@@ -22,13 +33,20 @@ import org.hibernate.annotations.CascadeType;
  * @author Biju Joseph
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "investigators")
-public class Investigator extends User {
+@DiscriminatorColumn(name="type")
+@GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
+public abstract class Investigator extends User {
+	
+	protected Integer id;
+	
+	protected String nciIdentifier;
 
-    private String nciIdentifier;
-
-    private final LazyListHelper lazyListHelper;
-
+	protected final LazyListHelper lazyListHelper;
+	
+	protected String externalId;
+	
     public Investigator() {
         lazyListHelper = new LazyListHelper();
 
@@ -36,7 +54,17 @@ public class Investigator extends User {
         lazyListHelper.add(SiteInvestigator.class, new InstantiateFactory<SiteInvestigator>(
                         SiteInvestigator.class));
     }
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
     // business methods
 
     public void addSiteInvestigator(final SiteInvestigator siteInvestigator) {
@@ -84,7 +112,7 @@ public class Investigator extends User {
     // bean methods
  
 
-
+    @RemoteProperty
     public String getNciIdentifier() {
         return nciIdentifier;
     }
@@ -111,7 +139,16 @@ public class Investigator extends User {
     public void setSiteInvestigators(final List<SiteInvestigator> investigators) {
         setSiteInvestigatorsInternal(investigators);
     }
+    
+    @RemoteUniqueId
+    @RemoteProperty
+	public String getExternalId() {
+		return externalId;
+	}
 
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
  
     // /OBJECT METHODS
 

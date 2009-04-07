@@ -42,6 +42,7 @@
     <bean id="participantAjaxFacade"
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">
         <property name="organizationDao" ref="organizationDao"/>
+        <property name="organizationRepository" ref="organizationRepository"/>
         <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
 
@@ -76,4 +77,8 @@
     <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
 
     <bean id="importAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade"/>
+	
+	<bean id="remoteObjectBinder" class="gov.nih.nci.cabig.caaers.web.remote.RemoteObjectBinder" autowire="byType"/>
+  
+	
 </beans>

@@ -3,6 +3,12 @@
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
 	
+	<!--
+	<target name="resolve" depends="common.resolve">
+	     <copy-resources src="${module.lib}/main/coppasimulator" dest="${lib.dir}"  filter="false" />
+	 </target>
+	 -->
+	
 	<!-- Logic that finds the conf to be used while making war -->
 	<condition property="webConf" value="distGrid" else="dist">
 		<istrue value="${cctsWAR}"/>

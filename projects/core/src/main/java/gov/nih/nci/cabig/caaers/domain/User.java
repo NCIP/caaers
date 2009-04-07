@@ -6,70 +6,49 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
+
+import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
 
 /**
  * This class represents the User domain object associated with the Adverse event report.
  *
  * @author Saurabh Agrawal
  */
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
-//@SequenceGenerator(name = "seq_research_staffs_id", sequenceName = "seq_research_staffs_id")
-
+@MappedSuperclass
 public abstract class User extends Person {
 	
-	private Integer id;
-	
-    private String loginId;
+	protected String loginId;
 
-    private List<UserGroupType> userGroupTypes;
+	protected List<UserGroupType> userGroupTypes;
 
-    private String emailAddress;
+	protected String emailAddress;
 
-    private String phoneNumber;
+	protected String phoneNumber;
 
-    private String faxNumber;
+	protected String faxNumber;
 
-    private String salt;
+	protected String salt;
 
-    private String token;
+	protected String token;
 
-    private Timestamp tokenTime;
+	protected Timestamp tokenTime;
 
-    private Timestamp passwordLastSet;
+	protected Timestamp passwordLastSet;
 
-    private int numFailedLogins;
+	protected int numFailedLogins;
 
-    private List<String> passwordHistory;
+	protected List<String> passwordHistory;
 
     public User() {
         userGroupTypes = new ArrayList<UserGroupType>();
         passwordHistory = new ArrayList<String>();
-    }
-    
-    @Id 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id-generator")
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
     
     public String getLoginId() {
@@ -204,12 +183,6 @@ public abstract class User extends Person {
         result = 31 * result + (faxNumber != null ? faxNumber.hashCode() : 0);
         return result;
     }
-
-    // @OneToMany(targetEntity = UserGroup.class,)
-    // @Transient
-    // public List<UserGroup> getUserGroups() {
-    // return null;
-    // }
 
     @Transient
     public List<UserGroupType> getUserGroupTypes() {

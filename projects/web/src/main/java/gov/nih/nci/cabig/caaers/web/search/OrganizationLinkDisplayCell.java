@@ -15,9 +15,15 @@ public class OrganizationLinkDisplayCell extends AbstractCell {
         String cellValue = column.getValueAsString();
         String link = model.getContext().getContextPath()
                         + "/pages/admin/editOrganization?organizationId=";
+        
+        String image = "";
+        String imagePath = model.getContext().getContextPath() + "/images/chrome/nci_icon_22.png";
+        if (organization.getExternalId() != null) {
+        	image = "<img src=\"" +imagePath+"\" alt=\"NCI data\" width=\"17\" height=\"16\" border=\"0\" align=\"middle\">&nbsp;";
+        }
 
         if (organization != null) {
-            cellValue = "<a href=\"" + link + organization.getId().toString() + "\">" + cellValue
+            cellValue = image + "<a href=\"" + link + organization.getId().toString() + "\">" + cellValue
                             + "</a>";
         }
         return cellValue;

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -19,7 +20,7 @@ public class CreateOrganizationController extends OrganizationController<Organiz
      * @return the organization
      */
     private Organization createOrganization() {
-        Organization organization = new Organization();
+        Organization organization = new LocalOrganization();
         return organization;
     }
 

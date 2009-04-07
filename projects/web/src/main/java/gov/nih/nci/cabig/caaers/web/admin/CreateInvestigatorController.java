@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -33,7 +34,7 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
 
     private Investigator createInvestigatorWithDesign() {
         SiteInvestigator siteInvestigator = new SiteInvestigator();
-        Investigator investigator = new Investigator();
+        Investigator investigator = new LocalInvestigator();
         siteInvestigator.setInvestigator(investigator);
         investigator.addSiteInvestigator(siteInvestigator);
         return investigator;

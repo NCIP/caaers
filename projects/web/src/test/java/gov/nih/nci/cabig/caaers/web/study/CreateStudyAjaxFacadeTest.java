@@ -10,7 +10,8 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -51,13 +52,13 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     public void testSiteInvestigatorsReduced() throws Exception {
         SiteInvestigator expectedInvestigator = new SiteInvestigator();
         expectedInvestigator.setId(34);
-        Investigator investigator = new Investigator();
+        Investigator investigator = new LocalInvestigator();
         investigator.setFirstName("Joe");
         investigator.setLastName("Something");
         expectedInvestigator.setInvestigator(investigator);
 
         StudySite studySite = new StudySite();
-        studySite.setOrganization(setId(6, new Organization()));
+        studySite.setOrganization(setId(6, new LocalOrganization()));
         study.addStudySite(studySite);
 
         expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(Arrays.asList(expectedInvestigator));

@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * This class implements the Data access related operations for the SiteInvestigator domain object.
  * 
@@ -20,6 +22,8 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("investigator.nciIdentifier");
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
     private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
+    
+    private RemoteInvestigatorDaoHelper remoteInvestigatorDaoHelper;
 
     /**
      * Get the Class representation of the domain object that this DAO is representing.
@@ -65,9 +69,21 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
      *                the name fragments to search on.
      * @return List of matching site investigators.
      */
+    @Transactional(readOnly = false)
     public List<SiteInvestigator> getBySubnames(String[] subnames, int site) {
-        return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
+    	List<SiteInvestigator> siteInvestigators= findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+        
+    	List<SiteInvestigator> remoteSiteInvestigators= remoteInvestigatorDaoHelper.getSiteInvestigators(site);
+    	for (SiteInvestigator siteInvestigator:remoteSiteInvestigators) {
+    		
+    		if (!siteInvestigators.contains(siteInvestigator)) {
+    			save(siteInvestigator);
+    			siteInvestigators.add(siteInvestigator);
+    		}
+    	}
+    	return siteInvestigators;
+    	
     }
     
     
@@ -82,5 +98,10 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
         return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+
+	public void setRemoteInvestigatorDaoHelper(
+			RemoteInvestigatorDaoHelper remoteInvestigatorDaoHelper) {
+		this.remoteInvestigatorDaoHelper = remoteInvestigatorDaoHelper;
+	}
     
 }

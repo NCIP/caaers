@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Location;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -75,7 +76,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		
 		TaskConfig tc = wfConfig.findTaskConfig("a1");
 		PersonAssignee a1 = new PersonAssignee();
-		r1  = new ResearchStaff();
+		r1  = new LocalResearchStaff();
 		r1.setEmailAddress("joel@abcd.com");
 		r1.setLoginId("joel");
 		a1.setUser(r1);

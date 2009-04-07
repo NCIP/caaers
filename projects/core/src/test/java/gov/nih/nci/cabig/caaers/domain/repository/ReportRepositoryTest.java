@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
@@ -129,7 +131,7 @@ public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
         StudyInvestigator studyInvestigator = new StudyInvestigator();
         studyInvestigator.setRoleCode("Site Principal Investigator");
         SiteInvestigator siteInvestigator = new SiteInvestigator();
-        Investigator investigator = new Investigator();
+        Investigator investigator = new LocalInvestigator();
         investigator.setEmailAddress("biju@kk.com");
         siteInvestigator.setInvestigator(investigator);
         studyInvestigator.setSiteInvestigator(siteInvestigator);
@@ -165,13 +167,13 @@ public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
         StudyInvestigator studyInvestigator = new StudyInvestigator();
         studyInvestigator.setRoleCode("Site Principal Investigator");
         SiteInvestigator siteInvestigator = new SiteInvestigator();
-        Investigator investigator = new Investigator();
+        Investigator investigator = new LocalInvestigator();
         investigator.setEmailAddress("biju@kk.com");
         siteInvestigator.setInvestigator(investigator);
         studyInvestigator.setSiteInvestigator(siteInvestigator);
         site.addStudyInvestigators(studyInvestigator);
 
-        ResearchStaff staff = new ResearchStaff();
+        ResearchStaff staff = new LocalResearchStaff();
         staff.setEmailAddress("aa@kk.com");
         StudyPersonnel studyPersonnel = new StudyPersonnel();
         studyPersonnel.setRoleCode("Participant Coordinator");

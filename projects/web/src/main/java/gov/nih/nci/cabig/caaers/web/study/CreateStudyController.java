@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.web.remote.RemoteObjectBinder;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import javax.servlet.ServletException;
@@ -24,7 +25,8 @@ public class CreateStudyController extends StudyController<StudyCommand> {
      * Layout Tabs
      * @param flow - flow the Flow object
      */
-
+	private RemoteObjectBinder remoteObjectBinder;
+	
     @Override
     protected void layoutTabs(final Flow<StudyCommand> flow) {
     	/**
@@ -53,7 +55,8 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
         StudyCommand cmd = new StudyCommand();
-        Study study = new Study();
+        Study study = new Study();        
+        cmd.setRemoteObjectBinder(remoteObjectBinder);
         cmd.setStudy(study);
 
         StudyFundingSponsor sponsor = new StudyFundingSponsor();
@@ -102,5 +105,9 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         if (targetPage < curPage) return true;
         return super.suppressValidation(request, command);
     }
+
+	public void setRemoteObjectBinder(RemoteObjectBinder remoteObjectBinder) {
+		this.remoteObjectBinder = remoteObjectBinder;
+	}
 
 }

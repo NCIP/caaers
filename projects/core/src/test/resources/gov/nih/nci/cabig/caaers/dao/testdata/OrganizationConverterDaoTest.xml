@@ -1,0 +1,21 @@
+<dataset>
+	<ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"
+        nci_institute_code="code 1"
+    />
+    
+    <ORGANIZATIONS
+        id="-1002"
+        name="Another Site"
+        grid_id="anotherGridSite"
+    />
+    
+    <ORGANIZATIONS
+        id="-1003"
+        name="default"
+        grid_id="defaultGridSite"
+    />
+
+</dataset>

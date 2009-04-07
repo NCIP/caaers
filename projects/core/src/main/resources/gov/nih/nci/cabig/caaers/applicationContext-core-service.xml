@@ -107,6 +107,7 @@ This applicationContext contains the definition of the concrete services
 	<!--  Migrators -->
 	<bean id="identifierMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator">
 		<property name="organizationDao" ref="organizationDao" />
+		<property name="organizationRepository" ref="organizationRepository" />
 	</bean>
 	<bean id="studyTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTherapyMigrator" />
 	<bean id="studyTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTerminologyMigrator">
@@ -118,6 +119,7 @@ This applicationContext contains the definition of the concrete services
 		<property name="researchStaffDao" ref="researchStaffDao" />
 		<property name="organizationDao" ref="organizationDao" />
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
+		<property name="organizationRepository" ref="organizationRepository" />
 	</bean>
 	<bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator">
 		<property name="agentDao" ref="agentDao" />

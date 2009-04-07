@@ -83,6 +83,9 @@
 			
 			<!-- Jaxen XPATH -->
 			<dependency org="jaxen" name="jaxen" rev="1.1" />
+			
+			<!-- COPPA Common dependencies -->
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.integration" />
 							
 			<!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />

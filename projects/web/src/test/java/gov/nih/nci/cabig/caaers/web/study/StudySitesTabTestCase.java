@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -11,6 +12,11 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+import org.easymock.EasyMock;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Ion C. Olaru
@@ -35,14 +41,14 @@ public class StudySitesTabTestCase extends AbstractStudyWebTestCase {
     public void testValidation() {
         StudySite ss = new StudySite();
         ss.setId(71);
-        ss.setOrganization(new Organization());
+        ss.setOrganization(new LocalOrganization());
         ss.getOrganization().setId(2);
         ss.getOrganization().setName("A");
         study.addStudySite(ss);
 
         ss = new StudySite();
         ss.setId(72);
-        ss.setOrganization(new Organization());
+        ss.setOrganization(new LocalOrganization());
         ss.getOrganization().setId(1);
         ss.getOrganization().setName("B");
         study.addStudySite(ss);
@@ -57,14 +63,14 @@ public class StudySitesTabTestCase extends AbstractStudyWebTestCase {
     public void testPostProcess() {
         StudySite ss = new StudySite();
         ss.setId(71);
-        ss.setOrganization(new Organization());
+        ss.setOrganization(new LocalOrganization());
         ss.getOrganization().setId(2);
         ss.getOrganization().setName("A");
         study.addStudySite(ss);
 
         ss = new StudySite();
         ss.setId(72);
-        ss.setOrganization(new Organization());
+        ss.setOrganization(new LocalOrganization());
         ss.getOrganization().setId(1);
         ss.getOrganization().setName("B");
         study.addStudySite(ss);

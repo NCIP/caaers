@@ -127,9 +127,9 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         if (organization == null) {
             if (other.organization != null) return false;
         } else if (!organization.equals(other.organization)) return false;
-        if (statusDate == null) {
-            if (other.statusDate != null) return false;
-        } else if (!statusDate.equals(other.statusDate)) return false;
+       // if (statusDate == null) {
+        //    if (other.statusDate != null) return false;
+        //} else if (!statusDate.equals(other.statusDate)) return false;
         return true;
     }
 

@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
@@ -48,6 +50,24 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         	public List<Organization> getOrganizationsHavingStudySites() {
         		return new ArrayList<Organization>();
         	}
+			public void convertToRemote(Organization localOrganization,
+					Organization remoteOrganization) {
+				// TODO Auto-generated method stub
+				
+			}
+			public List<Organization> getAll() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			public List<Organization> restrictBySubnames(String[] subnames) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			public List<Organization> searchOrganization(OrganizationQuery query) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
         	
         });
         createParticipantTab.setListValues(listValues);

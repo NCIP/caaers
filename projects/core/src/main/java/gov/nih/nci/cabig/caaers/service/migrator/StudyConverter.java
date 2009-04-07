@@ -20,6 +20,9 @@ import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -159,7 +162,7 @@ public class StudyConverter {
 				studyInvestigator.setStatusCode(studyInvestigatorType.getStatusCode().value());
 					SiteInvestigatorType siteInvestigatorType = studyInvestigatorType.getSiteInvestigator();
 					siteInvestigator = new SiteInvestigator();
-						investigator = new Investigator();
+						investigator = new LocalInvestigator();
 						investigator.setFirstName(siteInvestigatorType.getInvestigator().getFirstName());
 						investigator.setLastName(siteInvestigatorType.getInvestigator().getLastName());
 						investigator.setNciIdentifier(siteInvestigatorType.getInvestigator().getNciIdentifier());
@@ -180,7 +183,7 @@ public class StudyConverter {
 				studyPersonnel = new StudyPersonnel();
 				studyPersonnel.setRoleCode(studyPersonnelType.getRoleCode().value());
 				studyPersonnel.setStatusCode(studyPersonnelType.getStatusCode().value());
-				ResearchStaff researchStaff = new ResearchStaff();
+				ResearchStaff researchStaff = new LocalResearchStaff();
 				researchStaff.setFirstName(studyPersonnelType.getResearchStaff().getFirstName());
 				researchStaff.setLastName(studyPersonnelType.getResearchStaff().getLastName());
 				researchStaff.setNciIdentifier(studyPersonnelType.getResearchStaff().getNciIdentifier());
@@ -258,7 +261,7 @@ public class StudyConverter {
 			if(studyDto.getFundingSponsor().getStudyFundingSponsor() != null){
 				studyFundingSponsor = new StudyFundingSponsor();
 				if(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization() != null){
-					Organization organization = new Organization();
+					Organization organization = new LocalOrganization();
 					organization.setName(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization().getName());
 					organization.setNciInstituteCode(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization().getNciInstituteCode());
 					studyFundingSponsor.setOrganization(organization);
@@ -291,7 +294,7 @@ public class StudyConverter {
 			if(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter() != null){
 				studyCoordinatingCenter = new StudyCoordinatingCenter();
 				if(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization() != null){
-					Organization organization = new Organization();
+					Organization organization = new LocalOrganization();
 					organization.setName(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().getName());
 					organization.setNciInstituteCode(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode());
 					studyCoordinatingCenter.setOrganization(organization);
@@ -320,7 +323,7 @@ public class StudyConverter {
 				for(StudySiteType studySiteType : studySiteList){
 					studySite = new StudySite();
 					if(studySiteType.getOrganization() != null){
-						Organization organization = new Organization();
+						Organization organization = new LocalOrganization();
 						organization.setName(studySiteType.getOrganization().getName());
 						organization.setNciInstituteCode(studySiteType.getOrganization().getNciInstituteCode());
 						studySite.setOrganization(organization);
@@ -347,7 +350,7 @@ public class StudyConverter {
 			List<OrganizationAssignedIdentifierType> orgAssignedIdList = identifiers.getOrganizationAssignedIdentifier();
 			if(orgAssignedIdList != null && !orgAssignedIdList.isEmpty()){
 				OrganizationAssignedIdentifier orgIdentifier;
-				Organization organization = new Organization();
+				Organization organization = new LocalOrganization();
 				for(OrganizationAssignedIdentifierType organizationAssignedIdentifierType : orgAssignedIdList){
 					orgIdentifier = new OrganizationAssignedIdentifier();
 					orgIdentifier.setType(organizationAssignedIdentifierType.getType().value());

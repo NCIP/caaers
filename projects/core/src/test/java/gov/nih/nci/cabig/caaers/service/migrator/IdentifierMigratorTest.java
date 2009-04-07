@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 
@@ -25,6 +27,7 @@ import org.easymock.classextension.EasyMock;
 public class IdentifierMigratorTest extends AbstractTestCase {
 	
 	OrganizationDao organizationDao;
+	OrganizationRepository organizationRepository;
 	IdentifierMigrator migrator;
 	
 	String orgName = "SemanticBits";
@@ -40,6 +43,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 		super.setUp();
 		
 		organizationDao = registerDaoMockFor(OrganizationDao.class);
+		organizationRepository = registerMockFor(OrganizationRepositoryImpl.class);
 		
 		migrator = new IdentifierMigrator();
 		migrator.setOrganizationDao(organizationDao);
@@ -66,7 +70,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
         organizations.add(organization);
         
         EasyMock.expect(organizationDao.getByName(orgName)).andReturn(organization);
-        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations).anyTimes();
+        EasyMock.expect(organizationRepository.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations).anyTimes();
 		
 		replayMocks();
 		migrator.migrate(src, dest, outcome);

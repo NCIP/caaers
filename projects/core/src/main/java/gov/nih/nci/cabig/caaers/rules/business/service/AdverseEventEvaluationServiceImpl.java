@@ -74,8 +74,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         }
 
         for (StudyOrganization so : study.getStudyOrganizations()) {
-            message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
-                            RuleType.REPORT_SCHEDULING_RULES.getName(), aer);
+            message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, RuleType.REPORT_SCHEDULING_RULES.getName(), aer);
             if (!message.equals(CAN_NOT_DETERMINED)) {
                 if (message.indexOf("IGNORE") < 0) {
                     return SERIOUS_ADVERSE_EVENT;
@@ -96,8 +95,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         // boolean ignore = false ;
 
         for (AdverseEvent ae : aes) {
-            String message = evaluateSponsorTarget(ae, study, null,
-                            RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
+            String message = evaluateSponsorTarget(ae, study, null,RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
 
             System.out.println("message is " + message);
 
@@ -105,8 +103,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
                 if (message.indexOf("IGNORE") < 0) {
                     // add the report definitions to the map
-                    String[] messages = RuleUtil
-                                    .charSeparatedStringToStringArray(message, "\\|\\|");
+                    String[] messages = RuleUtil.charSeparatedStringToStringArray(message, "\\|\\|");
                     for (int i = 0; i < messages.length; i++) {
                         reportDefinitionsForSponsor.add(messages[i]);
                     }
@@ -304,6 +301,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return final_result;
 
     }
+    
 
     /**
      * This method will evaluate the rules that are bound in the below URI. URI naming convention

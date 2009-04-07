@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import junit.framework.TestCase;
@@ -41,7 +42,7 @@ public class CreateOrganizationControllerTest extends TestCase {
         controller.setOrganizationDao(organizationDao);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        organization = new Organization();
+        organization = new LocalOrganization();
 
     }
 

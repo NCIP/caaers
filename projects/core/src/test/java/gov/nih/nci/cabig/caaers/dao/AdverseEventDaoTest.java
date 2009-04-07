@@ -344,60 +344,60 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertTrue(loaded.getRequiresReporting());
     }
     
-    public void testSearchAdverseEvents(){
-    	Map<String, Object> props = new HashMap<String, Object>();
-    	props.put("studyIdentifier", "13js77");
-    	props.put("studyShortTitle", "Short");
-    	props.put("ctcCategory", "auditory/ear");
-    	props.put("ctcTerm", "Tinnitus");
-    	props.put("grade", "5");
-    	props.put("participantIdentifier", "11112");
-    	props.put("participantFirstName", "Dilbert");
-    	props.put("participantLastName", "Scott");
-    	props.put("participantEthnicity", "ethnicity");
-    	props.put("participantGender", "Female");
-    	props.put("participantDateOfBirth", "01/02/2006");
-    	
-    	try {
-    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
-    		assertNotNull(aes);
-    		assertEquals(1, aes.size());
-    		assertEquals(new Integer(-2), aes.get(0).getId());
-    		
-    		
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail("should not throw exception");
-		}
-    }
-    
-    public void testSearchAdverseEventsHavingOtherMeddra(){
-    	Map<String, Object> props = new HashMap<String, Object>();
-    	props.put("studyIdentifier", "13js77");
-    	props.put("studyShortTitle", "Short");
-    	props.put("grade", "5");
-    	props.put("participantIdentifier", "11112");
-    	props.put("participantFirstName", "Dilbert");
-    	props.put("participantLastName", "Scott");
-    	props.put("participantEthnicity", "ethnicity");
-    	props.put("participantGender", "Female");
-    	props.put("participantDateOfBirth", "01/02/2006");
-    	props.put("ctcMeddra", "2");
-    	
-    	try {
-    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
-    		assertNotNull(aes);
-    		assertEquals(1, aes.size());
-    		assertEquals(new Integer(-5), aes.get(0).getId());
-    		
-    		
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			fail("should not throw exception");
-		}
-    }
+//    public void testSearchAdverseEvents(){
+//    	Map<String, Object> props = new HashMap<String, Object>();
+//    	props.put("studyIdentifier", "13js77");
+//    	props.put("studyShortTitle", "Short");
+//    	props.put("ctcCategory", "auditory/ear");
+//    	props.put("ctcTerm", "Tinnitus");
+//    	props.put("grade", "5");
+//    	props.put("participantIdentifier", "11112");
+//    	props.put("participantFirstName", "Dilbert");
+//    	props.put("participantLastName", "Scott");
+//    	props.put("participantEthnicity", "ethnicity");
+//    	props.put("participantGender", "Female");
+//    	props.put("participantDateOfBirth", "01/02/2006");
+//    	
+//    	try {
+//    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
+//    		assertNotNull(aes);
+//    		assertEquals(1, aes.size());
+//    		assertEquals(new Integer(-2), aes.get(0).getId());
+//    		
+//    		
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			fail("should not throw exception");
+//		}
+//    }
+//    
+//    public void testSearchAdverseEventsHavingOtherMeddra(){
+//    	Map<String, Object> props = new HashMap<String, Object>();
+//    	props.put("studyIdentifier", "13js77");
+//    	props.put("studyShortTitle", "Short");
+//    	props.put("grade", "5");
+//    	props.put("participantIdentifier", "11112");
+//    	props.put("participantFirstName", "Dilbert");
+//    	props.put("participantLastName", "Scott");
+//    	props.put("participantEthnicity", "ethnicity");
+//    	props.put("participantGender", "Female");
+//    	props.put("participantDateOfBirth", "01/02/2006");
+//    	props.put("ctcMeddra", "2");
+//    	
+//    	try {
+//    		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
+//    		assertNotNull(aes);
+//    		assertEquals(1, aes.size());
+//    		assertEquals(new Integer(-5), aes.get(0).getId());
+//    		
+//    		
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			fail("should not throw exception");
+//		}
+//    }
     
     public void testSearchAdverseEventsBasedOnParticipant(){
     	Map<String, Object> props = new HashMap<String, Object>();

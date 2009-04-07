@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This applicationContext contains the definition of the concrete services
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-lazy-init="true">
+	
+	<bean id="organizationService" class="com.semanticbits.coppasimulator.service.OrganizationService"/>
+	<bean id="researchStaffRemoteService" class="com.semanticbits.coppasimulator.service.ResearchStaffService"/>
+	<bean id="investigatorRemoteService" class="com.semanticbits.coppasimulator.service.InvestigatorService"/>
+	
+	<bean id="identifiedOrganizationCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.IdentifiedOrganizationCorrelationServiceImpl"/>
+	<bean id="clinicalResearchStaffCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.ClinicalResearchStaffCorrelationServiceImpl"/>
+	<bean id="healthCareProviderCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.HealthCareProviderCorrelationServiceImpl"/>
+	<bean id="personEntityServiceRemote" class="com.semanticbits.coppasimulator.service.PersonEntityServiceImpl"/>
+	<bean id="organizationEntityServiceRemote" class="com.semanticbits.coppasimulator.service.OrganizationEntityServiceImpl"/>
+	<bean id="identifiedPersonCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.IdentifiedPersonCorrelationServiceImpl"/>
+	
+	
+	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
+		<property name="organizationService" ref="organizationService"/>
+		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
+		<property name="organizationEntityServiceRemote" ref="organizationEntityServiceRemote"/>
+	</bean>
+	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
+		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
+		<property name="clinicalResearchStaffCorrelationServiceRemote" ref="clinicalResearchStaffCorrelationServiceRemote"/>
+		<property name="personEntityServiceRemote" ref="personEntityServiceRemote"/>
+		<property name="identifiedPersonCorrelationServiceRemote" ref="identifiedPersonCorrelationServiceRemote"/>
+	</bean>
+	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
+		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
+		<property name="healthCareProviderCorrelationServiceRemote" ref="healthCareProviderCorrelationServiceRemote"/>
+		<property name="personEntityServiceRemote" ref="personEntityServiceRemote"/>
+		<property name="identifiedPersonCorrelationServiceRemote" ref="identifiedPersonCorrelationServiceRemote"/>
+	</bean>		
+</beans>

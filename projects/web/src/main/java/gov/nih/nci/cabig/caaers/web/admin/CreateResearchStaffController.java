@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -19,7 +20,7 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-        ResearchStaff researchStaff = new ResearchStaff();
+        ResearchStaff researchStaff = new LocalResearchStaff();
         return researchStaff;
     }
 

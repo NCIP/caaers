@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+import org.easymock.EasyMock;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Ion C. Olaru
@@ -47,13 +53,13 @@ public class StudyInvestigatorsTabTestCase extends AbstractStudyWebTestCase {
 
     public void testValidation() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
         so.addStudyInvestigators(new StudyInvestigator());
         study.addStudyOrganization(so);
 
         so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("B");
         so.addStudyInvestigators(new StudyInvestigator());
         study.addStudyOrganization(so);
@@ -67,7 +73,7 @@ public class StudyInvestigatorsTabTestCase extends AbstractStudyWebTestCase {
 
     public void testPostProcess() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
         so.addStudyInvestigators(new StudyInvestigator());
         so.addStudyInvestigators(new StudyInvestigator());
@@ -90,13 +96,13 @@ public class StudyInvestigatorsTabTestCase extends AbstractStudyWebTestCase {
 
     public void testCreateFieldGroups() {
         StudyOrganization so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("A");
         so.addStudyInvestigators(new StudyInvestigator());
         study.addStudyOrganization(so);
 
         so = new StudySite();
-        so.setOrganization(new Organization());
+        so.setOrganization(new LocalOrganization());
         so.getOrganization().setName("B");
         so.addStudyInvestigators(new StudyInvestigator());
         study.addStudyOrganization(so);

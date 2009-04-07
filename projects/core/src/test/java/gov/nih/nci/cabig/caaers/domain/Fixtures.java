@@ -60,7 +60,7 @@ public class Fixtures {
     }
 
     public static Organization createOrganization(final String name) {
-        Organization organization = new Organization();
+        Organization organization = new LocalOrganization();
         organization.setName(name);
         organization.setDescriptionText("dec:" + name);
         organization.setNciInstituteCode("NCI333:" + name);
@@ -141,7 +141,8 @@ public class Fixtures {
     public static ReportDefinition createReportDefinition(String name) {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
-        Organization org = Fixtures.createOrganization("Test", "test");
+        Organization org = new LocalOrganization();
+        org.setName("Test");
         def.setOrganization(org);
         def.addPlannedNotification(createPlannedEmailNotification());
         return def;
@@ -240,7 +241,7 @@ public class Fixtures {
 
     public static ResearchStaff createResearchStaff(final Organization organization,
                                                     final List<UserGroupType> userGroupTypes, final String name) {
-        ResearchStaff researchStaff = new ResearchStaff();
+        ResearchStaff researchStaff = new LocalResearchStaff();
         researchStaff.setFirstName("FN"+name);
         researchStaff.setLastName("LN"+name);
         researchStaff.setEmailAddress(name + "@def.com");
@@ -353,7 +354,7 @@ public class Fixtures {
     }
     
     public static Investigator createInvestigator(String name){
-    	Investigator inv = new Investigator();
+    	Investigator inv = new LocalInvestigator();
     	inv.setFirstName("FN" + name);
     	inv.setLastName("LN" + name);
     	inv.setEmailAddress("abc@kk.com");
@@ -449,7 +450,7 @@ public class Fixtures {
     }
     
     public static Organization createOrganization(final String name, final String nciInstituteCode) {
-        Organization organization = new Organization();
+        Organization organization = new LocalOrganization();
         organization.setName(name);
         organization.setDescriptionText("dec:" + name);
         organization.setNciInstituteCode(nciInstituteCode);

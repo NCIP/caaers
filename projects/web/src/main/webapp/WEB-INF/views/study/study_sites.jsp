@@ -39,10 +39,12 @@
                 this.orgName = orgName;
                 this.sitePropertyName = "study.studySites[" + index + "].organization";
                 this.siteInputId = this.sitePropertyName + "-input";
+                this.options = {minChars : 3, frequency : 2};
                 if (orgName) $(this.siteInputId).value = orgName;
                 AE.createStandardAutocompleter(this.sitePropertyName,
                             this.sitePopulator.bind(this),
-                            this.siteSelector.bind(this)
+                            this.siteSelector.bind(this),
+                            this.options
                         );
             },
             sitePopulator: function(autocompleter, text) {
@@ -52,8 +54,15 @@
             },
 
             siteSelector: function(organization) {
+            	var image;            	
+            	if(organization.externalId != null){
+                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                } else {
+                          image = '';
+                }
+                
                 var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-                return organization.name + nciInstituteCode
+                return organization.name + nciInstituteCode + "" + image
             }
 
         });

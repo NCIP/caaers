@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -11,6 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+import org.easymock.EasyMock;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Ion C. Olaru
@@ -44,14 +50,14 @@ public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
         OrganizationAssignedIdentifier o = new OrganizationAssignedIdentifier();
         o.setType("T1");
         o.setValue("V1");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-1");
         study.addIdentifier(o);
 
         o = new OrganizationAssignedIdentifier();
         o.setType("T2");
         o.setValue("V2");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-2");
         study.addIdentifier(o);
 
@@ -66,14 +72,14 @@ public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
         OrganizationAssignedIdentifier o = new OrganizationAssignedIdentifier();
         o.setType("T1");
         o.setValue("V1");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-1");
         study.addIdentifier(o);
 
         o = new OrganizationAssignedIdentifier();
         o.setType("T1");
         o.setValue("V1");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-2");
         study.addIdentifier(o);
 
@@ -88,14 +94,14 @@ public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
         OrganizationAssignedIdentifier o = new OrganizationAssignedIdentifier();
         o.setType("T1");
         o.setValue("V1");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-1");
         study.addIdentifier(o);
 
         o = new OrganizationAssignedIdentifier();
         o.setType("T2");
         o.setValue("V2");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-2");
         study.addIdentifier(o);
 
@@ -115,14 +121,14 @@ public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
         OrganizationAssignedIdentifier o = new OrganizationAssignedIdentifier();
         o.setType("T1");
         o.setValue("V1");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-1");
         study.addIdentifier(o);
 
         o = new OrganizationAssignedIdentifier();
         o.setType("T2");
         o.setValue("V2");
-        o.setOrganization(new Organization());
+        o.setOrganization(new LocalOrganization());
         o.getOrganization().setName("O-2");
         study.addIdentifier(o);
 

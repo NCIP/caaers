@@ -178,6 +178,9 @@
 			<!-- Rules Jar -->
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
 			
+			<!-- COPPA Common dependencies -->
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.integration" />			
+			
 			<!-- Apache POI dependencies -->
 			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>
 			
@@ -191,6 +194,6 @@
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default"/>
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>
 			<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
-
+			
         </dependencies>
 </ivy-module>

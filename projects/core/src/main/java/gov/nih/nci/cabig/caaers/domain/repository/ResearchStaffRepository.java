@@ -1,8 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
+import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -32,7 +36,8 @@ public class ResearchStaffRepository {
     private CSMUserRepository csmUserRepository;
 
     private ResearchStaffDao researchStaffDao;
-
+    private ResearchStaffConverterDao researchStaffConverterDao;
+    private OrganizationConverterDao organizationConverterDao;
 
     private UserProvisioningManager userProvisioningManager;
     private String authenticationMode;
@@ -76,6 +81,25 @@ public class ResearchStaffRepository {
         if(mailException != null) throw mailException;
         
     }
+    
+    public void evict(ResearchStaff researchStaff){
+    	researchStaffDao.evict(researchStaff);
+    }
+    
+    @Transactional(readOnly = false)
+    public void convertToRemote(ResearchStaff localResearchStaff, ResearchStaff remoteResearchStaff){
+    	ConverterResearchStaff conRStaff = researchStaffConverterDao.getById(localResearchStaff.getId());
+    	conRStaff.setType("REMOTE");
+    	conRStaff.setExternalId(remoteResearchStaff.getExternalId());
+    	conRStaff.setFirstName(remoteResearchStaff.getFirstName());
+    	conRStaff.setLastName(remoteResearchStaff.getLastName());
+    	conRStaff.setMiddleName(remoteResearchStaff.getMiddleName());
+    	conRStaff.setPhoneNumber(remoteResearchStaff.getPhoneNumber());
+    	conRStaff.setFaxNumber(remoteResearchStaff.getFaxNumber());
+    	ConverterOrganization conOrg = organizationConverterDao.getById(localResearchStaff.getOrganization().getId());
+    	conRStaff.setConverterOrganization(conOrg);
+    	researchStaffConverterDao.save(conRStaff);
+    }
 
     public ResearchStaff getById(final int id) {
         ResearchStaff researchStaff = researchStaffDao.getById(id);
@@ -108,6 +132,15 @@ public class ResearchStaffRepository {
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
         return researchStaffDao.getBySubnames(subnames, site);
     }
+    
+    
+    public List<ResearchStaff> getResearchStaff(final ResearchStaffQuery query){
+    	return researchStaffDao.getResearchStaff(query);
+    }
+    
+    public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
+    	return researchStaffDao.getRemoteResearchStaff(researchStaff);
+    }
 
     @Required
     public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
@@ -135,4 +168,15 @@ public class ResearchStaffRepository {
     public void setAuthenticationMode(String authenticationMode) {
         this.authenticationMode = authenticationMode;
     }
+
+	public void setResearchStaffConverterDao(
+			ResearchStaffConverterDao researchStaffConverterDao) {
+		this.researchStaffConverterDao = researchStaffConverterDao;
+	}
+
+	public void setOrganizationConverterDao(
+			OrganizationConverterDao organizationConverterDao) {
+		this.organizationConverterDao = organizationConverterDao;
+	}
+    
 }

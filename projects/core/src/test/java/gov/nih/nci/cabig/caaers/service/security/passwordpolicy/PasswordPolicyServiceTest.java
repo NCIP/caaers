@@ -6,7 +6,7 @@ import static org.easymock.EasyMock.not;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
@@ -32,7 +32,7 @@ public class PasswordPolicyServiceTest extends CaaersTestCase {
         super.setUp();
 
         userName = "user@domain";
-        user = new ResearchStaff();
+        user = new LocalResearchStaff();
         user.setEmailAddress(userName);
         csmUserRepository = registerMockFor(CSMUserRepository.class);
         expect(csmUserRepository.getUserByName(userName)).andReturn(user).anyTimes();

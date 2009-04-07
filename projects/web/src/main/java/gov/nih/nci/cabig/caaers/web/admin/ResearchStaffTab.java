@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
@@ -85,44 +86,91 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(final ResearchStaff command) {
+    	boolean remoteEntity = false;
+    	if (command instanceof RemoteResearchStaff) {
+    		remoteEntity = true;
+    	}
         InputFieldGroup researchStaffFieldGroup;
 
         InputFieldGroup siteFieldGroup;
 
         siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
-        siteFieldGroup.getFields().add(InputFieldFactory.createAutocompleterField("organization", "Organization", true));
+        if (!remoteEntity) {
+        	siteFieldGroup.getFields().add(InputFieldFactory.createAutocompleterField("organization", "Organization", true));
+        } else {
+        	siteFieldGroup.getFields().add(InputFieldFactory.createLabelField("organization.name", "Organization", true));
+        }
+        
         researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
-
-        InputField firstNameField = InputFieldFactory.createTextField("firstName", "First name", true);
+        InputField firstNameField = null;
+        if (!remoteEntity) {
+        	 firstNameField = InputFieldFactory.createTextField("firstName", "First name", true);
+        } else {
+        	 firstNameField = InputFieldFactory.createLabelField("firstName", "First name", true);
+        }        
         InputFieldAttributes.setSize(firstNameField, 30);
         researchStaffFieldGroup.getFields().add(firstNameField);
 
-        InputField middleNameField = InputFieldFactory.createTextField("middleName", "Middle name", false);
+        InputField middleNameField = null;
+        if (!remoteEntity) {
+           middleNameField = InputFieldFactory.createTextField("middleName", "Middle name", false);
+        } else {
+    	   middleNameField = InputFieldFactory.createLabelField("middleName", "Middle name", false);
+        }  
         InputFieldAttributes.setSize(middleNameField, 30);
         researchStaffFieldGroup.getFields().add(middleNameField);
 
-        InputField lastNameField = InputFieldFactory.createTextField("lastName", "Last name", true);
+        InputField lastNameField = null;
+        if (!remoteEntity) {
+        	lastNameField = InputFieldFactory.createTextField("lastName", "Last name", true);
+        } else {
+        	lastNameField = InputFieldFactory.createLabelField("lastName", "Last name", true);
+        }
         InputFieldAttributes.setSize(lastNameField, 30);
         researchStaffFieldGroup.getFields().add(lastNameField);
 
-        InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Researcher ID", false);
+        
+        InputField ncidIdField = null;
+        if (!remoteEntity) {
+        	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Researcher ID", false);
+        } else {
+        	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Researcher ID", false);
+        }
         InputFieldAttributes.setSize(ncidIdField, 30);
         researchStaffFieldGroup.getFields().add(ncidIdField);
 
-        InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress", "Email address", true);
+        InputField emailAddressField = null;
+        if (!remoteEntity) {
+        	emailAddressField = InputFieldFactory.createEmailField("emailAddress", "Email address", true);
+        } else {
+        	emailAddressField = InputFieldFactory.createLabelField("emailAddress", "Email address", true);
+        }
         InputFieldAttributes.setSize(emailAddressField, 30);
         researchStaffFieldGroup.getFields().add(emailAddressField);
 
-        InputField phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
-        InputFieldAttributes.setSize(phoneNumberField, 30);
-        phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
+        InputField phoneNumberField = null;
+        if (!remoteEntity) {
+        	phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
+        	phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        } else {
+        	phoneNumberField = InputFieldFactory.createLabelField("phoneNumber", "Phone", false);
+        }        
+        InputFieldAttributes.setSize(phoneNumberField, 30);        
         researchStaffFieldGroup.getFields().add(phoneNumberField);
 
-        InputField faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax", false);
-        InputFieldAttributes.setSize(faxNumberField, 30);
-        faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
+        InputField faxNumberField = null;
+        if (!remoteEntity) {
+        	faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax", false);
+        	faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        } else {
+        	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax", false);
+        }
+        InputFieldAttributes.setSize(faxNumberField, 30);        
         researchStaffFieldGroup.getFields().add(faxNumberField);
-
+        
+        
         InputField loginIdField = InputFieldFactory.createTextField("loginId", "Grid identity", false);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
