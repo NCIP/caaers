@@ -35,6 +35,8 @@ This applicationContext contains the definition of the DAOs
                 <ref bean="investigatorResolver"/>
             </list>
          </property> 
+         <property name="enableCaching" value="false"/>
+		 <property name="enabled" value="false"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
