@@ -25,6 +25,7 @@
 		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
 		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" /></a>
 		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" /></a>
+		<c:if test="${command.commandType == 'reportingPeriod'}">
 		<div id="wf-action-div">
 			<div id="wf-action-label">
 			Next Action
@@ -39,6 +40,7 @@
 			 
 			
 		</div>
+		</c:if>
 	</div>
 </div>
 <div id="reportingPeriod-validation-errors-popup" style="display:none" >
@@ -56,7 +58,6 @@
 
 <script language="JavaScript1.2">
 	 
-	
 	function addComment(){
 		routingHelper.addComment();
 	}

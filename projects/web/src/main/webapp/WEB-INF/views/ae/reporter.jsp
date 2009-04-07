@@ -23,7 +23,7 @@
     
     
     <script type="text/javascript">
-    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     
         var NAME_FIELDS = [
             'firstName', 'middleName', 'lastName','title', 'address.street', 'address.city', 'address.state', 'address.zip'

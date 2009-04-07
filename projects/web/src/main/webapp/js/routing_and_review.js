@@ -1,8 +1,9 @@
 var RoutingAndReviewHelper = Class.create();
 Object.extend(RoutingAndReviewHelper.prototype, {
 	
-	initialize : function(aFacade){
+	initialize : function(aFacade, workflowType){
 		this.ajaxFacade = aFacade;
+		this.workflowType = workflowType;
 	},
 	enableEditMode : function(id){
 		// First of all set the variable edit_comment_id with the correct id of the comment
@@ -67,9 +68,11 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	retrieveReviewCommentsAndActions : function(){
 		this.ajaxFacade.retrieveReviewCommentsAndActions(function(ajaxOutput){
 			this.updateCommentElementContent(ajaxOutput.htmlContent);
-			var sbox = $('sliderWFAction');
-			var sboxIndicator = $('sliderWFAction-indicator');
-			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+			if(this.workflowType == 'reportingPeriod'){
+				var sbox = $('sliderWFAction');
+				var sboxIndicator = $('sliderWFAction-indicator');
+				this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+			}
 		}.bind(this)) ;
 		$('entire-slider').show();
 	},

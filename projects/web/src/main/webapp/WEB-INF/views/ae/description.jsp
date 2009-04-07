@@ -32,7 +32,7 @@
     </style>
     
     <script language="JavaScript">
-    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     
 		Event.observe(window, "load", function() {
 			if($("aeReport.responseDescription.studyDrugInterrupted")){

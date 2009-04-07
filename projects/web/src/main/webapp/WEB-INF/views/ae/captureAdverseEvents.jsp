@@ -23,7 +23,7 @@
 	var deleteIndex = 0;
 
     var oldSignatures = new Array();
-    var routingHelper = new RoutingAndReviewHelper(captureAE);
+    var routingHelper = new RoutingAndReviewHelper(captureAE, 'reportingPeriod');
 
     Object.extend(RPCreatorClass.prototype, {
         initialize : function(rpDetailsDiv) {

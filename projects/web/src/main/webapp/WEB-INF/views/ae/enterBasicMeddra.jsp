@@ -44,7 +44,7 @@
     </tags:slider>
     
      <script type="text/javascript">
-     	var routingHelper = new RoutingAndReviewHelper(createAE);
+     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
 		

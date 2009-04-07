@@ -46,7 +46,7 @@
         .attribution td.definite  { background-color: #6E81A6 }
     </style>
     <script type="text/javascript">
-    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     
         function updateCodeClass(evt) {
             var attrib_level = $F(Event.element(evt))

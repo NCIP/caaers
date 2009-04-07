@@ -64,7 +64,7 @@ div.row div.value, div.row div.extra {
     	</jsp:attribute>
     </tags:slider>
 <script type="text/javascript">
-		var routingHelper = new RoutingAndReviewHelper(createAE);
+		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
         var AETerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.aeTerminology.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id}

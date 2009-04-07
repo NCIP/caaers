@@ -9,7 +9,7 @@
  	<tags:javascriptLink name="routing_and_review" />
  	<tags:dwrJavascriptLink objects="reviewRP,createAE,reviewAeReport"/>
     <script>
-	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport);
+	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport, 'aeReport');
 	    
 	    function addComment(){
 			routingHelper.addComment();

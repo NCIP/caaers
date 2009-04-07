@@ -136,6 +136,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
 	}
 	
+	/**
+	 * This method returns the type of the command object (reportingPeriod)
+	 *
+	 */
+	public String getCommandType(){
+		return "reportingPeriod";
+	}
+	
 	public void reassociate(ExpeditedAdverseEventReport aeReport){
 		aeReportDao.reassociate(aeReport);
 	}

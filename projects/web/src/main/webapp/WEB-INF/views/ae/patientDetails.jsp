@@ -24,7 +24,7 @@
     </tags:slider>
 
 <script type="text/javascript">
-		var routingHelper = new RoutingAndReviewHelper(createAE);
+		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
 		var mHistory = null;
  		var mHistoryClass = Class.create();
  		Object.extend(mHistoryClass.prototype, {

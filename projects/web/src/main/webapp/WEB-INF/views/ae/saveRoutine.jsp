@@ -26,7 +26,7 @@
     </tags:slider>
 	<tags:stylesheetLink name="ae"/>
 	<script>
-		var routingHelper = new RoutingAndReviewHelper(createAE);
+		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
 		function fireAction(action, selected){
 			document.getElementById('command')._target.name='_noname';
 			document.saveRoutineForm._action.value=action;

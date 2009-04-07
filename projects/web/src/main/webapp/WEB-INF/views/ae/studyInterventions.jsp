@@ -34,7 +34,7 @@
 
 <script language="JavaScript">
 var divisions = new Hash();
-//var routingHelper = new RoutingAndReviewHelper(createAE);
+var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
 
 function refreshBoxes() {
     registerAll();

@@ -116,6 +116,13 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	}
     }
     
+    /**
+     * This method returns the type of the command object (aeReport)
+     */
+    public String getCommandType(){
+    	return "aeReport";
+    }
+    
     public void populateCreationAndAmendmentList(){
     	// For Sponsor/amendable newlySelectedReport take the following action
     	//        - create New report if it doesnt exist

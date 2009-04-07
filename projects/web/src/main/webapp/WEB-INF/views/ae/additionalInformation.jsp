@@ -30,7 +30,7 @@
     	</jsp:attribute>
     </tags:slider>
     <script type="text/javascript">
-    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     	
     	Event.observe(window, "load", function() {
             

@@ -51,7 +51,7 @@
         .delete { position: absolute; right: 20px; }
     </style>
     <script>
-    	var routingHelper = new RoutingAndReviewHelper(reviewRP);
+    	var routingHelper = new RoutingAndReviewHelper(reviewRP, 'reportingPeriod');
     	
 		Event.observe(window, "load", function(){
 			routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();

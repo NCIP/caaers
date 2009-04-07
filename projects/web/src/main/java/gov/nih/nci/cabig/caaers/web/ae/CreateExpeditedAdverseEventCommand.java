@@ -104,6 +104,10 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		}
     }
 	
+	public String getCommandType(){
+		return "aeReport";
+	}
+	
 	public void reassociateSelectedReportDefinitions(){
 		//always reassociate the report definitions	
 		for (ReportDefinition definition : selectedReportDefinitions) {
