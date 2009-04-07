@@ -135,7 +135,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
     public void save(final Organization organization) {
-    	if(organization.getId() == null && organization instanceof LocalOrganization){
+    	if(organization.getId() == null && organization instanceof LocalOrganization && remoteSession.getEnabled()){
     		Organization searchCriteria = new RemoteOrganization();
     		searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
     		List<Organization> remoteOrganizations = (List)remoteSession.find(searchCriteria);
@@ -186,9 +186,12 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     
     @SuppressWarnings("unchecked")
 	public List<Organization> getRemoteOrganizations(Organization organization){
-    	Organization searchCriteria = new RemoteOrganization();
-    	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
-    	return (List)remoteSession.find(searchCriteria);
+    	if(remoteSession.getEnabled()){
+    	   	Organization searchCriteria = new RemoteOrganization();
+        	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
+        	return (List)remoteSession.find(searchCriteria);
+    	}
+    	return null;
     }
 
 	@Required

@@ -21,8 +21,6 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
 	
 	
 	public void testSaveLocalOrg(){
-		try{
-			
 			Organization localOrg = new LocalOrganization();
 			localOrg.setName("Local Org");
 			localOrg.setCity("Local City");
@@ -31,10 +29,14 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
 			localOrg.setNciInstituteCode("Local Code");
 			getDao().save(localOrg);
 			
-			fail("Expecting an exception control is not expected to hit this statement");
-		}catch(Exception e){
-			//TestCase Pass.
-		}
+			interruptSession();
+			
+			localOrg = getDao().getByNCIcode("Local Code");
+			assertNotNull(localOrg);
+			assertEquals("Local Org", localOrg.getName());
+			assertEquals("Country", localOrg.getCountry());
+			
+			
 	}
 	
 	public void testSaveRemoteOrg(){
