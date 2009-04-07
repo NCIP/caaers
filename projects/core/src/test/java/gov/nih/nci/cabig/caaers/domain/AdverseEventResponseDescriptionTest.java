@@ -48,9 +48,9 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         //assertEquals(reducedDate, adverseEventResponseDescription.getReducedDate());
         assertEquals(description.getRetreated(), adverseEventResponseDescription.getRetreated());
         assertEquals(description.getStudyDrugInterrupted(), adverseEventResponseDescription.getStudyDrugInterrupted());
-        assertEquals(reducedDose, adverseEventResponseDescription.getReducedDose());
-        assertEquals(retreated, adverseEventResponseDescription.getRetreated());
-        assertEquals(studyDrugInterrupted, adverseEventResponseDescription.getStudyDrugInterrupted());
+        //assertEquals(reducedDose, adverseEventResponseDescription.getReducedDose());
+        //assertEquals(retreated, adverseEventResponseDescription.getRetreated());
+        //assertEquals(studyDrugInterrupted, adverseEventResponseDescription.getStudyDrugInterrupted());
         
         assertEquals("primaryTreatment must be same", description.getPrimaryTreatment(), adverseEventResponseDescription.getPrimaryTreatment());
      
@@ -72,11 +72,11 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     	 AdverseEventResponseDescription adverseEventResponseDescription = description.copy();
 
         assertEquals("primaryTreatmentApproximateTime must  be refer same objects", description.getPrimaryTreatmentApproximateTime(), adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
-        assertEquals("primaryTreatmentApproximateTime must  be refer same objects", 
-        		primaryTreatmentApproximateTime, 
-        		adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
-
-        assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+//        assertEquals("primaryTreatmentApproximateTime must  be refer same objects", 
+//        		primaryTreatmentApproximateTime, 
+//        		adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+//
+//        assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
 
 
     }
