@@ -255,8 +255,9 @@ This applicationContext contains the definition of the concrete services
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
 	</bean>	
-	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer"/>
-		
+	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" >
+		<property name="reportDao" ref="reportDao" />
+	</bean>		
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
 	<bean id="freeMarkerService" class="gov.nih.nci.cabig.caaers.service.FreeMarkerService"/>
