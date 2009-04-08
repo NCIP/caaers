@@ -42,7 +42,7 @@ public class TreatmentTab extends AeTab {
         InputField totalCourseField = InputFieldFactory.createNumberField("totalCourses", "Total number of courses to date", false);
         InputFieldAttributes.setSize(totalCourseField, 4);
         InputField investigationalAgentAdministeredField = InputFieldFactory.createSelectField("investigationalAgentAdministered", "Was an investigational agent administered on this protocol?" , true, createInvestigationalAgentAdministeredOptions());
-
+        InputFieldAttributes.setSize(investigationalAgentAdministeredField, 10);
         
         InputField firstCourseDateField = InputFieldFactory.createPastDateField("firstCourseDate", "Start date of first course", false);
         firstCourseDateField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
