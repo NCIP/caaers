@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
@@ -17,9 +17,8 @@ import org.acegisecurity.context.SecurityContextHolder;
 
 public class ResearchStaffSecurityFiltererTest extends DaoTestCase {
 	
-	private ResearchStaffDao researchStaffDao = 
-		(ResearchStaffDao) getApplicationContext().getBean("researchStaffDao");
-
+	private ResearchStaffRepository researchStaffRepository = (ResearchStaffRepository)getApplicationContext().getBean("researchStaffRepository");
+	
 	private ResearchStaffSecurityFilterer researchStaffSecurityFilterer = 
 		(ResearchStaffSecurityFilterer) getApplicationContext().getBean("researchStaffSecurityFilterer");
 	/**
@@ -40,7 +39,7 @@ public class ResearchStaffSecurityFiltererTest extends DaoTestCase {
 		//disable security before query 
 		disableAuthorization();
 		ResearchStaffQuery query = new ResearchStaffQuery();
-		List<ResearchStaff> researchStaffs = researchStaffDao.findResearchStaff(query);
+		List<ResearchStaff> researchStaffs = researchStaffRepository.getResearchStaff(query);
 		assertEquals(4,researchStaffs.size());
 		
 		//enable security 

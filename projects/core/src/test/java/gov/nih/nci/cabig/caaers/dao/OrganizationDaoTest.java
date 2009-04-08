@@ -21,22 +21,20 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
 	
 	
 	public void testSaveLocalOrg(){
-			Organization localOrg = new LocalOrganization();
-			localOrg.setName("Local Org");
-			localOrg.setCity("Local City");
-			localOrg.setState("Local State");
-			localOrg.setCountry("Country");
-			localOrg.setNciInstituteCode("Local Code");
-			getDao().save(localOrg);
-			
-			interruptSession();
-			
-			localOrg = getDao().getByNCIcode("Local Code");
-			assertNotNull(localOrg);
-			assertEquals("Local Org", localOrg.getName());
-			assertEquals("Country", localOrg.getCountry());
-			
-			
+		Organization localOrg = new LocalOrganization();
+		localOrg.setName("Local Org");
+		localOrg.setCity("Local City");
+		localOrg.setState("Local State");
+		localOrg.setCountry("Country");
+		localOrg.setNciInstituteCode("Local Code");
+		getDao().save(localOrg);
+		
+		interruptSession();
+		
+		localOrg = getDao().getByNCIcode("Local Code");
+		assertNotNull(localOrg);
+		assertEquals("Local Org", localOrg.getName());
+		assertEquals("Country", localOrg.getCountry());
 	}
 	
 	public void testSaveRemoteOrg(){
@@ -49,13 +47,11 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
 	    assertEquals("Remote Code", loaded.getNciInstituteCode());
 	}
 	
-	//REVISIT
-	
-//	public void testGetRemoteOrg(){
-//		Organization remoteOrg = getDao().getByNCIcode("REMOTE_RTOG");
-//		assertNotNull("Organization not found", remoteOrg);
-//		assertEquals("REMOTE_RTOG", remoteOrg.getNciInstituteCode());
-//	}
+	public void testGetRemoteOrg(){
+		Organization remoteOrg = getDao().getByNCIcode("REMOTE_RTOG");
+		assertNotNull("Organization not found", remoteOrg);
+		assertEquals("REMOTE_RTOG", remoteOrg.getNciInstituteCode());
+	}
 	
     public void testGetByNCIcode(){
     	Organization org = getDao().getByNCIcode("RTOG");
@@ -80,17 +76,10 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
         assertEquals("New Site", loaded.getName());
     }
  
-  //REVISIT
-//    public void testGetAll() throws Exception {
-//        List<Organization> orgs = getDao().getAll();
-//        assertEquals(5, orgs.size());
-//    }
-    
     public void testInitializeAndLock(){
     	Organization org = getDao().getById(-1001);
     	getDao().initialize(org);
     	getDao().lock(org);
-    	
     }
     
     public void testGetDefaultOrganization(){
