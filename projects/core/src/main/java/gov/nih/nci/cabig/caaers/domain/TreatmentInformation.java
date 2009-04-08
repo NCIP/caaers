@@ -43,6 +43,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     private Integer totalCourses;
     private TreatmentAssignment treatmentAssignment;
     private String treatmentDescription;
+    private Boolean investigationalAgentAdministered;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -168,4 +169,13 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
         return treatmentInformation;
     }
+
+	public Boolean getInvestigationalAgentAdministered() {
+		return investigationalAgentAdministered;
+	}
+
+	public void setInvestigationalAgentAdministered(
+			Boolean investigationalAgentAdministered) {
+		this.investigationalAgentAdministered = investigationalAgentAdministered;
+	}
 }
