@@ -142,7 +142,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.restrict*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.dao.ResearchStaffDao+.find*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
                               "/>
 
 
@@ -238,7 +238,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.find(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
-        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ResearchStaffDao.find*(..))"
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
                
 

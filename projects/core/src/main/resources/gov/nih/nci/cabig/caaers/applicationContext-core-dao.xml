@@ -512,7 +512,6 @@ This applicationContext contains the definition of the DAOs
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
     <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao">
-    	<property name="organizationDao" ref="organizationDao"/>
     	<property name="remoteSession" ref="remoteSession"/>
     </bean>
     <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao">
@@ -593,7 +592,7 @@ This applicationContext contains the definition of the DAOs
     
     <bean id="uniqueResearchStaffEmailAddressValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddressValidator">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="researchStaffRepository" ref="researchStaffRepository"/>
     </bean>
     
     <!-- validator beans end here-->
@@ -635,6 +634,8 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="researchStaffRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
         <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="organizationDao" ref="organizationDao"/>
+        <property name="organizationRepository" ref="organizationRepository"/>
         <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="authenticationMode" ref="authenticationMode"/>
