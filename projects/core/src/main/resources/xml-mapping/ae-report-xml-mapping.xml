@@ -1038,6 +1038,10 @@
     <field name="totalCourses" type="integer">
       <bind-xml name="totalCourses"/>
     </field>
+    <field name="investigationalAgentAdministered" type="boolean">
+      <bind-xml name="investigationalAgentAdministered" node="element"/>
+    </field> 
+    
     <field name="adverseEventCourse" type="gov.nih.nci.cabig.caaers.domain.CourseDate">
       <bind-xml name="AdverseEventCourse"/>
     </field>
