@@ -1,15 +1,17 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Required;
 
 public class UniqueResearchStaffEmailAddressValidator implements
 Validator<UniqueResearchStaffEmailAddress>{
 	
-	private ResearchStaffDao researchStaffDao;
+	private ResearchStaffRepository researchStaffRepository;
 	String message;
 	
 	public void initialize(UniqueResearchStaffEmailAddress parameters) {
@@ -27,7 +29,7 @@ Validator<UniqueResearchStaffEmailAddress>{
         String emailAddress = (String)value;
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
         researchStaffQuery.filterByLoginId(emailAddress);
-        List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
+        List<ResearchStaff> researchStaffList = researchStaffRepository.getResearchStaff(researchStaffQuery);
             if (researchStaffList!=null && !researchStaffList.isEmpty()) {
             	message = "EmailAddress already in use";
             	return false;
@@ -35,7 +37,10 @@ Validator<UniqueResearchStaffEmailAddress>{
 		return true;
 	}
 
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
+	@Required
+	public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
 	}
+
 }

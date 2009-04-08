@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
@@ -40,8 +39,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     
     private RemoteSession remoteSession;
     
-    private OrganizationDao organizationDao;
-
     /**
      * Get the Class representation of the domain object that this DAO is representing.
      * 
@@ -66,20 +63,8 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     			logger.error("ResearchStaff exists in external system");
     			throw new RuntimeException("ResearchStaff exists in external system");
     		}
-    	}else{
-    		getHibernateTemplate().saveOrUpdate(researchStaff);
     	}
-    }
-    
-    @SuppressWarnings( { "unchecked" })
-    @Transactional(readOnly = false)
-    public List<ResearchStaff> findResearchStaff(final ResearchStaffQuery query) {
-    	List<ResearchStaff> researchStaffs = searchResearchStaff(query);
-    	ResearchStaff searchCriteria = new RemoteResearchStaff();
-    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(searchCriteria); 
-    	
-    	return merge (researchStaffs,remoteResearchStaffs);
-    	//return searchResearchStaff(query);
+    	getHibernateTemplate().saveOrUpdate(researchStaff);
     }
     
     /**
@@ -89,7 +74,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false)
-	public List<ResearchStaff> getResearchStaff(final ResearchStaffQuery query){
+	public List<ResearchStaff> getLocalResearchStaff(final ResearchStaffQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
         List<ResearchStaff> researchStaffs = (List<ResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
@@ -115,7 +100,8 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      * @param researchStaff
      * @return
      */
-    public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
+    @SuppressWarnings("unchecked")
+	public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
     	ResearchStaff searchCriteria = new RemoteResearchStaff();
     	searchCriteria.setOrganization(researchStaff.getOrganization());
     	searchCriteria.setFirstName(researchStaff.getFirstName());
@@ -126,28 +112,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     }
     
     
-    
-    /**
-     * Search for research staffs using query.
-     * 
-     * @param query
-     *                The query used to search for research staffs
-     * @return The list of research staffs.
-     */
-    @SuppressWarnings( { "unchecked" })
-    @Transactional(readOnly = false)
-    public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
-    	//Get all the RS from caAERS DB
-        List<ResearchStaff> researchStaffs = getResearchStaff(query);
-        
-        //Get all the RS from External System
-        ResearchStaff searchCriteria = new RemoteResearchStaff();
-    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(searchCriteria); 
-    	
-    	//Merge and Return
-    	return merge (researchStaffs,remoteResearchStaffs);
-    }
-
     /**
      * Get the list of research staffs matching the name fragments and belonging to specified site.
      * 
@@ -162,12 +126,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 
     	List<ResearchStaff> researchStaffs =  findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-    	ResearchStaff searchCriteria = new RemoteResearchStaff();
-    	Organization org = organizationDao.getById(site);
-    	searchCriteria.setOrganization(org);
-    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(searchCriteria); 
-    	
-    	return merge (researchStaffs,remoteResearchStaffs);
+    	return researchStaffs;
     }
     
     /**
@@ -184,43 +143,9 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 
     	List<ResearchStaff> researchStaffs = findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
         		NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-        ResearchStaff searchCriteria = new RemoteResearchStaff();
-    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(searchCriteria); 
-    	
-    	return merge (researchStaffs,remoteResearchStaffs);
+    	return researchStaffs;
     }
 
-	private List<ResearchStaff> merge(List<ResearchStaff> localList , List<ResearchStaff> remoteList) {
-		for (ResearchStaff remoteResearchStaff:remoteList) {
-			ResearchStaff rs = getByEmailAddress(remoteResearchStaff.getEmailAddress());
-    		if (rs == null ) {
-    			// look for his organization ;
-    			Organization remoteOrganization = remoteResearchStaff.getOrganization();
-    			//if associated organization is not there in our DB
-    			Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    			if (organization == null) {
-    				// TODO : need to get the remote organozation from coppa and save it ..
-    				organizationDao.save(remoteOrganization);
-    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    			} 
-    			remoteResearchStaff.setOrganization(organization);
-        		save(remoteResearchStaff);
-        		rs = getByEmailAddress(remoteResearchStaff.getEmailAddress());
-        		rs.setFirstName(remoteResearchStaff.getFirstName());
-        		rs.setLastName(remoteResearchStaff.getLastName());
-        		rs.setMiddleName(remoteResearchStaff.getMiddleName());
-        		localList.add(rs);
-        	} else {
-        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
-        		if (!localList.contains(rs)) {
-        			localList.add(rs);
-        		}
-        	}
-    	}
-		
-		return localList;
-	}
-	
     /**
      * Get the user who has specified email address.
      * 
@@ -228,13 +153,15 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      *                The loginId of the user.
      * @return The user.
      */
-    public ResearchStaff getByLoginId(String loginId) {
+    @SuppressWarnings("unchecked")
+	public ResearchStaff getByLoginId(String loginId) {
         List<ResearchStaff> results = getHibernateTemplate().find(
                         "from ResearchStaff where loginId= ?", loginId);
         return results.size() > 0 ? results.get(0) : null;
     }
 
-    public ResearchStaff getByEmailAddress(String email) {
+    @SuppressWarnings("unchecked")
+	public ResearchStaff getByEmailAddress(String email) {
         List<ResearchStaff> results = getHibernateTemplate().find(
                         "from ResearchStaff where emailAddress= ?", email);
         return results.size() > 0 ? results.get(0) : null;
@@ -244,7 +171,4 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 		this.remoteSession = remoteSession;
 	}
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
 }

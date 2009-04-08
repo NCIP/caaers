@@ -162,7 +162,6 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		conOrg.setState(remoteOrganization.getState());
 		conOrg.setCountry(remoteOrganization.getCountry());
 		organizationConverterDao.save(conOrg);
-		
 	}
  	
  	@SuppressWarnings("unchecked")

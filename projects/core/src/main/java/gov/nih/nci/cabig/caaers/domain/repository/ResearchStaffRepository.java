@@ -2,11 +2,14 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -34,19 +37,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class ResearchStaffRepository {
 
     private CSMUserRepository csmUserRepository;
-
     private ResearchStaffDao researchStaffDao;
     private ResearchStaffConverterDao researchStaffConverterDao;
     private OrganizationConverterDao organizationConverterDao;
-
+    private OrganizationRepository organizationRepository;
+    private OrganizationDao organizationDao;
     private UserProvisioningManager userProvisioningManager;
     private String authenticationMode;
-
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
 
     public List<ResearchStaff> getAll() {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-        return researchStaffDao.searchResearchStaff(researchStaffQuery);
+        return getResearchStaff(researchStaffQuery);
     }
     
     /**
@@ -107,10 +109,6 @@ public class ResearchStaffRepository {
         return researchStaff;
     }
 
-    public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
-        return researchStaffDao.searchResearchStaff(query);
-    }
-
     @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
         try {
@@ -128,16 +126,69 @@ public class ResearchStaffRepository {
         }
         return researchStaff;
     }
-
+    
+    @Transactional(readOnly = false)
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
-        return researchStaffDao.getBySubnames(subnames, site);
+    	List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(subnames, site);
+    	ResearchStaff searchCriteria = new RemoteResearchStaff();
+    	Organization org = organizationDao.getById(site);
+    	searchCriteria.setOrganization(org);
+    	List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(searchCriteria); 
+    	
+    	return merge (researchStaffs,remoteResearchStaffs);
     }
     
-    
+    @Transactional(readOnly = false)
     public List<ResearchStaff> getResearchStaff(final ResearchStaffQuery query){
-    	return researchStaffDao.getResearchStaff(query);
+    	//Get all the RS from caAERS DB
+        List<ResearchStaff> researchStaffs = researchStaffDao.getLocalResearchStaff(query);
+        //Get all the RS from External System
+        ResearchStaff searchCriteria = new RemoteResearchStaff();
+    	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria); 
+    	//Merge and Return
+    	return merge (researchStaffs,remoteResearchStaffs);
     }
     
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+    private List<ResearchStaff> merge(List<ResearchStaff> localList , List<ResearchStaff> remoteList) {
+		for (ResearchStaff remoteResearchStaff:remoteList) {
+			ResearchStaff rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
+    		if (rs == null ) {
+    			// look for his organization ;
+    			Organization remoteOrganization = remoteResearchStaff.getOrganization();
+    			//if associated organization is not there in our DB
+    			Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    			if (organization == null) {
+    				// TODO : need to get the remote organozation from coppa and save it ..
+    				organizationRepository.create(remoteOrganization);
+    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    			} 
+    			remoteResearchStaff.setOrganization(organization);
+        		save(remoteResearchStaff,"");
+        		rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
+        		rs.setFirstName(remoteResearchStaff.getFirstName());
+        		rs.setLastName(remoteResearchStaff.getLastName());
+        		rs.setMiddleName(remoteResearchStaff.getMiddleName());
+        		localList.add(rs);
+        	} else {
+        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
+        		if (!localList.contains(rs)) {
+        			localList.add(rs);
+        		}
+        	}
+    	}
+		return localList;
+	}
+    
+    @Transactional(readOnly = false)
+    public List<ResearchStaff> getByNciIdentifier(final String[] subnames, final int site){
+    	List<ResearchStaff> researchStaffs = researchStaffDao.getByNciIdentifier(subnames,site);
+    	ResearchStaff searchCriteria = new RemoteResearchStaff();
+    	List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(searchCriteria); 
+    	
+    	return merge (researchStaffs,remoteResearchStaffs);
+    }
+
     public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
     	return researchStaffDao.getRemoteResearchStaff(researchStaff);
     }
@@ -147,18 +198,15 @@ public class ResearchStaffRepository {
         this.researchStaffDao = researchStaffDao;
     }
 
-
     @Required
     public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
     }
 
-
     @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
     }
-    
 
     @Required
     public String getAuthenticationMode() {
@@ -169,14 +217,28 @@ public class ResearchStaffRepository {
         this.authenticationMode = authenticationMode;
     }
 
+    @Required
 	public void setResearchStaffConverterDao(
 			ResearchStaffConverterDao researchStaffConverterDao) {
 		this.researchStaffConverterDao = researchStaffConverterDao;
 	}
 
+	@Required
 	public void setOrganizationConverterDao(
 			OrganizationConverterDao organizationConverterDao) {
 		this.organizationConverterDao = organizationConverterDao;
+	}
+
+	
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	}
+	
+	@Required
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
     
 }

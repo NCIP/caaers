@@ -135,7 +135,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
     public void save(final Organization organization) {
-    	if(organization.getId() == null && organization instanceof LocalOrganization && remoteSession.getEnabled()){
+    	if(organization.getId() == null && organization instanceof LocalOrganization){
     		Organization searchCriteria = new RemoteOrganization();
     		searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
     		List<Organization> remoteOrganizations = (List)remoteSession.find(searchCriteria);
@@ -143,9 +143,8 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     			logger.error("Organization exists in external system");
     			throw new RuntimeException("Organization exists in external system");
     		}
-    	}else{
-    		getHibernateTemplate().saveOrUpdate(organization);
     	}
+    	getHibernateTemplate().saveOrUpdate(organization);
     }
 
     /**
@@ -186,12 +185,9 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     
     @SuppressWarnings("unchecked")
 	public List<Organization> getRemoteOrganizations(Organization organization){
-    	if(remoteSession.getEnabled()){
-    	   	Organization searchCriteria = new RemoteOrganization();
-        	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
-        	return (List)remoteSession.find(searchCriteria);
-    	}
-    	return null;
+	   	Organization searchCriteria = new RemoteOrganization();
+    	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
+    	return (List)remoteSession.find(searchCriteria);
     }
 
 	@Required
