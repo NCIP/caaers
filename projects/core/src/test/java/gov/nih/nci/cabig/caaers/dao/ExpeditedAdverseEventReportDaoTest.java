@@ -720,9 +720,12 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 
     	ExpeditedAdverseEventReport aer = getDao().getById(-1);
 
-    	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
+    	AdverseEventReportSerializer aeser = (AdverseEventReportSerializer) getApplicationContext()
+        .getBean("adverseEventReportSerializer");
 
-    	aeser.serialize(aer);
+    	String xml = aeser.serialize(aer,-40);
+    	
+    	//System.out.println(xml);
 
     	assertTrue(true);
     }
