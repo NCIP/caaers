@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -37,10 +38,14 @@ import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +62,8 @@ public class AdverseEventReportSerializer {
 
 	   //TO-DO set in spring config
 	   private String mappingFile = "xml-mapping/ae-report-xml-mapping.xml";
+	   
+	   private ReportDao reportDao;
 
 	   /**
 	    *
@@ -69,9 +76,24 @@ public class AdverseEventReportSerializer {
 	   }
 
 	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,int reportId) throws Exception{
+		    
+		   Report report = reportDao.getById(reportId);
+		   List<String> notApplicableFieldPaths = new ArrayList<String>();
+		   if (report != null ) {
+			   ReportDefinition reportDefinition = report.getReportDefinition();
+			   List<ReportMandatoryFieldDefinition> mandatoryFields = reportDefinition.getMandatoryFields();
+			   //
+			   
+			   for (ReportMandatoryFieldDefinition mandatoryField : mandatoryFields) {
+		                if (mandatoryField.getMandatory().equals(Mandatory.NA)) {
+		                	notApplicableFieldPaths.add(mandatoryField.getFieldPath());
+		                }
+		        }
+		   }
+		   	   
 		   String xml = "";
 			XmlMarshaller marshaller = new XmlMarshaller();
-			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,reportId);
+			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,reportId,notApplicableFieldPaths);
 			xml = marshaller.toXML(aer,getMappingFile());
 		
 			return xml;
@@ -85,7 +107,7 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport , int reportId) throws Exception{
+	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport , int reportId,List<String> notApplicableFieldPaths) throws Exception{
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 		    AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
@@ -104,10 +126,10 @@ public class AdverseEventReportSerializer {
 	    	aer.setPhysician(getPhysician(hibernateAdverseEventReport.getPhysician()));
 
 	    	//build AdverseEventResponseDescription
-	    	aer.setResponseDescription(getAdverseEventResponseDescription(hibernateAdverseEventReport.getResponseDescription()));
+	    	aer.setResponseDescription(getAdverseEventResponseDescription(hibernateAdverseEventReport.getResponseDescription(),notApplicableFieldPaths));
 
 	    	//build DiseaseHistory
-	    	aer.setDiseaseHistory(getDiseaseHistory(hibernateAdverseEventReport.getDiseaseHistory()));
+	    	aer.setDiseaseHistory(getDiseaseHistory(hibernateAdverseEventReport.getDiseaseHistory(),notApplicableFieldPaths));
 
 	    	//build Participant history
 	    	aer.setParticipantHistory(getParticipantHistory(hibernateAdverseEventReport.getParticipantHistory()));
@@ -116,7 +138,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
 
 	    	//build treatment info
-	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
+	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation(),notApplicableFieldPaths));
 
 	    	
 	    
@@ -441,11 +463,13 @@ public class AdverseEventReportSerializer {
 	    	return participantHistory;
 	    }
 
-	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd) throws Exception {
+	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd,List<String> notApplicableFieldPaths) throws Exception {
 	    	AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
 	    	try {
 		    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
-		    	adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
+		    	if (!notApplicableFieldPaths.contains("responseDescription.dateRemovedFromProtocol")) {
+		    		adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
+		    	}
 		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
 		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
 		    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
@@ -472,13 +496,15 @@ public class AdverseEventReportSerializer {
 
 	    }
 
-	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh) throws Exception {
+	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh,List<String> notApplicableFieldPaths) throws Exception {
 	    	DiseaseHistory diseaseHistory = new DiseaseHistory();
 	    	try {
 		    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
 		    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
-		    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
-		    	if (dh.getCodedPrimaryDiseaseSite() != null) {
+		    	if (!notApplicableFieldPaths.contains("diseaseHistory.diagnosisDate")) {
+		    		diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
+		    	}
+		    	if (dh.getCodedPrimaryDiseaseSite() != null && !notApplicableFieldPaths.contains("diseaseHistory.codedPrimaryDiseaseSite")) {
 		    		diseaseHistory.setCodedPrimaryDiseaseSite(getAnatomicSite(dh.getCodedPrimaryDiseaseSite()));
 		    	}
 		    	diseaseHistory.setAbstractStudyDisease(dh.getCtepStudyDisease() == null ?
@@ -729,13 +755,18 @@ public class AdverseEventReportSerializer {
 
 	    }
 
-	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf) throws Exception {
+	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf,List<String> notApplicableFieldPaths) throws Exception {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
+	    	String field = "treatmentInformation";
+	    	
 	    	try {
-		    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
+
+	    		treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 		    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
 		    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
-	
+	    		if (!notApplicableFieldPaths.contains("treatmentInformation.investigationalAgentAdministered")) {	
+	    			treatmentInformation.setInvestigationalAgentAdministered(trtInf.getInvestigationalAgentAdministered());
+	    		}
 		    	TreatmentAssignment ta = trtInf.getTreatmentAssignment();
 		    	
 		    	if (ta != null ) {
@@ -755,7 +786,11 @@ public class AdverseEventReportSerializer {
 		    		CourseAgent ca1 = new CourseAgent();
 		    		ca1.setId(ca.getId());
 		    		ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
-		    		ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
+		    		if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].administrationDelayAmount")) {
+		    			ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
+		    		} else {
+		    			ca1.setAdministrationDelayAmount(new BigDecimal(-1));
+		    		}
 		    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
 		    		ca1.setDose(ca.getDose());
 		    		//ca1.setModifiedDose(ca.getModifiedDose());
@@ -806,5 +841,9 @@ public class AdverseEventReportSerializer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+
+		public void setReportDao(ReportDao reportDao) {
+			this.reportDao = reportDao;
 		}
 }
