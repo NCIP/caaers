@@ -114,7 +114,7 @@ public class TreatmentInformationTest extends AbstractTestCase {
         treatmentInformation.addCourseAgent(createCourseAgent(false));
         treatmentInformation.addCourseAgent(createCourseAgent(null));
 
-        assertTrue(treatmentInformation.isInvestigationalAgentAdministered());
+        assertTrue(treatmentInformation.isAgentAdministered());
     }
 
     public void testInvestigationalDrugUsedWhenNotUsed() throws Exception {
@@ -122,17 +122,17 @@ public class TreatmentInformationTest extends AbstractTestCase {
         treatmentInformation.addCourseAgent(createCourseAgent(false));
         treatmentInformation.addCourseAgent(createCourseAgent(null));
 
-        assertFalse(treatmentInformation.isInvestigationalAgentAdministered());
+        assertFalse(treatmentInformation.isAgentAdministered());
     }
 
     public void testInvestigationalDrugUsedWhenIndicatorNull() throws Exception {
         treatmentInformation.addCourseAgent(createCourseAgent(null));
 
-        assertFalse(treatmentInformation.isInvestigationalAgentAdministered());
+        assertFalse(treatmentInformation.isAgentAdministered());
     }
 
     public void testInvestigationalDrugUsedWhenNone() throws Exception {
-        assertFalse(treatmentInformation.isInvestigationalAgentAdministered());
+        assertFalse(treatmentInformation.isAgentAdministered());
     }
 
     private CourseAgent createCourseAgent(Boolean newDrug) {
