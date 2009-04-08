@@ -41,17 +41,27 @@ public class TreatmentTab extends AeTab {
         InputFieldAttributes.setSize(eventCourseField, 4);
         InputField totalCourseField = InputFieldFactory.createNumberField("totalCourses", "Total number of courses to date", false);
         InputFieldAttributes.setSize(totalCourseField, 4);
+        InputField investigationalAgentAdministeredField = InputFieldFactory.createSelectField("investigationalAgentAdministered", "Was an investigational agent administered on this protocol?" , true, createInvestigationalAgentAdministeredOptions());
 
+        
         InputField firstCourseDateField = InputFieldFactory.createPastDateField("firstCourseDate", "Start date of first course", false);
         firstCourseDateField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
        
         InputField adverseEventCourse_dateField = InputFieldFactory.createPastDateField("adverseEventCourse.date", "Start date of course associated with expedited report", false);
         adverseEventCourse_dateField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.adverseEventCourse.date");
 
-        creator.createFieldGroup("treatmentInfo", null, "treatmentInformation", assignmentField, descField, newDescField, firstCourseDateField, adverseEventCourse_dateField,  eventCourseField, totalCourseField);
+        creator.createFieldGroup("treatmentInfo", null, "treatmentInformation", assignmentField, descField, newDescField, firstCourseDateField, adverseEventCourse_dateField,  eventCourseField, totalCourseField,investigationalAgentAdministeredField);
 
     }
 
+	protected Map<Object, Object> createInvestigationalAgentAdministeredOptions() {
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.put(Boolean.TRUE, "Yes");
+        options.put(Boolean.FALSE, "No");
+        return options;
+    }
+	
     private Map<Object, Object> collectTreatmentAssignmentCodes(ExpeditedAdverseEventInputCommand command) {
         LinkedHashMap<Object, Object> map = new LinkedHashMap<Object, Object>();
         map.put("", "Please select");
