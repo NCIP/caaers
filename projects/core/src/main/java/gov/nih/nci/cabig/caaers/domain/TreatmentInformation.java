@@ -52,7 +52,8 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     // //// LOGIC
 
     @Transient
-    public boolean isInvestigationalAgentAdministered() {
+    //changed method name as it is clashing with investigationalAgentAdministered , this method needs to be deleted as it is not used 
+    public boolean isAgentAdministered() {
         for (CourseAgent courseAgent : getCourseAgents()) {
             Boolean indicator = courseAgent.getStudyAgent().getInvestigationalNewDrugIndicator();
             if (indicator != null && indicator) return true;
@@ -169,7 +170,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
         return treatmentInformation;
     }
-
+    @Column(name="investigational_agent_administered")
 	public Boolean getInvestigationalAgentAdministered() {
 		return investigationalAgentAdministered;
 	}
