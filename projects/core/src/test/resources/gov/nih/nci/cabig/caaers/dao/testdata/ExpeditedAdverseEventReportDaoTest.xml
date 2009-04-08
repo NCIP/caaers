@@ -139,7 +139,7 @@
                       state="VA" zip="20170"/>
     <TREATMENTS id="-10" report_id="-1" first_course_date="2005-06-04"
                 adverse_event_course_date="2006-07-09" adverse_event_course_number="8"
-                treatment_assignment_id="-10"  />
+                treatment_assignment_id="-10"  investigational_agent_administered="1"/>
     <COURSE_AGENTS id="-20" treatment_id="-10" list_index="1"
                    administration_delay_minutes="240" dose_amount="17.4" dose_units="mg"
                    dose_route="aural" modified_dose_amount="10" modified_dose_units="mg"
@@ -165,11 +165,35 @@
                         value="joltin@joe.com"/>
     <REPORT_CALENDAR_TEMPLATES id="-30" name="11-day"
                                duration="8" time_scale_unit_code="4" amendable="0"/>
+
+		
+
+		 
+		 
+		
     <REPORT_SCHEDULES id="-41" due_on="2007-05-05"
                       created_on="2007-04-24" report_id="-1" rct_id="-30"/>
     <REPORT_SCHEDULES id="-40" due_on="2007-05-03"
                       created_on="2007-04-22" report_id="-1" rct_id="-30"/>
     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
+    
+    		<mandatory_field_defs id="-330"
+		 field_path="abcd.e"
+		 mandatory="0" 
+		 rct_id="-30" />
+		<mandatory_field_defs id="-331"
+		 field_path="diseaseHistory.diagnosisDate"
+		 mandatory="-1"
+		  rct_id="-30" />
+		<mandatory_field_defs id="-332"
+		 field_path="treatmentInformation.courseAgents[].administrationDelayAmount"
+		 rct_id="-30"
+		 mandatory="-1" />
+		<mandatory_field_defs id="-333"
+		 field_path="treatmentInformation.investigationalAgentAdministered"
+		 rct_id="-30"
+		 mandatory="1" />		 
+		 
     <!--
          tables which an AE report will reference, but which are not otherwise
          in this file. This is so dbunit will clean them up.
@@ -182,7 +206,7 @@
     <study_amendments/>
     <study_therapy/>
     <research_staffs/>
-    <mandatory_field_defs/>
+
     <ae_medical_devices/>
     <ae_radiation_interventions/>
     <ae_reporting_periods/>
