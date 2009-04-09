@@ -184,9 +184,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     }
     
     @SuppressWarnings("unchecked")
-	public List<Organization> getRemoteOrganizations(Organization organization){
-	   	Organization searchCriteria = new RemoteOrganization();
-    	searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
+	public List<Organization> getRemoteOrganizations(Organization searchCriteria){
     	return (List)remoteSession.find(searchCriteria);
     }
 
