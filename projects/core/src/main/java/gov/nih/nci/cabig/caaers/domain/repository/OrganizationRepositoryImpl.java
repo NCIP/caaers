@@ -176,6 +176,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		List<Organization> localOrganizations = organizationDao.getBySubnames(subnames);
  		//get organizations from remote service
     	Organization searchCriteria = new RemoteOrganization();
+    	searchCriteria.setName(subnames[0]);
     	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
     	return mergeOrgs (localOrganizations,remoteOrganizations);
  	}
