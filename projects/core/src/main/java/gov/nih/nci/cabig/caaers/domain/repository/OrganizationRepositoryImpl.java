@@ -185,7 +185,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     		for (Organization remoteOrganization:remoteList) {
         		Organization org = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
         		if (org == null ) {
-        			create(remoteOrganization);
+        			createOrUpdate(remoteOrganization);
             		localList.add(remoteOrganization);
             	} else {
             		// if it exist in local list , remote interceptor would have loaded the rest of the details .
