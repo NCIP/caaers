@@ -142,7 +142,7 @@
         </li>
     </ul>
 </div>
-<br/>
+<!--<br/>-->
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
 
@@ -168,7 +168,6 @@
             </c:forEach>
     </div>
     <div class="rightpanel">
-    <td>
          <c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
@@ -176,9 +175,7 @@
         <c:if test="${authenticationMode == 'webSSO'}">
             <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
         </c:if>
-    </td>
     </div>
-	<td>
 	<c:if test="${(command.id gt 0) }">
 	<div class="row">
 		<div class="value">
@@ -186,7 +183,6 @@
 		</div>
 	</div>
 	</c:if>
-	</td>
     </chrome:division>
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
