@@ -41,6 +41,7 @@
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="organizationDao" ref="organizationDao" />
 		<property name="organizationRepository" ref="organizationRepository" />
+		<property name="investigatorRepository" ref="investigatorRepository" />
 	</bean>
 	
 	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">

@@ -464,6 +464,7 @@ This applicationContext contains the definition of the DAOs
         	<list>
         		<value>gov.nih.nci.cabig.caaers.domain.ConverterOrganization</value>
         		<value>gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff</value>
+        		<value>gov.nih.nci.cabig.caaers.domain.ConverterInvestigator</value>
         	</list>
         </property>
     </bean>
@@ -487,6 +488,7 @@ This applicationContext contains the definition of the DAOs
 	
 	<bean id="organizationConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao"/>
 	<bean id="researchStaffConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao"/>
+	<bean id="investigatorConverterDao" parent="converterDaoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao"/>
 	
 	<!-- End -->
 	
@@ -646,7 +648,7 @@ This applicationContext contains the definition of the DAOs
 		<property name="authenticationMode" ref="authenticationMode"/>
 		<property name="csmUserRepository" ref="csmUserRepository"/>
 		<property name="investigatorDao" ref="investigatorDao" />
-		
+		<property name="investigatorConverterDao" ref="investigatorConverterDao" />
 	</bean>
     <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>

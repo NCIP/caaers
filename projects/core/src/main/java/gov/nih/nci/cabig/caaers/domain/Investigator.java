@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.DiscriminatorColumn;
@@ -46,6 +47,8 @@ public abstract class Investigator extends User {
 	protected final LazyListHelper lazyListHelper;
 	
 	protected String externalId;
+	
+	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
 	
     public Investigator() {
         lazyListHelper = new LazyListHelper();
@@ -112,7 +115,7 @@ public abstract class Investigator extends User {
     // bean methods
  
 
-    @RemoteProperty
+    @Transient
     public String getNciIdentifier() {
         return nciIdentifier;
     }
@@ -140,8 +143,7 @@ public abstract class Investigator extends User {
         setSiteInvestigatorsInternal(investigators);
     }
     
-    @RemoteUniqueId
-    @RemoteProperty
+    @Transient
 	public String getExternalId() {
 		return externalId;
 	}
@@ -150,6 +152,15 @@ public abstract class Investigator extends User {
 		this.externalId = externalId;
 	}
  
+	@Transient
+	public List<Investigator> getExternalInvestigators() {
+		return externalInvestigators;
+	}
+
+	public void setExternalInvestigators(List<Investigator> externalInvestigators) {
+		this.externalInvestigators = externalInvestigators;
+	}
+	
     // /OBJECT METHODS
 
     @Override
@@ -171,4 +182,5 @@ public abstract class Investigator extends User {
         result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
         return result;
     }
+
 }

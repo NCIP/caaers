@@ -17,6 +17,7 @@
 		<property name="investigationalnewdrugdao" ref="investigationalNewDrugDao"/>
 		<property name="diseasetermdao" ref="diseaseTermDao"/>
 		<property name="investigatordao" ref="investigatorDao"/>
+		<property name="investigatorRepository" ref="investigatorRepository"/>
 		<property name="studyImportService" ref="studyImportService"/>
 		<property name="domainObjectValidator" ref="domainObjectValidator"/>
     </bean>

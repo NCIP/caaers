@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
+import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 
 public class ResearchStaffConverterDaoTest extends DaoNoSecurityTestCase<ResearchStaffConverterDao>{
 
-	private ResearchStaffDao researchStaffDao = (ResearchStaffDao) getApplicationContext().getBean(
-    "researchStaffDao");
 	private OrganizationConverterDao organizationConverterDao = (OrganizationConverterDao) getApplicationContext().getBean(
     "organizationConverterDao");
 	 

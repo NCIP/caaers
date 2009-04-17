@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
@@ -35,7 +36,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	private static final Log logger = LogFactory.getLog(DefaultInvestigatorMigratorService.class);
 	
 	private InvestigatorDao investigatorDao;
-	
+	private InvestigatorRepository investigatorRepository;
 	private List<DomainObjectImportOutcome<Investigator>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
 	private List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
 	
@@ -51,7 +52,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         if (StringUtils.isNotEmpty(nciIdentifier)) {
         	invQuery.filterByNciIdentifier(nciIdentifier);
         }
-        List<Investigator> rsList = investigatorDao.searchInvestigator(invQuery);
+        List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
         
         if (rsList == null || rsList.isEmpty()) {
             return null;
@@ -191,7 +192,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		this.investigatorDao = investigatorDao;
 	}
 
-
+	
 
 	public List<DomainObjectImportOutcome<Investigator>> getImportableInvestigators() {
 		return importableInvestigators;
@@ -207,5 +208,15 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	
 	private void addNonImportableInvestigators(DomainObjectImportOutcome<Investigator> domainObjectImportInvestigator) {
 		this.getNonImportableInvestigators().add(domainObjectImportInvestigator);
+	}
+
+	public InvestigatorRepository getInvestigatorRepository() {
+		return investigatorRepository;
+	}
+	
+	@Required
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 }

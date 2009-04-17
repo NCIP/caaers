@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -26,7 +27,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Base Controller class to handle the basic work flow in the Creation / Updation of a Investigator
@@ -128,34 +128,48 @@ public abstract class InvestigatorController<C extends Investigator> extends
         return attr;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected ModelAndView processFinish(final HttpServletRequest request,
                     final HttpServletResponse response, final Object command,
                     final BindException errors) throws Exception {
 
-        int selected = Integer.parseInt(request.getParameter("_selected"));
-        String action = request.getParameter("_action");
-        Investigator investigator = (Investigator) command;
-        boolean sentEmail = true;
-        if ("addSiteInvestigator".equals(action)) {
-        } else if ("removeInvestigator".equals(action)) {
-        } else {
-            try {
-				investigatorRepository.save(investigator, ResetPasswordController.getURL(request
-				        .getScheme(), request.getServerName(), request.getServerPort(), request
-				        .getContextPath()));
-            } catch (MailException e) {
-                logger.error("Could not send email to user.", e);
-                sentEmail = false;
-            }
-            request.setAttribute("statusMessage", "Successfully saved the investigator"
-            		+ ((sentEmail) ? "." : ". But we could not send email to user."));
-            ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
-            modelAndView.addAllObjects(errors.getModel());
-            modelAndView.addObject("investigator", investigator);
-            return modelAndView;
+    	Investigator investigator = (Investigator) command;
+        ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
+        String emailSendingErrorMessage = "";
+        try {
+        	if("saveRemoteInv".equals(request.getParameter("_action"))){
+        		
+        		Investigator remoteInvtoSave = investigator.getExternalInvestigators().get(Integer.parseInt(request.getParameter("_selected")));
+        		investigator.setEmailAddress(remoteInvtoSave.getEmailAddress());
+        		investigator.setFirstName(remoteInvtoSave.getFirstName());
+        		investigator.setLastName(remoteInvtoSave.getLastFirst());
+        		investigator.setPhoneNumber(remoteInvtoSave.getPhoneNumber());
+        		investigator.setFaxNumber(remoteInvtoSave.getFaxNumber());
+        		investigatorRepository.save(remoteInvtoSave, ResetPasswordController.getURL(request
+                        .getScheme(), request.getServerName(), request.getServerPort(), request
+                        .getContextPath()));
+        	}else{
+        		investigatorRepository.save(investigator, ResetPasswordController.getURL(request
+                        .getScheme(), request.getServerName(), request.getServerPort(), request
+                        .getContextPath()));
+        	}
+        } catch (MailException e) {
+            emailSendingErrorMessage = "Could not send email to user.";
+            logger.error("Could not send email to user.", e);
         }
-        return new ModelAndView(new RedirectView("createInvestigator"));
+        if (!errors.hasErrors()) {
+            String statusMessage = "Successfully created Investigator.";
+            
+            if (!StringUtils.isBlank(emailSendingErrorMessage)) {
+                statusMessage = statusMessage + " But we could not send email to user";
+            }
+            request.setAttribute("statusMessage", statusMessage);
+            modelAndView.getModel().put("flashMessage", statusMessage);
+        }
+        modelAndView.addAllObjects(errors.getModel());
+        modelAndView.addObject("investigator", investigator);
+        return modelAndView;
 
     }
 

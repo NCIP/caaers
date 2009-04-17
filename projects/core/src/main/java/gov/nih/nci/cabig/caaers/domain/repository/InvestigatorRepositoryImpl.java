@@ -1,9 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
+import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
+import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -16,9 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Biju Joseph
  *
  */
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private InvestigatorDao investigatorDao;
+	private InvestigatorConverterDao investigatorConverterDao;
 	private CSMUserRepository csmUserRepository;
 	private String authenticationMode;
 	private static final Log logger = LogFactory.getLog(InvestigatorRepositoryImpl.class); 
@@ -61,6 +69,50 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         
 	}
 	
+	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
+		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
+		//TODO populate searchCriteria 
+		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
+		return merge(localInvestigators,remoteInvestigators);
+	}
+	
+	public List<Investigator> getBySubnames(String[] subnames) {
+		List<Investigator> localInvestigators = investigatorDao.getBySubnames(subnames);
+		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
+		return merge(localInvestigators,remoteInvestigators);
+	}
+	
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+    private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
+		for (Investigator remoteInvestigator:remoteList) {
+			Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
+    		if (inv == null ) {
+        		save(remoteInvestigator,"");
+        		localList.add(remoteInvestigator);
+        	} else {
+        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
+        		if (!localList.contains(remoteInvestigator)) {
+        			localList.add(remoteInvestigator);
+        		}
+        	}
+    	}
+		return localList;
+	}
+	
+	@Transactional(readOnly = false)
+    public void convertToRemote(Investigator localInvestigator, Investigator remoteInvestigator){
+    	ConverterInvestigator conInv = investigatorConverterDao.getById(localInvestigator.getId());
+    	conInv.setType("REMOTE");
+    	conInv.setExternalId(remoteInvestigator.getExternalId());
+    	conInv.setFirstName(remoteInvestigator.getFirstName());
+    	conInv.setLastName(remoteInvestigator.getLastName());
+    	conInv.setMiddleName(remoteInvestigator.getMiddleName());
+    	conInv.setPhoneNumber(remoteInvestigator.getPhoneNumber());
+    	conInv.setFaxNumber(remoteInvestigator.getFaxNumber());
+    	investigatorConverterDao.save(conInv);
+    }
 	
     public InvestigatorDao getInvestigatorDao() {
 		return investigatorDao;
@@ -80,4 +132,5 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
 		this.csmUserRepository = csmUserRepository;
 	}
+
 }

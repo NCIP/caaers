@@ -34,6 +34,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -49,6 +50,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ExcelProcessor {
 	
@@ -70,6 +72,7 @@ public class ExcelProcessor {
 	private InvestigationalNewDrugDao investigationalnewdrugdao;
 	private DiseaseTermDao diseasetermdao;
 	private InvestigatorDao investigatordao;
+	private InvestigatorRepository investigatorRepository;
 	private StudyImportServiceImpl studyImportService;
 	private String primaryIdentifierString;
 	private String localDocumentNumber;
@@ -505,7 +508,7 @@ public class ExcelProcessor {
             iq.filterByNciIdentifierExactMatch(invNciId);
 //            System.out.print(getCellData(INVESTIGATOR_SHEET_NAME, invRow,
 //                    investigatorInfoSheet.getRow(invRow).getCell((short) 3)));
-            invList = investigatordao.searchInvestigator(iq);
+            invList = investigatorRepository.searchInvestigator(iq);
 
             if (invList.size() == 0) {
             	statusMessage=" Created in caAERS.";
@@ -677,6 +680,15 @@ public class ExcelProcessor {
 
 	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
 		this.domainObjectValidator = domainObjectValidator;
+	}
+
+	public InvestigatorRepository getInvestigatorRepository() {
+		return investigatorRepository;
+	}
+	
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 
 }
