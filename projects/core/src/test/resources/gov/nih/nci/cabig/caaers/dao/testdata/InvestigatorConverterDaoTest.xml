@@ -1,0 +1,18 @@
+<dataset>
+    <INVESTIGATORS
+        id="-200"
+        first_name="karthik"
+        last_name="iyer"
+		nci_identifier="222"
+        email_address="ki@def.com"
+        phone_number="123-456-789"
+        login_id="abcd"
+       />
+	<INVESTIGATORS
+        id="-100"
+        first_name="Dilbert"
+        last_name="Scott"
+        email_address="abc@def.com"
+        phone_number="123-456-789"
+       />
+</dataset>
