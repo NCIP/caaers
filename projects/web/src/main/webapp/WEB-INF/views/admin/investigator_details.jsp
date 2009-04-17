@@ -1,10 +1,11 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-
 <html>
 <head>
 <title>Investigator</title>
 <tags:includeScriptaculous />
+<tags:stylesheetLink name="extremecomponents"/>
+<tags:includePrototypeWindow />
 <tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
         div.content {
@@ -15,7 +16,6 @@
 <tags:dwrJavascriptLink objects="createInvestigator" />
 <tags:dwrJavascriptLink objects="createIND"/>
 <script language="JavaScript" type="text/JavaScript">
-
 
 var addInvestigatorEditor;
 var jsInvestigator = Class.create();
@@ -64,7 +64,11 @@ Event.observe(window, "load", function() {
   <c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
 	new jsInvestigator(${status.index}, '${si.organization.fullName}');
   </c:forEach>
-      		
+
+  if(${fn:length(command.externalInvestigators) gt 0}){
+		 displayRemoteInvestigator();
+  }
+  		
   //This is added for Add Site Investigator button
   new ListEditor("site-investigator-row", createInvestigator, "SiteInvestigator", {
 	addFirstAfter: "site-investigator",
@@ -77,10 +81,84 @@ Event.observe(window, "load", function() {
    });
    
 });
+
+	function displayRemoteInvestigator(){
+		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"remoteInv-popup-id", width:550,  height:200, top: 30, left: 300});
+		contentWin.setContent( 'display_remote_inv' );
+	    contentWin.showCenter(true);
+	   popupObserver = {
+	  			onDestroy: function(eventName, win) {
+	  				if (win == contentWin) {
+	  					$('display_remote_inv').style.display='none';
+	  					
+	  					contentWin = null;
+	  					Windows.removeObserver(this);
+	  				}
+	  			}
+	  		}
+	    Windows.addObserver(popupObserver);
+	}
+
+	function submitRemoteInvForSave(){
+		var form = document.getElementById('command');
+		form._action.value="saveRemoteInv";
+		form.submit();
+	}
+
+	function selectInvestigator(selectedIndex){
+		var form = document.getElementById('command')
+		form._selected.value=selectedIndex;
+		document.getElementById('save-yes').disabled = false;
+	}
+
+	function syncInvestigator(){
+		var form = document.getElementById('command');
+		form._action.value="syncInvestigator";
+		form.submit();
+	}
+
 </script>
 
 </head>
 <body>
+
+<div id="display_remote_inv" style="display:none;text-align:left" >
+	<chrome:box title="Please select a Investigator to be saved in caAERS" id="popupId">
+		<div class="eXtremeTable">
+          <table width="100%" border="0" cellspacing="0"  class="tableRegion">
+            <thead>
+              <tr align="center" class="label">
+              	<td/>
+                <td class="tableHeader">First Name</td>
+                <td class="tableHeader">Last Name</td>
+                <td class="tableHeader">Email Address</td>
+              </tr>
+            </thead>
+            <c:forEach items="${command.externalInvestigators}"  var="remInv" varStatus="rdStatus">
+              <tr>
+              	<td><input type="radio" name="remotersradio" value=${rdStatus.index} id="remoters-radio" onClick="javascript:selectInvestigator('${rdStatus.index}');"/></td>
+                <td align="left">${remInv.firstName}</td>
+                <td align="left">${remInv.lastName}</td>
+                <td align="left">${remInv.emailAddress}</td>
+              </tr>
+            </c:forEach>
+          </table>
+		</div>
+		<br><br>
+   		<table width="100%">	
+   			<tr>
+   				<td align="left">
+   					<input type="submit" value="Cancel" id="save-no" onClick="javascript:window.parent.Windows.close('remoteInv-popup-id');"/>
+   				</td>
+   				<td align="right">
+    				<input type="submit" disabled value="Ok" id="save-yes" onClick="javascript:window.parent.submitRemoteInvForSave();"/>
+   				</td>
+   			<tr>	
+   		</table>
+	</chrome:box>
+</div>
+
+
 
 <div class="tabpane">
     <div class="workflow-tabs2">
@@ -107,12 +185,10 @@ Event.observe(window, "load", function() {
 	<jsp:attribute name="singleFields">
 	<div>
 	<c:if test="${(command.externalId != null)}"> <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/> </c:if>
-
 	
-	
-	<input type="hidden" name="_action" id="_action" value="">
-	<input type="hidden" name="_selected" id="_selected" value="-1">
-	    <c:if test="${(empty id) or ( id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
+	<input type="hidden" name="_action" value="">
+    <input type="hidden" name="_selected" value="">
+	<input type="hidden" name="_finish" value="true"/>
 	</div>
 
     </jsp:attribute>
@@ -139,6 +215,14 @@ Event.observe(window, "load", function() {
             </c:if>
 		</div>
 		<div id="test-row" class="row"></div>
+	<c:if test="${(command.id gt 0) }">
+	<div class="row">
+		<div class="value">
+			<input type="submit" value="Sync" id="sync-rs" onClick="javascript:syncInvestigator();"/>
+		</div>
+	</div>
+	</c:if>
+		
 	</chrome:division>
 	<chrome:division title="Associate Organizations">
 	  
