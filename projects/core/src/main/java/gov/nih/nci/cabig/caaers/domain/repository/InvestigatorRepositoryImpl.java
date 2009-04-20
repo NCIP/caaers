@@ -133,4 +133,9 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		this.csmUserRepository = csmUserRepository;
 	}
 
+	public void setInvestigatorConverterDao(
+			InvestigatorConverterDao investigatorConverterDao) {
+		this.investigatorConverterDao = investigatorConverterDao;
+	}
+
 }
