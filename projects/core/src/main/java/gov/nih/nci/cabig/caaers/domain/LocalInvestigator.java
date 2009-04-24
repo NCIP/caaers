@@ -24,6 +24,11 @@ public class LocalInvestigator extends Investigator{
     }
     
     @Override
+    public String getNciIdentifier() {
+        return nciIdentifier;
+    }
+    
+    @Override
     public String getMiddleName() {
         return middleName;
     }
