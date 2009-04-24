@@ -11,6 +11,8 @@ public class ResearchStaffQuery extends AbstractQuery {
     private static String FIRST_NAME = "firstName";
 
     private static String ORGANIZATION_NAME = "name";
+    
+    private static String ORGANIZATION_NCI_INSTITUTE_CODE = "organizationNciInstituteCode";
 
     private static String LAST_NAME = "lastName";
 
@@ -28,6 +30,12 @@ public class ResearchStaffQuery extends AbstractQuery {
         String searchString = "%" + name.toLowerCase() + "%";
         andWhere("lower(rs.organization.name) LIKE :" + ORGANIZATION_NAME);
         setParameter(ORGANIZATION_NAME, searchString);
+    }
+    
+    public void filterByOrganizationNciInstituteCode(final String organizationNciInstituteCode) {
+        String searchString = "%" + organizationNciInstituteCode.toLowerCase() + "%";
+        andWhere("lower(rs.organization.nciInstituteCode) LIKE :" + ORGANIZATION_NCI_INSTITUTE_CODE);
+        setParameter(ORGANIZATION_NCI_INSTITUTE_CODE, searchString);
     }
 
     public void filterByFirstName(final String firstName) {

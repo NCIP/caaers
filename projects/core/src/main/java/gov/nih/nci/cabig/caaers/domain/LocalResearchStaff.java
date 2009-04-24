@@ -22,6 +22,11 @@ public class LocalResearchStaff extends ResearchStaff{
         return middleName;
     }
     
+    @Override
+    public String getNciIdentifier() {
+        return nciIdentifier;
+    }
+    
 	@Transient
 	public String getExternalId() {
 		return externalId;

@@ -469,6 +469,8 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
 		    	if (!notApplicableFieldPaths.contains("responseDescription.dateRemovedFromProtocol")) {
 		    		adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
+		    	} else {
+		    		adverseEventResponseDescription.setDateRemovedFromProtocol(null);
 		    	}
 		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
 		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());

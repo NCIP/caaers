@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public interface OrganizationRepository {
     List<Organization> getOrganizationsHavingStudySites();
     void convertToRemote(Organization localOrganization, Organization remoteOrganization);
     
+
+    List<Organization> searchRemoteOrganization(String coppaSearchText, String sType);
     List<Organization> searchOrganization(final OrganizationQuery query);
     List<Organization> restrictBySubnames(final String[] subnames);
+    
 }

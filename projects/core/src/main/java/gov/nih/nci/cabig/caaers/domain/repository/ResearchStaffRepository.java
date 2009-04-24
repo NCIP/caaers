@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -18,6 +19,7 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -144,6 +146,21 @@ public class ResearchStaffRepository {
         List<ResearchStaff> researchStaffs = researchStaffDao.getLocalResearchStaff(query);
         //Get all the RS from External System
         ResearchStaff searchCriteria = new RemoteResearchStaff();
+        Map<String, Object> queryParameterMap = query.getParameterMap();
+        for (String key : queryParameterMap.keySet()) {
+            Object value = queryParameterMap.get(key);
+            if (key.equals("firstName")) {
+				searchCriteria.setFirstName(value.toString());
+			}
+            if (key.equals("lastName")) {
+				searchCriteria.setLastName(value.toString());
+			}
+			if (key.equals("organizationNciInstituteCode")) {
+				Organization organization = new RemoteOrganization();
+				organization.setNciInstituteCode(value.toString());
+				searchCriteria.setOrganization(organization);
+			}	
+        }
     	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria); 
     	//Merge and Return
     	return merge (researchStaffs,remoteResearchStaffs);
@@ -159,12 +176,13 @@ public class ResearchStaffRepository {
     			//if associated organization is not there in our DB
     			Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
     			if (organization == null) {
-    				// TODO : need to get the remote organozation from coppa and save it ..
     				organizationRepository.create(remoteOrganization);
     				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
     			} 
     			remoteResearchStaff.setOrganization(organization);
-        		save(remoteResearchStaff,"");
+        		//TODO: failing to save csm user , need to fix this , calling researchStaffDao.save temp fix 
+    			//save(remoteResearchStaff,"");
+        		researchStaffDao.save(remoteResearchStaff);
         		rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
         		rs.setFirstName(remoteResearchStaff.getFirstName());
         		rs.setLastName(remoteResearchStaff.getLastName());

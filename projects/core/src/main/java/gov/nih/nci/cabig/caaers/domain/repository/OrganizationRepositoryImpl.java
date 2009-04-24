@@ -19,6 +19,7 @@ import gov.nih.nci.security.exceptions.CSTransactionException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -165,18 +166,48 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	}
  	
  	@SuppressWarnings("unchecked")
+	public List<Organization> searchRemoteOrganization(String coppaSearchText, String sType){
+ 		//List organizations =  organizationDao.getLocalOrganizations(query);
+ 		Organization searchCriteria = new RemoteOrganization();
+ 		if (sType.equals("name")) {
+ 			searchCriteria.setName(coppaSearchText);
+ 		}
+ 		if (sType.equals("nciInstituteCode")) {
+ 			searchCriteria.setNciInstituteCode(coppaSearchText);
+ 		}        
+    	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
+    	return remoteOrganizations;
+ 	}
+ 	
+ 	@SuppressWarnings("unchecked")
 	public List<Organization> searchOrganization(final OrganizationQuery query){
  		List organizations =  organizationDao.getLocalOrganizations(query);
-        Organization searchCriteria = new RemoteOrganization();
-    	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
-    	return mergeOrgs(organizations,remoteOrganizations);
+ 		// to get remote organizations ...
+ 		Organization searchCriteria = new RemoteOrganization();
+ 		Map<String, Object> queryParameterMap = query.getParameterMap();
+        for (String key : queryParameterMap.keySet()) {
+            Object value = queryParameterMap.get(key);
+            if (key.equals("name")) {
+				searchCriteria.setName(value.toString());
+			}
+			if (key.equals("nciInstituteCode")) {
+				searchCriteria.setNciInstituteCode(value.toString());
+			}	
+        }
+
+		List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
+		if (remoteOrganizations.size() > 0) {
+			return mergeOrgs(organizations,remoteOrganizations);
+		}
+ 		
+    	return organizations;
  	}
  	
  	public List<Organization> restrictBySubnames(final String[] subnames) {
  		List<Organization> localOrganizations = organizationDao.getBySubnames(subnames);
  		//get organizations from remote service
     	Organization searchCriteria = new RemoteOrganization();
-    	searchCriteria.setName(subnames[0]);
+    	searchCriteria.setNciInstituteCode(subnames[0]);
     	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
     	return mergeOrgs (localOrganizations,remoteOrganizations);
  	}
@@ -188,20 +219,46 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
         			createOrUpdate(remoteOrganization);
             		localList.add(remoteOrganization);
             	} else {
-            		// if it exist in local list , remote interceptor would have loaded the rest of the details .
-            		// ? what if the existing organization is local . ?
-            		//if (org instanceof LocalOrganization) {        		}
-            		if (!localList.contains(org)) {
-            			localList.add(org);
+            		//what if org is local 
+            		/*
+            		if (org instanceof LocalOrganization) {            			   
+            			//session is not getting refreshed if converted to remote ... 
+            			//convertToRemote(org,remoteOrganization);
+            			//Organization populatedLocalOrganization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+            			Organization populatedLocalOrganization = populateLocalWithRemoteOrganization(org,remoteOrganization);
+            			organizationDao.save(populatedLocalOrganization);
+            			localList.remove(org);
+            			localList.add(populatedLocalOrganization);
+            		} else {
+            			if (!localList.contains(org)) {
+            				localList.add(org);
+            			}
             		}
-            	}
+            		*/
+            		if (!localList.contains(org)) {
+        				localList.add(org);
+        			}
+             	}
         	}
     	return localList;
 	}
+ 	/*
+ 	private Organization populateLocalWithRemoteOrganization(Organization localOrg,Organization remoteOrg){ 
+ 		localOrg.setExternalId(remoteOrg.getExternalId());
+ 		localOrg.setName(remoteOrg.getName());
+ 		localOrg.setNciInstituteCode(remoteOrg.getNciInstituteCode());
+ 		localOrg.setCity(remoteOrg.getCity());
+ 		localOrg.setState(remoteOrg.getState());
+ 		localOrg.setCountry(remoteOrg.getCountry());
+		return localOrg;
+		
+ 	}*/
 
 	public void setOrganizationConverterDao(
 			OrganizationConverterDao organizationConverterDao) {
 		this.organizationConverterDao = organizationConverterDao;
 	}
+
+
     
 }

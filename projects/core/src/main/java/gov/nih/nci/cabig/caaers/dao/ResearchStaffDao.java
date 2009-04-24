@@ -102,12 +102,8 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
 	public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
-    	ResearchStaff searchCriteria = new RemoteResearchStaff();
-    	searchCriteria.setOrganization(researchStaff.getOrganization());
-    	searchCriteria.setFirstName(researchStaff.getFirstName());
-    	searchCriteria.setLastName(researchStaff.getLastName());
-    	searchCriteria.setEmailAddress(researchStaff.getEmailAddress());
-    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(searchCriteria); 
+
+    	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(researchStaff); 
     	return remoteResearchStaffs;
     }
     
