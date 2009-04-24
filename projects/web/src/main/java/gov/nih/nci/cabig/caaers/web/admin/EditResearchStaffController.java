@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -92,10 +93,17 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
                                      BindException errors, int page) throws Exception {
         ResearchStaff researchStaff = (ResearchStaff) command;
         if("syncResearchStaff".equals(request.getParameter("_action"))){
-        	List<ResearchStaff> remoteRs = researchStaffRepository.getRemoteResearchStaff(researchStaff);
+        	
+        	ResearchStaff remoteResearchStaff = new RemoteResearchStaff();        	
+        	List<ResearchStaff> remoteRs = null;
+        	if (researchStaff.getNciIdentifier() != null) {
+        		remoteResearchStaff.setNciIdentifier(researchStaff.getNciIdentifier());
+        		remoteRs = researchStaffRepository.getRemoteResearchStaff(remoteResearchStaff);
+        	}
+        	
     		if(remoteRs != null && remoteRs.size() > 0){
     			researchStaff.setExternalResearchStaff(remoteRs);
-    			errors.reject("REMOTE_RS_EXISTS","ResearchStaff with EmailAddress " +researchStaff.getEmailAddress()+ " exisits in external system");
+    			errors.reject("REMOTE_RS_EXISTS","ResearchStaff with NCI Identifier " +researchStaff.getNciIdentifier()+ " exisits in external system");
     		}
         }
     }

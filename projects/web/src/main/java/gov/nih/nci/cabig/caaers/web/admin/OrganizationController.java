@@ -133,8 +133,8 @@ public abstract class OrganizationController<C extends Organization> extends
     				errors.reject("LOCAL_ORG_EXISTS","Organization with NCI Institute Code " +organization.getNciInstituteCode()+ " already exisits");
     				return;
     			}
-        		List<Organization> remoteOrgs = organizationDao.getRemoteOrganizations(organization);
-        		if(remoteOrgs != null && remoteOrgs.size() > 0){
+    			List<Organization> remoteOrgs = organizationRepository.searchRemoteOrganization(organization.getNciInstituteCode(), "nciInstituteCode");
+       		if(remoteOrgs != null && remoteOrgs.size() > 0){
         			organization.setExternalOrganizations(remoteOrgs);
         			errors.reject("REMOTE_ORG_EXISTS","Organization with NCI Institute Code " +organization.getNciInstituteCode()+ " exisits in external system");
         		}

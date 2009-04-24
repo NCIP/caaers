@@ -81,7 +81,8 @@ public class EditOrganizationController extends OrganizationController<Organizat
                     BindException errors, int page) throws Exception {
     	Organization organization = (Organization) command;
     	if("syncOrganization".equals(request.getParameter("_action"))){
-    		List<Organization> remoteOrgs = organizationDao.getRemoteOrganizations(organization);
+    		//TODO: searching only on nci-id , shud be able to search by name or nci-id
+    		List<Organization> remoteOrgs = organizationRepository.searchRemoteOrganization(organization.getNciInstituteCode(), "nciInstituteCode");
     		if(remoteOrgs != null && remoteOrgs.size() > 0){
     			organization.setExternalOrganizations(remoteOrgs);
     			errors.reject("REMOTE_ORG_EXISTS","Organization with NCI Institute Code " +organization.getNciInstituteCode()+ " exisits in external system");
