@@ -17,15 +17,9 @@ This applicationContext contains the definition of the concrete services
 	
 	
 	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
-		<property name="organizationService" ref="organizationService"/>
-		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
-		<property name="organizationEntityServiceRemote" ref="organizationEntityServiceRemote"/>
 	</bean>
 	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
-		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
-		<property name="clinicalResearchStaffCorrelationServiceRemote" ref="clinicalResearchStaffCorrelationServiceRemote"/>
-		<property name="personEntityServiceRemote" ref="personEntityServiceRemote"/>
-		<property name="identifiedPersonCorrelationServiceRemote" ref="identifiedPersonCorrelationServiceRemote"/>
+
 	</bean>
 	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
 		<property name="identifiedOrganizationCorrelationServiceRemote" ref="identifiedOrganizationCorrelationServiceRemote"/>
