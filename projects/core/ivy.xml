@@ -134,16 +134,7 @@
         	<!--  Quartz modules -->
         	<dependency org="opensymphony" name="quartz-all" rev="1.6.0" />
         	
-        	<!-- TODO: Check if Grid -->
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.0" /> 
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.0" />
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="1.0" />
-        	<dependency org="gov.nih.nci" name="c3pr-esb-client" rev="1.0" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11" />
-        	<!-- TODO : Check if Grid END-->
+
 
 			<!--  DB related supporting JARS -->        	
         	<dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" >
@@ -182,11 +173,23 @@
 			
 			<!-- COPPA Common dependencies -->
 			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.integration" />	
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="1.1" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="1.1" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="1.1" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="1.1" />			
-			
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="latest.integration" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="latest.integration" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="latest.integration" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="latest.integration" />	
+			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="latest.integration" /> 
+        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="latest.integration" />
+        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="latest.integration" />
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.2.1" />		
+
+        	<!-- TODO: Check if Grid -->
+
+        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2" />
+        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2" />
+        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2" />
+        	<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11" />
+        	<!-- TODO : Check if Grid END-->
+        				
 			<!-- Apache POI dependencies -->
 			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>
 			
