@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -22,7 +22,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
+public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase {
 
 	private InvestigatorMigratorService svc = null;
 	private JAXBContext jaxbContext = null;
