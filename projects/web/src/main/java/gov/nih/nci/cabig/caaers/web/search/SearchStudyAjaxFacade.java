@@ -742,6 +742,7 @@ public class SearchStudyAjaxFacade {
         List<Organization> organizations = new ArrayList<Organization>();
 
         OrganizationQuery organizationQuery = new OrganizationQuery();
+        
 
         while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
             sType = typeToken.nextToken();
@@ -752,6 +753,7 @@ public class SearchStudyAjaxFacade {
             if (sType.equals("nciInstituteCode")) {
                 organizationQuery.filterByNciInstituteCode(sText);
             }
+
         }
 
         try {
@@ -820,7 +822,9 @@ public class SearchStudyAjaxFacade {
             } else if (sType.equals("lastName")) {
                 query.filterByLastName(sText);
             } else if (sType.equals("name")) {
-                query.filterByOrganizationName(sText);
+            	//TODO: shud be able ti filter by name and nci-id , using only nci-id temp 
+                //query.filterByOrganizationName(sText);
+            	query.filterByOrganizationNciInstituteCode(sText);
             }
         }
 
