@@ -25,7 +25,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		serializer = new AdverseEventReportSerializer();
+		serializer = (AdverseEventReportSerializer)getDeployedApplicationContext().getBean("adverseEventReportSerializer");
 	}
 	
 	/**
