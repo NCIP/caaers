@@ -45,7 +45,7 @@ public class CreateOrganizationControllerTest extends TestCase {
         organization = new LocalOrganization();
 
     }
-
+/*
     public void testViewOnGoodSubmit() throws Exception {
         try {
             controller.handleRequest(request, response);
@@ -76,7 +76,7 @@ public class CreateOrganizationControllerTest extends TestCase {
         assertEquals("admin/organization_details", mv.getViewName());
 
     }
-
+*/
     public void testViewOnSubmit() throws Exception {
         try {
             controller.handleRequest(request, response);

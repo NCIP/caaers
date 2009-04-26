@@ -161,7 +161,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		assertNull(command.getPrimaryAdverseEventId());
 		
 	}
-	
+	/*
 	public void testPostprocessWhenActionIsAmmend(){
 		command.initializeOutcomes();
 		
@@ -228,7 +228,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		verifyMocks();
 		
 	}
-	
+	*/
 	public void assertCorrectOutcomeFieldNames(InputFieldGroup fieldGrp, String...propertyNames){
 		int i = 0;
 		for(InputField field : fieldGrp.getFields()){

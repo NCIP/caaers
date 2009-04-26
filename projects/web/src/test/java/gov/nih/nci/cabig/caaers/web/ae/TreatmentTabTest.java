@@ -39,6 +39,7 @@ public class TreatmentTabTest extends AeTabTestCase {
                         "aeReport.treatmentInformation.firstCourseDate",
                         "aeReport.treatmentInformation.adverseEventCourse.date",
                         "aeReport.treatmentInformation.adverseEventCourse.number",
-                        "aeReport.treatmentInformation.totalCourses");
+                        "aeReport.treatmentInformation.totalCourses",
+                        "aeReport.treatmentInformation.investigationalAgentAdministered");
     }
 }
