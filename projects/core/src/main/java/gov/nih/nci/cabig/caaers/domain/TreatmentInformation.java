@@ -170,7 +170,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
         return treatmentInformation;
     }
-    @Column(name="investigational_agent_administered")
+    @Column(name="inv_agent_adminstrd")
 	public Boolean getInvestigationalAgentAdministered() {
 		return investigationalAgentAdministered;
 	}

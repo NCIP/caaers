@@ -1,9 +1,9 @@
 class AddAgentAdministered extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        addColumn("treatments", "investigational_agent_administered", "boolean")
+        addColumn("treatments", "inv_agent_adminstrd", "boolean")
     }
 
     void down() {
-        dropColumn("treatments", "investigational_agent_administered")
+        dropColumn("treatments", "inv_agent_adminstrd")
     }
 }
