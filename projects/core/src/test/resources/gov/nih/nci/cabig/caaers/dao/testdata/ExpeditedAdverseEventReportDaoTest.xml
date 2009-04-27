@@ -139,7 +139,7 @@
                       state="VA" zip="20170"/>
     <TREATMENTS id="-10" report_id="-1" first_course_date="2005-06-04"
                 adverse_event_course_date="2006-07-09" adverse_event_course_number="8"
-                treatment_assignment_id="-10"  investigational_agent_administered="1"/>
+                treatment_assignment_id="-10"  inv_agent_adminstrd="1"/>
     <COURSE_AGENTS id="-20" treatment_id="-10" list_index="1"
                    administration_delay_minutes="240" dose_amount="17.4" dose_units="mg"
                    dose_route="aural" modified_dose_amount="10" modified_dose_units="mg"
