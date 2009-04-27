@@ -4,4 +4,4 @@
 <%@attribute name="onClick" required="false"%>
 <%@attribute name="buttonCssClass"  required="false"%>
 <tags:indicator id="add-${divisionClass}-indicator"/>
-<input type="button" value="${label}" onClick="${onClick}" id="add-${divisionClass}-button" class="${empty buttonCssClass ? '' : buttonCssClass }"/>
+<tags:button icon="add" size="small" value="${label}" type="button" color="blue" id="add-${divisionClass}-button" onclick="${onClick}"/>

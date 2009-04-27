@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQu
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -13,11 +14,14 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
 import java.util.ArrayList;
@@ -39,8 +43,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private EvaluationService evaluationService;
 	
 	private WorkflowService workflowService;
+	
+	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office SAE Coordinator";
 	
 	
 	public AdverseEventRoutingAndReviewRepositoryImpl() {
@@ -73,7 +80,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportingPeriod.setWorkflowId((int) pInstance.getId());
 		reportingPeriod.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
-		adverseEventReportingPeriodDao.save(reportingPeriod);
+		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 		
 		return pInstance.getId();
 	}
@@ -106,7 +113,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		aeReport.setWorkflowId((int)pInstance.getId());
 		aeReport.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
-		expeditedAdverseEventReportDao.save(aeReport);
+		expeditedAdverseEventReportDao.modifyOrSaveReviewStatusAndComments(aeReport);
 		
 		return pInstance.getId();
 	}
@@ -137,7 +144,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reviewComment.setEditable(true);
 		reviewComment.setUserId(userId);
 		
-		expeditedAdverseEventReportDao.save(report);
+		expeditedAdverseEventReportDao.modifyOrSaveReviewStatusAndComments(report);
 	}
 	
 	public void editReportReviewComment(Integer aeReportId, String comment, String userId, Integer commentId){
@@ -154,7 +161,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			}
 		}
 		
-		expeditedAdverseEventReportDao.save(aeReport);
+		expeditedAdverseEventReportDao.modifyOrSaveReviewStatusAndComments(aeReport);
 	}
 	
 	public void deleteReportReviewComment(Integer aeReportId, Integer commentId){
@@ -169,7 +176,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 				break;
 			}
 		}
-		expeditedAdverseEventReportDao.save(aeReport);
+		expeditedAdverseEventReportDao.modifyOrSaveReviewStatusAndComments(aeReport);
 	}
 	
 	public void deleteReportingPeriodReviewComment(Integer reportingPeriodId, Integer commentId){
@@ -184,7 +191,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 				break;
 			}
 		}
-		adverseEventReportingPeriodDao.save(reportingPeriod);
+		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
@@ -201,7 +208,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reviewComment.setUserId(userId);
 		
 		reportingPeriod.getReviewComments().add(reviewComment);
-		adverseEventReportingPeriodDao.save(reportingPeriod);
+		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
 	public void editReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId, Integer commentId){
@@ -217,7 +224,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			}
 		}
 		
-		adverseEventReportingPeriodDao.save(reportingPeriod);
+		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 	}
 	
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id, String userId) {
@@ -237,7 +244,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		// Add a comment describing the action taken by the user-
 		ReviewComment reviewComment = createAdvanceWorkflowComment(toTransition, userId, "reportingPeriod");
 		reportingPeriod.getReviewComments().add((ReportingPeriodReviewComment)reviewComment);
-		adverseEventReportingPeriodDao.save(reportingPeriod);
+		adverseEventReportingPeriodDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 		return nextTransitionNames(workflowId, userId);
 	}
 	
@@ -276,15 +283,54 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		// Add a comment describing action taken by the user
 		ReviewComment reviewComment = createAdvanceWorkflowComment(toTransition, userId, "aeReport");
 		aeReport.getReviewComments().add((ReportReviewComment)reviewComment);
-		expeditedAdverseEventReportDao.save(aeReport);
-		return nextTransitionNames(workflowId, userId);
+		expeditedAdverseEventReportDao.modifyOrSaveReviewStatusAndComments(aeReport);
+		return nextTransitionNamesForAeReportWorkflow(aeReport, userId);
 	}
 	
 	public List<String> nextTransitionNames(Integer workflowId, String loginId) {
 		return workflowService.nextTransitionNames(workflowId, loginId);
 	}
 	
+	/**
+	 * This method is specifically called for aeReport workflow. This was needed to do an extra step of filtering the transtions.
+	 * If all the reports in the aeReport are not in submittable state then, the CRA cannot submit the aeReport to the SAE coordinator
+	 * for review. This filtering is applied to the list of transition names returned from workflowService in this method.
+	 * First of all a check is made if such a filtering is needed, and if needed then the EvaulationService is called to check the 
+	 * submittablity of all the reports (in the aeReport in context)
+	 * @param workflowId
+	 * @param loginId
+	 * @return
+	 */
+	public List<String> nextTransitionNamesForAeReportWorkflow(ExpeditedAdverseEventReport aeReport, String loginId){
+		List<String> nextTransitionNames = workflowService.nextTransitionNames(aeReport.getWorkflowId(), loginId);
+		
+		Map<Integer, Boolean> reportsSubmittable = new HashMap<Integer, Boolean>();
+		reportsSubmittable.clear();
+        for (Report report : aeReport.getReports()) {
+        	if(report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED)){
+        		ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+        		reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
+        	}
+        }
+        
+        Boolean removeSubmitToSAECoordinator = true;
+        for(Integer key: reportsSubmittable.keySet()){
+        	if(reportsSubmittable.get(key).equals(true))
+        		removeSubmitToSAECoordinator = false;
+        }
+        
+        List<String> filteredTransitionNames = new ArrayList<String>();
+        if(removeSubmitToSAECoordinator){
+        	for(String transitionName: nextTransitionNames){
+        		if(!transitionName.equals(SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR))
+        			filteredTransitionNames.add(transitionName);
+        	}
+        	return filteredTransitionNames;
+        }
+		return nextTransitionNames;
+	}
 
+	
 	
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
@@ -391,6 +437,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		this.workflowService = workflowService;
 	}
 
-	
+	public void setEvaluationService(EvaluationService evaluationService){
+		this.evaluationService = evaluationService;
+	}
 	
 }

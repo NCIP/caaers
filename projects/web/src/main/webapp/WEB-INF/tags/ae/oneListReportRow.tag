@@ -7,19 +7,22 @@
 <c:set var="repcurrClass" value="${rpIndex %2 gt 0 ? 'odd' : 'even'}" />
 <c:set var="lastVersion" value="${report.lastVersion}" />
 <c:set var="reportStatus" value="${lastVersion.reportStatus}" />
-<c:if test="${reportStatus ne 'REPLACED'}">
+<c:set var="aeReportPDFPageURL"
+	value="/pages/ae/reviewResolver?aeReport=${report.aeReport.id}&viewOnly=true" />
+
+<c:if test="${reportStatus ne 'REPLACED' and reportStatus ne 'AMENDED'}">
 	<tr align="center" id="row${rpIndex}" class="${repcurrClass}">
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
 			<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-				<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Report(s) Completed'}">
-					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
-						${report.reportDefinition.label}
-					</a>
-				</c:if>
-				<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Report(s) Completed'}">
-					${report.reportDefinition.label }
-				</c:if>
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Report(s) Completed'}">
+						<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+							${report.reportDefinition.label}
+						</a>
+					</c:if>
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Report(s) Completed'}">
+						${report.reportDefinition.label }
+					</c:if>
 			</c:if>
 			<c:if test="${report.reportDefinition.amendable and !report.isLatestVersion}">
 				${report.reportDefinition.label}
@@ -40,7 +43,7 @@
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
 			
-			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
+			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
 		     	<OPTION selected value="none">Please select</OPTION>
 		     	<c:if test="${command.study.caaersXMLType}">
 		     		<OPTION value="xml">Export caAERS XML</OPTION>
@@ -68,7 +71,9 @@
                     <c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
                         <c:choose>
                             <c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
-                                <OPTION value="submit">Submit</OPTION>
+                            	<c:if test="${command.workflowEnabled == false}">
+                            		<OPTION value="submit">Submit</OPTION>
+                            	</c:if>
                                 <OPTION value="withdraw">Withdraw</OPTION>
                             </c:when>
                             <c:when test="${reportStatus eq 'PENDING' and (not empty lastVersion.submissionUrl)}">
@@ -78,7 +83,7 @@
                             <c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
                                 <OPTION value="amend">Amend</OPTION>
                             </c:when>
-                            <c:when test="${reportStatus eq 'INPROGRESS'}">
+                            <c:when test="${reportStatus eq 'INPROGRESS' and command.workflowEnabled == false} ">
                                 <OPTION value="submit">Submit</OPTION>
                             </c:when>
                         </c:choose>

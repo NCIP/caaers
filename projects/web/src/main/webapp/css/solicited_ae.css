@@ -16,8 +16,6 @@
 	text-align: center;
 }
 .sae .deletecol {
-	padding-left: 2em;
-	padding-right: 2em;
 }
 .sae .data {
 	border-width:0px 1px 0px 1px;
@@ -63,7 +61,9 @@ th.reportingperiod, th.epoch {
 }
 .sae td {
 border:1px solid #CCCCCC;
-	height: 2em;
+}
+.sae td td {
+	border:none;
 }
 tr.gap {
 	border-color:#ccc;

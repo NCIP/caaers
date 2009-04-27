@@ -6,7 +6,6 @@
 <%@attribute name="reportStatus" required="true" type="gov.nih.nci.cabig.caaers.domain.ReportStatus" %>
 <%@attribute name="lastVersion" type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" required="true" description="The last version of the report" %>
 
-<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
 
 <%--
   Link : completed , inprocess , failed 
@@ -17,15 +16,15 @@
 --%>
 
 <script>
-    function showToolTip(text, title) {
-        Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
-    }
+    
 </script>
+
+<c:set var="_statusCSS" value="${theReport.overdue ? 'reportsOverdue' : (reportStatus eq 'INPROCESS' or reportStatus eq 'PENDING') ? 'reportsDue' : reportStatus eq 'FAILED' ? 'reportsFailed' : 'reportsCompleted'}" />
 
 <c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED')  }" />
 
 <c:if test="${detailsEnabled}">
-	<span class="dueOn"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u>${lastVersion.statusAsString}</u></i></a></span>
+	<span class="${_statusCSS }"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u class="${_statusCSS }" >${lastVersion.statusAsString}</u></i></a></span>
 	<div id="_table${theReport.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
         <div id="_ctx_${theReport.id}">
         <c:choose>
@@ -51,5 +50,5 @@
 </c:if>
 
 <c:if test="${not detailsEnabled}">
-	<span class="submittedOn"><i>${lastVersion.statusAsString}</i></span>
+	<span class="${_statusCSS }"><i>${lastVersion.statusAsString}</i></span>
 </c:if>

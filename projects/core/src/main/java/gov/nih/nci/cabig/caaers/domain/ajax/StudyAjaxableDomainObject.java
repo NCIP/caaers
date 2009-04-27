@@ -11,7 +11,7 @@ public class StudyAjaxableDomainObject extends AbstractAjaxableDomainObject {
 
     public String getDisplayName() {
         String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" : " ( " + this.getPrimaryIdentifierValue() + " ) ";
-        return this.getShortTitle() + primaryIdentifier;
+        return  primaryIdentifier + this.getShortTitle();
     }
 
 

@@ -140,7 +140,7 @@
         	$('course-details').style.display='none';
         },
         
-        populateRPCrlOptions:function(){
+        populateRPCrlOptions:function(defaultVal){
         	// If Both Study and Participant are selected then make the Ajax call to fetch course informtion
         	// and populate the Course dropdown with the fetched values.
         	if(this.isStudyParticipantSelected()){
@@ -154,6 +154,11 @@
 					}
 					rpCreator.addOptionToSelectBox(rpCreator.rpCtrl, 'Create New', '-1')
 					rpCreator.rpCtrl.enable();
+
+					//select the default value
+					if(defaultVal){
+						rpCreator.rpCtrl.value = defaultVal;
+					}
         		});
         	}
         },
@@ -231,13 +236,14 @@
             updateSelectedDisplay(studyAutocompleterProps)
             initSearchField()
             rpCreator = new RPCreatorClass('course-input','edit_button');
-            rpCreator.populateRPCrlOptions();
+            rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
+            $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
         })
     </script>
 </head>
 <body>
 
-<p><tags:instructions code="instruction_ae_assignmentNote"/></p>
+<tags:instructions code="instruction_ae_assignmentNote"/>
 
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
@@ -272,13 +278,12 @@
 			<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
 			<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
-        	<form:hidden path="adverseEventReportingPeriod"/>
+        	<form:hidden path="adverseEventReportingPeriod" />
         	<tags:requiredIndicator/>
         	<select id="course-input" style="width:20em" value="${command.adverseEventReportingPeriod.id }">
 				<option value="">Please select</option>
 			</select>
 			<input id="edit_button" type="button" value="Edit" style="display:none;"/>
-			<br>
 			<div id="course-details" style="display:none">
 				<table width="100%">
 					<tr>

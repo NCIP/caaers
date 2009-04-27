@@ -14,10 +14,12 @@
 
     <jsp:body>
 
-<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
-		<table width="100%">
- 			<tr>
-  				<td width="99%">
+<ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
+    <jsp:attribute name="label">${siteField.displayName}</jsp:attribute>
+    <jsp:attribute name="value">
+
+                      <c:if test="${empty anatomicSite.name}">
+
                     <c:set var="initValue" value="${not empty anatomicSite ? anatomicSite.name : 'Begin typing here...'}"/>
                       <ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" initialDisplayValue="${initValue}" size="50">
                           <jsp:attribute name="populatorJS">
@@ -34,21 +36,15 @@
                           </jsp:attribute>
                       </ui:autocompleter>
                       <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c2_${index}" onclick="showShowAllTable('_c2_${index}', 'assignmentDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')">Show All</a>
-                      
+
+
                     <c:if test="${anatomicSite.id eq 110}">
 					<ui:text path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="true"/>
 					</c:if>
-  				</td>
-<%--
-  				<td>
-					<a href="#anchorMetastaticDiseases" onClick="mHistory.removeDetails('metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases')">
-  					<img src="<chrome:imageUrl name="../checkno.gif" />" />
-					</a>
-				</td>
---%>
- 			</tr>
-		</table> 
-</div>
+                          
+                      </c:if>
+</jsp:attribute>
+</ui:row>        
 
         </jsp:body>
 </chrome:division>    

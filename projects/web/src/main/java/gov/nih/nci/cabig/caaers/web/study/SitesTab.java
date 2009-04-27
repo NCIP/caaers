@@ -43,13 +43,19 @@ class SitesTab extends StudyTab {
             StudySite site = command.getStudy().getStudySites().get(index);
 
             if (CollectionUtils.isNotEmpty(site.getStudyInvestigators())) {
-                errors.reject("site.notempty", "The site is associated to investigators, so unable to delete");
+                errors.reject("STU_013", "The site is associated to investigators, so unable to delete");
             }
             if (CollectionUtils.isNotEmpty(site.getStudyPersonnels())) {
-                errors.reject("site.notempty", "The site is associated to research staffs, so unable to delete");
+                errors.reject("STU_014", "The site is associated to research staffs, so unable to delete");
             }
 
-            if (!errors.hasErrors()) command.getStudy().getStudySites().remove(index);
+            if (!errors.hasErrors()) {
+            	command.getStudy().getStudySites().remove(index);
+            	
+            	// Take care of the command.studySite incase the removed site is the last in the list
+            	if(command.getStudySiteIndex() >= command.getStudy().getStudySites().size())
+            		command.setStudySiteIndex(command.getStudy().getStudySites().size() - 1);
+            }
         }else{
         	Object isAjax = request.getAttribute("_isAjax");
         	

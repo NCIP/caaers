@@ -50,7 +50,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	Investigator fetchInvestigator(String nciIdentifier) {
     	InvestigatorQuery invQuery = new InvestigatorQuery();
         if (StringUtils.isNotEmpty(nciIdentifier)) {
-        	invQuery.filterByNciIdentifier(nciIdentifier);
+        	invQuery.filterByNciIdentifierExactMatch(nciIdentifier);
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
         
@@ -128,12 +128,19 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
              
            // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
             String nciIdentifier = investigatorDto.getNciIdentifier();
-            Investigator investigator = fetchInvestigator(nciIdentifier);
-            if (investigator == null ) {
-            	// build new 
+            Investigator investigator = null;
+            if (StringUtils.isEmpty(nciIdentifier)){
             	investigator = new LocalInvestigator();
-            	investigator.setNciIdentifier(nciIdentifier);
-            } 
+            } else {
+            	investigator = fetchInvestigator(nciIdentifier);
+                if (investigator == null ) {
+                	// build new 
+                	investigator = new Investigator();
+                	investigator.setNciIdentifier(nciIdentifier);
+                } 
+            }
+
+
             investigator.setFirstName(investigatorDto.getFirstName());
             investigator.setLastName(investigatorDto.getLastName());
             investigator.setMiddleName(investigatorDto.getMiddleName());

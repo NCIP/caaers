@@ -21,19 +21,17 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin
@@ -41,12 +39,14 @@ import org.springframework.validation.Errors;
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 
+    private static final Log logger = LogFactory.getLog(AeTab.class);
+    
     protected static final String MANDATORY_FIELD_ATTR = "mandatory";
-    private ExpeditedReportTree expeditedReportTree;
+    protected ExpeditedReportTree expeditedReportTree;
     protected ReportRepository reportRepository;
     protected EvaluationService evaluationService;
     protected SchedulerService schedulerService;
-    protected HashMap<String, Boolean> hm;
+    protected HashMap<String, Boolean> emptyFieldNameMap;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -73,10 +73,38 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         Map<String, Object> refData = super.referenceData( request,command);
         Object fieldGroups = refData.get("fieldGroups");
         populateMandatoryFlag(fieldGroups, command, refData);
-        request.setAttribute("empties", hm);
+        populateEmptyMandatoryFieldMap(fieldGroups, command);
+        request.setAttribute("empties", emptyFieldNameMap);
+        WebUtils.synchronzeErrorFields(emptyFieldNameMap, command.getRulesErrors());
         return refData;
     }
+    
+    /**
+     * This method will populate the empty mandatory field details, so that the boxes
+     * containing those fields can be opened in the UI.
+     */
+    protected void populateEmptyMandatoryFieldMap(Object fieldGroups, ExpeditedAdverseEventInputCommand command){
 
+        Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
+        if (groupMap == null) return;
+        
+        emptyFieldNameMap = new HashMap<String, Boolean>();
+        
+        for (InputFieldGroup group : groupMap.values()) {
+            for (InputField field : group.getFields()) {
+            	
+            	//for every required or mandatory field, check if value is provided.
+            	if(field.isRequired() || field.getAttributes().get(MANDATORY_FIELD_ATTR) != null){
+            		 List<UnsatisfiedProperty> unsatisfiedProps = expeditedReportTree.verifyPropertiesPresent(field.getPropertyName().substring(9), command.getAeReport());
+            		 for(UnsatisfiedProperty unsatisfiedProperty : unsatisfiedProps){
+            			 String unsatisfiedPropertyName = unsatisfiedProperty.getBeanPropertyName();
+            			 emptyFieldNameMap.put("aeReport." + unsatisfiedPropertyName.substring(0, unsatisfiedPropertyName.indexOf("].") + 1), Boolean.TRUE);
+            		 }
+            	}
+            }
+        }
+    }
+    
     /**
      * Will populate the mandatory flag.
      */
@@ -87,20 +115,15 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         // the fields
         // here can be avoided.
 
-        BeanWrapper bw = new BeanWrapperImpl(command);
 
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
 
-        hm = new HashMap<String, Boolean>();
+        
         for (InputFieldGroup group : groupMap.values()) {
             for (InputField field : group.getFields()) {
                 if (isMandatory(command.getMandatoryProperties(), field)) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
-                    if (bw.getPropertyValue(field.getPropertyName()) == null) {
-                        String subName = field.getPropertyName().substring(0, field.getPropertyName().indexOf("].") + 1).toString();
-                        hm.put(subName, Boolean.TRUE);
-                    }
                 }
             }
         }
@@ -153,11 +176,26 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        command.setRulesErrors(new HashMap<String, Boolean>());
         super.validate(command, commandBean, fieldGroups, errors);
+        
         if (!errors.hasErrors() && isAssociatedToBusinessRules()) {
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
+
             for (ValidationError vError : validationErrors.getErrors()) {
-                errors.reject(vError.getCode(), vError.getMessage());
+                
+                if (command.isErrorApplicable(vError.getFieldNames())) {
+                    
+                    if (vError.getFieldNames() == null) {
+                        errors.reject(vError.getCode(), vError.getMessage());
+                        continue;
+                    }
+                    
+                    // command.setRulesErrors(new HashMap<String, Boolean>());
+                    WebUtils.rejectErrors(errors, vError);
+                    WebUtils.populateErrorFieldNames(command.getRulesErrors(), vError.getFieldNames());
+                    WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
+                }
             }
         }
     }
@@ -173,7 +211,6 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	InputFieldAttributes.setSize(mmField, 2);
 
     	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
-
     }
 
     public boolean isAssociatedToBusinessRules(){

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -34,6 +35,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -51,7 +53,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
-public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
     private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
@@ -73,8 +75,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private LowLevelTerm lowLevelTerm;
 
     private ExpeditedAdverseEventReport report;
-
-    private RoutineAdverseEventReport routineReport;
 
     private List<CourseAgentAttribution> courseAgentAttributions;
 
@@ -107,6 +107,10 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private String eventLocation;
     
     private Date gradedDate;
+    
+    private String signature;
+    
+    private Boolean reported;
     
     public AdverseEvent() {
         solicited = false;
@@ -142,17 +146,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.report = report;
     }
 
-    // This is annotated this way so that the IndexColumn in the parent
-    // will work with the bidirectional mapping
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable = false, updatable = false, nullable = true)
-    public RoutineAdverseEventReport getRoutineReport() {
-        return routineReport;
-    }
-
-    public void setRoutineReport(RoutineAdverseEventReport routineReport) {
-        this.routineReport = routineReport;
-    }
 
     @ManyToOne
     @JoinColumn(name = "reporting_period_id", nullable = true)
@@ -684,7 +677,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
      * @return String
      */
     @Transient
-    public String getSignature(){
+    public String getCurrentSignature(){
     	StringBuffer sb = new StringBuffer("");
     	// verbatim value
     	sb.append(detailsForOther == null ? "" : detailsForOther.toString());
@@ -741,7 +734,49 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     	return sb.toString();
     }
     
-    @Override
+    
+    public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+	
+	
+	public Boolean getReported() {
+		return reported;
+	}
+	
+	public void setReported(Boolean reported) {
+		this.reported = reported;
+	}
+	
+	/**
+	 * Checks whether the signature persisted is different than the one newly calculated
+	 * @return
+	 */
+	@Transient
+	public boolean isModified(){
+		return !StringUtils.equals(signature, getCurrentSignature());
+	}
+	
+	/**
+	 * This method will list the names of all active reports that are associated to this expeidted data collection.
+	 * @return
+	 */
+	@Transient
+	public List<String> getAssociatedReportNames(){
+		List<String> reportNames = new ArrayList<String>();
+		if(report != null){
+			for(Report r: report.getActiveReports()){
+				reportNames.add(r.getName());
+			}
+		}
+		return reportNames;
+	}
+
+	@Override
     public String toString() {
     	StringBuilder sb = new StringBuilder();
     	sb.append("{")

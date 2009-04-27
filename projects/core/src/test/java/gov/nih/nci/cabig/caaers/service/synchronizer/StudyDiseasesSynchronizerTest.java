@@ -65,32 +65,7 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		
 	}
 	
-	public void testCtepStudyDiseasesRemoveSynch() {
-		
-		diseaseTerm1 = new DiseaseTerm();
-		diseaseTerm1.setCtepTerm("ctepTerm1");
-		
-		diseaseTerm2 = new DiseaseTerm();
-		diseaseTerm2.setCtepTerm("ctepTerm2");
-		
-		ctepStudyDisease1 = Fixtures.createCtepStudyDisease(dbStudy,diseaseTerm1);
-		ctepStudyDisease1.setId(1);
-		ctepStudyDisease2 = Fixtures.createCtepStudyDisease(dbStudy,diseaseTerm2);
-		ctepStudyDisease2.setId(2);
-		
-		diseaseTerm1a = new DiseaseTerm();
-		diseaseTerm1a.setCtepTerm("ctepTerm1");
-
-		ctepStudyDisease1a = Fixtures.createCtepStudyDisease(xmlStudy,diseaseTerm1a);
-		
-		studyDiseasesSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(1, dbStudy.getCtepStudyDiseases().size());
-		
-	}
-	
 	public void testMedraStudyDiseasesAddedSynch() {
-		
-		
 		
 		meddraStudyDisease1 = new MeddraStudyDisease();
 		meddraStudyDisease1.setId(1);
@@ -138,40 +113,4 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		assertEquals(3, dbStudy.getMeddraStudyDiseases().size());
 		
 	}
-	
-	public void testMedraStudyDiseasesRemoveSynch() {
-		
-		meddraStudyDisease1 = new MeddraStudyDisease();
-		meddraStudyDisease1.setId(1);
-		meddraStudyDisease1.setMeddraCode("meddraCode1");
-		lowLevelTerm1 = new LowLevelTerm();
-		lowLevelTerm1.setMeddraCode("meddraCode1");
-		meddraStudyDisease1.setTerm(lowLevelTerm1);
-		
-		
-		meddraStudyDisease2 = new MeddraStudyDisease();
-		meddraStudyDisease2.setId(2);
-		meddraStudyDisease2.setMeddraCode("meddraCode2");
-		lowLevelTerm2 = new LowLevelTerm();
-		lowLevelTerm2.setMeddraCode("meddraCode2");
-		meddraStudyDisease2.setTerm(lowLevelTerm2);
-		
-		dbStudy.addMeddraStudyDisease(meddraStudyDisease1);
-		dbStudy.addMeddraStudyDisease(meddraStudyDisease2);
-		
-		
-		meddraStudyDisease1a = new MeddraStudyDisease();
-		meddraStudyDisease1a.setMeddraCode("meddraCode1");
-		lowLevelTerm1a = new LowLevelTerm();
-		lowLevelTerm1a.setMeddraCode("meddraCode1");
-		meddraStudyDisease1a.setTerm(lowLevelTerm1a);
-		
-		
-		xmlStudy.addMeddraStudyDisease(meddraStudyDisease1a);
-		
-		studyDiseasesSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(1, dbStudy.getMeddraStudyDiseases().size());
-		
-	}
-	
 }

@@ -4,13 +4,12 @@ import java.util.Arrays;
 
 public class ValidationError {
     private String code;
-
     private String message;
-
+    private String[] fieldNames;
     private Object[] replacementVariables;
 
     public ValidationError() {
-        this("0", "");
+        this("0", "", "");
     }
 
     public ValidationError(String code, String msg, Object... replacementVariables) {
@@ -41,7 +40,18 @@ public class ValidationError {
 
     @Override
     public String toString() {
-        return "code :" + code + ", replacements : "
-                        + Arrays.asList(replacementVariables).toString() + ", message :" + message;
+        return "code: " + code + ", fieldNames: " + fieldNames + ", replacements: " + Arrays.asList(replacementVariables).toString() + ", message: " + message;
+    }
+
+    public void addFieldNames(String... fieldNames) {
+        this.fieldNames = fieldNames;
+    }
+
+    public String[] getFieldNames() {
+        return this.fieldNames;
+    }
+
+    public void setFieldNames(String[] fieldNames) {
+        this.fieldNames = fieldNames;
     }
 }

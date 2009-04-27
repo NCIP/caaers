@@ -15,8 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.drools.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
 
 public class WebUtils {
+
+    private static final Log logger = LogFactory.getLog(WebUtils.class);
 
     /**
      * Creates and options map using the same principles as spring's <code>form:options</code>
@@ -139,6 +146,53 @@ public class WebUtils {
             result.put(entry.getKey(), entry.getValue());
         }
         return result;
+    }
+
+    /*
+    * Errors coming from validate() methods
+    * */
+    public static void populateErrorFieldNames(Map<String, Boolean> map, Errors errors) {
+        logger.debug("F: populateErrorFieldNames(Map map, Errors errors)");
+        if (map == null || errors == null || errors.getFieldErrors() == null|| errors.getFieldErrors().size() == 0) return;
+
+        Iterator it = errors.getFieldErrors().iterator();
+        while (it.hasNext()) {
+            FieldError fe = (FieldError)it.next();
+            String subName = fe.getField().substring(0, fe.getField().indexOf("].") + 1).toString();
+            map.put(subName, Boolean.TRUE);
+            logger.debug("FE: " + fe.getField());
+        }
+    }
+
+    public static void rejectErrors(Errors errors, ValidationError ve) {
+        logger.debug("F: rejectErrors(Errors errors, String...fieldNames)");
+        if (errors == null || ve.getFieldNames() == null || ve.getFieldNames().length == 0) return;
+        String subName = ve.getFieldNames()[0];
+        errors.rejectValue(subName, ve.getCode(), ve.getMessage());
+        logger.debug("F:rejectErrors: " + subName);
+    }
+
+    public static void populateErrorFieldNames(Map<String, Boolean> map, String... fieldNames) {
+        logger.debug("F: populateErrorFieldNames(Map map, String... fieldNames)");
+        for (byte i=0; i<fieldNames.length; i++) {
+            String subName = fieldNames[i].substring(0, fieldNames[i].indexOf("].") + 1).toString();
+            map.put(subName, Boolean.TRUE);
+        }
+    }
+
+    public static void synchronzeErrorFields(Map<String, Boolean> m1, Map<String, Boolean> m2) {
+        if (m1 == null || m2 == null) return;
+        if (m2.size() == 0) return;
+        
+        logger.debug("F: synchronzeErrorFields");
+        logger.debug("F: " + m1);
+        logger.debug("F: " + m2);
+        Iterator it = m2.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next().toString();
+            m1.put(key, Boolean.TRUE);
+            logger.debug("F: This field copied from XML Rules Files to the Mandatory Fields Hashmap: " + key);
+        }
     }
 
 }

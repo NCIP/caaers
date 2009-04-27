@@ -81,7 +81,10 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                 query.append(" and ");
             }
         }
-        
+
+        if(substringMatchProperties != null && !substringMatchProperties.isEmpty()){
+        	query.append(" order by o." + substringMatchProperties.get(0));
+        }
         getHibernateTemplate().setMaxResults(30);
         log.debug("query::" + query.toString());
         

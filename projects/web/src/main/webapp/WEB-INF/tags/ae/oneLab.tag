@@ -6,15 +6,13 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <%@attribute name="lab" type="gov.nih.nci.cabig.caaers.domain.Lab" %>
+<%@attribute name="expanded" type="java.lang.Boolean" %>
 
 <c:set var="v" value="aeReport.labs[${index}]" />
 
 <c:set var="fieldGroupName">lab${index}</c:set>
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
-
-<chrome:division title="&nbsp;${lab.labTerm.term}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="false">
-<%--<ae:fieldGroupDivision fieldGroupFactoryName="lab" index="${index}" style="${style}" collapsed="${!empties[v]}">--%>
-
+<chrome:division title="&nbsp;${empty lab.labTerm.term ? (empty lab.other ? '' : lab.other) : lab.labTerm.term}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="${!empties[v] && !expanded}">
 	 <div class="row">
             <div class="label"><label for="aeReport.labs[${index}].lab-category">Lab category</label></div>
             <div class="value">

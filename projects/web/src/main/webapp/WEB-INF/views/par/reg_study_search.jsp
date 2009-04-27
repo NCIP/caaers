@@ -127,7 +127,8 @@
                             <td>
                                 <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
                                 <%--<form:input path="searchText" size="25" onkeydown="onKey(event);" />&nbsp;--%>
-                                <input type="button" onClick="buildTable('assembler', true);" value="Search"/>&nbsp;
+                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+
                                 <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
                                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
                         </tr>

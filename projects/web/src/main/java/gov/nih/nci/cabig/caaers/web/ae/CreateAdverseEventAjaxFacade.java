@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
@@ -61,6 +62,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -121,6 +123,7 @@ public class CreateAdverseEventAjaxFacade {
     protected PreExistingConditionDao preExistingConditionDao;
     protected AgentDao agentDao;
     protected TreatmentAssignmentDao treatmentAssignmentDao;
+    protected ReportDefinitionDao reportDefinitionDao;
     protected ExpeditedReportTree expeditedReportTree;
     protected ConfigProperty configProperty;
     protected ReportRepository reportRepository;
@@ -787,6 +790,11 @@ public class CreateAdverseEventAjaxFacade {
             ExpeditedAdverseEventReportChild removedAEChild = (ExpeditedAdverseEventReportChild) removedObject;
             removedAEChild.setReport(null);
         }
+        
+        //update the reported flag when you delete from expedited report.
+        if(removedObject instanceof AdverseEvent){
+        	((AdverseEvent) removedObject).setReported(false);
+        }
 
         addDisplayNames(listProperty, changes);
         try {
@@ -927,6 +935,29 @@ public class CreateAdverseEventAjaxFacade {
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
     }
     
+    public AjaxOutput updatePhysicianSignOff(Boolean physicianSignOff){
+    	AjaxOutput output = new AjaxOutput();
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	aeReportDao.refresh(command.getAeReport());
+    	command.getAeReport().getReports();
+    	command.getAeReport().setPhysicianSignOff(physicianSignOff);
+    	saveIfAlreadyPersistent(command);
+    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	String html = renderAjaxView("submitReportValidationSection", 0, params);
+    	output.setHtmlContent(html);
+    	
+    	return output;
+    }
+    
+    public AjaxOutput refreshSubmitReportValidationSection(){
+    	AjaxOutput output = new AjaxOutput();
+    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	String html = renderAjaxView("submitReportValidationSection", 0, params);
+    	output.setHtmlContent(html);
+    	
+    	return output;
+    }
+    
     public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
 		Map params = new HashMap<String, String>();
 		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "aeReport");
@@ -950,7 +981,7 @@ public class CreateAdverseEventAjaxFacade {
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	List<String> transitions = new ArrayList<String>();
     	if(command.getAeReport().getWorkflowId() != null){
-    		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAeReport().getWorkflowId(), getUserId());
+    		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNamesForAeReportWorkflow(command.getAeReport(), getUserId());
     	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
@@ -1003,8 +1034,7 @@ public class CreateAdverseEventAjaxFacade {
     protected String getUserId(){
 		WebContext webContext = getWebContext();
 		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
-		return userId;
+		return SecurityUtils.getUserLoginName(context.getAuthentication());
 	}
 
     // For RoutingAndReview - Report comments ends here.
@@ -1183,6 +1213,14 @@ public class CreateAdverseEventAjaxFacade {
     public void setReportingPeriodDao(
             AdverseEventReportingPeriodDao reportingPeriodDao) {
         this.reportingPeriodDao = reportingPeriodDao;
+    }
+    
+    public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao){
+    	this.reportDefinitionDao = reportDefinitionDao;
+    }
+    
+    public ReportDefinitionDao getReportDefinitionDao(){
+    	return reportDefinitionDao;
     }
 
     public void setLabLoadDao(LabLoadDao labLoadDao) {

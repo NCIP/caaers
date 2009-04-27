@@ -28,15 +28,15 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                for(SAEReportPreExistingCondition pc : aeReport.getSaeReportPreExistingConditions()){
-                i++;
-                if(pc.getOther() != null &amp;&amp; pc.getPreExistingCondition() != null){
-                errors.addValidationError("PEC_BR1_ERR", "Either and only 'Pre-existing condition' or
-                'Other(pre-existing)' must be provided", i);
-                }
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
+                    int i = 0;
+                    for(SAEReportPreExistingCondition pc : aeReport.getSaeReportPreExistingConditions()){
+                            if(pc.getOther() != null &amp;&amp; pc.getPreExistingCondition() != null){
+                                errors.addValidationError("PEC_BR1_ERR", "Either and only 'Pre-existing condition' or
+                                'Other(pre-existing)' must be provided", i).addFieldNames("aeReport.saeReportPreExistingConditions[" + i + "].preExistingCondition", "aeReport.saeReportPreExistingConditions[" + i + "].other");
+                            }
+                        i++;
+                    }
+                    return errors.hasErrors() ? FAIL : SUCCESS;
                 }
                 }.validate(aeReport, errors)
             </eval>

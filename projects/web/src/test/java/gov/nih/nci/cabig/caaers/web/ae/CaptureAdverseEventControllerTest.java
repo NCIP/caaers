@@ -127,8 +127,8 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 		assertNotNull(refDataMap);
 		assertTrue(refDataMap.containsKey("routineAeSummary"));
 		Map<String, String> summary = (Map<String, String>)refDataMap.get("routineAeSummary");
-		assertEquals("Joel Joseph", summary.get("Participant"));
-		assertEquals("Start Date: 12/11/08", summary.get("Course"));
+		assertEquals("(null) Joel Joseph", summary.get("Participant"));
+		assertEquals("Start Date: 11/11/08", summary.get("Course"));
 		verifyMocks();
 	}
 	/**

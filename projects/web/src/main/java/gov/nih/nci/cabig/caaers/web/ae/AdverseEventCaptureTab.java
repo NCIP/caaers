@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +44,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     //max characters allowed for Verbatim
     private static final Integer VERBATIM_MAX_SIZE = 65;
-
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     public AdverseEventCaptureTab() {
         super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
+        setAutoPopulateHelpKey(true);
     }
 
 
@@ -115,7 +116,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to protocol treatment", false, createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false, createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Event time
@@ -127,8 +128,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
             	InputFieldAttributes.setSize(hrField, 2);
             	InputFieldAttributes.setSize(mmField, 2);
-            	InputField timeOfEventField =  new CompositeField("eventApproximateTime", 
-            			new DefaultInputFieldGroup(null,"Event time").addField(hrField).addField(mmField).addField(amPmField));
+            	InputField timeOfEventField =  new CompositeField("eventApproximateTime", new DefaultInputFieldGroup(null,"Event time").addField(hrField).addField(mmField).addField(amPmField));
             	mainFieldFactory.addField(timeOfEventField);
             	
             	//EventLocation
@@ -136,7 +136,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(eventLocationField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?", false, createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false, createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
@@ -190,18 +190,20 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                     ae.getAdverseEventTerm().isOtherRequired();
                     if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
                     	ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                        ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();	
+                        ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
                     }
                 }
         }
+        
+       
 
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
-        
+
     	return super.referenceData(command);
     }
 
-    
+
 
     @Override
     public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
@@ -233,10 +235,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
         		if(reportIdMap.containsKey(aeReport.getId())){
         			command.reassociate(aeReport);
+
+                	//update the graded date on aes, as we are going to amend the report.
+                	aeReport.updateAdverseEventGradedDate();
+                	
         			Boolean useDefaultVersion = false;
-        	    	for(Report report: aeReport.getReports()){
+        			List<Report> reportsOfAeReport = new ArrayList<Report>(aeReport.getReports());
+        	    	for(Report report: reportsOfAeReport){
         	    		if(report.getReportDefinition().getAmendable() && report.getIsLatestVersion()){
-        	    			reportRepository.amendReport(report, useDefaultVersion);
+        	    			reportRepository.createAndAmendReport(command.reassociateReportDefinition(report.getReportDefinition()), 
+        	    					report, useDefaultVersion);
         	    			aeReportsAmmended.add(aeReport);
         	    			
         	    			// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
@@ -306,43 +314,27 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // CHECKING VERBATIM LENGTH
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
-                InputField verbatimField = fieldGroups.get(MAIN_FIELD_GROUP + i).getFields().get(1);
-                errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
+                errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
+
+            // If grade is greater than 2 then hospitalization cannot be null.
+            if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
+                if (ae.getGrade() != null) {
+    				if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
+    					errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 2");
+    			}
+            }
+            
             i++;
         }
 
-
-        // If grade is greater than 2 then hospitalization cannot be null.
-    	if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()){
-    		for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-    			if (!ae.getSolicited() && ae.getGrade() != null) {
-    				if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
-    					errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
-    			}
-    		}
-    	}
-
-        // If grade = "Please Select" then other attributes cannot be modified. They should be "Please Select"
-/*        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-            if (ae.getSolicited()) {
-                if (ae.getGrade() == null || ae.getGrade().equals(Grade.NOT_EVALUATED)) {
-                    if (ae.getAttributionSummary() != null || ae.getHospitalization() != null || ae.getExpected() != null) {
-                        if (ae.getGrade() == null)
-                            errors.reject("GRADE_NEEDED", "Attribution, Hospitalization or Expectedness cannot be selected when Grade is not selected.");
-                        else
-                            errors.reject("GRADE_NEEDED", "Attribution, Hospitalization or Expectedness cannot be selected when Grade is not evaluated.");
-                    }
-
-
-                }
-            }
-        }*/
+        command.setErrorsForFields(new HashMap<String, Boolean>());
+        WebUtils.populateErrorFieldNames(command.getErrorsForFields(), errors);
     }
     
-    public void setAdverseEventRoutingAndReviewRepository(
-			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+    public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
     

@@ -116,6 +116,9 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		
 		//do the setup stuff
 		
+		//initialize already present reportdef map
+		command.refreshInstantiatedReportDefinitionMap();
+		
 		// evalutate available report definitions per session.
 		command.findAllReportDefintionNames();
 		
@@ -152,10 +155,30 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			
 			allReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable );
 			
-			//only add to selected map, if it is 'required' or 'selected'.
-			if(command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()) || command.getReportDefinitionMap().get(rpDef.getId())){
-				selectedReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable);
+			//find the report definitions for newly added adverse events
+			List<ReportDefinition> reportDefsNonExpeditedAes = command.findRequiredReportDefinitionsForNonExpeditedAdverseEvents();
+			
+			//show the rules result, if there are new report-able aes
+			List<ReportDefinition> reportDefsForModifiedAes = command.findRequiredReportDefinitionsForModifiedAdverseEvents();
+			//if for modified aes, new kind of report definition is selected? then we should show the alert popup. for easiness, add them
+			//to in reportDefsNonExpeditedAes.
+			for(ReportDefinition reportDefinition : reportDefsForModifiedAes){
+				if(!command.getInstantiatedReportDefinitionMap().containsKey(reportDefinition.getId())){
+					reportDefsNonExpeditedAes.add(reportDefinition);
+				}
 			}
+			
+			
+			// - as we re-fire rules now on all AEs
+			// If new/modified AEs did not suggest report we need to show them as suggested reports
+			// Else, only if they are not already instantiated (ones not available in instantiatedReportDefMap) show them.
+			if(!reportDefsNonExpeditedAes.isEmpty() || !command.getInstantiatedReportDefinitionMap().containsKey(rpDef.getId())){
+				//only add to selected map, if it is 'required' or 'selected' and the
+				if(command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()) || command.getReportDefinitionMap().get(rpDef.getId())){
+					selectedReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable);
+				}
+			}
+			
 			
 			i++;
 		}
@@ -230,22 +253,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	}
 
 	
- 	/**
-	 * This will remove all unselected report definitions from the report, by calling delete on the repository 
-	 * @param aeReport
-	 * @param removedDefinitions
-	 */
-	private void removeUnselectedReports(ExpeditedAdverseEventReport aeReport , Collection<ReportDefinition> removedDefinitions) {
-		 List<Report> nonWitdrawnReports = aeReport.getNonWithdrawnReports();
-		 for(Report report : nonWitdrawnReports){
-			 for(ReportDefinition rpDef : removedDefinitions){
-				 if(report.getReportDefinition().getId().equals(rpDef.getId())){
-					 reportRepository.deleteReport(report); 
-				 }
-			 }
-			 
-		 }
-	}
 	
 }
 

@@ -136,8 +136,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
      *
      * @throws Exception
      */
-    public void testNoOtherDiseaseName_WhenDiseaseTermIsNotHematopoieticmalignancyNOS()
-            throws Exception {
+    public void testNoOtherDiseaseName_WhenDiseaseTermIsNotHematopoieticmalignancyNOS() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPreExistingConditions().clear();
 
@@ -147,9 +146,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
         ValidationErrors errors = fireRules(aeReport);
 
-        assertEquals(
-                "No Errors when OtherDiseaseName is not present and diseaseTerm is not Hemtopoietc.....",
-                0, errors.getErrorCount());
+        assertEquals("No Errors when OtherDiseaseName is not present and diseaseTerm is not Hemtopoietc.....", 0, errors.getErrorCount());
     }
 
     /**
@@ -160,20 +157,17 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
      *
      * @throws Exception
      */
-    public void testOtherDiseaseName_WhenDiseaseTermIsNotHematopoieticmalignancyNOS()
-            throws Exception {
+    public void testOtherDiseaseName_WhenDiseaseTermIsNotHematopoieticmalignancyNOS() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPreExistingConditions().clear();
-
         aeReport.getDiseaseHistory().setOtherPrimaryDisease("Some diesase");
         DiseaseTerm diseaseTerm = new DiseaseTerm();
         diseaseTerm.setTerm("abc NOS");
         aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals("Errors when OtherDiseaseName is present and disease is not Hematopoietic...",
-                1, errors.getErrorCount());
+        assertEquals("Errors when OtherDiseaseName is present and disease is not Hematopoietic...", 1, errors.getErrorCount());
         assertEquals("Error code must be same", "PAT_BR2B_ERR", errors.getErrorAt(0).getCode());
+        System.out.println(errors.getErrorAt(0).getFieldNames());
     }
 
     /**
@@ -184,12 +178,9 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
     public void testOtherPrimarySiteOfDiseaseOnly() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPreExistingConditions().clear();
-
         aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite("OtherSite");
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals("No Errors when OtherPrimarySiteOfDisease is only present", 0, errors
-                .getErrorCount());
+        assertEquals("No Errors when OtherPrimarySiteOfDisease is only present", 0, errors.getErrorCount());
     }
 
     /**
@@ -260,8 +251,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         site.setCodedSite(diseaseSite);
         aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors,
-                "No errors should be there when there only site name in metastatic disease");
+        assertNoErrors(errors, "No errors should be there when there only site name in metastatic disease");
     }
 
     /**
@@ -278,8 +268,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         site.setOtherSite("test");
         aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors,
-                "No errors should be there when there only other site name in metastatic disease");
+        assertNoErrors(errors, "No errors should be there when there only other site name in metastatic disease");
     }
 
     /**
@@ -301,6 +290,9 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SMD_BR1_ERR");
         assertSameErrorCount(errors, 1);
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].codedSite-input", "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].otherSite");
     }
 
     /**
@@ -328,8 +320,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SMD_BR1_ERR");
         assertSameErrorCount(errors, 1);
-        assertSame("Replacement should be correct", 2, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
+        assertSame("Replacement should be correct", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
 
     }
 

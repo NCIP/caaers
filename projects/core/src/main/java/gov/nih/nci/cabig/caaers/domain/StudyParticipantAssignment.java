@@ -351,8 +351,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      */
     public boolean containsConcomitantMedication(ConcomitantMedication concomitantMedication){
     	if(concomitantMedication == null || concomitantMedication.getAgentName() == null) return true;
-    	for(StudyParticipantConcomitantMedication spaConMed : getConcomitantMedications()){
-    		if(spaConMed.getAgentName().equals(concomitantMedication.getAgentName())) return true;
+        for(StudyParticipantConcomitantMedication spaConMed : getConcomitantMedications()){
+            if (spaConMed == null || spaConMed.getAgentName() == null) continue;
+            if (spaConMed.getAgentName().equals(concomitantMedication.getAgentName())) return true;
     	}
     	return false;
     }
@@ -360,8 +361,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
         for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
             if (!containsConcomitantMedication(saeReportConcomitantMedication)) {
-                StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(
-                        saeReportConcomitantMedication);
+                StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(saeReportConcomitantMedication);
                 addConcomitantMedication(studyParticipantConcomitantMedication);
             }
         }

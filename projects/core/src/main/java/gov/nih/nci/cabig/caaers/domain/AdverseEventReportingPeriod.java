@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -135,7 +137,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy("grade desc")
+    @OrderBy("id desc")
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;
@@ -193,7 +195,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     }
     
     /**
-     * This method will return a a sorted list containing the evaluated adverse events.
+     * This method will return a a sorted list containing the evaluated adverse events + adverse events associated to data collection, that got modified.
      * @see AdverseEventComprator#compare(AdverseEvent, AdverseEvent)
      * @return
      */
@@ -201,10 +203,57 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getReportableAdverseEvents(){
     	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getGradedAdverseEvents()){
-    		if(ae.getReport() == null) reportableAdverseEvents.add(ae);
+    		//if(ae.getReport() == null || ae.isModified())
+    		reportableAdverseEvents.add(ae);
     	}
     	return reportableAdverseEvents;
     }
+    
+    /**
+     * This method will return the adverse events that are graded, but not yet associated to any
+     * expedited data collection.
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getNonExpeditedAdverseEvents(){
+    	List<AdverseEvent> unReportedAes = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae : getGradedAdverseEvents()){
+    		if(ae.getReport() == null)
+    			unReportedAes.add(ae);
+    	}
+    	
+    	return unReportedAes;
+    }
+    
+    /**
+     * This method will return a a sorted list containing the newly added evaluated adverse events + adverse events associated to data collection, that got modified +
+     * adverse events associated to data collection that are not reported.
+     * 
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getModifiedReportableAdverseEvents(){
+    	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    		if( ae.isModified() || BooleanUtils.isNotTrue(ae.getReported())) reportableAdverseEvents.add(ae);
+    	}
+    	return reportableAdverseEvents;
+    }
+    
+    /**
+     * This return the modified adverse events that are associated to an expedited data collection
+     * 
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getModifiedExpeditedAdverseEvents(){
+    	List<AdverseEvent> modifiedAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getGradedAdverseEvents()){
+    		if( ae.getReport() != null && ae.isModified()) modifiedAdverseEvents.add(ae);
+    	}
+    	return modifiedAdverseEvents;
+    }
+    
     
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value={CascadeType.MERGE, CascadeType.LOCK})
@@ -319,7 +368,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
      */
     private Boolean isAeReportActive(ExpeditedAdverseEventReport aeReport){
     	for(Report report: aeReport.getReports()){
-    		if(!report.getStatus().equals(ReportStatus.WITHDRAWN) && !report.getStatus().equals(ReportStatus.REPLACED))
+    		if(!report.getStatus().equals(ReportStatus.WITHDRAWN) && 
+    				!report.getStatus().equals(ReportStatus.REPLACED) && 
+    				!report.getStatus().equals(ReportStatus.AMENDED))
     			return true;
     	}
     	return false;
@@ -337,6 +388,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @org.hibernate.annotations.OrderBy(clause="created_date desc")
     public List<ReportingPeriodReviewComment> getReviewComments() {
+    	if(reviewComments == null) reviewComments = new ArrayList<ReportingPeriodReviewComment>();
 		return reviewComments;
 	}
     
@@ -416,14 +468,19 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	
     	for(ExpeditedAdverseEventReport aeReport: this.getAeReports()){
     		for(Report report: aeReport.getReports()){
+    			
+    			if(report.isOverdue()) return "Reports Overdue";
+    			
     			ReportStatus status = report.getLastVersion().getReportStatus();
-    			if(status == ReportStatus.PENDING   || status == ReportStatus.INPROCESS || status == ReportStatus.FAILED){
-    				return "Report(s) Due";
+    			if(status == ReportStatus.PENDING   || status == ReportStatus.INPROCESS){
+    				return "Reports Due";
+    			}else if(status == ReportStatus.FAILED){
+    				return "Report Submission Failed";
     			}
     		}	
     	}
     	
-    	return "Report(s) Completed";
+    	return "Reports Completed";
     }
     
     /**
@@ -457,5 +514,37 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
 
     public void setTreatmentAssignmentDescription(String treatmentAssignmentDescription) {
         this.treatmentAssignmentDescription = treatmentAssignmentDescription;
+    }
+    
+    /**
+     * This method will return the earliest graded date, of reportable adverse event
+     * @return
+     */
+    @Transient
+    public Date getEarliestAdverseEventGradedDate(){
+    	Date d = null;
+    	for(AdverseEvent ae : getReportableAdverseEvents()){
+    		if(ae.getGradedDate() == null) continue;
+    		
+    		if(d == null){
+    			d = ae.getGradedDate();
+    		}else{
+    			d = (DateUtils.compateDateAndTime(ae.getGradedDate(), d) < 0) ? ae.getGradedDate() : d;
+    		}
+    	}
+    	return d;
+    }
+    
+    /**
+     * Returns true, if all sponsor reports associated to all the data collections is complete. 
+     * @return
+     */
+    @Transient
+    public boolean getAllSponsorReportsCompleted(){
+    	boolean complete = false;
+    	for(ExpeditedAdverseEventReport aeReport : getAeReports()){
+    		complete |= aeReport.getAllSponsorReportsCompleted();
+    	}
+    	return complete;
     }
 }

@@ -4,6 +4,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createBoolea
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createPastDateField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
+import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -35,17 +36,20 @@ public class DescriptionTab extends AeTab {
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
 
-        Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
-        statusOpts.put("", "Please select");
-        statusOpts.putAll(WebUtils.collectOptions(Arrays.asList(PostAdverseEventStatus.values()), null, "displayName"));
+        Map<Object, Object> postEventStatusOpts = new LinkedHashMap<Object, Object>();
+        postEventStatusOpts.put("", "Please select");
+        postEventStatusOpts.putAll(WebUtils.collectOptions(Arrays.asList(PostAdverseEventStatus.values()), null, "displayName"));
 
-        InputField removedDateField = createPastDateField(baseProp + ".dateRemovedFromProtocol",
-                "Date removed from protocol", false);
+        Map<Object, Object> eventStatusOpts = new LinkedHashMap<Object, Object>();
+        eventStatusOpts.put("", "Please select");
+        eventStatusOpts.putAll(WebUtils.collectOptions(Arrays.asList(EventStatus.values()), null, "displayName"));
+        
+        InputField removedDateField = createPastDateField(baseProp + ".dateRemovedFromProtocol", "Date removed from protocol", false);
         InputField treatmentTimeField = createTimeField(baseProp +".primaryTreatmentApproximateTime", "Event treatment, approximate time");
         treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
         creator.createFieldGroup("desc", desc,
         		treatmentTimeField,
-                createSelectField(baseProp + ".presentStatus", "Present status", false, statusOpts),
+                createSelectField(baseProp + ".presentStatus", "Present status", false, postEventStatusOpts),
                 createPastDateField(baseProp + ".recoveryDate", "Date of recovery or death", false),
                 createBooleanSelectField(baseProp + ".retreated", "Has the participant been re-treated?", false),
                 removedDateField);
@@ -60,8 +64,8 @@ public class DescriptionTab extends AeTab {
                 InputFieldFactory.createTextField(baseProp + ".daysNotGiven", "If interrupted, specify total number of days not given", false),
                 InputFieldFactory.createCheckboxField(baseProp + ".autopsyPerformed", "Autopsy performed?"),
                 InputFieldFactory.createTextField(baseProp + ".causeOfDeath", "Cause of death"),
-                createSelectField(baseProp + ".eventAbate", "Did event abate after study drug was stopped or dose reduced?", false, createBooleanOptions()),
-                createSelectField(baseProp + ".eventReappear", "Did event reappear after study drug was reintroduced?", false, createBooleanOptions()));
+                createSelectField(baseProp + ".eventAbate", "Did event abate after study drug was stopped or dose reduced?", false, eventStatusOpts),
+                createSelectField(baseProp + ".eventReappear", "Did event reappear after study drug was reintroduced?", false, eventStatusOpts));
     }
 
     private Map<Object, Object> createBooleanOptions() {

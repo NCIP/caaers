@@ -34,10 +34,8 @@
   <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
     <property name="interceptors">
       <list>
-	<!--
-	    <ref bean="loginCheckInterceptor"/>
-	-->
-	<ref bean="sectionInterceptor"/>
+	    <ref bean="stateInformationInterceptor"/>
+		<ref bean="sectionInterceptor"/>
       </list>
     </property>
   </bean>
@@ -45,6 +43,8 @@
   <bean id="urlResolver" class="gov.nih.nci.cabig.ctms.tools.spring.BeanNameControllerUrlResolver">
     <property name="servletName"><value>pages</value></property>
   </bean>
+
+  <bean id="stateInformationInterceptor" class="gov.nih.nci.cabig.caaers.web.StateInfoInterceptor" />
 
   <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
     <property name="taskGroups">
@@ -366,9 +366,10 @@
    <!--  AE   -->
   
   <bean name="aeEditTask" id="aeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
-  	  autowire="byType" p:displayName="Enter expedited report" p:linkName="editAdverseEventController"/>
+  	  autowire="byType" p:displayName="Report Adverse Events" p:linkName="editAdverseEventController"/>
+  	  
   <bean name="aeCreateTask" id="aeCreateTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
-  	  autowire="byType" p:displayName="Create expedited report" p:linkName="createAdverseEventController"/>
+  	  autowire="byType" p:displayName="Report Adverse Events" p:linkName="createAdverseEventController"/>
   
 	
   <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>	

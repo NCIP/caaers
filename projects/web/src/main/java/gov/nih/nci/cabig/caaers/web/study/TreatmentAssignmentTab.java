@@ -77,7 +77,7 @@ public class TreatmentAssignmentTab extends StudyTab {
         for (int j = 0; j < treatmentAssignments.size(); j++) {
             TreatmentAssignment treatmentAssignment = treatmentAssignments.get(j);
             if (treatmentAssignment.getDoseLevelOrder() != null && treatmentAssignment.getDoseLevelOrder().toString().length() > 2) {
-                errors.rejectValue("treatmentAssignments[" + j + "].doseLevelOrder", "REQUIRED", "Does level order should be a two digit number only (less than 100)..!");
+                errors.rejectValue("treatmentAssignments[" + j + "].doseLevelOrder", "STU_018", "Does level order should be a two digit number only (less than 100)..!");
             }
         }
 

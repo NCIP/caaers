@@ -45,32 +45,37 @@
 		<table width="100%" border="0" cellspacing="0"> <!-- This is the outer table -->
 			<tr>
 				<td width="100%">
-					<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="rStatus">
-						<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
-							<tr>
-								<td>
-									<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
-										<thead>
-											<tr class="label">
-												<td class="tableHeader" width="36%">Report Name</td>
-												<td class="centerTableHeader" width="24%">Submission Status</td>
-												<td class="centerTableHeader" width="10%">Review Status</td>
-												<td class="centerTableHeader" width="5%">Comments</td>
-												<td class="centerTableHeader" width="25%">Action</td>
-											</tr>						
-										</thead>
-											<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
-									</table>
-								</td>
-							</tr>
-						</table>
-					</c:forEach>
-	
+					<c:choose>
+						<c:when test="${not empty reportingPeriod.aeReports}">
+							<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="rStatus">
+								<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
+									<tr>
+										<td>
+											<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter eXtremeTable">
+												<thead>
+													<tr class="label">
+														<td class="tableHeader" width="36%">Report Name</td>
+														<td class="centerTableHeader" width="24%">Report Submission Status</td>
+														<td class="centerTableHeader" width="10%">Review Status</td>
+														<td class="centerTableHeader" width="5%">Comments</td>
+														<td class="centerTableHeader" width="25%">Action</td>
+													</tr>						
+												</thead>
+													<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
+											</table>
+										</td>
+									</tr>
+								</table>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							There are no reports for this course/cycle.
+						</c:otherwise>
+					</c:choose>
 				</td>
 			</tr>
 			<tr>
 				<td width="100%">
-				    <span style="font-size:13px; font-weight:bold;">All Adverse Events for this Reporting Period</span>
 					<ae:routingAndReviewListAllAeSection reportingPeriod="${reportingPeriod.adverseEventReportingPeriod}" isDCPStudy="${reportingPeriod.dcpSponsoredStudy}"/>
 				</td>
 			</tr>

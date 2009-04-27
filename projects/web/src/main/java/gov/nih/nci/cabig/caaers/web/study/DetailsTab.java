@@ -177,20 +177,20 @@ public class DetailsTab extends StudyTab {
         // Adverse event coding terminology
         if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA && command.getStudy().getAeTerminology().getMeddraVersion() == null) {
             InputField field = fieldGroups.get("scFieldGroup").getFields().get(2);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+            errors.rejectValue(field.getPropertyName(), "STU_006", new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
         }
 
         if (command.getStudy().getAeTerminology().getTerm() == Term.CTC) {
 
             if (command.getStudy().getAeTerminology().getCtcVersion() == null) {
                 InputField field = fieldGroups.get("scFieldGroup").getFields().get(1);
-                errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+                errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
             }
 
 /*
             if (command.getStudy().getOtherMeddra() == null) {
                 InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
-                errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+                errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
             }
 */
         }
@@ -199,7 +199,7 @@ public class DetailsTab extends StudyTab {
         // This is to validate if meddra version is selected incase the disease term is of type meddra
         if (command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA && command.getStudy().getDiseaseTerminology().getMeddraVersion() == null) {
         	InputField field = fieldGroups.get("sdcFieldGroup").getFields().get(1);
-        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+        	errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
         }
     }
 

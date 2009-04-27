@@ -12,7 +12,6 @@
         /*background-color: #e8e8ff;*/
     }
 </style>
-
 <chrome:division title="" collapsable="true" id="studyTermsID">
     <c:if test="${not empty command.study.aeTerminology.meddraVersion}">
         <c:set var="terms" value="${command.study.expectedAEMeddraLowLevelTerms}" />

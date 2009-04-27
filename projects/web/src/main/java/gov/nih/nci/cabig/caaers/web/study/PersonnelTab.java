@@ -92,7 +92,7 @@ class PersonnelTab extends StudyTab {
             for (StudyPersonnel sp : studyOrg.getStudyPersonnels()) {
                 spIndex++;
                 if (!hSet.add(sp)) {
-                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].researchStaff", "DUPLICATE", "Duplicate entry");
+                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].researchStaff", "STU_012", "Duplicate entry");
                 }
             }
 

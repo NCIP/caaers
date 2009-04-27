@@ -55,27 +55,11 @@ public class TreatmentAssignmentSynchronizerTest extends AbstractTestCase{
 		
 		assertEquals(4, dbStudy.getTreatmentAssignments().size());
 		
-	}
-	
-	public void testTreatmentAssignmentRemoveUpdateSync() {
+		xmlStudy.getTreatmentAssignments().clear();
 		
-		treatmentAssignment1 = Fixtures.createTreatmentAssignment("Code1");
-		treatmentAssignment1.setId(1);
-		dbStudy.addTreatmentAssignment(treatmentAssignment1);
-		
-		treatmentAssignment2 = Fixtures.createTreatmentAssignment("Code2");
-		treatmentAssignment2.setId(2);
-		dbStudy.addTreatmentAssignment(treatmentAssignment2);
-		
-		treatmentAssignment1a = Fixtures.createTreatmentAssignment("Code1");
-		treatmentAssignment1a.setComments("UpdatedComments");
-		treatmentAssignment1a.setDoseLevelOrder(4);
-		xmlStudy.addTreatmentAssignment(treatmentAssignment1a);
-		
-		treatmentAssignmentSynchronizer = new TreatmentAssignmentSynchronizer();
 		treatmentAssignmentSynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		
-		assertEquals(1, dbStudy.getTreatmentAssignments().size());
+		assertEquals(4, dbStudy.getTreatmentAssignments().size());
 		
 	}
 	

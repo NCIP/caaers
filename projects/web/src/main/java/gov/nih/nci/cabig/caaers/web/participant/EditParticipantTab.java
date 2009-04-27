@@ -160,7 +160,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         DateValue dob = command.getParticipant().getDateOfBirth();
 
         if (dob.checkIfDateIsInValid()) {
-            errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
+            errors.rejectValue("participant.dateOfBirth", "PT_010", "Incorrect Date Of Birth");
         }
 
         for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
@@ -181,7 +181,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 */
         }
 
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include exactly One Primary Identifier");
+        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "PT_011", "Please Include exactly One Primary Identifier");
 
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
     }

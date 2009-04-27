@@ -53,7 +53,7 @@
                     </c:forEach>
 
                     <c:if test="${!displayOnly}">
-        		  	  <th id="addButtonCell" class="action"> &nbsp<input id="AddEpoch" type="button" value="Add" /></th>
+        		  	  <td id="addButtonCell" class="action" align="center"><tags:button id="AddEpoch" color="blue" type="button" value="Add" size="small" icon="add" onclick=""/></td>
        		  	   </c:if>  
     			</tr>
  				<c:if test="${!displayOnly}">

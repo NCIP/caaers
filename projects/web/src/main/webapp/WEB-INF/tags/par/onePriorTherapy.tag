@@ -9,41 +9,37 @@
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
 
-<div>
- <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true"
-  deleteParams="'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
+<c:set var="v" value="assignment.priorTherapies[${index}]" />
 
-     <ui:select options="${priorTherapyOptions}" path="assignment.priorTherapies[${index}].priorTherapy" />
-     
+<div>
+ <chrome:division id="assignment.priorTherapies[${index}]" collapsed="${collapsed && !empties[v]}" collapsable="true" deleteParams="'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
+     <jsp:attribute name="title">
+         ${priorTherapy.name}
+     </jsp:attribute>
+
+     <jsp:attribute name="titleFragment" />
+
+     <jsp:body>
+    <c:if test="${empty priorTherapy.name}">
+        <ui:row path="assignment.priorTherapies[${index}].priorTherapy">
+            <jsp:attribute name="label">Prior Therapy</jsp:attribute>
+            <jsp:attribute name="value"><ui:select options="${priorTherapyOptions}" path="assignment.priorTherapies[${index}].priorTherapy" /></jsp:attribute>
+        </ui:row>
+    </c:if>
     <ui:row path="assignment.priorTherapies[${index}].other">
-	 <jsp:attribute name="label">
-		<ui:label path="assignment.priorTherapies[${index}].other" text="Comments" />
-	 </jsp:attribute>
-	 <jsp:attribute name="value">
-		<ui:textarea path="assignment.priorTherapies[${index}].other" cols="55" />
-	 </jsp:attribute>
-	</ui:row>
+        <jsp:attribute name="label"><ui:label path="assignment.priorTherapies[${index}].other" text="Comments" /></jsp:attribute>
+        <jsp:attribute name="value"><ui:textarea path="assignment.priorTherapies[${index}].other" cols="55" /></jsp:attribute>
+    </ui:row>
 
      <div id="dates${index}" style="display:${priorTherapy.name eq 'No prior therapy' ? 'none;' : 'inline;'}">
-    <ui:row path="assignment.priorTherapies[${index}].startDate">
-	 <jsp:attribute name="label">
-		<ui:label path="assignment.priorTherapies[${index}].startDate" text="Therapy start Date" />
-	 </jsp:attribute>
-	 <jsp:attribute name="value">
-		<ui:splitDate path="assignment.priorTherapies[${index}].startDate" />
-	 </jsp:attribute>
-	 
-	</ui:row>
-
-	<ui:row path="assignment.priorTherapies[${index}].endDate">
-	 <jsp:attribute name="label">
-		<ui:label path="assignment.priorTherapies[${index}].endDate" text="Therapy end date" />
-	 </jsp:attribute>
-	 <jsp:attribute name="value">
-		<ui:splitDate path="assignment.priorTherapies[${index}].endDate" />
-	 </jsp:attribute>
-	 
-	</ui:row>
+        <ui:row path="assignment.priorTherapies[${index}].startDate">
+            <jsp:attribute name="label"><ui:label path="assignment.priorTherapies[${index}].startDate" text="Therapy start Date" /></jsp:attribute>
+            <jsp:attribute name="value"><ui:splitDate path="assignment.priorTherapies[${index}].startDate" /></jsp:attribute>
+        </ui:row>
+        <ui:row path="assignment.priorTherapies[${index}].endDate">
+            <jsp:attribute name="label"><ui:label path="assignment.priorTherapies[${index}].endDate" text="Therapy end date" /></jsp:attribute>
+            <jsp:attribute name="value"><ui:splitDate path="assignment.priorTherapies[${index}].endDate" /></jsp:attribute>
+        </ui:row>
     </div>
      
     <c:if test="${priorTherapy.priorTherapy.agentsPossible}">
@@ -51,15 +47,9 @@
 	 <jsp:attribute name="label">Prior Therapy Agents</jsp:attribute>
 	 <jsp:attribute name="value">
 	   <table class="tablecontent" width="95%">
-			<tr>
-				<td width="10%">
-					<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>
-                </td>
-                <%--<td width="20%"><a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a></td>--%>
-            </tr>
+			<tr><td width="10%"><tags:button cssClass="foo" id="priortherapy[${index}].agent-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPTAgents_${index}();" size="small"/></td></tr>
 			<tr>
 				<td colspan="3">
-					<a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
 					<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
 						<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
 						<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status" var="agent">
@@ -73,6 +63,7 @@
 	 </jsp:attribute>
 	  </ui:row>
 	</c:if>
+     </jsp:body>
  </chrome:division>
 </div>
 <script type="text/javascript">
@@ -91,17 +82,16 @@
 });
     
 
+function addPTAgents_${index}() {
+    mHistory.addDetails('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
+    AE.resetAutocompleter('priorTherapyAgents[${index}]');
+}
+
 function initializePriorTherapy(){
 	
 	if($('priortherapy[${index}].agent-btn')){
-		
 		Element.observe('priortherapy[${index}].agent-btn', 'click', function(evt){
-		 	mHistory.addDetails('priorTherapyAgent', evt.element(), null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
-		 	
-		 	//clear the fields
-		 	AE.resetAutocompleter('priorTherapyAgents[${index}]');
-	 	});	
-	 	
+	 	});
 	}
 	
 	//AE.registerCalendarPopups("contentOf-assignment.priorTherapies[${index}]");
@@ -109,5 +99,16 @@ function initializePriorTherapy(){
 }
 
 initializePriorTherapy.defer();
+
+function setTitlePT_${index}() {
+    var titleID = $('titleOf_assignment.priorTherapies[${index}]');
+    var select = $("assignment.priorTherapies[${index}].priorTherapy");
+    var value = select.options[select.selectedIndex].text;
+    $(titleID).innerHTML = value;
+}
+
+Event.observe($("assignment.priorTherapies[${index}].priorTherapy"), "change", function() {
+    setTitlePT_${index}();
+});
 </script>
 

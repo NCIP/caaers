@@ -9,6 +9,7 @@ import static gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.REQUIRED_INTERVENTION;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -41,6 +42,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	CaptureAdverseEventInputCommand command;
 	Errors errors;
 	ExpeditedAdverseEventReportDao reportDao;
+	ReportDefinitionDao reportDefinitionDao;
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
@@ -53,10 +55,11 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		reportingPeriod.setAdverseEvents(aeList);
 		Fixtures.createCtcV3Terminology(reportingPeriod.getStudy());
 		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 		
-		command = new CaptureAdverseEventInputCommand(null, null, null, null, null, reportDao);
+		command = new CaptureAdverseEventInputCommand(null, null, null, reportDefinitionDao, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
 		
 	
@@ -180,9 +183,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		
 	    request.setAttribute("_action", "amendmentRequired");
 	    request.setAttribute("_amendReportIds", "1");
-	    
+
 	    reportDao.reassociate(command.getAdverseEventReportingPeriod().getAeReports().get(0));
-	    reportRepository.amendReport(report, false);
+	    reportRepository.createAndAmendReport(report.getReportDefinition(), report, false);
+	    EasyMock.expect(reportDefinitionDao.merge(report.getReportDefinition())).andReturn(report.getReportDefinition());
 	    replayMocks();
 		tab.postProcess(request, command, errors);
 		
@@ -216,7 +220,8 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	    request.setAttribute("_amendReportIds", "1");
 	    
 	    reportDao.reassociate(command.getAdverseEventReportingPeriod().getAeReports().get(0));
-	    reportRepository.amendReport(report, false);
+	    EasyMock.expect(reportDefinitionDao.merge(report.getReportDefinition())).andReturn(report.getReportDefinition());
+	    reportRepository.createAndAmendReport(report.getReportDefinition(), report, false);
 	    EasyMock.expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport)).andReturn(3L);
 	    replayMocks();
 		tab.postProcess(request, command, errors);

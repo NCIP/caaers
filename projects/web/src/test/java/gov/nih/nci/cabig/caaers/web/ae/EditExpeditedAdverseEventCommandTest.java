@@ -47,6 +47,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.classextension.EasyMock;
+
 /**
  * @author Sameer Work
  * @author Biju Joseph
@@ -154,7 +156,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	reportDefinition.setTimeScaleUnitType(TimeScaleUnit.DAY);
     	reportDefinition.setDuration(3);
     	command.getNewlySelectedSponsorReports().add(reportDefinition);
-    	assertFalse(command.isNewlySelectedReportEarlier());
+    	assertFalse(command.isNewlySelectedSponsorReportEarlier());
     }
     
    /* public List<Report> createReportList(){
@@ -186,17 +188,19 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.getAeReport().setWorkflowId(1);
     	command.setWorkflowEnabled(true);
     	// Make the reports amendable.
-    	for(Report report: command.getAeReport().getReports())
+    	for(Report report: command.getAeReport().getReports()){
     		report.getReportDefinition().setAmendable(true);
-    	
-    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
-    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
-    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
+    		//modify the amendment map.
+    		command.getAmendedReportsMap().put(report.getReportDefinition(), report);
+    	}
+    		
+    	reportRepository.createAndAmendReport((ReportDefinition) EasyMock.anyObject(), (Report) EasyMock.anyObject(), EasyMock.anyBoolean());
+    	EasyMock.expectLastCall().times(4);
     	
     	expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(command.getAeReport())).andReturn(new Long(1)).times(1);
     
     	replayMocks();
-    	command.amendReports(command.getAeReport().getReports());
+    	command.amendReports();
     	verifyMocks();
     }
     
@@ -211,15 +215,16 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.getAeReport().setWorkflowId(1);
     	command.setWorkflowEnabled(false);
     	// Make the reports amendable.
-    	for(Report report: command.getAeReport().getReports())
+    	for(Report report: command.getAeReport().getReports()){
     		report.getReportDefinition().setAmendable(true);
-    	
-    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
-    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
-    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
-    	
+    		//modify the amendment map.
+    		command.getAmendedReportsMap().put(report.getReportDefinition(), report);
+    	}
+    		
+    	reportRepository.createAndAmendReport((ReportDefinition) EasyMock.anyObject(), (Report) EasyMock.anyObject(), EasyMock.anyBoolean());
+    	EasyMock.expectLastCall().times(4);
     	replayMocks();
-    	command.amendReports(command.getAeReport().getReports());
+    	command.amendReports();
     	verifyMocks();
     }
     
@@ -233,15 +238,18 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	
     	command.setWorkflowEnabled(true);
     	// Make the reports amendable.
-    	for(Report report: command.getAeReport().getReports())
+    	for(Report report: command.getAeReport().getReports()){
     		report.getReportDefinition().setAmendable(true);
-    	
-    	reportRepository.amendReport(command.getAeReport().getReports().get(0), false);
-    	for(int i = 1; i < command.getAeReport().getReports().size(); i++)
-    		reportRepository.amendReport(command.getAeReport().getReports().get(i), true);
+    		//modify the amendment map.
+    		command.getAmendedReportsMap().put(report.getReportDefinition(), report);
+    	}
+    		
+    	reportRepository.createAndAmendReport((ReportDefinition) EasyMock.anyObject(), (Report) EasyMock.anyObject(), EasyMock.anyBoolean());
+    	EasyMock.expectLastCall().times(4);
     	
     	replayMocks();
-    	command.amendReports(command.getAeReport().getReports());
+    	command.amendReports();
+    	
     	verifyMocks();
 
     }
@@ -436,9 +444,10 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.setWorkflowEnabled(true);
     	command.getAeReport().setWorkflowId(1);
     	// setup the arraylist- reportListForAmendment
-    	command.getReportListForAmendment().add(command.getAeReport().getReports().get(0));
+    	Report report = command.getAeReport().getReports().get(0);
+    	command.getAmendedReportsMap().put(report.getReportDefinition(), report);
     	
-    	reportRepository.amendReport(command.getReportListForAmendment().get(0), false);
+    	reportRepository.createAndAmendReport(report.getReportDefinition(), report, false);
     	expect(adverseEventRoutingAndReviewRepository.enactReportWorkflow(command.getAeReport())).andReturn(new Long(1));
     	replayMocks();
     	command.amendReports();
@@ -448,44 +457,20 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     public void testAmendReportsWithWorkflowDisabled() throws Exception{
     	addReportsToAeReport();
     	command.setWorkflowEnabled(false);
-    	command.getReportListForAmendment().add(command.getAeReport().getReports().get(0));
-    	
-    	reportRepository.amendReport(command.getReportListForAmendment().get(0), false);
+    	Report report = command.getAeReport().getReports().get(0);
+    	command.getAmendedReportsMap().put(report.getReportDefinition(), report);
+    	reportRepository.createAndAmendReport(report.getReportDefinition(), report, false);
+
     	replayMocks();
     	command.amendReports();
     	verifyMocks();
     }
     
-    public void testPopulateCreationAndAmendmentList() throws Exception{
-    	addReportsToAeReport();
-    	command.getAeReport().getReports().get(0).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(1).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	
-    	//Setup new reportDefinitions in newSelectedReportDefs.
-    	//existing one (should cause amendment)
-    	ReportDefinition reportDefinition = new ReportDefinition();
-		reportDefinition.setAmendable(true);
-		reportDefinition.setExpedited(true);
-		reportDefinition.setName("repDefn 1");
-		reportDefinition.setId(1);
-    	command.getNewlySelectedDefs().add(reportDefinition);
-    	
-    	//new one (should cause creation)
-    	reportDefinition = new ReportDefinition();
-		reportDefinition.setAmendable(false);
-		reportDefinition.setExpedited(false);
-		reportDefinition.setId(5);
-		command.getNewlySelectedDefs().add(reportDefinition);
-		
-    	command.initializeExistingReportMap();
-    	command.populateCreationAndAmendmentList();
-    	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
-    	assertEquals("Incorrect number of reports for amendment", 1, command.getReportListForAmendment().size());
-    }
+ 
     
     public void testRefreshMandatoryProperties(){
     	addReportsToAeReport();
+    	command.getAeReport().setId(5);
     	command.refreshMandatoryProperties();
     	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
     	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
@@ -493,6 +478,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     
     public void testRefreshMandatoryPropertiesWhenSomeReportsAreInactive(){
     	addReportsToAeReport();
+    	command.getAeReport().setId(4);
     	command.getAeReport().getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
     	command.getAeReport().getReports().get(2).setStatus(ReportStatus.WITHDRAWN);
     	command.getAeReport().getReports().get(3).setStatus(ReportStatus.WITHDRAWN);
@@ -505,6 +491,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     
     public void testRefreshMandatoryPropertiesWhenAllReportsAreInactive(){
     	addReportsToAeReport();
+    	command.getAeReport().setId(4);
     	command.getAeReport().getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
     	command.getAeReport().getReports().get(1).setStatus(ReportStatus.WITHDRAWN);
     	command.getAeReport().getReports().get(2).setStatus(ReportStatus.WITHDRAWN);
@@ -513,4 +500,16 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	assertFalse(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
     	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
     }
+    
+    public void testRefreshMandatoryPropertiesWhenAeReportIsNew(){
+    	addReportsToAeReport();
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(0).getReportDefinition());
+    	command.refreshMandatoryProperties();
+    	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
+    	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].startDate"));
+    	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
+    }
+    
+   
+    
 }

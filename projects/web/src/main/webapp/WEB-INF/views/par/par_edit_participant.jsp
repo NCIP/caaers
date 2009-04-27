@@ -203,7 +203,7 @@ function removeSystemIdentifier(container, index) {
     </tbody>
 
 </table>
-
+<tags:button id="organization-button" color="blue" type="button" value="Add Organization Identifier" size="small" icon="add" onclick="addOrganizationIdentifier('addOrganizationIdentifierDiv')"/>
 </chrome:division>
 
 <chrome:division title="Subject ID Assigned by a System">
@@ -230,6 +230,7 @@ function removeSystemIdentifier(container, index) {
     </c:forEach>
     <tbody>
 </table>
+ <tags:button id="system-button" color="blue" type="button" value="Add System Identifier" size="small" icon="add" onclick="addSystemIdentifier('addSystemIdentifierDiv')"/>
 </chrome:division>
 
 <script language="JavaScript">
@@ -268,8 +269,8 @@ function removeSystemIdentifier(container, index) {
 </jsp:attribute>
 
 <jsp:attribute name="localButtons">
-    <input type=button value="Add System Identifier" id="system-button" onClick="addSystemIdentifier('addSystemIdentifierDiv')">
-    <input type=button value="Add Organization Identifier" id="organization-button" onClick="addOrganizationIdentifier('addOrganizationIdentifierDiv')">
+   
+    
 </jsp:attribute>
      
 </tags:tabForm>

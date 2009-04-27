@@ -16,9 +16,6 @@ public class StudyLinkDisplayCell extends AbstractCell {
         if (ae.getReport() != null) {
             study = ae.getReport().getAssignment().getStudySite().getStudy();
         }
-        if (ae.getRoutineReport() != null) {
-            study = ae.getRoutineReport().getAssignment().getStudySite().getStudy();
-        }
         String cellValue = study.getPrimaryIdentifier().getValue();
         String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
 

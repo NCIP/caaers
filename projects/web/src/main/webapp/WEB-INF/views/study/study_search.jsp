@@ -89,7 +89,7 @@ function onKey(e) {
 			</div>
 		 	</c:forEach>
 
-            <input class='ibutton' type='button' onclick="buildTable('searchForm'); $('bigSearch').show();" value='Search'  title='Search Study'/>
+            <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('searchForm'); $('bigSearch').show();"/>
             <tags:indicator id="indicator" />
         </div>
     </form:form>

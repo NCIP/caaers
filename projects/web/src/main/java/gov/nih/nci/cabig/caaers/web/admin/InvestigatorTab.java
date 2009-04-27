@@ -215,12 +215,12 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         for (int i = 0; i < investigators.size(); i++) {
             SiteInvestigator siteInvestigator = investigators.get(i);
             if (siteInvestigator.getOrganization() == null) {
-                errors.rejectValue("siteInvestigators[" + i + "].organization", "REQUIRED",
+                errors.rejectValue("siteInvestigators[" + i + "].organization", "INV_001",
                         "Site is required..!");
 
             }
             if (siteInvestigator.getStatusCode() == null) {
-                errors.rejectValue("siteInvestigators[" + i + "].statusCode", "REQUIRED",
+                errors.rejectValue("siteInvestigators[" + i + "].statusCode", "INV_002",
                         "Status type is required..!");
 
             }

@@ -1,45 +1,29 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
-import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
-import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.context.SecurityContext;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.validation.BindException;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractCommandController;
-import org.springframework.web.servlet.mvc.AbstractController;
-import org.springframework.web.servlet.mvc.AbstractFormController;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 
@@ -50,6 +34,9 @@ public class ReviewAeReportController extends SimpleFormController{
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private StudyParticipantAssignmentDao assignmentDao;
 	private Configuration configuration;
+	private MessageSource messageSource;
+	private CSMUserRepository csmUserRepository;
+	private EvaluationService evaluationService;
 	
 	public ReviewAeReportController(){
 		setCommandClass(ReviewAeReportCommand.class);
@@ -67,12 +54,63 @@ public class ReviewAeReportController extends SimpleFormController{
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao);
 		String aeReportId = request.getParameter("aeReport");
+		String reportId = request.getParameter("report");
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+		command.setReportId(Integer.parseInt(reportId));
 		command.setAeReport(aeReport);
 		command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 		return command;
 	}
-		
+	
+	@SuppressWarnings("unchecked")
+    @Override
+    protected Map referenceData(final HttpServletRequest request, final Object cmd, final Errors errors) throws Exception {
+		ReviewAeReportCommand command = (ReviewAeReportCommand) cmd;
+		Map<String, Object> refdata = new HashMap<String, Object>();
+        Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
+
+        // evaluate business rules.
+        ReportSubmittability reportSubmittability = new ReportSubmittability();
+        for (ExpeditedReportSection section : ExpeditedReportSection.values()) {
+
+            if (!section.isAssociatedToBusinessRules()) continue;
+
+            ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules( command.getAeReport(), section);
+            for (ValidationError vError : validationErrors.getErrors()) {
+                reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
+            }
+        }
+
+        reportMessages.put(ExpeditedAdverseEventInputCommand.ZERO, reportSubmittability);
+
+        // -- check the report submittability
+        for (Report report : command.getAeReport().getReports()) {
+        		reportMessages.put(report.getId(), evaluationService.isSubmittable(report));
+        }
+        refdata.put("reportMessages", reportMessages);
+
+        // This is to check if the logged in person is SAE-Coordinator.
+        // Data coordinator cannot submit a report.
+        SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
+		boolean isUserSAECoordinator = false;
+		if(!csmUserRepository.isSuperUser(userId)){
+			User user = csmUserRepository.getUserByName(userId);
+			if(user.getUserGroupTypes().contains(UserGroupType.caaers_central_office_sae_cd)){
+					isUserSAECoordinator = true;
+			}
+		}
+        
+        boolean canSubmit = false;
+        if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isUserSAECoordinator)
+        	canSubmit = true;
+        
+        
+        refdata.put("canSubmit", canSubmit);
+        
+        return refdata;
+	}
+	
 	@Required
 	public Configuration getConfiguration() {
 		return configuration;
@@ -96,4 +134,17 @@ public class ReviewAeReportController extends SimpleFormController{
 	public StudyParticipantAssignmentDao getAssignmentDao(){
 		return assignmentDao;
 	}
+	
+	public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+	
+	public void setEvaluationService(EvaluationService evaluationService){
+		this.evaluationService = evaluationService;
+	}
+	
+	@Required
+    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
+    }
 }

@@ -398,6 +398,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		
 		switch(personRole){
+			case CENTRAL_OFFICE_SAE_COORDINATOR:
+				List<User> saeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				users.addAll(saeCoordinators);
+				break;
+			case DATA_COORDINATOR:
+				List<User> dataCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				users.addAll(dataCoordinators);
+				break;
 			case ADVERSE_EVENT_COORDINATOR:
 				List<User> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(aeCoordinators);

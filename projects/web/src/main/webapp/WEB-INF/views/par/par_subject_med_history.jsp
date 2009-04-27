@@ -9,14 +9,14 @@
 	 		border-style:solid;
 	 		border-width:1px 0px 0px 0px;
 		}
-		 div.row div.label { width: 15em; } 
-		 div.summary div.row div.label { width: 10em; } 
-		 div.summary div.row div.value, div.summary div.row div.extra {margin-left:11em;}
-		 div.row div.value, div.row div.extra { margin-left: 16em; }
+		 /*div.row div.label { width: 15em; } */
+		 /*div.summary div.row div.label { width: 10em; } */
+		 /*div.summary div.row div.value, div.summary div.row div.extra {margin-left:11em;}*/
+		 /*div.row div.value, div.row div.extra { margin-left: 16em; }*/
 		 .tablecontent td {
 		 	border : 0px;
 		 }
-		 
+
 	</style>
 	<tags:javascriptLink name="extremecomponents"/>
  	<tags:dwrJavascriptLink objects="createAE"/>
@@ -27,9 +27,6 @@
  	 		initialize: function(){ 
  	 		},
  	 		addDetails : function(itemType, src, val, loc, options){
- 	 	 		
- 	 	 		src.disable();
- 	 	 		
  	 	 		var container = $(loc);
  	 	 		var paramHash = new Hash(); //parameters to post to server
  	 	 		paramHash.set('task', 'add');
@@ -42,9 +39,7 @@
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
-				this.insertContent(container, url, paramHash, function() {
-						src.enable();
-						});
+				this.insertContent(container, url, paramHash, function() {});
  	 		},
  	 		removeDetails :function(itemType,index, loc, options){
  	 	 		if(index < 0) return;
@@ -92,57 +87,25 @@
  		});
 
  		Event.observe(window, "load",setupPage);
-		
-		function setupPage(){
+
+        function addMetastaticDisease() {
+            mHistory.addDetails('metastaticDiseaseSite', null, null, 'anchorMetastaticDiseases');
+        }
+
+        function addPreexistingCondition() {
+            mHistory.addDetails('preExistingCondition', null, null, 'anchorPreExistingCondition');
+        }
+
+        function addConMeds() {
+            mHistory.addDetails('concomitantMedication', null, null, 'anchorConcomitantMedication');
+        }
+
+        function addPriorTherapy() {
+            mHistory.addDetails('priorTherapy', null, null, 'anchorPriorTherapy');
+        }
+
+        function setupPage(){
 			mHistory = new mHistoryClass();//create a new mHistory object
-
-			//--for metastatic diseases button 
-			Element.observe('metastatic-diseases-btn', 'click', function(e){
-			 	this.addDetails('metastaticDiseaseSite', e.element(), null, 'anchorMetastaticDiseases');
-
-			 	//clear the fields
-//			 	AE.resetAutocompleter('metastaticDiseaseSite');
-		 	}.bind(mHistory));
-
-			//--for pre-existing condition button
-		 	Element.observe('pre-cond-btn', 'click', function(e){
-/*
-			 	var preCondField = $('preExistingCondition');
-			    if(preCondField.selectedIndex < 1) {
-                    alert('Select a value first.');
-                    return
-                }
-*/
-			    this.addDetails('preExistingCondition', e.element(), null, 'anchorPreExistingCondition');
-			    preCondField.selectedIndex = 0;
-			 	
-		 	}.bind(mHistory));
-		 	//-- for concomitant medication
-		 	Element.observe('concomitantMedication-btn', 'click', function(e){
-/*
-			 	var conMedField = $('concomitantMedication');
-			 	if(conMedField.value == '') {
-                     alert('Type a value first.');
-                     return
-                 }
-*/
-			 	this.addDetails('concomitantMedication', e.element(), null, 'anchorConcomitantMedication');
-			 	conMedField.value = '';
-		 	}.bind(mHistory));
-		 	
-			//-- for prior therapy button
-		 	Element.observe('priortherapy-btn','click', function(e){
-/*
-			 	var priorTherapyField = $('priorTherapy');
-			 	if(priorTherapyField.selectedIndex < 1) {
-                     alert('Select a value first.');
-                     return
-                 }
-*/
-			 	this.addDetails('priorTherapy', e.element(), null, 'anchorPriorTherapy');
-			 	// priorTherapyField.selectedIndex = 0;
-		 	}.bind(mHistory));
-
 		 	Event.observe('command', 'submit', function(e){
 
 				/* Below is a very ugly tweak did for IE7 if priorTherapyAgents[i]-input='begin', the value of priorTherapyAgents[i], is assumed by spring as its value 
@@ -235,7 +198,9 @@
 	</script>
   </head>
   <body>
-  	<div class="summary">
+
+  <%--(${empties})--%>
+      <div class="summary">
       <div class="row">
           <div class="label">Subject</div>
           <div class="value">${command.participant.fullName}</div>
@@ -327,7 +292,7 @@
 				</jsp:attribute>
 				<jsp:attribute name="value">
 					<ui:autocompleter path="assignment.diseaseHistory.codedPrimaryDiseaseSite"
-					  initialDisplayValue="${empty command.assignment.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.assignment.diseaseHistory.codedPrimaryDiseaseSite.name}">
+					  initialDisplayValue="${empty command.assignment.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.assignment.diseaseHistory.codedPrimaryDiseaseSite.name}" enableClearButton="true">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text) {
                 				createAE.matchAnatomicSite(text, function(values) {
@@ -383,119 +348,92 @@
 		</div>
 	</chrome:box>
 
+   <%-- BOX --%>
 
-	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
-    <p><tags:instructions code="instruction_subject_enter.medhist.meta"/></p>
-		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
-		
-		<table class="tablecontent" width="80%" style="padding-left:50px;">
-			<tr>
-				<td style="padding-left:50px;">
-                    &nbsp;
-                    <input id="metastatic-diseases-btn" type="button" value="Add"/>
-                    <%--<a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a>--%>
-                </td>
-				<td></td>
-			</tr>
-			<tr>
-				<td colspan="2" style="padding-left:50px;">
-					<a name="anchorMetastaticDiseases" />
-					<div id="anchorMetastaticDiseases">
-						<c:set var="size" value="${fn:length(command.assignment.diseaseHistory.metastaticDiseaseSites)}" />
-						<c:forEach items="${command.assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="mSite" value="${command.assignment.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
-							<par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
-						</c:forEach>
-					</div>
-                </td>
-			</tr>
-		</table>
+    <chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
+            <p><tags:instructions code="instruction_subject_enter.medhist.meta"/></p>
+            <tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
+            <%--<p><tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/></p>--%>
+
+            <div style="padding-left:20px;">
+            <div>
+                <tags:button cssClass="foo" id="metastatic-diseases-btn" color="blue" value="Add" icon="Add" type="button" onclick="addMetastaticDisease();" size="small"/>
+                <%--<tags:indicator id="metastatic-diseases-btn-indicator" />--%>
+                <%--<tags:indicator id="metastaticDiseaseSite-indicator"/>--%>
+                <div id="anchorMetastaticDiseases">
+                    <c:set var="size" value="${fn:length(command.assignment.diseaseHistory.metastaticDiseaseSites)}" />
+                    <c:forEach items="${command.assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="mSite" value="${command.assignment.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
+                        <par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
+                    </c:forEach>
+                </div>
+            </div>
+            </div>
 	</chrome:box>
 
-	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
-    <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
-		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
-		<table width="100%">
-			<tr>
-				<td width="100%" style="padding-left:50px;">
-                    &nbsp;
-                    <input id="pre-cond-btn" type="button" value="Add"/>
-                </td>
-				<td width="10%">
+   <%-- BOX --%>
 
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="padding-left:50px;">
-					<a name="anchorPreExistingCondition" />
-					<div id="anchorPreExistingCondition">
-						<c:set var="size" value="${fn:length(command.assignment.preExistingConditions)}" />
-						<c:forEach items="${command.assignment.preExistingConditions}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="pCond" value="${command.assignment.preExistingConditions[newIndex]}" />
-							<par:onePreExistingCondition index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
+    <chrome:box id="assignment.preExistingConditions" title="Pre-Existing Conditions" collapsable="true">
+            <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
+            <tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
+
+            <div style="padding-left:20px;">
+            <div>
+                <tags:button cssClass="foo" id="pre-cond-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPreexistingCondition();" size="small"/>
+                <div id="anchorPreExistingCondition">
+                    <c:set var="size" value="${fn:length(command.assignment.preExistingConditions)}" />
+                    <c:forEach items="${command.assignment.preExistingConditions}" varStatus="status">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <c:set var="pCond" value="${command.assignment.preExistingConditions[newIndex]}" />
+                        <par:onePreExistingCondition index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" otherValue="${pCond.other}"/>
+                    </c:forEach>
+                </div>
+            </div>
+            </div>
 	</chrome:box>
 
-	<chrome:box id="assignment.concomitantMedications" title="Concomitant Medications" collapsable="true">
-    <p><tags:instructions code="instruction_subject_enter.medhist.conmeds"/></p>
-		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
-		<tags:hasErrorsMessage path="concomitantMedication" />
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td width="90%" style="padding-left:50px;">
-                    &nbsp;
-                    <input id="concomitantMedication-btn" type="button" value="Add"/>
-                </td>
-				<td width="10%">
+   <%-- BOX --%>
+   
+    <chrome:box id="assignment.concomitantMedications" title="Concomitant Medications" collapsable="true">
+                <p><tags:instructions code="instruction_subject_enter.medhist.conmeds"/></p>
+                <tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
+                <tags:hasErrorsMessage path="concomitantMedication" />
 
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" style="padding-left:50px;">
-					<a name="anchorConcomitantMedication" />
-					<div id="anchorConcomitantMedication">
-						<c:set var="size" value="${fn:length(command.assignment.concomitantMedications)}" />
-						<c:forEach items="${command.assignment.concomitantMedications}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="conMed" value="${command.assignment.concomitantMedications[newIndex]}" />
-							<par:oneConcomitantMedication index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
+                <div style="padding-left:20px;">
+                <div>
+                  <tags:button cssClass="foo" id="concomitantMedication-btn" color="blue" value="Add" icon="Add" type="button" onclick="addConMeds();" size="small"/>
+                            <div id="anchorConcomitantMedication">
+                                <c:set var="size" value="${fn:length(command.assignment.concomitantMedications)}" />
+                                <c:forEach items="${command.assignment.concomitantMedications}" varStatus="status">
+                                    <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                                    <c:set var="conMed" value="${command.assignment.concomitantMedications[newIndex]}" />
+                                    <par:oneConcomitantMedication index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
+                                </c:forEach>
+                            </div>
+                </div>
+                </div>
 	</chrome:box>
 
-	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
-    <p><tags:instructions code="instruction_subject_enter.medhist.pt"/></p>
-		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
-<%--
-		<tags:hasErrorsMessage path="priorTherapyAgents" />
-		<tags:hasErrorsMessage path="priorTherapy" />
---%>
+   <%-- BOX --%>
+   
+    <chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
+            <p><tags:instructions code="instruction_subject_enter.medhist.pt"/></p>
+            <tags:hasErrorsMessage path="assignment.priorTherapies.*" />
 
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td colspan="2" style="padding-left:50px;">
-                    <input id="priortherapy-btn" type="button" value="Add"/>
-					<a name="anchorPriorTherapy" />
-					<div id="anchorPriorTherapy">
-						<c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />
-						<c:forEach items="${command.assignment.priorTherapies}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="ptherapy" value="${command.assignment.priorTherapies[newIndex]}" />
-							<par:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
+            <div style="padding-left:20px;">
+            <div>
+                        <tags:button cssClass="foo" id="priortherapy-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPriorTherapy();" size="small"/>
+                        <div id="anchorPriorTherapy">
+                            <c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />
+                            <c:forEach items="${command.assignment.priorTherapies}" varStatus="status">
+                                <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                                <c:set var="ptherapy" value="${command.assignment.priorTherapies[newIndex]}" />
+                                <par:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
+                            </c:forEach>
+                        </div>
+            </div>
+            </div>
 	</chrome:box>
 
     <tags:tabControls flow="${flow}" tab="${tab}" />

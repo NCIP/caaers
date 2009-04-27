@@ -16,10 +16,11 @@
     <field name="createdAt" type="timestamp">
       <bind-xml name="createdAt" node="element"/>
     </field>
+    <!-- 
     <field name="status" type="gov.nih.nci.cabig.caaers.domain.ReportStatus">
       <bind-xml name="status"/>
     </field>
-
+	 -->
     <field name="responseDescription"
       type="gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription">
       <bind-xml name="AdverseEventResponseDescription"/>
@@ -266,11 +267,11 @@
     <field name="daysNotGiven" type="integer">
       <bind-xml name="daysNotGiven" node="element"/>
     </field>
-    <field name="eventAbate" type="boolean">
-      <bind-xml name="eventAbate" node="element"/>
+    <field name="eventAbate" type="gov.nih.nci.cabig.caaers.domain.EventStatus">
+      <bind-xml name="eventAbate"/>
     </field>
-    <field name="eventReappear" type="boolean">
-      <bind-xml name="eventReappear" node="element"/>
+    <field name="eventReappear" type="gov.nih.nci.cabig.caaers.domain.EventStatus">
+      <bind-xml name="eventReappear"/>
     </field>  
     
     <field name="autopsyPerformed" type="boolean">

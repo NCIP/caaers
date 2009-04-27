@@ -42,28 +42,5 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <!--
-    <xs:element name="investigator" type="investigatorType"/>
-    <xs:complexType name="investigatorType">
-            <xs:sequence>
-                <xs:element type="common:personType" name="person"/>
-                <xs:element type="common:customStringType" name="emailAddress"/>
-                <xs:element type="common:customStringType" name="phoneNumber"/>
-                <xs:element type="common:customStringType" name="faxNumber"/> 
-                <xs:element type="common:customStringType" name="nciIdentifier"/>
-                <xs:element ref="siteInvestigator" minOccurs="1"  maxOccurs="unbounded"></xs:element>
-            </xs:sequence>
-    </xs:complexType>
 
-    
-    <xs:element name="siteInvestigator" type="siteInvestigatorType"/>
-    <xs:complexType name="siteInvestigatorType">
-                <xs:sequence>
-                    <xs:element type="common:customStringType" name="emailAddress"/>
-                    <xs:element type="common:customStringType" name="statusCode"/>
-                    <xs:element type="common:customStringType" name="statusDate"/>
-                    <xs:element type="common:organizationType" name="organization"/>
-                </xs:sequence>
-    </xs:complexType>
-    -->
 </xs:schema>

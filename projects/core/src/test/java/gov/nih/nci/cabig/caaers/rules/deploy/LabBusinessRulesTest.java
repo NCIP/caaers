@@ -114,10 +114,13 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR1_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Replacement values incorrect", 1, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
-        assertEquals("Replacement values incorrect", 2, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+        assertEquals("Replacement values incorrect", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replacement values incorrect", 1, errors.getErrorAt(1).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].lab-category", "aeReport.labs[" + i + "].labName", "aeReport.labs[" + i + "].other");
+
     }
 
     /**
@@ -140,8 +143,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR1_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Replacement values incorrect", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+        assertEquals("Replacement values incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
     }
 
     /**
@@ -166,6 +168,10 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR2B_ERR");
         assertSameErrorCount(errors, 2);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
     }
 
     /**
@@ -194,6 +200,10 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR2B_ERR");
         assertSameErrorCount(errors, 2);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
 
     }
 
@@ -261,7 +271,12 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR3_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Replcement incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replcement incorrect", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir");
+        
     }
 
     /**
@@ -296,7 +311,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR3_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Replcement incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replcement incorrect", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
     }
 
     /**
@@ -315,6 +330,10 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR2B_ERR");
         assertSameErrorCount(errors, 2);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
 
     }
 
@@ -379,7 +398,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR4_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Replcement incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replcement incorrect", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
     }
 
     /**
@@ -414,7 +433,12 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR4_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Replcement incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replcement incorrect", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery");
+        
     }
 
     /**
@@ -436,9 +460,10 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_UK_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Incorrect replacement", "KK",
-                        errors.getErrorAt(0).getReplacementVariables()[1]);
-        assertEquals("Incorrect replacement", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Incorrect replacement", "KK", errors.getErrorAt(0).getReplacementVariables()[1]);
+        assertEquals("Incorrect replacement", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNull(errors.getErrorAt(0).getFieldNames());
     }
 
     /**
@@ -480,8 +505,45 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_UK_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Incorrect replacement", "kk",
-                        errors.getErrorAt(0).getReplacementVariables()[1]);
-        assertEquals("Incorrect replacement", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Incorrect replacement", "kk",errors.getErrorAt(0).getReplacementVariables()[1]);
+        assertEquals("Incorrect replacement", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+    }
+
+    public void testNAFields() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        LabValue bl1 = new LabValue();
+        bl1.setDate(DateUtils.createDate(2007, 11, 11));
+        bl1.setValue("abcd1");
+
+        LabValue bl2 = new LabValue();
+        bl2.setDate(DateUtils.createDate(2007, 11, 11));
+        bl2.setValue("abcd1");
+
+        LabValue r1 = new LabValue();
+        r1.setDate(DateUtils.createDate(2007, 11, 11));
+        r1.setValue("abcdx");
+
+        LabValue r21 = new LabValue();
+        r21.setDate(DateUtils.createDate(2007, 11, 11));
+        r21.setValue("abcdx");
+
+        LabValue wv1 = new LabValue();
+        wv1.setValue("33");
+        wv1.setDate(DateUtils.createDate(2007, 11, 11));
+
+        aeReport.getLabs().get(0).getLabTerm().setTerm("kk");
+        aeReport.getLabs().get(0).setBaseline(bl1);
+        aeReport.getLabs().get(0).setRecovery(r1);
+        aeReport.getLabs().get(0).setNadir(wv1);
+
+        aeReport.getLabs().get(1).getLabTerm().setTerm("kk");
+        aeReport.getLabs().get(1).setBaseline(bl2);
+        aeReport.getLabs().get(1).setRecovery(r21);
+        aeReport.getLabs().get(1).setNadir(wv1);
+
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "LAB_UK_ERR");
+        assertSameErrorCount(errors, 1);
+        assertNull(errors.getErrorAt(0).getFieldNames());
     }
 }

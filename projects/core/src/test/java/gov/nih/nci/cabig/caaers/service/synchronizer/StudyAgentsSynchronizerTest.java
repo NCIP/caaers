@@ -43,23 +43,4 @@ public class StudyAgentsSynchronizerTest extends AbstractTestCase{
 		
 		assertEquals(3, dbStudy.getStudyAgents().size());
 	}
-	
-	
-	public void testStudyAgentsRemove(){
-		
-		studyAgent1 = Fixtures.createStudyAgent("agent1");
-		studyAgent1.setId(1);
-		studyAgent2 = Fixtures.createStudyAgent("agent2");
-		studyAgent2.setId(2);
-		dbStudy.addStudyAgent(studyAgent1);
-		dbStudy.addStudyAgent(studyAgent2);
-		
-		studyAgent1a = Fixtures.createStudyAgent("agent1");
-		xmlStudy.addStudyAgent(studyAgent1a);
-		
-		studyAgentsSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		
-		assertEquals(1, dbStudy.getStudyAgents().size());
-	}
-
 }

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.validation.Errors;
 
@@ -13,6 +14,10 @@ import org.springframework.validation.Errors;
  */
 public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T> {
 
+	private static final String SELECTED_STUDY_ID = "pre_selected_study_id";
+	private static final String SELECTED_PARTICIPANT_ID = "pre_selected_participant_id";
+	private static final String SELECTED_COURSE_ID = "pre_selected_reporting_period_id";
+	
     String instructions;
 
     public BeginTab() {
@@ -47,10 +52,25 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         boolean noAdverseEventReportingPeriod = command.getAdverseEventReportingPeriod() == null;
-        if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
-        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course/cycle");
+        if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
+        if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
+        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "SAE_003", "Missing course/cycle");
     }
+
+	@Override
+	public void postProcess(HttpServletRequest request, T command, Errors errors) {
+		super.postProcess(request, command, errors);
+		
+		//save the ids of the study/participant/couse for future use.
+		if(!errors.hasErrors()){
+			HttpSession session = request.getSession();
+			session.setAttribute(SELECTED_STUDY_ID, command.getStudy().getId());
+			session.setAttribute(SELECTED_PARTICIPANT_ID, command.getParticipant().getId());
+			session.setAttribute(SELECTED_COURSE_ID, command.getAdverseEventReportingPeriod().getId());
+		}
+	}
+    
+    
     
     
 }

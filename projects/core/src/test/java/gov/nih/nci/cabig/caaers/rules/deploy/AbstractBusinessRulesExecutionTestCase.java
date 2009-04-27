@@ -91,8 +91,15 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         String message = (msg.length > 1) ? "[" + msg[1] + "]" : "";
         assertHasErrors(errors, message);
         for (int i = 0; i < errors.getErrorCount(); i++) {
-            assertEquals("Error code should be same," + message, errCode, errors.getErrorAt(i)
-                            .getCode());
+            assertEquals("Error code should be same," + message, errCode, errors.getErrorAt(i).getCode());
+        }
+    }
+
+    public void assertCorrectFieldNames(ValidationError error, String... fieldNames) {
+        if (fieldNames == null) return;
+        assertEquals(error.getFieldNames().length, fieldNames.length);
+        for (int i=0; i<error.getFieldNames().length; i++) {
+            assertEquals(error.getFieldNames()[i], fieldNames[i]);
         }
     }
 
@@ -204,6 +211,7 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         ta.setDescription("My TAC description");
         TreatmentInformation ti = new TreatmentInformation();
         ti.setTreatmentAssignment(ta);
+        
 
         // - Course Information
         CourseDate adverseEventCourse = new CourseDate();

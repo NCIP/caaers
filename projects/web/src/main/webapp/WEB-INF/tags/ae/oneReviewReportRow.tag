@@ -7,9 +7,8 @@
 <c:set var="repcurrClass" value="${rpIndex %2 gt 0 ? 'odd' : 'even'}" />
 <c:set var="lastVersion" value="${report.lastVersion}" />
 <c:set var="reportStatus" value="${lastVersion.reportStatus}" />
-<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED'}">
+<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' }">
 	<tr align="center" id="row${rpIndex}" class="${repcurrClass}" onMouseOver="this.className='highlight'"	onMouseOut="this.className='${repcurrClass}'">
-		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
 				${report.reportDefinition.label}
 		</td>

@@ -5,6 +5,7 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    <tags:javascriptLink name="routing_and_review" />
     <tags:stylesheetLink name="slider" />
 
 <%--
@@ -77,30 +78,26 @@ function closeAll() {
 --%>
 
         interventionInstance = new InterventionClass();
-
-        if ($('btn-add-surgery'))
-            Element.observe('btn-add-surgery', 'click', function(e) {
-                this._addItem('surgery', e.element(), null, '_surgeries');
-            }.bind(interventionInstance));
-
-        if ($('btn-add-radiation'))
-            Element.observe('btn-add-radiation', 'click', function(e) {
-                this._addItem('radiation', e.element(), null, '_radiations');
-            }.bind(interventionInstance));
-
-        if ($('btn-add-device'))
-            Element.observe('btn-add-device', 'click', function(e) {
-                this._addItem('device', e.element(), null, '_devices');
-            }.bind(interventionInstance));
-
-        if ($('btn-add-agent'))
-            Element.observe('btn-add-agent', 'click', function(e) {
-                this._addItem('agent', e.element(), null, '_agents');
-            }.bind(interventionInstance));
-
-        // refreshBoxes();
+        <c:if test="${command.investigationalAgentAdministeredForPreviousReports == 'true'}">
+            if($('aeReport.treatmentInformation.investigationalAgentAdministered').value == '') {
+                $('aeReport.treatmentInformation.investigationalAgentAdministered').value = 'true';
+            }
+         </c:if>
     }
-    
+
+    function addAgent() {
+        interventionInstance._addItem('agent', null, null, '_agents');
+    }
+    function addRadiation() {
+        interventionInstance._addItem('radiation', null, null, '_radiations');
+    }
+    function addDevice() {
+        interventionInstance._addItem('device', null, null, '_devices');
+    }
+    function addSurgery() {
+        interventionInstance._addItem('surgery', null, null, '_surgeries');
+    }
+
     function fireAction(itemType, index, location, elementId, css) {
         interventionInstance._deleteItem(itemType, index, location);
     }
@@ -198,10 +195,12 @@ function closeAll() {
         <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">
             <jsp:attribute name="additionalTitle" />
             <jsp:body>
+            	<tags:renderRow field="${fieldGroups.agentAdministered.fields[0]}"/>
                 <div style="padding-left:20px;">
-                    <input type="button" value="Add Agent" id="btn-add-agent" >
+                    <tags:button cssClass="foo" id="btn-add-agent" color="blue" value="Add" icon="Add" type="button" onclick="addAgent();" size="small"/>
+                    <tags:indicator id="agent_AjaxIndicator" />
                 <div id="_agents">
-
+					
                     <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
                     <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
@@ -219,7 +218,8 @@ function closeAll() {
             <jsp:attribute name="additionalTitle" />
             <jsp:body>
                 <div style="padding-left:20px;">
-                    <input type="button" value="Add Device" id="btn-add-device">
+                   <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="addDevice();" size="small"/>
+                    <tags:indicator id="device_AjaxIndicator" />
                 <div id="_devices">
                 <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
                 <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
@@ -237,7 +237,8 @@ function closeAll() {
             <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
-                    <input type="button" value="Add Radiation" id="btn-add-radiation">
+                    <tags:button cssClass="foo" id="btn-add-radiation" color="blue" value="Add" icon="Add" type="button" onclick="addRadiation();" size="small"/>
+                    <tags:indicator id="radiation_AjaxIndicator" />
                 <div id="_radiations">
                     <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
                     <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
@@ -255,7 +256,8 @@ function closeAll() {
             <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
-                    <input type="button" value="Add Surgery" id="btn-add-surgery">
+                    <tags:button cssClass="foo" id="btn-add-surgery" color="blue" value="Add" icon="Add" type="button" onclick="addSurgery();" size="small"/>
+                    <tags:indicator id="surgery_AjaxIndicator" />
                 <div id="_surgeries">
                     <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
                     <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">

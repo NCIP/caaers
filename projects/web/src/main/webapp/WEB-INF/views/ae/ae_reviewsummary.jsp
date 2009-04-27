@@ -32,9 +32,6 @@
       	 	 });
 		}
 
-
-		//The below function will help showing the selected reports
-	     enableReportsInPopup();
 	});
 
 		function selectReport(task, reportId, primaryAEId){
@@ -113,37 +110,6 @@
 			form.submit();
 		}
 		
-		function enableReportsInPopup(){
-		
-			if(hasReportableAEs() && ${fn:length(command.adverseEventReportingPeriod.activeAeReports) gt 0}){
-				if(checkIfReportSelected() == false){
-					$('create-new-report-table').style.display = 'none';
-					$('create-new-report-statement').style.display = '';
-					if(document.getElementById('command')._action.value == 'createNew'){
-						document.getElementById('command')._action.value = '';
-						document.getElementById('command')._reportId.value = '';					
-					}
-				}
-				$('box-existing-reports').style.display = '';
-							
-				var chkboxElements = $('report-list').select('[type="checkbox"]');
-				for(var i=0; i < chkboxElements.length; i++){
-					if(chkboxElements[i].checked){
-						$(chkboxElements[i].name + '-p').show();
-					}else{
-						$(chkboxElements[i].name + '-p').hide();
-					}
-				}
-			}	
-		}
-		
-		function displayCreateNewReportTable(){
-			$('create-new-report-table').style.display = '';
-			$('create-new-report-statement').style.display = 'none';
-			selectReport('createNew','', '');
-			$$('.newRadio')[0].checked = true;
-		}
-		
 		function checkIfReportSelected(){
 			var reportElements = $('report-list').select('[type="checkbox"]');
 			for(var i = 0; i < reportElements.length; i++){
@@ -203,6 +169,7 @@ background-color:#e5e8ff;
 <body>
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
   <tags:noform>
+   <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.activeAeReports)}" />
   	<script>
   	Event.observe(window, "load", function() {
   	  	//if there are no existing reports, createNew should be the default action.
@@ -214,6 +181,17 @@ background-color:#e5e8ff;
 		     $('report-input-0').checked=true;
 	    	 $('report-input-0').click();
 	     }
+	     //always select the first AE in the list as primary. 
+		if(${empty aeReportsLength or aeReportsLength lt 1}){
+			var firstAERow = $('ae-section-0');
+			if(firstAERow){
+				var primaryRadioElements = firstAERow.select("input[type='radio']");
+				if(primaryRadioElements && primaryRadioElements.length > 0){
+					primaryRadioElements[0].click();
+				}
+			}
+		}
+	     
   	});
   	</script>
   
@@ -227,7 +205,7 @@ background-color:#e5e8ff;
         <tr>
           <td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
           <td align="left">
-          <ui:checkbox path="${rdTable.value.field.propertyName}" cssClass="rpdChk" onclick="javascript:enableReportsInPopup();"></ui:checkbox>
+          <ui:checkbox path="${rdTable.value.field.propertyName}" cssClass="rpdChk"></ui:checkbox>
             <tags:renderLabel field="${rdTable.value.field}"/></td>
           <td>${rdTable.value.status}</td>
         </tr>
@@ -238,7 +216,7 @@ background-color:#e5e8ff;
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report" hideBox="true">
   <jsp:attribute name="singleFields">
   
-	    <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.activeAeReports)}" />
+	   
 	    <input type="hidden" name="_finish"/>
 	    <input type="hidden" name="_action" value="${aeReportsLength gt 0 ? '' : 'createNew' }">
 	    <input type="hidden" name="_reportId" value="">
@@ -304,7 +282,7 @@ background-color:#e5e8ff;
         </c:otherwise>
       </c:choose>
        
-        <chrome:box id="box-existing-reports" title="Select Reporting Method" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
+        <chrome:box id="box-existing-reports" title="Current report" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
             <tags:instructions code="instruction_ae_existing_reports" />
 
        	 
@@ -324,7 +302,6 @@ background-color:#e5e8ff;
                   <table width="100%" border="0" cellspacing="0" class="tableRegion">
                     <thead>
                       <tr align="center" class="label">
-                        <td width="5%"/>
                         <td class="tableHeader" width="15%">Report Type</td>
                         <td class="centerTableHeader" width="10%">Amendment #</td>
                         <td class="centerTableHeader" width="10%"># of AEs</td>
@@ -340,38 +317,6 @@ background-color:#e5e8ff;
           	</c:forEach>
       	 	</c:if>
       	 	
-      	 	
-      	 	<%-- Only shown if there are reportable adverse events AND atleast one existing aeReport(dataCollection)--%>
-      	 	<c:if test="${displayReportableAeTable and aeReportsLength gt 0}">
-      	 	<div id="create-new-report-statement" >Click <a style='cursor:pointer' href="javascript:displayCreateNewReportTable()" class="link">here</a> to create a new report.</div>
-      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;display:none" id="create-new-report-table">
-      	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
-      	 		<td width="10%" align="left">
-          			<ui:radio path="reportingMethod" value="" onclick="javascript:selectReport('createNew','','');" cssClass="newRadio"/>&nbsp;Create
-          		</td>
-        		<td>
-			        <div class="eXtremeTable">
-			          <table width="100%" border="0" cellspacing="0"  class="tableRegion">
-			            <thead>
-			              <tr align="center" class="label">
-			                <td class="tableHeader">Report</td>
-			                <td class="tableHeader">Status</td>
-			              </tr>
-			            </thead>
-			            <c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
-			              <tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
-			                <td align="left">${repDefn.label}</td>
-			                <td align="left">${command.reportStatusMap[repDefn.id]}</td>
-			              </tr>
-			            </c:forEach>
-			          </table>
-			        </div>
-        		</td>
-      	 	</tr>
-      	 	</table>
-      	 	</c:if>
-      	 	
-      	         
         </chrome:box>
       <div id="div-aes">
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
@@ -389,7 +334,7 @@ background-color:#e5e8ff;
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
                 <th scope="col" align="left"><b>Start Date</b> </th>
-                <th scope="col" align="left"><b>Select Primary</b> </th>
+                <th scope="col" align="left"><b><tags:requiredIndicator></tags:requiredIndicator>Select Primary</b> </th>
               </tr>
               
               

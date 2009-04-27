@@ -44,7 +44,7 @@
         <rhs>
             <!-- Populate Error Message-->
             errors.addValidationError("PAT_BR2A_ERR","Disease Name Not Listed must not be null if Disease Name is 'Solid
-            tumor, NOS' or 'Hematopoietic malignancy, NOS'");
+            tumor, NOS' or 'Hematopoietic malignancy, NOS'").addFieldNames("aeReport.diseaseHistory.ctepStudyDisease");
         </rhs>
     </rule>
 
@@ -71,7 +71,7 @@
         <rhs>
             <!-- Populate Error Message-->
             errors.addValidationError("PAT_BR2B_ERR","Disease Name Not Listed must not be provided where Disease Name is
-            not 'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS'");
+            not 'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS'").addFieldNames("ctepStudyDisease");
         </rhs>
     </rule>
     <!-- ==========================================================================
@@ -95,7 +95,7 @@
         <rhs>
             <!-- Populate Error Message-->
             errors.addValidationError("PAT_BR3B_ERR","Either and only 'Primary site of disease' or 'Other primary site
-            of disease' must be provided");
+            of disease' must be provided").addFieldNames("aeReport.diseaseHistory.codedPrimaryDiseaseSite");
         </rhs>
     </rule>
     <!-- ==========================================================================
@@ -110,15 +110,15 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
-                for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()){
-                i++;
-                if( (ds.getCodedSite() != null &amp;&amp; !"Other, specify".equals(ds.getCodedSite().getName())) &amp;&amp;
-                ds.getOtherSite() != null){
-                errors.addValidationError("SMD_BR1_ERR", "'Sites of Metastatic Disease' must not be provided if 'Other
-                Sites of Metastatic Disease' is provided and vice-versa.", i);
-                }
+                    int i = 0;
+                    if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
+                    for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()) {
+                        if( (ds.getCodedSite() != null &amp;&amp; !"Other, specify".equals(ds.getCodedSite().getName())) &amp;&amp;
+                        ds.getOtherSite() != null){
+                        errors.addValidationError("SMD_BR1_ERR", "'Sites of Metastatic Disease' must not be provided if 'Other
+                        Sites of Metastatic Disease' is provided and vice-versa.", i).addFieldNames("aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].codedSite-input", "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].otherSite");
+                    }
+                    i++;
                 }
                 return errors.hasErrors() ? FAIL : SUCCESS;
                 }

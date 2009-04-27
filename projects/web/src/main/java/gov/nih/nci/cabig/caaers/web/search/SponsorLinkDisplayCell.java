@@ -17,9 +17,6 @@ public class SponsorLinkDisplayCell extends AbstractCell {
         if (ae.getReport() != null) {
             study = ae.getReport().getAssignment().getStudySite().getStudy();
         }
-        if (ae.getRoutineReport() != null) {
-            study = ae.getRoutineReport().getAssignment().getStudySite().getStudy();
-        }
         String cellValue = study.getPrimarySponsorCode();
 
         return cellValue;

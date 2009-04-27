@@ -75,7 +75,7 @@
 					<option value="50" <c:if test="${numberOfResultsPerPage == 50}">selected</c:if>>50</option>
 					<option value="100" <c:if test="${numberOfResultsPerPage == 100}">selected</c:if>>100</option>
 				</select>
-				<img alt="Rows Displayed" src="<c:url value="/images/rowsDisplayed.gif"/>" style="border:0pt none;"></img>
+				<img alt="Rows Displayed" src="<c:url value="/images/table/rowsDisplayed.gif"/>" style="border:0pt none;"></img>
 			</td>
 		</tr>
 	</tbody>

@@ -34,6 +34,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
@@ -119,7 +120,10 @@ public class StudyInterventionsTab extends AeTab {
         //InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
         InputField modifiedDoseField = InputFieldFactory.createSelectField("agentAdjustment", "Dose Modification?", false, WebUtils.collectOptions(Arrays.asList(AgentAdjustment.values()), null, "displayName","Please Select"));
        // modifiedDoseField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
-
+        InputField investigationalAgentAdministeredField = InputFieldFactory.createSelectField("treatmentInformation.investigationalAgentAdministered", "Was an investigational agent administered on this protocol?" , false, createInvestigationalAgentAdministeredOptions());
+        investigationalAgentAdministeredField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.investigationalAgentAdministered");
+        creator.createFieldGroup("agentAdministered", investigationalAgentAdministeredField);
+        
         creator.createRepeatingFieldGroup("courseAgent", "treatmentInformation.courseAgents",
                 new SimpleNumericDisplayNameCreator("Study Agent"), agentField, InputFieldFactory.createTextField("formulation", "Formulation"),
                 InputFieldFactory.createTextField("lotNumber", "Lot # (if known)"),
@@ -210,7 +214,13 @@ public class StudyInterventionsTab extends AeTab {
     			ExpeditedReportSection.SURGERY_INTERVENTION_SECTION,
     			ExpeditedReportSection.MEDICAL_DEVICE_SECTION};
     }
-
+	protected Map<Object, Object> createInvestigationalAgentAdministeredOptions() {
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.put(Boolean.TRUE, "Yes");
+        options.put(Boolean.FALSE, "No");
+        return options;
+    }
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
         this.configurationProperty = configurationProperty;
     }
@@ -417,6 +427,17 @@ public class StudyInterventionsTab extends AeTab {
 
     public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
+    	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
+    	boolean hasAtleastAnIntervention = CollectionUtils.isNotEmpty(command.getAeReport().getRadiationInterventions()) ||
+    								CollectionUtils.isNotEmpty(command.getAeReport().getSurgeryInterventions()) ||
+    								CollectionUtils.isNotEmpty(command.getAeReport().getMedicalDevices()) ||
+    								CollectionUtils.isNotEmpty(command.getAeReport().getTreatmentInformation().getCourseAgents());
+    	
+    	return hasEmptyFields || !hasAtleastAnIntervention;
     }
 
 }

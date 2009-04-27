@@ -20,6 +20,11 @@
             background-color: #CCE6FF;
         }
 
+		#criteria-div{
+          width: 70%;
+          margin-left: 10em;
+        }
+
     </style>
     <c:if test="${empty tab}">
         <tags:stylesheetLink name="tabbedflow"/>
@@ -92,17 +97,22 @@
     </script>
 </head>
 <body>
-<p>
-    <tags:instructions code="instruction_ae_assignment"/>
-</p>
+<tags:instructions code="instruction_ae_assignment"/>
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
 
-<table width="100%" border="0">
-<tr>
-<td  valign="top">
-
-    <!--<div class="autoclear">-->
+    <div class="autoclear" id="criteria-div">
+    	<chrome:box title="Select study" id="study-entry" autopad="true" cssClass="pairedLong">
+            <p><tags:instructions code="instruction_ae_select_study"/></p>
+            <form:hidden path="study"/>
+            <tags:requiredIndicator/>
+            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
+            <input type="button" id="study-clear" value="Clear"/>
+            <tags:indicator id="study-indicator"/>
+            <tags:errors path="study"/>
+            <div id="study-choices" class="autocomplete"></div>
+            <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
+        </chrome:box>
         <chrome:box title="Select subject" id="participant-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
@@ -114,23 +124,7 @@
             <tags:errors path="participant"/>
             <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
         </chrome:box>
- </td>
- <td width="50%" valign="top">
-        <chrome:box title="Select study" id="study-entry" autopad="true" cssClass="pairedLong">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
-            <form:hidden path="study"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-            <input type="button" id="study-clear" value="Clear"/>
-            <tags:indicator id="study-indicator"/>
-            <tags:errors path="study"/>
-            <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
-        </chrome:box>
-</td>
-</tr>
-</table>
-    <!--</div>-->
+    </div>
     <c:choose>
         <c:when test="${empty tab}">
             <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>

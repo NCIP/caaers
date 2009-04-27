@@ -48,7 +48,6 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 
     public RoutineAdverseEventReport() {
         lazyListHelper = new LazyListHelper();
-        addReportChildLazyList(AdverseEvent.class);
 
     }
 
@@ -128,7 +127,6 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 
     public void addAdverseEvent(AdverseEvent adverseEvent) {
         getAdverseEventsInternal().add(adverseEvent);
-        if (adverseEvent != null) adverseEvent.setRoutineReport(this);
     }
 
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */

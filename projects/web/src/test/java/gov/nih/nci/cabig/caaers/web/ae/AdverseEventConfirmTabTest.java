@@ -160,6 +160,8 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		rdList.add(rd1);
 		EasyMock.expect(evaluationService.applicableReportDefinitions(command.getAssignment())).andReturn(rdList);
 		EasyMock.expect(evaluationService.findRequiredReportDefinitions(command.getAdverseEventReportingPeriod())).andReturn(new HashMap<ReportDefinition, List<AdverseEvent>>());
+		EasyMock.expect(evaluationService.findRequiredReportDefinitions(null, command.getAdverseEventReportingPeriod().getNonExpeditedAdverseEvents(),
+						command.getAdverseEventReportingPeriod().getStudy())).andReturn(new ArrayList<ReportDefinition>());
 		replayMocks();
 		Map<String, Object> refdata = tab.referenceData(request, command);
 		assertNotNull(refdata.get("fieldGroups"));
@@ -187,6 +189,8 @@ public class AdverseEventConfirmTabTest extends WebTestCase {
 		
 		EasyMock.expect(evaluationService.applicableReportDefinitions(command.getAssignment())).andReturn(rdList);
 		EasyMock.expect(evaluationService.findRequiredReportDefinitions(command.getAdverseEventReportingPeriod())).andReturn(reqMap);
+		EasyMock.expect(evaluationService.findRequiredReportDefinitions(null, command.getAdverseEventReportingPeriod().getNonExpeditedAdverseEvents(), 
+					command.getAdverseEventReportingPeriod().getStudy())).andReturn(new ArrayList<ReportDefinition>());
 		replayMocks();
 		Map<String, Object> refdata = tab.referenceData(request, command);
 		assertNotNull(refdata.get("fieldGroups"));

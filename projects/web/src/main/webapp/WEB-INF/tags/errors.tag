@@ -7,4 +7,4 @@
             <c:forEach items="${messages}" var="message"><li>${message}</li></c:forEach>
         </ul>
     </c:if>
-</form:errors>
+</form:errors> 

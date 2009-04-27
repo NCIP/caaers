@@ -189,10 +189,9 @@ public class PatientDetailsTab extends AeTab {
      * 
      */
     private void createPreExistingConditionFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
-        InputField preCondField = InputFieldFactory.createSelectField("preExistingCondition","Pre-Existing condition", false, initializePreExistingConditionOptions());
+        InputField preCondField = InputFieldFactory.createSelectField("preExistingCondition","Pre-existing condition", false, initializePreExistingConditionOptions());
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 50);
-
         creator.createRepeatingFieldGroup("preExistingCondition", "saeReportPreExistingConditions", new SimpleNumericDisplayNameCreator("Pre-existing condition"), preCondField, otherField);
     }
     
@@ -206,7 +205,7 @@ public class PatientDetailsTab extends AeTab {
         InputFieldAttributes.setSize(agentNameField, 50);
         InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Start date", false, false, false, false);
         InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "End date", false, false, false, false);
-        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Still taking?");
+        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Still taking medication?");
         creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), agentNameField,stillTakingMedicationField, startDateField, endDateField);
     }
     
@@ -245,6 +244,7 @@ public class PatientDetailsTab extends AeTab {
     	validatePreExistingConditions(command, commandBean, fieldGroups, errors);
     	validateConcomitantMedications(command, commandBean, fieldGroups, errors);
     	validatePriorTherapies(command, commandBean, fieldGroups, errors);
+        WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }
     
     // ---------------- validation on individual items -------------------------
@@ -295,7 +295,7 @@ public class PatientDetailsTab extends AeTab {
     			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
 
-            if (!conMed.getStillTakingMedications() && conMed.getStartDate().compareTo(conMed.getEndDate()) > 0) {
+            if (!conMed.getStillTakingMedications() && !conMed.getEndDate().isNull() && conMed.getStartDate().compareTo(conMed.getEndDate()) > 0) {
                 propertyName = String.format("aeReport.concomitantMedications[%d].endDate", i);
                 errors.rejectValue(propertyName, "SAE_024", new Object[]{conMed.getName()}, "The 'End date' can not be before the 'Start Date'");
             }

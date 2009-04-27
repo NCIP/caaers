@@ -64,28 +64,5 @@ public class IdentifierSynchronizerTest extends AbstractTestCase{
 		
 		assertEquals(4, dbStudy.getIdentifiers().size());
 	}
-	
-	
-	public void testIdentifiersRemovedSynch() {
-		
-		orgIdentifier1 = Fixtures.createOrganizationAssignedIdentifier("111", organization1);
-		orgIdentifier1.setId(1);
-		orgIdentifier2 = Fixtures.createOrganizationAssignedIdentifier("222", organization1);
-		orgIdentifier2.setId(2);
-		List<Identifier> dbIdentifiers = new ArrayList<Identifier>();
-		dbIdentifiers.add(orgIdentifier1);
-		dbIdentifiers.add(orgIdentifier2);
-		dbStudy.setIdentifiers(dbIdentifiers);
-		
-		orgIdentifier1a = Fixtures.createOrganizationAssignedIdentifier("111", organization1);
-		List<Identifier> xmlIdentifiers = new ArrayList<Identifier>();
-		xmlIdentifiers.add(orgIdentifier1a);
-		xmlStudy.setIdentifiers(xmlIdentifiers);
-		
-		identifierSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		
-		assertEquals(1, dbStudy.getIdentifiers().size());
-		
-	}
 
 }

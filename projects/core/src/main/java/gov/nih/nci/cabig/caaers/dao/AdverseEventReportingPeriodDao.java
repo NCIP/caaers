@@ -51,6 +51,18 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     }
     
     /**
+     * Save or update the adverse event reporting periods in the db.
+     * 
+     * @param The adverse event reporting period.
+     */
+    @Transactional(readOnly = false)
+    public void modifyOrSaveReviewStatusAndComments(final AdverseEventReportingPeriod reportingPeriod) {
+        getHibernateTemplate().saveOrUpdate(reportingPeriod);
+      
+    }
+    
+    
+    /**
      * Get the list of AdverseEventReportingPeriods based on the Assignment.
      * This is needed to rightly update the dropdown on addition of a new reporting period.
      */

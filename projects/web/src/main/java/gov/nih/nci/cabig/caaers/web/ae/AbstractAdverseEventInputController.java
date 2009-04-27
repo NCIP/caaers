@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
+import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -190,6 +191,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerEnumEditor(binder, RadiationAdministration.class);
         ControllerTools.registerEnumEditor(binder, Availability.class);
         ControllerTools.registerEnumEditor(binder, AgentAdjustment.class);
+        ControllerTools.registerEnumEditor(binder, EventStatus.class);
     }
 
     @Override

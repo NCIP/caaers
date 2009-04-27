@@ -44,6 +44,7 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
+		physician_signoff="0"
 		/>
 	<report_calendar_templates 
 		id="-222"
@@ -54,6 +55,7 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
+		physician_signoff="0"
 		/>
 	
 	<planned_notifications 

@@ -1,15 +1,11 @@
 /* TODO: some of these may be moved up to common */ 
 .border-BR div.row .summaryvalue {
     font-weight: normal;
-    margin-left: 11em;
 }
 div.row div.extra {
     padding-top: 0.3em;
 } 
 .main-fields {
-    float: left;
-    width: 60em;
-    margin-bottom: 0.5em;
 } 
 .ctc-details {
     padding-right: 1.2em;

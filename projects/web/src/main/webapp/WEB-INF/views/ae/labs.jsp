@@ -176,9 +176,9 @@
         <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
             <ae:oneLab index="${status.index}" lab="${lab}"/>
         </c:forEach>
+        <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.EasyMock;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -174,6 +175,7 @@ public class ReporterTabTest extends AeTabTestCase {
     		Report report = new Report();
     		report.setId(i);
     		ReportDefinition reportDefinition = new ReportDefinition();
+    		reportDefinition.setId(i+1);
     		reportDefinition.setAmendable(false);
     		reportDefinition.setExpedited(false);
     		reportDefinition.setName("repDefn " + i);
@@ -247,11 +249,16 @@ public class ReporterTabTest extends AeTabTestCase {
     	additionalSetupOnCommand();
     	
     	// Set the due dates on the existing reports and modify the amendable/expedited properties
-    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setExpedited(true);
-    	command.getAeReport().getReports().get(1).getReportDefinition().setName("test 24 hr notification");
+    	ReportDefinition rd = command.getAeReport().getReports().get(0).getReportDefinition();
+    	rd.setAmendable(true);
+    	rd.setExpedited(true);
+    	rd.setId(1);
+    	rd.setName("test existing amendable report");
+    	
+    	rd = command.getAeReport().getReports().get(1).getReportDefinition();
+    	rd.setName("test 24 hr notification");
+    	
     	//command.getAeReport().getReports().get(1).getReportDefinition().setId(10);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setName("test existing amendable report");
     	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     	Calendar now = GregorianCalendar.getInstance();
     	now.add(Calendar.DAY_OF_MONTH, 7);
@@ -264,6 +271,9 @@ public class ReporterTabTest extends AeTabTestCase {
     	request.getSession().setAttribute("action", "editReport");
 
     	// Setup the expect calls
+    	for(ReportDefinition rpdef : command.getSelectedReportDefinitions()){
+    		expect(reportDefinitionDao.merge(rpdef)).andReturn(rpdef);
+    	}
     	expect(command.getEvaluationService().addOptionalReports(command.getAeReport(), command.getReportDefinitionListForCreation(), false)).andReturn(null);
     	reportRepository.replaceReport(command.getAeReport().getReports().get(0));
     	expeditedReportDao.save(command.getAeReport());
@@ -276,7 +286,6 @@ public class ReporterTabTest extends AeTabTestCase {
     	
     	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
     	assertEquals("Incorrect number of reports for withdrawal", 1, command.getReportListForWithdrawal().size());
-    	assertEquals("Incorrect number of reports for amendment", 0, command.getReportListForAmendment().size());
     }
     
     /**
@@ -319,7 +328,6 @@ public class ReporterTabTest extends AeTabTestCase {
     	
     	assertEquals("Incorrect number of reports for creation", 0, command.getReportDefinitionListForCreation().size());
     	assertEquals("Incorrect number of reports for withdrawal", 0, command.getReportListForWithdrawal().size());
-    	assertEquals("Incorrect number of reports for amendment", 0, command.getReportListForAmendment().size());
     }
     
     /**
@@ -364,8 +372,7 @@ public class ReporterTabTest extends AeTabTestCase {
     	request.getSession().setAttribute("action", "amendReport");
 
     	// Setup the expect calls
-    	expect(command.getEvaluationService().addOptionalReports(command.getAeReport(), command.getReportDefinitionListForCreation(), true)).andReturn(null);
-    	reportRepository.replaceReport(command.getAeReport().getReports().get(0));
+    	reportRepository.createAndAmendReport(command.getSelectedReportDefinitions().get(0), command.getAeReport().getReports().get(0), false);
     	expeditedReportDao.save(command.getAeReport());
     	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
     	
@@ -374,8 +381,5 @@ public class ReporterTabTest extends AeTabTestCase {
     	((ReporterTab)tab).onDisplay(request, command);
     	verifyMocks();
     	
-    	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
-    	assertEquals("Incorrect number of reports for withdrawal", 1, command.getReportListForWithdrawal().size());
-    	assertEquals("Incorrect number of reports for amendment", 0, command.getReportListForAmendment().size());
     }
 }

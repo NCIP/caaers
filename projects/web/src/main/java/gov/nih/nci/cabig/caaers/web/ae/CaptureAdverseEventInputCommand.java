@@ -5,18 +5,17 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
@@ -27,18 +26,15 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
-import org.springframework.ui.context.Theme;
+import org.apache.commons.lang.StringUtils;
 /**
  * @author Sameer Sawanth
  * @author Biju Joseph
@@ -78,6 +74,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	//this map is used for internal purpouses
 	private Map<Integer, ReportDefinition> reportDefinitionIndexMap;
 	
+	//this map will store the report definitions, already associated with active Expedited Reports of this reporting period.
+	private Map<Integer, ReportDefinition> instantiatedReportDefinitionMap;
+	
 	private Map<Integer, Boolean> selectedAesMap;
 	
 	private Ctc ctcVersion;
@@ -87,6 +86,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private String _action;
 	
 	private String reportingMethod;
+	protected HashMap<String, Boolean> errorsForFields;
 	
 	
 	public CaptureAdverseEventInputCommand(){
@@ -98,6 +98,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
+        this.instantiatedReportDefinitionMap = new HashMap<Integer, ReportDefinition>();
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
         this.outcomeOtherDetails = new ArrayList<String>();
 	}
@@ -116,13 +117,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	/**
-	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
+	 * This method will check if the study is AdEERS submittable.
 	 * @return
 	 */
-	public boolean isDCPNonAdeersStudy(){
+	public boolean isNonAdeersStudy(){
 		if(study == null) return false;
-		return (!study.getAdeersReporting()) && study.getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
+		return !study.getAdeersReporting();
 	}
+	
+	/**
+	 * Will return true, if the primary sponsor of this study is DCP.
+	 * @return
+	 */
+	public boolean isDCPSponsoredStudy(){
+		if(study == null) return false;
+		return StringUtils.equals("DCP", study.getPrimarySponsorCode());
+	}
+	
 	/**
 	 * This method will save the {@link AdverseEventReportingPeriod}.
 	 */
@@ -259,6 +270,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				if(assignment.getParticipant() != null)	this.assignment.getParticipant().getIdentifiers();
 			}
 			
+			if(this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs() != null){
+				this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs().size();
+			}
+			
 			//initialize the expectedness on adverse events.
 			initializeExpectednessOnAdverseEvents();
 		}
@@ -299,6 +314,28 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	}
     	return new ArrayList<ReportDefinition>(requiredReportDefinitionsMap.keySet());
     }
+    
+    /**
+     * Will figureout the report definitions required for modified adverse events.
+     * @return
+     */
+    public List<ReportDefinition> findRequiredReportDefinitionsForModifiedAdverseEvents(){
+    	List<AdverseEvent> modifiedAdverseEvents = adverseEventReportingPeriod.getModifiedExpeditedAdverseEvents();
+    	if(modifiedAdverseEvents == null || modifiedAdverseEvents.isEmpty()) return new ArrayList<ReportDefinition>();
+    	
+    	return evaluationService.findRequiredReportDefinitions(null, modifiedAdverseEvents, adverseEventReportingPeriod.getStudy());
+    }
+    /**
+     * This method will find the report definitions required for non expedited adverse events.
+     * @return
+     */
+    public List<ReportDefinition> findRequiredReportDefinitionsForNonExpeditedAdverseEvents(){
+    	
+    	List<AdverseEvent> nonExpeditedAdverseEvents = adverseEventReportingPeriod.getNonExpeditedAdverseEvents();
+    	if(nonExpeditedAdverseEvents == null || nonExpeditedAdverseEvents.isEmpty()) return new ArrayList<ReportDefinition>();
+    	
+    	return evaluationService.findRequiredReportDefinitions(null, nonExpeditedAdverseEvents, adverseEventReportingPeriod.getStudy());
+    }
 
 
     /**
@@ -332,6 +369,22 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		   reportDefinitionMap.put(rpDef.getId(), true);
 	   }
    }
+   
+   /**
+    * Will populate the map, containg the ID and ReportDefinition, that are associated to 
+    * active ExpeditedReports of this reporting period. 
+    */
+   public void refreshInstantiatedReportDefinitionMap(){
+	   instantiatedReportDefinitionMap.clear();
+	   for(ExpeditedAdverseEventReport aeReport : getAdverseEventReportingPeriod().getActiveAeReports()){
+		   for(Report report : aeReport.getReports()){
+			   if(!report.isHavingStatus(ReportStatus.WITHDRAWN , ReportStatus.AMENDED, ReportStatus.REPLACED)){
+				   instantiatedReportDefinitionMap.put(report.getReportDefinition().getId(), report.getReportDefinition());
+			   }
+			   
+		   }
+	   }
+   }
     
     /**
      * This method will return the adverse events that are selected (checked)
@@ -350,10 +403,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     public void refreshReportStatusMap(){
     	reportStatusMap.clear();
+        Date earliestGradedDate = adverseEventReportingPeriod.getEarliestAdverseEventGradedDate();
+        if(earliestGradedDate == null) earliestGradedDate = new Date();
         
     	//initialize every thing with empty
     	for(ReportDefinition rpDef : allReportDefinitions){
-    		reportStatusMap.put(rpDef.getId(), rpDef.getExpectedDisplayDueDate());
+    		reportStatusMap.put(rpDef.getId(), rpDef.getExpectedDisplayDueDate(earliestGradedDate));
     	}
     }
     
@@ -566,7 +621,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.ctcVersion = ctcVersion;
 	}
 	
-	@Transient
 	public Integer getTermCode(){
 		return null;
 	}
@@ -708,7 +762,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public List<AdverseEvent> getSelectedAesList() {
 		List<AdverseEvent> selectedAesList = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: adverseEvents){
-    		
+    		if(ae.getReport() != null) continue;
     		if(BooleanUtils.isTrue(getSelectedAesMap().get(ae.getId()))){
     			if(primaryAdverseEventId != null && ae.getId().equals(primaryAdverseEventId)){
     				selectedAesList.add(0, ae);
@@ -774,4 +828,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.outcomeOtherDetails = outcomeOtherDetails;
 	}
     
+    public ReportDefinition reassociateReportDefinition(ReportDefinition reportDefinition){
+    	return reportDefinitionDao.merge(reportDefinition);
+    }
+    
+    public Map<Integer, ReportDefinition> getInstantiatedReportDefinitionMap() {
+		return instantiatedReportDefinitionMap;
+	}
+    public void setInstantiatedReportDefinitionMap(
+			Map<Integer, ReportDefinition> instantiatedReportDefinitionMap) {
+		this.instantiatedReportDefinitionMap = instantiatedReportDefinitionMap;
+	}
+	
+    public HashMap<String, Boolean> getErrorsForFields() {
+        return errorsForFields;
+    }
+
+    public void setErrorsForFields(HashMap<String, Boolean> errorsForFields) {
+        this.errorsForFields = errorsForFields;
+    }
 }

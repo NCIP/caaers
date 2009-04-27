@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 
 <%@attribute name="path" description="The path to bind" required="true"%>
@@ -28,8 +29,8 @@
 <jsp:attribute name="field">
   <input size="${empty size ? '50' : size}" type="text" id="${path}-input" name="${path}-input" title="${title}" ${disabled ? 'disabled' : ''} value="${initialDisplayValue}" 
 	class="autocomplete ${cssClass} ${validationCss}" onkeydown="suppressEnter(event)"/>
+  <c:if test="${enableClearButton and not disabled}"><a id="${path}-clear" onclick="javascript:$('${path}-input').clear();$('${path}').clear();" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a></c:if>
   <tags:indicator id="${path}-indicator"/>
-  <c:if test="${enableClearButton and not disabled}"><input type="button" id="${path}-clear" name="C" value="Clear" onClick="javascript:$('${path}-input').clear();$('${path}').clear();" /></c:if>
   <div id="${path}-choices" class="autocomplete" style="display: none"></div>
   <form:hidden path="${path}"/>
 </jsp:attribute>

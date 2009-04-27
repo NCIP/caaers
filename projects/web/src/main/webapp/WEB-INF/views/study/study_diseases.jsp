@@ -310,7 +310,7 @@ Event.observe(window, "load", function() {
 
                         <span id="disease-selected-name"></span>
                         <div style="text-align:right; padding-right:11px; padding-top:2px;">
-                            <input class='ibutton' type='button' onClick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease' align="right"/>
+                            <tags:button color="blue" type="button" value="Add disease" size="small" icon="add" onclick="fireAction('addStudyDisease','0');"/>
                         </div>
                     </div>
                     <br/>
@@ -328,7 +328,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
 					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
-                    <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
+                    <tags:button color="blue" type="button" value="Add disease" size="small" icon="add" onclick="fireAction('addMeddraStudyDisease','0');"/>
             </chrome:division>
             </c:if>
             
@@ -336,7 +336,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="Other, Specify">
 					<p><tags:instructions code="study.study_disease.other" /></p>
 					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
-                    <input class='ibutton' type='button' onClick="fireAction('addOtherCondition','0');" value='Add condition'  title='Add condition'/>
+                    <tags:button color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fireAction('addOtherCondition','0');"/>
             </chrome:division>
             </c:if>
 
@@ -353,14 +353,14 @@ Event.observe(window, "load", function() {
 			<table width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>CTC disease term</b> </th>
-    				<th scope="col" width="10%" align="left"><b>Primary</b> </th>
-    				<th scope="col" width="5%" align="left"></th>
+    				<th scope="col" width="10%" align="center"><b>Primary</b> </th>
+    				<th scope="col" width="5%" align="center"></th>
     			</tr>
     			 <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease" varStatus="status">
     			<tr>    				
-            		<td><div class="label">${studyDisease.term.ctepTerm}</div></td>
-            		<td><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
-            		<td><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            		<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
+            		<td align="center"><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
+            		<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.ctepStudyDiseases) == 0}" >
@@ -383,8 +383,8 @@ Event.observe(window, "load", function() {
     			</tr>
     			<c:forEach items="${command.study.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
     			<tr>    				
-            		<td><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
-            		<td><div class="label">
+            		<td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
+            		<td align="center"><div class="label">
                         <a href="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
                         </div>
                     </td>

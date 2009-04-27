@@ -45,9 +45,9 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
 
     private Integer daysNotGiven;
 
-    private Boolean eventAbate;
+    private EventStatus eventAbate;
 
-    private Boolean eventReappear;
+    private EventStatus eventReappear;
 
     private Boolean autopsyPerformed;
 
@@ -118,19 +118,21 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
         this.blindBroken = blindBroken;
     }
 
-    public Boolean getEventAbate() {
+    @Column(name = "event_abate")
+    public EventStatus getEventAbate() {
         return eventAbate;
     }
 
-    public void setEventAbate(Boolean eventAbate) {
+    public void setEventAbate(EventStatus eventAbate) {
         this.eventAbate = eventAbate;
     }
 
-    public Boolean getEventReappear() {
+    @Column(name = "event_reappear")
+    public EventStatus getEventReappear() {
         return eventReappear;
     }
 
-    public void setEventReappear(Boolean eventReappear) {
+    public void setEventReappear(EventStatus eventReappear) {
         this.eventReappear = eventReappear;
     }
 

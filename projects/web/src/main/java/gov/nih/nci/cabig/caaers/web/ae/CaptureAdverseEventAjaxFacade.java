@@ -180,9 +180,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 			//ammend the report if needed
 			if(StringUtils.isNotEmpty(reportId) && ammendedReport != null){
 				Boolean useDefaultVersion = false;
-				for(Report report: ammendedReport.getReports()){
+				List<Report> reportsOfAeReport = new ArrayList<Report>(ammendedReport.getReports());
+				for(Report report: reportsOfAeReport){
 					if(report.getReportDefinition().getAmendable()){
-						reportRepository.amendReport(report, useDefaultVersion);
+						reportRepository.createAndAmendReport(command.reassociateReportDefinition(report.getReportDefinition()), 
+								report, useDefaultVersion);
 						reportsGotAmmended = true;
 						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
 						// and just incremented for the 1st one in the list.
@@ -197,6 +199,10 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	// Remove the adverseEvent from the list of AEs assosicated to the report which has id = deletedId
     	command.getAdverseEvents().remove(index);
     	deletedAe.setReportingPeriod(null);
+    	
+    	//if reports got amended , update the earliest graded date
+    	if(reportsGotAmmended)
+    		ammendedReport.updateAdverseEventGradedDate();
     	
     	//save the expedited report
     	if(ammendedReport != null)

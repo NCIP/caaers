@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query) {
 
         List<Object[]> objects = super.find(query);
-        Map<Integer, T> existingStudyMap = new HashMap<Integer, T>();
+        Map<Integer, T> existingStudyMap = new LinkedHashMap<Integer, T>();
         for (Object[] o : objects) {
         	
         	

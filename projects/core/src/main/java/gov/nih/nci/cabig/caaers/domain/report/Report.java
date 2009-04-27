@@ -239,14 +239,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setSubmitter(Submitter submitter) {
         this.submitter = submitter;
     }
-
-    @Column(name = "physician_signoff")
+    
+    @Transient
     public Boolean getPhysicianSignoff() {
-        return physicianSignoff;
+        return getLastVersion().getPhysicianSignoff();
     }
 
     public void setPhysicianSignoff(Boolean physicianSignoff) {
-        this.physicianSignoff = physicianSignoff;
+    	getLastVersion().setPhysicianSignoff(physicianSignoff);
     }
 
     
@@ -410,13 +410,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     }
     
     /**
-     * All the reports, which can be submitted or ammended(re-submitted) are considered active. 
-     * The reports in {@link ReportStatus#WITHDRAWN} or {@link ReportStatus#REPLACED} are considered inactive. 
+     * All the reports, which can be submitted is considered active. 
+     * The reports in {@link ReportStatus#WITHDRAWN} or {@link ReportStatus#REPLACED} or {@link ReportStatus#COMPLETED} or {@link ReportStatus#AMENDED}are considered inactive. 
      * @return
      */
     @Transient
     public boolean isActive(){
-    	return !( ReportStatus.WITHDRAWN.equals(status) || ReportStatus.REPLACED.equals(status) ); 
+    	return !isHavingStatus(ReportStatus.WITHDRAWN, ReportStatus.REPLACED, ReportStatus.AMENDED, ReportStatus.COMPLETED);
     }
     
     /**
@@ -428,5 +428,33 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	return reportDefinition.getAttributionRequired();
     }
    
+    public void copySubmissionDetails(Report r){
+    	this.assignedIdentifer = r.getAssignedIdentifer();
+    	//copy the last version also.
+    	getLastVersion().copySubmissionDetails(r.getLastVersion());
+    }
+    
+    /**
+     * Returns true, if the status of this report is any of the input reportStatus
+     * @param reportStatus
+     * @return
+     */
+    @Transient
+    public boolean isHavingStatus(ReportStatus...reportStatus){
+    	boolean retVal = false;
+    	for(ReportStatus rpStatus : reportStatus){
+    		retVal = retVal || rpStatus.equals(status);
+    	}
+    	return retVal;
+    }
+    
+    /**
+     * True, if the report is overdue,ie. the dueOn is passed. 
+     * @return
+     */
+    @Transient
+    public boolean isOverdue(){
+    	return (dueOn != null && new Date().getTime() > dueOn.getTime());
+    }
    
 }

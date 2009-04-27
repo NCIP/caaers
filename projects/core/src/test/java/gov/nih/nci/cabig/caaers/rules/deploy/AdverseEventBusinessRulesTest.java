@@ -141,8 +141,11 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 1);
         assertCorrectErrorCode(errors, "AER_BR3_ERR");
-        assertEquals("Correct replacement values", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+        assertEquals("Correct replacement values", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
     }
 //
 //    /**
@@ -232,8 +235,11 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 1, "When 1 of the AEs has wrong end dates");
         assertCorrectErrorCode(errors, "AER_BR5_ERR");
-        assertEquals("Correct replacement in error", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+        assertEquals("Correct replacement in error", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.adverseEvents[" + i + "].endDate","aeReport.adverseEvents[" + i + "].startDate");
 
     }
 
@@ -260,10 +266,8 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "AER_UK_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Replacement variables should be same", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
-        assertEquals("Replacement variables should be same", "abcxyz", errors.getErrorAt(0)
-                        .getReplacementVariables()[1]);
+        assertEquals("Replacement variables should be same", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Replacement variables should be same", "abcxyz", errors.getErrorAt(0).getReplacementVariables()[1]);
     }
 
     public void testSingleAeTerm() throws Exception {

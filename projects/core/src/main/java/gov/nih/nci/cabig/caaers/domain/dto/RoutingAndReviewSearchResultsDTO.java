@@ -29,9 +29,9 @@ public class RoutingAndReviewSearchResultsDTO {
 		this.studyCentric = studyCentric;
 		
 		if(studyCentric){
-			this.header = study.getShortTitle() + " , " + study.getPrimaryIdentifierValue();
+			this.header = "(" + study.getPrimaryIdentifierValue() + ") " + study.getShortTitle() ;
 		}else{
-			this.header = participant.getFullName() + ", "  + participant.getPrimaryIdentifierValue();
+			this.header = "(" + participant.getPrimaryIdentifierValue() + ") " + participant.getFullName() ;
 		}
 		
 		resultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
@@ -49,7 +49,7 @@ public class RoutingAndReviewSearchResultsDTO {
 					resultDto = resultMap.get(groupedParticipant.getId());
 				}else {
 					resultDto = new RoutingAndReviewSearchResultDTO();
-					String strHeader = groupedParticipant.getFullName() + ", " + groupedParticipant.getPrimaryIdentifierValue();
+					String strHeader = "(" + groupedParticipant.getPrimaryIdentifierValue() + ") " + groupedParticipant.getFullName();
 					resultDto.setHeader(strHeader);
 					resultMap.put(groupedParticipant.getId(), resultDto); //add it to the map
 				}
@@ -62,7 +62,7 @@ public class RoutingAndReviewSearchResultsDTO {
 					resultDto = resultMap.get(groupedStudy.getId());
 				}else{
 					resultDto = new RoutingAndReviewSearchResultDTO();
-					String strHeader = groupedStudy.getShortTitle() + ", " + groupedStudy.getPrimaryIdentifierValue();
+					String strHeader =  "(" + groupedStudy.getPrimaryIdentifierValue() + ") " + groupedStudy.getShortTitle() ;
 					resultDto.setHeader(strHeader);
 					resultMap.put(groupedStudy.getId(), resultDto); //add it to the map
 				}
@@ -72,24 +72,35 @@ public class RoutingAndReviewSearchResultsDTO {
 		}
 	}
 	
+	/**
+	 * This will go through the original search results, 
+	 * Will pick the first entry in the result, then loops through it,
+	 * Will only add the RoutingAndReviewSearchResultDTO, starting from startIndex, till endIndex.
+	 * 
+	 * @param startIndex
+	 * @param endIndex
+	 */
 	public void filterResultMap(int startIndex, int endIndex){
 		int i = 0;
 		filteredResultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		
 		for(Integer id: resultMap.keySet()){
 			RoutingAndReviewSearchResultDTO resultsDto = resultMap.get(id);
+			
 			for(AdverseEventReportingPeriodDTO dto : resultsDto.getResults()){
+				
 				if(i >= startIndex && i <= endIndex){
 					RoutingAndReviewSearchResultDTO filteredResultDto = null;
 					if(filteredResultMap.containsKey(id)){
 						filteredResultDto = filteredResultMap.get(id);
 					}else {
 						filteredResultDto = new RoutingAndReviewSearchResultDTO();
-						String strHeader = dto.getParticipant().getFullName() + ", " + dto.getParticipant().getPrimaryIdentifierValue();
-						filteredResultDto.setHeader(strHeader);
+						filteredResultDto.setHeader(resultsDto.getHeader());
 						filteredResultMap.put(id, filteredResultDto); //add it to the map
 					}
 					filteredResultDto.addResult(dto);
 				}
+				
 				if (++i > endIndex) break;
 			}
 		}

@@ -26,7 +26,7 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
 
         String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" :
                 " ( " + this.getPrimaryIdentifierValue() + " ) ";
-        StringBuilder name = new StringBuilder();
+        StringBuilder name = new StringBuilder(primaryIdentifier);
         boolean hasLastName = getLastName() != null;
         if (getFirstName() != null) {
             name.append(getFirstName());
@@ -37,7 +37,7 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
         if (hasLastName) {
             name.append(getLastName());
         }
-        return name.toString() + primaryIdentifier;
+        return name.toString() ;
 
     }
 

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -15,10 +16,13 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	AdverseEventRoutingAndReviewRepositoryImpl impl;
 	ProcessInstance processInstance;
 	ContextInstance contextInstance;
+	EvaluationService evaluationService;
 	
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
@@ -57,12 +62,14 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		wfService = registerMockFor(WorkflowService.class);
 		processInstance = registerMockFor(ProcessInstance.class);
 		contextInstance = registerMockFor(ContextInstance.class);
+		evaluationService = registerMockFor(EvaluationService.class);
 		
 		impl = new AdverseEventRoutingAndReviewRepositoryImpl();
 		impl.setAdverseEventReportingPeriodDao(rpDao);
 		impl.setRoutingAndReviewFactory(factory);
 		impl.setExpeditedAdverseEventReportDao(rDao);
 		impl.setWorkflowService(wfService);
+		impl.setEvaluationService(evaluationService);
 	}
 	
 	public void testFetchReviewCommentsForReport() {
@@ -121,7 +128,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		rp.setReviewComments(new ArrayList<ReportingPeriodReviewComment>());
 		EasyMock.expect(rpDao.getById(reportingPeriodId)).andReturn(rp);
-		rpDao.save(rp);
+		rpDao.modifyOrSaveReviewStatusAndComments(rp);
 		replayMocks();
 		impl.addReportingPeriodReviewComment(reportingPeriodId, comment, userId);
 		verifyMocks();
@@ -151,7 +158,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		rp.setReviewComments(commentsList);
 		rp.setId(1);
 		EasyMock.expect(rpDao.getById(1)).andReturn(rp);
-		rpDao.save(rp);
+		rpDao.modifyOrSaveReviewStatusAndComments(rp);
 		replayMocks();
 		impl.deleteReportingPeriodReviewComment(1, 2);
 		verifyMocks();
@@ -167,7 +174,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		r.setReviewComments(commentsList);
 		r.setId(1);
 		EasyMock.expect(rDao.getById(1)).andReturn(r);
-		rDao.save(r);
+		rDao.modifyOrSaveReviewStatusAndComments(r);
 		replayMocks();
 		impl.deleteReportReviewComment(1, 2);
 		verifyMocks();
@@ -188,7 +195,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		commentsList.add(comment);
 		rp.setReviewComments(commentsList);
 		EasyMock.expect(rpDao.getById(reportingPeriodId)).andReturn(rp);
-		rpDao.save(rp);
+		rpDao.modifyOrSaveReviewStatusAndComments(rp);
 		replayMocks();
 		impl.editReportingPeriodReviewComment(reportingPeriodId, newComment, userId, commentId);
 		verifyMocks();
@@ -267,11 +274,12 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
 		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
 		r.setReviewComments(new ArrayList<ReportReviewComment>());
+		r.setWorkflowId(wfId);
 		List<String> transitions = new ArrayList<String>();
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
 		EasyMock.expect(rDao.getById(id)).andReturn(r);
-		rDao.save(r);
+		rDao.modifyOrSaveReviewStatusAndComments(r);
 		replayMocks();
 		List<String> transitionsNames = impl.advanceReportWorkflow(wfId, transitionToTake, id, loginId);
 		
@@ -292,7 +300,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(rs);
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(rpDao.getById(id)).andReturn(rp);
-		rpDao.save(rp);
+		rpDao.modifyOrSaveReviewStatusAndComments(rp);
 		replayMocks();
 		List<String> transitionNames = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id, loginId);
 		
@@ -319,7 +327,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
-	    rpDao.save(reportingPeriod);
+	    rpDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
 		replayMocks();
 		impl.enactReportingPeriodWorkflow(reportingPeriod);
 		verifyMocks();
@@ -346,9 +354,50 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
-	    rDao.save(aeReport);
+	    rDao.modifyOrSaveReviewStatusAndComments(aeReport);
 		replayMocks();
 		impl.enactReportWorkflow(aeReport);
 		verifyMocks();
 	}
+	
+	public void testNextTransitionsForAeReportWithIncompleteReports() throws Exception{
+		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		aeReport.setWorkflowId(1);
+		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.PENDING);
+		aeReport.addReport(report);
+		List<String> transitions = new ArrayList<String>();
+		transitions.add("test action");
+		transitions.add("Submit to Central Office SAE Coordinator");
+		
+		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
+		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(false);
+		replayMocks();
+		List<String> filteredTransitions = impl.nextTransitionNamesForAeReportWorkflow(aeReport, "SYSTEM_ADMIN");
+		verifyMocks();
+		assertEquals(1, filteredTransitions.size());
+	}
+
+	public void testNextTransitionsForAeReportWithCompleteReports() throws Exception{
+		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		aeReport.setWorkflowId(1);
+		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.PENDING);
+		aeReport.addReport(report);
+		List<String> transitions = new ArrayList<String>();
+		transitions.add("test action");
+		transitions.add("Submit to Central Office SAE Coordinator");
+		
+		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
+		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(true);
+		replayMocks();
+		List<String> filteredTransitions = impl.nextTransitionNamesForAeReportWorkflow(aeReport, "SYSTEM_ADMIN");
+		verifyMocks();
+		assertEquals(2, filteredTransitions.size());
+	}
+
 }

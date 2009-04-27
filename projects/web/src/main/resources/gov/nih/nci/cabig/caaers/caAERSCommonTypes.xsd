@@ -148,7 +148,7 @@
     <xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
     <xs:complexType name="ResearchStaffRefType">
         <xs:sequence>
-            <xs:element name="nciIdentifier" type="CustomStringType"/>
+            <xs:element name="nciIdentifier" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -159,7 +159,7 @@
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
@@ -182,7 +182,7 @@
     <xs:element name="investigatorRef" type="InvestigatorRefType"/>
     <xs:complexType name="InvestigatorRefType">
         <xs:sequence>
-            <xs:element name="nciIdentifier" type="CustomStringType"/>
+            <xs:element name="nciIdentifier" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -193,7 +193,7 @@
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
             </xs:extension>

@@ -7,6 +7,6 @@
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
 	<c:set var="preCond" value="${preExistingConditions[index]}" />
-	<par:onePreExistingCondition index="${index}" preExistingCondition="${preCond.preExistingCondition}" />
+	<par:onePreExistingCondition index="${index}" preExistingCondition="${preCond.preExistingCondition}" otherValue="${preCond.other}"/>
 </c:forEach>
 </tags:noform>

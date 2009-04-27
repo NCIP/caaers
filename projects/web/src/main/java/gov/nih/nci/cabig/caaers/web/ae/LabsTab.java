@@ -17,6 +17,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
+
 /**
  * @author Rhett Sutphin
  */
@@ -126,5 +128,12 @@ public class LabsTab extends AeTab {
 
     public void setLabTermDao(LabTermDao labTermDao) {
         this.labTermDao = labTermDao;
+    }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
+    	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
+    	hasEmptyFields |= CollectionUtils.isEmpty(command.getAeReport().getLabs());
+    	return hasEmptyFields;
     }
 }

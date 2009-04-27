@@ -33,8 +33,8 @@
              
               addDetails : function(itemType, src, val, loc, options){
  	 	 		
- 	 	 		src.disable();
-				this.showIndicator(src.id + "-indicator");	 	 		
+ 	 	 		// src.disable();
+				// this.showIndicator(src.id + "-indicator");	 	 		
  	 	 		var container = $(loc);
  	 	 		var paramHash = new Hash(); //parameters to post to server
  	 	 		paramHash.set('task', 'add');
@@ -48,8 +48,8 @@
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
 				this.insertContent(container, url, paramHash, function() {
-						src.enable();
-						this.hideIndicator(src.id + "-indicator");
+						// src.enable();
+						// this.hideIndicator(src.id + "-indicator");
 						}.bind(this));
  	 		},
              
@@ -58,7 +58,7 @@
 				
 				var confirmation = confirm("Do you really want to delete?");
 				if(!confirmation) return; //return if not agreed.
-				this.showIndicator(itemType+"-indicator");				
+				// this.showIndicator(itemType+"-indicator");				
 				var container = $(loc);
                   
                 var paramHash = new Hash(); //parameters to post to server
@@ -79,7 +79,7 @@
  	 	 		var newLoc = replaceHtml($(loc) , '');
 
                 this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
-					this.hideIndicator(itemType + "-indicator");
+					// this.hideIndicator(itemType + "-indicator");
 				}.bind(this));
  	 	 		
  	 		},
@@ -123,8 +123,24 @@
  		});
 
  		Event.observe(window, "load",setupPage);
-		
-		function setupPage(){
+
+        function addMetastaticDisease() {
+            mHistory.addDetails('metastaticDiseaseSite', null, null, 'anchorMetastaticDiseases');
+        }
+
+        function addPreexistingCondition() {
+            mHistory.addDetails('preExistingCondition', null, null, 'anchorPreExistingCondition');
+        }
+
+        function addConMeds() {
+            mHistory.addDetails('concomitantMedication', null, null, 'anchorConcomitantMedication');
+        }
+
+        function addPriorTherapy() {
+            mHistory.addDetails('priorTherapy', null, null, 'anchorPriorTherapy');
+        }
+
+        function setupPage(){
 			//only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
@@ -133,7 +149,8 @@
 		
 			mHistory = new mHistoryClass();//create a new mHistory object
 
-			//--for metastatic diseases button 
+/*
+			//--for metastatic diseases button
 			Element.observe('metastatic-diseases-btn', 'click', function(e){
 			 	this.addDetails('metastaticDiseaseSite', e.element(), null, 'anchorMetastaticDiseases');
 		 	}.bind(mHistory));
@@ -152,6 +169,7 @@
 		 	Element.observe('priortherapy-btn','click', function(e){
 			 	this.addDetails('priorTherapy', e.element(), null , 'anchorPriorTherapy');
 		 	}.bind(mHistory));
+*/
 
 			Event.observe('command', 'submit', function(e){
 
@@ -287,9 +305,7 @@
   <tags:tabFields tab="${tab}" />
   <tags:hasErrorsMessage />
   <chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
-    <p>
-	 <tags:instructions code="instruction_ae_patientdetails_general"/>
-	</p>
+    <p><tags:instructions code="instruction_ae_patientdetails_general"/></p>
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
 			<table width="100%">
@@ -434,7 +450,7 @@
 
           <div style="padding-left:20px;">
           <div id="_metastatic">
-              <input id="metastatic-diseases-btn" type="button" value="Add"/>
+              <tags:button cssClass="foo" id="metastatic-diseases-btn" color="blue" value="Add" icon="Add" type="button" onclick="addMetastaticDisease();" size="small"/>
               <tags:indicator id="metastatic-diseases-btn-indicator" />
 
               <!--<a name="anchorMetastaticDiseases"/>-->
@@ -458,11 +474,11 @@
 
 
 
-  <chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-existing Conditions" collapsable="true">
+  <chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-Existing Conditions" collapsable="true">
         <jsp:body>
             <p><tags:instructions code="instruction_ae_patientdetails_precond"/></p>
             <div style="padding-left:20px;">
-                <input id="pre-cond-btn" type="button" value="Add"/>
+                <tags:button cssClass="foo" id="pre-cond-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPreexistingCondition();" size="small"/>
                 <tags:indicator id="pre-cond-btn-indicator" />
 
             <div id="_preExistingConditions">
@@ -473,7 +489,7 @@
                     <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
                       <c:set var="newIndex" value="${size - (status.index + 1)}" />
                       <c:set var="pCond" value="${command.aeReport.saeReportPreExistingConditions[newIndex]}" />
-                      <ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
+                      <ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" otherValue="${pCond.other}"/>
                     </c:forEach>
                 </div>
             </div>
@@ -494,7 +510,7 @@
 
       <div style="padding-left:20px;">
       <div id="">
-          <input id="concomitantMedication-btn" type="button" value="Add"/>
+          <tags:button cssClass="foo" id="concomitantMedication-btn" color="blue" value="Add" icon="Add" type="button" onclick="addConMeds();" size="small"/>
           <tags:indicator id="concomitantMedication-btn-indicator"/>
 
           <a name="anchorConcomitantMedication"/>
@@ -524,7 +540,8 @@
 
     <div style="padding-left:20px;">
     <div id="priorTherapy">
-        <input id="priortherapy-btn" type="button" value="Add"/>
+        <tags:button cssClass="foo" id="priortherapy-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPriorTherapy();" size="small"/>
+        <!--<input id="priortherapy-btn" type="button" value="Add"/>-->
         <tags:indicator id="priortherapy-btn-indicator" />
 
         <a name="anchorPriorTherapy"/>

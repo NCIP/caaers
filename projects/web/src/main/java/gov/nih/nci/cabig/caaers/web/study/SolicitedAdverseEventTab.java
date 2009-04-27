@@ -85,7 +85,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
 
         for (Epoch epoch : listOfEpochs) {
             if (epoch.getName() == null || epoch.getName().equalsIgnoreCase("Enter name here"))
-                errors.reject("name", "Each evaluation period type must have a valid title. Type the title or delete the evaluation period type.");
+                errors.reject("STU_015", "Each evaluation period type must have a valid title. Type the title or delete the evaluation period type.");
             listOfEpochNames.add(epoch.getName().toUpperCase());
         }
     	
@@ -96,7 +96,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
         }
 
         if( setOfEpochNames.size() != listOfEpochNames.size())
-    		errors.reject("name","There is a duplicate evaluation period type. Modify or delete the evaluation period types so they are all unique.");
+    		errors.reject("STU_016","There is a duplicate evaluation period type. Modify or delete the evaluation period types so they are all unique.");
     	
     	HashSet<SolicitedAdverseEvent> solicitedAEsWithinEpochSet = new HashSet<SolicitedAdverseEvent>();
 
@@ -115,7 +115,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     			// Validate otherMeddra for ctc terminology.
     			if(sae.getCtcterm() != null && sae.getCtcterm().isOtherRequired()){
     				if(sae.getOtherTerm() == null && !otherMeddraErrorMap.containsKey(sae.getCtcterm().getTerm())){
-    					errors.reject("otherMeddraRequired", "Other medDRA term is required for the term " + sae.getCtcterm().getTerm());
+    					errors.reject("STU_017", new Object[]{sae.getCtcterm().getTerm()} , "Other medDRA term is required for the term " + sae.getCtcterm().getTerm());
     					otherMeddraErrorMap.put(sae.getCtcterm().getTerm(), Boolean.TRUE);
     				}
     			}

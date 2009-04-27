@@ -1,5 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags\ae"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -7,6 +8,8 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="collapsed" required="true" type="java.lang.Boolean" %>
 <%@attribute name="style"%>
+<%@attribute name="adverseEvent" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" %>
+
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
@@ -17,14 +20,35 @@
 </c:choose></c:set>
 
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${!empties[v]}">
+<a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsable="true" collapsed="${!empties[v]}">
 
     <div id="main-fields-${index}" class="main-fields">
-		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
-        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="0" end="${len - 2}">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
+    	<!-- Verbatim -->
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+		<!-- Grade -->
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+		<div class="row">
+			<div class="leftpanel">
+				<!-- Start Date -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
+				<!-- Attribution -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}"/>
+				<!-- Event Time -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+			</div>
+			<div class="rightpanel">
+				<!-- End Date -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
+				<!-- Expected -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
+				<!-- Location -->
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+			</div>
+		</div>		
+		<!-- Hospitalization -->
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+		<!-- Outcomes -->
 		<ae:oneOutcome index="${index}" />
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
     </div>
 </chrome:division>

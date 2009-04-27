@@ -88,7 +88,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		aeReport.setId(7);
 		aeReport.setWorkflowId(workflowId);
 		
-		EasyMock.expect(repository.nextTransitionNames(workflowId, userId)).andReturn(actions);
+		EasyMock.expect(repository.nextTransitionNamesForAeReportWorkflow(aeReport, userId)).andReturn(actions);
 		replayMocks();
 		
 		ExpeditedAdverseEventReportDTO dto = factory.createAdverseEventReportDTO( aeReport, userId);

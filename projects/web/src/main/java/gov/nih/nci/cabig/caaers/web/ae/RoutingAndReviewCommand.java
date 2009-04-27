@@ -26,6 +26,8 @@ public class RoutingAndReviewCommand{
     
     private ReviewStatus reviewStatus;
     
+    private boolean workflowEnabled = false;
+    
     private HashMap<Object, Object> reviewStatusOptionsMap = new LinkedHashMap<Object,Object>();
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
@@ -101,4 +103,12 @@ public class RoutingAndReviewCommand{
 			RoutingAndReviewSearchResultsDTO searchResultsDTO) {
 		this.searchResultsDTO = searchResultsDTO;
 	}
+    
+    public boolean getWorkflowEnabled(){
+    	return workflowEnabled;
+    }
+    
+    public void setWorkflowEnabled(boolean workflowEnabled){
+    	this.workflowEnabled = workflowEnabled;
+    }
 }

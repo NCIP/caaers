@@ -166,6 +166,7 @@
                 </TOTAL_NUMBER_OF_COURSES>
             </xsl:if>
             
+            <!--
 			<xsl:variable name="flg">
 	  			<xsl:for-each select="TreatmentInformation/CourseAgent">
 	  				<xsl:if test="StudyAgent/INDType = 'DCP_IND'">Yes</xsl:if>
@@ -182,7 +183,17 @@
 	  				<INV_AGENT_ADMIN><xsl:value-of select="substring($flg,1,3)"/></INV_AGENT_ADMIN>
 	  			</xsl:otherwise>
 	  		</xsl:choose>
- 		
+ 		    -->
+ 		    <xsl:choose>
+	  			<xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'true'">
+	  				<INV_AGENT_ADMIN>Yes</INV_AGENT_ADMIN>
+	  			</xsl:when>
+	  			<xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'false'">
+	  				<INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
+	  			</xsl:when>
+	  		</xsl:choose>
+ 		    
+ 		    
             
             <!-- no info -->
         </COURSE_INFORMATION>
@@ -480,15 +491,18 @@
                     <xsl:if test="AdverseEventResponseDescription/retreated = 'false'">No</xsl:if>
                 </RETREATED>
             </xsl:if>
+            	
 
-            <REMOVED_FROM_PROTOCOL_TRT>
+            
                 <xsl:choose>
-                    <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol">Yes</xsl:when>
-                    <xsl:otherwise>No</xsl:otherwise>
+                    <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol = '1678-01-01T00:00:00.000-05:00'"></xsl:when>
+                    <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol"><REMOVED_FROM_PROTOCOL_TRT>Yes</REMOVED_FROM_PROTOCOL_TRT></xsl:when>                    
+                    <xsl:otherwise><REMOVED_FROM_PROTOCOL_TRT>No</REMOVED_FROM_PROTOCOL_TRT></xsl:otherwise>
                 </xsl:choose>
-            </REMOVED_FROM_PROTOCOL_TRT>
 
-            <xsl:if test="AdverseEventResponseDescription/dateRemovedFromProtocol != ''">
+
+	
+            <xsl:if test="AdverseEventResponseDescription/dateRemovedFromProtocol != '' and AdverseEventResponseDescription/dateRemovedFromProtocol !='1678-01-01T00:00:00.000-05:00'">
                 <REMOVED_FROM_PROTOCOL_TRT_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date"
@@ -559,17 +573,23 @@
                     <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
                 </DISEASE_NAME>
             </xsl:if>
+            
+            
+         <xsl:if test="DiseaseHistory/AnatomicSite/category != 'Other'">   
             <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
                 <PRIMARY_SITE_OF_DISEASE>
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
                 </PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-            
+         </xsl:if>
+             
             <xsl:if test="DiseaseHistory/AnatomicSite/category != ''">
                 <PRIMARY_ANATOMIC_SITE>
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/category"/>
                 </PRIMARY_ANATOMIC_SITE>
             </xsl:if>
+            
+            
 
             <xsl:if test="DiseaseHistory/otherPrimaryDisease != ''">
                 <DISEASE_NAME_NOT_LISTED>
@@ -716,14 +736,17 @@
                 </xsl:if>
                 
                 <xsl:choose>
-                    <xsl:when test="administrationDelayAmount">
+                    <xsl:when test="administrationDelayAmount &gt; 0">
                         <AGENT_DELAYED>Yes</AGENT_DELAYED>
                     </xsl:when>
+                    
+                    <xsl:when test="administrationDelayAmount = -1">
+                    </xsl:when>                    
                     <xsl:otherwise>
                         <AGENT_DELAYED>No</AGENT_DELAYED>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="administrationDelayAmount">
+                <xsl:if test="administrationDelayAmount and administrationDelayAmount &gt; 0">
                     <DELAY>
                         <xsl:value-of select="administrationDelayAmount"/>
                     </DELAY>

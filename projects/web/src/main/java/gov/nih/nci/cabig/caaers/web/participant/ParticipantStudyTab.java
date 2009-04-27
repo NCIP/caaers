@@ -20,21 +20,5 @@ public class ParticipantStudyTab extends gov.nih.nci.cabig.ctms.web.tabs.Tab<New
         return refdata;
     }
 
-    // /*
-    // * @Override
-    // */
-    // @Override
-    // public void validate(final NewParticipantCommand command, final Errors errors) {
-    // boolean studySiteArray = command.getStudySiteArray() == null ||
-    // command.getStudySiteArray().length == 0;
-    // if (studySiteArray) {
-    // errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
-    // }
-    // }
-    //
-    // @Override
-    // public boolean isAllowDirtyForward() {
-    // return false;
-    // }
-
+  
 }

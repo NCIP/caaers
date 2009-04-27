@@ -83,6 +83,8 @@ function submitPage(s){
 				${role.csmName eq 'caaers_study_cd' ? 'Study coordinator' : ''}
 				${role.csmName eq 'caaers_ae_cd' ? 'Adverse event coordinator' : ''}
 				${role.csmName eq 'caaers_site_cd' ? 'Site coordinator' : ''}
+				${role.csmName eq 'caaers_central_office_sae_cd' ? 'Central Office SAE coordinator' : ''}
+				${role.csmName eq 'caaers_data_cd' ? 'Data coordinator' : ''}
 			</li>
 		</c:forEach>
         </div>

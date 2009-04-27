@@ -23,7 +23,6 @@ import static org.easymock.EasyMock.expect;
  */
 public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 	
-	protected CSMUserRepository csmUserRepository;
 	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	protected SecurityContext context;
@@ -37,7 +36,6 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 		
 		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		csmUserRepository = registerMockFor(CSMUserRepositoryImpl.class);
 		context = registerMockFor(SecurityContext.class);
 		auth =  registerMockFor(Authentication.class);
         user = registerMockFor(User.class);
@@ -47,7 +45,6 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 		controller = new RoutingAndReviewResolverController();
 		controller.setAdverseEventReportingPeriodDao(adverseEventReportingPeriodDao);
 		controller.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
-		controller.setCsmUserRepository(csmUserRepository);
 	}
 		
 	/**
@@ -61,10 +58,6 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 		reportingPeriod.getStudy().setId(1);
 		reportingPeriod.getParticipant().setId(1);
 		expect(adverseEventReportingPeriodDao.getById(1)).andReturn(reportingPeriod);
-		expect(context.getAuthentication()).andReturn(auth);
-        expect(auth.getPrincipal()).andReturn(user);
-        expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
-        expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
@@ -79,11 +72,7 @@ public class RoutingAndReviewResolverControllerTest extends WebTestCase{
 	public void testHandleRequestInternalForAeReportSystemAdmin() throws Exception{
 		request.setParameter("aeReport", "1");
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		expect(expeditedAdverseEventReportDao.getById(1)).andReturn(aeReport);
-		expect(context.getAuthentication()).andReturn(auth);
-        expect(auth.getPrincipal()).andReturn(user);
-        expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
-        expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
+		
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();

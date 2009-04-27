@@ -71,6 +71,9 @@ public class MedicalDeviceBusinessRulesTest extends AbstractBusinessRulesExecuti
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SME_BR1_ERR");
         assertSameErrorCount(errors, 1);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.medicalDevices[0].commonName","aeReport.medicalDevices[0].brandName");
     }
 
     /**
@@ -358,8 +361,7 @@ public class MedicalDeviceBusinessRulesTest extends AbstractBusinessRulesExecuti
 
         aeReport.getMedicalDevices().get(0).setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors,
-                        "Device Operator is HEALTHY PROFESSIONAL, and there is no other operator description");
+        assertNoErrors(errors, "Device Operator is HEALTHY PROFESSIONAL, and there is no other operator description");
     }
 
     /**
@@ -379,8 +381,8 @@ public class MedicalDeviceBusinessRulesTest extends AbstractBusinessRulesExecuti
         aeReport.getMedicalDevices().get(0).setOtherDeviceOperator("Other");
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "ADO_BR1_ERR");
-        assertSameErrorCount(errors, 1,
-                        "Other Operator information must not be provied for non-OTHER operators");
+        assertSameErrorCount(errors, 1, "Other Operator information must not be provied for non-OTHER operators");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
 
     }
 }

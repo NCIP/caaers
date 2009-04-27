@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ParticipantSynchronizer extends CompositeMigrator<Participant>{
 
 	public ParticipantSynchronizer(List<Migrator<Participant>> synchronizers) {
@@ -19,12 +21,21 @@ public class ParticipantSynchronizer extends CompositeMigrator<Participant>{
 		
 		dbParticipant.setFirstName(xmlParticipant.getFirstName());
 		dbParticipant.setLastName(xmlParticipant.getLastName());
-		dbParticipant.setMiddleName(xmlParticipant.getMiddleName());
-		dbParticipant.setMaidenName(xmlParticipant.getMaidenName());
+		if(xmlParticipant.getMiddleName() != null &&  StringUtils.isNotEmpty(xmlParticipant.getMiddleName())){
+			dbParticipant.setMiddleName(xmlParticipant.getMiddleName());
+		}
+		if(xmlParticipant.getMaidenName() != null &&  StringUtils.isNotEmpty(xmlParticipant.getMaidenName())){
+			dbParticipant.setMaidenName(xmlParticipant.getMaidenName());
+		}
 		dbParticipant.setDateOfBirth(xmlParticipant.getDateOfBirth());
-		dbParticipant.setGender(xmlParticipant.getGender());
-		dbParticipant.setEthnicity(xmlParticipant.getEthnicity());
-		dbParticipant.setRace(xmlParticipant.getRace());
+		if(xmlParticipant.getGender() != null &&  StringUtils.isNotEmpty(xmlParticipant.getGender())){
+			dbParticipant.setGender(xmlParticipant.getGender());
+		}
+		if(xmlParticipant.getEthnicity() != null &&  StringUtils.isNotEmpty(xmlParticipant.getEthnicity())){
+			dbParticipant.setEthnicity(xmlParticipant.getEthnicity());
+		}
+		if(xmlParticipant.getRace() != null &&  StringUtils.isNotEmpty(xmlParticipant.getRace())){
+			dbParticipant.setRace(xmlParticipant.getRace());
+		}
 	}
-
 }

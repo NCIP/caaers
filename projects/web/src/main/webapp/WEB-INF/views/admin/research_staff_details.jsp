@@ -142,7 +142,6 @@
         </li>
     </ul>
 </div>
-<!--<br/>-->
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
 
@@ -168,6 +167,7 @@
             </c:forEach>
     </div>
     <div class="rightpanel">
+    
          <c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
@@ -175,6 +175,7 @@
         <c:if test="${authenticationMode == 'webSSO'}">
             <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
         </c:if>
+    
     </div>
 	<c:if test="${(command.id gt 0) }">
 	<div class="row">
@@ -210,6 +211,22 @@
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_ae_cd').value='true':$('caaers_ae_cd').value='false';" ${caaers_ae_cd ? 'checked':''} />
             <input id="caaers_ae_cd" type="hidden" name="caaers_ae_cd" value="${caaers_ae_cd}"/>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label label2">Central office SAE coordinator</div>
+        <div class="value value2">
+            <input type="checkbox" onclick="this.checked?$('caaers_central_office_sae_cd').value='true':$('caaers_central_office_sae_cd').value='false';" ${caaers_central_office_sae_cd ? 'checked':''} />
+            <input id="caaers_central_office_sae_cd" type="hidden" name="caaers_central_office_sae_cd" value="${caaers_central_office_sae_cd}"/>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label label2">Data coordinator</div>
+        <div class="value value2">
+            <input type="checkbox" onclick="this.checked?$('caaers_data_cd').value='true':$('caaers_data_cd').value='false';" ${caaers_data_cd ? 'checked':''} />
+            <input id="caaers_data_cd" type="hidden" name="caaers_data_cd" value="${caaers_data_cd}"/>
         </div>
     </div>
 

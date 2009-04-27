@@ -18,7 +18,7 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
 		super.setUp();
 		generator = new AdeersReportGenerator();
 		mockSerializer = registerMockFor(AdverseEventReportSerializer.class);
-		generator.setAeReportSerializer(mockSerializer);
+		generator.setAdverseEventReportSerializer(mockSerializer);
 	}
 	public void testGenerateCaaersXml() throws Exception {
 		String retValue = "hello biju";

@@ -125,15 +125,14 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     public void testValidateDateOfBirth() throws Exception {
         newParticipantCommand.getParticipant().setDateOfBirth(new DateValue(2011));
         doValidate();
-        assertFieldRequiredCustomErrorMessageRaised("participant.dateOfBirth",
-                "Incorrect Date Of Birth");
+        assertEquals("Wrong number of errors for " + "participant.dateOfBirth", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
     }
 
     public void testValidateIdentifiers() throws Exception {
         newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         doValidate();
-        assertFieldRequiredCustomErrorMessageRaised("participant.identifiers",
-                "Please Include exactly One Primary Identifier");
+        assertEquals("Wrong number of errors for " + "participant.identifiers", 1, errors.getFieldErrorCount("participant.identifiers"));
+        
     }
   
 

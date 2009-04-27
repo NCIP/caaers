@@ -35,19 +35,16 @@
 	<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	    
 		<fo:layout-master-set>
-		  	<fo:simple-page-master master-name="A4" margin-left="2mm" margin-top="2mm" margin-right="0.25in">
-		    	<fo:region-body margin-top="2.4in"/>
+		  	<fo:simple-page-master master-name="A4" margin-left="2mm" margin-top="2mm" margin-right="0.25in" margin-bottom="10mm">
+		    	<fo:region-body margin-top="2.1in" margin-bottom="1in"/>
 		    	<fo:region-before extent="2in"/>
-		    	<fo:region-after extent="0.5in"/>
-		  	</fo:simple-page-master>
-
-
+		    	<fo:region-after extent="1mm"/>
+		  	</fo:simple-page-master>		  	
 		</fo:layout-master-set>
 		
 		<fo:page-sequence master-reference="A4">
 			
 		<fo:static-content flow-name="xsl-region-after">
-
 				<fo:block font-size="8pt" font-family="arial" text-align-last="right" > 
 						Page <fo:page-number/> of <fo:page-number-citation ref-id="content_terminator"/>
 				</fo:block>
@@ -96,8 +93,6 @@
 				     <fo:block font-weight="bold" font-size="14pt" font-family="arial" text-align-last="center" display-align="center">
 				      	Adverse Event Expedited Report</fo:block>	      
 				    </fo:table-cell>
-
-				  
 				  </fo:table-row>
 				</fo:table-body>
 				
@@ -119,20 +114,13 @@
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 						 
-					
 						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/SiteInvestigator"> 
 								
 								<xsl:value-of select="Investigator/firstName"/>
 								<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 								<xsl:value-of select="Investigator/lastName"/>
-								
-							
 						</for-each>
-
 					</fo:inline>	
-					
-					
-																				
 				</fo:block>
 
 				<fo:block margin-left="4mm"> 
@@ -149,18 +137,23 @@
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">  
-						<xsl:if test ="Report/ReportVersion/reportVersionId > 0 ">
-							Amended
-						</xsl:if>
+					<fo:inline xsl:use-attribute-sets="normal"> 
+						<xsl:choose>												 
+							<xsl:when test ="AdverseEventReport/Report/ReportVersion/reportVersionId &gt; 0 ">
+								Amended
+							</xsl:when>
+							<xsl:otherwise>
+								Original
+							</xsl:otherwise>
+						</xsl:choose>
 					</fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Ticket #:</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">   <xsl:value-of select="AdverseEventReport/Summary[@id='Ticket number']/value"/> </fo:inline>	
+					<fo:inline xsl:use-attribute-sets="normal">   <xsl:value-of select="AdverseEventReport/Report/assignedIdentifer"/> </fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Amendment #: </fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 
-						<xsl:value-of select="Report/ReportVersion/reportVersionId"/>  
+						<xsl:value-of select="AdverseEventReport/Report/ReportVersion/reportVersionId"/>  
 					</fo:inline>																	
 				</fo:block>
 				
@@ -178,19 +171,13 @@
 					</fo:inline>
 				</fo:block>
 
-  
-
-
 					<fo:block space-after="5pt">
 						<fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="2pt"/>
 					</fo:block>
 									
-									
 		  </fo:static-content>
 		  
-		  <fo:flow flow-name="xsl-region-body">		  	
-           		
-   
+		  <fo:flow flow-name="xsl-region-body">			  
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Reporter Information 
 		  		</fo:block>
@@ -939,11 +926,11 @@
 	  			</fo:table-body>
 		  		</fo:table>
 		  		
-		  		
-		  								  		  		
+		  		<fo:block break-after="page"/>
+		  			<!--					  		  		
 					<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
-					</fo:block>	
+					</fo:block>	-->
 
 
 		  		
@@ -953,7 +940,7 @@
 				</fo:block>
 				
 				
-  				<!-- break-before="page" --> <fo:block xsl:use-attribute-sets="sub-head" > 
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Radiation Intervention
 		  		</fo:block>
 		  		
@@ -1175,8 +1162,7 @@
 				
 				</xsl:if>
 				
-  				<!-- break-before="page" -->
-
+				<!--<fo:block break-before="page"/> -->
 		  		
 		  		<xsl:if test="AdverseEventReport/MedicalDevice">
 		  		
@@ -1602,7 +1588,7 @@
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
 
-  				<!-- break-before="page" --><fo:block xsl:use-attribute-sets="sub-head" > 
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Protocol Agents
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>

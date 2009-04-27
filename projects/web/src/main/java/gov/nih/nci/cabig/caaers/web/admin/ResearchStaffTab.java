@@ -35,7 +35,12 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     private static final String RESEARCH_STAFF_FIELD_GROUP = "researchStaff";
     private static final String SITE_FIELD_GROUP = "site";
 
-    private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd, UserGroupType.caaers_site_cd, UserGroupType.caaers_study_cd};
+    private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {UserGroupType.caaers_ae_cd, 
+    	UserGroupType.caaers_participant_cd, 
+    	UserGroupType.caaers_site_cd, 
+    	UserGroupType.caaers_study_cd,
+    	UserGroupType.caaers_central_office_sae_cd,
+    	UserGroupType.caaers_data_cd};
     private CSMUserRepository csmUserRepository;
 
     public ResearchStaffTab() {

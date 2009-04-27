@@ -56,59 +56,58 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
 		
 		String tempDir = System.getProperty("java.io.tmpdir");
-		String reportId = request.getParameter("aeReport");
+		String aeReportId = request.getParameter("aeReport");
+		String reportId = request.getParameter("reportId");
 		String format = request.getParameter("format");
    		try {
     			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao)getApplicationContext().getBean("expeditedAdverseEventReportDao");
-    			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(reportId));
-    			AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
-    			String xml = ser.serialize(aeReport);
+    			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+    			AdverseEventReportSerializer ser = (AdverseEventReportSerializer)this.getApplicationContext().getBean("adverseEventReportSerializer");
+    			AdeersReportGenerator gen = (AdeersReportGenerator)this.getApplicationContext().getBean("adeersReportGenerator");
+    			if (reportId == null) {
+    				reportId = "0";
+    			}
+                String xml = ser.serialize(aeReport,Integer.parseInt(reportId));
     			//System.out.print(xml);
     			
     			if (format.equals("pdf")) {
     			
-	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportId+".pdf";
+	    			String pdfOutFile = "expeditedAdverseEventReport-"+aeReportId+".pdf";
 	    	        // generate report and send ...
-	    	        AdeersReportGenerator gen = (AdeersReportGenerator) getApplicationContext().getBean(
-	    	                        "adeersReportGenerator");
 	    			//AdeersReportGenerator gen = new AdeersReportGenerator();
 	    			gen.generatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
-	    			generateOutput(pdfOutFile,response,reportId);
+	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("medwatchpdf")) {
  
-	    			String pdfOutFile = "MedWatchReport-"+reportId+".pdf";
+	    			String pdfOutFile = "MedWatchReport-"+aeReportId+".pdf";
 	    			
-	    			AdeersReportGenerator gen = new AdeersReportGenerator();
 	    			gen.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
-	    			generateOutput(pdfOutFile,response,reportId);
+	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("dcp")) {
-    				String pdfOutFile = "dcp-"+reportId+".pdf";
-    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				String pdfOutFile = "dcp-"+aeReportId+".pdf";
     				gen.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
     				
-    				generateOutput(pdfOutFile,response,reportId);
+    				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("cioms")) {
-    				String pdfOutFile = "cioms-"+reportId+".pdf";
-    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				String pdfOutFile = "cioms-"+aeReportId+".pdf";
     				gen.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
     				
-    				generateOutput(pdfOutFile,response,reportId);
+    				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("ciomssae")) {
-    				String pdfOutFile = "ciomssae-"+reportId+".pdf";
-    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				String pdfOutFile = "ciomssae-"+aeReportId+".pdf";
     				gen.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
     				
-    				generateOutput(pdfOutFile,response,reportId);
+    				generateOutput(pdfOutFile,response,aeReportId);
     			} else  {
-	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportId+".xml";
+	    			String xmlOutFile = "expeditedAdverseEventReport-"+aeReportId+".xml";
 	    			
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);
 	    			outw.close();
 	    			
-	    			generateOutput(xmlOutFile,response,reportId);  				
+	    			generateOutput(xmlOutFile,response,aeReportId);  				
     			}
 				
 			} catch (Exception e) {

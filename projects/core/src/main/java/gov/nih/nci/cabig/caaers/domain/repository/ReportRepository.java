@@ -61,6 +61,12 @@ public interface ReportRepository {
     void amendReport(Report report, Boolean useDefaultVersion);
     
     /**
+     * This method will
+     *   - Amend existing reports, by creating a new report instance. 
+     */
+    void createAndAmendReport(ReportDefinition repDef, Report toAmend, Boolean useDefaultVersion);
+    
+    /**
      * Will tell whether all the mandatory field for this report is duly filled.
      *
      * @return ErrorMessages, if any.

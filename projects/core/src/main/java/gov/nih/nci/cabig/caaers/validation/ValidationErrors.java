@@ -12,8 +12,10 @@ public class ValidationErrors {
         errors = new ArrayList<ValidationError>();
     }
 
-    public void addValidationError(String code, String msg, Object... r1) {
-        errors.add(new ValidationError(code, msg, r1));
+    public ValidationError addValidationError(String code, String msg, Object... r1) {
+        ValidationError ve = new ValidationError(code, msg, r1);
+        errors.add(ve);
+        return ve;
     }
 
     public String toString() {

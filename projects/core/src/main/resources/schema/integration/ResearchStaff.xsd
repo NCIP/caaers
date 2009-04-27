@@ -53,20 +53,17 @@
 					  <xs:documentation>Site coordinator </xs:documentation>
  				</xs:annotation>
  			</xs:enumeration>
+ 			<xs:enumeration value="caaers_data_cd">
+               <xs:annotation>
+					  <xs:documentation>Coordinating Center Data Coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+ 			<xs:enumeration value="caaers_central_office_sae_cd">
+               <xs:annotation>
+					  <xs:documentation>Coordinating Center SAE Coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     
 </xs:schema>
-<!--
-    <xs:complexType name="researchStaffType">
-        <xs:sequence>
-            <xs:element type="common:personType" name="person"/>
-            <xs:element type="common:customStringType" name="emailAddress"/>
-            <xs:element type="common:customStringType" name="phoneNumber"/>
-            <xs:element type="common:customStringType" name="faxNumber"/>
-            <xs:element type="common:customStringType" name="nciIdentifier"/>
-            <xs:element type="common:organizationRefType" name="organizationRef" minOccurs="1"
-                maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
--->

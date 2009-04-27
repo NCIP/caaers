@@ -197,7 +197,7 @@ public class DateValue implements Comparable<DateValue> {
     }
 
     public Date toDate() {
-        return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month,
+        return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month-1,
                 day == null ? 0 : day).getTime();
     }
 

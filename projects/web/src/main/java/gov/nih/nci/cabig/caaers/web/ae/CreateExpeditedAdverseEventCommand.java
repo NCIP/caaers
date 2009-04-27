@@ -122,17 +122,6 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	}
 	
 
-	@Override
-    public void save() {
-        reportDao.save(aeReport);
-    }
-	
-
-	@Override
-    public void flush() {
-    	reportDao.flush();
-    }
-	
 	/**
 	 * This method will take care of setting up the command object.
 	 */
@@ -265,7 +254,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	 * @param removedDefinitions
 	 */
 	public void removeUnselectedReports() {
-		 List<Report> nonWitdrawnReports = aeReport.getNonWithdrawnReports();
+		 List<Report> nonWitdrawnReports = aeReport.getActiveReports();
 		 List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
 		 Map<Integer, Report> unselectedMap = new HashMap<Integer, Report>();
 		 //find difference (nonwithdrawn - selected)
@@ -301,7 +290,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	   //also the user selected ones should be checked. 
 	   // add the reports that are already instantiated
        if(aeReport.getId() != null){
-       	List<Report> nonWithdrawnReports = aeReport.getNonWithdrawnReports();
+       	List<Report> nonWithdrawnReports = aeReport.getActiveReports();
        	for(Report report : nonWithdrawnReports){
        		ReportDefinition repDef = report.getReportDefinition();
        		reportDefinitionMap.put(repDef.getId(), true);

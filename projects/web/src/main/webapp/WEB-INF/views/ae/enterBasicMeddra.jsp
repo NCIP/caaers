@@ -20,8 +20,6 @@
             padding-left: 3.0em;
             text-indent: -2.5em;
         }
-        div.row div.label { width: 15em; } 
-		div.row div.value, div.row div.extra { margin-left: 16em; }
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
@@ -76,13 +74,51 @@
       //==================================================================================================
        function addAdverseEvents(selectedTerms){
             var termId = selectedTerms.keys()[0];
-             
+
+           var tID = lookupByTermId(termId);
+           if (tID != -1) {
+               openDivisionById(tID);
+               document.location = document.location.toString().split("#")[0] + "#adverseEventTerm-" + termId;
+               return;
+           }
+           
            // var newIndex = $$(".ae-section").length;
 			var externalFunction = createAE['addAdverseEventWithTermsMeddra'];
             var externalArgs = [termId];
 			aesEditor.add('', externalFunction,externalArgs);
        }
-     //==================================================================================================      
+     //==================================================================================================
+
+         // ----------------------------------------------------------------------------------------------------------------
+
+          function lookupByTermId(_id) {
+             var list = $$('div.aeID-' + _id);
+             for (i=0; i<list.length; i++) {
+                 return (list[i].id);
+             }
+             return -1;
+          }
+
+         // ----------------------------------------------------------------------------------------------------------------
+
+          function closeDivisionById(_id) {
+                  panelDiv = $("contentOf-" + _id);
+                  imageId= 'image-' + _id;
+                  imageSource = $(imageId).src;
+                  CloseDown(panelDiv, arguments[1] || {});
+                  document.getElementById(imageId).src = imageSource.replace('down','right');
+          }
+
+          // ----------------------------------------------------------------------------------------------------------------
+
+          function openDivisionById(_id) {
+                  panelDiv = $("contentOf-" + _id);
+                  imageId= 'image-' + _id;
+                  imageSource = $(imageId).src;
+                  OpenUp(panelDiv, arguments[1] || {});
+                  document.getElementById(imageId).src = imageSource.replace('right','down');
+          }
+         
     </script>
 </head>
 <body>
@@ -100,8 +136,8 @@
                        	version="${command.assignment.studySite.study.aeTerminology.meddraVersion.id}"
                        	title="Select New Adverse Event Terms">
     	</tags:aeTermQuery>
-            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-                <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}"/>
+            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
+                <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
             </c:forEach>
         </jsp:attribute>
 

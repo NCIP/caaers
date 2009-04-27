@@ -242,7 +242,7 @@ td#linkPosition a img {
 	<jsp:attribute name="localButtons" >
         <div align=right>
             <tags:indicator id="sa-add-indicator" />
-            <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" name="AddStudyAgent" value="Add Study Agent">
+            <tags:button color="blue" type="button" value="Add Study Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
         </div>
     </jsp:attribute>
     

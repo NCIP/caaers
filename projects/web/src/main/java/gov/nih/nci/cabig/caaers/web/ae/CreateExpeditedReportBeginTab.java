@@ -49,18 +49,19 @@ public class CreateExpeditedReportBeginTab<T extends AdverseEventInputCommand> e
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         boolean noAdverseEventReportingPeriod = command.getAdverseEventReportingPeriod() == null;
-        if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
-        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course");
+        if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
+        if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
+        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "SAE_003", "Missing course");
         
         //special case, if user goes back and picks up a different reporting period after creating an expedited report. 
         AdverseEventReportingPeriod associatedReportingPeriod = command.getAeReport().getReportingPeriod();
         if(associatedReportingPeriod != null){
         	if(noAdverseEventReportingPeriod){
-        		 errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "You should not change the reporting period from '" + associatedReportingPeriod.getName()+"'");
+        		 errors.rejectValue("adverseEventReportingPeriod", "SAE_004", new Object[]{associatedReportingPeriod.getName()}, 
+        				 "You should not change the reporting period from '" + associatedReportingPeriod.getName()+"'");
         	}else{
         		if(associatedReportingPeriod.getId().equals(command.getAdverseEventReportingPeriod().getId())){
-        			errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "You should not change the reporting period from '" + associatedReportingPeriod.getName()+"'");
+        			errors.rejectValue("adverseEventReportingPeriod", "SAE_004", "You should not change the reporting period from '" + associatedReportingPeriod.getName()+"'");
         		}
         	}
         }

@@ -61,7 +61,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("detailsForOther","Verbatim"),
                                         property("startDate", "Start date"),
                                         property("endDate", "End date"), 
-                                        property("attributionSummary","Attribution to study"),
+                                        property("attributionSummary","Attribution to study intervention"),
                                         property("hospitalization","Hospitalization"),
                                         property("expected", "Expected"), 
                                         property("eventLocation", "Where was the patient when the event occurred?"),
@@ -137,6 +137,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         ),
                         section(AGENTS_INTERVENTION_SECTION,
                                 property("treatmentInformation",
+        							property("investigationalAgentAdministered","Was an investigational agent administered on this protocol?"),
                                     list("courseAgents","Study Agent",
                                             property("studyAgent", "Study Agent"),
                                             property("formulation","Formulation"),
@@ -148,8 +149,9 @@ public class ExpeditedReportTree extends PropertylessNode {
                                             property("lastAdministeredDate","Date last administered"),
                                             property("administrationDelayAmount","Administration Delay Amount"),
                                             property("administrationDelayUnits","Administration Delay Units"),
-                                            property("comments", "Comments"),dosage("modifiedDose", "Modified dose")
-
+                                            property("agentAdjustment","Dose Modification?"),
+                                            property("comments", "Comments")
+                                            // dosage("modifiedDose", "Modified dose")
                                     )
                                 )
                         ),
@@ -177,7 +179,22 @@ public class ExpeditedReportTree extends PropertylessNode {
                         ),
                         section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses", property("text", "Cause"))),
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
-                        section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
+                        section(ADDITIONAL_INFO_SECTION,
+                        		property("additionalInformation",
+                        				property("autopsyReport","Autopsy Report"),
+                        				property("pathologyReport","Pathology Report"),
+                        				property("consults","Consults"),
+                        				property("progressNotes","Progress Notes"),
+                        				property("dischargeSummary","Discharge Summary"),
+                        				property("radiologyReports","Radiology Report"),
+                        				property("flowCharts","Flow Sheets/Case Report Forms"),
+                        				property("labReports","Laboratory Reports"),
+                        				property("irbReport","Summary Report Sent to IRB"),
+                        				property("obaForm","OBA Form"),
+                        				property("other","Other"),
+                        				property("otherInformation","Other Information")
+                        		)
+                        ),// TODO: additional info section
                         section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
                         section(OUTCOME_SECTION),// TODO: just a space filler section
                         section(PRIOR_THERAPIES_SECTION, 
@@ -322,8 +339,7 @@ public class ExpeditedReportTree extends PropertylessNode {
     }
 
     private static TreeNode dosage(String baseName, String displayName) {
-        return property(baseName, displayName, property("amount", "Amount"), property("units",
-                        "Units")
+        return property(baseName, displayName, property("amount", "Amount"), property("units","Units")
         // ,property("route", "Route")
         );
     }

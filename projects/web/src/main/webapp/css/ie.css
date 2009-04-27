@@ -45,8 +45,9 @@ div.row, build-name, main {
 }
 #thirdlevelnav {
 	font-size:9pt;
-	margin:5px;
+	height:15px;
 }
+
 #all {
 	width:980px;
 	margin:0px auto;

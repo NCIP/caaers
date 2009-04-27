@@ -6,12 +6,16 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
@@ -425,7 +429,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
-        assertEquals("El Study", summary.get("Study"));
+        assertEquals(" El Study", summary.get("Study"));
     }
 
     public void testSummaryStudyIncludesPrimaryIdentifier() throws Exception {
@@ -435,7 +439,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         study.getIdentifiers().get(0).setPrimaryIndicator(true);
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
-        assertEquals("El Study (1845)", summary.get("Study"));
+        assertEquals(" (1845) El Study", summary.get("Study"));
     }
 
     public void testSummaryIncludesParticipant() throws Exception {
@@ -443,7 +447,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
-        assertEquals("Joe Shabadoo", summary.get("Participant"));
+        assertEquals(" Joe Shabadoo", summary.get("Participant"));
     }
 
     public void testSummaryParticipantIncludesPrimaryIdentifier() throws Exception {
@@ -453,7 +457,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         Study study = Fixtures.createStudy("El Study");
         report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
-        assertEquals("Joe Shabadoo (MRN1138)", summary.get("Participant"));
+        assertEquals(" (MRN1138) Joe Shabadoo", summary.get("Participant"));
     }
 
     public void testSummaryIncludesFirstAETerm() throws Exception {
@@ -496,33 +500,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         assertSame("Reverse link not set", report, actual.getReport());
     }
 
-    public void testExpeditedRequiredReportWhenReqd() throws Exception {
-        report.addReport(new Report());
-        report.addReport(new Report());
-        Report reqd = new Report();
-        reqd.setRequired(true);
-        report.addReport(reqd);
 
-        assertTrue(report.isExpeditedReportingRequired());
-    }
-
-    public void testExpeditedRequiredReportWhenNotReqd() throws Exception {
-        report.addReport(new Report());
-        report.addReport(new Report());
-        report.addReport(new Report());
-
-        assertFalse(report.isExpeditedReportingRequired());
-    }
-
-    public void testRequiredReportCount() throws Exception {
-        report.addReport(new Report());
-        report.addReport(new Report());
-        Report reqd = new Report();
-        reqd.setRequired(true);
-        report.addReport(reqd);
-
-        assertEquals(1, report.getRequiredReportCount());
-    }
 
     public void testGetSponsorDefinedReports() throws Exception {
         Report rep = new Report();
@@ -742,7 +720,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	
     	rep = Fixtures.createReport("test2");
     	rep.getReportDefinition().setAttributionRequired(false);
-    	rep.setStatus(ReportStatus.COMPLETED);
+    	rep.setStatus(ReportStatus.FAILED);
     	report.addReport(rep);
     	
     	rep = Fixtures.createReport("test3");
@@ -754,5 +732,299 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	assertFalse(report.isAttributionRequired());
     }
     
+    public void testGetActiveReports(){
+    	Report rep = Fixtures.createReport("test1");
+    	rep.getReportDefinition().setAttributionRequired(true);
+    	rep.setStatus(ReportStatus.PENDING);
+    	report.addReport(rep);
+    	
+    	Report rep2 = Fixtures.createReport("test2");
+    	rep2.getReportDefinition().setAttributionRequired(false);
+    	rep2.setStatus(ReportStatus.FAILED);
+    	report.addReport(rep2);
+    	assertNotNull(report.getActiveReports());
+    	assertEquals(2,report.getActiveReports().size());
+    	assertSame(rep, report.getActiveReports().get(0));
+    	assertSame(rep2, report.getActiveReports().get(1));
+    	
+    }
+    
+    public void testUpdateSignatureOfAdverseEvents(){
+    	assertNull(report.getAdverseEvents().get(0).getSignature());
+    	report.updateSignatureOfAdverseEvents();
+    	assertNotNull(report.getAdverseEvents().get(0).getSignature());
+    	
+    }
    
+    public void testGetModifiedAdverseEvents(){
+    	assertNotNull(report.getModifiedAdverseEvents());
+    	assertEquals(1, report.getModifiedAdverseEvents().size());
+    }
+    
+    public void testGetModifiedAdverseEvents_WhenSignatureNotModified(){
+    	AdverseEvent ae = report.getAdverseEvents().get(0);
+    	ae.setSignature(ae.getCurrentSignature());
+    	
+    	assertNotNull(report.getModifiedAdverseEvents());
+    	assertEquals(0, report.getModifiedAdverseEvents().size());
+    }
+    
+    public void testGetEarliestAdverseEventGradedDate(){
+    	assertNull(report.getEarliestAdverseEventGradedDate());
+    	Date d = new Date();
+    	report.getAdverseEvents().get(0).setGradedDate(d);
+    	assertNotNull(report.getEarliestAdverseEventGradedDate());
+    }
+    
+    public void testGetPendingReports(){
+    	assertTrue(report.getPendingReports().isEmpty());
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.COMPLETED);
+        rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+        rep.setId(2);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        assertEquals(1, report.getPendingReports().size());
+        assertSame(rep, report.getPendingReports().get(0));
+        
+    }
+    
+    public void testUpdateAdverseEventGradedDate(){
+    	for(AdverseEvent ae : report.getAdverseEvents()){
+    		assertNull(ae.getGradedDate());
+    	}
+    	Date now = new Date();
+    	String strDate = DateUtils.formatDate(now);
+    	report.updateAdverseEventGradedDate();
+    	for(AdverseEvent ae : report.getAdverseEvents()){
+    		assertNotNull(ae.getGradedDate());
+    		assertEquals(strDate, DateUtils.formatDate(ae.getGradedDate()));
+    	}
+    	
+    }
+    
+    public void testFindAmendableReports(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.COMPLETED);
+        rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        List<Report> reports = report.findAmendableReports("NCI-CODE1", ReportStatus.COMPLETED);
+        assertEquals(1, reports.size());
+        
+        reports = report.findAmendableReports("NCI-CODE1", ReportStatus.PENDING);
+        assertEquals(0, reports.size());
+        
+    }
+    
+    public void testFindPendingAmendableReports(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.COMPLETED);
+        rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+        rep.setId(2);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setAmendable(false);
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+        rep.setId(3);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setAmendable(true);
+        reportDefinition.setExpedited(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        List<Report> reports = report.findPendingAmendableReports("NCI-CODE1");
+        assertNotNull(reports);
+        assertFalse(reports.isEmpty());
+        assertEquals(1, reports.size());
+        
+        reports = report.findPendingAmendableReports("NCI-CODE13");
+        assertNotNull(reports);
+        assertTrue(reports.isEmpty());
+    }
+    
+    public void testIsAnActiveReportPresent(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        boolean result = report.isAnActiveReportPresent(reportDefinition);
+        assertTrue(result);
+    }
+    
+    
+    public void testIsAnActiveReportPresentWhenThereAreReplacedReportsOnly(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.REPLACED);
+        rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        boolean result = report.isAnActiveReportPresent(reportDefinition);
+        assertFalse(result);
+    }
+    
+    
+    public void testIsAnActiveReportPresentWhenThereAreReplacedWithdrawnReportsOnly(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.REPLACED);
+        rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.WITHDRAWN);
+        rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        boolean result = report.isAnActiveReportPresent(reportDefinition);
+        assertFalse(result);
+    }
+    
+ 
+    
+    public void testIsAnActiveReportPresentWhenThereAreReplacedWithdrawnAndPendingReportsOnly(){
+    	Report rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.REPLACED);
+        rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+        ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.WITHDRAWN);
+        rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        rep = new Report();
+    	rep.setId(1);
+        Fixtures.createReportVersion(rep);
+        rep.setStatus(ReportStatus.PENDING);
+        rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+        reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setId(55);
+        reportDefinition.setExpedited(true);
+        reportDefinition.setAmendable(true);
+        rep.setReportDefinition(reportDefinition);
+        report.addReport(rep);
+        
+        boolean result = report.isAnActiveReportPresent(reportDefinition);
+        assertTrue(result);
+    }
+    
+    public void testGetPhysicianSignOff() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.addReportVersion(new ReportVersion());
+    	report1.getLastVersion().setPhysicianSignoff(true);
+    	report1.getReportDefinition().setPhysicianSignOff(true);
+    	aeReport.addReport(report1);
+    	Report report2 = Fixtures.createReport("report 2");
+    	report2.addReportVersion(new ReportVersion());
+    	report2.getLastVersion().setPhysicianSignoff(true);
+    	report2.getReportDefinition().setPhysicianSignOff(true);
+    	aeReport.addReport(report2);
+    	assertTrue("Physician-signOff not evaluated correctly", aeReport.getPhysicianSignOff());
+    }
+    
+    public void testIsPhysicianSignOffRequired() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.getReportDefinition().setPhysicianSignOff(false);
+    	aeReport.addReport(report1);
+    	Report report2 = Fixtures.createReport("report 2");
+    	report2.getReportDefinition().setPhysicianSignOff(false);
+    	aeReport.addReport(report2);
+    	assertFalse("isPhysicianSignOffRequired not evaluated correctly", aeReport.isPhysicianSignOffRequired());
+    	
+    }
+    
+    public void testSetPhysicianSignOff() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.addReportVersion(new ReportVersion());
+    	Report report2 = Fixtures.createReport("report 2");
+    	report2.addReportVersion(new ReportVersion());
+    	aeReport.addReport(report1);
+    	aeReport.addReport(report2);
+    	aeReport.setPhysicianSignOff(true);
+    	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
+    	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(1).getLastVersion().getPhysicianSignoff());
+    }
 }

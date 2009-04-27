@@ -260,7 +260,7 @@ Object.extend(ListEditor.prototype, {
             }
         }
 
-        if (this.options.addButton) this.options.addButton.disable()
+        // if (this.options.addButton) this.options.addButton.disable()
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
@@ -277,7 +277,7 @@ Object.extend(ListEditor.prototype, {
                 this.updateFirstAndLast()
                 this.createSingleItemControls(newId)
                 if (this.options.addCallback) this.options.addCallback(nextIndex)
-                if (this.options.addButton) this.options.addButton.enable()
+                // if (this.options.addButton) this.options.addButton.enable()
                 if (this.options.addIndicator) AE.hideIndicator(this.options.addIndicator)
             }.bind(this)
         ])

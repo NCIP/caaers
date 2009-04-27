@@ -109,7 +109,7 @@ function buildTable(form) {
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onClick="buildTable('assembler'); $('bigSearch').show();" value='Search'  title='Search Subject'/>
+    <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler'); $('bigSearch').show();"/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />

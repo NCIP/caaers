@@ -126,25 +126,32 @@ public class ReportRepositoryImpl implements ReportRepository {
 
         //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
         if( report.getReportDefinition().getAttributionRequired()){
-		    	   ExpeditedAdverseEventReport aeReport = report.getAeReport();
-		    	   for (AdverseEvent ae : aeReport.getAdverseEvents()) {
-		    		   Attribution max = null;
-		    		   for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
-		    			   if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).
-		    			   if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
-		    				   max = attribution.getAttribution();
-		    			   }
-
-		    		   }
-		    		   if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
-		    			   messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
-		    					   String.format(
-		    							   "The adverse event, '%s, ' is not attributed to a cause. " +
-		    							   "An attribution of possible or higher must be selected for at least one of the causes.",
-		    							   ae.getAdverseEventTerm().getUniversalTerm()));
-		    		   }
-		    	   }
-		       }
+        	ExpeditedAdverseEventReport aeReport = report.getAeReport();
+        	for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+        		Attribution max = null;
+        		for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
+        			if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).
+        			if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
+        				max = attribution.getAttribution();
+		    		}
+		    	}
+        		if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
+        			messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
+		    		String.format(
+		    			"The adverse event, '%s, ' is not attributed to a cause. " +
+		    			"An attribution of possible or higher must be selected for at least one of the causes.",
+		    			ae.getAdverseEventTerm().getUniversalTerm()));
+        		}
+		    }
+        }
+        
+        //biz rule - Physician Sign-Off should be true if the ReportDefinition says that Physician Sign-Off is needed.
+        if(report.getReportDefinition().getPhysicianSignOff()){
+        	if(report.getPhysicianSignoff() == null || !report.getPhysicianSignoff()){
+        		messages.addValidityMessage(ExpeditedReportSection.SUBMIT_REPORT_SECTION, 
+        				"Physician sign-off is mandatory for this report.");
+        	}
+        }
        return messages;
     }
 
@@ -178,6 +185,36 @@ public class ReportRepositoryImpl implements ReportRepository {
                     uProp.getBeanPropertyName());
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     * This method will amend the toAmend report,by making its status to {@link ReportStatus#AMENDED}.
+     * Then creates a new report, based on the {@link ReportDefinition}, also copies the external ticket number
+     * from toAmend to the newly created report.
+     */
+    public void createAndAmendReport(ReportDefinition repDef, Report toAmend,Boolean useDefaultVersion) {
+    	
+    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), useDefaultVersion);
+    	 
+    	 //copy the assigned identifier (in case of AdEERS the ticket number)
+         report.copySubmissionDetails(toAmend);
+         
+         //amend the toAmend Report, by updating its status
+         toAmend.setStatus(ReportStatus.AMENDED);
+         toAmend.getLastVersion().setReportStatus(ReportStatus.AMENDED);
+         toAmend.getLastVersion().setAmendedOn(nowFactory.getNow());
+         
+         //save the amended report
+         reportDao.save(toAmend);
+         
+         //save the report
+         reportDao.save(report);
+
+         //schedule the report, if there are scheduled notifications.
+         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
+    	
+    }
+  
 
     /**
      * This method has the logic needed to a report. Basically a new ReportVersion is created and added to the ReportVersions of th
@@ -188,6 +225,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     public void amendReport(Report report, Boolean useDefaultVersion){
     	
     	try {
+    		
 			participantDao.lock(report.getAeReport().getParticipant());
 			reportDao.reassociate(report);
 			studyDao.lock(report.getAeReport().getStudy());
@@ -198,12 +236,12 @@ public class ReportRepositoryImpl implements ReportRepository {
 			report.setStatus(ReportStatus.PENDING);
 			
 			// Set report due date
-			Calendar cal = GregorianCalendar.getInstance();
-			Date now = nowFactory.getNow();
-			cal.setTime(now);
-			cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
-			report.setDueOn(cal.getTime());
-			reportVersion.setDueOn(cal.getTime());
+			Date earliestGradedDate = report.getAeReport().getEarliestAdverseEventGradedDate();
+			if(earliestGradedDate == null) earliestGradedDate = nowFactory.getNow();
+			
+			Date expectedDueDate = report.getReportDefinition().getExpectedDueDate(earliestGradedDate);
+			report.setDueOn(expectedDueDate);
+			reportVersion.setDueOn(expectedDueDate);
 			
 			// Logic to update the reportVersionId
 			//ReportVersion lastVersion = report.getLastVersion();

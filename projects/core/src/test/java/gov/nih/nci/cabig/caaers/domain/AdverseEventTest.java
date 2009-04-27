@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -127,7 +128,6 @@ public class AdverseEventTest extends AbstractTestCase {
         adverseEvent.setStartDate(startDate);
         adverseEvent.setEndDate(endDate);
         adverseEvent.setReport(report);
-        adverseEvent.setRoutineReport(routineReport);
         adverseEvent.setReportingPeriod(reportingPeriod);
         adverseEvent.addAdverseEventAttribution(deviceAttribution);
         adverseEvent.addAdverseEventAttribution(radiationAttribution);
@@ -168,10 +168,10 @@ public class AdverseEventTest extends AbstractTestCase {
     }
     
     
-    public void testGetSignature(){
+    public void testGetCurrentSignature(){
     	AdverseEvent ae = new AdverseEvent();
-    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$", ae.getSignature());
-    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getSignature());
+    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$", ae.getCurrentSignature());
+    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getCurrentSignature());
     }
     
     public void testInitializeGradedDate(){
@@ -192,6 +192,16 @@ public class AdverseEventTest extends AbstractTestCase {
     	adverseEvent.setGrade(Grade.NOT_EVALUATED);
     	adverseEvent.initailzeGradedDate();
     	assertNull(adverseEvent.getGradedDate());
+    }
+    
+    public void testGetAssocitatedReportNames(){
+    	assertTrue(adverseEvent.getAssociatedReportNames().isEmpty());
+    	Report r = Fixtures.createReport("test");
+    	r.setStatus(ReportStatus.PENDING);
+    	report.addReport(r);
+    	assertFalse(adverseEvent.getAssociatedReportNames().isEmpty());
+    	assertEquals(1, adverseEvent.getAssociatedReportNames().size());
+    	assertEquals("test", adverseEvent.getAssociatedReportNames().get(0));
     }
 //
 //    public void testCopyAdverseEventTerm() {

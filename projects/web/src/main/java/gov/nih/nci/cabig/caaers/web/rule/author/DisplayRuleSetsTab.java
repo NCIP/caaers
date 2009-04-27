@@ -151,7 +151,7 @@ public class DisplayRuleSetsTab extends DefaultTab {
             String ruleSetName = command.getRuleSetName();
             System.out.println("RULE SET NAME :" + ruleSetName + ":");
             if (ruleSetName == null || (ruleSetName != null && ruleSetName.trim().equals(""))) {
-                errors.reject("Missing Rule Set", "Missing Rule Set");
+                errors.reject("RUL_010", "Missing Rule Set");
             }
         }
     }

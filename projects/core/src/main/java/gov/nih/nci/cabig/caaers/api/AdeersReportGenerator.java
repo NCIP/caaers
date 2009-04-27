@@ -34,11 +34,11 @@ public class AdeersReportGenerator {
 //    private String pdfOutFile = "/tmp/aeReport.pdf";
 
 
-    protected  AdverseEventReportSerializer aeReportSerializer;
+    protected  AdverseEventReportSerializer adverseEventReportSerializer;
 
 
 	public AdeersReportGenerator() {
-		aeReportSerializer = new AdverseEventReportSerializer();
+		//aeReportSerializer = new AdverseEventReportSerializer();
 	};
 
     public String getAdeersXml(String adverseEventReportXml) throws Exception {
@@ -89,11 +89,11 @@ public class AdeersReportGenerator {
      * @param aeReport
      */
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport) throws Exception{
-    	return aeReportSerializer.serialize(aeReport);
+    	return adverseEventReportSerializer.serialize(aeReport);
     }
 
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,int reportId) throws Exception{
-    	return aeReportSerializer.serialize(aeReport,reportId );
+    	return adverseEventReportSerializer.serialize(aeReport,reportId );
     }
     
     /**
@@ -137,18 +137,13 @@ public class AdeersReportGenerator {
     }
   
 
-
-
-	public void setAeReportSerializer(AdverseEventReportSerializer aeReportSerializer) {
-		this.aeReportSerializer = aeReportSerializer;
-	}
 	
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/Users/sakkala/tech/adeers/expeditedAdverseEventReport-79.xml");
+            FileReader input = new FileReader("/Users/sakkala/tech/adeers/expeditedAdverseEventReport-1.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -158,12 +153,17 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generatePdf(str1, "/Users/sakkala/tech/adeers/caaers.pdf");
+            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
+	public void setAdverseEventReportSerializer(
+			AdverseEventReportSerializer adverseEventReportSerializer) {
+		this.adverseEventReportSerializer = adverseEventReportSerializer;
+	}
 
 
 

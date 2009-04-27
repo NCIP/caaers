@@ -26,7 +26,7 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-						int i = 1;
+						int i = 0;
 						for(AdverseEvent ae : aeReport.getAdverseEvents()){
 						
 							if(
@@ -34,7 +34,7 @@
 							   &amp;&amp; 
 							   ((ae.getHospitalization() == null) || (ae.getHospitalization().getCode() == Hospitalization.NONE.getCode())  ) 
 							  ){
-								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than 2", i);
+								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than 2", i).addFieldNames("aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
 							}
 							
 							i++;
@@ -80,11 +80,11 @@
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						int i = 0;
 						for(AdverseEvent ae : aeReport.getAdverseEvents()){
-							i++;
 							if(ae.getEndDate() == null) continue;
 							if(DateUtil.compare(ae.getStartDate(), ae.getEndDate()) &lt; 0){
-							  errors.addValidationError("AER_BR5_ERR","'End date' must be greater than or equal to 'Start date' for adverse event", i);
+							  errors.addValidationError("AER_BR5_ERR","'End date' must be greater than or equal to 'Start date' for adverse event", i).addFieldNames("aeReport.adverseEvents[" + i + "].endDate","aeReport.adverseEvents[" + i + "].startDate");
 							}							
+                            i++;
 						}
 						return false;
 					}
@@ -110,13 +110,13 @@
 					int i = 0;
 					HashSet hSet = new HashSet();
 					for(AdverseEvent ae : aeReport.getAdverseEvents()){
-						i++;
 						if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm ){
 							if(!hSet.add(ae.getAdverseEventCtcTerm().getCtcTerm().getId())){
 							 errors.addValidationError("AER_UK_ERR","Adverse Events CTC must be unique", i, ae.getAdverseEventCtcTerm().getCtcTerm().getFullName());
 							}
 						}
-					}
+                        i++;
+                    }
 					return false;
 				}
 		  	}.validate(aeReport, errors)</eval>

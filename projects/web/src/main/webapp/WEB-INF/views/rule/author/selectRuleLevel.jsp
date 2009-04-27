@@ -84,7 +84,7 @@
 			}
 
 			function studyValueSelector(study) {
-				return study.shortTitle;
+				return "(" + study.primaryIdentifierValue + ") "+study.shortTitle;
 			}
 
 			function studyPopulator(autocompleter, text) 

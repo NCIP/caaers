@@ -21,11 +21,12 @@
 
     <jsp:body>
 
+        <c:if test="${empty anatomicSite.name}">
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
     <jsp:attribute name="label">${siteField.displayName}</jsp:attribute>
     <jsp:attribute name="value">
         <c:set var="initValue" value="${not empty anatomicSite.name ? anatomicSite.name : 'Begin typing here...'}"/>
-        <ui:autocompleter path="${siteField.propertyName}" readonly="false" displayNamePath="${siteField.propertyName}.name"  initialDisplayValue="${initValue}">
+        <ui:autocompleter path="${siteField.propertyName}" readonly="false" displayNamePath="${siteField.propertyName}.name" initialDisplayValue="${initValue}" enableClearButton="true">
               <jsp:attribute name="populatorJS"> function(autocompleter, text) {
                   createAE.matchAnatomicSite(text, function(values) {
                   autocompleter.setChoices(values)
@@ -40,7 +41,8 @@
         <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
     </jsp:attribute>
 </ui:row>
-
+        </c:if>
+        
     </jsp:body>
     
 </chrome:division>

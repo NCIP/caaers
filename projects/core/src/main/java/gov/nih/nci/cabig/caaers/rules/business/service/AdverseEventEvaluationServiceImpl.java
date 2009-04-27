@@ -63,9 +63,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception {
 
         ExpeditedAdverseEventReport aer = ae.getReport();
-
-        String message = evaluateSponsorTarget(ae, study, null, RuleType.REPORT_SCHEDULING_RULES
-                        .getName(), aer);
+        String message = evaluateSponsorTarget(ae, study, null, RuleType.REPORT_SCHEDULING_RULES.getName(), aer);
 
         if (!message.equals(CAN_NOT_DETERMINED)) {
             if (message.indexOf("IGNORE") < 0) {
@@ -563,6 +561,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         List<Object> outputObjects = null;
         try {
             outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
+        }catch (RuleSetNotFoundException e){
+        	log.debug("No rule registered under :" + bindURI, e);
         } catch (RuleException e) {
             throw e;
         } catch (Exception ex) {

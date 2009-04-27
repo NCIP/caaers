@@ -5,8 +5,9 @@
 <html>
 <head>
 <title>Enter basic AE information</title>
-<tags:stylesheetLink name="ae"/>
-<style type="text/css">
+
+    <tags:stylesheetLink name="ae"/>
+    <style type="text/css">
 /* This is intended to apply to the grade longselect only */
 .longselect {
 	width: 40em;
@@ -32,24 +33,15 @@
 	overflow:auto;
 	width:620px;
 }
-div.row div.label {
-	width: 15em;
-}
-div.row div.value, div.row div.extra {
-	font-weight: normal;
-	margin-left: 16em;
-	text-align:left;
-	white-space:normal;
-}
 .help-content {
 	width:550px;
 }
 </style>
-<tags:includeScriptaculous/>
-<tags:dwrJavascriptLink objects="createAE"/>
-<tags:javascriptLink name="routing_and_review" />
-<tags:stylesheetLink name="slider" />
-<tags:stylesheetLink name="aeTermQuery_box" />
+    <tags:includeScriptaculous/>
+    <tags:dwrJavascriptLink objects="createAE"/>
+    <tags:javascriptLink name="routing_and_review" />
+    <tags:stylesheetLink name="slider" />
+    <tags:stylesheetLink name="aeTermQuery_box" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
@@ -63,7 +55,7 @@ div.row div.value, div.row div.extra {
     		</div>
     	</jsp:attribute>
     </tags:slider>
-<script type="text/javascript">
+    <script type="text/javascript">
 		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
@@ -386,7 +378,14 @@ div.row div.value, div.row div.extra {
 
         function addAdverseEvents(selectedTerms){
             var termId = selectedTerms.keys()[0];
-             
+
+            var tID = lookupByTermId(termId);
+            if (tID != -1) {
+                openDivisionById(tID);
+                document.location = document.location.toString().split("#")[0] + "#adverseEventTerm-" + termId;
+                return;
+            }
+
            // var newIndex = $$(".ae-section").length;
 			var externalFunction = createAE['addAdverseEventWithTerms'];
             var externalArgs = [termId];
@@ -394,7 +393,40 @@ div.row div.value, div.row div.extra {
       
         }
 
+        // ----------------------------------------------------------------------------------------------------------------
+
+         function lookupByTermId(_id) {
+            var list = $$('div.aeID-' + _id);
+            for (i=0; i<list.length; i++) {
+                return (list[i].id);
+            }
+            return -1;
+         }
+
+        // ----------------------------------------------------------------------------------------------------------------
+
+         function closeDivisionById(_id) {
+                 panelDiv = $("contentOf-" + _id);
+                 imageId= 'image-' + _id;
+                 imageSource = $(imageId).src;
+                 CloseDown(panelDiv, arguments[1] || {});
+                 document.getElementById(imageId).src = imageSource.replace('down','right');
+         }
+
+         // ----------------------------------------------------------------------------------------------------------------
+
+         function openDivisionById(_id) {
+                 panelDiv = $("contentOf-" + _id);
+                 imageId= 'image-' + _id;
+                 imageSource = $(imageId).src;
+                 OpenUp(panelDiv, arguments[1] || {});
+                 document.getElementById(imageId).src = imageSource.replace('right','down');
+         }
+
+    
+
 </script>
+
 </head>
 <body>
 
@@ -412,12 +444,13 @@ div.row div.value, div.row div.extra {
                        	ctcCategories="${ctcCategories}"
                        	version="${command.assignment.studySite.study.aeTerminology.ctcVersion.id}"
                        	title="Select New Adverse Event Terms">
-    </tags:aeTermQuery>    
-    <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-      <ae:oneAdverseEvent index="${status.index}" collapsed="${status.index gt 0}"/>
+    </tags:aeTermQuery>
+    <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
+      <ae:oneAdverseEvent index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
     </c:forEach>
   </jsp:attribute>
   
 </tags:tabForm>
+
 </body>
 </html>

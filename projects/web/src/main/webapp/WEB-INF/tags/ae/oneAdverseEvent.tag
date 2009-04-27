@@ -9,15 +9,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
+
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="collapsed" required="true" type="java.lang.Boolean" %>
 <%@attribute name="style"%>
+<%@attribute name="adverseEvent" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" %>
 
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
-
 <c:set var="title">
     <c:choose>
         <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:when>
@@ -25,7 +26,8 @@
     </c:choose>
 </c:set>
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${!empties[v]}" collapsable="true">
+<a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
@@ -44,31 +46,64 @@
         </div>
 
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
+
+        <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
+            <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
+            <jsp:attribute name="value">
+                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}">
+                    <jsp:attribute name="populatorJS">
+                        function(autocompleter, text) {
+                            var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
+                            createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+                                autocompleter.setChoices(values)})
+                        }
+                    </jsp:attribute>
+                    <jsp:attribute name="selectorJS">
+                        function(lowLevelTerm) {
+                            $('titleOf_ae-section-${index}').innerHTML = '${title_term} Grade: ${title_grade}';
+                            return lowLevelTerm.meddraTerm;
+                        }
+                    </jsp:attribute>
+                    
+                </ui:autocompleter>
+            </jsp:attribute>
+        </ui:row>
+
+<%--
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">
-            <label>
-                ${fieldGroups[ctcOtherGroup].fields[0].displayName}
-            </label>
+            <label>${fieldGroups[ctcOtherGroup].fields[0].displayName}</label>
         </jsp:attribute>
    		</tags:renderRow>
+--%>
     </div>
 
     <div id="main-fields-${index}" class="main-fields">
-		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
+		<%-- Verbatim --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+		<%-- Grade --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
-		<div class="leftpanel">
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
+		<div class="row">
+			<div class="leftpanel">
+				<%-- Start Date --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
+				<%-- Attribution --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
+				<%-- Event Time --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+			</div>
+			<div class="rightpanel">
+				<%-- End Date --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
+				<%-- Expected --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
+				<%-- Location --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+			</div>
 		</div>
-		<div class="rightpanel">
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
-		</div>
-		
-		 <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="5" end="${len - 2}">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
+		<%-- Hospitalization --%>
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+		<%-- Outcomes --%>
 		<ae:oneOutcome index="${index}" />
     </div>
     </jsp:body>

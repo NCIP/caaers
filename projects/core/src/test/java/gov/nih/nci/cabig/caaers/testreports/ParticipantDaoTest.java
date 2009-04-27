@@ -124,7 +124,8 @@ public class ParticipantDaoTest extends DaoTestCase {
                     outputStream.println("");
 
                     for (ExpeditedAdverseEventReport aeReport : spa.getAeReports()) {
-                        AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
+                        AdverseEventReportSerializer ser = (AdverseEventReportSerializer)this.getApplicationContext().getBean("adverseEventReportSerializer");
+
                         String xml = ser.serialize(aeReport);
                         String newXml = new XMLOutputter(Format.getPrettyFormat())
                                         .outputString(new SAXBuilder().build(new StringReader(xml)));

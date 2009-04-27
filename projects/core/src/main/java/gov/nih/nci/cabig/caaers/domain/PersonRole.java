@@ -18,9 +18,9 @@ public enum PersonRole implements CodedEnum<Integer>{
 	STUDY_COORDINATOR(5, "Study Coordinator","SC", UserGroupType.caaers_study_cd),
 	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "AEC", UserGroupType.caaers_ae_cd),
 	REPORTER(7, "Reporter", "PC", UserGroupType.caaers_participant_cd),
-	PHYSICIAN (8, "Physician", "SI", UserGroupType.caaers_physician)
-	//CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office SAE Coordinator","AEC"),
-	//COORDINATING_CENTER_DATA_COORDINATOR(10, "Coordinating Center Data Coordinator", "AEC"),
+	PHYSICIAN (8, "Physician", "SI", UserGroupType.caaers_physician),
+	CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office SAE Coordinator","CSC", UserGroupType.caaers_central_office_sae_cd),
+	DATA_COORDINATOR(10, "Data Coordinator", "CDC", UserGroupType.caaers_data_cd),
 	//SITE_CRA(11, "Site Clinical Research Assistant", "PC")
 	;
 	

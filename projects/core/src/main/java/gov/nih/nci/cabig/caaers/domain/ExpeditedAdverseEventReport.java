@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -41,6 +43,7 @@ import org.springframework.beans.BeanUtils;
  * This class represents the ExpeditedAdverseEventReport domain object.
  *
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "ae_reports")
@@ -67,12 +70,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
-    // This gives the number of Aes in the expeditedReport (Data Collection)
-    private int numberOfAes;
-
-    // This gives the primary report in the expeditedReport (Data Collection)
-    private Report primaryReport;
-    
     private ReviewStatus reviewStatus;
     private Integer workflowId;
     private List<ReportReviewComment> reviewComments;
@@ -143,40 +140,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return ss == null ? null : ss.getStudy();
     }
 
-    @Transient
-    @Deprecated
-    public boolean isExpeditedReportingRequired() {
-        for (Report report : getReports()) {
-            if (report.isRequired()) return true;
-        }
-        return false;
-    }
-
-    @Transient
-    @Deprecated
-    public int getRequiredReportCount() {
-        int count = 0;
-        for (Report report : getReports()) {
-            if (report.isRequired()) count++;
-        }
-        return count;
-    }
-
-    /*
-    * Checks whether all reports in the SAE are complete or not
-    *
-    */
-    @Transient
-    public String getAreAllReportsSubmitted() {
-        Boolean areAllReportsSubmitted = true;
-        for (Report report : reports) {
-            if (report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED) {
-                areAllReportsSubmitted = false;
-                break;
-            }
-        }
-        return areAllReportsSubmitted.toString();
-    }
+// BJ : NOT REFFERED     
+//    /*
+//    * Checks whether all reports in the SAE are complete or not
+//    *
+//    */
+//    @Transient
+//    public String getAreAllReportsSubmitted() {
+//        Boolean areAllReportsSubmitted = true;
+//        for (Report report : reports) {
+//            if (report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED) {
+//                areAllReportsSubmitted = false;
+//                break;
+//            }
+//        }
+//        return areAllReportsSubmitted.toString();
+//    }
     
     /**
      * Checks whether all the sponsor reports in the SAE are complete/withdrawn or not.
@@ -187,17 +166,13 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public Boolean getAllSponsorReportsCompleted(){
     	Boolean completed = true;
     	for(Report report: getSponsorDefinedReports()){
-    		if(report.getReportDefinition().getExpedited() && report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED &&
-    				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN && report.getLastVersion().getReportStatus() != ReportStatus.REPLACED)
-    			completed = false;
+    		if(report.getReportDefinition().getExpedited() && report.getLastVersion().isActive()) completed = false;
     	}
     	
     	// Handle the case where there are no expedited / amendable reports.
     	if(!getHasAmendableReport()){
     		for(Report report: getSponsorDefinedReports()){
-    			if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED && report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN
-    					&& report.getLastVersion().getReportStatus() != ReportStatus.REPLACED)
-    				completed = false;
+    			if(report.getLastVersion().isActive()) completed = false;
     		}
     	}
     	return completed;
@@ -258,8 +233,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Participant", summaryLine(getParticipant()));
         summary.put("Study", summaryLine(getStudy()));
+        summary.put("Participant", summaryLine(getParticipant()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm() != null && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
@@ -280,15 +255,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     private String summaryLine(Participant participant) {
         if (participant == null) return null;
-        StringBuilder sb = new StringBuilder(participant.getFullName());
+        StringBuilder sb = new StringBuilder();
         appendPrimaryIdentifier(participant, sb);
+        sb.append(" ").append(participant.getFullName());
         return sb.toString();
     }
 
     private String summaryLine(Study study) {
         if (study == null) return null;
-        StringBuilder sb = new StringBuilder(study.getShortTitle());
+        StringBuilder sb = new StringBuilder();
         appendPrimaryIdentifier(study, sb);
+        sb.append(" ").append(study.getShortTitle());
         return sb.toString();
     }
 
@@ -309,6 +286,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getAdverseEvents() {
         return lazyListHelper.getLazyList(AdverseEvent.class);
+    }
+    
+    /**
+     * This method will return all the adverse events,which got modified.
+     * It is obtained by comparing the saved signature and newly calculated signature.
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getModifiedAdverseEvents(){
+    	List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		if(ae.isModified()){
+    			adverseEvents.add(ae);
+    		}
+    	}
+    	return adverseEvents;
     }
 
     public void addLab(Lab lab) {
@@ -662,21 +655,75 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     /**
-     * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN.
+     * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN or {@link ReportStatus}.REPLACED.
      *
      * @return
      */
     @Transient
-    public List<Report> getNonWithdrawnReports() {
+    public List<Report> getActiveReports() {
         List<Report> reports = getReports();
         if (reports.isEmpty()) return reports;
         List<Report> submitableReports = new ArrayList<Report>();
         for (Report report : reports) {
-            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) submitableReports.add(report);
+            if (report.isActive()) submitableReports.add(report);
         }
         return submitableReports;
     }
-
+    
+    /**
+     * Returns all the pending reports, that are in PENDING
+     * @return
+     */
+    @Transient
+    public List<Report> getPendingReports(){
+    	List<Report> pendingReports = new ArrayList<Report>();
+    	for(Report report: getReports()){
+    		if(ReportStatus.PENDING.equals(report.getStatus())) pendingReports.add(report);
+    	}
+    	return pendingReports;
+    }
+    
+    /**
+     * Tells whether an active report (ie. in PENDING, INPROCESS, FAILED) status, beloing to the same report definition is present. 
+     * @param reportType
+     * @return
+     */
+    @Transient
+    public boolean isAnActiveReportPresent(ReportDefinition reportType){
+    	for(Report report : getActiveReports()){
+    		if(report.getReportDefinition().getId().equals(reportType.getId())) return true;
+    	}
+    	return false;
+    }
+    
+    public List<Report> findPendingAmendableReports(String nciInstituteCode){
+    	return findAmendableReports(nciInstituteCode, ReportStatus.PENDING);
+    }
+    
+    public List<Report> findCompletedAmendableReports(String nciInstituteCode){
+    	return findAmendableReports(nciInstituteCode, ReportStatus.COMPLETED);
+    }
+    
+    public List<Report> findAmendableReports(String nciInstituteCode, ReportStatus... statuses){
+    	List<Report> reports = new ArrayList<Report>();
+    	for(Report report : getReports()){
+    		if(!report.getReportDefinition().getAmendable()) continue;
+    		
+    		String nciCode = report.getReportDefinition().getOrganization().getNciInstituteCode();
+    		if(!StringUtils.equals(nciCode, nciInstituteCode)) continue;
+    		
+    		for(ReportStatus status : statuses){
+    			if(report.getStatus().equals(status)){
+    				reports.add(report); 
+    				break;
+    			}
+    		}
+    		
+    	}
+    	return reports;
+    }
+    
+    
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
@@ -772,24 +819,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @Transient
     public Report getPrimaryReport() {
         return getReports().get(0);
-    }
-
-    @Deprecated
-    @Transient
-    public ReportStatus getStatus() {
-        //TODO: to be removed after compile/runtime
-        //dependency is resolved, by respective developer
-
-        //assert false : "Update your code";
-        return ReportStatus.PENDING;
-    }
-
-    @Deprecated
-    public void setStatus(ReportStatus status) {
-        //TODO: to be removed after compile/runtime
-        //dependency is resolved, by respective developer
-
-        //assert false : "Update your code";
     }
 
     public ExpeditedAdverseEventReport copy() {
@@ -1037,5 +1066,90 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return activeCount > 0 && attributionRequired;
     	
+    }
+    /**
+     * This method will update the signatures in all the adverse events associated to 
+     * this expedited data collection.
+     */
+    public void updateSignatureOfAdverseEvents(){
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		ae.setSignature(ae.getCurrentSignature());
+    	}
+    }
+    
+    
+    /**
+     * This method will return the earliest graded date, of  adverse events
+     * @return
+     */
+    @Transient
+    public Date getEarliestAdverseEventGradedDate(){
+    	Date d = null;
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		if(ae.getGradedDate() == null) continue;
+    		if(d == null){
+    			d = ae.getGradedDate();
+    		}else{
+    			d = (DateUtils.compateDateAndTime(ae.getGradedDate(), d) < 0) ? ae.getGradedDate() : d;
+    		}
+    	}
+    	return d;
+    }
+    
+    /**
+     * This method will set the graded date of adverse events to today.
+     */
+    public void updateAdverseEventGradedDate(){
+    	Date now = new Date();
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		ae.setGradedDate(now);
+    	}
+    }
+    
+    /**
+     * This method will set the reported flag on adverse events.
+     */
+    public void updateReportedFlagOnAdverseEvents(){
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		ae.setReported(true);
+    	}
+    }
+    
+    /**
+     * This method will clear the reportedFlag, set on previously reported adverse events, 
+     * which got modified.
+     */
+    public void clearReportedFlagOnModifiedAdverseEvents(){
+    	List<AdverseEvent> modifiedAdverseEvents = getModifiedAdverseEvents();
+    	for(AdverseEvent modifiedAdverseEvent : modifiedAdverseEvents){
+    		modifiedAdverseEvent.setReported(false);
+    	}
+    }
+    
+    @Transient
+    public boolean isPhysicianSignOffRequired(){
+    	boolean physicianSignOffRequired = false;
+    	for(Report report: getReports()){
+    		physicianSignOffRequired |= report.getReportDefinition().getPhysicianSignOff();
+    	}
+    	return physicianSignOffRequired;
+    }
+    
+    @Transient
+    public Boolean getPhysicianSignOff(){
+    	Boolean physicianSignOff = true;
+    	for(Report report: getReports()){
+    		if(report.getPhysicianSignoff() != null)
+    			physicianSignOff &= report.getPhysicianSignoff();
+    		else
+    			physicianSignOff = false;
+    	}
+    	return physicianSignOff;
+    }
+    
+    @Transient
+    public void setPhysicianSignOff(Boolean physicianSignOff){
+    	for(Report report: getReports())
+    		report.setPhysicianSignoff(physicianSignOff);
     }
 }

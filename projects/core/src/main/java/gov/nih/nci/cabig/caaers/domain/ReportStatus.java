@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @since 1.0
  */
 public enum ReportStatus implements CodedEnum<Integer> {
-    PENDING(1), COMPLETED(2), WITHDRAWN(3), INPROCESS(4), FAILED(5), REPLACED(6);
+    PENDING(1), COMPLETED(2), WITHDRAWN(3), INPROCESS(4), FAILED(5), REPLACED(6), AMENDED(7);
     private int code;
 
     private ReportStatus(int code) {

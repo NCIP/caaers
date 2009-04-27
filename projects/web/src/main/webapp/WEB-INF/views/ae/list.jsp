@@ -4,6 +4,7 @@
 <head>
 <title>Manage Reports</title>
 <tags:stylesheetLink name="extremecomponents"/>
+<tags:javascriptLink name="dropdown_menu" />
 <tags:dwrJavascriptLink objects="createAE"/>
 <tags:dwrJavascriptLink objects="adverseEventHistory"/>
 <%-- <tags:slider renderComments="false" renderAlerts="true" display="">
@@ -24,8 +25,8 @@
 	color: #900;
 }
 .eXtremeTable .centerTableHeader {
-	background-color: #2b4186;
-	color: white;
+	background-color: #DFE4E8;
+	color: black;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 17px;
 	font-weight: bold;
@@ -38,9 +39,9 @@
 	border-right-style: solid;
 	border-right-width: 1px;
 	border-color: white;
-	background-image: url(../../images/blue/eXtableheader_bg.png);
+	background-image: url(../../images/blue/manage-reports-gradient.png);
 	background-repeat: repeat-x;
-	background-position: top;
+	background-position: bottom;
 }
 .eXtremeTable .eXtremeTable {
 	border:1px solid silver;
@@ -50,7 +51,10 @@
 	font-weight:normal;
 }
 .eXtremeTable .eXtremeTable .even{
-background-color:#ffdada;
+	background-color:#FFEFEF;
+}
+.eXtremeTable .eXtremeTable .eXtremeTable .even{
+	background-color:#fff;
 }
 .eXtremeTable .odd td, .eXtremeTable .even td {
 	padding-top: 7px;
@@ -96,8 +100,8 @@ background-color:#ffdada;
 	font-weight: normal;
 }
 .eXtremeTable .tableHeader {
-	background-color: #2b4186;
-	color: white;
+	background-color: #DFE4E8;
+	color: black;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 17px;
 	font-weight: bold;
@@ -110,9 +114,9 @@ background-color:#ffdada;
 	border-right-style: solid;
 	border-right-width: 1px;
 	border-color: white;
-	background-image: url(../../images/blue/eXtableheader_bg.png);
+	background-image: url(../../images/blue/manage-reports-gradient.png);
 	background-repeat: repeat-x;
-	background-position: top;
+	background-position: bottom;
 }
 .eXtremeTable .eXtremeTable .tableHeader {
 	background-color: #2b4186;
@@ -171,9 +175,6 @@ background-color:#ffdada;
 .eXtremeTable .eXtremeTable .odd {
 	background-color: #eaeaea;
 }
-.eXtremeTable .even {
-  	background-color: #abc4d8;
-}
 .eXtremeTable a:hover{
 color:#0033FF;
 }
@@ -228,15 +229,20 @@ color:#0033FF;
 
     function executeAction(reportId, url, aeReportId, submissionUrl){
         var actions = $("actions-" + reportId);
+        
     	for ( i=0; i < actions.length; i++) {
             if (actions.options[i].selected && actions.options[i].value != "none") {
-                switch (actions.options[i].value) {
-                    case "notifyPSC": notifyPsc(aeReportId); break;
-                    case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
-                    case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  updateDropDownAfterWithdraw(reportId); break;
-                    case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
-                    case "adeers": window.open(submissionUrl, "_blank");  break;
-                    default: window.open(url + "&format="+ actions.options[i].value,"_self");
+            	if(confirm('Are you sure you want to take the action - ' + actions.options[i].text)){
+	                switch (actions.options[i].value) {
+    	                case "notifyPSC": notifyPsc(aeReportId); break;
+        	            case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
+            	        case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  updateDropDownAfterWithdraw(reportId); break;
+                	    case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
+                    	case "adeers": window.open(submissionUrl, "_blank");  break;
+                    	default: window.open(url + "&format="+ actions.options[i].value,"_self");
+                	}
+                }else{
+                	return false;
                 }
             }
          }
@@ -272,26 +278,36 @@ color:#0033FF;
                 }
             })
         }
+
+     function executeReportingPeriodActions(id){
+ 		var url = '<c:url value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=' + id + '&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true"/>';
+ 		window.location = url; 
+ 	}
+
+     function showToolTip(text, title) {
+         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
+     }
         
     </script>
 </head>
 <body>
+<tags:javascriptLink name="wz_tooltip/wz_tooltip" />
 <!-- AE summary  -->
 <c:if test="${not empty command.participant}">
   <div>
-    <div class="row">
-      <div class="summarylabel">Subject</div>
-      <div class="summaryvalue">${command.participant.fullName}</div>
-    </div>
+    
     <div class="row">
       <div class="summarylabel">Study</div>
-      <div class="summaryvalue">${command.study.longTitle}</div>
+      <div class="summaryvalue">(${command.study.primaryIdentifier.value}) ${command.study.longTitle}</div>
+    </div>
+    <div class="row">
+      <div class="summarylabel">Subject</div>
+      <div class="summaryvalue">(${command.participant.primaryIdentifier.value}) ${command.participant.fullName}</div>
     </div>
   </div>
 </c:if>
-<p>
     <tags:instructions code="instruction_manage_reports"/>
-</p>
+
 
 
 <c:if test="${not empty configuration.map.pscBaseUrl}">
@@ -308,7 +324,7 @@ color:#0033FF;
         <td width="16%" class="centerTableHeader"># of Reports</td>
         <td width="16%" class="centerTableHeader"># of AEs</td>
         <td width="16%" class="tableHeader">Data Entry Status</td>
-        <td width="16%" class="tableHeader">Report Status</td>
+        <td width="16%" class="tableHeader">Report Submission Status</td>
         <td width="16%" class="tableHeader">Options</td>
       </tr>
     </thead>
@@ -319,7 +335,7 @@ color:#0033FF;
     </c:if>
   </table>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
-  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No course have been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
+  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No course has been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
     
 </div>
 </body>

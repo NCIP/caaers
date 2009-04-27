@@ -103,7 +103,7 @@ class InvestigatorsTab extends StudyTab {
             for (StudyInvestigator si : studyOrg.getStudyInvestigators()) {
                 siIndex++;
                 if (!hSet.add(si)) {
-                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyInvestigators[" + siIndex + "].siteInvestigator", "DUPLICATE", "Duplicate entry");
+                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyInvestigators[" + siIndex + "].siteInvestigator", "STU_012", "Duplicate entry");
                 }
             }
         }

@@ -31,6 +31,19 @@ public class DateUtilsTest extends TestCase {
 		assertEquals(1, DateUtils.compareDate(d3, d2));
 		
 	}
+	
+	public void testCompareDateAndTime(){
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2002, Calendar.FEBRUARY, 12);
+		Date d1 = cal.getTime();
+		Date d2 = cal.getTime();
+		
+		assertEquals(0, DateUtils.compateDateAndTime(d1, d2));
+		cal.add(Calendar.HOUR, 24);
+		Date d3 = cal.getTime();
+		assertEquals(1, DateUtils.compateDateAndTime(d3, d2));
+		assertEquals(-1, DateUtils.compateDateAndTime(d2, d3));
+	}
 
 	public void testFormatDate() {
 		Calendar cal = GregorianCalendar.getInstance();

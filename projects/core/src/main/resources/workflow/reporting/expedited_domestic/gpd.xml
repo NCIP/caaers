@@ -29,6 +29,12 @@
     <edge>
       <label x="5" y="-10"/>
     </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="211" h1="-2" w2="218" h2="137"/>
+      <bendpoint w1="211" h1="-57" w2="218" h2="82"/>
+      <bendpoint w1="209" h1="-140" w2="216" h2="-1"/>
+    </edge>
   </node>
   <node name="Provide Additional Information To Physician" x="86" y="280" width="325" height="36">
     <edge>
@@ -38,11 +44,11 @@
   </node>
   <node name="Central Office SAE Coordinator Review" x="475" y="545" width="290" height="36">
     <edge>
-      <label x="-61" y="-10"/>
-      <bendpoint w1="-219" h1="-57" w2="178" h2="-53"/>
+      <label x="5" y="-10"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
+      <bendpoint w1="-192" h1="-60" w2="205" h2="-56"/>
     </edge>
   </node>
   <node name="Provide Additional Information To Central Office" x="53" y="541" width="340" height="36">

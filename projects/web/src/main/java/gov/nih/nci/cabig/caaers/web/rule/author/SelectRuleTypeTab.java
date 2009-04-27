@@ -56,26 +56,26 @@ public class SelectRuleTypeTab extends DefaultTab {
             if (level != null) {
                 if (level.equals(RuleLevel.Sponsor.getName())) {
                     if (command.getSponsorName().trim().equals("")) {
-                        errors.reject("Missing Sponsor", "Missing Sponsor");
+                        errors.reject("RUL_011", "Missing Sponsor");
                     }
                 } else if (level.equals(RuleLevel.SponsorDefinedStudy.getName())) {
                     if (command.getSponsorName().trim().equals("")) {
-                        errors.reject("Missing Sponsor", "Missing Sponsor");
+                        errors.reject("RUL_011", "Missing Sponsor");
                     }
                     if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.reject("Missing Study", "Missing Study");
+                        errors.reject("RUL_012", "Missing Study");
                     }
                 } else if (level.equals(RuleLevel.Institution.getName())) {
                     System.out.println("inst:" + command.getInstitutionName() + ":");
                     if (command.getInstitutionName().trim().equals("")) {
-                        errors.reject("Missing Instiution", "Missing Instiution");
+                        errors.reject("RUL_013", "Missing Instiution");
                     }
                 } else if (level.equals(RuleLevel.InstitutionDefinedStudy.getName())) {
                     if (command.getInstitutionName().trim().equals("")) {
-                        errors.reject("Missing Instiution", "Missing Instiution");
+                        errors.reject("RUL_013", "Missing Instiution");
                     }
                     if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.reject("Missing Study", "Missing Study");
+                        errors.reject("RUL_012", "Missing Study");
                     }
                 }
             }

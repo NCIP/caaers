@@ -12,7 +12,9 @@
 
  <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}" onkeydown="suppressEnter(event);"/>
  <tags:indicator id="${propertyName}-indicator"/>
- <c:if test="${enableClear and not disabled}"><input type="button" id="${propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" /></c:if>
+ <c:if test="${enableClear and not disabled}">
+        <tags:button cssClass="foo" id="${propertyName}-clear" color="blue" value="Clear" icon="x" type="button" onclick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" size="small"/>
+ </c:if>
  <div id="${propertyName}-choices" class="autocomplete" style="display: none"></div>
  <input type="hidden" name="${propertyName}" id="${propertyName}" value="${initialValue}"/>
 

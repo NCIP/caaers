@@ -46,6 +46,8 @@
         .attribution td.definite  { background-color: #6E81A6 }
     </style>
     <script type="text/javascript">
+    	ValidationManager.validate = false; //do not perform validation 
+    	
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     
         function updateCodeClass(evt) {

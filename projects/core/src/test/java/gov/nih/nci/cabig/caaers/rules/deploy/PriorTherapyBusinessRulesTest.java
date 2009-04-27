@@ -67,7 +67,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(1).getReplacementVariables()[0]);
+        assertEquals("Correct replacement variable value", 1, errors.getErrorAt(1).getReplacementVariables()[0]);
     }
 
     /**
@@ -86,8 +86,11 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Correct replacement variable value", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
 
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.saeReportPriorTherapies[" + i + "].other");
     }
 
     /**
@@ -220,6 +223,11 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_BR3_ERR");
         assertSameErrorCount(errors, 2);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.saeReportPriorTherapies[" + i + "].endDate", "aeReport.saeReportPriorTherapies[" + i + "].startDate");
+        
     }
 
     /**
@@ -312,8 +320,11 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 1);
         assertCorrectErrorCode(errors, "PTY_BR2_ERR");
-        assertEquals("Incorrect replacement variable", 2, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
+        assertEquals("Incorrect replacement variable", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object j = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.saeReportPriorTherapies[" + j + "].endDate", "aeReport.saeReportPriorTherapies[" + j + "].startDate");
 
     }
 

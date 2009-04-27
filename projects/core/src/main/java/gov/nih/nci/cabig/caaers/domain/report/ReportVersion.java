@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -46,6 +47,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     private Date submittedOn;
 
     private Date withdrawnOn;
+    
+    private Date amendedOn;
 
     private Submitter submitter;
 
@@ -78,14 +81,15 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     @Transient
     public String getStatusAsString(){
     	if(reportStatus == ReportStatus.PENDING){
-    		if(dueOn != null)	return "Due on " + DateUtils.formatDate(dueOn);
-    		return "Amendment due";
+    		if(dueOn != null)	return DurationUtils.formatDuration(dueOn.getTime() - new Date().getTime(), report.getReportDefinition().getTimeScaleUnitType().getFormat());
+    		return "Pending";
     	}
     		
     	if(reportStatus == ReportStatus.INPROCESS) return "In-progress";
     	if(reportStatus == ReportStatus.COMPLETED) return "Submitted on " + DateUtils.formatDate(submittedOn);
     	if(reportStatus == ReportStatus.WITHDRAWN) return "Withdrawn on " + DateUtils.formatDate(withdrawnOn);
     	if(reportStatus == ReportStatus.FAILED) return "Submission Failed";
+    	if(reportStatus == ReportStatus.AMENDED) return "Amended on " + DateUtils.formatDate(amendedOn);
     	return "";
     }
     
@@ -129,7 +133,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     public void setSubmittedOn(Date submittedOn) {
         this.submittedOn = submittedOn;
     }
-
+    
+    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getWithdrawnOn() {
         return withdrawnOn;
     }
@@ -137,14 +142,22 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     public void setWithdrawnOn(Date withdrawnOn) {
         this.withdrawnOn = withdrawnOn;
     }
-
+    
+    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDueOn() {
         return dueOn;
     }
-
     public void setDueOn(Date dueOn) {
         this.dueOn = dueOn;
     }
+    
+    @Temporal(value = TemporalType.TIMESTAMP)
+    public Date getAmendedOn() {
+		return amendedOn;
+	}
+    public void setAmendedOn(Date amendedOn) {
+		this.amendedOn = amendedOn;
+	}
 
     @Transient
     public void addSubmitter() {
@@ -231,5 +244,22 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     public void setContents(List<ReportContent> contents) {
 		this.contents = contents;
 	}
+    
+    public void copySubmissionDetails(ReportVersion rv){
+    	this.setAssignedIdentifer(rv.getAssignedIdentifer());
+    }
    
+    /**
+     * This method returns true, if the report version can be submitted.
+     * The following statuses cannot be submitted : REPLACED, WITDRAWN, COMPLETED, AMENDED. 
+     * @return
+     */
+    @Transient
+    public boolean isActive(){
+    	if(reportStatus == null) return true;
+    	return !(reportStatus.equals(ReportStatus.COMPLETED) || 
+    			reportStatus.equals(ReportStatus.AMENDED)    || 
+    			reportStatus.equals(ReportStatus.REPLACED)   || 
+    			reportStatus.equals(ReportStatus.WITHDRAWN));
+    }
 }

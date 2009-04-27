@@ -61,6 +61,14 @@
 					jbpmConfiguration
 				</factoryKey>
 			</action>
+			<action name="physicianReviewActionHandler" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+				<targetBean>
+					physicianReviewActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
 		</event>		
 		<transition to="Submit Report To Central Office" name="Approve Report"></transition>
 		<transition to="Provide Additional Information To Physician" name="Request Additional Information"></transition>
@@ -89,6 +97,7 @@
 			</action>
 		</event>		
 		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
+		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Physician">
@@ -137,9 +146,9 @@
 					jbpmConfiguration
 				</factoryKey>
 			</action>
-		</event>	
+		</event>
+		<transition to="End Expedited Domestic Flow" name="Approve Report"></transition>	
 		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
-		<transition to="End Expedited Domestic Flow" name="Approve Report"></transition>
 		
 	</node>
 

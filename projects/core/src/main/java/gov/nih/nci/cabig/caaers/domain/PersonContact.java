@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
@@ -54,7 +55,7 @@ public abstract class PersonContact extends Person {
 
     // //// BOUND PROPERTIES
 
-    @CollectionOfElements
+    @CollectionOfElements(fetch=FetchType.EAGER)
     @JoinTable(name = "contact_mechanisms", joinColumns = @JoinColumn(name = "person_id"))
     @MapKey(columns = @Column(name = "type"))
     @Column(name = "value")

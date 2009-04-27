@@ -75,7 +75,7 @@ public class AgentsTab extends StudyTab {
             
             if (studyAgent.getAgent() == null && studyAgent.getOtherAgent() == null) {
                 isAgentEmpty = true;
-                errors.rejectValue("study.studyAgents[" + i + "].otherAgent", "REQUIRED","Select either Agent or Other ");
+                errors.rejectValue("study.studyAgents[" + i + "].otherAgent", "STU_007","Select either Agent or Other ");
                 continue;
             }
 
@@ -85,7 +85,7 @@ public class AgentsTab extends StudyTab {
         }
 
         if (isAgentEmpty) {
-            errors.rejectValue("study.studyAgents", "REQUIRED", "One or more Agents are missing or not in list");
+            errors.rejectValue("study.studyAgents", "STU_008", "One or more Agents are missing or not in list");
         }
 
     }

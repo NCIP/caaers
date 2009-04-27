@@ -1,24 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.HashMap;
-import java.util.Locale;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.context.MessageSource;
-
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
-import gov.nih.nci.cabig.caaers.validation.ValidationError;
-import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 /**
  *
@@ -30,7 +20,7 @@ public class SubmitReportResultTab extends TabWithFields<ExpeditedAdverseEventIn
 	protected ReportDao reportDao;
 	
 	public SubmitReportResultTab() {
-        super("Submission Result", "Submit Report Result", "ae/submitReportResult");
+        super("Submission Result", "Submission Status", "ae/submitReportResult");
 
     }
 	

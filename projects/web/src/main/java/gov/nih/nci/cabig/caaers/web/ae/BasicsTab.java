@@ -59,7 +59,7 @@ public abstract class BasicsTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
 
-        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to protocol treatment", false, createAttributionOptions());
+        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false, createAttributionOptions());
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
         InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", false);
@@ -72,18 +72,19 @@ public abstract class BasicsTab extends AeTab {
                 attributionField,
                 timeOfEventField,
                 InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
-                InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
+                InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
                 exField);
     }
 
     @Override
     public ExpeditedReportSection[] section() {
-        return new ExpeditedReportSection[] { ExpeditedReportSection.BASICS_SECTION};
+        return new ExpeditedReportSection[] { ExpeditedReportSection.BASICS_SECTION, ExpeditedReportSection.ADVERSE_EVENT_SECTION};
     }
 
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-    	AbstractExpeditedAdverseEventInputCommand command = (AbstractExpeditedAdverseEventInputCommand) cmd;
+
+        AbstractExpeditedAdverseEventInputCommand command = (AbstractExpeditedAdverseEventInputCommand) cmd;
         super.validate(command, commandBean, fieldGroups, errors);
         
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
@@ -97,8 +98,10 @@ public abstract class BasicsTab extends AeTab {
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);
         
         if (command.getAeReport().getAdverseEvents().size() > 0 && command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
-            errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED", firstStartDateField.getDisplayName() + " required for primary AE");
+            errors.rejectValue(firstStartDateField.getPropertyName(), "SAE_025", firstStartDateField.getDisplayName() + " required for primary AE");
         }
+
+        WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }
     
     
@@ -205,12 +208,5 @@ public abstract class BasicsTab extends AeTab {
     	return super.hasEmptyMandatoryFields(command, request) || primaryAEStartDateNotFilled;
     }
 
-    @SuppressWarnings("unchecked")
-    protected void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
-        super.populateMandatoryFlag(fieldGroups, command, refData);
-        if (command.getAeReport() != null && command.getAeReport().getAdverseEvents() != null && command.getAeReport().getAdverseEvents().size() > 0)
-            if (command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
-                hm.put("aeReport.adverseEvents[0]", Boolean.TRUE);
-            }
-    }
+    
 }

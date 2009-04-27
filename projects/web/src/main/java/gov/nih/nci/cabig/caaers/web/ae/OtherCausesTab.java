@@ -5,6 +5,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.collections.CollectionUtils;
+
 /**
  * @author Rhett Sutphin
  */
@@ -23,5 +27,12 @@ public class OtherCausesTab extends AeTab {
     @Override
     public ExpeditedReportSection[] section() {
         return new ExpeditedReportSection[] {ExpeditedReportSection.OTHER_CAUSE_SECTION};
+    }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
+    	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
+    	hasEmptyFields |= CollectionUtils.isEmpty(command.getAeReport().getOtherCauses());
+    	return hasEmptyFields;
     }
 }

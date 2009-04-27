@@ -85,6 +85,8 @@ input.pending-search {
  */
 .longselect {
     border: 1px inset #ccc; 
+	background-color:#F4F4F5;
+	padding:2px;
 }
 .longselect label {
     display: block;

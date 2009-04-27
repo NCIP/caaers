@@ -29,14 +29,19 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		
 		dbStudy.setShortTitle(StringUtils.isNotEmpty(xmlStudy.getShortTitle()) ? xmlStudy.getShortTitle() : "NA");
 		dbStudy.setLongTitle(xmlStudy.getLongTitle());
-		dbStudy.setDescription(xmlStudy.getDescription());
-		dbStudy.setPrecis(xmlStudy.getPrecis());
+		if(xmlStudy.getDescription() != null &&  StringUtils.isNotEmpty(xmlStudy.getDescription())){
+			dbStudy.setDescription(xmlStudy.getDescription());
+		}
+		if(xmlStudy.getPrecis() != null &&  StringUtils.isNotEmpty(xmlStudy.getPrecis())){
+			dbStudy.setPrecis(xmlStudy.getPrecis());
+		}
 		dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
 		dbStudy.setStatus(xmlStudy.getStatus());
 		dbStudy.setMultiInstitutionIndicator(xmlStudy.getMultiInstitutionIndicator());
 		dbStudy.setAdeersReporting(xmlStudy.getAdeersReporting());
-		dbStudy.setDesign(xmlStudy.getDesign());
-
+		if(xmlStudy.getDesign() != null){
+			dbStudy.setDesign(xmlStudy.getDesign());
+		}
 		dbStudy.setDrugAdministrationTherapyType(xmlStudy.getDrugAdministrationTherapyType());
 		dbStudy.setRadiationTherapyType(xmlStudy.getRadiationTherapyType());
 		dbStudy.setDeviceTherapyType(xmlStudy.getDeviceTherapyType());

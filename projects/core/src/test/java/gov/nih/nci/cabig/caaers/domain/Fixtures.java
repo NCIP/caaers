@@ -446,6 +446,7 @@ public class Fixtures {
 		ae.setId(id);
 		ae.setGrade(grade);
 		Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
+		ae.setSignature(ae.getCurrentSignature());
 		return ae;
     }
     
@@ -543,9 +544,9 @@ public class Fixtures {
        description.setCauseOfDeath("cause of death");
        description.setDateRemovedFromProtocol(new Date());
        description.setDaysNotGiven(2);
-       description.setEventAbate(true);
+       description.setEventAbate(EventStatus.YES);
        description.setEventDescription("event desc");
-       description.setEventReappear(true);
+       description.setEventReappear(EventStatus.YES);
        description.setGridId("grid id");
        description.setId(2);
        description.setPresentStatus(PostAdverseEventStatus.DEAD);

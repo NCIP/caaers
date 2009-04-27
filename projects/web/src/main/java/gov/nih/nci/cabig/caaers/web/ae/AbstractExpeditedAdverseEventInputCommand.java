@@ -85,12 +85,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected RenderDecisionManager renderDecisionManager;
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
-//    private AnatomicSite metastaticEditExpeditedAdverseEventCommandDiseaseSite;
-//    private PreExistingCondition preExistingCondition;
-//    private PriorTherapy priorTherapy; 
     private List<String> chemoAgents;
-//    private ChemoAgent chemoAgent;
-//    private String concomitantMedication;
 
     private Term studyTerminologyTerm;
     
@@ -98,6 +93,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Integer index; //corresponds to the index of the item (eg: conmed[3])
     private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
 
+    protected HashMap<String, Boolean> rulesErrors;
+    
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
     }
@@ -124,8 +121,21 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public abstract StudyParticipantAssignment getAssignment();
     public abstract Participant getParticipant();
     public abstract Study getStudy();
-    public abstract void save();
-    public abstract void flush();
+    
+    public void flush() {
+    	reportDao.flush();
+    }
+    
+    public void save(){
+    	
+    	//clear reported flag on modified adverse events.
+    	aeReport.clearReportedFlagOnModifiedAdverseEvents();
+    	
+    	//modify the signatures of the adverse events in this report.
+    	aeReport.updateSignatureOfAdverseEvents();
+    	
+    	reportDao.save(aeReport);
+    }
     
     
     public void synchronizeAndSaveAssignment(){
@@ -182,13 +192,22 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void refreshMandatoryProperties() {
         if (aeReport.getReports() == null) return;
         mandatoryProperties = new MandatoryProperties(expeditedReportTree);
-        for (Report report : aeReport.getReports()) {
-        	if(!report.isActive()) continue;
-        	if (report.getReportDefinition().getMandatoryFields() == null) continue;
-        	for (ReportMandatoryFieldDefinition field : report.getReportDefinition()
-                           .getMandatoryFields()) {
-        		mandatoryProperties.add(field);
+        List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
+        
+        if(aeReport.getId() == null){
+        	for(ReportDefinition reportDef : selectedReportDefinitions){
+        		List<ReportMandatoryFieldDefinition> mFieldList = reportDef.getMandatoryFields();
+        		if(mFieldList != null) mandatoryFields.addAll(mFieldList);
         	}
+        }else{
+        	for(Report report : aeReport.getActiveReports()){
+        		List<ReportMandatoryFieldDefinition> mFieldList = report.getReportDefinition().getMandatoryFields();
+        		if(mFieldList != null) mandatoryFields.addAll(mFieldList);
+        	}
+        }
+
+        for (ReportMandatoryFieldDefinition field : mandatoryFields) {
+        		mandatoryProperties.add(field);
         }
     }
 
@@ -388,7 +407,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     		}
     	}
     	
-    	for(Report r : getAeReport().getReports()){
+    	for(Report r : getAeReport().getActiveReports()){
     		ReportDefinition rd = r.getReportDefinition();
     		map.put(rd.getId(), rd);
     	}
@@ -499,7 +518,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	AdverseEvent newPrimaryAE = null;
     	List<AdverseEvent> aeList = aeReport.getAdverseEvents();
     	int size = aeList.size();
-    	for(int i = 1; i < size; i++){
+    	for(int i = 1; i < size; i++){                                                        
     		if(aeList.get(i).getId().equals(primaryAdverseEventId)){
     			newPrimaryAE = aeList.get(i);
     			break;
@@ -511,5 +530,43 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     		aeList.add(0, newPrimaryAE);
     	}
     }
-       
+
+    public boolean isErrorApplicable(String... fields) {
+        if (fields == null) return true;
+        for (byte i=0; i<fields.length; i++)
+            if (!renderDecisionManager.canRenderField(fields[i])) return false;
+        return true;
+    }
+    
+    /**
+     * This method checks if a previous report for this study participant indicated Was an investigational agent administered on this protocol?="Yes" 
+     * @return
+     */
+	public boolean isInvestigationalAgentAdministeredForPreviousReports(){
+		List<ExpeditedAdverseEventReport> allAeReportsForAssignment = getAssignment().getAeReports();
+		for (ExpeditedAdverseEventReport aeReport:allAeReportsForAssignment) {
+				Boolean flag  = aeReport.getTreatmentInformation().getInvestigationalAgentAdministered();
+				if (flag != null && flag) {
+					return true;
+				}
+		}
+		return false;
+	}
+    
+    /**
+     * This method will reassociate a report definition, by merging it to the session.
+     * @param reportDefinition
+     * @return
+     */
+    public ReportDefinition reassociateReportDefinitionToSession(ReportDefinition reportDefinition){
+    	return reportDefinitionDao.merge(reportDefinition);
+    }
+
+    public HashMap<String, Boolean> getRulesErrors() {
+        return rulesErrors;
+    }
+
+    public void setRulesErrors(HashMap<String, Boolean> rulesErrors) {
+        this.rulesErrors = rulesErrors;
+    }
 }

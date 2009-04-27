@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.math.BigDecimal;
@@ -126,6 +127,9 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SEC_BR1_ERR");
         assertSameErrorCount(errors, 1);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
 
     }
 
@@ -250,6 +254,10 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SEC_BR2_ERR");
         assertSameErrorCount(errors, 1);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
+
     }
 
     /**
@@ -457,8 +465,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         aeReport.setTreatmentInformation(null);
 
         Study s = aeReport.getStudy();
-        StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.RADIATION,
-                StudyTherapyType.SURGERY, StudyTherapyType.DRUG_ADMINISTRATION };
+        StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.RADIATION, StudyTherapyType.SURGERY, StudyTherapyType.DRUG_ADMINISTRATION };
         for (int i = 0; i < therapies.length; i++) {
             StudyTherapy st = new StudyTherapy();
             st.setId(i + 1);
@@ -469,6 +476,9 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "SEC_BR4_ERR");
         assertSameErrorCount(errors, 1, "When no course/surger/radiation is present");
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
     }
 
     /**
@@ -743,10 +753,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         }
 
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should not be any error, when NON ind agents dont have last administred date",
-                0, errors.getErrorCount());
+        assertEquals("There should not be any error, when NON ind agents dont have last administred date", 0, errors.getErrorCount());
     }
 
     /**
@@ -798,14 +805,15 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
 
         ValidationErrors errors = fireRules(aeReport);
 
-        assertEquals(
-                "Errors should be there when LastAdministeredDate is not available for IND agents",
-                2, errors.getErrorCount());
+        assertEquals("Errors should be there when LastAdministeredDate is not available for IND agents", 2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR3_ERR", errors.getErrorAt(0).getCode());
-        assertEquals("Error replacement variable should be correct", 1, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
-        assertEquals("Error replacement variable should be correct", 2, errors.getErrorAt(1)
-                .getReplacementVariables()[0]);
+        assertEquals("Error replacement variable should be correct", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
+        assertEquals("Error replacement variable should be correct", 1, errors.getErrorAt(1).getReplacementVariables()[0]);
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object j = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[" + j + "].lastAdministeredDate");
+
     }
 
     /**
@@ -832,12 +840,9 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
 
         ValidationErrors errors = fireRules(aeReport);
 
-        assertEquals(
-                "Errors should be there when LastAdministeredDate is not available for IND agents",
-                1, errors.getErrorCount());
+        assertEquals("Errors should be there when LastAdministeredDate is not available for IND agents",1, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR3_ERR", errors.getErrorAt(0).getCode());
-        assertEquals("Error replacement variable should be correct", 2, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
+        assertEquals("Error replacement variable should be correct", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
 
     }
 
@@ -899,6 +904,42 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PAG_BR2B_ERR");
         assertSameErrorCount(errors, 2, "When 2 of the course agents has no UOM for dose");
+
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        Object j = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[" + j + "].dose.units", "aeReport.treatmentInformation.courseAgents[" + j + "].dose.amount");
+        
+    }
+    
+    /**
+     * RuleName : PAG_BR4_CHK Rule : 'Was an investigational agent administered on this protocol?' must be 'Yes' if one of the agents is investigational agent
+     * Error Code : PAG_BR4_ERR Error Message : investigationalAgentAdministered must be true
+     */
+    
+    public void testInvestigationalAgentAdministeredNo_InvestigationalStudyAgents()
+            throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        TreatmentInformation ti = aeReport.getTreatmentInformation();
+        ti.setInvestigationalAgentAdministered(false);
+        int i = 0;
+        for (CourseAgent ca : ti.getCourseAgents()) {
+            ca.setLastAdministeredDate(new Date());
+            i++;
+            StudyAgent sa1 = new StudyAgent();
+            sa1.setId(5 + i);
+            StudyAgentINDAssociation saIND1 = new StudyAgentINDAssociation();
+            InvestigationalNewDrug ind1 = new InvestigationalNewDrug();
+            saIND1.setInvestigationalNewDrug(ind1);
+            sa1.addStudyAgentINDAssociation(saIND1);
+
+            ca.setStudyAgent(sa1);
+        }
+
+        ValidationErrors errors = fireRules(aeReport);
+
+        assertEquals("Error code should be same", "PAG_BR4_ERR", errors.getErrorAt(0).getCode());
+
+
     }
     
 }

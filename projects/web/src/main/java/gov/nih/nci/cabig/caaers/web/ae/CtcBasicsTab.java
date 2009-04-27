@@ -75,7 +75,7 @@ public class CtcBasicsTab extends BasicsTab {
         CtcTerm ctcTerm = ae.getAdverseEventCtcTerm().getCtcTerm();
         if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null) {
             InputField field0 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
-            errors.rejectValue(field0.getPropertyName(), "REQUIRED", "Missing " + field0.getDisplayName());
+            errors.rejectValue(field0.getPropertyName(), "SAE_005", new Object[] {field0.getDisplayName()},"Missing " + field0.getDisplayName());
         }
         super.validateAdverseEvent(ae, index, groups, errors);
 

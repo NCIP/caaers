@@ -627,7 +627,7 @@
 														<fo:inline font-size="6.5pt" >
 														
 													<xsl:choose>
-														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'YES'">
 															[x]
 														</xsl:when>
 														<xsl:otherwise>
@@ -637,7 +637,7 @@
 													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
-														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NO'">
 															[x]
 														</xsl:when>
 														<xsl:otherwise>
@@ -646,7 +646,15 @@
 													</xsl:choose>
 													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														[ ]Doesn't 														
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NA'">
+															[x]
+														</xsl:when>
+														<xsl:otherwise>
+															[ ]
+														</xsl:otherwise>													
+													</xsl:choose>														
+														Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
@@ -701,7 +709,7 @@
 													<fo:block font-size="6.5pt">
 														<fo:inline font-size="6.5pt" >
 													<xsl:choose>
-														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'YES'">
 															[x]
 														</xsl:when>
 														<xsl:otherwise>
@@ -711,7 +719,7 @@
 													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
-														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'false'">
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NO'">
 															[x]
 														</xsl:when>
 														<xsl:otherwise>
@@ -720,7 +728,15 @@
 													</xsl:choose>
 													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														[ ]Doesn't 														
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NA'">
+															[x]
+														</xsl:when>
+														<xsl:otherwise>
+															[ ]
+														</xsl:otherwise>													
+													</xsl:choose>	
+														Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>

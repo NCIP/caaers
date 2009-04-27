@@ -122,7 +122,7 @@ public class CreateINDController extends SimpleFormController {
         }
         // check if the strINDNumber is a numeric value
         if (!StringUtils.isNumeric((String) commandBean.getPropertyValue("strINDNumber"))) {
-            errors.rejectValue("strINDNumber", "REQUIRED", "IND# must be numeric");
+            errors.rejectValue("strINDNumber", "ADM_IND_001", "IND# must be numeric");
         }
     }
 

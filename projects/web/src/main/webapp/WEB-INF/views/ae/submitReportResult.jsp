@@ -44,8 +44,8 @@
         	}
         	
         	Event.observe(window, "load", function() {
-        		if(${command.lastVersion.reportStatus == 'INPROCESS'})
-	        		checkReportSubmissionStatus();
+        		//if(${command.lastVersion.reportStatus == 'INPROCESS'})
+	        	//	checkReportSubmissionStatus();
         	});
         	
         	
@@ -106,18 +106,12 @@
             			 				<span class="dueOn" >
            				 					<i>Submission to AdEERS in process</i>
            				 				</span>
-           				 				<img id="reportStatus-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style=""/>           			
            				 			</c:if>
 			            		</td>
 			            		<td>
 									<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 										<c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}" >
 											<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
-										</c:if>
-										<c:if test="${report.reportDefinition.amendable and ( (command.lastVersion.reportStatus == 'WITHDRAWN') or (command.lastVersion.reportStatus == 'COMPLETED') )}" >
-											<center>
-												<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}&action=amendReport"/>">Amend</a>
-											</center>
 										</c:if>
 									</c:if>					
             					</td>

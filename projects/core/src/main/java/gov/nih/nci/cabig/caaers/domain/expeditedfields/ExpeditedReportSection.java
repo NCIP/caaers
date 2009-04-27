@@ -19,7 +19,7 @@ public enum ExpeditedReportSection {
     OTHER_CAUSE_SECTION("Other Causes"), 
     ATTRIBUTION_SECTION("Attribution", true), 
     ADDITIONAL_INFO_SECTION("Additional Info"), 
-    SUBMIT_REPORT_SECTION("Submit", true), 
+    SUBMIT_REPORT_SECTION("Review & Submit", true), 
     OUTCOME_SECTION("Outcome");
 
     private String displayName;

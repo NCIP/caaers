@@ -11,7 +11,7 @@
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
 			<tr>
 				<td align="left" width="60%">
-					<a href="<c:url value="${aeReportPageURL}"/>">${report.name}</a>
+					<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true&report=${report.id}"/>">${report.name}</a>
 				</td>
 				<td align="center" width="40%" id="report-${reportingPeriod.id}-status">
 					${report.status.displayName }
@@ -28,7 +28,7 @@
 	</td>
 	<td width="25%" align="center">
 		<select onChange="advanceWorkflow(this,${aeReport.workflowId }, ${aeReport.id }, 'aeReport')" class="wf${aeReport.workflowId }" style="width: 100px">
-			<option value="Please select">Please Select</option>
+			<option value="Please Select">Please Select</option>
 			<c:forEach items="${aeReport.possibleActions}" var="rAction">
 				<option value="${rAction}">${rAction}</option>
 			</c:forEach>

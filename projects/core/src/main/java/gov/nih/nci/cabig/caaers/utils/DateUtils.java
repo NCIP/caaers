@@ -36,6 +36,19 @@ public class DateUtils {
         y = c2.get(Calendar.DATE);
         return x - y;
     }
+    /**
+     *Compares two date objects along with time,
+     * @param d1
+     * @param d2
+     * @return 0 if same, -1 if d1 is less and 1 if d1 is higher. 
+     */
+    public static int compateDateAndTime(Date d1, Date d2){
+    	long t1 = d1.getTime();
+    	long t2 = d2.getTime();
+    	if(t1 > t2) return 1;
+    	if(t1 < t2) return -1;
+    	return 0;
+    }
     
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     public static String formatDate(Date d){

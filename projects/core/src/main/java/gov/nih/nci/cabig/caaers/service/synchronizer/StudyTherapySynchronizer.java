@@ -13,18 +13,7 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 	public void migrate(Study dbStudy, Study xmlStudy,
 			DomainObjectImportOutcome<Study> outcome) {
 		
-		if(xmlStudy.getStudyTherapies() != null){
-			if(xmlStudy.getStudyTherapies().size() == 0){
-				if(dbStudy.getStudyTherapies() != null){
-					dbStudy.getStudyTherapies().clear();
-				}
-				return;
-			}
-		}
-
 		List<StudyTherapy> newStudyTherapyList = new ArrayList<StudyTherapy>();
-		List<StudyTherapy> deleteStudyTherapyList = new ArrayList<StudyTherapy>();
-		StudyTherapy remStudyTherapy = null;
 		
 		//Identify newly added StudyTherapy.
 		for(StudyTherapy xmlStudyTherapy : xmlStudy.getStudyTherapies()){
@@ -41,29 +30,9 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 			}
 		}
 		
-		//Identify StudyTherapy to be removed.
-		for(StudyTherapy dbStudyTherapy : dbStudy.getStudyTherapies()){
-			for(StudyTherapy xmlStudyTherapy : xmlStudy.getStudyTherapies()){
-				remStudyTherapy = new StudyTherapy();
-				remStudyTherapy = (StudyTherapy)dbStudyTherapy;
-				if(remStudyTherapy.getStudyTherapyType().equals(xmlStudyTherapy.getStudyTherapyType())){
-					remStudyTherapy = null;
-					break;
-				}
-			}
-			if(remStudyTherapy != null){
-				deleteStudyTherapyList.add(remStudyTherapy);
-			}
-		}
-		
 		//Adding the new StudyTherapies to the existing Study.
 		for(StudyTherapy newStudyTherapy : newStudyTherapyList){
 			dbStudy.getStudyTherapies().add(newStudyTherapy);
-		}
-		
-		//Removing the StudyTherapies from the existing Study
-		for(StudyTherapy delStudyTherapy : deleteStudyTherapyList){
- 			dbStudy.getStudyTherapies().remove(delStudyTherapy);
 		}
 		
 		//Need to set the Study for the update to function

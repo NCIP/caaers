@@ -36,10 +36,11 @@ public class ReportFactory {
     public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
-
+        
         Date now = nowFactory.getNow();
-        Calendar cal = GregorianCalendar.getInstance();
-
+        Date baseDate = aeReport.getEarliestAdverseEventGradedDate();
+        if(baseDate == null) baseDate = now;
+        
         Report report = reportDefinition.createReport();
         report.setCreatedOn(now);
 
@@ -64,10 +65,9 @@ public class ReportFactory {
         aeReport.addReport(report);
 
         //set the due date
-        cal.setTime(now);
-        cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), reportDefinition.getDuration());
-        report.setDueOn(cal.getTime());
-        reportVersion.setDueOn(cal.getTime());
+        Date dueDate = reportDefinition.getExpectedDueDate(baseDate);
+        report.setDueOn(dueDate);
+        reportVersion.setDueOn(dueDate);
 
         //populate the delivery definitions
         if (reportDefinition.getDeliveryDefinitions() != null) {

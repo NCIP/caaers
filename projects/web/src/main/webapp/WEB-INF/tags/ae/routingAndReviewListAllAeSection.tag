@@ -8,6 +8,7 @@
 <%@attribute name="isDCPStudy" type="java.lang.Boolean" required="true" description="True, if it is a DCP study" %>
 
 <c:if test="${fn:length(reportingPeriod.evaluatedAdverseEvents) gt 0}">
+<span style="font-size:13px; font-weight:bold;">All Adverse Events for this course/cycle.</span>
 <div class="eXtremeTable">
 	<table width="100%" border="0" cellspacing="0" class="allAEs rpTableRegion">
 		<thead>

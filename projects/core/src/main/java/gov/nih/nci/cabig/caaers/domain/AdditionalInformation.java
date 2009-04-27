@@ -18,29 +18,29 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_additional_information_id")})
 public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
-    private Boolean autopsyReport = false;
+    private Boolean autopsyReport;
 
-    private Boolean consults = false;
+    private Boolean consults;
 
-    private Boolean dischargeSummary = false;
+    private Boolean dischargeSummary;
 
-    private Boolean flowCharts = false;
+    private Boolean flowCharts;
 
-    private Boolean labReports = false;
+    private Boolean labReports;
 
-    private Boolean obaForm = false;
+    private Boolean obaForm;
 
-    private Boolean other = false;
+    private Boolean other;
 
-    private Boolean pathologyReport = false;
+    private Boolean pathologyReport;
 
-    private Boolean progressNotes = false;
+    private Boolean progressNotes;
 
-    private Boolean radiologyReports = false;
+    private Boolean radiologyReports;
 
-    private Boolean referralLetters = false;
+    private Boolean referralLetters;
 
-    private Boolean irbReport = false;
+    private Boolean irbReport;
 
     private String otherInformation;
 

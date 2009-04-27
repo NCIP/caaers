@@ -170,7 +170,7 @@
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Term:</b> </th>
     				<th ><b><tags:requiredIndicator/>Grade:</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution:</b> </th>
-    				<th scope="col" align="left"><b>Hospitalization or prolongation of existing hospitalization?</b> </th>
+    				<th scope="col" align="left"><b>Did AE cause hospitalization?</b> </th>
     				<th scope="col" align="left"><b>Expected:</b> </th>
     			</tr>
     			<tr id="koi" />

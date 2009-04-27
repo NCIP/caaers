@@ -118,7 +118,7 @@ public class RuleAjaxFacade {
         // cut down objects for serialization
         List<Study> reducedStudies = new ArrayList<Study>(studies.size());
         for (Study study : studies) {
-            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle")));
+            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle", "primaryIdentifierValue")));
         }
 
         return reducedStudies;
@@ -159,7 +159,7 @@ public class RuleAjaxFacade {
         // cut down objects for serialization
         List<Study> reducedStudies = new ArrayList<Study>(newStudyList.size());
         for (Study study : newStudyList) {
-            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle")));
+            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle", "primaryIdentifierValue")));
         }
         return reducedStudies;
     }

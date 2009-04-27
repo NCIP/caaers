@@ -30,14 +30,18 @@ public class RenderDecisionManager {
 	}
 	
 	public boolean canRenderField(String fieldId, HttpServletRequest request, HttpServletResponse response){
-		Boolean decision = decisionCache.get(findActualName(fieldId));
-		if(decision == null) return true; //if decision is not set, assumed always renderable. 
-		return decision;
+        return canRenderField(fieldId);
 	}
 	
+	public boolean canRenderField(String fieldId){
+        Boolean decision = decisionCache.get(findActualName(fieldId));
+		if(decision == null) return true; //if decision is not set, assumed always renderable.
+        return decision;
+    }
+
 	/**
 	 * Will mark the field, identified by the name as conceled (not renderable).
-	 * @param fieldName
+	 * @param fieldNames
 	 */
 	public void conceal(String... fieldNames){
 		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
@@ -45,7 +49,7 @@ public class RenderDecisionManager {
 	
 	/**
 	 * Will mark the field, identified by the name as renderable.
-	 * @param fieldName
+	 * @param fieldNames
 	 */
 	public void reveal(String... fieldNames){
 		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.TRUE);

@@ -1,14 +1,14 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <page:applyDecorator name="standardNoHeader">
+
 <html>
  <head>
 	<tags:stylesheetLink name="standard-form" />
 	<style type="text/css">
-		body {background: none; text-align:left;}
+		body {background: none; text-align:left; font-size:10pt;}
 		div.row div.label {width: 16em;}
 	 	div.row div.value, div.row div.extra { margin-left: 17em; }
-        div.hr {font-size:1px; height: 1px;}
 	</style>
      <script>
          Event.observe(window, "load", function() {
@@ -75,9 +75,8 @@
             </table>
         </tags:table>
 </center>
-        <br>
     </jsp:attribute>
-    <jsp:attribute name="navButtons"><div align="right"><input type="image" src="<c:url value="/images/blue/save_btn.png" />" id="flow-update" class="tab${tabNumber}" value="Save" alt="Save"/></div></jsp:attribute>
+    <jsp:attribute name="navButtons"><div align="right"><tags:button color="green" type="submit" id="flow-update" cssClass="tab${tabNumber}" value="Save" icon="save"/></div></jsp:attribute>
 
 </tags:standardForm>
 

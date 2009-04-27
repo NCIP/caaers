@@ -58,7 +58,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private static final String CREATE_NEW_TASK = "createNew";
 	private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
 	private static final String AMEND_REPORT = "amendReport";
-	 private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
+	private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
+	
+	
+	private static final String SELECTED_STUDY_ID = "pre_selected_study_id";
+	private static final String SELECTED_PARTICIPANT_ID = "pre_selected_participant_id";
+	private static final String SELECTED_COURSE_ID = "pre_selected_reporting_period_id";
+	
 	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
@@ -177,6 +183,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		cmd.set_action(request.getParameter("_action"));
 		
         boolean fromListPage =  request.getParameterMap().keySet().contains("displayReportingPeriod");
+		
         if (fromListPage) {
           
             AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
@@ -192,6 +199,25 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
             } else {
                 cmd.setAssignment(null);
             }
+        }else{
+        	//the binding should be manual, when it is the first page, as the parameter in the url will have old study and participants.
+        	int curPage = getCurrentPage(request);
+        	if(curPage == 0){
+        		String strStudyId = request.getParameter("study");
+        		if(StringUtils.isNotEmpty(strStudyId) && StringUtils.isNumeric(strStudyId)){
+        			cmd.setStudy(studyDao.getById(Integer.parseInt(strStudyId)));
+        		}
+        		
+        		String strSubjectId = request.getParameter("participant");
+        		if(StringUtils.isNotEmpty(strSubjectId) && StringUtils.isNumeric(strSubjectId)){
+        			cmd.setParticipant(participantDao.getById(Integer.parseInt(strSubjectId)));
+        		}
+        		
+        		String strCourseId = request.getParameter("adverseEventReportingPeriod");
+        		if(StringUtils.isNotEmpty(strCourseId) && StringUtils.isNumeric(strCourseId)){
+        			cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(Integer.parseInt(strCourseId)));
+        		}
+        	}
         }
     }
 	
@@ -209,8 +235,10 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		CaptureAdverseEventInputCommand command  = (CaptureAdverseEventInputCommand) o;
 		Map referenceData =  super.referenceData(request, command, errors, page);
 		Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Participant", (command.getParticipant() == null) ? "" : command.getParticipant().getFullName() );
-        summary.put("Study", (command.getStudy() == null) ? "" : command.getStudy().getShortTitle());
+		
+		summary.put("Study", (command.getStudy() == null) ? "" : "(" +  command.getStudy().getPrimaryIdentifierValue() + ") " + command.getStudy().getShortTitle());
+        summary.put("Participant", (command.getParticipant() == null) ? "" : "(" +  command.getParticipant().getPrimaryIdentifierValue() + ") " + command.getParticipant().getFullName() );
+      
         if(command.getAdverseEventReportingPeriod() != null){
         	summary.put("Course", command.getAdverseEventReportingPeriod().getName());	
         }
@@ -220,13 +248,16 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	referenceData.put("routineAeSummary", summary);
         }
         
+        
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-        //hide for non DCP-AdEERS reporting enabled study
-        if(!command.isDCPNonAdeersStudy()){
-        	renderDecisionManager.conceal("outcomes", "adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
+        
+        //hide DCP for only AdEERS reporting enabled studies
+        if(command.isNonAdeersStudy()){
+        	renderDecisionManager.reveal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
         }else{
-        	renderDecisionManager.reveal("outcomes", "adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
+        	renderDecisionManager.conceal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
         }
+        
 		return referenceData;
 	}
 	
@@ -293,6 +324,25 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
 		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+		
+		//restore the values from session if they are available. 
+		HttpSession session = request.getSession();
+
+		Integer studyId = (Integer) session.getAttribute(SELECTED_STUDY_ID);
+		if(studyId != null){
+			cmd.setStudy(studyDao.getById(studyId));
+		}
+		
+		Integer subjectId = (Integer) session.getAttribute(SELECTED_PARTICIPANT_ID);
+		if(subjectId != null){
+			cmd.setParticipant(participantDao.getById(subjectId));
+		}
+		
+		Integer courseId = (Integer) session.getAttribute(SELECTED_COURSE_ID);
+		if(courseId != null){
+			cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
+		}
+		
 		return cmd;
 	}
 

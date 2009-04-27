@@ -68,7 +68,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	retrieveReviewCommentsAndActions : function(){
 		this.ajaxFacade.retrieveReviewCommentsAndActions(function(ajaxOutput){
 			this.updateCommentElementContent(ajaxOutput.htmlContent);
-			if(this.workflowType == 'reportingPeriod'){
+			if(this.workflowType == 'reportingPeriod' || this.workflowType == 'reviewAeReport'){
 				var sbox = $('sliderWFAction');
 				var sboxIndicator = $('sliderWFAction-indicator');
 				this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
@@ -82,9 +82,8 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		sbox.disable();
 		sboxIndicator.style.display='';
 		this.ajaxFacade.retrieveNextTransitions(function(ajaxOutput){
-			updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
-		});
-		
+			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+		}.bind(this));
 	},
 	updateSelectBoxContent : function(sb, sbIndicator, objectContent){
 		sb.options.length = 0;
@@ -138,14 +137,18 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	},
 	advanceWorkflow: function(){
 		var sbox = $('sliderWFAction');
-		if(sbox.value == '') return;
-		var sboxIndicator = $('sliderWFAction-indicator');		
-		sbox.disable();
-		sboxIndicator.style.display='';
-		this.ajaxFacade.advanceWorkflow(sbox.value, function(ajaxOutput){
-			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
-			this.retrieveReviewComments();
-		}.bind(this));
+		if(sbox.value == '' || sbox.value == 'Please Select') return;
+		if(confirm('Are you sure you want to take the action - ' + sbox.value)){
+			var sboxIndicator = $('sliderWFAction-indicator');		
+			sbox.disable();
+			sboxIndicator.style.display='';
+			this.ajaxFacade.advanceWorkflow(sbox.value, function(ajaxOutput){
+				this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+				this.retrieveReviewComments();
+			}.bind(this));
+		}else{
+			return false;
+		}
 	},
 	collapseAllComments : function(){
 		var list = $('comments-id').select('div.division');

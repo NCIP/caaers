@@ -29,14 +29,12 @@
 				
 				int i = 0;
 				for(AdverseEvent ae : aeReport.getAdverseEvents()){
-					i++;
 					if(!(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm)) continue;
 					if(ae.getGrade().equals(Grade.DEATH)) continue;
 					if(!ae.isAttributedWith(new Attribution[]{Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE})){
-						errors.addValidationError("AER_BR7_ERR", 
-								"At least one attribution with one of the following values should present for every AE entered on the report i.e. 'Possible', 'Probable' and 'Definite'. AEs reported on the 'DEATH' category are considered as an exception and are not required to meet this specification",
-								i);
+						errors.addValidationError("AER_BR7_ERR", "At least one attribution with one of the following values should present for every AE entered on the report i.e. 'Possible', 'Probable' and 'Definite'. AEs reported on the 'DEATH' category are considered as an exception and are not required to meet this specification",i);
 					}
+                    i++;
 				}
 				return errors.getErrorCount() > 0 ? FAIL : SUCCESS;
 			}
@@ -60,9 +58,7 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-				
-				if(!aeReport.isAttributionRequired()) return SUCCESS;
-				
+		
 				int i = 0;
 				for(AdverseEvent ae : aeReport.getAdverseEvents()){
 					i++;

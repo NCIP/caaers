@@ -15,8 +15,10 @@
     		</div>
     	</jsp:attribute>
     </tags:slider>
-	
- <script><!--
+
+
+
+ <script>
  	var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
 	var catSel = null;
 	var RPCreatorClass = Class.create();
@@ -24,6 +26,7 @@
 
     var oldSignatures = new Array();
     var routingHelper = new RoutingAndReviewHelper(captureAE, 'reportingPeriod');
+    var LOCATION = document.location;
 
     Object.extend(RPCreatorClass.prototype, {
         initialize : function(rpDetailsDiv) {
@@ -34,9 +37,18 @@
         addAdverseEvents:function(selectedTerms) {
             //find the terms that are not already added in the page
             var listOfTermIDs = new Array();
-
+            var first = 0;
+            
             $H(selectedTerms).keys().each(function(termID) {
-                listOfTermIDs.push(termID);
+                var tID = lookupByTermId(termID);
+                if (tID == -1) listOfTermIDs.push(termID); else {
+                    openDivisionById(tID);
+                    if (first == 0) {
+                        // jump to the box
+                        document.location = document.location.toString().split("#")[0] + "#adverseEventTerm-" + termID;
+                        first = termID;
+                    }
+                }
             }.bind(this));
 
 
@@ -334,13 +346,44 @@
 		//AE.checkForModification = false; //tell app,not to complain about page modification event. 
 		rpCreator.deleteAdverseEvent(index);
 	}
-	// ----------------------------------------------------------------------------------------------------------------
- --></script>
- 
-</head>
- <body>
 
-	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm" hideBox="true">
+    // ----------------------------------------------------------------------------------------------------------------
+
+     function lookupByTermId(_id) {
+        var list = $$('div.aeID-' + _id);
+        for (i=0; i<list.length; i++) {
+            return (list[i].id);
+        }
+         return -1;
+     }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+     function closeDivisionById(_id) {
+             panelDiv = $("contentOf-" + _id);
+             imageId= 'image-' + _id;
+             imageSource = $(imageId).src;
+             CloseDown(panelDiv, arguments[1] || {});
+             document.getElementById(imageId).src = imageSource.replace('down','right');
+     }
+
+     // ----------------------------------------------------------------------------------------------------------------
+
+     function openDivisionById(_id) {
+             panelDiv = $("contentOf-" + _id);
+             imageId= 'image-' + _id;
+             imageSource = $(imageId).src;
+             OpenUp(panelDiv, arguments[1] || {});
+             document.getElementById(imageId).src = imageSource.replace('right','down');
+     }
+
+     // ----------------------------------------------------------------------------------------------------------------
+ 
+ </script>
+
+</head>
+<body>
+     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm" hideBox="true">
       	
       	<jsp:attribute name="singleFields">
       		<input type="hidden" name="_action" id="_action" value="">
@@ -367,7 +410,7 @@
             			<span id="observedBlankRow"></span>
             			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             				<c:if test="${not ae.solicited}">
-            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="true" />
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="true" isSolicited="false"/>
             				</c:if> 
             			</c:forEach>   
 					</chrome:box>
@@ -379,7 +422,7 @@
 							<p><tags:instructions code="instruction_ae_sae"/></p>
 							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             				<c:if test="${ae.solicited}">
-            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="false" />
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="false" isSolicited="true"/>
             				</c:if> 
             			</c:forEach>   
  						</chrome:box>

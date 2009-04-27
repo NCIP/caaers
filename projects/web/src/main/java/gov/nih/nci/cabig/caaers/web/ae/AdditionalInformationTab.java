@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createCheckboxField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
+
+import javax.servlet.http.HttpServletRequest;
+
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
@@ -45,5 +49,17 @@ public class AdditionalInformationTab extends AeTab {
     @Override
     public ExpeditedReportSection[] section() {
         return new ExpeditedReportSection[] {ExpeditedReportSection.ADDITIONAL_INFO_SECTION};
+    }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command,HttpServletRequest request) {
+    	boolean emptyMandatoryField = super.hasEmptyMandatoryFields(command, request);
+    	boolean allFieldsUnfilled = true;
+    	
+    	TreeNode aiNode = expeditedReportTree.find("additionalInformation");
+    	for(TreeNode aNode : aiNode.getChildren()){
+    		allFieldsUnfilled &= (aNode.getPropertyValuesFrom(command.getAeReport()).getPropertyValues()[0].getValue() == null);
+    	}
+    	return emptyMandatoryField || allFieldsUnfilled;
     }
 }

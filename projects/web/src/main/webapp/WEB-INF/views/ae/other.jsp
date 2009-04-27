@@ -59,9 +59,10 @@
         <c:forEach items="${command.aeReport.otherCauses}" varStatus="status">
             <ae:oneOtherCause index="${status.index}"/>
         </c:forEach>
+        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
+        
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

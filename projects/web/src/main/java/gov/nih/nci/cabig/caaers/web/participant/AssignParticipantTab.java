@@ -36,7 +36,7 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
     protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         if (command.getParticipant() == null || command.getParticipant().getId() == null)
-            errors.rejectValue("participant", "REQUIRED", "Subject not selected");
+            errors.rejectValue("participant", "PT_001", "Subject not selected");
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {

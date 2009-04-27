@@ -15,8 +15,8 @@
  <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
     <c:set var="selected" value="${atab.number == tab.number}"/>
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
-     <c:if test="${fn:contains(mandatoryTabs, atab.shortTitle)}"><span class="required-indicator">*</span></c:if><c:if test="${fn:contains(unfilledTabs, atab.shortTitle)}"><span class="required-for-submit"><img src="<chrome:imageUrl name="time_elapsed.png" />" alt="Data remains to be filled" /></span></c:if>
-        <a href="#" class="tab${atab.number} ${fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'}">${atab.number + 1}. ${atab.shortTitle}</a>
+     <c:if test="${fn:contains(mandatoryTabs, atab.shortTitle)}"><span class="required-indicator">*</span></c:if>
+        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'):''}">${atab.number + 1}. ${atab.shortTitle}</a>
     </div></li>
 	<c:if test="${selected}">
 		<tags:pageHelp propertyKey="${tab.class.name}" />

@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -16,8 +13,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
@@ -182,58 +177,85 @@ public class ReporterTab extends AeTab {
     
     /**
      * This method takes care of extra-processing incase of Amend-Report flow.
+     *  - Find the reports that are to be amended, based on the newly selected report. 
+     *     ie. we will ammend an amendable report only if the newly selected reports list, has an amendable report from the same organization.
+     *     
      */
     public void processAmendReportFlow(EditExpeditedAdverseEventCommand command){
+
     	
-    	command.populateCreationAndAmendmentList();
-    	// Check if existing amendable & submitted reports are present in the newlySelectedDefs.
-    	// If not they are withdrawn.
-    	// This is needed for the following scenario - 
-    	// The aeReport contains a 10 day report (SUBMITTED)
-    	// The users amends it with a 5 day reportDefinition
-    	// In this case we want to change the status of the 10 day report to ReportStatus.REPLACED.
-    	Map<ReportDefinition, Boolean> newlySelectedReportDefinitionsMap = new HashMap<ReportDefinition, Boolean>();
-    	for(ReportDefinition rd: command.getNewlySelectedDefs()){
-    		if(!newlySelectedReportDefinitionsMap.containsKey(rd))
-    			newlySelectedReportDefinitionsMap.put(rd, true);
-    	}
-    	for(Report report: command.getAeReport().getReports()){
-    		if(report.isSubmitted() && report.getReportDefinition().getAmendable() && !newlySelectedReportDefinitionsMap.containsKey(report.getReportDefinition()))
-    			command.getReportListForWithdrawal().add(report);
-    	}
+    	command.populateCreationAmendmentAndWithdrawlList();
+    	
+//    	// Check if existing amendable & submitted reports are present in the newlySelectedDefs.
+//    	// If not they are withdrawn.
+//    	// This is needed for the following scenario - 
+//    	// The aeReport contains a 10 day report (SUBMITTED)
+//    	// The users amends it with a 5 day reportDefinition
+//    	// In this case we want to change the status of the 10 day report to ReportStatus.REPLACED.
+//    	Map<ReportDefinition, Boolean> newlySelectedReportDefinitionsMap = new HashMap<ReportDefinition, Boolean>();
+//    	for(ReportDefinition rd: command.getNewlySelectedDefs()){
+//    		if(!newlySelectedReportDefinitionsMap.containsKey(rd))
+//    			newlySelectedReportDefinitionsMap.put(rd, true);
+//    	}
+//    	for(Report report: command.getAeReport().getReports()){
+//    		if(report.isSubmitted() && report.getReportDefinition().getAmendable() && !newlySelectedReportDefinitionsMap.containsKey(report.getReportDefinition()))
+//    			command.getReportListForWithdrawal().add(report);
+//    	}
     }
     
     /**
      * This method takes care of extra-processing incase of Edit-Report flow.
+     *  - If there is a PENDING, INPROCESS, FAILED report already available, dont create them. 
+     *  -
      * @param command
      */
     public void processEditReportFlow(EditExpeditedAdverseEventCommand command){
     	
-    	if(command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
-    		if(command.isNewlySelectedReportEarlier()) {
-    			// Case(A) Newly selected amendable sponsor report is earlier
-    			//         - withdraw the existing amendable sponsor report
-    			Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
-                for (ReportDefinition reportDefinition : command.getNewlySelectedSponsorReports())
-                    sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
-
-                String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-
-                for (Report report : command.getAeReport().getReports()) {
-                    if (report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
-                            && report.getReportDefinition().getAmendable()) {
-                        command.getExistingReportMap().remove(report.getReportDefinition());
-                        command.getReportListForWithdrawal().add(report);
-                    }
-                }
-       	 	}else{
-       		 	// Case(B) Newly selected amendable sponsor report is later
-       		 	//			- ignore the newly selected amendable sponsor report
-       		 	command.setNewlySelectedDefs(command.getOtherSelectedReports());
-       	 	}
-        }
-
-    	command.populateCreationAndAmendmentList();
+    	if(command.getNewlySelectedDefs() != null){
+    		//check if there is already a report persent, if not they should be created.
+    		for(ReportDefinition repDef : command.getNewlySelectedDefs()){
+    			if(!command.getAeReport().isAnActiveReportPresent(repDef)){
+    				command.getReportDefinitionListForCreation().add(command.reassociateReportDefinitionToSession(repDef));
+    			}
+    		}
+    		
+    		//If there are reports to create, make sure, other Reports already present belonging to the same 
+    		// organization is REPLACED. 
+    		if(!command.getReportDefinitionListForCreation().isEmpty()){
+    			for(ReportDefinition repDef : command.getReportDefinitionListForCreation()){
+    				String nciInstituteCode = repDef.getOrganization().getNciInstituteCode();
+    				command.getReportListForWithdrawal().addAll(command.getAeReport().findPendingAmendableReports(nciInstituteCode));
+    			}
+    		}
+    	}
+    	
+//    	BJ: Do not delete the below commented lines, as we may need it later. 
+//    	
+//    	if(command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
+//    		if(command.isNewlySelectedSponsorReportEarlier()) {
+//    			// Case(A) Newly selected amendable sponsor report is earlier
+//    			//         - withdraw the existing amendable sponsor report
+//    			Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
+//                for (ReportDefinition reportDefinition : command.getNewlySelectedSponsorReports())
+//                    sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
+//
+//                String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+//
+//                for (Report report : command.getAeReport().getReports()) {
+//                    if (report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
+//                            && report.getReportDefinition().getAmendable()) {
+//                        command.getExistingReportMap().remove(report.getReportDefinition());
+//                        command.getReportListForWithdrawal().add(report);
+//                    }
+//                }
+//       	 	}else{
+//       		 	// Case(B) Newly selected amendable sponsor report is later
+//       		 	//			- ignore the newly selected amendable sponsor report
+//       		 	command.setNewlySelectedDefs(command.getOtherSelectedReports());
+//       	 	}
+//        }
+//
+//   	command.populateCreationAndAmendmentList();
     }
         
     public void processForCreateNewFlow(EditExpeditedAdverseEventCommand command){

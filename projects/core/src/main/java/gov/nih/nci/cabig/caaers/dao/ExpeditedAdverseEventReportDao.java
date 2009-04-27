@@ -89,6 +89,14 @@ public class ExpeditedAdverseEventReportDao extends
      */
     @Transactional(readOnly = false)
     public void save(final ExpeditedAdverseEventReport report) {
+    	saveOrUpdateExpeditedReport(report);
+    }
+    
+    /**
+     * This method is invoked from save or modifyOrSaveReviewStatusAndComments methods
+     * @param report
+     */
+    private void saveOrUpdateExpeditedReport(final ExpeditedAdverseEventReport report){
     	log.debug("Saving ExpeditedAdverseEventReport..");
         getHibernateTemplate().saveOrUpdate(report);
         for (AdverseEvent ae : report.getAdverseEvents()) {
@@ -119,7 +127,15 @@ public class ExpeditedAdverseEventReportDao extends
         for (Report r : report.getReports()) {
             reportDao.save(r);
         }
-
+    }
+    
+    /**
+     * This method is used by workflow module to update/save the comments and review status
+     * on the expedited report.
+     */
+    @Transactional(readOnly = false)
+    public void modifyOrSaveReviewStatusAndComments(final ExpeditedAdverseEventReport aeReport){
+    	saveOrUpdateExpeditedReport(aeReport);
     }
 
     /**

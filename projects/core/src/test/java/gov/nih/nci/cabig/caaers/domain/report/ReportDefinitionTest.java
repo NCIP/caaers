@@ -2,15 +2,16 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+
 
 /**
  * @author Rhett Sutphin
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_REPORT_FORMAT })
-public class ReportDefinitionTest extends CaaersTestCase {
+public class ReportDefinitionTest extends AbstractTestCase {
     private ReportDefinition def;
 
     @Override
@@ -35,11 +36,52 @@ public class ReportDefinitionTest extends CaaersTestCase {
         assertEquals(def1, def2);
     }
     
+    public void testGetExpectedDisplayDueDate_OverDue(){
+    	java.util.Calendar c = java.util.Calendar.getInstance();
+    	c.add(c.DATE, -4);
+    	
+    	// 1-Days
+    	def.setDuration(1);
+    	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	String displayDueDate = def.getExpectedDisplayDueDate(c.getTime());
+    	assertEquals("3 days overdue", displayDueDate);
+    	//3 Days
+    	def.setDuration(3);
+    	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	displayDueDate = def.getExpectedDisplayDueDate(c.getTime());
+    	assertEquals("1 day overdue", displayDueDate);
+    	
+    	
+    	//4 Days
+    	def.setDuration(4);
+    	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	displayDueDate = def.getExpectedDisplayDueDate(c.getTime());
+    	assertEquals("0 day overdue", displayDueDate);
+    	
+    	//5 Days
+    	def.setDuration(5);
+    	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	displayDueDate = def.getExpectedDisplayDueDate(c.getTime());
+    	System.out.println(displayDueDate);
+    	assertEquals("Due in 1 day", displayDueDate);
+    	
+    	//6 Days
+    	def.setDuration(6);
+    	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	displayDueDate = def.getExpectedDisplayDueDate(c.getTime());
+    	System.out.println(displayDueDate);
+    	assertEquals("Due in 2 days", displayDueDate);
+    	
+    	
+    }
+    
     /**
      * This method tests the expectedDueDate display String for a 5 day report.
      */
     public void testGetExpectedDisplayDueDate(){
-    	def = new ReportDefinition();
+    	
+    	java.util.Calendar c = java.util.Calendar.getInstance();
+    	
     	// 1 day
     	def.setDuration(1);
     	def.setTimeScaleUnitType(TimeScaleUnit.DAY);
@@ -64,18 +106,8 @@ public class ReportDefinitionTest extends CaaersTestCase {
     	displayDueDate = def.getExpectedDisplayDueDate();
     	assertNotNull("Error in generating expectedDisplayDueDate", displayDueDate);
     	assertEquals("Error in generating expectedDisplayDuedate", displayDueDate, "Due in 5 hours");
-    	// 1 month
-    	def.setDuration(1);
-    	def.setTimeScaleUnitType(TimeScaleUnit.MONTH);
-    	displayDueDate = def.getExpectedDisplayDueDate();
-    	assertNotNull("Error in generating expectedDisplayDueDate", displayDueDate);
-    	assertEquals("Error in generating expectedDisplayDuedate", displayDueDate, "Due in 1 month");
-    	// N months
-    	def.setDuration(5);
-    	def.setTimeScaleUnitType(TimeScaleUnit.MONTH);
-    	displayDueDate = def.getExpectedDisplayDueDate();
-    	assertNotNull("Error in generating expectedDisplayDueDate", displayDueDate);
-    	assertEquals("Error in generating expectedDisplayDuedate", displayDueDate, "Due in 5 months");
+    	
+    	
     	// 1 minute
     	def.setDuration(1);
     	def.setTimeScaleUnitType(TimeScaleUnit.MINUTE);

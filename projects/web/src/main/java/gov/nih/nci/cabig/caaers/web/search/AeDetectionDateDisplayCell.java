@@ -15,11 +15,9 @@ public class AeDetectionDateDisplayCell extends AbstractCell {
         AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
         String date = ae.getReport() != null ? ControllerTools.formatDate(ae.getReport()
                         .getAdverseEvents().get(0).getStartDate())
-                        : ae.getRoutineReport() != null ? ControllerTools.formatDate(ae
-                                        .getRoutineReport().getStartDate())
+                        : ae.getReportingPeriod() != null ? ControllerTools.formatDate(ae.getReportingPeriod().getStartDate())
                                         + " - "
-                                        + ControllerTools.formatDate(ae.getRoutineReport()
-                                                        .getEndDate()) : "N/A";
+                                        + ControllerTools.formatDate(ae.getReportingPeriod().getEndDate()) : "N/A";
 
         String cellValue = column.getValueAsString();
         cellValue = date;

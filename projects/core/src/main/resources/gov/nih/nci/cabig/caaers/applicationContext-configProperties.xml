@@ -286,6 +286,14 @@
                             <property name="desc" value="Adverse Event Coordinator" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="CSC" />
+                            <property name="desc" value="Central Office SAE Coordinator" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="CDC" />
+                            <property name="desc" value="Data Coordinator" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="PC" />
                             <property name="desc" value="Participant Coordinator" />
                         </bean>

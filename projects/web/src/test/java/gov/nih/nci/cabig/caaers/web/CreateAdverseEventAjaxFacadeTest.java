@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -31,6 +32,8 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
@@ -230,6 +233,27 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         replayMocks();
         assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));
         verifyMocks();
+    }
+    
+    public void testRefreshSubmitReportValidationSection() throws Exception{
+    	expect(webContext.getCurrentPage()).andReturn("pages/ae/edit");
+    	expect(webContext.forwardToString("pages/ae/edit?aeReport=0&subview=submitReportValidationSection")).andReturn("The Html");
+    	replayMocks();
+    	AjaxOutput output = facade.refreshSubmitReportValidationSection();
+    	assertEquals("The Html", output.getHtmlContent());
+    	verifyMocks();
+    }
+    
+    public void testUpdatePhysicianSignOff() throws Exception{
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	aeReportDao.refresh(command.getAeReport());
+    	expect(webContext.getCurrentPage()).andReturn("pages/ae/edit");
+    	expect(webContext.forwardToString("pages/ae/edit?aeReport=0&subview=submitReportValidationSection")).andReturn("The Html");
+    	replayMocks();
+    	AjaxOutput output = facade.updatePhysicianSignOff(true);
+    	assertEquals("The Html", output.getHtmlContent());
+    	assertTrue("Physician sign-off set incorrectly", command.getAeReport().getPhysicianSignOff());
+    	verifyMocks();
     }
 
     public void testAddConcomitantMedications() throws Exception {
@@ -585,7 +609,10 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
         // TODO: fix it when use case is ready.
         reportingPeriod.addAeReport(report);
-
+        
+        Report r = Fixtures.createReport("test report");
+        r.addReportVersion(new ReportVersion());
+        report.addReport(r);
         command.setAeReport(report);
         session.setAttribute(EditAdverseEventController.class.getName() + ".FORM.command", command);
         expect(webContext.getSession()).andReturn(session).anyTimes();

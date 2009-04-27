@@ -63,8 +63,7 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
         System.out.println(errors);
         assertCorrectErrorCode(errors, "AER_BR7_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Replacment variable should be same", 2, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+        assertEquals("Replacment variable should be same", 1, errors.getErrorAt(1).getReplacementVariables()[0]);
     }
 
     /**
@@ -85,8 +84,7 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
         System.out.println(errors);
         assertHasErrorsHavingCode(errors, "AER_BR7_ERR");
         //assertSameErrorCount(errors, 2);
-        assertEquals("Replacment variable should be same", 2, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+        assertEquals("Replacment variable should be same", 1, errors.getErrorAt(1).getReplacementVariables()[0]);
     }
 
     /**
@@ -130,8 +128,7 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
         System.out.println(errors);
         assertHasErrorsHavingCode(errors, "AER_BR7_ERR");
        // assertSameErrorCount(errors, 1);
-        assertEquals("Replacment variable should be same", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+        assertEquals("Replacment variable should be same", 0, errors.getErrorAt(0).getReplacementVariables()[0]);
 
     }
 

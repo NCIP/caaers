@@ -64,7 +64,7 @@ public class DiseaseTab extends StudyTab {
         if (newCTEPTermIds != null) {
             for (String newCTEPTermId : newCTEPTermIds) {
                 if (ctepTermMap.containsKey(newCTEPTermId)) {
-                    errors.reject("DUPLICATE", "'" + ctepTermMap.get(newCTEPTermId).getFullName() + "' is already associated to this study");
+                    errors.reject("STU_005", new Object[]{ctepTermMap.get(newCTEPTermId).getFullName()}, "'" + ctepTermMap.get(newCTEPTermId).getFullName() + "' is already associated to this study");
                 }
             }
         }
@@ -76,7 +76,7 @@ public class DiseaseTab extends StudyTab {
 
         if (command.getDiseaseLlt() != null) {
             if (medraTermMap.containsKey(command.getDiseaseLlt())) {
-                errors.reject("DUPLICATE", "'" + medraTermMap.get(command.getDiseaseLlt()).getFullName() + "' is already associated to this study");
+                errors.reject("STU_005",new Object[]{medraTermMap.get(command.getDiseaseLlt()).getFullName()}, "'" + medraTermMap.get(command.getDiseaseLlt()).getFullName() + "' is already associated to this study");
                 command.setDiseaseLlt(null);
             }
         }

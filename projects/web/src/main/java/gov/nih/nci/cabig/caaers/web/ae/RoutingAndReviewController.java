@@ -3,16 +3,13 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
@@ -27,8 +24,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.context.SecurityContext;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -47,14 +42,10 @@ public class RoutingAndReviewController extends SimpleFormController{
     
     private StudySiteDao studySiteDao;
     
-    private StudyParticipantAssignmentDao assignmentDao;
-    
-    private WorkflowService workflowService;
+    private Configuration configuration;
     
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
-    private CSMUserRepository csmUserRepository;
-
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
     private static final String PAGINATION_ACTION = "paginationAction";
@@ -74,7 +65,9 @@ public class RoutingAndReviewController extends SimpleFormController{
     
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new RoutingAndReviewCommand();
+    	RoutingAndReviewCommand command = new RoutingAndReviewCommand();
+    	command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+        return command;
     }
     
     @Override
@@ -98,7 +91,6 @@ public class RoutingAndReviewController extends SimpleFormController{
         
     	boolean hasParticipant = paramNames.contains("participant");
         boolean hasStudy = paramNames.contains("study");
-        boolean hasStudySite = paramNames.contains("studySite");
         String paginationAction = (String)findInRequest(request, PAGINATION_ACTION);
         
         return hasParticipant || hasStudy || paginationAction != null;
@@ -109,14 +101,12 @@ public class RoutingAndReviewController extends SimpleFormController{
     protected ModelAndView processFormSubmission(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
 
-    	SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
+		String userId = SecurityUtils.getUserLoginName();
 		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
     		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), userId);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
-        	String action = (String) findInRequest(request, PAGINATION_ACTION);
         	processPaginationSubmission(request, cmd, modelAndView);
         	
         	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
@@ -136,16 +126,6 @@ public class RoutingAndReviewController extends SimpleFormController{
     			modelAndView.getModel().put("isLastPage", false);
     	}
     	
-    	
-    	modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
-		if(!csmUserRepository.isSuperUser(userId)){
-			User user = csmUserRepository.getUserByName(userId);
-			if(user.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
-				modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
-			}
-		}
-		
-		
 		
     	return modelAndView;
     }
@@ -245,13 +225,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     	this.studySiteDao = studySiteDao;
     }
     
-    public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao){
-    	this.assignmentDao = assignmentDao;
-    }
     
-    public void setWorkflowService(WorkflowService workflowService){
-    	this.workflowService = workflowService;
-    }
     
     public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
 		return adverseEventRoutingAndReviewRepository;
@@ -261,8 +235,12 @@ public class RoutingAndReviewController extends SimpleFormController{
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
     
-    @Required
-    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
-        this.csmUserRepository = csmUserRepository;
+    
+    public void setConfiguration(Configuration configuration){
+    	this.configuration = configuration;
+    }
+    
+    public Configuration getConfiguration(){
+    	return configuration;
     }
 }

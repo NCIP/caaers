@@ -91,16 +91,17 @@ public class AttributionTab extends AeTab {
 
             if (accessor.getDisplayName(causes.get(c)) == CauseAndAttributionAccessor.DEFAULT_NAME) continue;
             for (int a = 0; a < report.getAdverseEvents().size(); a++) {
-                newGroup.getFields().add(createAttributionField(accessor.getKey(), a, c, report.isAttributionRequired()));
+                newGroup.getFields().add(createAttributionField(" attribution for " + newGroup.getDisplayName() , 
+                		accessor.getKey(), a, c, report.isAttributionRequired()));
             }
             groups.add(newGroup);
         }
         return groups;
     }
 
-    private static InputField createAttributionField(String groupKey, int aeIndex, int causeIndex, boolean required) {
+    private static InputField createAttributionField(String displayName, String groupKey, int aeIndex, int causeIndex, boolean required) {
         String propertyName = new StringBuilder().append("attributionMap[").append(groupKey).append("][").append(aeIndex).append("][").append(causeIndex).append(']').toString();
-        return InputFieldFactory.createSelectField(propertyName, " ", required, ATTRIBUTION_OPTIONS);
+        return InputFieldFactory.createSelectField(propertyName, displayName, required, ATTRIBUTION_OPTIONS);
     }
 
     private static Map<Object, Object> collectAttributionOptions() {
@@ -114,6 +115,8 @@ public class AttributionTab extends AeTab {
     public ExpeditedReportSection[] section() {
         return new ExpeditedReportSection[] {ExpeditedReportSection.ATTRIBUTION_SECTION};
     }
+    
+    
     
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command,HttpServletRequest request) {

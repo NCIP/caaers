@@ -3,12 +3,12 @@ package gov.nih.nci.cabig.caaers.domain.report;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +76,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private String expectedDisplayDueDate;
     
     private ReportFormatType reportFormatType;
+    
+    private Boolean physicianSignOff;
     
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
@@ -356,61 +358,46 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
     
     @Transient
-    public String getExpectedDisplayDueDate(){
-    	String expectedDisplayDueDate = "Due in ";
-    	String unitTypeString = "";
-    	switch(timeScaleUnitType.getCode()){
-    		case 1:
-    			if(duration.equals(1))
-    				unitTypeString = "second";
-    			else
-    				unitTypeString = "seconds";
-    			break;
-    		case 2: 
-    			if(duration.equals(1))
-    				unitTypeString = "minute";
-    			else
-    				unitTypeString = "minutes";
-    			break;
-    		case 3: 
-    			if(duration.equals(1))
-    				unitTypeString = "hour";
-    			else
-    				unitTypeString = "hours";
-    			break;
-    		case 4: 
-    			if(duration.equals(1))
-    				unitTypeString = "day";
-    			else
-    				unitTypeString = "days";
-    			break;
-    		case 5:
-    			if(duration.equals(1))
-    				unitTypeString = "week";
-    			else
-    				unitTypeString = "weeks";
-    			break;
-    		case 6: 
-    			if(duration.equals(1))
-    				unitTypeString = "month";
-    			else
-    				unitTypeString = "months";
-    			break;
-    		default: 
-    			if(duration.equals(1))
-    				unitTypeString = "day";
-    			else
-    				unitTypeString = "days";
-    	}
+    public Date getExpectedDueDate(Date baseDate){
+    	Calendar c = Calendar.getInstance();
+    	c.setTime(baseDate);
+    	c.add(timeScaleUnitType.getCalendarTypeCode(), duration);
+    	return c.getTime();
+    }
+    
+    @Transient
+    public String getExpectedDisplayDueDate(Date baseDate){
     	
-    	return expectedDisplayDueDate + duration + " " + unitTypeString;
+    	Date now = new Date();
+    	Date expectedDueDate = getExpectedDueDate(baseDate);
+    	
+    	
+    	int actualDuration = duration;
+    	
+    	String msgPrefix = "Due in ";
+    	String msgSuffix = " overdue";
+    	double difference = 0.0;
+    	
+    	if( DateUtils.compateDateAndTime(now, expectedDueDate) >= 0 ){
+    		msgPrefix = "";
+    		difference = now.getTime() - expectedDueDate.getTime();
+    	}else {
+    		msgSuffix = "";
+    		difference = expectedDueDate.getTime() - now.getTime();
+    	}
+    	actualDuration = (int) Math.round(difference / timeScaleUnitType.getMilliSecondConversionFactor());
+    	return msgPrefix + actualDuration + " " + timeScaleUnitType.name().toLowerCase() + ((actualDuration > 1)? "s": "") +  msgSuffix; 
+    	
+    }
+    
+    @Transient
+    public String getExpectedDisplayDueDate(){
+    	return getExpectedDisplayDueDate(new Date());
     }
     
     @Transient
     public Date getExpectedDueDate(){
-    	Calendar today = GregorianCalendar.getInstance();
-    	today.add(timeScaleUnitType.getCalendarTypeCode(), duration);
-    	return today.getTime();
+    	return getExpectedDueDate(new Date());
     }
     
     
@@ -424,6 +411,12 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		this.reportFormatType = reportFormatType;
 	}
 
-
-
+	@Column(name = "physician_signoff")
+	public Boolean getPhysicianSignOff() {
+		return physicianSignOff;
+	}
+	
+	public void setPhysicianSignOff(Boolean physicianSignOff) {
+		this.physicianSignOff = physicianSignOff;
+	}
 }

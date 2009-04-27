@@ -174,50 +174,6 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
     }
 
 
-    public void testUpdateParticipantForIdentifierRemove() {
-        try {
-
-            createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForIdentifierAdd.xml");
-
-            xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForIdentifierRemove.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
-
-            caaersServiceResponse = participantService.updateParticipant(participants);
-
-            SecurityTestUtils.switchToSuperuser();
-
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
-            List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
-            assertEquals(1, matches.size());
-            updatedParticipant = matches.get(0);
-            updatedParticipant = participantDao.getParticipantById(updatedParticipant.getId());
-
-            assertEquals("Herd Updated", updatedParticipant.getLastName());
-            assertEquals("MaidenName Updated", updatedParticipant.getMaidenName());
-            assertEquals("Leing Updated", updatedParticipant.getMiddleName());
-            assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
-            assertEquals("Not Reported", updatedParticipant.getGender());
-            assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
-
-            assertEquals(1, updatedParticipant.getIdentifiers().size());
-//				}
-//			}
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail("Error running test: " + e.getMessage());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-            fail("Error running test: " + e.getMessage());
-        } finally {
-            if (updatedParticipant != null) {
-                participantDao.delete(updatedParticipant);
-            }
-        }
-    }
-
-
     public void testUpdateParticipantForAssignmentsAdd() {
         try {
             createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipant.xml");
@@ -243,48 +199,6 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
 
             assertEquals(2, updatedParticipant.getAssignments().size());
-//				}
-//			}
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail("Error running test: " + e.getMessage());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-            fail("Error running test: " + e.getMessage());
-        } finally {
-            if (updatedParticipant != null) {
-                participantDao.delete(updatedParticipant);
-            }
-        }
-    }
-
-    public void testUpdateParticipantForAssignmentsRemove() {
-        try {
-
-            createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForAssignmentsAdd.xml");
-
-            xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForAssignmentsRemove.xml")[0].getFile();
-            participants = (Participants) unmarshaller.unmarshal(xmlFile);
-
-            caaersServiceResponse = participantService.updateParticipant(participants);
-            SecurityTestUtils.switchToSuperuser();
-
-            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
-            List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard Updated"});
-            assertEquals(1, matches.size());
-            updatedParticipant = matches.get(0);
-            updatedParticipant = participantDao.getParticipantById(updatedParticipant.getId());
-
-            assertEquals("Herd Updated", updatedParticipant.getLastName());
-            assertEquals("MaidenName Updated", updatedParticipant.getMaidenName());
-            assertEquals("Leing Updated", updatedParticipant.getMiddleName());
-            assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
-            assertEquals("Not Reported", updatedParticipant.getGender());
-            assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
-
-            assertEquals(1, updatedParticipant.getAssignments().size());
 //				}
 //			}
 

@@ -31,7 +31,7 @@
 			  	  <td width="50%" VALIGN="top">
                         <chrome:division title="Agent" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
                             <rd:renderMandatoryFields key="AGENTS_INTERVENTION_SECTION~Study Agents" />
-                            <rd:renderMandatoryFields key="AGENTS_INTERVENTION_SECTION~Study Agents~Modified dose" heading="Modified dose" tabular="true" />
+                             <rd:renderMandatoryFields key="AGENTS_INTERVENTION_SECTION" />
                         </chrome:division>
 			 	  </td>
 			  </tr>

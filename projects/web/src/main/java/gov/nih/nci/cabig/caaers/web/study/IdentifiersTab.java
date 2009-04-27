@@ -87,14 +87,14 @@ public class IdentifiersTab extends StudyTab {
         for (int i = 0; i < identifiers.size(); i++) {
             Identifier identifier = identifiers.get(i);
             if (!set.add(identifier.getType())) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].type", "REQUIRED", "Duplicate, already an identifier of this type is present");
+                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate, already an identifier of this type is present");
             }
 
             if (identifier instanceof OrganizationAssignedIdentifier && ((OrganizationAssignedIdentifier) identifier).getOrganization() == null) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].organization", "REQUIRED", "Organization is required..!");
+                errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
 
             } else if (identifier instanceof SystemAssignedIdentifier && (((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier).getSystemName().equals(""))) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "REQUIRED","System Name is required..!");
+                errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
             }
         }
 

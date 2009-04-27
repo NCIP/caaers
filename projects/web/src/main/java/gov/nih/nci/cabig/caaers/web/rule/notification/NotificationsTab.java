@@ -98,17 +98,17 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
             // Message
             if (nf.getNotificationBodyContent() == null
                             || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())) {
-                errors.rejectValue("tempProperty", "REQUIRED",
+                errors.rejectValue("tempProperty", "RPD_003",new Object[]{i},
                                 "Message Invalid  in Email Notification(" + i + ")");
             }
             // Recipients
             if (nf.getRecipients() == null) {
-                errors.rejectValue("tempProperty", "REQUIRED",
+                errors.rejectValue("tempProperty", "RPD_004",new Object[]{i},
                                 "Invalid Recipient Information in Email Notification (" + i + ")");
             } else {
                 for (Recipient recipient : nf.getRecipients()) {
                     if (StringUtils.isEmpty(recipient.getContact())) {
-                        errors.rejectValue("tempProperty", "REQUIRED",
+                        errors.rejectValue("tempProperty", "RPD_004",new Object[]{i},
                                         "Invalid Recipient Information in Email Notification (" + i
                                                         + ")");
                         break;
@@ -116,15 +116,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
                     // valid email?
                     if (recipient instanceof ContactMechanismBasedRecipient) {
                         if (!emailValidator.isValid(recipient.getContact())) {
-                            errors
-                                            .rejectValue(
-                                                            "tempProperty",
-                                                            "REQUIRED",
-                                                            "Invalid email address ["
-                                                                            + recipient
-                                                                                            .getContact()
-                                                                            + "] in Email Notification ("
-                                                                            + i + ")");
+                            errors.rejectValue("tempProperty","RPD_005",new Object[]{recipient.getContact(), i},"Invalid email address ["+ recipient.getContact()+ "] in Email Notification (" + i + ")");
                             break;
                         }
                     }
@@ -132,7 +124,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
             }
             // subject line
             if (StringUtils.isEmpty(nf.getSubjectLine())) {
-                errors.rejectValue("tempProperty", "REQUIRED",
+                errors.rejectValue("tempProperty", "RPD_006",new Object[]{i},
                                 "Subject line Invalid  in Email Notification(" + i + ")");
             }
         }

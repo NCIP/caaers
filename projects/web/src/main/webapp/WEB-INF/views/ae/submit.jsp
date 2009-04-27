@@ -1,8 +1,10 @@
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -61,19 +63,109 @@
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+ 	          	routingHelper.updateWorkflowActions.bind(routingHelper)();
             }
     })
        
-       function executeAction(aeReportId,url){
-			
-			var actions = $("actions-"+aeReportId)
-			 for ( i=0; i < actions.length; i++)
-               {
-                  if (actions.options[i].selected && actions.options[i].value != "none") {
-                     window.open(url + "&format="+ actions.options[i].value,"_self")
-                   }
-               }
-        }
+       
+    function updatePhysicianSignOff(){
+    	createAE.updatePhysicianSignOff($('aeReport.physicianSignOff').checked, function(output){
+    		$('report-validation-section').innerHTML = output.htmlContent;
+    		if(${command.workflowEnabled == true})
+	    		routingHelper.updateWorkflowActions.bind(routingHelper)();
+    	});
+    }   
+    
+	function executeAction(reportId, url, aeReportId, submissionUrl){
+		var actions = $("actions-" + reportId);
+		for ( i=0; i < actions.length; i++) {
+			if (actions.options[i].selected && actions.options[i].value != "none") {
+				if(confirm('Are you sure you want to take the action - ' + actions.options[i].text)){
+					switch (actions.options[i].value) {
+						case "notifyPSC": notifyPsc(aeReportId); break;
+						case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;
+						case "withdraw": doAction(actions.options[i].value, aeReportId, reportId);  updateDropDownAfterWithdraw(reportId); break;
+						case "amend": doAction(actions.options[i].value, aeReportId, reportId);  break;
+						case "adeers": window.open(submissionUrl, "_blank");  break;
+						default: window.open(url + "&format="+ actions.options[i].value,"_self");
+					}
+				}else{
+					return false;
+				}
+			}
+		}
+	}
+	
+	function doAction(action, aeReportId, reportId) {
+		if(action == 'withdraw'){
+			createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+				//AE.hideIndicator("notify-indicator-" + aeReportId)
+				var statusColumn = $("status"+reportId)
+				var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+	      
+				var optionColumn = $("action"+reportId)
+				optionColumnData = $("action"+reportId).innerHTML;
+	      
+				Element.update(statusColumn, statusColumnData)
+				Element.update(optionColumn, optionColumnData)
+			});
+		} else if(action =='submit') {
+			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
+			window.location = url;
+		} else if(action =='amend') {
+			var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
+			window.location = url; 
+		}
+	}
+	
+	function updateDropDownAfterWithdraw(reportId) {
+		var select = $('actions-' + reportId);
+        
+		for (var i = (select.options.length-1); i>=0; i--) {
+			var o = select.options[i];
+			if ((select.options[i].value == 'submit')) {
+				select.options[i].value = "amend";
+				select.options[i].text = "Amend";
+			}
+			if ((select.options[i].value == 'withdraw')) {
+				select.options[i] = null;
+			}
+		}
+	}
+	
+	function advanceWorkflow(){
+		var sbox = $('sliderWFAction');
+		
+		var sbox = $('sliderWFAction');
+		if(sbox.value == '' || sbox.value == 'Please Select') return;
+		if(confirm('Are you sure you want to take the action - ' + sbox.value)){
+			var sboxIndicator = $('sliderWFAction-indicator');
+			var selected_sbox_value = sbox.value;		
+			sbox.disable();
+			sboxIndicator.style.display='';
+			createAE.advanceWorkflow(sbox.value, function(ajaxOutput){
+				routingHelper.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+				if(${command.aeReport.physicianSignOffRequired}){
+				if(selected_sbox_value == 'Approve Report' || selected_sbox_value == 'Request Additional Information'){
+					if(selected_sbox_value == 'Approve Report'){
+						$('aeReport.physicianSignOff').checked = true;
+					}
+					else{
+						$('aeReport.physicianSignOff').checked = false;
+					}
+					createAE.refreshSubmitReportValidationSection( function(output){
+    					$('report-validation-section').innerHTML = output.htmlContent;
+    					routingHelper.retrieveReviewComments();
+    				});
+				}
+			}
+				
+			});
+		}else{
+			return false;
+		}
+		
+	}
         
     </script>
     <style type="text/css">
@@ -95,190 +187,63 @@
     </style>
 </head>
 <body>
-<tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}" pageHelpAnchor="section18submit">
-    <jsp:attribute name="instructions">
-       Submit the report once it is complete. You can also withdraw the report completely, or amend it from this page.
-    </jsp:attribute>
-    <jsp:attribute name="singleFields">
+		
+        
+<tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}" pageHelpAnchor="section18submit" hideBox="true">
+	
+	<jsp:attribute name="singleFields">
     	<input type="hidden" name="_action" value="">
         <input type="hidden" name="_selected" value="">
-        
-    	<c:if test="${not reportMessages[command.ZERO].submittable}">
-    		<table class="tablecontent" width="75%">
+
+		<c:if test="${command.aeReport.physicianSignOffRequired}">
+			<chrome:box title="Physician signoff">
+			 	<div class="row">
+   		     		<div class="label">
+			        	<ui:checkbox path="aeReport.physicianSignOff" onclick="javascript:updatePhysicianSignOff();"></ui:checkbox>
+    	   			</div>
+      	 	 	<div class="value">
+       		  		<b>I certify that this report has been reviewed and approved by a physician or his/her medically certified designee responsible for the care of this patient.</b>
+        		</div>
+        	</div>
+			</chrome:box>
+	       
+        </c:if>
+        <chrome:box title="${tab.shortTitle}" >
+        Submit the report once it is complete. You can also withdraw the report completely, or amend it from this page.<br><br>
+        <ae:submitReportValidation/>
+    	    	<p>&nbsp;</p>
+    	<c:if test="${command.workflowEnabled == true}">
+    		<table class="tablecontent" width="40%">
     			<tr>
-    				<th scope="col" align="left"><b>Report Validation Errors</b></th>
+    				<th scope="col" align="left"><b>Actions</b></th>
     			</tr>
     			<tr>
     				<td class="completion-messages">
-    				
-    				 <c:forEach items="${reportMessages[command.ZERO].messages}" var="sectionEntry">
-                       <h4>${sectionEntry.key.displayName} section</h4>
-                       <c:forEach items="${sectionEntry.value}" var="msg">
-                          <ul>
-                           <li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-                         </ul>
-                       </c:forEach>
-                     </c:forEach>
+    					<select id="sliderWFAction" onChange="javascript:advanceWorkflow();">
+							<option value="">Please select</option>
+						</select>
+						<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
     				</td>
     			</tr>
     		</table>
-    		<p>&nbsp;  </p>
     	</c:if>
-
-		
-    		    	
-    	<table class="tablecontent">
-    			<tr>
-    				<th scope="col" align="left"><b>Report</b> </th>
-    				<th scope="col" align="left"><b>Amendment #</b> </th>
-    				<th scope="col" align="left"><b>Ready to submit?</b> </th>
-    				<th scope="col" align="left"><b>Status</b> </th>
-    				<th scope="col" align="left"><b>Actions</b> </th>
-    			</tr>
-    			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-    			<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED'}">
-    			<tr>    				
-            		<td><div class="label">${report.reportDefinition.label}</div></td>
-            		<c:if test="${report.reportDefinition.amendable == true}">
-	            		<td align="center"><div class="label">${report.lastVersion.reportVersionId}</div></td>
-	            	</c:if>
-	            	<c:if test="${report.reportDefinition.amendable == false}">
-	            		<td/>
-	            	</c:if>
-            		<td class="completion-messages">
-                        <c:choose>
-                            <c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
-                                Yes
-                            </c:when>
-                            <c:otherwise>
-								<c:if test="${report.status ne 'COMPLETED'}">
-                                <p>Not yet.  Remaining to complete:</p>
-                                <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
-                                    <h4>${sectionEntry.key.displayName} section</h4>
-                                    <c:forEach items="${sectionEntry.value}" var="msg">
-                                        <ul>
-                                            <li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-                                        </ul>
-                                    </c:forEach>
-                                </c:forEach>
-								</c:if>
-                            </c:otherwise>
-                        </c:choose>
-						
-                    </td>
-            		<td id="report-status">
-            			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
-							<span class="dueOn" >
-								<c:if test="${not empty report.lastVersion.dueOn}" >
-            						<i>Due on</i> <br> <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b>
-            					</c:if>
-            					<c:if test="${ empty report.lastVersion.dueOn}" >
-            						<i>Amendment Due</i>
-            					</c:if>
-            				</span>
-            			</c:if>
-            			<c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}" >
-							<span class="submittedOn" >
-            						<i>Withdrawn</i><br> <b><tags:formatDate value="${report.lastVersion.withdrawnOn}" /></b>
-            				</span>
-            			</c:if>
-            			<c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}" >
-            				<span class="submittedOn" >
-            					<i>Submitted on </i><br> <b><tags:formatDate value="${report.lastVersion.submittedOn}" /></b>
-            				</span>
-            			</c:if>	
-            			<c:if test="${report.lastVersion.reportStatus == 'FAILED'}" >
-             				<span class="dueOn" >
-            					<i>Submission to AdEERS failed </i>
-            				</span>           			
-            			</c:if>
-             			<c:if test="${report.lastVersion.reportStatus == 'INPROCESS'}" >
-             				<span class="dueOn" >
-            					<i>Submission to AdEERS in process</i>
-            				</span>           			
-            			</c:if>           		
-            			<%--
-            			<c:if test="${ not empty report.lastVersion.submittedOn}" >
-            				<center><strong>Submitted on </strong><br/><tags:formatDate value="${report.lastVersion.submittedOn}" /></center>
-            			</c:if>
-            			<c:if test="${empty report.lastVersion.submittedOn}" >
-            				<center>
-            				Due on <br> <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b><br>
-            				</center>
-            			</c:if>
-            			--%>
-            		</td>
-            		<td id="report-action">
-
-						<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
-							<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
-								<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-										<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
-										<br><a href="javascript:withdrawReport(${report.aeReport.id },${report.id});">Withdraw</a>
-								</c:if>
-							
-								<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
-									<center>
-										<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}&action=amendReport"/>">Amend</a>
-									</center>
-								</c:if>
-							</c:if>					
-						
-						</c:if>
-            		</td>
-    			</tr>
-    			</c:if>
-    			</c:forEach>    						
-    	</table>		
-    	<p>&nbsp;</p>
-    	<table class="tablecontent" width = "40%">
-    			<tr>
-    				<th scope="col" align="left"><b>View report</b></th>
-    			</tr>
-    			<tr>
-    				<td class="completion-messages">
-    				
-    				 <SELECT id="actions-${command.aeReport.id}" name="actions" onChange="executeAction(${command.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}'/>')">
-     					<OPTION selected label="none" value="none">None</OPTION>
-     					
-     					<c:if test="${command.study.caaersXMLType}">
-     						<OPTION label="xml" value="xml">caAERS XML</OPTION>
-     					</c:if>
-     					<c:if test="${command.study.adeersPDFType}">
-     						<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
-     					</c:if>
-     					<c:if test="${command.study.medwatchPDFType}">
-     						<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
-     					</c:if>
-     					<c:if test="${command.study.dcpSAEPDFType}">
-     						<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
-     					</c:if>
-     					<c:if test="${command.study.ciomsPDFType}">
-     						<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
-     					</c:if>
-     					<c:if test="${command.study.ciomsSaePDFType}">
-     						<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
-     					</c:if>
- 					</SELECT>
-     					
-    				</td>
-    			</tr>
-    		</table>
     
-     <input type="hidden" name="_finish"/>
-    </jsp:attribute>
-	<jsp:attribute name="tabControls">
-  	<div class="content buttons autoclear">
+     	<input type="hidden" name="_finish"/>
+	
+        </chrome:box>
+    </jsp:attribute>    
+    <jsp:attribute name="tabControls">
+  		<div class="content buttons autoclear">
     		<div class="local-buttons"></div>
 	    	<div class="flow-buttons">
 	        <span class="prev">
-	                <input type="image" alt="« Save &amp; Back" value="« saveback" class="tab11" id="flow-prev" src="/caaers/images/blue/saveback_btn.png"/>
+	        		<tags:button color="blue" value="Back" icon="Back" cssClass="tab9"></tags:button>
 	        </span>
 	        <span class="next">
 	            <input type="image" alt="save »" value="Go to Manage Reports " id="flow-next" src="<c:url value="/images/blue/go_to_manage_reports_btn.png" />"/>
 	        </span>
 	    	</div>
-	</div>
+		</div>    
 	</jsp:attribute>
 </tags:tabForm>
 </body>

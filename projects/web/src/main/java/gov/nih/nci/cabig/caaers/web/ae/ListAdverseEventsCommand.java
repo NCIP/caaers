@@ -23,7 +23,10 @@ public class ListAdverseEventsCommand {
     private Participant participant;
 
     Map<Integer, Boolean> reportsSubmittable;
+    
+    private boolean submitLinkRenderable;
 
+    private boolean workflowEnabled = false;
 
     private EvaluationService evaluationService;
 
@@ -71,5 +74,20 @@ public class ListAdverseEventsCommand {
     
     public boolean getIgnoreCompletedStudy() {
         return false;
+    }
+    
+    public boolean isSubmitLinkRenderable() {
+		return submitLinkRenderable;
+	}
+    public void setSubmitLinkRenderable(boolean submitLinkRenderable) {
+		this.submitLinkRenderable = submitLinkRenderable;
+	}
+    
+    public boolean getWorkflowEnabled(){
+    	return workflowEnabled;
+    }
+    
+    public void setWorkflowEnabled(boolean workflowEnabled){
+    	this.workflowEnabled = workflowEnabled;
     }
 }

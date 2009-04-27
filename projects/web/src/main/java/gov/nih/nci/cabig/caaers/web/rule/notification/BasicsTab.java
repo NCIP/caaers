@@ -79,6 +79,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
                         "reportDefinition.duration", "Time until report due", true);
         InputFieldAttributes.setSize(timeTillReportDueField, 2);
         fields.add(timeTillReportDueField);
+        fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.physicianSignOff", "Physician signoff required?", true));
 
         map.addInputFieldGroup(fieldGroup);
 
@@ -121,7 +122,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
                     Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         if (command.getReportDefinition().getDuration() == null) {
-            errors.rejectValue("reportDefinition.duration", "REQUIRED",
+            errors.rejectValue("reportDefinition.duration", "RPD_002",
                             "Invalid Time Till Report Due");
         }
         

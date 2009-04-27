@@ -68,7 +68,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setName("Expedited Report");
 		dto.setNoOfAe(aeReport.getNumberOfAes());
 		dto.setReviewStatus(aeReport.getReviewStatus());
-		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(aeReport.getWorkflowId(), userId));
+		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNamesForAeReportWorkflow(aeReport, userId));
 		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
 		dto.setReports(createReportDTOs(aeReport));
 		return dto;

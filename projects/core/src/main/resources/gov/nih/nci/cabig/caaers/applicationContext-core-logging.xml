@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-This applicationContext contains the definition of the DAOs
+This applicationContext contains the definition aspectJ logging related beans
 -->
 
 <beans

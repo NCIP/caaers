@@ -14,11 +14,7 @@ public class StudyParticipantAssignmentSynchronizer implements Migrator<Particip
 	public void migrate(Participant dbParticipant, Participant xmlParticipant,
 			DomainObjectImportOutcome<Participant> outcome) {
 		
-		
 		List<StudyParticipantAssignment> newStudyParticipantAssignmentList = new ArrayList<StudyParticipantAssignment>();
-		List<StudyParticipantAssignment> deleteStudyParticipantAssignmentList = new ArrayList<StudyParticipantAssignment>();
-		StudyParticipantAssignment remStudyParticipantAssignment = null;
-		
 		
 		//Identify New StudyParticipantAssignment .
 		for(StudyParticipantAssignment xmlStudyParticipantAssignment : xmlParticipant.getAssignments()){
@@ -44,39 +40,10 @@ public class StudyParticipantAssignmentSynchronizer implements Migrator<Particip
 			}
 		}
 		
-		//Identify StudyParticipantAssignment to be Removed
-		for(StudyParticipantAssignment dbStudyParticipantAssignment : dbParticipant.getAssignments()){
-			for(StudyParticipantAssignment xmlStudyParticipantAssignment : xmlParticipant.getAssignments()){
-				remStudyParticipantAssignment = new StudyParticipantAssignment();
-				remStudyParticipantAssignment = dbStudyParticipantAssignment;
-				
-				List<Identifier> xmlIdentifiers = xmlStudyParticipantAssignment.getStudySite().getStudy().getIdentifiers();
-				List<Identifier> dbIdentifiers = remStudyParticipantAssignment.getStudySite().getStudy().getIdentifiers();
-				boolean studyIdentifierMatchFound = matchIdentifiers(xmlIdentifiers, dbIdentifiers);
-				String xmlOrgName = xmlStudyParticipantAssignment.getStudySite().getOrganization().getName();
-				String dbOrgName = remStudyParticipantAssignment.getStudySite().getOrganization().getName();
-				String xmlNciInstCode = xmlStudyParticipantAssignment.getStudySite().getOrganization().getNciInstituteCode();
-				String dbNciInstCode = remStudyParticipantAssignment.getStudySite().getOrganization().getNciInstituteCode();
-				
-				if(studyIdentifierMatchFound && (xmlOrgName.equals(dbOrgName) || xmlNciInstCode.equals(dbNciInstCode))){
-					remStudyParticipantAssignment = null;
-					break;
-				}
-			}
-			if(remStudyParticipantAssignment != null){
-				deleteStudyParticipantAssignmentList.add(remStudyParticipantAssignment);
-			}
-		}
-		
 		//Add New StudyParticipantAssignment
 		for(StudyParticipantAssignment newStudyParticipantAssignment : newStudyParticipantAssignmentList){
 			dbParticipant.getAssignments().add(newStudyParticipantAssignment);
 		}
-		//Remove StudyParticipantAssignment
-		for(StudyParticipantAssignment delStudyParticipantAssignment : deleteStudyParticipantAssignmentList){
-			dbParticipant.getAssignments().remove(delStudyParticipantAssignment);
-		}
-		
 		//Need to set the Study for the update to function
 		for(StudyParticipantAssignment studyParticipantAssignment : dbParticipant.getAssignments()){
 			studyParticipantAssignment.setParticipant(dbParticipant);

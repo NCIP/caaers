@@ -109,10 +109,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     public void testCourseNumberOfAE_LT_TotalNumberOfCourses() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
-                0, errors.getErrorCount());
+        assertEquals("There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses", 0, errors.getErrorCount());
     }
 
     /**
@@ -125,10 +122,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         aeReport.getTreatmentInformation().setTotalCourses(5);
         aeReport.getTreatmentInformation().getAdverseEventCourse().setNumber(5);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
-                0, errors.getErrorCount());
+        assertEquals("There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses", 0, errors.getErrorCount());
     }
 
     /**
@@ -140,10 +134,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getTreatmentInformation().setTotalCourses(null);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should not be any error, when  TotalNumberOfCourses are null. This is required if only courseNo of AE is mandatory field",
-                0, errors.getErrorCount());
+        assertEquals("There should not be any error, when  TotalNumberOfCourses are null. This is required if only courseNo of AE is mandatory field",0, errors.getErrorCount());
 
     }
 
@@ -156,10 +147,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getTreatmentInformation().setAdverseEventCourse(null);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals("There should not be any error, when courseNo.OfAE is null", 0, errors
-                .getErrorCount());
-
+        assertEquals("There should not be any error, when courseNo.OfAE is null", 0, errors.getErrorCount());
     }
 
     /**
@@ -171,11 +159,10 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getTreatmentInformation().getAdverseEventCourse().setNumber(55);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should be error, when courseNo.OfAE is greater than TotalNumberOfCourses",
-                1, errors.getErrorCount());
+        assertEquals("There should be error, when courseNo.OfAE is greater than TotalNumberOfCourses", 1, errors.getErrorCount());
         assertEquals("Error code should be same", "CIN_BR1_ERR", errors.getErrorAt(0).getCode());
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.totalCourses", "aeReport.treatmentInformation.adverseEventCourse.number");
     }
 
     /**
@@ -188,10 +175,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         aeReport.getTreatmentInformation().getAdverseEventCourse().setNumber(null);
         aeReport.getTreatmentInformation().setTotalCourses(null);
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                "There should not be any error, when courseNo.OfAE is null and totalNo.OfCourse is null",
-                0, errors.getErrorCount());
+        assertEquals("There should not be any error, when courseNo.OfAE is null and totalNo.OfCourse is null", 0, errors.getErrorCount());
     }
 
     /**

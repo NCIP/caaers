@@ -32,7 +32,7 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
 	protected ReportSubmissionService reportSubmissionService;
 	
     public SubmitReportTab() {
-        super("Submission", "Submit Report", "ae/submitReport");
+        super("Submission", "Recipients", "ae/submitReport");
 
     }
 
@@ -67,7 +67,7 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
 
                 if (!isEmailValid(email)) {
                     InputField field = fieldGroups.get("ccReport").getFields().get(0);
-                    errors.rejectValue(field.getPropertyName(), "NOT VALID", "Not Valid "
+                    errors.rejectValue(field.getPropertyName(), "SAE_007", new Object[]{field.getDisplayName()},"Not Valid "
                                     + field.getDisplayName());
                     break;
                 }
@@ -89,8 +89,10 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         log.debug("Report Index :" + reportIndex.intValue());
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
         Report report = aeReport.getReports().get(((int) reportIndex));
-        if(!command.getReportSubmitted())
+        if(!command.getReportSubmitted()){
+        	aeReport.updateReportedFlagOnAdverseEvents();
         	reportSubmissionService.submitReport(report);
+        }
     }
     
     public ReportSubmissionService getReportSubmissionService() {

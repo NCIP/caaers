@@ -6,13 +6,14 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * @author Biju Joseph
@@ -23,7 +24,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     
 	public List<T> findParticipants(ParticipantAjaxableDomainObjectQuery query) {
         List<Object[]> objects = super.find(query);
-        Map<Integer,T> existingParticipantsMap = new HashMap<Integer, T>();
+        Map<Integer,T> existingParticipantsMap = new LinkedHashMap<Integer, T>();
         for (Object[] o : objects) {
             T participantAjaxableDomainObject = existingParticipantsMap.get((Integer) o[0]);
 

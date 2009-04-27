@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.security.RoleCheck;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,6 +17,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.userdetails.User;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
@@ -48,17 +54,24 @@ public class ViewReportTab extends AeTab {
 
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules( command.getAeReport(), section);
             for (ValidationError vError : validationErrors.getErrors()) {
-                reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
+            	if(command.isErrorApplicable(vError.getFieldNames())){
+            		reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
+
+            	}
             }
         }
 
         reportMessages.put(ExpeditedAdverseEventInputCommand.ZERO, reportSubmittability);
 
         // -- check the report submittability
-        for (Report report : command.getAeReport().getReports()) {
+        for (Report report : command.getAeReport().getActiveReports()) {
             reportMessages.put(report.getId(), evaluationService.isSubmittable(report));
         }
         refdata.put("reportMessages", reportMessages);
+        
+    	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
+    	refdata.put("isSuperUser", isSuperUser);
+    	
         return refdata;
     }
 
@@ -96,4 +109,6 @@ public class ViewReportTab extends AeTab {
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
     }
+    
+    
 }

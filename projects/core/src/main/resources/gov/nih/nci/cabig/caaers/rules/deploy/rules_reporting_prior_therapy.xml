@@ -27,16 +27,15 @@
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
-
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(StringUtils.equalsIgnoreCase("Prior Therapy NOS", pt.getName()) &amp;&amp; pt.getOther() == null ){
-                errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is
-                'Prior Therapy NOS'", i);
-                }
-                }
+                    int i = 0;
+                    for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()) {
+                            if(StringUtils.equalsIgnoreCase("Prior Therapy NOS", pt.getName()) &amp;&amp; pt.getOther() == null ) {
+                                errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is
+                                'Prior Therapy NOS'", i).addFieldNames("aeReport.saeReportPriorTherapies[" + i + "].other");
+                            }
+                            i++;
+                    }
                 return errors.hasErrors() ? FAIL : SUCCESS;
                 }
                 }.validate(aeReport, errors)
@@ -93,11 +92,11 @@
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                 int i = 0;
                 for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(pt.getStartDate().getYear() == null &amp;&amp; pt.getEndDate().getYear() != null){
-                errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date'
-                is not provided", i);
-                }
+                    if(pt.getStartDate().getYear() == null &amp;&amp; pt.getEndDate().getYear() != null){
+                        errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date'
+                        is not provided", i).addFieldNames("aeReport.saeReportPriorTherapies[" + i + "].endDate", "aeReport.saeReportPriorTherapies[" + i + "].startDate");
+                    }
+                    i++;
                 }
                 return errors.hasErrors() ? FAIL : SUCCESS;
                 }
@@ -125,12 +124,11 @@
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                 int i = 0;
                 for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(pt.getEndDate() != null &amp;&amp;!pt.getEndDate().isNull() &amp;&amp;
-                pt.getStartDate().compareTo(pt.getEndDate()) &gt; 0){
-                errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start
-                Date'", i);
-                }
+                    if(pt.getEndDate() != null &amp;&amp;!pt.getEndDate().isNull() &amp;&amp;
+                    pt.getStartDate().compareTo(pt.getEndDate()) &gt; 0){
+                        errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start Date'", i).addFieldNames("aeReport.saeReportPriorTherapies[" + i + "].endDate", "aeReport.saeReportPriorTherapies[" + i + "].startDate");;
+                    }
+                    i++;
                 }
                 return errors.hasErrors() ? FAIL : SUCCESS;
                 }

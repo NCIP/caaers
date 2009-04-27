@@ -51,7 +51,8 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     private static final Log log = LogFactory.getLog(SubjectMedHistoryTab.class);
     Map<String, String> methodNameMap = new HashMap<String, String>();
 
-	
+	protected HashMap<String, Boolean> emptyFieldNameMap;
+
     private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
     private ConfigProperty configurationProperty;
@@ -95,7 +96,8 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	refData.put("studyDiseasesOptions", command.getStudyDiseasesMap());
     	refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
     	refData.put("priorTherapyOptions", initializePriorTherapyOptions());
-    	return refData;
+        request.setAttribute("empties", emptyFieldNameMap);
+        return refData;
     	
     }
     
@@ -377,12 +379,15 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
+        emptyFieldNameMap = new HashMap<String, Boolean>();
+        
         // check PriorTherapies duplicates
         List list = command.getAssignment().getPriorTherapies();
         Set<String> set = new HashSet<String>();
         boolean hasDuplicatePT = false;
         boolean hasDuplicateAg = false;
-        
+
+        byte i = 0;
         for (Object object : list) {
             StudyParticipantPriorTherapy pt = (StudyParticipantPriorTherapy)object;
 
@@ -390,9 +395,34 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
             if (pt != null) {
                 StringBuffer ptUnique = new StringBuffer();
                 ptUnique.append(pt.getName()).append(pt.getStartDate().getYear()).append(pt.getStartDate().getMonth());
-                if (!set.add(ptUnique.toString())) hasDuplicatePT = true;
+                if (!set.add(ptUnique.toString())) {
+                    hasDuplicatePT = true;
+                    String propertyName = String.format("assignment.priorTherapies[%d].startDate", i);
+                    errors.rejectValue(propertyName, "PTY_UK_ERR", "Two identical prior therapies cannot share the same starting month and year");
+                }
+                
             }
 
+/*
+            if (hasDuplicatePT) {
+                String propertyName = String.format("assignment.priorTherapies[%d].startDate", i);
+                errors.reject("PTY_UK_ERR", null, "Two identical prior therapies cannot share the same starting month and year");
+                errors.rejectValue(propertyName, "", "Two identical prior therapies cannot share the same starting month and year");
+            }
+*/
+            if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
+
+            
+            // check PT dates
+            String propertyName = String.format("assignment.priorTherapies[%d].endDate", i);
+            if (!pt.getEndDate().isNull())
+                if (pt.getStartDate().compareTo(pt.getEndDate()) > 0) {
+                    errors.rejectValue(propertyName, "SAE_024", new Object[]{pt.getName()}, "The 'End date' can not be before the 'Start Date'");
+                }
+
+            i++;
+
+            // all tge PT validation should go above these lines, because of teh continue keyword inside the next block
             // check the agents within the Prior Therapy objects
             List<StudyParticipantPriorTherapyAgent> agents = pt.getPriorTherapyAgents();
             if (agents == null || agents.size() < 2) continue;
@@ -403,9 +433,10 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
                     hasDuplicateAg = true;
                 }
             }
+
         }
-        
-        if (hasDuplicatePT) errors.reject("PTY_UK_ERR", null, "Two identical prior therapies cannot share the same starting month and year");
+
+        // if (hasDuplicatePT) errors.reject("PTY_UK_ERR", null, "Two identical prior therapies cannot share the same starting month and year");
         if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
 
 
@@ -422,7 +453,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         // check ConMeds duplicates
         list = command.getAssignment().getConcomitantMedications();
         set = new HashSet();
-        byte i = 0;
+        i = 0;
         for (Object object : list) {
             StudyParticipantConcomitantMedication pt = (StudyParticipantConcomitantMedication)object;
             if (pt != null)
@@ -430,9 +461,10 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
             String propertyName = String.format("assignment.concomitantMedications[%d].endDate", i);
 
-            if (!pt.getStillTakingMedications() && pt.getStartDate().compareTo(pt.getEndDate()) > 0) {
-                errors.rejectValue(propertyName, "SAE_024", new Object[]{pt.getName()}, "The 'End date' can not be before the 'Start Date'");
-            }
+            if (!pt.getEndDate().isNull())
+                if (!pt.getStillTakingMedications() && pt.getStartDate().compareTo(pt.getEndDate()) > 0) {
+                    errors.rejectValue(propertyName, "SAE_024", new Object[]{pt.getName()}, "The 'End date' can not be before the 'Start Date'");
+                }
 
             i++;
         }
@@ -448,6 +480,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
                 if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
         }
 
+        WebUtils.populateErrorFieldNames(emptyFieldNameMap, errors);
     }
 }
 

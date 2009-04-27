@@ -27,7 +27,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SME_BR1_ERR","Either 'Brand name' or 'Common name' must be provided");
+			errors.addValidationError("SME_BR1_ERR","Either 'Brand name' or 'Common name' must be provided").addFieldNames("aeReport.medicalDevices[0].commonName","aeReport.medicalDevices[0].brandName");
        	</rhs>
 	</rule>
 	<!-- ==========================================================================
@@ -47,7 +47,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SME_BR2_ERR","Either 'Model#', 'Serial#', 'Catalog#'  or 'Lot#' must be provided");
+			errors.addValidationError("SME_BR2_ERR","Either 'Model#', 'Serial#', 'Catalog#'  or 'Lot#' must be provided").addFieldNames("aeReport.medicalDevices[0].modelNumber","aeReport.medicalDevices[0].catalogNumber","aeReport.medicalDevices[0].lotNumber","aeReport.medicalDevices[0].serialNumber");
        	</rhs>
 	</rule>
 	
@@ -74,7 +74,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("ADO_BR1_ERR","'Device Operator Description' must be provided if (and only if) 'Device Operator' is 'Other'");
+			errors.addValidationError("ADO_BR1_ERR","'Device Operator Description' must be provided if (and only if) 'Device Operator' is 'Other'").addFieldNames("medicalDevices[0].otherDeviceOperator", "medicalDevices[0].deviceOperator");
        	</rhs>
 	</rule>
 	

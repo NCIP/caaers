@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
 
@@ -100,8 +101,7 @@ public class RoutingAndReviewAjaxFacade {
 	protected String getUserId(){
 		WebContext webContext = getWebContext();
 		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
-		return userId;
+		return SecurityUtils.getUserLoginName(context.getAuthentication());
 	}
 	 
 	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {

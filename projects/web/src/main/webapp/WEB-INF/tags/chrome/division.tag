@@ -5,6 +5,7 @@
 <%@attribute name="path" description="This path is used by the render decision manager to determinie the visibility" %>
 <%@attribute name="title"%>
 <%@attribute name="titleFragment" fragment="true" description="This is a fragment, that is put beside the title" %>
+<%@attribute name="additionalInfo" %>
 <%@attribute name="id"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
@@ -23,7 +24,8 @@
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
                         <td width="100%" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><span id="titleOf_${id}">${title}</span><jsp:invoke fragment="titleFragment" /></td>
- 						<c:if test="${enableDelete and not empty deleteParams}"><td align="left"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="Delete"/></a></td></c:if>
+                        <td align="right">${additionalInfo}</td>
+                         <c:if test="${enableDelete and not empty deleteParams}"><td align="left"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="Delete"/></a></td></c:if>
                     </tr>
                 </table>
 				</h3>

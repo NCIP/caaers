@@ -30,11 +30,8 @@
         </c:if>
 
     <chrome:division title="Demographic Information">
-        <br>
-        <table id="test2" class="single-fields" width="100%">
-            <tr>
-                <td>
-                    <div class="leftpane">
+    			<div class="row">
+                    <div class="leftpanel">
                         <div class="row">
                             <div class="label">First name&nbsp; </div>
                             <div class="value">${command.participant.firstName}</div>
@@ -55,8 +52,7 @@
                             <div class="value">${command.participant.middleName}</div>
                         </div>
                     </div>
-                </td>
-                <td>
+                <div class="rightpanel">
                     <div class="row">
                         <div class="label">Date of birth&nbsp; </div>
                         <div class="value"><tags:validDate date="${command.participant.dateOfBirth}" /></div>
@@ -77,10 +73,8 @@
                         <div class="label">Gender&nbsp;</div>
                         <div class="value">${command.participant.gender}</div>
                     </div>
-
-                </td>
-            </tr>
-        </table>
+                </div>
+			</div>
     </chrome:division>
 	
     <c:if test="${not empty command.participant.identifiers}">

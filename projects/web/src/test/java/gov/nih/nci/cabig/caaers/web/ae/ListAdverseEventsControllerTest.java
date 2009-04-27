@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static org.easymock.EasyMock.expect;
+
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -10,9 +13,14 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.security.RoleCheck;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.acegisecurity.Authentication;
+import org.easymock.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -28,6 +36,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     private ParticipantDao participantDao;
 
     private StudyDao studyDao;
+    
 
     @Override
     protected void setUp() throws Exception {
@@ -77,6 +86,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         mockCommand.setParticipant(p);
         mockCommand.setStudy(s);
         mockCommand.updateSubmittability();
+        mockCommand.setSubmitLinkRenderable(true);
         expect(mockCommand.getStudy()).andReturn(s).anyTimes();
         expect(mockCommand.getParticipant()).andReturn(p).anyTimes();
         expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
@@ -84,5 +94,13 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         replayMocks();
         controller.handleRequest(request, response);
         verifyMocks();
+    }
+    
+    //will test whether the security role is applied correctly.
+    public void testDoSubmitAction() throws Exception{
+    	 mockCommand.setSubmitLinkRenderable(true);
+    	replayMocks();
+    	controller.doSubmitAction(mockCommand);
+    	verifyMocks();
     }
 }

@@ -15,6 +15,7 @@
 <%@attribute name="collapsed" required="true" type="java.lang.Boolean" description="If true, will display the box collapsed"%>
 <%@attribute name="enableDelete" description="If true, the delete button will be enabled" %>
 <%@attribute name="style" %>
+<%@attribute name="isSolicited" type="java.lang.Boolean" %>
 
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired ? 1  : 0}" />
@@ -22,32 +23,40 @@
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
 
-<c:set var="collapsedCheck" value="${adverseEvent.grade != null && (adverseEvent.grade != null && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true))}" />
-
-<chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:${title_grade}" id="ae-section-${index}" cssClass="ae-section" style="${style}" 
+<c:set var="v" value="adverseEvents[${index}]" />
+<c:set var="collapsedCheck" value="${!command.errorsForFields[v] && (isSolicited ? 'true' : adverseEvent.grade != null) && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true)}" />
+<c:if test="${command.adverseEvents[index].report.id > 0}"><c:set var="inReport"><jsp:attribute name="value"><img src='<c:url value='/images/blue/in-report.png '/>'></jsp:attribute></c:set></c:if>
+<a name="adverseEventTerm-${adverseEvent.adverseEventTerm.term.id}"></a>
+<chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade: ${title_grade}" id="ae-section-${index}" cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}"
 	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${collapsedCheck}">
-	<jsp:body>	
-	
+    <jsp:attribute name="additionalInfo">${inReport}</jsp:attribute>
+
+    <jsp:body>
 		<%-- Other MedDRA --%>
 		<c:if test="${indexCorrection gt 0}">
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
-			<script>
-                if(${adverseEvent.lowLevelTerm != null})
-                    $('${fieldGroups[mainGroup].fields[0].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.meddraTerm}';
 
-                var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
-                AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[0].propertyName}',
-                function(autocompleter, text) {
-                    createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-                        autocompleter.setChoices(values)})
-                },
-                function(lowLevelTerm) { 
-                	<%-- populate the heading--%>
-                    $('titleOf_ae-section-${index}').innerHTML = '${title_term} :' + lowLevelTerm.meddraTerm +', Grade: ${title_grade}';
-                    return lowLevelTerm.meddraTerm;
-                });
+            <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
+                <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
+                <jsp:attribute name="value">
+                    <ui:autocompleter path="${fieldGroups[mainGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}">
+                        <jsp:attribute name="populatorJS">
+                            function(autocompleter, text) {
+                                var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
+                                createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+                                    autocompleter.setChoices(values)})
+                            }
+                        </jsp:attribute>
+                        <jsp:attribute name="selectorJS">
+                            function(lowLevelTerm) {
+                                $('titleOf_ae-section-${index}').innerHTML = '${title_term} Grade: ${title_grade}';
+                                return lowLevelTerm.meddraTerm;
+                            }
+                        </jsp:attribute>
+                    </ui:autocompleter>
+                </jsp:attribute>
+            </ui:row>
 
-            </script>
+            <%--<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>--%>
 		</c:if>
 		<%-- Verbatim --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0 + indexCorrection]}"/>
@@ -57,17 +66,17 @@
 		<%-- 
 			Logic that selects the DEATH outcome when grade DEATH is checked. 
 		--%>
-			Event.observe('${fieldGroups[mainGroup].fields[1 + indexCorrection].propertyName}-row','click', function(evt){
+			Event.observe('${fieldGroups[mainGroup].fields[1 + indexCorrection].propertyName}-longselect','click', function(evt){
 				var val = evt.element().value;
 				var chkDeath = $('outcomes[' + ${index} + '][1]');
 				if(chkDeath){
 					chkDeath.checked = (val == 'DEATH');
 				}
 				//update the heading
-				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade:" + grades.indexOf(val);
+				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade: " + grades.indexOf(val);
 			});
 		</script>
-		<div class="row">
+	<div class="row" style="margin-top:0;margin-bottom:0;">
 		<div class="leftpanel">
 			<%-- Start Date --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
@@ -75,8 +84,6 @@
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
 			<%-- Time Of Event --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
-			<%-- Hospitalization --%>
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
 		</div>
 		<div class="rightpanel">
 			<%-- End Date --%>
@@ -85,10 +92,12 @@
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
 			<%-- Event Location --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
-			<%-- Outcome--%>
-			<ae:oneOutcome index="${index}" isRoutineFlow="true" />
 		</div>
-</div>
+	</div>
+	<%-- Hospitalization --%>
+	<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
+	<%-- Outcome--%>
+	<ae:oneOutcome index="${index}" isRoutineFlow="true" />
 		<!--  field to store the sig -->
 		<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>
 		<c:if test="${adverseEvent.submitted == true}">

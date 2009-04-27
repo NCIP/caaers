@@ -36,7 +36,7 @@
                      <td class="col-epoch-${status.index-4}"><input  ${displayOnly?'disabled':''} class="ck${status.index-4} ck-${eachRow[0]}" id="ck${status.index-4}-${eachRow[0]}" name="epoch[${status.index-4}]" value="${eachRow[0]}" type="checkbox" ${(eachRow[status.index] == true)?'checked':''}/></td>    			   
     			   </c:forEach>	
     			 <c:if test="${!displayOnly}">
-        		  <td id="deletecol-${eachRow[0]}" class='deletecol' ><input  id="button-${eachRow[0]}" class="eachRowDeleteButton" type="button" value="Delete" /></td>
+        		  <td id="deletecol-${eachRow[0]}" class='deletecol'><tags:button id="button-${eachRow[0]}" color="blue" type="button" value="Delete" size="small" icon="x" onclick=""/></td>
         		 </c:if>
     			</tr>
     		

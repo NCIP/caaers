@@ -73,6 +73,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         definition.setTimeScaleUnitType(TimeScaleUnit.DAY);
         definition.setAmendable(true);
         definition.setReportFormatType(ReportFormatType.ADEERSPDF);
+        definition.setPhysicianSignOff(false);
 
         // create planned notifications
         List<PlannedNotification> pnlist = new ArrayList<PlannedNotification>();

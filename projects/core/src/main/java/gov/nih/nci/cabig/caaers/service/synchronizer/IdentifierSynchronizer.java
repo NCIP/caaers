@@ -21,8 +21,6 @@ public class IdentifierSynchronizer<E extends AbstractIdentifiableDomainObject> 
 			DomainObjectImportOutcome<E> outcome) {
 		
 		List<Identifier> newIdentifiersList = new ArrayList<Identifier>();
-		List<Identifier> deleteIdentifiersList = new ArrayList<Identifier>();
-		OrganizationAssignedIdentifier remIdentifier = null;
 		
 		//Identify newly added Identifiers.
 		for(Identifier xmlIdentifer : xmlObj.getIdentifiers()){
@@ -42,34 +40,9 @@ public class IdentifierSynchronizer<E extends AbstractIdentifiableDomainObject> 
 				}
 			}
 		}
-		
-		//Identify identifiers to be removed.
-		for(Identifier dbIdentifer : dbObj.getIdentifiers()){
-			if(dbIdentifer instanceof OrganizationAssignedIdentifier){
-				for(Identifier xmlIdentifer : xmlObj.getIdentifiers()){
-					if(xmlIdentifer instanceof OrganizationAssignedIdentifier){
-						remIdentifier = new OrganizationAssignedIdentifier();
-						remIdentifier = (OrganizationAssignedIdentifier)dbIdentifer;
-						if(remIdentifier.equals(xmlIdentifer)){
-							remIdentifier = null;
-							break;
-						}
-					}
-				}
-				if(remIdentifier != null){
-					deleteIdentifiersList.add(remIdentifier);
-				}
-			}
-		}
-		
 		//Adding the new identifiers to the existing Study.
 		for(Identifier newIdentifier : newIdentifiersList){
 			dbObj.getIdentifiers().add(newIdentifier);
-		}
-		
-		//Removing the identifiers from the existing Study
-		for(Identifier delIdentifier : deleteIdentifiersList){
- 			dbObj.getIdentifiers().remove(delIdentifier);
 		}
 	} //end method
 }

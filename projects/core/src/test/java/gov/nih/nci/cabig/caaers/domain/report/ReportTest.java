@@ -76,5 +76,12 @@ public class ReportTest extends TestCase {
 		r.setStatus(ReportStatus.FAILED);
 		assertTrue(r.isActive());
 	}
+	
+	public void testGetPhysicianSignOff(){
+		Report report = Fixtures.createReport("testReport");
+		report.addReportVersion(new ReportVersion());
+		report.getLastVersion().setPhysicianSignoff(true);
+		assertTrue("getPhysicianSignOff incorrect", report.getPhysicianSignoff());
+	}
 
 }

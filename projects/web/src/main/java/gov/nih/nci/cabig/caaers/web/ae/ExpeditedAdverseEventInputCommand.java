@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Rhett Sutphin
@@ -62,6 +63,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      * @return
      */
     boolean isAdditionAllowed();
-    
     void saveReportingPeriod();
+    boolean isErrorApplicable(String... fields);
+    public HashMap<String, Boolean> getRulesErrors();
+    public void setRulesErrors(HashMap<String, Boolean> rulesErrors);    
 }

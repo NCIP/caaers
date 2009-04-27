@@ -225,7 +225,7 @@
 	 	task_config_id="-8" />	 	
 	 	
 	<task_configuration id="-9" 
-	 	status_name="SUBMITTED_TO_SPONSOR" 
+	 	status_name="SUBMIT_TO_SPONSOR" 
 	 	workflow_config_id="-11" location="1" 
 	 	task_name="End Expedited Domestic Flow" 
 	 	applicable="1"  message="abcd"/>
@@ -235,5 +235,7 @@
 	 <jbpm_pooledactor />
 	 <jbpm_taskactorpool />
 	 <jbpm_log />
+	 <wf_transition_owners/>
+	 <wf_assignees/>
 	 
 </dataset>

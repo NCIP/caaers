@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
 import java.util.List;
 
@@ -75,8 +76,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		}
 		cmd.setPreviousComments(prevComments);
 		
-		SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		String userId = SecurityUtils.getUserLoginName();
 		cmd.setUserId(userId);
 	}
 	
@@ -84,8 +84,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
 		super.onBindAndValidate(request, command, errors);
 		RoutingAndReviewCommentCommand cmd = (RoutingAndReviewCommentCommand) command;
-		SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		String userId = SecurityUtils.getUserLoginName();
 		cmd.setUserId(userId);
 		Object action = findInRequest(request, AJAX_ACTION);
 		if(action == null){

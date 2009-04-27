@@ -137,8 +137,8 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType" minOccurs="1"/>
-                    <xs:element name="lastName" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="firstName" type="CustomStringType"/>
+                    <xs:element name="lastName" type="CustomStringType"/>
                     <xs:element name="middleName" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
@@ -148,7 +148,7 @@
     <xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
     <xs:complexType name="ResearchStaffRefType">
         <xs:sequence>
-            <xs:element name="nciIdentifier" type="CustomStringType"/>
+            <xs:element name="nciIdentifier" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -157,10 +157,10 @@
         <xs:complexContent>
             <xs:extension base="PersonType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
-                    <xs:element name="phoneNumber" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
+                    <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -171,8 +171,8 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
-                    <xs:element name="statusCode" type="StatusCodeType" minOccurs="1"/>
+                    <xs:element name="emailAddress" type="CustomStringType"/>
+                    <xs:element name="statusCode" type="StatusCodeType"/>
                     
                 </xs:sequence>
             </xs:extension>
@@ -182,7 +182,7 @@
     <xs:element name="investigatorRef" type="InvestigatorRefType"/>
     <xs:complexType name="InvestigatorRefType">
         <xs:sequence>
-            <xs:element name="nciIdentifier" type="CustomStringType"/>
+            <xs:element name="nciIdentifier" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -191,10 +191,10 @@
         <xs:complexContent>
             <xs:extension base="PersonType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
-                    <xs:element name="phoneNumber" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
+                    <xs:element name="phoneNumber" type="CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

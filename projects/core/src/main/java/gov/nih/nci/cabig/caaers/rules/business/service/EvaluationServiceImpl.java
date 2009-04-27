@@ -76,7 +76,8 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod){
     	Map<ReportDefinition, List<AdverseEvent>> map = new HashMap<ReportDefinition, List<AdverseEvent>>();
-    		for(AdverseEvent ae : reportingPeriod.getReportableAdverseEvents()){
+    	List<AdverseEvent> adverseEventsToEvaluate =reportingPeriod.getModifiedReportableAdverseEvents();
+    		for(AdverseEvent ae : adverseEventsToEvaluate){
     			List<ReportDefinition> reportDefs = findRequiredReportDefinitions(null, Arrays.asList(ae), reportingPeriod.getStudy());
     			for(ReportDefinition reportDef : reportDefs){
     				if(map.containsKey(reportDef)){
@@ -132,9 +133,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     	
         // Bug fix - 12770
         if(expeditedData != null){
-        	if (defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
+        	if (defList.isEmpty() || expeditedData.getActiveReports().isEmpty()) return defList;
         	// Will filter already instantiated reports.
-        	for (Report report : expeditedData.getNonWithdrawnReports()) {
+        	for (Report report : expeditedData.getActiveReports()) {
         		for (ReportDefinition def : defList) {
         			if (!def.getId().equals(report.getReportDefinition().getId())) {
         				filterdReportDefs.add(def);

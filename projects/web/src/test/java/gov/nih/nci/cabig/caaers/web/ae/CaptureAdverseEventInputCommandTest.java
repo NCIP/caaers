@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -10,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -119,6 +121,19 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		System.out.println(aeList);
 		assertEquals(1, aeList.size());
 		assertEquals(new Integer(2), aeList.get(0).getId());
+		
+	}
+	
+	/**
+	 * This method tests {@link CaptureAdverseEventInputCommand#getSelectedAesList()}
+	 */
+	public void testGetSelectedAesList_WhenAssociatedToExpeditedReport(){
+		//refresh the selected ae map.
+		command.getSelectedAesMap().put(1, false);
+		command.getSelectedAesMap().put(2, true);
+		command.getAdverseEvents().get(1).setReport(new ExpeditedAdverseEventReport());
+		List<AdverseEvent> aeList = command.getSelectedAesList();
+		assertEquals(0, aeList.size());
 		
 	}
 	

@@ -121,20 +121,31 @@
     function setTitleDevice_${index}() {
         var titleID = "titleOf_medicalDevice-" + ${index};
         var fieldBrandName = $("aeReport.medicalDevices[${index}].brandName");
-        var brandNameValue = fieldBrandName.value;
+        var brandNameValue = '';
+        if(fieldBrandName){
+        	 brandNameValue = " (" + fieldBrandName.value + ")";
+        }
+       
 
         var fieldCommonName = $("aeReport.medicalDevices[${index}].commonName");
-        var commonNameValue = fieldCommonName.value;
+        var commonNameValue = '';
+        if(){
+        	commonNameValue = fieldCommonName.value;
+        }
 
-        $(titleID).innerHTML = "" + commonNameValue + " (" + brandNameValue + ")";
+        $(titleID).innerHTML = "" + commonNameValue + brandNameValue;
     }
 
     setTitleDevice_${index}.defer();
-    Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
-        setTitleDevice_${index}();
-    });
+    if($("aeReport.medicalDevices[${index}].brandName")){
+    	Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
+        	setTitleDevice_${index}();
+    	});
+    }
 
-    Event.observe($("aeReport.medicalDevices[${index}].commonName"), "change", function() {
-        setTitleDevice_${index}();
-    });
+	if($("aeReport.medicalDevices[${index}].commonName")){
+    	Event.observe($("aeReport.medicalDevices[${index}].commonName"), "change", function() {
+        	setTitleDevice_${index}();
+    	});
+	}
 </script>

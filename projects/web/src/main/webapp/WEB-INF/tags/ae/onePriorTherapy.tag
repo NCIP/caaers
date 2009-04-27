@@ -61,11 +61,10 @@
            <table class="tablecontent" border="0">
 				<tr>
 					<td colspan="2">
-                        <table width="100%" border="1" width="400px">
-                        <tr><td align="left"><b color="#2E3257">Therapy agent(s)</b>&nbsp;<td align="right"><input id="priortherapy[${index}].agent-btn" type="button" value="Add"/></td></tr>
+                        <table width="100%" border="1" width="450px">
+                        <tr><td align="left"><b color="#2E3257">Therapy agent(s)</b>&nbsp;<td align="right"><tags:button cssClass="foo" id="priortherapy[${index}].agent-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPTAgents_${index}();" size="small"/></td></tr>
                         </table>
 
-                        <a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
 						<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
 							<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
                             <c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status" var="agent">
@@ -87,16 +86,13 @@
 </div>
 
 <script type="text/javascript">
+
+function addPTAgents_${index}() {
+    mHistory.addDetails('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
+    AE.resetAutocompleter('priorTherapyAgents[${index}]');
+}
+    
 function initializePriorTherapy(){
-	
-	if($('priortherapy[${index}].agent-btn')){
-		
-		Element.observe('priortherapy[${index}].agent-btn', 'click', function(evt){
-		 	mHistory.addDetails('priorTherapyAgent', evt.element(), null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
-	 	});
-	 	
-	}
-	
 	AE.registerCalendarPopups();
 }
 

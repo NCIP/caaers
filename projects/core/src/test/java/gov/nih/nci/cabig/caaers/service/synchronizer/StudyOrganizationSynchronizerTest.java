@@ -79,32 +79,6 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		
 	}
 	
-	public void testStudyFundingSponsorRemoveSI(){
-		
-		FundingSponsor fundingSponsor1 = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
-		studyFundingSponsor1 = Fixtures.createStudyFundingSponsor(organization1);
-		studyInvestigator1 = Fixtures.createStudyInvestigator("Monish", organization1);
-		studyInvestigator1.setId(1);
-		studyInvestigator2 = Fixtures.createStudyInvestigator("Sameer", organization1);
-		studyInvestigator2.setId(2);
-		studyFundingSponsor1.addStudyInvestigators(studyInvestigator1);
-		studyFundingSponsor1.addStudyInvestigators(studyInvestigator2);
-		fundingSponsor1.setStudyFundingSponsor(studyFundingSponsor1);
-		dbStudy.setFundingSponsor(fundingSponsor1);
-		
-		
-		FundingSponsor fundingSponsor1a = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
-		studyFundingSponsor1a = Fixtures.createStudyFundingSponsor(organization1);
-		studyInvestigator1a = Fixtures.createStudyInvestigator("Monish", organization1);
-		studyFundingSponsor1a.addStudyInvestigators(studyInvestigator1a);
-		fundingSponsor1a.setStudyFundingSponsor(studyFundingSponsor1a);
-		xmlStudy.setFundingSponsor(fundingSponsor1a);
-		
-		studyOrganizationSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(1, dbStudy.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators().size());
-		
-	}
-	
 	public void testStudyFundingSponsorAddSP(){
 		FundingSponsor fundingSponsor1 = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
 		List<UserGroupType> groupTypeList = new ArrayList<UserGroupType>();
@@ -141,31 +115,4 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		assertEquals(3,dbStudy.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels().size());
 	}
 	
-	public void testStudyFundingSponsorRemoveSP(){
-		FundingSponsor fundingSponsor1 = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
-		List<UserGroupType> groupTypeList = new ArrayList<UserGroupType>();
-		studyFundingSponsor1 = Fixtures.createStudyFundingSponsor(organization1);
-		researchStaff1 = Fixtures.createResearchStaff(organization1, groupTypeList, "Monish");
-		studyPersonnel1 = Fixtures.createStudyPersonnel(researchStaff1);
-		studyPersonnel1.setId(1);
-		researchStaff2 = Fixtures.createResearchStaff(organization1, groupTypeList, "Sameer");
-		researchStaff2.setNciIdentifier("Nci 123");
-		studyPersonnel2 = Fixtures.createStudyPersonnel(researchStaff2);
-		studyPersonnel2.setId(2);
-		studyFundingSponsor1.addStudyPersonnel(studyPersonnel1);
-		studyFundingSponsor1.addStudyPersonnel(studyPersonnel2);
-		fundingSponsor1.setStudyFundingSponsor(studyFundingSponsor1);
-		dbStudy.setFundingSponsor(fundingSponsor1);
-		
-		FundingSponsor fundingSponsor1a = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
-		studyFundingSponsor1a = Fixtures.createStudyFundingSponsor(organization1);
-		researchStaff1a = Fixtures.createResearchStaff(organization1, groupTypeList, "Monish");
-		studyPersonnel1a = Fixtures.createStudyPersonnel(researchStaff1a);
-		studyFundingSponsor1a.addStudyPersonnel(studyPersonnel1a);
-		fundingSponsor1a.setStudyFundingSponsor(studyFundingSponsor1a);
-		xmlStudy.setFundingSponsor(fundingSponsor1a);
-		
-		studyOrganizationSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(1,dbStudy.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels().size());
-	}
 }

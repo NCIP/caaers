@@ -39,7 +39,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SEC_BR1_ERR","Either Course Information and/or Radiation Intervention must be provided for AGENTS + RADIATION pathways");
+			errors.addValidationError("SEC_BR1_ERR","Either Course Information and/or Radiation Intervention must be provided for AGENTS + RADIATION pathways").addFieldNames("aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
        	</rhs>
 	</rule>
 	
@@ -67,7 +67,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SEC_BR2_ERR","Either Course Information and/or Surgery Intervention must be provided for AGENTS + SURGERY pathways");
+			errors.addValidationError("SEC_BR2_ERR","Either Course Information and/or Surgery Intervention must be provided for AGENTS + SURGERY pathways").addFieldNames("aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
        	</rhs>
 	</rule>
 	
@@ -116,7 +116,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SEC_BR4_ERR","Either Course Information and/or Surgery Intervention and/or Radiation Intervention must be provided for AGENTS + SURGERY + RADIATION pathways");
+			errors.addValidationError("SEC_BR4_ERR","Either Course Information and/or Surgery Intervention and/or Radiation Intervention must be provided for AGENTS + SURGERY + RADIATION pathways").addFieldNames("aeReport.treatmentInformation.firstCourseDate", "aeReport.treatmentInformation.adverseEventCourse.date", "aeReport.treatmentInformation.adverseEventCourse.number", "aeReport.treatmentInformation.totalCourses");
        	</rhs>
 	</rule>
 	<!-- ==========================================================================
@@ -223,15 +223,18 @@
                 object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors"
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator(){ public boolean
-                validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
-                SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
-                ca : ti.getCourseAgents()){ i++;
-                if(ca.getStudyAgent() == null) continue;
-                if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp;
-                ca.getLastAdministeredDate() == null){ errors.addValidationError("PAG_BR3_ERR",
-                "'Date Last Administered' must be provided for an investigational agent.",i); } }
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    TreatmentInformation ti = aeReport.getTreatmentInformation();
+                    if(ti == null) return SUCCESS;
+                    if(ti.getCourseAgents() == null) return SUCCESS;
+
+                int i = 0;
+                for(CourseAgent ca : ti.getCourseAgents()) {
+                    if(ca.getStudyAgent() == null) continue;
+                    if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp; ca.getLastAdministeredDate() == null) { errors.addValidationError("PAG_BR3_ERR", "'Date Last Administered' must be provided for an investigational agent.",i).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].lastAdministeredDate"); }
+                    i++;
+                }
                 return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
         </lhs>
         <rhs>
@@ -255,12 +258,12 @@
                 validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                 TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
                 SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
-                ca : ti.getCourseAgents()){ i++; 
+                ca : ti.getCourseAgents()){  
                 if(ca.getStudyAgent() == null) continue;
                 if(ca.getDose().getAmount() != null
                 &amp;&amp; StringUtils.isEmpty(ca.getDose().getUnits()) ){
-                    errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Total dose administered this course' is provided",i);
-                     } } return errors.hasErrors() ? FAIL : SUCCESS;
+                    errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Total dose administered this course' is provided",i).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].dose.units", "aeReport.treatmentInformation.courseAgents[" + i + "].dose.amount");
+                     }; i++; } return errors.hasErrors() ? FAIL : SUCCESS;
                 } }.validate(aeReport, errors)</eval>
         </lhs>
         <rhs>
@@ -295,6 +298,41 @@
         <rhs>
             <!-- Populate Error Message--> errors.addValidationError("SEC_BR5B_ERR","'Protocol
             agents' must be not be provided if 'Course Information' has not been provided"); </rhs>
+    </rule>
+    
+    <!-- ==========================================================================
+    RuleName : PAG_BR4_CHK
+    Rule : 'Date Last Administered' must be provided for an investigational agent."
+    Error Code : PAG_BR4_ERR
+    Error Message : LAST_ADMINISTERED_DATE must be entered for an investigational agent.
+    ============================================================================= -->
+    <rule name="PAG_BR4_CHK">
+        <lhs>
+            <pattern identifier="aeReport"
+                object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors"
+                object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    TreatmentInformation ti = aeReport.getTreatmentInformation();
+                    if(ti == null) return SUCCESS;
+                    if(ti.getCourseAgents() == null) return SUCCESS;
+
+                int i = 0;
+                for(CourseAgent ca : ti.getCourseAgents()) {
+                    if(ca.getStudyAgent() == null ) continue;
+                    if(ti.getInvestigationalAgentAdministered() == null ) break;
+                    if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp; !ti.getInvestigationalAgentAdministered()) { 
+                    	errors.addValidationError("PAG_BR4_ERR", "'Was an investigational agent administered on this protocol?' must be 'Yes' if one of the Agents is Investigational Agent.",i).addFieldNames("aeReport.treatmentInformation.investigationalAgentAdministered"); 
+                    	break;
+                    }
+                    i++;                    
+                }
+                return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
     </rule>
     
 </package>	

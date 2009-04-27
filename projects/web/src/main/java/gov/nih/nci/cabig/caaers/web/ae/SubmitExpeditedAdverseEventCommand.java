@@ -69,6 +69,11 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     		}
     	}
     }
+    
+    @Override
+    public void save(){
+    	reportDao.modifyOrSaveReviewStatusAndComments(aeReport);
+    }
 
     public void setReportIndex(String reportIndex) {
         this.reportIndex = reportIndex;

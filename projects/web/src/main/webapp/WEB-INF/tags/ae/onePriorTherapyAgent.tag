@@ -10,12 +10,12 @@
 <%@attribute name="style"%>
 <%@attribute name="agent" type="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent" %>
 
-<table width="400px" border="0">
+<table width="480px" border="0">
 <tr>
     <td align="left">
         <%--${agent.chemoAgent.name}--%>
         <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.name : 'Begin typing here...'}"/>
-          <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" initialDisplayValue="${initValue}">
+          <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" initialDisplayValue="${initValue}" enableClearButton="true">
               <jsp:attribute name="populatorJS">
                   function(autocompleter, text){
                       createAE.matchChemoAgents(text, function(values) {

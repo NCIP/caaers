@@ -50,11 +50,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 
 		<entry key="/pages/ae/reviewResolver"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/reviewEvaluationPeriod"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/reviewAeReport"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+		<entry key="/pages/ae/submitReport"
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />	
 		<entry key="/pages/ae/createReportingPeriod"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createAeReportingPeriod"
@@ -190,7 +192,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="privilegeGenerator"
 			ref="sectionPrivilegeAndObjectIdGenerator" />
 	</bean>
-
+	
+    <bean  id="roleCheck" class="gov.nih.nci.cabig.caaers.web.security.RoleCheck">
+    	<property name="authorizationSwitch" ref="authorizationSwitch"/>
+    </bean>
+    
     <util:map id="tabObjectPrivilegeMap">
     	<!-- STUDY FLOW  , STUDY READ ONLY (assumption : user with CREATE , UPDATE would automatically have READ )-->
 		<entry key="gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
@@ -249,6 +255,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AttributionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		
+		<!--  AE Flow, Submit -->
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		
         <!--========= RULES ========-->
 		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>

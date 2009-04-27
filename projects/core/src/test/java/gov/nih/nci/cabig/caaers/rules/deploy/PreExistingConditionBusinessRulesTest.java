@@ -65,6 +65,10 @@ public class PreExistingConditionBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 2);
         assertCorrectErrorCode(errors, "PEC_BR1_ERR");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+
+        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.saeReportPreExistingConditions[" + i + "].preExistingCondition", "aeReport.saeReportPreExistingConditions[" + i + "].other");
 
     }
 

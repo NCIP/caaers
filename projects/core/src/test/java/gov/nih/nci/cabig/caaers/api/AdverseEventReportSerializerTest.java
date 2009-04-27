@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -25,7 +23,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		serializer = (AdverseEventReportSerializer)getDeployedApplicationContext().getBean("adverseEventReportSerializer");
+		serializer = (AdverseEventReportSerializer)this.getDeployedApplicationContext().getBean("adverseEventReportSerializer");
 	}
 	
 	/**

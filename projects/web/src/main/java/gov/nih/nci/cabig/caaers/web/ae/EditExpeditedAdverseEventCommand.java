@@ -20,8 +20,10 @@ import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Rhett Sutphin
@@ -40,9 +42,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
     List<ReportDefinition> reportDefinitionListForCreation = new ArrayList<ReportDefinition>();
-    List<Report> reportListForAmendment = new ArrayList<Report>();
     List<Report> reportListForWithdrawal = new ArrayList<Report>();
-    
+    Map<ReportDefinition, Report> amendedReportsMap = new HashMap<ReportDefinition, Report>();
     Map<ReportDefinition, ReportStatus> existingReportMap = new HashMap<ReportDefinition, ReportStatus>();
     
     // //// LOGIC
@@ -63,10 +64,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		this.evaluationService = evaluationService;
     }
 
-    @Override
-    public void save() {
-        reportDao.save(getAeReport());
-    }
     
     public void saveReportingPeriod() {
     	reportingPeriodDao.save(aeReport.getReportingPeriod());
@@ -78,10 +75,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
         assignmentDao.reassociate(getAssignment());
     }
     
-    @Override
-    public void flush() {
-    	reportDao.flush();
-    }
+   
     
    
     /**
@@ -123,25 +117,72 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	return "aeReport";
     }
     
-    public void populateCreationAndAmendmentList(){
-    	// For Sponsor/amendable newlySelectedReport take the following action
-    	//        - create New report if it doesnt exist
-    	//        - amend if it exists (also instantiate Notifications)
-
-    	// For other reports take the following action
-    	//         - create New report if it doesnt exist
-    	//         - amend if it exists and has status = SUBMITTED/WITHDRAWN
-    	//         - ignore if it exists and the status = PENDING.
-    	for (ReportDefinition reportDefinition : getNewlySelectedDefs()) {
-    		if (!existingReportMap.containsKey(reportDefinition))
-    			reportDefinitionListForCreation.add(reportDefinition);
-    		else {
-    			if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
-    					existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
-    				for (Report report : getAeReport().getReports()) {
-    					if (report.getReportDefinition().equals(reportDefinition))
-    						reportListForAmendment.add(report);
+    
+    /**
+     * This method will populate the reports to amend/create/replace. 
+     * 
+     * Note :- This method works on the base assumption that there will only be one amendable sponsor report completed at given point in time.
+     */
+    public void populateCreationAmendmentAndWithdrawlList(){
+//    	BJ: dont delete this comment.
+//    	// For Sponsor/amendable newlySelectedReport take the following action
+//    	//        - create New report if it doesnt exist
+//    	//        - amend if it exists (also instantiate Notifications)
+//
+//    	// For other reports take the following action
+//    	//         - create New report if it doesnt exist
+//    	//         - amend if it exists and has status = SUBMITTED/WITHDRAWN
+//    	//         - ignore if it exists and the status = PENDING.
+//    	for (ReportDefinition reportDefinition : getNewlySelectedDefs()) {
+//    		if (!existingReportMap.containsKey(reportDefinition))
+//    			reportDefinitionListForCreation.add(reportDefinition);
+//    		else {
+//    			if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+//    					existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+//    				for (Report report : getAeReport().getReports()) {
+//    					if (report.getReportDefinition().equals(reportDefinition))
+//    						reportListForAmendment.add(report);
+//    				}
+//    		}
+//    	}
+    	
+    	
+    	
+    	Set<Report> masterSetOfReportToAmmend = new HashSet<Report>();//to prevent double amending reports.
+    	if(newlySelectedDefs != null && !newlySelectedDefs.isEmpty()){
+    		
+    		//find the reports to be amended.
+    		for(ReportDefinition reportDef : newlySelectedDefs){
+    			List<Report> toAmmendReports = new ArrayList<Report>();
+    			
+    			if(reportDef.getAmendable()){
+    				String nciInstituteCode = reportDef.getOrganization().getNciInstituteCode();
+    				List<Report> completedReportsOfAnOrg = getAeReport().findCompletedAmendableReports(nciInstituteCode);
+    				//this is to filter double amending when multiple report defs of the same org is present in newly selected report defs
+    				for(Report report : completedReportsOfAnOrg){
+    					if(masterSetOfReportToAmmend.add(report)){
+    						toAmmendReports.add(report);
+    					}
     				}
+    			}
+    			
+    			
+    			
+    			if(toAmmendReports.isEmpty() && !aeReport.isAnActiveReportPresent(reportDef)){
+    			
+    				//there are no reports to amend, so newly selected one is to be added new. So add this to create list.
+    				reportDefinitionListForCreation.add(reportDef);
+    			
+    			}else{
+    				
+    				//there are a reports to amend. The first one should be amended. Others should be replaced. 
+    				//for time being this is fine, as there won't be more that one sponsor report to amend at a given point in time. 
+    				amendedReportsMap.put(reportDef, toAmmendReports.get(0));
+    				
+    				//add the rest, to the withdraw list. (Note:- Ideally they should also be AMENDED, but its okay for time being).
+    				toAmmendReports.remove(0);
+    				reportListForWithdrawal.addAll(toAmmendReports);
+    			}
     		}
     	}
     }
@@ -154,7 +195,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
      * @param command
      * @return
      */
-    public Boolean isNewlySelectedReportEarlier(){
+    public Boolean isNewlySelectedSponsorReportEarlier(){
     	Boolean isSelectedReportEarlier = false;
     	Report earliestPendingSponsorReport = getAeReport().getEarliestPendingSponsorReport();
     	for(ReportDefinition reportDefinition: newlySelectedSponsorReports){
@@ -171,26 +212,36 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
 
     
+
     /**
-     * This method amends the reports in the list reportListForAmendment.
+     * This method will amend the reports
      */
     public void amendReports(){
-    	amendReports(reportListForAmendment);
-    }
-    
-    public void amendReports(List<Report> amendReportList){
+    	
+    	//to capture the AE reports on which workflow should be enacted.
+    	Map<Integer, ExpeditedAdverseEventReport> aeReportMap = new HashMap<Integer, ExpeditedAdverseEventReport>();
+    	
     	// Set useDefaultVersion to false so that for the first report the reportVersionId is correctly incremented by 1.
     	Boolean useDefaultVersion = false;
-    	for(Report report: amendReportList){
-    		reportRepository.amendReport(report, useDefaultVersion);
+    	for(ReportDefinition repDef : amendedReportsMap.keySet()){
+    		Report report = amendedReportsMap.get(repDef);
+    		reportRepository.createAndAmendReport(repDef, report, useDefaultVersion);
     		// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
     		// and just incremented for the 1st one in the list.
     		useDefaultVersion = true;
+    		
+    		//add the aeReport to the map, so that next we could enact workflow
+    		aeReportMap.put(report.getAeReport().getId(), report.getAeReport());
     	}
-    	
+    
+    	//logic to restart the workflow on amending.
     	if(this.getWorkflowEnabled() && this.isAssociatedToWorkflow()){
-    		if(amendReportList.size() > 0)
-    			enactWorkflow(amendReportList.get(0).getAeReport());
+    		if(!aeReportMap.isEmpty()){
+    			for(ExpeditedAdverseEventReport aeReport : aeReportMap.values()){
+    				enactWorkflow(aeReport);
+    			}
+    		}
+    			
     	}
     }
 
@@ -324,14 +375,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	this.reportDefinitionListForCreation = reportDefinitionListForCreation;
     }
     
-    public List<Report> getReportListForAmendment(){
-    	return reportListForAmendment;
-    }
-    
-    public void setReportListForAmendment(List<Report> reportListForAmendment){
-    	this.reportListForAmendment = reportListForAmendment;
-    }
-    
     public List<Report> getReportListForWithdrawal(){
     	return reportListForWithdrawal;
     }
@@ -351,4 +394,12 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public EvaluationService getEvaluationService(){
     	return evaluationService;
     }
+    
+    public Map<ReportDefinition, Report> getAmendedReportsMap() {
+		return amendedReportsMap;
+	}
+    public void setAmendedReportsMap(
+			Map<ReportDefinition, Report> amendedReportsMap) {
+		this.amendedReportsMap = amendedReportsMap;
+	}
 }

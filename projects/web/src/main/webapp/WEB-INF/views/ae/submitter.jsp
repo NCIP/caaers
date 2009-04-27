@@ -103,24 +103,6 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
     	
-    	
-    	<chrome:division title="Physician sign-off">
-    		
-    		<p>
-    			
-    			Certify the physician has signed-off on the report and then enter your information as the submitter.
-    		
-    		</p>
-
-    		
-    		<c:forEach items="${fieldGroups['physicianSignoff'].fields}" var="field">
-                
-    			<tags:renderRow field="${field}"/>
-    		</c:forEach>
-    		
-    	
-    	</chrome:division>
-    	
         <chrome:division title="Reporter & Physician details">
             <c:forEach begin="0" end="1" varStatus="status">
             	<c:if test="${status.first}">

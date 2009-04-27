@@ -41,6 +41,7 @@ public class ReportDefinitionConverter {
 		reportDefinitionDomain.setDescription(reportDefinitionDto.getDescription());
 		reportDefinitionDomain.setAmendable(reportDefinitionDto.isAmendable());
 		reportDefinitionDomain.setDuration(reportDefinitionDto.getDuration());
+		reportDefinitionDomain.setPhysicianSignOff(reportDefinitionDto.isPhysicianSignOff());
 		
 		if("SECOND".equals(reportDefinitionDto.getTimeScaleUnit())){
 			reportDefinitionDomain.setTimeScaleUnitType(TimeScaleUnit.SECOND);
@@ -177,6 +178,8 @@ public class ReportDefinitionConverter {
 		reportDefinitionDto.setAmendable(reportDefinitionDomain.getAmendable());
 		reportDefinitionDto.setDuration(reportDefinitionDomain.getDuration());
 		reportDefinitionDto.setTimeScaleUnit(reportDefinitionDomain.getTimeScaleUnitType().getName());
+		reportDefinitionDto.setPhysicianSignOff((reportDefinitionDomain.getPhysicianSignOff() == null) ? false: reportDefinitionDomain.getPhysicianSignOff());
+		
 		//Populate Organization
 		OrganizationType org = objectFactory.createOrganizationType();
 		org.setName(reportDefinitionDomain.getOrganization().getName());

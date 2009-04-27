@@ -6,6 +6,7 @@
 
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The course that is being rendered" %>
 <c:if test="${fn:length(reportingPeriod.evaluatedAdverseEvents) gt 0}">
+<span style="font-size:13px; font-weight:bold;">All Adverse Events for this course/cycle</span>
 <div class="eXtremeTable">
 	<table width="100%" border="0" cellspacing="0" class="allAEs rpTableRegion">
 		<thead>

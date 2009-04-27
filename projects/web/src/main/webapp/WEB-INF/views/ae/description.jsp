@@ -33,8 +33,8 @@
     
     <script language="JavaScript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
-    
-		Event.observe(window, "load", function() {
+
+        Event.observe(window, "load", function() {
 			if($("aeReport.responseDescription.studyDrugInterrupted")){
 				Event.observe("aeReport.responseDescription.studyDrugInterrupted", "change", function() { viewSelection() })
 				viewSelection();
@@ -64,8 +64,26 @@
                 
 			}
 		}
-		
-	</script>
+
+        function pageSetup() {
+            Event.observe($('aeReport.responseDescription.presentStatus'), "change", function() {
+                checkPresense();
+            });
+        }
+
+        function checkPresense() {
+            if ($('aeReport.responseDescription.presentStatus').value == "DEAD") {
+                $('aeReport.responseDescription.autopsyPerformed-row').show();
+                $('aeReport.responseDescription.causeOfDeath-row').show();
+            } else {
+                $('aeReport.responseDescription.autopsyPerformed-row').hide();
+                $('aeReport.responseDescription.causeOfDeath-row').hide();
+            }
+        }
+
+        checkPresense.defer();
+        pageSetup.defer();
+    </script>
 	<!--[if lte IE 6]>
 <style>
 		#reporter-summary {

@@ -168,4 +168,13 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public List<String> nextTransitionNames(Integer workflowId, String userId);
+
+	/**
+	 * This method will return the next workflow transitions, available for the user for aeReport workflow.
+	 * It does the filtering of the next transitions depending upon whether the reports are submittable or not.
+	 * @param aeReport
+	 * @param loginId
+	 * @return
+	 */
+	public List<String> nextTransitionNamesForAeReportWorkflow(ExpeditedAdverseEventReport aeReport, String loginId);
 }

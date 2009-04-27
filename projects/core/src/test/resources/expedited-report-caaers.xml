@@ -2,8 +2,6 @@
 	<id>9</id>
 	<createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:type="java:java.lang.String">2008-10-01 11:35:16.921</createdAt>
-	<status xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:type="java:java.lang.String">PENDING</status>
 	<AdverseEventResponseDescription>
 		<eventDescription>abc</eventDescription>
 		<presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

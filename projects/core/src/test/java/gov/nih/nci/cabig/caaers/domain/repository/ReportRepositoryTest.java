@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -18,22 +21,29 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
+import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.easymock.EasyMock;
+
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
-public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
+public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     private static final Attribution[] SUFFICIENT_ATTRIBUTIONS = new Attribution[]{
             Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE};
 
@@ -42,18 +52,56 @@ public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
 
     private static final String TERM = "Auralmonagem";
 
-    private ReportRepository reportRepository;
+    private ReportRepositoryImpl reportRepository;
 
     private ExpeditedAdverseEventReport expeditedData;
+    
+    private ReportDao reportDao;
+    private ReportFactory reportFactory;
+    private SchedulerService schedulerService;
+    private ExpeditedReportTree expeditedReportTree;
+    private NowFactory nowFactory;
 
+    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         reportRepository = new ReportRepositoryImpl();
+        reportDao = registerDaoMockFor(ReportDao.class);
+        reportFactory = registerMockFor(ReportFactory.class);
+        schedulerService = registerMockFor(SchedulerService.class);
+        expeditedReportTree = new ExpeditedReportTree();
+        nowFactory = new NowFactory();
+        
+        
+        reportRepository.setReportDao(reportDao);
+        reportRepository.setReportFactory(reportFactory);
+        reportRepository.setSchedulerService(schedulerService);
+        reportRepository.setExpeditedReportTree(expeditedReportTree);
+        reportRepository.setNowFactory(nowFactory);
+        
+        
+        
         expeditedData = new ExpeditedAdverseEventReport();
         CtcTerm ctcTerm = new CtcTerm();
         ctcTerm.setTerm(TERM);
         expeditedData.getAdverseEvents().get(0).getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
+    }
+    
+    
+    public void testCreateAndAmendReport(){
+    	Report report = Fixtures.createReport("test");
+    	ReportDefinition repDef = report.getReportDefinition();
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	aeReport.addReport(report);
+    	
+    	EasyMock.expect(reportFactory.createReport(repDef, aeReport, true)).andReturn(report);
+    	reportDao.save(report);
+    	EasyMock.expectLastCall().times(2);
+    	schedulerService.scheduleNotification(report);
+    	replayMocks();
+    	reportRepository.createAndAmendReport(repDef, report, true);
+    	verifyMocks();
     }
 
 //    public void testValidateChecksForNoAttribution() throws Exception {

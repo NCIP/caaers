@@ -101,7 +101,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         ae0.getAdverseEventCtcTerm().getCtcTerm().setOtherRequired(true);
         ae0.setLowLevelTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].lowLevelTerm", "Other (MedDRA)");
+        assertEquals("SAE_005", errors.getFieldError("aeReport.adverseEvents[0].lowLevelTerm").getCode());
         // assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther","Other (verbatim)");
     }
 

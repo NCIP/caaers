@@ -11,8 +11,9 @@
 
 <c:set var="mainGroup">conmed${index}</c:set>
 <c:set var="conMedField" value="${fieldGroups[mainGroup].fields[0]}" />
+<c:set var="v" value="aeReport.concomitantMedications[${index}]" />
 
-<chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="false">
+<chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="${!empties[v]}">
 
     <jsp:attribute name="title">
 		${concomitantMedication.agentName}
@@ -31,19 +32,13 @@
     <jsp:attribute name="value"><ui:text path="aeReport.concomitantMedications[${index}].agentName" /></jsp:attribute>
 </ui:row>--%>
 
-<table >
-    <tr>
-        <td colspan="3">
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
-    <tr>
-        <td>
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
-        <td>
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
-        <td>
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 
-</table>    
+    <c:if test="${empty concomitantMedication.name}">
+        <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
+    </c:if>
+    <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
+    <tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+    <tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 
 <%--</ae:fieldGroupDivision>--%>
 
@@ -55,6 +50,7 @@
         var edYrField = $('aeReport.concomitantMedications[${index}].endDate.yearString')
         var edDdField = $('aeReport.concomitantMedications[${index}].endDate.dayString');
         var edMmField = $('aeReport.concomitantMedications[${index}].endDate.monthString');
+        var endDateElementId = 'aeReport.concomitantMedications[' + ${index} + '].endDate-row';
 
         if ($('aeReport.concomitantMedications[${index}].stillTakingMedications').checked) {
             edYrField.value = '';
@@ -63,10 +59,12 @@
             edYrField.clear(); edYrField.readOnly = true; edYrField.disable();
             edDdField.clear(); edDdField.readOnly = true; edDdField.disable();
             edMmField.clear(); edMmField.readOnly = true; edMmField.disable();
+            $(endDateElementId).style.display = 'none';
         } else {
             edYrField.readOnly = false; edYrField.enable();
             edDdField.readOnly = false; edDdField.enable();
             edMmField.readOnly = false; edMmField.enable();
+            $(endDateElementId).style.display = '';
         }
     }
     

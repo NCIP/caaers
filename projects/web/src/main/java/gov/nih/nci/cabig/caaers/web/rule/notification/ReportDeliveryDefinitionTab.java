@@ -65,7 +65,7 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         Iterator<ReportDeliveryDefinition> it = reportDefinitions.iterator();
         while (it.hasNext()) {
             ReportDeliveryDefinition rd = it.next();
-            if (StringUtils.isEmpty(rd.getEntityName())) { errors.reject("Check the fields for valid values.", "Check the fields for valid values."); return; }
+            if (StringUtils.isEmpty(rd.getEntityName())) { errors.reject("RPD_007", "Check the fields for valid values."); return; }
         }
     }
 

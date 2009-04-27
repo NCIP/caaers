@@ -170,7 +170,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         //check the treatment assignment.
         if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
             if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
-                errors.reject("", "Select the Treatment Assignment.");
+                errors.reject("CRP_001", "Select the Treatment Assignment.");
                 return;
             }
         } else {
@@ -182,14 +182,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
             for (AdverseEventReportingPeriod aerp : rPeriodList) {
                 if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
                     InputField epochField = fieldGroups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
-                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline treatment type already exists");
+                    errors.rejectValue(epochField.getPropertyName(), "CRP_002", "A Baseline treatment type already exists");
                     return;
                 }
             }
         }
         
         //validate the date related logic.
-        if(!errors.hasErrors())  validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), errors);
+        if(!errors.hasErrors())  validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), rpCommand.getAssignment().getStartDateOfFirstCourse(), errors);
     }
 
     /**
@@ -251,22 +251,29 @@ public class CreateReportingPeriodController extends SimpleFormController {
      * @param cmd
      * @return
      */
-    protected void validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList,Errors errors) {
+    protected void validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Errors errors) {
+        validateRepPeriodDates(rPeriod, rPeriodList, null, errors);
+    }
+
+    protected void validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Errors errors) {
 
         Date startDate = rPeriod.getStartDate();
         Date endDate = rPeriod.getEndDate();
-      
 
         // Check if the start date is equal to or before the end date.
+        if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
+            errors.rejectValue("reportingPeriod.startDate", "CRP_008", "Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
+        }
+
         if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
-            errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "End date cannot be earlier than Start date");
+            errors.rejectValue("reportingPeriod.endDate", "CRP_003", "End date cannot be earlier than Start date");
         }
 
         // Check if the start date is equal to end date.
         // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
         if (!rPeriod.getEpoch().getName().equals("Baseline")) {
             if (endDate != null && startDate.equals(endDate)) {
-                errors.rejectValue("reportingPeriod.startDate", "REQUIRED", "For Non-Baseline treatment type Start date cannot be equal to End date");
+                errors.rejectValue("reportingPeriod.startDate", "CRP_004", "For Non-Baseline treatment type Start date cannot be equal to End date");
             }
 
         }
@@ -282,22 +289,22 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 //we should make sure that no existing Reporting Period, start date falls, in-between these dates.
                 if(startDate != null && endDate != null){
                 	if(DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0){
-                		errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
                 		break;
                 	}
                 }else if(startDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                		errors.rejectValue("reportingPeriod.startDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
                 		break;
                 }
                 
                 //newly created reporting period start date, should not fall within any other existing reporting periods
                 if(sDate != null && eDate != null){
                 	if(DateUtils.compareDate(sDate, startDate) <=0 && DateUtils.compareDate(startDate, eDate) < 0){
-                		errors.rejectValue("reportingPeriod.endDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                		errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
                 		break;
                 	}
                 }else if(sDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                	errors.rejectValue("reportingPeriod.startDate", "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
+                	errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
             		break;
                 }
             }
@@ -306,14 +313,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
             if (rPeriod.getEpoch().getName().equals("Baseline")) {
                 if (!aerp.getEpoch().getName().equals("Baseline")) {
                     if (DateUtils.compareDate(sDate, startDate) < 0) {
-                        errors.rejectValue("reportingPeriod.startDate", "REQUIRED", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
+                        errors.rejectValue("reportingPeriod.startDate", "CRP_006", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
                         return;
                     }
                 }
             } else {
                 if (aerp.getEpoch().getName().equals("Baseline")) {
                     if (DateUtils.compareDate(startDate, sDate) < 0) {
-                        errors.rejectValue("reportingPeriod.startDate", "REQUIRED", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
+                        errors.rejectValue("reportingPeriod.startDate", "CRP_007", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
                         return;
                     }
                 }

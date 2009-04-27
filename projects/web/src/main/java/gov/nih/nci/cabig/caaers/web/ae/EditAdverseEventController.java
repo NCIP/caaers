@@ -4,19 +4,15 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +87,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	
         return command;
     }
-
+    
+    /**
+     * Find the parameters and initialize accordingly.
+     *  1- AE_LIST_PARAMETER, contains newly selected adverse events. 
+     *  2-
+     */
     @Override
     protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
         super.onBindOnNewForm(request, cmd);
@@ -109,19 +110,34 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         AdverseEventReportingPeriod reportingPeriod = (AdverseEventReportingPeriod) session.getAttribute(REPORTING_PERIOD_PARAMETER);
         List<ReportDefinition> rdList = (List<ReportDefinition>) session.getAttribute(REPORT_DEFN_LIST_PARAMETER);
         
-        
-        // This is to handle the case where the report is amended to add AEs. There is no new reportDefinition selected.
-        if(StringUtils.equals("amendReport", action) && (rdList == null || rdList.isEmpty())){
-        	// Here we need to populate rdList with submitted amendable reports.
-        	if(rdList == null)
-        		rdList = new ArrayList<ReportDefinition>();
-        	String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-        	for(Report report: command.getAeReport().getReports()){
-        		if(report.isSponsorReport(nciInstituteCode) && report.getStatus() == ReportStatus.COMPLETED && report.getReportDefinition().getAmendable() && report.getIsLatestVersion())
-        			rdList.add(report.getReportDefinition());
+        //if there are report definitions, choosen, add them to the command, after loading them to current session. 
+        if(rdList != null){
+        	for(ReportDefinition rd : rdList){
+        		command.getSelectedReportDefinitions().add(reportDefinitionDao.getById(rd.getId()));
         	}
         }
         
+        
+        // This is to handle the case where the report is amended to add AEs. There is no new reportDefinition selected.
+        if(StringUtils.equals("amendReport", action)){
+        	
+        	//update the graded date on aes, as we are going to amend the report.
+        	command.getAeReport().updateAdverseEventGradedDate();
+        	
+        	if(rdList == null || rdList.isEmpty()){
+            	
+            	//find  amendable reports of the sponsor, that are completed, they need to be amended.
+            	String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+            	List<Report> completedAmendableReports = command.getAeReport().findCompletedAmendableReports(nciInstituteCode);
+            	for(Report report: completedAmendableReports){
+            			command.getSelectedReportDefinitions().add(report.getReportDefinition());
+            	}
+            	
+        	}
+
+        }
+        
+        //add the newly selected adverse events.
         if(aeList != null){
         	for(AdverseEvent ae: aeList){
     			command.getAeReport().addAdverseEvent(ae);
@@ -130,10 +146,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         //modify the primary ae if necessary
         command.makeAdverseEventPrimary(primaryAdverseEventId);
-        
-        if(rdList != null){
-        	command.setSelectedReportDefinitions(rdList);
-        }
+      
         
         if(StringUtils.equals("createNew", action)){
         	AdverseEventReportingPeriod adverseEventReportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriod.getId());
@@ -151,7 +164,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         session.removeAttribute(REPORTING_PERIOD_PARAMETER);
         session.removeAttribute(REPORT_DEFN_LIST_PARAMETER);
         session.removeAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER);
-        
+       
+        //====================================================================================
         // Check whether the request is coming from ManageReports and is to amend a report
         String pramAction = request.getParameter(ACTION_PARAMETER);
         if(StringUtils.equals(pramAction, "amendReport")){
@@ -160,20 +174,25 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	String reportId = request.getParameter(REPORT_ID_PARAMETER);
         	session.setAttribute(ACTION_PARAMETER, pramAction);
         	if(reportId != null){
-        		List<Report> amendReportList = new ArrayList();
+        		
         		for(Report report: command.getAeReport().getReports()){
-        			if(report.getId().equals(Integer.parseInt(reportId)))
-        				amendReportList.add(report);	
+        			if(report.getId().equals(Integer.parseInt(reportId))){
+        				command.getAmendedReportsMap().put(report.getReportDefinition(), report);
+        				break;
+        			}
         		}
-        		command.amendReports(amendReportList);
+        		
+        		//update the graded date on aes, as we are going to amend the report.
+            	command.getAeReport().updateAdverseEventGradedDate();
+        		
+        		//now amend the reports
+        		command.amendReports();
         	}
         }
-        
-        
+        //====================================================================================
 
         if(StringUtils.equals(action, "createNew")){
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport(), rdList.toArray(new ReportDefinition[]{})));
-        	
         	// pre-init the mandatory section fields
             command.initializeMandatorySectionFields();
         }else{
@@ -231,10 +250,15 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected boolean suppressValidation(HttpServletRequest request,Object command) {
     	 if (super.suppressValidation(request, command)) return true;
     	 EditExpeditedAdverseEventCommand aeCommand = (EditExpeditedAdverseEventCommand) command;
-    	  //special case, if it is attribution page or intervention page, allow go back.
+    	 
+    	  //special case, if it is attribution page allow go back and forward
     	 String shortTitle = getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle();
-         if(shortTitle.equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName()) || 
-        		 shortTitle.equals(ExpeditedReportSection.STUDY_INTERVENTIONS.getDisplayName())){
+    	 if(shortTitle.equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName())){
+    		 return true;
+    	 }
+    	 
+    	//intervention page, allow go back.
+         if(shortTitle.equals(ExpeditedReportSection.STUDY_INTERVENTIONS.getDisplayName())){
         	 return super.getCurrentPage(request) > aeCommand.getNextPage();
          }
          

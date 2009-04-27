@@ -29,9 +29,9 @@
                         <xs:element name="birthDate" type="xs:date"  />
                         <xs:element name="birthYear" type="CustomDateType"   />
                     </xs:choice>
-                    <xs:element name="gender" type="GenderType"  minOccurs="0" />
-                    <xs:element name="race" type="RaceType"  minOccurs="0"/>
-                    <xs:element name="ethnicity" type="EthnicityType"  minOccurs="0" />
+                    <xs:element name="gender" type="GenderType"  minOccurs="1" maxOccurs="1" />
+                    <xs:element name="race" type="RaceType"  minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="ethnicity" type="EthnicityType"  minOccurs="1" maxOccurs="1"/>
                     
                     <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
                         <xs:complexType>

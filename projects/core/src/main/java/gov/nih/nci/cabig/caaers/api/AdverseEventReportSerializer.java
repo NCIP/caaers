@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Lab;
@@ -46,6 +47,9 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -247,6 +251,12 @@ public class AdverseEventReportSerializer {
 		   r.setId(report.getId());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
 		   r.setSubmissionMessage(report.getSubmissionMessage());
+		   ReportVersion rv = new ReportVersion();
+		   
+		   //rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
+		   rv.setReportVersionId(report.getLastVersion().getReportVersionId());
+		   
+		   r.addReportVersion(rv);
 		 //  r.setAmmendmentNumber(report.getAmmendmentNumber());
 		   
 		   // if report is successfully submitted before , get the ticket id.
@@ -470,7 +480,15 @@ public class AdverseEventReportSerializer {
 		    	if (!notApplicableFieldPaths.contains("responseDescription.dateRemovedFromProtocol")) {
 		    		adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
 		    	} else {
-		    		adverseEventResponseDescription.setDateRemovedFromProtocol(null);
+		    		DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+					try {
+						Date someNotPossibleDate = dfm.parse("1678-01-01 00:00:00");
+						adverseEventResponseDescription.setDateRemovedFromProtocol(someNotPossibleDate);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		    		
 		    	}
 		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
 		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
@@ -481,8 +499,17 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setReducedDose(aerd.getReducedDose());
 		    	adverseEventResponseDescription.setReducedDate(aerd.getReducedDate());
 		    	adverseEventResponseDescription.setDaysNotGiven(aerd.getDaysNotGiven());
-		    	adverseEventResponseDescription.setEventAbate(aerd.getEventAbate());
-		    	adverseEventResponseDescription.setEventReappear(aerd.getEventReappear());
+		    	if (!notApplicableFieldPaths.contains("responseDescription.eventAbate")) {
+		    		adverseEventResponseDescription.setEventAbate(aerd.getEventAbate());
+		    	} else {
+		    		adverseEventResponseDescription.setEventAbate(EventStatus.NA);
+		    	}
+		    	if (!notApplicableFieldPaths.contains("responseDescription.eventReappear")) {
+		    		adverseEventResponseDescription.setEventReappear(aerd.getEventReappear());
+		    	} else {
+		    		adverseEventResponseDescription.setEventReappear(EventStatus.NA);
+		    	}
+		    	
 		    	adverseEventResponseDescription.setAutopsyPerformed(aerd.getAutopsyPerformed());
 		    	adverseEventResponseDescription.setCauseOfDeath(aerd.getCauseOfDeath());
 		    	
@@ -797,7 +824,9 @@ public class AdverseEventReportSerializer {
 		    		ca1.setDose(ca.getDose());
 		    		//ca1.setModifiedDose(ca.getModifiedDose());
 		    		ca1.setAgentAdjustment(ca.getAgentAdjustment());
-		    		ca1.setStudyAgent(getStudyAgent(ca.getStudyAgent()));
+		    		if (ca.getStudyAgent() != null) {
+		    			ca1.setStudyAgent(getStudyAgent(ca.getStudyAgent()));
+		    		}
 		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
 		    		ca1.setFormulation(ca.getFormulation());
 		    		ca1.setLotNumber(ca.getLotNumber());
@@ -823,26 +852,20 @@ public class AdverseEventReportSerializer {
 		
 		public static void main (String[] args) {
 			//
-			AdverseEventReportSerializer aes = new AdverseEventReportSerializer();
-			ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
-			aer.setId(123);
-			
-			Lab l = new Lab();
-			l.setInfectiousAgent("test agent");
-			l.setSite("test site");
-			l.setLabDate(new Date());
-			
-			//List<Lab> labs= new ArrayList<Lab>();
-			aer.addLab(l);
-			
+			DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			try {
-				XmlMarshaller marshaller = new XmlMarshaller();
-				String	xml = marshaller.toXML(aer,aes.getMappingFile());
-				System.out.print(xml);
-			} catch (Exception e) {
+				Date a = dfm.parse("1678-06-06 00:00:00");
+
+				AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
+				adverseEventResponseDescription.setDateRemovedFromProtocol(a);
+				System.out.println(adverseEventResponseDescription.getDateRemovedFromProtocol());
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+
+			
+			
 		}
 
 		public void setReportDao(ReportDao reportDao) {

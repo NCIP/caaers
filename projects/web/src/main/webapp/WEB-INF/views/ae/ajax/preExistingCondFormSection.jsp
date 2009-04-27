@@ -4,7 +4,7 @@
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
 	<c:set var="preCond" value="${preExistingConditions[index]}" />
-	<ae:onePreExistingCond index="${index}" preExistingCondition="${preCond.preExistingCondition}" />
+	<ae:onePreExistingCond index="${index}" preExistingCondition="${preCond.preExistingCondition}" otherValue="${preCond.other}"/>
 </c:forEach>
 </tags:noform>
 <%--

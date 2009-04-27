@@ -41,6 +41,9 @@
    <bean id="taskCloseActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.TaskCloseActionHandler">
    		<property name="workflowService" ref="workflowService"/>
    </bean>
+   <bean id="physicianReviewActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.PhysicianReviewActionHandler">
+	   <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao"></property>
+   </bean>
    <bean id="workflowService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl" depends-on="expedited_domestic">
         <property name="jbpmTemplate" ref="jbpmTemplate"/>
          <property name="processDefinitions">

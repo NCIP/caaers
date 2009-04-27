@@ -74,7 +74,8 @@
             </td>
             <td><form:input path="searchText" size="30" onkeydown="onKey(event);"/></td>
             <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-            <td width="100%"><input type="button" onClick="buildTable('assembler');" value="Search"/>&nbsp;
+            <td width="100%">
+                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler');"/>
                 <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
             </td>
         </tr>

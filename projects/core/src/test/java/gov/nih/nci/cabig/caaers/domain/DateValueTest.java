@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -39,7 +40,7 @@ public class DateValueTest extends TestCase {
         DateValue dv2 = new DateValue(d);
         assertEquals(0, dv.compareTo(dv2));
 
-        DateValue dv3 = new DateValue(18, 9, 2002);
+        DateValue dv3 = new DateValue(18, 9, 2001);
         assertEquals(1, dv2.compareTo(dv3));
         assertEquals(-1, dv3.compareTo(dv2));
 
@@ -54,9 +55,27 @@ public class DateValueTest extends TestCase {
         assertEquals(0, new DateValue().compareTo(new DateValue()));
     }
 
+    public void testCompareToNull() {
+        DateValue dv = new DateValue(19, 12, 2002);
+        DateValue dvNull = new DateValue();
+        assertEquals(-1, dvNull.compareTo(dv));
+        assertEquals(1, dv.compareTo(dvNull));
+    }
+
     public void testToString() {
         DateValue dv = new DateValue(19, 9, 2002);
         assertEquals("09/19/2002", dv.toString());
+    }
+    
+    public void testToDate(){
+    	Calendar c = Calendar.getInstance();
+    	c.set(Calendar.YEAR, 2008);
+    	c.set(Calendar.MONTH, Calendar.FEBRUARY);
+    	c.set(Calendar.DATE, 1);
+    	
+    	DateValue dv = new DateValue(1, 2, 2008);
+    	
+    	assertEquals(gov.nih.nci.cabig.caaers.utils.DateUtils.formatDate(dv.toDate()), "02/01/2008");
     }
 
 
