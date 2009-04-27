@@ -135,7 +135,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             	investigator = fetchInvestigator(nciIdentifier);
                 if (investigator == null ) {
                 	// build new 
-                	investigator = new Investigator();
+                	investigator = new LocalInvestigator();
                 	investigator.setNciIdentifier(nciIdentifier);
                 } 
             }
