@@ -45,8 +45,11 @@
             if(associatedToWorkflow){
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
             }
+
+            checkPresense.defer();
+            pageSetup.defer();
 			
-		});
+        });
 		
 		function viewSelection(){
 			if ($('aeReport.responseDescription.studyDrugInterrupted').options[1].selected){
@@ -66,34 +69,34 @@
 		}
 
         function pageSetup() {
-            Event.observe($('aeReport.responseDescription.presentStatus'), "change", function() {
-                checkPresense();
-            });
+            if ($('aeReport.responseDescription.presentStatus')) {
+                Event.observe($('aeReport.responseDescription.presentStatus'), "change", function() {
+                    checkPresense();
+                });
+            }
         }
 
         function checkPresense() {
             if ($('aeReport.responseDescription.presentStatus')) {
                     if ($('aeReport.responseDescription.presentStatus').value == "DEAD") {
-                        $('aeReport.responseDescription.autopsyPerformed-row').show();
-                        $('aeReport.responseDescription.causeOfDeath-row').show();
+                        if ($('aeReport.responseDescription.autopsyPerformed-row')) $('aeReport.responseDescription.autopsyPerformed-row').show();
+                        if ($('aeReport.responseDescription.causeOfDeath-row')) $('aeReport.responseDescription.causeOfDeath-row').show();
                     } else {
-                        $('aeReport.responseDescription.autopsyPerformed-row').hide();
-                        $('aeReport.responseDescription.causeOfDeath-row').hide();
+                        if ($('aeReport.responseDescription.autopsyPerformed-row')) $('aeReport.responseDescription.autopsyPerformed-row').hide();
+                        if ($('aeReport.responseDescription.causeOfDeath-row')) $('aeReport.responseDescription.causeOfDeath-row').hide();
                     }
             }
 
             if ($('aeReport.responseDescription.presentStatus')) {
                     var c = $('aeReport.responseDescription.presentStatus').value;
                     if (c == "RECOVERED_WITH_SEQUELAE" || c == "RECOVERED_WITHOUT_SEQUELAE" || c == "DEAD") {
-                        $('aeReport.responseDescription.recoveryDate-row').show();
+                        if ($('aeReport.responseDescription.recoveryDate-row')) $('aeReport.responseDescription.recoveryDate-row').show();
                     } else {
-                        $('aeReport.responseDescription.recoveryDate-row').hide();
+                        if ($('aeReport.responseDescription.recoveryDate-row')) $('aeReport.responseDescription.recoveryDate-row').hide();
                     }
             }
         }
 
-        checkPresense.defer();
-        pageSetup.defer();
     </script>
 	<!--[if lte IE 6]>
 <style>
