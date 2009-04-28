@@ -18,8 +18,8 @@
 <script type="text/javascript">
 
 Event.observe(window, "load", function() {
-    $('condition-input').clear();
-    $('condition').clear();
+    if ($('condition-input')) $('condition-input').clear();
+    if ($('condition')) $('condition').clear();
 })
 
 function fireAction(action, selected) {
