@@ -72,12 +72,23 @@
         }
 
         function checkPresense() {
-            if ($('aeReport.responseDescription.presentStatus').value == "DEAD") {
-                $('aeReport.responseDescription.autopsyPerformed-row').show();
-                $('aeReport.responseDescription.causeOfDeath-row').show();
-            } else {
-                $('aeReport.responseDescription.autopsyPerformed-row').hide();
-                $('aeReport.responseDescription.causeOfDeath-row').hide();
+            if ($('aeReport.responseDescription.presentStatus')) {
+                    if ($('aeReport.responseDescription.presentStatus').value == "DEAD") {
+                        $('aeReport.responseDescription.autopsyPerformed-row').show();
+                        $('aeReport.responseDescription.causeOfDeath-row').show();
+                    } else {
+                        $('aeReport.responseDescription.autopsyPerformed-row').hide();
+                        $('aeReport.responseDescription.causeOfDeath-row').hide();
+                    }
+            }
+
+            if ($('aeReport.responseDescription.presentStatus')) {
+                    var c = $('aeReport.responseDescription.presentStatus').value;
+                    if (c == "RECOVERED_WITH_SEQUELAE" || c == "RECOVERED_WITHOUT_SEQUELAE" || c == "DEAD") {
+                        $('aeReport.responseDescription.recoveryDate-row').show();
+                    } else {
+                        $('aeReport.responseDescription.recoveryDate-row').hide();
+                    }
             }
         }
 
