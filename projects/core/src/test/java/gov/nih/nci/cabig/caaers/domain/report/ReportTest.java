@@ -84,4 +84,11 @@ public class ReportTest extends TestCase {
 		assertTrue("getPhysicianSignOff incorrect", report.getPhysicianSignoff());
 	}
 
+	public void testIsAmended(){
+		Report report = Fixtures.createReport("test report");
+		ReportVersion reportVersion = new ReportVersion();
+		reportVersion.setReportStatus(ReportStatus.AMENDED);
+		report.addReportVersion(reportVersion);
+		assertTrue("isAmended is returning and incorrect value", report.isAmended());
+	}
 }

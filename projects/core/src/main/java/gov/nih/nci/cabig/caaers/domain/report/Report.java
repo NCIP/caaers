@@ -410,6 +410,17 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     }
     
     /**
+     * This method returns true if the last reportVersion is in Amended state.
+     * @return
+     */
+    @Transient
+    public Boolean isAmended(){
+    	if(this.getLastVersion() != null && this.getLastVersion().getReportStatus() == ReportStatus.AMENDED)
+    		return true;
+    	return false;
+    }
+    
+    /**
      * All the reports, which can be submitted is considered active. 
      * The reports in {@link ReportStatus#WITHDRAWN} or {@link ReportStatus#REPLACED} or {@link ReportStatus#COMPLETED} or {@link ReportStatus#AMENDED}are considered inactive. 
      * @return

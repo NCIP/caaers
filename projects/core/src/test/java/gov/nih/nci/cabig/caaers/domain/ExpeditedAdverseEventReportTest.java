@@ -836,6 +836,24 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
     }
     
+    public void testGetHasSubmittedReport(){
+    	Report rep = Fixtures.createReport("test report 1");
+    	rep.setId(1);
+    	ReportVersion reportVersion = new ReportVersion();
+    	rep.getReportDefinition().setAmendable(true);
+    	reportVersion.setReportStatus(ReportStatus.AMENDED);
+    	rep.addReportVersion(reportVersion);
+    	report.addReport(rep);
+    	rep = Fixtures.createReport("test report 2");
+    	rep.setId(2);
+    	rep.getReportDefinition().setAmendable(true);
+    	reportVersion = new ReportVersion();
+    	reportVersion.setReportStatus(ReportStatus.COMPLETED);
+    	rep.addReportVersion(reportVersion);
+    	report.addReport(rep);
+    	assertTrue("getHasSubmittedReport is returning and incorrect Value", report.getHasSubmittedReport());
+    }
+    
     public void testFindPendingAmendableReports(){
     	Report rep = new Report();
     	rep.setId(1);

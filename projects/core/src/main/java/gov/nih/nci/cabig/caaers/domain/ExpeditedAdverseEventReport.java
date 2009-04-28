@@ -988,7 +988,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public Boolean getHasSubmittedReport(){
     	Boolean submitted = true;
     	for(Report report: reports){
-    		if(report.getReportDefinition().getAmendable() && !report.isSubmitted())
+    		if(report.getReportDefinition().getAmendable() && !report.isSubmitted() && !report.isAmended())
     			submitted = false;
     	}
     	
