@@ -961,6 +961,7 @@
 	</Summary>
 	<TreatmentInformation>
 		<firstCourseDate>2008-12-01T00:00:00.000-05:00</firstCourseDate>
+		<investigationalAgentAdministered>false</investigationalAgentAdministered>
 		<TreatmentAssignment>
 			<code>A</code>
 			<description>(Cycle= 3 Weeks): Cisplatin 60 mg/m2 IV on day 1 Flavopiridol 100 mg/m2 CIV over 24 hours on day 1</description>
