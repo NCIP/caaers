@@ -3,16 +3,15 @@
     xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <ns2:researchStaff>
-        <firstName>John</firstName>
-        <lastName>Chapman</lastName>
+        <firstName>Sam</firstName>
+        <lastName>Rockwell</lastName>
         <middleName>S</middleName>
-        <emailAddress>caaers.app2@gmail.com</emailAddress>
-        <faxNumber>879-345-0983</faxNumber>
-        <nciIdentifier>NCI</nciIdentifier>
-        <phoneNumber>657-678-0098</phoneNumber> 
-        <loginId>jchapman</loginId>       
+        <emailAddress>caaers.rock@gmail.com</emailAddress>
+        <faxNumber>2340980-0983</faxNumber>
+        <nciIdentifier>ID2</nciIdentifier>
+        <phoneNumber>657-093-1123</phoneNumber>       
         <ns1:organizationRef>
-            <nciInstituteCode>DCP</nciInstituteCode>
+            <nciInstituteCode>NCI</nciInstituteCode>
         </ns1:organizationRef>
         <role>caaers_participant_cd</role>
         <role>caaers_study_cd</role>
