@@ -51,11 +51,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
      * @param nciCode
      * @return
      */
-    ResearchStaff fetchResearchStaff(String email) {//String nciIdentifier) {
+    ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {
     	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-        if (StringUtils.isNotEmpty(email)) {
-        	//rsQuery.filterByNciIdentifier(nciIdentifier);
-        	rsQuery.filterByEmailAddress(email);
+        if (StringUtils.isNotEmpty(loginId)) {
+        	rsQuery.filterByLoginId(loginId);
+        	//rsQuery.filterByEmailAddress(email);
         }
         List<ResearchStaff> rsList = researchStaffRepository.getResearchStaff(rsQuery);
         
@@ -132,19 +132,27 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                
               String nciIdentifier = researchStaffDto.getNciIdentifier();
               String email = researchStaffDto.getEmailAddress();
-              ResearchStaff researchStaff = fetchResearchStaff(email);
+              String loginId = researchStaffDto.getLoginId();
+              if (StringUtils.isEmpty(loginId)) {
+            	  loginId = email;
+              }
+              ResearchStaff researchStaff = fetchResearchStaff(loginId);
               if (researchStaff == null ) {
               	// build new 
               	researchStaff = new LocalResearchStaff();
-              	researchStaff.setNciIdentifier(nciIdentifier);
-              	researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
-              	researchStaff.setLoginId(researchStaffDto.getEmailAddress());
+              	researchStaff.setNciIdentifier(nciIdentifier); 
+              	if (StringUtils.isEmpty(loginId)) {
+              		researchStaff.setLoginId(researchStaffDto.getEmailAddress());
+              	} else {
+              		researchStaff.setLoginId(loginId);
+              	}              	
               } 
               researchStaff.setFirstName(researchStaffDto.getFirstName());
               researchStaff.setLastName(researchStaffDto.getLastName());
               researchStaff.setMiddleName(researchStaffDto.getMiddleName());              
               researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
               researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
+              researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
               researchStaff.getUserGroupTypes().clear();
               
               List<Role> roles = researchStaffDto.getRole();

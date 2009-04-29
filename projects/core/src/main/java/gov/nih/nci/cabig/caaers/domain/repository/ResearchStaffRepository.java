@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class ResearchStaffRepository {
     		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
     	}
     	//update the loginId to email address if this is not webSSO mode
-    	if(createMode && !webSSOAuthentication){
+    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(researchStaff.getLoginId())) {
     		researchStaff.setLoginId(researchStaff.getEmailAddress());
     	}
     	MailException mailException = null;
