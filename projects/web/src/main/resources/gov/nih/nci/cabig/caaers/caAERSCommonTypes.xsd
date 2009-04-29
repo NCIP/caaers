@@ -161,6 +161,7 @@
                     <xs:element name="faxNumber" type="xs:string"/>
                     <xs:element name="nciIdentifier" type="xs:string"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
+                    <xs:element name="loginId" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
