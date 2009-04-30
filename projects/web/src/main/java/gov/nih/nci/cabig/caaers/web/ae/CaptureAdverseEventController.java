@@ -166,9 +166,12 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
     		BindException errors = new BindException(binder.getBindingResult());
     		return processFormSubmission(request, response, command, errors);
         }
-        else
-        	return super.handleInvalidSubmit(request, response);
-	}
+        else {
+            response.sendRedirect("captureRoutine");
+            // return new ModelAndView("ae/selectAssignment"); // super.handleInvalidSubmit(request, response);
+            return null;
+        }
+    }
 	
 	/**
 	 * If the request is from the Manage Reports page (link has displayReportingPeriod), 
