@@ -25,9 +25,13 @@
         <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:otherwise>
     </c:choose>
 </c:set>
+<c:set var="title_grade">${command.aeReport.adverseEvents[index].grade.code}</c:set>
+<c:set var="title_lowlevel">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
+<c:set var="isAdeersReporting" value="${command.adverseEventReportingPeriod.study.adeersReporting}" />
+
 <a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
+<chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
@@ -47,6 +51,7 @@
 
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
 
+        <div style="display:${empty adverseEvent.lowLevelTerm ? "none;" : "''"}">
         <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
             <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
             <jsp:attribute name="value">
@@ -60,7 +65,6 @@
                     </jsp:attribute>
                     <jsp:attribute name="selectorJS">
                         function(lowLevelTerm) {
-                            $('titleOf_ae-section-${index}').innerHTML = '${title_term} Grade: ${title_grade}';
                             return lowLevelTerm.meddraTerm;
                         }
                     </jsp:attribute>
@@ -68,7 +72,7 @@
                 </ui:autocompleter>
             </jsp:attribute>
         </ui:row>
-
+        </div>
 <%--
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">
@@ -89,28 +93,56 @@
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
 				<%-- Attribution --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
-				<%-- Event Time --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
-			</div>
+                        <%-- Event Time --%>
+                        <c:if test="${!isAdeersReporting}">
+                            <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+                        </c:if>
+            </div>
 			<div class="rightpanel">
 				<%-- End Date --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
 				<%-- Expected --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
-				<%-- Location --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
-			</div>
+    				<%-- Location --%>
+                    <c:if test="${!isAdeersReporting}">
+                            <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+                    </c:if>
+            </div>
 		</div>
-		<%-- Hospitalization --%>
+            <c:if test="${!isAdeersReporting}">
+        <%-- Hospitalization --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
 		<%-- Outcomes --%>
 		<ae:oneOutcome index="${index}" />
+            </c:if>
     </div>
     </jsp:body>
 </chrome:division>
 
 <script>
+    var ae_title_one_${index} = "${title}";
+    var ae_title_lowlevel_${index} = "${adverseEvent.lowLevelTerm.meddraTerm}";
+    var ae_title_grade_${index} = ${not empty title_grade ? title_grade : 0};
+
     Event.observe($('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input'), "blur", function() {
-        $('titleOf_ae-section-${index}').innerHTML = $('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input').value;
+        // $('titleOf_ae-section-${index}').innerHTML = $('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input').value;
+        updateAETitle_${index}();
     });
+    
+    Event.observe($('aeReport.adverseEvents[${index}].lowLevelTerm-input'), "blur", function() {
+        // $('titleOf_ae-section-${index}').innerHTML = $('aeReport.adverseEvents[${index}].lowLevelTerm-input').value;
+        ae_title_lowlevel_${index} = $('aeReport.adverseEvents[${index}].lowLevelTerm-input').value;
+        updateAETitle_${index}();
+    });
+
+    Event.observe('aeReport.adverseEvents[${index}].grade-longselect','click', function(evt){
+        var val = evt.element().value;
+        ae_title_grade_${index} = grades.indexOf(val);
+        updateAETitle_${index}();
+    });
+
+    function updateAETitle_${index}() {
+        $('titleOf_ae-section-${index}').innerHTML = ae_title_one_${index} + "&nbsp;" + ae_title_lowlevel_${index}  + ", Grade: " + ae_title_grade_${index};
+    }
+
 </script>

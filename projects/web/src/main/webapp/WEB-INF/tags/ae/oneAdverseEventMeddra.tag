@@ -14,6 +14,11 @@
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 
+<c:set var="title_grade">${command.aeReport.adverseEvents[index].grade.code}</c:set>
+<c:set var="title_lowlevel">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
+<c:set var="v" value="aeReport.adverseEvents[${index}]" />
+<c:set var="isAdeersReporting" value="${command.adverseEventReportingPeriod.study.adeersReporting}" />
+
 <c:set var="title"><c:choose>
     <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName} (Primary)</c:when>
     <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName}</c:otherwise>
@@ -21,7 +26,7 @@
 
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
 <a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsable="true" collapsed="${!empties[v]}">
+<chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsable="true" collapsed="${!empties[v]}">
 
     <div id="main-fields-${index}" class="main-fields">
     	<!-- Verbatim -->
@@ -35,20 +40,43 @@
 				<!-- Attribution -->
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}"/>
 				<!-- Event Time -->
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
-			</div>
+                <c:if test="${!isAdeersReporting}">
+                    <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+                </c:if>
+            </div>
 			<div class="rightpanel">
 				<!-- End Date -->
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 				<!-- Expected -->
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
 				<!-- Location -->
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
-			</div>
-		</div>		
-		<!-- Hospitalization -->
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
-		<!-- Outcomes -->
-		<ae:oneOutcome index="${index}" />
+                <c:if test="${!isAdeersReporting}">
+                    <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+                </c:if>
+            </div>
+		</div>
+        <c:if test="${!isAdeersReporting}">
+            <!-- Hospitalization -->
+            <tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+            <!-- Outcomes -->
+            <ae:oneOutcome index="${index}" />
+        </c:if>
     </div>
 </chrome:division>
+
+<script>
+    var ae_title_one_${index} = '${title}';
+    var ae_title_grade_${index} = ${not empty title_grade ? title_grade : 0};
+
+    Event.observe('aeReport.adverseEvents[${index}].grade-longselect','click', function(evt){
+        var val = evt.element().value;
+        ae_title_grade_${index} = grades.indexOf(val);
+        updateAETitle_${index}();
+    });
+
+    function updateAETitle_${index}() {
+        $('titleOf_ae-section-${index}').innerHTML = ae_title_one_${index} + ", Grade: " + ae_title_grade_${index};
+    }
+
+</script>
+

@@ -62,6 +62,10 @@
         var AETerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.aeTerminology.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id}
         var OtherMeddraTerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.otherMeddra.id : -1}
 
+        var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
+
+        // ----------------------------------------------------------------------------------------------------------------
+
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
             <c:if test="${not empty ae.adverseEventCtcTerm.ctcTerm}">
@@ -423,7 +427,7 @@
                  document.getElementById(imageId).src = imageSource.replace('right','down');
          }
 
-    
+
 
 </script>
 

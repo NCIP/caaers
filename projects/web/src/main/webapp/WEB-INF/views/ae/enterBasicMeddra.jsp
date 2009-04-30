@@ -44,10 +44,9 @@
      <script type="text/javascript">
      	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
-
-		
 		var aesEditor;
-		 
+        var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
+
         Element.observe(window, "load", function() {
             
             aesEditor = new ListEditor("ae-section", createAE, "AdverseEventMeddra", {

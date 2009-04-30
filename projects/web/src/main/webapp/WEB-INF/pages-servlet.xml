@@ -408,8 +408,7 @@
     <property name="validator" ref="numInRangeValidator"/>
   </bean>
 
-  <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
+  <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
     <property name="sessionForm"><value>true</value></property>
     <property name="authenticationMode" ref="authenticationMode"/>
     <property name="investigatorRepository" ref="investigatorRepository" />
