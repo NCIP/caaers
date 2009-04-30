@@ -62,7 +62,7 @@
                         else el.innerHTML = '';
                     });
                  }
-             })    
+             }, "aeReport.adverseEvents")    
 			
 			 //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
