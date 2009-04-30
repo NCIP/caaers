@@ -121,7 +121,7 @@
 
 <script>
     var ae_title_one_${index} = "${title}";
-    var ae_title_lowlevel_${index} = "${adverseEvent.lowLevelTerm.meddraTerm}";
+    var ae_title_lowlevel_${index} = '${adverseEvent.lowLevelTerm.meddraTerm}';
     var ae_title_grade_${index} = ${not empty title_grade ? title_grade : 0};
 
     Event.observe($('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input'), "blur", function() {
