@@ -13,8 +13,7 @@ public class ViewInvestigatorController extends ParameterizableViewController {
         setViewName("admin/investigator_confirmation");
     }
 
-    public ModelAndView handleRequestInternal(HttpServletRequest request,
-                    HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         setViewName("admin/investigator_confirmation");
         ModelAndView mav = new ModelAndView("admin/investigator_confirmation");

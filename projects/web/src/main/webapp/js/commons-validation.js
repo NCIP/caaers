@@ -232,6 +232,15 @@ function isValidUSPhoneNumber(areaCode, prefixNumber, suffixNumber) {
         if (phoneNumber.length == 0) {
             return true;
         }
+
+        var _x = phoneNumber.indexOf('x');
+        var _ext = "";
+        
+        if (_x >= 0 ) {
+            _ext = phoneNumber.substr(_x + 1);
+            phoneNumber = phoneNumber.substr(0, _x);
+        }
+        
         phoneNumber = phoneNumber.replace(/\D+/g, '');
         var length = phoneNumber.length;
         if (phoneNumber.length >= 7) {
@@ -248,7 +257,7 @@ function isValidUSPhoneNumber(areaCode, prefixNumber, suffixNumber) {
     }
     else return true;
 
-    if (areaCode.length != 3 || !isNumeric(areaCode) || prefixNumber.length != 3 || !isNumeric(prefixNumber) || suffixNumber.length != 4 || !isNumeric(suffixNumber)) return false;
+    if (areaCode.length != 3 || !isNumeric(areaCode) || prefixNumber.length != 3 || !isNumeric(prefixNumber) || suffixNumber.length != 4 || !isNumeric(suffixNumber) || !isNumeric(_ext)) return false;
     return true;
 }
 
