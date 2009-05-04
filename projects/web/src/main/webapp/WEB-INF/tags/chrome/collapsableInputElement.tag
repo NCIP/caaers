@@ -7,10 +7,10 @@
 
 <c:if test="${collapsed}">
 <script language="JavaScript1.2">_collapsedELs['${targetID}'] = 1;</script>
-<input type="image" id="${id }" src="<c:url value="/images/arrow-right.png"/>" onClick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">
+<img id="${id}" src="<c:url value="/images/arrow-right.png"/>" onClick="expandImageClick('${id}', '${targetID}', '');">
 </c:if>
 
 <c:if test="${!collapsed}">
-<input type="image" id="${id }" src="<c:url value="/images/arrow-right.png"/>" onClick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">
+<img id="${id }" src="<c:url value="/images/arrow-right.png"/>" onClick="expandImageClick('${id}', '${targetID}', '');">
 </c:if>
 

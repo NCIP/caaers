@@ -713,3 +713,15 @@ function replaceHtml(el, html) {
 	to the new element, which can be used to restore variable references. */
 	return newEl;
 };
+
+//---------------------------------------------------------------------------------------------------------------------
+
+/*
+* CollapsabaleInputElement.tag expanding functionality
+* */
+function expandImageClick(imgID, targetID) {
+    if ($(targetID).style.display == 'none') { $(targetID).show(); $(imgID).src = $(imgID).src.replace('right','down');} else { $(targetID).hide(); $(imgID).src = $(imgID).src.replace('down','right');}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+

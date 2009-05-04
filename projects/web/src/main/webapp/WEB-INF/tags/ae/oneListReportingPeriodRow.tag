@@ -31,14 +31,14 @@
 <c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
 <c:set var="reportingPeriodPageURL" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
 
-<tr align="center" id="${index}" class="${currClass}" onmouseout="this.className='${currClass}'" onmouseover="this.className='highlight'" onclick="$('collapseElement${reportingPeriod.id}').click() ;">
+<tr align="center" id="${index}" class="${currClass}" onmouseout="this.className='${currClass}'" onmouseover="this.className='highlight'">
 	<td><chrome:collapsableInputElement targetID="table${reportingPeriod.id}" collapsed="true" id="collapseElement${reportingPeriod.id}"/></td>
-	<td width="15%" align="left">${reportingPeriod.name }</td>
-	<td width="10%">${reportingPeriod.numberOfReports}</td>
-	<td width="10%">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
-	<td align="left">${reportingPeriod.dataEntryStatus}</td>
-	<td align="left"><span class="${reportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : reportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : reportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : reportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${reportingPeriod.reportStatus}</span></td>
-	<td width="20%" align="center">
+	<td width="15%" align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${reportingPeriod.name }</td>
+	<td width="10%" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${reportingPeriod.numberOfReports}</td>
+	<td width="10%" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
+	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${reportingPeriod.dataEntryStatus}</td>
+	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');"><span class="${reportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : reportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : reportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : reportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${reportingPeriod.reportStatus}</span></td>
+	<td width="20%" align="center" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">
 		<SELECT style="width:100px;" id="actions-${reportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${reportingPeriod.id})" >
 				<OPTION selected value="none">Please select</OPTION>
 		     	<OPTION value="editReportingPeriod">Edit Adverse Events</OPTION>
