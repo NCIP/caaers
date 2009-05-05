@@ -88,7 +88,11 @@
                 <c:forEach items="${command.participant.identifiers}" var="identifier">
                     <tr class="results">
                         <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-                            <td>${identifier.organization}</td>
+                            <td>
+   							<c:if test ="${identifier.organization.externalId != null}">
+								<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+							</c:if>                            
+                            ${identifier.organization}</td>
                         </c:if>
                         <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
                             <td>${identifier.systemName}</td>
@@ -114,7 +118,13 @@
                         <tr class="results">
                             <td>${assignment.studySite.study.primaryIdentifier}</td>
                             <td>${assignment.studySite.study.shortTitle}</td>
-                            <td>${assignment.studySite.organization.name}</td>
+                            <td>
+  							<c:if test ="${assignment.studySite.organization.externalId != null}">
+								<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+							</c:if>                              
+                            ${assignment.studySite.organization.name}
+                            
+                            </td>
                             <td>${assignment.studySubjectIdentifier}</td>
                         </tr>
                 </c:forEach>

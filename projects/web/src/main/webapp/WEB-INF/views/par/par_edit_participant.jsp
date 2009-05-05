@@ -120,7 +120,12 @@ function removeSystemIdentifier(container, index) {
     <tr class="results">
       <td><ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}</td>
       <td>${assignment.studySite.study.shortTitle}</td>
-      <td>${assignment.studySite.organization.name}</td>
+      <td>
+   	<c:if test ="${assignment.studySite.organization.externalId != null}">
+			<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+	</c:if>        
+      ${assignment.studySite.organization.name}
+      </td>
       <td><ui:text path="${assign}" /></td>
     </tr>
   </c:forEach>

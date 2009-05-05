@@ -128,7 +128,12 @@ function ajaxStudySearch(searchText, searchType) {
                             </ec:column>
                             <ec:column property="primaryIdentifier" title="Primary ID" />
                             <ec:column property="shortTitle" title="Short Title" />
-                            <ec:column property="primarySponsorCode" title="Funding Sponsor" />
+                            <ec:column property="primarySponsorCode" title="Funding Sponsor" >
+								<c:if test ="${study.primaryFundingSponsorOrganization.externalId != null}">
+									<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+								</c:if>
+								${study.primarySponsorCode}
+                            </ec:column>
                             <ec:column property="phaseCode" title="Phase" />
                             <ec:column property="status" title="Status" />
                         </ec:row>
