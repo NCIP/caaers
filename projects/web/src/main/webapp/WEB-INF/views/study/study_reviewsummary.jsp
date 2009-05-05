@@ -58,11 +58,19 @@
             	</div>
             	<div class="row">
                 	<div class="label">Primary sponsor</div>
+                	<c:if test="${command.study.primaryFundingSponsorOrganization.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if>                	
                 	<div class="value">${command.study.primaryFundingSponsorOrganization.name} </div>
             	</div>
 				<div class="row">
                 	<div class="label">Coordinating center</div>
-                	<div class="value">${command.study.studyCoordinatingCenter.organization.name} </div>
+                	<div class="value">
+                	<c:if test="${command.study.studyCoordinatingCenter.organization.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if>
+                	${command.study.studyCoordinatingCenter.organization.name} 
+                	</div>
             	</div>
             </div>
         	<div class="rightpanel">
@@ -222,7 +230,13 @@
 				</tr>
 				<c:forEach items="${command.study.studySites}" var="studySite">
 				<tr class="results">
-					<td>${studySite.organization.name}</td>
+					<td>
+					<c:if test="${studySite.organization.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if>
+					${studySite.organization.name}
+					
+					</td>
 				</tr>
 				</c:forEach>
 				<c:if test="${empty command.study.studySites}">
@@ -245,7 +259,12 @@
             <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
-                        <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
+                        <td>
+                    <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if>  
+                        
+                        ${studyInvestigator.siteInvestigator.investigator.fullName}</td>
                         <td>${studyInvestigator.roleCode}</td>
                         <td>${studyInvestigator.statusCode}</td>
                     </tr>
@@ -275,7 +294,13 @@
             <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
                     <tr class="results">
-                        <td>${studyPersonnel.researchStaff.fullName}</td>
+                    
+                        <td>
+                    <c:if test="${studyPersonnel.researchStaff.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if>  
+                        ${studyPersonnel.researchStaff.fullName}
+                        </td>
                         <td>${studyPersonnel.roleCode}</td>
                         <td>${studyPersonnel.statusCode}</td>
                     </tr>
@@ -408,7 +433,12 @@
 			<c:forEach items="${command.study.identifiersLazy}" var="identifier">
 			<tr class="results">
 				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<td>${identifier.organization}</td>
+					<td>
+				<c:if test="${identifier.organization.externalId != null}">
+                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                	</c:if> 
+					
+					${identifier.organization}</td>
 				</c:if>
 				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					<td>${identifier.systemName}</td>

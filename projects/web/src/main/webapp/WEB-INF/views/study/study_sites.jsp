@@ -48,7 +48,7 @@
                         );
             },
             sitePopulator: function(autocompleter, text) {
-                createStudy.matchOrganization(text, function(values) {
+                createStudy.restrictOrganizations(text, function(values) {
                     autocompleter.setChoices(values)
                 })
             },
@@ -62,7 +62,7 @@
                 }
                 
                 var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-                return organization.name + nciInstituteCode + "" + image
+                return image + "" +organization.name + nciInstituteCode 
             }
 
         });

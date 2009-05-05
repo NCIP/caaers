@@ -54,7 +54,7 @@
         	sitePersonnelSelector: function(sPersonnel) { 
         	 	  var image;
         	 	  if(sPersonnel.externalId != null){
-                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                          image = '<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
                   } else {
                           image = '';
                   }
