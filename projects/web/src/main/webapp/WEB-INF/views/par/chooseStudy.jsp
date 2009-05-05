@@ -131,7 +131,12 @@
                                     <td><form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}"
                                                           path="siteId" value="${studySite.organization.id}"
                                                           onclick="javascript:resetStudy('studyId_${study.id}');"/>
-                                            ${studySite.organization.name }</td>
+                                                          
+    							<c:if test ="${studySite.organization.externalId != null}">
+									<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+								</c:if>                                                           
+                                            ${studySite.organization.name }
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </table>
