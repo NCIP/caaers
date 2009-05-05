@@ -33,7 +33,9 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -83,9 +85,11 @@ public class CreateStudyAjaxFacade {
     private DiseaseTermDao diseaseTermDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
+    private ResearchStaffRepository researchStaffRepository;
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    private InvestigatorRepository investigatorRepository;
     private StudyDao studyDao;
     protected LowLevelTermDao lowLevelTermDao;
     protected CtcTermDao ctcTermDao;
@@ -96,7 +100,7 @@ public class CreateStudyAjaxFacade {
         String[] arr = new String[] { text };
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
         int siteId = studyCommand.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
-        List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
+        List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(arr, siteId);
 
         return ObjectTools.reduceAll(siteInvestigators,
                         new ObjectTools.Initializer<SiteInvestigator>() {
@@ -110,7 +114,7 @@ public class CreateStudyAjaxFacade {
 
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
-        List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text }, siteId);
+        List<ResearchStaff> researchStaff = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
         return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
     }
 
@@ -199,7 +203,7 @@ public class CreateStudyAjaxFacade {
      */
     public List<Organization> restrictOrganizations(final String text) {
         List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text));
-        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
     }
     
     public List<Organization> matchOrganization(final String text) {
@@ -713,5 +717,15 @@ public class CreateStudyAjaxFacade {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+
+	public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
+	}
+
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 }
