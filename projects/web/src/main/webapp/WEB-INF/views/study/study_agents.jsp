@@ -237,13 +237,14 @@ td#linkPosition a img {
 		</c:forEach>
 
         <span id="agentbookmark"></span>
-	
-	</jsp:attribute>
-	<jsp:attribute name="localButtons" >
-        <div align=right>
+
+        <div align="left">
             <tags:indicator id="sa-add-indicator" />
             <tags:button color="blue" type="button" value="Add Study Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
         </div>
+        
+    </jsp:attribute>
+	<jsp:attribute name="localButtons" >
     </jsp:attribute>
     
 </tags:tabForm>
