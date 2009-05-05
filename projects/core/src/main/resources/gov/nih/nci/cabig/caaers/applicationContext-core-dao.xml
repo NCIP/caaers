@@ -649,6 +649,7 @@ This applicationContext contains the definition of the DAOs
 		<property name="csmUserRepository" ref="csmUserRepository"/>
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="investigatorConverterDao" ref="investigatorConverterDao" />
+		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
 	</bean>
     <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>
