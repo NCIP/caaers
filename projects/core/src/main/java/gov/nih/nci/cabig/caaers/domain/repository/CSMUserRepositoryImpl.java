@@ -120,7 +120,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             csmUser.setLoginName(user.getLoginId());
         }
         csmUser.setEmailId(emailId);
-        csmUser.setPhoneNumber(user.getPhoneNumber());
+// this line is causing issues, the CSM_USER table has the phone length as 15 chars, and the phone can be wider, as it can have spaces and extension        
+//        csmUser.setPhoneNumber(user.getPhoneNumber());
         csmUser.setFirstName(user.getFirstName());
         csmUser.setLastName(user.getLastName());
         // psc does not use these
