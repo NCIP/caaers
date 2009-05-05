@@ -3,11 +3,12 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
-import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 import java.util.List;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false)
 public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private InvestigatorDao investigatorDao;
+	private SiteInvestigatorDao siteInvestigatorDao;
 	private InvestigatorConverterDao investigatorConverterDao;
 	private CSMUserRepository csmUserRepository;
 	private String authenticationMode;
@@ -77,11 +79,12 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		return merge(localInvestigators,remoteInvestigators);
 	}
 	
-	public List<Investigator> getBySubnames(String[] subnames) {
-		List<Investigator> localInvestigators = investigatorDao.getBySubnames(subnames);
-		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
-		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
-		return merge(localInvestigators,remoteInvestigators);
+	public List<SiteInvestigator> getBySubnames(String[] subnames, int siteId) {
+		List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(subnames,siteId);
+		//RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		//List<SiteInvestigator> remoteInvestigators = siteInvestigatorDao.getRemoteInvestigators(searchCriteria);
+		//return merge(localInvestigators,remoteInvestigators);
+		return siteInvestigators;
 	}
 	
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
@@ -136,6 +139,10 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public void setInvestigatorConverterDao(
 			InvestigatorConverterDao investigatorConverterDao) {
 		this.investigatorConverterDao = investigatorConverterDao;
+	}
+
+	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
+		this.siteInvestigatorDao = siteInvestigatorDao;
 	}
 
 }
