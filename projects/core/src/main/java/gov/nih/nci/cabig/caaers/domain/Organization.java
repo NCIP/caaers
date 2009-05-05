@@ -245,7 +245,7 @@ public abstract class Organization extends AbstractMutableDomainObject {
 
     @Override
     public int hashCode() {
-        return (getName() != null ? getName().hashCode() : 0);
+        return (getNciInstituteCode() != null ? getNciInstituteCode().hashCode() : 0);
     }
 
     @Override
