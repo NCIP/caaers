@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 
 import java.util.Arrays;
@@ -33,16 +35,19 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private SiteInvestigatorDao siteInvestigatorDao;
 
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    
+    private InvestigatorRepository investigatorRepository;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         siteInvestigatorDao = registerDaoMockFor(SiteInvestigatorDao.class);
         investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
+        investigatorRepository = this.registerMockFor(InvestigatorRepositoryImpl.class);
         facade = new CreateStudyAjaxFacade();
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
-
+        facade.setInvestigatorRepository(investigatorRepository);
         command = new StudyCommand();
         study = new Study();
         command.setStudy(study);
@@ -61,7 +66,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         studySite.setOrganization(setId(6, new LocalOrganization()));
         study.addStudySite(studySite);
 
-        expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(Arrays.asList(expectedInvestigator));
+        expect(investigatorRepository.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(Arrays.asList(expectedInvestigator));
         replayMocks();
         List<SiteInvestigator> results = facade.matchSiteInvestigator("foo", 0);
         verifyMocks();
