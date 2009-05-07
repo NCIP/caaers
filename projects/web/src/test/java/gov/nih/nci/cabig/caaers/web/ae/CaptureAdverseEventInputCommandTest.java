@@ -137,45 +137,8 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		
 	}
 	
-	public void testInitializeExpectednessOnAdverseEvents(){
-		//set some expected aes in study
-		ExpectedAECtcTerm expectedAECtcTerm = Fixtures.createExpectedAECtcTerm(2, "abcd", "efg");
+
 	
-		command.getAdverseEventReportingPeriod().getStudy().addExpectedAECtcTerm(expectedAECtcTerm);
-		for(AdverseEvent ae: command.getAdverseEvents()){
-			assertNull(ae.getExpected());
-		}
-		
-		//update the ctcterm Id of the second AE
-		command.getAdverseEvents().get(1).getAdverseEventCtcTerm().getTerm().setId(2);
-		
-		command.initializeExpectednessOnAdverseEvents();
-		
-		assertNull(command.getAdverseEvents().get(0).getExpected());
-		assertTrue(command.getAdverseEvents().get(1).getExpected());
-		assertNull(command.getAdverseEvents().get(2).getExpected());
-	}
-	
-	
-	public void testInitializeExpectednessOnMedDRAAdverseEvents(){
-		//set some expected aes in study
-		ExpectedAECtcTerm expectedAECtcTerm = Fixtures.createExpectedAECtcTerm(2, "abcd", "efg");
-	
-		command.getAdverseEventReportingPeriod().getStudy().addExpectedAECtcTerm(expectedAECtcTerm);
-		for(AdverseEvent ae: command.getAdverseEvents()){
-			ae.setAdverseEventCtcTerm(null);
-			ae.getAdverseEventMeddraLowLevelTerm().setTerm(new LowLevelTerm());
-		}
-		
-		//update the ctcterm Id of the second AE
-		command.getAdverseEvents().get(1).getAdverseEventTerm().getTerm().setId(2);
-		
-		command.initializeExpectednessOnAdverseEvents();
-		
-		assertNull(command.getAdverseEvents().get(0).getExpected());
-		assertNull(command.getAdverseEvents().get(1).getExpected());
-		assertNull(command.getAdverseEvents().get(2).getExpected());
-	}
 	
 	/**
 	 * This method tests {@link CaptureAdverseEventInputCommand#initializeOutcomes()}

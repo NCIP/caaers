@@ -176,7 +176,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         researchStaffFieldGroup.getFields().add(faxNumberField);
         
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Grid identity", false);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Login Id", true);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
 

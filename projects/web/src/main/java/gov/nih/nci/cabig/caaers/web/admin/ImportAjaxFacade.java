@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -56,11 +57,10 @@ public class ImportAjaxFacade {
 
     private StudyDao studyDao;
     
-    private InvestigatorDao investigatorDao;
-    
-    private ResearchStaffDao researchStaffDao;
-    
     protected ResearchStaffRepository researchStaffRepository;
+    
+    protected InvestigatorRepository investigatorRepository;
+
 
     private AdverseEventEvaluationService adverseEventEvaluationService;// = new AdverseEventEvaluationServiceImpl();
 
@@ -116,7 +116,9 @@ public class ImportAjaxFacade {
         ImportCommand importCommand = getImportCommand(request);
         List<DomainObjectImportOutcome<Investigator>> importableInvestigators = importCommand.getImportableInvestigators();
         for (DomainObjectImportOutcome<Investigator> importOutcome : importableInvestigators) {
-    		investigatorDao.save(importOutcome.getImportedDomainObject());
+    		investigatorRepository.save(importOutcome.getImportedDomainObject(), ResetPasswordController.getURL(request
+                    .getScheme(), request.getServerName(), request.getServerPort(), request
+                    .getContextPath()));
         }
     	return "DONE";
     }
@@ -273,16 +275,15 @@ public class ImportAjaxFacade {
 		this.adverseEventEvaluationService = adverseEventEvaluationService;
 	}
 
-	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
 
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}
 
 	public void setResearchStaffRepository(
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
+	}
+
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 }

@@ -78,11 +78,13 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
+			<%-- 
+			<tr style="display:none">
 				<td width="100%">
 					<ae:listAllAeSection reportingPeriod="${reportingPeriod}"/>
 				</td>
 			</tr>
+			--%>
 		</table>			
 	</td>
 </tr>

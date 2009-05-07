@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyCondition;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
@@ -791,5 +792,22 @@ assertTrue(true);
         assertNotNull(study);
         //REVISIT
         //assertEquals(-3, study.getId().intValue());
+    }
+    
+    public void testReassociateStudyOrganizations(){
+    	Study study = getDao().getById(-5);
+    	//fetch all study orgs
+    	List<StudyOrganization> studyOrgs = study.getStudyOrganizations();
+    	assertFalse(studyOrgs.isEmpty());
+    	
+    	interruptSession();
+    	try{
+    		study.getStudyOrganizations().get(0).getStudyInvestigators().size();
+    		fail("Should have thrown exception");
+    	}catch(Exception fail){
+    		
+    	}
+    	getDao().reassociateStudyOrganizations(studyOrgs);
+    	study.getStudyOrganizations().get(0).getStudyInvestigators();
     }
 }

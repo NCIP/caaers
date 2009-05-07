@@ -216,6 +216,7 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
      */
     public void testOneConMedNotAttributed() throws Exception{
     	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getTreatmentInformation().getCourseAgents().clear();
     	
     	ConcomitantMedication conMed1 = new ConcomitantMedication();
     	conMed1.setReport(aeReport);
@@ -229,8 +230,14 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
     	ma.setCause(conMed1);
     	ma.setAttribution(Attribution.DEFINITE);
     	
+    	ConcomitantMedicationAttribution ma2 = new ConcomitantMedicationAttribution();
+    	ma2.setCause(conMed2);
+    	ma2.setAttribution(null);
+    	
+    	
     	List<ConcomitantMedicationAttribution> list = new ArrayList<ConcomitantMedicationAttribution>();
     	list.add(ma);
+    	list.add(ma2);
     	
     	for (AdverseEvent ae : aeReport.getAdverseEvents()) {
     		ae.setConcomitantMedicationAttributions(list);
@@ -238,7 +245,7 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
     	
     	ValidationErrors errors = fireRules(aeReport);
     	assertHasErrorsHavingCode(errors, "ATT_BR1_ERR");
-    	assertSameErrorCount(errors, 2);
+    	assertSameErrorCount(errors, 1);
     }
     
     /**
@@ -248,15 +255,14 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 	Error Message : AE must be attributed to all CAUSAL factors on report
 
      */
-    public void testAllAttributable_NotAttributed_NoActiveReports() throws Exception{
+    public void testOneCourseAgentNotAttributed() throws Exception{
     	ExpeditedAdverseEventReport aeReport = createAEReport();
-    	aeReport.getReports().get(0).setStatus(ReportStatus.REPLACED);
     	
     	List<CourseAgentAttribution> courseAgentAttributions = new ArrayList<CourseAgentAttribution>();
     	
     	CourseAgentAttribution ca = new CourseAgentAttribution();
     	ca.setCause(aeReport.getTreatmentInformation().getCourseAgents().get(0));
-    	ca.setAttribution(null);
+    	ca.setAttribution(Attribution.DEFINITE);
     	courseAgentAttributions.add(ca);
 
     	
@@ -272,10 +278,10 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
         }
     	
     	ValidationErrors errors = fireRules(aeReport);
-    	assertNoErrors(errors, "No active reports and not attributed no errors should be there");
+    	assertHasErrorsHavingCode(errors, "ATT_BR1_ERR");
+    	assertSameErrorCount(errors, 1);
     }
-    
-    
+  
     
     /*
     public void printLogs(ExpeditedAdverseEventReport aeReport){

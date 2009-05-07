@@ -1045,4 +1045,98 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
     	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(1).getLastVersion().getPhysicianSignoff());
     }
+    
+    public void testGetHasAmendableSubmittedReport(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	
+    	ReportDefinition rd = Fixtures.createReportDefinition("test");
+    	rd.setAmendable(true);
+    	
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.setStatus(ReportStatus.REPLACED);
+    	report1.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	report1.setReportDefinition(rd);
+    	
+    	Report report2 = Fixtures.createReport("report 1");
+    	report2.setStatus(ReportStatus.REPLACED);
+    	report2.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	report2.setReportDefinition(rd);
+    	
+    	
+    	Report report3= Fixtures.createReport("report 1");
+    	report3.setStatus(ReportStatus.REPLACED);
+    	report3.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	report3.setReportDefinition(rd);
+    	
+    	aeReport.addReport(report1);
+    	aeReport.addReport(report2);
+    	aeReport.addReport(report3);
+    	assertFalse(aeReport.getHasSubmittedAmendableReport());
+    	
+    	
+    }
+    
+    
+    public void testGetHasAmendableSubmittedReport_WhenNoAmendableReport(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	
+    	ReportDefinition rd = Fixtures.createReportDefinition("test");
+    	rd.setAmendable(false);
+    	
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.setStatus(ReportStatus.COMPLETED);
+    	report1.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	report1.setReportDefinition(rd);
+    	
+    	Report report2 = Fixtures.createReport("report 1");
+    	report2.setStatus(ReportStatus.COMPLETED);
+    	report2.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	report2.setReportDefinition(rd);
+    	
+    	
+    	Report report3= Fixtures.createReport("report 1");
+    	report3.setStatus(ReportStatus.COMPLETED);
+    	report3.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	report3.setReportDefinition(rd);
+    	
+    	aeReport.addReport(report1);
+    	aeReport.addReport(report2);
+    	aeReport.addReport(report3);
+    	assertFalse(aeReport.getHasSubmittedAmendableReport());
+    	
+    	
+    }
+    
+
+    public void testGetHasAmendableSubmittedReport_WhenAmendableReport(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	
+    	ReportDefinition rd = Fixtures.createReportDefinition("test");
+    	rd.setAmendable(true);
+    	
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.setStatus(ReportStatus.REPLACED);
+    	report1.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	report1.setReportDefinition(rd);
+    	
+    	ReportDefinition rd2 = Fixtures.createReportDefinition("test");
+    	rd2.setAmendable(false);
+    	Report report2 = Fixtures.createReport("report 1");
+    	report2.setStatus(ReportStatus.COMPLETED);
+    	report2.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	report2.setReportDefinition(rd2);
+    	
+    	
+    	Report report3= Fixtures.createReport("report 1");
+    	report3.setStatus(ReportStatus.COMPLETED);
+    	report3.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	report3.setReportDefinition(rd);
+    	
+    	aeReport.addReport(report1);
+    	aeReport.addReport(report2);
+    	aeReport.addReport(report3);
+    	assertTrue(aeReport.getHasSubmittedAmendableReport());
+    	
+    	
+    }
 }

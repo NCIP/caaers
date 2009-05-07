@@ -459,7 +459,6 @@
 				                    		<table width="100%" border="0" cellspacing="0" class="tableRegion">
 				                      			<thead>
 				                        			<tr align="center" class="label">
-				                          				<td width="5%"/>
 				                          				<td class="tableHeader" width="15%">Report Type</td>
 				                          				<td class="centerTableHeader" width="10%">Report Version</td>
 				                          				<td class="centerTableHeader" width="10%"># of AEs</td>

@@ -470,7 +470,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     }
 
-    private boolean containsAttribution(
+    public  boolean containsAttribution(
             List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
             Attribution... attributions) {
         if (attributionList == null || attributionList.isEmpty()) return false;
@@ -481,6 +481,71 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
             }
         }
         return false;
+    }
+    
+    @Transient
+    public boolean isAllCourseAgentAttributionProvided(){
+    	if(courseAgentAttributions == null || courseAgentAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : courseAgentAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    
+    @Transient
+    public boolean isAllConMedAttributionProvided(){
+    	if(concomitantMedicationAttributions == null || concomitantMedicationAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : concomitantMedicationAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    @Transient
+    public boolean isAllOtherCauseAttributionProvided(){
+    	if(otherCauseAttributions == null || otherCauseAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : otherCauseAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    @Transient
+    public boolean isAllDeviceAttributionProvided(){
+    	if(deviceAttributions == null || deviceAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : deviceAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    @Transient
+    public boolean isAllSurgeryAttributionProvided(){
+    	if(surgeryAttributions == null || surgeryAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : surgeryAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    @Transient
+    public boolean isAllRadiationAttributionProvided(){
+    	if(radiationAttributions == null || radiationAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : radiationAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+    }
+    
+    @Transient
+    public boolean isAllDiseaseAttributionProvided(){
+    	if(diseaseAttributions == null || diseaseAttributions.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : diseaseAttributions){
+    		if(aea.getAttribution() == null) return false;
+    	}
+    	return true;
+
     }
 
     @Transient
@@ -665,9 +730,19 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     @Transient
     public Boolean getSubmitted(){
     	Boolean submitted = false;
-    	if(report != null && report.getHasSubmittedReport())
+    	if(report != null && report.getHasSubmittedAmendableReport())
     		submitted = true;
     	return submitted;
+    }
+    
+    /**
+     * This method returns true, if this AE is part of a submitted Amendable report. 
+     * @return
+     */
+    @Transient
+    public boolean isSubmittedOnAnAmendableReport(){
+    	if(report == null) return false;
+    	return report.getHasSubmittedAmendableReport();
     }
     
     /**

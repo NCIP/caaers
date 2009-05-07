@@ -4,9 +4,12 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -157,6 +160,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     		// Initialize the treatment assignment & start date of course
            command.initializeTreatmentInformation();
            
+           //set the reporter, as the login person
+           String loginId = SecurityUtils.getUserLoginName();
+           if(loginId != null){
+        	   User loggedInUser = userDao.getByLoginId(loginId);
+        	  command.getAeReport().getReporter().copy(loggedInUser);
+           }
         }
         
         session.removeAttribute(AE_LIST_PARAMETER);
@@ -172,7 +181,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
         	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
         	String reportId = request.getParameter(REPORT_ID_PARAMETER);
-        	session.setAttribute(ACTION_PARAMETER, pramAction);
         	if(reportId != null){
         		
         		for(Report report: command.getAeReport().getReports()){

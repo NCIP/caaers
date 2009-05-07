@@ -351,9 +351,12 @@ public class Participant extends Person {
 
     @Transient
     public Identifier getPrimaryIdentifier() {
-        for (Identifier id : getIdentifiersLazy()) {
-            if (id.isPrimary()) return id;
-        }
+        try {
+			for (Identifier id : getIdentifiersLazy()) {
+			    if (id.isPrimary()) return id;
+			}
+		} catch (Exception ignore) {
+		}
         return null;
     }
 

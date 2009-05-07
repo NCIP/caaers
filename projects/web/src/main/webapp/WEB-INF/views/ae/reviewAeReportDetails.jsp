@@ -40,27 +40,12 @@
 			routingHelper.expandAllComments();
 		}
 		
-		function submitReport(){
-			var url = '<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${command.reportId}"/>';
+		function submitReport(reportId){
+			var url = '<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=' + reportId + '"/>';
 			window.location = url;
 		}
 		
-		function executeAction(){
-			var actions = $("actions-" + ${command.reportId});
-			for ( i=0; i < actions.length; i++) {
-				if (actions.options[i].selected && actions.options[i].value != "none") {
-					if(confirm('Are you sure you want to take the action - ' + actions.options[i].text)){
-						switch (actions.options[i].value) {
-							case "submit": submitReport();
-						}
-					}else{
-						return false;
-					}
-				}
-			}
-		}
-	    
-	    Event.observe(window, "load", function(){
+		Event.observe(window, "load", function(){
 	    	if(${command.workflowEnabled}){
             	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  			}
@@ -100,85 +85,15 @@
     					<th scope="col" align="left"><b>Options</b> </th>
     				</tr>
     				<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-    					<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED' && report.id == command.reportId}">
-    						<tr>    				
-       	   			  			<td>
-           			 				<div class="label" align="left">${report.reportDefinition.label}</div>
-           			 			</td>
-           			 			<c:if test="${report.reportDefinition.amendable == true}">
-	            					<td align="center">
-	            						<div class="label" align="center">${report.lastVersion.reportVersionId}</div>
-	         		   				</td>
-	           		 			</c:if>
-	         			   		<c:if test="${report.reportDefinition.amendable == false}">
-	          			  			<td/>
-	           			 		</c:if>
-           			 			<td class="completion-messages">
-               			         	<c:choose>
-                		            	<c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
-                     			           	<div class="label" align="center">Yes</div>
-                       			     	</c:when>
-                       			     	<c:otherwise>
-											<c:if test="${report.status ne 'COMPLETED'}">
-            		                    		<p>Not yet.  Remaining to complete:</p>
-                    		            		<c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
-                            		        		<h4>${sectionEntry.key.displayName} section</h4>
-                                 		   			<c:forEach items="${sectionEntry.value}" var="msg">
-                                     		   		<ul>
-                                      		      		<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-                                     		   		</ul>
-                                 			   		</c:forEach>
-                                				</c:forEach>
-											</c:if>
-                            			</c:otherwise>
-                     			   	</c:choose>
-	                  			</td>
-    	        				<td id="report-status">
-        	 			   			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
-										<span class="dueOn" >
-											<c:if test="${not empty report.lastVersion.dueOn}" >
-        		    							<i>Due on</i> <br> <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b>
-            								</c:if>
-            								<c:if test="${ empty report.lastVersion.dueOn}" >
-            									<i>Amendment Due</i>
-            								</c:if>
-            							</span>
-            						</c:if>
-            						<c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}" >
-										<span class="submittedOn" >
-            								<i>Withdrawn</i><br> <b><tags:formatDate value="${report.lastVersion.withdrawnOn}" /></b>
-            							</span>
-            						</c:if>
-            						<c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}" >
-            							<span class="submittedOn" >
-            								<i>Submitted on </i><br> <b><tags:formatDate value="${report.lastVersion.submittedOn}" /></b>
-            							</span>
-            						</c:if>	
-            						<c:if test="${report.lastVersion.reportStatus == 'FAILED'}" >
-             							<span class="dueOn" >
-            								<i>Submission to AdEERS failed </i>
-            							</span>           			
-            						</c:if>
-             						<c:if test="${report.lastVersion.reportStatus == 'INPROCESS'}" >
-             							<span class="dueOn" >
-            								<i>Submission to AdEERS in process</i>
-            							</span>           			
-            						</c:if>           		
-            					</td>
-            					<td id="report-action">
-            						<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction()">
-            							<OPTION selected value="none">Please select</OPTION>
-										<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable && canSubmit}" >
-											<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
-												<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-													<OPTION value="submit">Submit</OPTION>
-													<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
-												</c:if>
-											</c:if>					
-										</c:if>
-									</SELECT>
-    	        				</td>
-    						</tr>
+    					<c:if test="${command.reportId != null}">
+    						<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED' && report.status ne 'AMENDED' && report.id == command.reportId}">
+    							<ae:reviewAeReportValidation report="${report }" />
+    						</c:if>
+    					</c:if>
+    					<c:if test="${command.reportId == null}">
+    						<c:if test="${report.status ne 'WITHDRAWN' && report.status ne 'REPLACED' && report.status ne 'AMENDED'}">
+    							<ae:reviewAeReportValidation report="${report }" />
+    						</c:if>
     					</c:if>
     				</c:forEach>
 				</table>

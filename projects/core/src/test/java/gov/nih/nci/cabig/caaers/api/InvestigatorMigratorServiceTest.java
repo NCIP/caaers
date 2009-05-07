@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 
 import java.io.File;
@@ -29,7 +27,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 	private Unmarshaller unmarshaller = null;
 	private gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = null;
 	private File xmlFile = null;
-	private InvestigatorDao investigatorDao = null;
+	private InvestigatorRepository investigatorRepository = null;
 	private InvestigatorRepository investigatorRepository;
 	Identifier identifier = null;
 	Organization organization = null;
@@ -41,7 +39,6 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		svc = (InvestigatorMigratorService)getDeployedApplicationContext().getBean("investigatorMigratorService");
-		investigatorDao = (InvestigatorDao)getDeployedApplicationContext().getBean("investigatorDao");
 		investigatorRepository = (InvestigatorRepository)getDeployedApplicationContext().getBean("investigatorRepository");
 	}
 
@@ -59,7 +56,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveInvestigator(staff);
 			
-			updatedInvestigator = fetchInvestigator("sr-1");
+			updatedInvestigator = fetchInvestigator("l1");
 			
 			//Below lines commented sine they are being fetched as null from DB.
 			//Not sure how the Entity is REMOTE in DB. Flow needs to be relooked 
@@ -67,26 +64,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 			//assertEquals("870-098-7777", updatedInvestigator.getFaxNumber());
 			//assertEquals("888-098-0099", updatedInvestigator.getPhoneNumber());
 			
-			//	update site investigators data ..
-			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateSiteInvestigatorsTest.xml")[0].getFile();
-			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
-			svc.saveInvestigator(staff);
-			
-			assertNotNull(updatedInvestigator);
-			updatedInvestigator = fetchInvestigator("sr-1");
-			
-			//get site investigators.
-			List<SiteInvestigator> siteInvestigators = updatedInvestigator.getSiteInvestigatorsInternal();
-			for (SiteInvestigator siteInvestigator:siteInvestigators) {
-				if (siteInvestigator.getEmailAddress().equals("jd@dcp.org")) {
-					assertEquals("NCI", siteInvestigator.getOrganization().getNciInstituteCode());
-				}
-//				newly added site investigator
-				if (siteInvestigator.getEmailAddress().equals("jb@nci.gov")) {
-					assertEquals("CTEP", siteInvestigator.getOrganization().getNciInstituteCode());
-				}
-				
-			}
+
 						
 			
 		} catch (IOException e) {
@@ -104,10 +82,10 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
      * @param nciCode
      * @return
      */
-	Investigator fetchInvestigator(String nciIdentifier) {
+	Investigator fetchInvestigator(String loginId) {
     	InvestigatorQuery invQuery = new InvestigatorQuery();
-        if (StringUtils.isNotEmpty(nciIdentifier)) {
-        	invQuery.filterByNciIdentifier(nciIdentifier);
+        if (StringUtils.isNotEmpty(loginId)) {
+        	invQuery.filterByLoginId(loginId);
         	
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);

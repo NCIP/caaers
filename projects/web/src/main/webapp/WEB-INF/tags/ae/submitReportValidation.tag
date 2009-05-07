@@ -70,7 +70,7 @@
                         </c:choose>
 						
                     </td>
-            		<td id="report-status">
+            		<td id="report-status-${report.id}">
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 							<span class="dueOn" >
 								<c:if test="${not empty report.lastVersion.dueOn}" >

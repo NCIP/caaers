@@ -175,8 +175,8 @@
                             <property name="desc" value="C3D Identifier" />
                         </bean>
                     	 <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="ClinicalTrails.gov Identifier" />
-                            <property name="desc" value="ClinicalTrails.gov Identifier" />
+                            <property name="code" value="ClinicalTrials.gov Identifier" />
+                            <property name="desc" value="ClinicalTrials.gov Identifier" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Coordinating Center Identifier" />
@@ -287,7 +287,7 @@
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="CSC" />
-                            <property name="desc" value="Central Office SAE Coordinator" />
+                            <property name="desc" value="Central Office Report Reviewer" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="CDC" />

@@ -62,16 +62,99 @@
 				int i = 0;
 				for(AdverseEvent ae : aeReport.getAdverseEvents()){
 					i++;
-					if( (NullSafeFieldExtractor.extractFieldLength(aeReport,"concomitantMedications") != NullSafeFieldExtractor.extractFieldLength(ae,"concomitantMedicationAttributions"))
-					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"treatmentInformation.courseAgents") != NullSafeFieldExtractor.extractFieldLength(ae,"courseAgentAttributions"))
-					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"medicalDevices") != NullSafeFieldExtractor.extractFieldLength(ae,"deviceAttributions"))
-					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"radiationInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"radiationAttributions"))
-					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"surgeryInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"surgeryAttributions"))
-					   ||( ( (NullSafeFieldExtractor.extractFieldLength(aeReport.getStudy(),"ctepStudyDiseases") + NullSafeFieldExtractor.extractFieldLength(aeReport.getStudy(), "meddraStudyDiseases")) &gt;  0) &amp;&amp; (1 != NullSafeFieldExtractor.extractFieldLength(ae,"diseaseAttributions")))
-					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"otherCauses") != NullSafeFieldExtractor.extractFieldLength(ae,"otherCauseAttributions"))){
-					   
-					   errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report",i,ae.getAdverseEventTerm().getUniversalTerm());
+					int conMedLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"concomitantMedications");
+					if( conMedLen &gt; 0){
+						if(conMedLen != NullSafeFieldExtractor.extractFieldLength(ae,"concomitantMedicationAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report, conmed",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllConMedAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report, conmed",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
 					}
+					
+					int caLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"treatmentInformation.courseAgents");
+					if( caLen &gt; 0){
+						if(caLen != NullSafeFieldExtractor.extractFieldLength(ae,"courseAgentAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report,courseAgents",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllCourseAgentAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report,courseAgents",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					int mdLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"medicalDevices");
+					if( mdLen &gt; 0){
+						if(mdLen != NullSafeFieldExtractor.extractFieldLength(ae,"deviceAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report,medicalDevices",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllDeviceAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report,medicalDevices",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					int rdLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"radiationInterventions");
+					if( rdLen &gt; 0){
+						if(rdLen != NullSafeFieldExtractor.extractFieldLength(ae,"radiationAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report(radiation)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllRadiationAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report (radiation)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					
+					int suLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"surgeryInterventions");
+					if( suLen &gt; 0){
+						if(suLen != NullSafeFieldExtractor.extractFieldLength(ae,"surgeryAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report(surgery)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllSurgeryAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report (surgery)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					if(aeReport.getDiseaseHistory().getAbstractStudyDisease() != null){
+						if(1 != NullSafeFieldExtractor.extractFieldLength(ae,"diseaseAttributions")){
+							errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report (disease)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+						if(!ae.isAllDiseaseAttributionProvided()){
+							errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report (disease)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					int ocLen = NullSafeFieldExtractor.extractFieldLength(aeReport,"otherCauses");
+					if( ocLen &gt; 0){
+						if(ocLen != NullSafeFieldExtractor.extractFieldLength(ae,"otherCauseAttributions")){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report(other)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						if(!ae.isAllOtherCauseAttributionProvided()){
+						 	errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report (other)",i,ae.getAdverseEventTerm().getUniversalTerm());
+						 	break;
+						}
+						
+					}
+					
+					
     				  
 				}
 				return errors.getErrorCount() > 0 ? FAIL : SUCCESS;

@@ -158,7 +158,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			//find the report definitions for newly added adverse events
 			List<ReportDefinition> reportDefsNonExpeditedAes = command.findRequiredReportDefinitionsForNonExpeditedAdverseEvents();
 			
-			//show the rules result, if there are new report-able aes
+			//show the rules result, if there are modified aes
 			List<ReportDefinition> reportDefsForModifiedAes = command.findRequiredReportDefinitionsForModifiedAdverseEvents();
 			//if for modified aes, new kind of report definition is selected? then we should show the alert popup. for easiness, add them
 			//to in reportDefsNonExpeditedAes.

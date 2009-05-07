@@ -57,7 +57,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         	rsQuery.filterByLoginId(loginId);
         	//rsQuery.filterByEmailAddress(email);
         }
-        List<ResearchStaff> rsList = researchStaffRepository.getResearchStaff(rsQuery);
+        List<ResearchStaff> rsList = researchStaffRepository.searchResearchStaff(rsQuery);
         
         if (rsList == null || rsList.isEmpty()) {
             return null;

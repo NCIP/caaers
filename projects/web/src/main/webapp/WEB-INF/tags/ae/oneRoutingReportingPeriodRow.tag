@@ -46,8 +46,8 @@
 			<tr>
 				<td width="100%">
 					<c:choose>
-						<c:when test="${not empty reportingPeriod.aeReports}">
-							<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="rStatus">
+						<c:when test="${not empty reportingPeriod.activeAeReports}">
+							
 								<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
 									<tr>
 										<td>
@@ -61,12 +61,13 @@
 														<td class="centerTableHeader" width="25%">Action</td>
 													</tr>						
 												</thead>
+												<c:forEach items="${reportingPeriod.activeAeReports}" var="aeReport" varStatus="rStatus">
 													<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
+												</c:forEach>
 											</table>
 										</td>
 									</tr>
 								</table>
-							</c:forEach>
 						</c:when>
 						<c:otherwise>
 							There are no reports for this course/cycle.
@@ -74,7 +75,7 @@
 					</c:choose>
 				</td>
 			</tr>
-			<tr>
+			<tr style="display:none">
 				<td width="100%">
 					<ae:routingAndReviewListAllAeSection reportingPeriod="${reportingPeriod.adverseEventReportingPeriod}" isDCPStudy="${reportingPeriod.dcpSponsoredStudy}"/>
 				</td>

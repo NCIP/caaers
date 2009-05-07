@@ -87,19 +87,30 @@ public abstract class PersonContact extends Person {
 		super.setTitle(title);
 	}
 	
-    @Override
-    public String getFirstName() {
-        return firstName;
-    }
-    
-    @Override
-    public String getLastName() {
+	@Transient
+	public void setPhoneNumber(String phoneNumber){
+		contactMechanisms.put(PHONE, phoneNumber);
+	}
+	@Transient
+	public String getPhoneNumber(){
+		return contactMechanisms.get(PHONE);
         return lastName;
-    }
-    
-    @Override
-    public String getMiddleName() {
-        return middleName;
-    }
-    
+	}
+	@Transient
+	public void setFax(String fax){
+		contactMechanisms.put(FAX, fax);
+	}
+	@Transient
+	public String getFax(){
+		return contactMechanisms.get(FAX);
+	}
+	@Transient
+	public void setEmailAddress(String emailAddress){
+		contactMechanisms.put(EMAIL, emailAddress);
+	}
+	@Transient
+	public String getEmailAddress(){
+		return contactMechanisms.get(EMAIL);
+	}
+	
 }

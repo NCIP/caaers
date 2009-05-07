@@ -1,0 +1,1 @@
+update task_configuration set message = 'The task "Central Office Report Review" is assigned to you. Please use the link ${EXPEDITED_REPORT_LINK} to access the report.' where status_name = 'CENTRAL_OFFICE_REVIEW';

@@ -15,12 +15,12 @@
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
 			<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Report(s) Completed'}">
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Reports Completed'}">
 						<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
 							${report.reportDefinition.label}
 						</a>
 					</c:if>
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Report(s) Completed'}">
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Reports Completed'}">
 						${report.reportDefinition.label }
 					</c:if>
 			</c:if>

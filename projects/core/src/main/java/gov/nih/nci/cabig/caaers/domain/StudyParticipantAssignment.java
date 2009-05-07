@@ -384,6 +384,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private void syncrhonizeDiseaseHistory(final DiseaseHistory saeReportDiseaseHistory) {
 
         // Disease name
+        if (this.getDiseaseHistory() == null) return;
         DiseaseCodeTerm dct = saeReportDiseaseHistory.getReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
         if (dct == DiseaseCodeTerm.MEDDRA) {
             this.getDiseaseHistory().setMeddraStudyDisease(saeReportDiseaseHistory.getMeddraStudyDisease());

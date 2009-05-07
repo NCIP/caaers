@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDomainObject, A extends MutableDomainObjectDao<D>>
                 extends AutomaticSaveFlowFormController<C, D, A> {
 
+	 protected static final Log log = LogFactory.getLog(AutomaticSaveAjaxableFormController.class);
+	 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
@@ -71,22 +76,38 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
     @Override
     protected void postProcessPage(HttpServletRequest request, Object command, Errors errors,
                     int page) throws Exception {
-        if (isAjaxRequest(request)) {
-            AjaxableTab<C> ajaxTab = (AjaxableTab<C>) getFlow((C) command).getTab(page);
-            ModelAndView modelAndView = ajaxTab.postProcessAsynchronous(request, (C) command,
-                            errors);
-            setAjaxModelAndView(request, modelAndView);
-            if (!errors.hasErrors() && shouldSave(request, (C) command, getTab((C) command, page))) {
-                C newCommand = save((C) command, errors);
-                if (newCommand != null) {
-                    request.getSession().setAttribute(
-                                    getReplacedCommandSessionAttributeName(request), newCommand);
-                }
-            }
-        }
-        else {
-            super.postProcessPage(request, command, errors, page);
-        }
+        try {
+        	
+        	//if there is an optimistic locking error, make sure, proper error message is populated.
+        	Throwable optimisticLockException = (Throwable)request.getAttribute("OPTIMISTIC_LOCKING_ERROR");
+        	if(optimisticLockException != null){
+        		log.warn("Optimistic Locking error", optimisticLockException);
+    			errors.reject("GEN_002", "Cannot continue this operation, as another user is working on the same data.");
+        	}
+        	
+			if (isAjaxRequest(request)) {
+			    AjaxableTab<C> ajaxTab = (AjaxableTab<C>) getFlow((C) command).getTab(page);
+			    ModelAndView modelAndView = ajaxTab.postProcessAsynchronous(request, (C) command,
+			                    errors);
+			    setAjaxModelAndView(request, modelAndView);
+			    if (!errors.hasErrors() && shouldSave(request, (C) command, getTab((C) command, page))) {
+			        C newCommand = save((C) command, errors);
+			        if (newCommand != null) {
+			            request.getSession().setAttribute(
+			                            getReplacedCommandSessionAttributeName(request), newCommand);
+			        }
+			    }
+			}
+			else {
+			    super.postProcessPage(request, command, errors, page);
+			}
+		} catch (DataIntegrityViolationException e) {
+			log.warn("Data integrity error", e);
+			errors.reject("GEN_001", "Cannot continue this operation, as there are other entities referencing this.");
+		} catch(org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException e){
+			log.warn("Optimistic Locking error", e);
+			errors.reject("GEN_002", "Cannot continue this operation, as another user is working on the same data.");
+		}
     }
 
     protected boolean isAjaxRequest(HttpServletRequest request) {

@@ -10,6 +10,8 @@
         <faxNumber>870-098-7777</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
         <phoneNumber>888-098-0099</phoneNumber>
+        <loginId>l1</loginId>
+        
 
         <ns1:siteInvestigator>
             <emailAddress>jd@rtog.org</emailAddress>

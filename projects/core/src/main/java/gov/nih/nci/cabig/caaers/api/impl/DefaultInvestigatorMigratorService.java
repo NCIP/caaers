@@ -47,10 +47,10 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
      * @param nciCode
      * @return
      */
-	Investigator fetchInvestigator(String nciIdentifier) {
+	Investigator fetchInvestigator(String loginId) {
     	InvestigatorQuery invQuery = new InvestigatorQuery();
-        if (StringUtils.isNotEmpty(nciIdentifier)) {
-        	invQuery.filterByNciIdentifierExactMatch(nciIdentifier);
+        if (StringUtils.isNotEmpty(loginId)) {
+        	invQuery.filterByLoginId(loginId);
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
         
@@ -128,17 +128,29 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
              
            // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
             String nciIdentifier = investigatorDto.getNciIdentifier();
+            String email = investigatorDto.getEmailAddress();
+            String loginId = investigatorDto.getLoginId();
             Investigator investigator = null;
-            if (StringUtils.isEmpty(nciIdentifier)){
+             if (StringUtils.isEmpty(loginId)) {
+          	  loginId = email;
+            }
+
+
+                          if (StringUtils.isEmpty(nciIdentifier)){
             	investigator = new LocalInvestigator();
             } else {
-            	investigator = fetchInvestigator(nciIdentifier);
+            investigator = fetchInvestigator(nciIdentifier);
                 if (investigator == null ) {
                 	// build new 
                 	investigator = new LocalInvestigator();
                 	investigator.setNciIdentifier(nciIdentifier);
-                } 
-            }
+
+		}
+	investigator.setLoginId(loginId);
+	
+           
+<Merge Conflict>
+
 
 
             investigator.setFirstName(investigatorDto.getFirstName());
@@ -177,7 +189,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	private void saveInvestigator(Investigator investigator) throws CaaersSystemException {
 		try {
             logger.info("Begining of DefaultInvestigatorMigratorService : saveInvestigator");
-            investigatorDao.save(investigator);
+            investigatorRepository.save(investigator,"URL");
 
             logger.info("Created the Investigator  :" + investigator.getId());
             logger.info("End of DefaultInvestigatorMigratorService : saveInvestigator");

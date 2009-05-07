@@ -65,7 +65,6 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     public void withdrawOrReplaceReport(Report report){
     	schedulerService.unScheduleNotification(report);
-        
         withdrawLastReportVersion(report);
         reportDao.save(report);
     }
@@ -93,6 +92,10 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     @Transactional(readOnly = false)
     public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
+    	
+    	//reassociate all the study orgs
+    	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
+    	
         Report report = reportFactory.createReport(reportDefinition, aeReport, useDefaultVersion);
         
         //save the report
@@ -181,7 +184,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
             messages.addMissingField(
                     section,
-                    unsatisfiedNode.getDisplayName(),
+                    uProp.getDisplayName(),
                     uProp.getBeanPropertyName());
         }
     }

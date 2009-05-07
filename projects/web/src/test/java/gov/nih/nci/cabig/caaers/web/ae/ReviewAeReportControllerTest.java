@@ -93,7 +93,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();
-		assertFalse("canSubmit flag set incorrectly", (Boolean)refdata.get("canSubmit"));
+		assertFalse("isUserSAECoordinator flag set incorrectly", (Boolean)refdata.get("isUserSAECoordinato"));
 		assertContainsKey("Report messages is expected in jsp, but not set in the reference data", refdata, "reportMessages");
 	}
 }

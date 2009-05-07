@@ -257,7 +257,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			for(ExpeditedAdverseEventReport aeReport : this.adverseEventReportingPeriod.getAeReports()){
 				aeReport.getAllSponsorReportsCompleted();
 				aeReport.getHasAmendableReport();
-				aeReport.getHasSubmittedReport();
+				aeReport.getHasSubmittedAmendableReport();
 				aeReport.getNumberOfAes();
 				for(Report report : aeReport.getReports()){
 					report.getLastVersion().getVersion();	
@@ -274,23 +274,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs().size();
 			}
 			
-			//initialize the expectedness on adverse events.
-			initializeExpectednessOnAdverseEvents();
 		}
     }
     
-    /**
-     * There is a requirement to pre set the exptectedness based on Adverse Event Expected List , captured at the study.
-     * This method performs, that. 
-     */
-    public void initializeExpectednessOnAdverseEvents(){
-    	if(this.adverseEvents == null) return;
-    	for(AdverseEvent ae : adverseEvents){
-    		if(ae.getAdverseEventTerm() == null) continue;
-    		if(adverseEventReportingPeriod.getStudy().isExpectedAdverseEventTerm(ae.getAdverseEventTerm().getTerm()))
-    			ae.setExpected(true);
-    	}
-    }
+   
     
     /**
      * This method will find all avaliable report definitions for all the StudyOrganizations. 
@@ -436,7 +423,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			Integer id = ae.getId();
 			selectedAesMap.put(id, Boolean.FALSE);
 		}
-		for(AdverseEvent ae: adverseEventReportingPeriod.getReportableAdverseEvents()){
+		for(AdverseEvent ae: adverseEventReportingPeriod.getModifiedReportableAdverseEvents()){
 			ae.setRequiresReporting(false);
 		}
 		

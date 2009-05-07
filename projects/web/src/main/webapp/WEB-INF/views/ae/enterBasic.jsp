@@ -112,20 +112,7 @@
                 // Taking care of meddra or other 
                 this.initializeMeddraOrOther(this.initialCtcTerm)
 
-                AE.createStandardAutocompleter(this._detailsForOtherLltId(),
-                        function(autocompleter, text) {
-                            createAE.matchLowLevelTermsByCode(OtherMeddraTerminologyVersionID, text, function(values) {autocompleter.setChoices(values)})
-                        },
-                        function(lowLevelTerm) {
-                            return lowLevelTerm.fullName
-                        });
-
-                AE.createStandardAutocompleter(this._ctcTermId(), this.termPopulator.bind(this), termValueSelector, {
-                        afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                            this.selectTerm(selectedChoice)
-                        }.bind(this)
-                    }
-                )
+               
 
                 initSearchField();
                 AE.registerCalendarPopups(this.div.id);

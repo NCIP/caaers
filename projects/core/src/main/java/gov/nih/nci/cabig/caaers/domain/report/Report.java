@@ -465,7 +465,16 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
      */
     @Transient
     public boolean isOverdue(){
+    	if(status != ReportStatus.PENDING || status != ReportStatus.INPROCESS ) return false;
     	return (dueOn != null && new Date().getTime() > dueOn.getTime());
     }
+    
+    /**
+     * Will return true the report definition says that it can be amended.
+     */
+    @Transient
+    public boolean isAmendable() {
+    	return reportDefinition.getAmendable();
+	}
    
 }

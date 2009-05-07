@@ -210,6 +210,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 AdverseEvent adverseEvent = new AdverseEvent();
                 adverseEvent.setSolicited(true);
                 adverseEvent.setRequiresReporting(false);
+               
 
                 if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
                     AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
@@ -223,6 +224,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
                     if(sae.getOtherTerm() != null)
                     	adverseEvent.setLowLevelTerm(sae.getOtherTerm());
                     aeCtcTerm.setAdverseEvent(adverseEvent);
+                    if(command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
+                    	adverseEvent.setExpected(true);
                 }
                 reportingPeriod.addAdverseEvent(adverseEvent);
             }

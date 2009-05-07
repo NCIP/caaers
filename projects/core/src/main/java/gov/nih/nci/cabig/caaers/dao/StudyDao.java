@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
@@ -304,6 +305,17 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     @Transactional(readOnly = false)
     public void delete(Study study) {
         getHibernateTemplate().delete(study);
+    }
+    
+    /**
+     * This utility method is used to lock the study. 
+     * @param studyOrg
+     */
+    public void reassociateStudyOrganizations(List<StudyOrganization> studyOrgs){
+    	for(StudyOrganization studyOrg : studyOrgs){
+    		getHibernateTemplate().lock(studyOrg, LockMode.NONE);
+    	}
+    	
     }
 
 }

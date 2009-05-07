@@ -15,13 +15,13 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     DRAFT_INCOMPLETE (1, "Draft/Incomplete"), 
     PHYSICIAN_REVIEW (2, "Physician Review"), 
     PHYSICIAN_ADDITIONAL_INFO (3, "Additional Info Requested by Physician"),
-    PHYSICIAN_APPROVED (4, "Approved by Physician "), 
-    CENTRAL_OFFICE_REVIEW (5, "Central Office SAE Coordinator Review"), 
+    PHYSICIAN_APPROVED (4, "Reviewed by Physician "), 
+    CENTRAL_OFFICE_REVIEW (5, "Central Office Report Review"), 
     CENTRAL_OFFICE_ADDITIONAL_INFO (6, "Additional Info Request by Central Office"), 
     SUBMIT_TO_SPONSOR (7, "Ready for Submission to Sponsor "),
     DATA_COORDINATOR_REVIEW(8, "Data Coordinator Review"),
     DATA_COORDINATOR_ADDITIONAL_INFO(9,"Additional Info Requested By Data Coordinator"),
-    APPROVED(11, "Approved"),
+    APPROVED(11, "Reviewed"),
     SUBMITTED_TO_SPONSOR(12, "Submitted to Sponsor");
     
     private Integer code;

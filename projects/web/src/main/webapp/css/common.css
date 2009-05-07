@@ -68,11 +68,7 @@ body {
 #thirdlevelnav div a.complete {
 	opacity:.50;
 	filter: alpha(opacity=50);
-	background-image: url(../images/buttons/button_icons/small/check_icon_small.png);
-	background-repeat:no-repeat;
-	background-position:left;
-	padding-left:17px;
-	zoom:1;
+	zoom:1
 }
 #thirdlevelnav div a.incomplete {
 	background-repeat:no-repeat;
@@ -82,10 +78,6 @@ body {
 #thirdlevelnav.last div a.complete {
 	opacity:1;
 	filter: alpha(opacity=100);
-	background-image: none;
-	background-repeat:no-repeat;
-	background-position:left;
-	padding-left:0;
 }
 #thirdlevelnav div a:hover { text-decoration:underline }
 #thirdlevelnav div a:active { color:#CCCCCC }

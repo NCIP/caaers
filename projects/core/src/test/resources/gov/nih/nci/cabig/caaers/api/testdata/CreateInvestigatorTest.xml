@@ -10,7 +10,7 @@
         <faxNumber>870-098-0989</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
         <phoneNumber>908-098-0099</phoneNumber>
-
+		<loginId>l1</loginId>
 
         <ns1:siteInvestigator>
             <emailAddress>jb@nci.gov</emailAddress>

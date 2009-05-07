@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.service.workflow;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -68,6 +70,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	
+	
+	private StudyDao studyDao;
 	
 	private CaaersJavaMailSender caaersJavaMailSender;
 	
@@ -380,6 +385,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			study = site.getStudy();
 		}
 		
+		
 		List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
 		switch(location){
 		
@@ -396,6 +402,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			if(coordinatingCenter2 != null) studyOrganizations.add(coordinatingCenter2);
 			break;
 		}
+		
+		studyDao.reassociateStudyOrganizations(studyOrganizations);
 		
 		switch(personRole){
 			case CENTRAL_OFFICE_SAE_COORDINATOR:
@@ -444,6 +452,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return users;
 	}
 	
+	
+
 	private List<User> fetchUsersHavingRoleFromStudyOrganizations(List<StudyOrganization> studyOrganizations, PersonRole role){
 		List<User> users = new ArrayList<User>();
 		for(StudyOrganization studyOrg : studyOrganizations){
@@ -508,4 +518,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+	
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+	
 }

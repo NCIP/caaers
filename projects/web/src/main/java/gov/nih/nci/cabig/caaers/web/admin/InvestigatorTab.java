@@ -186,7 +186,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Grid identity", false);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Login Id", true);
         InputFieldAttributes.setSize(loginIdField, 30);
         investigatorFieldGroup.getFields().add(loginIdField);
         

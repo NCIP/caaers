@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;

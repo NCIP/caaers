@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.List;
 
@@ -52,13 +53,15 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	if(webSSOAuthentication && StringUtils.isBlank(investigator.getLoginId())){
     		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
     	}
-    	
     	//if this is a new one, add the default group, set the login id if websso mode
     	if(createMode){
     		investigator.addUserGroupType(UserGroupType.caaers_physician);
     		investigator.addUserGroupType(UserGroupType.caaers_user);
     		//login id should be email id , if it is non websso mode
-    		if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
+    		//if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
+    	}
+    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
+    		investigator.setLoginId(investigator.getEmailAddress());
     	}
     	MailException mailException = null;
         try {

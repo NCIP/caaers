@@ -808,6 +808,7 @@ public class CaaersRulesEngineService {
                     newRd.setDuration(2);
                     newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
                     newRd.setExpedited(false);
+                    newRd.setPhysicianSignOff(false);
                     reportDefinitionDao.save(newRd);
                     reportDefinitionsCreated.add(rd);
                 }

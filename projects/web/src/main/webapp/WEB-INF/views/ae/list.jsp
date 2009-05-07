@@ -217,18 +217,14 @@ color:#0033FF;
         
         for (var i = (select.options.length-1); i>=0; i--) {
             var o = select.options[i];
-            if ((select.options[i].value == 'submit')) {
-                select.options[i].value = "amend";
-                select.options[i].text = "Amend";
-            }
-            if ((select.options[i].value == 'withdraw')) {
-                select.options[i] = null;
+            if ((select.options[i].value == 'submit') || (select.options[i].value == 'withdraw')) {
+            	select.options[i] = null;
             }
         }
     }
 
     function executeAction(reportId, url, aeReportId, submissionUrl){
-        var actions = $("actions-" + reportId);
+        var actions = $("actions-rp-" + reportId);
         
     	for ( i=0; i < actions.length; i++) {
             if (actions.options[i].selected && actions.options[i].value != "none") {

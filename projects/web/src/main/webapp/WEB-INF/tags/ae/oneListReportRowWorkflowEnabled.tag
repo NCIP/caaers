@@ -13,20 +13,13 @@
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
 			<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Report(s) Completed'}">
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Reports Completed'}">
 						<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${report.aeReport.id}&viewOnly=true&report=${report.id }"/>">
 							${report.reportDefinition.label}
 						</a>
 					</c:if>
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Report(s) Completed'}">
-						<c:if test="${command.submitLinkRenderable}">
-							<a href="<c:url value="/pages/ae/reviewAeReport?aeReport=${report.aeReport.id}"/>">
-								${report.reportDefinition.label }
-							</a>
-						</c:if>
-						<c:if test="${!command.submitLinkRenderable}">
-								${report.reportDefinition.label }
-						</c:if>
+					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Reports Completed'}">
+						${report.reportDefinition.label }
 					</c:if>
 			</c:if>
 			<c:if test="${report.reportDefinition.amendable and !report.isLatestVersion}">
@@ -48,7 +41,7 @@
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
 			
-			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
+			<SELECT style="width:100px;" id="actions-rp-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
 		     	<OPTION selected value="none">Please select</OPTION>
 		     	<c:if test="${command.study.caaersXMLType}">
 		     		<OPTION value="xml">Export caAERS XML</OPTION>
@@ -90,7 +83,7 @@
                                 <OPTION value="adeers">View in AdEERS</OPTION>
                                 <OPTION value="amend">Amend</OPTION>
                             </c:when>
-                            <c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
+                            <c:when test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED')}">
                                 <OPTION value="amend">Amend</OPTION>
                             </c:when>
                         </c:choose>

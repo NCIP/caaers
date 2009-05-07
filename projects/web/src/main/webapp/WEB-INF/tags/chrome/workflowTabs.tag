@@ -16,7 +16,16 @@
     <c:set var="selected" value="${atab.number == tab.number}"/>
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
      <c:if test="${fn:contains(mandatoryTabs, atab.shortTitle)}"><span class="required-indicator">*</span></c:if>
-        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'):''}">${atab.number + 1}. ${atab.shortTitle}</a>
+        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'):''}">
+        	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
+				<c:if test="${!status.last}">
+					<c:if test="${!fn:contains(unfilledTabs, atab.shortTitle)}">
+		        		<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt="Complete" style="vertical-align:top;" />
+		        	</c:if>
+				</c:if>
+			</c:if>
+			${atab.number + 1}. ${atab.shortTitle}
+			</a>
     </div></li>
 	<c:if test="${selected}">
 		<tags:pageHelp propertyKey="${tab.class.name}" />

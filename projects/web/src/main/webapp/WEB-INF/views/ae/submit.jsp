@@ -48,11 +48,8 @@
 	           	var statusColumn = $('report-status')
 	     		var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
 	      
-	      		var optionColumn = $('report-action')
-	      		optionColumnData = '';
 	      
 	      		Element.update(statusColumn, statusColumnData)
-	      		Element.update(optionColumn, optionColumnData)
 	        });
 	     }
     
@@ -100,14 +97,14 @@
 		if(action == 'withdraw'){
 			createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
 				//AE.hideIndicator("notify-indicator-" + aeReportId)
-				var statusColumn = $("status"+reportId)
+				var statusColumn = $("report-status-"+reportId)
 				var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
 	      
-				var optionColumn = $("action"+reportId)
-				optionColumnData = $("action"+reportId).innerHTML;
+				//var optionColumn = $("action"+reportId)
+				//optionColumnData = $("action"+reportId).innerHTML;
 	      
 				Element.update(statusColumn, statusColumnData)
-				Element.update(optionColumn, optionColumnData)
+				//Element.update(optionColumn, optionColumnData)
 			});
 		} else if(action =='submit') {
 			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
@@ -122,12 +119,7 @@
 		var select = $('actions-' + reportId);
         
 		for (var i = (select.options.length-1); i>=0; i--) {
-			var o = select.options[i];
-			if ((select.options[i].value == 'submit')) {
-				select.options[i].value = "amend";
-				select.options[i].text = "Amend";
-			}
-			if ((select.options[i].value == 'withdraw')) {
+			if ((select.options[i].value == 'withdraw') || (select.options[i].value == 'submit')) {
 				select.options[i] = null;
 			}
 		}

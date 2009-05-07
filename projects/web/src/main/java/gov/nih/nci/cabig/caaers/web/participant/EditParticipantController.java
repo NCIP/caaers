@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -103,13 +104,17 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     }
 
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
-        ParticipantInputCommand cmd = (ParticipantInputCommand) oCommand;
-//        participantDao.reassociateUsingLock(cmd.getParticipant());
+        try {
+			ParticipantInputCommand cmd = (ParticipantInputCommand) oCommand;
 
-        String p = request.getParameter("_asyncMethodName");
-        if (p == null || !(p.equals("addOrganizationIdentifier") || p.equals("removeOrganizationIdentifier") || p.equals("addSystemIdentifier") || p.equals("removeSystemIdentifier"))) {
-            participantDao.reassociate(cmd.getParticipant());
-        }
+			String p = request.getParameter("_asyncMethodName");
+			if (p == null || !(p.equals("addOrganizationIdentifier") || p.equals("removeOrganizationIdentifier") || p.equals("addSystemIdentifier") || p.equals("removeSystemIdentifier"))) {
+			    participantDao.reassociate(cmd.getParticipant());
+			}
+		}catch (HibernateOptimisticLockingFailureException  e) {
+			log.warn("Optimistic locking error, while reassociating the report", e);
+			request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
+		}
 
         return super.currentFormObject(request, oCommand);
     }

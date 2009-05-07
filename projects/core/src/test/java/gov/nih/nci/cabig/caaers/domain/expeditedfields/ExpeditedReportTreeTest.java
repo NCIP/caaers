@@ -43,6 +43,10 @@ public class ExpeditedReportTreeTest extends TestCase {
                 if (childPropName.indexOf('[') >= 0) {
                     childPropName = childPropName.substring(0, childPropName.indexOf('['));
                 }
+                
+                if(childPropName.indexOf(".") > 0){
+                	childPropName = childPropName.substring(0, childPropName.indexOf("."));
+                }
                 // look for matching property
                 boolean found = false;
                 for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {

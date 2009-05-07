@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -56,6 +58,15 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
            CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, evaluationService, reportRepository, studyDao, assignmentDao, adverseEventRoutingAndReviewRepository);
            command.getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
            command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+           
+
+           //set the reporter, as the login person
+           String loginId = SecurityUtils.getUserLoginName();
+           if(loginId != null){
+        	   User loggedInUser = userDao.getByLoginId(loginId);
+        	   command.getAeReport().getReporter().copy(loggedInUser);
+           }
+           
            return command;
        }
 	   

@@ -4,6 +4,7 @@ import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -13,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Location;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -51,6 +53,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	WorkflowConfig wfConfig;
 	UserDao userDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
+	StudyDao studyDao;
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
 	ResearchStaff r1;
@@ -91,6 +94,9 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		wfService.setAdverseEventReportingPeriodDao(reportingPeriodDao);
 		wfService.setFreeMarkerService(new FreeMarkerService());
 		configuration = registerMockFor(Configuration.class);
+		studyDao = registerDaoMockFor(StudyDao.class);
+		
+		wfService.setStudyDao(studyDao);
 		wfService.setConfiguration(configuration);
 		
 	}
@@ -261,6 +267,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		expect(assignment.getStudySite()).andReturn(site);
 		expect(site.getStudy()).andReturn(study);
 		expect(site.findUsersByRole(PersonRole.ADVERSE_EVENT_COORDINATOR)).andReturn(users);
+		studyDao.reassociateStudyOrganizations((List<StudyOrganization>)EasyMock.anyObject());
 		
 		replayMocks();
 		List<User> returnedUsers = wfService.findUsersHavingRole(personRole, pInstance, Location.STUDY_SITE);

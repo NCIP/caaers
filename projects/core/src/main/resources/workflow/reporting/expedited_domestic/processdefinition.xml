@@ -37,7 +37,7 @@
 			</action>
 		</event>
 		<transition to="Physician Review" name="Send to Physician for Review"></transition>
-		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
+		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
 	</node>
 
 	<node name="Physician Review">
@@ -96,7 +96,7 @@
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
+		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
 		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 
@@ -125,7 +125,7 @@
 		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 
-	<node name="Central Office SAE Coordinator Review">
+	<node name="Central Office Report Review">
 		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
 			<targetBean>
 				nodeSkipActionHandler
@@ -174,7 +174,7 @@
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
+		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
 		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
 

@@ -47,7 +47,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	private WorkflowService workflowService;
 	
-	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office SAE Coordinator";
+	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office Report Reviewer";
 	
 	
 	public AdverseEventRoutingAndReviewRepositoryImpl() {
@@ -306,8 +306,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		Map<Integer, Boolean> reportsSubmittable = new HashMap<Integer, Boolean>();
 		reportsSubmittable.clear();
-        for (Report report : aeReport.getReports()) {
-        	if(report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED)){
+        for (Report report : aeReport.getActiveReports()) {
+        	if(report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED) || report.getStatus().equals(ReportStatus.COMPLETED)){
         		ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
         		reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
         	}

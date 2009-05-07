@@ -27,7 +27,7 @@
   </node>
   <node name="Submit Report To Central Office" x="469" y="425" width="296" height="36">
     <edge>
-      <label x="5" y="-10"/>
+      <label x="4" y="-9"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
@@ -42,7 +42,7 @@
       <bendpoint w1="176" h1="-39" w2="-186" h2="-45"/>
     </edge>
   </node>
-  <node name="Central Office SAE Coordinator Review" x="475" y="545" width="290" height="36">
+  <node name="Central Office Report Review" x="475" y="545" width="290" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>

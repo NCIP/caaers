@@ -23,7 +23,10 @@
         }
 
     </style>
-   
+    <c:if test="${empty tab}">
+        <tags:stylesheetLink name="tabbedflow"/>
+        <tags:javascriptLink name="tabbedflow"/>
+    </c:if>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
 	<tags:dwrJavascriptLink objects="createStudy"/>
@@ -113,12 +116,11 @@
    	</p>
 </c:if>
 <c:if test="${command.workflowEnabled}">
-	<tags:standardForm title="Search Criteria">
-		<jsp:attribute name="instructions">
-			<tags:instructions code="instruction_selectRoutingAndReview"/>
-		</jsp:attribute>
-		<jsp:attribute name="singleFields">
+	<tags:instructions code="instruction_selectRoutingAndReview"/>
+	<form:form method="post" cssClass="standard autoclear">
+    	<tags:tabFields tab="${tab}"/>
 			<div id="criteria-div">
+				<chrome:box title="Search Criteria" id="search-criteria" autopad="true" >
 				<ui:row path="Study">
 					<jsp:attribute name="label">Study
 					</jsp:attribute>
@@ -187,19 +189,19 @@
 						<ui:select options="${command.reviewStatusOptionsMap}" path="reviewStatus"></ui:select>
 					</jsp:attribute>
 				</ui:row>
+				</chrome:box>
 			</div>
-			 <c:choose>
-        <c:when test="${empty tab}">
-            <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
-        </c:when>
-        <c:otherwise>
-            <tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
-        </c:otherwise>
-    </c:choose>
-	<input type="hidden" name="paginationAction" value="firstPage"/>
-	<input type="hidden" name="numberOfResultsPerPage" value="15"/>
-	</jsp:attribute>
-</tags:standardForm>
+			<c:choose>
+        		<c:when test="${empty tab}">
+            		<tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
+       			</c:when>
+        		<c:otherwise>
+            		<tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
+        		</c:otherwise>
+    		</c:choose>
+			<input type="hidden" name="paginationAction" value="firstPage"/>
+			<input type="hidden" name="numberOfResultsPerPage" value="15"/>
+	</form:form>	
 </c:if>
 
 </body>

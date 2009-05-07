@@ -39,38 +39,43 @@ function submitPage(s){
      <chrome:division title="Research Staff Details">
     	<div class="leftpanel">
     	 <div class="row">
-	     	<div class="label">Organization:</div>
+	     	<div class="label">Organization</div>
 	     	<div class="value">${researchStaff.organization.fullName}</div>
 	   	  </div>
     	  <div class="row">
-	            <div class="label">First Name:</div>
+	            <div class="label">First name</div>
 	            <div class="value">${researchStaff.firstName}</div>
 	       </div>
 	       <div class="row">
-	            <div class="label">Last Name:</div>
+	            <div class="label">Last name</div>
 	            <div class="value">${researchStaff.lastName}</div>
 	       </div>
 	       <div class="row">
-	            <div class="label">Middle Name:</div>
+	            <div class="label">Middle name</div>
 	            <div class="value">${researchStaff.middleName}</div>
 	       </div>
-    	</div>
-    	<div class="rightpanel">
-    	    <div class="row">
-	            <div class="label">Researcher ID:</div>
+	       <div class="row">
+	            <div class="label">Researcher ID</div>
 	            <div class="value">${researchStaff.nciIdentifier} </div>
 	        </div>
+    	</div>
+    	<div class="rightpanel">
+    	    
 	        <div class="row">
-	            <div class="label">Email address:</div>
+	            <div class="label">Email address</div>
 	            <div class="value">${researchStaff.emailAddress}</div>
 	        </div>
 	        <div class="row">
-	            <div class="label">Phone:</div>
+	            <div class="label">Phone</div>
 	            <div class="value">${researchStaff.phoneNumber}</div>
 			</div>
 	        <div class="row">
-	            <div class="label">Fax:</div>
+	            <div class="label">Fax</div>
 	            <div class="value">${researchStaff.faxNumber}</div>
+	        </div>
+	        <div class="row">
+	            <div class="label">Login Id</div>
+	            <div class="value">${researchStaff.loginId} </div>
 	        </div>
     	</div>
       
@@ -83,7 +88,7 @@ function submitPage(s){
 				${role.csmName eq 'caaers_study_cd' ? 'Study coordinator' : ''}
 				${role.csmName eq 'caaers_ae_cd' ? 'Adverse event coordinator' : ''}
 				${role.csmName eq 'caaers_site_cd' ? 'Site coordinator' : ''}
-				${role.csmName eq 'caaers_central_office_sae_cd' ? 'Central Office SAE coordinator' : ''}
+				${role.csmName eq 'caaers_central_office_sae_cd' ? 'Central Office Report Reviewer' : ''}
 				${role.csmName eq 'caaers_data_cd' ? 'Data coordinator' : ''}
 			</li>
 		</c:forEach>

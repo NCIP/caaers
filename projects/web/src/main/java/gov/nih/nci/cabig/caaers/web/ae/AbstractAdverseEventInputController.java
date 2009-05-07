@@ -55,6 +55,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -275,11 +276,16 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
     	
-    	log.debug("In currentFormObject :" + oCommand );
-    	((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
-        log.debug("After calling reassociate");
-    	oCommand = super.currentFormObject(request, oCommand);
-        log.debug("After calling super class currentFormObject :" + oCommand);
+    	try {
+			log.debug("In currentFormObject :" + oCommand );
+			((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
+			log.debug("After calling reassociate");
+			oCommand = super.currentFormObject(request, oCommand);
+			log.debug("After calling super class currentFormObject :" + oCommand);
+		} catch (HibernateOptimisticLockingFailureException  e) {
+			log.warn("Optimistic locking error, while reassociating the report", e);
+			request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
+		}
         return oCommand;
     }
 

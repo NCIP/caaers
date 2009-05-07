@@ -134,6 +134,10 @@ color:#0033FF;
         
 	}
 	
+	function showToolTip(text, title) {
+         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
+     }
+	
 	function advanceWorkflow(selectBox,wfId, entityId, entityType){
 		var sb = $(selectBox);
 		var newStatus = sb.value;
@@ -226,6 +230,7 @@ color:#0033FF;
 </script>
 </head>
 <body>
+<tags:javascriptLink name="wz_tooltip/wz_tooltip" />
 <tags:standardForm title="Course/Cycle Information">
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >

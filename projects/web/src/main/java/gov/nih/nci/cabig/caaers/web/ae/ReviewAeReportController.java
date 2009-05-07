@@ -56,7 +56,10 @@ public class ReviewAeReportController extends SimpleFormController{
 		String aeReportId = request.getParameter("aeReport");
 		String reportId = request.getParameter("report");
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
-		command.setReportId(Integer.parseInt(reportId));
+		if(reportId != null && !reportId.equals("") && !reportId.equals("null"))
+			command.setReportId(Integer.parseInt(reportId));
+		else
+			command.setReportId(null);
 		command.setAeReport(aeReport);
 		command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 		return command;
@@ -101,12 +104,13 @@ public class ReviewAeReportController extends SimpleFormController{
 			}
 		}
         
-        boolean canSubmit = false;
-        if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isUserSAECoordinator)
-        	canSubmit = true;
+        //boolean canSubmit = false;
+        //if(reportMessages.get(command.ZERO).isSubmittable() && reportMessages.get(command.getReportId()).isSubmittable() && isUserSAECoordinator)
+        //	canSubmit = true;
         
         
-        refdata.put("canSubmit", canSubmit);
+        //refdata.put("canSubmit", canSubmit);
+		refdata.put("isUserSAECoordinato", isUserSAECoordinator);
         
         return refdata;
 	}

@@ -9,6 +9,8 @@ public class InvestigatorQuery extends AbstractQuery {
     private static String LAST_NAME = "lastName";
 
     private static String NCI_CODE = "nciIdentifier";
+    
+    private static String LOGIN_ID = "loginId";
 
     public InvestigatorQuery() {
 
@@ -36,6 +38,11 @@ public class InvestigatorQuery extends AbstractQuery {
         String searchString = value.toLowerCase();
         andWhere("lower(i.nciIdentifier) LIKE :" + NCI_CODE);
         setParameter(NCI_CODE, searchString);
+    }
+    public void filterByLoginId(final String loginId) {
+        String searchString = "%" + loginId.trim().toLowerCase() + "%";
+        andWhere(String.format("lower(i.loginId) LIKE :%s", LOGIN_ID));
+        setParameter(LOGIN_ID, searchString);
     }
 
 }

@@ -45,40 +45,43 @@ function submitPage(s){
 <chrome:division title="Investigator Details">
  <div class="leftpanel">
  <div class="row">
-	<div class="label">First Name:</div>
+	<div class="label">First Name</div>
 	<div class="value">${investigator.firstName}</div>
  </div>
 	        
  <div class="row">
-    <div class="label">Last Name:</div>
+    <div class="label">Last Name</div>
     <div class="value">${investigator.lastName}</div>
  </div>
 	        
  <div class="row">
-    <div class="label">Middle Name:</div>
+    <div class="label">Middle Name</div>
     <div class="value">${investigator.middleName}</div>
  </div>
  </div>
 
  <div class="rightpanel">
    <div class="row">
-	<div class="label">Investigator number:</div>
+	<div class="label">Investigator number</div>
 	<div class="value">${investigator.nciIdentifier} </div>
    </div>
    <div class="row">
-	 <div class="label">Email address:</div>
+	 <div class="label">Email address</div>
 	 <div class="value">${investigator.emailAddress}</div>
    </div>
 	        
    <div class="row">
-	 <div class="label">Phone:</div>
+	 <div class="label">Phone</div>
 	 <div class="value">${investigator.phoneNumber}</div>
    <div>
    <div class="row">
-	 <div class="label">Fax:</div>
+	 <div class="label">Fax</div>
 	 <div class="value">${investigator.faxNumber}</div>
    </div>
- 
+   <div class="row">
+	 <div class="label">Login Id</div>
+	 <div class="value">${investigator.loginId}</div>
+   </div>
  </div>
 </chrome:division>
 	

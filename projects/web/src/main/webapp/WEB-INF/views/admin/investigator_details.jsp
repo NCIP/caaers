@@ -209,10 +209,7 @@ Event.observe(window, "load", function() {
 		    <c:forEach begin="4" end="6" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow field="${field}" />
             </c:forEach>
-            
-            <c:if test="${authenticationMode == 'webSSO'}">
-               <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
-            </c:if>
+            <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
 		</div>
 		<div id="test-row" class="row"></div>
 	<c:if test="${(command.id gt 0) }">

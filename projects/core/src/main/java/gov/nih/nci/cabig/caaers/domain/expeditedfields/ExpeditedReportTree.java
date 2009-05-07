@@ -65,7 +65,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("hospitalization","Hospitalization"),
                                         property("expected", "Expected"), 
                                         property("eventLocation", "Where was the patient when the event occurred?"),
-                                        property("eventApproximateTime","Time of event"),
+                                        property("eventApproximateTime.hourString","Time of event"),
                                         property("outcomes", "Outcomes"),
                                         property("comments", "Comments")
                                  )
@@ -120,7 +120,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                             property("responseDescription",
                                         property("eventDescription", "Description and treatment of event(s)"),
                                         property("dateRemovedFromProtocol", "Date removed from protocol"),
-                                        property("primaryTreatmentApproximateTime","Event treatment, approximate time"),
+                                        property("primaryTreatmentApproximateTime.hourString","Event treatment, approximate time"),
                                         property("presentStatus", "Present status"),
                                         property("recoveryDate","Date of recovery or death"),
                                         property("retreated","Has the participant been re-treated?"),
@@ -139,7 +139,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                 property("treatmentInformation",
         							property("investigationalAgentAdministered","Was an investigational agent administered on this protocol?"),
                                     list("courseAgents","Study Agent",
-                                            property("studyAgent", "Study Agent"),
+                                            property("studyAgent", "Study Agent Name"),
                                             property("formulation","Formulation"),
                                             property("lotNumber", "Lot # (if known)"),
                                             property("dose",
@@ -335,7 +335,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     private static TreeNode participantMeasure(String baseName) {
         return property(baseName, StringUtils.capitalize(baseName),
-                        property("quantity", StringUtils.capitalize(baseName) + "-" + "Quantity"), property("unit", "Units"));
+                        property("quantity",  "Quantity"), property("unit","Units"));
     }
 
     private static TreeNode dosage(String baseName, String displayName) {

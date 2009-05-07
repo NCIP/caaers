@@ -286,6 +286,7 @@ Event.observe(window, "load", function() {
       <input type="hidden" name="_action" value="">
       <input type="hidden" name="_selected" value="">
       <tags:tabFields tab="${tab}"/>
+      <tags:hasErrorsMessage hideErrorDetails="false"/>
       <div class="leftpanel">
       <chrome:box title="${tab.shortTitle}" id="all-disease">
 		
@@ -344,7 +345,6 @@ Event.observe(window, "load", function() {
         </div>   
         <div class="rightpanel">
         <chrome:box title="Selected Diseases " id="diseases">
-          <tags:hasErrorsMessage hideErrorDetails="false"/>
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">

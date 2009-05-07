@@ -1,12 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Transient;
 
 public class AdverseEventReportingPeriodDTO {
 	
@@ -24,6 +29,7 @@ public class AdverseEventReportingPeriodDTO {
 	private List<ReviewCommentsDTO> reviewComments;
 	
 	private List<ExpeditedAdverseEventReportDTO> aeReports;
+	private List<ExpeditedAdverseEventReportDTO> activeAeReports;
 	
 	
 	
@@ -46,6 +52,40 @@ public class AdverseEventReportingPeriodDTO {
 		if(possibleActions == null) possibleActions = new ArrayList<String>();
 		possibleActions.add(transition);
 	}
+	
+	
+	 /**
+     * This method returns a list of expedited aeReports that are active. An Expedited AeReport
+     * is active if it has atleast on report in non-withdrawn state.
+     * @return
+     */
+    public List<ExpeditedAdverseEventReportDTO> getActiveAeReports() {
+    	activeAeReports = new ArrayList<ExpeditedAdverseEventReportDTO>();
+    	if(aeReports != null)
+    	{
+    		for(ExpeditedAdverseEventReportDTO aeReport: aeReports){
+    			if(isAeReportActive(aeReport))
+    				activeAeReports.add(aeReport);
+    		}
+    	}
+    	return activeAeReports;
+    }
+    
+    /**
+     * If any report associated to expedited AeReport is in non-withdrawn state,
+     * the expedited aeReport is considered to be an active report.
+     * @param aeReport
+     * @return
+     */
+    private Boolean isAeReportActive(ExpeditedAdverseEventReportDTO aeReport){
+    	for(ReportDTO report: aeReport.getReports()){
+    		if(!report.getStatus().equals(ReportStatus.WITHDRAWN) && 
+    				!report.getStatus().equals(ReportStatus.REPLACED) && 
+    				!report.getStatus().equals(ReportStatus.AMENDED))
+    			return true;
+    	}
+    	return false;
+    }
 	
 	public Integer getId() {
 		return id;

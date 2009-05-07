@@ -125,15 +125,15 @@ public class ReporterTab extends AeTab {
             if(StringUtils.equals("amendReport", action)){
             	processAmendReportFlow(command);
             	command.createReports(true);
+            	
+            	// Amend the reports to be amended
+                command.amendReports();
             }else if(StringUtils.equals("editReport", action)){
             	processEditReportFlow(command);
             	command.createReports(false);
             }
             // Withdraw the reports to be withdrawn
             command.withdrawReports();
-
-            // Amend the reports to be amended
-            command.amendReports();
 
             if (command.getAeReport().getReports().size() > 0) {
                 command.save();
@@ -163,6 +163,9 @@ public class ReporterTab extends AeTab {
      *  7. Refresh the mandatory fields map.
      */
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
+    	//only process if there are no validation errors.
+    	if(errors.hasErrors()) return;
+    	
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
         String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
         if (StringUtils.equals("createNew", action)) {

@@ -256,9 +256,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         
         //hide DCP for only AdEERS reporting enabled studies
         if(command.isNonAdeersStudy()){
-        	renderDecisionManager.reveal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
+        	renderDecisionManager.reveal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime",
+        			"adverseEvents[].eventApproximateTime.hourString","adverseEvents[].eventApproximateTime.minuteString","adverseEvents[].eventApproximateTime.type");
         }else{
-        	renderDecisionManager.conceal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime");
+        	renderDecisionManager.conceal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime",
+        			"adverseEvents[].eventApproximateTime.hourString","adverseEvents[].eventApproximateTime.minuteString","adverseEvents[].eventApproximateTime.type");
         }
         
 		return referenceData;

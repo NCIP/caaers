@@ -9,14 +9,21 @@
 	<td colspan=2>
 		<table width="100%">
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
-			<tr>
-				<td align="left" width="60%">
-					<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true&report=${report.id}"/>">${report.name}</a>
-				</td>
-				<td align="center" width="40%" id="report-${reportingPeriod.id}-status">
-					${report.status.displayName }
-				</td>
-			</tr>
+			<c:if test="${report.status ne 'REPLACED' and report.status ne 'AMENDED'}">
+				<tr>
+					<td align="left" width="60%">
+						<c:if test="${report.status ne 'COMPLETED'}">
+							<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${aeReport.id}&viewOnly=true&report=${report.id}"/>">${report.name}</a>
+						</c:if>
+						<c:if test="${report.status eq 'COMPLETED'}">
+							${report.name}
+						</c:if>
+					</td>
+					<td align="center" width="40%" id="report-${reportingPeriod.id}-status">
+						<ae:oneListReportSubmissionStatus theReport="${report.report}" reportStatus="${report.status}" lastVersion="${report.report.lastVersion}"/>
+					</td>
+				</tr>
+			</c:if>
 		</c:forEach>
 		</table>
 	</td>

@@ -19,29 +19,24 @@
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
-<c:set var="title">
-    <c:choose>
-        <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:when>
-        <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:otherwise>
-    </c:choose>
-</c:set>
+<c:set var="title">${adverseEvent.adverseEventCtcTerm.ctcTerm.term}</c:set>
 <c:set var="title_grade">${command.aeReport.adverseEvents[index].grade.code}</c:set>
 <c:set var="title_lowlevel">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
-<c:set var="isAdeersReporting" value="${command.adverseEventReportingPeriod.study.adeersReporting}" />
 
 <a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
-<chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" cssClass="ae-section aeID-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
+<chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" 
+	cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
-    <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
+    <div id="${v}.ctc-details" class="ctc-details">
   
         <div class="row" style="display:none;">
-            <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
+            <div class="label"><label for="${v}.ctc-category">CTC category</label></div>
             <div class="value">
 
               <div class="ctcCategoryValueDiv">
-                <select id="aeReport.adverseEvents[${index}].ctc-category" class="ctcCategoryClass" onchange="javascript:enableDisableAjaxTable(${index})" >
+                <select id="${v}.ctc-category" class="ctcCategoryClass" onchange="javascript:enableDisableAjaxTable(${index})" >
                     <option value="">Any</option>
                 </select>
 
@@ -49,13 +44,15 @@
             </div>
         </div>
 
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
-
-        <div style="display:${empty adverseEvent.lowLevelTerm ? "none;" : "''"}">
+        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('${v}.ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
+		</div>
+		
+		<!--  Other MedDRA -->
+        <div style="display:${adverseEvent.adverseEventTerm.otherRequired ? 'block' : 'none'}">
         <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
             <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
             <jsp:attribute name="value">
-                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}">
+                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? '(Begin typing here)' : adverseEvent.lowLevelTerm.meddraTerm}">
                     <jsp:attribute name="populatorJS">
                         function(autocompleter, text) {
                             var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
@@ -80,8 +77,7 @@
         </jsp:attribute>
    		</tags:renderRow>
 --%>
-    </div>
-
+  
     <div id="main-fields-${index}" class="main-fields">
 		<%-- Verbatim --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
@@ -94,9 +90,7 @@
 				<%-- Attribution --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
                         <%-- Event Time --%>
-                        <c:if test="${!isAdeersReporting}">
                             <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
-                        </c:if>
             </div>
 			<div class="rightpanel">
 				<%-- End Date --%>
@@ -104,17 +98,13 @@
 				<%-- Expected --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
     				<%-- Location --%>
-                    <c:if test="${!isAdeersReporting}">
-                            <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
-                    </c:if>
+                 <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
             </div>
 		</div>
-            <c:if test="${!isAdeersReporting}">
-        <%-- Hospitalization --%>
+		  <%-- Hospitalization --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
 		<%-- Outcomes --%>
 		<ae:oneOutcome index="${index}" />
-            </c:if>
     </div>
     </jsp:body>
 </chrome:division>
