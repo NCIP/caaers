@@ -126,33 +126,27 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		try {
             logger.info("Begining of DefaultInvestigatorMigratorService : buildInvestigator");
              
-           // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
             String nciIdentifier = investigatorDto.getNciIdentifier();
             String email = investigatorDto.getEmailAddress();
             String loginId = investigatorDto.getLoginId();
-            Investigator investigator = null;
+            
              if (StringUtils.isEmpty(loginId)) {
           	  loginId = email;
             }
+            Investigator investigator = null;
 
-
-                          if (StringUtils.isEmpty(nciIdentifier)){
+            if (StringUtils.isEmpty(nciIdentifier)){
             	investigator = new LocalInvestigator();
             } else {
-            investigator = fetchInvestigator(nciIdentifier);
+            	investigator = fetchInvestigator(loginId);
                 if (investigator == null ) {
                 	// build new 
                 	investigator = new LocalInvestigator();
                 	investigator.setNciIdentifier(nciIdentifier);
 
-		}
-	investigator.setLoginId(loginId);
-	
-           
-<Merge Conflict>
-
-
-
+                }
+            }
+            investigator.setLoginId(loginId);
             investigator.setFirstName(investigatorDto.getFirstName());
             investigator.setLastName(investigatorDto.getLastName());
             investigator.setMiddleName(investigatorDto.getMiddleName());

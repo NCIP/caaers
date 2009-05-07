@@ -111,6 +111,9 @@ public class ResearchStaffRepository {
         initialize(researchStaff);
         return researchStaff;
     }
+    public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
+        return researchStaffDao.searchResearchStaff(query);
+    }
 
     @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {

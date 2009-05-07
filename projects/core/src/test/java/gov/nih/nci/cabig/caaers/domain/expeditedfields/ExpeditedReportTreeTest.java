@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersError;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Rhett Sutphin
@@ -148,6 +151,16 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertUnsatisfiedProperties("Wrong unsatisfied properties found", "labs[].labTerm", report,
                         "labs[1].labTerm");
     }
+    
+    public void testListPropertyIsNotSatisfiedWhenTheSecondInstanceInCodedOrOtherIsMissing(){
+    	//aeReport.labs[1].other
+    	 ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+         LabTerm labTerm = new LabTerm();
+         report.getLabs().get(0).setOther(null);
+    	 List<UnsatisfiedProperty> actualUnsatisfied = tree.verifyPropertiesPresent("labs[1].other",
+                 report);
+    	 System.out.println(actualUnsatisfied);
+    }
 
     public void testCodedOrOtherSatisfiedByCoded() throws Exception {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
@@ -174,6 +187,50 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertNoUnsatisfiedProperties("Other didn't satisfy it", "diseaseHistory.ctepStudyDisease",
                         report);
     }
+    
+    public void testDisplayNames(){
+    	populateFieldMap(tree);
+    	TreeNode node = tree.find("additionalInformation");
+    	ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+    	AdditionalInformation ai = new AdditionalInformation();
+    	ai.setAutopsyReport(true);
+    	report.setAdditionalInformation(ai);
+    	ArrayList list = new ArrayList();
+    	for(TreeNode tn : node.getChildren()){
+    		System.out.println(tn.getPropertyValuesFrom(report).getPropertyValues()[0].getValue());
+    		list.add(tn.getPropertyPath());
+    	}
+    	
+    	
+
+    	
+    	List<UnsatisfiedProperty> props = tree.verifyPropertiesPresent(list, report);
+    	System.out.println(props);
+    }
+    
+    
+    public void populateFieldMap(
+            TreeNode node) {
+		    		// only add leaf nodes in the filed map. (others are just sections)
+		if (node.isLeaf()) {
+		    String key = node.getParent().getQualifiedDisplayName();
+		
+		    String displayName = node.getDisplayName();
+		    String path = node.getPropertyPath();
+		    if (StringUtils.isEmpty(path)) return;
+		    if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
+		    System.out.println(key + ">>" + displayName);
+		   
+		
+		    		
+		} else {
+		    // add children of this node in the map
+		    for (TreeNode n : node.getChildren())
+		        populateFieldMap( n);
+		}
+
+}
+
 
     public void testGetSectionForNode() throws Exception {
         assertEquals(ExpeditedReportSection.LABS_SECTION, tree.getSectionForNode(tree

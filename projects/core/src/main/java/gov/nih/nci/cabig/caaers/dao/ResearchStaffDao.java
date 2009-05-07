@@ -107,6 +107,32 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     	return remoteResearchStaffs;
     }
     
+    /**
+     * Search for research staffs using query.
+     * 
+     * @param query
+     *                The query used to search for research staffs
+     * @return The list of research staffs.
+     */
+    @SuppressWarnings( { "unchecked" })
+    public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
+        String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+        return (List<ResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+
+    }
     
     /**
      * Get the list of research staffs matching the name fragments and belonging to specified site.

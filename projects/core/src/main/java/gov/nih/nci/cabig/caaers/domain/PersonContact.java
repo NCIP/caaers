@@ -94,7 +94,6 @@ public abstract class PersonContact extends Person {
 	@Transient
 	public String getPhoneNumber(){
 		return contactMechanisms.get(PHONE);
-        return lastName;
 	}
 	@Transient
 	public void setFax(String fax){
@@ -112,5 +111,21 @@ public abstract class PersonContact extends Person {
 	public String getEmailAddress(){
 		return contactMechanisms.get(EMAIL);
 	}
+	
+	@Override
+	public String getFirstName() {
+		return firstName;
+	}
+
+	@Override
+	public String getLastName() {
+		return lastName;
+	}
+
+	@Override
+	public String getMiddleName() {
+		return middleName;
+	}
+
 	
 }

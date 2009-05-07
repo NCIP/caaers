@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import com.semanticbits.coppa.domain.annotations.RemoteProperty;
 
 /**
  * @author Kulasekaran
