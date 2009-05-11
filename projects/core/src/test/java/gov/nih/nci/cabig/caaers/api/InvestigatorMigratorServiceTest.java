@@ -74,7 +74,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 			svc.saveInvestigator(staff);
 			
 			assertNotNull(updatedInvestigator);
-			updatedInvestigator = fetchInvestigator("sr-1");
+			updatedInvestigator = fetchInvestigator("l1");
 			
 			//get site investigators.
 			List<SiteInvestigator> siteInvestigators = updatedInvestigator.getSiteInvestigatorsInternal();
