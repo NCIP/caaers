@@ -1,212 +1,324 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
+import edu.duke.cabig.c3pr.esb.Metadata;
+import edu.duke.cabig.c3pr.esb.OperationNameEnum;
+import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.coppa.iso.Enxp;
-import gov.nih.nci.coppa.iso.Ii;
-import gov.nih.nci.coppa.iso.Tel;
-import gov.nih.nci.coppa.iso.Util.IiConverter;
-import gov.nih.nci.services.correlation.HealthCareProviderCorrelationServiceRemote;
-import gov.nih.nci.services.correlation.HealthCareProviderDTO;
-import gov.nih.nci.services.correlation.IdentifiedOrganizationCorrelationServiceRemote;
-import gov.nih.nci.services.correlation.IdentifiedOrganizationDTO;
-import gov.nih.nci.services.correlation.IdentifiedPersonCorrelationServiceRemote;
-import gov.nih.nci.services.correlation.IdentifiedPersonDTO;
-import gov.nih.nci.services.person.PersonDTO;
-import gov.nih.nci.services.person.PersonEntityServiceRemote;
+import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.coppa.po.HealthCareProvider;
+import gov.nih.nci.coppa.po.IdentifiedOrganization;
+import gov.nih.nci.coppa.po.IdentifiedPerson;
+import gov.nih.nci.coppa.po.Person;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
+import org.iso._21090.ENXP;
+import org.iso._21090.EntityNamePartType;
+import org.iso._21090.II;
+import org.iso._21090.TEL;
 
 import com.semanticbits.coppa.infrastructure.service.RemoteResolver;
+import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
-public class InvestigatorResolver implements RemoteResolver{
+public class InvestigatorResolver extends BaseResolver implements RemoteResolver {
 	
 	private static Logger logger = Logger.getLogger(InvestigatorResolver.class);
+	private static Log log = LogFactory.getLog(InvestigatorResolver.class);
 
-	private IdentifiedOrganizationCorrelationServiceRemote  identifiedOrganizationCorrelationServiceRemote;
-	private HealthCareProviderCorrelationServiceRemote healthCareProviderCorrelationServiceRemote;
-	private PersonEntityServiceRemote personEntityServiceRemote;
-	private IdentifiedPersonCorrelationServiceRemote identifiedPersonCorrelationServiceRemote;
+	private RemoteInvestigator setInvestigatorDetails(Person coppaPerson,String nciIdentifier) {
+		RemoteInvestigator remoteInvestigator = new RemoteInvestigator();
 
-	
-	public Investigator populateRemoteInvestigator(PersonDTO personDTO,String orgCtepId,String coppaOrgId){
-		Investigator remoteInvestigator = new RemoteInvestigator();
-		Iterator<Enxp> enxpItr = personDTO.getName().getPart().iterator();
-        Enxp next = enxpItr.next();
-        String firstName = next.getValue();
-        next = enxpItr.next();
-        String lastName = next.getValue();
-        
-        String externalId = personDTO.getIdentifier().getExtension();
-        Set<Tel> email = personDTO.getTelecomAddress().getItem();
-        Iterator<Tel> emailItr = email.iterator();
-        Tel nextTel = emailItr.next();
-        String emailStr = "";
-		try {
-			emailStr = nextTel.getValue().toURL().toString();
-			//remove mailto: string from email 
-			if (emailStr.startsWith("mailto:")) {
-				emailStr = emailStr.substring("mailto:".length(), emailStr.length());
+		Iterator<ENXP> enxpItr = coppaPerson.getName().getPart().iterator();
+		ENXP enxp;
+		String firstName = "";
+		String lastName = "";
+		while(enxpItr.hasNext()){
+			enxp = enxpItr.next();
+			if(enxp.getType().equals(EntityNamePartType.GIV)){
+				firstName = enxp.getValue();
 			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			if(enxp.getType().equals(EntityNamePartType.FAM)){
+				lastName = enxp.getValue();
+			}
+		}        
+
+        List<TEL> email = coppaPerson.getTelecomAddress().getItem();
+        Iterator<TEL> emailItr = email.iterator();
+        TEL nextTel = emailItr.next();
+        String emailStr = "";
+		emailStr = nextTel.getValue();
+		//remove mailto: string from email 
+		if (emailStr.startsWith("mailto:")) {
+			emailStr = emailStr.substring("mailto:".length(), emailStr.length());
 		}
 		remoteInvestigator.setFirstName(firstName);
 		remoteInvestigator.setLastName(lastName);
-		
-		// DO I NEED NCI ID ? 
-		Ii ii = new Ii();
-		ii.setExtension(externalId);
-		try {
-			IdentifiedPersonDTO identifiedPersonDTO = identifiedPersonCorrelationServiceRemote.getCorrelation(ii);
-			remoteInvestigator.setNciIdentifier(identifiedPersonDTO.getAssignedId().getExtension());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
 		remoteInvestigator.setEmailAddress(emailStr);
-		remoteInvestigator.setExternalId(externalId);
-		//build org
-		Organization organization = new RemoteOrganization();
-		organization.setNciInstituteCode(orgCtepId);
-		SiteInvestigator si = new SiteInvestigator();
-		si.setOrganization(organization);
-		si.setInvestigator(remoteInvestigator);
-		remoteInvestigator.addSiteInvestigator(si)	;
+		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
+		if (nciIdentifier != null) {
+			remoteInvestigator.setNciIdentifier(nciIdentifier);
+		}
 		return remoteInvestigator;
+
 	}
+	
 	/**
 	 * Find By Organization
 	 */
 	public List<Object> find(Object example) {
-		List<Object> remoteInvestigators = new ArrayList<Object>();
-		
+		System.out.println("Initiated coppa call from FIND ");
 		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
-		//organization ctep-id
+		List<Object> remoteInvestigatorList = new ArrayList<Object>();
+		RemoteInvestigator tempRemoteInvestigator = null;
 		Organization org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
-		//if organization is null get all research staffs
-		if (org == null) {
-			PersonDTO personDTO = new PersonDTO();
-			Ii ii = new Ii();
-			ii.setRoot(IiConverter.HEALTH_CARE_PROVIDER_ROOT);
-			personDTO.setIdentifier(ii);
-			
-			List<PersonDTO> allPersons = personEntityServiceRemote.search(personDTO);
-			//need to get organization for each person . 
-			
-			for (PersonDTO person:allPersons) {
-				String ctepOrgId = "";
-				String coppaOrgId = "";
-				try {
-					HealthCareProviderDTO ctDto = healthCareProviderCorrelationServiceRemote.getCorrelation(person.getIdentifier()); //player id
-					Ii scoperId = ctDto.getScoperIdentifier();
-					IdentifiedOrganizationDTO organizationDto = identifiedOrganizationCorrelationServiceRemote.getCorrelation(scoperId);
-					ctepOrgId = organizationDto.getAssignedId().getExtension();		
-					coppaOrgId = organizationDto.getPlayerIdentifier().getExtension();
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				remoteInvestigators.add(this.populateRemoteInvestigator(person,ctepOrgId,coppaOrgId));
+		
+		
+		if (remoteInvestigatorExample.getNciIdentifier() != null) {
+			//get Identified Organization ... 
+			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
+			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
+			if (identifiedPerson == null) {
+				return remoteInvestigatorList;
 			}
-			return remoteInvestigators;
-		}
-		String ctepOrgId = org.getNciInstituteCode();
-		//build IdentifiedOrganizationDTO
-		IdentifiedOrganizationDTO idOrgDto = new IdentifiedOrganizationDTO();
-		Ii ii = new Ii();
-		ii.setExtension(ctepOrgId);
-		ii.setRoot(IiConverter.CTEP_ORG_IDENTIFIER_ROOT);
-		idOrgDto.setAssignedId(ii);
-		// get List of Organizations , in this case it should be only one ...
-		List <IdentifiedOrganizationDTO> idOrgDtos = identifiedOrganizationCorrelationServiceRemote.search(idOrgDto);
-		IdentifiedOrganizationDTO identifiedOrganizationDTO = idOrgDtos.get(0);
-		// grab coppa-id of organization from above object
-		Ii playerId = identifiedOrganizationDTO.getPlayerIdentifier();
-		
-		// using above id get investigators
-		HealthCareProviderDTO crDto = new HealthCareProviderDTO();
-		crDto.setScoperIdentifier(playerId);
-		List<HealthCareProviderDTO> investigators = healthCareProviderCorrelationServiceRemote.search(crDto);
-		
-		//now we need to get the details of each person from person service .
-		
-		for (HealthCareProviderDTO investigator:investigators) {
-			Ii crPlayerId = investigator.getPlayerIdentifier();
+			II ii = identifiedPerson.getPlayerIdentifier();
+			String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
 			try {
-				PersonDTO personDTO = personEntityServiceRemote.getPerson(crPlayerId);
-				Investigator remoteInvestigator = populateRemoteInvestigator(personDTO,ctepOrgId,playerId.getExtension());
-				remoteInvestigators.add(remoteInvestigator);
+				String resultXml = broadcastPersonGetById(iiXml);
+				tempRemoteInvestigator = loadInvestigatorForPersonResult(resultXml);
+				remoteInvestigatorList.add(tempRemoteInvestigator);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return remoteInvestigatorList;
 		}
 		
 		
-		/*
-		List<ResearchStaffDTO> ResearchStaffDTOs = 
-			researchStaffRemoteService.searchClinicalResearchStaffPerson(remoteResearchStaffExample.getEmailAddress());
-		for (ResearchStaffDTO researchStaffDTO:ResearchStaffDTOs) {
-			ResearchStaff remoteResearchStaff = populateRemoteResearchStaff(researchStaffDTO);
-			remoteResearchStaffs.add(remoteResearchStaff);
-		}*/
-		return remoteInvestigators;
+		
+		if (org != null){
+			//get Organization by ctepId 
+			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(org.getNciInstituteCode());
+			String payload = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationSearchCriteria);
+			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
+			String results =getInteroperationService().broadcastCOPPA(payload, mData);//
+			List<String> resultObjects = XMLUtil.getObjectsFromCoppaResponse(results);
+			for (String resultObj:resultObjects) {
+				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
+				II organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
+				String iiXml = CoppaObjectFactory.getCoppaIIXml(organizationIdentifier);
+				//Get Organization based on player id of above.
+				mData = new Metadata(OperationNameEnum.getById.getName(),  "externalId", ServiceTypeEnum.ORGANIZATION.getName());
+				String organizationResults = getInteroperationService().broadcastCOPPA(iiXml, mData);//
+				List<String> organizationResultObjects = XMLUtil.getObjectsFromCoppaResponse(organizationResults);
+				for (String organizationResultObject:organizationResultObjects) {
+					gov.nih.nci.coppa.po.Organization coppaOrganizationResult = CoppaObjectFactory.getCoppaOrganization(organizationResultObject);
+					II ii = coppaOrganizationResult.getIdentifier();
+					//above ii is the scoper if clinical research staff...
+					HealthCareProvider healthCareProvider = CoppaObjectFactory.getCoppaHealthCareProviderWithScoperIdAsSearchCriteria(ii);
+					String coppaHealthCareProviderXml = CoppaObjectFactory.getCoppaHealthCareProviderXml(healthCareProvider);
+					String sRolesXml = "";
+					try {
+						sRolesXml = broadcastRoleSearch(coppaHealthCareProviderXml,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
+					} catch (CaaersSystemException e) {
+						System.out.print(e);
+					}
+
+					List<String> sRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);	
+					
+					for(String sRole: sRoles){
+						HealthCareProvider hcp = CoppaObjectFactory.getCoppaHealthCareProvider(sRole);
+						II pid = hcp.getPlayerIdentifier();	
+						String idXml = CoppaObjectFactory.getCoppaIIXml(pid);
+						//above player id is the Id of a Person . 						
+						// now get  the Person by Id ... 
+						mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
+						String personResultXml = "";
+						try {
+							personResultXml = getInteroperationService().broadcastCOPPA(idXml, mData);//
+							List<String> persons = XMLUtil.getObjectsFromCoppaResponse(personResultXml);	
+							for(String personXml: persons){
+								Person person = CoppaObjectFactory.getCoppaPerson(personXml);
+								IdentifiedPerson identifiedPerson = getIdentifiedPerson(person.getIdentifier());
+								String nciIdentifier = null;
+								if (identifiedPerson != null ) {
+									nciIdentifier = identifiedPerson.getAssignedId().getExtension();
+								}
+								tempRemoteInvestigator = populateRemoteInvestigator(person, nciIdentifier , coppaIdOrganization);
+								remoteInvestigatorList.add(tempRemoteInvestigator);
+							}
+							
+						} catch (CaaersSystemException e) {
+							System.out.print(e);
+						}
+
+					}
+				}
+			}
+			return remoteInvestigatorList;
+		}
+		
+		String personXml = CoppaObjectFactory.getCoppaPersonXml(CoppaObjectFactory.getCoppaPerson(remoteInvestigatorExample.getFirstName(), remoteInvestigatorExample.getMiddleName(), remoteInvestigatorExample.getLastName()));
+		String resultXml = "";
+		try {
+			resultXml = broadcastPersonSearch(personXml);
+		} catch (Exception e) {
+			System.out.print(e);
+		}
+		List<String> coppaPersons = XMLUtil.getObjectsFromCoppaResponse(resultXml);
+		
+
+		Person coppaPerson = null;
+		if (coppaPersons != null){
+			for(String coppaPersonXml: coppaPersons){
+				coppaPerson = CoppaObjectFactory.getCoppaPerson(coppaPersonXml);
+				IdentifiedPerson identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
+				String nciIdentifier = null;
+				if (identifiedPerson != null ) {
+					nciIdentifier = identifiedPerson.getAssignedId().getExtension();
+				}
+				
+				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
+				tempRemoteInvestigator = populateRemoteInvestigator(coppaPerson, nciIdentifier, coppaOrganizationList);
+				remoteInvestigatorList.add(tempRemoteInvestigator);
+			}
+		}
+		
+		
+		return remoteInvestigatorList;
+	}
+	
+
+	
+	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, IdentifiedOrganization identifiedOrganization){		
+		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);		
+		Organization site = new RemoteOrganization();
+		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());		
+		SiteInvestigator si = new SiteInvestigator();
+		si.setOrganization(site);
+		si.setInvestigator(remoteInvestigator);
+		remoteInvestigator.addSiteInvestigator(si)	;
+
+		return remoteInvestigator;
 	}
 
 	public Object getRemoteEntityByUniqueId(String externalId) {
-		Ii ii = new Ii();
-		ii.setExtension(externalId);
-		PersonDTO person = null;
-		String ctepOrgId = "";
-		String coppaOrgId = "";
+		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
+
+		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
+		String resultXml = "";
 		try {
-			person = personEntityServiceRemote.getPerson(ii);
-			HealthCareProviderDTO ctDto = healthCareProviderCorrelationServiceRemote.getCorrelation(person.getIdentifier()); //player id
-			Ii scoperId = ctDto.getScoperIdentifier();
-			IdentifiedOrganizationDTO organizationDto = identifiedOrganizationCorrelationServiceRemote.getCorrelation(scoperId);
-			ctepOrgId = organizationDto.getAssignedId().getExtension();	
-			coppaOrgId = organizationDto.getPlayerIdentifier().getExtension();
+			resultXml = broadcastPersonGetById(iiXml);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
-		//ResearchStaffDTO researchStaffDTO = researchStaffRemoteService.getClinicalResearchStaffPerson(email);
-		
-		return this.populateRemoteInvestigator(person,ctepOrgId,coppaOrgId);
-		//return null;
+		return loadInvestigatorForPersonResult(resultXml);
 	}
+	
+	private RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml) {
+		List<String> results = XMLUtil.getObjectsFromCoppaResponse(personResultXml);
+		List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList = null;
+		RemoteInvestigator remoteInvestigator = null;
+		Person coppaPerson = null;
+		String nciIdentifier = null;
+		if (results.size() > 0) {
+			coppaPerson = CoppaObjectFactory.getCoppaPerson(results.get(0));
+			coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
+			IdentifiedPerson identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
+			
+			if (identifiedPerson != null ) {
+				nciIdentifier = identifiedPerson.getAssignedId().getExtension();
+			}
+			remoteInvestigator =  this.populateRemoteInvestigator(coppaPerson, nciIdentifier, coppaOrganizationList);
+		}
+
+		return remoteInvestigator;		
+	}
+	
+	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList){		
+
+		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);	
+		List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList = new ArrayList<IdentifiedOrganization>();
+
+		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
+			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
+				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
+				identifiedCoppaOrganizationList.add(identifiedOrganization);
+			}
+		}
+		//Build HealthcareSite and HealthcareSiteInvestigator
+
+		Organization site = null;
+
+		if (identifiedCoppaOrganizationList != null && identifiedCoppaOrganizationList.size()>0){
+
+			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
+				site = new RemoteOrganization();
+				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());	
+				SiteInvestigator si = new SiteInvestigator();
+				si.setOrganization(site);
+				si.setInvestigator(remoteInvestigator);
+				remoteInvestigator.addSiteInvestigator(si)	;
+				
+
+			}
+
+		}
+
+		return remoteInvestigator;
+	}
+
+	/*
+	private List<gov.nih.nci.coppa.po.Organization> getOrganizationsForPerson(Person coppaPerson) {
+		List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
+
+		HealthCareProvider healthCareProvider = CoppaObjectFactory.getCoppaHealthCareProvider(coppaPerson.getIdentifier());
+		String coppaHealthCareProviderXml = CoppaObjectFactory.getCoppaHealthCareProviderXml(healthCareProvider);
+
+		String sRolesXml = "";
+		try {
+			sRolesXml = broadcastRoleSearch(coppaHealthCareProviderXml,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
+		} catch (CaaersSystemException e) {
+			System.out.print(e);
+		}
+
+		List<String> sRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);		
+
+		for(String sRole: sRoles){
+
+			String orgResultXml = "";
+
+			HealthCareProvider hcp = CoppaObjectFactory.getCoppaHealthCareProvider(sRole);
+			String orgIiXml = CoppaObjectFactory.getCoppaIIXml(hcp.getScoperIdentifier());
+			try {
+				orgResultXml = broadcastOrganizationGetById(orgIiXml);
+			} catch (Exception e) {
+				System.out.print(e);
+			}
+
+			List<String> orgResults = XMLUtil.getObjectsFromCoppaResponse(orgResultXml);
+			if (orgResults.size() > 0) {
+				coppaOrganizationList.add(CoppaObjectFactory.getCoppaOrganization(orgResults.get(0)));
+			}
+
+		}
+
+		return coppaOrganizationList;
+
+	}
+	*/
 
 
 
-
-	public void setIdentifiedOrganizationCorrelationServiceRemote(
-			IdentifiedOrganizationCorrelationServiceRemote identifiedOrganizationCorrelationServiceRemote) {
-		this.identifiedOrganizationCorrelationServiceRemote = identifiedOrganizationCorrelationServiceRemote;
-	}
-	public void setPersonEntityServiceRemote(
-			PersonEntityServiceRemote personEntityServiceRemote) {
-		this.personEntityServiceRemote = personEntityServiceRemote;
-	}
-	public void setIdentifiedPersonCorrelationServiceRemote(
-			IdentifiedPersonCorrelationServiceRemote identifiedPersonCorrelationServiceRemote) {
-		this.identifiedPersonCorrelationServiceRemote = identifiedPersonCorrelationServiceRemote;
-	}
-	public void setHealthCareProviderCorrelationServiceRemote(
-			HealthCareProviderCorrelationServiceRemote healthCareProviderCorrelationServiceRemote) {
-		this.healthCareProviderCorrelationServiceRemote = healthCareProviderCorrelationServiceRemote;
-	}
 
 }

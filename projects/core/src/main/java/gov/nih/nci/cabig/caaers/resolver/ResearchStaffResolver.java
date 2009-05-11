@@ -30,7 +30,7 @@ import org.iso._21090.TEL;
 import com.semanticbits.coppa.infrastructure.service.RemoteResolver;
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
-public class ResearchStaffResolver implements RemoteResolver{
+public class ResearchStaffResolver extends BaseResolver implements RemoteResolver{
 	
 	private static Logger logger = Logger.getLogger(ResearchStaffResolver.class);
 	private static Log log = LogFactory.getLog(ResearchStaffResolver.class);
@@ -74,27 +74,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 		return remoteResearchStaff;
 
 	}
-	
-	private IdentifiedOrganization getIdentifiedOrganization(gov.nih.nci.coppa.po.Organization coppaOrganization){
-		if(coppaOrganization != null){
-			//using coppa organization identier and previously obtained id of CTEP (hard coded in CoppaObjectFactory.getIIOfCTEP) get Identified organization 
 
-			IdentifiedOrganization identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaForCorrelation(coppaOrganization.getIdentifier());
-			String identifiedOrganizationXml = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganization);		
-			String resultXml = "";
-			try {
-				resultXml = broadcastIdentifiedOrganizationSearch(identifiedOrganizationXml);
-			} catch (CaaersSystemException e) {
-				log.error(e.getMessage());
-			}
-			List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
-			if (results.size() > 0) {
-				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(results.get(0));
-			}
-			return identifiedOrganization;
-		}
-		return null;
-	}
 	
 	public RemoteResearchStaff populateRemoteResearchStaff(Person coppaPerson, String nciIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList){		
 
@@ -132,33 +112,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 
 		return remoteResearchStaff;
 	}
-	private IdentifiedPerson getIdentifiedPerson(II personIdentifier) {
-		Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", "IDENTIFIED_PERSON");		
-		IdentifiedPerson ip = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaForCorrelation(personIdentifier);
-		String ipPayload = CoppaObjectFactory.getCoppaIdentfiedPersonXml(ip);		
-		
-		String result = broadcastCoppaMessage(ipPayload, mData);
-		List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(result);	
-		IdentifiedPerson identifiedPerson = null;
-		for(String identifiedPersonXml: identifiedPersons){
-			identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonXml);
-		}
-		return identifiedPerson;
-	}
-	private IdentifiedPerson getIdentifiedPerson(IdentifiedPerson ip) {
-		Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", "IDENTIFIED_PERSON");		
-		
-		String ipPayload = CoppaObjectFactory.getCoppaIdentfiedPersonXml(ip);		
-		
-		String result = broadcastCoppaMessage(ipPayload, mData);
 
-		List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(result);	
-		IdentifiedPerson identifiedPerson = null;
-		for(String identifiedPersonXml: identifiedPersons){
-			identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonXml);
-		}
-		return identifiedPerson;
-	}
 	/**
 	 * Find By Organization
 	 */
@@ -194,7 +148,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(remoteResearchStaffExample.getOrganization().getNciInstituteCode());
 			String payload = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationSearchCriteria);
 			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-			String results =broadcastCoppaMessage(payload, mData);//
+			String results =getInteroperationService().broadcastCOPPA(payload, mData);//
 			List<String> resultObjects = XMLUtil.getObjectsFromCoppaResponse(results);
 			for (String resultObj:resultObjects) {
 				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
@@ -202,7 +156,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 				String iiXml = CoppaObjectFactory.getCoppaIIXml(organizationIdentifier);
 				//Get Organization based on player id of above.
 				mData = new Metadata(OperationNameEnum.getById.getName(),  "externalId", ServiceTypeEnum.ORGANIZATION.getName());
-				String organizationResults = broadcastCoppaMessage(iiXml, mData);//
+				String organizationResults = getInteroperationService().broadcastCOPPA(iiXml, mData);//
 				List<String> organizationResultObjects = XMLUtil.getObjectsFromCoppaResponse(organizationResults);
 				for (String organizationResultObject:organizationResultObjects) {
 					gov.nih.nci.coppa.po.Organization coppaOrganizationResult = CoppaObjectFactory.getCoppaOrganization(organizationResultObject);
@@ -212,7 +166,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 					String coppaClinicalResearchStaffXml = CoppaObjectFactory.getClinicalResearchStaffXml(clinicalResearchStaff);
 					String sRolesXml = "";
 					try {
-						sRolesXml = broadcastClinicalResearchStaffSearch(coppaClinicalResearchStaffXml);
+						sRolesXml = broadcastRoleSearch(coppaClinicalResearchStaffXml,ServiceTypeEnum.CLINICAL_RESEARCH_STAFF);
 					} catch (CaaersSystemException e) {
 						System.out.print(e);
 					}
@@ -228,7 +182,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 						mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
 						String personResultXml = "";
 						try {
-							personResultXml = broadcastCoppaMessage(idXml, mData);//
+							personResultXml = getInteroperationService().broadcastCOPPA(idXml, mData);//
 							List<String> persons = XMLUtil.getObjectsFromCoppaResponse(personResultXml);	
 							for(String personXml: persons){
 								Person person = CoppaObjectFactory.getCoppaPerson(personXml);
@@ -275,7 +229,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 					nciIdentifier = identifiedPerson.getAssignedId().getExtension();
 				}
 				
-				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = getOrganizationsForPerson(coppaPerson);
+				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.CLINICAL_RESEARCH_STAFF);
 				tempRemoteResearchStaff = populateRemoteResearchStaff(coppaPerson, nciIdentifier, coppaOrganizationList);
 				remoteResearchStaffList.add(tempRemoteResearchStaff);
 			}
@@ -290,7 +244,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 		String nciIdentifier = null;
 		if (results.size() > 0) {
 			coppaPerson = CoppaObjectFactory.getCoppaPerson(results.get(0));
-			coppaOrganizationList = getOrganizationsForPerson(coppaPerson);
+			coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.CLINICAL_RESEARCH_STAFF);
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
 			
 			if (identifiedPerson != null ) {
@@ -313,24 +267,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 		}
 		return loadResearchStaffForPersonResult(resultXml);
 	}
-
-	public String broadcastPersonGetById(String iiXml) throws Exception {
-		//build metadata with operation name and the external Id and pass it to the broadcast method.
-
-        Metadata mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
-		return broadcastCoppaMessage(iiXml, mData);
-
-	}
-	
-	public String broadcastPersonSearch(String iiXml) throws Exception{
-		//build metadata with operation name and the external Id and pass it to the broadcast method.
-        Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.PERSON.getName());
-		return broadcastCoppaMessage(iiXml, mData);
-
-	}
-
-
-
+/*
 	private List<gov.nih.nci.coppa.po.Organization> getOrganizationsForPerson(Person coppaPerson) {
 		List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
 
@@ -339,7 +276,7 @@ public class ResearchStaffResolver implements RemoteResolver{
 
 		String sRolesXml = "";
 		try {
-			sRolesXml = broadcastClinicalResearchStaffSearch(coppaClinicalResearchStaffXml);
+			sRolesXml = broadcastRoleSearch(coppaClinicalResearchStaffXml,ServiceTypeEnum.CLINICAL_RESEARCH_STAFF);
 		} catch (CaaersSystemException e) {
 			System.out.print(e);
 		}
@@ -368,63 +305,5 @@ public class ResearchStaffResolver implements RemoteResolver{
 		return coppaOrganizationList;
 
 	}
-
-	public String broadcastIdentifiedOrganizationSearch(String healthcareSiteXml) throws CaaersSystemException {
-		//build metadata with operation name and the external Id and pass it to the broadcast method.|
-        Metadata mData = new Metadata(OperationNameEnum.search.getName(), "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-        return broadcastCoppaMessage(healthcareSiteXml, mData);
-	}
-	
-	public String broadcastClinicalResearchStaffSearch(String personXml) throws CaaersSystemException {
-
-		//build metadata with operation name and the external Id and pass it to the broadcast method.
-
-        Metadata mData = new Metadata(OperationNameEnum.search.getName(), "externalId", ServiceTypeEnum.CLINICAL_RESEARCH_STAFF.getName());
-		return broadcastCoppaMessage(personXml, mData);
-
-	}
-
-	public String broadcastCoppaMessage(String xml, Metadata mData) throws CaaersSystemException {
-		String caXchangeResponseXml = null;
-		try {
-			CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:28445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
-            caXchangeResponseXml = broadCaster.broadcastCoppaMessage(xml, mData);
-        }
-        catch (Exception e) {
-            log.error(e);
-            throw new CaaersSystemException ("BROADCAST.SEND_ERROR", e);
-
-        }
-
-		return caXchangeResponseXml;
-
-	}
-
-
-	/**
-
-	 * Broadcast Org getById.
-
-	 * 
-
-	 * @param iiXml the ii xml
-
-	 * @return the string
-
-	 * @throws Exception the exception
-
-	 */
-
-	public String broadcastOrganizationGetById(String iiXml) throws Exception{
-
-		//build metadata with operation name and the external Id and pass it to the broadcast method.
-
-        Metadata mData = new Metadata(OperationNameEnum.getById.getName(),  "extId", ServiceTypeEnum.ORGANIZATION.getName());
-
-		return broadcastCoppaMessage(iiXml, mData);
-
-	}
-
-
+*/
 }
