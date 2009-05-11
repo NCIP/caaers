@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -135,10 +137,17 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
                                      BindException errors, int page) throws Exception {
         Investigator investigator = (Investigator) command;
         if("syncInvestigator".equals(request.getParameter("_action"))){
-        	List<Investigator> remoteInvs = getDao().getRemoteInvestigators(investigator);
+        	Investigator remoteInvestigator = new RemoteInvestigator();   
+        	List<Investigator> remoteInvs = null;
+        	if (investigator.getNciIdentifier() != null) {
+        		remoteInvestigator.setNciIdentifier(investigator.getNciIdentifier());
+        		remoteInvs = getDao().getRemoteInvestigators(remoteInvestigator);
+        	}
+        	
+
     		if(remoteInvs != null && remoteInvs.size() > 0){
     			investigator.setExternalInvestigators(remoteInvs);
-    			errors.reject("REMOTE_INV_EXISTS","Investigator with EmailAddress " +investigator.getEmailAddress()+ " exisits in external system");
+    			errors.reject("REMOTE_INV_EXISTS","Investigator with NCI Identifier " +investigator.getNciIdentifier()+ " exisits in external system");
     		}
         }
     }
