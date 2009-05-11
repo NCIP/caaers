@@ -51,15 +51,23 @@
                
             
             },sitePopulator: function(autocompleter, text) {
-         		createStudy.matchOrganization(text, function(values) {
+         		createStudy.restrictOrganizations(text, function(values) {
          			autocompleter.setChoices(values)
          		})
         	},
         	
         	siteSelector: function(organization) {
+        	    var image;            	
+            	if(organization.externalId != null){
+                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                } else {
+                          image = '';
+                }
+                
         		var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
             							 " ( " + organization.nciInstituteCode + " ) ";
-        		return organization.name + nciInstituteCode
+        		
+        		return image + "" +organization.name + nciInstituteCode 
         	}
         	}
         	       
