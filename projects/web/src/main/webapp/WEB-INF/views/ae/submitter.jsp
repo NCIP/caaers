@@ -42,7 +42,7 @@
             })
         }
 
-        function isPhysicianSame() {
+        function isSubmitterSameAsReporter() {
             return $('reporter_same_as_submitter').checked
         }
 
@@ -51,8 +51,8 @@
         }
 
 		
-        function updatePhysicianSame() {
-            if (isPhysicianSame()) {
+        function updateSubmitterWithReporter() {
+            if (isSubmitterSameAsReporter()) {
                 updateSubmitterFromReporter()
                 $('physician_same_as_submitter').checked=""
             } else {
@@ -70,7 +70,7 @@
         }
 
         function updatePhysicianFromReporterIfSame() {
-            if (isPhysicianSame()) updateSubmitterFromReporter();
+            if (isSubmitterSameAsReporter()) updateSubmitterFromReporter();
         }
 
         function updateSubmitterFromReporter() {
@@ -87,8 +87,16 @@
 
         Event.observe(window, "load", function() {
             //$('staff').observe("change", chooseStaff)
-            $('reporter_same_as_submitter').observe("click", updatePhysicianSame)
+            $('reporter_same_as_submitter').observe("click", updateSubmitterWithReporter)
             $('physician_same_as_submitter').observe("click", updateSubmitterWithPhysician)
+
+            //default to reporter, if entering first time. 
+            var fNField = $("aeReport.reports[" + reportIndex + "].lastVersion.submitter.firstName");
+            if(fNField){
+                if(fNField.value == ''){
+                	$('reporter_same_as_submitter').click();
+                }
+            }
         })
 
     </script>
