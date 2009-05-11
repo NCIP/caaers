@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -64,8 +65,10 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
      */
     @Transactional(readOnly = false)
     public void save(final Investigator investigator) {
-    	if(investigator.getId() == null && investigator instanceof LocalInvestigator){
-    		List<Investigator> remoteInvestigators = getRemoteInvestigators(investigator);
+    	if(investigator.getId() == null && investigator.getNciIdentifier() != null && investigator instanceof LocalInvestigator){
+    		Investigator ri = new RemoteInvestigator();
+    		ri.setNciIdentifier(investigator.getNciIdentifier());
+    		List<Investigator> remoteInvestigators = getRemoteInvestigators(ri);
     		if(remoteInvestigators != null && remoteInvestigators.size() > 0){
     			logger.error("ResearchStaff exists in external system");
     			throw new RuntimeException("ResearchStaff exists in external system");
@@ -73,7 +76,6 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     	}
     	getHibernateTemplate().saveOrUpdate(investigator);
     }
-
     /**
      * Get the list of investigators matching the name fragments.
      * 
@@ -142,41 +144,8 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 
     public List<Investigator> getRemoteInvestigators(final Investigator investigator) {
     	
-    	//Commenting the stuff as SRINI is integrating with actual coppa service.
-    	//No point in redoing this stuff now.
-    	
-//    	Investigator searchCriteria = new RemoteInvestigator();
-    	List<Investigator> remoteInvestigators = new ArrayList<Investigator>(); 
-//        List<Investigator> remoteInvestigators = (List)remoteSession.find(searchCriteria); 
-//        for (Investigator remoteInvestigator:remoteInvestigators) {  
-//        	Investigator investigator = getByEmailAddress(remoteInvestigator.getEmailAddress());
-//    			if (investigator == null ) {  
-//    				List<SiteInvestigator> siteInvestigators = remoteInvestigator.getSiteInvestigators();
-//        			List<SiteInvestigator> newSiteInvestigators = new ArrayList<SiteInvestigator>();
-//        			for (SiteInvestigator siteInvestigator:siteInvestigators) {
-//        				//if associated organization is not there in our DB
-//        				Organization remoteOrganization = siteInvestigator.getOrganization();
-//        				Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-//            			if (organization == null) {
-//            				// TODO : need to get the remote organozation from coppa and save it ..
-//            				organizationDao.save(remoteOrganization);
-//            				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-//            			} 
-//
-//            			SiteInvestigator newSi = new SiteInvestigator();
-//            			newSi.setOrganization(organization);
-//            			//newSi.setInvestigator(investigator);
-//            			newSiteInvestigators.add(newSi);
-//        			}
-//        			remoteInvestigator.getSiteInvestigators().clear();
-//        			save(remoteInvestigator);
-//        			investigator = getByEmailAddress(remoteInvestigator.getEmailAddress());  
-//        			remoteInvestigators1.add(investigator);
-//    			} else {
-//    				remoteInvestigators1.add(investigator);
-//    			}
-//        }
-        return remoteInvestigators;
+    	List<Investigator> remoteInvestigators = (List)remoteSession.find(investigator); 
+    	return remoteInvestigators;
     }
     /**
      * Get the user who has specified email address.
