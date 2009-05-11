@@ -172,7 +172,7 @@
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
 			
 			<!-- COPPA Common dependencies -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.3.11" />	
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.3.15" />	
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="latest.integration" />
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="latest.integration" />
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="latest.integration" />
