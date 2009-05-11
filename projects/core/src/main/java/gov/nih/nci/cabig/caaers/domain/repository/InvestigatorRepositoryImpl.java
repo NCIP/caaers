@@ -7,12 +7,17 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -78,6 +83,23 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
 		//TODO populate searchCriteria 
 		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		
+        Map<String, Object> queryParameterMap = query.getParameterMap();
+        for (String key : queryParameterMap.keySet()) {
+            Object value = queryParameterMap.get(key);
+            if (key.equals("firstName")) {
+				searchCriteria.setFirstName(value.toString());
+			}
+            if (key.equals("lastName")) {
+				searchCriteria.setLastName(value.toString());
+			}
+			if (key.equals("nciIdentifier")) {
+				searchCriteria.setNciIdentifier(value.toString());
+			}	
+			if (key.equals("loginId")) {
+				return localInvestigators;
+			}
+        }
 		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
 		return merge(localInvestigators,remoteInvestigators);
 	}
@@ -95,12 +117,13 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		for (Investigator remoteInvestigator:remoteList) {
 			Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
     		if (inv == null ) {
-        		save(remoteInvestigator,"");
+        		//save(remoteInvestigator,"");
+        		this.investigatorDao.save(remoteInvestigator);
         		localList.add(remoteInvestigator);
         	} else {
         		// if it exist in local list , remote interceptor would have loaded the rest of the details .
-        		if (!localList.contains(remoteInvestigator)) {
-        			localList.add(remoteInvestigator);
+        		if (!localList.contains(inv)) {
+        			localList.add(inv);
         		}
         	}
     	}
