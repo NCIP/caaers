@@ -16,13 +16,20 @@
     	//Calls ReportDefinitionAjaxFacade:matchOrganization(..)
     	AE.createStandardAutocompleter(
     		'reportDefinition.organization', function(autocompleter, text) {
-         		reportDef.matchOrganization(text, function(values) {
+         		reportDef.restrictOrganization(text, function(values) {
          			autocompleter.setChoices(values)
          		})
         	}, function(organization) { 
+  		                var image;            	
+				    	if(organization.externalId != null){
+				                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+				        } else {
+				                  image = '';
+				        }
+				                	
         		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
             							 " ( " + organization.nciInstituteCode + " ) ";
-        		return organization.name + nciInstituteCode;
+        		return image + organization.name + nciInstituteCode;
         	});
         
         //populate the name of the associated organization in 'organization-input' field	
