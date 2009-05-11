@@ -45,9 +45,17 @@
   		      		})
   		    	},
   		        function(organization) { 
-  		    		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+  		        
+  		                var image;            	
+				    	if(organization.externalId != null){
+				                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+				        } else {
+				                  image = '';
+				        }
+        
+  		    		   var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
   		            							 " ( " + organization.nciInstituteCode + " ) ";
-  					   return organization.name + nciInstituteCode  
+  					   return image + organization.name + nciInstituteCode  
   		    	}
   		);
   	 }
@@ -172,7 +180,9 @@
             <tags:renderRow field="${field}"/>
         </c:forEach>
 
-        <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
+        <c:if test="${authenticationMode == 'webSSO'}">
+            <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
+        </c:if>
     
     </div>
 	<c:if test="${(command.id gt 0) }">
@@ -186,7 +196,7 @@
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
 
-<div>
+<div class="leftpanel">
 
     <div class="row">
         <div class="label label2">Subject coordinator</div>
@@ -213,7 +223,7 @@
     </div>
     
     <div class="row">
-        <div class="label label2">Central Office Report Reviewer</div>
+        <div class="label label2">Central office SAE coordinator</div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_central_office_sae_cd').value='true':$('caaers_central_office_sae_cd').value='false';" ${caaers_central_office_sae_cd ? 'checked':''} />
             <input id="caaers_central_office_sae_cd" type="hidden" name="caaers_central_office_sae_cd" value="${caaers_central_office_sae_cd}"/>

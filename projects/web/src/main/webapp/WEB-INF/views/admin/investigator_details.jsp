@@ -35,10 +35,17 @@ Object.extend(jsInvestigator.prototype, {
 	 if(orgName) $(this.orgInputField).value = orgName;
 	 
 	},sitePopulator: function(autocompleter, text) {
-    	createIND.matchOrganization(text, function(values) {
+    	createIND.restrictOrganization(text, function(values) {
       	 autocompleter.setChoices(values)
       })
     },siteSelector: function(organization) { 
+        var image;            	
+    	if(organization.externalId != null){
+                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+        } else {
+                  image = '';
+        }
+        
     	return organization.name + " (" + organization.nciInstituteCode + ")";
     }
 	
