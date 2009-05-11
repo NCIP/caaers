@@ -113,7 +113,7 @@ input[type="text"].required, input[type="password"].required, select.required, t
 
 input[type="text"].mandatory, input[type="password"].mandatory, select.mandatory, textarea.mandatory {
     border:1px #F05757 solid;
-    background-color:#FDF688;
+    background-color:#FEC7C7;
 }
 
 input[type="text"].valueOK, input[type="password"].valueOK, select.valueOK, textarea.valueOK {
