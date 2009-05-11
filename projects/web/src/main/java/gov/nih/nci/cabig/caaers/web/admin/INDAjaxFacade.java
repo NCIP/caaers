@@ -46,7 +46,7 @@ public class INDAjaxFacade {
      */
     public List<Organization> restrictOrganization(String text) {
         List<Organization> orgs = organizationRepository.restrictBySubnames(new String[] { text });
-        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode","externalId");
     }
 
 	public OrganizationRepository getOrganizationRepository() {
