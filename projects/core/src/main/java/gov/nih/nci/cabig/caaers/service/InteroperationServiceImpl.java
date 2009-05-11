@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import edu.duke.cabig.c3pr.esb.Metadata;
 import gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae.AeNotification;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -53,6 +54,16 @@ public class InteroperationServiceImpl implements InteroperationService {
 		}
         // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
         
+    }
+    public String broadcastCOPPA(String message,Metadata metaData) throws CaaersSystemException {
+    	String result = null;
+    	try {
+    		result = getMessageBroadcastService().broadcastCOPPA(message, metaData);
+    	} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new CaaersSystemException(e);
+		}
+    	return result;
     }
 
     private String secure(String message) {
