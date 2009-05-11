@@ -26,12 +26,12 @@
 
         <ui:row path="assignment.startDateOfFirstCourse">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[0]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" field="${fieldGroups.ReportingPeriod.fields[0]}"/></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" field="${fieldGroups.ReportingPeriod.fields[0]}" required="true"/></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.startDate">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[1]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" field="${fieldGroups.ReportingPeriod.fields[1]}"/></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" field="${fieldGroups.ReportingPeriod.fields[1]}" required="true"/></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.endDate">

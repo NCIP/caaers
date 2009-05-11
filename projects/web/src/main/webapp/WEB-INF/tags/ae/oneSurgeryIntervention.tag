@@ -18,7 +18,7 @@
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[2]}"/></jsp:attribute>
          <jsp:attribute name="value">
              <c:set var="initValue" value="${not empty surgery.interventionSite ? surgery.interventionSite.name : 'Begin typing here...'}"/>
-             <ui:autocompleter path="aeReport.surgeryInterventions[${index}].interventionSite" initialDisplayValue="${initValue}" enableClearButton="true">
+             <ui:autocompleter path="aeReport.surgeryInterventions[${index}].interventionSite" initialDisplayValue="${initValue}" enableClearButton="true" field="${fieldGroup.fields[2]}">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text){
                                 createAE.matchInterventionSites(text, function(values) {
@@ -37,7 +37,7 @@
 
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionDate">
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[3]}"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:date path="aeReport.surgeryInterventions[${index}].interventionDate" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:date path="aeReport.surgeryInterventions[${index}].interventionDate" field="${fieldGroup.fields[3]}"/></jsp:attribute>
     </ui:row>
 
 <script language="JavaScript">

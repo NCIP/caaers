@@ -14,38 +14,38 @@
     <tags:errors path="aeReport.radiationInterventions[${index}]"/>
 
     <ui:row path="aeReport.radiationInterventions[${index}].administration">
-         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[0].propertyName}" options="${fieldGroup.fields[0].attributes.options}" /></jsp:attribute>
+         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="true" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[0].propertyName}" options="${fieldGroup.fields[0].attributes.options}" field="${fieldGroup.fields[0]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].dosage">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[1].propertyName}" text="${fieldGroup.fields[1].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[1].propertyName}" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[1].propertyName}" field="${fieldGroup.fields[1]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].dosageUnit">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[2].propertyName}" text="${fieldGroup.fields[2].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[2].propertyName}" options="${fieldGroup.fields[2].attributes.options}"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[2].propertyName}" options="${fieldGroup.fields[2].attributes.options}" field="${fieldGroup.fields[2]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].lastTreatmentDate">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[3].propertyName}" text="${fieldGroup.fields[3].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:date path="${fieldGroup.fields[3].propertyName}" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:date path="${fieldGroup.fields[3].propertyName}" field="${fieldGroup.fields[3]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].fractionNumber">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[4].propertyName}" text="${fieldGroup.fields[4].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[4].propertyName}" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[4].propertyName}" field="${fieldGroup.fields[4]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].daysElapsed">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[5].propertyName}" text="${fieldGroup.fields[5].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[5].propertyName}" /></jsp:attribute>
+         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[5].propertyName}" field="${fieldGroup.fields[5]}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].adjustment">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[6].propertyName}" text="${fieldGroup.fields[6].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[6].propertyName}" options="${fieldGroup.fields[6].attributes.options}"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[6].propertyName}" options="${fieldGroup.fields[6].attributes.options}" field="${fieldGroup.fields[6]}"/></jsp:attribute>
     </ui:row>
 
     <script language="JavaScript">

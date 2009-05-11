@@ -61,10 +61,10 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         InputField expeditedField = InputFieldFactory.createBooleanSelectField("reportDefinition.expedited", "Report is expedited?", true);
         fields.add(expeditedField);
 
-        InputField reportFormatField = InputFieldFactory.createSelectField("reportDefinition.reportFormatType", "Report Format", true, 
-        		//createMapFromArray(ReportFormatType.values())
-        		WebUtils.collectOptions(Arrays.asList(ReportFormatType.values()), "name", "displayName")
-         );
+        Map<Object, Object> reportFormatTypesOptions = new LinkedHashMap<Object, Object>();
+        reportFormatTypesOptions.put("", "Please select");
+        reportFormatTypesOptions.putAll(WebUtils.collectOptions(Arrays.asList(ReportFormatType.values()), "name", "displayName"));
+        InputField reportFormatField = InputFieldFactory.createSelectField("reportDefinition.reportFormatType", "Report Format", true, reportFormatTypesOptions);
         fields.add(reportFormatField);
  
         

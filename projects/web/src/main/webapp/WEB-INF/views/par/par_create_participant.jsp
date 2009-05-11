@@ -135,7 +135,7 @@ ${command.organization}
 					<ui:label path="participant.firstName" text="First Name" required="true" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:text path="participant.firstName" required="true" title="First name" />
+					<ui:text path="participant.firstName" required="true" title="First name"/>
 				</jsp:attribute>
 			</ui:row>
 			<ui:row path="participant.lastName">

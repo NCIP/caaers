@@ -5,12 +5,12 @@
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <c:choose>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <label for="${field.propertyName}-input">
+        <label for="${field.propertyName}-input" class="${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }">
             <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
         </label>
     </c:when>
     <c:otherwise>
-         <form:label path="${field.propertyName}">
+         <form:label path="${field.propertyName}" cssClass="${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }">
             <tags:putSpecialRequiredIndicator field="${field}" />
             <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
         </form:label>

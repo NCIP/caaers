@@ -12,6 +12,9 @@
 <%@attribute name="displayNamePath" description="This path is used to display the text, when the field is readOnly, if not specified 'path' is used as default " %>
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
+<%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
+
+<c:if test="${field != null}"><c:set var="mandatory" value="${field.attributes.mandatory}" /></c:if>
 
 <%@attribute name="options" type="java.util.Map" required="true" description="Specifies the options to be displayed in the select control" %>
 <%@attribute name="maxlength" description="Specifies max allowed characters" %>
