@@ -145,6 +145,10 @@
 	 <wf_transition_configs id="-2" 
 	 	transition_name="Submit For Physician Review" 
 	 	task_config_id="-2" />
+	 	
+	 <wf_transition_configs id="-22"
+	 	transition_name="Submit to Central Office Report Reviewer"
+	 	task_config_id="-2" />
 		 	
 	<task_configuration id="-3" 
 	 	status_name="PHYSICIAN_REVIEW" 
@@ -170,7 +174,11 @@
 	 	applicable="1"  message="abcd"/>
 
 	 <wf_transition_configs id="-5" 
-	 	transition_name="Submit to Central Office SAE Coordinator" 
+	 	transition_name="Submit to Central Office Report Reviewer" 
+	 	task_config_id="-4" />
+	 	
+	 <wf_transition_configs id="-55"
+	 	transition_name="Send to Physician for Review"
 	 	task_config_id="-4" />
 	 	
 	<task_configuration id="-5" 
@@ -186,7 +194,7 @@
 	<task_configuration id="-6" 
 	 	status_name="CENTRAL_OFFICE_REVIEW" 
 	 	workflow_config_id="-11" location="1" 
-	 	task_name="Central Office SAE Coordinator Review" 
+	 	task_name="Central Office Report Review" 
 	 	applicable="1"  message="abcd"/>
 	
 	 <wf_transition_configs id="-7" 
@@ -206,11 +214,11 @@
 
 	 	
 	 <wf_transition_configs id="-9" 
-	 	transition_name="Submit to Central Office SAE Coordinator" 
+	 	transition_name="Submit to Central Office Report Reviewer" 
 	 	task_config_id="-7" />	 	
 	 	
 	 <wf_transition_configs id="-10" 
-	 	transition_name="Submit for Physician Review" 
+	 	transition_name="Send to Physician for Review" 
 	 	task_config_id="-7" />	 	
 
 	 	

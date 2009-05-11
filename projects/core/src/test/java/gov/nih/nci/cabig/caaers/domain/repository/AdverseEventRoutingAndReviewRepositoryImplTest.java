@@ -369,7 +369,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		aeReport.addReport(report);
 		List<String> transitions = new ArrayList<String>();
 		transitions.add("test action");
-		transitions.add("Submit to Central Office SAE Coordinator");
+		transitions.add("Submit to Central Office Report Reviewer");
 		
 		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
 		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
@@ -389,7 +389,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		aeReport.addReport(report);
 		List<String> transitions = new ArrayList<String>();
 		transitions.add("test action");
-		transitions.add("Submit to Central Office SAE Coordinator");
+		transitions.add("Submit to Central Office Report Reviewer");
 		
 		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
 		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);

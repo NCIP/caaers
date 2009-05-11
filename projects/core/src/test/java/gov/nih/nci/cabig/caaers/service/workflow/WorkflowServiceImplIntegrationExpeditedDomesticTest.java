@@ -55,7 +55,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		interruptSession();
 		
 		{
-			ReviewStatus status = wfService.advanceWorkflow(id, "Submit to Central Office SAE Coordinator");
+			ReviewStatus status = wfService.advanceWorkflow(id, "Submit to Central Office Report Reviewer");
 			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
 		}
 		interruptSession();
@@ -142,8 +142,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertNotNull(nextTransitions);
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(2, nextTransitions.size());
-			assertEquals("Submit to Central Office SAE Coordinator", nextTransitions.get(1).getName());
-			assertEquals("Central Office SAE Coordinator Review", nextTransitions.get(1).getTo().getName());
+			assertEquals("Submit to Central Office Report Reviewer", nextTransitions.get(1).getName());
+			assertEquals("Central Office Report Review", nextTransitions.get(1).getTo().getName());
 			assertEquals("Send to Physician for Review", nextTransitions.get(0).getName());
 		}
 	}
@@ -185,8 +185,8 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertNotNull(nextTransitions);
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(2, nextTransitions.size());
-			assertEquals("Submit to Central Office SAE Coordinator", nextTransitions.get(1).getName());
-			assertEquals("Central Office SAE Coordinator Review", nextTransitions.get(1).getTo().getName());
+			assertEquals("Submit to Central Office Report Reviewer", nextTransitions.get(1).getName());
+			assertEquals("Central Office Report Review", nextTransitions.get(1).getTo().getName());
 			assertEquals("Send to Physician for Review", nextTransitions.get(0).getName());
 		}
 		interruptSession();
