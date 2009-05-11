@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class ReportDefinitionAjaxFacade {
     public static final String EDIT_FLOW_COMMAND_KEY = EditReportDefinitionController.class.getName() + ".FORM.command";
     private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
     private OrganizationDao orgDao;
+    private OrganizationRepository organizationRepository;
 
     // /LOGIC
     public String addReportDeliveryDefinition(int index, int type) {
@@ -75,6 +77,10 @@ public class ReportDefinitionAjaxFacade {
 
     public List<Organization> matchOrganization(String text) {
         return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name", "nciInstituteCode");
+    }
+    public List<Organization> restrictOrganization(String text) {
+        List<Organization> orgs = organizationRepository.restrictBySubnames(new String[] { text });
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode","externalId");
     }
 
     // / HELPER METHODS
@@ -123,4 +129,9 @@ public class ReportDefinitionAjaxFacade {
     public OrganizationDao getOrganizationDao() {
         return orgDao;
     }
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	}
 }
