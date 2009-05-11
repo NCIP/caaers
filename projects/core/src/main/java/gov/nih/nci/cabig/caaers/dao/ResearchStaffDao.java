@@ -57,8 +57,10 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @Transactional(readOnly = false)
     public void save(final ResearchStaff researchStaff) {
-    	if(researchStaff.getId() == null && researchStaff instanceof LocalResearchStaff){
-    		List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(researchStaff);
+    	if(researchStaff.getId() == null && researchStaff.getNciIdentifier() != null  && researchStaff instanceof LocalResearchStaff){
+    		ResearchStaff rs = new RemoteResearchStaff();
+    		rs.setNciIdentifier(researchStaff.getNciIdentifier());
+    		List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(rs);
     		if(remoteResearchStaffs != null && remoteResearchStaffs.size() > 0){
     			logger.error("ResearchStaff exists in external system");
     			throw new RuntimeException("ResearchStaff exists in external system");
