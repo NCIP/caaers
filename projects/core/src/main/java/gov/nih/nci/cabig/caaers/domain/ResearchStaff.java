@@ -104,7 +104,7 @@ public abstract class ResearchStaff extends User {
 
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
+        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
         return result;
     }
     
