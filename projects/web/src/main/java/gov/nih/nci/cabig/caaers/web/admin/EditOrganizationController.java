@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -39,7 +40,7 @@ public class EditOrganizationController extends OrganizationController<Organizat
 
         return organization;
     }
-
+    
     @Override
     protected Organization save(final Organization organization, final Errors errors) {
         if (errors.hasErrors()) {
