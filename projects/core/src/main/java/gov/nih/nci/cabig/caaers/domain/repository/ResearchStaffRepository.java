@@ -184,9 +184,13 @@ public class ResearchStaffRepository {
     				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
     			} 
     			remoteResearchStaff.setOrganization(organization);
-        		//TODO: failing to save csm user , need to fix this , calling researchStaffDao.save temp fix 
-    			//save(remoteResearchStaff,"URL");
-        		researchStaffDao.save(remoteResearchStaff);
+ 
+    			try {
+    				save(remoteResearchStaff,"URL");
+    			} catch (MailException e) {
+    				e.printStackTrace();
+    			}
+        		//researchStaffDao.save(remoteResearchStaff);
         		rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
         		rs.setFirstName(remoteResearchStaff.getFirstName());
         		rs.setLastName(remoteResearchStaff.getLastName());
