@@ -146,10 +146,15 @@
         reporting_period_id="1001"
         report_id="-19"
         grade_code="5"
-        hospitalization_code="0"
+        hospitalization_code="2"
         attribution_summary_code="3"
         expected="1"
         comments="That was some big AE: id=-3"
+        solicited="false"
+        event_time_zone="0"
+        event_time_minute="0"
+        event_time_hour="0"
+        
         />
     
      <!--AE_TERMS
@@ -186,7 +191,7 @@
     <ADVERSE_EVENTS
         id="-2"
         report_id="-17"
-        grade_code="3"
+        grade_code="5"
         hospitalization_code="1"
         attribution_summary_code="3"
         expected="1"
