@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.TimeValue;
 
 import java.util.List;
 
@@ -49,33 +50,52 @@ public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 		assertEquals(-4, resultAe.getId().intValue());
 		//System.out.println(svc.getText(svc.getXML(aes)));
 	}
-	public void testAEsForParticipantWithBlankAE() {
-		Participant participant = new Participant();
-		participant.setFirstName("Dilbert");
-		AdverseEvent ae = new AdverseEvent();
-		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(0, aes.size());
-	}
-	public void testAEsForParticipantWithGrade() {
+
+	public void testAEsForParticipantWithGradeDEATH() {
 		Participant participant = new Participant();
 		participant.setFirstName("Dilbert");
 		AdverseEvent ae = new AdverseEvent();
 		ae.setGrade(Grade.DEATH);
+		ae.setEventApproximateTime(getDefaultTimeValue());
+		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
+		assertEquals(1, aes.size());
+	}
+
+	public void testAEsForParticipantWithGradeMILD() {
+		Participant participant = new Participant();
+		participant.setFirstName("Dilbert");
+		AdverseEvent ae = new AdverseEvent();
+		ae.setGrade(Grade.MILD);
+		ae.setEventApproximateTime(getDefaultTimeValue());
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
 		assertEquals(0, aes.size());
 	}
-		
-	public void testAEsForParticipantWithHosp() {
+	
+	public void testAEsForParticipantWithHospNO() {
 		Participant participant = new Participant();
 		participant.setFirstName("Dilbert");
 		AdverseEvent ae = new AdverseEvent();
 		ae.setHospitalization(Hospitalization.NO);
+		ae.setEventApproximateTime(getDefaultTimeValue());
+		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
+		assertEquals(1, aes.size());
+
+	}
+	
+	public void testAEsForParticipantWithHospYES() {
+		Participant participant = new Participant();
+		participant.setFirstName("Dilbert");
+		AdverseEvent ae = new AdverseEvent();
+		ae.setHospitalization(Hospitalization.YES);
+		ae.setEventApproximateTime(getDefaultTimeValue());
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
 		assertEquals(0, aes.size());
 
 	}
 	
-	
+	/*
+	 * issue with start date search , need to fix the format issue
+	 */
 	public void testAEsForParticipantWithStartDate() {
 //		Participant participant = new Participant();
 //		participant.setFirstName("Dilbert");
@@ -95,6 +115,18 @@ public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 		AdverseEvent ae = new AdverseEvent();
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
 		assertEquals(0, aes.size());
+	}
+	/**
+	 * AdverseEvent class always adds timevalue even incase of null , so criteria query is alwayas comaping the time value.
+	 * need to find a way to fix this , mean time adding default time value .. 
+	 * @return
+	 */
+	private TimeValue getDefaultTimeValue(){
+		TimeValue eventApproximateTime = new TimeValue();
+        eventApproximateTime.setHour(0);
+        eventApproximateTime.setMinute(0);
+        eventApproximateTime.setType(0);	
+        return eventApproximateTime;
 	}
 
 	/*
