@@ -1,5 +1,17 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
+import edu.duke.cabig.c3pr.esb.Metadata;
+import edu.duke.cabig.c3pr.esb.OperationNameEnum;
+import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
+import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.coppa.po.ClinicalResearchStaff;
+import gov.nih.nci.coppa.po.HealthCareProvider;
+import gov.nih.nci.coppa.po.IdentifiedOrganization;
+import gov.nih.nci.coppa.po.IdentifiedPerson;
+import gov.nih.nci.coppa.po.Person;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,26 +21,14 @@ import org.iso._21090.II;
 
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
-import edu.duke.cabig.c3pr.esb.Metadata;
-import edu.duke.cabig.c3pr.esb.OperationNameEnum;
-import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.utils.XMLUtil;
-import gov.nih.nci.coppa.po.ClinicalResearchStaff;
-import gov.nih.nci.coppa.po.HealthCareProvider;
-import gov.nih.nci.coppa.po.IdentifiedOrganization;
-import gov.nih.nci.coppa.po.IdentifiedPerson;
-import gov.nih.nci.coppa.po.Person;
-
 public abstract class BaseResolver {
-	protected InteroperationService interoperationService;
+	//private MessageBroadcastService coppaMessageBroadcastService;
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 	
 	public String broadcastPersonSearch(String iiXml) throws Exception{
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
         Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.PERSON.getName());
-		return interoperationService.broadcastCOPPA(iiXml, mData);
+		return broadcastCOPPA(iiXml, mData);
 
 	}
 	
@@ -58,7 +58,7 @@ public abstract class BaseResolver {
 		
 		String ipPayload = CoppaObjectFactory.getCoppaIdentfiedPersonXml(ip);		
 		
-		String result = interoperationService.broadcastCOPPA(ipPayload, mData);
+		String result = broadcastCOPPA(ipPayload, mData);
 
 		List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(result);	
 		IdentifiedPerson identifiedPerson = null;
@@ -73,7 +73,7 @@ public abstract class BaseResolver {
 		IdentifiedPerson ip = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaForCorrelation(personIdentifier);
 		String ipPayload = CoppaObjectFactory.getCoppaIdentfiedPersonXml(ip);		
 		
-		String result = interoperationService.broadcastCOPPA(ipPayload, mData);
+		String result = broadcastCOPPA(ipPayload, mData);
 		List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(result);	
 		IdentifiedPerson identifiedPerson = null;
 		for(String identifiedPersonXml: identifiedPersons){
@@ -137,29 +137,48 @@ public abstract class BaseResolver {
 
 	public String broadcastRoleSearch(String personXml,ServiceTypeEnum role) throws CaaersSystemException {
 	       Metadata mData = new Metadata(OperationNameEnum.search.getName(), "externalId", role.getName());
-		   return getInteroperationService().broadcastCOPPA(personXml, mData);
+		   return broadcastCOPPA(personXml, mData);
 	}
 
 	public String broadcastOrganizationGetById(String iiXml) throws Exception{
         Metadata mData = new Metadata(OperationNameEnum.getById.getName(),  "externalId", ServiceTypeEnum.ORGANIZATION.getName());
-		return interoperationService.broadcastCOPPA(iiXml, mData);
+		return broadcastCOPPA(iiXml, mData);
 	}
 	
 	public String broadcastPersonGetById(String iiXml) throws Exception {
         Metadata mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
-		return interoperationService.broadcastCOPPA(iiXml, mData);
+		return broadcastCOPPA(iiXml, mData);
 	}
 	public String broadcastIdentifiedOrganizationSearch(String healthcareSiteXml) throws CaaersSystemException {
         Metadata mData = new Metadata(OperationNameEnum.search.getName(), "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-        return interoperationService.broadcastCOPPA(healthcareSiteXml, mData);
+        return broadcastCOPPA(healthcareSiteXml, mData);
 	}
+
+/*
+	public MessageBroadcastService getCoppaMessageBroadcastService() {
+		return coppaMessageBroadcastService;
+	}
+
+	public void setCoppaMessageBroadcastService(
+			MessageBroadcastService coppaMessageBroadcastService) {
+		this.coppaMessageBroadcastService = coppaMessageBroadcastService;
+	}*/
 	
+	public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
+        String result = null;
+        try {
+        	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
+        //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
+            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:28445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
 
-	public void setInteroperationService(InteroperationService interoperationService) {
-		this.interoperationService = interoperationService;
-	}
+        	result = broadCaster.broadcastCoppaMessage(message, metaData);
+		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
 
-	public InteroperationService getInteroperationService() {
-		return interoperationService;
-	}
+            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
+		}
+    	return result;
+    }
+	
+	
+	
 }

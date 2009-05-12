@@ -111,7 +111,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(org.getNciInstituteCode());
 			String payload = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationSearchCriteria);
 			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-			String results =getInteroperationService().broadcastCOPPA(payload, mData);//
+			String results =broadcastCOPPA(payload, mData);//
 			List<String> resultObjects = XMLUtil.getObjectsFromCoppaResponse(results);
 			for (String resultObj:resultObjects) {
 				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
@@ -119,7 +119,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				String iiXml = CoppaObjectFactory.getCoppaIIXml(organizationIdentifier);
 				//Get Organization based on player id of above.
 				mData = new Metadata(OperationNameEnum.getById.getName(),  "externalId", ServiceTypeEnum.ORGANIZATION.getName());
-				String organizationResults = getInteroperationService().broadcastCOPPA(iiXml, mData);//
+				String organizationResults = broadcastCOPPA(iiXml, mData);//
 				List<String> organizationResultObjects = XMLUtil.getObjectsFromCoppaResponse(organizationResults);
 				for (String organizationResultObject:organizationResultObjects) {
 					gov.nih.nci.coppa.po.Organization coppaOrganizationResult = CoppaObjectFactory.getCoppaOrganization(organizationResultObject);
@@ -145,7 +145,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 						mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
 						String personResultXml = "";
 						try {
-							personResultXml = getInteroperationService().broadcastCOPPA(idXml, mData);//
+							personResultXml = broadcastCOPPA(idXml, mData);//
 							List<String> persons = XMLUtil.getObjectsFromCoppaResponse(personResultXml);	
 							for(String personXml: persons){
 								Person person = CoppaObjectFactory.getCoppaPerson(personXml);
