@@ -68,7 +68,15 @@ public class ReporterTest extends AbstractTestCase {
 
     }
 
-    public void testCopyContactMechanism() {
-
+    public void testCopy() {
+    	ResearchStaff staff = new LocalResearchStaff();
+    	staff.setFirstName("a");
+    	staff.setEmailAddress("k");
+    	reporter.copy(staff);
+    	assertSame(reporter.getUser(), staff);
+    	assertEquals("a", reporter.getFirstName());
+    	assertNull(reporter.getLastName());
+    	assertNull(reporter.getPhoneNumber());
+    	assertEquals("k", reporter.getEmailAddress());
     }
 }

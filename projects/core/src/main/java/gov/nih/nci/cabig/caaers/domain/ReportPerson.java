@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -36,7 +37,9 @@ public abstract class ReportPerson extends PersonContact {
 
     private ReportVersion report;
     
-    private User user;
+	private Investigator investigator;
+	private ResearchStaff researchStaff;
+	
 
     // //// BOUND PROPERTIES
 
@@ -63,23 +66,36 @@ public abstract class ReportPerson extends PersonContact {
     }
     
     
-    /*
-     * Please Uncomment Commented for COPPA Changes 
-     */
-    
-//    @ManyToOne
-//    @JoinColumn(name="user_id")
-//    public User getUser() {
-//		return user;
-//	}
-    
     @Transient
-    public User getUser() {
-		return user;
-    }
+	public User getUser() {
+		if(getResearchStaff() != null) return researchStaff;
+		return getInvestigator();
+	}
+	
+	public void setUser(User user) {
+		if(user instanceof ResearchStaff) setResearchStaff((ResearchStaff)user); 
+		else setInvestigator((Investigator)user);
+	}
     
-    public void setUser(User user) {
-		this.user = user;
+
+	@ManyToOne
+    @JoinColumn(name = "investigator_id")
+	public Investigator getInvestigator() {
+		return investigator;
+	}
+
+	public void setInvestigator(Investigator investigator) {
+		this.investigator = investigator;
+	}
+
+	@ManyToOne
+    @JoinColumn(name = "researchstaff_id")
+	public ResearchStaff getResearchStaff() {
+		return researchStaff;
+	}
+
+	public void setResearchStaff(ResearchStaff researchStaff) {
+		this.researchStaff = researchStaff;
 	}
 
     public ReportPerson copy() {
