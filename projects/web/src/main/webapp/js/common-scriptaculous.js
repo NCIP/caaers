@@ -207,7 +207,7 @@ Object.extend(Ajax.InPlaceCollectionEditor.prototype, {
 			var fields=new Array();
 			fields.push(this.editField);
 			ValidationManager.prepareField(fields[0]);
-			if(validateFields(fields)){
+			if(validateFields(fields, true)){
 				this.__onSubmit();
 		    }else{
 		    	arguments.length > 1?Event.stop(arguments[0]):null;
@@ -231,7 +231,7 @@ Ajax.InPlaceEditor.prototype = Object.extend(Ajax.InPlaceEditor.prototype, {
 			var fields=new Array();
 			fields.push(this.editField);
 			ValidationManager.prepareField(fields[0]);
-			if(validateFields(fields)){
+			if(validateFields(fields, true)){
 				this.__onSubmit();
 		    }else{
 		    	arguments.length > 1?Event.stop(arguments[0]):null;

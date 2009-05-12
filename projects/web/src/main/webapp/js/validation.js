@@ -67,154 +67,210 @@
 
 var ValidationManager = Class.create()
 var ValidationManager = {
-	validate:true, //only if this flag is true, it will validate
-	debug: false,
-	currentFormVar:"",
-	registeredInvokes: new Array(),
-	ERROR_STRATEGY:"text",
-	ERROR_HIGHTLIGHT_COLOR:"red",
-	ERROR_MSG_REQUIRED:"Missing ",
-	ERROR_MSG_PATTERN:"Invalid ",
-	ERROR_MSG_MINLENGTH:"too short ",
-	ERROR_MSG_MAXLENGTH:"too long ",
-	ERROR_MSG_PHONE:"Invalid ",
+    validate:true, //only if this flag is true, it will validate
+    debug: false,
+    currentFormVar:"",
+    registeredInvokes: new Array(),
+    ERROR_STRATEGY:"text",
+    ERROR_HIGHTLIGHT_COLOR:"red",
+    ERROR_MSG_REQUIRED:"Missing ",
+    ERROR_MSG_PATTERN:"Invalid ",
+    ERROR_MSG_MINLENGTH:"too short ",
+    ERROR_MSG_MAXLENGTH:"too long ",
+    ERROR_MSG_PHONE:"Invalid ",
 
-	validateForm: function(submit){
-		formVar=submit?Event.element(submit):this
-		submit?Event.stop(submit):null
-		if(!ValidationManager.submitPreProcess(formVar)){
-			formVar._submit()
-			return
-		}
-		var fields=Form.getElements(formVar)
-		var checkFields=fields.findAll(function(field){
-							className=Element.classNames(field).detect(function(cls) {
-																var v=cls.indexOf('validate') == 0
-																return cls.indexOf('validate') == 0
-															})
-							return className==null?false:className.length>0
-						})
-		checkFields.each(ValidationManager.prepareField)
-		if(ValidationManager.afterPrepareFeilds(formVar)){
-			flag=validateFields(checkFields)
-			if(ValidationManager.submitPostProcess(formVar, flag, submit)){
-				ValidationManager.invokeAll(formVar)
-				if(ValidationManager.debug){
-					ValidationManager.currentFormVar=formVar
-					vLogString="------------------<br>"
-					vLogString+="Form not submitted...<br>"
-					vLogString+="Form submit params:<br>"
-					vSubmitParams= Form.serialize(formVar).split("&")
-					for(vI=0 ; vI<vSubmitParams.length ; vI++)
-						vLogString+=vSubmitParams[vI]+"<br>"
-					vLogString+="------------------<br>"
-					ValidationManager.log(vLogString)
-					ValidationManager.log("<input type='button' value='submit this form' onClick='ValidationManager.resumeSubmit()'/>")
-				}else
-					formVar._submit()
-			}
-		}
-	},
-	submitPostProcess: function(formElement, validationFlag, submit){
-		//tabbedflow.js will disable the button on click,so if there is 
-		// validation error, makesure we enable the button back. 	 
-		
-		if(!validationFlag ){
-			if((AE.clickSrc != null) && (!AE.clickSrc.visible())){
-				AE.clickSrc.show();
-			}
-		} 
-		AE.clickSrc = null;
-		return validationFlag;
-	},
-	submitPreProcess: function(formElement){return ValidationManager.validate;},
-	afterPrepareFeilds: function(formElement){return true},
-	
-	prepareField: function(element){
-		validationTypeStr=Element.classNames(element).detect(function(cls) {
-																var v=cls.indexOf('validate') == 0
-																return cls.indexOf('validate') == 0
-															})
-		validationTypeStr=validationTypeStr.substr(9)
-		validations=validationTypeStr.split("&&")
-		for(i=0 ; i<validations.length ; i++){
-			validationType=validations[i]
-			if(validationType.toUpperCase()=='NOTEMPTY'||validationType==''){
-				element.required = true
-				element.requiredError = ValidationManager.ERROR_MSG_REQUIRED
-			}else if(validationType.toUpperCase().indexOf('MINLENGTH')==0){
-				element.minlength = parseInt(validationType.substr(9))
-				element.minlengthError = ValidationManager.ERROR_MSG_MINLENGTH
-			}else if(validationType.toUpperCase().indexOf('MAXLENGTH')==0){
-				element.maxlength = parseInt(validationType.substr(9))
-				element.maxlengthError = ValidationManager.ERROR_MSG_MAXLENGTH
-										
-			}else {
-				element.pattern = validationType
-				element.patternError = ValidationManager.ERROR_MSG_PATTERN
-			}
-		}
-	},
-	showError: function(element,msg){
-		strategies=ValidationManager.ERROR_STRATEGY.split("&&")
-		for(i=0 ; i<strategies.length ; i++){
-		errorStrategy1=strategies[i]
-			if(errorStrategy1=="text"){
-				new Insertion.Bottom(element.parentNode, " <ul id='"+element.name+"-msg'class='errors'><li>"+msg+element.title+"</li></ul>")
-			}
-			if(errorStrategy1=="highlight") {
-				element.style._backgroundColor=element.style._backgroundColor?element.style._backgroundColor:element.style.backgroundColor
-				element.style.backgroundColor=ValidationManager.ERROR_HIGHTLIGHT_COLOR
-			}
-		}
-	},
-	removeError: function(element){
-		strategies=ValidationManager.ERROR_STRATEGY.split("&&")
-		for(i=0 ; i<strategies.length ; i++){
-		errorStrategy2=strategies[i]
-			if(errorStrategy2=="text"){
-				msgId=element.name+"-msg"
-			   	$(msgId)!=null?new Element.remove(msgId):null
-			}
-			if(errorStrategy2=="highlight") {
-				element.style.backgroundColor=element.style._backgroundColor?element.style._backgroundColor:element.style.backgroundColor
-			}
-		}
-	},
-	registerToInvoke: function(obj){
-							this.registeredInvokes.push(obj)
-						},
-	invokeAll: function(formElement){
-					for(vJ=0 ; vJ<this.registeredInvokes.length ; vJ++){
-						try{
-							this.registeredInvokes[vJ].onValidateSubmit(formElement)
-						}catch(error){
-							ValidationManager.log(error.message)
-						}
-					}
-				},
-	resumeSubmit: function(){
-						this.currentFormVar._submit()
-					},
-	loggerDiv: "ValidationManagerLog",
-	log: function(string){
-						if(ValidationManager.debug)
-							document.getElementById(ValidationManager.loggerDiv)!=null?new Insertion.Bottom(ValidationManager.loggerDiv,string):null
-					},
-	clearLog: function(){
-						document.getElementById(ValidationManager.loggerDiv)!=null?new Element.update(ValidationManager.loggerDiv,""):null
-					},
-	errorLog: function(str){
-					this.log("<br><span style='color:red;font-weight:bolder;'>----------------------<br>"+str+"<br>-------------------------</span><br>")
-				},
-	registerForm: function(formVariable){
-					formVariable._submit= formVariable.submit
-					formVariable.submit = ValidationManager.validateForm
-					Event.observe(formVariable, "submit", ValidationManager.validateForm)
-				}
+    validateForm: function(submit) {
+        formVar = submit ? Event.element(submit) : this
+        submit ? Event.stop(submit) : null
+        if (!ValidationManager.submitPreProcess(formVar)) {
+            formVar._submit()
+            return
+        }
+        var fields = Form.getElements(formVar)
+        var checkFields = fields.findAll(function(field) {
+            className = Element.classNames(field).detect(function(cls) {
+                var v = cls.indexOf('validate') == 0
+                return cls.indexOf('validate') == 0
+            })
+            return className == null ? false : className.length > 0
+        })
+        checkFields.each(ValidationManager.prepareField)
+        if (ValidationManager.afterPrepareFeilds(formVar)) {
+            flag = validateFields(checkFields, true)
+            if (ValidationManager.submitPostProcess(formVar, flag, submit)) {
+                ValidationManager.invokeAll(formVar)
+                if (ValidationManager.debug) {
+                    ValidationManager.currentFormVar = formVar
+                    vLogString = "------------------<br>"
+                    vLogString += "Form not submitted...<br>"
+                    vLogString += "Form submit params:<br>"
+                    vSubmitParams = Form.serialize(formVar).split("&")
+                    for (vI = 0; vI < vSubmitParams.length; vI++)
+                        vLogString += vSubmitParams[vI] + "<br>"
+                    vLogString += "------------------<br>"
+                    ValidationManager.log(vLogString)
+                    ValidationManager.log("<input type='button' value='submit this form' onClick='ValidationManager.resumeSubmit()'/>")
+                } else
+                    formVar._submit()
+            }
+        }
+    },
+    submitPostProcess: function(formElement, validationFlag, submit) {
+        //tabbedflow.js will disable the button on click,so if there is
+        // validation error, makesure we enable the button back.
+
+        if (!validationFlag) {
+            if ((AE.clickSrc != null) && (!AE.clickSrc.visible())) {
+                AE.clickSrc.show();
+            }
+        }
+        AE.clickSrc = null;
+        return validationFlag;
+    },
+    submitPreProcess: function(formElement) {
+        return ValidationManager.validate;
+    },
+    afterPrepareFeilds: function(formElement) {
+        return true
+    },
+
+    prepareField: function(element) {
+        validationTypeStr = Element.classNames(element).detect(function(cls) {
+            var v = cls.indexOf('validate') == 0
+            return cls.indexOf('validate') == 0
+        })
+        validationTypeStr = validationTypeStr.substr(9)
+        validations = validationTypeStr.split("&&")
+        for (i = 0; i < validations.length; i++) {
+            validationType = validations[i]
+            if (validationType.toUpperCase() == 'NOTEMPTY' || validationType == '') {
+                element.required = true
+                element.requiredError = ValidationManager.ERROR_MSG_REQUIRED
+            } else if (validationType.toUpperCase().indexOf('MINLENGTH') == 0) {
+                element.minlength = parseInt(validationType.substr(9))
+                element.minlengthError = ValidationManager.ERROR_MSG_MINLENGTH
+            } else if (validationType.toUpperCase().indexOf('MAXLENGTH') == 0) {
+                element.maxlength = parseInt(validationType.substr(9))
+                element.maxlengthError = ValidationManager.ERROR_MSG_MAXLENGTH
+
+            } else {
+                element.pattern = validationType
+                element.patternError = ValidationManager.ERROR_MSG_PATTERN
+            }
+        }
+    },
+    showError: function(element, msg) {
+        strategies = ValidationManager.ERROR_STRATEGY.split("&&")
+        for (i = 0; i < strategies.length; i++) {
+            errorStrategy1 = strategies[i]
+            if (errorStrategy1 == "text") {
+                new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + msg + element.title + "</li></ul>")
+            }
+            if (errorStrategy1 == "highlight") {
+                element.style._backgroundColor = element.style._backgroundColor ? element.style._backgroundColor : element.style.backgroundColor
+                element.style.backgroundColor = ValidationManager.ERROR_HIGHTLIGHT_COLOR
+            }
+        }
+    },
+    removeError: function(element) {
+        strategies = ValidationManager.ERROR_STRATEGY.split("&&")
+        for (i = 0; i < strategies.length; i++) {
+            errorStrategy2 = strategies[i]
+            if (errorStrategy2 == "text") {
+                msgId = element.name + "-msg"
+                $(msgId) != null ? new Element.remove(msgId) : null
+            }
+            if (errorStrategy2 == "highlight") {
+                element.style.backgroundColor = element.style._backgroundColor ? element.style._backgroundColor : element.style.backgroundColor
+            }
+        }
+    },
+    registerToInvoke: function(obj) {
+        this.registeredInvokes.push(obj)
+    },
+    invokeAll: function(formElement) {
+        for (vJ = 0; vJ < this.registeredInvokes.length; vJ++) {
+            try {
+                this.registeredInvokes[vJ].onValidateSubmit(formElement)
+            } catch(error) {
+                ValidationManager.log(error.message)
+            }
+        }
+    },
+    resumeSubmit: function() {
+        this.currentFormVar._submit()
+    },
+    loggerDiv: "ValidationManagerLog",
+    log: function(string) {
+        if (ValidationManager.debug)
+            document.getElementById(ValidationManager.loggerDiv) != null ? new Insertion.Bottom(ValidationManager.loggerDiv, string) : null
+    },
+    clearLog: function() {
+        document.getElementById(ValidationManager.loggerDiv) != null ? new Element.update(ValidationManager.loggerDiv, "") : null
+    },
+    errorLog: function(str) {
+        this.log("<br><span style='color:red;font-weight:bolder;'>----------------------<br>" + str + "<br>-------------------------</span><br>")
+    },
+    registerForm: function(formVariable) {
+        formVariable._submit = formVariable.submit
+        formVariable.submit = ValidationManager.validateForm
+        Event.observe(formVariable, "submit", ValidationManager.validateForm)
+    },
+
+    setValidState: function(inputField, isValid) {
+        if (isValid) {
+            Element.removeClassName(inputField, "required");
+            Element.removeClassName(inputField, "mandatory");
+            Element.addClassName(inputField, "validField");
+        } else {
+            Element.removeClassName(inputField, "validField");
+            Element.addClassName(inputField, "required");
+        }
+    },
+
+    doFieldValidation: function(inputField) {
+        ValidationManager.prepareField(inputField);
+        var isValid = validateFields(new Array(inputField), false);
+        ValidationManager.setValidState(inputField, isValid);
+    },
+
+    registerFields: function() {
+        $$('input.required', 'input.mandatory', 'input.valueOK').each(function(inputField) {
+            Event.observe(inputField, "keyup", function() {
+                ValidationManager.doFieldValidation(inputField);
+            });
+        });
+
+        $$('select.required', 'select.mandatory', 'select.valueOK').each(function(inputField) {
+            Event.observe(inputField, "change", function() {
+                ValidationManager.doFieldValidation(inputField);
+            });
+        });
+
+        $$('textarea.required', 'textarea.mandatory', 'textarea.valueOK').each(function(inputField) {
+            Event.observe(inputField, "keyup", function() {
+                ValidationManager.doFieldValidation(inputField);
+            });
+        });
+
+        $$('textarea.required', 'textarea.mandatory',  'textarea.valueOK', 'select.required', 'select.mandatory', 'select.valueOK', 'input.required', 'input.mandatory', 'input.valueOK').each(function(inputField) {
+            Event.observe(inputField, "blur", function() {
+                if (inputField.hasClassName("validField")) {
+                    Element.removeClassName(inputField, "validField");
+                    Element.removeClassName(inputField, "required");
+                    Element.removeClassName(inputField, "mandatory");
+                    Element.addClassName(inputField, "valueOK");
+                };
+            });
+        });
+        
+    }
 }
-Event.observe(window, "load", function(){
-	$$('form').each(function(formVar){
-									ValidationManager.registerForm(formVar)
-								})
+
+Event.observe(window, "load", function() {
+    $$('form').each(function(formVar) {
+        ValidationManager.registerForm(formVar);
+    })
+
+    ValidationManager.registerFields();
 })

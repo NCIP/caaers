@@ -2,8 +2,13 @@
 // http://www.dithered.com/javascript/form_validation/index.html
 // code by Chris Nott (chris@dithered.com)
 // modified by Kruttik Aggarwal
+// modified by Ion Olaru
 
-function validateFields(formFields) {
+/*
+* displayError - used for the SUBMIT button, this method is also called for fields navigation, in this case displayError is FALSE
+*
+* */
+function validateFields(formFields, displayError) {
     validForm = true;
     // loop thru all form elements
     for (var elementIndex = 0; elementIndex < formFields.length; elementIndex++) {
@@ -11,11 +16,11 @@ function validateFields(formFields) {
         ValidationManager.removeError(element);
         // text and textarea types
         if (element.type == "text" || element.type == "textarea") {
-            element.value = trimWhitespace(element.value)
+            if (displayError) element.value = trimWhitespace(element.value);
 
             // required element
             if (element.required && element.value == '') {
-                ValidationManager.showError(element, element.requiredError);
+                if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
 
@@ -23,14 +28,14 @@ function validateFields(formFields) {
 
             // maximum length
             if (element.maxlength && isValidLength(element.value, 0, element.maxlength) == false) {
-                ValidationManager.showError(element, element.maxlengthError);
+                if (displayError) ValidationManager.showError(element, element.maxlengthError);
                 validForm = false;
                 continue;
             }
 
             // minimum length
             if (element.minlength && isValidLength(element.value, element.minlength, Number.MAX_VALUE) == false) {
-                ValidationManager.showError(element, element.minlengthError);
+                if (displayError) ValidationManager.showError(element, element.minlengthError);
                 validForm = false;
                 continue;
             }
@@ -49,7 +54,7 @@ function validateFields(formFields) {
                     (element.pattern.toLowerCase() == 'numeric' && isNumeric(element.value, true) == false) ||
                     (element.pattern.toLowerCase() == 'alphabetic' && isAlphabetic(element.value, true) == false) ||
                     (element.pattern.toLowerCase().indexOf('date') == 0 && isCorrectDate(element.value) == false)) {
-                    ValidationManager.showError(element, element.patternError);
+                    if (displayError) ValidationManager.showError(element, element.patternError);
                     validForm = false;
                     continue;
                 }
@@ -61,21 +66,21 @@ function validateFields(formFields) {
 
             // required element
             if (element.required && element.value == '') {
-                ValidationManager.showError(element, element.requiredError);
+                if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
             }
 
             // maximum length
             if (element.maxlength && isValidLength(element.value, 0, element.maxlength) == false) {
-                ValidationManager.showError(element, element.maxLengthError);
+                if (displayError) ValidationManager.showError(element, element.maxLengthError);
                 validForm = false;
                 continue;
             }
 
             // minimum length
             if (element.minlength && isValidLength(element.value, element.minlength, Number.MAX_VALUE) == false) {
-                ValidationManager.showError(element, element.minLengthError);
+                if (displayError) ValidationManager.showError(element, element.minLengthError);
                 validForm = false;
                 continue;
             }
@@ -86,7 +91,7 @@ function validateFields(formFields) {
 
             // required element
             if (element.required && element.value == '') {
-                ValidationManager.showError(element, element.requiredError);
+                if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
             }
@@ -97,14 +102,14 @@ function validateFields(formFields) {
             //alert("12.4:select element")
             // required element
             if (element.required && (element.selectedIndex == -1 || element.options[element.selectedIndex].value == '')) {
-                ValidationManager.showError(element, element.requiredError);
+                if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
             }
 
             // disallow empty value selection
             if (element.disallowEmptyValue && element.options[element.selectedIndex].value == '') {
-                ValidationManager.showError(element, element.disallowEmptyValueError);
+                if (displayError) ValidationManager.showError(element, element.disallowEmptyValueError);
                 validForm = false;
                 continue;
             }
@@ -127,7 +132,7 @@ function validateFields(formFields) {
 
                     // show error if required and flag group as having been tested
                     if (checkedRadioButton == -1 && !radiogroup.tested) {
-                        ValidationManager.showError(element, radiogroup[0].requiredError);
+                        if (displayError) ValidationManager.showError(element, radiogroup[0].requiredError);
                         validForm = false;
                         radiogroup.tested = true;
                         continue;

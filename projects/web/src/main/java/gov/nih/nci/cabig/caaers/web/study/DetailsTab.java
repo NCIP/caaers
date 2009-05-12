@@ -47,6 +47,14 @@ public class DetailsTab extends StudyTab {
         Map<String, Object> refdata = super.referenceData(request, command);
         // TODO : to be removed from reference data, as they are no longer used.
         refdata.put("ctcVersion", ctcDao.getAll()); // remove
+        if (command.getStudy().getAeTerminology() != null && command.getStudy().getAeTerminology().getTerm() == null) {
+            command.getStudy().getAeTerminology().setTerm(Term.CTC);
+        };
+
+        if (command.getStudy().getAeTerminology() != null && command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == null) {
+            command.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+            // diseaseTerminology.diseaseCodeTerm
+        };
         return refdata;
     }
 
