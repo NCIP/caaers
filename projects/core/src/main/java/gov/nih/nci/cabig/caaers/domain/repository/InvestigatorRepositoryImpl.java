@@ -3,19 +3,18 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
-import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.util.StringUtilities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +36,9 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private InvestigatorConverterDao investigatorConverterDao;
 	private CSMUserRepository csmUserRepository;
 	private String authenticationMode;
+	private OrganizationDao organizationDao;
+	private OrganizationRepository organizationRepository;
+	
 	private static final Log logger = LogFactory.getLog(InvestigatorRepositoryImpl.class); 
 	 
 	 /**
@@ -117,8 +119,31 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		for (Investigator remoteInvestigator:remoteList) {
 			Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
     		if (inv == null ) {
-        		//save(remoteInvestigator,"");
-        		this.investigatorDao.save(remoteInvestigator);
+    			try {
+    				
+    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
+    				List<SiteInvestigator> siDBList = new ArrayList<SiteInvestigator>();
+    				for (SiteInvestigator si:siList) {
+    					Organization remoteOrganization = si.getOrganization();
+    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			if (organization == null) {
+    	    				organizationRepository.create(remoteOrganization);
+    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+    	    			} 
+    	    			SiteInvestigator dbSI = new SiteInvestigator();
+    	    			dbSI.setOrganization(organization);
+    	    			dbSI.setInvestigator(remoteInvestigator);
+    	    			siDBList.add(dbSI);
+    	    			
+    				}
+    				remoteInvestigator.getSiteInvestigators().clear();
+    				remoteInvestigator.setSiteInvestigators(siDBList);
+    				
+    				save(remoteInvestigator,"URL");
+    			} catch (MailException e) {
+    				e.printStackTrace();
+    			}
+        		//this.investigatorDao.save(remoteInvestigator);
         		localList.add(remoteInvestigator);
         	} else {
         		// if it exist in local list , remote interceptor would have loaded the rest of the details .
@@ -169,6 +194,15 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 
 	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
 		this.siteInvestigatorDao = siteInvestigatorDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 
 }

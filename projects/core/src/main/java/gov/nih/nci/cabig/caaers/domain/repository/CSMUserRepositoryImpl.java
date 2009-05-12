@@ -67,7 +67,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
         if(mailException != null) throw mailException;
     }
-
+    
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
     	MailException mailException = null;
