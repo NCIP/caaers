@@ -16,11 +16,13 @@ This applicationContext contains the definition of the concrete services
 	<bean id="identifiedPersonCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.IdentifiedPersonCorrelationServiceImpl"/>
 	
 	
-	<bean id="organizationResolver" autowire="byType" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
-	</bean>
-	<bean id="researchStaffResolver" autowire="byType" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
+	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
 
 	</bean>
-	<bean id="investigatorResolver" autowire="byType" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
+	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
+
+	</bean>
+	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
+
 	</bean>		
 </beans>
