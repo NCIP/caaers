@@ -35,6 +35,7 @@ function submitPage(s){
         </div>
 </div>
 <div style="height:10px"></div>
+<chrome:flashMessage key="statusMessage"></chrome:flashMessage>
 <chrome:box title="${researchStaff.lastName}, ${researchStaff.firstName}" >
      <chrome:division title="Research Staff Details">
     	<div class="leftpanel">

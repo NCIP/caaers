@@ -179,10 +179,7 @@
          <c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-
-        <c:if test="${authenticationMode == 'webSSO'}">
-            <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
-        </c:if>
+        <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
     
     </div>
 	<c:if test="${(command.id gt 0) }">
@@ -196,7 +193,7 @@
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
 
-<div class="leftpanel">
+<div>
 
     <div class="row">
         <div class="label label2">Subject coordinator</div>
@@ -223,7 +220,7 @@
     </div>
     
     <div class="row">
-        <div class="label label2">Central office SAE coordinator</div>
+        <div class="label label2">Central Office Report Reviewer</div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_central_office_sae_cd').value='true':$('caaers_central_office_sae_cd').value='false';" ${caaers_central_office_sae_cd ? 'checked':''} />
             <input id="caaers_central_office_sae_cd" type="hidden" name="caaers_central_office_sae_cd" value="${caaers_central_office_sae_cd}"/>

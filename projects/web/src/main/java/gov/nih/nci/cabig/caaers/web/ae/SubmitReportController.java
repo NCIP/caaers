@@ -19,6 +19,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * @author Biju Joseph
  * @author Krikor Krumlian
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {

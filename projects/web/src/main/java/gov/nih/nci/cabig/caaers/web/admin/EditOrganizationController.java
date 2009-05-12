@@ -41,6 +41,15 @@ public class EditOrganizationController extends OrganizationController<Organizat
     }
 
     @Override
+    protected Organization save(final Organization organization, final Errors errors) {
+        if (errors.hasErrors()) {
+            return organization;
+        }
+        organizationRepository.createOrUpdate(organization);
+        return organization;
+    }
+
+    @Override
     protected boolean isSummaryEnabled() {
         return true;
     }

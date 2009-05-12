@@ -15,9 +15,9 @@ import org.apache.commons.lang.StringUtils;
  * @author Kulasekaran
  * @author Rhett Sutphin
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
-    // private EvaluationService evaluationService;
 
     public SubmitterTab() {
         super("Submitter info", "Submitter", "ae/submitter");
