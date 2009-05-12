@@ -82,6 +82,9 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
 
     @Override
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
+    	
+    	if(cmd.getNextPage() < 2) return; //only process if we are moving forward.
+    	
     	log.debug("In postProcess");
         SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) cmd;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
