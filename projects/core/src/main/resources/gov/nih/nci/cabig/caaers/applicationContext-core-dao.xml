@@ -650,6 +650,8 @@ This applicationContext contains the definition of the DAOs
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="investigatorConverterDao" ref="investigatorConverterDao" />
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
+		<property name="organizationDao" ref="organizationDao" />
+		<property name="organizationRepository" ref="organizationRepository" />
 	</bean>
     <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>
