@@ -86,7 +86,7 @@ implements Migrator<E> {
 			sb
 			.append("(OrganizationAssignedIdentifier provided in CoordinatingCenter is considered \"Coordinating Center Identifier\")");
 
-			outcome.addErrorMessage("", Severity.ERROR);
+			outcome.addErrorMessage(sb.toString(), Severity.ERROR);
 		}
 	}
 
