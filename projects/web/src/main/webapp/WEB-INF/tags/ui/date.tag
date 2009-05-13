@@ -25,7 +25,7 @@
 
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}" required="${required}" displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="date">
     <jsp:attribute name="field">
-    <tags:dateInput path="${path}" cssClass="${cssValue} ${validationCss} ${cssClass}" title="${title}" field="${field}"/>
+    <tags:dateInput path="${path}" cssClass="${validationCss} ${cssClass}" title="${title}" field="${field}"/>
         <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
             <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}"/>
         </c:if>
