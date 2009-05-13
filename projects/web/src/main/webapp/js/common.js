@@ -92,7 +92,11 @@ AE.registerCalendarPopups = function(containerId) {
                 inputField  : input.id,
                 button      : anchorId,
                 ifFormat    : "%m/%d/%Y", // TODO: get this from the configuration
-                weekNumbers : false
+                weekNumbers : false,
+                onSelect    : function(cal) {
+                    input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y');
+                    ValidationManager.setNormalState(input);
+                }
             }
         );
     })
@@ -116,9 +120,13 @@ AE.registerCalendarPopups = function(containerId) {
                 ifFormat      : "%m/%d/%Y", // TODO: get this from the configuration
                 weekNumbers   : false,
                 onSelect      : function(cal){
-                	$(cal.params['dayInputId']).value = cal.date.print('%d')
-                	$(cal.params['monthInputId']).value = cal.date.print('%m')
-                	$(cal.params['yearInputId']).value =  cal.date.print('%Y')
+                	$(cal.params['dayInputId']).value = cal.date.print('%d');
+                	$(cal.params['monthInputId']).value = cal.date.print('%m');
+                	$(cal.params['yearInputId']).value =  cal.date.print('%Y');
+
+                    ValidationManager.setNormalState($(cal.params['dayInputId']));
+                    ValidationManager.setNormalState($(cal.params['monthInputId']));
+                    ValidationManager.setNormalState($(cal.params['yearInputId']));
                 }
             }
         );

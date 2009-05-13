@@ -232,8 +232,15 @@ var ValidationManager = {
             Element.addClassName(inputField, "validField");
         } else {
             Element.removeClassName(inputField, "validField");
+            Element.removeClassName(inputField, "valueOK");
             Element.addClassName(inputField, "required");
         }
+    },
+
+    setNormalState: function(inputField) {
+            Element.removeClassName(inputField, "required");
+            Element.removeClassName(inputField, "mandatory");
+            Element.addClassName(inputField, "valueOK");
     },
 
     doFieldValidation: function(inputField) {
@@ -296,7 +303,7 @@ var ValidationManager = {
     },
 
     clearFieldCss: function(inputField) {
-        if (inputField.hasClassName("validField")) {
+        if (inputField.hasClassName("validField") || inputField.hasClassName("valueOK")) {
             Element.removeClassName(inputField, "validField");
             Element.removeClassName(inputField, "required");
             Element.removeClassName(inputField, "mandatory");
