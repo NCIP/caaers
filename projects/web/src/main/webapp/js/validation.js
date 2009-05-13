@@ -321,7 +321,12 @@ var ValidationManager = {
     formKeyup: function(event) {
         var inputField = ValidationManager.getElement(event);
         if (inputField.hasClassName("required") || inputField.hasClassName("mandatory") || inputField.hasClassName("valueOK") || inputField.hasClassName("validField")) {
-            if (inputField) ValidationManager.doFieldValidation(inputField);
+            if (inputField) {
+                ValidationManager.doFieldValidation(inputField);
+                inputField.onblur = function() {
+                    ValidationManager.clearFieldCss(inputField);
+                }
+            };
         }
     }
 }
