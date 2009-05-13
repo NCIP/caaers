@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.remote.RemoteObjectBinder;
+
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -34,7 +34,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
     private static final Log log = LogFactory.getLog(EditStudyController.class);
     private Task task;
-    private RemoteObjectBinder remoteObjectBinder;
+
 
 	public EditStudyController() {
         setBindOnNewForm(true);
@@ -60,7 +60,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
         }
 
         StudyCommand cmd = new StudyCommand();
-        cmd.setRemoteObjectBinder(remoteObjectBinder);
+
         cmd.setStudy(study);
         
         cmd.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
@@ -199,8 +199,5 @@ public class EditStudyController extends StudyController<StudyCommand> {
     public void setTask(Task task) {
         this.task = task;
     }
-    
-	public void setRemoteObjectBinder(RemoteObjectBinder remoteObjectBinder) {
-		this.remoteObjectBinder = remoteObjectBinder;
-	}
+
 }
