@@ -154,7 +154,7 @@ function ajaxStudySearch(searchText, searchType) {
 --%>
                 <ui:row path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}">
                     <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" text="${fieldGroups.studySubjectIdentifier.fields[0].displayName}"/></jsp:attribute>
-                    <jsp:attribute name="value"><ui:text path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" /></jsp:attribute>
+                    <jsp:attribute name="value"><ui:text path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" cssClass="validate-NOTEMPTY&&MAXLENGTH64 ${not empty command.studySubjectIdentifier ? 'valueOK' : 'required'}"/></jsp:attribute>
                 </ui:row>
             </chrome:division>
         </div>
