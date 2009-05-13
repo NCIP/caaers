@@ -215,6 +215,12 @@ var ValidationManager = {
         formVariable._submit = formVariable.submit
         formVariable.submit = ValidationManager.validateForm
         Event.observe(formVariable, "submit", ValidationManager.validateForm)
+
+        Event.observe(formVariable, "click", ValidationManager.formClick)
+        Event.observe(formVariable, "domfocusout", ValidationManager.formBlur)
+        Event.observe(formVariable, "keyup", ValidationManager.formKeyup)
+        Event.observe(formVariable, "change", ValidationManager.formChange)
+        Event.observe(formVariable, "focus", ValidationManager.formFocus)
     },
 
     setValidState: function(inputField, isValid) {
@@ -235,7 +241,10 @@ var ValidationManager = {
     },
 
     registerFields: function() {
+        alert('registerFields');
+        return;
         $$('input.required', 'input.mandatory', 'input.valueOK').each(function(inputField) {
+            Event.stopObserving(inputField, "keyup");
             Event.observe(inputField, "keyup", function() {
                 ValidationManager.doFieldValidation(inputField);
             });
@@ -263,7 +272,57 @@ var ValidationManager = {
                 };
             });
         });
-        
+
+    },
+
+    getElement: function(event) {
+        var inputField = Event.findElement(event, 'INPUT');
+        if (inputField) return inputField;
+
+        var inputField = Event.findElement(event, 'TEXTAREA');
+        if (inputField) return inputField;
+
+        var inputField = Event.findElement(event, 'SELECT');
+        if (inputField) return inputField;
+
+        return null;
+    },
+
+    formClick: function(event) {
+        // var inputField = ValidationManager.getElement(event);
+    },
+
+    clearFieldCss: function(inputField) {
+        if (inputField.hasClassName("validField")) {
+            Element.removeClassName(inputField, "validField");
+            Element.removeClassName(inputField, "required");
+            Element.removeClassName(inputField, "mandatory");
+            Element.addClassName(inputField, "valueOK");
+        };
+    },
+
+    formChange: function(event) {
+        var inputField = ValidationManager.getElement(event);
+        if (inputField == null) return;
+        if (inputField.type == "select-one" || inputField.type == "select-multiple") {
+            if (inputField) ValidationManager.doFieldValidation(inputField);
+        };
+        inputField.onblur = function() {
+            ValidationManager.clearFieldCss(inputField);
+        }
+    },
+
+    formBlur: function(event) {
+    },
+
+    formFocus: function(event) {
+    },
+
+    formKeyup: function(event) {
+        var inputField = ValidationManager.getElement(event);
+        if (inputField.hasClassName("required") || inputField.hasClassName("mandatory") || inputField.hasClassName("valueOK") || inputField.hasClassName("validField")) {
+            if (inputField) ValidationManager.doFieldValidation(inputField);
+        }
     }
 }
 
@@ -271,6 +330,4 @@ Event.observe(window, "load", function() {
     $$('form').each(function(formVar) {
         ValidationManager.registerForm(formVar);
     })
-
-    ValidationManager.registerFields();
 })
