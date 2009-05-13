@@ -135,10 +135,12 @@ var ValidationManager = {
     },
 
     prepareField: function(element) {
+        validationTypeStr = -1;
         validationTypeStr = Element.classNames(element).detect(function(cls) {
             var v = cls.indexOf('validate') == 0
             return cls.indexOf('validate') == 0
-        })
+        });
+        if (!validationTypeStr) return;
         validationTypeStr = validationTypeStr.substr(9)
         validations = validationTypeStr.split("&&")
         for (i = 0; i < validations.length; i++) {
@@ -236,7 +238,8 @@ var ValidationManager = {
 
     doFieldValidation: function(inputField) {
         ValidationManager.prepareField(inputField);
-        var isValid = validateFields(new Array(inputField), false);
+        var isValid = (validateFields(new Array(inputField), false) && trimWhitespace(inputField.value) != "");
+        // Insertion.Before(document.body, "<font color='white'>" + isValid + ".</font><br>");
         ValidationManager.setValidState(inputField, isValid);
     },
 
@@ -302,13 +305,16 @@ var ValidationManager = {
     },
 
     formChange: function(event) {
+        // Insertion.Before(document.body, "<font color='white'>Change.</font><br>");
         var inputField = ValidationManager.getElement(event);
         if (inputField == null) return;
-        if (inputField.type == "select-one" || inputField.type == "select-multiple") {
-            if (inputField) ValidationManager.doFieldValidation(inputField);
-        };
-        inputField.onblur = function() {
-            ValidationManager.clearFieldCss(inputField);
+        if (inputField.hasClassName("required") || inputField.hasClassName("mandatory") || inputField.hasClassName("valueOK") || inputField.hasClassName("validField")) {
+            if (inputField.type == "select-one" || inputField.type == "select-multiple") {
+                if (inputField) ValidationManager.doFieldValidation(inputField);
+            };
+            inputField.onblur = function() {
+                ValidationManager.clearFieldCss(inputField);
+            }
         }
     },
 
@@ -319,6 +325,7 @@ var ValidationManager = {
     },
 
     formKeyup: function(event) {
+        // Insertion.Before(document.body, "<font color='white'>KeyUp.</font><br>");
         var inputField = ValidationManager.getElement(event);
         if (inputField == null) return;
         if (inputField.hasClassName("required") || inputField.hasClassName("mandatory") || inputField.hasClassName("valueOK") || inputField.hasClassName("validField")) {
