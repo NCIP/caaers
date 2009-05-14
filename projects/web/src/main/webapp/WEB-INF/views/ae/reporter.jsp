@@ -63,16 +63,23 @@
         function updateUserData(prefix, user) {
             NAME_FIELDS.each(function(field) {
             	if(user[field] != null) updateFieldValue(prefix + '.' + field, user[field]);
+                ValidationManager.doFieldValidation($(prefix + '.' + field));
             })
 			if(user['emailAddress'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
-			if(user['phoneNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
-			if(user['faxNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
+            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[e-mail]'));
+
+            if(user['phoneNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
+            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[phone]'));
+
+            if(user['faxNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
+            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[fax]'));
 			
         }
 
         function clear(person) {
             PERSON_FIELDS.each(function (field) {
             	updateFieldValue('aeReport.' + person + '.' + field, '');
+                ValidationManager.doFieldValidation($('aeReport.' + person + '.' + field));
             })
         }
 

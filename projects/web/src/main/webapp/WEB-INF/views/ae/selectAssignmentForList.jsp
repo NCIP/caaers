@@ -64,7 +64,13 @@
             Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
             $(mode.basename).value = selectedChoice.id;
             $(mode.basename + '-selected').show()
-            new Effect.Highlight(mode.basename + "-selected")
+            new Effect.Highlight(mode.basename + "-selected");
+
+            $(mode.basename + "-input").onblur = function() {
+                if ($(mode.basename + "-input").hasClassName('validField')) {
+                    ValidationManager.setNormalState($(mode.basename + "-input"))
+                };
+            }
         }
 
         function updateSelectedDisplay(mode) {

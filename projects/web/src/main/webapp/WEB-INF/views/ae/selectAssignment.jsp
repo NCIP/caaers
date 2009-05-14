@@ -198,13 +198,20 @@
 
         function acPostSelect(mode, selectedChoice) {
             Element.removeClassName($(mode.basename + "-input"), "required");
+            Element.removeClassName($(mode.basename + "-input"), "valueOK");
             Element.addClassName($(mode.basename + "-input"), "validField");
-            
             Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
             $(mode.basename).value = selectedChoice.id;
             $(mode.basename + '-selected').show()
             new Effect.Highlight(mode.basename + "-selected")
             rpCreator.populateRPCrlOptions();
+            $(mode.basename + "-input").onblur = function() {
+                if ($(mode.basename + "-input").hasClassName('validField')) {
+                    ValidationManager.setNormalState($(mode.basename + "-input"));
+                } else {
+                    ValidationManager.setInvalidState($(mode.basename + "-input"));
+                }
+            }
         }
         
         function updateSelectedDisplay(mode) {

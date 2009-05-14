@@ -135,7 +135,6 @@ var ValidationManager = {
     },
 
     prepareField: function(element) {
-        validationTypeStr = -1;
         validationTypeStr = Element.classNames(element).detect(function(cls) {
             var v = cls.indexOf('validate') == 0
             return cls.indexOf('validate') == 0
@@ -225,31 +224,28 @@ var ValidationManager = {
         Event.observe(formVariable, "focus", ValidationManager.formFocus)
     },
 
-    setValidState: function(inputField, isValid) {
+    setState: function(inputField, isValid) {
         if (isValid) {
-            Element.removeClassName(inputField, "required");
-            Element.removeClassName(inputField, "mandatory");
-            Element.addClassName(inputField, "validField");
+            ValidationManager.setValidState(inputField);
         } else {
-            Element.removeClassName(inputField, "validField");
-            Element.removeClassName(inputField, "valueOK");
-            Element.addClassName(inputField, "required");
+            ValidationManager.setInvalidState(inputField);
         }
     },
 
     setNormalState: function(inputField) {
             Element.removeClassName(inputField, "required");
             Element.removeClassName(inputField, "mandatory");
+            Element.removeClassName(inputField, "validField");
             Element.addClassName(inputField, "valueOK");
     },
 
     doFieldValidation: function(inputField) {
+        if (!inputField) return;
         if (inputField.hasClassName("autocomplete")) return;
         
         ValidationManager.prepareField(inputField);
         var isValid = (validateFields(new Array(inputField), false) && trimWhitespace(inputField.value) != "");
-        // Insertion.Before(document.body, "<font color='white'>" + isValid + ".</font><br>");
-        ValidationManager.setValidState(inputField, isValid);
+        ValidationManager.setState(inputField, isValid);
     },
 
     registerFields: function() {
@@ -305,7 +301,8 @@ var ValidationManager = {
     },
 
     clearFieldCss: function(inputField) {
-        if (inputField.hasClassName("validField") || inputField.hasClassName("valueOK")) {
+        if (Element.hasClassName(inputField, "autocomplete")) return;
+        if (Element.hasClassName(inputField, "validField") || Element.hasClassName(inputField, "valueOK")) {
             Element.removeClassName(inputField, "validField");
             Element.removeClassName(inputField, "required");
             Element.removeClassName(inputField, "mandatory");
@@ -313,8 +310,25 @@ var ValidationManager = {
         };
     },
 
+    setInvalidState: function(inputField) {
+        if (Element.hasClassName(inputField, "mandatory") || Element.hasClassName(inputField, "required") || Element.hasClassName(inputField, "validField") || Element.hasClassName(inputField, "valueOK")) {
+            Element.removeClassName(inputField, "validField");
+            Element.removeClassName(inputField, "valueOK");
+            Element.removeClassName(inputField, "mandatory");
+            Element.addClassName(inputField, "required");
+        }
+    },
+
+    setValidState: function(inputField) {
+        if (Element.hasClassName(inputField, "mandatory") || Element.hasClassName(inputField, "required") || Element.hasClassName(inputField, "validField") || Element.hasClassName(inputField, "valueOK")) {
+            Element.removeClassName(inputField, "required");
+            Element.removeClassName(inputField, "mandatory");
+            Element.removeClassName(inputField, "valueOK");
+            Element.addClassName(inputField, "validField");
+        }
+    },
+
     formChange: function(event) {
-        // Insertion.Before(document.body, "<font color='white'>Change.</font><br>");
         var inputField = ValidationManager.getElement(event);
         if (inputField == null) return;
         if (inputField.hasClassName("required") || inputField.hasClassName("mandatory") || inputField.hasClassName("valueOK") || inputField.hasClassName("validField")) {

@@ -53,20 +53,23 @@
     $('${path}-input').observe('focus', function() {
         if($('${path}').value == '' && AE.hash.get('${path}') == '1'){
              var el = $('${path}-input');
-			 el.removeClassName('pending-search');
+             el.removeClassName('pending-search');
              el.clear();
 			 AE.hash.set('${path}' , '0');
 		}
     });
 
     $('${path}-input').observe('blur', function() {
-			if(AE.hash.get('${path}') == '0'){
-                var el = $('${path}-input');
+            var el = $('${path}-input');
+            if (el.value == '') ValidationManager.setInvalidState(el);
+            else
+                if (el.hasClassName('validField')) ValidationManager.setNormalState(el);
+                else ValidationManager.setInvalidState(el);  
+            if(AE.hash.get('${path}') == '0'){
                 if (el.value == '') {
-                el.value = '${initialDisplayValue}';
-                el.addClassName('pending-search');
-               
-				AE.hash.set('${path}' , '1');
+                    el.value = '${initialDisplayValue}';
+                    el.addClassName('pending-search');
+                    AE.hash.set('${path}' , '1');
 			}
         };
     });

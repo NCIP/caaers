@@ -130,7 +130,8 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
         valueSelector: valueSelector,
         // if you replace this option, you'll need to include this functionality
         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-            $(propertyName).value = selectedChoice.id
+            $(propertyName).value = selectedChoice.id;
+            ValidationManager.setValidState($(propertyName + '-input'));
         }
     }, options || { })
 
@@ -154,7 +155,9 @@ AE.resetAutocompleter = function(propertyName){
 		var elInput = $(propertyName + '-input');
 		elInput.value="Begin typing here...";
 		elInput.addClassName('pending-search');
-	}
+        // Insertion.Before(document.body, "<font color='white'>Reset.</font><br>");
+        ValidationManager.setInvalidState($(propertyName + '-input'));
+    }
 }
 
 ////// INLINE HELP
