@@ -58,6 +58,9 @@
         }
 
         function acPostSelect(mode, selectedChoice) {
+            Element.removeClassName($(mode.basename + "-input"), "required");
+            Element.addClassName($(mode.basename + "-input"), "validField");
+            
             Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
             $(mode.basename).value = selectedChoice.id;
             $(mode.basename + '-selected').show()
@@ -72,8 +75,7 @@
         }
 
         function acCreate(mode) {
-            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-                    mode.populator, {
+            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices", mode.populator, {
                 valueSelector: mode.valueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                     acPostSelect(mode, selectedChoice)
@@ -81,6 +83,7 @@
                 indicator: mode.basename + "-indicator"
             })
             Event.observe(mode.basename + "-clear", "click", function() {
+                Element.addClassName($(mode.basename + "-input"), "required");
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
                 $(mode.basename + "-input").value = ""
@@ -113,6 +116,7 @@
             <div id="study-choices" class="autocomplete"></div>
             <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
         </chrome:box>
+        
         <chrome:box title="Select subject" id="participant-entry" autopad="true" cssClass="pairedLong">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>

@@ -540,15 +540,12 @@ function copyValues(select,prop){
 
 /////  autocompleter search fields
 function initSearchField() {
-
-    $$("input[type=text].autocomplete").each(function(theInput)
-    {
+    $$("input[type=text].autocomplete").each(function(theInput) {
         addEventHandlersForAutoCompleter(theInput)
     });
 
-     $$("input[type=text][class='autocomplete validate-NOTEMPTY']").each(function(theInput)
-    {
-            addEventHandlersForAutoCompleter(theInput)
+    $$("input[type=text][class='autocomplete validate-NOTEMPTY']").each(function(theInput) {
+        addEventHandlersForAutoCompleter(theInput)
     });
 
 }
@@ -562,18 +559,16 @@ function addEventHandlersForAutoCompleter(theInput){
         /* Save the current value */
         if (theInput.value == '') {
             theInput.defaultText = message;
-            theInput.className = 'pending-search';
+            theInput.className = 'required pending-search';
             theInput.value = message;
         }
 }
 function clearDefaultText(e) {
     var target = window.event ? window.event.srcElement : e ? e.target : null;
     if (!target) return;
-
     if (target.value == '(Begin typing here)') {
         target.value = '';
-        target.className = 'autocomplete';
-
+        target.className = 'required autocomplete';
     }
 
 }
@@ -581,10 +576,9 @@ function clearDefaultText(e) {
 function replaceDefaultText(e) {
     var target = window.event ? window.event.srcElement : e ? e.target : null;
     if (!target) return;
-
     if (target.value == '' ) {
         target.value = '(Begin typing here)';
-        target.className = 'pending-search';
+        target.className = 'required pending-search';
     }
 
 }

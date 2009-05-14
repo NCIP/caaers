@@ -176,11 +176,11 @@
             basename: "participant",
             populator: function(autocompleter, text) {
                 createAE.matchParticipants(text, $('study').value, function(values) {
-                    autocompleter.setChoices(values)
+                    autocompleter.setChoices(values);
                 })
             },
             valueSelector: function(obj) {
-                return obj.displayName
+                return obj.displayName;
             }
         }
 
@@ -197,6 +197,9 @@
         }
 
         function acPostSelect(mode, selectedChoice) {
+            Element.removeClassName($(mode.basename + "-input"), "required");
+            Element.addClassName($(mode.basename + "-input"), "validField");
+            
             Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
             $(mode.basename).value = selectedChoice.id;
             $(mode.basename + '-selected').show()
@@ -213,8 +216,7 @@
         }
 
         function acCreate(mode) {
-            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-                    mode.populator, {
+            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices", mode.populator, {
                 valueSelector: mode.valueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                     acPostSelect(mode, selectedChoice)
@@ -222,6 +224,7 @@
                 indicator: mode.basename + "-indicator"
             })
             Event.observe(mode.basename + "-clear", "click", function() {
+                Element.addClassName($(mode.basename + "-input"), "required");
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
                 $(mode.basename + "-input").value = ""
@@ -230,11 +233,11 @@
         }
 
         Event.observe(window, "load", function() {
-            acCreate(participantAutocompleterProps)
-            acCreate(studyAutocompleterProps)
-            updateSelectedDisplay(participantAutocompleterProps)
-            updateSelectedDisplay(studyAutocompleterProps)
-            initSearchField()
+            acCreate(participantAutocompleterProps);
+            acCreate(studyAutocompleterProps);
+            updateSelectedDisplay(participantAutocompleterProps);
+            updateSelectedDisplay(studyAutocompleterProps);
+            initSearchField();
             rpCreator = new RPCreatorClass('course-input','edit_button');
             rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
             $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
@@ -261,6 +264,7 @@
                 You have selected the study <span id="study-selected-name"></span>.
             </p>
         </chrome:box>
+
         <chrome:box title="Select subject" id="participant-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
@@ -274,13 +278,14 @@
                 You have selected the subject <span id="participant-selected-name"></span>.
             </p>
         </chrome:box>
+        
         <chrome:box title="Select course/cycle" id="course-entry" autopad="true">
 			<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
 			<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
         	<form:hidden path="adverseEventReportingPeriod" />
         	<tags:requiredIndicator/>
-        	<select id="course-input" style="width:20em" value="${command.adverseEventReportingPeriod.id }">
+        	<select id="course-input" style="width:20em" value="${command.adverseEventReportingPeriod.id }" class="required">
 				<option value="">Please select</option>
 			</select>
 			<input id="edit_button" type="button" value="Edit" style="display:none;"/>

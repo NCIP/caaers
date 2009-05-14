@@ -244,6 +244,8 @@ var ValidationManager = {
     },
 
     doFieldValidation: function(inputField) {
+        if (inputField.hasClassName("autocomplete")) return;
+        
         ValidationManager.prepareField(inputField);
         var isValid = (validateFields(new Array(inputField), false) && trimWhitespace(inputField.value) != "");
         // Insertion.Before(document.body, "<font color='white'>" + isValid + ".</font><br>");
