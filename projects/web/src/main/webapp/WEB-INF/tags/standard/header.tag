@@ -10,10 +10,10 @@
     <div class="background-R">
 
         <a href="/caaers/pages/task" id="logo">caAERS</a>
-		  <c:url value="/help/caAERS_Help.htm" scope="request" var="_caaersHelpURL" />
+		  <c:url value="${empty configuration.map.caaersBaseHelpUrl ? '/help/caAERS_Help.htm' : configuration.map.caaersBaseHelpUrl}" scope="request" var="_caaersHelpURL" />
 		  <c:set var="roboHelpKey">ROBOHELP_${currentTask.linkName}</c:set>
 		  <spring:message var="roboHelpLink" code="${roboHelpKey}" text="NO_${roboHelpKey}"/>
-          <a href="${_caaersHelpURL}#${roboHelpLink}.htm" target="_blank" id="help">Help</a>
+          <a href="${_caaersHelpURL}#${roboHelpLink}${empty configuration.map.caaersBaseHelpUrl ?'.htm' : ''}" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
         <ul id="sections" class="tabs">
         <c:forEach items="${sections}" var="section">
