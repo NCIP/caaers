@@ -62,18 +62,29 @@
         
         function updateUserData(prefix, user) {
             NAME_FIELDS.each(function(field) {
-            	if(user[field] != null) updateFieldValue(prefix + '.' + field, user[field]);
-                ValidationManager.doFieldValidation($(prefix + '.' + field));
+            	if(user[field] != null) {
+                    updateFieldValue(prefix + '.' + field, user[field]);
+                    ValidationManager.setNormalState($(prefix + '.' + field));
+                }
             })
-			if(user['emailAddress'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
-            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[e-mail]'));
+            
+            if(user['emailAddress'] != null) {
+                updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
+                ValidationManager.setNormalState($(prefix + '.contactMechanisms[e-mail]'));
+            }
 
-            if(user['phoneNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
-            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[phone]'));
 
-            if(user['faxNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
-            ValidationManager.doFieldValidation($(prefix + '.contactMechanisms[fax]'));
-			
+            if(user['phoneNumber'] != null) {
+                updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
+                ValidationManager.setNormalState($(prefix + '.contactMechanisms[phone]'));
+            }
+
+
+            if(user['faxNumber'] != null) {
+                updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
+                ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
+            }
+
         }
 
         function clear(person) {
