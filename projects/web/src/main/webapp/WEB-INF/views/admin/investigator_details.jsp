@@ -248,13 +248,15 @@ Event.observe(window, "load", function() {
        </table>
 	
 	</chrome:division>
-         
+        
+        <br>
+        <tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />
+
      </jsp:attribute>
 
 	<jsp:attribute name="localButtons"> 
 	      	<chrome:division title="">          	
-	      		<tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />   
-            </chrome:division>                                                                                                                                                                                                                                                             
+            </chrome:division>
 	</jsp:attribute>
 
 </tags:tabForm>

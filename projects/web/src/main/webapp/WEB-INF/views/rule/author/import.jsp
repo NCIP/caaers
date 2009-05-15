@@ -64,7 +64,7 @@
                 </div>
             </div>    
         <div class="row submit">
-            <input type="submit" value="Import"/>
+            <tags:button id="add-rule" color="blue" type="submit" value="Import" size="small" icon="add" />
         </div>
     </form:form>
     <c:if test="${command.updated}">

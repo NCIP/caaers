@@ -46,12 +46,11 @@
   </style>
 </head>
 <body> 
-  <chrome:box title="Password Policy Configuration" autopad="true">
-    <c:url value="/pages/admin/passwordPolicyConfigure" var="action" />
-    <p>
-     <tags:instructions code="passwordconfig" />
-    </p>
     <form:form action="${action}">
+    <chrome:box title="Password Policy Configuration" autopad="true">
+
+    <c:url value="/pages/admin/passwordPolicyConfigure" var="action" />
+    <p><tags:instructions code="passwordconfig" /></p>
 
       <chrome:division title="Login Policy">
 	<div class="nested_section">
@@ -165,14 +164,11 @@
 	  </div>
 	</chrome:division>
 
-      <div class="row submit" style="float: right;">
-	<input type="submit" value="Save"/>
-      </div>
 
-      <c:if test="${updated}">
-	<p class="updated">Settings saved</p>
-      </c:if>
-    </form:form>
+      <c:if test="${updated}"><p class="updated">Settings saved</p></c:if>
+
   </chrome:box>
+    <div class="row submit" style="float: right;"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
+    </form:form>
 </body>
 </html>

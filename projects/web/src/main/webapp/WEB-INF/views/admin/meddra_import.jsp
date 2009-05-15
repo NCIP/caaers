@@ -163,19 +163,15 @@ var t= 0 ;
     		
     		<c:forEach items="${meddraVersions}" var="meddraVersion">
 			<tr id="${meddraVersion.name}">
-				<td>
-					<c:out value="${meddraVersion.name}"/>
-				</td>
-				<td>
-					<input type="button" id="${meddraVersion.id}" value="Delete" onClick="deleteMeddra('${meddraVersion.id}', '${meddraVersion.name}');"><br><br>
-				</td> 
+				<td><c:out value="${meddraVersion.name}"/></td>
+				<td><tags:button id="${meddraVersion.id}" type="button" value="Delete" size="small" color="blue" icon="x" onclick="deleteMeddra('${meddraVersion.id}', '${meddraVersion.name}');"/><br><br></td>
 			</c:forEach>
 			<tr>
 				<td>
 					<input type="text" id="input" />
 				</td>
 				<td>
-					<input type="button" id="create_button" value="Create"><br><br>
+                    <tags:button id="create_button" type="button" value="Create" size="small" color="blue" icon="add"/><br><br>
 				</td>
 			</tr>
         </table>

@@ -37,5 +37,7 @@
 	 </c:if>
 	
 	</c:forEach>
-	<td><input type="button" value="Delete" onClick="javascript:fireDelete(${originalIndex},'${divisionClass}-${index}');" /></td>
+	<td width="100px;" nowrap="true">
+        <tags:button color="blue" type="button" value="Delete" size="small" icon="x" onclick="javascript:fireDelete(${originalIndex},'${divisionClass}-${index}');"/>
+    </td>
 </tr>

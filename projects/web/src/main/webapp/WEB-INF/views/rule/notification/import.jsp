@@ -59,7 +59,7 @@
                 </div>
             </div>    
         <div class="row submit">
-            <input type="submit" value="Import"/>
+            <tags:button type="submit" value="Import" size="small" color="blue" icon="add" />
         </div>
     </form:form>
     <c:if test="${command.updated}">

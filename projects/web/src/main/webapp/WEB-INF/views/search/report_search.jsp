@@ -148,8 +148,8 @@ function buildTable(form) {
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler');  $('bigSearch').show();" value='Search'  title='Search Study'/>
-	<tags:indicator id="indicator" />
+    <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');  $('bigSearch').show();" size="small"/>
+    <tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
  </form:form>

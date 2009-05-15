@@ -1703,8 +1703,7 @@ div#createNew h3, div.section h3 {
         </div>
         <!-- closing allRules -->
         <div class="local-buttons">
-          <input type="button"
-				value="Add Rule" onClick="addRule()" />
+            <tags:button id="add-rule" color="blue" type="button" value="Add Rule" size="small" icon="add" onclick="addRule()"/>
         </div>
       </div>
     </jsp:attribute>

@@ -13,9 +13,9 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
   <div class="value">
     <table border="0" cellspacing="2" cellpadding="0" width="90%">
       <tr align="middle">
-         <td width="49%"><input type="button" value="Add eMail" onClick="javascript:insertRecipient('direct', ${index})" /> </td>
+         <td width="49%"><tags:button color="blue" type="button" value="Add eMail" size="small" icon="add" onclick="javascript:insertRecipient('direct', ${index})"/></td>
          <td rowspan="2" width="2%" class="divider">&nbsp;</td>
-         <td><input type="button" value="Add Role" onClick="javascript:insertRecipient('role',${index})" /></td>
+         <td><tags:button color="blue" type="button" value="Add Role" size="small" icon="add" onclick="javascript:insertRecipient('role',${index})"/></td>
       </tr>
       <tr>
          <td width="49%" >
@@ -37,8 +37,7 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
 			  	<option value="${role.key}" ${selectedRole.contact == role.key ? 'SELECTED' : ''}>${role.value}</option>
 			  </c:forEach>
       	   </select>
-	       <input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
-           		style="border: 0px none ;" 	onClick="javascript:{removeRecipient(this.parentNode)}"/>
+	       <input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="border: 0px none ;" 	onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	  </div>
    	      </c:forEach>
    	      <span id="rbookmark${index}" /> 
@@ -76,7 +75,7 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
 </div>
 <div class="content buttons autoclear">
 	<div class="local-buttons">
-		<input type="button" value="Delete" onClick="javascript:deleteNotification(${index});"/>
-	</div> 
+        <tags:button color="blue" type="button" value="Delete" size="small" icon="x" onclick="javascript:deleteNotification(${index});"/>
+    </div>
 </div>
 </chrome:minimizableBox>

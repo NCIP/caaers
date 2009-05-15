@@ -191,10 +191,12 @@
 					<form:hidden path="indexToDelete" />
 					<input type="hidden" name="hideErrors"  value="false"/>
 					<input type="hidden" name="_action" value=""/>
-					
-				  </jsp:attribute>
+
+                      <br>
+                      <tags:listEditorAddButton divisionClass="nf-section" label="Add Notification" />
+                  </jsp:attribute>
 				  <jsp:attribute name="localButtons"> 
-	  				<tags:listEditorAddButton divisionClass="nf-section" label="Add Notification" />   
+
 				  </jsp:attribute>
 				</tags:tabForm> 
   

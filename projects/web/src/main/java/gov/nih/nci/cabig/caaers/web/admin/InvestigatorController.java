@@ -57,8 +57,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
     }
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
@@ -73,8 +72,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors, final int page) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("authenticationMode", getAuthenticationMode());
         return refdata;

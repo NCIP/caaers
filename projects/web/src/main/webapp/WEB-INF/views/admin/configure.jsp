@@ -15,12 +15,10 @@
     </style>
 </head>
 <body>
-    <chrome:box title="Configure caAERS" autopad="true">
-    <p>
-    <tags:instructions code="configurecaares" />
-    </p>
-    <c:url value="/pages/admin/configure" var="action"/>
     <form:form action="${action}" cssClass="standard">
+        <chrome:box title="Configure caAERS" autopad="true">
+            <p><tags:instructions code="configurecaares" /></p>
+            <c:url value="/pages/admin/configure" var="action"/>
         <c:forEach items="${command.conf}" var="entry" varStatus="status">
             <div class="row">
                 <div class="label">
@@ -47,14 +45,11 @@
                 </div>
             </div>
         </c:forEach>
-        <div class="row submit">
-            <input type="submit" value="Save"/>
-        </div>
 
-        <c:if test="${param.updated}">
-            <p class="updated">Settings saved</p>
-        </c:if>
+        <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
+        </chrome:box>
+
+        <div class="row submit"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
     </form:form>
-    </chrome:box>
 </body>
 </html>

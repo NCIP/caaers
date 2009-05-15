@@ -108,9 +108,10 @@
              </table>
          </div>
 		<br>
+        <tags:listEditorAddButton divisionClass="ss-section" label="Add Study Site"/>
+        
     </jsp:attribute>
     <jsp:attribute name="localButtons"> 
-	  <tags:listEditorAddButton divisionClass="ss-section" label="Add Study Site"/>
 	</jsp:attribute>
 
 </tags:tabForm>

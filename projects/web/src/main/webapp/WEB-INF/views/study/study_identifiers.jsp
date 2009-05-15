@@ -191,12 +191,14 @@ margin:5px;
 			    </c:forEach>
              </table>
            	</chrome:division>
-    	
+
+<br/>
+<tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier"/>
+<tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier"/>
+<br/>
+        	
    </jsp:attribute>
    <jsp:attribute name="localButtons"> 
-	 <tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier" />   
-     <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" />
-     <br /> 
    </jsp:attribute>
 </tags:tabForm>
 </body>

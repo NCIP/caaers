@@ -71,14 +71,13 @@
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
 	</div>
-	
-		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
-		<input type="button" id="participant_button" value="Import Subject         "><br><br>
-<!--		<input type="button" id="routine_ae_report_button" value="Import Routine AEs         "><br><br>-->
-		<input type="button" id="investigator_button" value="Import Investigator         "><br><br>
-		<input type="button" id="research_staff_button" value="Import Research Staff         ">
-		<input type="hidden" id="routine_ae_report_button" value="Import Routine AEs         "><br><br>
-		
+
+        <tags:button id="study_button" type="button" value="Import Study / Protocol" size="small" color="blue" icon="add" /><br><br>
+        <tags:button id="participant_button" type="button" value="Import Subject" size="small" color="blue" icon="add" /><br><br>
+        <tags:button id="investigator_button" type="button" value="Import Investigator" size="small" color="blue" icon="add" /><br><br>
+        <tags:button id="research_staff_button" type="button" value="Import Research Staff" size="small" color="blue" icon="add" /><br><br>
+        <tags:button id="routine_ae_report_button" type="button" value="Import Routine AEs" size="small" color="blue" icon="add" /><br><br>
+            		
 		 <tags:errors path="*"/>
     	 
 		<div style="display: none;position:relative;top:-30px; left:300px;width:300px;;" id = "study">

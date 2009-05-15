@@ -124,7 +124,7 @@
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
             <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-            <input type="button" id="study-clear" value="Clear"/>
+            <tags:button id="study-clear" type="button" value="Clear" color="blue" icon="x" size="small"/>
             <tags:indicator id="study-indicator"/>
             <tags:errors path="study"/>
             <div id="study-choices" class="autocomplete"></div>
@@ -136,7 +136,7 @@
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
             <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
-            <input type="button" id="participant-clear" value="Clear"/>
+            <tags:button id="participant-clear" type="button" value="Clear" color="blue" icon="x" size="small"/>
             <tags:indicator id="participant-indicator"/>
             <div id="participant-choices" class="autocomplete"></div>
             <tags:errors path="participant"/>

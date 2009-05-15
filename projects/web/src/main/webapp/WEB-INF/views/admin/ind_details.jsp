@@ -54,8 +54,8 @@
          </div>
   <br />
   <div class="content">
-    <chrome:box title="Investigational New Drug Details">
 	<form:form>
+        <chrome:box title="Investigational New Drug Details">
 		<chrome:division id="single-fields">
 			<p>
              <tags:instructions code="inddetails" />
@@ -67,19 +67,19 @@
                     <tags:renderRow field="${field}"/>
              </c:forEach>
 			</div>
-			<div class="content buttons autoclear">
-			  <div class="flow-buttons">
-			   <span class="next">
-			  	<!--  reset and save buttons -->
-			  	<input type="reset" value="Reset" />
-			  	<input type="submit" value="Save" />
-			   </span>	
-			  </div>
-			</div>
 		</chrome:division>
+    </chrome:box>
+        <div class="content buttons autoclear">
+          <div class="flow-buttons">
+           <span class="next">
+              <!--  reset and save buttons -->
+               <tags:button type="submit" value="Save" color="green" icon="save" />
+               <tags:button type="reset" value="Reset" color="blue" icon="x" />
+           </span>
+          </div>
+        </div>
 	</form:form>
-  </chrome:box>
-  
+
   </div>
   
   </div>

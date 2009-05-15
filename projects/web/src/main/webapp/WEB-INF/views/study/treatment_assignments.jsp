@@ -52,11 +52,13 @@
 		  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" sectionClass="si-section" index="${status.index}" identifier="${command.study.treatmentAssignments[status.index]}" />
 		</c:forEach>	
 		    <span id="identifierbookmark"></span>
+        <br>
+        <tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />
+        
     </jsp:attribute>
 	<jsp:attribute name="localButtons"> 
 	   <chrome:division title="">          	
-	   	<tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />   
-       </chrome:division>                                                                                                                                                                                                                                                             
+       </chrome:division>
 	</jsp:attribute>
 	
 </tags:tabForm>

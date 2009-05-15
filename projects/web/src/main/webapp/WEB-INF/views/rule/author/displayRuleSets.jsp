@@ -57,8 +57,8 @@
 		<jsp:attribute name="singleFields">
 
 		<div class="local-buttons">
-			<input type="button" id="createRuleSet" value="Create Rule Set" align="right"/>
-		</div>	
+            <tags:button id="createRuleSet" color="blue" type="button" value="Create Rule Set" size="small" icon="add"/>
+        </div>
             <tags:errors path="*"/>
             
 			<c:choose>
