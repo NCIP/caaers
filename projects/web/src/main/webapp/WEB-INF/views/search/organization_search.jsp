@@ -75,8 +75,8 @@ function buildTable(form) {
 
 	<div class="endpanes" />
 	<div class="row" style="float:right;">
-	<input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
-	<tags:indicator id="indicator" />
+        <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
+    <tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />
 
