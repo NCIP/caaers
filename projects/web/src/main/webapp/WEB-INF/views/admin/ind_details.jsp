@@ -73,7 +73,7 @@
           <div class="flow-buttons">
            <span class="next">
               <!--  reset and save buttons -->
-               <tags:button type="submit" value="Save" color="green" icon="save" />
+               <tags:button type="submit" value="Save" color="green" icon="save" />&nbsp;&nbsp;&nbsp;
                <tags:button type="reset" value="Reset" color="blue" icon="x" />
            </span>
           </div>

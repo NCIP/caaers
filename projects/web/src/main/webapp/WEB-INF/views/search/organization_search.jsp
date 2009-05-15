@@ -71,13 +71,14 @@ function buildTable(form) {
 		    	<div class="label"> NCI Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="nciInstituteCode"/></div>
 		    </div>
+
+           <div class="row" style="float:right;">
+                <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
+                <tags:indicator id="indicator" />
+           </div>
    </chrome:box>
 
 	<div class="endpanes" />
-	<div class="row" style="float:right;">
-        <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
-    <tags:indicator id="indicator" />
-	</div>
 	<div class="endpanes" />
 
 
