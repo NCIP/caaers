@@ -71,6 +71,12 @@
                     ValidationManager.setNormalState($(mode.basename + "-input"))
                 };
             }
+            $(mode.basename + "-input").onchange = function() {
+                if (!$(mode.basename + "-input").hasClassName('validField')) {
+                    ValidationManager.setInvalidState($(mode.basename + "-input"));
+                }
+            }
+            
         }
 
         function updateSelectedDisplay(mode) {

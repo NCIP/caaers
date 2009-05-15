@@ -212,6 +212,11 @@
                     ValidationManager.setInvalidState($(mode.basename + "-input"));
                 }
             }
+            $(mode.basename + "-input").onchange = function() {
+                if (!$(mode.basename + "-input").hasClassName('validField')) {
+                    ValidationManager.setInvalidState($(mode.basename + "-input"));
+                }
+            }
         }
         
         function updateSelectedDisplay(mode) {
@@ -232,6 +237,8 @@
             })
             Event.observe(mode.basename + "-clear", "click", function() {
                 Element.addClassName($(mode.basename + "-input"), "required");
+                Element.removeClassName($(mode.basename + "-input"), "validField");
+                Element.removeClassName($(mode.basename + "-input"), "valueOK");
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
                 $(mode.basename + "-input").value = ""
