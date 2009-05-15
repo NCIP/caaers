@@ -95,6 +95,8 @@
                 indicator: mode.basename + "-indicator"
             })
             Event.observe(mode.basename + "-clear", "click", function() {
+                Element.removeClassName($(mode.basename + "-input"), "valueOK");
+                Element.removeClassName($(mode.basename + "-input"), "falidField");
                 Element.addClassName($(mode.basename + "-input"), "required");
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
