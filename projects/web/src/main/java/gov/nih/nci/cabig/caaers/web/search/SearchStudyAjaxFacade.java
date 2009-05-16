@@ -174,15 +174,16 @@ public class SearchStudyAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
 
-        Column columnFirstName = model.getColumnInstance();
-        columnFirstName.setProperty("name");
-        columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.OrganizationLinkDisplayCell");
+        Column orgNameColumn = model.getColumnInstance();
+        orgNameColumn.setProperty("name");
+        orgNameColumn.setCell("gov.nih.nci.cabig.caaers.web.search.OrganizationLinkDisplayCell");
 
-        model.addColumn(columnFirstName);
+        model.addColumn(orgNameColumn);
 
-        Column columnLastName = model.getColumnInstance();
-        columnLastName.setProperty("nciInstituteCode");
-        model.addColumn(columnLastName);
+        Column orgNCICodeColumn = model.getColumnInstance();
+        orgNCICodeColumn.setTitle("NCI Identifier");
+        orgNCICodeColumn.setProperty("nciInstituteCode");
+        model.addColumn(orgNCICodeColumn);
 
         return model.assemble();
     }
