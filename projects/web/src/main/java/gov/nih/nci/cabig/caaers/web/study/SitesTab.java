@@ -28,7 +28,7 @@ class SitesTab extends StudyTab {
 
     private RepeatingFieldGroupFactory rfgFactory;
     private WorkflowConfigDao workflowConfigDao;
-    
+     
     public SitesTab() {
         super("Sites", "Sites", "study/study_sites");
     }
