@@ -1,0 +1,97 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria"
+    xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria"
+    elementFormDefault="unqualified">
+    
+     <xs:element name="Criteria">
+ 		<xs:complexType>
+            <xs:sequence>
+                <xs:element ref="participant"/>
+                <xs:element name="study" type="StudyType" />
+                <xs:element name="course" type="CourseType" />
+            </xs:sequence>
+        </xs:complexType>         	
+     </xs:element>
+	
+	<xs:element name="participant" type="ParticipantType"/>
+    <xs:complexType name="ParticipantType">
+                <xs:sequence>
+                    <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="organizationAssignedIdentifier" maxOccurs="unbounded"/>
+                                <xs:element ref="systemAssignedIdentifier"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+    </xs:complexType> 
+    <xs:complexType name="StudyType">
+                <xs:sequence>
+                  <xs:element name="TODO" type="xs:string"/>
+                </xs:sequence>
+    </xs:complexType> 
+    <xs:complexType name="CourseType">
+                <xs:sequence>
+                  <xs:element name="TODO" type="xs:string"/>
+                </xs:sequence>
+    </xs:complexType> 
+    
+        <xs:element name="organizationAssignedIdentifier" type="OrganizationAssignedIdentifierType"/>
+    <xs:complexType name="OrganizationAssignedIdentifierType">
+        <xs:complexContent>
+            <xs:extension base="IdentifierType">
+                <xs:sequence>
+                    <xs:element ref="organization"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
+    <xs:complexType name="SystemAssignedIdentifierType">
+        <xs:complexContent>
+            <xs:extension base="IdentifierType">
+                <xs:sequence>
+                    <xs:element name="systemName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType> 
+    
+    <xs:element name="organization" type="OrganizationType"/>
+    <xs:complexType name="OrganizationType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string" minOccurs="1"/>
+                    <xs:element name="nciInstituteCode" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+    </xs:complexType>     
+    
+    <xs:complexType name="IdentifierType">
+                <xs:sequence>
+                    <xs:element name="type" type="ParticipantIdentifierType"/>
+                    <xs:element name="value" type="CustomStringType"/>
+                    <xs:element name="primaryIndicator" type="xs:boolean" />
+                </xs:sequence>
+    </xs:complexType>    
+    <xs:simpleType name="ParticipantIdentifierType">
+        <xs:annotation>
+            <xs:documentation>
+                Medical Record Number - MRN, Cooperative Group Identifier - CC 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MRN"/>
+            <xs:enumeration value="CC"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>   
+    
+    <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>            	
+</xs:schema>
+    
