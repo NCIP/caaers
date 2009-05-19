@@ -27,8 +27,8 @@
         </xs:complexContent>
     </xs:complexType>  
     
-    <xs:element name="adverseEvent" type="adverseEvent"/>
-    <xs:complexType name="adverseEvent">
+    <xs:element name="adverseEvent" type="AdverseEventType"/>
+    <xs:complexType name="AdverseEventType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
@@ -37,8 +37,8 @@
                     <xs:element name="expected" type="xs:boolean" />
                     <xs:element name="attributionSummary" type="AttributionType" />
                     <xs:element name="comments" type="xs:string" />
-                    <xs:element name="startDate" type="CustomDateType" />
-                    <xs:element name="endDate" type="CustomDateType" />                    
+                    <xs:element name="startDate" type="xs:date" />
+                    <xs:element name="endDate" type="xs:date" />                    
                    	<xs:element name="lowLevelTerm" type="LowLevelTermType" />
                     <xs:element name="courseAgentAttributions">
                     	<xs:complexType>
