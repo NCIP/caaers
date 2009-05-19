@@ -96,7 +96,7 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>  
-                    <!--<xs:element name="adverseEventReportingPeriod" type="xs:string" />--> 
+                    <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType" />
                     <xs:element name="solicited" type="xs:boolean" />  
                     <xs:element name="serious" type="OutComeEnumType" /> 
                     <xs:element name="requiresReporting" type="xs:boolean" />  
@@ -110,7 +110,24 @@
             </xs:extension>
         </xs:complexContent>
    </xs:complexType>  
-   
+
+    <xs:complexType name="AdverseEventReportingPeriodType">
+                <xs:sequence>
+                  <xs:element name="description" type="xs:string"/>
+                  <xs:element name="cycleNumber" type="xs:integer"/>
+                  <xs:element name="startDate" type="CustomDateType"/>
+                  <xs:element name="endDate" type="CustomDateType"/>
+                  <xs:element name="epoch" type="EpochType"/>
+                </xs:sequence>
+    </xs:complexType> 
+
+    <xs:complexType name="EpochType">
+                <xs:sequence>
+                  <xs:element name="name" type="xs:string"/>
+                  <xs:element name="descriptionText" type="xs:string"/>
+                </xs:sequence>
+    </xs:complexType> 
+           
     <xs:complexType name="LowLevelTermType">
                 <xs:sequence>
                   <xs:element name="meddraCode" type="xs:string"/>
@@ -401,6 +418,14 @@
             <xs:enumeration value="DEFINITE"/>
         </xs:restriction>
     </xs:simpleType>  
+    <xs:simpleType name="EpochNameEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Baseline"/>
+            <xs:enumeration value="Pre-Treatment"/>
+            <xs:enumeration value="Treatment"/>
+            <xs:enumeration value="Post-treatment"/>
+        </xs:restriction>
+    </xs:simpleType>    
     <xs:simpleType name="CustomDateType">
         <xs:restriction base="xs:integer">
             <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
