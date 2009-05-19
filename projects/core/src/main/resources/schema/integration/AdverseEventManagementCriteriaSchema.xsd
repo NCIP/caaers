@@ -14,6 +14,8 @@
 	
 	<xs:element name="participant" type="ParticipantType"/>
     <xs:complexType name="ParticipantType">
+         <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
                         <xs:complexType>
@@ -24,9 +26,13 @@
                         </xs:complexType>
                     </xs:element>
                 </xs:sequence>
+           </xs:extension>
+         </xs:complexContent>  
     </xs:complexType> 
     <xs:element name="study" type="StudyType"/>
     <xs:complexType name="StudyType">
+         <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="identifiers" minOccurs="0">
                         <xs:complexType>
@@ -37,6 +43,8 @@
                         </xs:complexType>
                     </xs:element>
                 </xs:sequence>
+           </xs:extension>
+         </xs:complexContent>  
     </xs:complexType> 
     <xs:complexType name="CourseType">
                 <xs:sequence>
@@ -99,6 +107,17 @@
             <xs:minLength value="1"/>
             <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
-    </xs:simpleType>            	
+    </xs:simpleType> 
+        <xs:complexType name="DomainObject">
+        <xs:attribute name="id" type="xs:integer"/>
+    </xs:complexType>
+    
+    <xs:complexType name="MutableDomainObject">
+        <xs:complexContent>
+            <xs:extension base="DomainObject">
+                <xs:attribute name="version" type="xs:integer"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>            	
 </xs:schema>
     
