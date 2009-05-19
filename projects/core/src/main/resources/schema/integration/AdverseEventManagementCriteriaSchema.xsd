@@ -7,7 +7,7 @@
  		<xs:complexType>
             <xs:sequence>
                 <xs:element ref="participant"/>
-                <xs:element name="study" type="StudyType" />
+                <xs:element ref="study" />
                 <xs:element name="course" type="CourseType" />
             </xs:sequence>
         </xs:complexType>         	
@@ -26,9 +26,17 @@
                     </xs:element>
                 </xs:sequence>
     </xs:complexType> 
+    <xs:element name="study" type="StudyType"/>
     <xs:complexType name="StudyType">
                 <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
+                    <xs:element name="identifiers" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="organizationAssignedIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+                                <xs:element ref="systemAssignedIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
                 </xs:sequence>
     </xs:complexType> 
     <xs:complexType name="CourseType">
