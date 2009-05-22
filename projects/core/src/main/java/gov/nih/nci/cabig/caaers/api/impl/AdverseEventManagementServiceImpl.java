@@ -30,8 +30,6 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
 import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.Criteria;
 import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ImportAdverseEvents;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ParticipantType;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.StudyType;
 
 import java.util.ArrayList;
 import java.util.Date;
