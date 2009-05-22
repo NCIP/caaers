@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns2:Criteria xmlns:ns2="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria">
+	<participantIdentifier>008</participantIdentifier>
+	<studyIdentifier>009</studyIdentifier>
+	<course>
+		<startDateOfFirstCourse>2009-03-29</startDateOfFirstCourse>
+		<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
+		<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+		<treatmentType>Treatment</treatmentType>
+		<cycleNumber>1</cycleNumber>
+		<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+	</course>	
+</ns2:Criteria>

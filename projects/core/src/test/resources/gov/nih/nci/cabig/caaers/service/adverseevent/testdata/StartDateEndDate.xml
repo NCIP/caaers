@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria">
+	<ae:adverseEvents xmlns:ae="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+		<ae:adverseEvent>
+			<grade>3</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<startDate>2005-07-29</startDate>
+			<endDate>2005-03-29</endDate>		
+			<adverseEventCtcTerm>
+				<ctep-term>Burn</ctep-term>
+			</adverseEventCtcTerm>		
+		</ae:adverseEvent>
+	</ae:adverseEvents>
+	<ns1:criteria>
+		<participantIdentifier>008</participantIdentifier>
+		<studyIdentifier>009</studyIdentifier>
+		<course>
+			<startDateOfFirstCourse>2009-03-29</startDateOfFirstCourse>
+			<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
+			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+			<treatmentType>Treatment</treatmentType>
+			<cycleNumber>1</cycleNumber>
+			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+		</course>	
+	</ns1:criteria>
+</ns1:ImportAdverseEvents>
