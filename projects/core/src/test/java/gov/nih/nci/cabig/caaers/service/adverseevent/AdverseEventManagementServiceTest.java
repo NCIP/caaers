@@ -79,7 +79,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 
 		ImportAdverseEvents importAdverseEvents = (ImportAdverseEvents)unmarshaller.unmarshal(getFile(xmlFile));
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(importAdverseEvents);
-		assertEquals("TreatmentType not valid - TreatmentX",resp.getResponse().getMessage().get(0));
+		assertEquals("TreatmentType is not valid - TreatmentX",resp.getResponse().getMessage().get(0));
 	}
 	
 	public void testInvalidCourseDates() throws Exception{
