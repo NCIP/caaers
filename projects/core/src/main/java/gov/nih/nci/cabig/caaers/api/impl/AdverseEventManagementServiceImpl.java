@@ -157,7 +157,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 					return caaersServiceResponse;
 				}
 			}
-			ValidationErrors errors = fireRules(aeReport);
+			ValidationErrors errors = fireRules(aeReport,"gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
 			
 			if (errors.getErrorCount() > 0) {
 				for (ValidationError error:errors.getErrors()) {
@@ -223,7 +223,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		    		}
 		    	}
 		    	if (epochToSave == null) {
-		    		throw new CaaersSystemException("TreatmentType not valid - " + criteria.getCourse().getTreatmentType());
+		    		throw new CaaersSystemException("TreatmentType is not valid - " + criteria.getCourse().getTreatmentType());
 		    	} else {
 		    		adverseEventReportingPeriod.setEpoch(epochToSave);
 		    	}
@@ -332,7 +332,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
         }
         return adverseEvent;
  	}
-	
+/*	
 	private Study processStudyCriteria(StudyType xmlStudy) throws CaaersSystemException{
 		logger.info("Entering processStudyCriteria() in AdverseEventManagementServiceImpl");		
 		
@@ -356,7 +356,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
          	throw new CaaersSystemException("Participant Criteria to ParticipantDomain Conversion Failed ", caEX);
         }
         return participant;
- 	}
+ 	}*/
 	public CaaersServiceResponse deleteAdverseEvent(ImportAdverseEvents importAdverseEvents) {
 		// TODO Auto-generated method stub
 		return null;
@@ -399,31 +399,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 
 		return dbStudy;
 	}
-	/*
-	private Participant fetchParticipant(Participant participant){
-		Participant dbParticipant = null;
-		for(Identifier identifier : participant.getIdentifiers()){
-			dbParticipant = participantDao.getParticipantDesignByIdentifier(identifier);
-			if(dbParticipant != null){
-				break;
-			}
-			participantDao.evict(dbParticipant);
-		}
-		return dbParticipant;
-	}	
-	
-	private Study fetchStudy(Study importedStudy){
-		Study dbStudy = null;
-		for (Identifier identifier : importedStudy.getIdentifiers()) {
-            dbStudy = studyDao.getStudyDesignByIdentifier(identifier);
-            if(dbStudy != null){
-            	break;
-            }
-            studyDao.evict(dbStudy);
-        }
-		return dbStudy;
-	}
-	*/
+
 	
 	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
 		this.adverseEventDao = adverseEventDao;
@@ -453,7 +429,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 			StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
 		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
 	}
-	private ValidationErrors fireRules(ExpeditedAdverseEventReport aeReport  ){
+	private ValidationErrors fireRules(ExpeditedAdverseEventReport aeReport  , String bindUri){
 
         List<Object> input = new ArrayList<Object>();
         input.add(aeReport);
@@ -461,7 +437,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
         input.add(errors);
         
         
-        List<Object> output = executionService.fireRules("gov.nih.nci.cabig.caaers.rules.reporting_basics_section", input);
+        List<Object> output = executionService.fireRules(bindUri, input);
         errors = retrieveValidationErrors(output);
         return errors;
 	}
