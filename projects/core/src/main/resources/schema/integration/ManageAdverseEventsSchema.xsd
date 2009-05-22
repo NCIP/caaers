@@ -8,7 +8,7 @@
         schemaLocation="AdverseEventSchema.xsd"/>    
     
     
-    <xs:element name="root">
+    <xs:element name="ImportAdverseEvents">
         <xs:annotation>
             <xs:documentation> The top level (typically root) element. Allows the definition of
                 default values for all nested bean definitions. </xs:documentation>
