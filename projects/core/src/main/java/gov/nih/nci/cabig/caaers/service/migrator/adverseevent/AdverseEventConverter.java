@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -9,7 +8,6 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.LowLevelTermType;
@@ -35,10 +33,29 @@ public class AdverseEventConverter {
 			if(adverseEventDto.getEndDate() != null){
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
-		//	populateLowLevelTerm(adverseEventDto,adverseEvent);
-			
-			 
+		//	populateLowLevelTerm(adverseEventDto,adverseEvent); 
 			populateCtcTerm(adverseEventDto,adverseEvent);
+			if (adverseEventDto.isSolicited() != null){
+				adverseEvent.setSolicited(adverseEventDto.isSolicited());
+			}			
+			//serious
+			if (adverseEventDto.isRequiresReporting() != null) {
+				adverseEvent.setRequiresReporting(adverseEventDto.isRequiresReporting());
+			}
+			if (adverseEventDto.getEventLocation() != null) { 
+				adverseEvent.setEventLocation(adverseEventDto.getEventLocation());
+			}
+			
+			if(adverseEventDto.getGradedDate() != null){
+				adverseEvent.setGradedDate(adverseEventDto.getGradedDate().toGregorianCalendar().getTime());
+			}
+			if (adverseEventDto.getSignature() != null) {
+				adverseEvent.setSignature(adverseEventDto.getSignature());
+			}			
+			if (adverseEventDto.isReported() != null) {
+				adverseEvent.setReported(adverseEventDto.isReported());
+			}
+			
 		}catch(Exception e){
 			throw new CaaersSystemException(e);
 		}
