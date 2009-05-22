@@ -32,7 +32,7 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="grade" type="GradeType" />
+                    <xs:element name="grade" type="GradeType" minOccurs="1"/>
                     <xs:element name="hospitalization" type="HospitalizationType" minOccurs="0"/>
                     <xs:element name="expected" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="attributionSummary" type="AttributionType" minOccurs="0"/>
@@ -40,7 +40,7 @@
                     <xs:element name="startDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="endDate" type="xs:date" minOccurs="0"/>                    
                    	<xs:element name="lowLevelTerm" type="LowLevelTermType" minOccurs="0"/>
-                   	<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType"/>
+                   	<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1"/>
                    	
                     <xs:element name="courseAgentAttributions" minOccurs="0">
                     	<xs:complexType>
@@ -98,21 +98,21 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>  
-                    <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType" minOccurs="0"/>
+                   <!-- <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType" minOccurs="0"/>-->
                     <xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
                     <xs:element name="serious" type="OutComeEnumType" minOccurs="0"/> 
                     <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  
-                    <xs:element name="displayExpected" type="xs:string" minOccurs="0"/>
+                    <!--<xs:element name="displayExpected" type="xs:string" minOccurs="0"/>-->
                     <!--<xs:element name="eventApproximateTime" type="xs:boolean" />-->
                     <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
-                    <xs:element name="gradedDate" type="CustomDateType" minOccurs="0"/>
+                    <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="signature" type="xs:string" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	                                                                                                                            
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
    </xs:complexType>  
-
+<!--
     <xs:complexType name="AdverseEventReportingPeriodType">
                 <xs:sequence>
                   <xs:element name="description" type="xs:string"/>
@@ -121,11 +121,11 @@
                   <xs:element name="endDate" type="CustomDateType"/>
                   <xs:element name="epoch" type="EpochType"/>
                 </xs:sequence>
-    </xs:complexType> 
+    </xs:complexType> -->
 
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
-                  <xs:element name="ctep-term" type="xs:string"/>
+                  <xs:element name="ctep-term" type="CustomStringType"/>
                   <!--
                   <xs:element name="ctep-code" type="xs:string"/>
                   <xs:element name="ctc-version" type="CtcVersionEnum"/>-->
@@ -447,5 +447,11 @@
             <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
             <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
-    </xs:simpleType>      
+    </xs:simpleType>   
+    <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+           <xs:minLength value="1"/>
+           <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>   
 </xs:schema>

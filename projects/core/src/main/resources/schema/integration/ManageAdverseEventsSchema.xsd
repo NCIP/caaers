@@ -24,8 +24,8 @@
 
  	<xs:complexType name="Criteria">
         <xs:sequence>
-        	<xs:element name="participantIdentifier" type="xs:string" minOccurs="1"/>
-        	<xs:element name="studyIdentifier" type="xs:string" minOccurs="1"/>
+        	<xs:element name="participantIdentifier" type="CustomStringType" minOccurs="1"/>
+        	<xs:element name="studyIdentifier" type="CustomStringType" minOccurs="1"/>
         	<xs:element name="course" type="CourseType" minOccurs="1"/>
         </xs:sequence>
     </xs:complexType>         	
@@ -36,22 +36,28 @@
                     <xs:element name="startDateOfFirstCourse" type="xs:date" minOccurs="1"/>
                     <xs:element name="startDateOfThisCourse" type="xs:date" minOccurs="1"/>
                     <xs:element name="endDateOfThisCourse" type="xs:date"/>
-                    <xs:element name="treatmentType" type="xs:string" minOccurs="1"/>
+                    <xs:element name="treatmentType" type="CustomStringType" minOccurs="1"/>
                     <xs:element name="cycleNumber" type="xs:integer"/>
                     <xs:choice>
 	                    <xs:element name="treatmentAssignment" type="TreatmentAssignmentType" minOccurs="1"/>
-	                    <xs:element name="otherTreatmentAssignmentDescription" type="xs:string" minOccurs="1"/>
+	                    <xs:element name="otherTreatmentAssignmentDescription" type="CustomStringType" minOccurs="1"/>
                     </xs:choice>
                 </xs:sequence> 
     </xs:complexType>
     <xs:complexType name="TreatmentAssignmentType">
                 <xs:sequence>
-                    <xs:element name="code" type="xs:string" minOccurs="1"/>
+                    <xs:element name="code" type="CustomStringType" minOccurs="1"/>
                     <xs:element name="doseLevelOrder" type="xs:string"/>
                     <xs:element name="description" type="xs:string"/>
                     <xs:element name="comments" type="xs:string"/>
                 </xs:sequence> 
     </xs:complexType> 
+    <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+           <xs:minLength value="1"/>
+           <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>
     <!--   
     <xs:simpleType name="EpochType">
         <xs:restriction base="xs:string">
