@@ -1,17 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ParticipantType.Identifiers;
-
-import java.util.List;
 
 public class ParticipantCriteriaConverter {
+	/*
 	public void convertParticipantDtoToParticipantDomain(gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ParticipantType participantDto, Participant participant) throws CaaersSystemException{
 		if(participant == null){
 			participant = new Participant();
@@ -53,6 +44,6 @@ public class ParticipantCriteriaConverter {
 			}
 		}
 		
-	}
+	}*/
 
 }

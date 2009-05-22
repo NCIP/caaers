@@ -1,18 +1,9 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.OrganizationAssignedIdentifierType;
-
-
-import java.util.List;
 
 
 public class StudyCriteriaConverter {
+	/*
 	public void convertStudyDtoToStudyDomain(gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.StudyType studyDto, Study study) throws CaaersSystemException{
 		
 		if(study == null){
@@ -51,5 +42,6 @@ public class StudyCriteriaConverter {
 			}
 		}
 		
-	}
+		
+	}*/
 }
