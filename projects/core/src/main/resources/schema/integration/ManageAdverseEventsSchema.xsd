@@ -1,17 +1,67 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria"
     xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria"
+    xmlns:ae="http://webservice.caaers.cabig.nci.nih.gov/adverseevent"
     elementFormDefault="unqualified">
     
-     <xs:element name="Criteria">
- 		<xs:complexType>
+    <xs:import namespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent"
+        schemaLocation="AdverseEventSchema.xsd"/>    
+    
+    
+    <xs:element name="root">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
             <xs:sequence>
-                <xs:element ref="participant"/>
-                <xs:element ref="study" />
+                <xs:element ref="ae:adverseEvents"/>
+                <xs:element ref="criteria"/>
             </xs:sequence>
-        </xs:complexType>         	
-     </xs:element>
-	
+        </xs:complexType>        
+    </xs:element>
+     <xs:element name="criteria" type="Criteria"/>   
+
+ 	<xs:complexType name="Criteria">
+        <xs:sequence>
+        	<xs:element name="participantIdentifier" type="xs:string" minOccurs="1"/>
+        	<xs:element name="studyIdentifier" type="xs:string" minOccurs="1"/>
+        	<xs:element name="course" type="CourseType" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>         	
+
+
+    <xs:complexType name="CourseType">
+                <xs:sequence>
+                    <xs:element name="startDateOfFirstCourse" type="xs:date" minOccurs="1"/>
+                    <xs:element name="startDateOfThisCourse" type="xs:date" minOccurs="1"/>
+                    <xs:element name="endDateOfThisCourse" type="xs:date"/>
+                    <xs:element name="treatmentType" type="xs:string" minOccurs="1"/>
+                    <xs:element name="cycleNumber" type="xs:integer"/>
+                    <xs:choice>
+	                    <xs:element name="treatmentAssignment" type="TreatmentAssignmentType" minOccurs="1"/>
+	                    <xs:element name="otherTreatmentAssignmentDescription" type="xs:string" minOccurs="1"/>
+                    </xs:choice>
+                </xs:sequence> 
+    </xs:complexType>
+    <xs:complexType name="TreatmentAssignmentType">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:string" minOccurs="1"/>
+                    <xs:element name="doseLevelOrder" type="xs:string"/>
+                    <xs:element name="description" type="xs:string"/>
+                    <xs:element name="comments" type="xs:string"/>
+                </xs:sequence> 
+    </xs:complexType> 
+    <!--   
+    <xs:simpleType name="EpochType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Baseline"/>
+            <xs:enumeration value="Pre-Treatment"/>
+            <xs:enumeration value="Treatment"/>
+            <xs:enumeration value="Post-treatment"/>
+        </xs:restriction>
+    </xs:simpleType>
+
 	<xs:element name="participant" type="ParticipantType"/>
     <xs:complexType name="ParticipantType">
          <xs:complexContent>
@@ -118,6 +168,6 @@
                 <xs:attribute name="version" type="xs:integer"/>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>            	
+    </xs:complexType>   -->         	
 </xs:schema>
     
