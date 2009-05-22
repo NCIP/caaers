@@ -41,6 +41,7 @@
                     <xs:element name="endDate" type="xs:date" minOccurs="0"/>                    
                    	<xs:element name="lowLevelTerm" type="LowLevelTermType" minOccurs="0"/>
                    	<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType"/>
+                   	
                     <xs:element name="courseAgentAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
@@ -48,49 +49,49 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
-                    <xs:element name="concomitantMedicationAttributions">
+                    <xs:element name="concomitantMedicationAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="concomitantMedicationAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>  
-                    <xs:element name="otherCauseAttributions">
+                    <xs:element name="otherCauseAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="otherCauseAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>       
-                    <xs:element name="diseaseAttributions">
+                    <xs:element name="diseaseAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="diseaseAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>   
-                    <xs:element name="surgeryAttributions">
+                    <xs:element name="surgeryAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="surgeryAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>  
-                    <xs:element name="radiationAttributions">
+                    <xs:element name="radiationAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="radiationAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element> 
-                    <xs:element name="deviceAttributions">
+                    <xs:element name="deviceAttributions" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="deviceAttribution" maxOccurs="unbounded" minOccurs="0"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>  
-                    <xs:element name="outcomes">
+                    <xs:element name="outcomes" minOccurs="0">
                     	<xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="outcome" maxOccurs="unbounded" minOccurs="0"/>
