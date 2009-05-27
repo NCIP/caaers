@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -15,7 +16,8 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.LowLevelTermType;
 public class AdverseEventConverter {
 	private CtcTermDao ctcTermDao = null;
 
-	public void convertAdverseEventDtoToAdverseEventDomain(gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType adverseEventDto, AdverseEvent adverseEvent) throws CaaersSystemException{
+	public void convertAdverseEventDtoToAdverseEventDomain(gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType adverseEventDto, 
+			AdverseEvent adverseEvent, String operation) throws CaaersSystemException{
 		if(adverseEvent == null){
 			adverseEvent = new AdverseEvent();
 		}
@@ -34,7 +36,9 @@ public class AdverseEventConverter {
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
 		//	populateLowLevelTerm(adverseEventDto,adverseEvent); 
-			populateCtcTerm(adverseEventDto,adverseEvent);
+			if (operation.equals(AdverseEventManagementService.CREATE)) {
+				populateCtcTerm(adverseEventDto,adverseEvent);
+			}
 			if (adverseEventDto.isSolicited() != null){
 				adverseEvent.setSolicited(adverseEventDto.isSolicited());
 			}			
@@ -49,9 +53,7 @@ public class AdverseEventConverter {
 			if(adverseEventDto.getGradedDate() != null){
 				adverseEvent.setGradedDate(adverseEventDto.getGradedDate().toGregorianCalendar().getTime());
 			}
-			if (adverseEventDto.getSignature() != null) {
-				adverseEvent.setSignature(adverseEventDto.getSignature());
-			}			
+						
 			if (adverseEventDto.isReported() != null) {
 				adverseEvent.setReported(adverseEventDto.isReported());
 			}
@@ -61,9 +63,7 @@ public class AdverseEventConverter {
 		}
 	}
 	
-	private void populateCourseAgentAttribution(AdverseEventType adverseEventDto, AdverseEvent adverseEvent) {
-		
-	}
+
 	private void populateGrade(AdverseEventType adverseEventDto, AdverseEvent adverseEvent){		
 		Grade grade = Grade.getByCode(adverseEventDto.getGrade());
 		adverseEvent.setGrade(grade);		
