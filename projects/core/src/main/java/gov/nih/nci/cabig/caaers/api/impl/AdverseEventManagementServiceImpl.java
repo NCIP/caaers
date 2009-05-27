@@ -4,11 +4,13 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -49,6 +51,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	protected StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	protected TreatmentAssignmentDao treatmentAssignmentDao;
+	protected CtcTermDao ctcTermDao;
 	
 	private ParticipantCriteriaConverter participantCriteriaConverter;
 	private StudyCriteriaConverter studyCriteriaConverter;
@@ -56,7 +59,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
 
-	public CaaersServiceResponse createAdverseEvent(ImportAdverseEvents importAdverseEvents) {
+	private CaaersServiceResponse saveAdverseEvent(ImportAdverseEvents importAdverseEvents,String operation) {
 
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 		Response adverseEventResponse = new Response();
@@ -133,7 +136,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 			AdverseEventReportingPeriod adverseEventReportingPeriod = null;
 			if (criteria.getCourse() != null) {
 				try {
-					adverseEventReportingPeriod = getReportingPeriod(criteria, assignment);
+					adverseEventReportingPeriod = getReportingPeriod(criteria, assignment, operation);
 				} catch (CaaersSystemException e) {
 		    		messages.add(e.getMessage());
 		    		adverseEventResponse.setMessage(messages);
@@ -146,7 +149,8 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 			ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 			for (AdverseEventType adverseEventType:xmlAdverseEvents.getAdverseEvent()) {
 				try {
-					AdverseEvent adverseEvent = processAdverseEvent(adverseEventType,adverseEventReportingPeriod);
+					AdverseEvent adverseEvent = processAdverseEvent(adverseEventType,adverseEventReportingPeriod,operation);
+
 					aeReport.addAdverseEvent(adverseEvent);
 				} catch (CaaersSystemException e) {
 					messages.add(e.getMessage());
@@ -163,8 +167,35 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 				}
 			} else {
 				//SAVE AEs
+				
 				for (AdverseEvent ae:aeReport.getAdverseEvents()){
-					adverseEventDao.save(ae);
+					adverseEventReportingPeriod.addAdverseEvent(ae);
+				}
+				
+				//if(operation.equals(DELETE)) {						
+					//dbAdverseEvents.remove(ae);	
+					//adverseEventDao.
+				//}	else {	
+				if (operation.equals(CREATE) || operation.equals(UPDATE)) {
+					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
+				}
+				List<AdverseEvent> dbAdverseEvents = adverseEventReportingPeriod.getAdverseEvents();
+
+				if(operation.equals(DELETE)) {	
+					for (AdverseEvent ae:aeReport.getAdverseEvents()){
+						for (int i=0;i<adverseEventReportingPeriod.getAdverseEvents().size();i++) {
+							AdverseEvent dbAE = adverseEventReportingPeriod.getAdverseEvents().get(i);
+							if (dbAE.getId() == ae.getId()) {
+								dbAdverseEvents.remove(i);
+							}
+						}
+					}					
+					adverseEventReportingPeriod.setAdverseEvents(dbAdverseEvents);
+					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);		 
+
+				}
+//				 adding messages for tests
+				for (AdverseEvent ae:adverseEventReportingPeriod.getAdverseEvents()){
 					messages.add(ae.getId()+"");
 				}
 				
@@ -177,24 +208,44 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		return caaersServiceResponse;
 	}
 	
-	private AdverseEventReportingPeriod getReportingPeriod(Criteria criteria,StudyParticipantAssignment assignment) throws CaaersSystemException {
+	private AdverseEventReportingPeriod getReportingPeriod(Criteria criteria,StudyParticipantAssignment assignment,String operation) throws CaaersSystemException {
 		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
+
 		if (criteria.getCourse() != null) {
 	        Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
-	        Date xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
-	        
+	        Date xmlEndDate = null;
+	        if (criteria.getCourse().getEndDateOfThisCourse() != null) {
+	        	xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
+	        }
 	        
 			List<AdverseEventReportingPeriod> rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
 			for (AdverseEventReportingPeriod aerp : rPeriodList) {
 	        	Date sDate = aerp.getStartDate();
 	            Date eDate = aerp.getEndDate();
-	            if (xmlEndDate.equals(eDate) && xmlStartDate.equals(sDate)) {
-	            	adverseEventReportingPeriod = aerp;
-	            	break;
+	            if (xmlStartDate.equals(sDate) ) {
+	            	if (xmlEndDate != null) {
+	            		if (xmlEndDate.equals(eDate)) {
+	            			adverseEventReportingPeriod = aerp;
+	            			break;
+	            		}
+	            	} else {
+	            		if (eDate == null) {
+	            			adverseEventReportingPeriod = aerp;
+	            			break;	            			
+	            		}
+	            	}
 	            }
 			}
+			
+			// incase of update , the reporting period shud be existing in database . 
+			
 			Study study = assignment.getStudySite().getStudy();
 			if (adverseEventReportingPeriod == null) {
+				
+				if (operation.equals(UPDATE) || operation.equals(DELETE)) {
+					throw new CaaersSystemException("Course/ Cycle doesn't exist .." );
+				}
+				
 				//create one 
 				adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		    	//reportingPeriod.setDescription(criteria.getCourse().getd);
@@ -238,98 +289,138 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		return adverseEventReportingPeriod;
 	}
 
-    private List<String> validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate) {
-
-        Date startDate = rPeriod.getStartDate();
-        Date endDate = rPeriod.getEndDate();
-        List<String> errors = new ArrayList<String>();
-
-        // Check if the start date is equal to or before the end date.
-        if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
-            errors.add("Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
-        }
-
-        if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
-            errors.add("Course End date cannot be earlier than Start date");
-        }
-
-        // Check if the start date is equal to end date.
-        // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
-        if (!rPeriod.getEpoch().getName().equals("Baseline")) {
-            if (endDate != null && startDate.equals(endDate)) {
-                errors.add("For Non-Baseline treatment type Start date cannot be equal to End date");
-            }
-
-        }
-
-        // Check if the start date - end date for the reporting Period overlaps with the
-        // date range of an existing Reporting Period.
-        for (AdverseEventReportingPeriod aerp : rPeriodList) {
-        	Date sDate = aerp.getStartDate();
-            Date eDate = aerp.getEndDate();
-            
-            if (!aerp.getId().equals(rPeriod.getId())) {
-                
-                //we should make sure that no existing Reporting Period, start date falls, in-between these dates.
-                if(startDate != null && endDate != null){
-                	if(DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0){
-                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
-                	}
-                }else if(startDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
-                }
-                
-                //newly created reporting period start date, should not fall within any other existing reporting periods
-                if(sDate != null && eDate != null){
-                	if(DateUtils.compareDate(sDate, startDate) <=0 && DateUtils.compareDate(startDate, eDate) < 0){
-                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
-                	}
-                }else if(sDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                	errors.add("Course/cycle cannot overlap with an existing course/cycle.");
-            		break;
-                }
-            }
-            
-            // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
-            if (rPeriod.getEpoch().getName().equals("Baseline")) {
-                if (!aerp.getEpoch().getName().equals("Baseline")) {
-                    if (DateUtils.compareDate(sDate, startDate) < 0) {
-                        errors.add("Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
-                        return errors;
-                    }
-                }
-            } else {
-                if (aerp.getEpoch().getName().equals("Baseline")) {
-                    if (DateUtils.compareDate(startDate, sDate) < 0) {
-                        errors.add("Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
-                        return errors;
-                    }
-                }
-            }
-            
-        }
-        return errors;
-      
-    }
-
-    
-	private AdverseEvent processAdverseEvent(AdverseEventType xmlAdverseEvent,AdverseEventReportingPeriod adverseEventReportingPeriod) throws CaaersSystemException{
+ 
+	private AdverseEvent processAdverseEvent(AdverseEventType xmlAdverseEvent,
+					AdverseEventReportingPeriod adverseEventReportingPeriod, String operation) throws CaaersSystemException{
 		logger.info("Entering processAdverseEvent() in AdverseEventManagementServiceImpl");		
 		
-		AdverseEvent adverseEvent = new AdverseEvent();
-		adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+		AdverseEvent adverseEvent = null;
 		
-		try{
-			
-			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent);
+		//if update get the adverse event to update ..
+		List<AdverseEvent> dbAdverseEvents = getAdverseEventDao().getByAssignment(adverseEventReportingPeriod.getAssignment());
+		if (operation.equals(UPDATE) || operation.equals(DELETE)) {			
+			for (AdverseEvent dbAdverseEvent:dbAdverseEvents) {
+				if (adverseEventReportingPeriod.getStartDate().equals(dbAdverseEvent.getReportingPeriod().getStartDate())) {
+					if (adverseEventReportingPeriod.getEndDate() != null ) {
+						if (adverseEventReportingPeriod.getEndDate().equals(dbAdverseEvent.getReportingPeriod().getEndDate())) {
+							if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
+								AdverseEventCtcTerm aeCtcTerm = (AdverseEventCtcTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeCtcTerm.getCtcTerm().getTerm().equals(xmlAdverseEvent.getAdverseEventCtcTerm().getCtepTerm())) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}
+							}
+						}
+					} else {
+						if (dbAdverseEvent.getReportingPeriod().getEndDate() == null) {
+							if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
+								AdverseEventCtcTerm aeCtcTerm = (AdverseEventCtcTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeCtcTerm.getCtcTerm().getTerm().equals(xmlAdverseEvent.getAdverseEventCtcTerm().getCtepTerm())) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}
+							}							
+						}
+					}
+				}
+			}
+		} else if (operation.equals(CREATE)) {
+			adverseEvent = new AdverseEvent();
+			adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+		} 
+		if (adverseEvent == null) {
+			throw new CaaersSystemException("Unable to update Adverse Event , AE not found  ") ;
+		}
+		if (operation.equals(DELETE)) {
+			return adverseEvent;			
+		}
+		
+		try{			
+			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent, operation);
         }catch(CaaersSystemException caEX){
          	throw new CaaersSystemException(caEX);
         }
         return adverseEvent;
  	}
+	
+	   private List<String> validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate) {
+
+	        Date startDate = rPeriod.getStartDate();
+	        Date endDate = rPeriod.getEndDate();
+	        List<String> errors = new ArrayList<String>();
+
+	        // Check if the start date is equal to or before the end date.
+	        if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
+	            errors.add("Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
+	        }
+
+	        if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
+	            errors.add("Course End date cannot be earlier than Start date");
+	        }
+
+	        // Check if the start date is equal to end date.
+	        // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
+	        if (!rPeriod.getEpoch().getName().equals("Baseline")) {
+	            if (endDate != null && startDate.equals(endDate)) {
+	                errors.add("For Non-Baseline treatment type Start date cannot be equal to End date");
+	            }
+
+	        }
+
+	        // Check if the start date - end date for the reporting Period overlaps with the
+	        // date range of an existing Reporting Period.
+	        for (AdverseEventReportingPeriod aerp : rPeriodList) {
+	        	Date sDate = aerp.getStartDate();
+	            Date eDate = aerp.getEndDate();
+	            
+	            if (!aerp.getId().equals(rPeriod.getId())) {
+	                
+	                //we should make sure that no existing Reporting Period, start date falls, in-between these dates.
+	                if(startDate != null && endDate != null){
+	                	if(DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0){
+	                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
+	                		break;
+	                	}
+	                }else if(startDate != null && DateUtils.compareDate(sDate, startDate) == 0){
+	                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
+	                		break;
+	                }
+	                
+	                //newly created reporting period start date, should not fall within any other existing reporting periods
+	                if(sDate != null && eDate != null){
+	                	if(DateUtils.compareDate(sDate, startDate) <=0 && DateUtils.compareDate(startDate, eDate) < 0){
+	                		errors.add("Course/cycle cannot overlap with an existing course/cycle.");
+	                		break;
+	                	}
+	                }else if(sDate != null && DateUtils.compareDate(sDate, startDate) == 0){
+	                	errors.add("Course/cycle cannot overlap with an existing course/cycle.");
+	            		break;
+	                }
+	            }
+	            
+	            // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
+	            if (rPeriod.getEpoch().getName().equals("Baseline")) {
+	                if (!aerp.getEpoch().getName().equals("Baseline")) {
+	                    if (DateUtils.compareDate(sDate, startDate) < 0) {
+	                        errors.add("Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
+	                        return errors;
+	                    }
+	                }
+	            } else {
+	                if (aerp.getEpoch().getName().equals("Baseline")) {
+	                    if (DateUtils.compareDate(startDate, sDate) < 0) {
+	                        errors.add("Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
+	                        return errors;
+	                    }
+	                }
+	            }
+	            
+	        }
+	        return errors;
+	      
+	    }
+
+	    
 /*	
 	private Study processStudyCriteria(StudyType xmlStudy) throws CaaersSystemException{
 		logger.info("Entering processStudyCriteria() in AdverseEventManagementServiceImpl");		
@@ -357,12 +448,14 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
  	}*/
 	public CaaersServiceResponse deleteAdverseEvent(ImportAdverseEvents importAdverseEvents) {
 		// TODO Auto-generated method stub
-		return null;
+		return saveAdverseEvent(importAdverseEvents,DELETE);
 	}
 
 	public CaaersServiceResponse updateAdverseEvent(ImportAdverseEvents importAdverseEvents) {
-		// TODO Auto-generated method stub
-		return null;
+		return saveAdverseEvent(importAdverseEvents,UPDATE);
+	}
+	public CaaersServiceResponse createAdverseEvent(ImportAdverseEvents importAdverseEvents) {
+		return saveAdverseEvent(importAdverseEvents,CREATE);
 	}
 	private Participant fetchParticipant(String identifier){
 		Participant dbParticipant = null;
