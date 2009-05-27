@@ -217,7 +217,12 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		//}
 		return getHibernateTemplate().findByCriteria(criteria);	
 	}
-
+	
+	public List<AdverseEvent> getByAssignment(StudyParticipantAssignment assignment) { 
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.createCriteria("reportingPeriod").createCriteria("assignment").add(getAssignmentExample(assignment));
+		return getHibernateTemplate().findByCriteria(criteria);		
+	}
 	public List<AdverseEvent> getByStudyParticipant(Study study, Participant participant, AdverseEvent adverseEvent) {
 		
 		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);		
