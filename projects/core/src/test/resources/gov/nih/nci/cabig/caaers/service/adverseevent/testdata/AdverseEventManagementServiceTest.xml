@@ -74,7 +74,10 @@
         id="3002"
         category_id="301"
         term="Dry skin"
-        other_required="0"
+        ctep_term=""
+        select_ae=""
+        ctep_code="-18"
+        other_required="1"
         />    
 
      <epochs
