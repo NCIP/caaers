@@ -60,7 +60,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		assertEquals("'End date' must be greater than or equal to 'Start date' for adverse event",resp.getResponse().getMessage().get(0));
 	}
 
-	public void testSuccessAE() throws Exception{
+	public void testAECreateAndUpdate() throws Exception{
 		//String criteriaXmlFile = "AdverseeventCriteria.xml";
 		String xmlFile = "SucessAE.xml";;
 
@@ -71,6 +71,48 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("3",ae.getGrade().getCode()+"");
+		
+		//update AE ....
+		xmlFile = "SucessAEUpdate.xml";
+		importAdverseEvents = (ImportAdverseEvents)unmarshaller.unmarshal(getFile(xmlFile));
+		resp = adverseEventManagementService.updateAdverseEvent(importAdverseEvents);
+		ae = adverseEventDao.getById(Integer.parseInt(id));
+		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
+		assertEquals("YES",ae.getHospitalization().name());
+		assertEquals("4",ae.getGrade().getCode()+"");		
+	}
+
+	public void testAEDelete() throws Exception{
+		//String criteriaXmlFile = "AdverseeventCriteria.xml";
+		String xmlFile = "SucessAEUpdate.xml";
+		
+		ImportAdverseEvents importAdverseEvents = (ImportAdverseEvents)unmarshaller.unmarshal(getFile(xmlFile));
+		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse resp = adverseEventManagementService.createAdverseEvent(importAdverseEvents);
+		
+		String id = resp.getResponse().getMessage().get(0).toString();
+		AdverseEvent ae = adverseEventDao.getById(Integer.parseInt(id));
+		assertEquals("Burn",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
+		assertEquals("YES",ae.getHospitalization().name());
+		assertEquals("4",ae.getGrade().getCode()+"");
+
+		String id2 = resp.getResponse().getMessage().get(1).toString();
+		ae = adverseEventDao.getById(Integer.parseInt(id2));
+		assertEquals("Dry skin",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
+		assertEquals("YES",ae.getHospitalization().name());
+		assertEquals("3",ae.getGrade().getCode()+"");
+
+		xmlFile = "DeleteAE.xml";
+		importAdverseEvents = (ImportAdverseEvents)unmarshaller.unmarshal(getFile(xmlFile));
+		adverseEventManagementService.deleteAdverseEvent(importAdverseEvents);
+		
+		ae = adverseEventDao.getById(Integer.parseInt(id));
+		assertNull(ae);
+		ae = adverseEventDao.getById(Integer.parseInt(id2));
+		assertNotNull(ae);	
+		assertEquals("Dry skin",((AdverseEventCtcTerm)ae.getAdverseEventTerm()).getTerm().getTerm());
+		assertEquals("YES",ae.getHospitalization().name());
+		assertEquals("3",ae.getGrade().getCode()+"");
+		
 	}
 	
 	public void testInvalidTreatmentType() throws Exception{
