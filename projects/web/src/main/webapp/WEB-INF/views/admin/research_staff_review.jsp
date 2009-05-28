@@ -37,11 +37,12 @@ function submitPage(s){
 <chrome:flashMessage/>
 <chrome:box title="${researchStaff.lastName}, ${researchStaff.firstName}" >
      <chrome:division title="Research Staff Details">
-    	<div class="row">
-	     	<div class="label">Organization</div>
-	     	<div class="value">${researchStaff.organization.fullName}</div>
-	   	  </div>
+    	
     	<div class="leftpanel">
+    		<div class="row">
+	     		<div class="label">Organization</div>
+	     		<div class="value">${researchStaff.organization.fullName}</div>
+	   		</div>
     	  <div class="row">
 	            <div class="label">First name</div>
 	            <div class="value">${researchStaff.firstName}</div>
@@ -60,7 +61,10 @@ function submitPage(s){
 	        </div>
     	</div>
     	<div class="rightpanel">
-    	    
+    	   	<div class="row">
+	            <div class="label">Status</div>
+	            <div class="value">${researchStaff.statusCode eq 'ACT' ? 'Active' : 'Inactive' }</div>
+	        </div>
 	        <div class="row">
 	            <div class="label">Email address</div>
 	            <div class="value">${researchStaff.emailAddress}</div>
