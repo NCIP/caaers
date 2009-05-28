@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -18,31 +19,42 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.ParticipantCriteriaConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.StudyCriteriaConverter;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.Response;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.Criteria;
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ImportAdverseEvents;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.Criteria;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 
-public class AdverseEventManagementServiceImpl implements AdverseEventManagementService{
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.AdverseEventManagementService", serviceName="AdverseEventManagementService")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+public class AdverseEventManagementServiceImpl implements AdverseEventManagementService , ApplicationContextAware{
 	
 	protected BusinessRulesExecutionServiceImpl executionService;
 	protected AdverseEventDao adverseEventDao;
@@ -56,6 +68,9 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	private ParticipantCriteriaConverter participantCriteriaConverter;
 	private StudyCriteriaConverter studyCriteriaConverter;
 	private AdverseEventConverter adverseEventConverter;
+	private AdverseEventEvaluationService adverseEventEvaluationService;
+	private CaaersJavaMailSender caaersJavaMailSender;
+	private ApplicationContext applicationContext;
 	
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
 
@@ -119,6 +134,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 			}
 		}
 		StudyParticipantAssignment assignment = null;
+		
 		if (dbParticipant != null && dbStudy != null) {
 			// process adverse events ...
 			// check for assignment .
@@ -160,6 +176,26 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 				}
 			}
 			ValidationErrors errors = fireRules(aeReport,"gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
+			/* FIRE SAE RULES ..
+			Study initializedStudy = studyDao.initialize(dbStudy);
+			for (AdverseEvent ae:aeReport.getAdverseEvents()) {
+				try {
+					String reportDefinition = adverseEventEvaluationService.assesAdverseEvent(ae, initializedStudy);
+					messages.add(reportDefinition);
+				} catch (Exception e) {
+					messages.add("Error in firing SAE rules . "+e.getMessage());
+					adverseEventResponse.setMessage(messages);
+					caaersServiceResponse.setResponse(adverseEventResponse);
+					return caaersServiceResponse;
+				}
+			}
+			*/
+			try {
+				notifyStudyPersonnel(assignment);
+			} catch (Exception e) {
+				messages.add(e.getMessage());
+			}
+			
 			
 			if (errors.getErrorCount() > 0) {
 				for (ValidationError error:errors.getErrors()) {
@@ -197,6 +233,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 //				 adding messages for tests
 				for (AdverseEvent ae:adverseEventReportingPeriod.getAdverseEvents()){
 					messages.add(ae.getId()+"");
+				//	messages.add("Adverse Event Added Succyfully " + ae.getAdverseEventTerm().getTerm());
 				}
 				
 			}
@@ -207,7 +244,17 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		caaersServiceResponse.setResponse(adverseEventResponse);
 		return caaersServiceResponse;
 	}
-	
+	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws Exception {
+		List<String> emails = new ArrayList<String>();
+		List<StudyPersonnel> studyPersonnel = assignment.getStudySite().getStudyPersonnels();
+		for (StudyPersonnel sp:studyPersonnel) {
+			String email = sp.getResearchStaff().getEmailAddress();
+			emails.add(email);
+		}
+		String content = "report email test ... ";
+		caaersJavaMailSender.sendMail(emails.toArray(new String[0]), "Reporting required for exported Adverse Events", content,new String[0]);
+		
+	}
 	private AdverseEventReportingPeriod getReportingPeriod(Criteria criteria,StudyParticipantAssignment assignment,String operation) throws CaaersSystemException {
 		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
 
@@ -223,6 +270,13 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	        	Date sDate = aerp.getStartDate();
 	            Date eDate = aerp.getEndDate();
 	            if (xmlStartDate.equals(sDate) ) {
+		            if ((xmlEndDate != null && xmlEndDate == eDate) || (xmlEndDate == null && eDate == null)) {
+	            			adverseEventReportingPeriod = aerp;
+	            			break;
+	            	}
+	            }
+	            /*
+	            if (xmlStartDate.equals(sDate) ) {
 	            	if (xmlEndDate != null) {
 	            		if (xmlEndDate.equals(eDate)) {
 	            			adverseEventReportingPeriod = aerp;
@@ -234,7 +288,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	            			break;	            			
 	            		}
 	            	}
-	            }
+	            }*/
 			}
 			
 			// incase of update , the reporting period shud be existing in database . 
@@ -300,7 +354,27 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		List<AdverseEvent> dbAdverseEvents = getAdverseEventDao().getByAssignment(adverseEventReportingPeriod.getAssignment());
 		if (operation.equals(UPDATE) || operation.equals(DELETE)) {			
 			for (AdverseEvent dbAdverseEvent:dbAdverseEvents) {
-				if (adverseEventReportingPeriod.getStartDate().equals(dbAdverseEvent.getReportingPeriod().getStartDate())) {
+				if (adverseEventReportingPeriod.getStartDate() == dbAdverseEvent.getReportingPeriod().getStartDate()) {
+					
+					if ((adverseEventReportingPeriod.getEndDate() != null && adverseEventReportingPeriod.getEndDate() == dbAdverseEvent.getReportingPeriod().getEndDate())
+							|| (adverseEventReportingPeriod.getEndDate() == null && dbAdverseEvent.getReportingPeriod().getEndDate() == null) ) {
+							//ctc or meddra
+							if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
+								AdverseEventCtcTerm aeCtcTerm = (AdverseEventCtcTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeCtcTerm.getCtcTerm().getTerm().equals(xmlAdverseEvent.getAdverseEventCtcTerm().getCtepTerm())) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}
+							} else if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm) {
+								AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = (AdverseEventMeddraLowLevelTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraCode().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraCode()) &&
+										aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraTerm().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraTerm()) ) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}								
+							}					
+					}
+					/*
 					if (adverseEventReportingPeriod.getEndDate() != null ) {
 						if (adverseEventReportingPeriod.getEndDate().equals(dbAdverseEvent.getReportingPeriod().getEndDate())) {
 							if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
@@ -309,6 +383,13 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 									adverseEvent = dbAdverseEvent;
 									break;
 								}
+							} else if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm) {
+								AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = (AdverseEventMeddraLowLevelTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraCode().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraCode()) &&
+										aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraTerm().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraTerm()) ) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}								
 							}
 						}
 					} else {
@@ -319,9 +400,16 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 									adverseEvent = dbAdverseEvent;
 									break;
 								}
-							}							
+							} else if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm) {
+								AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = (AdverseEventMeddraLowLevelTerm)dbAdverseEvent.getAdverseEventTerm();
+								if (aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraCode().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraCode()) &&
+										aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraTerm().equals(xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm().getMeddraTerm()) ) {
+									adverseEvent = dbAdverseEvent;
+									break;
+								}								
+							}						
 						}
-					}
+					}*/
 				}
 			}
 		} else if (operation.equals(CREATE)) {
@@ -550,6 +638,18 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	public void setTreatmentAssignmentDao(
 			TreatmentAssignmentDao treatmentAssignmentDao) {
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
+	}
+
+	public void setAdverseEventEvaluationService(
+			AdverseEventEvaluationService adverseEventEvaluationService) {
+		this.adverseEventEvaluationService = adverseEventEvaluationService;
+	}
+	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+		this.caaersJavaMailSender = caaersJavaMailSender;
+	}
+	public void setApplicationContext(ApplicationContext arg0) throws BeansException {
+		this.applicationContext = applicationContext;
+		
 	}
 
 }

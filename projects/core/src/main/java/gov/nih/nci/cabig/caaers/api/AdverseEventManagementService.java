@@ -1,6 +1,11 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ImportAdverseEvents;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+
 
 /**
  * API to import adverse events to caAERS System. 
@@ -9,6 +14,7 @@ import gov.nih.nci.cabig.caaers.webservice.adverseeventcriteria.ImportAdverseEve
  * @author sakkala
  *
  */
+@WebService(name="AdverseEventManagementServiceIntf",targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent")
 public interface AdverseEventManagementService {
 	public static final String CREATE = "create";
 	public static final String UPDATE = "update";
@@ -28,20 +34,23 @@ public interface AdverseEventManagementService {
 	 * @param importAdverseEvents
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createAdverseEvent(ImportAdverseEvents importAdverseEvents) ;
+	@WebMethod
+	public CaaersServiceResponse createAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
 	
 	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
 	 * @param importAdverseEvents
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateAdverseEvent(ImportAdverseEvents importAdverseEvents) ;
+	@WebMethod
+	public CaaersServiceResponse updateAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
 	
 	/**
 	 * Delete Adverse Events for a Study Participant Assignment on a given Course/Cycle.
 	 * @param importAdverseEvents
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse deleteAdverseEvent(ImportAdverseEvents importAdverseEvents) ;
+	@WebMethod
+	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
 	
 }
