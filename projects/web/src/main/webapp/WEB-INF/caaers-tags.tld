@@ -57,6 +57,83 @@
 			<description>The prorpery of the element, which will used to query its renderability in the page</description>
 		</attribute>
 		
-		
 	</tag>
+	<tag>
+		<name>message</name>
+		<tag-class>gov.nih.nci.cabig.caaers.web.tags.MessageTag</tag-class>
+		<body-content>JSP</body-content>
+
+		<description>
+			Retrieves the message with the given code, or text if code isn't resolvable.
+			The HTML escaping flag participates in a page-wide or application-wide setting
+			(i.e. by HtmlEscapeTag or a "defaultHtmlEscape" context-param in web.xml).
+		</description>
+		<attribute>
+			<name>code</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The code (key) to use when looking up the message.</description>
+		</attribute>
+
+		<attribute>
+			<name>arguments</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>Set optional message arguments for this tag, as a
+			(comma-)delimited String (each String argument can contain JSP EL),
+			an Object array (used as argument array), or a single Object (used
+			as single argument).</description>
+		</attribute>
+
+		<attribute>
+			<name>argumentSeparator</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The separator character to be used for splitting the
+			arguments string value; defaults to a 'comma' (',').</description>
+		</attribute>
+
+		<attribute>
+			<name>text</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>Default text to output when a message for the given code
+			could not be found. If both text and code are not set, the tag will
+			output null.</description>
+		</attribute>
+
+		<attribute>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The string to use when binding the result to the page,
+			request, session or application scope. If not specified, the result
+			gets outputted to the writer (i.e. typically directly to the JSP).</description>
+		</attribute>
+
+		<attribute>
+			<name>scope</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The scope to use when exporting the result to a variable.
+			This attribute is only used when var is also set. Possible values are
+			page, request, session and application.</description>
+		</attribute>
+
+		<attribute>
+			<name>htmlEscape</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>Set HTML escaping for this tag, as boolean value.
+			Overrides the default HTML escaping setting for the current page.</description>
+		</attribute>
+
+		<attribute>
+			<name>javaScriptEscape</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>Set JavaScript escaping for this tag, as boolean value. Default is false.</description>
+		</attribute>
+	</tag>
+	
 </taglib>
