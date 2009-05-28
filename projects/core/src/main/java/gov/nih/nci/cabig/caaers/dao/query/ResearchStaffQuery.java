@@ -17,9 +17,12 @@ public class ResearchStaffQuery extends AbstractQuery {
     private static String LAST_NAME = "lastName";
 
     private static String EMAIL_ADDRESS = "emailAddress";
+    
     private static String LOGIN_ID = "loginId";
 
     private static String NCI_IDENTIFIER = "nciIdentifier";
+    
+    private static String ORGANIZATION = "organization";
 
     public ResearchStaffQuery() {
 
@@ -68,4 +71,11 @@ public class ResearchStaffQuery extends AbstractQuery {
         andWhere("lower(rs.nciIdentifier) LIKE :" + NCI_IDENTIFIER);
         setParameter(NCI_IDENTIFIER, searchString);
     }
+    
+    public void filterByOrganization(final String organization) {
+        String searchString = organization.trim();
+        andWhere("rs.organization.id =:" + ORGANIZATION);
+        setParameter(ORGANIZATION, Integer.parseInt(searchString));
+    }
+    
 }

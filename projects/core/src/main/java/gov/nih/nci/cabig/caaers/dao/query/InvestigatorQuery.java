@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class InvestigatorQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal order by i.id";
+    private static String queryString = "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si order by i.id";
     
     private static String FIRST_NAME = "firstName";
 
@@ -11,6 +11,8 @@ public class InvestigatorQuery extends AbstractQuery {
     private static String NCI_CODE = "nciIdentifier";
     
     private static String LOGIN_ID = "loginId";
+    
+    private static String ORGANIZATION = "organization";
 
     public InvestigatorQuery() {
 
@@ -43,6 +45,11 @@ public class InvestigatorQuery extends AbstractQuery {
         String searchString = "%" + loginId.trim().toLowerCase() + "%";
         andWhere(String.format("lower(i.loginId) LIKE :%s", LOGIN_ID));
         setParameter(LOGIN_ID, searchString);
+    }
+    public void filterByOrganization(final String organization) {
+        String searchString = organization.trim();
+        andWhere("si.organization.id =:" + ORGANIZATION);
+        setParameter(ORGANIZATION, Integer.parseInt(searchString));
     }
 
 }
