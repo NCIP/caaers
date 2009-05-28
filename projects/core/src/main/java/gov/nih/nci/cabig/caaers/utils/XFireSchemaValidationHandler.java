@@ -81,10 +81,13 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
 		if(element.getChildren() != null && element.getChildren().size() > 0){
 			List<Element> elements = element.getChildren();
 			for(Element eachElement : elements){
+				
 				String elementName = eachElement.getName();
 				String elementNamespaceURI = eachElement.getNamespaceURI();
 				String investigatorNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/investigator";
 				String researchStaffNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff";
+				String manageAdverseEventsNamespace = "http://webservice.caaers.cabig.nci.nih.gov/adverseevent";
+
 				if("studies".equalsIgnoreCase(elementName)){
 					payLoad = eachElement;
 					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd")[0].getFile());
@@ -103,6 +106,11 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
 				}else if("staff".equalsIgnoreCase(elementName) && researchStaffNamespace.equalsIgnoreCase(elementNamespaceURI)){
 					payLoad = eachElement;
 					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd")[0].getFile());
+		        	schema = factory.newSchema(ss);
+					break;
+				}else if("ImportAdverseEvents".equalsIgnoreCase(elementName) && manageAdverseEventsNamespace.equalsIgnoreCase(elementNamespaceURI)){
+					payLoad = eachElement;
+					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ManageAdverseEventsSchema.xsd")[0].getFile());
 		        	schema = factory.newSchema(ss);
 					break;
 				}else{
