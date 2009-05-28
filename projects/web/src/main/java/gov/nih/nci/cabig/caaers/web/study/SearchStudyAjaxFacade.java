@@ -125,7 +125,7 @@ public class SearchStudyAjaxFacade {
             organizationID = 0;
         }
 
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID);
+        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID, true);
 
         try {
 
@@ -172,14 +172,16 @@ public class SearchStudyAjaxFacade {
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text) {
-        return getObjects(type, text, 0);
+        return getObjects(type, text, 0, false);
     }
 
-    private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID) {
+    private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID, boolean hideIncomplete) {
         StudySearchableAjaxableDomainObjectQuery studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
 
         if (organizationID > 0)
             studySearchableAjaxableDomainObjectQuery.filterStudiesByStudySiteBySiteId(organizationID);
+        
+        studySearchableAjaxableDomainObjectQuery.filterByDataEntryStatus(hideIncomplete);
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");

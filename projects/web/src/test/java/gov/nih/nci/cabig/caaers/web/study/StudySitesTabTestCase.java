@@ -24,9 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class StudySitesTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+
 
     protected StudyTab createTab() {
         SitesTab tab = new SitesTab();
@@ -111,11 +109,5 @@ public class StudySitesTabTestCase extends AbstractStudyWebTestCase {
         assertEquals(1, main0.getFields().size());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+   
 }

@@ -272,6 +272,9 @@ Object.extend(ListEditor.prototype, {
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
+        if(this.options.nextIndexCallback){
+        	nextIndex = this.options.nextIndexCallback.call();
+        }
         var args = [nextIndex].concat(this.options.addParameters);
         if(externalArgs){
         	args = args.concat(externalArgs);

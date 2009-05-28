@@ -19,9 +19,7 @@ import java.util.Map;
 
 public class ExpectedAETabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+   
 
     protected StudyTab createTab() {
         ExpectedAEsTab tab = new ExpectedAEsTab();
@@ -109,11 +107,5 @@ public class ExpectedAETabTestCase extends AbstractStudyWebTestCase {
         assertEquals(0, errors.getErrorCount());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+   
 }

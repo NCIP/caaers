@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.tools.spring.tabbedflow;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractMutableDeletableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.Retireable;
 import gov.nih.nci.cabig.caaers.web.utils.DefaultObjectPropertyReader;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -101,9 +101,9 @@ public abstract class RowManagableTab<C> extends ReflexiveAjaxableTab<C> {
         }
         else {
             // Enabling the retitred_indicator
-            AbstractMutableDeletableDomainObject obj = (AbstractMutableDeletableDomainObject) col
+            Retireable obj = (Retireable) col
                             .get(index);
-            obj.setRetiredIndicatorAsTrue();
+            obj.retire();
         }
 
         return new ModelAndView("", map);

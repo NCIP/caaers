@@ -1,5 +1,5 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
 <tags:noform>
-	<study:oneStudyChildRow cssClass="ssi-table-row" index="${index}" style="display: none" />
+	<study:oneInvestigator cssClass="ssi-table-row" index="${index}" style="display: none"  readOnly="false"/>
 </tags:noform>

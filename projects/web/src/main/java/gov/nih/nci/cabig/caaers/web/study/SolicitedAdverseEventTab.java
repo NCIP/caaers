@@ -80,7 +80,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     @Override
     protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
        
-    	List<Epoch> listOfEpochs = command.getStudy().getEpochs();
+    	List<Epoch> listOfEpochs = command.getStudy().getActiveEpochs();
     	List<String> listOfEpochNames = new ArrayList<String>();
 
         for (Epoch epoch : listOfEpochs) {
@@ -101,7 +101,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	HashSet<SolicitedAdverseEvent> solicitedAEsWithinEpochSet = new HashSet<SolicitedAdverseEvent>();
 
     	HashMap<String, Boolean> otherMeddraErrorMap = new HashMap<String, Boolean>(); // This is used to avoid repeating the error messages.
-    	for(Epoch epoch: command.getStudy().getEpochs()){
+    	for(Epoch epoch: listOfEpochs){
     		solicitedAEsWithinEpochSet.clear();
     		
     		for(SolicitedAdverseEvent sae: epoch.getArms().get(0).getSolicitedAdverseEvents()){
@@ -131,21 +131,21 @@ public class SolicitedAdverseEventTab extends StudyTab {
                 unDeletedEpochs.add(epoch_order);
             }
 
-            List<Epoch> all_epochs = study.getEpochs();
+            List<Epoch> all_epochs = study.getActiveEpochs();
             java.util.Iterator<Epoch> iterator = all_epochs.iterator();
             
             while (iterator.hasNext()) {
                 Epoch epoch = iterator.next();
                 if (!unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder()))) {
-
-                    int count = 0;
-                    if (epoch.getId() != null)
-                        count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
-
-                    // System.out.println("This epoch is assigned to (" + count + ") Reporting Periods.");
-                    if (count == 0) iterator.remove(); else {
-                        request.setAttribute("statusMessage", "wrongEpochDelete");
-                    }
+                	epoch.retire();
+//                    int count = 0;
+//                    if (epoch.getId() != null)
+//                        count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
+//
+//                    // System.out.println("This epoch is assigned to (" + count + ") Reporting Periods.");
+//                    if (count == 0) iterator.remove(); else {
+//                        request.setAttribute("statusMessage", "wrongEpochDelete");
+//                    }
                 }
             }
 
@@ -162,12 +162,11 @@ public class SolicitedAdverseEventTab extends StudyTab {
     
     	if( request.getParameter("_ajaxInPlaceEditParam") != null || request.getParameter(AJAX_REQUEST_PARAMETER) != null || request.getAttribute(AJAX_REQUEST_PARAMETER) != null ) return;
 
-        List<Epoch> listOfEpochs = command.getStudy().getEpochs();
    	    String[] epoch_ids = request.getParameterValues("epoch_id");
     	
         int indexOfEpoch = 0;
     	
-    	for (Epoch e : command.getStudy().getEpochs()){
+    	for (Epoch e : command.getStudy().getActiveEpochs()){
     		List<SolicitedAdverseEvent> listOfSolicitedAEs = new ArrayList<SolicitedAdverseEvent>();
     		String[] termIDs = request.getParameterValues( "epoch[" + indexOfEpoch + "]" );
 
@@ -237,8 +236,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	 */
 
     private int generateNextEpochOrderNumber(Study study) {
-        List<Epoch> listOfEpochs = study.getEpochs();
-        return listOfEpochs.get(listOfEpochs.size() - 1).getEpochOrder() + 1;
+       return study.getEpochs().size();
     }
 
     public ModelAndView addEpoch(HttpServletRequest request, Object command, Errors error) {
@@ -249,10 +247,14 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	study.addEpoch(newEpoch);
     	return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());
 	}
-
-/*
- *  For future use
- */
+    
+    /**
+     * Will be called, when you delete an epoch on the screen.
+     * @param request
+     * @param command
+     * @param error
+     * @return
+     */
 	public ModelAndView deleteEpoch(HttpServletRequest request, Object command, Errors error) {
 		Study study = ((StudyCommand)command).getStudy();
         // the list of all epochs on the page (before deleting) except the # of the one to delete

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -17,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -36,10 +38,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.axis.utils.StringUtils;
 import org.directwebremoting.WebContextFactory;
 import org.drools.repository.PackageItem;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
 import com.semanticbits.rules.api.BusinessRulesExecutionService;
@@ -101,27 +105,15 @@ public class RuleAjaxFacade {
      * This method retrieves studies based on the Sponsor Name and Partial Study name
      */
     public List<Study> matchStudies(String text, String sponsorName) {
-        List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
-
-        if (sponsorName == null) {
-            return null;
-        }
-
-        for (Iterator<Study> it = studies.iterator(); it.hasNext();) {
-            Study study = it.next();
-
-            if (!sponsorName.equals(study.getPrimaryFundingSponsorOrganization().getName())) {
-                it.remove();
-            }
-        }
-
-        // cut down objects for serialization
-        List<Study> reducedStudies = new ArrayList<Study>(studies.size());
-        for (Study study : studies) {
-            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle", "primaryIdentifierValue")));
-        }
-
-        return reducedStudies;
+    	if(StringUtils.isEmpty(sponsorName)) return null;
+    	
+    	StudyQuery studyQuery = new StudyQuery();
+    	studyQuery.joinStudyOrganization();
+    	studyQuery.filterByDataEntryStatus(true);
+    	studyQuery.filterByNonAdministrativelyComplete();
+    	studyQuery.filterByFundingSponsorNameExactMatch(sponsorName);
+    	List<Study> studies = studyDao.find(studyQuery);
+    	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
     }
 
     /*
@@ -129,39 +121,16 @@ public class RuleAjaxFacade {
      */
 
     public List<Study> matchStudiesByInstitution(String text, String institutionName) {
-        List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
-
-        if (institutionName == null) {
-            return null;
-        }
-        List<Study> newStudyList = new ArrayList<Study>();
-
-        for (Iterator<Study> it = studies.iterator(); it.hasNext();) {
-            Study study = it.next();
-
-            List<StudyOrganization> studyOrgs = study.getStudyOrganizations();
-
-            // loop thru each study site and get Site .
-            // if site name = institutionName
-            // add this study to new list
-
-            for (Iterator<StudyOrganization> ssit = studyOrgs.iterator(); ssit.hasNext();) {
-                StudyOrganization studyOrganization = ssit.next();
-                Organization org = studyOrganization.getOrganization();
-                if (institutionName.equals(org.getName())) {
-                    newStudyList.add(study);
-                    break;
-                }
-            }
-
-        }
-
-        // cut down objects for serialization
-        List<Study> reducedStudies = new ArrayList<Study>(newStudyList.size());
-        for (Study study : newStudyList) {
-            reducedStudies.add(buildReduced(study, Arrays.asList("id", "shortTitle", "primaryIdentifierValue")));
-        }
-        return reducedStudies;
+    	if(StringUtils.isEmpty(institutionName)) return null;
+    	
+    	StudyQuery studyQuery = new StudyQuery();
+    	studyQuery.joinStudyOrganization();
+    	studyQuery.filterByDataEntryStatus(true);
+    	studyQuery.filterByNonAdministrativelyComplete();
+    	studyQuery.filterByStudyOrganizationNameExactMatch(institutionName);
+    	List<Study> studies = studyDao.find(studyQuery);
+    	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
+    	
     }
 
     public List<CtcTerm> fetchTerms() throws Exception {
@@ -576,26 +545,7 @@ public class RuleAjaxFacade {
         return adverseEventSDO;
     }
 
-    // TODO: move this somewhere shared. Or, better, obviate it.
-    @SuppressWarnings("unchecked")
-    private <T> T buildReduced(T src, List<String> properties) {
-        T dst = null;
-        try {
-            // it doesn't seem like this cast should be necessary
-            dst = (T) src.getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
-        } catch (IllegalAccessException e) {
-            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
-        }
-
-        BeanWrapper source = new BeanWrapperImpl(src);
-        BeanWrapper destination = new BeanWrapperImpl(dst);
-        for (String property : properties) {
-            destination.setPropertyValue(property, source.getPropertyValue(property));
-        }
-        return dst;
-    }
+    
 
     private String[] extractSubnames(String text) {
         return text.split("\\s+");
@@ -817,5 +767,7 @@ public class RuleAjaxFacade {
 			BusinessRulesExecutionService businessRulesExecutionService) {
 		this.businessRulesExecutionService = businessRulesExecutionService;
 	}
+	
+
     
 }

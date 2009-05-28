@@ -9,6 +9,7 @@
 <%@attribute name="disableDelete" type="java.lang.Boolean"  %>
 <%@attribute name="identifiers" type="java.lang.Boolean"  %>
 <%@attribute name="exclusions" %>
+<%@attribute name="readOnly" type="java.lang.Boolean" %>
 
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>

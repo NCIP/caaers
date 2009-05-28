@@ -23,7 +23,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffTy
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -37,9 +36,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -110,7 +107,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
    
    private ParticipantServiceImpl participantServiceImpl;
 
-    private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
     private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
 
@@ -487,7 +483,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         xstream.alias("grade", gov.nih.nci.cabig.caaers.domain.Grade.class);
         xstream.alias("hospitalization", gov.nih.nci.cabig.caaers.domain.Hospitalization.class);
         xstream.alias("attribution", gov.nih.nci.cabig.caaers.domain.Attribution.class);
-        xstream.alias("status", gov.nih.nci.cabig.caaers.domain.Status.class);
 
         BufferedReader input = null;
         try {
@@ -509,22 +504,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         		return;
         	}
 
-            if (type.equals("routineAeReport")) {
-                int maxNumberofRoutineReports = 1000;
-                int currentNumberofRoutineReports = 1;
-                input = new BufferedReader(new FileReader(xmlFile));
-                ObjectInputStream in = xstream.createObjectInputStream(input);
-                while (true && currentNumberofRoutineReports++ <= maxNumberofRoutineReports
-                                && command.getSchemaValidationResult() == null) {
-                    RoutineAdverseEventReport xstreamRoutineAdverseEventReport = (RoutineAdverseEventReport) in
-                                    .readObject();
-                    migrateRoutineAdverseEventReport(xstreamRoutineAdverseEventReport, command);
-                }
-            }
         } catch (EOFException ex) {
             System.out.println("EndOfFile Reached");
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException("Class Not found Exception", ex);
         } catch (FileNotFoundException ex) {
             throw new RuntimeException("File Not found Exception", ex);
         } catch (IOException ex) {
@@ -667,18 +648,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 //        }
 //    }
 
-    private void migrateRoutineAdverseEventReport(
-                    RoutineAdverseEventReport xstreamRoutineAdverseEventReport,
-                    ImportCommand command) {
-
-        DomainObjectImportOutcome<RoutineAdverseEventReport> routineAdverseEventReportImportOutcome = routineAdverseEventReportServiceImpl
-                        .createRoutineAdverseEventReportObjects(xstreamRoutineAdverseEventReport);
-        if (routineAdverseEventReportImportOutcome.isSavable()) {
-            command.addImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
-        } else {
-            command.addNonImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
-        }
-    }
 
     public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer) {
         log.debug("Checking for expedited AEs");
@@ -749,14 +718,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     }
 
 
-    public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
-        return routineAdverseEventReportServiceImpl;
-    }
-
-    public void setRoutineAdverseEventReportServiceImpl(
-                    RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl) {
-        this.routineAdverseEventReportServiceImpl = routineAdverseEventReportServiceImpl;
-    }
 
     public NowFactory getNowFactory() {
         return nowFactory;

@@ -32,8 +32,14 @@
   	  //This is added for Add Sysetem TreatmentAssignments button
 	  new ListEditor("si-section", createStudy, "TreatmentAssignment", {
 		addFirstAfter: "identifierbookmark",
+		addCallback: function(nextIndex) {
+  			$('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
+     	},
 		deletable: true,
-        removeParameters:['Treatment Assignment']
+        removeParameters:['Treatment Assignment'],
+        nextIndexCallback : function(){
+            return $('_ITEM_COUNT').value;
+        }
 	   },'study.treatmentAssignments');
 		               	
     });
@@ -48,18 +54,24 @@
     <p><tags:instructions code="study.study_treatments.top" /></p>
 		 <input type="hidden" name="_action" value="">
 		 <input type="hidden" name="_selected" value="">
-		<c:forEach varStatus="status" items="${command.study.treatmentAssignments}">
-		  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" sectionClass="si-section" index="${status.index}" identifier="${command.study.treatmentAssignments[status.index]}" />
+		 <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.treatmentAssignments)}">
+		<c:forEach var="ta" varStatus="status" items="${command.study.treatmentAssignments}">
+			<c:if test="${not ta.retired}">
+		  		<study:treatmentAssignment
+		  			title="${empty ta.code ? '...' : ta.code}"
+		  			sectionClass="si-section" 
+		  			index="${status.index}" 
+		  			treatmentAssignment="${command.study.treatmentAssignments[status.index]}" 
+		  			collapsed="true"
+		  			readOnly="${not empty ta.code}"
+		  			/>
+		 	</c:if>
 		</c:forEach>	
 		    <span id="identifierbookmark"></span>
         <br>
         <tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />
         
     </jsp:attribute>
-	<jsp:attribute name="localButtons"> 
-	   <chrome:division title="">          	
-       </chrome:division>
-	</jsp:attribute>
 	
 </tags:tabForm>
 </body>

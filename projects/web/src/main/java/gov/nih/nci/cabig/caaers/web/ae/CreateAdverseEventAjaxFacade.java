@@ -302,6 +302,7 @@ public class CreateAdverseEventAjaxFacade {
             domainObjectQuery.filterByParticipant(participantId);
         }
         domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
+        domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
         return studies;
     }

@@ -58,7 +58,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         EasyMock.expect(conditionDao.getById(5)).andReturn(condition);
         replayMocks();
 
-        StudyCommand command  = new StudyCommand();
+        StudyCommand command  = new StudyCommand(studyDao);
         command.setStudy(study);
         command.setCondition("5");
 

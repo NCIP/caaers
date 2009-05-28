@@ -22,6 +22,10 @@
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>
 <tags:javascriptLink name="common"/>
+<script type="text/javascript">
+AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
+AE.autocompleterChars = ${configuration.map.autoCompleterChars};
+</script>
 <tags:javascriptLink name="validation"/>
 <tags:javascriptLink name="commons-validation"/>
 

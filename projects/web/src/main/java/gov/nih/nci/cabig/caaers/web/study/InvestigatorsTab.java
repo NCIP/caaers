@@ -22,6 +22,7 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 class InvestigatorsTab extends StudyTab {
     private List<InputField> fields;
@@ -46,21 +47,14 @@ class InvestigatorsTab extends StudyTab {
         int selectedIndex = command.getStudySiteIndex();
         
         if ("removeInv".equals(action) && selectedIndex >= 0) {
-         StudyOrganization studyOrg = command.getStudy().getStudyOrganizations().get(selectedIndex);
-	         if(studyOrg != null){
-	        	 StudyInvestigator rmStudyInvestigator = studyOrg.getStudyInvestigators().remove(Integer.parseInt(selectedInvestigator));
+        	int index = Integer.parseInt(selectedInvestigator);
+        	command.deleteSiteInvestigatorAtIndex(selectedIndex, index);
 
-                 if (rmStudyInvestigator != null) {
-                     rmStudyInvestigator.setStudyOrganization(null);
-                    
-                 }
-             }
-         
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
             command.setStudySiteIndex(siteIndex);
             if (siteIndex >= 0) {
-                command.getStudy().getStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
+                command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
             }
         }
     }
@@ -82,11 +76,11 @@ class InvestigatorsTab extends StudyTab {
 
         int ssIndex = command.getStudySiteIndex();
         if (ssIndex >= 0) {
-            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "study.studyOrganizations[" + ssIndex + "].studyInvestigators");
+            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "study.activeStudyOrganizations[" + ssIndex + "].studyInvestigators");
             for (InputField f : fields) {
                 rfgFactory.addField(f);
             }
-            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudy().getStudyOrganizations().get(ssIndex).getStudyInvestigators().size());
+            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudy().getActiveStudyOrganizations().get(ssIndex).getStudyInvestigators().size());
         }
         return map;
     }
@@ -96,14 +90,14 @@ class InvestigatorsTab extends StudyTab {
         super.validate(command, commandBean, fieldGroups, errors);
         int soIndex = -1;
 
-        for (StudyOrganization studyOrg : command.getStudy().getStudyOrganizations()) {
+        for (StudyOrganization studyOrg : command.getStudy().getActiveStudyOrganizations()) {
             soIndex++;
             int siIndex = -1;
             HashSet<StudyInvestigator> hSet = new HashSet<StudyInvestigator>();
             for (StudyInvestigator si : studyOrg.getStudyInvestigators()) {
                 siIndex++;
                 if (!hSet.add(si)) {
-                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyInvestigators[" + siIndex + "].siteInvestigator", "STU_012", "Duplicate entry");
+                    errors.rejectValue("study.activeStudyOrganizations[" + soIndex + "].studyInvestigators[" + siIndex + "].siteInvestigator", "STU_012", "Duplicate entry");
                 }
             }
         }

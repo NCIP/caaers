@@ -22,6 +22,7 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 class PersonnelTab extends StudyTab {
     private List<InputField> fields;
@@ -43,12 +44,12 @@ class PersonnelTab extends StudyTab {
         String prevSiteIndex = request.getParameter("_prevSite");
         int selectedIndex = command.getStudySiteIndex();
         if ("removeStudyPersonnel".equals(action) && selectedIndex >= 0) {
-            command.getStudy().getStudyOrganizations().get(command.getStudySiteIndex()).getStudyPersonnels().remove(Integer.parseInt(selectedPersonnel));
+        	command.deleteStudyPersonAtIndex(selectedIndex, Integer.parseInt(selectedPersonnel));
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
             command.setStudySiteIndex(siteIndex);
             if (siteIndex >= 0) {
-                command.getStudy().getStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
+                command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
             }
         }
     }
@@ -70,12 +71,12 @@ class PersonnelTab extends StudyTab {
 
         int ssIndex = command.getStudySiteIndex();
         if (ssIndex >= 0) {
-            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "study.studyOrganizations[" + ssIndex + "].studyPersonnels");
+            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "study.activeStudyOrganizations[" + ssIndex + "].studyPersonnels");
 
             for (InputField f : fields) {
                 rfgFactory.addField(f);
             }
-            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudy().getStudyOrganizations().get(ssIndex).getStudyPersonnels().size());
+            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudy().getActiveStudyOrganizations().get(ssIndex).getStudyPersonnels().size());
         }
         return map;
     }
@@ -85,14 +86,14 @@ class PersonnelTab extends StudyTab {
         super.validate(command, commandBean, fieldGroups, errors);
         int soIndex = -1;
 
-        for (StudyOrganization studyOrg : command.getStudy().getStudyOrganizations()) {
+        for (StudyOrganization studyOrg : command.getStudy().getActiveStudyOrganizations()) {
             soIndex++;
             int spIndex = -1;
             HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
             for (StudyPersonnel sp : studyOrg.getStudyPersonnels()) {
                 spIndex++;
                 if (!hSet.add(sp)) {
-                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].researchStaff", "STU_012", "Duplicate entry");
+                    errors.rejectValue("study.activeStudyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].researchStaff", "STU_012", "Duplicate entry");
                 }
             }
 

@@ -24,9 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+   
 
     protected StudyTab createTab() {
         IdentifiersTab tab = new IdentifiersTab();
@@ -151,11 +149,5 @@ public class StudyIdentifiersTabTestCase extends AbstractStudyWebTestCase {
 
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+   
 }

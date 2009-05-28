@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.ConditionDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Condition;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
@@ -30,13 +29,14 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  * @author Krikor Krumlian
+ * @author Ion Oluru
+ * @author Biju Joseph
  */
 public class DiseaseTab extends StudyTab {
     private static Log log = LogFactory.getLog(DiseaseTab.class);
 
     private DiseaseTermDao diseaseTermDao;
     private LowLevelTermDao lowLevelTermDao;
-    private MeddraVersionDao meddraVersionDao;
     private ConditionDao conditionDao;
     private HashMap<String, Condition> conditionMap;
     
@@ -51,12 +51,15 @@ public class DiseaseTab extends StudyTab {
      * 
      * If Medra Study Disease 1. Check if the existing MEDRA disease (LowLevelTerm) is mentioned in
      * study.getDiseaseLlt() 2. Throw error, saying that the selected disease already present.
+     * 
+     * If Study Condition, if already existing will throw error. 
      */
     @Override
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
         HashMap<String, DiseaseTerm> ctepTermMap = new HashMap<String, DiseaseTerm>();
         for (CtepStudyDisease ctepDisease : command.getStudy().getCtepStudyDiseases()) {
+        	if(ctepDisease.isRetired()) continue;
             ctepTermMap.put(ctepDisease.getTerm().getId().toString(), ctepDisease.getDiseaseTerm());
         }
 
@@ -71,6 +74,7 @@ public class DiseaseTab extends StudyTab {
 
         HashMap<String, LowLevelTerm> medraTermMap = new HashMap<String, LowLevelTerm>();
         for (MeddraStudyDisease meddraStudyDisease : command.getStudy().getMeddraStudyDiseases()) {
+        	if(meddraStudyDisease.isRetired()) continue;
             medraTermMap.put(meddraStudyDisease.getTerm().getId().toString(), meddraStudyDisease.getTerm());
         }
 
@@ -103,6 +107,7 @@ public class DiseaseTab extends StudyTab {
         // this will hold the Study Conditions' IDs as keys
         conditionMap = new HashMap<String, Condition>();
         for (StudyCondition studyCondition : study.getStudyConditions()) {
+        	if(studyCondition.isRetired()) continue;
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
         }
 
@@ -143,24 +148,24 @@ public class DiseaseTab extends StudyTab {
         }
 
         if ("removeMeddraStudyDisease".equals(action)) {
-            command.getStudy().getMeddraStudyDiseases().remove(Integer.parseInt(selected));
+            command.deleteMeddraStudyDiseaseAtIndex(Integer.parseInt(selected));
         }
 
         if (action.equals("addOtherCondition")) {
 
             Condition condition = null;
-            int _c = 0;
+            int conditionId = 0;
 
             try {
-                _c = Integer.parseInt(command.getCondition());
+                conditionId = Integer.parseInt(command.getCondition());
             } catch (NumberFormatException e) {
                 log.warn("Incorrect ID for the Condition Object.");
                 e.printStackTrace();
             }
             StudyCondition studyCondition = new StudyCondition();
 
-            if (_c > 0) {
-                condition = conditionDao.getById(_c);
+            if (conditionId > 0) {
+                condition = conditionDao.getById(conditionId);
                 studyCondition.setTerm(condition);
             } else {
 
@@ -181,8 +186,7 @@ public class DiseaseTab extends StudyTab {
 
         if (action.equals("removeOtherCondition")) {
             try {
-                command.getStudy().getStudyConditions().remove(Integer.parseInt(selected));
-                System.out.println("Removing a Condition.");
+                command.deleteStudyConditionAtIndex(Integer.parseInt(selected));
             } catch (IndexOutOfBoundsException e) {
                 log.warn("No <StudyCondition> at the position: " + selected);
             }
@@ -199,7 +203,7 @@ public class DiseaseTab extends StudyTab {
 
             }
         } else if ("removeStudyDisease".equals(action)) {
-            command.getStudy().getCtepStudyDiseases().remove(Integer.parseInt(selected));
+            command.deleteCtepStudyDiseaseAtIndex(Integer.parseInt(selected));
         }
     }
 
@@ -211,9 +215,6 @@ public class DiseaseTab extends StudyTab {
         this.lowLevelTermDao = lowLevelTermDao;
     }
 
-    public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
-        this.meddraVersionDao = meddraVersionDao;
-    }
 
     public ConditionDao getConditionDao() {
         return conditionDao;

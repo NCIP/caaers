@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,8 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
                 extends AutomaticSaveFlowFormController<C, D, A> {
 
 	 protected static final Log log = LogFactory.getLog(AutomaticSaveAjaxableFormController.class);
+	 
+	 protected MessageSource messageSource;
 	 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request,
@@ -148,5 +151,16 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
 
     protected String getFreeTextModelName() {
         return "free_text";
+    }
+    
+    public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+    public MessageSource getMessageSource() {
+		return messageSource;
+	}
+    
+    protected String getMessage(String code, String defaultMsg, Object...objects){
+    	return messageSource.getMessage(code, objects, defaultMsg, null);
     }
 }

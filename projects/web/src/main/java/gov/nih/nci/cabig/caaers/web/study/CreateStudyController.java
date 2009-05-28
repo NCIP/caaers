@@ -53,8 +53,9 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-        StudyCommand cmd = new StudyCommand();
-        Study study = new Study();        
+        StudyCommand cmd = new StudyCommand(studyDao);
+        Study study = new Study(); 
+        study.setDataEntryStatus(false);
         cmd.setStudy(study);
 
         StudyFundingSponsor sponsor = new StudyFundingSponsor();

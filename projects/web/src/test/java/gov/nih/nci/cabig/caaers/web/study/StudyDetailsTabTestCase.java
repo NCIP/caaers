@@ -28,9 +28,7 @@ import org.springframework.validation.ObjectError;
 
 public class StudyDetailsTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+   
 
     protected StudyTab createTab() {
         DetailsTab tab = new DetailsTab();
@@ -152,11 +150,5 @@ public class StudyDetailsTabTestCase extends AbstractStudyWebTestCase {
         assertEquals(0, errors.getErrorCount());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+    
 }

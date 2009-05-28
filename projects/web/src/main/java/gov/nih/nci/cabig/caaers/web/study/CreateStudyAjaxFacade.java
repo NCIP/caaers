@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Retireable;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -63,6 +64,7 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
  * @author Rhett Sutphin
  * @author Krikor Krumlian
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 public class CreateStudyAjaxFacade {
 
@@ -198,6 +200,19 @@ public class CreateStudyAjaxFacade {
                         .findByIds(new String[] { text });
         return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
     }
+    
+    /**
+     * This ajax call will set the data entry status on this study. 
+     * Will save the study. 
+     * @return
+     */
+    public String openStudy(){
+    	StudyCommand command = getStudyCommand(getHttpServletRequest());
+    	command.openStudy();
+    	return command.getDataEntryStatus();
+    	
+    }
+    
     /*
      * added this method to call this wherever any security filtering on organization is required
      */
@@ -292,7 +307,6 @@ public class CreateStudyAjaxFacade {
 
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         return getOutputFromJsp(url);
-
     }
 
     public boolean deleteIdentifier(final int index) {
@@ -303,12 +317,15 @@ public class CreateStudyAjaxFacade {
     public String addStudyAgent(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         StudyCommand command = getStudyCommand(request);
+        int newIndex = command.getStudy().getStudyAgents().size();
         // pre-initialize the agent at index
-        command.getStudy().getStudyAgents().get(index);
-        setRequestAttributes(request, index, -1, "studyAgentSection");
+        command.getStudy().getStudyAgents().get(newIndex);
+        setRequestAttributes(request, newIndex, -1, "studyAgentSection");
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         return getOutputFromJsp(url);
     }
+    
+    
 
     /**
      * A row of IND is needed to display
@@ -382,8 +399,22 @@ public class CreateStudyAjaxFacade {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
             return new AjaxOutput("Unable to delete. Attempted to delete from an invalid index; " + indexToDelete + " < 0");
         }
-        List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
-        Object o = list.remove(indexToDelete);
+        
+        List<IndexChange> changes = new ArrayList<IndexChange>() ;
+        Object o = null;
+        
+        
+        if(listProperty.equals("study.studyAgents")){
+        	changes = createDeleteChangeList(indexToDelete, command.getStudy().getStudyAgents(), displayName, command.isDataEntryComplete());
+        	command.deleteStudyAgentAtIndex(indexToDelete);
+        }else if(listProperty.equals("study.treatmentAssignments")){
+        	changes = createDeleteChangeList(indexToDelete, command.getStudy().getTreatmentAssignments(), displayName,command.isDataEntryComplete());
+        	command.deleteTreatmentAssignmentAtIndex(indexToDelete);
+        }else{
+        	
+        	changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
+        	o = list.remove(indexToDelete);
+        }
         
         try {
             saveIfAlreadyPersistent(command.getStudy());
@@ -403,6 +434,22 @@ public class CreateStudyAjaxFacade {
         for (int i = indexToDelete + 1; i < length; i++) {
             IndexChange change = new IndexChange(i, i - 1);
             change.setCurrentDisplayName(displayName + " " + (i + 1));
+            changes.add(change);
+        }
+        return changes;
+    }
+    
+    private List<IndexChange> createDeleteChangeList(int indexToDelete, List<? extends Retireable> list, String displayName, boolean softDeleted) {
+        List<IndexChange> changes = new ArrayList<IndexChange>();
+        changes.add(new IndexChange(indexToDelete, null));
+        int length = list.size();
+        int j = indexToDelete;
+        int k = (softDeleted)? 0 : 1;
+        
+        for (int i = indexToDelete + 1; i < length; i++) {
+            IndexChange change = new IndexChange(i, i - k);
+            if(!list.get(i).isRetired()) j++;
+            change.setCurrentDisplayName(displayName + " " + j);
             changes.add(change);
         }
         return changes;

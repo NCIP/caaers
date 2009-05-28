@@ -12,9 +12,6 @@ import java.util.Map;
 
 public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
 
     protected StudyTab createTab() {
         StudyTherapiesTab tab = new StudyTherapiesTab();
@@ -68,11 +65,5 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
         assertNull(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+   
 }

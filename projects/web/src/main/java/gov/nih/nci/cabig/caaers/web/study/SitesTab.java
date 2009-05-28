@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,22 +39,23 @@ class SitesTab extends StudyTab {
         if ("removeSite".equals(action)) {
 
             int index = Integer.parseInt(request.getParameter("_selected"));
+            
             StudySite site = command.getStudy().getStudySites().get(index);
 
-            if (CollectionUtils.isNotEmpty(site.getStudyInvestigators())) {
-                errors.reject("STU_013", "The site is associated to investigators, so unable to delete");
+            if (CollectionUtils.isNotEmpty(site.getActiveStudyInvestigators())) {
+              errors.reject("STU_013", "The site is associated to investigators, so unable to delete");
             }
-            if (CollectionUtils.isNotEmpty(site.getStudyPersonnels())) {
-                errors.reject("STU_014", "The site is associated to research staffs, so unable to delete");
+            if (CollectionUtils.isNotEmpty(site.getActiveStudyPersonnel())) {
+              errors.reject("STU_014", "The site is associated to research staffs, so unable to delete");
             }
-
-            if (!errors.hasErrors()) {
-            	command.getStudy().getStudySites().remove(index);
-            	
-            	// Take care of the command.studySite incase the removed site is the last in the list
-            	if(command.getStudySiteIndex() >= command.getStudy().getStudySites().size())
-            		command.setStudySiteIndex(command.getStudy().getStudySites().size() - 1);
+            
+            //remove site, if no investigator or research person is associated to site.
+            if(!errors.hasErrors()){
+            	command.deleteStudySiteAtIndex(index);
+                command.setStudySiteIndex(-1);
             }
+            
+            
         }else{
         	Object isAjax = request.getAttribute("_isAjax");
         	
@@ -85,19 +85,24 @@ class SitesTab extends StudyTab {
         map.addRepeatingFieldGroupFactory(rfgFactory, study.getStudySites().size());
         return map;
     }
+    
 
     @Override
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         // check if there are duplicate sites.
-        HashSet<String> set = new HashSet<String>();
+        HashSet<Integer> set = new HashSet<Integer>();
         int size = command.getStudy().getStudySites().size();
-        for (int i = 0; i < size; i++) {
-            List<InputField> fields = fieldGroups.get("main" + i).getFields();
-            if (!set.add(fieldValuesAsString(fields, commandBean))) {
-                rejectFields(fields, errors, "Duplicate");
-            }
+        StudySite site = null;
+        for(int i = 0; i < size; i++){
+        	site = command.getStudy().getStudySites().get(i);
+        	if(site.isRetired() || site.getOrganization() == null) continue;
+        	
+        	if(!set.add(site.getOrganization().getId())){
+        		rejectFields(fieldGroups.get("main" + i).getFields(), errors, "Duplicate");
+        	}
         }
+        
     }
     
     public void setWorkflowConfigDao(WorkflowConfigDao workflowConfigDao) {

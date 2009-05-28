@@ -38,14 +38,20 @@
                 this.index = index;
                 this.orgName = orgName;
                 this.sitePropertyName = "study.studySites[" + index + "].organization";
-                this.siteInputId = this.sitePropertyName + "-input";
-                this.options = {minChars : 3, frequency : 2};
-                if (orgName) $(this.siteInputId).value = orgName;
-                AE.createStandardAutocompleter(this.sitePropertyName,
-                            this.sitePopulator.bind(this),
-                            this.siteSelector.bind(this),
-                            this.options
-                        );
+                this.siteInput = $(this.sitePropertyName + "-input");
+                this.options = {minChars : AE.autocompleterDelay , frequency : AE.autocompleterChars};
+                
+                if(this.siteInput){
+                   if(orgName){
+                        this.siteInput.value = orgName;
+                   }
+                   AE.createStandardAutocompleter(this.sitePropertyName,
+                                 this.sitePopulator.bind(this),
+                                 this.siteSelector.bind(this),
+                                 this.options
+                   );
+                }
+                
             },
             sitePopulator: function(autocompleter, text) {
                 createStudy.restrictOrganizations(text, function(values) {
@@ -73,9 +79,13 @@
         </c:forEach>
             addSiteEditor = new ListEditor('ss-section', createStudy, "StudySite", {
                 addFirstAfter: "ss-table-head",
+                nextIndexCallback : function(){
+                	return $('_ITEM_COUNT').value;
+            	},
                 addCallback: function(nextIndex) {
                     //initilze auto completer and calendar
                     new jsStudySite(nextIndex);
+                    $('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
                     refreshDeleteButtons();
                 }
             });
@@ -96,14 +106,17 @@
 		<p><tags:instructions code="study.study_sites.top"/></p>
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
+		<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studySites)}">
  	    <div align="left" style="margin-left: 50px">
              <table width="55%" class="tablecontent">
                  <tr id="ss-table-head" class="amendment-table-head">
                      <th width="95%" class="tableHeader"><tags:requiredIndicator/>Site</th>
                      <th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
                  </tr>
-                 <c:forEach varStatus="status" items="${command.study.studySites}">
-                     <study:oneStudyChildRow cssClass="ss-section" index="${status.index}"/>
+                 <c:forEach varStatus="status" items="${command.study.studySites}" var="ss">
+                 	<c:if test="${not ss.retired}">
+                     <study:oneStudySite cssClass="ss-section" index="${status.index}" readOnly="${not empty ss.organization}"/>
+                    </c:if>
                  </c:forEach>
              </table>
          </div>
@@ -111,8 +124,6 @@
         <tags:listEditorAddButton divisionClass="ss-section" label="Add Study Site"/>
         
     </jsp:attribute>
-    <jsp:attribute name="localButtons"> 
-	</jsp:attribute>
 
 </tags:tabForm>
 </body>

@@ -8,6 +8,7 @@ import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
@@ -21,6 +22,8 @@ import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -37,6 +40,8 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     
     private InvestigatorRepository investigatorRepository;
+    
+    private StudyDao studyDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -48,7 +53,8 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
         facade.setInvestigatorRepository(investigatorRepository);
-        command = new StudyCommand();
+        studyDao = registerDaoMockFor(StudyDao.class);
+        command = new StudyCommand(studyDao);
         study = new Study();
         command.setStudy(study);
         request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command", command);
@@ -97,5 +103,15 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         InvestigationalNewDrug actual = results.get(0);
         assertEquals("IND number is not matching", (int) actual.getIndNumber(), 99);
         //
+    }
+    
+    public void testOpenStudy(){
+    	assertEquals("Inprogress", command.getDataEntryStatus());
+    	EasyMock.expect(studyDao.merge(command.getStudy())).andReturn(command.getStudy());
+		EasyMock.expect(studyDao.initialize(command.getStudy())).andReturn(command.getStudy());
+		replayMocks();
+    	assertEquals("Complete", facade.openStudy());
+    	verifyMocks();
+    	
     }
 }

@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.tools.spring.tabbedflow;
 
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractMutableDeletableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.Retireable;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.PrintWriter;
@@ -16,7 +17,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-public abstract class SimpleFormAjaxableController<C extends AbstractMutableDomainObject, D extends AbstractMutableDeletableDomainObject, A extends CaaersDao<D>>
+public abstract class SimpleFormAjaxableController<C extends AbstractMutableDomainObject, D extends AbstractMutableRetireableDomainObject, A extends CaaersDao<D>>
                 extends SimpleFormController {
 
     private InPlaceEditableTab<C> page;

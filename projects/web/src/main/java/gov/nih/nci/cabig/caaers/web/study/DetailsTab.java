@@ -85,6 +85,7 @@ public class DetailsTab extends StudyTab {
             options.put(Boolean.TRUE, "Yes");
             fields.add(InputFieldFactory.createSelectField("study.multiInstitutionIndicator", "Multi Institutional", true, options));
             fields.add(InputFieldFactory.createSelectField("study.adeersReporting", "AdEERS  reporting required", true, options));
+            fields.add(InputFieldFactory.createLabelField("dataEntryStatus", "Data Entry Status", false));
 
         }
 

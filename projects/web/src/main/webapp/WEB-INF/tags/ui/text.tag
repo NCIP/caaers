@@ -2,6 +2,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <%@attribute name="path" description="The path to bind" required="true"%>
 <%@attribute name="cssClass" description="The 'class' attribute in HTML" %>
@@ -16,7 +17,7 @@
 <%@attribute name="size" description="Specifies the display size of the text field" %>
 <%@attribute name="maxlength" description="Specifies max allowed characters" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
-<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+
 
 <c:if test="${field != null}"><c:set var="mandatory" value="${field.attributes.mandatory}" /></c:if>
 

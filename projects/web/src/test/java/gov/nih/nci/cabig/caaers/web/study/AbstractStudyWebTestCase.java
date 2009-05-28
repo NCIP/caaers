@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -39,6 +40,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
     protected CtcTermDao ctcTermDao;
     protected ConditionDao conditionDao;
     protected EpochDao epochDao;
+    protected StudyDao studyDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -50,6 +52,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
         conditionDao = registerDaoMockFor(ConditionDao.class);
         epochDao = registerDaoMockFor(EpochDao.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
 
         tab = createTab();
 
@@ -60,7 +63,13 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
 
     }
 
-    protected abstract StudyCommand createCommand();
+    protected StudyCommand createCommand(){
+    	 StudyCommand command = new StudyCommand(studyDao);
+         Study study = new Study();
+         command.setStudy(study);
+
+         return command;
+    }
     protected abstract StudyTab createTab();
 
     public StudyTab getTab() {

@@ -37,7 +37,7 @@
             	this.index = index;
             	this.siteIndex = $F('studySiteIndex');
             	this.sitePersonnelName = sitePersonnelName;
-            	this.sitePersonnelPropertyName = "study.studyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
+            	this.sitePersonnelPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
             	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
@@ -76,7 +76,11 @@
 	     personnelListEditor = new ListEditor('ssi-table-row',createStudy, "StudyPersonnel",{
              addParameters: [],
              addFirstAfter: "ssi-table-head",
+             nextIndexCallback : function(){
+  				return $('_ITEM_COUNT').value;
+			 },
              addCallback: function(nextIndex) {
+			   $('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
           	   new jsPersonnel(nextIndex);
           	   if($('ssi-empty-row')){
                 	Effect.Fade('ssi-empty-row');
@@ -111,7 +115,9 @@ margin:5px;
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
 	<input type="hidden" name="_selectedPersonnel" value="">
-	 <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
+	<input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
+	<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.activeStudyOrganizations[command.studySiteIndex].studyPersonnels)}">
+	  
 	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td width="70%" valign="top" >
@@ -129,25 +135,23 @@ margin:5px;
 	    </td>
       	<td valign="top" width="25%">
 			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.study.studyOrganizations}">
+ 				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
  					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
 						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>
- 					<div class="">Personnel Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
+ 					<div class="">Personnel Assigned: <b> ${fn:length(studySite.activeStudyPersonnel)} </b>
  					</div>
  				
  				</c:forEach>
  				<div>
- 				   <img src="/caaers/images/chrome/spacer.gif" width="1" height="150" />
+ 				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
  				</div>
  			</chrome:box>
 		</td>
 	  </tr>
 	</table>
  </jsp:attribute>	
- <jsp:attribute name="localButtons">
-  
- </jsp:attribute> 
+
   
 </tags:tabForm>
 </body>

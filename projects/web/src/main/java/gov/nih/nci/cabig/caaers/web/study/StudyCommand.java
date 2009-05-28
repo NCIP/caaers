@@ -1,19 +1,27 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.Retireable;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.BooleanUtils;
 
 /**
  * User: Ion C. Olaru
@@ -68,10 +76,11 @@ public class StudyCommand {
     private List<Epoch> epochs=new ArrayList<Epoch>();
     
     private boolean workflowEnabled;
+    
+    private StudyDao studyDao;
 
-
-    public StudyCommand() {
-    	
+    public StudyCommand(StudyDao studyDao) {
+    	this.studyDao = studyDao;
     }
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
@@ -227,5 +236,127 @@ public class StudyCommand {
     public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;
 	}
+    
+    /**
+     * This will mark datacomplete the study
+     */
+    public void openStudy(){
+    	study.setDataEntryStatus(true);
+    	save();
+    }
+    
+    public boolean isDataEntryComplete(){
+    	return BooleanUtils.isTrue(study.getDataEntryStatus()); 
+    }
+    
+    public String getDataEntryStatus(){
+    	if(isDataEntryComplete()) return "Complete";
+    	return "Inprogress";
+    }
+    
+    public StudyDao getStudyDao() {
+		return studyDao;
+	}
+    public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+    
+    /**
+     * Will delete or mark as retired the study agent object mentioned.
+     * @param index
+     */
+    public void deleteStudyAgentAtIndex(int index){
+    	delete(study.getStudyAgents(), index);
+    }
+    
+    /**
+     * Will delete or mark as retired the treatment assignment object mentioned.
+     * @param index
+     */
+    public void deleteTreatmentAssignmentAtIndex(int index){
+    	delete(study.getTreatmentAssignments(), index);
+    }
+    
+    /**
+     * Will delete or mark as retired the study site at specified index.
+     * @param index
+     */
+    public void deleteStudySiteAtIndex(int index){
+    	delete(study.getStudySites(), index);
+    }
+    
+    /**
+     * Will delete or mark as retired the {@link CtepStudyDisease} at specified index.
+     * @param index
+     */
+    public void deleteCtepStudyDiseaseAtIndex(int index){
+    	delete(study.getCtepStudyDiseases(), index);
+    }
+    
 
+    /**
+     * Will delete or mark as retired the {@link MeddraStudyDisease} at specified index.
+     * @param index
+     */
+    public void deleteMeddraStudyDiseaseAtIndex(int index){
+    	delete(study.getMeddraStudyDiseases(), index);
+    }
+
+    /**
+     * Will delete or mark as retired the {@link StudyCondition} at specified index.
+     * @param index
+     */
+    public void deleteStudyConditionAtIndex(int index){
+    	delete(study.getStudyConditions(), index);
+    }
+    
+    /**
+     * Will delete or mark as retired the {@link SiteInvestigator} at specified index.
+     * @param index
+     */
+    public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
+    	study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators().get(index).retire();
+    }
+    
+    /**
+     * Will delete or mark as retired the {@link StudyPersonnel} at specified index.
+     * @param studyOrgIndex
+     * @param index
+     */
+    public void deleteStudyPersonAtIndex(int studyOrgIndex, int index){
+    	study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels().get(index).retire();
+    }
+    
+    /**
+     * This base method will delete or mark retire a retire-able object. 
+     * @param source
+     * @param index
+     */
+    public void delete(List<? extends Retireable> source, int index){
+    		source.get(index).retire();
+    }
+   
+    /**
+     * This method will save a study into the DB
+     */
+    public void save(){
+    	
+         Study mergedStudy = studyDao.merge(study);
+         studyDao.initialize(mergedStudy);
+
+         // now check for study therapies.
+         mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
+         mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
+         mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
+         mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
+
+         mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
+         mergedStudy.setCaaersXMLType(study.getCaaersXMLType());
+         mergedStudy.setCiomsPDFType(study.getCiomsPDFType());
+         mergedStudy.setCiomsSaePDFType(study.getCiomsSaePDFType());
+         mergedStudy.setDcpSAEPDFType(study.getDcpSAEPDFType());
+         mergedStudy.setMedwatchPDFType(study.getMedwatchPDFType());
+
+         setStudy(mergedStudy);
+    }
 }

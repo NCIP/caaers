@@ -60,7 +60,7 @@ public class AgentsTab extends StudyTab {
 
     @Override
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
-        handleStudyAgentAction(command.getStudy(), request.getParameter("_action"), request.getParameter("_selected"), request.getParameter("_selectedInd"));
+        handleStudyAgentAction(command, request.getParameter("_action"), request.getParameter("_selected"), request.getParameter("_selectedInd"));
     }
 
     @Override
@@ -99,6 +99,8 @@ public class AgentsTab extends StudyTab {
         for (StudyAgent sa : command.getStudy().getStudyAgents()) {
             i++;
             InputFieldGroup fieldGrp = new DefaultInputFieldGroup("main" + i);
+            InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + i);
+            
             List<InputField> fields = fieldGrp.getFields();
             InputField agentField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].agent", "Agent", false);
             InputFieldAttributes.setSize(agentField, 70);
@@ -120,27 +122,30 @@ public class AgentsTab extends StudyTab {
                         continue;
                     }
                     j++;
+                    
                     InputField indField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].studyAgentINDAssociations[" + j + "].investigationalNewDrug", "IND #", true);
                     indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
                     InputFieldAttributes.setSize(indField, 11);
-                    fields.add(indField);
+                    indFieldGroup.getFields().add(indField);
                 }
             }// ~if
 
             InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "[" + i + "].partOfLeadIND", "Lead IND ?");
             fields.add(partOfLeadIND);
             map.addInputFieldGroup(fieldGrp);
+            map.addInputFieldGroup(indFieldGroup);
+            
         }
         return map;
     }
 
-    private void handleStudyAgentAction(final Study study, final String action, final String selected, final String selectedInd) {
+    private void handleStudyAgentAction(final StudyCommand command, final String action, final String selected, final String selectedInd) {
+    	Study study = command.getStudy();
+    	
         if ("addStudyAgent".equals(action)) {
             StudyAgent studyAgent = new StudyAgent();
             studyAgent.setAgent(new Agent());
             study.addStudyAgent(studyAgent);
-        } else if ("removeStudyAgent".equals(action)) {
-            study.getStudyAgents().remove(Integer.parseInt(selected));
         } else if ("removeInd".equals(action)) {
             StudyAgent sa = study.getStudyAgents().get(Integer.parseInt(selected));
             List<StudyAgentINDAssociation> sas = sa.getStudyAgentINDAssociations();

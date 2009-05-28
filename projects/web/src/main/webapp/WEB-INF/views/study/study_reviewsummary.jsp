@@ -14,6 +14,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<tags:dwrJavascriptLink objects="createStudy"/>
 <title>${tab.longTitle}</title>
 <style type="text/css">
        .label { width: 12em; padding: 1px;  margin-right: 0.5em; } 
@@ -27,6 +28,20 @@
 	}
 </style> 
 <![endif]-->
+
+<script type="text/javascript">
+	Event.observe(window, "load", function(){
+		var openStudyBtn = $('open-study-btn');
+		if(openStudyBtn){
+			openStudyBtn.observe("click", function(){
+				openStudyBtn.writeAttribute('disabled', 'disabled');
+				createStudy.openStudy(function(status){
+					$('data-entry-status-div').innerHTML = status;
+				})
+			});
+		}
+	});
+</script>
 </head>
 <body>
 
@@ -103,7 +118,12 @@
             	<div class="row">
                 	<div class="label">AdEERS reporting</div>
                 	<div class="value">${command.study.adeersReporting ? 'Yes' : 'No'} </div>
-            	</div>	
+            	</div>
+            	
+            	<div class="row">
+                	<div class="label">Data Entry Status</div>
+                	<div id="data-entry-status-div" class="value">${command.dataEntryStatus} </div>
+            	</div>		
             		
         	</div>
        </chrome:division>
@@ -163,8 +183,10 @@
 			<th scope="col">Investigational new <br /> drug?</th>
 			<th scope="col">Part of <br />lead IND?</th>	
 		</tr>																			
-	 	    
+	 	<c:set var="activeAgentCnt" value="0" />    
 		<c:forEach items="${command.study.studyAgents}" var="studyAgent">
+			<c:if test="${not studyAgent.retired}">
+			<c:set var="activeAgentCnt" value="${activeAgentCnt + 1}" />
 			<tr>						
 				<td>${studyAgent.agentName}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
@@ -173,7 +195,7 @@
 					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-						  <tr><td>${sai.investigationalNewDrug.indNumber eq -111 ? 'CTEP IND' : sai.investigationalNewDrug.indNumber eq -222 ? 'DCP IND' : sai.investigationalNewDrug.indNumber }</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
+						  <tr><td>${sai.investigationalNewDrug.strINDNo}</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
 				 	 </c:forEach>
 					</table>					
 					</c:if>
@@ -181,15 +203,18 @@
 				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
 				<td>${studyAgent.partOfLeadIND ? 'Yes' : 'No' }</td>
 			</tr>
+			
+			</c:if>
 		</c:forEach>				
-		<c:if test="${empty command.study.studyAgents}">
+		<c:if test="${activeAgentCnt lt 1}">
 			<tr class="results">
 				<td colspan="5">No agents are associated to this study</td>
 			</tr>
 		</c:if>
 		</table>
     </chrome:division>
-         
+    
+    <c:set var="activeTACnt" value="0" />     
     <chrome:division title="Treatment Assignments">
     	<!--[if lte IE 6]>
 		<br>
@@ -203,14 +228,17 @@
                  <th scope="col">Comments</th>
             	</tr>
             	<c:forEach items="${command.study.treatmentAssignments}" var="treatmentAssignment" >
+                    <c:if test="${not treatmentAssignment.retired}">
+                    <c:set var="activeTACnt" value="${activeTACnt + 1}" />     
                     <tr class="results">
                         <td>${treatmentAssignment.code}</td>
                         <td>${treatmentAssignment.doseLevelOrder}</td>
                         <td>${treatmentAssignment.description}</td>
                         <td>${treatmentAssignment.comments}</td>
                     </tr>
+                    </c:if>
             	</c:forEach>
-            	<c:if test="${empty command.study.treatmentAssignments}">
+            	<c:if test="${activeTACnt lt 1}">
             	 <tr class="results">
             	  <td colspan="4">No treatment assignment code(TAC) is available to this study</td>
             	 </tr>
@@ -218,7 +246,7 @@
         	</table>
 	</chrome:division>
 		
-		       
+	<c:set var="activeSiteCnt" value="0" />    	       
     <chrome:division title="Sites">
     	<!--[if lte IE 6]>
 		<br>
@@ -229,6 +257,7 @@
 					<th scope="col">Study Site</th>
 				</tr>
 				<c:forEach items="${command.study.studySites}" var="studySite">
+				<c:set var="activeSiteCnt" value="${activeSiteCnt + 1}" /> 
 				<tr class="results">
 					<td>
 					<c:if test="${studySite.organization.externalId != null}">
@@ -239,7 +268,7 @@
 					</td>
 				</tr>
 				</c:forEach>
-				<c:if test="${empty command.study.studySites}">
+				<c:if test="${activeSiteCnt lt 1}">
 				<tr><td class="results">No sites are associated to this study</td></tr>
 				</c:if>
 			</table>	
@@ -457,7 +486,12 @@
 	<chrome:division title="Evaluation Period Types & Solicited Adverse Events">
   		<study:solicitedAETable displayOnly="true" />
     </chrome:division>
-
+	
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+    	<c:if test="${editFlow and not command.dataEntryComplete}">
+    		 <tags:button id="open-study-btn" type="button" value="Open Study" color="green" icon="check" size="small"/>
+    	</c:if>
     </jsp:attribute>
 </tags:tabForm>
 

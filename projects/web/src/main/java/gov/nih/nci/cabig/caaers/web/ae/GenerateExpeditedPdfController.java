@@ -3,7 +3,11 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,11 +25,16 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 public class GenerateExpeditedPdfController extends AbstractCommandController {
 	
+	private ReportDao reportDao;
+	private ExpeditedAdverseEventReportDao aeReportDao;
+	private AdverseEventReportSerializer adverseEventReportSerializer;
+	private AdeersReportGenerator adeersReportGenerator;
+	
 	public GenerateExpeditedPdfController() {
 		setCommandClass(GenerateExpeditedPdfCommand.class);
     }
 	
-	private void generateOutput(String outFile,HttpServletResponse response,String reportId) throws Exception{
+	private void generateOutput(String outFile,HttpServletResponse response,Integer reportId) throws Exception{
 		String tempDir = System.getProperty("java.io.tmpdir");
 		File file = new File(tempDir+File.separator+outFile);
 		FileInputStream fileIn = new FileInputStream(file);
@@ -56,48 +65,61 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
 		
 		String tempDir = System.getProperty("java.io.tmpdir");
-		String aeReportId = request.getParameter("aeReport");
-		String reportId = request.getParameter("reportId");
+		String strAeReportId = request.getParameter("aeReport");
+		String strReportId = request.getParameter("reportId");
 		String format = request.getParameter("format");
+		
    		try {
-    			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao)getApplicationContext().getBean("expeditedAdverseEventReportDao");
-    			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
-    			AdverseEventReportSerializer ser = (AdverseEventReportSerializer)this.getApplicationContext().getBean("adverseEventReportSerializer");
-    			AdeersReportGenerator gen = (AdeersReportGenerator)this.getApplicationContext().getBean("adeersReportGenerator");
-    			if (reportId == null) {
-    				reportId = "0";
+   				Integer aeReportId = Integer.parseInt(strAeReportId);
+   				Integer reportId = Integer.parseInt(strReportId);
+    			ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
+    			Report report = reportDao.getById(reportId);
+    			
+    			//if report is completed xml should be obtained from saved data.
+    			String xml = null;
+    			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
+    				//obtain the saved xml report
+    				ReportContent reportContent = report.getLastVersion().getXmlContent();
+    				if(reportContent == null){
+    					xml =  adverseEventReportSerializer.serialize(aeReport,report);
+    				}else{
+    					xml = new String(reportContent.getContent());
+    				}
+    			}else{
+    				//obtain newly generated caaers xml
+    				xml =  adverseEventReportSerializer.serialize(aeReport,report);
     			}
-                String xml = ser.serialize(aeReport,Integer.parseInt(reportId));
-    			//System.out.print(xml);
+    			
+                
     			
     			if (format.equals("pdf")) {
     			
 	    			String pdfOutFile = "expeditedAdverseEventReport-"+aeReportId+".pdf";
 	    	        // generate report and send ...
 	    			//AdeersReportGenerator gen = new AdeersReportGenerator();
-	    			gen.generatePdf(xml,tempDir+File.separator+pdfOutFile);
+	    			adeersReportGenerator.generatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("medwatchpdf")) {
  
 	    			String pdfOutFile = "MedWatchReport-"+aeReportId+".pdf";
 	    			
-	    			gen.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
+	    			adeersReportGenerator.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("dcp")) {
     				String pdfOutFile = "dcp-"+aeReportId+".pdf";
-    				gen.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
+    				adeersReportGenerator.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("cioms")) {
     				String pdfOutFile = "cioms-"+aeReportId+".pdf";
-    				gen.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
+    				adeersReportGenerator.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("ciomssae")) {
     				String pdfOutFile = "ciomssae-"+aeReportId+".pdf";
-    				gen.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
+    				adeersReportGenerator.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else  {
@@ -119,5 +141,40 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 		
 		return null;
 	}
+
+	public ReportDao getReportDao() {
+		return reportDao;
+	}
+
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
+
+	public ExpeditedAdverseEventReportDao getAeReportDao() {
+		return aeReportDao;
+	}
+
+	public void setAeReportDao(ExpeditedAdverseEventReportDao aeReportDao) {
+		this.aeReportDao = aeReportDao;
+	}
+
+	public AdverseEventReportSerializer getAdverseEventReportSerializer() {
+		return adverseEventReportSerializer;
+	}
+
+	public void setAdverseEventReportSerializer(
+			AdverseEventReportSerializer adverseEventReportSerializer) {
+		this.adverseEventReportSerializer = adverseEventReportSerializer;
+	}
+
+	public AdeersReportGenerator getAdeersReportGenerator() {
+		return adeersReportGenerator;
+	}
+
+	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
+		this.adeersReportGenerator = adeersReportGenerator;
+	}
+	
+	
    
 }

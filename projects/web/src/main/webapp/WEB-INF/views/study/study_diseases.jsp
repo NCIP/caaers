@@ -357,13 +357,15 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="5%" align="center"></th>
     			</tr>
     			 <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease" varStatus="status">
-    			<tr>    				
-            		<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
-            		<td align="center"><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
-            		<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
-            	</tr>
+    				<c:if test="${not studyDisease.retired}">
+    				<tr>    				
+            			<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
+            			<td align="center"><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
+            			<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            		</tr>
+    				</c:if>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.study.ctepStudyDiseases) == 0}" >
+            	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
             	 	<td><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
              </table>
@@ -382,6 +384,7 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
     			<c:forEach items="${command.study.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
+    			<c:if test="${not meddraStudyDisease.retired}">
     			<tr>    				
             		<td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
             		<td align="center"><div class="label">
@@ -389,8 +392,9 @@ Event.observe(window, "load", function() {
                         </div>
                     </td>
             	</tr>
+            	</c:if>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.study.meddraStudyDiseases) == 0}" >
+            	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
             	 	<td><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
             	
@@ -410,12 +414,14 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
     			<c:forEach items="${command.study.studyConditions}" var="studyConditions" varStatus="status">
+    			<c:if test="${not meddraStudyDisease.retired}">
     			<tr>
             		<td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
             		<td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
+            	</c:if>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.study.studyConditions) == 0}" >
+            	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
             	 	<tr><td colspan="2"><div class="label"><i>No terms selected</i></div></td></tr>
             	 </c:if>
 

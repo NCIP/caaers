@@ -70,7 +70,7 @@ public abstract class StudyTab extends TabWithFields<StudyCommand> {
         list.add(new Lov("-1", " - Please select - "));
         if (study.getStudyOrganizations() != null) {
             int i = -1;
-            for (StudyOrganization so : study.getStudyOrganizations()) {
+            for (StudyOrganization so : study.getActiveStudyOrganizations()) {
                 i++;
                 if (so.getOrganization() == null) continue;
                 list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + " (" + so.getRoleName() + ")"));

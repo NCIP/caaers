@@ -39,7 +39,7 @@
                 this.index = index;
             	this.siteIndex = $F('studySiteIndex');
                 this.siteInvestigatorName = siteInvestigatorName;
-            	this.siteInvestigatorPropertyName = "study.studyOrganizations["  + this.siteIndex + "].studyInvestigators[" + index + "].siteInvestigator";
+            	this.siteInvestigatorPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyInvestigators[" + index + "].siteInvestigator";
 
                 this.siteInvestigatorInputId = this.siteInvestigatorPropertyName + "-input";
             	if (siteInvestigatorName) $(this.siteInvestigatorInputId).value = siteInvestigatorName;
@@ -77,7 +77,11 @@
 	 invListEditor = new ListEditor('ssi-table-row', createStudy, "Investigator",{
              addParameters: [],
              addFirstAfter: "ssi-table-head",
+             nextIndexCallback : function(){
+     			return $('_ITEM_COUNT').value;
+ 			 },
              addCallback: function(nextIndex) {
+		 	   $('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
           	   new jsInvestigator(nextIndex);
           	   if ($('ssi-empty-row')){
                     Effect.Fade('ssi-empty-row');
@@ -103,6 +107,7 @@
  <input type="hidden" name="_action" value="">
  <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
  <input type="hidden" name="_selectedInvestigator" value="">
+ <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.activeStudyOrganizations[command.studySiteIndex].studyInvestigators)}">
 
  <table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
@@ -121,11 +126,11 @@
 	    </td>
       	<td valign="top" width="45%">
 			<chrome:box title="Summary" id="participant-entry2" autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.study.studyOrganizations}">
+ 				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
  					<div class ="">
                          <a href="#" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study"> <font size="-1"> <b>${studySite.organization.name}</b></font></a>
  					</div>
-                     <div class="">Investigators Assigned: <b> ${fn:length(studySite.studyInvestigators)}</b></div>
+                     <div class="">Investigators Assigned: <b> ${fn:length(studySite.activeStudyInvestigators)}</b></div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
@@ -136,9 +141,6 @@
 	  </tr>
 	</table>
  </jsp:attribute>	
-
-    <jsp:attribute name="localButtons">
-    </jsp:attribute>
 
 </tags:tabForm>
 </body>

@@ -11,9 +11,7 @@ import java.util.Map;
 
 public class StudyEmptyTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+   
 
     protected StudyTab createTab() {
         EmptyStudyTab tab = new EmptyStudyTab("", "", "");
@@ -30,11 +28,5 @@ public class StudyEmptyTabTestCase extends AbstractStudyWebTestCase {
         assertNotNull(output.get("listOfSolicitedAERows"));
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+    
 }

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.utils.CustomLinkedSet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class SolicitedEventTabTable{
 			eachRowOfSolicitedAE.add(null);
 			eachRowOfSolicitedAE.add(isOtherFieldRequired(command, termIDs[i], ctcTermDao));
 			
-			int numberOfEpochs = command.getEpochs().size(); 
+			int numberOfEpochs = command.getActiveEpochs().size(); 
 			for( int e = 0 ; e < numberOfEpochs ; e++ )
 			  eachRowOfSolicitedAE.add(false);
 			numOfnewlyAddedRows++;
@@ -61,7 +62,7 @@ public class SolicitedEventTabTable{
 
 	public SolicitedEventTabTable( Study command, String[] termIDs, CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao )
 	{
-          listOfEpochs = command.getEpochs();
+          listOfEpochs = command.getActiveEpochs();
 		  
 		  buildConsolidatedListOfSolicitedAEsWithExtraTerms( command, termIDs, ctcTermDao, lowLevelTermDao);
 		  
@@ -71,7 +72,7 @@ public class SolicitedEventTabTable{
 	
 	public SolicitedEventTabTable( Study command )
 	{
-		listOfEpochs = command.getEpochs();
+		listOfEpochs = command.getActiveEpochs();
 		
 		buildConsolidatedListOfSolicitedAEs( listOfEpochs );
 		
@@ -116,26 +117,47 @@ public class SolicitedEventTabTable{
 	{
 		Set<SolicitedAdverseEvent> listOfSolicitedAEs = new LinkedHashSet<SolicitedAdverseEvent>();
 		
-		Term term = command.getAeTerminology().getTerm();
-		if( termIDs != null )
-    		for( String termID : termIDs )
-    		{
-      		  if( term.equals( Term.CTC ) )
-    		  {
-    			  CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
-      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
-      			  solicitedAE.setCtcterm( ctcterm );
-                  listOfSolicitedAEs.add( solicitedAE );
-    		  }
-      		  else
-    		  {
-      			  LowLevelTerm medraterm = lowLevelTermDao.getById(Integer.parseInt(termID));
-      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
-      			  solicitedAE.setLowLevelTerm( medraterm );
-                  listOfSolicitedAEs.add( solicitedAE );
-    		  }
-    		}
+		//add all the terms to a set
+		Set<String> termIDSet = new HashSet<String>();
+		if(termIDs != null){
+			for(String termId : termIDs){
+				termIDSet.add(termId);
+			}
+		}
 		
+		for(Epoch e : listOfEpochs){
+			listOfSolicitedAEs.addAll(getSolicitedAEsForEpoch(e));
+		}
+		
+		Term term = command.getAeTerminology().getTerm();
+		 
+		if(term.equals(Term.CTC)){
+			//now remove the terms that are already avaliable in solicited aes...
+			for(SolicitedAdverseEvent sae : listOfSolicitedAEs){
+				termIDSet.remove(sae.getCtcterm().getId().toString());
+			}
+			//add the terms, available in the set
+			for(String termID : termIDSet){
+				CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
+    			SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+    			solicitedAE.setCtcterm( ctcterm );
+                listOfSolicitedAEs.add( solicitedAE );
+			}
+			
+		}else{
+			//now remove the terms that are already avaliable in solicited aes...
+			for(SolicitedAdverseEvent sae : listOfSolicitedAEs){
+				termIDSet.remove(sae.getLowLevelTerm().getId().toString());
+			}
+			//add for the terms available in the set
+			for(String termID : termIDSet){
+				LowLevelTerm medraterm = lowLevelTermDao.getById(Integer.parseInt(termID));
+    			SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+    			solicitedAE.setLowLevelTerm( medraterm );
+                listOfSolicitedAEs.add( solicitedAE );
+			}
+			
+		}
 		consolidatedListOfSolicitedAEsForAllEpochs.addAll( listOfSolicitedAEs );
 		return consolidatedListOfSolicitedAEsForAllEpochs;
 	}

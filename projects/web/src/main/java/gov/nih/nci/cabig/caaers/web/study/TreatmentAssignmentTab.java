@@ -34,8 +34,7 @@ public class TreatmentAssignmentTab extends StudyTab {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeTreatmentAssignment".equals(action)) {
-            Study study = command.getStudy();
-            study.getTreatmentAssignments().remove(Integer.parseInt(selected));
+        	command.deleteTreatmentAssignmentAtIndex(Integer.parseInt(selected));
         }
     }
 

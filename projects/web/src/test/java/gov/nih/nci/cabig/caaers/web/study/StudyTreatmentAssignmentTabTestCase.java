@@ -19,9 +19,6 @@ import org.springframework.validation.ObjectError;
 
 public class StudyTreatmentAssignmentTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
 
     protected StudyTab createTab() {
         TreatmentAssignmentTab tab = new TreatmentAssignmentTab();
@@ -106,11 +103,5 @@ public class StudyTreatmentAssignmentTabTestCase extends AbstractStudyWebTestCas
         assertEquals("Missing Description", ((ObjectError)errors.getAllErrors().get(1)).getDefaultMessage());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+    
 }

@@ -20,9 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class SolicitedAETabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+   
 
     protected StudyTab createTab() {
         SolicitedAdverseEventTab tab = new SolicitedAdverseEventTab();
@@ -161,11 +159,5 @@ public class SolicitedAETabTestCase extends AbstractStudyWebTestCase {
         assertEquals(0, study.getEpochs().size());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+   
 }

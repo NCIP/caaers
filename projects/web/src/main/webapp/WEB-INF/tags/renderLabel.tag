@@ -1,18 +1,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <c:choose>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <label for="${field.propertyName}-input" class="${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }">
-            <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
-        </label>
+    	<ui:label path="${field.propertyName}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}"/>
     </c:when>
     <c:otherwise>
-         <form:label path="${field.propertyName}" cssClass="${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }">
-            <tags:putSpecialRequiredIndicator field="${field}" />
-            <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
-        </form:label>
+    	<ui:label path="${field.propertyName}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}" />
     </c:otherwise>
 </c:choose>

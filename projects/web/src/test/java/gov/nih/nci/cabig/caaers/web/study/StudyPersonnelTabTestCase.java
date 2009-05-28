@@ -21,9 +21,7 @@ import java.util.Map;
 
 public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
-    protected StudyCommand createCommand() {
-        return createMockCommand();
-    }
+ 
 
     protected StudyTab createTab() {
         PersonnelTab tab = new PersonnelTab();
@@ -153,11 +151,5 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
         assertEquals(1, map.size());
     }
 
-    protected StudyCommand createMockCommand() {
-        StudyCommand command = new StudyCommand();
-        Study study = new Study();
-        command.setStudy(study);
-
-        return command;
-    }
+    
 }
