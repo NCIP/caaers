@@ -24,7 +24,6 @@ function submitPage(s){
 <body>
 
 <div class="tabpane">
-
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab selected">
@@ -39,32 +38,30 @@ function submitPage(s){
     </div>
     
 </div>
-<div style="height:10px"></div>
-<chrome:flashMessage key="statusMessage" />
+<chrome:flashMessage/>
 <chrome:box title="${investigator.lastName}, ${investigator.firstName}" >
 <chrome:division title="Investigator Details">
  <div class="leftpanel">
- <div class="row">
-	<div class="label">First Name</div>
-	<div class="value">${investigator.firstName}</div>
- </div>
-	        
- <div class="row">
-    <div class="label">Last Name</div>
-    <div class="value">${investigator.lastName}</div>
- </div>
-	        
- <div class="row">
-    <div class="label">Middle Name</div>
-    <div class="value">${investigator.middleName}</div>
- </div>
+	 <div class="row">
+		<div class="label">First name</div>
+		<div class="value">${investigator.firstName}</div>
+	 </div>
+	<div class="row">
+	    <div class="label">Middle name</div>
+	    <div class="value">${investigator.middleName}</div>
+	 </div>	        
+	 <div class="row">
+	    <div class="label">Last name</div>
+	    <div class="value">${investigator.lastName}</div>
+	 </div>
+ 	<div class="row">
+		<div class="label">Investigator number</div>
+		<div class="value">${investigator.nciIdentifier} </div>
+   </div>
  </div>
 
  <div class="rightpanel">
-   <div class="row">
-	<div class="label">Investigator number</div>
-	<div class="value">${investigator.nciIdentifier} </div>
-   </div>
+   
    <div class="row">
 	 <div class="label">Email address</div>
 	 <div class="value">${investigator.emailAddress}</div>
@@ -79,7 +76,7 @@ function submitPage(s){
 	 <div class="value">${investigator.faxNumber}</div>
    </div>
    <div class="row">
-	 <div class="label">Login Id</div>
+	 <div class="label">Username</div>
 	 <div class="value">${investigator.loginId}</div>
    </div>
  </div>
@@ -87,6 +84,7 @@ function submitPage(s){
 	
  <c:if test="${not empty investigator.siteInvestigators}">
    <chrome:division title="Associate Sites">
+   <br>
 	 <table class="tablecontent" width="70%">
 	  <tr>
 		 <th scope="col">Site</th>

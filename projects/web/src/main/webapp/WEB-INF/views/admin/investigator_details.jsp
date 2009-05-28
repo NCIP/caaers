@@ -69,7 +69,7 @@ Object.extend(jsInvestigator.prototype, {
 	  
 Event.observe(window, "load", function() {
   <c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
-	new jsInvestigator(${status.index}, '${si.organization.fullName}');
+	new jsInvestigator(${status.index}, "${si.organization.fullName}");
   </c:forEach>
 
   if(${fn:length(command.externalInvestigators) gt 0}){
@@ -203,9 +203,8 @@ Event.observe(window, "load", function() {
             <p>
         <tags:instructions code="investigatordetails" />
         </p>
-		
-    	
-    	<chrome:division title="Investigator Details" id="investigator">
+
+    	<chrome:division title="Demographic Details" id="investigator">
     	
 		<div class="leftpanel">
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
@@ -218,19 +217,13 @@ Event.observe(window, "load", function() {
             </c:forEach>
             <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
 		</div>
-		<div id="test-row" class="row"></div>
-	<c:if test="${(command.id gt 0) }">
-	<div class="row">
-		<div class="value">
-			<input type="submit" value="Sync" id="sync-rs" onClick="javascript:syncInvestigator();"/>
-		</div>
-	</div>
-	</c:if>
-		
+		<br>
+		<br>
 	</chrome:division>
 	<chrome:division title="Associate Organizations">
-	  
+	  <br>
 	  <table class="tablecontent" width="78%">
+	  			
     			<tr id="site-investigator">
     				<th class="tableHeader"><tags:requiredIndicator />Organization</th>
     				<th class="tableHeader"><tags:requiredIndicator />Status</th>
@@ -249,16 +242,25 @@ Event.observe(window, "load", function() {
 	
 	</chrome:division>
         
-        <br>
-        <tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />
+    <br>
+    <tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />
 
      </jsp:attribute>
-
-	<jsp:attribute name="localButtons"> 
-	      	<chrome:division title="">          	
-            </chrome:division>
-	</jsp:attribute>
-
+	
+	<jsp:attribute name="tabControls">
+	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
+	 	
+	 		<jsp:attribute name="customNextButton">
+	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalInvestigator'}">
+	 				<tags:button type="submit" value="Sync" color="blue"
+									id="sync-rs" onclick="javascript:syncInvestigator();" />
+				</c:if>					
+	 		</jsp:attribute>
+	 		
+	 	</tags:tabControls>
+	 </jsp:attribute>		
+	
+		
 </tags:tabForm>
 
 </body>

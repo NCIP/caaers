@@ -143,7 +143,7 @@
 <div class="workflow-tabs2">
     <ul id="" class="tabs autoclear">
         <li id="thirdlevelnav" class="tab selected">
-            <div><a href="createResearchStaff">Create Research Staff</a></div>
+            <div><a href="createResearchStaff">Create/Edit Research Staff</a></div>
         </li>
         <li id="thirdlevelnav" class="tab">
             <div><a href="searchResearchStaff">Search Research Staff</a></div>
@@ -168,7 +168,7 @@
     </c:forEach>
     </chrome:division>
 
-    <chrome:division title="Details">
+    <chrome:division title="Demographic Details">
     <div class="leftpanel">
             <c:forEach begin="0" end="3" items="${fieldGroups.researchStaff.fields}" var="field">
                 <tags:renderRow field="${field}"/>
@@ -182,13 +182,6 @@
         <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
     
     </div>
-	<c:if test="${(command.id gt 0) }">
-	<div class="row">
-		<div class="value">
-			<input type="submit" value="Sync" id="sync-rs" onClick="javascript:syncResearchStaff();"/>
-		</div>
-	</div>
-	</c:if>
     </chrome:division>
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
@@ -248,6 +241,19 @@
 </chrome:division>
 
 </jsp:attribute>
+
+	<jsp:attribute name="tabControls">
+	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
+	 	
+	 		<jsp:attribute name="customNextButton">
+	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalResearchStaff'}">
+	 				<tags:button type="submit" value="Sync" color="blue"
+									id="sync-rs" onclick="javascript:syncResearchStaff();" />
+				</c:if>					
+	 		</jsp:attribute>
+	 		
+	 	</tags:tabControls>
+	 </jsp:attribute>
 
 </tags:tabForm>
 </body>
