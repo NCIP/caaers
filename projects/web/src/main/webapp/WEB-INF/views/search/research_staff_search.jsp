@@ -14,7 +14,7 @@
 <title>Search Research Staff</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <tags:dwrJavascriptLink objects="search"/>
-
+<tags:dwrJavascriptLink objects="createInvestigator" />
 <script language="JavaScript">
 
 function buildTable(form) {
@@ -22,13 +22,16 @@ function buildTable(form) {
 	var type = "";
 	var text = "";
 
-	for (var x=0; x < 3; x++) {
+	for (var x=0; x < 2; x++) {
 	
 		if ($('prop'+x).value.length > 0 ) {
 			text = text +  $('prop'+x).value + ",";
 			type = type +  $('prop'+x).name +',';
 		}
 	}
+
+	text = text + $('organization').value + ",";
+    type = type + "organization" + ',';
 	
 	$('prop').value=type
 	$('value').value=text
@@ -63,27 +66,51 @@ function buildTable(form) {
     <form:form name="searchForm" id="searchForm" method="post">
     <p><tags:instructions code="researchstaffsearch" /></p>
 
-        <chrome:box title="Research Staff Criteria" cssClass="mpaired" autopad="false">
+        <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
             <div class="row">
-                <div class="label"> First Name&nbsp; </div>
+                <div class="label"> First name&nbsp; </div>
                 <div class="value"><input id="prop0" name="firstName" type="text"/></div>
             </div>
 
             <div class="row">
-                <div class="label"> Last Name&nbsp; </div>
+                <div class="label"> Last name&nbsp; </div>
                 <div class="value"><input id="prop1" name="lastName" type="text"/></div>
             </div>
 
             <div class="row">
-                <div class="label">Organization&nbsp; </div>
-                <div class="value"><input id="prop2" name="name" type="text"/></div>
+				<div class="label"> Organization&nbsp; </div>
+					<div class="value">
+						<ui:autocompleter path="organization"
+							initialDisplayValue="Begin typing here..." enableClearButton="true">
+							<jsp:attribute name="populatorJS">
+								function(autocompleter, text) {
+				         				createInvestigator.restrictOrganization(text, function(values) {
+				    					autocompleter.setChoices(values)
+				  					})
+				     			}
+							</jsp:attribute>
+							<jsp:attribute name="selectorJS">
+								function(organization){
+					        		var image;            	
+							    	if(organization.externalId != null){
+							                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+							        } else {
+							                  image = '';
+							        }
+					    			return organization.name + " (" + organization.nciInstituteCode + ")";
+								}
+							</jsp:attribute>
+						</ui:autocompleter>
+					</div>
             </div>
 
-           <div class="endpanes"></div>
-        <div class="row" style="float:right;">
-            <input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
-            <tags:indicator id="indicator" />
-        </div>
+		<div class="row">
+			<div class="value" style="float:left;">
+		   		<tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler'); $('bigSearch').show();"/>
+				<tags:indicator id="indicator"/>
+			</div>
+		</div>
+        
         <div class="endpanes"></div>
     </chrome:box>
 
