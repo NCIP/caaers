@@ -44,7 +44,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     private CSMUserRepository csmUserRepository;
 
     public ResearchStaffTab() {
-        super("Research Staff Details", "Details", "admin/research_staff_details");
+        super("Research Staff Details", "Research Staff Details", "admin/research_staff_details");
         setAutoPopulateHelpKey(true);
     }
 
@@ -84,7 +84,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
             if(loginIdExists){
-            	 errors.reject("USR_001", new Object[]{loginId},  "Login ID or Email address already in use..!");
+            	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }
     }
@@ -101,7 +101,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
         siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
         if (!remoteEntity) {
-        	siteFieldGroup.getFields().add(InputFieldFactory.createAutocompleterField("organization", "Organization", true));
+        	InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
+        	InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
+        	siteFieldGroup.getFields().add(orgInputField);
         } else {
         	siteFieldGroup.getFields().add(InputFieldFactory.createLabelField("organization.name", "Organization", true));
         }
@@ -157,7 +159,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputField phoneNumberField = null;
         if (!remoteEntity) {
         	phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
-        	phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         } else {
         	phoneNumberField = InputFieldFactory.createLabelField("phoneNumber", "Phone", false);
         }        
@@ -168,7 +169,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputField faxNumberField = null;
         if (!remoteEntity) {
         	faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax", false);
-        	faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         } else {
         	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax", false);
         }
@@ -176,7 +176,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         researchStaffFieldGroup.getFields().add(faxNumberField);
         
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Login Id", true);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
 

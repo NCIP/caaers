@@ -82,6 +82,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
             modelAndView.getModel().put("flashMessage", statusMessage);
         	
         }
+        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
         return modelAndView;

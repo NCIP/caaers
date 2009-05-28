@@ -127,6 +127,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
             modelAndView.getModel().put("flashMessage", statusMessage);
         	
         }
+        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("investigator", investigator);
         return modelAndView;

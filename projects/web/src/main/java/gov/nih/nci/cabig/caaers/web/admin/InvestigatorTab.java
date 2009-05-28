@@ -113,11 +113,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         if (organizations != null) {
             options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
         }
-
-        // rfgFactory.addField(InputFieldFactory.createSelectField("organization", "Organization",
-        // false, options));
-        rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
-                "Organization", true));
+        InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
+    	InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
+        rfgFactory.addField(orgInputField);
 
         rfgFactory.addField(InputFieldFactory.createSelectField("statusCode", "Status", true,
                 collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
@@ -125,23 +123,23 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         investigatorFieldGroup = new DefaultInputFieldGroup(INVESTIGATOR_FIELD_GROUP);
         
         if (!remoteEntity) {
-        	investigatorFieldGroup.getFields().add(InputFieldFactory.createTextField("firstName", "First Name", true));
+        	investigatorFieldGroup.getFields().add(InputFieldFactory.createTextField("firstName", "First name", true));
         } else {
-        	investigatorFieldGroup.getFields().add(InputFieldFactory.createLabelField("firstName", "First Name", true));
+        	investigatorFieldGroup.getFields().add(InputFieldFactory.createLabelField("firstName", "First name", true));
         }
         if (!remoteEntity) {
         	investigatorFieldGroup.getFields().add(
-                InputFieldFactory.createTextField("middleName", "Middle Name", false));
+                InputFieldFactory.createTextField("middleName", "Middle name", false));
         } else {
         	investigatorFieldGroup.getFields().add(
-                    InputFieldFactory.createLabelField("middleName", "Middle Name", false));
+                    InputFieldFactory.createLabelField("middleName", "Middle name", false));
         }
         if (!remoteEntity) {
         	investigatorFieldGroup.getFields().add(
-                InputFieldFactory.createTextField("lastName", "Last Name", true));
+                InputFieldFactory.createTextField("lastName", "Last name", true));
         } else {
         	investigatorFieldGroup.getFields().add(
-                    InputFieldFactory.createLabelField("lastName", "Last Name", true));
+                    InputFieldFactory.createLabelField("lastName", "Last name", true));
         }
         if (!remoteEntity) {
         	investigatorFieldGroup.getFields().add(
@@ -166,18 +164,15 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         InputField phoneNumberField = null;
         if (!remoteEntity) {
         	phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
-        	phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         } else {
         	phoneNumberField = InputFieldFactory.createLabelField("phoneNumber", "Phone", true);
         }                
-        // InputFieldAttributes.setSize(phoneNumberField, 30);
         investigatorFieldGroup.getFields().add(phoneNumberField);
         
         InputField faxNumberField = null;
         if (!remoteEntity) {
         	faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
                 FieldValidator.PHONE_VALIDATOR);
-        	faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         } else {
         	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",
                     FieldValidator.PHONE_VALIDATOR);
@@ -186,7 +181,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Login Id", true);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
         InputFieldAttributes.setSize(loginIdField, 30);
         investigatorFieldGroup.getFields().add(loginIdField);
         
@@ -207,7 +202,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
             if(loginIdExists){
-            	 errors.reject("USR_001", new Object[]{loginId},  "Login ID or Email address already in use..!");
+            	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }
         

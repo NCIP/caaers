@@ -76,7 +76,6 @@ public abstract class InvestigatorController<C extends Investigator> extends
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("authenticationMode", getAuthenticationMode());
         return refdata;
-
     }
 
     /**
@@ -162,9 +161,9 @@ public abstract class InvestigatorController<C extends Investigator> extends
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
             }
-            request.setAttribute("statusMessage", statusMessage);
             modelAndView.getModel().put("flashMessage", statusMessage);
         }
+        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("investigator", investigator);
         return modelAndView;

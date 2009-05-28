@@ -128,6 +128,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
             request.setAttribute("statusMessage", statusMessage);
             modelAndView.getModel().put("flashMessage", statusMessage);
         }
+        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
         return modelAndView;

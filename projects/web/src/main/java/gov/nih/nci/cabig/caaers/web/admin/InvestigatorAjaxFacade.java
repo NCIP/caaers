@@ -3,9 +3,13 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.mvc.BaseCommandController;
 
 /**
@@ -44,6 +49,7 @@ public class InvestigatorAjaxFacade {
     private static final Log log = LogFactory.getLog(InvestigatorAjaxFacade.class);
 
     private OrganizationDao organizationDao;
+    private OrganizationRepository organizationRepository;
 
     private Investigator getInvestigatorCommand(final HttpServletRequest request) {
         Investigator investigator = (Investigator) request.getSession().getAttribute(
@@ -125,5 +131,24 @@ public class InvestigatorAjaxFacade {
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
+    
+    
+    /*
+     * added this method to call this wherever any security filtering on organization is required
+     */
+    public List<Organization> restrictOrganization(String text) {
+        List<Organization> orgs = organizationRepository.restrictBySubnames(new String[] { text });
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode","externalId");
+    }
+
+	public OrganizationRepository getOrganizationRepository() {
+		return organizationRepository;
+	}
+
+	@Required
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
+	} 
 
 }
