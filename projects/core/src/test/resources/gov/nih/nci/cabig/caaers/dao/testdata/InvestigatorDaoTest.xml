@@ -15,4 +15,38 @@
         email_address="abc@def.com"
         phone_number="123-456-789"
        />
+     
+    <INVESTIGATORS 
+    	id="-3004"
+    	first_name="Aaron"
+    	last_name="Burr"
+    	email_address="ab@nci.com" 
+    	phone_number="312-555-0102" 
+    	nci_identifier="NCI_ID-01"/> 
+       
+    <INVESTIGATORS 
+    	id="-3005" 
+    	first_name="second investigator" 
+    	last_name="Burr" 
+    	email_address="ab@nci.com" 
+    	phone_number="555-555-5555"/>  
+     
+	<ORGANIZATIONS 
+		id="-1003" 
+		version="1" 
+		name="Cancer and Leukemia Group B" 
+		description_text="NUCC" 
+		nci_institute_code="CALGB"/>
+    
+    <SITE_INVESTIGATORS 
+    	id="-4004" 
+    	status_code="ACT" 
+    	site_id="-1003" 
+    	investigator_id="-3004"/>
+    	
+    <SITE_INVESTIGATORS 
+    	id="-4005" 
+    	status_code="ACT" 
+    	site_id="-1003" 
+    	investigator_id="-3005"/>  
 </dataset>
