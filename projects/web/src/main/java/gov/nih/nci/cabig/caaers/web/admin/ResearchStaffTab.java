@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -11,8 +12,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +37,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     protected static final Log log = LogFactory.getLog(ResearchStaffTab.class);
     private static final String RESEARCH_STAFF_FIELD_GROUP = "researchStaff";
     private static final String SITE_FIELD_GROUP = "site";
+    private ConfigProperty configurationProperty;
 
     private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {UserGroupType.caaers_ae_cd, 
     	UserGroupType.caaers_participant_cd, 
@@ -48,6 +52,14 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         setAutoPopulateHelpKey(true);
     }
 
+    public ConfigProperty getConfigurationProperty() {
+        return configurationProperty;
+    }
+    
+    public void setConfigurationProperty(final ConfigProperty configProperty) {
+        configurationProperty = configProperty;
+    }
+    
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ResearchStaff staff) {
         Map<String, Object> refdata = super.referenceData(request, staff);
@@ -104,8 +116,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         	InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
         	InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
         	siteFieldGroup.getFields().add(orgInputField);
+        	siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("statusCode", "Status", true,
+                    collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
         } else {
         	siteFieldGroup.getFields().add(InputFieldFactory.createLabelField("organization.name", "Organization", true));
+        	siteFieldGroup.getFields().add(InputFieldFactory.createLabelField("statusCode", "Status", true));
         }
         
         researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
@@ -192,6 +207,20 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     @Required
     public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
 		this.csmUserRepository = csmUserRepository;
+	}
+    
+    protected Map<Object, Object> collectOptionsFromConfig(final String configPropertyName,
+            final String nameProperty, final String valueProperty) {
+    		return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,
+    					valueProperty);
+    }
+    
+    protected Map<Object, Object> collectOptions(final List list, final String nameProperty,
+            final String valueProperty) {
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+		options.put("", "Please select");
+		options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));
+		return options;
 	}
 
 }
