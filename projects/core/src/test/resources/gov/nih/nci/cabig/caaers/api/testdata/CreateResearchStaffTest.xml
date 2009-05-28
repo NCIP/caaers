@@ -10,7 +10,8 @@
         <faxNumber>2340980-0983</faxNumber>
         <nciIdentifier>NCI</nciIdentifier>
         <phoneNumber>657-093-0098</phoneNumber> 
-        <loginId>jchapman</loginId>       
+        <loginId>jchapman</loginId> 
+        <statusCode>INA</statusCode>      
         <ns1:organizationRef>
             <nciInstituteCode>NCI</nciInstituteCode>
         </ns1:organizationRef>

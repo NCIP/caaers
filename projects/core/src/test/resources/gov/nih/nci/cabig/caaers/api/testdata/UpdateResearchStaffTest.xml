@@ -10,7 +10,8 @@
         <faxNumber>879-345-0983</faxNumber>
         <nciIdentifier>NCI</nciIdentifier>
         <phoneNumber>657-678-0098</phoneNumber> 
-        <loginId>jchapman</loginId>       
+        <loginId>jchapman</loginId>
+        <statusCode>ACT</statusCode>       
         <ns1:organizationRef>
             <nciInstituteCode>DCP</nciInstituteCode>
         </ns1:organizationRef>
