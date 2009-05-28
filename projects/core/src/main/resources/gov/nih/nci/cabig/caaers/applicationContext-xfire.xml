@@ -67,6 +67,7 @@
 		<property name="participantSynchronizer" ref="participantSynchronizer" />
 		<property name="domainObjectValidator" ref="domainObjectValidator" />
    </bean>	
+   <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
     
   <bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
     <constructor-arg ref="xfire.transportManager"/>
@@ -155,5 +156,22 @@
        	</list>
        </property>
    </bean>
-   
+
+   <!-- caAERS AdverseEventManagement WebService --> 
+   <bean id="adverseEventManagementService" class="org.codehaus.xfire.spring.ServiceBean"> 
+
+       <property name="serviceBean" ref="adverseEventManagementServiceImpl"/>
+       <property name="serviceFactory" ref="jaxbServiceFactory"/>
+       <property name="inHandlers">
+         <list>
+           <ref bean="xFireSchemaValidationHandler"/>
+         </list>
+       </property>
+       <property name="schemas">
+       <list>
+           <value>gov/nih/nci/cabig/caaers/ManageAdverseEventsSchema.xsd</value>
+
+       	</list>
+       </property>
+   </bean>   
  </beans>
