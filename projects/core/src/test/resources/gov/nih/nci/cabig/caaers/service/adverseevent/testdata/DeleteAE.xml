@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria">
-	<ae:adverseEvents xmlns:ae="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
-		<ae:adverseEvent>
+<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+	<ns1:adverseEvents>
+		<ns1:adverseEvent>
 			<grade>4</grade>
 			<hospitalization>YES</hospitalization>
 			<expected>true</expected>
@@ -13,9 +13,9 @@
 				<ctep-code>10043882</ctep-code>
 				<ctc-version>3</ctc-version>-->
 			</adverseEventCtcTerm>	
-		</ae:adverseEvent>
+		</ns1:adverseEvent>
 				
-	</ae:adverseEvents>
+	</ns1:adverseEvents>
 	<ns1:criteria>
 		<participantIdentifier>008</participantIdentifier>
 		<studyIdentifier>009</studyIdentifier>

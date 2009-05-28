@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns2:Criteria xmlns:ns2="http://webservice.caaers.cabig.nci.nih.gov/adverseeventcriteria">
+<ns2:Criteria xmlns:ns2="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
 	<participantIdentifier>008</participantIdentifier>
 	<studyIdentifier>009</studyIdentifier>
 	<course>
