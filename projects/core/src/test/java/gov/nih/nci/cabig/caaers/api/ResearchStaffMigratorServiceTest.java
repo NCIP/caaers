@@ -66,9 +66,8 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertEquals("879-345-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
-			
 			assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
-			
+			assertEquals("ACT", updatedResearchStaff.getStatusCode());
 			
 		} catch (IOException e) {
 			e.printStackTrace();
