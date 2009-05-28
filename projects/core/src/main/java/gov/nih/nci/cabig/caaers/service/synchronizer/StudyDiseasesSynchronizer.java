@@ -1,72 +1,60 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCondition;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
+import org.apache.commons.collections.CollectionUtils;
+/**
+ * @author Monish Domla
+ * @author Biju Joseph (refactored)
+ *
+ */
 public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.caaers.domain.Study>{
 
-	public void migrate(Study dbStudy, Study xmlStudy,
-			DomainObjectImportOutcome<Study> outcome) {
+	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
-		syncCtepDiseases(dbStudy,xmlStudy,outcome);
-		syncMeddraDiseases(dbStudy,xmlStudy,outcome);
+		//ignore if disease section is empty in xmlstudy
+		if(CollectionUtils.isEmpty(xmlStudy.getActiveStudyDiseases()) ){
+			return;
+		}
+		
+		//create an Index of existing study diseases
+		HashMap<AbstractStudyDisease<? extends DomainObject>, AbstractStudyDisease<? extends DomainObject>> dbDiseasesIndexMap = 
+			new HashMap<AbstractStudyDisease<? extends DomainObject>, AbstractStudyDisease<? extends DomainObject>>();
+		
+		for(AbstractStudyDisease<? extends DomainObject> studyDisease : dbStudy.getActiveStudyDiseases()){
+			dbDiseasesIndexMap.put(studyDisease, studyDisease);
+		}
+		
+		//loop through the xml study, then add/update existing diseases
+		for(AbstractStudyDisease<? extends DomainObject> xmlDisease : xmlStudy.getActiveStudyDiseases()){
+			AbstractStudyDisease<? extends DomainObject> disease = dbDiseasesIndexMap.remove(xmlDisease);
+			if(disease == null){
+				//new disease, so add to dbstudy
+				if(xmlDisease instanceof CtepStudyDisease) dbStudy.addCtepStudyDisease((CtepStudyDisease)xmlDisease);
+				if(xmlDisease instanceof MeddraStudyDisease) dbStudy.addMeddraStudyDisease((MeddraStudyDisease)xmlDisease);
+				if(xmlDisease instanceof StudyCondition) dbStudy.addStudyCondition((StudyCondition)xmlDisease);
+				continue;
+			}
+			
+			//update the primary indicator (if CTEP Disease)
+			if(disease instanceof CtepStudyDisease){
+				((CtepStudyDisease)disease).setLeadDisease( ((CtepStudyDisease)xmlDisease).getLeadDisease() );
+			}
+		}
+		
+		//mark retired the diseases still in index
+		AbstractMutableRetireableDomainObject.retire(dbDiseasesIndexMap.values());
 		
 	}
 	
-	private void syncCtepDiseases(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome){
-		
-		List<CtepStudyDisease> newCtepStudyDiseaseList = new ArrayList<CtepStudyDisease>();
-		
-		//Identify New CtepDiseases .
-		for(CtepStudyDisease xmlCtepStudyDisease : xmlStudy.getCtepStudyDiseases()){
-			for(CtepStudyDisease dbCtepStudyDisease : dbStudy.getCtepStudyDiseases()){
-				xmlCtepStudyDisease.setId(dbCtepStudyDisease.getId());
-				if(xmlCtepStudyDisease.getDiseaseTerm().equals(dbCtepStudyDisease.getDiseaseTerm())){
-					dbCtepStudyDisease.setLeadDisease(xmlCtepStudyDisease.getLeadDisease());
-					break;
-				}else{
-					xmlCtepStudyDisease.setId(null);
-				}
-			}
-			if(xmlCtepStudyDisease.getId() == null){
-				newCtepStudyDiseaseList.add(xmlCtepStudyDisease);
-			}
-		}
-		
-		//Add New CtepStudyDiseases
-		for(CtepStudyDisease newCtepStudyDisease : newCtepStudyDiseaseList){
-			dbStudy.getCtepStudyDiseases().add(newCtepStudyDisease);
-		}
-	}
-	
-	private void syncMeddraDiseases(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome){
-		
-		List<MeddraStudyDisease> newMeddraStudyDiseaseList = new ArrayList<MeddraStudyDisease>();
-		
-		//Identify New MeddraStudyDiseases .
-		for(MeddraStudyDisease xmlMeddraStudyDisease : xmlStudy.getMeddraStudyDiseases()){
-			for(MeddraStudyDisease dbMeddraStudyDisease : dbStudy.getMeddraStudyDiseases()){
-				xmlMeddraStudyDisease.setId(dbMeddraStudyDisease.getId());
-				if(xmlMeddraStudyDisease.getMeddraCode().equals(dbMeddraStudyDisease.getTerm().getMeddraCode())){
-					break;
-				}else{
-					xmlMeddraStudyDisease.setId(null);
-				}
-			}
-			if(xmlMeddraStudyDisease.getId() == null){
-				newMeddraStudyDiseaseList.add(xmlMeddraStudyDisease);
-			}
-		}
-		
-		//Add New MeddraStudyDiseases
-		for(MeddraStudyDisease newMeddraStudyDisease : newMeddraStudyDiseaseList){
-			dbStudy.getMeddraStudyDiseases().add(newMeddraStudyDisease);
-		}
-	}
 }

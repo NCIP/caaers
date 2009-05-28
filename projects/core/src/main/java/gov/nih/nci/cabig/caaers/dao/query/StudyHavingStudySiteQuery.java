@@ -11,6 +11,8 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
     private static String STIUDY_SHORT_TITLE = "shortTitle";
 
     private static String STUDY_IDENTIFIER_VALUE = "identifier";
+    
+    private static final String DATA_ENTRY_STATUS = "qcStatus";
 
     public StudyHavingStudySiteQuery() {
 
@@ -43,6 +45,17 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
         String searchString = Identifiervalue.toLowerCase();
         andWhere("lower(ss.study.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
         setParameter(STUDY_IDENTIFIER_VALUE, searchString);
+    }
+    
+    /**
+     * If true, will return only DATA ENTRY completed studies.
+     * @param ignoreNonQCedStudy
+     */
+    public void filterByDataEntryStatus(boolean ignoreNonQCedStudy) {
+        if (ignoreNonQCedStudy) {
+            andWhere("ss.study.dataEntryStatus = :" + DATA_ENTRY_STATUS);
+            setParameter(DATA_ENTRY_STATUS, true);
+        }
     }
 
 }

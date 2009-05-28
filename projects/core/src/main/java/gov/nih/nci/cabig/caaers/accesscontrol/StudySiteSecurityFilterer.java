@@ -72,7 +72,11 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         
         //study filtering is required only for ROLE_caaers_participant_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
 
-        String[] roles = {UserGroupType.caaers_study_cd.getSecurityRoleName(),UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_physician.getSecurityRoleName()};
+        String[] roles = {
+        				  UserGroupType.caaers_study_cd.getSecurityRoleName(),
+        				  UserGroupType.caaers_site_cd.getSecurityRoleName(),
+        				  UserGroupType.caaers_physician.getSecurityRoleName()
+        				  };
         List<String> rolesToExclude = Arrays.asList(roles);
         boolean studyFilteringRequired = studyFilteringRequired(grantedAuthorities, rolesToExclude);
 		boolean isAuthorizedOnThisStudy = true;
@@ -143,8 +147,9 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 	}
 
 	private boolean isUserOrganizationPartOfStudySites( List<String> userOrganizations , Study study) {
-		List<StudyOrganization> soList = study.getStudyOrganizations();
+		List<StudyOrganization> soList = study.getActiveStudyOrganizations();
 		for (StudyOrganization so:soList) {
+			
 			if (so instanceof StudySite) {
 				if (userOrganizations.contains(so.getOrganization().getNciInstituteCode())) {
 					return true;
@@ -161,10 +166,12 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 	private boolean isUserAssignedToStudy(Integer userId, Study study) {
 		// TODO
 		
-		List<StudyOrganization> soList = study.getStudyOrganizations();
+		List<StudyOrganization> soList = study.getActiveStudyOrganizations();
 		for (StudyOrganization so:soList) {
-			List<StudyPersonnel> spList = so.getStudyPersonnels();
+			
+			List<StudyPersonnel> spList = so.getActiveStudyPersonnel();
 			for (StudyPersonnel sp:spList) {
+				if(sp.isInActive()) continue;
 				if (sp.getResearchStaff().getId().equals(userId)) {
 					return true;
 				}

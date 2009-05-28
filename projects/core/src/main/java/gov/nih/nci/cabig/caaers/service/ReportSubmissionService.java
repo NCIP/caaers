@@ -62,7 +62,7 @@ public class ReportSubmissionService {
     		
     		Date today = nowFactory.getNow();
     		//step 1
-    		String caaersXml = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report.getId());
+    		String caaersXml = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
 
     		//if there is no external system to receive, it is assumed that there are no interim report statuses..
     		boolean hasSystemDeliveries = report.hasSystemDeliveries();

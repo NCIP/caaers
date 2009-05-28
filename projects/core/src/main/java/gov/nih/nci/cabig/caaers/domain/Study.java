@@ -21,6 +21,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -97,12 +98,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private Boolean deviceTherapyType = Boolean.FALSE;
     private Boolean surgeryTherapyType = Boolean.FALSE;
     private Boolean behavioralTherapyType = Boolean.FALSE;
-    private Boolean caaersXMLType = Boolean.FALSE;
-    private Boolean adeersPDFType = Boolean.FALSE;
-    private Boolean medwatchPDFType = Boolean.FALSE;
-    private Boolean dcpSAEPDFType = Boolean.FALSE;
-    private Boolean ciomsPDFType = Boolean.FALSE;
-    private Boolean ciomsSaePDFType = Boolean.FALSE;
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     // Used to facilitate import of a coordinating center / funding sponsor
@@ -113,6 +108,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private Design design;
 
     private List<Epoch> epochs=new ArrayList<Epoch>();
+    
+    private Boolean dataEntryStatus;
 
     public Study() {
 
@@ -232,7 +229,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         meddraStudyDisease.setStudy(this);
         meddraStudyDiseases.add(meddraStudyDisease);
     }
-
+    
+    public void addStudyCondition(final StudyCondition studyCondition) {
+        studyCondition.setStudy(this);
+        studyConditions.add(studyCondition);
+    }
+    
+    
     @Transient
     public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
         return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations, StudyCoordinatingCenter.class);
@@ -283,7 +286,96 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void setStudyAgents(final List<StudyAgent> studyAgents) {
         setStudyAgentsInternal(studyAgents);
     }
-
+    
+    /**
+     * Will return the {@link StudyAgent}s that are not retired
+     * @return
+     */
+    @Transient
+    public List<StudyAgent> getActiveStudyAgents(){
+    	List<StudyAgent> agents = new ArrayList<StudyAgent>();
+    	for(StudyAgent sa : getStudyAgents()){
+    		if(!sa.isRetired()) agents.add(sa);
+    	}
+    	return agents;
+    }
+    
+    /**
+     * Will return the {@link StudySite}s that are not retired
+     * @return
+     */
+    @Transient
+    public List<StudySite> getActiveStudySites(){
+    	List<StudySite> sites = new ArrayList<StudySite>();
+    	for(StudySite site : getStudySites()){
+    		if(!site.isRetired()) sites.add(site);
+    	}
+    	return sites;
+    }
+    
+    /**
+     * Will return the {@link StudyOrganization}s that are not retired.
+     * @return
+     */
+    @Transient
+    public List<StudyOrganization> getActiveStudyOrganizations(){
+    	List<StudyOrganization> studyOrgs = new ArrayList<StudyOrganization>();
+    	for(StudyOrganization studyOrg : getStudyOrganizations()){
+    		if(!studyOrg.isRetired()) studyOrgs.add(studyOrg);
+    	}
+    	return studyOrgs;
+    }
+    
+    /**
+     * Will return the {@link TreatmentAssignment}s that are not retired.
+     * @return
+     */
+    @Transient
+    public List<TreatmentAssignment> getActiveTreatmentAssignments(){
+    	List<TreatmentAssignment> tacs = new ArrayList<TreatmentAssignment>();
+    	for(TreatmentAssignment tac : getTreatmentAssignments()){
+    		if(!tac.isRetired()) tacs.add(tac);
+    	}
+    	return tacs;
+    }
+    
+    /**
+     * Will return the {@link AbstractStudyDisease}s that are not retired.
+     * @return
+     */
+    @Transient
+    public List<? extends AbstractStudyDisease<? extends DomainObject>> getActiveStudyDiseases(){
+    	
+    	if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.CTEP)){
+    		List<CtepStudyDisease> diseases = new ArrayList<CtepStudyDisease>();
+    		if(CollectionUtils.isNotEmpty(ctepStudyDiseases)){
+        		for(CtepStudyDisease disease: ctepStudyDiseases){
+        			if(!disease.isRetired()) diseases.add(disease);
+        		}
+        		return diseases;
+        	}
+    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)){
+    		List<MeddraStudyDisease> diseases = new ArrayList<MeddraStudyDisease>();
+    		if(CollectionUtils.isNotEmpty(meddraStudyDiseases)){
+        		for(MeddraStudyDisease disease : meddraStudyDiseases){
+        			if(!disease.isRetired()) diseases.add(disease);
+        		}
+        		return diseases;
+        	}
+    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.OTHER)){
+    		List<StudyCondition> diseases = new ArrayList<StudyCondition>();
+    		if(CollectionUtils.isNotEmpty(studyConditions)){
+        		for(StudyCondition disease : studyConditions){
+        			if(!disease.isRetired()) diseases.add(disease);
+        		}
+        		return diseases;
+        	}
+    	}
+    	
+    	return null;
+    	
+    }
+    
     public boolean hasTherapyOfType(StudyTherapyType therapyType) {
         if (getStudyTherapies() != null) {
             for (StudyTherapy therapy : getStudyTherapies()) {
@@ -368,7 +460,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @OneToMany
     @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "STU_ID")
-    @OrderBy
+    @OrderBy("id")
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
     }
@@ -392,6 +484,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy("id")
     public List<StudyAgent> getStudyAgentsInternal() {
         return lazyListHelper.getInternalList(StudyAgent.class);
     }
@@ -404,6 +497,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
+    @OrderBy("id")
     @UniqueObjectInCollection(message = "Duplicates found in CtepStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<CtepStudyDisease> getCtepStudyDiseases() {
@@ -418,6 +512,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'meddra'")
+    @OrderBy("id")
     @UniqueObjectInCollection(message = "Duplicates found in MeddraStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<MeddraStudyDisease> getMeddraStudyDiseases() {
@@ -527,6 +622,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
+    @OrderBy("id")
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -543,6 +639,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy("id")
     public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
         return lazyListHelper.getInternalList(TreatmentAssignment.class);
     }
@@ -864,7 +961,24 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		
 	public boolean removeEpoch(Epoch epoch){
 		  return epochs.remove(epoch);
-	}	
+	}
+	
+	/**
+	 * This method will list all the {@link Epoch}s that are not retired. 
+	 * @return
+	 */
+	@Transient
+	public List<Epoch> getActiveEpochs(){
+		List<Epoch> epochs = new ArrayList<Epoch>();
+		List<Epoch> allEpochs = getEpochs();
+		if(allEpochs != null ){
+			for(Epoch epoch : allEpochs){
+				if(epoch.isRetired()) continue;
+				epochs.add(epoch);
+			}
+		}
+		return epochs;
+	}
 	
 	//this method is added to satisfy the UI requirements, so to be moved to command classs
 	@Transient
@@ -931,6 +1045,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'dcp'")
+    @OrderBy("id")
     @UniqueObjectInCollection(message = "Duplicate - Same condition is associated to the study more than ones")
     public List<StudyCondition> getStudyConditions() {
         return studyConditions;
@@ -940,10 +1055,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.studyConditions = studyConditions;
     }
 
-    public void addStudyCondition(final StudyCondition studyCondition) {
-        studyCondition.setStudy(this);
-        studyConditions.add(studyCondition);
-    }
 
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
@@ -980,6 +1091,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         expectedAEMeddraTerms.add(expectedAEMeddraLowLevelTerm);
     }
     
+    @Column(name="data_entry_status")
+    public Boolean getDataEntryStatus(){
+    	return dataEntryStatus;
+    }
+    public void setDataEntryStatus(Boolean dataEntryStatus) {
+		this.dataEntryStatus = dataEntryStatus;
+	}
     
     @Override
     public int hashCode() {

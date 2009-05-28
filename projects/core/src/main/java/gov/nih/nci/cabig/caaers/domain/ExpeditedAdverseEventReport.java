@@ -653,6 +653,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
     }
+    
 
     /**
      * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN or {@link ReportStatus}.REPLACED.

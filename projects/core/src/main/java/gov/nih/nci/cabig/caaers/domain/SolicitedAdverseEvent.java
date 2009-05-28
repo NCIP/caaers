@@ -56,6 +56,7 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((ctcterm == null) ? 0 : ctcterm.getId());
+		result = prime * result + ((otherTerm == null) ? 0 : otherTerm.getId());
 		result = prime * result
 				+ ((medraterm == null) ? 0 : medraterm.getId());
 		return result;
@@ -90,4 +91,11 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 		if(getCtcterm() == null) return false;
 		return getCtcterm().isOtherRequired();
     }
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[").append(ctcterm != null ? ctcterm.getFullName() : medraterm.getFullName()).append("]");
+		return sb.toString();
+	}
 }

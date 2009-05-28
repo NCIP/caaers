@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 
@@ -61,7 +62,8 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
         */
         
 	    //study filtering is required only for ROLE_caaers_participant_cd , ROLE_caaers_study_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
-        String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_physician.getSecurityRoleName()};
+        String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),
+        				  UserGroupType.caaers_physician.getSecurityRoleName()};
         List<String> rolesToExclude = Arrays.asList(roles);
         boolean studyFilteringRequired = studyFilteringRequired(grantedAuthorities, rolesToExclude);
 
@@ -81,7 +83,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
      //   	Study study = expeditedAdverseEventReport.getStudy();     	
         	
 			if (studyFilteringRequired) {
-				if (!isUserOrganizationPartOfStudySites(caaersUser.getId(),expeditedAdverseEventReport.getAssignment())) {
+				if (!isUserAssociatedToStudy(caaersUser.getId(),expeditedAdverseEventReport.getAssignment())) {
 					isAuthorizedOnThisStudy=false;
 				}
 			}
@@ -94,27 +96,39 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 		return filterer.getFilteredObject();
 	}
 	private boolean isAuthorized(List<String> userOrganizations , StudyParticipantAssignment assignment) {
-		// check if user is part of co-ordinating center 
-		if (userOrganizations.contains(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		
-		Organization studySite = assignment.getStudySite().getOrganization();
+		//check if the study site is still active?
+		StudySite studySite = assignment.getStudySite();
+		if(studySite.isRetired()) return false;
+		
+		// check if user is part of co-ordinating center 
+		if (userOrganizations.contains(studySite.getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+		
+		Organization site = studySite.getOrganization();
 		//for (StudyOrganization so:soList) {
 			//if (so instanceof StudySite) {
-				if (userOrganizations.contains(studySite.getNciInstituteCode())) {
+				if (userOrganizations.contains(site.getNciInstituteCode())) {
 					return true;
 				}
 			//}			
 		//}
 		return false;
 	}
-	private boolean isUserOrganizationPartOfStudySites(Integer userId, StudyParticipantAssignment assignment) {
-
+	private boolean isUserAssociatedToStudy(Integer userId, StudyParticipantAssignment assignment) {
+		
+		//check if the study site is still active?
+		StudySite studySite = assignment.getStudySite();
+		if(studySite.isRetired()) return false;
+		
 		//StudyOrganization so = assignment.getStudySite();//.getOrganization();
-		List<StudyOrganization> soList = assignment.getStudySite().getStudy().getStudyOrganizations();
+		List<StudyOrganization> soList = assignment.getStudySite().getStudy().getActiveStudyOrganizations();
 
 		for (StudyOrganization so:soList) {
-			List<StudyPersonnel> spList = so.getStudyPersonnels();
+			List<StudyPersonnel> spList = so.getActiveStudyPersonnel();
 			for (StudyPersonnel sp:spList) {
+				
+				if(sp.isInActive()) continue;
+				
 				if (sp.getResearchStaff().getId().equals(userId)) {
 					return true;
 				}

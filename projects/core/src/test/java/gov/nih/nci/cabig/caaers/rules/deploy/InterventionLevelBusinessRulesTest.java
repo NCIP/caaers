@@ -942,5 +942,46 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
 
     }
     
+    /**
+     * 	RuleName : PAG_BR5_CHK
+    	Rule : 'Protocol Agent' must be active."
+    	Error Code : PAG_BR5_ERR
+    	Error Message : Agent is incorrect and is removed from protocol.
+     */
+    public void testRetiredAgentPresentInReport() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	TreatmentInformation ti = aeReport.getTreatmentInformation();
+    	ti.getCourseAgents().get(0).getStudyAgent().retire();
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+
+
+        assertSameErrorCount(errors, 1, "When study agent has been retired");
+        assertCorrectErrorCode(errors, "PAG_BR5_ERR");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[0].studyAgent");
+    }
+    
+    /**
+     * 	RuleName : PAG_BR5_CHK
+    	Rule : 'Protocol Agent' must be active."
+    	Error Code : PAG_BR5_ERR
+    	Error Message : Agent is incorrect and is removed from protocol.
+     */
+    public void testAllAgentsPresentInReportAreRetired() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	TreatmentInformation ti = aeReport.getTreatmentInformation();
+    	ti.getCourseAgents().get(0).getStudyAgent().retire();
+    	ti.getCourseAgents().get(1).getStudyAgent().retire();
+    	
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+
+
+        assertSameErrorCount(errors,2, "When all study agent has been retired");
+        assertCorrectErrorCode(errors, "PAG_BR5_ERR");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[0].studyAgent");
+        assertCorrectFieldNames(errors.getErrorAt(1), "aeReport.treatmentInformation.courseAgents[1].studyAgent");
+    }
+    
 }
 

@@ -43,6 +43,7 @@
             grid_id=""
             load_status="1"
             status="Active - Trial is open to accrual"
+            data_entry_status="1"
             />
     <STUDIES
             id="-3"
@@ -51,16 +52,18 @@
             long_title="Lengthy Title" description="Different description"
             grid_id="f2321"
             load_status="1"
+             data_entry_status="1"
             />
 
     <STUDIES
+    		id="-4"
             grid_id="gridStudy"
-            id="-4"
             multi_institution_indicator="0"
             short_title="Shortest"
             long_title="Event Lengthier Title"
             description="Yet another different description"
-            load_status="0"
+            load_status="1"
+             data_entry_status="0"
             />
     <STUDIES
             id="-5"
@@ -70,6 +73,7 @@
             description="Is this a valid Description"
             grid_id=""
             load_status="1"
+             data_entry_status="1"
             />
 
     <STUDIES id="-999" short_title="dummy" load_status="0"/>
@@ -352,7 +356,16 @@
             site_id="-1002"
             type="SCC"
             />
-
+<STUDY_ORGANIZATIONS
+            id="-1009"
+            version="1"
+            status_code="inactive"
+            start_date="01-01-2001"
+            end_date="01-01-2002"
+            study_id="-4"
+            site_id="-1002"
+            type="SCC"
+            />
     <investigational_new_drugs id="-881" ind_number="-881"/>
     <investigational_new_drugs id="-882" ind_number="-882"/>
     <investigational_new_drugs id="-883" ind_number="-883"/>

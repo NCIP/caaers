@@ -40,7 +40,6 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 
     private Date endDate;
 
-    private Status status = Status.CURRENT;
 
     private TreatmentAssignment treatmentAssignment;
 
@@ -186,15 +185,6 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         this.startDate = startDate;
     }
 
-    @Type(type = "status")
-    @Column(name = "status_code")
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")

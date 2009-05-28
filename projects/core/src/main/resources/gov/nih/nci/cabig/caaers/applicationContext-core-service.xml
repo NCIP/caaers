@@ -70,7 +70,6 @@ This applicationContext contains the definition of the concrete services
 	<bean id="messageNotificationService" class="gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService" autowire="byType"/>
 	<!-- XXX: may want to put this in a different app context -->
 	<bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
-	<bean id="routineAdverseEventReportServiceImpl" class="gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl" autowire="byType"/>
 	<!--  This bean that implements the service  -->
 	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">
 		<property name="scheduler">
@@ -257,9 +256,7 @@ This applicationContext contains the definition of the concrete services
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
 	</bean>	
-	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" >
-		<property name="reportDao" ref="reportDao" />
-	</bean>		
+	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
 	<bean id="freeMarkerService" class="gov.nih.nci.cabig.caaers.service.FreeMarkerService"/>

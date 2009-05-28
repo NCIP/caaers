@@ -27,6 +27,10 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "investigational_new_drugs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_investigational_new_dru_id") })
 public class InvestigationalNewDrug extends AbstractMutableDomainObject {
+	
+	private int CTEP_IND = -111;
+	private int DCP_IND = -222;
+	
     private Integer indNumber;
 
     private INDHolder iNDHolder;
@@ -78,11 +82,20 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
 
     @Transient
     public String getStrINDNo() {
+    	if(indNumber == null) return "";
+    	if(indNumber == CTEP_IND) return "CTEP IND";
+    	if(indNumber == DCP_IND) return "DCP IND";
+    	
         return String.valueOf(indNumber);
     }
 
     public void setStrINDNo(String strINDNo) {
         indNumber = new Integer(strINDNo);
+    }
+    
+    @Transient
+    public String getNumberAndHolderName(){
+    	return getStrINDNo() + " : " + getHolderName();
     }
 
     @Override

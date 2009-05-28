@@ -1,56 +1,52 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.collections.map.HashedMap;
+
+/**
+ * @author Monish Domla
+ * @author Biju Joseph (refactored)
+ *
+ */
 public class StudyAgentsSynchronizer  implements Migrator<gov.nih.nci.cabig.caaers.domain.Study>{
 	
-	public void migrate(Study dbStudy, Study xmlStudy,
-			DomainObjectImportOutcome<Study> outcome) {
+	public void migrate(Study dbStudy, Study xmlStudy, DomainObjectImportOutcome<Study> outcome) {
 		
-		List<StudyAgent> newStudyAgentList = new ArrayList<StudyAgent>();
+		//Ignore if the section is empty
+		if(CollectionUtils.isEmpty(xmlStudy.getStudyAgents())){
+			return;
+		}
 		
-		//Identify newly added StudyAgent.
+		//create an index of existing agents in the dbStudy.
+		HashMap<String, StudyAgent> dbStudyAgentIndexMap = new HashMap<String, StudyAgent>();
+		for(StudyAgent sa : dbStudy.getActiveStudyAgents()){
+			dbStudyAgentIndexMap.put(sa.getAgentName(), sa);
+		}
+
+		//identify new study agents, also update existing ones.
 		for(StudyAgent xmlStudyAgent : xmlStudy.getStudyAgents()){
-			for(StudyAgent dbStudyAgent : dbStudy.getStudyAgents()){
-				
-				String xmlNscNumber = xmlStudyAgent.getAgent().getNscNumber();
-				String dbNscNumber = dbStudyAgent.getAgent().getNscNumber();
-				
-				xmlStudyAgent.setId(dbStudyAgent.getId());
-				if(xmlNscNumber != null && dbNscNumber != null) {
-					if(xmlNscNumber.equals(dbNscNumber)){
-						break;
-					}else{
-						xmlStudyAgent.setId(null);
-					}
-				}else{
-					if(xmlStudyAgent.getAgentName().equals(dbStudyAgent.getAgentName())){
-						break;
-					}else{
-						xmlStudyAgent.setId(null);
-					}
-				}
-				
+			StudyAgent sa = dbStudyAgentIndexMap.remove(xmlStudyAgent.getAgentName());
+			if(sa == null){
+				//newly added one, so add it to study
+				dbStudy.addStudyAgent(xmlStudyAgent);
+				continue;
 			}
-			if(xmlStudyAgent.getId() == null){
-				newStudyAgentList.add(xmlStudyAgent);
-			}
+			
+			//existing one - so update if necessary
+			//BJ : the original code did not do anything, so nothing to update. 
 		}
 		
-		//Adding the new StudyAgents to the existing Study.
-		for(StudyAgent newStudyAgent : newStudyAgentList){
-			dbStudy.getStudyAgents().add(newStudyAgent);
-		}
-		
-		//Need to set the Study for the update to function
-		for(StudyAgent studyAgent : dbStudy.getStudyAgents()){
-			studyAgent.setStudy(dbStudy);
-		}
+		//now soft delete, all the ones not present in XML Study
+		AbstractMutableRetireableDomainObject.retire(dbStudyAgentIndexMap.values());
 	}
 }

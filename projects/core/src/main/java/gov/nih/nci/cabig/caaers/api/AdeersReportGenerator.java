@@ -92,8 +92,8 @@ public class AdeersReportGenerator {
     	return adverseEventReportSerializer.serialize(aeReport);
     }
 
-    public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,int reportId) throws Exception{
-    	return adverseEventReportSerializer.serialize(aeReport,reportId );
+    public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
+    	return adverseEventReportSerializer.serialize(aeReport,report );
     }
     
     /**

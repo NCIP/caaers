@@ -37,7 +37,7 @@ public class StudySite extends StudyOrganization {
     private Date startDate;
 
     private Date endDate;
-
+    
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
 
     // TODO : to be removed.
@@ -86,13 +86,6 @@ public class StudySite extends StudyOrganization {
         this.startDate = startDate;
     }
 
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
 
     public Date getEndDate() {
         return endDate;
@@ -101,6 +94,8 @@ public class StudySite extends StudyOrganization {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+    
+    
 
     @Override
     @Transient

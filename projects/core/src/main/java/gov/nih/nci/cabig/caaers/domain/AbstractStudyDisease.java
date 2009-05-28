@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
@@ -24,6 +23,7 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 
 @Entity
@@ -33,7 +33,7 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorValue("ABSTRACT_TERM")
 // should be ignored
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_diseases_id") })
-public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject implements Serializable {
+public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableRetireableDomainObject implements Serializable {
     private T term;
     private Study study;
 
@@ -50,11 +50,12 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends Abstr
         this.study = study;
     }
 
-    @Transient
+   
     /*
      * this is only transient here -- subclasses need to override it and specify what it refers to
      * This should work: @ManyToOne @JoinColumn(name = "cause_id", nullable = false)
      */
+    @Transient
     public T getTerm() {
         return term;
     }

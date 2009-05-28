@@ -10,12 +10,14 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 
 public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig.caaers.domain.Study>{
 
-	public void migrate(Study dbStudy, Study xmlStudy,
-			DomainObjectImportOutcome<Study> outcome) {
+	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
 		
 		//migrate funding sponsor
@@ -29,52 +31,46 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 		
 	}
 	
-	
+	/**
+	 * This method will synchronize the study site
+	 * @param dbStudy
+	 * @param xmlStudy
+	 * @param outcome
+	 */
 	private void syncStudySite(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
-		List<StudySite> newStudySiteList = new ArrayList<StudySite>();
+		//do nothing if study sites section is empty in xmlStudy
+		if(CollectionUtils.isNotEmpty(xmlStudy.getStudySites())){
+			return;
+		}
 		
-		//Identify New StudySites .
+		//create an index consisting of sites, in dbStudy
+		HashMap<String, StudySite> siteIndexMap = new HashMap<String, StudySite>();
+		for(StudySite ss : dbStudy.getStudySites()){
+			siteIndexMap.put(generateIndexKey(ss), ss);
+		}
+		
+		//loop through xmlStudy sites, and sync the personnel and investigators
 		for(StudySite xmlStudySite : xmlStudy.getStudySites()){
-			for(StudySite dbStudySite : dbStudy.getStudySites()){
-				
-				String xmlNciInstituteCode = xmlStudySite.getOrganization().getNciInstituteCode();
-				String dbNciInstituteCode = dbStudySite.getOrganization().getNciInstituteCode();
-				String xmlOrgName = xmlStudySite.getOrganization().getName();
-				String dbOrgName = dbStudySite.getOrganization().getName();
-				
-				xmlStudySite.setId(dbStudySite.getId());
-				if(xmlNciInstituteCode != null && dbNciInstituteCode != null){
-					if(xmlNciInstituteCode.equals(dbNciInstituteCode)){
-						syncStudyInvestigators(dbStudySite,xmlStudySite,dbStudySite.getOrganization(),outcome);
-						syncStudyPersonnels(dbStudySite,xmlStudySite,dbStudySite.getOrganization(),outcome);
-						break;
-					}else{
-						xmlStudySite.setId(null);
-					}
-				}else{
-					if(xmlOrgName.equals(dbOrgName)){
-						syncStudyInvestigators(dbStudySite,xmlStudySite,dbStudySite.getOrganization(),outcome);
-						syncStudyPersonnels(dbStudySite,xmlStudySite,dbStudySite.getOrganization(),outcome);
-						break;
-					}else{
-						xmlStudySite.setId(null);
-					}
-				}
+			StudySite ss = siteIndexMap.remove(generateIndexKey(xmlStudySite));
+			if(ss == null){
+				//new so add it to dbStudy
+				dbStudy.addStudySite(xmlStudySite);
+				continue;
 			}
-			if(xmlStudySite.getId() == null){
-				newStudySiteList.add(xmlStudySite);
-			}
+			
+			//sync the staff & investigators
+			syncStudyInvestigators(ss, xmlStudySite, ss.getOrganization(), outcome);
+			syncStudyPersonnels(ss, xmlStudySite, ss.getOrganization(), outcome);
+			
 		}
 		
-		//Add New StudySites
-		for(StudySite newStudySite : newStudySiteList){
-			dbStudy.getStudySites().add(newStudySite);
+		//de-activate, all the other sites and their investigators and personnel
+		for(StudySite ss : siteIndexMap.values()){
+			ss.deactivate();
 		}
 		
-		for(StudySite studySite : dbStudy.getStudySites()){
-			studySite.setStudy(dbStudy);
-		}
+		
 	}
 	
 	private void syncFundingSponsor(Study dbStudy, Study xmlStudy, DomainObjectImportOutcome<Study> outcome ){
@@ -113,7 +109,20 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
+		if(xmlStudyOrganization.getStudyInvestigators() != null){
+			if(xmlStudyOrganization.getStudyInvestigators().size() == 0){
+				if(dbStudyOrganization.getStudyInvestigators() != null){
+					while(!dbStudyOrganization.getStudyInvestigators().isEmpty()){
+						dbStudyOrganization.getStudyInvestigators().remove(0);
+					}
+				}
+				return;
+			}
+		}
+		
 		List<StudyInvestigator> newStudyInvestigatorList = new ArrayList<StudyInvestigator>();
+		List<StudyInvestigator> deleteStudyInvestigatorList = new ArrayList<StudyInvestigator>();
+		StudyInvestigator remStudyInvestigator = null;
 		
 		//Identify newly added StudyInvestigators
 		for(StudyInvestigator xmlStudyInvestigator : xmlStudyOrganization.getStudyInvestigators()){
@@ -150,9 +159,44 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 			}
 		}
 		
+		//Identify StudyInvestigators to be Removed
+		for(StudyInvestigator dbStudyInvestigator : dbStudyOrganization.getStudyInvestigators()){
+			for(StudyInvestigator xmlStudyInvestigator : xmlStudyOrganization.getStudyInvestigators()){
+				remStudyInvestigator = new StudyInvestigator();
+				remStudyInvestigator = dbStudyInvestigator;
+				
+				String xmlNciIdentifier = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
+				String dbNciIdentifier = remStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
+				String xmlFName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
+				String dbFName = remStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
+				String xmlLName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
+				String dbLName = remStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
+				
+				if(dbNciIdentifier != null && xmlNciIdentifier != null){
+					if(dbNciIdentifier.equals(xmlNciIdentifier)){
+						remStudyInvestigator = null;
+						break;
+					}
+				}else{
+					if(dbFName.equals(xmlFName) && dbLName.equals(xmlLName)){
+						remStudyInvestigator = null;
+						break;
+					}
+				}
+			}
+			if(remStudyInvestigator != null){
+				deleteStudyInvestigatorList.add(remStudyInvestigator);
+			}
+		}
+		
 		//Add New StudyInvestigators
 		for(StudyInvestigator newStudyInvestigator : newStudyInvestigatorList){
 			dbStudyOrganization.getStudyInvestigators().add(newStudyInvestigator);
+		}
+		
+		//Remove StudyInvestigators
+		for(StudyInvestigator delStudyInvestigator : deleteStudyInvestigatorList){
+			dbStudyOrganization.getStudyInvestigators().remove(delStudyInvestigator);
 		}
 		
 		for(StudyInvestigator studyInvestigator : dbStudyOrganization.getStudyInvestigators()){
@@ -166,7 +210,20 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
+		if(xmlStudyOrganization.getStudyPersonnels() != null){
+			if(xmlStudyOrganization.getStudyPersonnels().size() == 0){
+				if(dbStudyOrganization.getStudyPersonnels() != null){
+					while(!dbStudyOrganization.getStudyPersonnels().isEmpty()){
+						dbStudyOrganization.getStudyPersonnels().remove(0);
+					}
+				}
+				return;
+			}
+		}
+		
 		List<StudyPersonnel> newStudyPersonnelList = new ArrayList<StudyPersonnel>();
+		List<StudyPersonnel> deleteStudyPersonnelList = new ArrayList<StudyPersonnel>();
+		StudyPersonnel remStudyPersonnel = null;
 		
 		//Identify newly added StudyPersonnel
 		for(StudyPersonnel xmlStudyPersonnel : xmlStudyOrganization.getStudyPersonnels()){
@@ -203,9 +260,44 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 			}
 		}
 		
+		//Identify StudyPersonnel to be Removed
+		for(StudyPersonnel dbStudyPersonnel : dbStudyOrganization.getStudyPersonnels()){
+			for(StudyPersonnel xmlStudyPersonnel : xmlStudyOrganization.getStudyPersonnels()){
+				remStudyPersonnel = new StudyPersonnel();
+				remStudyPersonnel = dbStudyPersonnel;
+				
+				String xmlNciIdentifier = xmlStudyPersonnel.getResearchStaff().getNciIdentifier();
+				String dbNciIdentifier = remStudyPersonnel.getResearchStaff().getNciIdentifier();
+				String xmlFName = xmlStudyPersonnel.getResearchStaff().getFirstName();
+				String dbFName = remStudyPersonnel.getResearchStaff().getFirstName();
+				String xmlLName = xmlStudyPersonnel.getResearchStaff().getLastName();
+				String dbLName = remStudyPersonnel.getResearchStaff().getLastName();
+				
+				if(dbNciIdentifier != null && xmlNciIdentifier != null){
+					if(dbNciIdentifier.equals(xmlNciIdentifier)){
+						remStudyPersonnel = null;
+						break;
+					}
+				}else{
+					if(dbFName.equals(xmlFName) && dbLName.equals(xmlLName)){
+						remStudyPersonnel = null;
+						break;
+					}
+				}
+			}
+			if(remStudyPersonnel != null){
+				deleteStudyPersonnelList.add(remStudyPersonnel);
+			}
+		}
+		
 		//Add New StudyPersonnel
 		for(StudyPersonnel newStudyPersonnel : newStudyPersonnelList){
 			dbStudyOrganization.getStudyPersonnels().add(newStudyPersonnel);
+		}
+		
+		//Remove StudyPersonnel
+		for(StudyPersonnel delStudyPersonnel : deleteStudyPersonnelList){
+			dbStudyOrganization.getStudyPersonnels().remove(delStudyPersonnel);
 		}
 		
 		for(StudyPersonnel studyPersonnel : dbStudyOrganization.getStudyPersonnels()){
@@ -213,5 +305,13 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 		}
 		
 	}//end method
+	
+	private String generateIndexKey(StudyOrganization so){
+		Organization o = so.getOrganization();
+		String nciCode = o.getNciInstituteCode();
+		String name = o.getName();
+		assert nciCode != null || name != null : " Organization Name and NCICode, atleast one should be present";
+		return ((nciCode == null) ? "" : nciCode + "%" ) + ( (name == null) ? "" : name); 
+	}
 
 }

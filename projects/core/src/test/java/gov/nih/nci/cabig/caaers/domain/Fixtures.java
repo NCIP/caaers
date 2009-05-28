@@ -218,6 +218,7 @@ public class Fixtures {
     public static CtcTerm createCtcTerm(final String ctepTerm, final String ctepCode){
     	CtcTerm cTerm = new CtcTerm();
     	cTerm.setCtepTerm(ctepTerm);
+    	cTerm.setTerm(ctepTerm);
     	cTerm.setCtepCode(ctepCode);
     	return cTerm;
     }
@@ -410,6 +411,13 @@ public class Fixtures {
 		meddraStudyDisease.setStudy(s);
 		return meddraStudyDisease;
 		
+    }
+    
+    public static StudyCondition createStudyCondition(Study s, Condition c){
+    	StudyCondition sc = new StudyCondition();
+    	sc.setTerm(c);
+    	s.addStudyCondition(sc);
+    	return sc;
     }
     
     public static AdverseEventReportingPeriod createReportingPeriod(){

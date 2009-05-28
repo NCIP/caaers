@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -7,68 +10,92 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+/**
+ * @author Monish Domla
+ * @author Biju Joseph (refactored)
+ *
+ */
 public class StudyEvaluationPeriodsSynchronizer implements Migrator<gov.nih.nci.cabig.caaers.domain.Study>{
 
-	public void migrate(Study dbStudy, Study xmlStudy,
-			DomainObjectImportOutcome<Study> outcome) {
+	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
-		List<Epoch> newEpochList = new ArrayList<Epoch>();
+		//ignore if epochs is empty in xmlStudy
+		if(CollectionUtils.isEmpty(xmlStudy.getEpochs()) ){
+			return;
+		}
 		
-		//Identify New Epochs
+		//create an index map
+		HashMap<String, Epoch> dbEpochIndexMap = new HashMap<String,Epoch>();
+		for(Epoch epoch : dbStudy.getActiveEpochs()){
+			dbEpochIndexMap.put(epoch.getName(), epoch);
+		}
+		
+		//identify new epochs, also modify existing ones
 		for(Epoch xmlEpoch : xmlStudy.getEpochs()){
-			for(Epoch dbEpoch : dbStudy.getEpochs()){
-				xmlEpoch.setId(dbEpoch.getId());
-				if(xmlEpoch.getName().equals(dbEpoch.getName())){
-					syncSolicitedAEs(xmlEpoch,dbEpoch);
-					break;
-				}else{
-					xmlEpoch.setId(null);
-				}
+			Epoch dbEpoch = dbEpochIndexMap.remove(xmlEpoch.getName());
+			if(dbEpoch == null){
+				//newly added, so add it to study
+				dbStudy.addEpoch(xmlEpoch);
+				continue;
 			}
-			if(xmlEpoch.getId() == null){
-				newEpochList.add(xmlEpoch);
+			//update the epoch details & solicited aes
+			dbEpoch.setDescriptionText(xmlEpoch.getDescriptionText());
+			dbEpoch.setEpochOrder(xmlEpoch.getEpochOrder());
+			
+			//sync - solicited aes
+			if(!CollectionUtils.isEmpty(xmlEpoch.getArms())){
+				syncSolicitedAEs(xmlEpoch, dbEpoch);
 			}
+			
 		}
 		
-		//Add New Epochs
-		for(Epoch newEpoch : newEpochList){
-			dbStudy.getEpochs().add(newEpoch);
-		}
+		//now soft delete the Epochs that are not in xmlStudy
+		AbstractMutableRetireableDomainObject.retire(dbEpochIndexMap.values());
+		
 	}
 	
+	/**
+	 * {@link SolicitedAdverseEvent}s, just need to be removed, if, not present in xml study
+	 * @param xmlEpoch
+	 * @param dbEpoch
+	 */
 	private void syncSolicitedAEs(Epoch xmlEpoch,Epoch dbEpoch){
 		
-		if(xmlEpoch.getArms().get(0).getSolicitedAdverseEvents() != null){
-			if(xmlEpoch.getArms().get(0).getSolicitedAdverseEvents().size() == 0){
-				if(dbEpoch.getArms().get(0).getSolicitedAdverseEvents() != null){
-					dbEpoch.getArms().get(0).getSolicitedAdverseEvents().clear();
-				}
-				return;
+		Arm xmlArm = xmlEpoch.getArms().get(0);
+		Arm dbArm = dbEpoch.getArms().get(0);
+		
+		List<SolicitedAdverseEvent> xmlSolicitedEvents = xmlArm.getSolicitedAdverseEvents();
+		List<SolicitedAdverseEvent> dbSolicitedEvents = dbArm.getSolicitedAdverseEvents();
+		
+		//if solicited evenst are not present in xmlStudy, check if dbStudy if empty (create one)
+		if(CollectionUtils.isEmpty(xmlSolicitedEvents)){
+			if(dbSolicitedEvents == null){
+				dbArm.setSolicitedAdverseEvents(new ArrayList<SolicitedAdverseEvent>());
+			}
+			return; //already did the processing so QUIT
+		}
+		
+		//Create and Index of  DB Solicited Adverse events
+		HashMap<SolicitedAdverseEvent, SolicitedAdverseEvent> dbSolicitedEventIndexMap = new HashMap<SolicitedAdverseEvent, SolicitedAdverseEvent>();
+		for(SolicitedAdverseEvent dbSolicitedAdverseEvent : dbSolicitedEvents){
+			dbSolicitedEventIndexMap.put(dbSolicitedAdverseEvent, dbSolicitedAdverseEvent);
+		}
+		
+		//Add new solicited events
+		for(SolicitedAdverseEvent xmlSolicitedEvent : xmlSolicitedEvents){
+			if(dbSolicitedEventIndexMap.remove(xmlSolicitedEvent) == null){
+				//new - add it to the dbArm
+				dbSolicitedEvents.add(xmlSolicitedEvent);
 			}
 		}
 		
-		List<SolicitedAdverseEvent> newSolicitedAdverseEventList = new ArrayList<SolicitedAdverseEvent>();
-		
-		//Identify Newly added SolicitedAdverseEvents
-		for(SolicitedAdverseEvent xmlSolicitedAdverseEvent : xmlEpoch.getArms().get(0).getSolicitedAdverseEvents()){
-			for(SolicitedAdverseEvent dbSolicitedAdverseEvent : dbEpoch.getArms().get(0).getSolicitedAdverseEvents()){
-				xmlSolicitedAdverseEvent.setId(dbSolicitedAdverseEvent.getId());
-				if(xmlSolicitedAdverseEvent.equals(dbSolicitedAdverseEvent)){
-					break;
-				}else{
-					xmlSolicitedAdverseEvent.setId(null);
-				}
-			}
-			if(xmlSolicitedAdverseEvent.getId() == null){
-				newSolicitedAdverseEventList.add(xmlSolicitedAdverseEvent);
-			}
+		//remove all the ones' not available in xml study.
+		for(SolicitedAdverseEvent solicitedAdverseEvent : dbSolicitedEventIndexMap.keySet()){
+			dbSolicitedEvents.remove(solicitedAdverseEvent);
 		}
 		
-		//Add New Epochs
-		for(SolicitedAdverseEvent newSolicitedAdverseEvent : newSolicitedAdverseEventList){
-			dbEpoch.getArms().get(0).getSolicitedAdverseEvents().add(newSolicitedAdverseEvent);
-		}
 	}
+	
 }

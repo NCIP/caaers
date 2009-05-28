@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -15,11 +15,12 @@ import org.hibernate.annotations.Parameter;
  * This class represents the StudyPersonnel domain object associated with the Adverse event report.
  * 
  * @author Kulasekaran
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "study_personnel")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_personnel_id") })
-public class StudyPersonnel extends AbstractMutableDomainObject implements StudyOrganizationChild {
+public class StudyPersonnel extends AbstractMutableRetireableDomainObject implements StudyOrganizationChild {
 
     private String roleCode;
 
@@ -28,6 +29,10 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
     private ResearchStaff researchStaff;
 
     private StudyOrganization studyOrganization;
+    
+    public void deactivate(){
+    	this.statusCode = "Inactive";
+    }
 
     @ManyToOne
     @JoinColumn(name = "research_staffs_id")
@@ -66,6 +71,16 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
     }
+    
+    @Transient
+    public boolean isActive(){
+    	return StringUtils.equals(statusCode, "Active");
+    }
+    
+    @Transient
+    public boolean isInActive(){
+    	return StringUtils.equals(statusCode, "Inactive");
+    }
 
     // /OBJECT METHODS
     @Override
@@ -84,6 +99,8 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final StudyPersonnel other = (StudyPersonnel) obj;
+        
+        if(this.isRetired() || other.isRetired()) return false;
         if (researchStaff == null) {
             if (other.researchStaff != null) return false;
         } else if (!researchStaff.equals(other.researchStaff)) return false;

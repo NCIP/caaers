@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
@@ -22,11 +26,13 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 /**
  * This class encapsulates all types of organizations associated with a Study
  * 
  * @author Ram Chilukuri
+ * @author Biju Joseph
  * 
  */
 @Entity
@@ -34,14 +40,18 @@ import org.hibernate.annotations.Parameter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_organizations_id") })
-public abstract class StudyOrganization extends AbstractMutableDomainObject implements StudyChild {
-
+public abstract class StudyOrganization extends AbstractMutableRetireableDomainObject implements StudyChild {
+	
     private Study study;
 
     private Organization organization;
 
     private LazyListHelper lazyListHelper;
-
+    
+    private String status;
+    
+    private Date statusDate;
+    
     public StudyOrganization() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(StudyInvestigator.class, new StudyOrganizationChildInstantiateFactory<StudyInvestigator>(this, StudyInvestigator.class));
@@ -57,7 +67,38 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
         getStudyInvestigators().add(studyInvestigator);
         studyInvestigator.setStudyOrganization(this);
     }
+    
+    /**
+     * This method will deactivate this study organization.
+     * Will change the status of this study organization and all associated {@link StudyPersonnel} and {@link StudyInvestigator} to  'Inactive'.
+     */
+    public void deactivate(){
+    	this.status = "Inactive";
+    	for(StudyPersonnel sp : getStudyPersonnels()){
+    		sp.deactivate();
+    	}
+    	for(StudyInvestigator si : getStudyInvestigators()){
+    		si.deactive();
+    	}
+    }
+    
+    @Column(name = "status_code")
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getStatusDate() {
+		return statusDate;
+	}
+    public void setStatusDate(Date statusDate) {
+		this.statusDate = statusDate;
+	}
+    
     @ManyToOne
     @JoinColumn(name = "site_id", nullable = false)
     @Cascade(value = { CascadeType.LOCK})
@@ -81,6 +122,19 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
     public void setStudyInvestigatorsInternal(List<StudyInvestigator> studyInvestigators) {
         lazyListHelper.setInternalList(StudyInvestigator.class, studyInvestigators);
     }
+    
+    /**
+     * This method will return all {@link StudyInvestigator}s that are not retired
+     * @return
+     */
+    @Transient
+    public List<StudyInvestigator> getActiveStudyInvestigators(){
+    	List<StudyInvestigator> investigators = new ArrayList<StudyInvestigator>();
+    	for(StudyInvestigator si : getStudyInvestigators()){
+    		if(!si.isRetired()) investigators.add(si);
+    	}
+    	return investigators;
+    }
 
     @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -91,7 +145,20 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
     public void setStudyPersonnelsInternal(List<StudyPersonnel> studyPersonnels) {
         lazyListHelper.setInternalList(StudyPersonnel.class, studyPersonnels);
     }
+    
 
+    /**
+     * This method will return all {@link StudyPersonnel}s that are not retired
+     * @return
+     */
+    @Transient
+    public List<StudyPersonnel> getActiveStudyPersonnel(){
+    	List<StudyPersonnel> personnel = new ArrayList<StudyPersonnel>();
+    	for(StudyPersonnel si : getStudyPersonnels()){
+    		if(!si.isRetired()) personnel.add(si);
+    	}
+    	return personnel;
+    }
     @Transient
     public List<StudyPersonnel> getStudyPersonnels() {
         return lazyListHelper.getLazyList(StudyPersonnel.class);
@@ -121,6 +188,16 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
     @Transient
     public abstract String getRoleName();
     
+    @Transient
+    public boolean isActive(){
+    	return StringUtils.equals("Active", status);
+    }
+    
+    @Transient
+    public boolean isInactive(){
+    	return StringUtils.equals("Inactive", status);
+    }
+    
     /**
      * This method will return the list of users having a specific role.
      * @param personRole
@@ -148,6 +225,7 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
         final int prime = 31;
         int result = 1;
         result = prime * result + (getOrganization() == null ? 0 : getOrganization().hashCode());
+        result = prime * result + (getStudy() == null ? 0 : getStudy().hashCode());
         return result;
     }
 

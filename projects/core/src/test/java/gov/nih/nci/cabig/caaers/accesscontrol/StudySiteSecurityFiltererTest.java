@@ -89,4 +89,46 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		assertEquals(filteredList.size(),1);		
 	}
 	
+
+	public void testFilterAsAdverseEventCoordinator_InactiveOnStudy() {
+		//disable security before query 
+		disableAuthorization();
+		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
+		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+		assertEquals(studies.size(),3);
+		
+		//enable security 
+		enableAuthorization();		
+		//login as AE Coordinator.
+		SecurityTestUtils.switchUser("1002@def.com", UserGroupType.caaers_ae_cd.getSecurityRoleName());
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Filterer filterer = new CollectionFilterer(studies); 
+		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
+		System.out.println(filteredList);
+		
+		assertEquals(filteredList.size(),0);		
+	}
+	
+
+	public void testFilterAsAdverseEventCoordinator_RetiredOnStudy() {
+		//disable security before query 
+		disableAuthorization();
+		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
+		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+		assertEquals(studies.size(),3);
+		
+		//enable security 
+		enableAuthorization();		
+		//login as AE Coordinator.
+		SecurityTestUtils.switchUser("1003@def.com", UserGroupType.caaers_ae_cd.getSecurityRoleName());
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Filterer filterer = new CollectionFilterer(studies); 
+		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
+		System.out.println(filteredList);
+		
+		assertEquals(filteredList.size(),0);		
+	}
+	
 }

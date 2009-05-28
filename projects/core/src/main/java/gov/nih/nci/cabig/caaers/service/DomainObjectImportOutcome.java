@@ -153,14 +153,6 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
     }
 
 
-    public void addErrorMessageForRoutineAdverseEventReport(final RoutineAdverseEventReport xstreamRoutineAdverseEventReport) {
-        ifNullObject(xstreamRoutineAdverseEventReport.getStatus(), Severity.ERROR, "Status is either Empty or Not Valid");
-        ifNullObject(xstreamRoutineAdverseEventReport.getStartDate(), Severity.ERROR, "Start Date is either Empty or Not Valid");
-        ifNullObject(xstreamRoutineAdverseEventReport.getEndDate(), Severity.ERROR, "End Date is either Empty or Not Valid");
-
-    }
-
-
     public void addErrorMessageForIdentifiers(final List<Identifier> identifiers) {
         ifNullOrEmptyList(identifiers, Severity.ERROR,
                 "Identifiers are either Empty or Not Valid");

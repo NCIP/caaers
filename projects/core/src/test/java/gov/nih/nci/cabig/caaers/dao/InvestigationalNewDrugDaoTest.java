@@ -59,6 +59,8 @@ public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNe
             System.out.println(nDrug.getINDHolder());
             assertEquals("The organization Id should be same", org.getId(),
                             ((OrganizationHeldIND) nDrug.getINDHolder()).getOrganization().getId());
+            
+            assertEquals("12345 : " + nDrug.getHolderName() , nDrug.getNumberAndHolderName());
         }
 
         // Investigator Held

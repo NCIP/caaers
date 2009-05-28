@@ -139,4 +139,11 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
 
 	        return false;
 	    }
+
+	@Override
+	public String toString() {
+		return "StudySearchableAjaxableDomainObject[" + getId() + ", " + shortTitle +"]";
+	}
+	   
+	   
 }

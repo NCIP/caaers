@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +22,7 @@ import org.hibernate.validator.Length;
 @Entity
 @Table(name = "treatment_assignment")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_treatment_assignment_id") })
-public class TreatmentAssignment extends AbstractMutableDomainObject implements StudyChild {
+public class TreatmentAssignment extends AbstractMutableRetireableDomainObject implements StudyChild {
 
     private Study study;
 

@@ -59,6 +59,24 @@
 		</rhs>
 	</rule>
 
+	<!-- ==========================================================================
+	RuleName : TAI_BR3_CHK
+	Rule : Treatment assignment must be active
+	Error Code : TAI_BR3_ERR
+	Error Message : Treatment assignment is incorrect or removed from protocol.
+	============================================================================= -->
+	<rule name="TAI_BR3_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentAssignment.retired").equals(true)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message--> 
+			errors.addValidationError("TAI_BR3_ERR","Treatment assignment is incorrect or removed from protocol.").addFieldNames("aeReport.treatmentInformation.treatmentAssignment"); 
+		</rhs>
+	</rule>
+
 	
 
 	

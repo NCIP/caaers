@@ -5,8 +5,6 @@ package gov.nih.nci.cabig.caaers.domain;
  * @author Ion C. Olaru
  */
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "epochs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_epochs_id")})
-public class Epoch extends AbstractMutableDomainObject {
+public class Epoch extends AbstractMutableRetireableDomainObject {
 
     public static final String NAME_BASELINE = "Baseline";
     public static final String NAME_PRETREATMENT = "Pre-Treatment";
@@ -100,6 +98,16 @@ public class Epoch extends AbstractMutableDomainObject {
 
     public void setEpochOrder(Integer epochOrder) {
         this.epochOrder = epochOrder;
+    }
+    
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("[").append(name);
+    	if(arms != null && arms.get(0) != null && arms.get(0).getSolicitedAdverseEvents() != null)
+    		sb.append("  {").append(arms.get(0).getSolicitedAdverseEvents()).append("}");
+    	sb.append("]");
+    	return super.toString();
     }
 
 }

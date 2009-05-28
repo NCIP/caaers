@@ -1,14 +1,21 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.domain.Condition;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCondition;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-
+/**
+ * @author Monish Domla
+ * @author Biju Joseph (refactored)
+ *
+ */
 public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 
 	Study dbStudy;
@@ -33,7 +40,31 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		
 	}
 	
+	public void testMigrate_WhenXMLStudyIsNotHavingDiseases(){
+		dbStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(dbStudy));
+		xmlStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(xmlStudy));
+		
+		diseaseTerm1 = new DiseaseTerm();
+		diseaseTerm1.setCtepTerm("ctepTerm1");
+		
+		diseaseTerm2 = new DiseaseTerm();
+		diseaseTerm2.setCtepTerm("ctepTerm2");
+		
+		ctepStudyDisease1 = Fixtures.createCtepStudyDisease(dbStudy,diseaseTerm1);
+		ctepStudyDisease1.setId(1);
+		ctepStudyDisease2 = Fixtures.createCtepStudyDisease(dbStudy,diseaseTerm2);
+		ctepStudyDisease2.setId(2);
+		
+
+		studyDiseasesSynchronizer.migrate(dbStudy, xmlStudy, outcome);
+		assertEquals(2, dbStudy.getCtepStudyDiseases().size());
+		
+	}
+	
 	public void testCtepStudyDiseasesAddedSynch() {
+		
+		dbStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(dbStudy));
+		xmlStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(xmlStudy));
 		
 		diseaseTerm1 = new DiseaseTerm();
 		diseaseTerm1.setCtepTerm("ctepTerm1");
@@ -66,6 +97,13 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 	}
 	
 	public void testMedraStudyDiseasesAddedSynch() {
+		
+
+		dbStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(dbStudy));
+		dbStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
+		
+		xmlStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(xmlStudy));
+		xmlStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
 		
 		meddraStudyDisease1 = new MeddraStudyDisease();
 		meddraStudyDisease1.setId(1);
@@ -102,7 +140,7 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		meddraStudyDisease3a.setMeddraCode("meddraCode3a");
 		lowLevelTerm3a = new LowLevelTerm();
 		lowLevelTerm3a.setMeddraCode("meddraCode3a");
-		meddraStudyDisease2a.setTerm(lowLevelTerm3a);
+		meddraStudyDisease3a.setTerm(lowLevelTerm3a);
 		
 		
 		xmlStudy.addMeddraStudyDisease(meddraStudyDisease1a);
@@ -112,5 +150,43 @@ public class StudyDiseasesSynchronizerTest  extends AbstractTestCase{
 		studyDiseasesSynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		assertEquals(3, dbStudy.getMeddraStudyDiseases().size());
 		
+	}
+	
+	
+	public void testMigrateStudyCondition(){
+
+		dbStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(dbStudy));
+		dbStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+		
+		xmlStudy.setDiseaseTerminology(Fixtures.createDiseaseTerminology(xmlStudy));
+		xmlStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+		
+		Condition c1 = new Condition();
+		c1.setConditionName("c1");
+		c1.setId(1);
+		StudyCondition sc1 = Fixtures.createStudyCondition(dbStudy, c1);
+		
+		Condition c2 = new Condition();
+		c2.setConditionName("c2");
+		c2.setId(2);
+		StudyCondition sc2 = Fixtures.createStudyCondition(dbStudy, c2);
+		
+		assertEquals(2, dbStudy.getStudyConditions().size());
+		assertSame(sc2, dbStudy.getActiveStudyDiseases().get(1));
+		
+		Condition c3 = new Condition();
+		c3.setConditionName("c1");
+		c3.setId(1);
+		StudyCondition sc3 = Fixtures.createStudyCondition(xmlStudy, c3);
+		
+		
+		Condition c4 = new Condition();
+		c4.setId(3);
+		c4.setConditionName("c3");
+		StudyCondition sc4 = Fixtures.createStudyCondition(xmlStudy, c4);
+		
+		studyDiseasesSynchronizer.migrate(dbStudy, xmlStudy, outcome);
+		assertEquals(2, dbStudy.getActiveStudyDiseases().size());
+		assertSame(sc4, dbStudy.getActiveStudyDiseases().get(1));
 	}
 }

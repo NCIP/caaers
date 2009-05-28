@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -67,7 +66,7 @@ public class AdverseEventReportSerializer {
 	   //TO-DO set in spring config
 	   private String mappingFile = "xml-mapping/ae-report-xml-mapping.xml";
 	   
-	   private ReportDao reportDao;
+	  
 
 	   /**
 	    *
@@ -76,13 +75,13 @@ public class AdverseEventReportSerializer {
 	    * @throws Exception
 	    */
 	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
-		   return this.serialize(adverseEventReportDataObject, 0);
+		   return this.serialize(adverseEventReportDataObject, null);
 	   }
 
-	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,int reportId) throws Exception{
-		    
-		   Report report = reportDao.getById(reportId);
+	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,Report report) throws Exception{
+		   int reportId = report == null ? 0 : report.getId();
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
+		   
 		   if (report != null ) {
 			   ReportDefinition reportDefinition = report.getReportDefinition();
 			   List<ReportMandatoryFieldDefinition> mandatoryFields = reportDefinition.getMandatoryFields();
@@ -605,7 +604,7 @@ public class AdverseEventReportSerializer {
 	    	//studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
 	    	//studySite.setRoleCode(ss.getRoleCode());
 	    	try { 
-		    	studySite.setStatusCode(ss.getStatusCode());
+	    		studySite.setStatus(ss.getStatus());
 		    	studySite.setStartDate(ss.getStartDate());
 		    	studySite.setEndDate(ss.getEndDate());
 		    	
@@ -868,7 +867,4 @@ public class AdverseEventReportSerializer {
 			
 		}
 
-		public void setReportDao(ReportDao reportDao) {
-			this.reportDao = reportDao;
-		}
 }

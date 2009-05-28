@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,7 +18,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_investigators")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_investigators_id") })
-public class StudyInvestigator extends AbstractMutableDomainObject implements
+public class StudyInvestigator extends AbstractMutableRetireableDomainObject implements
                 StudyOrganizationChild {
 
     private String roleCode;
@@ -30,6 +28,10 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements
     private SiteInvestigator siteInvestigator;
 
     private StudyOrganization studyOrganization;
+    
+    public void deactive(){
+    	this.statusCode = "Inactive";
+    }
 
     @ManyToOne
     @JoinColumn(name = "site_investigators_id")
@@ -77,7 +79,8 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements
         if (o == null || getClass() != o.getClass()) return false;
 
         StudyInvestigator that = (StudyInvestigator) o;
-
+        if(this.isRetired() || that.isRetired()) return false;
+        
         if (roleCode != null ? !roleCode.equals(that.roleCode) : that.roleCode != null) return false;
         if (siteInvestigator != null ? !siteInvestigator.equals(that.siteInvestigator) : that.siteInvestigator != null)
             return false;

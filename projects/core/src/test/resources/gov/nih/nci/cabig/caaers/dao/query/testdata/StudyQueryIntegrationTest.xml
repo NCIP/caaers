@@ -126,18 +126,26 @@
             study_id="-3"
             site_id="-1002"
             type="SCC"/>
- 
-
-    <STUDY_ORGANIZATIONS
+   <STUDY_ORGANIZATIONS
+            id="-1006"
+            version="1"
+            status_code="active"
+            start_date="01-01-2001"
+            end_date="01-01-2002"
+            study_id="-5"
+            site_id="-1001"
+            type="SST"/>    
+ <STUDY_ORGANIZATIONS
             id="-1007"
             version="1"
             status_code="inactive"
             start_date="01-01-2001"
             end_date="01-01-2002"
             study_id="-5"
-            site_id="-1001"
+            site_id="-1003"
             type="SFS"
-            />
+            />       
+  
     <STUDY_ORGANIZATIONS
             id="-1008"
             version="1"
@@ -158,13 +166,14 @@
             site_id="-1002"
             type="SCC"
             />
-   <STUDY_ORGANIZATIONS
+    <STUDY_ORGANIZATIONS
             id="-1010"
             version="1"
-            status_code="active"
+            status_code="inactive"
             start_date="01-01-2001"
             end_date="01-01-2002"
             study_id="-4"
-            site_id="-1003"
-            type="SST"/>            
+            site_id="-1001"
+            type="SFS"
+            />       
 </dataset>

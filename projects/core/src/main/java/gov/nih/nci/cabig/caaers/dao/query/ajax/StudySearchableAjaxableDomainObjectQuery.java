@@ -45,6 +45,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static final String LONG_TITLE = "longTitle";
     private static final String PARTICIPANT_ID = "participantId";
     private static final String STATUS = "status";
+    private static final String QC_STATUS = "qcStatus";
 
     public StudySearchableAjaxableDomainObjectQuery() {
         super(queryString);
@@ -139,6 +140,17 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
         if (ignoreCompletedStudy) {
             andWhere("study.status <> :" + STATUS);
             setParameter(STATUS, Study.STATUS_ADMINISTRATIVELY_COMPLETE);
+        }
+    }
+    
+    /**
+     * If true, will return only QC completed studies.
+     * @param ignoreNonQCedStudy
+     */
+    public void filterByDataEntryStatus(boolean ignoreNonQCedStudy) {
+        if (ignoreNonQCedStudy) {
+            andWhere("study.dataEntryStatus = :" + QC_STATUS);
+            setParameter(QC_STATUS, true);
         }
     }
 

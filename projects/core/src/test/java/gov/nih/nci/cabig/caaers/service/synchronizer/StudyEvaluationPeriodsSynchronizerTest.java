@@ -9,6 +9,11 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
+/**
+ * @author Monish Domla
+ * @author Biju Joseph (refactored)
+ *
+ */
 public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
 
 	private Study xmlStudy;
@@ -34,6 +39,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         arm.setDescriptionText("Baseline Arm");
         SolicitedAdverseEvent sAE = new SolicitedAdverseEvent();
         CtcTerm ctcTerm = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        ctcTerm.setId(1);
         sAE.setCtcterm(ctcTerm);
         sAE.setId(1);
         arm.getSolicitedAdverseEvents().add(sAE);
@@ -50,6 +56,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         arm1.setDescriptionText("Baseline Arm");
         SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
         CtcTerm ctcTerm1 = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        ctcTerm1.setId(2);
         sAE1.setCtcterm(ctcTerm1);
         arm1.getSolicitedAdverseEvents().add(sAE1);
         epoch1.getArms().add(arm1);
@@ -64,6 +71,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         arm2.setDescriptionText("Baseline-2 Arm");
         SolicitedAdverseEvent sAE2 = new SolicitedAdverseEvent();
         CtcTerm ctcTerm2 = Fixtures.createCtcTerm("ctepTerm_2", "ctepCode_2");
+        ctcTerm2.setId(3);
         sAE2.setCtcterm(ctcTerm2);
         arm2.getSolicitedAdverseEvents().add(sAE2);
         epoch2.getArms().add(arm2);
@@ -75,7 +83,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
 	}
 	
 
-	public void testAddSAE(){
+	public void testAddSolicitedAE(){
 		
         Epoch dbEpoch = new Epoch();
         dbEpoch.setName("Baseline");
@@ -86,6 +94,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         arm.setDescriptionText("Baseline Arm");
         SolicitedAdverseEvent sAE = new SolicitedAdverseEvent();
         CtcTerm ctcTerm = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        ctcTerm.setId(1);
         sAE.setCtcterm(ctcTerm);
         sAE.setId(1);
         arm.getSolicitedAdverseEvents().add(sAE);
@@ -103,26 +112,27 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         arm1.setDescriptionText("Baseline Arm");
         
         SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
-        CtcTerm ctcTerm1 = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        CtcTerm ctcTerm1 = Fixtures.createCtcTerm("ctepTerm_1x", "ctepCode_1x");
+        ctcTerm1.setId(2);
         sAE1.setCtcterm(ctcTerm1);
         arm1.getSolicitedAdverseEvents().add(sAE1);
         
         SolicitedAdverseEvent sAE2 = new SolicitedAdverseEvent();
         CtcTerm ctcTerm2 = Fixtures.createCtcTerm("ctepTerm_2", "ctepCode_2");
+        ctcTerm2.setId(3);
         sAE2.setCtcterm(ctcTerm2);
         arm1.getSolicitedAdverseEvents().add(sAE2);
         
         SolicitedAdverseEvent sAE3 = new SolicitedAdverseEvent();
         CtcTerm ctcTerm3 = Fixtures.createCtcTerm("ctepTerm_3", "ctepCode_3");
-        sAE2.setCtcterm(ctcTerm3);
+        ctcTerm3.setId(4);
+        sAE3.setCtcterm(ctcTerm3);
         arm1.getSolicitedAdverseEvents().add(sAE3);
         
         epoch1.getArms().add(arm1);
         xmlStudy.getEpochs().add(epoch1);
-		
         synchronizer.migrate(dbStudy, xmlStudy, outcome);
-        
-        assertEquals(4, dbStudy.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
+        assertEquals(3, dbStudy.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
         
 	}
 	
@@ -210,7 +220,7 @@ public class StudyEvaluationPeriodsSynchronizerTest extends AbstractTestCase{
         
         synchronizer.migrate(dbStudy, xmlStudy, outcome);
         
-        assertEquals(0, dbStudy.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
+        assertEquals(3, dbStudy.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
 		
 	}
 

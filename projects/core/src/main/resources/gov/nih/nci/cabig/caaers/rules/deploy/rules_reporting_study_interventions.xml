@@ -232,7 +232,8 @@
                 int i = 0;
                 for(CourseAgent ca : ti.getCourseAgents()) {
                     if(ca.getStudyAgent() == null) continue;
-                    if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp; ca.getLastAdministeredDate() == null) { errors.addValidationError("PAG_BR3_ERR", "'Date Last Administered' must be provided for an investigational agent.",i).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].lastAdministeredDate"); }
+                    if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp; ca.getLastAdministeredDate() == null) {
+                     errors.addValidationError("PAG_BR3_ERR", "'Date Last Administered' must be provided for an investigational agent.",i).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].lastAdministeredDate"); }
                     i++;
                 }
                 return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
@@ -326,6 +327,42 @@
                     	errors.addValidationError("PAG_BR4_ERR", "'Was an investigational agent administered on this protocol?' must be 'Yes' if one of the Agents is Investigational Agent.",i).addFieldNames("aeReport.treatmentInformation.investigationalAgentAdministered"); 
                     	break;
                     }
+                    i++;                    
+                }
+                return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+    
+    
+    <!-- ==========================================================================
+    RuleName : PAG_BR5_CHK
+    Rule : 'Protocol Agent' must be active."
+    Error Code : PAG_BR5_ERR
+    Error Message : Agent is incorrect and is removed from protocol.
+    ============================================================================= -->
+    <rule name="PAG_BR5_CHK">
+        <lhs>
+            <pattern identifier="aeReport"
+                object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors"
+                object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    TreatmentInformation ti = aeReport.getTreatmentInformation();
+                    if(ti == null) return SUCCESS;
+                    if(ti.getCourseAgents() == null) return SUCCESS;
+
+                int i = 0;
+                for(CourseAgent ca : ti.getCourseAgents()) {
+                    if(ca.getStudyAgent() == null ) continue;
+                    if(ca.getStudyAgent().isRetired()){
+                    	errors.addValidationError("PAG_BR5_ERR",
+                    		"Agent is incorrect and is removed from protocol.", i,ca.getStudyAgent().getAgentName()).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].studyAgent");
+                    }
+                    
                     i++;                    
                 }
                 return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>

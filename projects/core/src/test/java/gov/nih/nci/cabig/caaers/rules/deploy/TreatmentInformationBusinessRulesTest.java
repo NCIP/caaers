@@ -36,6 +36,21 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
                 .getErrorCount());
 
     }
+    
+    /**
+	    RuleName : TAI_BR3_CHK
+		Rule : Treatment assignment must be active
+		Error Code : TAI_BR3_ERR
+		Error Message : Treatment assignment is incorrect or removed from protocol.
+     */
+    public void testTAC_WhenRetired() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getTreatmentInformation().getTreatmentAssignment().retire();
+    	ValidationErrors errors = fireRules(aeReport);
+    	assertSameErrorCount(errors, 1);
+    	assertCorrectErrorCode(errors,"TAI_BR3_ERR");
+    	assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.treatmentAssignment");
+    }
 
     /**
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe

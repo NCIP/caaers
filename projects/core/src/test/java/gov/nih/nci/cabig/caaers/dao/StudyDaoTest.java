@@ -355,7 +355,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             // Study Site
             StudySite studySite = new StudySite();
             studySite.setOrganization(organization);
-            studySite.setStatusCode("active");
+            studySite.setStatus("Active");
 
             study.addStudySite(studySite);
 
@@ -404,7 +404,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             // Study Site
             StudySite studySite = new StudySite();
             studySite.setOrganization(organization);
-            studySite.setStatusCode("active");
+            studySite.setStatus("Inactive");
 
             study.addStudySite(studySite);
 

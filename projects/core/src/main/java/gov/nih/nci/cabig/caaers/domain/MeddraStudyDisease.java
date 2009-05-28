@@ -61,4 +61,9 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
         return result;
     }
     
+    @Override
+    public String toString() {
+    	return meddraCode + " : "+ this.getTermName();
+    }
+    
 }

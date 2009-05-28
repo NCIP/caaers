@@ -85,6 +85,20 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
+        assertEquals(4, studyAjaxableDomainObjects.size());
+
+
+    }
+    
+    public void testFindStudies_IgnoreNonQCedOnes() {
+        query = new StudySearchableAjaxableDomainObjectQuery();
+        query.filterByDataEntryStatus(true);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+
+        assertNotNull(studyAjaxableDomainObjects);
+        assertFalse(studyAjaxableDomainObjects.isEmpty());
+        System.out.println(studyAjaxableDomainObjects);
+        assertEquals(3, studyAjaxableDomainObjects.size());
 
 
     }

@@ -29,7 +29,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agents_id") })
-public class StudyAgent extends AbstractMutableDomainObject implements StudyChild {
+public class StudyAgent extends AbstractMutableRetireableDomainObject implements StudyChild {
 
     private LazyListHelper lazyListHelper;
 
@@ -160,6 +160,12 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
     public void setPartOfLeadIND(Boolean partOfLeadIND) {
         this.partOfLeadIND = partOfLeadIND;
     }
+    
+    @Transient
+    public String getPartOfLeadINDAsString(){
+    	if(partOfLeadIND == null) return "";
+    	return partOfLeadIND ? "Yes" : "No";
+    }
 
     @Transient
     public String getAgentName() {
@@ -185,6 +191,7 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final StudyAgent other = (StudyAgent) obj;
+        if(this.isRetired() || other.isRetired()) return false;
         if (agent == null) {
             if (other.agent != null) return false;
         } else if (!agent.equals(other.agent)) return false;

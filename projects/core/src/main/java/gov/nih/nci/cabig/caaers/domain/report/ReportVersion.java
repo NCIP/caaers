@@ -245,6 +245,21 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 		this.contents = contents;
 	}
     
+    /**
+     * Returns the {@link ReportContent} of type text/xml
+     * @return
+     */
+    @Transient
+    public ReportContent getXmlContent(){
+    	if(contents != null){
+    		for(ReportContent rc : contents){
+        		if(rc.getContentType().equals("text/xml")) return rc;
+        	}
+    	}
+    	
+    	return null;
+    }
+    
     public void copySubmissionDetails(ReportVersion rv){
     	this.setAssignedIdentifer(rv.getAssignedIdentifer());
     }

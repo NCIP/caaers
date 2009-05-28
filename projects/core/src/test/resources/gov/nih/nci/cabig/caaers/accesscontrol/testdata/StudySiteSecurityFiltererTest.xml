@@ -469,6 +469,23 @@
 			study_sites_id="-1000"
 			role_code="Adverse Event Coordinator"
 			status_code="Active"
+			retired_indicator="0"
+	/>
+	<study_personnel 
+			id="-2"
+			research_staffs_id="-1002"
+			study_sites_id="-1000"
+			role_code="Adverse Event Coordinator"
+			status_code="Inactive"
+			retired_indicator="0"
+	/>
+	<study_personnel 
+			id="-3"
+			research_staffs_id="-1003"
+			study_sites_id="-1000"
+			role_code="Adverse Event Coordinator"
+			status_code="Active"
+			retired_indicator="1"
 	/>
     <treatment_assignment/>
     <epochs/>

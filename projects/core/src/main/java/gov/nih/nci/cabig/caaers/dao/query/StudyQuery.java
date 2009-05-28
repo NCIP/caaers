@@ -114,4 +114,26 @@ public class StudyQuery extends AbstractQuery {
         andWhere("lower(pIdentifier.value) LIKE :pIdVal");
         setParameter("pIdVal", "%" + participantIdentifierValue.toLowerCase() + "%");
     }
+    
+    public void filterByFundingSponsorNameExactMatch(String sponsorName){
+    	andWhere("ss.class = 'SFS'");
+    	andWhere("ss.organization.name = :sponsorName");
+    	setParameter("sponsorName", sponsorName);
+    }
+    
+    public void filterByStudyOrganizationNameExactMatch(String studyOrgName){
+    	andWhere("ss.organization.name = :studyOrgName");
+    	setParameter("studyOrgName", studyOrgName);
+    }
+    
+    /**
+     * If true, will return only DATA ENTRY completed studies.
+     * @param ignoreNonQCedStudy
+     */
+    public void filterByDataEntryStatus(boolean ignoreNonQCedStudy) {
+        if (ignoreNonQCedStudy) {
+            andWhere("s.dataEntryStatus = :dataEntryStatus");
+            setParameter("dataEntryStatus", true);
+        }
+    }
 }
