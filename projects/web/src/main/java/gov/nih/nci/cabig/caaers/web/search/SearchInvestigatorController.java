@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
+import gov.nih.nci.cabig.caaers.web.study.SearchInvestigatorCommand;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +12,7 @@ public class SearchInvestigatorController extends SearchController {
     private static final Log log = LogFactory.getLog(SearchInvestigatorController.class);
 
     public SearchInvestigatorController() {
-        setCommandClass(SearchStudyCommand.class);
+        setCommandClass(SearchInvestigatorCommand.class);
         setFormView("search/investigator_search");
         setSuccessView("search/investigator_search");
     }

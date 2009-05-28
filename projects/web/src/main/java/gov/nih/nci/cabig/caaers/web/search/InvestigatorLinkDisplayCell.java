@@ -8,13 +8,13 @@ import org.extremecomponents.table.core.TableModel;
 
 public class InvestigatorLinkDisplayCell extends AbstractCell {
 
+	public static final String VIEW_INVESTIGATOR_URL= "editInvestigator?investigatorId=";
+	
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
         Investigator investigator = (Investigator) model.getCurrentRowBean();
         String cellValue = column.getValueAsString();
-        String link = model.getContext().getContextPath()
-                        + "/pages/admin/editInvestigator?investigatorId=";
         
         String image = "";
         String imagePath = model.getContext().getContextPath() + "/images/chrome/nci_icon_22.png";
@@ -23,9 +23,13 @@ public class InvestigatorLinkDisplayCell extends AbstractCell {
         }
 
         if (investigator != null) {
-            cellValue = image + "<a href=\"" + link + investigator.getId().toString() + "\">" + cellValue
-                            + "</a>";
+        	cellValue = image + cellValue;
         }
+        
+        String url = "document.location='" + VIEW_INVESTIGATOR_URL + investigator.getId().toString() + "'";
+        model.getRowHandler().getRow().setOnclick(url);
+        model.getRowHandler().getRow().setStyle("cursor:pointer");
+        
         return cellValue;
     }
 }

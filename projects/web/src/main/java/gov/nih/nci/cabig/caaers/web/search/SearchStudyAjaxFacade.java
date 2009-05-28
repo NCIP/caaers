@@ -211,21 +211,23 @@ public class SearchStudyAjaxFacade {
 
         Column columnFirstName = model.getColumnInstance();
         columnFirstName.setProperty("firstName");
+        columnFirstName.setTitle("First name");
         columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorLinkDisplayCell");
-
         model.addColumn(columnFirstName);
+        
+        Column columnMiddleName = model.getColumnInstance();
+        columnMiddleName.setProperty("middleName");
+        columnMiddleName.setTitle("Middle name");
+        model.addColumn(columnMiddleName);
 
         Column columnLastName = model.getColumnInstance();
         columnLastName.setProperty("lastName");
+        columnLastName.setTitle("Last name");
         model.addColumn(columnLastName);
-
-        Column columnMiddleName = model.getColumnInstance();
-        columnMiddleName.setProperty("middleName");
-        model.addColumn(columnMiddleName);
 
         Column columnNciInstituteCode = model.getColumnInstance();
         columnNciInstituteCode.setProperty("nciIdentifier");
-        columnNciInstituteCode.setTitle("Investigator Number");
+        columnNciInstituteCode.setTitle("Investigator number");
 
         model.addColumn(columnNciInstituteCode);
 
@@ -255,15 +257,18 @@ public class SearchStudyAjaxFacade {
 
         Column columnFirstName = model.getColumnInstance();
         columnFirstName.setProperty("firstName");
+        columnFirstName.setTitle("First name");
         columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffLinkDisplayCell");
         model.addColumn(columnFirstName);
 
         Column columnMiddleName = model.getColumnInstance();
         columnMiddleName.setProperty("middleName");
+        columnMiddleName.setTitle("Middle name");
         model.addColumn(columnMiddleName);
 
         Column columnLastName = model.getColumnInstance();
         columnLastName.setProperty("lastName");
+        columnLastName.setTitle("Last name");
         model.addColumn(columnLastName);
 
         Column columnOrganizationNameName = model.getColumnInstance();
@@ -789,6 +794,8 @@ public class SearchStudyAjaxFacade {
                 investigatorQuery.filterByNciIdentifier(sText);
             } else if (sType.equals("lastName")) {
                 investigatorQuery.filterByLastName(sText);
+            } else if (sType.equals("organization")) {
+            	investigatorQuery.filterByOrganization(sText);
             }
         }
 
@@ -822,10 +829,8 @@ public class SearchStudyAjaxFacade {
                 query.filterByFirstName(sText);
             } else if (sType.equals("lastName")) {
                 query.filterByLastName(sText);
-            } else if (sType.equals("name")) {
-            	//TODO: shud be able ti filter by name and nci-id , using only nci-id temp 
-                //query.filterByOrganizationName(sText);
-            	query.filterByOrganizationNciInstituteCode(sText);
+            } else if (sType.equals("organization")) {
+            	query.filterByOrganization(sText);
             }
         }
 

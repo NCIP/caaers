@@ -7,14 +7,14 @@ import org.extremecomponents.table.cell.AbstractCell;
 import org.extremecomponents.table.core.TableModel;
 
 public class ResearchStaffLinkDisplayCell extends AbstractCell {
-
+	
+	public static final String VIEW_RESEARCHSTAFF_URL= "editResearchStaff?researchStaffId=";
+	
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
         ResearchStaff researchStaff = (ResearchStaff) model.getCurrentRowBean();
         String cellValue = column.getValueAsString();
-        String link = model.getContext().getContextPath()
-                        + "/pages/admin/editResearchStaff?researchStaffId=";
         
         String image = "";
         String imagePath = model.getContext().getContextPath() + "/images/chrome/nci_icon_22.png";
@@ -23,10 +23,11 @@ public class ResearchStaffLinkDisplayCell extends AbstractCell {
         }
 
         if (researchStaff != null) {
-            cellValue = image + "<a href=\"" + link + researchStaff.getId().toString() + "\">" +  cellValue
-                            + "</a>";
+            cellValue = image +  cellValue;
         }
-        //System.out.println(cellValue);
+        String url = "document.location='" + VIEW_RESEARCHSTAFF_URL + researchStaff.getId().toString() + "'";
+        model.getRowHandler().getRow().setOnclick(url);
+        model.getRowHandler().getRow().setStyle("cursor:pointer");
         return cellValue;
     }
 }
