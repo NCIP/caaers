@@ -18,7 +18,7 @@ import java.util.List;
  */
 @CaaersUseCases( { STUDY_ABSTRACTION })
 public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
-
+	
     public void testGetById() throws Exception {
         Investigator investigator = getDao().getById(-100);
         assertNotNull("Investigator not found", investigator);
@@ -58,40 +58,6 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
         }
     }
 
-    
-    //Below testcase commented coz of NullPointer Exception @ Line 177 in InvestigatorResolver.getRemoteEntityByUniqueId
-//    public void testSaveRemoteInvestigator() throws Exception {
-//        Integer savedId;
-//        {
-//            Investigator investigator = new RemoteInvestigator();
-//
-//            investigator.setEmailAddress("abc@def.com");
-//            investigator.setExternalId("externalId");
-//            getDao().save(investigator);
-//            savedId = investigator.getId();
-//            assertNotNull("The saved investigator id", savedId);
-//        }
-//
-//        interruptSession();
-//
-//        {
-//        	System.out.println(savedId);
-//            Investigator loaded = getDao().getById(savedId);
-//            assertNotNull("Could not reload investigator id " + savedId, loaded);
-//            assertEquals("Wrong emailAddress", "abc@def.com", loaded.getEmailAddress());
-//        }
-//    }
-    
-//Commented below testcase. Remote Investigators returned are constant right now. We have to revisit once coppa integration is complete.    
-//    public void testQueryInvestigatorByNCIIdentiferExactMatch() throws Exception {
-//        InvestigatorQuery query = new InvestigatorQuery();
-//        query.filterByNciIdentifierExactMatch("222");
-//        List<Investigator> invList = getDao().searchInvestigator(query);
-//        assertEquals("there should be one investigator", 1, invList.size());
-//        query.filterByNciIdentifierExactMatch("2");
-//        invList = getDao().searchInvestigator(query);
-//        assertEquals("there should be no investigator", 0, invList.size());
-//        }
     
     public void testGetBySubname(){
     	List<Investigator> invs = getDao().getBySubnames(new String[]{"kar"});
@@ -166,4 +132,13 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
     	String query = getDao().buildSubnameQuery(new String[]{"abc", "def"}, extraConditions, extraParameters, joins, params, substringMatchProperties, exactMatchProperties);
     	assertEquals(" select distinct o from gov.nih.nci.cabig.caaers.domain.Investigator o join dept where cond1 and (LOWER(s) LIKE ? or LOWER(j) LIKE ? or LOWER(m) LIKE ? or LOWER(n) LIKE ?) and (LOWER(s) LIKE ? or LOWER(j) LIKE ? or LOWER(m) LIKE ? or LOWER(n) LIKE ?)", query);
     }
+    
+    public void testGetByIquery(){
+		List<Investigator> investigators = new ArrayList<Investigator>();
+        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+        investigatorQuery.filterByOrganization("-1003");
+        investigators = getDao().getLocalInvestigator(investigatorQuery);
+        assertNotNull(investigators);
+        assertEquals(2, investigators.size());
+	}
 }
