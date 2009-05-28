@@ -9,6 +9,7 @@
 <%@attribute name="willSave"%>
 <%@attribute name="saveButtonLabel" required="false"%>
 <%@attribute name="localButtons" fragment="true" %>
+<%@attribute name="customNextButton" fragment="true" %>
 <c:set var="tabNumber" value="${empty tabNumber ? tab.number : tabNumber}"/>
 <c:set var="isLast" value="${empty isLast ? not (tab.number < flow.tabCount - 1) : isLast}"/>
 <div class="content buttons autoclear">
@@ -22,7 +23,7 @@
             </c:if>
         </span>
         <span class="next">
-
+			<jsp:invoke fragment="customNextButton"/>
             <c:if test="${not isLast  and willSave}">
                 <tags:button type="submit" color="blue" icon="save" id="flow-update" cssClass="tab${tabNumber}" value="Save"/>
             </c:if>

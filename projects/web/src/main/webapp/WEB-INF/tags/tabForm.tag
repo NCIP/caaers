@@ -37,10 +37,10 @@
                     </p>
                 </c:if><tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
             </chrome:division><jsp:invoke fragment="repeatingFields"/>
-            <c:if test="${not empty tabControls}">
+        </chrome:box>
+        <c:if test="${not empty tabControls}">
                 <jsp:invoke fragment="tabControls" />
             </c:if>
-        </chrome:box>
         <c:if test="${empty tabControls}">
             <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
         </c:if>
