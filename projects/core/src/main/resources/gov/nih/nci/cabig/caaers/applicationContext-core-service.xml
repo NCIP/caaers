@@ -15,7 +15,6 @@ This applicationContext contains the definition of the concrete services
 		<property name="studyDao" ref="studyDao"/>
 	</bean>
 	<bean id="interoperationService" autowire="byType" class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
-	<bean id="adverseEventManagementService" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
 	<bean id="adverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter"/>
 	<bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
 	<bean id="passwordPolicyService" class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
