@@ -47,6 +47,8 @@ public abstract class ResearchStaff extends User {
     
     protected String externalId;
     
+    protected String statusCode;
+    
   @Id 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
   public Integer getId() {
@@ -134,7 +136,14 @@ public abstract class ResearchStaff extends User {
 	public void setExternalResearchStaff(List<ResearchStaff> externalResearchStaff) {
 		this.externalResearchStaff = externalResearchStaff;
 	}
-	
-	
+
+	@Transient
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
 
 }

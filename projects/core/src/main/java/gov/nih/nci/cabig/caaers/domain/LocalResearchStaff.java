@@ -31,4 +31,9 @@ public class LocalResearchStaff extends ResearchStaff{
 	public String getExternalId() {
 		return externalId;
 	}
+	
+	@Override
+	public String getStatusCode() {
+		return statusCode;
+	}
 }
