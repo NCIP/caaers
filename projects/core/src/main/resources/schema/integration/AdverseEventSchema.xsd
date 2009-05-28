@@ -32,96 +32,31 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
+                	<xs:element name="verbatim" type="xs:string" minOccurs="0"/>
                     <xs:element name="grade" type="GradeType" minOccurs="1"/>
                     <xs:element name="hospitalization" type="HospitalizationType" minOccurs="0"/>
                     <xs:element name="expected" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="attributionSummary" type="AttributionType" minOccurs="0"/>
                     <xs:element name="comments" type="xs:string" minOccurs="0"/>
                     <xs:element name="startDate" type="xs:date" minOccurs="0"/>
-                    <xs:element name="endDate" type="xs:date" minOccurs="0"/>                    
-                   	<xs:element name="lowLevelTerm" type="LowLevelTermType" minOccurs="0"/>
-                   	<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1"/>
-                   	
-                    <xs:element name="courseAgentAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="courseAgentAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                    <xs:element name="concomitantMedicationAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="concomitantMedicationAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>  
-                    <xs:element name="otherCauseAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="otherCauseAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>       
-                    <xs:element name="diseaseAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="diseaseAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>   
-                    <xs:element name="surgeryAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="surgeryAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>  
-                    <xs:element name="radiationAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="radiationAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element> 
-                    <xs:element name="deviceAttributions" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="deviceAttribution" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>  
-                    <xs:element name="outcomes" minOccurs="0">
-                    	<xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="outcome" maxOccurs="unbounded" minOccurs="0"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>  
-                   <!-- <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType" minOccurs="0"/>-->
-                    <xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
-                    <xs:element name="serious" type="OutComeEnumType" minOccurs="0"/> 
-                    <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  
-                    <!--<xs:element name="displayExpected" type="xs:string" minOccurs="0"/>-->
-                    <!--<xs:element name="eventApproximateTime" type="xs:boolean" />-->
+                    <xs:element name="endDate" type="xs:date" minOccurs="0"/>  
+                    <xs:choice>
+                    	<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1"/>
+                   		<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1"/>
+                    </xs:choice> 
+                    
+                   	<!--<xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
+                    <xs:element name="serious" type="OutComeEnumType" minOccurs="0"/>  
+                    <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
+                    <xs:element name="eventApproximateTime" type="xs:time" minOccurs="0"/>
                     <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
-                    <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
-                    <xs:element name="signature" type="xs:string" minOccurs="0"/>
-                    <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	                                                                                                                            
+                   <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
+                    <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
    </xs:complexType>  
-<!--
-    <xs:complexType name="AdverseEventReportingPeriodType">
-                <xs:sequence>
-                  <xs:element name="description" type="xs:string"/>
-                  <xs:element name="cycleNumber" type="xs:integer"/>
-                  <xs:element name="startDate" type="CustomDateType"/>
-                  <xs:element name="endDate" type="CustomDateType"/>
-                  <xs:element name="epoch" type="EpochType"/>
-                </xs:sequence>
-    </xs:complexType> -->
+
 
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
@@ -138,10 +73,10 @@
                 </xs:sequence>
     </xs:complexType> 
            
-    <xs:complexType name="LowLevelTermType">
+    <xs:complexType name="AdverseEventMeddraLowLevelTermType">
                 <xs:sequence>
-                  <xs:element name="meddraCode" type="xs:string"/>
-                  <xs:element name="meddraTerm" type="xs:string"/>
+                  <xs:element name="meddraCode" type="xs:string" minOccurs="1"/>
+                  <xs:element name="meddraTerm" type="xs:string" minOccurs="1"/>
                 </xs:sequence>
     </xs:complexType> 
         
@@ -152,178 +87,8 @@
                   <xs:element name="date" type="CustomDateType"/>
                   <xs:element name="other" type="xs:string"/>
                 </xs:sequence>
-    </xs:complexType>     
-    <xs:element name="surgeryAttribution" type="SurgeryAttributionType"/>
-    <xs:complexType name="SurgeryAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="SurgeryInterventionType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
     </xs:complexType> 
-    <xs:complexType name="SurgeryInterventionType">
-                <xs:sequence>
-                  <xs:element name="treatmentArm" type="xs:string"/>
-                  <xs:element name="description" type="xs:string"/>
-                  <xs:element name="interventionSite" type="InterventionSiteType"/>
-                  <xs:element name="interventionDate" type="CustomDateType"/>
-                </xs:sequence>
-    </xs:complexType>     
-    <xs:complexType name="InterventionSiteType">
-                <xs:sequence>
-                  <xs:element name="name" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>    
-    <xs:element name="radiationAttribution" type="RadiationAttributionType"/>
-    <xs:complexType name="RadiationAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="RadiationInterventionType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType> 
-    <xs:complexType name="RadiationInterventionType">
-                <xs:sequence>
-                  <xs:element name="treatmentArm" type="xs:string"/>
-                  <xs:element name="description" type="xs:string"/>
-                  <xs:element name="RadiationAdministration" type="RadiationAdministrationType"/>
-                  <xs:element name="dosage" type="xs:string"/>
-                  <xs:element name="dosageUnit" type="xs:string"/>
-                  <xs:element name="lastTreatmentDate" type="CustomDateType"/>
-                  <xs:element name="fractionNumber" type="xs:string"/>
-                  <xs:element name="daysElapsed" type="xs:string"/>
-                  <xs:element name="adjustment" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>
-   
-    <xs:element name="deviceAttribution" type="DeviceAttributionType"/>
-    <xs:complexType name="DeviceAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="MedicalDeviceType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType>  
-    <xs:complexType name="MedicalDeviceType">
-                <xs:sequence>
-                  <xs:element name="brandName" type="xs:string"/>
-                  <xs:element name="commonName" type="xs:string"/>
-                  <xs:element name="deviceType" type="xs:string"/>
-                  <xs:element name="manufacturerName" type="xs:string"/>
-                  <xs:element name="manufacturerCity" type="xs:string"/>
-                  <xs:element name="manufacturerState" type="xs:string"/>
-                  <xs:element name="modelNumber" type="xs:string"/>
-                  <xs:element name="lotNumber" type="xs:string"/>
-                  <xs:element name="catalogNumber" type="xs:string"/>
-                  <xs:element name="expirationDate" type="CustomDateType"/>
-                  <xs:element name="serialNumber" type="xs:string"/>
-                  <xs:element name="deviceOperator" type="DeviceOperatorType"/>
-                  <xs:element name="otherDeviceOperator" type="xs:string"/>
-                  <xs:element name="implantedDate" type="CustomDateType"/>
-                  <xs:element name="explantedDate" type="CustomDateType"/>
-                  <xs:element name="deviceReprocessed" type="AvailabilityType"/>
-                  <xs:element name="reprocessorName" type="xs:string"/>
-                  <xs:element name="reprocessorAddress" type="xs:string"/>
-                  <xs:element name="evaluationAvailability" type="AvailabilityType"/>
-                  <xs:element name="returnedDate" type="CustomDateType"/>
-                </xs:sequence>
-    </xs:complexType>                
-    <xs:element name="diseaseAttribution" type="DiseaseAttributionType"/>
-    <xs:complexType name="DiseaseAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="DiseaseHistoryType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType>     
-    <xs:complexType name="DiseaseHistoryType">
-                <xs:sequence>
-                  <xs:element name="otherPrimaryDisease" type="xs:string"/>
-                  <xs:element name="otherPrimaryDiseaseSite" type="xs:string"/>
-                  <xs:element name="diagnosisDate" type="CustomDateType"/>
-				<!--  <xs:element name="abstractStudyDisease" type="TODO"/>-->
-                  <xs:element name="codedPrimaryDiseaseSite" type="AnatomicSiteType"/>
-                </xs:sequence>
-    </xs:complexType>    
-    <xs:complexType name="AnatomicSiteType">
-                <xs:sequence>
-                  <xs:element name="name" type="xs:string"/>
-                  <xs:element name="category" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>     
-    <xs:element name="otherCauseAttribution" type="OtherCauseAttributionType"/>
-    <xs:complexType name="OtherCauseAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="OtherCauseType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType> 
- 
-    <xs:complexType name="OtherCauseType">
-                <xs:sequence>
-                  <xs:element name="text" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>     
-    <xs:element name="courseAgentAttribution" type="CourseAgentAttributionType"/>
-    <xs:complexType name="CourseAgentAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="CourseAgentType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType>    
-    <xs:complexType name="CourseAgentType">
-                <xs:sequence>
-                  <xs:element name="treatmentInformation" type="TreatmentInformationType"/>
-                  <xs:element name="studyAgent" type="StudyAgentType"/>
-                  <xs:element name="dose" type="DoseType"/>
-                  <xs:element name="durationAndSchedule" type="xs:string"/>
-                 <!-- <xs:element name="administrationDelayAmount" type="xs:string"/>-->
-                  <xs:element name="administrationDelayUnits" type="DelayUnitsType"/>
-                  <xs:element name="agentAdjustment" type="AgentAdjustmentType"/>
-                  <xs:element name="modifiedDose" type="DoseType"/>
-                  <xs:element name="lastAdministeredDate" type="CustomDateType"/>
-                  <!--<xs:element name="totalDoseAdministeredThisCourse" type="CustomDateType"/>-->
-                  <xs:element name="comments" type="xs:string"/>
-                  <xs:element name="lotNumber" type="xs:string"/>
-                  <xs:element name="formulation" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-    <xs:complexType name="TreatmentInformationType">
-                <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-    <xs:complexType name="StudyAgentType">
-                <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-    <xs:complexType name="DoseType">
-                <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>  
-    <xs:complexType name="AgentAdjustmentType">
-                <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>      
-    <xs:complexType name="DelayUnitsType">
-                <xs:sequence>
-                  <xs:element name="TODO" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>        
-    <xs:element name="concomitantMedicationAttribution" type="ConcomitantMedicationAttributionType"/>
-    <xs:complexType name="ConcomitantMedicationAttributionType">
-                <xs:sequence>
-                  <xs:element name="cause" type="ConcomitantMedicationType"/>
-                  <xs:element name="attribution" type="AttributionType"/>
-                </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="ConcomitantMedicationType">
-                <xs:sequence>
-                  <xs:element name="agentName" type="xs:string"/>
-                  <xs:element name="startDate" type="CustomDateType"/>
-                  <xs:element name="endDate" type="CustomDateType"/>
-                  <xs:element name="stillTakingMedications" type="xs:boolean"/>
-                </xs:sequence>
-    </xs:complexType>     
+    
 	<!-- FIXED Types  --> 
     <xs:simpleType name="CtcVersionEnum">
         <xs:restriction base="xs:int">
@@ -331,70 +96,8 @@
             <xs:enumeration value="3"/>
         </xs:restriction>
     </xs:simpleType> 	
-    <xs:simpleType name="AvailabilityType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="YES"/>
-            <xs:enumeration value="NO"/>
-            <xs:enumeration value="UNKNOWN"/>
-            <xs:enumeration value="RETURNED"/>
-        </xs:restriction>
-    </xs:simpleType> 	
-    <xs:simpleType name="DeviceOperatorType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="HEALTH_PROFESSIONAL"/>
-            <xs:enumeration value="PATIENT"/>
-            <xs:enumeration value="OTHER"/>
-        </xs:restriction>
-    </xs:simpleType> 	      
-    <xs:simpleType name="RadiationAdministrationType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="BT_HDR">
-            	<xs:annotation>
-            		<xs:documentation>Brachytherapy HDR</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="BT_LDR">
-            	<xs:annotation>
-            		<xs:documentation>Brachytherapy LDR</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="BT_NOS">
-            	<xs:annotation>
-            		<xs:documentation>Brachytherapy NOS</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="EB_NOS">
-            	<xs:annotation>
-            		<xs:documentation>External Beam NOS</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="EB_2D">
-            	<xs:annotation>
-            		<xs:documentation>External Beam, 2D</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="EB_3D">
-            	<xs:annotation>
-            		<xs:documentation>External Beam, 3D</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="EB_IMRT">
-            	<xs:annotation>
-            		<xs:documentation>External Beam, IMRT</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="EB_PROTON">
-            	<xs:annotation>
-            		<xs:documentation>External Beam, Proton</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="SYSTEMIC_RADIOTHERAPY">
-            	<xs:annotation>
-            		<xs:documentation>Systemic radiotherapy</xs:documentation>
-        		</xs:annotation>
-            </xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>       
+	      
+     
     <xs:simpleType name="OutComeEnumType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="DEATH"/>
