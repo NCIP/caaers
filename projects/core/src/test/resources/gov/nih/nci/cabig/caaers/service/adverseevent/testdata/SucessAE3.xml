@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+	<ns1:adverseEvents>
+		<ns1:adverseEvent>
+			<grade>3</grade>
+			<hospitalization>YES</hospitalization>
+			<expected>true</expected>
+			<startDate>2005-07-29</startDate>
+			<endDate>2005-08-29</endDate>		
+			<adverseEventCtcTerm>
+				<ctep-term>Auditory/Ear - Other (Specify, __)</ctep-term>
+				<other-meddra>
+					<meddraCode>mc1</meddraCode>
+					<meddraTerm>mt1</meddraTerm>
+				</other-meddra>
+			</adverseEventCtcTerm>	
+		</ns1:adverseEvent>		
+	</ns1:adverseEvents>
+	<ns1:criteria>
+		<participantIdentifier>008</participantIdentifier>
+		<studyIdentifier>009</studyIdentifier>
+		<course>
+			<startDateOfFirstCourse>2009-03-21</startDateOfFirstCourse>
+			<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
+			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+			<treatmentType>Treatment</treatmentType>
+			<cycleNumber>1</cycleNumber>
+			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
+		</course>	
+	</ns1:criteria>
+</ns1:ImportAdverseEvents>

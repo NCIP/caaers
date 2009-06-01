@@ -68,7 +68,7 @@
         ctep_term=""
         select_ae=""
         ctep_code="-17"
-        other_required="1"
+        other_required="0"
         />
     <ctc_terms
         id="3002"
@@ -77,6 +77,15 @@
         ctep_term=""
         select_ae=""
         ctep_code="-18"
+        other_required="0"
+        /> 
+    <ctc_terms
+        id="3003"
+        category_id="301"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term=""
+        select_ae=""
+        ctep_code="-19"
         other_required="1"
         />    
 	<meddra_llt
