@@ -62,4 +62,8 @@ public class InputFieldAttributes {
 
     private InputFieldAttributes() {
     }
+    
+    public static void setLabelProperty(InputField field, String labelProperty) {
+        field.getAttributes().put(InputField.LABEL_PROPERTY, labelProperty);
+    }
 }

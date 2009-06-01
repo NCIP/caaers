@@ -153,11 +153,13 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
         
         InputField ncidIdField = null;
+        
         if (!remoteEntity) {
         	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Researcher ID", false);
         } else {
         	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Researcher ID", false);
         }
+        InputFieldAttributes.setLabelProperty(ncidIdField, "researchStaff.nciIdentifier");
         InputFieldAttributes.setSize(ncidIdField, 30);
         researchStaffFieldGroup.getFields().add(ncidIdField);
 

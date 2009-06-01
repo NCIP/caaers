@@ -49,6 +49,8 @@ public interface InputField {
 
 
     String EXTRA_VALUE_PARAMS = "extraParams";
+    
+    String LABEL_PROPERTY = "labelProperty";
 
     Category getCategory();
 
