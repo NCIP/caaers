@@ -118,19 +118,23 @@
                    		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1"/>
                     </xs:choice> 
                     <xs:element name="otherMeddra" type="AdverseEventMeddraLowLevelTermType" minOccurs="0"/>
-                   	<!--<xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
-
-                    <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
-                    <xs:element name="eventApproximateTime" type="xs:time" minOccurs="0"/>
+                   	<xs:element name ="outcome" type="OutcomeType" minOccurs="0" maxOccurs="unbounded"/>  
+                    <xs:element name="eventApproximateTime" type="TimeType" minOccurs="0"/>
                     <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
-                    <xs:element ref="outcome" minOccurs="0" maxOccurs="unbounded"/>  
+                    <!-- <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
                    <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
    </xs:complexType>  
-
+    <xs:complexType name="TimeType">
+                <xs:sequence>
+                  <xs:element name="hour" type="xs:integer" minOccurs="1"/>
+                  <xs:element name="minute" type="xs:integer" minOccurs="1"/>
+                  <xs:element name="ampm" type="AMPM" minOccurs="1"/>
+                </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
@@ -154,15 +158,22 @@
                 </xs:sequence>
     </xs:complexType> 
         
-    <xs:element name="outcome" type="OutcomeType"/>
+
     <xs:complexType name="OutcomeType">
                 <xs:sequence>
-                  <xs:element name="outComeEnumType" type="OutComeEnumType"/>
-                  <xs:element name="other" type="xs:string"/>
+                  <xs:element name="outComeEnumType" type="OutComeEnumType" minOccurs="1"/>
+                  <xs:element name="other" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
     </xs:complexType> 
     
 	<!-- FIXED Types  --> 
+    <xs:simpleType name="AMPM">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AM"/>
+            <xs:enumeration value="PM"/>
+        </xs:restriction>
+    </xs:simpleType>
+    	
     <xs:simpleType name="CtcVersionEnum">
         <xs:restriction base="xs:int">
             <xs:enumeration value="2"/>
