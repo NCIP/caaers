@@ -45,7 +45,10 @@ public class AdverseEventConverter {
 
 			if (operation.equals(AdverseEventManagementService.CREATE)) {
 				populateCtcTerm(adverseEventDto,adverseEvent);
-				populateLowLevelTerm(adverseEventDto,adverseEvent); 
+				if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
+					populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
+				}
+				
 			}
 			if (adverseEventDto.getEventApproximateTime() != null) { 
 				TimeValue tv = new TimeValue();
@@ -64,6 +67,9 @@ public class AdverseEventConverter {
 			if (adverseEventDto.getEventLocation() != null) { 
 				adverseEvent.setEventLocation(adverseEventDto.getEventLocation());
 			}
+			//if (adverseEventDto.getOutcome() != null) {
+				//populateOutcomes(adverseEventDto,adverseEvent);
+			//}
 			/*
 			if(adverseEventDto.getGradedDate() != null){
 				adverseEvent.setGradedDate(adverseEventDto.getGradedDate().toGregorianCalendar().getTime());
@@ -96,11 +102,17 @@ public class AdverseEventConverter {
 			adverseEvent.setAttributionSummary(attributionSummary);
 		}
 	}
-	private void populateLowLevelTerm(AdverseEventType adverseEventDto, AdverseEvent adverseEvent) {
-		if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
-			AdverseEventMeddraLowLevelTermType xmlLowLevelTerm = adverseEventDto.getAdverseEventMeddraLowLevelTerm();
+	private LowLevelTerm getLowLevelTerm(String code, String term) {
+		LowLevelTerm lowLevelTerm = null;
+		lowLevelTerm=lowLevelTermDao.getByCodeAndTerm(code,term);
+		return lowLevelTerm;
+	}
+	
+	private void populateLowLevelTerm(AdverseEventMeddraLowLevelTermType adverseEventMeddraLowLevelTermType, AdverseEvent adverseEvent) {
+		if (adverseEventMeddraLowLevelTermType != null) {
+			AdverseEventMeddraLowLevelTermType xmlLowLevelTerm = adverseEventMeddraLowLevelTermType;
 			
-			LowLevelTerm lowLevelTerm = lowLevelTermDao.getByCodeAndTerm(xmlLowLevelTerm.getMeddraCode(),xmlLowLevelTerm.getMeddraTerm());
+			LowLevelTerm lowLevelTerm = getLowLevelTerm(xmlLowLevelTerm.getMeddraCode(),xmlLowLevelTerm.getMeddraTerm());
 			if (lowLevelTerm == null) {
 				throw new CaaersSystemException ("Meddra term not found " + xmlLowLevelTerm.getMeddraCode().toString());
 				
@@ -118,6 +130,19 @@ public class AdverseEventConverter {
 			if (ctcTerm == null) {
 				throw new CaaersSystemException ("CTC term not found " + adverseEventDto.getAdverseEventCtcTerm().getCtepTerm().toString());
 			} else {
+				if (ctcTerm.isOtherRequired()) {
+					if (adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra() != null) {
+						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraCode(),adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraTerm());
+						if (lowLevelTerm == null) {
+							throw new CaaersSystemException ("Meddra term not found " + adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraCode().toString());
+						} else {
+							adverseEvent.setLowLevelTerm(lowLevelTerm);
+						}
+					} else {
+						throw new CaaersSystemException ("Other(Meddra) missing.");
+					}
+				}
+				
 				AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
 				adverseEventCtcTerm.setCtcTerm(ctcTerm);
 				adverseEventCtcTerm.setAdverseEvent(adverseEvent);
@@ -133,7 +158,7 @@ public class AdverseEventConverter {
 			//adverseEventCtcTerm.setsetMeddraTerm(xmlLowLevelTerm.getMeddraTerm());
 		}
 	}
-
+	
 	public void setCtcTermDao(CtcTermDao ctcTermDao) {
 		this.ctcTermDao = ctcTermDao;
 	}
