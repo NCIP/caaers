@@ -2,7 +2,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-<title>Research Staff</title>
+<title><caaers:message code="researchStaff.details.pageTitle"/></title>
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:includeScriptaculous/>
     <tags:stylesheetLink name="extremecomponents"/>
@@ -143,10 +143,10 @@
 <div class="workflow-tabs2">
     <ul id="" class="tabs autoclear">
         <li id="thirdlevelnav" class="tab selected">
-            <div><a href="createResearchStaff">Create/Edit Research Staff</a></div>
+            <div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div>
         </li>
         <li id="thirdlevelnav" class="tab">
-            <div><a href="searchResearchStaff">Search Research Staff</a></div>
+            <div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div>
         </li>
     </ul>
 </div>
@@ -159,16 +159,18 @@
 	<input type="hidden" name="_finish" value="true"/>
 
     <p><tags:instructions code="researchstaffdetails" /></p>
-
-    <chrome:division title="Site">
-    <c:forEach items="${fieldGroups.site.fields}" var="field">
-        <csmauthz:accesscontrol domainObject="${organization}" hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
-            <tags:renderRow field="${field}"/>
-        </csmauthz:accesscontrol>
-    </c:forEach>
+    
+	<caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/>
+    <chrome:division title="${siteSectionTitle}">
+	    <c:forEach items="${fieldGroups.site.fields}" var="field">
+	        <csmauthz:accesscontrol domainObject="${organization}" hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
+	            <tags:renderRow field="${field}"/>
+	        </csmauthz:accesscontrol>
+	    </c:forEach>
     </chrome:division>
 
-    <chrome:division title="Demographic Details">
+	<caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
+    <chrome:division title="${detailsSectionTitle}">
     <div class="leftpanel">
             <c:forEach begin="0" end="3" items="${fieldGroups.researchStaff.fields}" var="field">
                 <tags:renderRow field="${field}"/>
@@ -184,12 +186,13 @@
     </div>
     </chrome:division>
 
-<chrome:division id="staff-details" title="User Role (Check all that apply)">
+<caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
+<chrome:division id="staff-details" title="${roleSectionTitle}">
 
 <div>
 
     <div class="row">
-        <div class="label label2">Subject coordinator</div>
+        <div class="label label2"><caaers:message code="role.subjectCoordinator"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_participant_cd').value='true':$('caaers_participant_cd').value='false';" ${caaers_participant_cd ? 'checked':'' }/>
             <input id="caaers_participant_cd" type="hidden" name="caaers_participant_cd" value="${caaers_participant_cd}" />
@@ -197,7 +200,7 @@
     </div>
 
     <div class="row">
-        <div class="label label2">Study coordinator</div>
+        <div class="label label2"><caaers:message code="role.studyCoordinator"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_study_cd').value='true':$('caaers_study_cd').value='false';" ${caaers_study_cd ? 'checked':''} />
             <input id="caaers_study_cd" type="hidden" name="caaers_study_cd" value="${caaers_study_cd}"/>
@@ -205,7 +208,7 @@
     </div>
 
     <div class="row">
-        <div class="label label2">Adverse event coordinator</div>
+        <div class="label label2"><caaers:message code="role.adverseEventCoordinator"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_ae_cd').value='true':$('caaers_ae_cd').value='false';" ${caaers_ae_cd ? 'checked':''} />
             <input id="caaers_ae_cd" type="hidden" name="caaers_ae_cd" value="${caaers_ae_cd}"/>
@@ -213,7 +216,7 @@
     </div>
     
     <div class="row">
-        <div class="label label2">Central Office Report Reviewer</div>
+        <div class="label label2"><caaers:message code="role.centralOfficeReportReviewer"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_central_office_sae_cd').value='true':$('caaers_central_office_sae_cd').value='false';" ${caaers_central_office_sae_cd ? 'checked':''} />
             <input id="caaers_central_office_sae_cd" type="hidden" name="caaers_central_office_sae_cd" value="${caaers_central_office_sae_cd}"/>
@@ -221,7 +224,7 @@
     </div>
     
     <div class="row">
-        <div class="label label2">Data coordinator</div>
+        <div class="label label2"><caaers:message code="role.dataCoordinator"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_data_cd').value='true':$('caaers_data_cd').value='false';" ${caaers_data_cd ? 'checked':''} />
             <input id="caaers_data_cd" type="hidden" name="caaers_data_cd" value="${caaers_data_cd}"/>
@@ -229,7 +232,7 @@
     </div>
 
     <div class="row">
-        <div class="label label2">Site coordinator</div>
+        <div class="label label2"><caaers:message code="role.siteCoordinator"/></div>
         <div class="value value2">
             <input type="checkbox" onclick="this.checked?$('caaers_site_cd').value='true':$('caaers_site_cd').value='false';" ${caaers_site_cd ? 'checked' :''} />
             <input id="caaers_site_cd" type="hidden" name="caaers_site_cd" value="${caaers_site_cd}"/>

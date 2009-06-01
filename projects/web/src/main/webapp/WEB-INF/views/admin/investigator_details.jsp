@@ -2,7 +2,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-<title>Investigator</title>
+<title><caaers:message code="investigator.details.pageTitle"/></title>
 <tags:includeScriptaculous />
 <tags:stylesheetLink name="extremecomponents"/>
 <tags:includePrototypeWindow />
@@ -172,12 +172,12 @@ Event.observe(window, "load", function() {
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab selected">
                 <div>
-                    <a href="createInvestigator">Create/Edit Investigator</a>
+                    <a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
                 </div>
             </li>
             <li id="thirdlevelnav" class="tab">
                 <div>
-                    <a href="searchInvestigator">Search Investigator</a>
+                    <a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a>
                 </div>
             </li>
         </ul>
@@ -203,8 +203,8 @@ Event.observe(window, "load", function() {
             <p>
         <tags:instructions code="investigatordetails" />
         </p>
-
-    	<chrome:division title="Demographic Details" id="investigator">
+		<caaers:message code="investigator.details.detailsSection" var="detailsSectionTitle"/>
+    	<chrome:division title="${detailsSectionTitle}" id="investigator">
     	
 		<div class="leftpanel">
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
@@ -220,7 +220,8 @@ Event.observe(window, "load", function() {
 		<br>
 		<br>
 	</chrome:division>
-	<chrome:division title="Associate Organizations">
+	<caaers:message code="investigator.details.associateSitesSection" var="associateSitesSectionTitle"/>
+	<chrome:division title="${associateSitesSectionTitle}">
 	  <br>
 	  <table class="tablecontent" width="78%">
 	  			

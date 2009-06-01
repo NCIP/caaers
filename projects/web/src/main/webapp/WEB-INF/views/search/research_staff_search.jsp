@@ -11,7 +11,7 @@
     div.content { padding: 5px 15px; }
 </style>
 
-<title>Search Research Staff</title>
+<title><caaers:message code="researchStaff.search.pageTitle"/></title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <tags:dwrJavascriptLink objects="search"/>
 <tags:dwrJavascriptLink objects="createInvestigator" />
@@ -50,12 +50,12 @@ function buildTable(form) {
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab">
                 <div>
-                    <a href="createResearchStaff">Create Research Staff</a>
+                    <a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a>
                 </div>
             </li>
             <li id="thirdlevelnav" class="tab selected">
                 <div>
-                    <a href="searchResearchStaff">Search Research Staff</a>
+                    <a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a>
                 </div>
             </li>
         </ul>
@@ -65,20 +65,20 @@ function buildTable(form) {
  <div class="content">
     <form:form name="searchForm" id="searchForm" method="post">
     <p><tags:instructions code="researchstaffsearch" /></p>
-
-        <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
+		<caaers:message code="researchstaff.search.criteriaSection" var="criteriaSectionTitle"/>
+        <chrome:box title="${criteriaSectionTitle}" cssClass="mpaired" autopad="false">
             <div class="row">
-                <div class="label"> First name&nbsp; </div>
+                <div class="label"><caaers:message code="firstName"/>&nbsp; </div>
                 <div class="value"><input id="prop0" name="firstName" type="text"/></div>
             </div>
 
             <div class="row">
-                <div class="label"> Last name&nbsp; </div>
+                <div class="label"><caaers:message code="lastName"/>&nbsp; </div>
                 <div class="value"><input id="prop1" name="lastName" type="text"/></div>
             </div>
 
             <div class="row">
-				<div class="label"> Organization&nbsp; </div>
+				<div class="label"><caaers:message code="organization"/>&nbsp; </div>
 					<div class="value">
 						<ui:autocompleter path="organization"
 							initialDisplayValue="Begin typing here..." enableClearButton="true">
@@ -123,7 +123,8 @@ function buildTable(form) {
                  <input type="hidden" name="_prop" id="prop">
                  <input type="hidden" name="_value" id="value">
              </div>
-             <chrome:box title="Search Results">
+             <caaers:message code="researchStaff.search.resultsSection" var="resultsSectionTitle"/>
+             <chrome:box title="${resultsSectionTitle}">
                  <chrome:division id="single-fields">
                      <div id="tableDiv">
                          <c:out value="${assembler}" escapeXml="false"/>

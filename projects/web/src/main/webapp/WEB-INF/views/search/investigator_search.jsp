@@ -11,7 +11,7 @@
         div.content { padding: 5px 15px; }
     </style>
 
-    <title>Search Investigator</title>
+    <title><caaers:message code="investigator.search.pageTitle"/></title>
     <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
     <tags:dwrJavascriptLink objects="search"/>
 	<tags:dwrJavascriptLink objects="createInvestigator" />
@@ -47,8 +47,8 @@
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab"><div><a href="createInvestigator">Create/Edit Investigator</a></div></li>
-            <li id="thirdlevelnav" class="tab selected"><div><a href="searchInvestigator">Search Investigator</a></div></li>
+            <li id="thirdlevelnav" class="tab"><div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div></li>
+            <li id="thirdlevelnav" class="tab selected"><div><a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a></div></li>
         </ul>
         <tags:pageHelp propertyKey="searchInvestigator"/>
     </div>
@@ -57,19 +57,19 @@
     <div class="content">
         <form:form name="searchForm" id="searchForm" method="post">
             <p><tags:instructions code="investigatorreview"/></p>
-			
-            <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
+			<caaers:message code="investigator.search.criteriaSection" var="criteriaSectionTitle"/>
+            <chrome:box title="${criteriaSectionTitle}" cssClass="mpaired" autopad="false">
             	<table>
             		<tr>
             			<td>
 	            			<div class="row">
-	            				<div class="label"> First name&nbsp; </div>
+	            				<div class="label"><caaers:message code="firstName"/>&nbsp; </div>
 	            				<div class="value"><input id="prop0" name="firstName" type="text"/></div>
 	            			</div>
             			</td>
             			<td style="vertical-align:top">
             				<div class="row">
-            					<div class="label">Last name&nbsp; </div>
+            					<div class="label"><caaers:message code="lastName"/>&nbsp; </div>
                     			<div class="value"><input id="prop1" name="lastName" type="text"/></div>
                     		</div>
             			</td>
@@ -77,13 +77,13 @@
             		<tr>
             			<td style="vertical-align:top">
             				<div class="row">
-                    			<div class="label">Investigator number&nbsp; </div>
+                    			<div class="label"><caaers:message code="investigator.nciInstituteCode"/>&nbsp; </div>
                     			<div class="value"><input id="prop2" type="text" name="nciInstituteCode"/></div>
                 			</div>
             			</td>
             			<td style="vertical-align:top">
             					<div class="row">
-                    				<div class="label"> Organization&nbsp; </div>
+                    				<div class="label"><caaers:message code="organization"/>&nbsp; </div>
                     				<div class="value">
                     					<ui:autocompleter path="organization"
 										  initialDisplayValue="Begin typing here..." enableClearButton="true">
@@ -130,7 +130,8 @@
                     <input type="hidden" name="_prop" id="prop">
                     <input type="hidden" name="_value" id="value">
                 </div>
-                <chrome:box title="Search Results">
+                <caaers:message code="investigator.search.resultsSection" var="resultsSectionTitle"/>
+                <chrome:box title="${resultsSectionTitle}">
                     <chrome:division id="single-fields">
                         <div id="tableDiv">
                             <c:out value="${assembler}" escapeXml="false"/>

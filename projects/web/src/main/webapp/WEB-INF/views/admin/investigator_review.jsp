@@ -2,7 +2,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-<title>Investigator</title>
+<title><caaers:message code="investigator.review.pageTitle"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <tags:stylesheetLink name="participant" />
 <tags:includeScriptaculous />
@@ -27,11 +27,11 @@ function submitPage(s){
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
             <li id="thirdlevelnav" class="tab selected">
-                <div><a href="createInvestigator">Create/Edit Investigator</a></div>
+                <div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div>
             </li>
             <li id="thirdlevelnav" class="tab ">
                 <div>
-                    <a href="searchInvestigator">Search Investigator</a>
+                    <a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a>
                 </div>
             </li>
         </ul>
@@ -40,50 +40,90 @@ function submitPage(s){
 </div>
 <chrome:flashMessage/>
 <chrome:box title="${investigator.lastName}, ${investigator.firstName}" >
-<chrome:division title="Investigator Details">
+<caaers:message code="investigator.review.detailsSection" var="detailsSectionTitle"/>
+<chrome:division title="${detailsSectionTitle}">
  <div class="leftpanel">
-	 <div class="row">
-		<div class="label">First name</div>
-		<div class="value">${investigator.firstName}</div>
-	 </div>
-	<div class="row">
-	    <div class="label">Middle name</div>
-	    <div class="value">${investigator.middleName}</div>
-	 </div>	        
-	 <div class="row">
-	    <div class="label">Last name</div>
-	    <div class="value">${investigator.lastName}</div>
-	 </div>
- 	<div class="row">
-		<div class="label">Investigator number</div>
-		<div class="value">${investigator.nciIdentifier} </div>
-   </div>
+     	
+     	<ui:row path="firstName">
+ 			<jsp:attribute name="value">
+ 				${investigator.firstName}
+ 			</jsp:attribute>
+ 			<jsp:attribute name="label">
+ 				<ui:label path="firstName" text="First name"></ui:label>
+ 			</jsp:attribute>
+ 		</ui:row>
+ 
+       <ui:row path="middleName">
+  			<jsp:attribute name="value">
+  				${investigator.middleName}
+  			</jsp:attribute>
+  			<jsp:attribute name="label">
+  				<ui:label path="middleName" text="Middle name"></ui:label>
+  			</jsp:attribute>
+		</ui:row>
+		
+       <ui:row path="lastName">
+   			<jsp:attribute name="value">
+   				${investigator.lastName}
+   			</jsp:attribute>
+   			<jsp:attribute name="label">
+   				<ui:label path="lastName" text="Last name"></ui:label>
+   			</jsp:attribute>
+		</ui:row>				
+
+       <ui:row path="nciIdentifier">
+   			<jsp:attribute name="value">
+   				${investigator.nciIdentifier}
+   			</jsp:attribute>
+   			<jsp:attribute name="label">
+   				<ui:label path="nciIdentifier" labelProperty="investigator.nciIdentifier" text="Investigator number"></ui:label>
+   			</jsp:attribute>
+		</ui:row>
  </div>
 
  <div class="rightpanel">
    
-   <div class="row">
-	 <div class="label">Email address</div>
-	 <div class="value">${investigator.emailAddress}</div>
-   </div>
+        <ui:row path="emailAddress">
+   			<jsp:attribute name="value">
+   				${investigator.emailAddress}
+   			</jsp:attribute>
+   			<jsp:attribute name="label">
+   				<ui:label path="emailAddress" text="Email address"></ui:label>
+   			</jsp:attribute>
+		</ui:row>
 	        
-   <div class="row">
-	 <div class="label">Phone</div>
-	 <div class="value">${investigator.phoneNumber}</div>
-   <div>
-   <div class="row">
-	 <div class="label">Fax</div>
-	 <div class="value">${investigator.faxNumber}</div>
-   </div>
-   <div class="row">
-	 <div class="label">Username</div>
-	 <div class="value">${investigator.loginId}</div>
-   </div>
+        <ui:row path="phoneNumber">
+  			<jsp:attribute name="value">
+  				${investigator.phoneNumber}
+  			</jsp:attribute>
+  			<jsp:attribute name="label">
+  				<ui:label path="phoneNumber" text="Phone"></ui:label>
+  			</jsp:attribute>
+		</ui:row>
+		
+        <ui:row path="faxNumber">
+   			<jsp:attribute name="value">
+   				${investigator.faxNumber}
+   			</jsp:attribute>
+   			<jsp:attribute name="label">
+   				<ui:label path="faxNumber" text="Fax"></ui:label>
+   			</jsp:attribute>
+		</ui:row>
+			
+        <ui:row path="loginId">
+   			<jsp:attribute name="value">
+   				${investigator.loginId}
+   			</jsp:attribute>
+   			<jsp:attribute name="label">
+   				<ui:label path="loginId" text="Username"></ui:label>
+   			</jsp:attribute>
+		</ui:row>
  </div>
 </chrome:division>
 	
  <c:if test="${not empty investigator.siteInvestigators}">
-   <chrome:division title="Associate Sites">
+ <caaers:message code="investigator.review.associateSitesSection" var="associateSitesSectionTitle"/>
+   <chrome:division title="${associateSitesSectionTitle}">
    <br>
 	 <table class="tablecontent" width="70%">
 	  <tr>
