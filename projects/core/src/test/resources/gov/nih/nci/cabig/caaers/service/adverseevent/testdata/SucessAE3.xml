@@ -9,11 +9,11 @@
 			<endDate>2005-08-29</endDate>		
 			<adverseEventCtcTerm>
 				<ctep-term>Auditory/Ear - Other (Specify, __)</ctep-term>
-				<other-meddra>
-					<meddraCode>mc1</meddraCode>
-					<meddraTerm>mt1</meddraTerm>
-				</other-meddra>
-			</adverseEventCtcTerm>	
+			</adverseEventCtcTerm>
+			<otherMeddra>
+				<meddraCode>mc1</meddraCode>
+				<meddraTerm>mt1</meddraTerm>
+			</otherMeddra>	
 		</ns1:adverseEvent>		
 	</ns1:adverseEvents>
 	<ns1:criteria>
