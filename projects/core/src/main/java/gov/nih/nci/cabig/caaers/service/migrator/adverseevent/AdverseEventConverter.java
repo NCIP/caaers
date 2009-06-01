@@ -131,10 +131,10 @@ public class AdverseEventConverter {
 				throw new CaaersSystemException ("CTC term not found " + adverseEventDto.getAdverseEventCtcTerm().getCtepTerm().toString());
 			} else {
 				if (ctcTerm.isOtherRequired()) {
-					if (adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra() != null) {
-						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraCode(),adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraTerm());
+					if (adverseEventDto.getOtherMeddra() != null) {
+						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getOtherMeddra().getMeddraCode(),adverseEventDto.getOtherMeddra().getMeddraTerm());
 						if (lowLevelTerm == null) {
-							throw new CaaersSystemException ("Meddra term not found " + adverseEventDto.getAdverseEventCtcTerm().getOtherMeddra().getMeddraCode().toString());
+							throw new CaaersSystemException ("Meddra term not found " + adverseEventDto.getOtherMeddra().getMeddraCode().toString());
 						} else {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
 						}
