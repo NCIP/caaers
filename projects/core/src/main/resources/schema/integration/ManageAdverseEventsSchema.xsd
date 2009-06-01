@@ -113,18 +113,17 @@
                     <xs:element name="comments" type="xs:string" minOccurs="0"/>
                     <xs:element name="startDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="endDate" type="xs:date" minOccurs="0"/>  
-                    <xs:choice>
-                    	
+                    <xs:choice>                    	
                    		<xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1"/>
                    		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1"/>
                     </xs:choice> 
-                    
+                    <xs:element name="otherMeddra" type="AdverseEventMeddraLowLevelTermType" minOccurs="0"/>
                    	<!--<xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
 
                     <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
                     <xs:element name="eventApproximateTime" type="xs:time" minOccurs="0"/>
                     <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
-                    <xs:element ref="outcome" minOccurs="0"/>  
+                    <xs:element ref="outcome" minOccurs="0" maxOccurs="unbounded"/>  
                    <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->
                 </xs:sequence>
@@ -136,7 +135,6 @@
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
                   <xs:element name="ctep-term" type="CustomStringType"/>
-                  <xs:element name="other-meddra" type="AdverseEventMeddraLowLevelTermType" minOccurs="0"/>
                   <!--
                   <xs:element name="ctep-code" type="xs:string"/>
                   <xs:element name="ctc-version" type="CtcVersionEnum"/>-->
