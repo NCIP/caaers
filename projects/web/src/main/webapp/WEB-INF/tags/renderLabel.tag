@@ -5,9 +5,9 @@
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <c:choose>
     <c:when test="${field.categoryName == 'autocompleter'}">
-    	<ui:label path="${field.propertyName}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}"/>
+    	<ui:label path="${field.propertyName}" labelProperty="${field.attributes.labelProperty}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}"/>
     </c:when>
     <c:otherwise>
-    	<ui:label path="${field.propertyName}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}" />
+    	<ui:label path="${field.propertyName}" labelProperty="${field.attributes.labelProperty}" text="${field.displayName}" mandatory="${field.attributes.mandatory}" required="${field.required}" />
     </c:otherwise>
 </c:choose>
