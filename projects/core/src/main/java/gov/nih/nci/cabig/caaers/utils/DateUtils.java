@@ -26,7 +26,7 @@ public class DateUtils {
 	}
 	
 	/**
-	 * This is a convenient method to get yestarday's date
+	 * This is a convenient method to get yestarday date
 	 * @return
 	 */
 	public static Date yesterday(){
@@ -36,7 +36,7 @@ public class DateUtils {
 	}
 	
 	/**
-	 * This is a convenient method to get yestarday's date
+	 * This is a convenient method to get tomorrow
 	 * @return
 	 */
 	public static Date tomorrow(){
