@@ -58,6 +58,8 @@
 	 
 	 	
 	 <target name="war" depends="clean-war, init-war, resolve-dist">
+	 	<!-- copy the resources related to webservices -->
+	 	<copy-resources src="${webservice.xsd.src}" dest="${webservice.xsd.dest}" filter="false"/>
 		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
 	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
