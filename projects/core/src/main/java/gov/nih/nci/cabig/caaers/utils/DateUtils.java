@@ -8,6 +8,43 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
+
+	/**
+	 * Checks whether the given d, is greater than or equal to startDate and less than or equal to endDate.
+	 * @param d, cannot be null
+	 * @param startDate, cannot be null
+	 * @param endDate, if null ignored
+	 * @return
+	 * {@link NullPointerException} if d or startDate is null
+	 */
+	public static boolean between(Date d, Date startDate, Date endDate){
+		if(endDate == null){
+			return compareDate(d, startDate) >=0;
+		}else{
+			return compareDate(d, startDate) >= 0 && compareDate(d , endDate) <=0;
+		}
+	}
+	
+	/**
+	 * This is a convenient method to get yestarday's date
+	 * @return
+	 */
+	public static Date yesterday(){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, -1);
+		return c.getTime();
+	}
+	
+	/**
+	 * This is a convenient method to get yestarday's date
+	 * @return
+	 */
+	public static Date tomorrow(){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DATE, 1);
+		return c.getTime();
+	}
+	
     /**
      * Compares two dates. The time fields are ignored.
      * 
