@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.text.ParseException;
@@ -244,18 +246,59 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		//}
 		return getHibernateTemplate().findByCriteria(criteria);			
 	}
+	
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod, Study study, Participant participant){
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);
+		criteria.createCriteria("reportingPeriod").add(getReportingPeriodExample(adverseEventReportingPeriod)).createCriteria("assignment").add(getAssignmentExample(assignment));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod, Study study, Participant participant, AdverseEvent adverseEvent){
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);
+		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").add(getReportingPeriodExample(adverseEventReportingPeriod)).createCriteria("assignment").add(getAssignmentExample(assignment));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	public List<AdverseEvent> getByReport(Report report){
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);
+		criteria.createCriteria("reportingPeriod").createCriteria("aeReport").createCriteria("report").add(getReportExample(report));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	public List<AdverseEvent> getByReport(Report report, AdverseEvent adverseEvent){
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);
+		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").createCriteria("aeReport").createCriteria("report").add(getReportExample(report));
+		
+		return getHibernateTemplate().findByCriteria(criteria);
+	}
 
 	private Example getParticipantExample(Participant participant) {
 		return addOptions(Example.create(participant));
 	}
+	
 	private Example getStudyExample(Study study) {
 		return addOptions(Example.create(study));
-	}	
+	}
+	
 	private Example getAdverseEventExample(AdverseEvent adverseEvent) {
 		return addOptions(Example.create(adverseEvent));
 	}
+	
 	private Example getAssignmentExample( StudyParticipantAssignment assignment) {
 		return addOptions(Example.create(assignment));
+	}
+	
+	private Example getReportingPeriodExample(AdverseEventReportingPeriod reportingPeriod){
+		return addOptions(Example.create(reportingPeriod));
+	}
+	
+	private Example getReportExample(Report report){
+		return addOptions(Example.create(report));
 	}
 	
 	private Example addOptions(Example example) {

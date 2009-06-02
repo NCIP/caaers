@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -24,6 +25,10 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cagrid.cqlquery.Attribute;
+import gov.nih.nci.cagrid.cqlquery.CQLQuery;
+import gov.nih.nci.cagrid.cqlquery.Predicate;
+import com.semanticbits.core.CQL2HQL;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -40,12 +45,14 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 	
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
 		participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
+		adverseEventReportingPeriodDao = (AdverseEventReportingPeriodDao) getDeployedApplicationContext().getBean("adverseEventReportingPeriodDao");
 	}
 
     public void testCopyBasicProperties() throws Exception {
@@ -344,6 +351,31 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertTrue(loaded.getRequiresReporting());
     }
     
+    public void testGetByAdverseEventReportingPeriod() throws Exception{
+    	AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(1001);
+    	List<AdverseEvent> aeList = getDao().getByAdverseEventReportingPeriod(reportingPeriod, reportingPeriod.getStudy(), reportingPeriod.getParticipant() );
+    	assertEquals("Incorrect number of adverseEvents fetched by getByAdverseEventReportingPeriod", 1, aeList.size());
+    	assertEquals("Incorrect AE fetched by getByAdverseEventReportingPeriod", new Integer(-3), aeList.get(0).getId());
+    }
+    
+    public void testGetByAdverseEventReportingPeriodWithAECorrectGrade() throws Exception{
+    	AdverseEventReportingPeriod reportingPeriod  = adverseEventReportingPeriodDao.getById(1001);
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setSolicited(null);
+    	ae.setGrade(Grade.DEATH);
+    	List<AdverseEvent> aeList = getDao().getByAdverseEventReportingPeriod(reportingPeriod, reportingPeriod.getStudy(), reportingPeriod.getParticipant(), ae);
+    	assertEquals("Incorrect number of adverseEvents fetched by getByAdverseEventReportingPeriod", 1, aeList.size());
+    	assertEquals("Incorrect AE fetched by getByAdverseEventReportingPeriod", new Integer(-3), aeList.get(0).getId());
+    }
+    
+    public void testGetByAdverseEventReportingPeriodWithAEIncorrectGrade() throws Exception{
+    	AdverseEventReportingPeriod reportingPeriod  = adverseEventReportingPeriodDao.getById(1001);
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setSolicited(null);
+    	ae.setGrade(Grade.LIFE_THREATENING);
+    	List<AdverseEvent> aeList = getDao().getByAdverseEventReportingPeriod(reportingPeriod, reportingPeriod.getStudy(), reportingPeriod.getParticipant(), ae);
+    	assertEquals("Incorrect number of adverseEvents fetched by getByAdverseEventReportingPeriod", 0, aeList.size());
+    }
 //    public void testSearchAdverseEvents(){
 //    	Map<String, Object> props = new HashMap<String, Object>();
 //    	props.put("studyIdentifier", "13js77");
@@ -478,6 +510,20 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertTrue(loaded.size()==0);
 
     	
+    }
+    
+    /**
+     * This method returns a list of adversEvents where startdate >= 2007-09-12
+     */
+    public void testSearchByHQLForLessThanEqualsOperator() throws Exception{
+    	CQLQuery cqlQuery = new CQLQuery();
+    	gov.nih.nci.cagrid.cqlquery.Object targetObject = new gov.nih.nci.cagrid.cqlquery.Object();
+    	targetObject.setName("gov.nih.nci.cabig.caaers.domain.AdverseEvent");
+    	targetObject.setAttribute(new Attribute("startDate", Predicate.LESS_THAN_EQUAL_TO, "December 12, 2008, 00:00:00 GMT"));
+    	cqlQuery.setTarget(targetObject);
+    	String hqlQuery = CQL2HQL.translate(cqlQuery, false, true);
+    	List<AdverseEvent> aeList = getDao().search(new HQLQuery(hqlQuery));
+    	assertEquals("Incorrect number of adverse events fetched", 2, aeList.size());
     }
     
     public AdverseEventDao getDao(){

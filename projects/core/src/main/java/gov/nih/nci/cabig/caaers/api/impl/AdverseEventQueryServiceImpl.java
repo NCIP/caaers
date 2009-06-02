@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.api.AdverseEventQueryService;
 import gov.nih.nci.cabig.caaers.api.AdverseEventSerializer;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.util.List;
@@ -33,13 +35,28 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 		return adverseEventDao.getByStudy(study, adverseEvent);
 	}
 
-
 	public List<AdverseEvent> getByStudyParticipant(Study study , Participant participant, AdverseEvent adverseEvent) {
 		return adverseEventDao.getByStudyParticipant(study, participant, adverseEvent);
 	}
 
 	public List<AdverseEvent> getByStudyParticipant(Study study , Participant participant) {
 		return adverseEventDao.getByStudyParticipant(study, participant);
+	}
+	
+	public List<AdverseEvent> getByReport(Report report){
+		return adverseEventDao.getByReport(report);
+	}
+	
+	public List<AdverseEvent> getByReport(Report report, AdverseEvent adverseEvent){
+		return adverseEventDao.getByReport(report, adverseEvent);
+	}
+	
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(Study study, Participant participant, AdverseEventReportingPeriod adverseEventReportingPeriod){
+		return adverseEventDao.getByAdverseEventReportingPeriod(adverseEventReportingPeriod, study, participant);
+	}
+	
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(Study study, Participant participant, AdverseEventReportingPeriod adverseEventReportingPeriod, AdverseEvent adverseEvent){
+		return adverseEventDao.getByAdverseEventReportingPeriod(adverseEventReportingPeriod, study, participant, adverseEvent);
 	}
 	
 	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {

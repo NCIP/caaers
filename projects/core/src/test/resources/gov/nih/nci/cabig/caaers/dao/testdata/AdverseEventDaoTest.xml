@@ -190,6 +190,9 @@
             expected="1"
             comments="That was some big AE"
             low_level_term_id="-11"
+            event_time_zone="0"
+        	event_time_minute="0"
+        	event_time_hour="0"
             />
 
     <AE_TERMS

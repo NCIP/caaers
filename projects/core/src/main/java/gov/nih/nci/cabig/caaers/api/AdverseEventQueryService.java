@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.List;
 
@@ -63,6 +65,39 @@ public interface AdverseEventQueryService {
 	 * @return
 	 */	
 	public List<AdverseEvent> getByStudyParticipant(Study study , Participant participant, AdverseEvent adverseEvent);
+	
+	/**
+	 * Search for Adverse Events based on a given Report
+	 * @param report
+	 * @return
+	 */
+	public List<AdverseEvent> getByReport(Report report);
+	
+	/**
+	 * Search for Adverse Events based on a given Report and adverseEvent
+	 * @param report
+	 * @param adverseEvent
+	 * @return
+	 */
+	public List<AdverseEvent> getByReport(Report report, AdverseEvent adverseEvent);
+	
+	/**
+	 * Search for AdverseEvents based on a given ReportingPeriod, Study, Participant
+	 * @param Study
+	 * @param Participant
+	 * @param ReportingPeriod
+	 */
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(Study study, Participant participant, AdverseEventReportingPeriod adverseEventReportingPeriod);
+	
+	/**
+	 * Search for AdverseEvents based on a given ReportingPeriod, Study, Participant and AdverseEvent
+	 * @param study
+	 * @param participant
+	 * @param reportingPeriod
+	 * @param adverseEvent
+	 * @return
+	 */
+	public List<AdverseEvent> getByAdverseEventReportingPeriod(Study study, Participant participant, AdverseEventReportingPeriod adverseEventReportingPeriod, AdverseEvent adverseEvent);
 	
 	/**
 	 * Convert result AEs to XML

@@ -3,8 +3,37 @@
         id="3"
         name="CTCAE v3.0"
         />
-    <ctc_categories/> <!-- TEMP: purge LUT to avoid constraint violations -->
-    <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_categories
+            id="301"
+            name="allergy/immunology"
+            version_id="3"
+            />
+    <ctc_categories
+            id="302"
+            name="auditory/ear"
+            version_id="3"
+            />
+    <ctc_categories
+            id="303"
+            name="blood/bone marrow"
+            version_id="3"
+            />
+    <ctc_terms
+            id="3007"
+            category_id="302"
+            term="Auditory/Ear - Other (Specify, __)"
+            ctep_term="Ear disorder"
+            ctep_code="10014004"
+            other_required="1"
+            />
+    <ctc_terms
+            category_id="302"
+            id="3012"
+            term="Tinnitus"
+            ctep_term="Tinnitus"
+            ctep_code="10043882"
+            other_required="0"
+            />
     <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <PARTICIPANTS
         id="-99"
@@ -12,7 +41,7 @@
         institution="Hospital"
         first_name="Dilbert"
         last_name="Scott"
-       birth_day="02"
+       	birth_day="02"
         birth_month="01"
         birth_year="2006"
         gender="Female"
@@ -42,9 +71,9 @@
         institution="Hospital"
         first_name="Michael"
         last_name="Jordan"
-       birth_day="02"
+       	birth_day="02"
         birth_month="01"
-        birth_year="2006"
+        birth_year="2004"
         gender="Male"
         ethnicity="ethnicity"
         race="race"
@@ -85,7 +114,9 @@
     	id="-12"
     	term_code="1"
     	study_id="-2001"
-    	/>  		
+    	/>  	
+    	
+   
     	
      <TERMINOLOGIES
    		id="-11"
@@ -126,6 +157,88 @@
         participant_id="-99"
         study_site_id="-3000" 
         load_status="0" />
+        
+        
+     <TREATMENT_ASSIGNMENT
+            id="1001"
+            code="adverseEventReportingPeriodCode"
+            study_id="-2000"
+      />
+      
+      <EPOCHS
+            id="-1010"
+            name="test epoch 1"
+            order_no="1"
+            study_id="-2000"
+            />
+         
+         <AE_REPORTING_PERIODS
+            id="1001"
+            start_date="2008-05-23"
+            end_date="2008-05-25"
+            description="test object 1001"
+            treatment_assignment_id="1001"
+            assignment_id="-10"
+            epoch_id="-1010"
+            />
+
+    <AE_REPORTING_PERIODS
+            id="1002"
+            start_date="2008-05-26"
+            end_date="2008-05-27"
+            description="test object 1002"
+            treatment_assignment_id="1001"
+            assignment_id="-11"
+            epoch_id="-1010"
+            />		
+            
+      <ADVERSE_EVENTS
+            id="-2"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1001"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            solicited="1"
+            />
+
+    <AE_TERMS
+            id="-8"
+            adverse_event_id="-2"
+            term_id="3012"
+            term_type="ctep"
+            />
+            
+ 
+    <ADVERSE_EVENTS
+            id="-5"
+            grade_code="5"
+            hospitalization_code="0"
+            attribution_summary_code="3"
+            expected="1"
+            comments="That was some other big AE"
+            start_date="2007-09-12 21:43:56.987"
+            end_date="2007-09-12 21:43:56.987"
+            reporting_period_id="1002"
+            event_time_hour="12"
+            event_time_minute="3"
+            event_time_zone="1"
+            low_level_term_id="-11"
+            solicited="1"
+            />
+
+    <AE_TERMS
+            id="-91"
+            adverse_event_id="-5"
+            term_id="3007"
+            term_type="ctep"
+            />           
         
      <!-- stu_id="-999" to overcome metadata on first row issue -->
      <IDENTIFIERS
