@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           elementFormDefault="qualified" 
+           xmlns:searchui="http://caaers.cabig.nci.nih.gov/web/search/ui" 
+           targetNamespace="http://caaers.cabig.nci.nih.gov/web/search/ui">
+           
+	<xs:element name="advancedSearch-ui">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="search-target-object" type="searchui:search-target-object" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+		<xs:complexType name="search-target-object">
+			<xs:sequence>
+				<xs:element name="class-name" type="xs:string"/>
+				<xs:element name="display-name" type="xs:string"/>
+				<xs:element name="dependent-object" type="searchui:dependent-object" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="attribute" type="searchui:attribute" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	
+		<xs:complexType name="dependent-object">
+			<xs:sequence>
+				<xs:element name="class-name" type="xs:string"/>
+				<xs:element name="display-name" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	
+		<xs:complexType name="attribute">
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="label" type="xs:string"/>
+				<xs:element name="data-type" type="xs:string"/>
+				<xs:element name="field-type" type="xs:string"/>
+				<xs:element name="operator" type="searchui:operator" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	
+	<xs:complexType name="operator">
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="display-uri" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>

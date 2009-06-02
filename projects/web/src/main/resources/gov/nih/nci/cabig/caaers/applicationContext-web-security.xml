@@ -115,6 +115,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
 		<!--========= SEARCH ========-->
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 		<!--<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>-->
@@ -163,6 +164,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 	</util:map>
 	
 	<bean id="sectionPrivilegeAndObjectIdGenerator"

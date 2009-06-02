@@ -18,6 +18,9 @@
         <create javascript="reviewRP" creator="spring">
         	<param name="beanName" value="reviewRpAjaxFacade" />
         </create>
+        <create javascript="advSearch" creator="spring">
+        	<param name="beanName" value="advSearchAjaxFacade" />
+        </create>
         <create javascript="reviewAeReport" creator="spring">
         	<param name="beanName" value="reviewAeReportAjaxFacade" />
         </create>

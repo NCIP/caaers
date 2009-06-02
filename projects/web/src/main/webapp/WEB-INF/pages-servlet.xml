@@ -273,24 +273,20 @@
 	  </property>
 	</bean>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Advanced Search" p:mainController="reportController">
+	      p:displayName="Advanced Search" p:mainController="advancedSearchController">
 	  <property name="pathMapping"><value>/search/**</value></property>
-	  <property name="tasks">
+	  <!--  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Study search" p:linkName="studyController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Subject search" p:linkName="participantController"/>
-		  <!-- 
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="AE search" p:linkName="adverseEventController"/>
-		   -->    
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Expedited Report search" p:linkName="reportController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Routine AE search" p:linkName="routineReportController"/>
 	    </list>
-	  </property>
+	  </property> -->
 	</bean>
       </list>
     </property>
@@ -499,6 +495,9 @@
   
   <bean name="/search/report" id="reportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
+  
+  <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType"
+  	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
   
   <bean name="/search/routineReport" id="routineReportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
