@@ -55,9 +55,9 @@
     <TREATMENT_ASSIGNMENT id="-10" code="TAC010"
                           study_id="-1" dose_level_order="22" description="description"
                           comments="comments" version="0" grid_id="TAC333"/>
-    <STUDY_ORGANIZATIONS id="-10" site_id="-1001"
+    <STUDY_ORGANIZATIONS id="-10" site_id="-1001" start_date="2006-10-10"
                          study_id="-1" type="SST"/>
-    <STUDY_ORGANIZATIONS id="-11" site_id="-1001"
+    <STUDY_ORGANIZATIONS id="-11" site_id="-1001" start_date="2006-10-10"
                          study_id="-1" type="SCC"/>
     <TERMINOLOGIES id="-11" term_code="1" ctc_id="3"
                    study_id="-1"/>

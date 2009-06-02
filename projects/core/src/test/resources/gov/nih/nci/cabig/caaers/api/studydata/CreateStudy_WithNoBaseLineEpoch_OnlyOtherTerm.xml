@@ -52,10 +52,11 @@
                     <name>Cancer Therapy Evaluation Program</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
+                <p:startDate>2002-02-02</p:startDate>
                 <studyInvestigators>
                     <p:studyInvestigator>
                         <roleCode>Site Principal Investigator</roleCode>
-                        <statusCode>Active</statusCode>
+                        <p:startDate>2002-02-02</p:startDate>
                         <p:siteInvestigator>
                             <p:investigator>
                                 <firstName>Gerry</firstName>
@@ -66,7 +67,7 @@
                     </p:studyInvestigator>
                     <p:studyInvestigator>
                         <roleCode>Site Investigator</roleCode>
-                        <statusCode>Active</statusCode>
+                        <p:startDate>2002-02-02</p:startDate>
                         <p:siteInvestigator>
                             <p:investigator>
                                 <firstName>George</firstName>
@@ -79,7 +80,7 @@
                 <studyPersonnels>
                     <p:studyPersonnel>
                         <roleCode>Participant Coordinator</roleCode>
-                        <statusCode>Active</statusCode>
+                        <p:startDate>2002-02-02</p:startDate>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
                             <lastName>Conway</lastName>
@@ -96,7 +97,7 @@
                 <studyPersonnels>
                     <p:studyPersonnel>
                         <roleCode>Participant Coordinator</roleCode>
-                        <statusCode>Active</statusCode>
+                       <p:startDate>2002-02-02</p:startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>
                             <lastName>Border</lastName>

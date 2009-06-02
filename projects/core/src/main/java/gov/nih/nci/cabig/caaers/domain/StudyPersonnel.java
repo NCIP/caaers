@@ -1,15 +1,23 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import com.ibm.icu.util.Calendar;
 
 /**
  * This class represents the StudyPersonnel domain object associated with the Adverse event report.
@@ -24,14 +32,18 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
 
     private String roleCode;
 
-    private String statusCode;
-
     private ResearchStaff researchStaff;
 
     private StudyOrganization studyOrganization;
     
+    private Date startDate;
+    private Date endDate;
+    
+    /**
+     * This method will deactivate a user, by setting the termEndDate to a past date.
+     */
     public void deactivate(){
-    	this.statusCode = "Inactive";
+    	this.endDate = DateUtils.yesterday();
     }
 
     @ManyToOne
@@ -63,24 +75,37 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         this.roleCode = roleCode;
     }
 
-    @Column(name = "status_code")
-    public String getStatusCode() {
-        return statusCode;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="start_date")
+    public Date getStartDate() {
+		return startDate;
+	}
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
-    
-    @Transient
+	public void setStartDate(Date termStartDate) {
+		this.startDate = termStartDate;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="end_date")
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date termEndDate) {
+		this.endDate = termEndDate;
+	}
+
+	@Transient
     public boolean isActive(){
-    	return StringUtils.equals(statusCode, "Active");
+    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
     
+   
     @Transient
     public boolean isInActive(){
-    	return StringUtils.equals(statusCode, "Inactive");
+    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
     }
+    
 
     // /OBJECT METHODS
     @Override
@@ -89,6 +114,8 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         int result = 1;
         result = prime * result + ((researchStaff == null) ? 0 : researchStaff.hashCode());
         result = prime * result + ((roleCode == null) ? 0 : roleCode.hashCode());
+        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
         result = prime * result + ((studyOrganization == null) ? 0 : studyOrganization.hashCode());
         return result;
     }

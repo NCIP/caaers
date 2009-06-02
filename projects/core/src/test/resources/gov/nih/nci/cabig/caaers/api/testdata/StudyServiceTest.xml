@@ -86,12 +86,14 @@
         id="-3001"
         site_id="-1001"
         study_id="-2001"
+        start_date="2006-10-10"
         type="SST"
         />
     <STUDY_ORGANIZATIONS
         id="-3000"
         site_id="-1001"
         study_id="-2000"
+        start_date="2006-10-10"
         type="SST"
         />
     <PARTICIPANT_ASSIGNMENTS

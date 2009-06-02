@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.utils;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +25,7 @@ public class DateUtils {
 	}
 	
 	/**
-	 * This is a convenient method to get yestarday date
+	 * This is a convenient method to get yesterday date
 	 * @return
 	 */
 	public static Date yesterday(){

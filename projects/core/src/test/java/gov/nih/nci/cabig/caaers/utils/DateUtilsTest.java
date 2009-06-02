@@ -96,5 +96,33 @@ public class DateUtilsTest extends TestCase {
 	}
 	
 	
+	public void testBetween(){
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2002, Calendar.FEBRUARY, 11);
+		Date d0 = cal.getTime();
+		
+		cal.set(2002, Calendar.FEBRUARY, 12);
+		Date d1 = cal.getTime();
+		
+		cal.add(Calendar.DATE, 1);
+		Date d2 = cal.getTime();
+		
+		
+		cal.add(Calendar.DATE, 2);
+		Date d3 = cal.getTime();
+		
+		cal.add(Calendar.DATE, 2);
+		Date d4 = cal.getTime();
+		
+		assertTrue(DateUtils.between(d2, d1, d3));
+		assertTrue(DateUtils.between(d2, d2, d3));
+		assertTrue(DateUtils.between(d3, d2, d3));
+		assertTrue(DateUtils.between(d2, d1, null));
+		assertTrue(DateUtils.between(d2, d2, null));
+		
+		assertFalse(DateUtils.between(d0, d2, d3));
+		assertFalse(DateUtils.between(d4, d2, d3));
+	}
+	
 
 }

@@ -115,12 +115,14 @@
             id="-3001"
             site_id="-1002"
             study_id="-2000"
+            start_date="2006-10-10"
             type="SST"
             />
     <STUDY_ORGANIZATIONS
             id="-3000"
             site_id="-1001"
             study_id="-2000"
+            start_date="2006-10-10"
             type="SST"
             />
           
@@ -195,11 +197,13 @@
     	id = "-111"
     	research_staffs_id = "-1"
     	study_sites_id = "-3000"
+    	start_date="2006-10-10"
     />
     <study_personnel
     	id = "-112"
     	research_staffs_id = "-2"
     	study_sites_id = "-3001"
+    	start_date="2006-10-10"
     />
 
     <!--  We have some investigational new drugs pre-loaded for CTEP -->

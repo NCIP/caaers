@@ -36,6 +36,7 @@
         study_id="-4"
         site_id="-1"
         type="SST"
+        start_date="2006-10-10"
         />
     <PARTICIPANTS
         id="-5"

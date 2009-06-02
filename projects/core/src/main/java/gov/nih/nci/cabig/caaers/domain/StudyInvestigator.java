@@ -1,10 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -14,6 +21,7 @@ import org.hibernate.annotations.Parameter;
  * report.
  * 
  * @author Kulasekaran
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "study_investigators")
@@ -23,14 +31,26 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
 
     private String roleCode;
 
-    private String statusCode;
-
     private SiteInvestigator siteInvestigator;
 
     private StudyOrganization studyOrganization;
     
-    public void deactive(){
-    	this.statusCode = "Inactive";
+    
+    private Date startDate;
+    private Date endDate;
+    
+    /**
+     * This method will deactivate a {@link StudyInvestigator}, by setting the termEndDate to a past date.
+     */
+    public void deactivate(){
+    	this.endDate = DateUtils.yesterday();
+    }
+    
+    /**
+     * This method will activate, by setting the termEndDate to a past date.
+     */
+    public void activate(){
+    	this.startDate = DateUtils.yesterday();
     }
 
     @ManyToOne
@@ -62,14 +82,38 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
         this.roleCode = roleCode;
     }
 
-    @Column(name = "status_code")
-    public String getStatusCode() {
-        return statusCode;
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="start_date")
+    public Date getStartDate() {
+		return startDate;
+	}
 
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+	public void setStartDate(Date termStartDate) {
+		this.startDate = termStartDate;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="end_date")
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date termEndDate) {
+		this.endDate = termEndDate;
+	}
+
+    
+    @Transient
+    public boolean isActive(){
+    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
+    
+   
+    @Transient
+    public boolean isInActive(){
+    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
+    }
+    
 
     // /OBJECT METHODS
 
@@ -84,7 +128,6 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
         if (roleCode != null ? !roleCode.equals(that.roleCode) : that.roleCode != null) return false;
         if (siteInvestigator != null ? !siteInvestigator.equals(that.siteInvestigator) : that.siteInvestigator != null)
             return false;
-        if (statusCode != null ? !statusCode.equals(that.statusCode) : that.statusCode != null) return false;
         if (studyOrganization != null ? !studyOrganization.equals(that.studyOrganization) : that.studyOrganization != null)
             return false;
 
@@ -94,9 +137,10 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
     @Override
     public int hashCode() {
         int result = roleCode != null ? roleCode.hashCode() : 0;
-        result = 31 * result + (statusCode != null ? statusCode.hashCode() : 0);
         result = 31 * result + (siteInvestigator != null ? siteInvestigator.hashCode() : 0);
         result = 31 * result + (studyOrganization != null ? studyOrganization.hashCode() : 0);
+        result = 31 * result + ((endDate == null) ? 0 : endDate.hashCode());
+        result = 31 * result + ((startDate == null) ? 0 : startDate.hashCode());
         return result;
     }
 }

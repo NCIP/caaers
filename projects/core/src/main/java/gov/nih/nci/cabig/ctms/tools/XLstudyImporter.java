@@ -581,7 +581,7 @@ public class XLstudyImporter {
                 studyInvestigator.setRoleCode(getCellData(
                         INVESTIGATOR_SHEET_NAME, invRow, investigatorInfoSheet
                                 .getRow(invRow).getCell((short) 2)));
-                studyInvestigator.setStatusCode("Active");
+                studyInvestigator.activate();
                 so.addStudyInvestigators(studyInvestigator);
             }
         }

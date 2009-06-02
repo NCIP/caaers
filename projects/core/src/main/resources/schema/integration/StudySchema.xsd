@@ -173,6 +173,8 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element ref="organization"/>
+                    <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="endDate" type="xs:date" />
                     <xs:element name="studyInvestigators" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
@@ -228,7 +230,8 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="roleCode" type="RoleCodeType"/>
-                    <xs:element name="statusCode" type="StatusCodeType"/>
+                    <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="endDate" type="xs:date" />
                     <xs:element ref="siteInvestigator"/>
                 </xs:sequence>
             </xs:extension>
@@ -241,7 +244,8 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="roleCode" type="PersonnelRoleCodeType" />
-                    <xs:element name="statusCode" type="StatusCodeType"/>
+                    <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="endDate" type="xs:date" />
                     <xs:element ref="researchStaff"/>
                 </xs:sequence>
             </xs:extension>
@@ -635,14 +639,6 @@
             <xs:enumeration value="Study Coordinator"/>
             <xs:enumeration value="Adverse Event Coordinator"/>
         </xs:restriction>
-    </xs:simpleType>
-    
-    
-    <xs:simpleType name="StatusCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Active"/>
-            <xs:enumeration value="Inactive"/>
-        </xs:restriction>    
     </xs:simpleType>
     
     <xs:simpleType name="DiseaseCodeType">

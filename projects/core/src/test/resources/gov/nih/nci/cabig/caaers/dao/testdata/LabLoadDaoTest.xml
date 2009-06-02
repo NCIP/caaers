@@ -56,6 +56,7 @@
      <STUDY_ORGANIZATIONS
         id="-10"
         site_id="-1001"
+        start_date="2006-10-10"
         study_id="-1"
         type="SST"
         />

@@ -378,12 +378,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                     for (StudyInvestigator studyInvestigator : studySite.getStudyInvestigators()) {
                         if ("George".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getFirstName()) &&
                                 "Clinton".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getLastName())) {
-                            assertEquals("Inactive", studyInvestigator.getStatusCode());
                             assertEquals("Site Principal Investigator", studyInvestigator.getRoleCode());
                         }
                         if ("Gerry".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getFirstName()) &&
                                 "Elbridge".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getLastName())) {
-                            assertEquals("Active", studyInvestigator.getStatusCode());
                             assertEquals("Site Principal Investigator", studyInvestigator.getRoleCode());
                         }
                     }
@@ -462,7 +460,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                     for (StudyPersonnel studyPersonnel : studySite.getStudyPersonnels()) {
                         if ("Allan".equals(studyPersonnel.getResearchStaff().getFirstName()) &&
                                 "Border".equals(studyPersonnel.getResearchStaff().getLastName())) {
-                            assertEquals("Inactive", studyPersonnel.getStatusCode());
                             assertEquals("Study Coordinator", studyPersonnel.getRoleCode());
                         }
                     }

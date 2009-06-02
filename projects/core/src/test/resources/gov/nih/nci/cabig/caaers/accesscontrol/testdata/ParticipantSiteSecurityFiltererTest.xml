@@ -126,12 +126,14 @@
         id="-3001"
         site_id="-1002"
         study_id="-2001"
+        start_date="2006-10-10"
         type="SST"
         />
     <STUDY_ORGANIZATIONS
         id="-3000"
         site_id="-1002"
         study_id="-2000"
+        start_date="2006-10-10"
         type="SST"
         />
     <study_personnel 
@@ -139,7 +141,8 @@
 			research_staffs_id="-1000"
 			study_sites_id="-3000"
 			role_code="Adverse Event Coordinator"
-			status_code="Active"
+			start_date="2006-12-12"
+			
 	/>
     <PARTICIPANT_ASSIGNMENTS
         id="-10"

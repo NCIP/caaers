@@ -61,9 +61,7 @@
     <STUDY_ORGANIZATIONS
             id="-1000"
             version="1"
-            status_code="active"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+           start_date="2006-10-10"
             study_id="-2"
             site_id="-1003"
             type="SST" />        

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -48,16 +49,41 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
 
     private LazyListHelper lazyListHelper;
     
-    private String status;
-    
-    private Date statusDate;
-    
+    private Date startDate;
+    private Date endDate;
+
     public StudyOrganization() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(StudyInvestigator.class, new StudyOrganizationChildInstantiateFactory<StudyInvestigator>(this, StudyInvestigator.class));
         lazyListHelper.add(StudyPersonnel.class, new StudyOrganizationChildInstantiateFactory<StudyPersonnel>(this, StudyPersonnel.class));
     }
 
+    
+    /**
+     * This method will deactivate a {@link StudyOrganization}, by setting the termEndDate to a past date.
+     * Will deactivate {@link StudyPersonnel} and {@link StudyInvestigator}
+     */
+    public void deactivate(){
+    	this.endDate = DateUtils.yesterday();
+    	
+    	//cascade deactivation
+    	for(StudyPersonnel sp : getStudyPersonnels()){
+    		sp.deactivate();
+    	}
+    	for(StudyInvestigator si : getStudyInvestigators()){
+    		si.deactivate();
+    	}
+    }
+    
+    /**
+     *  This method will activate a {@link StudyOrganization}
+     */
+    public void activate(){
+    	this.startDate = DateUtils.yesterday();
+    	this.endDate = null;
+    }
+
+    
     public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
         getStudyPersonnels().add(studyPersonnel);
         studyPersonnel.setStudyOrganization(this);
@@ -68,36 +94,6 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
         studyInvestigator.setStudyOrganization(this);
     }
     
-    /**
-     * This method will deactivate this study organization.
-     * Will change the status of this study organization and all associated {@link StudyPersonnel} and {@link StudyInvestigator} to  'Inactive'.
-     */
-    public void deactivate(){
-    	this.status = "Inactive";
-    	for(StudyPersonnel sp : getStudyPersonnels()){
-    		sp.deactivate();
-    	}
-    	for(StudyInvestigator si : getStudyInvestigators()){
-    		si.deactive();
-    	}
-    }
-    
-    @Column(name = "status_code")
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    @Temporal(TemporalType.TIMESTAMP)
-    public Date getStatusDate() {
-		return statusDate;
-	}
-    public void setStatusDate(Date statusDate) {
-		this.statusDate = statusDate;
-	}
     
     @ManyToOne
     @JoinColumn(name = "site_id", nullable = false)
@@ -188,15 +184,38 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     @Transient
     public abstract String getRoleName();
     
-    @Transient
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="start_date")
+    public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date termStartDate) {
+		this.startDate = termStartDate;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="end_date")
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date termEndDate) {
+		this.endDate = termEndDate;
+	}
+
+	@Transient
     public boolean isActive(){
-    	return StringUtils.equals("Active", status);
+    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
     
+   
     @Transient
-    public boolean isInactive(){
-    	return StringUtils.equals("Inactive", status);
+    public boolean isInActive(){
+    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
     }
+    
     
     /**
      * This method will return the list of users having a specific role.

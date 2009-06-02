@@ -604,7 +604,6 @@ public class AdverseEventReportSerializer {
 	    	//studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
 	    	//studySite.setRoleCode(ss.getRoleCode());
 	    	try { 
-	    		studySite.setStatus(ss.getStatus());
 		    	studySite.setStartDate(ss.getStartDate());
 		    	studySite.setEndDate(ss.getEndDate());
 		    	

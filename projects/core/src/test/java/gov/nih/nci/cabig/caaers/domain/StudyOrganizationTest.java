@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 /**
@@ -22,11 +24,11 @@ public class StudyOrganizationTest extends TestCase {
         studyPersonnel1 = new StudyPersonnel();
         studyPersonnel1.setRoleCode("role code");
         studyPersonnel1.setResearchStaff(researchStaff);
-        studyPersonnel1.setStatusCode("status code");
+        studyPersonnel1.setStartDate(new Date());
         studyPersonnel2 = new StudyPersonnel();
         studyPersonnel2.setRoleCode("another role code");
         studyPersonnel1.setResearchStaff(researchStaff);
-        studyPersonnel2.setStatusCode("another status code");
+        studyPersonnel2.setStartDate(new Date());
 
         studyOrganization.addStudyPersonnel(studyPersonnel1);
         studyOrganization.addStudyPersonnel(studyPersonnel2);
@@ -83,16 +85,17 @@ public class StudyOrganizationTest extends TestCase {
     
     public void testIsActive(){
     	assertFalse(studyOrganization.isActive());
-    	studyOrganization.setStatus("Active");
+    	studyOrganization.activate();
     	assertTrue(studyOrganization.isActive());
-    	studyOrganization.setStatus("Inactive");
+    	studyOrganization.deactivate();
     	assertFalse(studyOrganization.isActive());
     }
     public void testIsInactive(){
-    	assertFalse(studyOrganization.isInactive());
-    	studyOrganization.setStatus("Active");
-    	assertFalse(studyOrganization.isInactive());
-    	studyOrganization.setStatus("Inactive");
-    	assertTrue(studyOrganization.isInactive());
+    	studyOrganization.activate();
+    	assertFalse(studyOrganization.isInActive());
+    	studyOrganization.activate();
+    	assertFalse(studyOrganization.isInActive());
+    	studyOrganization.deactivate();
+    	assertTrue(studyOrganization.isInActive());
     }
 }

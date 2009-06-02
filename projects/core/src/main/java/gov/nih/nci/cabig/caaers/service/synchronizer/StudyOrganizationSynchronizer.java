@@ -139,7 +139,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 				if(xmlNciIdentifier != null && dbNciIdentifier != null) {
 					if(xmlNciIdentifier.equals(dbNciIdentifier)){
 						dbStudyInvestigator.setRoleCode(xmlStudyInvestigator.getRoleCode());
-						dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
+						//dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
 						break;
 					}else{
 						xmlStudyInvestigator.setId(null);
@@ -147,7 +147,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 				}else{
 					if(xmlFName.equals(dbFName) && xmlLName.equals(dbLName)){
 						dbStudyInvestigator.setRoleCode(xmlStudyInvestigator.getRoleCode());
-						dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
+						//dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
 						break;
 					}else{
 						xmlStudyInvestigator.setId(null);
@@ -240,7 +240,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 				if(xmlNciIdentifier != null && dbNciIdentifier != null) {
 					if(xmlNciIdentifier.equals(dbNciIdentifier)){
 						dbStudyPersonnel.setRoleCode(xmlStudyPersonnel.getRoleCode());
-						dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
+						//dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
 						break;
 					}else{
 						xmlStudyPersonnel.setId(null);
@@ -248,7 +248,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 				}else{
 					if(xmlFName.equals(dbFName) && xmlLName.equals(dbLName)){
 						dbStudyPersonnel.setRoleCode(xmlStudyPersonnel.getRoleCode());
-						dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
+						//dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
 						break;
 					}else{
 						xmlStudyPersonnel.setId(null);

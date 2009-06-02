@@ -265,9 +265,7 @@
     <STUDY_ORGANIZATIONS
             id="-1000"
             version="1"
-            status_code="active"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-2"
             site_id="-1003"
             type="SST"/>
@@ -302,7 +300,7 @@
     <study_investigators
     		id="-22"
             role_code="role"
-            status_code="status"
+            start_date="2006-10-10"
             site_investigators_id="-4004"
             study_sites_id="-1000"
             />
@@ -310,7 +308,7 @@
     <study_investigators
     		   id="-23"
                role_code="role"
-               status_code="status"
+              start_date="2006-10-10"
                site_investigators_id="-4005"
                study_sites_id="-1000"
                />
@@ -319,9 +317,7 @@
     <STUDY_ORGANIZATIONS
             id="-1001"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-2"
             site_id="-1001"
             type="SFS"
@@ -329,9 +325,7 @@
     <STUDY_ORGANIZATIONS
             id="-1004"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-2"
             site_id="-1002"
             type="SCC"
@@ -339,9 +333,7 @@
     <STUDY_ORGANIZATIONS
             id="-1002"
             version="1"
-            status_code="active"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-3"
             site_id="-1003"
             type="SST"/>
@@ -349,9 +341,7 @@
     <STUDY_ORGANIZATIONS
             id="-1003"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-3"
             site_id="-1001"
             type="SFS"
@@ -359,18 +349,14 @@
     <STUDY_ORGANIZATIONS
             id="-1005"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-3"
             site_id="-1002"
             type="SCC"/>
     <STUDY_ORGANIZATIONS
             id="-1006"
             version="1"
-            status_code="active"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+           start_date="2006-10-10"
             study_id="-5"
             site_id="-1003"
             type="SST"/>
@@ -378,9 +364,7 @@
     <STUDY_ORGANIZATIONS
             id="-1007"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+           start_date="2006-10-10"
             study_id="-5"
             site_id="-1001"
             type="SFS"
@@ -388,9 +372,7 @@
     <STUDY_ORGANIZATIONS
             id="-1008"
             version="1"
-            status_code="inactive"
-            start_date="01-01-2001"
-            end_date="01-01-2002"
+            start_date="2006-10-10"
             study_id="-5"
             site_id="-1002"
             type="SCC"

@@ -383,7 +383,7 @@ public class Fixtures {
     	StudyPersonnel sp = new StudyPersonnel();
     	sp.setResearchStaff(staff);
     	sp.setRoleCode("role");
-    	sp.setStatusCode("code");
+    	sp.setStartDate(DateUtils.yesterday());
     	return sp;
     }
     

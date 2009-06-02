@@ -232,6 +232,10 @@
    		name="CTCAE v3.0"/>
    		
    	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+   	
+   	<ctc_categories />
+   	<ctc_terms />
+   	<ctc_grades />
    	<studies />
     <investigational_new_drugs />
     <ind_holders />

@@ -34,6 +34,7 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.sql.ResultSet;
@@ -355,7 +356,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             // Study Site
             StudySite studySite = new StudySite();
             studySite.setOrganization(organization);
-            studySite.setStatus("Active");
+            studySite.setStartDate(DateUtils.yesterday());
 
             study.addStudySite(studySite);
 
@@ -404,7 +405,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             // Study Site
             StudySite studySite = new StudySite();
             studySite.setOrganization(organization);
-            studySite.setStatus("Inactive");
+            studySite.setStartDate(DateUtils.tomorrow());
 
             study.addStudySite(studySite);
 

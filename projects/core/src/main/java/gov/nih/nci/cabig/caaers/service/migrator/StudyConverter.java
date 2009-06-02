@@ -76,6 +76,7 @@ import java.util.List;
  * This class has one public method which Converts a JAXB generated Study Type object
  * to a Domain Object Study Type as required by StudyMigrator.
  * @author Monish Dombla
+ * @author Biju Joseph (added start/end dates)
  *
  */
 public class StudyConverter {
@@ -86,13 +87,11 @@ public class StudyConverter {
 	 * It walks through the studyDto object and prepares a Study object 
 	 * which is StudyMigrator Complaint.
 	 * @param studyDto
-	 * @param study
+	 * @param study 
 	 */
 	public void convertStudyDtoToStudyDomain(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws CaaersSystemException{
+		assert study != null : "Domain study should not be null";
 		
-		if(study == null){
-			study = new Study();
-		}
 		try{
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
@@ -152,45 +151,48 @@ public class StudyConverter {
 	private void populateStudyInvestigators(List<StudyInvestigatorType> studyInvestigatorList,StudyOrganization studyOrganization) throws Exception{
 		
 		if(studyInvestigatorList != null && !studyInvestigatorList.isEmpty()){
-			List<StudyInvestigator> studyInvestigators = studyOrganization.getStudyInvestigators();
 			StudyInvestigator studyInvestigator = null;
 			SiteInvestigator siteInvestigator;
 			Investigator investigator;
 			for(StudyInvestigatorType studyInvestigatorType : studyInvestigatorList){
 				studyInvestigator = new StudyInvestigator();
 				studyInvestigator.setRoleCode(studyInvestigatorType.getRoleCode().value());
-				studyInvestigator.setStatusCode(studyInvestigatorType.getStatusCode().value());
-					SiteInvestigatorType siteInvestigatorType = studyInvestigatorType.getSiteInvestigator();
-					siteInvestigator = new SiteInvestigator();
-						investigator = new LocalInvestigator();
-						investigator.setFirstName(siteInvestigatorType.getInvestigator().getFirstName());
-						investigator.setLastName(siteInvestigatorType.getInvestigator().getLastName());
-						investigator.setNciIdentifier(siteInvestigatorType.getInvestigator().getNciIdentifier());
+				studyInvestigator.setStartDate(studyInvestigatorType.getStartDate().toGregorianCalendar().getTime());
+				if(studyInvestigatorType.getEndDate() != null){
+					studyInvestigator.setEndDate(studyInvestigatorType.getEndDate().toGregorianCalendar().getTime());
+				}
+				SiteInvestigatorType siteInvestigatorType = studyInvestigatorType.getSiteInvestigator();
+				siteInvestigator = new SiteInvestigator();
+				investigator = new LocalInvestigator();
+				investigator.setFirstName(siteInvestigatorType.getInvestigator().getFirstName());
+				investigator.setLastName(siteInvestigatorType.getInvestigator().getLastName());
+				investigator.setNciIdentifier(siteInvestigatorType.getInvestigator().getNciIdentifier());
 				siteInvestigator.setInvestigator(investigator);
 				studyInvestigator.setSiteInvestigator(siteInvestigator);
-				studyInvestigators.add(studyInvestigator);
+				studyOrganization.addStudyInvestigators(studyInvestigator);
 			}
-			studyOrganization.setStudyInvestigators(studyInvestigators);
+			
 		}
 	}
 	
 	//Populate StudyPersonnel for a StudyOrganization
 	private void populateStudyPersonnel(List<StudyPersonnelType> studyPersonnelList,StudyOrganization studyOrganization) throws Exception{
 		if(studyPersonnelList != null && !studyPersonnelList.isEmpty()){
-			List<StudyPersonnel> studyPersonnels = studyOrganization.getStudyPersonnels();
 			StudyPersonnel studyPersonnel;
 			for(StudyPersonnelType studyPersonnelType : studyPersonnelList){
 				studyPersonnel = new StudyPersonnel();
 				studyPersonnel.setRoleCode(studyPersonnelType.getRoleCode().value());
-				studyPersonnel.setStatusCode(studyPersonnelType.getStatusCode().value());
+				studyPersonnel.setStartDate(studyPersonnelType.getStartDate().toGregorianCalendar().getTime());
+				if(studyPersonnelType.getEndDate() != null){
+					studyPersonnel.setEndDate(studyPersonnelType.getEndDate().toGregorianCalendar().getTime());
+				}
 				ResearchStaff researchStaff = new LocalResearchStaff();
 				researchStaff.setFirstName(studyPersonnelType.getResearchStaff().getFirstName());
 				researchStaff.setLastName(studyPersonnelType.getResearchStaff().getLastName());
 				researchStaff.setNciIdentifier(studyPersonnelType.getResearchStaff().getNciIdentifier());
 				studyPersonnel.setResearchStaff(researchStaff);
-				studyPersonnels.add(studyPersonnel);
+				studyOrganization.addStudyPersonnel(studyPersonnel);
 			}
-			studyOrganization.setStudyPersonnels(studyPersonnels);
 		}
 	}
 	
@@ -322,6 +324,10 @@ public class StudyConverter {
 				StudySite studySite = null;
 				for(StudySiteType studySiteType : studySiteList){
 					studySite = new StudySite();
+					studySite.setStartDate(studySiteType.getStartDate().toGregorianCalendar().getTime());
+					if(studySiteType.getEndDate() != null){
+						studySite.setEndDate(studySiteType.getEndDate().toGregorianCalendar().getTime());
+					}
 					if(studySiteType.getOrganization() != null){
 						Organization organization = new LocalOrganization();
 						organization.setName(studySiteType.getOrganization().getName());

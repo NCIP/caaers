@@ -32,19 +32,11 @@ import org.hibernate.annotations.MapKey;
 @DiscriminatorValue(value = "SST")
 public class StudySite extends StudyOrganization {
 
-    private String statusCode;
-
-    private Date startDate;
-
-    private Date endDate;
-    
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
 
     // TODO : to be removed.
     private Date irbApprovalDate;
 
-    private String roleCode;
-    
     private Map<String, WorkflowConfig> workflowConfigs;
     
     // ////LOGIC
@@ -78,24 +70,6 @@ public class StudySite extends StudyOrganization {
         return studyParticipantAssignments;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-    
-    
 
     @Override
     @Transient

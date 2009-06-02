@@ -17,7 +17,7 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 	public void testMatchByStudyAndOrg() {
 		StudySite site = getDao().matchByStudyAndOrg("National Cancer Institute", "1138-43", "local");
 		assertNotNull(site);
-		assertEquals("Inactive", site.getStatus());
+		assertTrue(site.isActive());
 	}
 	
 	public void testMatchByStudyAndOrgNciId() {

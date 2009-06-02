@@ -66,6 +66,7 @@
         id="1003"
         site_id="1002"
         study_id="1001"
+        start_date="2006-10-10"
         type="SST"
         />
         
@@ -74,6 +75,7 @@
         id="1004"
         site_id="1002"
         study_id="1002"
+        start_date="2006-10-10"
         type="SST"
         />
 
