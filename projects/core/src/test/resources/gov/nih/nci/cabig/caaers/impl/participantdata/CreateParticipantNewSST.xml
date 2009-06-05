@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:participants xmlns:p="http://webservice.caaers.cabig.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
+  <p:participant>
+    <firstName>Richard</firstName>
+    <lastName>Herd</lastName>
+    <maidenName>maidenName</maidenName>
+    <middleName>Leing</middleName>
+    <birthDate>2001-01-01</birthDate>
+    <gender>Male</gender>
+    <race>Asian</race>
+    <ethnicity>Hispanic or Latino</ethnicity>
+    <identifiers>
+      <p:organizationAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza1</value>
+        <primaryIndicator>true</primaryIndicator>
+        <p:organization>
+          <name>Mayo Clinic Hospital</name>
+          <nciInstituteCode/>
+        </p:organization>
+      </p:organizationAssignedIdentifier>
+      <p:systemAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza2</value>
+        <primaryIndicator>false</primaryIndicator>
+        <systemName>Yarois</systemName>
+      </p:systemAssignedIdentifier>
+    </identifiers>
+    <assignments>
+      <p:assignment>
+      	<studySubjectIdentifier>001</studySubjectIdentifier>
+        <p:studySite>
+          <p:study>
+            <identifiers>
+              <identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>WFCCC001</value>
+              </identifier>
+            </identifiers>
+          </p:study>
+          <p:organization>
+            <name>Mayo Clinic Hospital</name>
+            <nciInstituteCode>MAYO</nciInstituteCode>
+          </p:organization>
+        </p:studySite>
+      </p:assignment>
+    </assignments>
+  </p:participant>
+</p:participants>
