@@ -18,15 +18,15 @@
 <table cellspacing="0" cellpadding="0" border="0" class="split-date-wrap">
     <tr>
         <td>
-            <form:input path="${path}.monthString" cssClass="${empty monthValue && monthRequired ? 'required' : not empty monthValue ? 'valueOK' : ''} ${required and monthRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>/
+            <form:input path="${path}.monthString" cssClass="${empty monthValue and required and monthRequired ? 'required' : not empty monthValue ? 'valueOK' : ''} ${required and monthRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>/
             <label for="${path}.month"><c:if test="${monthRequired}"><tags:requiredIndicator/></c:if>MM</label>
         </td>
         <td>
-            <form:input path="${path}.dayString" cssClass="${empty dateValue && dayRequired ? 'required' : not empty dateValue ? 'valueOK' : ''} ${cssValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>/
+            <form:input path="${path}.dayString" cssClass="${empty dateValue and required and dayRequired ? 'required' : not empty dateValue ? 'valueOK' : ''} ${cssValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>/
             <label for="${path}.day"><c:if test="${dayRequired}"><tags:requiredIndicator/></c:if>DD</label>
         </td>
         <td>
-            <form:input path="${path}.yearString" cssClass="${empty yearValue && yearRequired ? 'required' : not empty yearValue ? 'valueOK' : ''} ${cssValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>
+            <form:input path="${path}.yearString" cssClass="${empty yearValue and required and yearRequired ? 'required' : not empty yearValue ? 'valueOK' : ''} ${cssValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>
             <label for="${path}.yearString"><c:if test="${yearRequired}"><tags:requiredIndicator/></c:if>YYYY</label>
         </td>
         <td valign="top">&nbsp;<a href="#" id="${path}-calbutton"><img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/></a></td>

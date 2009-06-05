@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
-
+/**
+ * 
+ * @author Biju Joseph
+ *
+ */
 public abstract class FieldValidator {
 
     public static final FieldValidator NOT_NULL_VALIDATOR;
@@ -18,6 +22,7 @@ public abstract class FieldValidator {
     public static final FieldValidator HOUR_VALIDATOR;
     public static final FieldValidator MINUTE_VALIDATOR;
     public static final FieldValidator ZIP_CODE_VALIDATOR;
+    public static final FieldValidator DECIMAL_VALIDATOR;
 
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
@@ -31,6 +36,7 @@ public abstract class FieldValidator {
         ZIP_CODE_VALIDATOR = new ZipCodeValidator();
         FUTURE_DATE_VALIDATOR = new FutureDateValidator();
         DATE_VALIDATOR = new DateValidator();
+        DECIMAL_VALIDATOR = new DecimalValidator();
     }
 
     static NumberRangeValidator createNumberRangeValidator(int begin, int end) {

@@ -6,7 +6,7 @@
 <div class="row ${cssClass}" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label">${pair.key}</div>
     <div class="value" >
-		<c:if test="${preformatedValue}"><pre></c:if>${pair.value}<c:if test="${preformatedValue}"></pre></c:if>
+		<c:if test="${preformatedValue}"><pre width="96%"></c:if>${pair.value}<c:if test="${preformatedValue}"></pre></c:if>
 		
     </div>
 </div>

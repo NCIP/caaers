@@ -1,5 +1,5 @@
 
-//Note:- caAERS has tweaked the validation.js
+//NOTE:- BJ: caAERS has tweaked the validation.js
 
 // ===================================================================
 // Author: Kruttik Aggarwal <kruttikagarwal@@gmail.com>
@@ -39,6 +39,7 @@
 // Numeric          | NUMERIC            | <[input].... type=.... class=validate-NUMERIC
 // Alphabetic       | ALPHABETIC         | <[input].... type=.... class=validate-ALPHABETIC
 // date             | DATE               | <[input].... type=.... class=validate-DATE[(<format>)]
+// Decimal          | DECIMAL            | <[input].... type=.... class=validate-DECIMAL
 //
 // NOTE : For Multiple validation use JAVA 'and' notation ('&&').
 // Example:

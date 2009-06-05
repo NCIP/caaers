@@ -1,8 +1,4 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@taglib prefix="report" tagdir="/WEB-INF/tags/report"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -134,6 +130,7 @@
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 <tr>
     	<td>
+    		<caaers:message code="header.reportdefinition.notifications" arguments="${command.reportDefinition.name}" />
     	  	<!-- This box contains the Scale -->
     		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
    				<p>

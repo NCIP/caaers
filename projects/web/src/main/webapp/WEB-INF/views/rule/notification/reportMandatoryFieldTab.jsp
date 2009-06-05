@@ -13,6 +13,9 @@
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" >
+    	<jsp:attribute name="header">
+    		<caaers:message code="header.reportdefinition.mandatoryfields" arguments="${command.reportDefinition.name}" />
+    	</jsp:attribute>
     	<jsp:attribute name="instructions">
     	 <tags:instructions code="mandatoryfields" />
     	</jsp:attribute>

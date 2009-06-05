@@ -27,6 +27,8 @@
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}"
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}" readonlyDisplayFormat="split_date">
 <jsp:attribute name="field">
-    <tags:splitDateInput cssClass="${cssClass}" dayRequired="${dayRequired}" monthRequired="${monthRequired}" yearRequired="${yearRequired}" required="${yearRequired}" path="${path}" />
+    <tags:splitDateInput cssClass="${cssClass}" 
+    dayRequired="${dayRequired}" monthRequired="${monthRequired}" yearRequired="${yearRequired}" 
+    required="${yearRequired}" path="${path}" />
 </jsp:attribute>
 </ui:fieldWrapper>

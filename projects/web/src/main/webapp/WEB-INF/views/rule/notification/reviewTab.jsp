@@ -1,7 +1,5 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -29,6 +27,9 @@
 <body>
 
     <tags:tabForm tab="${tab}" flow="${flow}" >
+    <jsp:attribute name="header">
+    			<caaers:message code="header.reportdefinition.review" arguments="${command.reportDefinition.name}" />
+    </jsp:attribute>
     <jsp:attribute name="instructions">
     	<tags:instructions code="createrulereview" />
     </jsp:attribute>

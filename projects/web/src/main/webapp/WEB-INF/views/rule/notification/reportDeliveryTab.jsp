@@ -69,9 +69,9 @@
 <body>
     <chrome:division>
 	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="false">
-	     <jsp:attribute name="instructions">
-        	You are entering final report delivery information for <b>${command.reportDefinition.name}</b>.
-   		 </jsp:attribute>
+	   	 	<jsp:attribute name="header">
+    			<caaers:message code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name}" />
+    		</jsp:attribute>
 			<jsp:attribute name="singleFields">
 				<div id="rdd-tab-fields">
             	   <input type="hidden" name="lastPointOnScale" value=""/>

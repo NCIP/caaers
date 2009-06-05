@@ -18,6 +18,7 @@
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
 <%@attribute name="tabControls" fragment="true" %>
+<%@attribute name="header" fragment="true" description="Will display the content within the form, but above chrome box" %>
 <%@attribute name="saveButtonLabel" %>
 <%@attribute name="noBackground" required="false" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
@@ -28,6 +29,7 @@
 </c:if>
 <c:if test="${not hideBox}">
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
+    	<jsp:invoke fragment="header" />
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
             <chrome:flashMessage/><tags:tabFields tab="${tab}"/>
             <chrome:division id="single-fields">
@@ -47,8 +49,9 @@
     </form:form>
 </c:if>
 <c:if test="${hideBox}">
-    <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
+    	<jsp:invoke fragment="header" />
+    	<chrome:flashMessage/>
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}">

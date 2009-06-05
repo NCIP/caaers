@@ -53,7 +53,8 @@ function validateFields(formFields, displayError) {
                     (element.pattern.toLowerCase() == 'alphanumeric' && isAlphanumeric(element.value, true) == false) ||
                     (element.pattern.toLowerCase() == 'numeric' && isNumeric(element.value, true) == false) ||
                     (element.pattern.toLowerCase() == 'alphabetic' && isAlphabetic(element.value, true) == false) ||
-                    (element.pattern.toLowerCase().indexOf('date') == 0 && isCorrectDate(element.value) == false)) {
+                    (element.pattern.toLowerCase().indexOf('date') == 0 && isCorrectDate(element.value) == false) ||
+                    (element.pattern.toLowerCase().indexOf('decimal') ==0 && !isDecimal(element.value) )) {
                     if (displayError) ValidationManager.showError(element, element.patternError);
                     validForm = false;
                     continue;
@@ -288,6 +289,14 @@ function isNumeric(string, ignoreWhiteSpace) {
         if ((ignoreWhiteSpace && string.search(/[^\d\s]/) != -1) || (!ignoreWhiteSpace && string.search(/\D/) != -1)) return false;
     }
     return true;
+}
+
+//checks whether the string is decimal
+function isDecimal(string , ignoreWhiteSpace){
+	if(string.search){
+		if ((ignoreWhiteSpace && string.search(/^[\s]*-?\d+(\.\d+[\s]*)?$/) != -1) || (!ignoreWhiteSpace && string.search(/^-?\d+(\.\d+)?$/) != -1)) return false;
+	}
+	return true;
 }
 
 // Check that a string contains only numbers

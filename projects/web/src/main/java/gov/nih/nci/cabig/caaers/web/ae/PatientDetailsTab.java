@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -132,7 +133,7 @@ public class PatientDetailsTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(InputFieldFactory.createTextField("quantity", "", new NumberRangeValidator(1, 999)))
+                .addField(InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999)))
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }
@@ -484,7 +485,7 @@ public class PatientDetailsTab extends AeTab {
     	Integer[] indexes = new Integer[]{size};
     	modelAndView.getModel().put("indexes", indexes);
     	
-    	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this goof-up in obtaining the chemoagent.
+    	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this hoof-up in obtaining the chemoagent.
     	PriorTherapyAgent agent = new PriorTherapyAgent();
 //    	ChemoAgent chemoAgent = command.getPriorTherapyAgent();
 //    	command.setPriorTherapyAgent(null);

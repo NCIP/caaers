@@ -13,7 +13,8 @@
 
 <c:set var="otherField" value="${fieldGroups[mainGroup].fields[1]}" />        
 
-<chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions', {}" enableDelete="true" collapsed="false">
+<chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false" 
+deleteParams="'preExistingCondition', ${index}, '_preExistingConditions', {}" enableDelete="true" collapsed="false">
 
     <jsp:attribute name="title">
 		<c:out value="${not empty preExistingCondition.text ? preExistingCondition.text : otherValue }" />
@@ -25,13 +26,18 @@
 <%--<ae:fieldGroupDivision fieldGroupFactoryName="preExistingCondition" index="${index}" enableDelete="true" deleteParams="'preExistingCondition', ${index}, '_preExistingConditions'">--%>
 <c:if test="${empty preExistingCondition.text && empty otherValue}">
 <ui:row path="aeReport.saeReportPreExistingConditions[${index}]">
-    <jsp:attribute name="label">${preCondField.displayName}</jsp:attribute>
+    <jsp:attribute name="label">
+    	<ui:label path="aeReport.saeReportPreExistingConditions[${index}].preExistingCondition" mandatory="${preCondField.attributes.mandatory}" 
+    	required="${preCondField.required}" text="${preCondField.displayName}"/>
+    </jsp:attribute>
     <jsp:attribute name="value">
-        <ui:select options="${preExistingConditionOptions}" path="aeReport.saeReportPreExistingConditions[${index}].preExistingCondition"></ui:select>&nbsp;
+        <ui:select options="${preExistingConditionOptions}" path="aeReport.saeReportPreExistingConditions[${index}].preExistingCondition" 
+        		   mandatory="${preCondField.attributes.mandatory}"
+        		   required="${preCondField.required}" ></ui:select>&nbsp;
             <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
             <span id="other_${index}" style="display:none;">
                 <%-- Other, Specify--%>
-                <c:if test="${otherField.required or otherField.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;Other, specify <ui:text path="${otherField.propertyName}"/>
+                <c:if test="${otherField.required or otherField.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;Other, specify <ui:text path="${otherField.propertyName}" mandatory="${otherField.attributes.mandatory}" />
             </span>
         <tags:errors path="aeReport.saeReportPreExistingConditions[${index}]"/>
     </jsp:attribute>
