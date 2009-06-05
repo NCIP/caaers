@@ -40,7 +40,8 @@ public class ParticipantSynchronizerIntegrationTest extends AbstractNoSecurityTe
 		List<Migrator<Participant>> syncronizers = new ArrayList<Migrator<Participant>>();
 		syncronizers.add(identifierSynchronizer);
 		syncronizers.add(studyParticipantAssignmentSynchronizer);
-		participantSynchronizer = new ParticipantSynchronizer(syncronizers);
+		participantSynchronizer = new ParticipantSynchronizer();
+		participantSynchronizer.setChildren(syncronizers);
 		outcome = new DomainObjectImportOutcome<Participant>();
 	}
 	

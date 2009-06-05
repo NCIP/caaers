@@ -8,9 +8,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 public class StudyMigrator extends CompositeMigrator<Study> {
 	
-	public StudyMigrator(List<Migrator<Study>> migrators) {
-		super(migrators);
-	}
 	
 	@Override
 	/**

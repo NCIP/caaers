@@ -24,7 +24,7 @@ public class StudySynchronizerTest extends AbstractTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		studySynchronizer = new StudySynchronizer(new ArrayList<Migrator<Study>>());
+		studySynchronizer = new StudySynchronizer();
 		outcome = new DomainObjectImportOutcome<Study>();
 		dbStudy = Fixtures.createStudy("abcd");
 		xmlStudy = Fixtures.createStudy("abcd");

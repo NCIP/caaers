@@ -15,7 +15,7 @@ public class StudyMigratorTest extends TestCase {
 		DomainObjectImportOutcome<Study> outcome = new DomainObjectImportOutcome<Study>();
 		Study dest = new Study();
 		
-		StudyMigrator migrator = new StudyMigrator(new ArrayList<Migrator<Study>>());
+		StudyMigrator migrator = new StudyMigrator();
 		migrator.migrate(xstreamStudy, dest, outcome);
 		assertTrue(outcome.getMessages().isEmpty());
 		assertEquals("Incorrect short title", "abcd", dest.getShortTitle());

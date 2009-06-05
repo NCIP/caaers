@@ -8,10 +8,12 @@ import javax.persistence.Entity;
  * This class represents the ChemoAgent domain object associated with the Adverse event report.
  * 
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 @Entity
 public class ChemoAgent extends AbstractImmutableDomainObject {
     private String name;
+    private String genericName;
 
     public String getName() {
         return name;
@@ -20,6 +22,14 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public String getGenericName() {
+		return genericName;
+	}
+    
+    public void setGenericName(String genericName) {
+		this.genericName = genericName;
+	}
 
     @Override
     public int hashCode() {

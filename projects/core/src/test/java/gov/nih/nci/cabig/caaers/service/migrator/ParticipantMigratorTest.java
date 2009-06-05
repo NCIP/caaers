@@ -23,7 +23,8 @@ public class ParticipantMigratorTest extends AbstractTestCase {
 		xstreamParticipant = Fixtures.createParticipant("first", "last");
 		participant = new Participant();
 		List<Migrator<Participant>> migrators = new ArrayList<Migrator<Participant>>();
-		migrator = new ParticipantMigrator(migrators);
+		migrator = new ParticipantMigrator();
+		migrator.setChildren(migrators);
 	}
 	 
 	public void testPreMigrateParticipant() {

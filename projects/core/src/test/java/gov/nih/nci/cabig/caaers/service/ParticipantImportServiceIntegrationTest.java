@@ -56,7 +56,8 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         List<Migrator<Participant>> migrators = new ArrayList<Migrator<Participant>>();
         migrators.add(idMigrator);
         migrators.add(spaMigrator);
-        ParticipantMigrator migrator = new ParticipantMigrator(migrators);
+        ParticipantMigrator migrator = new ParticipantMigrator();
+        migrator.setChildren(migrators);
 
         spaMigrator.setStudySiteDao(studySiteDao);
         participantImportService.setParticipantRepository(participantRepository);

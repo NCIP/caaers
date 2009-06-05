@@ -61,18 +61,9 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     
     /**
      * This method will deactivate a {@link StudyOrganization}, by setting the termEndDate to a past date.
-     * Will deactivate {@link StudyPersonnel} and {@link StudyInvestigator}
      */
     public void deactivate(){
     	this.endDate = DateUtils.yesterday();
-    	
-    	//cascade deactivation
-    	for(StudyPersonnel sp : getStudyPersonnels()){
-    		sp.deactivate();
-    	}
-    	for(StudyInvestigator si : getStudyInvestigators()){
-    		si.deactivate();
-    	}
     }
     
     /**

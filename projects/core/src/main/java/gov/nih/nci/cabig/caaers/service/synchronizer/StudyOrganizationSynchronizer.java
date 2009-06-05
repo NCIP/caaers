@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -40,7 +42,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 	private void syncStudySite(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
 		//do nothing if study sites section is empty in xmlStudy
-		if(CollectionUtils.isNotEmpty(xmlStudy.getStudySites())){
+		if(CollectionUtils.isEmpty(xmlStudy.getStudySites())){
 			return;
 		}
 		
@@ -65,7 +67,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 			
 		}
 		
-		//de-activate, all the other sites and their investigators and personnel
+		//de-activate, all the other sites
 		for(StudySite ss : siteIndexMap.values()){
 			ss.deactivate();
 		}
@@ -109,99 +111,36 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
-		if(xmlStudyOrganization.getStudyInvestigators() != null){
-			if(xmlStudyOrganization.getStudyInvestigators().size() == 0){
-				if(dbStudyOrganization.getStudyInvestigators() != null){
-					while(!dbStudyOrganization.getStudyInvestigators().isEmpty()){
-						dbStudyOrganization.getStudyInvestigators().remove(0);
-					}
-				}
-				return;
+		//do nothing if there is no investigator in the xmlStudy Organization
+		if(CollectionUtils.isEmpty(xmlStudyOrganization.getStudyInvestigators())){
+			return;
+		}
+		
+		//generate and index of existing study investigators
+		HashMap<String, StudyInvestigator> dbStudyInvIndexMap = new HashMap<String, StudyInvestigator>();
+		for(StudyInvestigator si : dbStudyOrganization.getStudyInvestigators()){
+			dbStudyInvIndexMap.put(generateIndexKey(si), si);
+		}
+		
+		//loop through xmlStudy Organization StudyInvestigators, then add and modify details
+		for(StudyInvestigator xmlSi : xmlStudyOrganization.getStudyInvestigators()){
+			StudyInvestigator si = dbStudyInvIndexMap.remove(generateIndexKey(xmlSi));
+			if(si == null){
+				//new one so add it to Study
+				dbStudyOrganization.addStudyInvestigators(xmlSi);
+				continue;
 			}
+			//update existing investigator
+			si.setEndDate(xmlSi.getEndDate());
+			si.setStartDate(xmlSi.getStartDate());
+			si.setRoleCode(xmlSi.getRoleCode());
 		}
 		
-		List<StudyInvestigator> newStudyInvestigatorList = new ArrayList<StudyInvestigator>();
-		List<StudyInvestigator> deleteStudyInvestigatorList = new ArrayList<StudyInvestigator>();
-		StudyInvestigator remStudyInvestigator = null;
-		
-		//Identify newly added StudyInvestigators
-		for(StudyInvestigator xmlStudyInvestigator : xmlStudyOrganization.getStudyInvestigators()){
-			for(StudyInvestigator dbStudyInvestigator : dbStudyOrganization.getStudyInvestigators()){
-				
-				String xmlNciIdentifier = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
-				String dbNciIdentifier = dbStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
-				String xmlFName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
-				String dbFName = dbStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
-				String xmlLName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
-				String dbLName = dbStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
-				
-				xmlStudyInvestigator.setId(dbStudyInvestigator.getId());
-				if(xmlNciIdentifier != null && dbNciIdentifier != null) {
-					if(xmlNciIdentifier.equals(dbNciIdentifier)){
-						dbStudyInvestigator.setRoleCode(xmlStudyInvestigator.getRoleCode());
-						//dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
-						break;
-					}else{
-						xmlStudyInvestigator.setId(null);
-					}
-				}else{
-					if(xmlFName.equals(dbFName) && xmlLName.equals(dbLName)){
-						dbStudyInvestigator.setRoleCode(xmlStudyInvestigator.getRoleCode());
-						//dbStudyInvestigator.setStatusCode(xmlStudyInvestigator.getStatusCode());
-						break;
-					}else{
-						xmlStudyInvestigator.setId(null);
-					}
-				}
-			}
-			if(xmlStudyInvestigator.getId() == null){
-				newStudyInvestigatorList.add(xmlStudyInvestigator);
-			}
+		//deactivate the study investigators which are not present in xmlStudy Organization
+		for(StudyInvestigator si : dbStudyInvIndexMap.values()){
+			si.deactivate();
 		}
 		
-		//Identify StudyInvestigators to be Removed
-		for(StudyInvestigator dbStudyInvestigator : dbStudyOrganization.getStudyInvestigators()){
-			for(StudyInvestigator xmlStudyInvestigator : xmlStudyOrganization.getStudyInvestigators()){
-				remStudyInvestigator = new StudyInvestigator();
-				remStudyInvestigator = dbStudyInvestigator;
-				
-				String xmlNciIdentifier = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
-				String dbNciIdentifier = remStudyInvestigator.getSiteInvestigator().getInvestigator().getNciIdentifier();
-				String xmlFName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
-				String dbFName = remStudyInvestigator.getSiteInvestigator().getInvestigator().getFirstName();
-				String xmlLName = xmlStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
-				String dbLName = remStudyInvestigator.getSiteInvestigator().getInvestigator().getLastName();
-				
-				if(dbNciIdentifier != null && xmlNciIdentifier != null){
-					if(dbNciIdentifier.equals(xmlNciIdentifier)){
-						remStudyInvestigator = null;
-						break;
-					}
-				}else{
-					if(dbFName.equals(xmlFName) && dbLName.equals(xmlLName)){
-						remStudyInvestigator = null;
-						break;
-					}
-				}
-			}
-			if(remStudyInvestigator != null){
-				deleteStudyInvestigatorList.add(remStudyInvestigator);
-			}
-		}
-		
-		//Add New StudyInvestigators
-		for(StudyInvestigator newStudyInvestigator : newStudyInvestigatorList){
-			dbStudyOrganization.getStudyInvestigators().add(newStudyInvestigator);
-		}
-		
-		//Remove StudyInvestigators
-		for(StudyInvestigator delStudyInvestigator : deleteStudyInvestigatorList){
-			dbStudyOrganization.getStudyInvestigators().remove(delStudyInvestigator);
-		}
-		
-		for(StudyInvestigator studyInvestigator : dbStudyOrganization.getStudyInvestigators()){
-			studyInvestigator.setStudyOrganization(dbStudyOrganization);
-		}
 		
 	}//end method
 	
@@ -210,108 +149,82 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
-		if(xmlStudyOrganization.getStudyPersonnels() != null){
-			if(xmlStudyOrganization.getStudyPersonnels().size() == 0){
-				if(dbStudyOrganization.getStudyPersonnels() != null){
-					while(!dbStudyOrganization.getStudyPersonnels().isEmpty()){
-						dbStudyOrganization.getStudyPersonnels().remove(0);
-					}
-				}
-				return;
-			}
+		
+
+		//do nothing if there is no personnel in the xmlStudy Organization
+		if(CollectionUtils.isEmpty(xmlStudyOrganization.getStudyPersonnels())){
+			return;
 		}
 		
-		List<StudyPersonnel> newStudyPersonnelList = new ArrayList<StudyPersonnel>();
-		List<StudyPersonnel> deleteStudyPersonnelList = new ArrayList<StudyPersonnel>();
-		StudyPersonnel remStudyPersonnel = null;
-		
-		//Identify newly added StudyPersonnel
-		for(StudyPersonnel xmlStudyPersonnel : xmlStudyOrganization.getStudyPersonnels()){
-			for(StudyPersonnel dbStudyPersonnel : dbStudyOrganization.getStudyPersonnels()){
-				
-				String xmlNciIdentifier = xmlStudyPersonnel.getResearchStaff().getNciIdentifier();
-				String dbNciIdentifier = dbStudyPersonnel.getResearchStaff().getNciIdentifier();
-				String xmlFName = xmlStudyPersonnel.getResearchStaff().getFirstName();
-				String dbFName = dbStudyPersonnel.getResearchStaff().getFirstName();
-				String xmlLName = xmlStudyPersonnel.getResearchStaff().getLastName();
-				String dbLName = dbStudyPersonnel.getResearchStaff().getLastName();
-				
-				xmlStudyPersonnel.setId(dbStudyPersonnel.getId());
-				if(xmlNciIdentifier != null && dbNciIdentifier != null) {
-					if(xmlNciIdentifier.equals(dbNciIdentifier)){
-						dbStudyPersonnel.setRoleCode(xmlStudyPersonnel.getRoleCode());
-						//dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
-						break;
-					}else{
-						xmlStudyPersonnel.setId(null);
-					}
-				}else{
-					if(xmlFName.equals(dbFName) && xmlLName.equals(dbLName)){
-						dbStudyPersonnel.setRoleCode(xmlStudyPersonnel.getRoleCode());
-						//dbStudyPersonnel.setStatusCode(xmlStudyPersonnel.getStatusCode());
-						break;
-					}else{
-						xmlStudyPersonnel.setId(null);
-					}
-				}
-			}
-			if(xmlStudyPersonnel.getId() == null){
-				newStudyPersonnelList.add(xmlStudyPersonnel);
-			}
+		//generate and index of existing study StudyPersonnel
+		HashMap<String, StudyPersonnel> dbStudyPersonnelIndexMap = new HashMap<String, StudyPersonnel>();
+		for(StudyPersonnel sp : dbStudyOrganization.getStudyPersonnels()){
+			dbStudyPersonnelIndexMap.put(generateIndexKey(sp), sp);
 		}
 		
-		//Identify StudyPersonnel to be Removed
-		for(StudyPersonnel dbStudyPersonnel : dbStudyOrganization.getStudyPersonnels()){
-			for(StudyPersonnel xmlStudyPersonnel : xmlStudyOrganization.getStudyPersonnels()){
-				remStudyPersonnel = new StudyPersonnel();
-				remStudyPersonnel = dbStudyPersonnel;
-				
-				String xmlNciIdentifier = xmlStudyPersonnel.getResearchStaff().getNciIdentifier();
-				String dbNciIdentifier = remStudyPersonnel.getResearchStaff().getNciIdentifier();
-				String xmlFName = xmlStudyPersonnel.getResearchStaff().getFirstName();
-				String dbFName = remStudyPersonnel.getResearchStaff().getFirstName();
-				String xmlLName = xmlStudyPersonnel.getResearchStaff().getLastName();
-				String dbLName = remStudyPersonnel.getResearchStaff().getLastName();
-				
-				if(dbNciIdentifier != null && xmlNciIdentifier != null){
-					if(dbNciIdentifier.equals(xmlNciIdentifier)){
-						remStudyPersonnel = null;
-						break;
-					}
-				}else{
-					if(dbFName.equals(xmlFName) && dbLName.equals(xmlLName)){
-						remStudyPersonnel = null;
-						break;
-					}
-				}
+		//loop through xmlStudy Organization StudyPersonnel, then add and modify details
+		for(StudyPersonnel xmlSp : xmlStudyOrganization.getStudyPersonnels()){
+			StudyPersonnel sp = dbStudyPersonnelIndexMap.remove(generateIndexKey(xmlSp));
+			if(sp == null){
+				//new one so add it to Study
+				dbStudyOrganization.addStudyPersonnel(xmlSp);
+				continue;
 			}
-			if(remStudyPersonnel != null){
-				deleteStudyPersonnelList.add(remStudyPersonnel);
-			}
+			//update existing study personnel
+			sp.setEndDate(xmlSp.getEndDate());
+			sp.setStartDate(xmlSp.getStartDate());
+			sp.setRoleCode(xmlSp.getRoleCode());
 		}
 		
-		//Add New StudyPersonnel
-		for(StudyPersonnel newStudyPersonnel : newStudyPersonnelList){
-			dbStudyOrganization.getStudyPersonnels().add(newStudyPersonnel);
-		}
-		
-		//Remove StudyPersonnel
-		for(StudyPersonnel delStudyPersonnel : deleteStudyPersonnelList){
-			dbStudyOrganization.getStudyPersonnels().remove(delStudyPersonnel);
-		}
-		
-		for(StudyPersonnel studyPersonnel : dbStudyOrganization.getStudyPersonnels()){
-			studyPersonnel.setStudyOrganization(dbStudyOrganization);
+		//deactivate the study staff which are not present in xmlStudy Organization
+		for(StudyPersonnel sp : dbStudyPersonnelIndexMap.values()){
+			sp.deactivate();
 		}
 		
 	}//end method
 	
-	private String generateIndexKey(StudyOrganization so){
+	//generate a string key based on the values of site
+	private String generateIndexKey(StudySite so){
 		Organization o = so.getOrganization();
 		String nciCode = o.getNciInstituteCode();
 		String name = o.getName();
 		assert nciCode != null || name != null : " Organization Name and NCICode, atleast one should be present";
 		return ((nciCode == null) ? "" : nciCode + "%" ) + ( (name == null) ? "" : name); 
 	}
-
+	
+	//generate a string key based on the values of study investigator
+	private String generateIndexKey(StudyInvestigator si){
+		Investigator inv = si.getSiteInvestigator().getInvestigator();
+		String nciCode = inv.getNciIdentifier();
+		String firstName = inv.getFirstName();
+		String lastName = inv.getLastName();
+		String roleCode = si.getRoleCode();
+		
+		assert (nciCode != null || firstName != null || lastName != null || roleCode != null) : "Investigator firstname, lastname , nciCode or roleCode should be present";
+		StringBuffer sb = new StringBuffer();
+		sb.append(nciCode != null ? nciCode : "").append("%")
+		.append(firstName != null ? firstName : "").append("%")
+		.append(lastName != null ? lastName : "").append("%")
+		.append(roleCode != null ? roleCode : "");
+		return sb.toString();
+		
+	}
+	
+	//generate a string key based on the values of study personnel
+	private String generateIndexKey(StudyPersonnel sp){
+		ResearchStaff staff = sp.getResearchStaff();
+		String nciCode = staff.getNciIdentifier();
+		String firstName = staff.getFirstName();
+		String lastName = staff.getLastName();
+		String roleCode = sp.getRoleCode();
+		
+		assert (nciCode != null || firstName != null || lastName != null || roleCode != null) : "ResearchStaff firstname, lastname , nciCode or roleCode should be present";
+		StringBuffer sb = new StringBuffer();
+		sb.append(nciCode != null ? nciCode : "").append("%")
+		.append(firstName != null ? firstName : "").append("%")
+		.append(lastName != null ? lastName : "").append("%")
+		.append(roleCode != null ? roleCode : "");
+		return sb.toString();
+		
+	}
 }

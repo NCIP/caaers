@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -15,10 +16,7 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class StudySynchronizer extends CompositeMigrator<Study>{
-
-	public StudySynchronizer(List<Migrator<Study>> synchronizers) {
-		super(synchronizers);
-	}
+	
 
 	@Override
 	/**

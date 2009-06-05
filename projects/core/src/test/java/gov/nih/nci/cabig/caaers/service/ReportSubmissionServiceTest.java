@@ -77,7 +77,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		service.setMessageBroadcastService(new CaaersAdeersMessageBroadcastServiceImpl(){
 			@Override
 			public void broadcast(String message) throws BroadcastException {
-				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><REPORT_ID>55</REPORT_ID>" +
+				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><REPORT_ID>5</REPORT_ID>" +
 						"<SUBMITTER_EMAIL>just@frank.net</SUBMITTER_EMAIL><id>110</id><biju>Joseph</biju></AdverseEventReport>", message);
 			}
 			@Override

@@ -13,11 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import com.ibm.icu.util.Calendar;
 
 /**
  * This class represents the StudyPersonnel domain object associated with the Adverse event report.
@@ -44,6 +41,14 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
      */
     public void deactivate(){
     	this.endDate = DateUtils.yesterday();
+    }
+    
+    /**
+     *  This method will activate a {@link StudyPersonnel}
+     */
+    public void activate(){
+    	this.startDate = DateUtils.yesterday();
+    	this.endDate = null;
     }
 
     @ManyToOne

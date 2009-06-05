@@ -19,7 +19,7 @@ public class ParticipantSynchronizerTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		participantSynchronizer = new ParticipantSynchronizer(new ArrayList<Migrator<Participant>>());
+		participantSynchronizer = new ParticipantSynchronizer();
 		outcome = new DomainObjectImportOutcome<Participant>();
 	}
 	

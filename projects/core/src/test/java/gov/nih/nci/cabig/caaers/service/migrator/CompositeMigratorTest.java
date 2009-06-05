@@ -26,7 +26,7 @@ public class CompositeMigratorTest extends TestCase {
 class MyCompositeMigrator extends CompositeMigrator<gov.nih.nci.cabig.caaers.domain.Study>{
 	
 	public MyCompositeMigrator( List<Migrator<Study>> list) {
-		super(list);
+		setChildren(list);
 	}
 	
 	@Override

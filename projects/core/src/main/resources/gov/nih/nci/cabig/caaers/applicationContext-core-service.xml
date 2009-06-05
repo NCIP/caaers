@@ -140,7 +140,7 @@ This applicationContext contains the definition of the concrete services
 	</bean>
 	
 	<bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
-		<constructor-arg>
+		<property name="children">
 			<list>
 				<ref bean="studyTherapyMigrator"/>
 				<ref bean="studyTerminologyMigrator"/>
@@ -153,18 +153,18 @@ This applicationContext contains the definition of the concrete services
 				<ref bean="studyEvaluationPeriodsMigrator" />
 				<ref bean="studyExpectedAEMigrator" />
 			</list>
-		</constructor-arg>
+		</property>
 	</bean>
 	<bean id="studyParticipantAssignmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator">
 		<property name="studySiteDao" ref="studySiteDao" />
 	</bean>
 	<bean id="participantMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator">
-		<constructor-arg>
+		<property name="children">
 			<list>
 				<ref bean="identifierMigrator" />
 				<ref bean="studyParticipantAssignmentMigrator" />
 			</list>
-		</constructor-arg>
+		</property>
 	</bean>
 	
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>	
@@ -178,7 +178,7 @@ This applicationContext contains the definition of the concrete services
 	<bean id="studyEvaluationPeriodsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyEvaluationPeriodsSynchronizer"/>
 	
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
-		<constructor-arg>
+		<property name="children">
 			<list>
 				<ref bean="identifierSynchronizer"/>
 				<ref bean="treatmentAssignmentSynchronizer"/>
@@ -188,7 +188,7 @@ This applicationContext contains the definition of the concrete services
 				<ref bean="studyAgentsSynchronizer"/>
 				<ref bean="studyEvaluationPeriodsSynchronizer"/>
 			</list>
-		</constructor-arg>
+		</property>
 	</bean>
 	
 	<bean id="participantConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter"/>	
@@ -196,12 +196,12 @@ This applicationContext contains the definition of the concrete services
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	
 	<bean id="participantSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer">
-		<constructor-arg>
+		<property name="children">
 			<list>
 				<ref bean="identifierSynchronizer"/>
 				<ref bean="studyParticipantAssignmentSynchronizer"/>
 			</list>
-		</constructor-arg>
+		</property>
 	</bean>
 	
 	<bean id="adverseEventQueryService" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventQueryServiceImpl">
