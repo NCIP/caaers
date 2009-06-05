@@ -39,6 +39,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import java.io.File;
@@ -612,7 +613,7 @@ public class ExcelProcessor {
                 studyInvestigator.setRoleCode(getCellData(
                         INVESTIGATOR_SHEET_NAME, invRow, investigatorInfoSheet
                                 .getRow(invRow).getCell((short) 2)));
-                studyInvestigator.setStatusCode("Active");
+                studyInvestigator.setStartDate(DateUtils.yesterday());
                 so.addStudyInvestigators(studyInvestigator);
             }
         }
