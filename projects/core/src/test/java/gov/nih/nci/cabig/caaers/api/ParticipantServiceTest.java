@@ -2,8 +2,11 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
@@ -29,6 +32,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
     private gov.nih.nci.cabig.caaers.webservice.participant.Participants participants = null;
     private File xmlFile = null;
     private ParticipantDao participantDao;
+    private StudyDao studyDao;
     Participant updatedParticipant = null;
 
     @Override
@@ -39,7 +43,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
         unmarshaller = jaxbContext.createUnmarshaller();
         participantService = (ParticipantService) getDeployedApplicationContext().getBean("participantServiceImpl");
         participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
-
+        studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
 
     }
 
@@ -59,6 +63,44 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             fail("Error running test: " + e.getMessage());
         }
     }
+    
+    public void testCreateParticipantNewSST() {
+    	Participant createdParticipant = null;
+    	try {
+
+            createParticipant("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/CreateParticipantNewSST.xml");
+
+            SecurityTestUtils.switchToSuperuser();
+
+            assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
+            List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
+            assertEquals(1, matches.size());
+            createdParticipant= matches.get(0);
+            assertEquals("Herd", createdParticipant.getLastName());
+            assertEquals("maidenName", createdParticipant.getMaidenName());
+            assertEquals("Leing", createdParticipant.getMiddleName());
+            assertEquals(new DateValue(1, 1, 2001), createdParticipant.getDateOfBirth());
+            assertEquals("Male", createdParticipant.getGender());
+            assertEquals("Asian", createdParticipant.getRace());
+            assertEquals("Hispanic or Latino", createdParticipant.getEthnicity());
+            
+            Study study = studyDao.getStudyDesignById(-1);
+            assertNotNull(study);
+            List<StudyOrganization> studyOrganizations = study.getStudyOrganizations();
+            assertNotNull(studyOrganizations);
+            assertEquals(2, studyOrganizations.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Error running test: " + e.getMessage());
+        } finally {
+            if (createdParticipant != null) {
+                participantDao.delete(createdParticipant);
+            }
+        }
+    }
+    
+    
     
     public void testCreateParticipant() {
     	Participant createdParticipant = null;
