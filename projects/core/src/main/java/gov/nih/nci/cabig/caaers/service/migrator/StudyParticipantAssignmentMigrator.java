@@ -33,12 +33,17 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
 	public void migrate(Participant src, Participant dest,DomainObjectImportOutcome<Participant> outcome) {
 
         for (StudyParticipantAssignment studyParticipantAssignment : src.getAssignments()) {
+        	
+        	StudySite srcSite = studyParticipantAssignment.getStudySite();
+        	 log.debug("Size of identifiers : " + srcSite.getStudy().getIdentifiers());
+        	 
             for (Identifier identifier : studyParticipantAssignment.getStudySite().getStudy().getIdentifiers()) {
-                log.debug("Size of identifiers : " + studyParticipantAssignment.getStudySite().getStudy().getIdentifiers());
+               
                 String identifierValue = identifier.getValue();
-                String organizationName = studyParticipantAssignment.getStudySite().getOrganization().getName();
-                String organizationNciInstituteCode = studyParticipantAssignment.getStudySite().getOrganization().getNciInstituteCode();
                 String identifierType = identifier.getType();
+                String organizationName = srcSite.getOrganization().getName();
+                String organizationNciInstituteCode = srcSite.getOrganization().getNciInstituteCode();
+              
                 StudySite studySite = null;
                 Organization organization = null;
                 if (StringUtilities.isBlank(organizationNciInstituteCode)) {
@@ -56,7 +61,7 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 	studySite = new StudySite();
                 	studySite.setOrganization(organization);
                 	studySite.setStartDate(new Date());
-                	studySite.setStatus("Active");
+                	studySite.setEndDate(srcSite.getEndDate());
                 	study.addStudySite(studySite);
                 	if(study == null){
                 		outcome.ifNullObject(study, DomainObjectImportOutcome.Severity.ERROR,
