@@ -108,7 +108,7 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
 					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd")[0].getFile());
 		        	schema = factory.newSchema(ss);
 					break;
-				}else if("ImportAdverseEvents".equalsIgnoreCase(elementName) && manageAdverseEventsNamespace.equalsIgnoreCase(elementNamespaceURI)){
+				}else if("AdverseEventsInputMessage".equalsIgnoreCase(elementName) && manageAdverseEventsNamespace.equalsIgnoreCase(elementNamespaceURI)){
 					payLoad = eachElement;
 					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ManageAdverseEventsSchema.xsd")[0].getFile());
 		        	schema = factory.newSchema(ss);

@@ -35,7 +35,7 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse createAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
+	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
@@ -43,7 +43,7 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse updateAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
+	public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
 	 * Delete Adverse Events for a Study Participant Assignment on a given Course/Cycle.
@@ -51,6 +51,6 @@ public interface AdverseEventManagementService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="ImportAdverseEvents") gov.nih.nci.cabig.caaers.webservice.adverseevent.ImportAdverseEvents importAdverseEvents) ;
+	public CaaersServiceResponse deleteAdverseEvent(@WebParam(name="AdverseEventsInputMessage") gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 }
