@@ -5,19 +5,26 @@
     elementFormDefault="unqualified">
 
             
-    <xs:element name="ImportAdverseEvents">
+    <xs:element name="AdverseEventsInputMessage">
         <xs:annotation>
             <xs:documentation> The top level (typically root) element. Allows the definition of
                 default values for all nested bean definitions.             	
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:sequence>            	
-                <xs:element ref="adverseEvents">
-                        <xs:annotation>
-				            <xs:documentation> List of Adverse Events. </xs:documentation>
-				        </xs:annotation>
-                </xs:element>
+            <xs:sequence> 
+            	<xs:choice>         	
+	                <xs:element ref="adverseEvents">
+	                        <xs:annotation>
+					            <xs:documentation> List of Adverse Events to create or update. </xs:documentation>
+					        </xs:annotation>
+	                </xs:element>
+					<xs:element ref="adverseEventTerms">
+	                        <xs:annotation>
+					            <xs:documentation> List of Adverse Event Terms to delete. </xs:documentation>
+					        </xs:annotation>						
+					</xs:element>
+                </xs:choice>  
                 <xs:element ref="criteria">
                         <xs:annotation>
 				            <xs:documentation>Adverse Event Creation Criteria .
@@ -31,7 +38,15 @@
             </xs:sequence>
         </xs:complexType>        
     </xs:element>
-     <xs:element name="criteria" type="Criteria"/>   
+    <xs:element name="adverseEventTerms" type="AdverseEventTerms"/>   
+    <xs:complexType name="AdverseEventTerms">
+	         <xs:choice> 
+	         		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1" maxOccurs="unbounded"/>                   	
+	                <xs:element name="adverseEventCtcTerm" type="AdverseEventCtcTermType" minOccurs="1" maxOccurs="unbounded"/>
+             </xs:choice>
+     </xs:complexType>
+	                
+    <xs:element name="criteria" type="Criteria"/>   
 
  	<xs:complexType name="Criteria">
         <xs:sequence>
@@ -60,21 +75,14 @@
                     <xs:element name="startDateOfThisCourse" type="xs:date" minOccurs="1"/>
                     <xs:element name="endDateOfThisCourse" type="xs:date" minOccurs="0"/>
                     <xs:element name="treatmentType" type="CustomStringType" minOccurs="1"/>
-                    <xs:element name="cycleNumber" type="xs:integer"/>
+                    <xs:element name="cycleNumber" type="xs:integer" minOccurs="0"/>
                     <xs:choice>
-	                    <xs:element name="treatmentAssignment" type="TreatmentAssignmentType" minOccurs="1"/>
-	                    <xs:element name="otherTreatmentAssignmentDescription" type="CustomStringType" minOccurs="1"/>
+	                    <xs:element name="treatmentAssignmentCode" type="xs:string" minOccurs="1"/>
+	                    <xs:element name="otherTreatmentAssignmentDescription" type="xs:string" minOccurs="1"/>
                     </xs:choice>
                 </xs:sequence> 
     </xs:complexType>
-    <xs:complexType name="TreatmentAssignmentType">
-                <xs:sequence>
-                    <xs:element name="code" type="CustomStringType" minOccurs="1"/>
-                    <xs:element name="doseLevelOrder" type="xs:string"/>
-                    <xs:element name="description" type="xs:string"/>
-                    <xs:element name="comments" type="xs:string"/>
-                </xs:sequence> 
-    </xs:complexType> 
+
 
     <xs:element name="adverseEvents">
         <xs:annotation>
@@ -118,19 +126,23 @@
                    		<xs:element name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType" minOccurs="1"/>
                     </xs:choice> 
                     <xs:element name="otherMeddra" type="AdverseEventMeddraLowLevelTermType" minOccurs="0"/>
-                   	<!--<xs:element name="solicited" type="xs:boolean" minOccurs="0"/>  
-
-                    <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
-                    <xs:element name="eventApproximateTime" type="xs:time" minOccurs="0"/>
+                   	<xs:element name ="outcome" type="OutcomeType" minOccurs="0" maxOccurs="unbounded"/>  
+                    <xs:element name="eventApproximateTime" type="TimeType" minOccurs="0"/>
                     <xs:element name="eventLocation" type="xs:string" minOccurs="0"/>
-                    <xs:element ref="outcome" minOccurs="0" maxOccurs="unbounded"/>  
+                    <!-- <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
                    <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
    </xs:complexType>  
-
+    <xs:complexType name="TimeType">
+                <xs:sequence>
+                  <xs:element name="hour" type="xs:integer" minOccurs="1"/>
+                  <xs:element name="minute" type="xs:integer" minOccurs="1"/>
+                  <xs:element name="ampm" type="AMPM" minOccurs="1"/>
+                </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="AdverseEventCtcTermType">
                 <xs:sequence>
@@ -154,15 +166,22 @@
                 </xs:sequence>
     </xs:complexType> 
         
-    <xs:element name="outcome" type="OutcomeType"/>
+
     <xs:complexType name="OutcomeType">
                 <xs:sequence>
-                  <xs:element name="outComeEnumType" type="OutComeEnumType"/>
-                  <xs:element name="other" type="xs:string"/>
+                  <xs:element name="outComeEnumType" type="OutComeEnumType" minOccurs="1"/>
+                  <xs:element name="other" type="xs:string" minOccurs="0"/>
                 </xs:sequence>
     </xs:complexType> 
     
 	<!-- FIXED Types  --> 
+    <xs:simpleType name="AMPM">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AM"/>
+            <xs:enumeration value="PM"/>
+        </xs:restriction>
+    </xs:simpleType>
+    	
     <xs:simpleType name="CtcVersionEnum">
         <xs:restriction base="xs:int">
             <xs:enumeration value="2"/>
