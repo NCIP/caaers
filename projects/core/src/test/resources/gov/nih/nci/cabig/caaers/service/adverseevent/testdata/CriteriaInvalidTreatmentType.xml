@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+<ns1:AdverseEventsInputMessage xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
 	<ns1:adverseEvents>
 		<ns1:adverseEvent>
 			<grade>3</grade>
@@ -25,12 +25,7 @@
 			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
 			<treatmentType>TreatmentX</treatmentType>
 			<cycleNumber>1</cycleNumber>
-			<treatmentAssignment>
-				<code>TAC1</code>
-				<doseLevelOrder>2</doseLevelOrder>
-				<description>TAC1X DESC</description>
-				<comments>TAC comments</comments>
-			</treatmentAssignment>
+			<treatmentAssignmentCode>TAC1</treatmentAssignmentCode>
 		</course>	
 	</ns1:criteria>
-</ns1:ImportAdverseEvents>
+</ns1:AdverseEventsInputMessage>

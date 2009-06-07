@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns1:ImportAdverseEvents xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
+<ns1:AdverseEventsInputMessage xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
 	<ns1:adverseEvents>
 		<ns1:adverseEvent>
 			<grade>3</grade>
@@ -25,4 +25,4 @@
 			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
 		</course>	
 	</ns1:criteria>
-</ns1:ImportAdverseEvents>
+</ns1:AdverseEventsInputMessage>

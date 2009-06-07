@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ns1:AdverseEventsInputMessage xmlns:ns1="http://webservice.caaers.cabig.nci.nih.gov/adverseevent">
-	<ns1:adverseEvents>
-		<ns1:adverseEvent>
-			<grade>3</grade>
-			<hospitalization>YES</hospitalization>
-			<expected>true</expected>
-			<startDate>2005-07-29</startDate>
-			<endDate>2005-08-29</endDate>		
-			<adverseEventCtcTerm>
-				<ctep-term>Burn</ctep-term>
-				<!--
-				<ctep-code>10043882</ctep-code>
-				<ctc-version>3</ctc-version>-->
-			</adverseEventCtcTerm>	
-		</ns1:adverseEvent>		
-	</ns1:adverseEvents>
+	<ns1:adverseEventTerms>
+			<adverseEventMeddraLowLevelTerm>
+				<meddraCode>mc1</meddraCode>
+				<meddraTerm>mt1</meddraTerm>
+			</adverseEventMeddraLowLevelTerm>			
+	</ns1:adverseEventTerms>
 	<ns1:criteria>
 		<participantIdentifier>008</participantIdentifier>
 		<studyIdentifier>009</studyIdentifier>

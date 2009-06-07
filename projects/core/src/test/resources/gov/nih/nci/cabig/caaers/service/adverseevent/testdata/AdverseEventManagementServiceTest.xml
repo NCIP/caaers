@@ -3,6 +3,7 @@
         id="-4"
         short_title="A history of ghosts"
         load_status="1"
+        adeers_reporting="0"
         />        
     <ORGANIZATIONS
         id="-1"
@@ -133,8 +134,10 @@
 		research_staffs_id="-1001"
 		study_sites_id="-10"
 		role_code="caaers_site_cd"
-		/>				
+		/>	
+			
 	<adverse_events/>	
+	<outcomes/>	
 	<ae_terms/> 
 	<disease_terminologies/>
 		  	
