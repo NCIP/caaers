@@ -25,7 +25,7 @@
               </jsp:attribute>
               <jsp:attribute name="selectorJS">
                   function(agent) {
-                      return agent.name
+                      return agent.fullName
                   }
               </jsp:attribute>
           </ui:autocompleter>

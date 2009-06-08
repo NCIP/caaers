@@ -79,7 +79,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			String xml = null;
     			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
     				//obtain the saved xml report
-    				ReportContent reportContent = report.getLastVersion().getXmlContent();
+    				ReportContent reportContent = reportDao.getReportContent(report);
     				if(reportContent == null){
     					xml =  adverseEventReportSerializer.serialize(aeReport,report);
     				}else{
