@@ -1,6 +1,6 @@
 <dataset>
 
-    <chemo_agents id="1001" name="Test1" />
-    <chemo_agents id="1002" name="Agent" />    
+    <chemo_agents id="1001" name="Test1" generic_name="hello"/>
+    <chemo_agents id="1002" name="Agent" generic_name="below"/>    
 
 </dataset>

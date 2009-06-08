@@ -2,11 +2,17 @@ package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,5 +118,23 @@ public class ReportDao extends GridIdentifiableDao<Report> {
             if (report.getReportDeliveries() != null) initialize(report.getReportDeliveries());
         }
         return report;
+    }
+    
+    
+    public ReportContent getReportContent(final Report report){
+    	final int lastVersionId = report.getLastVersion().getId();
+    	ReportVersion reportVersion = (ReportVersion)getHibernateTemplate().load(ReportVersion.class, lastVersionId);
+    	return reportVersion.getXmlContent();
+//    	return (ReportContent)getHibernateTemplate().execute(new HibernateCallback(){
+//    		public Object doInHibernate(Session session)
+//    				throws HibernateException, SQLException {
+//    			session.beginTransaction();
+//    			ReportVersion reportVersion = (ReportVersion)session.get(ReportVersion.class, lastVersionId);
+//    			ReportContent reportContent =  reportVersion.getXmlContent();
+//    			return reportContent;
+//    		}
+//    	});
+    	
+    	
     }
 }

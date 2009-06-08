@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  * This class represents the ChemoAgent domain object associated with the Adverse event report.
@@ -30,6 +31,11 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
     public void setGenericName(String genericName) {
 		this.genericName = genericName;
 	}
+    
+    @Transient
+    public String getFullName(){
+    	return name + "(" + genericName + ")";
+    }
 
     @Override
     public int hashCode() {
@@ -49,6 +55,11 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
         return true;
+    }
+    
+    @Override
+    public String toString() {
+    	return getFullName();
     }
 
 }

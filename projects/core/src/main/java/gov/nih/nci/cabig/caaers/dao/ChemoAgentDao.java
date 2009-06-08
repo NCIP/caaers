@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
  * This class implements the Data access related operations for the ChemoAgent domain object.
  * 
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 @Transactional(readOnly = true)
 public class ChemoAgentDao extends CaaersDao<ChemoAgent> {
     
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name", "genericName");
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
     /**

@@ -580,4 +580,11 @@ public class Fixtures {
        return diseaseHistory;
   }
    
+  public static ChemoAgent createChemoAgent(String name, String genericName){
+	  ChemoAgent a = new ChemoAgent();
+	  a.setName(name);
+	  a.setGenericName(genericName);
+	  return a;
+  }
+   
 }

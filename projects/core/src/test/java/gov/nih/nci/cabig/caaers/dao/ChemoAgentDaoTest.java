@@ -1,15 +1,13 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 
 import java.util.List;
 
 /**
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 
 public class ChemoAgentDaoTest extends DaoTestCase<ChemoAgentDao> {
@@ -29,8 +27,15 @@ public class ChemoAgentDaoTest extends DaoTestCase<ChemoAgentDao> {
         List<ChemoAgent> all = getDao().getBySubname(new String[] {"Test"});
         assertNotNull(all);
         assertEquals(1, all.size());
+        assertEquals("Test1(hello)", all.get(0).getFullName());
     }
-
+    
+    public void testGetBySubnames_OnGenericName() throws Exception {
+        List<ChemoAgent> all = getDao().getBySubname(new String[] {"hell"});
+        assertNotNull(all);
+        assertEquals(1, all.size());
+        assertEquals("Test1(hello)", all.get(0).getFullName());
+    }
 
     public void testGetById() throws Exception {
         ChemoAgent loaded = getDao().getById(1002);

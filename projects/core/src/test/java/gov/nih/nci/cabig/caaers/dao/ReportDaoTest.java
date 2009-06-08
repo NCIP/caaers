@@ -368,6 +368,48 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		});
     }
     
+    
+
+    public void testGetReportContent() {
+    	transactionTemplate.execute(new TransactionCallbackWithoutResult(){
+    		@Override
+    		protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+    			Report report = getDao().getById(-223);
+	    		assertNotNull(report);
+	    		assertNotNull(report.getReportVersions());
+	    		assertEquals(1, report.getReportVersions().size());
+	    		
+	    		ReportVersion reportVersion = report.getLastVersion();
+	            reportVersion.setCreatedOn(new Date());
+	            reportVersion.setReportStatus(ReportStatus.PENDING);
+	            
+	            ReportContent c1 = new ReportContent("application/pdf");
+	            c1.setContent("<xml><testing>Welcome</testing></xml>".getBytes());
+	            
+	            ReportContent c2 = new ReportContent("text/xml");
+	            c2.setContent("<xml><testing>Welcome</testing></xml>".getBytes());
+	            
+	            reportVersion.addReportContent(c1);
+	            reportVersion.addReportContent(c2);
+	            
+	            report.setStatus(ReportStatus.PENDING);
+	            rsDao.save(report);
+	            
+    		}
+    	});
+    	interruptSession();
+    	ReportContent rc_global = null;
+    	transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+	        protected void doInTransactionWithoutResult(TransactionStatus status) {
+	    		Report report = getDao().getById(-223);
+	     		assertNotNull(report);
+	     		ReportContent rc = getDao().getReportContent(report);
+	     		System.out.println(rc);
+			}
+		});
+    }
+    
     public void testIsSubmitted(){
 		Report report = getDao().getById(-223);
 		assertTrue(report.isSubmitted());
