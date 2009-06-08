@@ -275,6 +275,23 @@ a#firstlevelnav_configurationController:link { background-position:0px 0px; }
 a#firstlevelnav_configurationController:hover { background-position:0px -45px; }
 a#firstlevelnav_configurationController:active { background-position:0px -90px; }
 .selected a#firstlevelnav_configurationController { background-image: url(../images/blue/administration_btn_selected.png); }
+
+
+a#firstlevelnav_advancedSearchController {
+	background-image: url(../images/blue/advancedSearch_btn.png);
+	height: 0px;
+	padding:45px 0px 0px 0px;
+	width: 133px;
+	float: left;
+	margin-right: -5px;
+	margin-left: -5px;
+}
+a#firstlevelnav_advancedSearchController:link { background-position:0px 0px; }
+a#firstlevelnav_advancedSearchController:hover { background-position:0px -45px; }
+a#firstlevelnav_advancedSearchController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_advancedSearchController { background-image: url(../images/blue/advancedSearch_btn_selected.png); }
+
+
 #sso-form { display: none }
 #build-name {
 	color: #666;
