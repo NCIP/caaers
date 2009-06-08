@@ -10,13 +10,13 @@
     <title>${pageTitle}</title>
     <style type="text/css">
         input.autocomplete {
-            width: 75%;
+            width: 450px;
             font-style: normal;
             background-color: #CCE6FF;
         }
 
         input.pending-search {
-            width: 75%;
+            width: 450px;
             color: gray;
             font-style: italic;
             background-color: #CCE6FF;
