@@ -194,7 +194,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 							message = messageSource.getMessage("WS_AEMS_024", new String[]{adverseEventCtcTerm.getCtepTerm()},"",Locale.getDefault());
 						} else {
 							deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
-							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventCtcTerm.getCtepTerm(),operation+"D"},"",Locale.getDefault());
+							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventCtcTerm.getCtepTerm(),operation+"d"},"",Locale.getDefault());
 						}
 						messages.add (message);	
 					}
@@ -206,7 +206,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 							message = messageSource.getMessage("WS_AEMS_024", new String[]{adverseEventMeddraLowLevelTerm.getMeddraTerm()},"",Locale.getDefault());
 						} else {
 							deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
-							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventMeddraLowLevelTerm.getMeddraTerm(),operation+"D"},"",Locale.getDefault());
+							message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEventMeddraLowLevelTerm.getMeddraTerm(),operation+"d"},"",Locale.getDefault());
 							
 						}
 						
@@ -233,12 +233,10 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 						}
 					} else {
 						//SAVE AE
-						adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
-
-						if (operation.equals(CREATE) || operation.equals(UPDATE)) {
-							
+						if (operation.equals(CREATE) || operation.equals(UPDATE)) {	
+							adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
 							adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-							String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEvent.getAdverseEventTerm().getFullName(),operation+"D"},"",Locale.getDefault());
+							String message = messageSource.getMessage("WS_AEMS_006", new String[]{adverseEvent.getId()+"",adverseEvent.getAdverseEventTerm().getFullName(),operation+"d"},"",Locale.getDefault());
 							messages.add (message);
 						}	
 					}
@@ -412,18 +410,20 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		} else if (xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm() != null) {
 			adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod , xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm());
 		}
-		
+		String operationOnThisAE = operation;
 		if (operation.equals(UPDATE)) {	
 			//if doesn't exist create ... 
 			if (adverseEvent == null) {
 				adverseEvent = new AdverseEvent();
 				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+				operationOnThisAE = CREATE;
 			}
 		} else if (operation.equals(CREATE)) {
 			//if AE exists , shud not be able to create AE with same term ...
 			if (adverseEvent == null) {
 				adverseEvent = new AdverseEvent();
 				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+				operationOnThisAE = CREATE;
 			} else {
 				String term = adverseEvent.getAdverseEventTerm().getFullName();
 				throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_012", new String[]{term},"",Locale.getDefault()));
@@ -439,7 +439,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		}
 */		
 		try{			
-			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent, operation);
+			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent, operationOnThisAE);
         }catch(CaaersSystemException caEX){
          	throw new CaaersSystemException(caEX);
         }

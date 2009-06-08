@@ -50,13 +50,13 @@ public class AdverseEventConverter {
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
 
-			if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
+			if (operation.equals(AdverseEventManagementService.CREATE)) {
 				populateCtcTerm(adverseEventDto,adverseEvent);
 				if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
 					populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
-				}
-				
+				}				
 			}
+			
 			if (adverseEventDto.getEventApproximateTime() != null) { 
 				TimeValue tv = new TimeValue();
 				tv.setHour(adverseEventDto.getEventApproximateTime().getHour().intValue());
