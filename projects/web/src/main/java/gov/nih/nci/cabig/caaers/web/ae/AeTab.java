@@ -124,8 +124,17 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             for (InputField field : group.getFields()) {
                 if (isMandatory(command.getMandatoryProperties(), field)) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
+
+                    if (field.getCategory() == InputField.Category.COMPOSITE) {
+                        for (InputField subField : CompositeField.getSubfields(field)) {
+                            if (isMandatory(command.getMandatoryProperties(), subField)) {
+                                subField.getAttributes().put(MANDATORY_FIELD_ATTR, true);
+                            }
+                        }
+                    }
                 }
             }
+
         }
 
     }
