@@ -52,7 +52,7 @@
         var edMmField = $('aeReport.concomitantMedications[${index}].endDate.monthString');
         var endDateElementId = 'aeReport.concomitantMedications[' + ${index} + '].endDate-row';
 
-        if ($('aeReport.concomitantMedications[${index}].stillTakingMedications').checked) {
+        if ($('aeReport.concomitantMedications[${index}].stillTakingMedications') && $('aeReport.concomitantMedications[${index}].stillTakingMedications').checked) {
             edYrField.value = '';
             edDdField.value = '';
             edMmField.value = '';
