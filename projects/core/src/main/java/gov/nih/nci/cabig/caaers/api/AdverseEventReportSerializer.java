@@ -606,7 +606,6 @@ public class AdverseEventReportSerializer {
 	    	try { 
 		    	studySite.setStartDate(ss.getStartDate());
 		    	studySite.setEndDate(ss.getEndDate());
-		    	
 		    	//buld identifiers , to resolve sesion error 
 		    	Study hibernateStudy = ss.getStudy();
 		    	

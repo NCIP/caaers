@@ -1355,7 +1355,8 @@
       collection="arraylist">
       <bind-xml name="StudyInvestigator" node="element"/>
     </field>
-    <field name="statusCode" type="string">
+	<!-- BJ : CAAERS-2281 :caAERS v. 2.0-SNAPSHOT (2009-06-09 09:28:30) -->
+    <field name="active" type="boolean">
       <bind-xml name="statusCode" node="element"/>
     </field>
     <field name="startDate" type="date">
@@ -1406,7 +1407,8 @@
     <field name="roleCode" type="string">
       <bind-xml name="roleCode" node="element"/>
     </field>
-    <field name="statusCode" type="string">
+	<!-- BJ : CAAERS-2281 :caAERS v. 2.0-SNAPSHOT (2009-06-09 09:28:30) -->
+    <field name="active" type="boolean">
       <bind-xml name="statusCode" node="element"/>
     </field>
     <field name="siteInvestigator" type="gov.nih.nci.cabig.caaers.domain.SiteInvestigator">
