@@ -295,7 +295,7 @@
                         
                         ${studyInvestigator.siteInvestigator.investigator.fullName}</td>
                         <td>${studyInvestigator.roleCode}</td>
-                        <td>${studyInvestigator.statusCode}</td>
+                        <td>-to be filled -</td>
                     </tr>
                     <c:set var="invCnt" value="${invCnt + 1}" />
                 </c:forEach>
@@ -331,7 +331,7 @@
                         ${studyPersonnel.researchStaff.fullName}
                         </td>
                         <td>${studyPersonnel.roleCode}</td>
-                        <td>${studyPersonnel.statusCode}</td>
+                        <td>-to be filled-</td>
                     </tr>
                     <c:set var="staffCnt" value="${invCnt + 1}" />
                 </c:forEach>
