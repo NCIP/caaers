@@ -130,7 +130,7 @@
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 <tr>
     	<td>
-    		<caaers:message code="header.reportdefinition.notifications" arguments="${command.reportDefinition.name}" />
+    		<caaers:message code="header.reportdefinition.notifications" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
     	  	<!-- This box contains the Scale -->
     		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
    				<p>

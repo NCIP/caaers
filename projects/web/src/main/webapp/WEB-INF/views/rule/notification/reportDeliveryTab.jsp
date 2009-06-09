@@ -70,7 +70,7 @@
     <chrome:division>
 	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="false">
 	   	 	<jsp:attribute name="header">
-    			<caaers:message code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name}" />
+    			<caaers:message code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
     		</jsp:attribute>
 			<jsp:attribute name="singleFields">
 				<div id="rdd-tab-fields">
