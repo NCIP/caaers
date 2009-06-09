@@ -4,6 +4,7 @@
 
 <tags:stylesheetLink name="debug"/>
 <tags:stylesheetLink name="common"/>
+<tags:stylesheetLink name="floatingTaskbar"/>
 <tags:stylesheetLink name="fields"/>
 <tags:stylesheetLink name="buttons"/>
 <tags:stylesheetLink name="extremecomponents"/>

@@ -1,8 +1,8 @@
-<%@taglib prefix="blue" tagdir="/WEB-INF/tags/blue" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <div id="header">
   <div id="skipnav">
   <a href="#skipnav">Skip Navigation</a>
@@ -16,14 +16,11 @@
           <a href="${_caaersHelpURL}#${roboHelpLink}${empty configuration.map.caaersBaseHelpUrl ?'.htm' : ''}" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
         <ul id="sections" class="tabs">
-        <c:forEach items="${sections}" var="section">
-            <csmauthz:accesscontrol authorizationCheckName="sectionAuthorizationCheck"
-                domainObject="${section}">
+        <c:forEach items="${sections}" var="section" varStatus="index">
+            <csmauthz:accesscontrol authorizationCheckName="sectionAuthorizationCheck" domainObject="${section}">
             <li class="${section == currentSection ? 'selected' : ''}">
-			      
-                <a id="firstlevelnav_${section.mainController}" href="<c:url value="${section.mainUrl}"/>">${section.displayName}</a>
-              
-			</li>
+                <a id="firstlevelnav_${section.mainController}" href="<c:url value="${section.mainUrl}"/>" index="${index.index}">${section.displayName}</a>
+            </li>
             </csmauthz:accesscontrol>
         </c:forEach>
         </ul>
@@ -41,6 +38,9 @@
                 </c:forEach>
 				</ul>
             </c:if>
+        </div>
+        <div id="floatingTaskbar" style="display:none;">
+            <tags:floatingTaskbar />
         </div>
     </div>
 </div>

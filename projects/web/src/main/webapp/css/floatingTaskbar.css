@@ -1,0 +1,83 @@
+
+#floatingTaskbar {
+	background: url(../images/blue/floatingTaskbar_BG.png) repeat-x top;
+	height: 51px;
+	width: 970px;
+	font-size: 12pt;
+	position: absolute;
+	top: 98px;
+	padding-left: 10px;
+	color: #FFFFFF;
+	vertical-align: middle;
+	z-index: 1;
+}
+#floatingTaskbar ul {
+	margin:0 0 0 -45px;
+}
+#floatingTaskbar li {
+	list-style-type:none;
+	display:inline;
+}
+#floatingTaskbar li.lte4 a {
+	color:#FFF;
+	text-decoration: none;
+	height: 43px;
+	width: 232px;
+	float:left;
+	padding-top: 8px;
+	font-weight: bold;
+}
+#floatingTaskbar li.gt4 a {
+	color:#FFF;
+	text-decoration: none;
+	height: 19px;
+	width: 232px;
+	float:left;
+	padding-top: 2px;
+	font-weight: bold;
+	font-size: 12px;
+	text-indent: 10px;
+	margin-top: 1px;
+	margin-right: 2px;
+}
+#floatingTaskbar li.gt4 a:hover {
+	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
+}
+#floatingTaskbar li.gt4 a:active {
+	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
+}
+#floatingTaskbar li.lte4 img {
+	margin-right:7px;
+	margin-left:5px;
+}
+#floatingTaskbar li a:hover {
+	color:#fff;
+	background-image: url(../images/blue/secondlevelnav_hover.png);
+	background-repeat: no-repeat;
+}
+#floatingTaskbar li a:active {
+	color:#ffe9a5;
+	background-image: url(../images/blue/secondlevelnav_hover.png);
+	background-repeat: no-repeat;
+}
+#floatingTaskbar li.lte4 img.imagegt18 {
+	float:left;
+	margin-top:6px;
+}
+#floatingTaskbar li.lte4 a.gt18 {
+	padding-top:2px;
+	display:inline;
+}
+.spangt18 { padding-right:4px }
+#floatingTaskbar .lte4 a.selected, #v .lte4 a.selected:hover, #floatingTaskbar .lte4 a.selected:active {
+	background-image: url(../images/blue/secondlevelnav_selected.jpg);
+	background-repeat: no-repeat;
+}
+#floatingTaskbar .gt4 a.selected, #floatingTaskbar .gt4 a.selected:hover, #floatingTaskbar .gt4 a.selected:active {
+	background-image: url(../images/blue/secondlevelnav_gt4_selected.png);
+	background-repeat: no-repeat;
+}
+
+
