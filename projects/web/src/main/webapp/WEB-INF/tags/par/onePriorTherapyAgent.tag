@@ -1,9 +1,4 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <%@attribute name="index" required="true" %>
 <%@attribute name="parentIndex" required="true" %>
@@ -14,8 +9,11 @@
 		<table width="100%">
  			<tr>
   				<td width="99%">
-                      <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.name : 'Begin typing here...'}"/>
-                      <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" initialDisplayValue="${initValue}">
+                      <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here...'}"/>
+                      <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" 
+                      	initialDisplayValue="${initValue}"
+                      	readonly="${not empty agent.chemoAgent}"
+                      	displayNamePath="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName">
                           <jsp:attribute name="populatorJS">
                               function(autocompleter, text){
                                   createAE.matchChemoAgents(text, function(values) {
@@ -25,11 +23,13 @@
                           </jsp:attribute>
                           <jsp:attribute name="selectorJS">
                               function(agent) {
-                                  return agent.name
+                                  return agent.fullName
                               }
                           </jsp:attribute>
                       </ui:autocompleter>
-                      <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c3_${parentIndex}_${index}" onclick="showShowAllTable('_c3_${parentIndex}_${index}', 'assignmentDOTpriorTherapiesOPEN${parentIndex}CLOSEDOTpriorTherapyAgentsOPEN${index}CLOSEDOTchemoAgent')">Show All</a>
+                       <c:if test="${ empty agent.chemoAgent}">
+                        <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c3_${parentIndex}_${index}" onclick="showShowAllTable('_c3_${parentIndex}_${index}', 'assignmentDOTpriorTherapiesOPEN${parentIndex}CLOSEDOTpriorTherapyAgentsOPEN${index}CLOSEDOTchemoAgent')">Show All</a>
+  					  </c:if>
   				</td>
   				<td>
 					<a href="#anchorPriorTherapies[${parentIndex}].priorTherapyAgents" onClick="mHistory.removeDetails('priorTherapyAgent', ${index}, 'anchorPriorTherapies[${parentIndex}].priorTherapyAgents', {parentIndex : ${parentIndex} })">

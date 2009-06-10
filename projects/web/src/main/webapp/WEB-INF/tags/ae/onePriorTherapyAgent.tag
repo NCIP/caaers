@@ -1,9 +1,4 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <%@attribute name="index" required="true" %>
 <%@attribute name="parentIndex" required="true" %>
@@ -14,8 +9,11 @@
 <tr>
     <td align="left">
         <%--${agent.chemoAgent.name}--%>
-        <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.name : 'Begin typing here...'}"/>
-          <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" initialDisplayValue="${initValue}" enableClearButton="true">
+        <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here...'}"/>
+          <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"
+            displayNamePath="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName"
+            readonly="${not empty agent.chemoAgent}"
+          	initialDisplayValue="${initValue}" enableClearButton="true">
               <jsp:attribute name="populatorJS">
                   function(autocompleter, text){
                       createAE.matchChemoAgents(text, function(values) {
@@ -29,9 +27,9 @@
                   }
               </jsp:attribute>
           </ui:autocompleter>
-          <%--<a id="showAllChemoAgentparent${parentIndex}index${index}" href="javascript:showChemoAgentsTable('chemoAgentTableparent${parentIndex}index${index}','chemoAgentTableparent${parentIndex}index${index}-outer')">Show All</a>--%>
-          <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c3_${parentIndex}_${index}" onclick="showShowAllTable('_c3_${parentIndex}_${index}', 'aeReportDOTsaeReportPriorTherapiesOPEN${parentIndex}CLOSEDOTpriorTherapyAgentsOPEN${index}CLOSEDOTchemoAgent')">Show All</a>
-
+          <c:if test="${ empty agent.chemoAgent}">
+           <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c3_${parentIndex}_${index}" onclick="showShowAllTable('_c3_${parentIndex}_${index}', 'aeReportDOTsaeReportPriorTherapiesOPEN${parentIndex}CLOSEDOTpriorTherapyAgentsOPEN${index}CLOSEDOTchemoAgent')">Show All</a>
+          </c:if>
       </td>
     <td align="right">
         <a href="#anchorPriorTherapies[${parentIndex}].priorTherapyAgents" onClick="mHistory.removeDetails('priorTherapyAgent', ${index}, 'anchorPriorTherapies[${parentIndex}].priorTherapyAgents', {parentIndex : ${parentIndex} })">

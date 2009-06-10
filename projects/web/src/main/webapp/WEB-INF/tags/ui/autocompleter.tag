@@ -46,7 +46,7 @@
   <form:hidden path="${path}"/>
 </jsp:attribute>
 <jsp:attribute name="embededJS">
-	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
+	<c:if test="${(not readonly) and (not empty populatorJS) and (not empty selectorJS)}">
 	AE.createStandardAutocompleter('${path}', ${populatorJS}, ${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
     </c:if>
 	<c:if test="${not readonly}">

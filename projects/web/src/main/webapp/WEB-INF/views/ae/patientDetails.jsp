@@ -540,18 +540,29 @@
 
     <div style="padding-left:20px;">
     <div id="priorTherapy">
-        <tags:button cssClass="foo" id="priortherapy-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPriorTherapy();" size="small"/>
-        <!--<input id="priortherapy-btn" type="button" value="Add"/>-->
+    <c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
+    
+        <tags:button id="priortherapy-btn" 
+        	cssClass="foo"
+        	color="blue" value="Add" 
+        	icon="Add" 
+        	type="button" 
+        	onclick="addPriorTherapy();" 
+        	size="small" 
+        	disabled="${(size gt 0 and command.aeReport.saeReportPriorTherapies[0].priorTherapy.id eq _priorTherapy_nopriortherapy_id) ? 'true' : ''}"/>
+        <!--<input id="priortherapy-btn" type="button" value="Add" ${size gt 0 and command.aeReport.saeReportPriorTherapies[0].priorTherapy.id eq _priorTherapy_nopriortherapy_id}/>-->
         <tags:indicator id="priortherapy-btn-indicator" />
 
         <a name="anchorPriorTherapy"/>
         <tags:indicator id="priorTherapy-indicator" />
         <div id="anchorPriorTherapy">
-            <c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
+            
             <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
               <c:set var="newIndex" value="${size - (status.index + 1)}" />
               <c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}" />
-              <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
+              <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" 
+              	collapsed="true" 
+              	showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}" />
             </c:forEach>
         </div>
     </div>

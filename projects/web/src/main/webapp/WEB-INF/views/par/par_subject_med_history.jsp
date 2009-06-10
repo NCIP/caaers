@@ -423,13 +423,24 @@
 
             <div style="padding-left:20px;">
             <div>
-                        <tags:button cssClass="foo" id="priortherapy-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPriorTherapy();" size="small"/>
+             <c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />
+                <tags:button id="priortherapy-btn" 
+                       	color="blue" 
+                       	value="Add" 
+                       	icon="Add" 
+                       	type="button" 
+                       	onclick="addPriorTherapy();" 
+                       	size="small"
+                       	disabled="${(size gt 0 and command.assignment.priorTherapies[0].priorTherapy.id eq _priorTherapy_nopriortherapy_id) ? 'true' : ''}" />
                         <div id="anchorPriorTherapy">
-                            <c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />
+                           
                             <c:forEach items="${command.assignment.priorTherapies}" varStatus="status">
                                 <c:set var="newIndex" value="${size - (status.index + 1)}" />
                                 <c:set var="ptherapy" value="${command.assignment.priorTherapies[newIndex]}" />
-                                <par:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
+                                <par:onePriorTherapy index="${newIndex}" 
+	                                priorTherapy="${ptherapy}" 
+	                                collapsed="true" 
+	                                showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}"/>
                             </c:forEach>
                         </div>
             </div>

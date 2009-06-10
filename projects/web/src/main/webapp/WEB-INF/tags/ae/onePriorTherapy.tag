@@ -1,19 +1,16 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@attribute name="index" required="true" %>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
+<%@attribute name="showNoPriorTherapy" type="java.lang.Boolean" %>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy" %>
 
 
 <div>
  <c:set var="v" value="aeReport.saeReportPriorTherapies[${index}]" />
  <c:set var="mainGroup">priorTherapy${index}</c:set>
- <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${!empties[v]}" collapsable="true" deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
+ <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" 
+ 	collapsed="${!empties[v]}" collapsable="true" 
+ 	deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
 	<jsp:attribute name="title">
 		${priorTherapy.name}
@@ -30,19 +27,27 @@
             <script>
                             Event.observe('${fieldGroups[mainGroup].fields[0].propertyName}', 'change' , function(evt){
                             var ptVal = evt.element().value;
-                            if(ptVal == 3 || ptVal == 4 || ptVal == 5 ||ptVal == 7 || ptVal == 8 || ptVal == 11){
-                                $('aeReport.saeReportPriorTherapies[${index}]-row').show();
-                            } else{
+                            if(ptVal == ${_priorTherapy_surgery_id} || ptVal == ${_priorTherapy_radiation_id} || ptVal == ${_priorTherapy_nopriortherapy_id}){
                                 $('aeReport.saeReportPriorTherapies[${index}]-row').hide();
+                            } else{
+                                $('aeReport.saeReportPriorTherapies[${index}]-row').show();
                             }
-                            if (ptVal == 13) {
+                            if (ptVal == ${_priorTherapy_nopriortherapy_id}) {
                                 $('aeReport.saeReportPriorTherapies[${index}].startDate-row').hide();
                                 $('aeReport.saeReportPriorTherapies[${index}].endDate-row').hide();
+                                $('priortherapy-btn').disabled = true;
                             } else {
                                 $('aeReport.saeReportPriorTherapies[${index}].startDate-row').show();
                                 $('aeReport.saeReportPriorTherapies[${index}].endDate-row').show();
+                                $('priortherapy-btn').disabled = false;
                             }
                         });
+                        
+						//sepcial case, add no prior therapy only if needed
+                        if(${showNoPriorTherapy}){
+                            var _ptSelBox = $('${fieldGroups[mainGroup].fields[0].propertyName}');
+                        	_ptSelBox.options[_ptSelBox.length - 1] = new Option('No prior therapy', ${_priorTherapy_nopriortherapy_id});
+                        }
             </script>
         </c:if>
 
@@ -61,8 +66,13 @@
            <table class="tablecontent" border="0">
 				<tr>
 					<td colspan="2">
-                        <table width="100%" border="1" width="450px">
-                        <tr><td align="left"><b color="#2E3257">Therapy agent(s)</b>&nbsp;<td align="right"><tags:button cssClass="foo" id="priortherapy[${index}].agent-btn" color="blue" value="Add" icon="Add" type="button" onclick="addPTAgents_${index}();" size="small"/></td></tr>
+                        <table border="1" width="450px">
+                         <tr>
+                        	<td align="left"><b color="#2E3257">Therapy agent(s)</b></td>
+                        	<td align="right">
+                        		<tags:button cssClass="foo" id="priortherapy[${index}].agent-btn" color="blue" value="Add" icon="Add" type="button" onclick="AE.addPTAgents_${index}();" size="small"/>
+                        	</td>
+                         </tr>
                         </table>
 
 						<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
@@ -87,7 +97,7 @@
 
 <script type="text/javascript">
 
-function addPTAgents_${index}() {
+AE.addPTAgents_${index}= function() {
     mHistory.addDetails('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
     AE.resetAutocompleter('priorTherapyAgents[${index}]');
 }

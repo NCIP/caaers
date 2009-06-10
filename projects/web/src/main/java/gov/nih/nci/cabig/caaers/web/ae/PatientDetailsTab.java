@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
@@ -57,6 +58,8 @@ public class PatientDetailsTab extends AeTab {
     private PreExistingConditionDao preExistingConditionDao;
     //static options of dropdowns are cached at Tab level. 
     Map<Object,Object> priorTherapyOptions;
+    Map<Object,Object> priorTherapyOptionWithNoPriorTherapy;
+    
     Map<Object, Object> preExistingConditionOptions;
     Map<Object, Object> baselinePerformanceOptions;
 	
@@ -97,6 +100,11 @@ public class PatientDetailsTab extends AeTab {
 	   refData.put("preExistingConditionOptions", initializePreExistingConditionOptions());
    	   refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
    	   refData.put("priorTherapyOptions", initializePriorTherapyOptions());
+   	   
+   	   refData.put("_priorTherapy_surgery_id", PriorTherapy.SURGERY);
+   	   refData.put("_priorTherapy_radiation_id", PriorTherapy.RADIATION);
+   	   refData.put("_priorTherapy_nopriortherapy_id", PriorTherapy.NO_PRIOR_THERAPY);
+   	   
    	   return refData;
    }
     
@@ -220,7 +228,7 @@ public class PatientDetailsTab extends AeTab {
         InputFieldAttributes.setColumns(otherField, 65);
         InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start date", false, true, true, false);
         InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "Therapy end date", false, true, true, false);
-
+        
         creator.createRepeatingFieldGroup("priorTherapy", "saeReportPriorTherapies",
             new SimpleNumericDisplayNameCreator("Prior therapy"),
             priorTherapyField,
@@ -547,16 +555,17 @@ public class PatientDetailsTab extends AeTab {
     
     
     /**
-     * Will initialize the Priortherapy drop down options
+     * Will initialize the Prior therapy drop down options
      * @return
      */
     private Map<Object, Object> initializePriorTherapyOptions() {
     	if(priorTherapyOptions == null){
-    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAll(),"id", "text","Please select");
+    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAllExcludingNoPriorTherapy(),"id", "text","Please select");
             log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
         }
         return priorTherapyOptions;
     }
+    
     
     /**
      * Will initialize the pre-existing condition options.

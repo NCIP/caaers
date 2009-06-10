@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantMetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
@@ -97,6 +98,11 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
     	refData.put("priorTherapyOptions", initializePriorTherapyOptions());
         request.setAttribute("empties", emptyFieldNameMap);
+        
+        refData.put("_priorTherapy_surgery_id", PriorTherapy.SURGERY);
+    	refData.put("_priorTherapy_radiation_id", PriorTherapy.RADIATION);
+    	refData.put("_priorTherapy_nopriortherapy_id", PriorTherapy.NO_PRIOR_THERAPY);
+    	
         return refData;
     	
     }
@@ -312,7 +318,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
      */
     private Map<Object, Object> initializePriorTherapyOptions() {
     	if(priorTherapyOptions == null){
-    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAll(),"id", "text","Please select");
+    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAllExcludingNoPriorTherapy(),"id", "text","Please select");
             log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
         }
         return priorTherapyOptions;
