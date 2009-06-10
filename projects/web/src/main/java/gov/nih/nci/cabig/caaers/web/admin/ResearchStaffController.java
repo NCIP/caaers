@@ -8,10 +8,12 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -85,6 +87,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
 
     }
 

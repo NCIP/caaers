@@ -74,12 +74,8 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final Investigator command,
                     final Tab<Investigator> tab) {
-        // supress for ajax and delete requests
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
-            return false;
-        }
-
+    	
+    	if(isAjaxRequest(request)) return true;
         String action = (String) super.findInRequest(request, "_action");
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;

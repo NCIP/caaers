@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -19,6 +20,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Saurabh Agrawal
@@ -42,6 +45,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     private static final String INVESTIGATOR_FIELD_GROUP = "investigator";
 
     private ConfigProperty configurationProperty;
+    
 
     private OrganizationDao organizationDao;
     private CSMUserRepository csmUserRepository;
@@ -58,6 +62,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         setAutoPopulateHelpKey(true);
         /*addHelpKeyExclusion("firstName", "middleName", "lastName", "emailAddress", "phoneNumber",
                 "faxNumber", "statusCode");*/
+        
     }
 
     @Override
@@ -114,12 +119,27 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
             options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
         }
         InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
-    	InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
+    	//InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
         rfgFactory.addField(orgInputField);
 
-        rfgFactory.addField(InputFieldFactory.createSelectField("statusCode", "Status", true,
-                collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
-
+        //startDate
+        InputField startDateField = null;
+        startDateField = InputFieldFactory.createDateField("startDate", "Start date", false);
+        rfgFactory.addField(startDateField);
+        InputFieldAttributes.setSize(startDateField, 10);
+ 
+        //endDate
+        InputField endDateField = null;
+        endDateField = InputFieldFactory.createDateField("endDate", "End date", false);
+        rfgFactory.addField(endDateField);       
+        InputFieldAttributes.setSize(endDateField, 10);
+        
+        //status
+        InputField statusField = null;
+        statusField = InputFieldFactory.createLabelField("status", "Status", false);
+        rfgFactory.addField(statusField);       
+        InputFieldAttributes.setSize(statusField, 10);
+        
         investigatorFieldGroup = new DefaultInputFieldGroup(INVESTIGATOR_FIELD_GROUP);
         
         if (!remoteEntity) {
@@ -141,15 +161,16 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	investigatorFieldGroup.getFields().add(
                     InputFieldFactory.createLabelField("lastName", "Last name", true));
         }
+        
+        InputField ncidIdField = null;
         if (!remoteEntity) {
-        	investigatorFieldGroup.getFields().add(
-                InputFieldFactory.createTextField("nciIdentifier", "Investigator number",
-                        false));
+        	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
         } else {
-        	investigatorFieldGroup.getFields().add(
-                    InputFieldFactory.createLabelField("nciIdentifier", "Investigator number",
-                            false));
+        	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Investigator number", false);
         }
+        InputFieldAttributes.setLabelProperty(ncidIdField, "investigator.nciIdentifier");
+        investigatorFieldGroup.getFields().add(ncidIdField);
+        
         InputField emailAddressField = null;
         if (!remoteEntity) {
         	emailAddressField = InputFieldFactory.createEmailField("emailAddress",
@@ -207,6 +228,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         }
         
         List<SiteInvestigator> investigators = command.getSiteInvestigators();
+        Date now = new Date();
         for (int i = 0; i < investigators.size(); i++) {
             SiteInvestigator siteInvestigator = investigators.get(i);
             if (siteInvestigator.getOrganization() == null) {
@@ -214,15 +236,54 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
                         "Site is required..!");
 
             }
-            if (siteInvestigator.getStatusCode() == null) {
-                errors.rejectValue("siteInvestigators[" + i + "].statusCode", "INV_002",
-                        "Status type is required..!");
-
+            if(siteInvestigator.getId() == null){
+                if(siteInvestigator.getStartDate() != null){
+                	if(DateUtils.compareDate(siteInvestigator.getStartDate(),now) < 0){
+                		errors.reject("USR_091", new Object[]{siteInvestigator.getStartDate()},  "Start date cannot be before today's date..!");
+                	}
+                }
+                if(siteInvestigator.getEndDate() != null){
+                	if(DateUtils.compareDate(command.getEndDate(),now) < 0){
+                    	errors.reject("USR_092", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be before today's date..!");
+                    }
+                }
+                if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
+                	if(DateUtils.compareDate(siteInvestigator.getStartDate(), siteInvestigator.getEndDate()) == 0){
+                		errors.reject("USR_093", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be same as Start date..!");
+                	}
+                	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
+                		errors.reject("USR_094", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be before Start date..!");
+                	}
+                }
             }
-
         }
     }
-
+    
+    public ModelAndView addSiteInvestigator(HttpServletRequest request , Object cmd, Errors errors){
+    	Investigator command =(Investigator)cmd;
+    	List<SiteInvestigator> siteInvestigators = command.getSiteInvestigators();
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/addSiteInvestigatorSection");
+    	//SiteInvestigator siteInvestigator = new SiteInvestigator();
+    	//command.addSiteInvestigator(siteInvestigator);
+    	modelAndView.getModel().put("siteInvestigators", siteInvestigators);
+    	int size = siteInvestigators.size();
+    	modelAndView.getModel().put("index", size);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView removeSiteInvestigator(HttpServletRequest request , Object cmd, Errors errors){
+    	Investigator command =(Investigator)cmd;
+    	List<SiteInvestigator> siteInvestigators = command.getSiteInvestigators();
+    	siteInvestigators.remove(siteInvestigators.get(Integer.parseInt(request.getParameter("index")))); //remove the element
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/removeSiteInvestigatorSection");
+    	modelAndView.getModel().put("siteInvestigators", siteInvestigators);
+    	
+    	return modelAndView;
+    }
+    
     protected List<Organization> getOrganizations() {
         return organizationDao.getAll();
     }

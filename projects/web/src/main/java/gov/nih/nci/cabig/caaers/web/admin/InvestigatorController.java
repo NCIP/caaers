@@ -60,9 +60,8 @@ public abstract class InvestigatorController<C extends Investigator> extends
     protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-
-        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
     }
 
     /**
