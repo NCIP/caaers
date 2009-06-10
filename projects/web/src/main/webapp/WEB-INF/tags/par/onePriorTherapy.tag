@@ -1,4 +1,10 @@
-<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <%@attribute name="index" required="true" %>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
