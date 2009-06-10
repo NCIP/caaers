@@ -92,7 +92,10 @@
                     if (c == "RECOVERED_WITH_SEQUELAE" || c == "RECOVERED_WITHOUT_SEQUELAE" || c == "DEAD") {
                         if ($('aeReport.responseDescription.recoveryDate-row')) $('aeReport.responseDescription.recoveryDate-row').show();
                     } else {
-                        if ($('aeReport.responseDescription.recoveryDate-row')) $('aeReport.responseDescription.recoveryDate-row').hide();
+                        if ($('aeReport.responseDescription.recoveryDate-row')) {
+                            $('aeReport.responseDescription.recoveryDate-row').hide();
+                            $('aeReport.responseDescription.recoveryDate').clear();
+                        }
                     }
             }
         }
