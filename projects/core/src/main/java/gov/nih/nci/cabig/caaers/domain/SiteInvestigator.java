@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -35,11 +37,13 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 
     private Investigator investigator;
 
-    private String statusCode;
-
     private String emailAddress;
 
-    private Date statusDate;
+    private Date startDate;
+    
+    private Date endDate;
+    
+    private String status;
 
     private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
 
@@ -73,15 +77,6 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         this.organization = organization;
     }
 
-    @Column(name = "status_code")
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-    }
-
     @Column(name = "email_address")
     public String getEmailAddress() {
         return emailAddress;
@@ -91,14 +86,31 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         this.emailAddress = emailAddress;
     }
 
-    @Column(name = "status_date")
-    public Date getStatusDate() {
-        return statusDate;
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	
+	@Transient
+    public boolean isActive(){
+    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
 
-    public void setStatusDate(Date statusDate) {
-        this.statusDate = statusDate;
-    }
+    @Transient
+    public boolean isInActive(){
+    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
+    }    
 
     // /OBJECT METHODS
     @Override
@@ -108,7 +120,6 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
         result = prime * result + ((investigator == null) ? 0 : investigator.hashCode());
         result = prime * result + ((organization == null) ? 0 : organization.hashCode());
-        result = prime * result + ((statusDate == null) ? 0 : statusDate.hashCode());
         return result;
     }
 
@@ -131,6 +142,28 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
         //    if (other.statusDate != null) return false;
         //} else if (!statusDate.equals(other.statusDate)) return false;
         return true;
+    }
+    
+    /**
+     * This method will return a status text for display purpose's. 
+     * @return
+     */
+    @Transient
+    public String getStatus(){
+    	status = "New";
+    	if(getInvestigator() != null){
+	    	if(getInvestigator().getId() == null){
+	    		return status;
+	    	}else{
+	    		if(isActive()){
+	    			status = "Active";
+	        	}
+	        	if(isInActive()){
+	        		status = "InActive";
+	        	}
+	    	}
+    	}
+    	return status;
     }
 
 }

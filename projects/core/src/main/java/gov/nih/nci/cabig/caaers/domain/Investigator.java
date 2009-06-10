@@ -17,14 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.collections15.Factory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-
-import com.semanticbits.coppa.domain.annotations.RemoteProperty;
-import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
 
 /**
  * This class represents the Investigator domain object associated with the Adverse event report.
@@ -48,14 +45,15 @@ public abstract class Investigator extends User {
 	
 	protected String externalId;
 	
+	protected String status;
+	
 	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
 	
     public Investigator() {
         lazyListHelper = new LazyListHelper();
 
         // register with lazy list helper study site.
-        lazyListHelper.add(SiteInvestigator.class, new InstantiateFactory<SiteInvestigator>(
-                        SiteInvestigator.class));
+        lazyListHelper.add(SiteInvestigator.class, new SiteInvestigatorFactory(this));
     }
     
     @Id 
@@ -181,6 +179,42 @@ public abstract class Investigator extends User {
         int result = super.hashCode();
         result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
         return result;
+    }
+    
+    /**
+     * This method will return a status text for display purpose's. 
+     * @return
+     */
+    @Transient
+    public String getStatus(){
+    	String stausText = "New";
+    	if(id == null){
+    		return stausText;
+    	}else{
+    		if(isActive()){
+        		stausText = "Active";
+        	}
+        	if(isInActive()){
+        		stausText = "InActive";
+        	}
+    	}
+    	return stausText;
+    }
+    
+    //Inner Class used instead of InstantiateFactory 
+    class SiteInvestigatorFactory implements Factory<SiteInvestigator>{
+    	
+    	Investigator investigator;
+    	
+    	public SiteInvestigatorFactory(Investigator investegator){
+    		this.investigator=investegator;
+    	}
+    	
+		public SiteInvestigator create() {
+			SiteInvestigator siteInvestigator = new SiteInvestigator();
+			siteInvestigator.setInvestigator(investigator);
+			return siteInvestigator;
+		}
     }
 
 }

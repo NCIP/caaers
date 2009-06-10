@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.Date;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -33,7 +35,12 @@ public class LocalResearchStaff extends ResearchStaff{
 	}
 	
 	@Override
-	public String getStatusCode() {
-		return statusCode;
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	@Override
+	public Date getEndDate() {
+		return endDate;
 	}
 }

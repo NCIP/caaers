@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.DiscriminatorColumn;
@@ -47,7 +50,7 @@ public abstract class ResearchStaff extends User {
     
     protected String externalId;
     
-    protected String statusCode;
+    protected String status;
     
   @Id 
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="id-generator")
@@ -137,13 +140,24 @@ public abstract class ResearchStaff extends User {
 		this.externalResearchStaff = externalResearchStaff;
 	}
 
-	@Transient
-	public String getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
-	}
-
+    /**
+     * This method will return a status text for display purpose's. 
+     * @return
+     */
+    @Transient
+    public String getStatus(){
+    	String stausText = "New";
+    	if(id == null){
+    		return stausText;
+    	}else{
+    		if(isActive()){
+        		stausText = "Active";
+        	}
+        	if(isInActive()){
+        		stausText = "InActive";
+        	}
+    	}
+    	return stausText;
+    }
+    
 }
