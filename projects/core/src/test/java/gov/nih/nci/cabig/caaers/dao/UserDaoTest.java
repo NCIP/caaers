@@ -64,8 +64,6 @@ public class UserDaoTest extends DaoNoSecurityTestCase<UserDao> {
 	            investigator.setPhoneNumber("123-456-789");
 	            
 	            SiteInvestigator siteInvestigator = Fixtures.createSiteInvestigator(organizationDao.getById(-1000), investigator);
-	            siteInvestigator.setStatusCode("ACTIVE");
-	            siteInvestigator.setStatusDate(new Date());
 	            investigator.addSiteInvestigator(siteInvestigator);
 	            getDao().save(investigator);
 	            savedId = investigator.getId();
