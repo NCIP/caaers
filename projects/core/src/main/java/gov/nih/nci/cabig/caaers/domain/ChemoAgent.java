@@ -34,7 +34,7 @@ public class ChemoAgent extends AbstractImmutableDomainObject {
     
     @Transient
     public String getFullName(){
-    	return name + "(" + genericName + ")";
+    	return name + " (" + genericName + ")";
     }
 
     @Override

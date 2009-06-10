@@ -37,11 +37,11 @@ public class ChemoAgentTest extends AbstractTestCase {
 	}
 
 	public void testGetFullName() {
-		assertEquals("a1(b1)", a1.getFullName());
+		assertEquals("a1 (b1)", a1.getFullName());
 	}
 	
 	public void testToString(){
-		assertEquals("a1(b1)", a1.toString());
+		assertEquals("a1 (b1)", a1.toString());
 	}
 	public void testEqualsObject() {
 		assertFalse(a1.equals(a2));

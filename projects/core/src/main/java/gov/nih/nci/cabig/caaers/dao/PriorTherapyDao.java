@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * This class implements the Data access related operations for the PriorTherapy domain object.
  * 
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("text",
@@ -47,5 +48,15 @@ public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
     public List<PriorTherapy> getAll() {
     	HibernateTemplate template = getHibernateTemplate();
         return getHibernateTemplate().find("from PriorTherapy");
+    }
+    
+    /**
+     * Get the list of all prior therapies, excluding 'No prior therapy'
+     * 
+     * @return return the list of prior therapies.
+     */
+    public List<PriorTherapy> getAllExcludingNoPriorTherapy() {
+    	HibernateTemplate template = getHibernateTemplate();
+        return getHibernateTemplate().find("from PriorTherapy pt where pt.text  != 'No prior therapy'");
     }
 }

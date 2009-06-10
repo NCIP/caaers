@@ -10,12 +10,18 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 
 /**
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 @CaaersUseCases( { MAPPING_VOCAB })
 public class PriorTherapyDaoTest extends DaoTestCase<PriorTherapyDao> {
 	
 	public void testGetAll() throws Exception{
 		List<PriorTherapy> priorTherapyList = getDao().getAll();
+		assertEquals("Incorrect number of prior therapies returned by Dao's getAll() method", 4, priorTherapyList.size());
+	}
+	
+	public void testGetAllExcludingNoPriorTherapy() throws Exception{
+		List<PriorTherapy> priorTherapyList = getDao().getAllExcludingNoPriorTherapy();
 		assertEquals("Incorrect number of prior therapies returned by Dao's getAll() method", 3, priorTherapyList.size());
 	}
 	

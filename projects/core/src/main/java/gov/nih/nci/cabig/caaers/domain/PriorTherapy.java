@@ -20,6 +20,16 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "prior_therapies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_prior_therapies_id") })
 public class PriorTherapy extends AbstractImmutableDomainObject {
+	
+	//id of surgery prior therapy
+	public static int SURGERY = 16;
+	
+	//id of radiation prior therapy
+	public static int RADIATION = 17;
+	
+	//id of no-prior therapy
+	public static int NO_PRIOR_THERAPY = 13;
+	
     private String text;
 
     private String meddraTerm; // MedDRA v9.0 Lower Level Term (LLT)
@@ -59,8 +69,8 @@ public class PriorTherapy extends AbstractImmutableDomainObject {
      */
     @Transient
     public boolean isAgentsPossible(){
-    	int[] agentsAllowedTherapyIds = {3,4,5,7,8,11};
-    	return ArrayUtils.contains(agentsAllowedTherapyIds, getId());
+    	int id = getId();
+    	return !(id == SURGERY || id == RADIATION || id == NO_PRIOR_THERAPY);
     }
     
     @Override
