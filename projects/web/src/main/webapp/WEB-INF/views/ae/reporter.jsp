@@ -151,7 +151,9 @@
                         <option value="">please select--</option>
                         <optgroup label="Reporter">
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
-                            <option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
+                        	<c:if test="person.active">
+                            	<option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
+                            </c:if>	
                         </c:forEach>
                         </optgroup>
                         <optgroup label="Investigators">
