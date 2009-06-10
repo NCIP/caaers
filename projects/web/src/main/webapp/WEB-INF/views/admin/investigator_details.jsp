@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<jsp:useBean id="today" class="java.util.Date" scope="request" />
 <html>
 <head>
 <title><caaers:message code="investigator.details.pageTitle"/></title>
@@ -17,7 +18,76 @@
 <tags:dwrJavascriptLink objects="createIND"/>
 <script language="JavaScript" type="text/JavaScript">
 
-var addInvestigatorEditor;
+var today = '<tags:formatDate value="${today}"/>'
+
+var associatedSite = null;
+var associatedSiteClass = Class.create();
+Object.extend(associatedSiteClass.prototype, {
+		initialize: function(){
+		},
+		addDetails : function(methodName,index,loc, options){
+			this.index=index;
+	 		var container = $(loc);
+	 		var paramHash = new Hash(); //parameters to post to server
+			//add extra options to the parameter list
+	 		if(options){
+	 			paramHash.set('parentIndex', options.parentIndex);
+	 		}
+	 		this.populateDeafultParameters(methodName, paramHash);
+	 		
+	 		var url = $('command').action + "?subview"; //make the ajax request
+			this.insertContent(container, url, paramHash, function(methodName)
+								 {
+				 					new jsInvestigator(this.index);
+				 				}.bind(this))
+		},
+		removeDetails :function(methodName,index, loc, options){
+	 		if(index < 0) return;
+
+			var confirmation = confirm("Do you really want to delete?");
+			if(!confirmation) return; //return if not agreed.
+					
+			var container = $(loc);
+	
+			var paramHash = new Hash(); //parameters to post to server
+	 		paramHash.set('index', index);
+	 		
+	 		this.populateDeafultParameters(methodName, paramHash);
+	 		
+	 		var url = $('command').action + "?subview"; //make the ajax request
+	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
+	 		$(loc).innerHTML = '';
+			this.insertContent(container, url, paramHash.merge(sectionHash));				
+		},
+		populateDeafultParameters : function(methodName, paramHash){
+		//will populate the default parameters, to support ajax communication
+		var page = ${tab.number};
+		var target = '_target' + ${tab.number}; 
+		paramHash.set('_page', page);
+		paramHash.set(target, page);
+		paramHash.set('_asynchronous', true);
+		paramHash.set('_asyncMethodName' , methodName);
+		paramHash.set('decorator', 'nullDecorator');
+		},
+		insertContent : function(aContainer, url, params, onCompleteCallBack){
+			//helper method to insert content in a DIV
+			new Ajax.Updater(aContainer, url, {
+				parameters: params.toQueryString() , onComplete: onCompleteCallBack ,insertion: Insertion.Bottom, evalScripts : true
+			});
+		},
+		formElementsInSection : function(aContainer){
+			return aContainer.select('input', 'select', 'textarea');	
+		}
+});
+
+function fireAction(index){
+	associatedSite.removeDetails("removeSiteInvestigator", index, 'anchorSiteInvestigators', {});
+}
+
+function addSiteInvestigator(){
+	associatedSite.addDetails('addSiteInvestigator',$$(".site-investigator-row").length ,'siteInvestigatorTable-body', {});
+}
+
 var jsInvestigator = Class.create();
 Object.extend(jsInvestigator.prototype, {
 		
@@ -25,69 +95,48 @@ Object.extend(jsInvestigator.prototype, {
 	 this.index = index;
 	 this.orgField = 'siteInvestigators['+ index + '].organization';
 	 this.orgInputField = this.orgField + '-input';
-	 
+		
+	 //initialze the date fields.	
+	 AE.registerCalendarPopups();
 	 //initialze the auto completer field.
-	 AE.createStandardAutocompleter(this.orgField, 
-     	this.sitePopulator.bind(this),
-        this.siteSelector.bind(this)
-     );
-     
-	 if(orgName) $(this.orgInputField).value = orgName;
-	 
-	},sitePopulator: function(autocompleter, text) {
+	 if($(this.orgInputField)){
+		 AE.createStandardAutocompleter(this.orgField, this.sitePopulator.bind(this),this.siteSelector.bind(this));
+		 if(orgName) $(this.orgInputField).value = orgName;
+	 }
+	},
+	sitePopulator: function(autocompleter, text) {
     	createIND.restrictOrganization(text, function(values) {
       	 autocompleter.setChoices(values)
       })
-    },siteSelector: function(organization) { 
+    },
+    siteSelector: function(organization) { 
         var image;            	
     	if(organization.externalId != null){
                   image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
         } else {
                   image = '';
         }
-        
     	return organization.name + " (" + organization.nciInstituteCode + ")";
     }
 	
    });
-    
-   function fireAction(action, selected){
-		if(action == 'addInvestigator'){
-			addInvestigatorEditor.add.bind(addInvestigatorEditor)();
-		}else{
-			document.getElementById('command')._target.name='_noname';
-			document.createInvestigatorForm._action.value=action;
-			document.createInvestigatorForm._selected.value=selected;
-			document.createInvestigatorForm._finish.name='xyz';		
-			document.createInvestigatorForm.submit();
-		}
-	};
-	
+
 	function clearField(field){
 		field.value="";
 	};
 	  
 Event.observe(window, "load", function() {
-  <c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
-	new jsInvestigator(${status.index}, "${si.organization.fullName}");
-  </c:forEach>
+		
+	  	<c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
+	  		new jsInvestigator(${status.index}, "${si.organization.fullName}");
+	  	</c:forEach>
 
-  if(${fn:length(command.externalInvestigators) gt 0}){
-		 displayRemoteInvestigator();
-  }
-  		
-  //This is added for Add Site Investigator button
-  new ListEditor("site-investigator-row", createInvestigator, "SiteInvestigator", {
-	addFirstAfter: "site-investigator",
-	addCallback: function(nextIndex) {
-	 new jsInvestigator(nextIndex);
-	 if($('empty-inv-row')){
-     	Effect.Fade('empty-inv-row');
-     }
-    }
-   });
-   
-});
+	  	associatedSite = new associatedSiteClass();
+		
+		if(${fn:length(command.externalInvestigators) gt 0}){
+				 displayRemoteInvestigator();
+		}
+	});
 
 	function displayRemoteInvestigator(){
 		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"remoteInv-popup-id", width:550,  height:200, top: 30, left: 300});
@@ -124,6 +173,24 @@ Event.observe(window, "load", function() {
 		form.submit();
 	}
 
+	function toggleDate(action, selected){
+
+		if(action == 'Deactivate'){
+			$('siteInvestigators['+ selected + '].endDate').value=today;
+		}
+		if(action == 'Activate'){
+			$('siteInvestigators['+ selected + '].endDate').value="";
+		}
+		
+			//$('startdate_as_label').style.display="none";
+			//$('startdate_as_cal').style.display="";
+			//$('enddate_as_label').style.display="none";
+			//$('startDate').value=today;
+			//$('endDate').value="";
+			//$('endDate').value = today;
+	}
+
+	
 </script>
 
 </head>
@@ -220,44 +287,56 @@ Event.observe(window, "load", function() {
 		<br>
 		<br>
 	</chrome:division>
+	
 	<caaers:message code="investigator.details.associateSitesSection" var="associateSitesSectionTitle"/>
 	<chrome:division title="${associateSitesSectionTitle}">
 	  <br>
-	  <table class="tablecontent" width="78%">
-	  			
-    			<tr id="site-investigator">
-    				<th class="tableHeader"><tags:requiredIndicator />Organization</th>
-    				<th class="tableHeader"><tags:requiredIndicator />Status</th>
-    			</tr>
-            	<c:forEach varStatus="status" items="${command.siteInvestigators}">
-					<investigator:siteInvestigator 	title="Associated Sites ${status.index + 1}" enableDelete="${status.index > 0}"
-						sectionClass="site-investigator-row"
-						removeButtonAction="removeInvestigator" index="${status.index}" />
-				</c:forEach>
+	  <div id="_anchorSiteInvestigators">
+	  <div id="anchorSiteInvestigators">
+	  <table id="siteInvestigatorTable" class="tablecontent" width="100%">
+	  	<tbody id="siteInvestigatorTable-body">
+  			<tr id="site-investigator">
+  				<th class="tableHeader" ><tags:requiredIndicator />Organization</th>
+  				<th class="tableHeader" ><tags:requiredIndicator />Start date</th>
+  				<th class="tableHeader" >End date</th>
+  				<th class="tableHeader" >Status</th>
+  				<th class="tableHeader" >Action</th>
+  			</tr>
+    				
+		            	<c:forEach var="siteInvestigator" varStatus="status" items="${command.siteInvestigators}">
+							<investigator:siteInvestigator 	
+								title="Associated Sites ${status.index + 1}" 
+								enableDelete="${empty siteInvestigator.id}"
+								sectionClass="site-investigator-row" 
+								index="${status.index}" 
+								active="${siteInvestigator.active}"
+								orgName="${siteInvestigator.organization.name}"/>
+						</c:forEach>
+				
             	<c:if test="${empty command.siteInvestigators}">
             		<tr id="empty-inv-row">
             			<td colspan="2" align="center">The investigator is not assigned to any organization</td>
             		</tr>
             	</c:if>
+           </tbody>
        </table>
-	
+		</div>
+	</div>
 	</chrome:division>
         
     <br>
-    <tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />
-
-     </jsp:attribute>
+    <tags:button cssClass="foo" id="addSiteInvestigator_btn" color="blue" value="Add Organization" icon="Add" type="button" onclick="addSiteInvestigator();" size="small"/>
 	
+     </jsp:attribute>
+     
 	<jsp:attribute name="tabControls">
 	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
-	 	
 	 		<jsp:attribute name="customNextButton">
 	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalInvestigator'}">
 	 				<tags:button type="submit" value="Sync" color="blue"
 									id="sync-rs" onclick="javascript:syncInvestigator();" />
-				</c:if>					
+				</c:if>
 	 		</jsp:attribute>
-	 		
 	 	</tags:tabControls>
 	 </jsp:attribute>		
 	
