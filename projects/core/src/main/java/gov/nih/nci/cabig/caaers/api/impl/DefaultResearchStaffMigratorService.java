@@ -153,8 +153,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
               researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
               researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
-              if(researchStaffDto.getStatusCode() != null){
-            	  researchStaff.setStatusCode(researchStaffDto.getStatusCode().value());
+              if(researchStaffDto.getStartDate() != null){
+            	  researchStaff.setStartDate(researchStaffDto.getStartDate().toGregorianCalendar().getTime());  
+              }
+              if(researchStaffDto.getEndDate() != null){
+            	  researchStaff.setEndDate(researchStaffDto.getEndDate().toGregorianCalendar().getTime());  
               }
               researchStaff.getUserGroupTypes().clear();
               
