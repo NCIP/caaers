@@ -39,7 +39,7 @@ function submitPage(s){
 <form:form>
 	<caaers:message code="researchStaff.review.detailsSection" var="detailsSectionTitle"/>	
      <chrome:division title="${detailsSectionTitle}">
-    	<div class="leftpanel">
+
     		<ui:row path="organization">
     			<jsp:attribute name="value">
     				${researchStaff.organization.fullName}
@@ -47,8 +47,9 @@ function submitPage(s){
     			<jsp:attribute name="label">
     				<ui:label path="organization" text="Organization"></ui:label>
     			</jsp:attribute>
-    		</ui:row>
-	       
+    		</ui:row>     
+     
+    	<div class="leftpanel">
 	       <ui:row path="firstName">
     			<jsp:attribute name="value">
     				${researchStaff.firstName}
@@ -85,17 +86,8 @@ function submitPage(s){
     			</jsp:attribute>
 			</ui:row>
     	</div>
-    	<div class="rightpanel">
 
-	       <ui:row path="statusCode">
-    			<jsp:attribute name="value">
-    				${researchStaff.statusCode eq 'ACT' ? 'Active' : 'Inactive' }
-    			</jsp:attribute>
-    			<jsp:attribute name="label">
-    				<ui:label path="statusCode" text="Status"></ui:label>
-    			</jsp:attribute>
-			</ui:row>    		
-    		
+    	<div class="rightpanel">
 	        <ui:row path="emailAddress">
     			<jsp:attribute name="value">
     				${researchStaff.emailAddress}
@@ -131,9 +123,35 @@ function submitPage(s){
     				<ui:label path="loginId" text="Username"></ui:label>
     			</jsp:attribute>
 			</ui:row>
+			
     	</div>
       
 	</chrome:division>
+	
+	<caaers:message code="researchStaff.statusSection" var="statusSection"/>
+	<chrome:division title="${statusSection} -- (${researchStaff.status})">
+		<div class="leftpanel">
+			<ui:row path="startDate">
+	    			<jsp:attribute name="value">
+	    				<tags:formatDate value="${researchStaff.startDate}"/>
+	    			</jsp:attribute>
+	    			<jsp:attribute name="label">
+	    				<ui:label path="startDate" text="Start date"></ui:label>
+	    			</jsp:attribute>
+				</ui:row>	
+		</div>
+		<div class="rightpanel">
+		       <ui:row path="endDate">
+	    			<jsp:attribute name="value">
+	    				<tags:formatDate value="${researchStaff.endDate}"/>
+	    			</jsp:attribute>
+	    			<jsp:attribute name="label">
+	    				<ui:label path="endDate" text="End date"></ui:label>
+	    			</jsp:attribute>
+				</ui:row>
+		</div>
+	</chrome:division>
+	
 	<caaers:message code="researchStaff.review.rolesSection" var="rolesSectionTitle"/>
 	<chrome:division title="${rolesSectionTitle}">
         <div style="padding-left:50px;">
@@ -144,7 +162,7 @@ function submitPage(s){
 				<c:if test="${role.csmName eq 'caaers_ae_cd'}"><caaers:message code="role.adverseEventCoordinator"/></c:if>
 				<c:if test="${role.csmName eq 'caaers_site_cd'}"><caaers:message code="role.siteCoordinator"/></c:if>
 				<c:if test="${role.csmName eq 'caaers_central_office_sae_cd'}"><caaers:message code="role.centralOfficeReportReviewer"/></c:if>
-				<c:if test="${role.csmName eq 'caaers_data_cd'}"><caaers:message code="role.dataCoordinator'"/></c:if>
+				<c:if test="${role.csmName eq 'caaers_data_cd'}"><caaers:message code="role.dataCoordinator"/></c:if>
 			</li>
 		</c:forEach>
         </div>

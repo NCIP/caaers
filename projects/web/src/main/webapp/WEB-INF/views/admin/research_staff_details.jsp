@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<jsp:useBean id="today" class="java.util.Date" scope="request" />
 <html>
 <head>
 <title><caaers:message code="researchStaff.details.pageTitle"/></title>
@@ -26,6 +27,9 @@
 
     <tags:dwrJavascriptLink objects="createIND"/>
     <script type="text/javascript">
+
+    var today = '<tags:formatDate value="${today}"/>'
+    
     Event.observe(window, "load", function() {
        if('${command.organization.name}'){
     	   if($('organization')){
@@ -96,6 +100,19 @@
 		var form = document.getElementById('command');
 		form._action.value="syncResearchStaff";
 		form.submit();
+	}
+
+	function activateResearchStaff(){
+		$('startdate_as_label').style.display="none";
+		$('startdate_as_cal').style.display="";
+		$('enddate_as_label').style.display="none";
+		$('enddate_as_cal').style.display="";
+		$('startDate').value=today;
+		$('endDate').value="";
+	}
+
+	function deActivateResearchStaff(){
+		$('endDate').value = today;
 	}
 
     </script>
@@ -177,14 +194,35 @@
             </c:forEach>
     </div>
     <div class="rightpanel">
-    
-         <c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
+         <c:forEach begin="5" end="8" items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-        <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
-    
     </div>
     </chrome:division>
+
+	<caaers:message code="researchStaff.statusSection" var="statusSection"/>
+	<chrome:division title="${statusSection} -- (${command.status})">
+		<div class="leftpanel">
+			<tags:renderRow field="${fieldGroups.researchStaff.fields[4]}">
+            	<jsp:attribute name="value">
+            			<div style="${not empty command.startDate ? '':'display:none;'}" id="startdate_as_label">
+            				<tags:formatDate value="${command.startDate}" />
+            			</div>
+            			<div style="${empty command.startDate ? '':'display:none;'}" id="startdate_as_cal">
+            				<tags:renderInputs field="${fieldGroups.researchStaff.fields[4]}"/>
+            			</div>	
+            	</jsp:attribute>
+            </tags:renderRow>	
+		</div>
+		<div class="rightpanel">
+        	<tags:renderRow field="${fieldGroups.researchStaff.fields[9]}">
+            	<jsp:attribute name="value">
+            			<div style="display:none" id="enddate_as_cal">
+            				<tags:renderInputs field="${fieldGroups.researchStaff.fields[9]}"/>
+            			</div>	
+            	</jsp:attribute>
+            </tags:renderRow>
+	</chrome:division>
 
 <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
 <chrome:division id="staff-details" title="${roleSectionTitle}">
@@ -252,9 +290,18 @@
 	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalResearchStaff'}">
 	 				<tags:button type="submit" value="Sync" color="blue"
 									id="sync-rs" onclick="javascript:syncResearchStaff();" />
-				</c:if>					
+				</c:if>
+				
+				<c:if test="${command.id != null && command.active}">
+	 				<tags:button type="button" value="Deactivate" color="blue"
+									id="deactivate-rs" onclick="javascript:deActivateResearchStaff();" />
+	 			</c:if>
+	 			
+	 			<c:if test="${command.id != null && command.inActive}">
+	 				<tags:button type="button" value="Activate" color="blue"
+									id="activate-rs" onclick="javascript:activateResearchStaff();" />
+	 			</c:if>					
 	 		</jsp:attribute>
-	 		
 	 	</tags:tabControls>
 	 </jsp:attribute>
 
