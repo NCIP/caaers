@@ -121,13 +121,15 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             csmUser.setLoginName(user.getLoginId());
         }
         csmUser.setEmailId(emailId);
-// this line is causing issues, the CSM_USER table has the phone length as 15 chars, and the phone can be wider, as it can have spaces and extension        
-//        csmUser.setPhoneNumber(user.getPhoneNumber());
+        // this line is causing issues, the CSM_USER table has the phone length as 15 chars, and the phone can be wider, as it can have spaces and extension        
+        // csmUser.setPhoneNumber(user.getPhoneNumber());
         csmUser.setFirstName(user.getFirstName());
         csmUser.setLastName(user.getLastName());
         // psc does not use these
         // do we really need this? csmUser.setOrganization(researchStaff.getOrganization().getName());
         // or this? csmUser.setOrganization(researchStaff.getOrganization().getNciInstituteCode());
+    	csmUser.setStartDate(user.getStartDate());
+    	csmUser.setEndDate(user.getEndDate());
     }
 
     private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
