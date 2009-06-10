@@ -44,6 +44,9 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -52,6 +55,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Rhett Sutphin
@@ -727,7 +732,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     	
     	//System.out.println(xml);
 
-    	assertTrue(true);
+    	assertEquals(xml,getStringFromFile());
     }
 
     public void testHasSubmittedReport(){
@@ -997,5 +1002,16 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	  
    }
    
-   
+   private String getStringFromFile() throws Exception {
+       File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/dao/testdata/ExpeditedAdverseEventReportString.txt").getFile();
+      
+       BufferedReader bufRead = new BufferedReader(new FileReader(testFile));
+      String line = bufRead.readLine();
+      String str1 = "";
+      while (line != null) {
+          str1 = str1 + line;
+          line = bufRead.readLine();
+      }
+      return str1;
+  } 
 }
