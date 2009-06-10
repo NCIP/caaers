@@ -77,8 +77,8 @@
             		<tr>
             			<td style="vertical-align:top">
             				<div class="row">
-                    			<div class="label"><caaers:message code="investigator.nciInstituteCode"/>&nbsp; </div>
-                    			<div class="value"><input id="prop2" type="text" name="nciInstituteCode"/></div>
+                    			<div class="label"><caaers:message code="investigator.nciIdentifier"/>&nbsp; </div>
+                    			<div class="value"><input id="prop2" type="text" name="nciIdentifier"/></div>
                 			</div>
             			</td>
             			<td style="vertical-align:top">
