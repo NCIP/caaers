@@ -103,7 +103,6 @@ public class CreateStudyAjaxFacade {
         StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
         int siteId = studyCommand.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteInvestigator> siteInvestigators = investigatorRepository.getBySubnames(arr, siteId);
-
         return ObjectTools.reduceAll(siteInvestigators,
                         new ObjectTools.Initializer<SiteInvestigator>() {
                             public void initialize(final SiteInvestigator instance) {
@@ -117,6 +116,15 @@ public class CreateStudyAjaxFacade {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<ResearchStaff> researchStaff = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
+        List<ResearchStaff> inActiveResearchStaff = new ArrayList<ResearchStaff>();
+        for(ResearchStaff rs : researchStaff){
+        	if(rs.isInActive()){
+        		inActiveResearchStaff.add(rs);
+        	}
+        }
+        for(ResearchStaff rs : inActiveResearchStaff){
+        	researchStaff.remove(rs);
+        }
         return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
     }
 
