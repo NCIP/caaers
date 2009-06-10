@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +67,12 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertEquals("657-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
 			assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
-			assertEquals("ACT", updatedResearchStaff.getStatusCode());
+			assertNotNull(updatedResearchStaff.getStartDate());
+			assertNotNull(updatedResearchStaff.getEndDate());
+			String startDate = DateUtils.formatDate(updatedResearchStaff.getStartDate());
+			String endDate = DateUtils.formatDate(updatedResearchStaff.getEndDate());
+			assertEquals("04/01/2009", startDate);
+			assertEquals("01/01/2010", endDate);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -99,8 +104,13 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			assertEquals("980-090-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-093-0098", updatedResearchStaff.getPhoneNumber());
-						
 			assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
+			assertNotNull(updatedResearchStaff.getStartDate());
+			assertNotNull(updatedResearchStaff.getEndDate());
+			String startDate = DateUtils.formatDate(updatedResearchStaff.getStartDate());
+			String endDate = DateUtils.formatDate(updatedResearchStaff.getEndDate());
+			assertEquals("04/01/2009", startDate);
+			assertEquals("06/03/2009", endDate);
 			
 			
 		} catch (IOException e) {

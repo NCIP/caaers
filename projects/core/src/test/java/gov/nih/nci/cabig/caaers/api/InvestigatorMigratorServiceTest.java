@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +90,12 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 				
 			}
 					
-						
+			assertNotNull(updatedInvestigator.getStartDate());
+			assertNotNull(updatedInvestigator.getEndDate());
+			String startDate = DateUtils.formatDate(updatedInvestigator.getStartDate());
+			String endDate = DateUtils.formatDate(updatedInvestigator.getEndDate());
+			assertEquals("04/01/2009", startDate);
+			assertEquals("01/01/2010", endDate);			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
