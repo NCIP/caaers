@@ -6,6 +6,7 @@
 <%@attribute name="path" %>
 <%@attribute name="title" %>
 <%@attribute name="cssClass" %>
+<%@attribute name="size" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField" %>
 
 <c:if test="${field != null}">
@@ -16,7 +17,7 @@
     <c:if test="${not empty fieldValue && (field.attributes.mandatory || field.required)}"><c:set var="cssValue" value="valueOK" /></c:if>
 </c:if>
 
-<form:input path="${path}" cssClass="date ${cssValue} ${cssClass}" title="${title}"/>
+<form:input path="${path}" size="${size}" cssClass="date ${cssValue} ${cssClass}" title="${title}"/>
 <a id="${path}-calbutton" style="cursor:pointer;">
     <img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/>
 </a>
