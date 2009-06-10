@@ -111,8 +111,9 @@ var ValidationManager = {
                     vLogString += "------------------<br>"
                     ValidationManager.log(vLogString)
                     ValidationManager.log("<input type='button' value='submit this form' onClick='ValidationManager.resumeSubmit()'/>")
-                } else
-                    formVar._submit()
+                } 
+                //submit the form
+                formVar._submit()
             }
         }
     },
