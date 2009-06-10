@@ -228,9 +228,8 @@ public class SearchStudyAjaxFacade {
         Column columnNciInstituteCode = model.getColumnInstance();
         columnNciInstituteCode.setProperty("nciIdentifier");
         columnNciInstituteCode.setTitle("Investigator number");
-
         model.addColumn(columnNciInstituteCode);
-
+        
         return model.assemble();
     }
 
@@ -277,6 +276,11 @@ public class SearchStudyAjaxFacade {
         columnOrganizationNameName.setAlias("name");
         model.addColumn(columnOrganizationNameName);
 
+        Column columnStatus = model.getColumnInstance();
+        columnStatus.setProperty("status");
+        columnStatus.setTitle("Status");
+        model.addColumn(columnStatus);
+        
         return model.assemble();
     }
 
