@@ -140,6 +140,8 @@
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
                     <xs:element name="middleName" type="xs:string"/>
+                    <xs:element name="startDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="endDate" type="xs:date" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -162,7 +164,6 @@
                     <xs:element name="nciIdentifier" type="xs:string"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                     <xs:element name="loginId" type="xs:string"/>
-                    <xs:element name="statusCode" type="StatusCodeType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
