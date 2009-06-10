@@ -138,6 +138,8 @@
 		<property name="validator" ref="gridProxyValidator"/>
 		<property name="userCache" ref="userCache"/>
 	</bean>
+	
+	<!--  
 	<bean id="localAuthenticationProvider" class="gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider">
 		<property name="csmAuthenticationManager">
 			<bean class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager">
@@ -148,9 +150,28 @@
 		</property>
 		<property name="userCache" ref="userCache"/>
 	</bean>
+	
 	<bean id="csmUserDetailsService" class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
 		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
 	</bean>
+	-->
+	
+	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider">
+		<property name="csmAuthenticationManager">
+			<bean class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager">
+				<constructor-arg ref="csmApplicationContextName"/>
+			</bean>
+		</property>
+		<property name="userDetailsService" ref="csmUserDetailsService">
+		</property>
+		<property name="userCache" ref="userCache"/>
+	</bean>
+	
+	<bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService">
+		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
+	</bean>
+	
+	
 	<bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
 		<property name="cache">
 			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
