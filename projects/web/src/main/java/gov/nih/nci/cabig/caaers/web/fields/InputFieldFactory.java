@@ -73,8 +73,7 @@ public class InputFieldFactory {
         }
         return createInputField(DATE, propertyName, displayName, validators);
     }
-
-
+    
     public static InputField createSplitDateField(String propertyName, String displayName, boolean dayRequired, boolean monthRequired, boolean yearRequired, boolean required) {
 
         FieldValidator validators[] = null;
