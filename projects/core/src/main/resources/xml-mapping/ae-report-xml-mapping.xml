@@ -1369,7 +1369,7 @@
       <bind-xml name="Study"/>
     </field>
     <field name="organization" type="gov.nih.nci.cabig.caaers.domain.Organization">
-      <bind-xml name="Organization"/>
+      <bind-xml auto-naming="deriveByClass"/>
     </field>
   </class>
 
@@ -1393,6 +1393,12 @@
     </field>
   </class>
 
+	<class name="gov.nih.nci.cabig.caaers.domain.LocalOrganization" extends="gov.nih.nci.cabig.caaers.domain.Organization">
+	    <map-to xml="Organization"/>    
+	</class> 
+	<class name="gov.nih.nci.cabig.caaers.domain.RemoteOrganization" extends="gov.nih.nci.cabig.caaers.domain.Organization">
+    	<map-to xml="Organization"/>    
+	</class>   
 
   <class name="gov.nih.nci.cabig.caaers.domain.StudyInvestigator">
     <map-to xml="StudyInvestigator"/>
@@ -1422,7 +1428,7 @@
       <bind-xml name="id" node="element"/>
     </field>
     <field name="investigator" type="gov.nih.nci.cabig.caaers.domain.Investigator">
-      <bind-xml name="Investigator" node="element"/>
+       <bind-xml auto-naming="deriveByClass"/>
     </field>
   </class>
 
@@ -1453,6 +1459,13 @@
       <bind-xml name="faxNumber" node="element"/>
     </field>   
   </class>
+
+	<class name="gov.nih.nci.cabig.caaers.domain.LocalInvestigator" extends="gov.nih.nci.cabig.caaers.domain.Investigator">
+	    <map-to xml="SiteInvestigator"/>    
+	</class>  
+	<class name="gov.nih.nci.cabig.caaers.domain.RemoteInvestigator" extends="gov.nih.nci.cabig.caaers.domain.Investigator">
+	    <map-to xml="SiteInvestigator"/>    
+	</class>  
 
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
     <map-to xml="Study"/>
