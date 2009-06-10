@@ -1,8 +1,8 @@
 <dataset>
 
     <!--  ======================= Organizations ================================-->
-    <ORGANIZATIONS id="-1001" name="New Site"/>
-    <ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite"/>
+    <ORGANIZATIONS id="-1001" name="New Site" nci_institute_code="DCP"/>
+    <ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite" nci_institute_code="NCI"/>
 
     <!-- ========================== CTC related information ===============================-->
     <ctc_versions id="3" name="CTCAE v3.0"/>
@@ -192,7 +192,13 @@
 		<mandatory_field_defs id="-333"
 		 field_path="treatmentInformation.investigationalAgentAdministered"
 		 rct_id="-30"
-		 mandatory="1" />		 
+		 mandatory="1" />	
+		 
+		 
+	<INVESTIGATORS id="-3004" first_name="Aaron" last_name="Burr" email_address="ab@nci.com" phone_number="312-555-0102" nci_identifier="NCI_ID-01"/>
+    <INVESTIGATORS id="-3005" first_name="second investigator" last_name="Burr" email_address="ab@nci.com" phone_number="555-555-5555"/>
+    <SITE_INVESTIGATORS id="-4004" status_code="ACT" site_id="-1001" investigator_id="-3004"/>
+    <SITE_INVESTIGATORS id="-4005" status_code="ACT" site_id="-1001" investigator_id="-3005"/>		 	 
 		 
     <!--
          tables which an AE report will reference, but which are not otherwise
