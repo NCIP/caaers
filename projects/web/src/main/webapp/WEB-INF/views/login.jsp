@@ -176,8 +176,7 @@
     <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>'>
 
         <c:if test="${not empty param.login_error}">
-            <p class="errors"><img src="/caaers/images/error-yellow.png" style="margin-right:10px">Incorrect username
-                and/or password. Please try again.</p>
+            <p class="errors"><img src="/caaers/images/error-yellow.png" style="margin-right:10px">Could not login. Valid authentication credentials were not provided.</p>
         </c:if>
         <div class="row" style="margin-top:20px;">
             <div class="label"> Username</div>
