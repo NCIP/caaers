@@ -7,6 +7,8 @@
         <lastName>Doe</lastName>
         <middleName>H</middleName>
         <emailAddress>jd@nci.org</emailAddress>
+        <startDate>2009-04-01</startDate>
+        <endDate>2010-01-01</endDate>
         <faxNumber>870-098-0989</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
         <phoneNumber>908-098-0099</phoneNumber>

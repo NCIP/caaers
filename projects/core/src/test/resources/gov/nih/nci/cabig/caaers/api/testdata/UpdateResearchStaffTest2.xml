@@ -6,6 +6,8 @@
         <firstName>Sam</firstName>
         <lastName>Rockwell</lastName>
         <middleName>S</middleName>
+        <startDate>2009-04-01</startDate>
+        <endDate>2009-06-03</endDate>        
         <emailAddress>caaers.rock@gmail.com</emailAddress>
         <faxNumber>980-090-0983</faxNumber>
         <nciIdentifier>ID2</nciIdentifier>
