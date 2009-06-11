@@ -128,8 +128,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         // psc does not use these
         // do we really need this? csmUser.setOrganization(researchStaff.getOrganization().getName());
         // or this? csmUser.setOrganization(researchStaff.getOrganization().getNciInstituteCode());
-    	csmUser.setStartDate(user.getStartDate());
-    	csmUser.setEndDate(user.getEndDate());
+    	//csmUser.setStartDate(user.getStartDate());
+    	//csmUser.setEndDate(user.getEndDate());
     }
 
     private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
