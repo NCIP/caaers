@@ -1,15 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 
+
 public class FutureDateValidatorTest extends TestCase {
 
 	public void testIsValid() {
-		
-		Date now = new Date();
+		Calendar gcNow = GregorianCalendar.getInstance();
+		gcNow.add(Calendar.MINUTE,-5);
+		Date now = gcNow.getTime();
 		boolean valid;
 		FutureDateValidator futureDateValidator = new FutureDateValidator();
 		valid = futureDateValidator.isValid(now);
