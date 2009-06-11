@@ -392,7 +392,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		
 		AdverseEvent adverseEvent = null;
 		if (adeersReportingRequired) {
-			if (xmlAdverseEvent.getOutcome() != null) {
+			if (xmlAdverseEvent.getOutcome().size() >0) {
 				throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_011", new String[]{"Oucomes"},"",Locale.getDefault()));
 			}
 			if (xmlAdverseEvent.getEventApproximateTime() != null) {
