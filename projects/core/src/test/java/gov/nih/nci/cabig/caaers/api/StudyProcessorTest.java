@@ -376,7 +376,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         for (StudySite studySite : updatedStudy.getStudySites()) {
             if (studySite.getOrganization() != null) {
                 if ("Cancer Therapy Evaluation Program".equals(studySite.getOrganization().getName())) {
-                    assertEquals(2, studySite.getStudyInvestigators().size());
+                    assertEquals(3, studySite.getStudyInvestigators().size());
                     for (StudyInvestigator studyInvestigator : studySite.getStudyInvestigators()) {
                         if ("George".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getFirstName()) &&
                                 "Clinton".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getLastName())) {
