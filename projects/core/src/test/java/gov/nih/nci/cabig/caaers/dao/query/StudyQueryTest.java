@@ -209,6 +209,6 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.joinStudyOrganization();
 		studyQuery.filterByFundingSponsorNameExactMatch("test");
-		assertEquals("select s from Study s join s.studyOrganizations as ss WHERE ss.type = 'SFS' AND ss.organization.name = :sponsorName", studyQuery.getQueryString());
+		assertEquals("select s from Study s join s.studyOrganizations as ss WHERE ss.class = 'SFS' AND ss.organization.name = :sponsorName", studyQuery.getQueryString());
 	}
 }
