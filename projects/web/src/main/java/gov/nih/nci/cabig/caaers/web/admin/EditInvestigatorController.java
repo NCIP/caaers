@@ -75,7 +75,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     protected boolean shouldSave(final HttpServletRequest request, final Investigator command,
                     final Tab<Investigator> tab) {
     	
-    	if(isAjaxRequest(request)) return true;
+    	if(isAjaxRequest(request)) return false;
         String action = (String) super.findInRequest(request, "_action");
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;

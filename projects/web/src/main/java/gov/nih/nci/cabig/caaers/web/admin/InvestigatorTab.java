@@ -124,7 +124,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 
         //startDate
         InputField startDateField = null;
-        startDateField = InputFieldFactory.createDateField("startDate", "Start date", false);
+        startDateField = InputFieldFactory.createDateField("startDate", "Start date", true);
         rfgFactory.addField(startDateField);
         InputFieldAttributes.setSize(startDateField, 10);
  
@@ -231,30 +231,25 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         Date now = new Date();
         for (int i = 0; i < investigators.size(); i++) {
             SiteInvestigator siteInvestigator = investigators.get(i);
-            if (siteInvestigator.getOrganization() == null) {
-                errors.rejectValue("siteInvestigators[" + i + "].organization", "INV_001",
-                        "Site is required..!");
-
-            }
+            
             if(siteInvestigator.getId() == null){
+            	//startdate cannot be less than today's date
                 if(siteInvestigator.getStartDate() != null){
                 	if(DateUtils.compareDate(siteInvestigator.getStartDate(),now) < 0){
-                		errors.reject("USR_091", new Object[]{siteInvestigator.getStartDate()},  "Start date cannot be before today's date..!");
+                		errors.rejectValue("siteInvestigators["+i+"].startDate","INV_001","Start date cannot be before today's date.");
                 	}
                 }
-                if(siteInvestigator.getEndDate() != null){
-                	if(DateUtils.compareDate(command.getEndDate(),now) < 0){
-                    	errors.reject("USR_092", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be before today's date..!");
-                    }
+            }
+            
+            if(siteInvestigator.getEndDate() != null){
+            	if(DateUtils.compareDate(siteInvestigator.getEndDate(),now) < 0){
+                	errors.rejectValue("siteInvestigators["+i+"].endDate","INV_003","End date cannot be before today's date.");
                 }
-                if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
-                	if(DateUtils.compareDate(siteInvestigator.getStartDate(), siteInvestigator.getEndDate()) == 0){
-                		errors.reject("USR_093", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be same as Start date..!");
-                	}
-                	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
-                		errors.reject("USR_094", new Object[]{siteInvestigator.getEndDate()},  "End date cannot be before Start date..!");
-                	}
-                }
+            }
+            if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
+            	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
+            		errors.rejectValue("siteInvestigators["+i+"].endDate","INV_004","End date cannot be before Start date.");
+            	}
             }
         }
     }
