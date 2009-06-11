@@ -84,11 +84,11 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals("Asian", createdParticipant.getRace());
             assertEquals("Hispanic or Latino", createdParticipant.getEthnicity());
             
-            Study study = studyDao.getStudyDesignById(-1);
+            Study study = studyDao.getById(-1);
             assertNotNull(study);
             List<StudyOrganization> studyOrganizations = study.getStudyOrganizations();
             assertNotNull(studyOrganizations);
-            assertEquals(2, studyOrganizations.size());
+            assertEquals(4, studyOrganizations.size());
 
         } catch (Exception e) {
             e.printStackTrace();
