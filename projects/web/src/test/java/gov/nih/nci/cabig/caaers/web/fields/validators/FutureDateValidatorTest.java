@@ -12,7 +12,7 @@ public class FutureDateValidatorTest extends TestCase {
 	public void testIsValid() {
 		Calendar gcNow = GregorianCalendar.getInstance();
 		gcNow.add(Calendar.MINUTE,-5);
-		Date now = gcNow.getTime();
+		Date now = gcNow.getTime(); //correct 5 mts
 		boolean valid;
 		FutureDateValidator futureDateValidator = new FutureDateValidator();
 		valid = futureDateValidator.isValid(now);
