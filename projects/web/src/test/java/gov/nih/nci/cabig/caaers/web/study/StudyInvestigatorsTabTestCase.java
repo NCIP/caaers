@@ -31,7 +31,6 @@ public class StudyInvestigatorsTabTestCase extends AbstractStudyWebTestCase {
         tab.setConfigurationProperty(new ConfigProperty());
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
         map.put("invRoleCodeRefData", new ArrayList<Lov>());
-        map.put("invStatusCodeRefData", new ArrayList<Lov>());
         tab.getConfigurationProperty().setMap(map);
 
         return tab;
@@ -44,7 +43,6 @@ public class StudyInvestigatorsTabTestCase extends AbstractStudyWebTestCase {
 
         assertNotNull(output);
         assertNotNull(output.get("invRoleCodeRefData"));
-        assertNotNull(output.get("invStatusCodeRefData"));
     }
 
     public void testValidation() {
