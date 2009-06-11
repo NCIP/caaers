@@ -512,20 +512,6 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	
     }
     
-    /**
-     * This method returns a list of adversEvents where startdate >= 2007-09-12
-     */
-    public void testSearchByHQLForLessThanEqualsOperator() throws Exception{
-    	CQLQuery cqlQuery = new CQLQuery();
-    	gov.nih.nci.cagrid.cqlquery.Object targetObject = new gov.nih.nci.cagrid.cqlquery.Object();
-    	targetObject.setName("gov.nih.nci.cabig.caaers.domain.AdverseEvent");
-    	targetObject.setAttribute(new Attribute("startDate", Predicate.LESS_THAN_EQUAL_TO, "December 12, 2008, 00:00:00 GMT"));
-    	cqlQuery.setTarget(targetObject);
-    	String hqlQuery = CQL2HQL.translate(cqlQuery, false, true);
-    	List<AdverseEvent> aeList = getDao().search(new HQLQuery(hqlQuery));
-    	assertEquals("Incorrect number of adverse events fetched", 2, aeList.size());
-    }
-    
     public AdverseEventDao getDao(){
     	return (AdverseEventDao) getDeployedApplicationContext().getBean("adverseEventDao");
     }
