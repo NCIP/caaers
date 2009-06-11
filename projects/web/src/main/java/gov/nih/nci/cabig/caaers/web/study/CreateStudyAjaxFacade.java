@@ -116,15 +116,6 @@ public class CreateStudyAjaxFacade {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<ResearchStaff> researchStaff = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
-        List<ResearchStaff> inActiveResearchStaff = new ArrayList<ResearchStaff>();
-        for(ResearchStaff rs : researchStaff){
-        	if(rs.isInActive()){
-        		inActiveResearchStaff.add(rs);
-        	}
-        }
-        for(ResearchStaff rs : inActiveResearchStaff){
-        	researchStaff.remove(rs);
-        }
         return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
     }
 
