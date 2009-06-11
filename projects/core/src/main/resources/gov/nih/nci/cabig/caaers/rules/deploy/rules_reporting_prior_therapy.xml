@@ -180,9 +180,6 @@
             </eval>
         </lhs>
         <rhs>
-            -->
-<!-- Already Populated Error Message-->
-<!--
 
         </rhs>
     </rule>
@@ -191,39 +188,37 @@
 
 
     <!-- ==========================================================================
-	 BJ : REMOVED : CAAERS-2267
+	 BJ : MODIFIED : CAAERS-2267
      RuleName : PTY_BR4B_CHK
-     Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is not
-             ‘Bone Marrow Transplant’
-             ‘Chemotherapy (NOS)’
-             ‘Chemotherapy multiple agents systemic’
-             ‘Chemotherapy single agent systemic’
-             ‘Immunotherapy’
-             ‘Hormonal Therapy’
+     Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is
+             ‘No Prior Therapy’
+             ‘Surgery’
+             ‘Radiation’
      Error Code : PTY_BR4B_ERR
-     Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
-     ============================================================================= 
+     Error Message : CHEMO_AGENTS must be provided for the provided PRIOR_THERAPY value.
+     ============================================================================= -->
     <rule name="PTY_BR4B_CHK">
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(!(NullSafeFieldExtractor.extractField(pt, "priorTherapy.id") instanceof Integer)) continue;
-                if(!ArrayUtils.contains(new int[] {3,4,5,6,7,8,11},
-                NullSafeFieldExtractor.extractIntegerField(pt, "priorTherapy.id"))) {
-                if(pt.getPriorTherapyAgents().size() &gt; 0) {
-                errors.addValidationError("PTY_BR4B_ERR", "'Prior Therapy Agents' must not be provided if
-                'Prior_Therapy' is not " +
-                "'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy
-                single agent systemic','Chemotherapy non-cytotoxic','Immunotherapy', 'Hormonal Therapy'", i);
-                }
-                }
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
+		                int i = 0;
+		                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
+		                	i++;
+		                	if(!(NullSafeFieldExtractor.extractField(pt, "priorTherapy.id") instanceof Integer)) continue;
+		                	if(ArrayUtils.contains(new int[] {13,16,17},NullSafeFieldExtractor.extractIntegerField(pt, "priorTherapy.id"))) {
+		                		if(pt.getPriorTherapyAgents().size() &gt; 0) {
+		                			errors.addValidationError("PTY_BR4B_ERR", 
+									"'Prior Therapy Agents' must not be provided if 'Prior_Therapy' is 'No prior therapy', 'Surgery' ,'Radiation therapy'",
+									 i).addFieldNames("aeReport.saeReportPriorTherapies[" + i + "]",
+									 	"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents",
+										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].chemoAgent",
+										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].chemoAgent.fullName");
+		                		}
+		               	   }
+		                }
+		                return errors.hasErrors() ? FAIL : SUCCESS;
                 }
                 }.validate(aeReport, errors)
             </eval>
@@ -233,7 +228,6 @@
 
         </rhs>
     </rule>
-	-->
     <!-- ==========================================================================
      RuleName : PTY_UK_CHK
      Logic : Prior Therapy must be unique

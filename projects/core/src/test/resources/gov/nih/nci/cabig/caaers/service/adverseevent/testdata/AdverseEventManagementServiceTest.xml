@@ -89,7 +89,10 @@
         select_ae=""
         ctep_code="-19"
         other_required="1"
-        />    
+        /> 
+	 <MEDDRA_VERSIONS
+    	id="9"
+    	name="MedDRA v9"/>   
 	<meddra_llt
 		id="1"
 		meddra_code="mc1"

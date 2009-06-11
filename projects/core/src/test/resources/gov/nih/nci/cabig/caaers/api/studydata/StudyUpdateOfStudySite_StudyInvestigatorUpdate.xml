@@ -67,6 +67,7 @@
                     <p:studyInvestigator>
                         <roleCode>Site Principal Investigator</roleCode>
                         <startDate>2002-02-02</startDate>
+                        <endDate>2003-02-02</endDate>
                         <p:siteInvestigator>
                             <p:investigator>
                                 <firstName>George</firstName>

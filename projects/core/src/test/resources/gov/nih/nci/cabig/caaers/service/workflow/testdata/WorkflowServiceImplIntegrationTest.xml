@@ -3,7 +3,7 @@
         id="-1000"
         name="New Site"
         grid_id="gridSite"/>
-
+	<identifiers />
 	<ind_holders />
 	
 <!--  =============== CSM Data and User data ===================== -->
@@ -82,7 +82,6 @@
        />
        <SITE_INVESTIGATORS
             id="-4004"
-            status_code="ACT"
             site_id="-1000"
             investigator_id="-902"/>
       <CSM_USER_GROUP USER_GROUP_ID="-16" USER_ID="-2" GROUP_ID="-2" />

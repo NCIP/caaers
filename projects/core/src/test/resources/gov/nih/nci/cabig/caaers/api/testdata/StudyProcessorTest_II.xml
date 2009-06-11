@@ -100,28 +100,24 @@
    <!--George  Clinton   to   Cancer Therapy Evaluation Program--> 	
     <SITE_INVESTIGATORS
     	id="-4001"
-    	status_code="ACT"
     	site_id="-1001"
     	investigator_id="-3002"/>
     
     <!--Gerry Elbridge   to  Cancer Therapy Evaluation Program-->	
     <SITE_INVESTIGATORS
     	id="-4002"
-    	status_code="ACT"
     	site_id="-1001"
     	investigator_id="-3001"/>
     	
     <!--David Algor   to  Cancer Therapy Evaluation Program-->	
     <SITE_INVESTIGATORS
     	id="-4005"
-    	status_code="ACT"
     	site_id="-1001"
     	investigator_id="-3005"/>
     
     <!--James Madison  to  Wake Forest Comprehensive Cancer Center -->	
      <SITE_INVESTIGATORS
     	id="-4003"
-    	status_code="ACT"
     	site_id="-1002"
     	investigator_id="-3003"/>
     
@@ -129,7 +125,6 @@
     <!-- Aaron Burr   to  University of Jonathan Dean-->	
     <SITE_INVESTIGATORS
     	id="-4004"
-    	status_code="ACT"
     	site_id="-1003"
     	investigator_id="-3004"/> 
     

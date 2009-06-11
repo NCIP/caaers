@@ -27,14 +27,14 @@ public class ChemoAgentDaoTest extends DaoTestCase<ChemoAgentDao> {
         List<ChemoAgent> all = getDao().getBySubname(new String[] {"Test"});
         assertNotNull(all);
         assertEquals(1, all.size());
-        assertEquals("Test1(hello)", all.get(0).getFullName());
+        assertEquals("Test1 (hello)", all.get(0).getFullName());
     }
     
     public void testGetBySubnames_OnGenericName() throws Exception {
         List<ChemoAgent> all = getDao().getBySubname(new String[] {"hell"});
         assertNotNull(all);
         assertEquals(1, all.size());
-        assertEquals("Test1(hello)", all.get(0).getFullName());
+        assertEquals("Test1 (hello)", all.get(0).getFullName());
     }
 
     public void testGetById() throws Exception {

@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -164,18 +165,21 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
 */
 
     /**
-     * RuleName : PTY_BR4B_CHK Logic : ?Prior Therapy Agents? must not be provided if
-     * "Prior_Therapy" is not ?Bone Marrow Transplant? ?Chemotherapy (NOS)? ?Chemotherapy multiple
-     * agents systemic? ?Chemotherapy single agent systemic? ?Immunotherapy? ?Hormonal Therapy?
-     * Error Code : PTY_BR4B_ERR Error Message : CHEMO_AGENTS must be provided for the provided
-     * PRIOR_THERAPY value.
+     BJ : MODIFIED : CAAERS-2267
+     RuleName : PTY_BR4B_CHK
+     Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is
+             ‘No Prior Therapy’
+             ‘Surgery’
+             ‘Radiation’
+     Error Code : PTY_BR4B_ERR
+     Error Message : CHEMO_AGENTS must be provided for the provided PRIOR_THERAPY value.
      */
 
-    public void testXYZPriorTherapy_With_PriorTherapyAgents() throws Exception {
+    public void testNoPriorTherapy_With_PriorTherapyAgents() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         int i = 0;
         for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
-            aet.getPriorTherapy().setId(23);
+            aet.getPriorTherapy().setId(PriorTherapy.NO_PRIOR_THERAPY);
             PriorTherapyAgent pta = new PriorTherapyAgent();
             ChemoAgent ca = new ChemoAgent();
             ca.setId(2 + i);

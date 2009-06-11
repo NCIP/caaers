@@ -328,13 +328,11 @@
 
     <SITE_INVESTIGATORS
             id="-4004"
-            status_code="ACT"
             site_id="-1003"
             investigator_id="-3004"/>
 
     <SITE_INVESTIGATORS
                id="-4005"
-               status_code="ACT"
                site_id="-1003"
                investigator_id="-3005"/>
 
