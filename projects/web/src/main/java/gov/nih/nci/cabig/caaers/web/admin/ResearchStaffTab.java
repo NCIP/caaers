@@ -89,28 +89,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
             	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }
-        
-        if(command !=null && command.getId() == null){
-        	Date now = new Date();
-            if(command.getStartDate() != null){
-            	if(DateUtils.compareDate(command.getStartDate(),now) < 0){
-            		errors.reject("USR_091", new Object[]{command.getStartDate()},  "Start date cannot be before today's date..!");
-            	}
-            }
-            if(command.getEndDate() != null){
-            	if(DateUtils.compareDate(command.getEndDate(),now) < 0){
-                	errors.reject("USR_092", new Object[]{command.getEndDate()},  "End date cannot be before today's date..!");
-                }
-            }
-            if(command.getStartDate() != null && command.getEndDate() != null){
-            	if(DateUtils.compareDate(command.getStartDate(), command.getEndDate()) == 0){
-            		errors.reject("USR_093", new Object[]{command.getEndDate()},  "End date cannot be same as Start date..!");
-            	}
-            	if(DateUtils.compareDate(command.getEndDate(), command.getStartDate()) < 0){
-            		errors.reject("USR_094", new Object[]{command.getEndDate()},  "End date cannot be before Start date..!");
-            	}
-            }
-        }
     }
 
     @Override
