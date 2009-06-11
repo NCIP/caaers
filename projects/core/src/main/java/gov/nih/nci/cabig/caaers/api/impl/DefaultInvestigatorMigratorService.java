@@ -153,12 +153,6 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             investigator.setEmailAddress(investigatorDto.getEmailAddress());
             investigator.setFaxNumber(investigatorDto.getFaxNumber());
             investigator.setPhoneNumber(investigatorDto.getPhoneNumber());
-            if(investigatorDto.getStartDate() != null){
-            	investigator.setStartDate(investigatorDto.getStartDate().toGregorianCalendar().getTime());  
-            }
-            if(investigatorDto.getEndDate() != null){
-            	investigator.setEndDate(investigatorDto.getEndDate().toGregorianCalendar().getTime());  
-            }
             //get site investigaor
             
             List<SiteInvestigatorType> siteInvTypeList= investigatorDto.getSiteInvestigator();
