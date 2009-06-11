@@ -490,7 +490,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             studyInvestigator.setStudyOrganization(studyOrganization);
             studyInvestigator.setRoleCode(invType.getRoleCode());
             studyInvestigator.setSiteInvestigator(siteInvestigator);
-            studyInvestigator.setStatusCode(invType.getStatusCode());
             studyOrganization.addStudyInvestigators(studyInvestigator);
         }
     }
