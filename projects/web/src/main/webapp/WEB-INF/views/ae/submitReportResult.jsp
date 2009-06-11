@@ -68,6 +68,7 @@
     				</tr>
     				<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 	    				<c:if test="${status.index == command.reportIndex}">
+	    				<c:set var="reportId" value="${report.id}"/>
    			 				<tr id="reportStatusRowId">
 	       			     		<td id="reportNameId">
 	       			     			<c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
@@ -127,7 +128,7 @@
     				<tr>
     					<td class="completion-messages">
     					
-    						<SELECT id="actions-${command.aeReport.id}" name="actions" onChange="executeAction(${command.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}'/>')">
+    						<SELECT id="actions-${command.aeReport.id}" name="actions" onChange="executeAction(${command.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}'/>')">
      							<OPTION selected label="none" value="none">None</OPTION>
      					
      							<c:if test="${command.study.caaersXMLType}">
