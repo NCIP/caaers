@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import static org.easymock.EasyMock.isA;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -14,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
@@ -41,7 +41,9 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
     private Organization organization;
     private OrganizationDao organizationDao;
-
+    private OrganizationRepository organizationRepository;
+    private StudyDao studyDao;
+    
     private StudyParticipantAssignment studyParticipantAssignment;
     private Study study;
 
@@ -50,6 +52,8 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         participantRepository = registerMockFor(ParticipantRepository.class);
         studySiteDao = registerMockFor(StudySiteDao.class);
         organizationDao = registerMockFor(OrganizationDao.class);
+        studyDao = registerMockFor(StudyDao.class);
+        organizationRepository = registerMockFor(OrganizationRepository.class);
         participantImportService = new ParticipantImportServiceImpl();
         IdentifierMigrator<Participant> idMigrator = new IdentifierMigrator<Participant>();
         StudyParticipantAssignmentMigrator spaMigrator = new StudyParticipantAssignmentMigrator();
@@ -60,6 +64,9 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         migrator.setChildren(migrators);
 
         spaMigrator.setStudySiteDao(studySiteDao);
+        spaMigrator.setOrganizationDao(organizationDao);
+        spaMigrator.setStudyDao(studyDao);
+        spaMigrator.setOrganizationRepository(organizationRepository);
         participantImportService.setParticipantRepository(participantRepository);
         idMigrator.setOrganizationDao(organizationDao);
         participantImportService.setParticipantMigrator(migrator);
@@ -89,33 +96,6 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         assertEquals("Assignments are either Empty or Not Valid", messages.get(1).getMessage());
 
     }
-
-//    public void testImportParticipantForNonUniqueParticipant() {
-//        xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
-//        xstreamParticipant.addIdentifier(systemAssignedIdentifier);
-//
-//        List<Organization> organizations = new ArrayList<Organization>();
-//        organizations.add(organization);
-//
-//        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
-//        EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(true);
-//        replayMocks();
-//
-//        DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
-//        verifyMocks();
-//
-//        validate(xstreamParticipant, participantDomainObjectImportOutcome);
-//        validateImportedObject(participantDomainObjectImportOutcome);
-//
-//        validateImportedObject(participantDomainObjectImportOutcome);
-//        List<DomainObjectImportOutcome.Message> messages = participantDomainObjectImportOutcome.getMessages();
-//        assertEquals(2, messages.size());
-//
-//        assertEquals("Assignments are either Empty or Not Valid", messages.get(0).getMessage());
-//        assertEquals("Participant identifier already exists.", messages.get(1).getMessage());
-//
-//
-//    }
 
 
     public void testImportParticipantForMigratingIdentifiers() {
@@ -167,14 +147,9 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
         StudySite studySite = new StudySite();
         studySite.setId(123);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization).anyTimes();
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(studySite);
-        //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
-       // List<Organization> organizations = new ArrayList<Organization>();
-        //organizations.add(organization);
-
-       // EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
-        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         replayMocks();
 
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
@@ -196,7 +171,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         studySite.setId(123);
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(studySite);
-        //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         replayMocks();
 
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
@@ -219,17 +194,18 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(null);
         //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
-
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
+        studyDao.save(study);
         replayMocks();
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
         verifyMocks();
         validate(xstreamParticipant, participantDomainObjectImportOutcome);
         validateImportedObject(participantDomainObjectImportOutcome);
         List<DomainObjectImportOutcome.Message> messages = participantDomainObjectImportOutcome.getMessages();
-        assertEquals(2, messages.size());
+        assertEquals(1, messages.size());
 
         assertEquals("Identifiers are either Empty or Not Valid", messages.get(0).getMessage());
-        assertEquals("The Study with Identifier \" value:org value \" is either nonexistant or does not match the provided Site", messages.get(1).getMessage());
 
     }
 
