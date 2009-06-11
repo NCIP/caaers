@@ -36,9 +36,11 @@ Object.extend(associatedSiteClass.prototype, {
 	 		this.populateDeafultParameters(methodName, paramHash);
 	 		
 	 		var url = $('command').action + "?subview"; //make the ajax request
+	 		$('ajax_wait').removeClassName('indicator');
 			this.insertContent(container, url, paramHash, function(methodName)
 								 {
 				 					new jsInvestigator(this.index);
+				 					$('ajax_wait').addClassName('indicator');
 				 				}.bind(this))
 		},
 		removeDetails :function(methodName,index, loc, options){
@@ -57,7 +59,8 @@ Object.extend(associatedSiteClass.prototype, {
 	 		var url = $('command').action + "?subview"; //make the ajax request
 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
 	 		$(loc).innerHTML = '';
-			this.insertContent(container, url, paramHash.merge(sectionHash));				
+	 		$('ajax_wait').removeClassName('indicator');
+			this.insertContent(container, url, paramHash.merge(sectionHash), function(){$('ajax_wait').addClassName('indicator');} );				
 		},
 		populateDeafultParameters : function(methodName, paramHash){
 		//will populate the default parameters, to support ajax communication
@@ -176,18 +179,16 @@ Event.observe(window, "load", function() {
 	function toggleDate(action, selected){
 
 		if(action == 'Deactivate'){
+			var dConfirmation = confirm("Do you really want to Deactivate?");
+			if(!dConfirmation) return; //return if not agreed.
 			$('siteInvestigators['+ selected + '].endDate').value=today;
 		}
 		if(action == 'Activate'){
+			var aConfirmation = confirm("Do you really want to Activate?");
+			if(!aConfirmation) return; //return if not agreed.
+			$('siteInvestigators['+ selected + '].startDate').value=today;
 			$('siteInvestigators['+ selected + '].endDate').value="";
 		}
-		
-			//$('startdate_as_label').style.display="none";
-			//$('startdate_as_cal').style.display="";
-			//$('enddate_as_label').style.display="none";
-			//$('startDate').value=today;
-			//$('endDate').value="";
-			//$('endDate').value = today;
 	}
 
 	
@@ -254,7 +255,7 @@ Event.observe(window, "load", function() {
  
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createInvestigatorForm"
-	 willSave="false">
+	 willSave="false" hideErrorDetails="false">
 
 	<jsp:attribute name="singleFields">
 	<div>
@@ -274,6 +275,7 @@ Event.observe(window, "load", function() {
     	<chrome:division title="${detailsSectionTitle}" id="investigator">
     	
 		<div class="leftpanel">
+
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
                <tags:renderRow field="${field}"  />
             </c:forEach>
@@ -291,6 +293,9 @@ Event.observe(window, "load", function() {
 	<caaers:message code="investigator.details.associateSitesSection" var="associateSitesSectionTitle"/>
 	<chrome:division title="${associateSitesSectionTitle}">
 	  <br>
+	  <div>
+			<tags:indicator id="ajax_wait"/>
+	 </div>
 	  <div id="_anchorSiteInvestigators">
 	  <div id="anchorSiteInvestigators">
 	  <table id="siteInvestigatorTable" class="tablecontent" width="100%">
