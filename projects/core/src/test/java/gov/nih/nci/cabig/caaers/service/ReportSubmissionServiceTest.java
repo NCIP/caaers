@@ -116,14 +116,14 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	public void testSubmitReportExternalSystemPath() throws Exception {
 		Date now = nowFactory.getNow();
 		Report report = registerMockFor(Report.class);
+		EasyMock.expect(generator.generateCaaersXml(aeReport,report)).andReturn(xml);
 		EasyMock.expect(report.getId()).andReturn(5);
 		EasyMock.expect(report.getAeReport()).andReturn(aeReport);
-		EasyMock.expect(generator.generateCaaersXml(aeReport,report)).andReturn(xml);
+		
 		EasyMock.expect(report.hasSystemDeliveries()).andReturn(true);
 		EasyMock.expect(report.getExternalSystemDeliveries()).andReturn(systemDeliveries);
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion).anyTimes();
 		EasyMock.expect(generator.generateExternalReports(report, xml)).andReturn(pdfFilePaths);
-		EasyMock.expect(report.getId()).andReturn(55);
 		report.setStatus(ReportStatus.INPROCESS);
 		report.setSubmissionUrl("");
 		report.setSubmissionMessage("");
@@ -138,9 +138,10 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	public void testSubmitReportOnlyEmailSubmission() throws Exception {
 		Date now = nowFactory.getNow();
 		Report report = registerMockFor(Report.class);
-		EasyMock.expect(report.getId()).andReturn(5);
 		EasyMock.expect(generator.generateCaaersXml(aeReport,report)).andReturn(xml);
 		EasyMock.expect(report.hasSystemDeliveries()).andReturn(false);
+		scheduler.unScheduleNotification(report);
+		
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion).anyTimes();
 		EasyMock.expect(generator.generateExternalReports(report, xml)).andReturn(pdfFilePaths);
 		report.setStatus(ReportStatus.COMPLETED);
@@ -150,7 +151,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		
 		EasyMock.expect(report.getEmailRecipients()).andReturn(emails);
 		EasyMock.expect(report.getAeReport()).andReturn(aeReport);
-		scheduler.unScheduleNotification(report);
+		
 		
 		reportDaoMock.save(report);
 		reportDaoMock.flush();
@@ -176,7 +177,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		Report report = registerMockFor(Report.class);
 		EasyMock.expect(report.getExternalSystemDeliveries()).andReturn(systemDeliveries);
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion);
-		EasyMock.expect(report.getId()).andReturn(55);
+		EasyMock.expect(report.getId()).andReturn(5);
 		replayMocks();
 		service.notifyExternalSystems(report, xml, pdfFilePaths);
 		verifyMocks();
