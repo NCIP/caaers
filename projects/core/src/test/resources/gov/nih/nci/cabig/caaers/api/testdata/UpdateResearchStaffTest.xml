@@ -6,8 +6,6 @@
         <firstName>John</firstName>
         <lastName>Chapman</lastName>
         <middleName>S</middleName>
-        <startDate>2009-04-01</startDate>
-        <endDate>2010-01-01</endDate>
         <emailAddress>caaers.app2@gmail.com</emailAddress>
         <faxNumber>879-345-0983</faxNumber>
         <nciIdentifier>NCI</nciIdentifier>
