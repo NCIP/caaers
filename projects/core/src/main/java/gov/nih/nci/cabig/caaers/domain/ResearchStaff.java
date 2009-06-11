@@ -140,24 +140,4 @@ public abstract class ResearchStaff extends User {
 		this.externalResearchStaff = externalResearchStaff;
 	}
 
-    /**
-     * This method will return a status text for display purpose's. 
-     * @return
-     */
-    @Transient
-    public String getStatus(){
-    	String stausText = "New";
-    	if(id == null){
-    		return stausText;
-    	}else{
-    		if(isActive()){
-        		stausText = "Active";
-        	}
-        	if(isInActive()){
-        		stausText = "InActive";
-        	}
-    	}
-    	return stausText;
-    }
-    
 }

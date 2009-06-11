@@ -34,13 +34,4 @@ public class LocalResearchStaff extends ResearchStaff{
 		return externalId;
 	}
 	
-	@Override
-	public Date getStartDate() {
-		return startDate;
-	}
-	
-	@Override
-	public Date getEndDate() {
-		return endDate;
-	}
 }

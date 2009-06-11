@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +44,6 @@ public abstract class User extends Person {
 
 	protected List<String> passwordHistory;
 	
-    protected Date startDate;
-    
-    protected Date endDate;
-
     public User() {
         userGroupTypes = new ArrayList<UserGroupType>();
         passwordHistory = new ArrayList<String>();
@@ -239,47 +233,5 @@ public abstract class User extends Person {
         }
         return name.toString();
     }
-    
-	@Transient
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
 	
-	@Transient
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-	
-	@Transient
-    public boolean isActive(){
-    	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
-    }
-
-
-    @Transient
-    public boolean isInActive(){
-    	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
-    }
-    
-    /**
-    * This method will deactivate a {@link StudyInvestigator}, by setting the termEndDate to a past date.
-    */
-    public void deactivate(){
-    	endDate = DateUtils.yesterday();
-    }
-    /**
-    * This method will activate, by setting the termEndDate to a past date.
-    */
-    public void activate(){
-    	startDate = DateUtils.yesterday();
-    }
-
 }
