@@ -63,7 +63,7 @@ public class PatientDetailsTabTest extends AeTabTestCase {
         });
 		pdt.setPriorTherapyDao(new PriorTherapyDao(){
 			@Override
-			public List<PriorTherapy> getAll() {
+			public List<PriorTherapy> getAllExcludingNoPriorTherapy() {
 				return new ArrayList<PriorTherapy>();
 			}
 		});
