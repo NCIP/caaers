@@ -67,12 +67,6 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertEquals("657-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
 			assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
-			assertNotNull(updatedResearchStaff.getStartDate());
-			assertNotNull(updatedResearchStaff.getEndDate());
-			String startDate = DateUtils.formatDate(updatedResearchStaff.getStartDate());
-			String endDate = DateUtils.formatDate(updatedResearchStaff.getEndDate());
-			assertEquals("04/01/2009", startDate);
-			assertEquals("01/01/2010", endDate);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -105,13 +99,6 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertEquals("980-090-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-093-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
-			assertNotNull(updatedResearchStaff.getStartDate());
-			assertNotNull(updatedResearchStaff.getEndDate());
-			String startDate = DateUtils.formatDate(updatedResearchStaff.getStartDate());
-			String endDate = DateUtils.formatDate(updatedResearchStaff.getEndDate());
-			assertEquals("04/01/2009", startDate);
-			assertEquals("06/03/2009", endDate);
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -89,13 +89,6 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 				}
 				
 			}
-					
-			assertNotNull(updatedInvestigator.getStartDate());
-			assertNotNull(updatedInvestigator.getEndDate());
-			String startDate = DateUtils.formatDate(updatedInvestigator.getStartDate());
-			String endDate = DateUtils.formatDate(updatedInvestigator.getEndDate());
-			assertEquals("04/01/2009", startDate);
-			assertEquals("01/01/2010", endDate);			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
