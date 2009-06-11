@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -10,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 
@@ -21,6 +24,9 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 	Participant participant;
 	DomainObjectImportOutcome<Participant> outcome = new DomainObjectImportOutcome<Participant>();
 	private StudySiteDao studySiteDao;
+	private OrganizationDao organizationDao;
+	private StudyDao studyDao;
+	private OrganizationRepository organizationRepository;
 	StudyParticipantAssignmentMigrator migrator;
 	private SystemAssignedIdentifier systemAssignedIdentifier;
 	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
@@ -40,8 +46,14 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 		 
 		 participant = new Participant();
 		 studySiteDao = registerDaoMockFor(StudySiteDao.class);
+		 organizationDao = registerDaoMockFor(OrganizationDao.class);
+		 studyDao = registerDaoMockFor(StudyDao.class);
+		 organizationRepository = registerMockFor(OrganizationRepository.class);
 		 migrator = new StudyParticipantAssignmentMigrator();
 		 migrator.setStudySiteDao(studySiteDao);
+		 migrator.setOrganizationDao(organizationDao);
+		 migrator.setOrganizationRepository(organizationRepository);
+		 migrator.setStudyDao(studyDao);
 		 
 	}
 	 
@@ -53,6 +65,7 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 
         StudySite studySite = new StudySite();
         studySite.setId(123);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(studySite);
         replayMocks();
@@ -80,15 +93,16 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 
         StudySite studySite = new StudySite();
         studySite.setId(123);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(null);
+        EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
+        studyDao.save(study);
         replayMocks();
 
         migrator.migrate(xstreamParticipant, participant, outcome);
         verifyMocks();
-        assertFalse(outcome.getMessages().isEmpty());
-		Message msg = (Message) outcome.getMessages().get(0);
-		assertEquals("incorrect error msg", "The Study with Identifier \" value:org value \" is either nonexistant or does not match the provided Site", msg.getMessage());
-		assertEquals(1, outcome.getMessages().size());
+        assertTrue(outcome.getMessages().isEmpty());
 	}
+	
 }
