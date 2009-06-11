@@ -23,7 +23,9 @@
 					enableClearButton="false" 
 					initialDisplayValue="${not empty orgName ? orgName : 'Begin typing here...'}"
 					readonly="${not enableDelete}"
-					displayNamePath="${fieldGroups[mainGroup].fields[0].propertyName}.name"/>
+					displayNamePath="${fieldGroups[mainGroup].fields[0].propertyName}.name"
+					title="${fieldGroups[mainGroup].fields[0].displayName}"
+					required="true"/>
 		</td>
                 
     <c:forEach begin="1" items="${fieldGroups[mainGroup].fields}" var="field">
