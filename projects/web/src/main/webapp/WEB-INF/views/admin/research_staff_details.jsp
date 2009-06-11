@@ -102,19 +102,6 @@
 		form.submit();
 	}
 
-	function activateResearchStaff(){
-		$('startdate_as_label').style.display="none";
-		$('startdate_as_cal').style.display="";
-		$('enddate_as_label').style.display="none";
-		$('enddate_as_cal').style.display="";
-		$('startDate').value=today;
-		$('endDate').value="";
-	}
-
-	function deActivateResearchStaff(){
-		$('endDate').value = today;
-	}
-
     </script>
 </head>
 <body>
@@ -200,30 +187,6 @@
     </div>
     </chrome:division>
 
-	<caaers:message code="researchStaff.statusSection" var="statusSection"/>
-	<chrome:division title="${statusSection} -- (${command.status})">
-		<div class="leftpanel">
-			<tags:renderRow field="${fieldGroups.researchStaff.fields[4]}">
-            	<jsp:attribute name="value">
-            			<div style="${not empty command.startDate ? '':'display:none;'}" id="startdate_as_label">
-            				<tags:formatDate value="${command.startDate}" />
-            			</div>
-            			<div style="${empty command.startDate ? '':'display:none;'}" id="startdate_as_cal">
-            				<tags:renderInputs field="${fieldGroups.researchStaff.fields[4]}"/>
-            			</div>	
-            	</jsp:attribute>
-            </tags:renderRow>	
-		</div>
-		<div class="rightpanel">
-        	<tags:renderRow field="${fieldGroups.researchStaff.fields[9]}">
-            	<jsp:attribute name="value">
-            			<div style="display:none" id="enddate_as_cal">
-            				<tags:renderInputs field="${fieldGroups.researchStaff.fields[9]}"/>
-            			</div>	
-            	</jsp:attribute>
-            </tags:renderRow>
-	</chrome:division>
-
 <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
 <chrome:division id="staff-details" title="${roleSectionTitle}">
 
@@ -291,16 +254,6 @@
 	 				<tags:button type="submit" value="Sync" color="blue"
 									id="sync-rs" onclick="javascript:syncResearchStaff();" />
 				</c:if>
-				
-				<c:if test="${command.id != null && command.active}">
-	 				<tags:button type="button" value="Deactivate" color="blue"
-									id="deactivate-rs" onclick="javascript:deActivateResearchStaff();" />
-	 			</c:if>
-	 			
-	 			<c:if test="${command.id != null && command.inActive}">
-	 				<tags:button type="button" value="Activate" color="blue"
-									id="activate-rs" onclick="javascript:activateResearchStaff();" />
-	 			</c:if>					
 	 		</jsp:attribute>
 	 	</tags:tabControls>
 	 </jsp:attribute>

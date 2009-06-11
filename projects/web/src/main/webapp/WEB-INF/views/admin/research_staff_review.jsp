@@ -128,30 +128,6 @@ function submitPage(s){
       
 	</chrome:division>
 	
-	<caaers:message code="researchStaff.statusSection" var="statusSection"/>
-	<chrome:division title="${statusSection} -- (${researchStaff.status})">
-		<div class="leftpanel">
-			<ui:row path="startDate">
-	    			<jsp:attribute name="value">
-	    				<tags:formatDate value="${researchStaff.startDate}"/>
-	    			</jsp:attribute>
-	    			<jsp:attribute name="label">
-	    				<ui:label path="startDate" text="Start date"></ui:label>
-	    			</jsp:attribute>
-				</ui:row>	
-		</div>
-		<div class="rightpanel">
-		       <ui:row path="endDate">
-	    			<jsp:attribute name="value">
-	    				<tags:formatDate value="${researchStaff.endDate}"/>
-	    			</jsp:attribute>
-	    			<jsp:attribute name="label">
-	    				<ui:label path="endDate" text="End date"></ui:label>
-	    			</jsp:attribute>
-				</ui:row>
-		</div>
-	</chrome:division>
-	
 	<caaers:message code="researchStaff.review.rolesSection" var="rolesSectionTitle"/>
 	<chrome:division title="${rolesSectionTitle}">
         <div style="padding-left:50px;">
