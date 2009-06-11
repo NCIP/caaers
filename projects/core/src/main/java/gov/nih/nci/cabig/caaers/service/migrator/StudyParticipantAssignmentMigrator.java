@@ -57,17 +57,17 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 }
                 //If study site is not found add the incoming studysite to the study.
                 if(studySite == null){
-                	Study study = studyDao.getStudyDesignByIdentifier(identifier);
+                	Study study = studyDao.getByIdentifier(identifier);
                 	studySite = new StudySite();
                 	studySite.setOrganization(organization);
                 	studySite.setStartDate(new Date());
                 	studySite.setEndDate(srcSite.getEndDate());
-                	study.addStudySite(studySite);
                 	if(study == null){
                 		outcome.ifNullObject(study, DomainObjectImportOutcome.Severity.ERROR,
                                 "The Study with Identifier \" " + identifierValue
                                         + " \" is nonexistant");
                 	}else{
+                		study.addStudySite(studySite);
                 		studyDao.save(study);
                 	}
                 }
