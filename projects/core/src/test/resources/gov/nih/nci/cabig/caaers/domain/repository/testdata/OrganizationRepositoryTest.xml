@@ -35,8 +35,7 @@
         type="REMOTE"
     />
 	
-    <csm_group />
-	<csm_user_group_role_pg />
+ 
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />

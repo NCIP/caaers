@@ -143,4 +143,9 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
         result = 31 * result + ((startDate == null) ? 0 : startDate.hashCode());
         return result;
     }
+    
+    @Override
+    public String toString() {
+    	return String.valueOf(siteInvestigator);
+    }
 }

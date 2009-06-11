@@ -181,6 +181,11 @@ public abstract class Investigator extends User {
         return result;
     }
     
+    @Override
+    public String toString() {
+    	return getFullName();
+    }
+    
     //Inner Class used instead of InstantiateFactory 
     class SiteInvestigatorFactory implements Factory<SiteInvestigator>{
     	

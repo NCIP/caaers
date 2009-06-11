@@ -9,13 +9,17 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.springframework.core.io.ClassPathResource;
+
+import com.semanticbits.rules.impl.RuleDeploymentServiceImpl;
 
 public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCase {
 	
@@ -26,6 +30,7 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 	private Unmarshaller unmarshaller = null;
 	private JAXBContext jaxbContext = null;
 	private AdverseEventDao adverseEventDao = null;
+	protected RuleDeploymentServiceImpl deploymetService;
 	
     @Override
     protected void setUp() throws Exception {
@@ -39,8 +44,22 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
         
         adverseEventManagementService = (AdverseEventManagementService)getApplicationContext().getBean("adverseEventManagementServiceImpl");
         adverseEventDao = (AdverseEventDao)getApplicationContext().getBean("adverseEventDao");
+        deploymetService = (RuleDeploymentServiceImpl)getDeployedApplicationContext().getBean("ruleDeploymentService");
+        
+        try {
+            unregisterRule();
+        } catch (Exception e) {
+        }
+        registerRule();
         
 
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+    	// TODO Auto-generated method stub
+    	super.tearDown();
+    	unregisterRule();
     }
 
 	public void testGrade3_HospitalizationNONE() throws Exception{
@@ -301,5 +320,40 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 	private File getFile(String fileName) throws IOException{
 		File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/service/adverseevent/testdata/" + fileName).getFile();
 		return testFile;
+	}
+	
+	
+	 public void registerRule() throws Exception {
+		String ruleXml = getFileContext("rules_reporting_adverse_events.xml");
+		try {
+			deploymetService
+					.deregisterRuleSet("gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
+		} catch (Exception e) {
+			System.out.println("registering for first time");
+		}
+		deploymetService.registerRuleXml(
+				"gov.nih.nci.cabig.caaers.rules.reporting_basics_section",
+				ruleXml);
+		assertTrue("Rule deployed", true);
+	}
+
+	public void unregisterRule() throws Exception {
+		deploymetService
+				.deregisterRuleSet("gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
+		assertTrue("Rule undeployed", true);
+	}
+
+	public String getFileContext(String fileName) throws Exception {
+		File testFile = new ClassPathResource(
+				"/gov/nih/nci/cabig/caaers/rules/deploy/" + fileName).getFile();
+		BufferedReader ds = new BufferedReader(new FileReader(testFile));
+		String line = null;
+		StringBuffer xml = new StringBuffer();
+		while ((line = ds.readLine()) != null) {
+			xml.append(line);
+		}
+		assertTrue("Content of the xml should not be null", xml.toString()
+				.length() > 0);
+		return xml.toString();
 	}
 }

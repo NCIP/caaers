@@ -165,5 +165,10 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
     	}
     	return status;
     }
+    
+    @Override
+    public String toString() {
+    	return String.valueOf(investigator);
+    }
 
 }
