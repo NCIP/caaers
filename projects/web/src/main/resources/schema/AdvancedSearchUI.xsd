@@ -17,7 +17,6 @@
 				<xs:element name="class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
 				<xs:element name="dependent-object" type="searchui:dependent-object" minOccurs="0" maxOccurs="unbounded" />
-				<xs:element name="attribute" type="searchui:attribute" minOccurs="1" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 	
@@ -25,16 +24,26 @@
 			<xs:sequence>
 				<xs:element name="class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
+				<xs:element name="ui-attribute" type="searchui:ui-attribute" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="ui-association">
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="role-name" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 	
-		<xs:complexType name="attribute">
+		<xs:complexType name="ui-attribute">
 			<xs:sequence>
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="label" type="xs:string"/>
 				<xs:element name="data-type" type="xs:string"/>
 				<xs:element name="field-type" type="xs:string"/>
 				<xs:element name="operator" type="searchui:operator" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	

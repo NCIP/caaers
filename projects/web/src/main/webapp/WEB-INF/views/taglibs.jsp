@@ -23,4 +23,5 @@
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="blue" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
+<%@taglib prefix="search" tagdir="/WEB-INF/tags/search" %>
 

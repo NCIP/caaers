@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.search;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -11,13 +13,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
+import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 
 
 public class AdvancedSearchCommand{
 	
 	private static final Log logger = LogFactory.getLog(AdvancedSearchCommand.class);
 	private AdvancedSearchUi advancedSearchUi;
-//	private SearchTargetObject searchTargetObject;
+	private List<AdvancedSearchCriteriaParameter> criteriaParameters;
+	private SearchTargetObject searchTargetObject;
 	
 	public AdvancedSearchCommand(){
 		setAdvancedSearchUi();
@@ -25,6 +29,24 @@ public class AdvancedSearchCommand{
 	
 	public AdvancedSearchUi getAdvancedSearchUi(){
 		return advancedSearchUi;
+	}
+	
+	public List<AdvancedSearchCriteriaParameter> getCriteriaParameters(){
+		if(criteriaParameters == null)
+			criteriaParameters = new ArrayList<AdvancedSearchCriteriaParameter>();
+		return criteriaParameters;
+	}
+	
+	public void setCriteriaParameters(List<AdvancedSearchCriteriaParameter> criteriaParameters){
+		this.criteriaParameters = criteriaParameters;
+	}
+	
+	public void setSearchTargetObject(SearchTargetObject searchTargetObject){
+		this.searchTargetObject = searchTargetObject;
+	}
+	
+	public SearchTargetObject getSearchTargetObject(){
+		return searchTargetObject;
 	}
 	
 	public void setAdvancedSearchUi(){

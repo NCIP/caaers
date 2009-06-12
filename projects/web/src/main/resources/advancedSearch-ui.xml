@@ -6,136 +6,165 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
+			<ui-attribute>
+				<name>shortTitle</name>
+				<label>Short Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>longTitle</name>
+				<label>Long Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>multiInstitutionIndicator</name>
+				<label>Multi institution</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
-		</dependent-object>
-		<attribute>
-			<name>identifier</name>
-			<label>Identifer</label>
-			<data-type>gov.nih.nci.cabig.caaers.domain.Identifier</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>shortTitle</name>
-			<label>Short Title</label>
-			<data-type>String</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<default-view-attribute>
-			<name></name>
-			<label></label>
-		</default-view-attribute>
-		<view-attribute>
-			<name></name>
-			<label></label>
-		</view-attribute>
-		<view-attribute>
-			<name></name>
-			<label></label>
-		</view-attribute>
-		<view-attribute>
-			<name></name>
-			<label></label>
-		</view-attribute>
-		<view-attribute>
-			<name></name>
-			<label></label>
-		</view-attribute>
-	</search-target-object>
-	<search-target-object>
-		<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
-		<display-name>Subject</display-name>
-		<dependent-object>
-			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
-			<display-name>Study</display-name>
-		</dependent-object>
-		<dependent-object>
-			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
-			<display-name>Subject</display-name>
-		</dependent-object>
-		<attribute>
-			<name>identifier</name>
-			<label>Identifier</label>
-			<data-type>gov.nih.nci.cabig.caaers.domain.Identifier</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
+			<ui-attribute>
 			<name>firstName</name>
 			<label>First Name</label>
 			<data-type>String</data-type>
 			<field-type>text-field</field-type>
 			<operator name="==" display-uri="Equal To"/>				
 			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
+		</ui-attribute>
+		<ui-attribute>
 			<name>lastName</name>
 			<label>Last Name</label>
 			<data-type>String</data-type>
 			<field-type>text-field</field-type>
 			<operator name="==" display-uri="Equal To"/>				
 			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>gender</name>
-			<label>Gender</label>
-			<data-type>String</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="Male" display-uri="Male"/>
-			<valid-value value="Female" display-uri="Female"/>
-			<valid-value value="Unknown" display-uri="Unknown"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>ethnicity</name>
-			<label>Ethnicity</label>
-			<data-type>String</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="Hispanic or Latino" display-uri="Hispanic or Latino"/>
-			<valid-value value="Not Hispanic or Latino" display-uri="Not Hispanic or Latino"/>
-			<valid-value value="Not Reported" display-uri="Not Reported"/>
-			<valid-value value="Unknown" display-uri="Unknown"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>birhtDate</name>
-			<label>Birth Date</label>
-			<data-type>Date</data-type>
-			<field-type>date-field</field-type>
-			<operator name="==" display-uri="Equal To"/>
-			<operator name="!=" display-uri="Not Equal To"/>
-			<operator name="&gt;=" display-uri="Greater Than Or Equal To"/>
-			<operator name="&lt;=" display-uri="Less Than Or Equal To"/>
-		</attribute>
+		</ui-attribute>
+		</dependent-object>
+	</search-target-object>
+	<search-target-object>
+		<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
+		<display-name>Subject</display-name>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
+			<display-name>Subject</display-name>
+			<ui-attribute>
+				<name>firstName</name>
+				<label>First Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>lastName</name>
+				<label>Last Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
+			<display-name>Study</display-name>
+			<ui-attribute>
+				<name>shortTitle</name>
+				<label>Short Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>longTitle</name>
+				<label>Long Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>multiInstitutionIndicator</name>
+				<label>Multi institution</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>assignments</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudySite</name>
+				<role-name>studySite</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.Study</name>
+				<role-name>study</role-name>
+			</ui-association>
+		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
+			<display-name>Adverse event</display-name>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>assignments</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
+				<role-name>reportingPeriods</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</name>
+				<role-name>adverseEvents</role-name>
+			</ui-association>
+			<ui-attribute>
+				<name>solicited</name>
+				<label>Solicited</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>requiresReporting</name>
+				<label>Required Reporting</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>expected</name>
+				<label>Expected</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+		</dependent-object>
 	</search-target-object>
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
@@ -143,71 +172,86 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
 			<display-name>Adverse Event</display-name>
+			<ui-attribute>
+				<name>solicited</name>
+				<label>Solicited</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>requiresReporting</name>
+				<label>Required Reporting</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>expected</name>
+				<label>Expected</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
+			<ui-attribute>
+			<name>shortTitle</name>
+			<label>Short Title</label>
+			<data-type>String</data-type>
+			<field-type>text-field</field-type>
+			<operator name="==" display-uri="Equal To"/>				
+			<operator name="!=" display-uri="Not Equal To"/>
+		</ui-attribute>
+		<ui-attribute>
+			<name>longTitle</name>
+			<label>Long Title</label>
+			<data-type>String</data-type>
+			<field-type>text-field</field-type>
+			<operator name="==" display-uri="Equal To"/>
+			<operator name="!=" display-uri="Not Equal To"/>
+		</ui-attribute>
+		<ui-attribute>
+			<name>multiInstitutionIndicator</name>
+			<label>Multi institution</label>
+			<data-type>boolean</data-type>
+			<field-type>drop-down</field-type>
+			<valid-value value="true" display-uri="Yes"/>
+			<valid-value value="false" display-uri="No"/>
+			<operator name="==" display-uri="Equal To"/>				
+			<operator name="!=" display-uri="Not Equal To"/>
+		</ui-attribute>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
+			<ui-attribute>
+				<name>firstName</name>
+				<label>First Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>lastName</name>
+				<label>Last Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 		</dependent-object>
-		<attribute>
-			<name>grade</name>
-			<label>Grade</label>
-			<data-type>gov.nih.nci.cabig.caaers.domain.Grade</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="-1" display-uri="-1:Not Evaluated"/>
-			<valid-value value="0" display-uri="0:Normal"/>
-			<valid-value value="1" display-uri="1:Mild"/>
-			<valid-value value="2" display-uri="2:Moderate"/>
-			<valid-value value="3" display-uri="3:Severe"/>
-			<valid-value value="4" display-uri="4:Life-threatening or disabling"/>
-			<valid-value value="5" display-uri="5:Death"/>
-			<operator name="==" display-uri="Equal To"/>
-			<operator name="!=" display-uri="Not Equal To"/>
-			<operator name="&gt;=" display-uri="Greater Than Or Equal To"/>
-			<operator name="&lt;=" display-uri="Less Than Or Equal To"/>
-		</attribute>
-		<attribute>
-			<name>solicited</name>
-			<label>Solicited</label>
-			<data-type>boolean</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="true" display-uri="Yes"/>
-			<valid-value value="false" display-uri="No"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>requiresReporting</name>
-			<label>Required Reporting</label>
-			<data-type>boolean</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="true" display-uri="Yes"/>
-			<valid-value value="false" display-uri="No"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>expected</name>
-			<label>Expected</label>
-			<data-type>boolean</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="true" display-uri="Yes"/>
-			<valid-value value="false" display-uri="No"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</attribute>
-		<attribute>
-			<name>startDate</name>
-			<label>Start Date</label>
-			<data-type>Date</data-type>
-			<field-type>date-field</field-type>
-			<operator name="==" display-uri="Equal To"/>
-			<operator name="!=" display-uri="Not Equal To"/>
-			<operator name="&gt;=" display-uri="Greater Than Or Equal To"/>
-			<operator name="&lt;=" display-uri="Less Than Or Equal To"/>
-		</attribute>
 	</search-target-object>
 </advancedSearch-ui>

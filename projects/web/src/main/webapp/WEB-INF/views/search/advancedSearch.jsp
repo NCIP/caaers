@@ -1,10 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
+	<tags:javascriptLink name="advancedSearch" />
 	<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
     
     <style type="text/css">
@@ -169,17 +171,26 @@
 color:#0033FF;
 }
 </style>
+<script>
+	var advancedSearchHelper = new AdvancedSearchHelper(advSearch);
+</script>
 </head>
 <body>
-<tags:standardForm title="Enter Search Criteria">
+<tags:standardForm title="Enter search criteria">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
-    	<chrome:division id="study-division" collapsable="true" collapsed="true" title="Study search criteria">
-    	</chrome:division>
-    	<chrome:division id="participant-division" collapsable="true" collapsed="true" title="Subject search criteria">
-    	</chrome:division>
-    	<chrome:division id="adverseEvent-division" collapsable="true" collapsed="true" title="Adverse event search criteria">
-    	</chrome:division>
+   <%-- <form:form name="command" method="post"> --%>
+    	<input type="hidden" name="_finish" value="finish"/>
+    	<b>Search:</b> <SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
+			<OPTION selected value="none">Please select</OPTION>
+			<c:forEach items="${advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
+				<OPTION value="${searchTargetObject.className }">${searchTargetObject.displayName }</OPTION>
+			</c:forEach>
+		</SELECT>
+		<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+		<br><br>
+		<div id="criteria-section-id">
+		</div>
 	</jsp:attribute>
 </tags:standardForm>
 </body>
