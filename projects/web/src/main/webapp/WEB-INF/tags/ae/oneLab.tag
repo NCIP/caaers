@@ -28,21 +28,24 @@
               </div>
             </div>
     </div>
-	
+
     <div class="row">
-     <div class="label">
-      <tags:renderLabel field="${fieldGroup.fields[0]}"/>
-     </div>
-     <div class="value">
-       <tags:renderInputs field="${fieldGroup.fields[0]}"/>
-     </div>
-   </div>  
-    
-    <tags:renderRow field="${fieldGroup.fields[1]}"  style="display: none">
+        <div class="label">
+            <tags:renderLabel field="${fieldGroup.fields[0]}"/>
+        </div>
+        <div class="value">
+            <tags:renderInputs field="${fieldGroup.fields[0]}"/>
+        </div>
+    </div>
+
+    <c:set var="display">
+        <jsp:attribute name="value">
+            ${lab.name eq '' ? 'inline' : 'none'}
+        </jsp:attribute>
+    </c:set>
+    <tags:renderRow field="${fieldGroup.fields[1]}"  style="display: ${display};">
         <jsp:attribute name="label">
-            <label>
-                ${fieldGroup.fields[1].displayName}
-            </label>
+            <label>${fieldGroup.fields[1].displayName}</label>
         </jsp:attribute>
     </tags:renderRow>
 
@@ -62,9 +65,9 @@
     </div>
     
     <div id="microbiology-${index}" style="display: none">
-    <tags:renderRow field="${fieldGroup.fields[9]}" />
-    <tags:renderRow field="${fieldGroup.fields[10]}" />    
-    <tags:renderRow field="${fieldGroup.fields[11]}" />        
+        <tags:renderRow field="${fieldGroup.fields[9]}" />
+        <tags:renderRow field="${fieldGroup.fields[10]}" />
+        <tags:renderRow field="${fieldGroup.fields[11]}" />
     </div>
     
 <%--</ae:fieldGroupDivision>--%>
