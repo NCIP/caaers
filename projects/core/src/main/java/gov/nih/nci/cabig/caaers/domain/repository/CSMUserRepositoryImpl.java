@@ -57,7 +57,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 			    sendCreateAccountEmail(researchStaff, changeURL);
 			} else {
 			    csmUser = updateCSMUser(researchStaff);
-			    sendUpdateAccountEmail(researchStaff);
+			    if(csmUser == null){
+			    	csmUser = createCSMUser(researchStaff);
+			    	sendCreateAccountEmail(researchStaff, changeURL);
+			    }else{
+			    	sendUpdateAccountEmail(researchStaff);
+			    }
 			}
 		} catch (MailException e) {
 			mailException = e;
@@ -79,7 +84,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 				sendCreateAccountEmail(investigator, changeURL);
 			}else{
 				csmUser = updateCSMUser(investigator);
-				sendUpdateAccountEmail(investigator);
+				if(csmUser == null){
+					csmUser = createCSMUser(investigator);
+					sendCreateAccountEmail(investigator, changeURL);
+				}else{
+					sendUpdateAccountEmail(investigator);
+				}
 			}
 		} catch (MailException e) {
 			mailException = e;
@@ -178,8 +188,10 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private gov.nih.nci.security.authorization.domainobjects.User updateCSMUser(final User user) {
         String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
-        copyUserToCSMUser(user, csmUser);
-        saveCSMUser(csmUser);
+        if(csmUser != null){
+        	copyUserToCSMUser(user, csmUser);
+            saveCSMUser(csmUser);
+        }
         return csmUser;
     }
 
