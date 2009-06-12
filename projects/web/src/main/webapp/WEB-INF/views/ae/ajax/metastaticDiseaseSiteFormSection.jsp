@@ -4,7 +4,7 @@
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
 	<c:set var="mSite" value="${metastaticDiseaseSites[index]}" />
-	<ae:oneMetastaticDiseaseSite index="${index}" anatomicSite="${mSite.codedSite}" />
+	<ae:oneMetastaticDiseaseSite index="${index}" anatomicSite="${mSite.codedSite}" otherSite="${mSite.otherSite}"/>
 </c:forEach>
 </tags:noform>
 

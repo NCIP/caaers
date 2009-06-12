@@ -266,16 +266,18 @@ public class PatientDetailsTab extends AeTab {
     	int i =0;
     	Set<MetastaticDiseaseSite> set = new HashSet<MetastaticDiseaseSite>();
     	for(MetastaticDiseaseSite mSite : command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites()){
-            if (mSite.getCodedSite() == null || mSite.getCodedSite().getId() == null) continue;
-            
-            if(mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())){
-    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014","Missing other metastatic site information");
-    		}
-    		if(!set.add(mSite)){
-    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_013" , new Object[]{mSite.getCodedSite().getName()},
-    					"Duplicate metastatic site information");
-    		}
-    		i++;
+            if (mSite.getCodedSite() == null || mSite.getCodedSite().getId() == null) {
+                errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].codedSite", i), "SAE_026","Missing Metastatic disease site");
+            } else {
+                if (mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())) {
+                    errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014", "Missing other metastatic site information");
+                }
+
+                if (!set.add(mSite)) {
+                    errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_013", new Object[]{mSite.getCodedSite().getName()}, "Duplicate metastatic site information");
+                }
+            }
+            i++;
     	}
     }
     
@@ -299,8 +301,12 @@ public class PatientDetailsTab extends AeTab {
     	String propertyName = null;
         
         for(ConcomitantMedication conMed : command.getAeReport().getConcomitantMedications()){
-    		propertyName = String.format("aeReport.concomitantMedications[%d]", i);
-    		if(!set.add(conMed)){
+    		propertyName = String.format("aeReport.concomitantMedications[%d].agentName", i);
+            if (conMed.getName() == null) {
+                errors.rejectValue(propertyName, "SAE_027",new Object[]{conMed.getName()}, "Missing Concomitant Medication");
+            }
+
+            if(!set.add(conMed)){
     			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
 
@@ -323,7 +329,17 @@ public class PatientDetailsTab extends AeTab {
     }
     
     protected void validatePriorTherapies(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-    	
+        int i = 0;
+        Set<PriorTherapy> set = new HashSet<PriorTherapy>();
+        String propertyName = null;
+
+        for(SAEReportPriorTherapy pt: command.getAeReport().getSaeReportPriorTherapies()){
+            if (pt == null || pt.getName() == null) {
+                propertyName = String.format("aeReport.saeReportPriorTherapies[%d].priorTherapy", i);
+                errors.rejectValue(propertyName, "SAE_028", "Missing Prior Therapy");
+            }
+            i++;
+        }
     }
     
     //----- Create/Edit/Save/Delete operations (tasks) ----------------- 

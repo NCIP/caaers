@@ -3,21 +3,20 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -56,15 +55,14 @@ public class LabsTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         // InputField labNameField = InputFieldFactory.createAutocompleterField("labTerm", "Lab test
         // name");
-        InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name",false, createOptions());
+        InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name", false, createOptions());
         InputFieldAttributes.setSize(labNameField, 60);
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 60);
 
         InputField siteField = InputFieldFactory.createTextField("site", "Site", false);
         InputField labDateField = InputFieldFactory.createPastDateField("labDate", "Date", false);
-        InputField infectiousAgentField = InputFieldFactory.createTextArea("infectiousAgent",
-                "Infectious Agent", false);
+        InputField infectiousAgentField = InputFieldFactory.createTextArea("infectiousAgent", "Infectious Agent", false);
         InputFieldAttributes.setColumns(infectiousAgentField, 60);
 
         creator.createRepeatingFieldGroup("lab", "labs", createNameCreator(), labNameField,
@@ -135,5 +133,32 @@ public class LabsTab extends AeTab {
     	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
     	hasEmptyFields |= CollectionUtils.isEmpty(command.getAeReport().getLabs());
     	return hasEmptyFields;
+    }
+
+    @Override
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
+        int i =0;
+        Set<Lab> set = new HashSet<Lab>();
+        String propertyName;
+
+        for(Lab lab : command.getAeReport().getLabs()){
+
+            if (StringUtils.isEmpty(lab.getName()) && StringUtils.isEmpty(lab.getOther())) {
+//                if (StringUtils.isEmpty(lab.getName())) {
+                    propertyName = String.format("aeReport.labs[%d].labTerm", i);
+                    errors.rejectValue(propertyName, "SAE_029", new Object[]{lab.getName()}, "Missing Lab Name");
+/*
+
+                    if (StringUtils.isEmpty(lab.getOther())) {
+                        propertyName = String.format("aeReport.labs[%d].other", i);
+                        errors.rejectValue(propertyName, "SAE_030", new Object[]{lab.getName()}, "Missing Lab Other Information");
+                    }
+*/
+//                }
+            }
+            i++;
+        }
+        WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }
 }

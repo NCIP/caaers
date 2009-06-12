@@ -17,11 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -39,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.BeanWrapper;
 
 /**
  * @author Ion C. Olaru
@@ -88,7 +85,7 @@ public class StudyInterventionsTab extends AeTab {
         fractionNumberField.getAttributes().put(InputField.HELP, "ae.radiationIntervention.aeReport.radiationInterventions.fractionNumber");
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions", new SimpleNumericDisplayNameCreator("Radiation"),
-                createSelectField("administration", "Type of radiation administration", false, statusOpts),
+                createSelectField("administration", "Type of radiation administration", true, statusOpts),
                 createTextField("dosage", "Total dose (to date)", FieldValidator.NUMBER_VALIDATOR),
                 doseUOMField,
                 createPastDateField("lastTreatmentDate", "Date of last treatment", false),
@@ -105,11 +102,11 @@ public class StudyInterventionsTab extends AeTab {
         InputFieldAttributes.setDetails(descField, description);
         InputField codeField = createTextField("treatmentArm", "Treatment arm", false);
         InputFieldAttributes.setDetails(codeField, code);
-        creator.createRepeatingFieldGroup("surgeryIntervention", "surgeryInterventions", new SimpleNumericDisplayNameCreator("Surgery"), codeField, descField, InputFieldFactory.createAutocompleterField("interventionSite", "Intervention site", false), InputFieldFactory.createPastDateField("interventionDate", "Date of intervention", false));
+        creator.createRepeatingFieldGroup("surgeryIntervention", "surgeryInterventions", new SimpleNumericDisplayNameCreator("Surgery"), codeField, descField, InputFieldFactory.createAutocompleterField("interventionSite", "Intervention site", true), InputFieldFactory.createPastDateField("interventionDate", "Date of intervention", false));
     }
 
     private void createAgentFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
-        InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", false, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
+        InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", true, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"), true));

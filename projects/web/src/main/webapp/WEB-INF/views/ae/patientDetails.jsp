@@ -449,8 +449,8 @@
         <p><tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/></p>
 
           <div style="padding-left:20px;">
-          <div id="_metastatic">
               <tags:button cssClass="foo" id="metastatic-diseases-btn" color="blue" value="Add" icon="Add" type="button" onclick="addMetastaticDisease();" size="small"/>
+          <div id="_metastatic">
               <tags:indicator id="metastatic-diseases-btn-indicator" />
 
               <!--<a name="anchorMetastaticDiseases"/>-->
@@ -460,7 +460,7 @@
                   <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
                       <c:set var="newIndex" value="${size - (status.index + 1)}"/>
                       <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}"/>
-                      <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
+                      <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" otherSite="${mSite.otherSite}"/>
                   </c:forEach>
               </div>
           </div>

@@ -6,6 +6,7 @@
 
 <%@attribute name="index" required="true"%>
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
+<%@attribute name="otherSite" type="java.lang.String"%>
 
 <c:set var="mainGroup">metastatic${index}</c:set>
 <c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
@@ -14,14 +15,15 @@
 
     <jsp:attribute name="title">
 		${anatomicSite.name}
-	</jsp:attribute>
+        <c:if test="${not empty otherSite}">: ${otherSite}</c:if>
+    </jsp:attribute>
 
     <jsp:attribute name="titleFragment">
 	</jsp:attribute>
 
     <jsp:body>
 
-<c:if test="${empty anatomicSite.name}">
+<c:if test="${empty anatomicSite.name || (anatomicSite.id == 110 && empty otherSite)}">
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
     <jsp:attribute name="label">
     	<ui:label path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" mandatory="${siteField.attributes.mandatory}" 
@@ -42,6 +44,11 @@
              }
             </jsp:attribute>
         </ui:autocompleter>
+        &nbsp;
+            <span id="other_${index}" style="display:none;">
+                    <%-- Other, Specify--%>
+                    &nbsp;Other, specify: <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
+            </span>
         <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
     </jsp:attribute>
 </ui:row>
@@ -56,10 +63,19 @@
         var titleID = $('titleOf_aeReport.diseaseHistory.metastaticDiseaseSites[${index}]');
         var name = $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input");
         var value = name.value;
+        if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
+            $('other_${index}').show();
+            value += ": " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value;
+        } else {
+            $('other_${index}').hide();
+        }
         $(titleID).innerHTML = value;
     }
 
     Event.observe($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input"), "blur", function() {
+        setTitleMDS_${index}();
+    });
+    Event.observe($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite"), "change", function() {
         setTitleMDS_${index}();
     });
 </script>

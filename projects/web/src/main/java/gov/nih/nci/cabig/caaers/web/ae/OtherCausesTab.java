@@ -19,7 +19,7 @@ public class OtherCausesTab extends AeTab {
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-        InputField otherField = InputFieldFactory.createTextArea("text", "Cause", false);
+        InputField otherField = InputFieldFactory.createTextArea("text", "Cause", true);
         InputFieldAttributes.setColumns(otherField, 50);
         creator.createRepeatingFieldGroup("otherCause", "otherCauses", new SimpleNumericDisplayNameCreator("Other Cause"), otherField);
     }
