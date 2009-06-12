@@ -4,7 +4,7 @@ set start_date = (select ae.time from audit_events ae
 				       ae.operation = 'CREATE' and 
 				       ae.class_name = 'gov.nih.nci.cabig.caaers.domain.SiteInvestigator');
 
-update site_investigators set start_date = '2009-01-01' where start_date IS null;
+update site_investigators set start_date = to_date('2009-01-01', 'yyyy/mm/dd') where start_date IS null;
 
 CREATE TABLE temp
 (
@@ -24,6 +24,6 @@ Group by
 	cu.login_name,si.start_date,i.id;	
 
 update csm_user cu set start_date = (select min(start_date) from temp where cu.login_name = temp.login_name);
-update csm_user set start_date = '2009-01-01' where start_date IS null;
+update csm_user set start_date = to_date('2009-01-01', 'yyyy/mm/dd') where start_date IS null;
 
 drop table temp;
