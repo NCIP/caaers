@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -170,7 +171,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
         });
     }
-
+    
     /**
      * This method will reassociate the domain object to hibernate session. With a lock mode none.
      *

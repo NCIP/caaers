@@ -21,6 +21,7 @@ import gov.nih.nci.cagrid.cqlquery.Group;
 import gov.nih.nci.cagrid.cqlquery.LogicalOperator;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import com.semanticbits.core.CQL2HQL;
+import com.semanticbits.core.ExtendedPredicate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -289,11 +290,11 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	CQLQuery cqlQuery = new CQLQuery();
     	gov.nih.nci.cagrid.cqlquery.Object targetObject = new gov.nih.nci.cagrid.cqlquery.Object();
     	targetObject.setName("gov.nih.nci.cabig.caaers.domain.Participant");
-    	targetObject.setAttribute(new Attribute("ethnicity", Predicate.EQUAL_TO, "ethnicity"));
+    	targetObject.setAttribute(new Attribute("firstName", Predicate.EQUAL_TO, "Dilbert"));
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, true);
-    	List<Participant> participantList = getDao().search(new HQLQuery(hqlQuery));
-    	assertEquals("Incorrect number of participant fetched", 2, participantList.size());
+    	List<Participant> participantList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
+    	assertEquals("Incorrect number of participant fetched", 1, participantList.size());
     }
     
     /**
@@ -306,7 +307,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	targetObject.setAttribute(new Attribute("gender", Predicate.NOT_EQUAL_TO, "Female"));
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, true);
-    	List<Participant> participantList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> participantList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participant fetched", 1, participantList.size());
     }
     
@@ -320,7 +321,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	targetObject.setAttribute(new Attribute("firstName", Predicate.LIKE, "Michael"));
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, true);
-    	List<Participant> participantList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> participantList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participant fetched", 1, participantList.size());
     }
     
@@ -344,7 +345,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, false);
-    	List<Participant> pList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> pList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participants fetched", 1, pList.size());
     }
     
@@ -368,7 +369,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, false);
-    	List<Participant> pList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> pList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participants fetched", 1, pList.size());
     }
     
@@ -392,7 +393,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, false);
-    	List<Participant> pList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> pList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participants fetched", 1, pList.size());
     }
     
@@ -441,7 +442,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	adverseEventAssociation.setGroup(aeGroup);
     	cqlQuery.setTarget(targetObject);
     	String hqlQuery = CQL2HQL.translate(cqlQuery, false, false);
-    	List<Participant> pList = getDao().search(new HQLQuery(hqlQuery));
+    	List<Participant> pList = (List<Participant>)getDao().search(new HQLQuery(hqlQuery));
     	assertEquals("Incorrect number of participants fetched", 1, pList.size());
     }
     
