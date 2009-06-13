@@ -26,13 +26,17 @@ import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 //import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -82,6 +86,7 @@ public class AdvancedSearchController extends SimpleFormController{
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
 		
 		AdvancedSearchCommand command = (AdvancedSearchCommand) cmd;
+		Map map = new LinkedHashMap();
 		
 		List<AdvancedSearchCriteriaParameter> parameters = new ArrayList<AdvancedSearchCriteriaParameter>();
 		for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
@@ -92,13 +97,34 @@ public class AdvancedSearchController extends SimpleFormController{
 		String query = CQL2HQL.translate(cql, false, true);
 		System.out.println("query = " + query);
 		
-		List<Participant> participantList = (List<Participant>)participantDao.search(new HQLQuery(query));
-		System.out.println("Number of participants  = " + participantList.size());
 		
-		Map map = new LinkedHashMap();
+		//List<Participant> participantList = (List<Participant>)participantDao.search(new HQLQuery(query));
+		List<DomainObject> objectList = (List<DomainObject>) participantDao.search(new HQLQuery(query)); 
+		//System.out.println("Number of participants  = " + participantList.size());
 		
+		//map.put("viewColumnDetails", command.getSearchTargetObject().getViewColumn());
+		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
+		//for(Participant participant: participantList){
+		for(Object object: objectList){
+			SearchResultRowDTO row = new SearchResultRowDTO();
+			SearchResultColumnDTO column = null;
+			BeanWrapper wrapper = new BeanWrapperImpl(object);
+			for(ViewColumn viewColumn: command.getSearchTargetObject().getViewColumn()){
+				column = new SearchResultColumnDTO();
+				column.setColumnHeader(viewColumn.getColumnTitle());
+				column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+				row.getColumnListDTO().getColumnDTOList().add(column);
+			}
+			rowList.getRowListDTO().add(row);
+		}
+		
+		//for(ViewColumn viewColumn: command.getSearchTargetObject().getViewColumn()){
+		//	ViewColumn
+		//}
+		
+		map.put("rowList", rowList);
 		map.put("hql", query);
-		map.put("results", participantList);
+		//map.put("results", participantList);
 		
         map.putAll(errors.getModel());
         ModelAndView modelAndView = new ModelAndView("search/advancedSearchResults", map);

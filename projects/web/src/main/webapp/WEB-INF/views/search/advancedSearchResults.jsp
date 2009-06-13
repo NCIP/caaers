@@ -13,25 +13,20 @@
 	<chrome:box title="Search results">
 	${hql }<br>
 	
-	
-	<div class="eXtremeTable" id="${dependentObject.displayName}-div-id" style="text-align:left">
+	<div class="eXtremeTable" id="${dependentObject.displayName }-div-id" style="text-align:left">
 		<table width="100%" border="0" cellspacing="0" class="tableRegion">
-			<tr align="center" class="label">
-				<td class="centerTableHeader" width="20%">First name</td>
-				<td class="centerTableHeader" width="20%">Last name</td>
-				<td class="centerTableHeader" width="20%">Gender</td>
-				<td class="centerTableHeader" width="20%">Ethnicity</td>
-				<td class="centerTableHeader" width="20%">Birth date</td>
+			<tr>
+				<c:forEach items="${command.searchTargetObject.viewColumn}" var="viewColumn" varStatus="viewColumnStatus">
+					<td width="20%" class="centerTableHeader">${viewColumn.columnTitle }</td>
+				</c:forEach>
 			</tr>
-			<c:forEach items="${results}" var="result" varStatus="resultStatus">
+			<c:forEach items="${rowList.rowListDTO }" var="row" varStatus="rowStatus">
 				<tr>
-					<td width="20%" align="center">${result.firstName }</td>
-					<td width="20%" align="center">${result.lastName }</td>
-					<td width="20%" align="center">${result.gender }</td>
-					<td width="20%" align="center">${result.ethnicity }</td>
-					<td width="20%" align="center">${result.birthDate }</td>
+				<c:forEach items="${row.columnListDTO.columnDTOList }" var="col" varStatus="colStatus">
+					<td width="20%" align="center">${col.value }</td>
+				</c:forEach>
 				</tr>
-			</c:forEach>			
+			</c:forEach>
 		</table>
 	</div>
 	

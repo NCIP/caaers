@@ -3,6 +3,26 @@
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 		<display-name>Study</display-name>
+		<view-column>
+			<column-title>Short title</column-title>
+			<column-attribute>shortTitle</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Long title</column-title>
+			<column-attribute>longTitle</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Phase code</column-title>
+			<column-attribute>phaseCode</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Status</column-title>
+			<column-attribute>status</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Multi institution</column-title>
+			<column-attribute>multiInstitutionIndicator</column-attribute>
+		</view-column>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
@@ -37,26 +57,58 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
 			<ui-attribute>
-			<name>firstName</name>
-			<label>First Name</label>
-			<data-type>String</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</ui-attribute>
-		<ui-attribute>
-			<name>lastName</name>
-			<label>Last Name</label>
-			<data-type>String</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</ui-attribute>
+				<name>firstName</name>
+				<label>First Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>lastName</name>
+				<label>Last Name</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
+				<role-name>studyOrganizations</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>studyParticipantAssignments</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.Participant</name>
+				<role-name>participant</role-name>
+			</ui-association>
 		</dependent-object>
 	</search-target-object>
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 		<display-name>Subject</display-name>
+		<view-column>
+			<column-title>First name</column-title>
+			<column-attribute>firstName</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Last name</column-title>
+			<column-attribute>lastName</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Gender</column-title>
+			<column-attribute>gender</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Ethnicity</column-title>
+			<column-attribute>ethnicity</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Birth date</column-title>
+			<column-attribute>birthDate</column-attribute>
+		</view-column>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
@@ -169,6 +221,14 @@
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
 		<display-name>Adverse Event</display-name>
+		<view-column>
+			<column-title>Solicited</column-title>
+			<column-attribute>solicited</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Grade</column-title>
+			<column-attribute>grade</column-attribute>
+		</view-column>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
 			<display-name>Adverse Event</display-name>
@@ -207,31 +267,47 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<ui-attribute>
-			<name>shortTitle</name>
-			<label>Short Title</label>
-			<data-type>String</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</ui-attribute>
-		<ui-attribute>
-			<name>longTitle</name>
-			<label>Long Title</label>
-			<data-type>String</data-type>
-			<field-type>text-field</field-type>
-			<operator name="==" display-uri="Equal To"/>
-			<operator name="!=" display-uri="Not Equal To"/>
-		</ui-attribute>
-		<ui-attribute>
-			<name>multiInstitutionIndicator</name>
-			<label>Multi institution</label>
-			<data-type>boolean</data-type>
-			<field-type>drop-down</field-type>
-			<valid-value value="true" display-uri="Yes"/>
-			<valid-value value="false" display-uri="No"/>
-			<operator name="==" display-uri="Equal To"/>				
-			<operator name="!=" display-uri="Not Equal To"/>
-		</ui-attribute>
+				<name>shortTitle</name>
+				<label>Short Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>longTitle</name>
+				<label>Long Title</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>multiInstitutionIndicator</name>
+				<label>Multi institution</label>
+				<data-type>boolean</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
+				<role-name>reportingPeriod</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>assignment</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudySite</name>
+				<role-name>studySite</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.Study</name>
+				<role-name>study</role-name>
+			</ui-association>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
@@ -252,6 +328,18 @@
 				<operator name="==" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 			</ui-attribute>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</name>
+				<role-name>reportingPeriod</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>assignment</role-name>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.Participant</name>
+				<role-name>participant</role-name>
+			</ui-association>
 		</dependent-object>
 	</search-target-object>
 </advancedSearch-ui>

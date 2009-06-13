@@ -16,7 +16,15 @@
 			<xs:sequence>
 				<xs:element name="class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
+				<xs:element name="view-column" type="searchui:view-column" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="dependent-object" type="searchui:dependent-object" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:complexType name="view-column">
+			<xs:sequence>
+				<xs:element name="column-title" type="xs:string"/>
+				<xs:element name="column-attribute" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 	
