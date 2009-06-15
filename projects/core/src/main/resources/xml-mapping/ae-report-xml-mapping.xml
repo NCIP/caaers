@@ -661,7 +661,7 @@
     </field>
       
     <field name="abstractStudyDisease" type="gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease">
-      <bind-xml auto-naming="deriveByClass"/> <!--CtepStudyDisease or MeddraStudyDisease-->
+      <bind-xml auto-naming="deriveByClass"/> <!--CtepStudyDisease or MeddraStudyDisease or StudyCondition-->
     </field>
     <field name="codedPrimaryDiseaseSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
       <bind-xml name="AnatomicSite"/>
@@ -698,7 +698,27 @@
       <bind-xml name="LowLevelTerm" node="element"/>
     </field>    
   </class>
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyCondition">
+    <map-to xml="StudyCondition"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="term" type="gov.nih.nci.cabig.caaers.domain.Condition">
+      <bind-xml name="Condition" node="element"/>
+    </field>
+  </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.Condition">
+    <map-to xml="Condition"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="conditionName" type="string">
+      <bind-xml name="conditionName" node="element"/>
+    </field>
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
     <map-to xml="LowLevelTerm"/>
     <field name="id" type="integer">

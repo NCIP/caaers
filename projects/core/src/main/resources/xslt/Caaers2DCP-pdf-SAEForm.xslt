@@ -980,6 +980,8 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="left"> 
 							  			<fo:inline font-weight="bold"> Disease : </fo:inline>
 							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName" />
+							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm" />
 							  			<fo:block/>
 							  			 <fo:inline font-weight="bold">Primary Site of Disease : </fo:inline>
 							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
