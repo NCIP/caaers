@@ -453,7 +453,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	/**
 	 * This method will initialize the outcomes and outcomeOtherDetails, in the command. 
 	 */
-	public void initializeOutcomes(){
+	public void initializeOutcomes() {
 		outcomeOtherDetails.clear();
     	outcomes.clear();
     	int i = 0;
@@ -492,7 +492,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 *   If the serious(outcome) not available in the outcomes list, it will be added.
 	 *   Remove all the other outcomes present in the list (means user deselected a previously selected one)
 	 */
-	public void synchronizeOutcome(){
+	public void synchronizeOutcome() {
 		int size = (adverseEvents == null) ? 0 : adverseEvents.size();
 		
 		for(int i = 0; i < size; i++){
@@ -515,28 +515,29 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
                 	removeOutcomeIfPresent(outcomeType, ae.getOutcomes());
                 }
             }
-            
+
             //special cases, add DEATH and HOSPITALIZATION
             //if grade is 5 make sure we have OutcomeType.DEATH
-			if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)){
-				if(!isOutcomePresent(OutcomeType.DEATH, ae.getOutcomes())){
-					Outcome newOutcome = new Outcome();
-					newOutcome.setOutcomeType(OutcomeType.DEATH);
-					ae.addOutcome(newOutcome);
-				}else{
-					removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
-				}
-			}
-			//if hospitalized, make sure we have OutcomeType.HOSPITALIZATION 
-			if(ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)){
-				if(!isOutcomePresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes())){
-					Outcome newOutcome = new  Outcome();
-					newOutcome.setOutcomeType(OutcomeType.HOSPITALIZATION);
-					ae.addOutcome(newOutcome);
-				}else{
-					removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
-				}
-			}
+            if (ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)) {
+                if (!isOutcomePresent(OutcomeType.DEATH, ae.getOutcomes())) {
+                    Outcome newOutcome = new Outcome();
+                    newOutcome.setOutcomeType(OutcomeType.DEATH);
+                    ae.addOutcome(newOutcome);
+                }
+            } else {
+                removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
+            }
+
+            //if hospitalized, make sure we have OutcomeType.HOSPITALIZATION
+            if (ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)) {
+                if (!isOutcomePresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes())) {
+                    Outcome newOutcome = new Outcome();
+                    newOutcome.setOutcomeType(OutcomeType.HOSPITALIZATION);
+                    ae.addOutcome(newOutcome);
+                }
+            } else {
+                removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
+            }
 		}
 		
 	}
