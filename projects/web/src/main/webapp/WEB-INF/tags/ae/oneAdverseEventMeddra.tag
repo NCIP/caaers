@@ -15,7 +15,7 @@
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
 <c:set var="title_lowlevel">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 
-<c:set var="title">${adverseEvent.adverseEventMeddraLowLevelTerm.fullName} ${index eq 0 ? '(Primary)' : ''}</c:set>
+<c:set var="title">${adverseEvent.adverseEventMeddraLowLevelTerm.term.meddraTerm} ${index eq 0 ? '(Primary)' : ''}</c:set>
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
 <a name="adverseEventTerm-${adverseEvent.adverseEventTerm.term.id}"></a>
 <chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" 

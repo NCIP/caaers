@@ -32,7 +32,8 @@ public class LowLevelTerm extends AbstractMeddraDomainObject {
     	if(getMeddraTerm() == null) 
     		return getMeddraCode();
     	else 
-    		return getMeddraCode() + " - " + getMeddraTerm();
+    		// return getMeddraCode() + " - " + getMeddraTerm();
+    		return getMeddraTerm();
     }
     
     

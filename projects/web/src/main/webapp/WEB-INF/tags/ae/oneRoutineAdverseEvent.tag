@@ -19,7 +19,7 @@
 
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired ? 1  : 0}" />
-<c:set var="title_term">${adverseEvent.adverseEventTerm.fullName}</c:set>
+<c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
 
