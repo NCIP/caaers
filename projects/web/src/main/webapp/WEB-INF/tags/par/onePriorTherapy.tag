@@ -36,8 +36,10 @@
     			
     			if (ptVal == ${_priorTherapy_nopriortherapy_id}) {
         			$('dates${index}').hide();
+        			 $('priortherapy-btn').disabled = true;
     			} else {
         			$('dates${index}').show();
+        			 $('priortherapy-btn').disabled = false;
     			}
 			});
 			
