@@ -50,10 +50,16 @@
 				<xs:element name="label" type="xs:string"/>
 				<xs:element name="data-type" type="xs:string"/>
 				<xs:element name="field-type" type="xs:string"/>
+				<xs:element name="valid-value" type="searchui:valid-value" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="operator" type="searchui:operator" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
+		
+	<xs:complexType name="valid-value">
+		<xs:attribute name="value" type="xs:string"/>
+		<xs:attribute name="display-uri" type="xs:string"/>
+	</xs:complexType>
 	
 	<xs:complexType name="operator">
 		<xs:attribute name="name" type="xs:string"/>

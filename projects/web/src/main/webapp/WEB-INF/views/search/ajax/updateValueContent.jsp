@@ -5,4 +5,4 @@
 
 
 
-<input type="text" name="criteriaParameters[${index}].value" />
+<search:renderValueColumn index="${index}" uiAttribute="${uiAttribute }"></search:renderValueColumn>

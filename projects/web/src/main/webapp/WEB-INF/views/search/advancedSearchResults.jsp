@@ -8,6 +8,9 @@
 	<tags:dwrJavascriptLink objects="advSearch"/>
 	<tags:javascriptLink name="advancedSearch" />
 	<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+	
+	<script>
+	</script>
 </head>
 <body>
 	<chrome:box title="Search results">
@@ -29,7 +32,12 @@
 			</c:forEach>
 		</table>
 	</div>
-	
 	</chrome:box>
+	<div align="left">
+		<%-- <tags:button size="small" color="blue" id="modify-criteria-button" type="button" value="Modify criteria"  onclick="location.href='${URL}'" /> --%>
+		<a href="<c:url value="/pages/search/advancedSearch?modifyCriteria=true"/>">
+							Modify criteria
+		</a>
+	</div>
 </body>
 </html>

@@ -26,6 +26,8 @@ import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 //import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -69,8 +71,16 @@ public class AdvancedSearchController extends SimpleFormController{
 	@Override
     protected Object formBackingObject(HttpServletRequest request) {
 		AdvancedSearchCommand command = new AdvancedSearchCommand();
+		
+		String modifyCriteria = request.getParameter("modifyCriteria");
+		if(modifyCriteria != null){
+			SearchTargetObject stObject = (SearchTargetObject) request.getSession().getAttribute("searchTargetObject");
+			List<AdvancedSearchCriteriaParameter> criteriaParameters = (List<AdvancedSearchCriteriaParameter>) request.getSession().getAttribute("criteriaParameters");
+			command.setSearchTargetObject(stObject);
+			command.setCriteriaParameters(criteriaParameters);
+		}
 		request.getSession(true).setAttribute(AdvancedSearchController.class.getName() + ".FORM.command", command);
-        return new AdvancedSearchCommand();
+        return command;
     }
 	
 	@Override
@@ -128,6 +138,11 @@ public class AdvancedSearchController extends SimpleFormController{
 		
         map.putAll(errors.getModel());
         ModelAndView modelAndView = new ModelAndView("search/advancedSearchResults", map);
+        
+        // Put searchTargetObject and criteriaParameters in session to create the form when the user clicks "modify criteria" on the 
+        // results page.
+        request.getSession().setAttribute("searchTargetObject", command.getSearchTargetObject());
+        request.getSession().setAttribute("criteriaParameters", command.getCriteriaParameters());
 
         return modelAndView;
 	}
@@ -193,7 +208,18 @@ public class AdvancedSearchController extends SimpleFormController{
 		// This is for updating the attribute select element
 		if(ajaxAction != null && ajaxAction.equals("updateAttribute")){
 			String indexString = (String) findInRequest(request, "index");
-			refdata.put("index", Integer.parseInt(indexString));
+			String attributeName = (String) findInRequest(request, "attributeName");
+			Integer index = Integer.parseInt(indexString);
+			refdata.put("index", index);
+			
+			//Put the uiAttribute in refdata. Its needed to provide the metadata to the renderValueColumn.tag
+			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+				if(dObject.getClassName().equals(command.getCriteriaParameters().get(index).getObjectName())){
+					for(UiAttribute uiAttribute: dObject.getUiAttribute())
+						if(uiAttribute.getName().equals(attributeName))
+							refdata.put("uiAttribute", uiAttribute);
+				}
+			}
 		}
         
 		refdata.put("advancedSearchUi", advancedSearchUi);

@@ -47,14 +47,9 @@ Object.extend(AdvancedSearchHelper.prototype, {
 	},
 	
 	addCriteria: function(dependentObjectDisplayName){
-		alert('addCriteria');
 		this.ajaxFacade.addCriteria(dependentObjectDisplayName, function(ajaxOutput){
-			alert('returned from the ajax method');
 			var blankRowId = dependentObjectDisplayName + '-blank-row';
-			alert('blankRowId = ' + blankRowId);
-			alert('htmlContent =' + ajaxOutput.htmlContent);
 			$(blankRowId).insert({before: ajaxOutput.htmlContent});
-			alert('done inserting row');
 		});	
 	},
 	

@@ -71,6 +71,8 @@ public class AdvancedSearchAjaxFacade{
 		SearchTargetObject targetObject = AdvancedSearchUiUtil.getSearchTargetObjectByName(advancedSearchUi, targetObjectClassName);
 		command.setSearchTargetObject(targetObject);
 		
+		// Initialize the criteriaParameters with null.
+		command.setCriteriaParameters(null);
 		// For each dependent object in the targetObject add a default criteriaParameter to the criteriaParameters list
 		for(int i = 0; i < targetObject.getDependentObject().size(); i++){
 			AdvancedSearchCriteriaParameter criteriaParameter = new AdvancedSearchCriteriaParameter();
@@ -104,6 +106,7 @@ public class AdvancedSearchAjaxFacade{
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("ajax_action", "updateAttribute");
 		params.put("index", index.toString());
+		params.put("attributeName", attributeName);
 		ajaxOutput.setHtmlContent(renderAjaxView("updateValueContent", params));
 		
 		return ajaxOutput;
