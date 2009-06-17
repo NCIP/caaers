@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -71,13 +72,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     private Boolean attributionRequired;
     
-    private Boolean expedited;
-    
-    private String expectedDisplayDueDate;
-    
     private ReportFormatType reportFormatType;
     
     private Boolean physicianSignOff;
+    
+    private ConfigProperty reportType;
+    
+    private ReportDefinition parent;
     
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
@@ -277,15 +278,25 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public void setLabel(String label) {
 		this.label = label;
 	}
-
-	public Boolean getExpedited() {
-		return expedited;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	public ReportDefinition getParent() {
+		return parent;
 	}
-
-	public void setExpedited(Boolean expedited) {
-		this.expedited = expedited;
-	}    
+	
+	public void setParent(ReportDefinition parent) {
+		this.parent = parent;
+	}
     
+	@ManyToOne
+	@JoinColumn(name="report_type_id")
+	public ConfigProperty getReportType() {
+		return reportType;
+	}
+	public void setReportType(ConfigProperty reportType) {
+		this.reportType = reportType;
+	}
 	
     // //// OBJECT METHODS
 
@@ -304,6 +315,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
         result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
         result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
+        result = PRIME * result + ((getReportType() == null) ? 0 : getReportType().hashCode());
         result = PRIME
                         * result
                         + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
@@ -418,5 +430,11 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	
 	public void setPhysicianSignOff(Boolean physicianSignOff) {
 		this.physicianSignOff = physicianSignOff;
+	}
+	
+	@Transient
+	public boolean getExpedited(){
+		if(reportType == null) return false;
+		return reportType.getCode().equals("RT_EXPEDITED");
 	}
 }

@@ -67,7 +67,7 @@ public class ReportDefinitionConverter {
 		reportDefinitionDomain.setOrganization(organization);
 		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
-		reportDefinitionDomain.setExpedited(reportDefinitionDto.isExpedited());
+		//reportDefinitionDomain.setExpedited(reportDefinitionDto.isExpedited());
 		
 		if("CAAERSXML".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CAAERSXML);
@@ -186,7 +186,7 @@ public class ReportDefinitionConverter {
 		org.setNciInstituteCode(reportDefinitionDomain.getOrganization().getNciInstituteCode());
 		reportDefinitionDto.setOrganization(org);
 		reportDefinitionDto.setAttributionRequired(reportDefinitionDomain.getAttributionRequired());
-		reportDefinitionDto.setExpedited(reportDefinitionDomain.getExpedited());
+//		reportDefinitionDto.setExpedited(reportDefinitionDomain.getExpedited());
 		reportDefinitionDto.setExpectedDisplayDueDate(reportDefinitionDomain.getExpectedDisplayDueDate());
 		reportDefinitionDto.setReportFormat(reportDefinitionDomain.getReportFormatType().getName());
 		

@@ -28,7 +28,7 @@
 		<xs:element name="organization" type="OrganizationType"/>        
         <xs:element name="attributionRequired" type="xs:boolean"/>
         <xs:element name="physicianSignOff" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="expedited" type="xs:boolean"/>
+        <xs:element name="reportType" type="ReportType" minOccurs="1" maxOccurs="1" />
         <xs:element name="expectedDisplayDueDate" type="xs:string"/>
         <xs:element name="reportFormat" type="xs:string"/>
         <xs:element name="deliveryDefinition" type="ReportDeliveryDefinition" minOccurs="0" maxOccurs="unbounded"/>
@@ -36,7 +36,12 @@
         <xs:element name="plannedNotificaiton" type="PlannedNotification" minOccurs="0" maxOccurs="unbounded"/> 
       </xs:sequence>
     </xs:complexType>
-    
+    <xs:complexType name="ReportType">
+      <xs:sequence>
+        <xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="name" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
      <xs:complexType name="ReportDeliveryDefinition">
       <xs:sequence>
       	 <xs:element name="format" type="xs:string"/>

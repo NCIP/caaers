@@ -385,7 +385,6 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		report.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
 		aeReport.addReport(report);
 		reportingPeriod1.addAeReport(aeReport);
-		report.getReportDefinition().setExpedited(true);
 		report.getReportDefinition().setAmendable(true);
 		report.getReportDefinition().getOrganization().setNciInstituteCode(reportingPeriod1.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode());
 		

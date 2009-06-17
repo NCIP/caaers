@@ -807,7 +807,7 @@ public class CaaersRulesEngineService {
                     newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
                     newRd.setDuration(2);
                     newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
-                    newRd.setExpedited(false);
+                    newRd.setReportType(null);
                     newRd.setPhysicianSignOff(false);
                     reportDefinitionDao.save(newRd);
                     reportDefinitionsCreated.add(rd);

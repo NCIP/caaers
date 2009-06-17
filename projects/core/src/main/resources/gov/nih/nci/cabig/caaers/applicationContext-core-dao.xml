@@ -194,6 +194,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -368,6 +369,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
             </list>
         </property>
         <!--
@@ -502,6 +504,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao">
     	<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao"/>
     </bean>
+	<bean id="configPropertyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao" />
     <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
     <bean id="adverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
     <bean id="epochDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>

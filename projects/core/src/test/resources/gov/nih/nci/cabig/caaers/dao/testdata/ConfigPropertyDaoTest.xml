@@ -1,0 +1,5 @@
+<dataset>
+	<config_properties id="-1" code="EXP1" name="Expedited Report" description="Expedited Report category" config_type="1" />
+	<config_properties id="-2" code="TET1" name="Test Report" description="Test Report category" config_type="1" />
+	<config_properties id="-3" code="TET2" name="Test Report2" description="Test Report category2" config_type="100" />
+</dataset>

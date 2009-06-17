@@ -145,6 +145,7 @@ public class Fixtures {
         org.setName("Test");
         def.setOrganization(org);
         def.addPlannedNotification(createPlannedEmailNotification());
+        def.setReportType(createConfigProperty("RT_EXPEDITED"));
         return def;
     }
     
@@ -169,6 +170,13 @@ public class Fixtures {
         Fixtures.createReportVersion(rep);
         rep.addScheduledNotification(createScheduledEmailNotification());
         return rep;
+    }
+    
+    public static ConfigProperty createConfigProperty(String code){
+    	ConfigProperty cp = new ConfigProperty();
+    	cp.setCode(code);
+    	cp.setName(code);
+    	return cp;
     }
 
     public static ScheduledEmailNotification createScheduledEmailNotification() {
