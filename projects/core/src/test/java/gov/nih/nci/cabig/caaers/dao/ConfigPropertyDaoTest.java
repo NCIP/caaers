@@ -5,6 +5,7 @@ import java.util.List;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 /**
  * 
  * @author Biju Joseph
@@ -15,7 +16,13 @@ public class ConfigPropertyDaoTest extends DaoTestCase<ConfigPropertyDao> {
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
-
+	
+	public void testGetById(){
+		ConfigProperty cp = getDao().getById(-1);
+		assertNotNull(cp);
+		assertNotNull(cp.getConfigType());
+	}
+	
 	public void testGetByType() {
 		List<ConfigProperty> props = getDao().getByType(ConfigPropertyType.REPORT_TYPE);
 		assertEquals(2, props.size());
@@ -34,6 +41,22 @@ public class ConfigPropertyDaoTest extends DaoTestCase<ConfigPropertyDao> {
 		assertEquals("Expedited Report", cp.getName());
 		cp = getDao().getByTypeAndCode(ConfigPropertyType.REPORT_TYPE, "RT_xx");
 		assertNull(cp);
+	}
+	
+	public void testSave(){
+		{
+			ConfigProperty cp = Fixtures.createConfigProperty("test");
+			cp.setConfigType(ConfigPropertyType.UNKNOWN);
+			getDao().save(cp);
+		}
+		interruptSession();
+		{
+			ConfigProperty cp = getDao().getByTypeAndCode(ConfigPropertyType.UNKNOWN, "test");
+			assertNotNull(cp);
+			assertNotNull(cp.getConfigType());
+			assertEquals("test", cp.getCode());
+			
+		}
 	}
 
 }
