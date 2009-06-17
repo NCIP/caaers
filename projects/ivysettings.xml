@@ -62,15 +62,10 @@
 				root="http://repository.jboss.com/maven2" changingPattern=".*SNAPSHOT"/>
 			
 
-            <ibiblio name="openqa" m2compatible="true"
-                            root="http://archiva.openqa.org/repository/releases/" changingPattern=".*SNAPSHOT"/>
-			
+            <ibiblio name="openqa" m2compatible="true" root="http://archiva.openqa.org/repository/releases/" changingPattern=".*SNAPSHOT"/>
 			<ibiblio name="java.net" root="http://download.java.net/maven/1/" pattern="[organization]/jars/[module]-[revision].[ext]" />
-			
-			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT">
-			</ibiblio>
-            
-            
+			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT" />
+            <ibiblio name="download-java-net" m2compatible="true" root="http://download.java.net/maven/2" changingPattern=".*SNAPSHOT" />
             		
 			<!--  SemanticBits shared repository [using sftp] -->
 <!--

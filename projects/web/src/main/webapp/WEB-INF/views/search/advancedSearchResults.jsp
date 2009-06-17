@@ -7,7 +7,6 @@
 <head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
 	<tags:javascriptLink name="advancedSearch" />
-	<tags:includeYUI />
 	<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 	<script>
 		Event.observe(window, "load", function() {

@@ -228,6 +228,47 @@
 	 <session-config>
       <session-timeout>30</session-timeout> 
     </session-config>
-	
+
+    <!-- JAWR config start -->
+
+        <servlet>
+            <servlet-name>JavascriptServlet</servlet-name>
+            <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+
+            <init-param>
+                <param-name>configLocation</param-name>
+                <param-value>/jawr.properties</param-value>
+            </init-param>
+            <load-on-startup>1</load-on-startup>
+        </servlet>
+
+        <servlet>
+            <servlet-name>CSSServlet</servlet-name>
+            <servlet-class>net.jawr.web.servlet.JawrServlet</servlet-class>
+
+            <!-- Location in classpath of the config file -->
+            <init-param>
+                <param-name>configLocation</param-name>
+                <param-value>/jawr.properties</param-value>
+            </init-param>
+            <init-param>
+                <param-name>type</param-name>
+                <param-value>css</param-value>
+            </init-param>
+            <load-on-startup>1</load-on-startup>
+        </servlet>
+
+        <servlet-mapping>
+            <servlet-name>JavascriptServlet</servlet-name>
+            <url-pattern>*.zjs</url-pattern>
+        </servlet-mapping>
+
+        <servlet-mapping>
+            <servlet-name>CSSServlet</servlet-name>
+            <url-pattern>*.zcss</url-pattern>
+        </servlet-mapping>
+
+        <!-- JAWR config end -->
+    
 </web-app>
 	
