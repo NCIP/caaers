@@ -467,11 +467,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
         if (studyDiseasesMap == null) {
             if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getActiveStudyDiseases(), "id", "term.meddraTerm", "Please select");
             } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getStudyConditions(), "id", "term.conditionName", "Please select");
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getActiveStudyDiseases(), "id", "term.conditionName", "Please select");
             } else {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(), "id", "term.term", "Please select");
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getActiveStudyDiseases(), "id", "term.term", "Please select");
             }
         }
         return studyDiseasesMap;
