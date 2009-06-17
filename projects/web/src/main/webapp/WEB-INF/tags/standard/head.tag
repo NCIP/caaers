@@ -2,6 +2,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<tags:stylesheetLink name="skin"/>
+<tags:stylesheetLink name="datatable"/>
 <tags:stylesheetLink name="debug"/>
 <tags:stylesheetLink name="common"/>
 <tags:stylesheetLink name="floatingTaskbar"/>
@@ -12,6 +14,7 @@
 <tags:stylesheetLink name="hoverhelp"/>
 <tags:stylesheetLink name="tigra-menu/tigra-menu"/>
 <tags:stylesheetLink name="side-bar"/>
+
 <!--[if IE]>
 <tags:stylesheetLink name="ie"/>
 <![endif]-->
