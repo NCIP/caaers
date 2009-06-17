@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
@@ -20,6 +22,7 @@ import gov.nih.nci.cabig.caaers.reportdefinition.OrganizationType;
 import gov.nih.nci.cabig.caaers.reportdefinition.RecipientType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.reportdefinition.ReportType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,14 @@ import java.util.List;
 public class ReportDefinitionConverter {
 	
 	private OrganizationDao organizationDao;
+	private ConfigPropertyDao configPropertyDao;
 	
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+	
+	public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
+		this.configPropertyDao = configPropertyDao;
 	}
 
 	public ReportDefinition dtoToDomain(ReportDefinitionType reportDefinitionDto){
@@ -67,7 +75,9 @@ public class ReportDefinitionConverter {
 		reportDefinitionDomain.setOrganization(organization);
 		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
-		//reportDefinitionDomain.setExpedited(reportDefinitionDto.isExpedited());
+		//populate the correct config property
+		reportDefinitionDomain.setReportType(configPropertyDao.getByTypeAndCode(ConfigPropertyType.valueOf(reportDefinitionDto.getReportType().getConfigType()), 
+							reportDefinitionDto.getReportType().getCode()));
 		
 		if("CAAERSXML".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CAAERSXML);
@@ -186,7 +196,12 @@ public class ReportDefinitionConverter {
 		org.setNciInstituteCode(reportDefinitionDomain.getOrganization().getNciInstituteCode());
 		reportDefinitionDto.setOrganization(org);
 		reportDefinitionDto.setAttributionRequired(reportDefinitionDomain.getAttributionRequired());
-//		reportDefinitionDto.setExpedited(reportDefinitionDomain.getExpedited());
+		//set the report type
+		ReportType reportType = new ReportType();
+		reportType.setCode(reportDefinitionDomain.getReportType().getCode());
+		reportType.setConfigType(reportDefinitionDomain.getReportType().getConfigType().name());
+		reportDefinitionDto.setReportType(reportType);
+		
 		reportDefinitionDto.setExpectedDisplayDueDate(reportDefinitionDomain.getExpectedDisplayDueDate());
 		reportDefinitionDto.setReportFormat(reportDefinitionDomain.getReportFormatType().getName());
 		

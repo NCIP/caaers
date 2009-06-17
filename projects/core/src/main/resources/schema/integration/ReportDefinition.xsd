@@ -39,7 +39,7 @@
     <xs:complexType name="ReportType">
       <xs:sequence>
         <xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="name" type="xs:string" />
+        <xs:element name="configType" type="xs:string" minOccurs="1" maxOccurs="1" />
       </xs:sequence>
     </xs:complexType>
      <xs:complexType name="ReportDeliveryDefinition">

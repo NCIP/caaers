@@ -44,8 +44,8 @@ public class ConfigProperty extends AbstractMutableDomainObject{
 	}
 	
 	
-	 @Type(type = "configType")
-	 @Column(name="config_type")
+	@Type(type = "configType")
+	@Column(name="config_type",nullable=false)
 	public ConfigPropertyType getConfigType() {
 		return configType;
 	}

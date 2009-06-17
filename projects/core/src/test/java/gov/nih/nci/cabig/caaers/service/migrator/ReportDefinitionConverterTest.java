@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.io.FileNotFoundException;
@@ -33,6 +34,8 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		
 		assertNotNull(reportDefinitionDomain);
 		assertEquals("TEST CTEP 24 Hour SAE Notification", reportDefinitionDomain.getName());
+		assertNotNull(reportDefinitionDomain.getReportType());
+		assertEquals("RT_INST", reportDefinitionDomain.getReportType().getCode());
 		assertEquals(reportDefinitionDto.getDeliveryDefinition().size(), reportDefinitionDomain.getDeliveryDefinitions().size());
 		assertEquals(reportDefinitionDto.getMandatoryField().size(), reportDefinitionDomain.getMandatoryFields().size());
 		assertEquals(reportDefinitionDto.getPlannedNotificaiton().size(), reportDefinitionDomain.getPlannedNotifications().size());
@@ -44,6 +47,12 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
 		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
+		assertNotNull(reportDefinitionDomain);
+		assertEquals("TEST CTEP 24 Hour SAE Notification", reportDefinitionDomain.getName());
+		assertNotNull(reportDefinitionDomain.getReportType());
+		assertEquals("RT_INST", reportDefinitionDomain.getReportType().getCode());
+		assertNotNull(reportDefinitionDomain.getReportType().getConfigType());
+		assertEquals(ConfigPropertyType.REPORT_TYPE, reportDefinitionDomain.getReportType().getConfigType());
 		
 		reportDefinitions = reportDefinitionConverter.domainToDto(reportDefinitionDomain);
 		reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);

@@ -11,7 +11,10 @@
             <nciInstituteCode>CTEP</nciInstituteCode>
         </organization>
         <attributionRequired>false</attributionRequired>
-        <expedited>false</expedited>
+        <reportType>
+        	<code>RT_INST</code>
+			<configType>REPORT_TYPE</configType>
+        </reportType>
         <expectedDisplayDueDate>Expected Due Date 10/28/08</expectedDisplayDueDate>
         <reportFormat>ADEERSPDF</reportFormat>
         <deliveryDefinition>

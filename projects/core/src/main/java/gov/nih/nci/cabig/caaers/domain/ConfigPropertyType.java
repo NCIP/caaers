@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 public enum ConfigPropertyType implements CodedEnum<Integer> {
 	REPORT_TYPE(1, "Report Definition Type"),
 	UNKNOWN(100,"Unknown");
+	
 	private Integer code;
 	private String displayName;
 	

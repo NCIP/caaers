@@ -6,6 +6,10 @@
         nci_institute_code="CTEP"
         grid_id="gridSite_1"/>
 		
+		<config_properties id="-1" code="RT_INST" name="Local Report" 
+		 	description="Local Report category" config_type="1" />
+		
 		<identifiers />
+		<ind_holders />
 
 </dataset>

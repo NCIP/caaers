@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -36,6 +39,7 @@ public class CaaersRulesEngineService {
     private RepositoryService repositoryService;
     private ReportDefinitionDao reportDefinitionDao;
     private OrganizationDao organizationDao;
+    private ConfigPropertyDao configPropertyDao;
 
     public CaaersRulesEngineService() {
         ruleAuthoringService = new RuleAuthoringServiceImpl();
@@ -793,7 +797,9 @@ public class CaaersRulesEngineService {
          * DCP uses CTEP report definitions, this is a temp fix
          */
         if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName()) && !orgName.equals("Division of Cancer Prevention")) {
-            //System.out.println("Size " + reportDefinitions.size());
+        	
+        	//find the "Expedited" - ConfigProperty 
+        	ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_TYPE, "RT_EXPEDITED");
             // check report definitions for this org
             for (String rd : reportDefinitions) {
                 ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
@@ -807,7 +813,7 @@ public class CaaersRulesEngineService {
                     newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
                     newRd.setDuration(2);
                     newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
-                    newRd.setReportType(null);
+                    newRd.setReportType(expeditedConfigProperty);
                     newRd.setPhysicianSignOff(false);
                     reportDefinitionDao.save(newRd);
                     reportDefinitionsCreated.add(rd);
@@ -881,6 +887,13 @@ public class CaaersRulesEngineService {
 
 	public OrganizationDao getOrganizationDao() {
 		return organizationDao;
+	}
+	
+	public ConfigPropertyDao getConfigPropertyDao() {
+		return configPropertyDao;
+	}
+	public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
+		this.configPropertyDao = configPropertyDao;
 	}
     
 }

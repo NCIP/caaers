@@ -247,6 +247,7 @@ This applicationContext contains the definition of the concrete services
 
 	<bean id="reportDefinitionConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter">
 		<property name="organizationDao" ref="organizationDao"/>
+		<property name="configPropertyDao" ref="configPropertyDao" />
 	</bean> 
 	
 	<bean id="adeersReportGenerator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
@@ -269,5 +270,6 @@ This applicationContext contains the definition of the concrete services
 		<property name="repositoryService" ref="jcrService"/>
 		<property name="reportDefinitionDao" ref="reportDefinitionDao"/>
 		<property name="organizationDao" ref="organizationDao"/>
+		<property name="configPropertyDao" ref="configPropertyDao" />
 	</bean>
 </beans>
