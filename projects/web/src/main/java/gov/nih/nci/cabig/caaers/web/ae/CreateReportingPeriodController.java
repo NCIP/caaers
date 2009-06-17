@@ -110,7 +110,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
         populateHelpAttributeOnFields(groupMap);
 
         refDataMap.put("fieldGroups", groupMap);
-        refDataMap.put("treatmentAssignments", fetchTreatmentAssignmentOptions(command));
         return refDataMap;
     }
 
@@ -174,8 +173,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 return;
             }
         } else {
+        	if(rPeriod.getTreatmentAssignment().isRetired()){
+        		errors.reject("CRP_009", "Treatment assignment should be active");
+        		return;
+        	}
             rPeriod.setTreatmentAssignmentDescription("");
         }
+        
+        
         
         // Check for duplicate baseline Reporting Periods.
         if (rPeriod.getEpoch().getName().equals("Baseline")) {
@@ -335,10 +340,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
     }
 
 
-    public Map<Object, Object> fetchTreatmentAssignmentOptions(final Object cmd) {
-        ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) cmd;
-        return WebUtils.collectOptions(rpCommand.getStudy().getActiveTreatmentAssignments(), "id", "code", "Please select");
-    }
 
     protected Map<Object, Object> createEpochOptions(final Object command) {
         Map<Object, Object> epochMap = new LinkedHashMap<Object, Object>();
