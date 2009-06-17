@@ -110,8 +110,8 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.getAeReport().getReports().get(1).getReportDefinition().setOrganization(organization2);
     	command.getAeReport().getReports().get(3).getReportDefinition().setOrganization(organization2);
     	// Setup expedited
-    	command.getAeReport().getReports().get(0).getReportDefinition().setExpedited(true);
-    	command.getAeReport().getReports().get(2).getReportDefinition().setExpedited(true);
+    	command.getAeReport().getReports().get(0).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
+    	command.getAeReport().getReports().get(2).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	// Create the list of newlySelectedDefs.
     	// For the test case we will just populate the reportDefinitions of the reports in aeReport in a list
     	List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
@@ -265,7 +265,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("treatmentInformation.treatmentAssignment",Mandatory.MANDATORY));
     		
     		reportDefinition.setAmendable(false);
-    		reportDefinition.setExpedited(false);
+    		reportDefinition.setReportType(Fixtures.createConfigProperty("NOT_EXPEDITED"));
     		reportDefinition.setName("repDefn " + i);
     		reportDefinition.setId(i);
     		report.setReportDefinition(reportDefinition);

@@ -13,12 +13,12 @@
 <c:set var="v" value="aeReport.surgeryInterventions[${index}]" />
 <ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
-
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionSite">
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[2]}"/></jsp:attribute>
          <jsp:attribute name="value">
              <c:set var="initValue" value="${not empty surgery.interventionSite ? surgery.interventionSite.name : 'Begin typing here...'}"/>
-             <ui:autocompleter path="aeReport.surgeryInterventions[${index}].interventionSite" initialDisplayValue="${initValue}" enableClearButton="true" field="${fieldGroup.fields[2]}">
+             <ui:autocompleter path="aeReport.surgeryInterventions[${index}].interventionSite" initialDisplayValue="${initValue}" enableClearButton="true" 
+             	field="${fieldGroup.fields[2]}">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text){
                                 createAE.matchInterventionSites(text, function(values) {

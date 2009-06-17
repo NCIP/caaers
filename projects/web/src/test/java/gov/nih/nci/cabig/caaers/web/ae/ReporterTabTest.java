@@ -177,7 +177,7 @@ public class ReporterTabTest extends AeTabTestCase {
     		ReportDefinition reportDefinition = new ReportDefinition();
     		reportDefinition.setId(i+1);
     		reportDefinition.setAmendable(false);
-    		reportDefinition.setExpedited(false);
+    		reportDefinition.setReportType(Fixtures.createConfigProperty("not expedited"));
     		reportDefinition.setName("repDefn " + i);
     		reportDefinition.setOrganization(Fixtures.createOrganization("test org"));
     		reportDefinition.getOrganization().setNciInstituteCode("test nci code");
@@ -199,7 +199,7 @@ public class ReporterTabTest extends AeTabTestCase {
     public void setupSelectedReportDefintiions(){
     	ReportDefinition rd = Fixtures.createReportDefinition("test 5 day report", "test nci code");
     	rd.setAmendable(true);
-    	rd.setExpedited(true);
+    	rd.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	rd.setTimeScaleUnitType(TimeScaleUnit.DAY);
     	rd.setDuration(5);
     	rd.setId(10);
@@ -251,7 +251,7 @@ public class ReporterTabTest extends AeTabTestCase {
     	// Set the due dates on the existing reports and modify the amendable/expedited properties
     	ReportDefinition rd = command.getAeReport().getReports().get(0).getReportDefinition();
     	rd.setAmendable(true);
-    	rd.setExpedited(true);
+    	rd.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	rd.setId(1);
     	rd.setName("test existing amendable report");
     	
@@ -299,7 +299,7 @@ public class ReporterTabTest extends AeTabTestCase {
     	
     	// Set the due dates on the existing reports and modify the amendable/expedited properties
     	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setExpedited(true);
+    	command.getAeReport().getReports().get(0).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	command.getAeReport().getReports().get(1).getReportDefinition().setName("test 24 hr notification");
     	command.getAeReport().getReports().get(0).getReportDefinition().setId(10);
     	command.getAeReport().getReports().get(0).getReportDefinition().setName("test existing amendable report");
@@ -356,7 +356,7 @@ public class ReporterTabTest extends AeTabTestCase {
     	
     	// Set the due dates on the existing reports and modify the amendable/expedited properties
     	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setExpedited(true);
+    	command.getAeReport().getReports().get(0).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	command.getAeReport().getReports().get(1).getReportDefinition().setName("test 24 hr notification");
     	command.getAeReport().getReports().get(0).getReportDefinition().setId(11);
     	
