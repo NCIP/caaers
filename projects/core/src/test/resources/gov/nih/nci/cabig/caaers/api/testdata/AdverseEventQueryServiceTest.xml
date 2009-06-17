@@ -150,7 +150,7 @@
         attribution_summary_code="3"
         expected="1"
         comments="That was some big AE: id=-3"
-        solicited="false"
+        solicited="0"
         event_time_zone="0"
         event_time_minute="0"
         event_time_hour="0"
