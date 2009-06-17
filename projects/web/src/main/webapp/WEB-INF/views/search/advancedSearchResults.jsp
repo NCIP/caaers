@@ -31,9 +31,18 @@
 					</c:forEach>
 				]
         };
+        
+        //Create config
+        var oConfigs = { 
+				paginator: new YAHOO.widget.Paginator({ 
+					rowsPerPage: 10 
+				}), 
+				initialRequest: "results=${numberOfResults}",
+				draggableColumns:true 
+			};
 
         // Create DataTable
-        var myDataTable = new YAHOO.widget.DataTable("columnshowhide", myColumnDefs, myDataSource, {draggableColumns:true});
+        var myDataTable = new YAHOO.widget.DataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
                     
         // Shows dialog, creating one when necessary
         var newCols = true;
@@ -141,7 +150,7 @@
 							Modify criteria
 		</a>
 	</div>
-	<br><br>
+	<br>
 	<chrome:box title="Search results">
 		<div id="resultsTableDiv">
 		    <div id="dt-options"><a id="dt-options-link" href="fallbacklink.html">Table Options</a></div>

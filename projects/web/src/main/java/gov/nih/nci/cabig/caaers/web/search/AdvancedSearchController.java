@@ -111,7 +111,7 @@ public class AdvancedSearchController extends SimpleFormController{
 		//List<Participant> participantList = (List<Participant>)participantDao.search(new HQLQuery(query));
 		List<DomainObject> objectList = (List<DomainObject>) participantDao.search(new HQLQuery(query)); 
 		//System.out.println("Number of participants  = " + participantList.size());
-		
+		map.put("numberOfResults", objectList.size());
 		//map.put("viewColumnDetails", command.getSearchTargetObject().getViewColumn());
 		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
 		//for(Participant participant: participantList){

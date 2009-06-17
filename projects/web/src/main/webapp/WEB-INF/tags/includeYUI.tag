@@ -5,3 +5,4 @@
 <tags:javascriptLink name="YUI/datatable-patch"/>
 <tags:javascriptLink name="YUI/container-min"/>
 <tags:javascriptLink name="YUI/button-min"/>
+<tags:javascriptLink name="YUI/paginator-min"/>
