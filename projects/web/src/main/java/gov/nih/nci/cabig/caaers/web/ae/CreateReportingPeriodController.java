@@ -337,7 +337,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
     public Map<Object, Object> fetchTreatmentAssignmentOptions(final Object cmd) {
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) cmd;
-        return WebUtils.collectOptions(rpCommand.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
+        return WebUtils.collectOptions(rpCommand.getStudy().getActiveTreatmentAssignments(), "id", "code", "Please select");
     }
 
     protected Map<Object, Object> createEpochOptions(final Object command) {

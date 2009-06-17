@@ -58,7 +58,7 @@ public class TreatmentTab extends AeTab {
     private Map<Object, Object> collectTreatmentAssignmentCodes(ExpeditedAdverseEventInputCommand command) {
         LinkedHashMap<Object, Object> map = new LinkedHashMap<Object, Object>();
         map.put("", "Please select");
-        List<TreatmentAssignment> taList = command.getAeReport().getStudy().getTreatmentAssignments();
+        List<TreatmentAssignment> taList = command.getAeReport().getStudy().getActiveTreatmentAssignments();
         if (taList != null) {
             for (TreatmentAssignment ta : taList) {
                 map.put(ta.getId(), ta.getCode());
