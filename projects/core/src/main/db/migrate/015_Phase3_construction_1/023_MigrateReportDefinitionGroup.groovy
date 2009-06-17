@@ -4,7 +4,7 @@ class MigrateReportDefinitionGroup extends edu.northwestern.bioinformatics.berin
 	         execute("update REPORT_CALENDAR_TEMPLATES set report_type_id = (select id from config_properties where code='RT_EXPEDITED') where expedited = true")
 	         
 	     }else if (databaseMatches('oracle')){
-	         external("update REPORT_CALENDAR_TEMPLATES set report_type_id = (select id from config_properties where code='RT_EXPEDITED') where expedited = 1")
+	         execute("update REPORT_CALENDAR_TEMPLATES set report_type_id = (select id from config_properties where code='RT_EXPEDITED') where expedited = 1")
 	     }
 		//update all other records to local
 		 execute("update REPORT_CALENDAR_TEMPLATES set report_type_id = (select id from config_properties where code='RT_INST') where report_type_id is null")
