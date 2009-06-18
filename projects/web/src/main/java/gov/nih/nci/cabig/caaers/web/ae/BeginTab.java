@@ -54,7 +54,14 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         boolean noAdverseEventReportingPeriod = command.getAdverseEventReportingPeriod() == null;
         if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
         if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
-        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "SAE_003", "Missing course/cycle");
+        if (noAdverseEventReportingPeriod){
+        	errors.rejectValue("adverseEventReportingPeriod", "SAE_003", "Missing course/cycle");
+        }else{
+        	if(command.getAdverseEventReportingPeriod().getTreatmentAssignment() != null && command.getAdverseEventReportingPeriod().getTreatmentAssignment().isRetired()){
+        		errors.reject("SAE_031", "Treatment assignment to which this course is associated to, is removed from protocol.");
+        	}
+        }
+        
     }
 
 	@Override
