@@ -117,26 +117,31 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 		
 		// Validate - All AE's should be graded.
 		if(!validGradeValues(adverseEventReportingPeriod))	
-			e.reject("All adverse events should be graded.");
+			e.reject("CAE_007","All adverse events should be graded.");
 		
 		// Validate - All AE's with grade >= 2 must have the hospitalization question answered.
 		if(!validHospitalization(adverseEventReportingPeriod))
-			e.reject("Hospitalization must be entered if grade is greater than 2.");
+			e.reject("CAE_008","Hospitalization must be entered if grade is greater than 2.");
 		
 		// Validate - All AE's with grade >= 1 must have attribution answered.
 		if(!validAttribution(adverseEventReportingPeriod))
-			e.reject("Attribution must be entered if grade is greater than 1.");
+			e.reject("CAE_009","Attribution must be entered if grade is greater than 1.");
 		
 		// Validate - The course/evaluation period must have an end date.
 		if(!validateEndDateNotNull(adverseEventReportingPeriod))
-			e.reject("End date should be entered for the course.");
+			e.reject("CAE_010","End date should be entered for the course.");
 		
 		// Validate - The end date for the course/reporting period must be <= the current date.
 		if(!validateFutureEndDate(adverseEventReportingPeriod))
-			e.reject("End date of the course cannot have a future date value.");
+			e.reject("CAE_011","End date of the course cannot have a future date value.");
 		
 		// Validate - All AE's with "Other, Specify" terms must have Verbatim entered or Other MedDRA term selected.
 		if(!validateOtherSpecifyTerms(adverseEventReportingPeriod))
-			e.reject("Either verbatim or Other Meddra should be added if the AE term is of kind - otherSpecify");
+			e.reject("CAE_012","Either verbatim or Other Meddra should be added if the AE term is of kind - otherSpecify");
+
+		//validate if TAC, present is active
+		if(adverseEventReportingPeriod.getTreatmentAssignment() != null && adverseEventReportingPeriod.getTreatmentAssignment().isRetired()){
+			e.reject("CAE_013","Treatment assignment associated to this course, is incorrect or removed from protocol.");
+		}
 	}
 }
