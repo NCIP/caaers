@@ -352,24 +352,24 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         		for(CtepStudyDisease disease: ctepStudyDiseases){
         			if(!disease.isRetired()) diseases.add(disease);
         		}
-        		return diseases;
         	}
+    		return diseases;
     	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)){
     		List<MeddraStudyDisease> diseases = new ArrayList<MeddraStudyDisease>();
     		if(CollectionUtils.isNotEmpty(meddraStudyDiseases)){
         		for(MeddraStudyDisease disease : meddraStudyDiseases){
         			if(!disease.isRetired()) diseases.add(disease);
         		}
-        		return diseases;
         	}
+    		return diseases;
     	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.OTHER)){
     		List<StudyCondition> diseases = new ArrayList<StudyCondition>();
     		if(CollectionUtils.isNotEmpty(studyConditions)){
         		for(StudyCondition disease : studyConditions){
         			if(!disease.isRetired()) diseases.add(disease);
         		}
-        		return diseases;
         	}
+    		return diseases;
     	}
     	
     	return null;
