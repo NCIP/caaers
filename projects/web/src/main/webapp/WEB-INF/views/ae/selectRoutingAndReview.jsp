@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Routing & Review</title>
@@ -23,11 +23,6 @@
         }
 
     </style>
-    <c:if test="${empty tab}">
-        <tags:stylesheetLink name="tabbedflow"/>
-        <tags:javascriptLink name="tabbedflow"/>
-    </c:if>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
 	<tags:dwrJavascriptLink objects="createStudy"/>
     <script type="text/javascript">

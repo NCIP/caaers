@@ -3,9 +3,6 @@
 <html>
 <head>
 	<title>${tab.longTitle}</title>
-
-    <tags:includePrototypeWindow />
-    <tags:javascriptLink name="hover-display" />
 	<tags:dwrJavascriptLink objects="createStudy"/>
 
     <script>

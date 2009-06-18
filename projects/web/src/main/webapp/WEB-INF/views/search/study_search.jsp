@@ -7,12 +7,9 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/extremecomponents.css"/>">
+
 <html>
 <head>
-<tags:stylesheetLink name="participant"/>
-<tags:includeScriptaculous />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <style type="text/css">
@@ -21,7 +18,6 @@
         div.row div.value { margin-left: 10em; }
 </style>
 <title>${tab.longTitle} Study search</title>
-<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>

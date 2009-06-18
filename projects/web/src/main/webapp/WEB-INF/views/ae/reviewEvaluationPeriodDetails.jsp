@@ -1,14 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
 <%@ page import = "java.util.ArrayList" %>
 
 <html>
  <head>
- 	<tags:stylesheetLink name="tabbedflow"/>
- 	<tags:stylesheetLink name="ae"/>
- 	<tags:javascriptLink name="routing_and_review" />
  	<tags:dwrJavascriptLink objects="reviewRP,captureAE"/>
- 	<tags:stylesheetLink name="slider" />
  	
  	<tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">

@@ -24,4 +24,5 @@
 <%@taglib prefix="blue" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
 <%@taglib prefix="search" tagdir="/WEB-INF/tags/search" %>
-
+<%@taglib prefix="ruletags" tagdir="/WEB-INF/tags/rule"%>
+<%@taglib prefix="ctms" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>

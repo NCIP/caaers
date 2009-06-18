@@ -12,7 +12,6 @@
 
 <title>${tab.longTitle}</title>
 
-<tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="createStudy" />
 <tags:dwrJavascriptLink objects="createAE" />
 <script type="text/javascript">

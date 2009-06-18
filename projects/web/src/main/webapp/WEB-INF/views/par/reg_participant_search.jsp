@@ -1,15 +1,8 @@
-<!-- BEGIN views\par\reg_participant_search.jsp -->
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib uri="http://www.extremecomponents.org" prefix="ec" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Search for a Subject</title>
-    <tags:includeScriptaculous/>
-
-    <tags:javascriptLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="createParticipant"/>
 
     <script type="text/javascript">

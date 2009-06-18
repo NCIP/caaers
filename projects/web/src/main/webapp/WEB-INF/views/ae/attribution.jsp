@@ -4,11 +4,8 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     
-    <tags:javascriptLink name="routing_and_review" />
-	<tags:stylesheetLink name="slider" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">

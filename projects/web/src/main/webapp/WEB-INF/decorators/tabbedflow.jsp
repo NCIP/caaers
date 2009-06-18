@@ -16,9 +16,6 @@
     <title>caAERS || ${flow.name} || ${tab.longTitle}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <standard:head/>
-
-    <tags:stylesheetLink name="tabbedflow"/>
-    <tags:javascriptLink name="tabbedflow"/>
     <decorator:head/>
 </head>
 <body>

@@ -2,13 +2,10 @@
 
 <html>
 <head>
-    <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="captureAE"/>
     <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>${tab.longTitle}</title>
-    <tags:includeScriptaculous/>
-    <tags:includePrototypeWindow />
     <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
     <style>.link {text-decoration:underline; color:blue;}</style>
 <script type="text/javascript">

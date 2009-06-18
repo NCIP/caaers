@@ -1,9 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <page:applyDecorator name="standardNoHeader">
 <html>
 <head>
     <title>caAERS || Review Comment</title>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
 	<tags:dwrJavascriptLink objects="createStudy"/>
 <style type="text/css">

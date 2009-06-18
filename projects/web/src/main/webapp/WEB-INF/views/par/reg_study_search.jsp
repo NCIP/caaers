@@ -1,15 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib uri="http://www.extremecomponents.org" prefix="ec" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
 
     <tags:dwrJavascriptLink objects="searchStudy"/>
-    <tags:includeScriptaculous/>
-
-    <tags:javascriptLink name="extremecomponents"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Search for a Study</title>

@@ -1,8 +1,5 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <html>
 <head>
     <title>${pageTitle}</title>
@@ -30,7 +27,6 @@
         <tags:stylesheetLink name="tabbedflow"/>
         <tags:javascriptLink name="tabbedflow"/>
     </c:if>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var participantAutocompleterProps = {

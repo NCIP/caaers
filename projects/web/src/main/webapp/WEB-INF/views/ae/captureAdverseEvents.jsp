@@ -1,13 +1,8 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <html>
  <head>
-    <tags:includePrototypeWindow />
-    <tags:javascriptLink name="dropdown_menu" />
-    <tags:javascriptLink name="routing_and_review" />
-    <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
-    <tags:stylesheetLink name="aeTermQuery_box" />
-    <tags:stylesheetLink name="slider" />
     <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
@@ -15,8 +10,6 @@
     		</div>
     	</jsp:attribute>
     </tags:slider>
-
-
 
  <script>
  	var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];

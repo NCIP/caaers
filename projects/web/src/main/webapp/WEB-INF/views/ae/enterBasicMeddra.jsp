@@ -1,11 +1,5 @@
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
-<%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
     <title>Enter basic AE information</title>
@@ -21,12 +15,7 @@
             text-indent: -2.5em;
         }
     </style>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    
-    <tags:javascriptLink name="routing_and_review" />
-	<tags:stylesheetLink name="slider" />
-	<tags:stylesheetLink name="aeTermQuery_box" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">

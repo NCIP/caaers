@@ -18,7 +18,6 @@
 		 }
 
 	</style>
-	<tags:javascriptLink name="extremecomponents"/>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
 		var mHistory = null;

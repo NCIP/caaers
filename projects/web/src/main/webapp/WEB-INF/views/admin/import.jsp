@@ -2,7 +2,6 @@
 
 <html>
 <head>
-<tags:includeScriptaculous/>
 	<script language="JavaScript" type="text/JavaScript">
 	
 	function toggle(in_id,out_id,out_second_id,out_third_id,out_fourth_id)

@@ -1,15 +1,7 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <title>Select Rule Level</title>
 

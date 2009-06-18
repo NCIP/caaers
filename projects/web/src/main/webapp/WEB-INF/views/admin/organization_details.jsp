@@ -3,10 +3,6 @@
 <html>
 <head>
 <title>Create Organization</title>
-	<tags:stylesheetLink name="tabbedflow"/>
-	<tags:stylesheetLink name="extremecomponents"/>
-	<tags:includeScriptaculous/>
-	<tags:includePrototypeWindow />
  	 <style type="text/css">
         div.content {
             padding: 5px 15px;

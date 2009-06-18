@@ -1,28 +1,11 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <html>
 <head>
 <title>Routing & Review || Course/Cycle Information</title>
 
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
-<script src="js/prototype.js"></script>
-<script src="js/common.js"></script>
-<script src="js/scriptaculous/effects.js"></script>
-<script src="js/scriptaculous/slider.js"></script>
-<script src="js/scriptaculous/builder.js"></script>
-<script src="js/scriptaculous/controls.js"></script>
-<script src="js/scriptaculous/dragdrop.js"></script>
-<script src="js/common-scriptaculous.js"></script>
-
-<tags:includePrototypeWindow />
-<tags:stylesheetLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="routingAndReview"/>
 
-<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">
 .eXtremeTable select {
 	font-size: 11px;
@@ -230,7 +213,6 @@ color:#0033FF;
 </script>
 </head>
 <body>
-<tags:javascriptLink name="wz_tooltip/wz_tooltip" />
 <tags:standardForm title="Course/Cycle Information">
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >

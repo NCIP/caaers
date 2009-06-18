@@ -5,15 +5,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>${tab.longTitle}</title>
   
-  <tags:includePrototypeWindow />
-  <tags:includeScriptaculous/>
-  <tags:stylesheetLink name="ae"/>
   <tags:dwrJavascriptLink objects="createStudy, createAE"/>
 
-  <tags:stylesheetLink name="aeTermQuery_box" />
-  <tags:stylesheetLink name="solicited_ae" />
-
-  
   <script type="text/javascript">
 
    var catSel = null;

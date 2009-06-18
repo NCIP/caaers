@@ -7,14 +7,11 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <title>Search Studies</title>
-<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="searchStudy"/>
 <style type="text/css">
         /* Override default lable length */

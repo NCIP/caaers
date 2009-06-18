@@ -3,8 +3,6 @@
 <html>
 <head>
 <title>Manage Reports</title>
-<tags:stylesheetLink name="extremecomponents"/>
-<tags:javascriptLink name="dropdown_menu" />
 <tags:dwrJavascriptLink objects="createAE"/>
 <tags:dwrJavascriptLink objects="adverseEventHistory"/>
 <%-- <tags:slider renderComments="false" renderAlerts="true" display="">

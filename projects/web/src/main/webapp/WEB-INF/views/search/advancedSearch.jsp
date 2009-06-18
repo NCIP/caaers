@@ -1,14 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
-	<tags:javascriptLink name="advancedSearch" />
-	<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
-    
+                          s
     <style type="text/css">
 .notify-unit.success {
 	color: #090;

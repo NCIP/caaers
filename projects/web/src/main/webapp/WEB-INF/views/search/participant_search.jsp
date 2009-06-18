@@ -2,8 +2,6 @@
 
 <html>
 <head>
-<tags:stylesheetLink name="participant"/>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <style type="text/css">
         /* Override default lable length */
@@ -11,7 +9,6 @@
         div.row div.value { margin-left: 10em; }
 </style>
 <title>${tab.longTitle} Subject search</title>
-<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>

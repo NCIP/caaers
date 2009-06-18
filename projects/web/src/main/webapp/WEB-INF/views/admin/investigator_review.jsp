@@ -1,12 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <html>
 <head>
 <title><caaers:message code="investigator.review.pageTitle"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<tags:stylesheetLink name="participant" />
-<tags:includeScriptaculous />
-<tags:stylesheetLink name="tabbedflow"/>
 <style type="text/css">
         div.content {
             padding: 5px 15px;

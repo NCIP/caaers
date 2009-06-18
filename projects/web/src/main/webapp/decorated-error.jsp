@@ -43,7 +43,6 @@
             }
         </style>
         
-        <tags:includeScriptaculous/>
         <title>Error</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <script type="text/javascript" language="JavaScript">

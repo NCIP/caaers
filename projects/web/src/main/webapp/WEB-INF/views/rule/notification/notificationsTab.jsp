@@ -4,8 +4,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="reportDef"/>
     <title>Not implemented</title>
 	<style>

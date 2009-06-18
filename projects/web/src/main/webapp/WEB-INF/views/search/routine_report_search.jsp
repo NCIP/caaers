@@ -7,11 +7,9 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/extremecomponents.css"/>">
+
 <html>
 <head>
-<tags:stylesheetLink name="participant"/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <style type="text/css">
@@ -21,7 +19,6 @@
         input { width:8em; }
 </style>
 <title>${tab.longTitle} Routine AE search</title>
-<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>

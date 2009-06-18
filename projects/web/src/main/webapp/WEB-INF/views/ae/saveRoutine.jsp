@@ -1,17 +1,9 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
 	<tags:dwrJavascriptLink objects="createAE"/>
-    <tags:javascriptLink name="routing_and_review" />
-	<tags:stylesheetLink name="slider" />
-	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}"
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
@@ -24,7 +16,6 @@
     		</div>
     	</jsp:attribute>
     </tags:slider>
-	<tags:stylesheetLink name="ae"/>
 	<script>
 		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
 		function fireAction(action, selected){

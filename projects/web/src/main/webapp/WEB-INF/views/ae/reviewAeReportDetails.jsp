@@ -1,13 +1,8 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
 <%@ page import = "java.util.ArrayList" %>
 
 <html>
 <head>
-	<tags:includePrototypeWindow />
- 	<tags:stylesheetLink name="tabbedflow"/>
- 	<tags:stylesheetLink name="ae"/>
- 	<tags:javascriptLink name="routing_and_review" />
  	<tags:dwrJavascriptLink objects="reviewRP,createAE,reviewAeReport"/>
     <script>
 	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport, 'reviewAeReport');

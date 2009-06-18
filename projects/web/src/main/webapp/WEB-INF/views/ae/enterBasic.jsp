@@ -37,11 +37,7 @@
 	width:550px;
 }
 </style>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    <tags:javascriptLink name="routing_and_review" />
-    <tags:stylesheetLink name="slider" />
-    <tags:stylesheetLink name="aeTermQuery_box" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">

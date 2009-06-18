@@ -3,8 +3,6 @@
 <html>
 <head>
 <title>Search Organization</title>
-<tags:stylesheetLink name="tabbedflow"/>
-<tags:stylesheetLink name="participant"/>
 
 <style type="text/css">
     div.row div.label { width: 9em; } 
@@ -13,7 +11,6 @@
 </style>
 
 <title>${tab.longTitle}</title>
-<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>

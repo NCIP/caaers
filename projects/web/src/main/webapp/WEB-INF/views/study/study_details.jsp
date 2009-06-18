@@ -9,7 +9,6 @@
         div.row div.value { margin-left: 12em; }
     </style>
 
-    <tags:javascriptLink name="hover-display" />
 	<tags:dwrJavascriptLink objects="createStudy"/>
 
 	<script language="JavaScript">

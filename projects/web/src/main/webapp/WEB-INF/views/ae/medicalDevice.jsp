@@ -1,13 +1,8 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
         .longselect {
@@ -21,11 +16,8 @@
       	div.row div.label { width: 13em; }
     	div.row div.value { margin-left: 14em;}
     </style>
-    <tags:includeScriptaculous/>
      <tags:dwrJavascriptLink objects="createAE"/>
      
-    <tags:javascriptLink name="routing_and_review" />
-	<tags:stylesheetLink name="slider" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">

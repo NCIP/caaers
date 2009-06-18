@@ -1,12 +1,9 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <jsp:useBean id="today" class="java.util.Date" scope="request" />
+
 <html>
 <head>
 <title><caaers:message code="investigator.details.pageTitle"/></title>
-<tags:includeScriptaculous />
-<tags:stylesheetLink name="extremecomponents"/>
-<tags:includePrototypeWindow />
 <tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
         div.content {

@@ -21,7 +21,6 @@ td#linkPosition a img {
 	}
 </style>
 <![endif]-->
-<tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="createStudy" />
 <script type="text/javascript">
 	var agentListEditor;
