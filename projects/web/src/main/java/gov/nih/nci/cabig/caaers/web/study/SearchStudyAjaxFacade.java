@@ -172,7 +172,7 @@ public class SearchStudyAjaxFacade {
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text) {
-        return getObjects(type, text, 0, false);
+        return getObjects(type, text, 0, true);
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID, boolean hideIncomplete) {
