@@ -587,7 +587,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
         verifyMocks();
 
         assertNotNull(refData);
-        assertEquals(2, refData.size());
+        assertEquals(1, refData.size());
         Map<String, DefaultInputFieldGroup> map = (Map)refData.get("fieldGroups");
         DefaultInputFieldGroup fg = map.get("ReportingPeriod");
 
