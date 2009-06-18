@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
@@ -72,6 +73,8 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         assignment = Fixtures.createAssignment();
+        Study study = assignment.getStudySite().getStudy();
+        study.setDiseaseTerminology(Fixtures.createDiseaseTerminology(study));
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
         reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
