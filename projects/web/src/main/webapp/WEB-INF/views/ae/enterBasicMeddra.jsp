@@ -3,7 +3,6 @@
 <html>
 <head>
     <title>Enter basic AE information</title>
-    <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
         .longselect {

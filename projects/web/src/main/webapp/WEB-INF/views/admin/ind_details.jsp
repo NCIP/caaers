@@ -3,7 +3,6 @@
 <html>
  <head>
  	<title>Create IND#</title>
- 	<tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
         div.content {
             padding: 5px 15px;

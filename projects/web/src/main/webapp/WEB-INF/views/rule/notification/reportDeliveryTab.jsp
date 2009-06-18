@@ -2,8 +2,6 @@
 
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
-    <tags:stylesheetLink name="extremecomponents"/>
     <style type="text/css">
         .eXtremeTable select { width: 150px; }
     </style>

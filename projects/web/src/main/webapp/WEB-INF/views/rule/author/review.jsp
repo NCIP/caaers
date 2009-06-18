@@ -6,7 +6,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
     <title>Not implemented</title>
   
     <script language="javascript">

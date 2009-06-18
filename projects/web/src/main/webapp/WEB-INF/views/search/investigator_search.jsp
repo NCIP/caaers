@@ -2,9 +2,6 @@
 
 <html>
 <head>
-    <tags:stylesheetLink name="tabbedflow"/>
-    <tags:stylesheetLink name="participant"/>
-
     <style type="text/css">
         div.row div.label { width: 9em; }
         div.row div.value { margin-left: 10em; }

@@ -4,7 +4,7 @@
 
 <html>
  <head>
-	<tags:stylesheetLink name="standard-form" />
+	<tags:css name="standard-form" />
 	<style type="text/css">
 		body {background: none; text-align:left; font-size:10pt;}
 		div.row div.label {width: 16em;}

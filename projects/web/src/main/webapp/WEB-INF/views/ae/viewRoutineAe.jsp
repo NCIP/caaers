@@ -1,19 +1,9 @@
-<!-- TODO: This view is virtually identical to the last screen of the create
-participant flow. Factor out their commonalities. -->
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>View Routine AE</title>
-    <tags:stylesheetLink name="ae"/>
     <style type="text/css">
 	
 	div.row div.label {
@@ -119,3 +109,4 @@ participant flow. Factor out their commonalities. -->
    	</chrome:division> 
 </chrome:box>
 </body>
+</html>

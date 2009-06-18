@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>List Report Calendars</title>
-    <tags:stylesheetLink name="extremecomponents"/>
     <style type="text/css">
         .notify-unit.success {
             color: #090;

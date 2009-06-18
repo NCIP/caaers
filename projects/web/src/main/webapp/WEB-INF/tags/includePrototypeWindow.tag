@@ -3,5 +3,5 @@
 <tags:javascriptLink name="prototypewindow/window_ext"/>
 <tags:javascriptLink name="prototypewindow/window_effects"/>
 <tags:javascriptLink name="prototypewindow/tooltip"/>
- <tags:stylesheetLink name="pw_default" />
- <tags:stylesheetLink name="pw_alphacube" />
+<tags:stylesheetLink name="pw_default" />
+<tags:stylesheetLink name="pw_alphacube" />

@@ -3,7 +3,6 @@
 <html>
 <head>
     <title>Participant Review</title>
-    <tags:stylesheetLink name="participant"/>
     <script>
         function submitPage(s) {
             document.getElementById("nextView").value = s;

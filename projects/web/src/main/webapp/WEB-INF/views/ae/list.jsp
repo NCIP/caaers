@@ -285,7 +285,6 @@ color:#0033FF;
     </script>
 </head>
 <body>
-<tags:javascriptLink name="wz_tooltip/wz_tooltip" />
 <!-- AE summary  -->
 <c:if test="${not empty command.participant}">
   <div>

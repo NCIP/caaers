@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>List Rules</title>
-    <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <style type="text/css">
         .notify-unit.success {

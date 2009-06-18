@@ -1,9 +1,10 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://jawr.net/tags" prefix="jwr" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://jawr.net/tags" prefix="jwr" %>
 
 <jwr:style src="/csslib/caaers.zcss" />
 <jwr:script src="/jslib/caaers.zjs" />
+<tags:js name="calendar" />
 
 <!--[if IE]>
 <jwr:style src="/csslib/ie.zcss" />

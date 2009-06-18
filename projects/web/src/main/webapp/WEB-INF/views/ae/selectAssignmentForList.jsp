@@ -23,10 +23,6 @@
         }
 
     </style>
-    <c:if test="${empty tab}">
-        <tags:stylesheetLink name="tabbedflow"/>
-        <tags:javascriptLink name="tabbedflow"/>
-    </c:if>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var participantAutocompleterProps = {

@@ -4,7 +4,6 @@
 <html>
 <head>
 <title><caaers:message code="investigator.details.pageTitle"/></title>
-<tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
         div.content {
             padding: 5px 15px;

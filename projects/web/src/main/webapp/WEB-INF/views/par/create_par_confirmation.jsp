@@ -3,13 +3,11 @@
 <html>
 <head>
     <title>Review and Submit</title>
-    <tags:stylesheetLink name="participant"/>
     <script>
         function submitPage(s) {
             document.getElementById("nextView").value = s;
             document.getElementById("command").submit();
         }
-
     </script>
 </head>
 <body>

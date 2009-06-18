@@ -3,8 +3,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
-    <tags:stylesheetLink name="extremecomponents"/>
     <title>Not implemented</title>
   	<style type="text/css">
   		.label {
