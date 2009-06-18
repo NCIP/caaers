@@ -115,15 +115,12 @@ public class ParticipantInputCommand {
     public void refreshStudyDiseases(){
     	diseaseCodingTerm = getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
     	//based on the disease coding term, initialize appropriate list
-
+    	studyDiseases = getStudy().getActiveStudyDiseases();
         if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {
-            studyDiseases = getStudy().getMeddraStudyDiseases();
             studyDiseasesMap = WebUtils.collectOptions(studyDiseases, "id", "term.meddraTerm", "Please select");
         } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.CTEP)) {
-            studyDiseases = getStudy().getCtepStudyDiseases();
             studyDiseasesMap = WebUtils.collectOptions(studyDiseases, "id", "term.term", "Please select");
         } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
-            studyDiseases = getStudy().getStudyConditions();
             studyDiseasesMap = WebUtils.collectOptions(studyDiseases, "id", "term.conditionName", "Please select");
         }
     }
