@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
@@ -9,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -20,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -33,7 +36,6 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessag
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.Criteria;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,11 +45,6 @@ import java.util.Locale;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -59,7 +56,7 @@ import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.AdverseEventManagementService", serviceName="AdverseEventManagementService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class AdverseEventManagementServiceImpl implements AdverseEventManagementService , ApplicationContextAware{
+public class AdverseEventManagementServiceImpl extends AbstractImportService implements AdverseEventManagementService , ApplicationContextAware {
 	
 	protected BusinessRulesExecutionServiceImpl executionService;
 	protected AdverseEventDao adverseEventDao;
@@ -70,7 +67,6 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	protected TreatmentAssignmentDao treatmentAssignmentDao;
 	protected CtcTermDao ctcTermDao;
 	
-
 	private AdverseEventConverter adverseEventConverter;
 	//private AdverseEventEvaluationService adverseEventEvaluationService;
 	//private CaaersJavaMailSender caaersJavaMailSender;
@@ -78,17 +74,17 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	private MessageSource messageSource;
 	
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
-
+	
 	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage,String operation) {
-		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+		//boolean authorizationOnByDefault = enableAuthorization(false);
+		//switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 		Response adverseEventResponse = new Response();
 		if (operation.equals(AdverseEventManagementService.CREATE) || operation.equals(AdverseEventManagementService.UPDATE)) {
 			if (adverseEventsInputMessage.getAdverseEvents() == null) {
-				adverseEventResponse.setResponsecode("EMPTY_ADVERSEEVENTS");
-				adverseEventResponse.setDescription("adverseEvents are empty , Populate adverseEventTerms");
+				adverseEventResponse.setResponsecode("WS_AEMS_025");
+				adverseEventResponse.setDescription(messageSource.getMessage("WS_AEMS_025", new String[]{},"",Locale.getDefault()));
 				caaersServiceResponse.setResponse(adverseEventResponse);
 				return caaersServiceResponse;
 			}
@@ -99,6 +95,42 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		Study dbStudy = null;
 		List messages = new ArrayList();
 		Criteria criteria = adverseEventsInputMessage.getCriteria();
+
+		if (criteria.getStudyIdentifier() != null) {
+			//if (criteria.getStudy() != null) {
+			try {
+				//Study study = processStudyCriteria(criteria.getStudy());
+				dbStudy = fetchStudy(criteria.getStudyIdentifier());
+        		if(dbStudy != null){
+        			logger.info("Study Exists in caAERS");
+        		}else{
+       				String message = messageSource.getMessage("WS_AEMS_003", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
+        			logger.error("Study Does not exist ");
+    				//adverseEventImportOutcome.addErrorMessage("Study Does not exist in caAERS " , DomainObjectImportOutcome.Severity.ERROR);
+    				adverseEventResponse.setResponsecode("WS_AEMS_003");
+    				adverseEventResponse.setDescription(message);
+    				caaersServiceResponse.setResponse(adverseEventResponse);
+    				return caaersServiceResponse;
+        		}
+        		List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(criteria.getStudyIdentifier());
+        		if(authorizedStudies.size() == 0) {
+        			String message = messageSource.getMessage("WS_AEMS_027", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
+        			adverseEventResponse.setResponsecode("WS_AEMS_027");
+    				adverseEventResponse.setDescription(message);
+    				caaersServiceResponse.setResponse(adverseEventResponse);
+    				return caaersServiceResponse;
+        		}
+			} catch (CaaersSystemException e){
+				String message = messageSource.getMessage("WS_AEMS_004", new String[]{e.getMessage()},"",Locale.getDefault());
+				//adverseEventImportOutcome = new DomainObjectImportOutcome<AdverseEvent>();
+				logger.error("Study Criteria to StudyDomain Conversion Failed " , e);
+				//adverseEventImportOutcome.addErrorMessage("Study Criteria to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+				adverseEventResponse.setResponsecode("WS_AEMS_004");
+				adverseEventResponse.setDescription(message);
+				caaersServiceResponse.setResponse(adverseEventResponse);
+				return caaersServiceResponse;
+			}
+		}
 		
 		if (criteria.getParticipantIdentifier() != null) {
 			//if (criteria.getParticipant() != null) {
@@ -127,33 +159,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 			
 		}		
 		//add criteria to criteria
-		if (criteria.getStudyIdentifier() != null) {
-			//if (criteria.getStudy() != null) {
-			try {
-				//Study study = processStudyCriteria(criteria.getStudy());
-				dbStudy = fetchStudy(criteria.getStudyIdentifier());
-        		if(dbStudy != null){
-        			logger.info("Study Exists in caAERS");
-        		}else{
-       				String message = messageSource.getMessage("WS_AEMS_003", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
-        			logger.error("Study Does not exist ");
-    				//adverseEventImportOutcome.addErrorMessage("Study Does not exist in caAERS " , DomainObjectImportOutcome.Severity.ERROR);
-    				adverseEventResponse.setResponsecode("WS_AEMS_003");
-    				adverseEventResponse.setDescription(message);
-    				caaersServiceResponse.setResponse(adverseEventResponse);
-    				return caaersServiceResponse;
-        		}
-			} catch (CaaersSystemException e){
-				String message = messageSource.getMessage("WS_AEMS_004", new String[]{e.getMessage()},"",Locale.getDefault());
-				//adverseEventImportOutcome = new DomainObjectImportOutcome<AdverseEvent>();
-				logger.error("Study Criteria to StudyDomain Conversion Failed " , e);
-				//adverseEventImportOutcome.addErrorMessage("Study Criteria to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-				adverseEventResponse.setResponsecode("WS_AEMS_004");
-				adverseEventResponse.setDescription(message);
-				caaersServiceResponse.setResponse(adverseEventResponse);
-				return caaersServiceResponse;
-			}
-		}
+
 		StudyParticipantAssignment assignment = null;
 		
 		if (dbParticipant != null && dbStudy != null) {
@@ -213,8 +219,8 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 						messages.add (message);	
 					}				
 				}
-		        enableAuthorization(authorizationOnByDefault);
-				switchUser(null);
+		        //enableAuthorization(authorizationOnByDefault);
+				//switchUser(null);
 				adverseEventResponse.setMessage(messages);
 				caaersServiceResponse.setResponse(adverseEventResponse);
 				return caaersServiceResponse;
@@ -272,8 +278,8 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 				}*/
 			adverseEventResponse.setMessage(messages);
 		}
-        enableAuthorization(authorizationOnByDefault);
-		switchUser(null);
+        //enableAuthorization(authorizationOnByDefault);
+		//switchUser(null);
 		
 		caaersServiceResponse.setResponse(adverseEventResponse);
 		return caaersServiceResponse;
@@ -392,7 +398,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		
 		AdverseEvent adverseEvent = null;
 		if (adeersReportingRequired) {
-			if (xmlAdverseEvent.getOutcome().size() >0) {
+			if (xmlAdverseEvent.getOutcome().size() > 0) {
 				throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_011", new String[]{"Oucomes"},"",Locale.getDefault()));
 			}
 			if (xmlAdverseEvent.getEventApproximateTime() != null) {
@@ -622,15 +628,11 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		if (adverseEventsInputMessage.getAdverseEventTerms() == null) {
 			CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 			Response adverseEventResponse = new Response();
-			adverseEventResponse.setResponsecode("EMPTY_TERMS");
-			adverseEventResponse.setDescription("adverseEventTerms are empty , Populate <adverseEventTerms> with terms to delete");
+			adverseEventResponse.setResponsecode("WS_AEMS_026");
+			adverseEventResponse.setDescription(messageSource.getMessage("WS_AEMS_026", new String[]{},"",Locale.getDefault()));
 			caaersServiceResponse.setResponse(adverseEventResponse);
 			return caaersServiceResponse;
 		}
-		
-		
-		
-		
 		return saveAdverseEvent(adverseEventsInputMessage,DELETE);
 	}
 
@@ -640,6 +642,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
 		return saveAdverseEvent(adverseEventsInputMessage,CREATE);
 	}
+	
 	private Participant fetchParticipant(String identifier){
 		Participant dbParticipant = null;
 		Identifier pi = new Identifier();
@@ -746,7 +749,7 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
 		this.applicationContext = applicationContext;
 		
 	}
-	
+	/*
 	private boolean enableAuthorization(boolean on) {
         AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
         if (sw == null) throw new RuntimeException("Authorization switch not found");
@@ -763,10 +766,9 @@ public class AdverseEventManagementServiceImpl implements AdverseEventManagement
         Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
         auth.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(auth);
-    }
+    }*/
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
-
 
 }

@@ -74,6 +74,15 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
         }
     }
 
+    public void filterStudiesWithExactMatchingIdentifierOnly(String text) {
+        if (!StringUtils.isBlank(text)) {
+            String searchString = text != null ?  text.toLowerCase()  : null;
+
+            andWhere(String.format("lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_VALUE));
+            setParameter(IDENTIFIER_EXACT_VALUE, searchString);
+        }
+    }
+    
     public void filterByParticipant(String firstName, String lastName, String ethnicity,
                                     final String identifierValue, String gender, DateValue dateOfBirth) {
 
