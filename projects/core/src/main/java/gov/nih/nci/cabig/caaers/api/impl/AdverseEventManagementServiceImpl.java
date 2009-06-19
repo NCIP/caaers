@@ -112,6 +112,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     				caaersServiceResponse.setResponse(adverseEventResponse);
     				return caaersServiceResponse;
         		}
+        		/*
         		List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(criteria.getStudyIdentifier());
         		if(authorizedStudies.size() == 0) {
         			String message = messageSource.getMessage("WS_AEMS_027", new String[]{criteria.getStudyIdentifier()},"",Locale.getDefault());
@@ -119,7 +120,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     				adverseEventResponse.setDescription(message);
     				caaersServiceResponse.setResponse(adverseEventResponse);
     				return caaersServiceResponse;
-        		}
+        		}*/
 			} catch (CaaersSystemException e){
 				String message = messageSource.getMessage("WS_AEMS_004", new String[]{e.getMessage()},"",Locale.getDefault());
 				//adverseEventImportOutcome = new DomainObjectImportOutcome<AdverseEvent>();
