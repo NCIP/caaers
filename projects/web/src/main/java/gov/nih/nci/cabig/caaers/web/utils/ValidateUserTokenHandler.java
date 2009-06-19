@@ -64,21 +64,7 @@ public class ValidateUserTokenHandler
            throw new XFireFault("UsernameToken must include username and password.",
                                 XFireFault.SENDER);
        }       
-   	   
-    	   gov.nih.nci.cabig.caaers.domain.User dbUSer = getByUserName(username.getValue());
-    	   if (dbUSer == null) {
-    		   throw new XFireFault("User Does Not Exist", XFireFault.SENDER);
-    	   }
-    	   
-			List<UserGroupType> groups = getUserGroups(dbUSer);
-			GrantedAuthority[] authorities = new GrantedAuthority[groups.size()];
-			int idx = 0;
-
-			for (Iterator i = groups.iterator(); i.hasNext(); idx++) {
-				UserGroupType group = (UserGroupType) i.next();
-				authorities[idx] = new GrantedAuthorityImpl(group.getCsmName());
-			}
-
+	       //LOGIN ....
 			AuthenticationManager authenticationManager = localAuthenticationProvider.getCsmAuthenticationManager();
 			try {
 				authenticationManager.login(username.getValue(), password.getValue());
@@ -87,6 +73,29 @@ public class ValidateUserTokenHandler
 			} catch (Exception e) {
 				throw new XFireFault(e.getMessage(), XFireFault.SENDER);
 			} 
+			//TODO handle super user in a generic way .. this is hardcoded as temp fix because authorities are not getting populated 
+			GrantedAuthority[] authorities = null;
+			if (username.getValue().equals("SYSTEM_ADMIN")) {
+				authorities = new GrantedAuthority[1];
+				authorities[0] = new GrantedAuthorityImpl(UserGroupType.caaers_super_user.getSecurityRoleName());
+			} else {
+			   // GET GROUPS ...
+	    	   gov.nih.nci.cabig.caaers.domain.User dbUSer = getByUserName(username.getValue());
+	    	   if (dbUSer == null) {
+	    		   throw new XFireFault("User Does Not Exist", XFireFault.SENDER);
+	    	   }
+	    	   
+				List<UserGroupType> groups = getUserGroups(dbUSer);
+				authorities = new GrantedAuthority[groups.size()];
+				int idx = 0;
+	
+				for (Iterator i = groups.iterator(); i.hasNext(); idx++) {
+					UserGroupType group = (UserGroupType) i.next();
+					authorities[idx] = new GrantedAuthorityImpl(group.getCsmName());
+				}
+			}
+
+			// populate groups ... 
 			Authentication authRequest = new TestingAuthenticationToken(username.getValue(), "ignored", authorities);//new UsernamePasswordAuthenticationToken(authorities);
 			authRequest.setAuthenticated(true);
 			SecurityContextHolder.getContext().setAuthentication(authRequest);
