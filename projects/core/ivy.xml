@@ -119,9 +119,11 @@
 			<dependency org="org.codehaus.xfire" name="xfire-annotations" rev="1.2.6" force="true" />
 			<dependency org="org.codehaus.xfire" name="xfire-xmlbeans" rev="1.2.6" force="true" />
 			<dependency org="org.codehaus.xfire" name="xfire-java5" rev="1.2.6" force="true" />
+			<dependency org="org.codehaus.xfire" name="xfire-ws-security" rev="1.2.6" force="true" />
 			<dependency org="org.apache.xbean" name="xbean-spring" rev="2.8" force="true" />
 			<dependency org="com.sun.xml.stream" name="sjsxp" rev="1.0.1" force="true" />
-			
+			<dependency org="org.apache.ws.security" name="wss4j" rev="1.5.4-osgi" force="true" />
+			<dependency org="org.opensaml" name="opensaml" rev="1.1" force="true" />			
 
             <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2" />
 
