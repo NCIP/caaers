@@ -203,14 +203,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.get*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
                
-        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.match*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.find*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
                
