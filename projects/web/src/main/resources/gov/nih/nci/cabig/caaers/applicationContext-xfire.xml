@@ -38,40 +38,6 @@
     
 	<bean id="domInHandler" class="org.codehaus.xfire.util.dom.DOMInHandler" />
 	<bean id="validateUserTokenHandler" autowire="byType"  class="gov.nih.nci.cabig.caaers.web.utils.ValidateUserTokenHandler" />
-	
-    
-   	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
-		<property name="investigatorDao" ref="investigatorDao" />
-		<property name="organizationDao" ref="organizationDao" />
-		<property name="organizationRepository" ref="organizationRepository" />
-		<property name="investigatorRepository" ref="investigatorRepository" />
-	</bean>
-	
-	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">
-		<property name="researchStaffDao" ref="researchStaffDao" />
-		<property name="organizationDao" ref="organizationDao" />	
-		<property name="researchStaffRepository" ref="researchStaffRepository" />
-		<property name="organizationRepository" ref="organizationRepository" />
-	</bean> 
-    
-   <bean id="studyProcessorImpl" class="gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl">
-		<property name="studyImportService" ref="studyImportService" />
-		<property name="studyConverter" ref="studyConverter" />
-		<property name="studyDao" ref="studyDao" />
-		<property name="studySynchronizer" ref="studySynchronizer" />
-		<property name="domainObjectValidator" ref="domainObjectValidator" />
-  </bean>
-  
-  	
-   <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
-   		<property name="participantImportServiceImpl" ref="participantImportService" />
-		<property name="participantConverter" ref="participantConverter" />
-		<property name="participantDao" ref="participantDao" />
-		<property name="participantSynchronizer" ref="participantSynchronizer" />
-		<property name="domainObjectValidator" ref="domainObjectValidator" />   
-   </bean>
-
-   <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
     
   <bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
     <constructor-arg ref="xfire.transportManager"/>
@@ -170,7 +136,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
-
+		   <ref bean="domInHandler"/> 
+		   <ref bean="validateUserTokenHandler"/> 
            <ref bean="xFireSchemaValidationHandler"/>           
          </list>
        </property>
