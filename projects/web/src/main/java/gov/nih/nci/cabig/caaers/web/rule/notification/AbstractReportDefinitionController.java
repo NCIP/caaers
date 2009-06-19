@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -27,19 +29,16 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-public abstract class AbstractReportDefinitionController extends
-                AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
+public abstract class AbstractReportDefinitionController extends AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-
     public static final String AJAX_REQUEST_PARAMETER = "isAjax";
 
     private ConfigProperty configurationProperty;
-
     protected ReportDefinitionDao reportDefinitionDao;
-
     protected Map<String, String> roles;
-
     protected OrganizationDao organizationDao;
+    protected ConfigPropertyRepositoryImpl configPropertyRepository;
+    protected ConfigPropertyDao configPropertyDao;
 
     public AbstractReportDefinitionController() {
         initFlow();
@@ -68,6 +67,7 @@ public abstract class AbstractReportDefinitionController extends
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerDomainObjectEditor(binder, configPropertyDao);
         ControllerTools.registerEnumEditor(binder, ReportFormat.class);
         ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
         ControllerTools.registerEnumEditor(binder, ReportFormatType.class);
@@ -167,4 +167,19 @@ public abstract class AbstractReportDefinitionController extends
         this.configurationProperty = configurationProperty;
     }
 
+    public ConfigPropertyRepositoryImpl getConfigPropertyRepository() {
+        return configPropertyRepository;
+    }
+
+    public void setConfigPropertyRepository(ConfigPropertyRepositoryImpl configPropertyRepository) {
+        this.configPropertyRepository = configPropertyRepository;
+    }
+
+    public ConfigPropertyDao getConfigPropertyDao() {
+        return configPropertyDao;
+    }
+
+    public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
+        this.configPropertyDao = configPropertyDao;
+    }
 }

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -32,34 +33,30 @@ public class ReportDefinitionCommand {
 
     // page -4
     private String pointOnScale = "0"; // the selected point in the time scale
-
     private String lastPointOnScale;
-
     private String indexToFetch = "0";
-
     private Map<String, Integer> mandatoryFieldMap;
 
     // supporting domain objects
     protected ReportDefinition rpDef;
-
     protected ReportDefinitionDao rpDefDao;
+    protected ConfigPropertyRepository cpRepository;
 
     // flow support variables
     private String indexToDelete; // index in the list to be deleted
-
     private String tempProperty;
 
     // hide validation errors
     private boolean hideErrors;
     
     public ReportDefinitionCommand(){
-    	
     }
     
-    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao, ConfigProperty configurationProperty) {
+    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao, ConfigProperty configurationProperty, ConfigPropertyRepository cpRepo) {
         this.rpDef = rpDef;
         this.rpDefDao = rpDefDao;
         this.configurationProperty = configurationProperty;
+        this.cpRepository = cpRepo;
         initializeMandatoryFieldMap();
     }
 
@@ -218,4 +215,11 @@ public class ReportDefinitionCommand {
         }
     }
 
+    public ConfigPropertyRepository getCpRepository() {
+        return cpRepository;
+    }
+
+    public void setCpRepository(ConfigPropertyRepository cpRepository) {
+        this.cpRepository = cpRepository;
+    }
 }

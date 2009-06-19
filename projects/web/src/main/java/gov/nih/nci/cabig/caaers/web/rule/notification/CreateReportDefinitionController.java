@@ -25,8 +25,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command,
-                    Tab<ReportDefinitionCommand> tab) {
+    protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command, Tab<ReportDefinitionCommand> tab) {
         return false;
     }
 
@@ -50,10 +49,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         populateMandatoryFields(mandatoryFields, expeditedReportTree);
         reportDef.setMandatoryFields(mandatoryFields);
-
-        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef,
-                        reportDefinitionDao, getConfigurationProperty());
-
+        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
         return rpDefCmd;
     }
 

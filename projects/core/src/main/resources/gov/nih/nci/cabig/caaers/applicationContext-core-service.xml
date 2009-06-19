@@ -308,7 +308,6 @@ This applicationContext contains the definition of the concrete services
    </bean>
 
    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
- 
- 
+   <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />
  
 </beans>

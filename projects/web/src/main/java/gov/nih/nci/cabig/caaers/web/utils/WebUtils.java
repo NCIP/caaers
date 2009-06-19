@@ -99,8 +99,7 @@ public class WebUtils {
     
     
     
-    public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty,
-                    String itemLabelProperty) {
+    public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty, String itemLabelProperty) {
         return collectOptions(items, itemValueProperty, itemLabelProperty, null);
     }
 

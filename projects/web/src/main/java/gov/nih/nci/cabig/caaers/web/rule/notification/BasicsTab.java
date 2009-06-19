@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -10,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -28,61 +32,6 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
     public BasicsTab(String longTitle, String shortTitle, String viewName) {
 
         super(longTitle, shortTitle, viewName);
-        map = new InputFieldGroupMap();
-        InputFieldGroup orgFieldGroup = new DefaultInputFieldGroup("reportDefinitionOrganization");
-        InputField orgField = InputFieldFactory.createAutocompleterField(
-                        "reportDefinition.organization", "Organization", true);
-        InputFieldAttributes.setDetails(orgField,
-                        "Enter a portion of the organization name that you are looking for.");
-        orgFieldGroup.getFields().add(orgField);
-        map.addInputFieldGroup(orgFieldGroup);
-
-        // setup the fileds
-        InputFieldGroup fieldGroup = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
-        List<InputField> fields = fieldGroup.getFields();
-        InputField nameField = InputFieldFactory.createTextField("reportDefinition.name", "Name",
-                        true);
-        InputFieldAttributes.setSize(nameField, 50);
-        fields.add(nameField);
-        
-        InputField labelField = InputFieldFactory.createTextField("reportDefinition.label", "Display Name",
-                        true);
-        InputFieldAttributes.setSize(labelField, 50);
-        fields.add(labelField);
-        
-        InputField descField = InputFieldFactory.createTextArea("reportDefinition.description",
-                        "Description", false);
-        InputFieldAttributes.setColumns(descField, 50);
-        fields.add(descField);
-
-        InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
-        fields.add(amendableField);
-        
-        InputField expeditedField = InputFieldFactory.createBooleanSelectField("reportDefinition.expedited", "Report is expedited?", true);
-        fields.add(expeditedField);
-
-        Map<Object, Object> reportFormatTypesOptions = new LinkedHashMap<Object, Object>();
-        reportFormatTypesOptions.put("", "Please select");
-        reportFormatTypesOptions.putAll(WebUtils.collectOptions(Arrays.asList(ReportFormatType.values()), "name", "displayName"));
-        InputField reportFormatField = InputFieldFactory.createSelectField("reportDefinition.reportFormatType", "Report Format", true, reportFormatTypesOptions);
-        fields.add(reportFormatField);
- 
-        
-        
-        InputField attributionRequiredField = InputFieldFactory.createBooleanSelectField(
-                        "reportDefinition.attributionRequired", "Attribution required?", true);
-        fields.add(attributionRequiredField);
-
-        fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType",
-                        "Time Scale UOM", true, createMapFromArray(TimeScaleUnit.values())));
-        InputField timeTillReportDueField = InputFieldFactory.createTextField(
-                        "reportDefinition.duration", "Time until report due", true);
-        InputFieldAttributes.setSize(timeTillReportDueField, 2);
-        fields.add(timeTillReportDueField);
-        fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.physicianSignOff", "Physician signoff required?", true));
-
-        map.addInputFieldGroup(fieldGroup);
-
     }
 
     public BasicsTab() {
@@ -99,14 +48,68 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
+        map = new InputFieldGroupMap();
+        InputFieldGroup orgFieldGroup = new DefaultInputFieldGroup("reportDefinitionOrganization");
+        InputField orgField = InputFieldFactory.createAutocompleterField("reportDefinition.organization", "Organization", true);
+        InputFieldAttributes.setDetails(orgField,"Enter a portion of the organization name that you are looking for.");
+        orgFieldGroup.getFields().add(orgField);
+        map.addInputFieldGroup(orgFieldGroup);
+
+        // setup the fileds
+        InputFieldGroup fieldGroup = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
+        List<InputField> fields = fieldGroup.getFields();
+        InputField nameField = InputFieldFactory.createTextField("reportDefinition.name", "Name", true);
+        InputFieldAttributes.setSize(nameField, 50);
+        fields.add(nameField);
+
+        InputField labelField = InputFieldFactory.createTextField("reportDefinition.label", "Display Name", true);
+        InputFieldAttributes.setSize(labelField, 50);
+        fields.add(labelField);
+
+        InputField descField = InputFieldFactory.createTextArea("reportDefinition.description", "Description", false);
+        InputFieldAttributes.setColumns(descField, 50);
+        fields.add(descField);
+
+        InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
+        fields.add(amendableField);
+
+/*
+        InputField expeditedField = InputFieldFactory.createBooleanSelectField("reportDefinition.expedited", "Report is expedited?", true);
+        fields.add(expeditedField);
+
+*/
+        Map<Object, Object> reportTypeOptions = new LinkedHashMap<Object, Object>();
+        List<ConfigProperty> list = command.getCpRepository().getByType(ConfigPropertyType.REPORT_TYPE);
+        for (int i=0; i<list.size(); i++) {
+            reportTypeOptions.put(list.get(i).getId(), list.get(i).getName());
+        }
+        InputField reportType = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report type?", true, reportTypeOptions);
+        fields.add(reportType);
+
+        Map<Object, Object> reportFormatTypesOptions = new LinkedHashMap<Object, Object>();
+        reportFormatTypesOptions.put("", "Please select");
+        reportFormatTypesOptions.putAll(WebUtils.collectOptions(Arrays.asList(ReportFormatType.values()), "name", "displayName"));
+        InputField reportFormatField = InputFieldFactory.createSelectField("reportDefinition.reportFormatType", "Report Format", true, reportFormatTypesOptions);
+        fields.add(reportFormatField);
+
+        InputField attributionRequiredField = InputFieldFactory.createBooleanSelectField("reportDefinition.attributionRequired", "Attribution required?", true);
+        fields.add(attributionRequiredField);
+
+        fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType","Time Scale UOM", true, createMapFromArray(TimeScaleUnit.values())));
+        InputField timeTillReportDueField = InputFieldFactory.createTextField("reportDefinition.duration", "Time until report due", true);
+        InputFieldAttributes.setSize(timeTillReportDueField, 2);
+        fields.add(timeTillReportDueField);
+        fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.physicianSignOff", "Physician signoff required?", true));
+
+        map.addInputFieldGroup(fieldGroup);
+        
         return map;
     }
 
     protected Map<Object, Object> createMapFromArray(Object[] arr) {
         Map<Object, Object> map = new LinkedHashMap<Object, Object>();
         map.put("", "Select a Value");
-        for (Object o : arr)
-            map.put(o, o);
+        for (Object o : arr) map.put(o, o);
         return map;
     }
 
@@ -118,17 +121,19 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
      *      org.springframework.validation.Errors)
      */
     @Override
-    protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         if (command.getReportDefinition().getDuration() == null) {
-            errors.rejectValue("reportDefinition.duration", "RPD_002",
-                            "Invalid Time Till Report Due");
+            errors.rejectValue("reportDefinition.duration", "RPD_002", "Invalid Time Till Report Due");
         }
         
         //check for duplicate report definitions.
         if(command.isSimilarReportDefinitionExist(command.getReportDefinition())){
         	errors.rejectValue("reportDefinition.name","RPD_001","Duplicate Report Definition!.");
         }
+    }
+
+    public void onBind(HttpServletRequest request, ReportDefinitionCommand command, Errors errors) {
+        // request.getParameter("")
     }
 }

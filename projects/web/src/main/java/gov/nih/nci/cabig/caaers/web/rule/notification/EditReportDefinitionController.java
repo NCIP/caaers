@@ -55,7 +55,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         // initialize all the lazy collections in rpDef
         reportDefinitionDao.initialize(rpDef);
         reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
-        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty());
+        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
 
         // find the index of the first planned notificaiton
         List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();

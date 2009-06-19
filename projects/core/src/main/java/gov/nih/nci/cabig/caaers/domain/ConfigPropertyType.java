@@ -28,7 +28,8 @@ public enum ConfigPropertyType implements CodedEnum<Integer>, Serializable {
 	public Integer getCode() {
 		return code;
 	}
-	public String getDisplayName() {
+    
+    public String getDisplayName() {
 		return displayName;
 	}
 	

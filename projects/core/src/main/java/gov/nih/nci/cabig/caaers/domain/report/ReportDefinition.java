@@ -53,31 +53,18 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private static final Log log = LogFactory.getLog(ReportDefinition.class);
 
     private String name;
-    
     private String label;
-    
     private String description;
-
     private Boolean amendable;
-
     private Integer duration;
-
     private TimeScaleUnit timeScaleUnitType;
-
     private LazyListHelper lazyListHelper;
-
     private Organization organization;
-
     private List<ReportMandatoryFieldDefinition> mandatoryFields;
-
     private Boolean attributionRequired;
-    
     private ReportFormatType reportFormatType;
-    
     private Boolean physicianSignOff;
-    
     private ConfigProperty reportType;
-    
     private ReportDefinition parent;
     
     public ReportDefinition() {
