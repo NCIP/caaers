@@ -615,6 +615,12 @@
                 </OTHER_PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
 
+            <xsl:if test="DiseaseHistory/AnatomicSite/category = 'Other'">
+                <OTHER_PRIMARY_SITE_OF_DISEASE>
+                    <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
+                </OTHER_PRIMARY_SITE_OF_DISEASE>
+            </xsl:if>
+            
         </PATIENT_INFORMATION>
         <xsl:for-each select="SAEReportPriorTherapy">
             <PRIOR_THERAPY>
