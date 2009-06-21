@@ -79,6 +79,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Search</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.Assignee</value>
@@ -516,6 +517,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
+    <bean id="searchDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SearchDao"/>
     <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao">
     	<property name="remoteSession" ref="remoteSession"/>
     </bean>
