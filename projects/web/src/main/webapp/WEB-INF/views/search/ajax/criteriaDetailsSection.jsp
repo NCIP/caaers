@@ -23,6 +23,7 @@
 </c:forEach>
 
 <div align="right">
+	<tags:button color="green" type="button" id="save-search" value="Save search" onclick="javascript:advancedSearchHelper.renderSaveSearchPopup();"/>
     <tags:button color="green" type="submit" id="flow-update" value="Submit"/> 
 </div>
 

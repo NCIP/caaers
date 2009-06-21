@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.web.search;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,19 +12,25 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.acegisecurity.context.SecurityContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.xml.sax.ContentHandler;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController;
+import gov.nih.nci.cabig.caaers.dao.SearchDao;
+import gov.nih.nci.cabig.caaers.domain.Search;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
+import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 
@@ -33,6 +41,8 @@ public class AdvancedSearchAjaxFacade{
 	private static final Log log = LogFactory.getLog(AdvancedSearchAjaxFacade.class);
 	
 	private static AdvancedSearchUi advancedSearchUi;
+	
+	private SearchDao searchDao;
 	
 	static{
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
@@ -144,6 +154,70 @@ public class AdvancedSearchAjaxFacade{
 		return ajaxOutput;
 	}
 	
+	/**
+	 * This method is used to delete the search. The parameter passed to the method is the searchName of the search to be deleted.
+	 */
+	public AjaxOutput deleteSearch(String searchName){
+		AjaxOutput ajaxOutput = new AjaxOutput();
+		String loginId = getUserId();
+		searchDao.deleteByLoginIdAndName(searchName, loginId);
+		
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("ajax_action", "deleteSearch");
+		ajaxOutput.setHtmlContent(renderAjaxView("savedSearchList", params));
+		
+		return ajaxOutput;
+	}
+	
+	/**
+	 * This method is used to save the search. The parameters passed to the method are the searchName and the searchDescription
+	 * entered by the user.
+	 * @return
+	 */
+	public AjaxOutput saveSearch(String searchName, String searchDescription){
+		AjaxOutput ajaxOutput = new AjaxOutput();
+		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
+		String loginId = getUserId();
+		// We will now create the criteriaXml attribute of the Search class.
+		SaveSearch saveSearch = new SaveSearch();
+		saveSearch.setTargetClassName(command.getSearchTargetObject().getClassName());
+		List<CriteriaParameter> criteriaParameterList = new ArrayList<CriteriaParameter>();
+		CriteriaParameter criteriaParameter = null;
+		for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
+			criteriaParameter = new CriteriaParameter();
+			criteriaParameter.setObjectName(parameter.getObjectName());
+			criteriaParameter.setAttributeName(parameter.getAttributeName());
+			criteriaParameter.setPredicate(parameter.getPredicate());
+			criteriaParameter.setValue(parameter.getValue());
+			criteriaParameterList.add(criteriaParameter);
+		}
+		saveSearch.setCriteriaParameter(criteriaParameterList);
+		Search search = new Search();
+		search.setCreatedDate(new Date());
+		search.setDescription(searchDescription);
+		search.setLoginId(loginId);
+		search.setName(searchName);
+		
+		// Marshall the saveSearch object into an xml string.
+		Marshaller marshaller;
+		try {
+			marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createMarshaller();
+			StringWriter writer = new StringWriter();
+			marshaller.marshal(saveSearch, writer);
+			search.setCriteriaXml(writer.toString());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		searchDao.save(search);
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("ajax_action", "saveSearch");
+		ajaxOutput.setHtmlContent(renderAjaxView("savedSearchList", params));
+		
+		return ajaxOutput;
+	}
+	
 	public Class<?>[] controllers() {
 		return CONTROLLERS;
 	}
@@ -189,6 +263,12 @@ public class AdvancedSearchAjaxFacade{
         return sb.toString().substring(0, sb.length() - 1);
     }
 	
+	protected String getUserId(){
+		WebContext webContext = getWebContext();
+		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		return SecurityUtils.getUserLoginName(context.getAuthentication());
+	}
+	
 	protected Object extractCommand() {
         WebContext webContext = getWebContext();
         Object command = null;
@@ -212,4 +292,8 @@ public class AdvancedSearchAjaxFacade{
 	protected WebContext getWebContext(){
     	return WebContextFactory.get();
     }
+	
+	public void setSearchDao(SearchDao searchDao){
+		this.searchDao = searchDao;
+	}
 }

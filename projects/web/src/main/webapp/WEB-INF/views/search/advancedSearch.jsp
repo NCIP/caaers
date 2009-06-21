@@ -3,7 +3,6 @@
 <html>
 <head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
-                          s
     <style type="text/css">
 .notify-unit.success {
 	color: #090;
@@ -174,27 +173,60 @@ color:#0033FF;
 <tags:standardForm title="Enter search criteria">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
-    	<input type="hidden" name="_finish" value="finish"/>
+    	<input type="hidden" name="_action" value="finish"/>
+    	<input type="hidden" name="searchName" value=""/>
+    	<input type="hidden" name="searchDescription" value=""/>
     	<c:if test="${command.searchTargetObject == null}">
-	    	<b>Search for:</b> <SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
-				<OPTION selected value="none">Please select</OPTION>
-				<c:forEach items="${advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
-						<OPTION value="${searchTargetObject.className }">${searchTargetObject.displayName }</OPTION>
-				</c:forEach>
-			</SELECT>
-			<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+    		<table><tr><td width="75%" valign="top" align="left">
+			   	<b>Search for:</b> <SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
+					<OPTION selected value="none">Please select</OPTION>
+					<c:forEach items="${advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
+							<OPTION value="${searchTargetObject.className }">${searchTargetObject.displayName }</OPTION>
+					</c:forEach>
+				</SELECT>
+				<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+			</td><td width="25%" valign="top" align="right" id="savedSearchId" style="${fn:length(shortSearchList) > 0 ? '' : 'display:none'}">
+				<chrome:box title="Saved searches">
+					<table id="shortSavedSearchListTable">
+						<c:forEach items="${shortSearchList }" var="search" varStatus="searchStatus">
+							<search:oneSavedSearch search="${search}"></search:oneSavedSearch>
+						</c:forEach>
+						<c:if test="${fn:length(savedSearchList) > 5}">
+							<tr>
+								<td><a onclick="javascript:advancedSearchHelper.renderFullSearchList();" href="#">more</a></td><td/>
+							</tr>
+						</c:if>
+					</table>
+				</chrome:box>
+			</td></tr></table>
 			<br><br>
 			<div id="criteria-section-id">
 			</div>
 		</c:if>
 		<c:if test="${command.searchTargetObject != null}">
-			<b>Search for:</b> <SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
-				<OPTION selected value="none">Please select</OPTION>
-				<c:forEach items="${advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
-					<OPTION value="${searchTargetObject.className }" <c:if test="${searchTargetObject.className == command.searchTargetObject.className }"> selected </c:if>>${searchTargetObject.displayName }</OPTION>
-				</c:forEach>
-			</SELECT>
-			<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+			<table><tr><td width="75%" valign="top" align="left">
+				<b>Search for:</b> <SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
+					<OPTION selected value="none">Please select</OPTION>
+					<c:forEach items="${advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
+						<OPTION value="${searchTargetObject.className }" <c:if test="${searchTargetObject.className == command.searchTargetObject.className }"> selected </c:if>>${searchTargetObject.displayName }</OPTION>
+					</c:forEach>
+				</SELECT>
+				<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+				</td><td width="25%" valign="top" align="right" id="savedSearchId" style="${fn:length(shortSearchList) > 0 ? '' : 'display:none'}">
+				<chrome:box title="Saved searches">
+					<table id="shortSavedSearchListTable">
+						<c:forEach items="${shortSearchList }" var="search" varStatus="searchStatus">
+							<search:oneSavedSearch search="${search}"></search:oneSavedSearch>
+						</c:forEach>
+						<c:if test="${fn:length(savedSearchList) > 5}">
+							<tr>
+								<td><a onclick="javascript:advancedSearchHelper.renderFullSearchList();" href="#">more</a></td><td/>
+							</tr>
+						</c:if>
+					</table>
+				</chrome:box>
+			</td></tr></table>
+	
 			<br><br>
 			<div id="criteria-section-id">
 				<c:forEach items="${command.searchTargetObject.dependentObject}" varStatus="status" var="dependentObject">
@@ -220,10 +252,39 @@ color:#0033FF;
 					</chrome:division>
 				</c:forEach>
 				<div align="right">
+					<tags:button color="green" type="button" id="save-search" value="Save search" onclick="javascript:advancedSearchHelper.renderSaveSearchPopup();"/>
   					<tags:button color="green" type="submit" id="flow-update" value="Submit"/> 
 				</div>
 			</div>
 		</c:if>
+		<div id="save_search_popup" style="display:none;text-align:left" >
+			<chrome:box title="Search details" id="popupId">
+				<div>
+					<div class="row">
+				    	<div class="summarylabel">Search name</div>
+				        <div class="summaryvalue"><ui:text path="searchName" size="20" mandatory="true"/></div>
+					</div>
+				    <div class="row">
+				    	<div class="summarylabel">Search description</div>
+				    	<div class="summaryvalue"><ui:textarea path="searchDescription" rows="3" cols="40"/></div>
+				    </div>
+				</div>
+				<div align="right">
+					<tags:button size="small" color="blue" id="save-button" type="button" value="Save"  onclick="javascript:advancedSearchHelper.saveSearch();" />
+				</div>
+			</chrome:box>
+		</div>
+		<div id="search_list_popup" style="display:none">
+			<chrome:box title="Saved searches" id="searchListPopupId">
+				<div>
+					<table width="100%">
+						<c:forEach items="${savedSearchList }" var="search" varStatus="searchStatus">
+							<search:oneSavedSearch search="${search}"></search:oneSavedSearch>
+						</c:forEach>
+					</table>
+				</div>
+			</chrome:box>
+		</div>
 	</jsp:attribute>
 </tags:standardForm>
 </body>

@@ -58,7 +58,63 @@ Object.extend(AdvancedSearchHelper.prototype, {
 			var rowId = 'criteria-' + index;
 			$(rowId).style.display = 'none';
 		});
-	}
-
+	},
+	
+	saveSearch: function(){
+		if($('searchName').value == '')
+			alert('Search name is required');
+		else{
+			var form = document.getElementById('command');
+			form._action.value = 'saveSearch';
+			form.searchName.value = $('searchName').value;
+			form.searchDescription.value = $('searchDescription').value;
+			form.submit();
+		} 
+	},
+	
+	deleteSavedSearch: function(searchName){
+		if(confirm('Are you sure you want to delete the search - ' + searchName)){
+			advSearch.deleteSearch(searchName, function(ajaxOutput){
+				alert('Search deleted successfully');
+				$('shortSavedSearchListTable').innerHTML = ajaxOutput.htmlContent;
+			});
+		}else
+			return;
+	},
+	
+	renderFullSearchList: function(){
+		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"search-list-popup-id", width:500,  height:330, top: 150, left: 400});
+        contentWin.setContent( 'search_list_popup' );
+        contentWin.showCenter(true);
+        popupObserver = {
+      			onDestroy: function(eventName, win) {
+      				if (win == contentWin) {
+      					$('search_list_popup').style.display='none';
+      					
+      					contentWin = null;
+      					Windows.removeObserver(this);
+      				}
+      			}
+      		}
+        Windows.addObserver(popupObserver);
+	},
+	
+	renderSaveSearchPopup: function(){
+		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"save-popup-id", width:500,  height:330, top: 150, left: 400});
+        contentWin.setContent( 'save_search_popup' );
+        contentWin.showCenter(true);
+        popupObserver = {
+      			onDestroy: function(eventName, win) {
+      				if (win == contentWin) {
+      					$('save_search_popup').style.display='none';
+      					
+      					contentWin = null;
+      					Windows.removeObserver(this);
+      				}
+      			}
+      		}
+        Windows.addObserver(popupObserver);
+	
+	},
 
 });

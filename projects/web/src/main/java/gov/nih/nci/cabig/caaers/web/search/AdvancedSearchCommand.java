@@ -22,6 +22,8 @@ public class AdvancedSearchCommand{
 	private AdvancedSearchUi advancedSearchUi;
 	private List<AdvancedSearchCriteriaParameter> criteriaParameters;
 	private SearchTargetObject searchTargetObject;
+	private String searchName;
+	private String searchDescription;
 	
 	public AdvancedSearchCommand(){
 		setAdvancedSearchUi();
@@ -63,6 +65,34 @@ public class AdvancedSearchCommand{
             logger.error("Error in reading advancedSearch-ui xml file ");
             e.printStackTrace();
         }
+	}
+
+	/**
+	 * @return the searchName
+	 */
+	public String getSearchName() {
+		return searchName;
+	}
+
+	/**
+	 * @param searchName the searchName to set
+	 */
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+
+	/**
+	 * @return the searchDescription
+	 */
+	public String getSearchDescription() {
+		return searchDescription;
+	}
+
+	/**
+	 * @param searchDescription the searchDescription to set
+	 */
+	public void setSearchDescription(String searchDescription) {
+		this.searchDescription = searchDescription;
 	}
 	
 }

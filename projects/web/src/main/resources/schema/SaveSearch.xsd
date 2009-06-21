@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           elementFormDefault="qualified" 
+           xmlns:search="http://caaers.cabig.nci.nih.gov/web/search/ui" 
+           targetNamespace="http://caaers.cabig.nci.nih.gov/web/search/ui">
+
+	<xs:element name="saveSearch">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="targetClassName" type="xs:string"/>
+				<xs:element name="criteriaParameter" type="search:criteriaParameter" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>  
+  
+	<xs:complexType name="criteriaParameter">
+		<xs:sequence>
+			<xs:element name="objectName" type="xs:string"/>
+			<xs:element name="attributeName" type="xs:string"/>
+			<xs:element name="predicate" type="xs:string"/>
+			<xs:element name="value" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+           
+</xs:schema>
