@@ -438,7 +438,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	props.put("participantLastName", "Scott");
     	props.put("participantEthnicity", "ethnicity");
     	props.put("participantGender", "Female");
-    	props.put("participantDateOfBirth", "01/02/2006");
+    	//props.put("participantDateOfBirth", "01/02/2006");
     	
     	try {
     		List<AdverseEvent> aes = 	getDao().searchAdverseEvents(props);
