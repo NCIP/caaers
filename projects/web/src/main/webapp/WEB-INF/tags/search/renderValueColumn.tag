@@ -44,4 +44,33 @@
 			
 	</SELECT> 
 </c:if>
-<%-- Done with handlnig drop-down type input --%>
+<%-- Done with handling drop-down type input --%>
+
+<%-- This is for handling Autocompleter type input  --%>
+<c:if test="${uiAttribute.fieldType eq 'Autocompleter'}">
+	<c:if test="${criteriaParameter == null }">
+		<tags:autocompleter displayName="abcd" propertyName="criteriaParameters[${index}].value" size="70" initialDisplayValue="Begin typing here" enableClear="true"/>
+		<input type="hidden" name="criteriaParameters[${index }].displayValue" id="criteriaParameters[${index }].displayValue" value=""/>
+	</c:if>
+	<c:if test="${criteriaParameter != null }">
+		<tags:autocompleter displayName="abcd" propertyName="criteriaParameters[${index}].value" size="70" initialDisplayValue="${criteriaParameter.displayValue}" initialValue="${criteriaParameter.value}" enableClear="true"/>
+		<input type="hidden" name="criteriaParameters[${index }].displayValue" id="criteriaParameters[${index }].displayValue" value="${criteriaParameter.displayValue }"/>
+	</c:if>
+	<script>
+        
+        var ${uiAttribute.label}AutocompleterProps = {
+        	basename: "criteriaParameters[${index}].value",
+        	displayName: "criteriaParameters[${index}].displayValue",
+        	populator: function(autocompleter, text){
+        		advSearch.${uiAttribute.ajaxMethod}(text, function(values) {
+					autocompleter.setChoices(values);
+				})        	
+        	},
+        	valueSelector: function(obj) {
+        		return obj.displayName;
+        	}
+        }
+        acCreate(${uiAttribute.label}AutocompleterProps);
+	</script>
+</c:if>
+<%-- Done with handling Autocompleter type input --%>

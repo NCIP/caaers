@@ -19,6 +19,7 @@
 			<xs:element name="attributeName" type="xs:string"/>
 			<xs:element name="predicate" type="xs:string"/>
 			<xs:element name="value" type="xs:string"/>
+			<xs:element name="displayValue" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
            

@@ -10,6 +10,7 @@ Object.extend(AdvancedSearchHelper.prototype, {
 		$('targetObjectProgessIndicator').style.display = '';
 		this.ajaxFacade.updateSearchTargetObject($('target-object-id').value , function(ajaxOutput) {
 			$('criteria-section-id').innerHTML = ajaxOutput.htmlContent;
+			//new Insertion.Top($('criteria-section-id'), ajaxOutput.htmlContent);
 			$('criteria-section-id').style.display='';
 			$('targetObjectProgessIndicator').style.display = 'none';
 		}.bind(this));
@@ -37,7 +38,8 @@ Object.extend(AdvancedSearchHelper.prototype, {
 					var operator = ajaxOutput.objectContent[i];
 					selectElement.options[i+1] = new Option(operator.displayUri, operator.name);
 				}
-				$(valueTdId).innerHTML = ajaxOutput.htmlContent;
+				//$(valueTdId).innerHTML = ajaxOutput.htmlContent;
+				new Insertion.Top($(valueTdId), ajaxOutput.htmlContent);
 			}.bind(this));
 		}
 	},

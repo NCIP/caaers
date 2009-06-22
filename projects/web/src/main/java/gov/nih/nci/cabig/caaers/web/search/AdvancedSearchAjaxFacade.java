@@ -20,11 +20,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.xml.sax.ContentHandler;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Search;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
@@ -41,6 +48,10 @@ public class AdvancedSearchAjaxFacade{
 	private static final Log log = LogFactory.getLog(AdvancedSearchAjaxFacade.class);
 	
 	private static AdvancedSearchUi advancedSearchUi;
+	
+	private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+	
+	private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 	
 	private SearchDao searchDao;
 	
@@ -169,6 +180,9 @@ public class AdvancedSearchAjaxFacade{
 		return ajaxOutput;
 	}
 	
+	/*
+	 * TODO: Delete this method saveSearch as its being done in the controller.
+	 */
 	/**
 	 * This method is used to save the search. The parameters passed to the method are the searchName and the searchDescription
 	 * entered by the user.
@@ -217,6 +231,25 @@ public class AdvancedSearchAjaxFacade{
 		
 		return ajaxOutput;
 	}
+	
+	public List<StudyAjaxableDomainObject> matchStudies(String text) {
+
+        StudySearchableAjaxableDomainObjectQuery domainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
+        domainObjectQuery.filterStudiesWithMatchingText(text);
+        domainObjectQuery.filterByDataEntryStatus(true);
+        List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        return studies;
+    }
+	
+	public List<ParticipantAjaxableDomainObject> matchParticipants(String text) {
+
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
+        query.filterParticipantsWithMatchingText(text);
+
+        List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
+        return participantAjaxableDomainObjects;
+    }
+
 	
 	public Class<?>[] controllers() {
 		return CONTROLLERS;
@@ -296,4 +329,14 @@ public class AdvancedSearchAjaxFacade{
 	public void setSearchDao(SearchDao searchDao){
 		this.searchDao = searchDao;
 	}
+	
+	@Required
+    public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
+        this.studySearchableAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
+    }
+
+    @Required
+    public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
+        this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+    }
 }

@@ -122,6 +122,7 @@ public class AdvancedSearchController extends SimpleFormController{
 					parameter.setAttributeName(criteriaParameter.getAttributeName());
 					parameter.setPredicate(criteriaParameter.getPredicate());
 					parameter.setValue(criteriaParameter.getValue());
+					parameter.setDisplayValue(criteriaParameter.getDisplayValue());
 					command.getCriteriaParameters().add(parameter);
 				}
 			} catch (Exception e) {
@@ -208,6 +209,7 @@ public class AdvancedSearchController extends SimpleFormController{
 					criteriaParameter.setAttributeName(parameter.getAttributeName());
 					criteriaParameter.setPredicate(parameter.getPredicate());
 					criteriaParameter.setValue(parameter.getValue());
+					criteriaParameter.setDisplayValue(parameter.getDisplayValue());
 					criteriaParameterList.add(criteriaParameter);
 				}
 				saveSearch.setCriteriaParameter(criteriaParameterList);

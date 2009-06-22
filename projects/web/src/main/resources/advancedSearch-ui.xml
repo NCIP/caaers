@@ -27,6 +27,15 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<ui-attribute>
+				<name>id</name>
+				<label>Study</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchStudies</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
 				<name>shortTitle</name>
 				<label>Short Title</label>
 				<data-type>String</data-type>
@@ -56,6 +65,15 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
+			<ui-attribute>
+				<name>id</name>
+				<label>Subject</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchParticipants</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 			<ui-attribute>
 				<name>firstName</name>
 				<label>First Name</label>
@@ -113,6 +131,15 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
 			<ui-attribute>
+				<name>id</name>
+				<label>Subject</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchParticipants</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
 				<name>firstName</name>
 				<label>First Name</label>
 				<data-type>String</data-type>
@@ -132,6 +159,15 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
+			<ui-attribute>
+				<name>id</name>
+				<label>Study</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchStudies</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 			<ui-attribute>
 				<name>shortTitle</name>
 				<label>Short Title</label>
@@ -267,6 +303,15 @@
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<ui-attribute>
+				<name>id</name>
+				<label>Study</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchStudies</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
 				<name>shortTitle</name>
 				<label>Short Title</label>
 				<data-type>String</data-type>
@@ -312,6 +357,15 @@
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Participant</class-name>
 			<display-name>Subject</display-name>
+			<ui-attribute>
+				<name>id</name>
+				<label>Subject</label>
+				<data-type>Integer</data-type>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchParticipants</ajax-method>
+				<operator name="==" display-uri="Equal To"/>
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
 			<ui-attribute>
 				<name>firstName</name>
 				<label>First Name</label>

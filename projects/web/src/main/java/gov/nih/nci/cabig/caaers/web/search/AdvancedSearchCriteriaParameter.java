@@ -21,6 +21,9 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 	// This represents the value of the attribute in the criteria
 	private String value;
 	
+	// This represents the displayValue for special input elements like autocompleters.
+	private String displayValue;
+	
 	// This represents the boolean value which says whether the criteria parameters has been deleted.
 	private boolean deleted;
 	
@@ -62,6 +65,14 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 	
 	public boolean isDeleted(){
 		return deleted;
+	}
+	
+	public String getDisplayValue(){
+		return displayValue;
+	}
+	
+	public void setDisplayValue(String displayValue){
+		this.displayValue = displayValue;
 	}
 	
 	public int compareTo(Object object){
