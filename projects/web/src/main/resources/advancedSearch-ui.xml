@@ -252,11 +252,44 @@
 				<operator name="==" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 			</ui-attribute>
+			<ui-attribute>
+				<name>startDate</name>
+				<label>Start date</label>
+				<data-type>Date</data-type>
+				<field-type>date-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>grade.code</name>
+				<label>Grade</label>
+				<data-type>Grade</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="-1" display-uri="-1:Not Evaluated"/>
+				<valid-value value="0" display-uri="0:Normal"/>
+				<valid-value value="1" display-uri="1:Mild"/>
+				<valid-value value="2" display-uri="2:Moderate"/>
+				<valid-value value="3" display-uri="3:Severe"/>
+				<valid-value value="4" display-uri="4:Life-threatening or disabling"/>
+				<valid-value value="5" display-uri="5:Death"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name=">" display-uri="Greater Than"/>
+				<operator name=">=" display-uri="Greater Than or Equal To"/>
+			</ui-attribute>
 		</dependent-object>
 	</search-target-object>
 	<search-target-object>
 		<class-name>gov.nih.nci.cabig.caaers.domain.AdverseEvent</class-name>
 		<display-name>Adverse Event</display-name>
+		<view-column>
+			<column-title>Ae term</column-title>
+			<column-attribute>adverseEventTerm.term.fullName</column-attribute>
+		</view-column>
+		<view-column>
+			<column-title>Reporting period</column-title>
+			<column-attribute>reportingPeriod.name</column-attribute>
+		</view-column>
 		<view-column>
 			<column-title>Solicited</column-title>
 			<column-attribute>solicited</column-attribute>
@@ -297,6 +330,31 @@
 				<valid-value value="false" display-uri="No"/>
 				<operator name="==" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>startDate</name>
+				<label>Start date</label>
+				<data-type>Date</data-type>
+				<field-type>date-field</field-type>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+			</ui-attribute>
+			<ui-attribute>
+				<name>grade.code</name>
+				<label>Grade</label>
+				<data-type>Grade</data-type>
+				<field-type>drop-down</field-type>
+				<valid-value value="-1" display-uri="-1:Not Evaluated"/>
+				<valid-value value="0" display-uri="0:Normal"/>
+				<valid-value value="1" display-uri="1:Mild"/>
+				<valid-value value="2" display-uri="2:Moderate"/>
+				<valid-value value="3" display-uri="3:Severe"/>
+				<valid-value value="4" display-uri="4:Life-threatening or disabling"/>
+				<valid-value value="5" display-uri="5:Death"/>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name=">" display-uri="Greater Than"/>
+				<operator name=">=" display-uri="Greater Than or Equal To"/>
 			</ui-attribute>
 		</dependent-object>
 		<dependent-object>

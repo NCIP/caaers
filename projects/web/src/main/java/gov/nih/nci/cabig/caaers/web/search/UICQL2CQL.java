@@ -223,6 +223,15 @@ public class UICQL2CQL{
 		// Here you will have to take care of IN and NOT IN correctly.
 		// If predicateString equals (IN or NOT IN) then you will have to create a new predicate object
 		// using new Predicate("IN") otherwise you can use the Predicates supported by CqlQuery.
+		if(predicateString.equals("=="))
+			return Predicate.EQUAL_TO;
+		else if(predicateString.equals("!="))
+			return Predicate.NOT_EQUAL_TO;
+		else if(predicateString.equals(">"))
+			return Predicate.GREATER_THAN;
+		else if(predicateString.equals(">="))
+			return Predicate.GREATER_THAN_EQUAL_TO;
+		
 		return Predicate.EQUAL_TO;
 	}
 	

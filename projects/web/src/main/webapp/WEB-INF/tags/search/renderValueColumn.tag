@@ -74,3 +74,9 @@
 	</script>
 </c:if>
 <%-- Done with handling Autocompleter type input --%>
+
+<%-- This is for handling Date type input --%>
+<c:if test="${uiAttribute.fieldType eq 'date-field' }">
+	ToDo - Date field.
+</c:if>
+<%-- Done handling Date type input --%>
