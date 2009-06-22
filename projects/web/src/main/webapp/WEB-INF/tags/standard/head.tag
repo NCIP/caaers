@@ -8,7 +8,7 @@
 <tags:js name="calendar" />
 <tags:js name="common" />
 
-<tags:js name="valiadtion" />
+<tags:js name="validation" />
 <tags:js name="commons-validation" />
 
 <tags:js name="scriptaculous/effects"/>
@@ -20,7 +20,7 @@
 <tags:js name="advancedSearch"/>
 <tags:js name="common_help"/>
 <tags:js name="side-bar/side-bar"/>
-<tags:js name="wz_tooltip.js"/>
+<tags:js name="wz_tooltip"/>
 <tags:js name="date"/>
 <tags:js name="D2H_ctxt"/>
 <tags:js name="dropdown_menu"/>
