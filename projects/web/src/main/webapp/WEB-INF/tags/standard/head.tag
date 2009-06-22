@@ -8,11 +8,34 @@
 <tags:js name="calendar" />
 <tags:js name="common" />
 
+<tags:js name="valiadtion" />
+<tags:js name="commons-validation" />
+
 <tags:js name="scriptaculous/effects"/>
 <tags:js name="scriptaculous/builder"/>
 <tags:js name="scriptaculous/controls"/>
 <tags:js name="scriptaculous/dragdrop"/>
 <tags:js name="scriptaculous/slider"/>
+
+<tags:js name="advancedSearch"/>
+<tags:js name="common_help"/>
+<tags:js name="side-bar/side-bar"/>
+<tags:js name="wz_tooltip.js"/>
+<tags:js name="date"/>
+<tags:js name="D2H_ctxt"/>
+<tags:js name="dropdown_menu"/>
+<tags:js name="extremecomponents"/>
+<tags:js name="hover-display"/>
+<tags:js name="routing_and_review"/>
+<tags:js name="tabbedflow"/>
+
+<!--
+/js/livepipe/livepipe.js, /js/livepipe/tabs.js, /js/livepipe/scrollbar.js, \
+/js/YUI/utilities.js, /js/YUI/datasource-min.js, /js/YUI/datatable-min.js, /js/YUI/datatable-patch.js, /js/YUI/container-min.js, /js/YUI/button-min.js, /js/YUI/paginator-min.js, \
+/js/ccts-hotlinks.js, \
+/js/prototypewindow/window.js, /js/prototypewindow/window_ext.js, /js/prototypewindow/window_effects.js, /js/prototypewindow/tooltip.js, \
+-->
+
 
 <jwr:script src="/jslib/caaers.zjs" />
 <tags:js name="common-scriptaculous"/>
