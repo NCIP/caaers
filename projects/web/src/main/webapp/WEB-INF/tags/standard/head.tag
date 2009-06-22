@@ -3,8 +3,19 @@
 <%@taglib uri="http://jawr.net/tags" prefix="jwr" %>
 
 <jwr:style src="/csslib/caaers.zcss" />
-<jwr:script src="/jslib/caaers.zjs" />
+
+<tags:js name="prototype"/>
 <tags:js name="calendar" />
+<tags:js name="common" />
+
+<tags:js name="scriptaculous/effects"/>
+<tags:js name="scriptaculous/builder"/>
+<tags:js name="scriptaculous/controls"/>
+<tags:js name="scriptaculous/dragdrop"/>
+<tags:js name="scriptaculous/slider"/>
+
+<jwr:script src="/jslib/caaers.zjs" />
+<tags:js name="common-scriptaculous"/>
 
 <!--[if IE]>
 <jwr:style src="/csslib/ie.zcss" />
