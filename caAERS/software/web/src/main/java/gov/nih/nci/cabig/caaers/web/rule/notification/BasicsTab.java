@@ -3,8 +3,8 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -101,8 +100,19 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         fields.add(timeTillReportDueField);
         fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.physicianSignOff", "Physician signoff required?", true));
 
+        Map<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
+        if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
+            List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
+            for (int i=0; i<rdList.size(); i++) {
+                ReportDefinition rd = rdList.get(i);
+                if (rd.getId() != command.getReportDefinition().getId())
+                    parentOptions.put(rd.getId(), rd.getName());
+            }
+        }
+        InputField parentReportDefinition = InputFieldFactory.createSelectField("reportDefinition.parent", "Parent", false, parentOptions);
+        fields.add(parentReportDefinition);
+
         map.addInputFieldGroup(fieldGroup);
-        
         return map;
     }
 

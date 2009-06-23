@@ -56,8 +56,7 @@
           class="gov.nih.nci.cabig.caaers.web.admin.InvestigatorAjaxFacade"/>
 
     <bean id="searchStudyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade">
-        <property name="studySearchableAjaxableDomainObjectRepository"
-                  ref="studySearchableAjaxableDomainObjectRepository"/>
+        <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
     <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade">
     	<property name="repositoryService" ref="jcrService" />
@@ -68,19 +67,14 @@
     </bean>
     
     <bean id="searchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade">
-        <property name="studySearchableAjaxableDomainObjectRepository"
-                  ref="studySearchableAjaxableDomainObjectRepository"/>
+        <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
     <bean id="searchParticipantAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantAjaxFacade">
-        <property name="participantAjaxableDomainObjectRepository"
-                  ref="participantAjaxableDomainObjectRepository"/>
+        <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
-    <bean id="reportAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
-    <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
 
+    <bean id="reportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
+    <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
     <bean id="importAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade"/>
-	
-  
 	
 </beans>

@@ -1,11 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
@@ -31,6 +34,7 @@ public class ReportDefinitionAjaxFacade {
     public static final String EDIT_FLOW_COMMAND_KEY = EditReportDefinitionController.class.getName() + ".FORM.command";
     private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
     private OrganizationDao orgDao;
+    private ReportDefinitionDao repDefDao;
     private OrganizationRepository organizationRepository;
 
     // /LOGIC
@@ -121,6 +125,22 @@ public class ReportDefinitionAjaxFacade {
         }
     }
 
+    public AjaxOutput fetchReportDefinitionsByOrganizationName(int organizationID, int repDefID) {
+        List<ReportDefinition> rdList = getRepDefDao().getAll(organizationID);
+        int i = 0;
+        while (i < rdList.size()) {
+            ReportDefinition rd = rdList.get(i);
+            if (repDefID > 0 && rd.getId() == repDefID) {
+                rdList.remove(i);
+            }
+            i++;
+        }
+
+        AjaxOutput out = new AjaxOutput();
+        out.setObjectContent(rdList.toArray());
+        return out;
+    }
+
     // /BEAN PROPERTIES
     public void setOrganizationDao(OrganizationDao orgDao) {
         this.orgDao = orgDao;
@@ -130,8 +150,15 @@ public class ReportDefinitionAjaxFacade {
         return orgDao;
     }
 
-	public void setOrganizationRepository(
-			OrganizationRepository organizationRepository) {
+	public void setOrganizationRepository(OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
+
+    public ReportDefinitionDao getRepDefDao() {
+        return repDefDao;
+    }
+
+    public void setRepDefDao(ReportDefinitionDao repDefDao) {
+        this.repDefDao = repDefDao;
+    }
 }
