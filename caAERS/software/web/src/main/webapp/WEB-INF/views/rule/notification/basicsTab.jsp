@@ -5,7 +5,7 @@
     <title>Not implemented</title>
     <tags:dwrJavascriptLink objects="reportDef"/>
     <script>
-     
+        var win;
         Event.observe(window, "load", function() {
             //Calls ReportDefinitionAjaxFacade:matchOrganization(..)
             AE.createStandardAutocompleter('reportDefinition.organization',
@@ -33,6 +33,39 @@
                 fetchParentReportDefinitions($('reportDefinition.organization').value);
             });
 
+            Event.observe($('reportDefinition.reportType'), "change", function() {
+                if ($('reportDefinition.reportType').options[$('reportDefinition.reportType').selectedIndex].value == -1) {
+                    newReportTypePopup();
+                }
+            });
+
+            Event.observe($('reportTypeSave'), "click", function() {
+                if (saveReportType($('rtCode').value, $('rtName').value, $('rtDesc').value)) {
+                    win.close();
+                    refreshReportTypes();
+                } else {
+                    
+                }
+            });
+
+            function newReportTypePopup() {
+                url = "createReportType",
+                win = new Window({className:"alphacube",
+                    destroyOnClose:true,
+                    url: url,
+                    title:"",
+                    width: 500,
+                    height: 300,
+                    recenterAuto: true,
+                    closable: true,
+                    resizable: false,
+                    maximizable: false,
+                    minimizable: false
+                });
+
+                win.showCenter(true);
+            }
+            
             function fetchParentReportDefinitions(organizationID) {
                 reportDef.fetchReportDefinitionsByOrganizationName(organizationID, ${command.reportDefinition != null && command.reportDefinition.id > 0 ? command.reportDefinition.id : 0}, function(output) {
                     var len = output.objectContent.length;
@@ -47,6 +80,11 @@
                     }
 
                 });
+            }
+            function saveReportType(code, name, desc) {
+                return false;
+            }
+            function refreshReportTypes() {
             }
         });
       
@@ -69,8 +107,6 @@
             </div>
 		</jsp:attribute>
 	</tags:tabForm> 
-    
+
 </body>
-
-
 </html>

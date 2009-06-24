@@ -4,7 +4,9 @@
 -->
 
 <decorators defaultdir="/WEB-INF/decorators">
-    <decorator name="standardNoHeader" page="standard-no-header.jsp" />
+    <decorator name="standardNoHeader" page="standard-no-header.jsp">
+        <pattern>/pages/rule/notification/createReportType</pattern>
+    </decorator>
 
     <decorator name="standard" page="standard.jsp">
         <pattern>/pages/*</pattern>
