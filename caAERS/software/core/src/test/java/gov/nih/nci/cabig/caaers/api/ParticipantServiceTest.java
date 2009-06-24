@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
@@ -23,7 +23,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-public class ParticipantServiceTest extends CaaersDbTestCase {
+public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
 
     private CaaersServiceResponse caaersServiceResponse;
     private ParticipantService participantService = null;
