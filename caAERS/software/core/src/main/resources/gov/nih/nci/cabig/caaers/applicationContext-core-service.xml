@@ -296,6 +296,8 @@ This applicationContext contains the definition of the concrete services
 		<property name="studyDao" ref="studyDao" />
 		<property name="studySynchronizer" ref="studySynchronizer" />
 		<property name="domainObjectValidator" ref="domainObjectValidator" />
+		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
+		<property name="organizationRepository" ref="organizationRepository" />  
   </bean>
   
   	
@@ -305,6 +307,9 @@ This applicationContext contains the definition of the concrete services
 		<property name="participantDao" ref="participantDao" />
 		<property name="participantSynchronizer" ref="participantSynchronizer" />
 		<property name="domainObjectValidator" ref="domainObjectValidator" />  
+		<property name="studyDao" ref="studyDao" />  
+		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
+		<property name="organizationRepository" ref="organizationRepository" />
    </bean>
 
    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
