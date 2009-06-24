@@ -54,7 +54,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {
     	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
         if (StringUtils.isNotEmpty(loginId)) {
-        	rsQuery.filterByLoginId(loginId);
+        	rsQuery.filterByExactLoginId(loginId);
         	//rsQuery.filterByEmailAddress(email);
         }
         List<ResearchStaff> rsList = researchStaffRepository.searchResearchStaff(rsQuery);

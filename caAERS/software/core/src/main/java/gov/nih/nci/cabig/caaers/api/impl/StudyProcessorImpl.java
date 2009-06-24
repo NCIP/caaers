@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
@@ -12,30 +14,31 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
+import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
 import gov.nih.nci.cabig.caaers.webservice.Response;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
+import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName="StudyService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class StudyProcessorImpl implements StudyProcessor,ApplicationContextAware {
+public class StudyProcessorImpl extends AbstractImportService implements StudyProcessor,ApplicationContextAware,MessageSourceAware {
 	
 	
 private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
@@ -47,6 +50,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private StudySynchronizer studySynchronizer;
 	private ApplicationContext applicationContext;
 	private DomainObjectValidator domainObjectValidator;
+	private MessageSource messageSource;
 	
 	public StudyProcessorImpl(){
 		
@@ -122,12 +126,33 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
 		return studyImportOutcome;
 	}
-	
+	private List<Organization> searchForOrganization(gov.nih.nci.cabig.caaers.webservice.OrganizationType org) {
+		if (!StringUtilities.isBlank(org.getNciInstituteCode())) {
+			return getAuthorizedOrganizationsByNameOrNciId(null, org.getNciInstituteCode());
+		} else {
+			return getAuthorizedOrganizationsByNameOrNciId(org.getName(), null);
+		}
+	}
+	private String checkAuthorizedOrganizations (gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		List<OrganizationType> orgs = new ArrayList<OrganizationType>();
+		orgs.add(studyDto.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization());		
+		orgs.add(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization());		
+		StudyOrganizations so = studyDto.getStudyOrganizations();
+		for (StudySiteType sst: so.getStudySite()) {
+			orgs.add(sst.getOrganization());
+		}
+		for (OrganizationType org:orgs) {
+			if (searchForOrganization(org).size()<1) {
+				return messageSource.getMessage("WS_AEMS_028", new String[]{org.getNciInstituteCode() + " : " + org.getName()},"",Locale.getDefault());
+			}
+		}
+		return "ALL_ORGS_AUTH";
+	}
+	//if (!StringUtilities.isBlank(nciInstituteCode)) {
 	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
 		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
-		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+
 		
 		Response studyServiceResponse = new Response();
 		
@@ -136,6 +161,13 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
 		
+		String errorMsg = checkAuthorizedOrganizations(studyDto);
+		if (!errorMsg.equals("ALL_ORGS_AUTH")) {
+			studyServiceResponse.setResponsecode("WS_AEMS_028");
+			studyServiceResponse.setDescription(errorMsg);	
+			caaersServiceResponse.setResponse(studyServiceResponse);
+			return caaersServiceResponse;
+		}
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
 		
@@ -183,7 +215,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				studyServiceResponse.setMessage(messages);
 			}
 		}
-		enableAuthorization(authorizationOnByDefault);
+
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
 		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
@@ -192,14 +224,21 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
 		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
-		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+
 		
 		Response studyServiceResponse = new Response();
 		
 		logger.info("Inside updateStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
+
+		String errorMsg = checkAuthorizedOrganizations(studyDto);
+		if (!errorMsg.equals("ALL_ORGS_AUTH")) {
+			studyServiceResponse.setResponsecode("WS_AEMS_028");
+			studyServiceResponse.setDescription(errorMsg);	
+			caaersServiceResponse.setResponse(studyServiceResponse);
+			return caaersServiceResponse;
+		}
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
@@ -246,7 +285,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				studyServiceResponse.setMessage(messages);
 			}
 		}
-		enableAuthorization(authorizationOnByDefault);
+
 		logger.info("Leaving updateStudy() in StudyProcessor");
 		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
@@ -268,24 +307,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
         }
 		return dbStudy;
 	}
-	
-	private void switchUser(String userName, String... roles) {
-        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            authorities[i] = new GrantedAuthorityImpl(roles[i]);
-        }
-        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-	
-	private boolean enableAuthorization(boolean on) {
-        AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
-        if (sw == null) throw new RuntimeException("Authorization switch not found");
-        boolean current = sw.isOn();
-        sw.setOn(on);
-        return current;
-    }
+
 
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
@@ -295,6 +317,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
 		this.domainObjectValidator = domainObjectValidator;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 
 }

@@ -1,10 +1,16 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.ParticipantService;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -12,41 +18,46 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
+import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
+import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
+import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
+import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import gov.nih.nci.cabig.caaers.webservice.participant.Response;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.ParticipantService", serviceName="ParticipantService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class ParticipantServiceImpl implements ParticipantService,ApplicationContextAware {
+public class ParticipantServiceImpl extends AbstractImportService implements ParticipantService,ApplicationContextAware,MessageSourceAware {
 	
 	private static Log logger = LogFactory.getLog(ParticipantServiceImpl.class);
 	private ApplicationContext applicationContext;
-	
+	private MessageSource messageSource;
     private ParticipantDao participantDao;
+    private StudyDao studyDao;
     private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
     private DomainObjectValidator domainObjectValidator;
+
     
 	/**
 	 * Method exisits only to be called from ImportController 
@@ -84,19 +95,77 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         logger.info("Leaving processParticipant() in ParticipantServiceImpl");
 		return participantImportOutcome;
 	}
-	
+	public Identifier getStudyIdentifierFromInXML(ParticipantType xmlParticipant) {
+		Identifier identifier = null;
+		Assignments assignments = xmlParticipant.getAssignments();
+		for(AssignmentType assignmentType : assignments.getAssignment()){
+			identifier = new Identifier();
+			identifier.setType(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getType().value());
+			identifier.setValue(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getValue());
+			return identifier;
+		}
+		return identifier;		
+	}
+	public List<StudySearchableAjaxableDomainObject> getAuthorizedStudies(Identifier identifier) {
+		List<StudySearchableAjaxableDomainObject> authorizedStudies = new ArrayList<StudySearchableAjaxableDomainObject>();
+		Study study = fetchStudy(identifier);
+		if (study!=null) {
+			authorizedStudies = getAuthorizedStudies(identifier.getValue());
+			return authorizedStudies;
+		}
+		return authorizedStudies;
+		
+	}
+
+	private String checkAuthorizedOrganizations (ParticipantType xmlParticipant) {
+		Assignments assignments = xmlParticipant.getAssignments();
+		for(AssignmentType assignmentType : assignments.getAssignment()){
+			String organizationName = assignmentType.getStudySite().getOrganization().getName();
+			String organizationNciInstituteCode = assignmentType.getStudySite().getOrganization().getNciInstituteCode();
+			List<Organization> organizations = new ArrayList<Organization>();
+			if (StringUtilities.isBlank(organizationNciInstituteCode)) {
+            	//System.out.println("looking by name");
+				organizations = getAuthorizedOrganizationsByNameOrNciId(organizationName,null);
+            } else {
+            	//System.out.println("looking by id");
+            	organizations = getAuthorizedOrganizationsByNameOrNciId(null,organizationNciInstituteCode);
+            }
+			if (organizations.size() == 0 ) {
+				return organizationNciInstituteCode + " : " + organizationName;
+			}
+		}
+		return "ALL_ORGS_AUTH";
+	}
 	public CaaersServiceResponse createParticipant(
 			Participants xmlParticipants) {
 		
 		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
-		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
-		
+
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 		Response participantServiceResponse = new Response();
 		Participant participant = new Participant();
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-        
+		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
+		if (identifier != null ) {
+			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
+			if(authorizedStudies.size() == 0) {
+				String message = messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault());
+				participantServiceResponse.setResponsecode("WS_AEMS_027");
+				participantServiceResponse.setDescription(message);
+				caaersServiceResponse.setResponse(participantServiceResponse);
+				return caaersServiceResponse;
+			}			
+		}
+		
+		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
+		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
+			String message = messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault());
+			participantServiceResponse.setResponsecode("WS_AEMS_029");
+			participantServiceResponse.setDescription(message);
+			caaersServiceResponse.setResponse(participantServiceResponse);
+			return caaersServiceResponse;
+		}		
+		
         try{
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
@@ -140,8 +209,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 				participantServiceResponse.setMessage(messages);
 			}
         }
-        enableAuthorization(authorizationOnByDefault);
-		switchUser(null);
+
 		caaersServiceResponse.setResponse(participantServiceResponse);
 		return caaersServiceResponse;
 	}
@@ -150,15 +218,32 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 			Participants xmlParticipants) {
 		
 		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
-		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 		Response participantServiceResponse = new Response();
+
+		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
+		if (identifier != null ) {
+			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
+			if(authorizedStudies.size() == 0) {
+				String message = messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault());
+				participantServiceResponse.setResponsecode("WS_AEMS_027");
+				participantServiceResponse.setDescription(message);
+				caaersServiceResponse.setResponse(participantServiceResponse);
+				return caaersServiceResponse;
+			}			
+		}
 		
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
 		Participant participant = new Participant();
-        
+		List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies("6482");
+		if(authorizedStudies.size() == 0) {
+			String message = messageSource.getMessage("WS_AEMS_027", new String[]{"6482"},"",Locale.getDefault());
+			participantServiceResponse.setResponsecode("WS_AEMS_027");
+			participantServiceResponse.setDescription(message);
+			caaersServiceResponse.setResponse(participantServiceResponse);
+			return caaersServiceResponse;
+		}        
         try{
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
@@ -207,8 +292,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 				participantServiceResponse.setMessage(messages);
         	}
         }
-        enableAuthorization(authorizationOnByDefault);
-		switchUser(null);
+
 		caaersServiceResponse.setResponse(participantServiceResponse);
 		return caaersServiceResponse;
 	}
@@ -224,7 +308,15 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 		}
 		return dbParticipant;
 	}
-
+	private Study fetchStudy(Identifier identifier){
+		Study dbStudy = null;
+		dbStudy = studyDao.getByIdentifier(identifier);
+			if(dbStudy != null){
+				return dbStudy;
+			}
+			studyDao.evict(dbStudy);
+		return dbStudy;
+	}
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}
@@ -254,24 +346,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
-	
-	private void switchUser(String userName, String... roles) {
-        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            authorities[i] = new GrantedAuthorityImpl(roles[i]);
-        }
-        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-	
-	private boolean enableAuthorization(boolean on) {
-        AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
-        if (sw == null) throw new RuntimeException("Authorization switch not found");
-        boolean current = sw.isOn();
-        sw.setOn(on);
-        return current;
-    }
+
 
 	public ParticipantSynchronizer getParticipantSynchronizer() {
 		return participantSynchronizer;
@@ -284,5 +359,12 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 	
 	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
 		this.domainObjectValidator = domainObjectValidator;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
 	}
 }
