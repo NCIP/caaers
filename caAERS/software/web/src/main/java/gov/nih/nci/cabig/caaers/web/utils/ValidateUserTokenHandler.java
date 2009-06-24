@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.utils;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider;
 import gov.nih.nci.security.exceptions.CSLoginException;
