@@ -39,15 +39,6 @@
                 }
             });
 
-            Event.observe($('reportTypeSave'), "click", function() {
-                if (saveReportType($('rtCode').value, $('rtName').value, $('rtDesc').value)) {
-                    win.close();
-                    refreshReportTypes();
-                } else {
-                    
-                }
-            });
-
             function newReportTypePopup() {
                 url = "createReportType",
                 win = new Window({className:"alphacube",
@@ -81,12 +72,22 @@
 
                 });
             }
-            function saveReportType(code, name, desc) {
-                return false;
-            }
-            function refreshReportTypes() {
-            }
+
         });
+        function refreshReportTypes() {
+            reportDef.fetchReportTypes(function(output) {
+                var len = output.objectContent.length;
+                $('reportDefinition.reportType').options.length = 0;
+
+                for (i=0; i<len; i++) {
+                    var repType = output.objectContent[i];
+                    var opt = new Option(repType.name, repType.id);
+                    $('reportDefinition.reportType').options.add(opt);
+                }
+                opt = new Option('Create new...', '-1');
+                $('reportDefinition.reportType').options.add(opt);
+            });
+        }
       
     </script>
 <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>   

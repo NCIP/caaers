@@ -3,8 +3,11 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
@@ -35,6 +38,7 @@ public class ReportDefinitionAjaxFacade {
     private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
     private OrganizationDao orgDao;
     private ReportDefinitionDao repDefDao;
+    private ConfigPropertyDao cpDao;
     private OrganizationRepository organizationRepository;
 
     // /LOGIC
@@ -141,6 +145,13 @@ public class ReportDefinitionAjaxFacade {
         return out;
     }
 
+    public AjaxOutput fetchReportTypes() {
+        List<ConfigProperty> rdList = cpDao.getByType(ConfigPropertyType.REPORT_TYPE);
+        AjaxOutput out = new AjaxOutput();
+        out.setObjectContent(rdList.toArray());
+        return out;
+    }
+
     // /BEAN PROPERTIES
     public void setOrganizationDao(OrganizationDao orgDao) {
         this.orgDao = orgDao;
@@ -160,5 +171,13 @@ public class ReportDefinitionAjaxFacade {
 
     public void setRepDefDao(ReportDefinitionDao repDefDao) {
         this.repDefDao = repDefDao;
+    }
+
+    public ConfigPropertyDao getCpDao() {
+        return cpDao;
+    }
+
+    public void setCpDao(ConfigPropertyDao cpDao) {
+        this.cpDao = cpDao;
     }
 }

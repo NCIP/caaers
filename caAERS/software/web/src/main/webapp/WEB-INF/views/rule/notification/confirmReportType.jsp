@@ -7,6 +7,7 @@
  
 <script>
     window.parent.win.close();
+    window.parent.refreshReportTypes();
 </script>
 
 </head>
