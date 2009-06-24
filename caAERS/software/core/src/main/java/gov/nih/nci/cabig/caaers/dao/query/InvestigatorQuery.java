@@ -46,6 +46,13 @@ public class InvestigatorQuery extends AbstractQuery {
         andWhere(String.format("lower(i.loginId) LIKE :%s", LOGIN_ID));
         setParameter(LOGIN_ID, searchString);
     }
+    
+    public void filterByExactLoginId(final String loginId) {
+    	 String searchString = loginId.trim().toLowerCase();
+         andWhere(String.format("lower(i.loginId) = :%s", LOGIN_ID));
+         setParameter(LOGIN_ID, searchString);
+    }
+    
     public void filterByOrganization(final String organization) {
         String searchString = organization.trim();
         andWhere("si.organization.id =:" + ORGANIZATION);

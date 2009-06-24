@@ -66,6 +66,12 @@ public class ResearchStaffQuery extends AbstractQuery {
         setParameter(LOGIN_ID, searchString);
     }
 
+    public void filterByExactLoginId(final String loginId) {
+        String searchString = loginId.trim().toLowerCase();
+        andWhere(String.format("lower(rs.loginId) = :%s", LOGIN_ID));
+        setParameter(LOGIN_ID, searchString);
+    }
+    
     public void filterByNciIdentifier(final String nciIdentifier) {
         String searchString = "%" + nciIdentifier.toLowerCase() + "%";
         andWhere("lower(rs.nciIdentifier) LIKE :" + NCI_IDENTIFIER);
