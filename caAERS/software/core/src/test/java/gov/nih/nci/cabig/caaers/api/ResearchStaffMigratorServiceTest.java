@@ -119,7 +119,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
     	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
         if (StringUtils.isNotEmpty(loginId)) {
         	//rsQuery.filterByNciIdentifier(nciIdentifier);
-        	rsQuery.filterByLoginId(loginId);
+        	rsQuery.filterByExactLoginId(loginId);
         }
         List<ResearchStaff> rsList = researchStaffRepository.searchResearchStaff(rsQuery);
         

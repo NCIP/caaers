@@ -108,7 +108,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 	Investigator fetchInvestigator(String loginId) {
     	InvestigatorQuery invQuery = new InvestigatorQuery();
         if (StringUtils.isNotEmpty(loginId)) {
-        	invQuery.filterByLoginId(loginId);
+        	invQuery.filterByExactLoginId(loginId);
         	
         }
         List<Investigator> rsList = investigatorRepository.searchInvestigator(invQuery);
