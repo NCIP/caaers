@@ -209,6 +209,18 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     }
 
     /**
+     * Save or update the study in the db.
+     * This method is called by StudyParticipantAssignmentMigrator , this method is create for securtuty policy.
+     * subject coordinator should be able to add study site while creating the subject. This method is called and grated permissions on to subject cordinator.
+     *
+     * @param The study.
+     */
+    @Transactional(readOnly = false)
+    public void updateStudyForServiceUseOnly(final Study study) {
+        getHibernateTemplate().saveOrUpdate(study);
+    }
+    
+    /**
      * Get the list of studies matching the name fragments.
      *
      * @param subnames the name fragments to search on.
