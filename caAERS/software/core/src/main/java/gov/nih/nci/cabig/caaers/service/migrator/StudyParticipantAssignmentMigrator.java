@@ -68,7 +68,8 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                                         + " \" is nonexistant");
                 	}else{
                 		study.addStudySite(studySite);
-                		studyDao.save(study);
+                	//	studyDao.save(study);
+                		studyDao.updateStudyForServiceUseOnly(study);
                 	}
                 }
                 StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);
