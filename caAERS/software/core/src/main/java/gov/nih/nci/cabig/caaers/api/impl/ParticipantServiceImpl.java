@@ -233,17 +233,19 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 				return caaersServiceResponse;
 			}			
 		}
-		
-		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-		Participant participant = new Participant();
-		List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies("6482");
-		if(authorizedStudies.size() == 0) {
-			String message = messageSource.getMessage("WS_AEMS_027", new String[]{"6482"},"",Locale.getDefault());
-			participantServiceResponse.setResponsecode("WS_AEMS_027");
+
+		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
+		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
+			String message = messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault());
+			participantServiceResponse.setResponsecode("WS_AEMS_029");
 			participantServiceResponse.setDescription(message);
 			caaersServiceResponse.setResponse(participantServiceResponse);
 			return caaersServiceResponse;
-		}        
+		}
+		
+		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
+		Participant participant = new Participant();
+       
         try{
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
