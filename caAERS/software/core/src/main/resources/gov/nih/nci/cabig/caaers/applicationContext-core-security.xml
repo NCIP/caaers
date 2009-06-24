@@ -143,6 +143,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))        
                               "/>
 
 
@@ -202,6 +204,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Participant))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
 
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.updateStudyForServiceUseOnly(gov.nih.nci.cabig.caaers.domain.Study))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
+               
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 
@@ -238,7 +243,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
                
-
+        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+               
+        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
     </util:map>
 
@@ -277,7 +286,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.restrict*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
-                
+                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK                
             </value>
         </property>
         <property name="accessDecisionManager">
@@ -395,6 +405,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         -->       
         <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
                value-ref="organizationSecurityFilterer"/>  
+        <entry key="gov.nih.nci.cabig.caaers.domain.LocalOrganization"
+               value-ref="organizationSecurityFilterer"/> 
         <entry key="gov.nih.nci.cabig.caaers.domain.ResearchStaff"
                value-ref="researchStaffSecurityFilterer"/>                
                
