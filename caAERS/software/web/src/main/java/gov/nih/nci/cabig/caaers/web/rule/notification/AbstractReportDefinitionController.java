@@ -67,6 +67,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         ControllerTools.registerDomainObjectEditor(binder, configPropertyDao);
         ControllerTools.registerEnumEditor(binder, ReportFormat.class);
         ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);

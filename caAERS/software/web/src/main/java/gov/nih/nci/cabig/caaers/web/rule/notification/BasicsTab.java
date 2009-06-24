@@ -101,6 +101,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.physicianSignOff", "Physician signoff required?", true));
 
         Map<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
+        parentOptions.put("", "Please select");
         if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
             List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
             for (int i=0; i<rdList.size(); i++) {
