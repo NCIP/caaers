@@ -56,6 +56,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         reportDefinitionDao.initialize(rpDef);
         reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
         ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        rpDefCmd.setMODE("EDIT");
 
         // find the index of the first planned notificaiton
         List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();

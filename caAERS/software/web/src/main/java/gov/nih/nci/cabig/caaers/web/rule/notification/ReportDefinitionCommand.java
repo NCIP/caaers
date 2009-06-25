@@ -30,6 +30,7 @@ import org.apache.commons.collections15.list.LazyList;
 public class ReportDefinitionCommand {
 
     private ConfigProperty configurationProperty;
+    private String MODE = "CREATE";
 
     // page -4
     private String pointOnScale = "0"; // the selected point in the time scale
@@ -221,5 +222,13 @@ public class ReportDefinitionCommand {
 
     public void setCpRepository(ConfigPropertyRepository cpRepository) {
         this.cpRepository = cpRepository;
+    }
+
+    public String getMODE() {
+        return MODE;
+    }
+
+    public void setMODE(String MODE) {
+        this.MODE = MODE;
     }
 }

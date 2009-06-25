@@ -103,6 +103,10 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
         Map<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
         parentOptions.put("", "Please select");
+
+        if (command.getMODE().equals("EDIT"))
+            command.getReportDefinitionDao().reassociate(command.getReportDefinition());
+
         if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
             List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
             for (int i=0; i<rdList.size(); i++) {
