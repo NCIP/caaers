@@ -86,7 +86,12 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     	return researchStaffImportOutcome;
     }
     
-    
+	private List<Organization> checkAuthorizedOrganizations (ResearchStaffType researchStaffType) {
+		String nciIntituteCode = researchStaffType.getOrganizationRef().getNciInstituteCode();
+		List<Organization> orgs = getAuthorizedOrganizationsByNameOrNciId(null, nciIntituteCode);
+		return orgs;
+	}
+	
     public CaaersServiceResponse saveResearchStaff(Staff staff) {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
     	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
@@ -97,7 +102,12 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (ResearchStaffType researchStaffType:researchStaffList) {
-
+    		if (checkAuthorizedOrganizations(researchStaffType).size() == 0){
+    			WsError err = new WsError();
+    			err.setErrorDesc("Failed to process ResearchStaff ::: nciIdentifier : "+researchStaffType.getNciIdentifier() + " ::: firstName : "+researchStaffType.getFirstName()+ " ::: lastName : "+researchStaffType.getLastName()) ;
+    			err.setException("User not authorized on this Organization : " + researchStaffType.getNciIdentifier());
+    			wsErrors.add(err);
+    		}
     		try {
     			researchStaff = buildResearchStaff(researchStaffType);
     			saveResearchStaff(researchStaff);

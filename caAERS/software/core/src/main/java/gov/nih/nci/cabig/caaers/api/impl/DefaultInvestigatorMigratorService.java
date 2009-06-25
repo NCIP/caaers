@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
@@ -78,6 +79,16 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		}
     	return investigatorImportOutcome;
 	}
+	private String checkAuthorizedOrganizations (InvestigatorType investigatorType) {
+		for (SiteInvestigatorType si:investigatorType.getSiteInvestigator()){
+			String nciIntituteCode = si.getOrganizationRef().getNciInstituteCode();
+			List<Organization> orgs = getAuthorizedOrganizationsByNameOrNciId(null, nciIntituteCode);
+			if (orgs.size() == 0 ) {
+				return nciIntituteCode;
+			}
+		}
+		return "ALL_ORGS_AUTH";
+	}
 	
     public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
@@ -91,6 +102,13 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (InvestigatorType investigatorType:investigatorTypeList) {
+    		String orgCheck = checkAuthorizedOrganizations(investigatorType);
+    		if (!orgCheck.equals("ALL_ORGS_AUTH")){
+    			WsError err = new WsError();
+       			err.setErrorDesc("Failed to process Investigator ::: nciIdentifier : "+investigatorType.getNciIdentifier() + " ::: firstName : "+investigatorType.getFirstName()+ " ::: lastName : "+investigatorType.getLastName()) ;
+       			err.setException("User not authorized on this Organization : " + orgCheck);
+    			wsErrors.add(err);
+    		}
      		try {
     			investigator = buildInvestigator(investigatorType);
     			saveInvestigator(investigator);
