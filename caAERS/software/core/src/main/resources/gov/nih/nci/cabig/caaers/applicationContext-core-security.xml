@@ -144,9 +144,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
         ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))        
+        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))  
+        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService+.saveResearchStaff(..))   
+        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService+.saveInvestigator(..))   
                               "/>
-
 
         <!-- advisors -->
 
@@ -249,6 +250,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
+        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService+.saveResearchStaff(..))"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+
+        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService+.saveInvestigator(..))"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+                              
     </util:map>
 
     <bean id="joinPointPrivilegeAndObjectIdGenerator"
@@ -287,7 +294,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK                
+                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK 
+                gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService.saveResearchStaff=CSM_AUTHN_CHECK     
+                gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService.saveInvestigator=CSM_AUTHN_CHECK
             </value>
         </property>
         <property name="accessDecisionManager">
