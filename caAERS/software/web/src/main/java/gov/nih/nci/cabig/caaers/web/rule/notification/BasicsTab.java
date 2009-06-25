@@ -82,7 +82,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         for (int i=0; i<list.size(); i++) {
             reportTypeOptions.put(list.get(i).getId(), list.get(i).getName());
         }
-        reportTypeOptions.put("-1", "Create new...");
+        // reportTypeOptions.put("-1", "Create new...");
         InputField reportType = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report type?", true, reportTypeOptions);
         fields.add(reportType);
 

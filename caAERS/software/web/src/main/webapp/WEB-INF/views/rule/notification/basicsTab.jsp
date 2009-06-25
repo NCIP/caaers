@@ -73,6 +73,8 @@
                 });
             }
 
+            opt = new Option('Create new...', '-1');
+            $('reportDefinition.reportType').options.add(opt);
         });
         function refreshReportTypes() {
             reportDef.fetchReportTypes(function(output) {
