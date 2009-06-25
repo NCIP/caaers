@@ -126,6 +126,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
+		   <ref bean="domInHandler"/> 
+		   <ref bean="validateUserTokenHandler"/>  
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
        </property>
@@ -147,6 +149,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
+		   <ref bean="domInHandler"/> 
+		   <ref bean="validateUserTokenHandler"/>  
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
        </property>
