@@ -107,6 +107,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         if (StringUtils.equals(request.getParameter("_action"), "deleteDelivery")) return true;
+        if (StringUtils.equals(request.getParameter("_action"), "delete")) return true;
         return isAjaxAddRequest(request) ? true : super.suppressValidation(request, command);
     }
 

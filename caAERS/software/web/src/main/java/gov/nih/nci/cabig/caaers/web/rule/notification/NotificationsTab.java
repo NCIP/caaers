@@ -38,11 +38,8 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
         super(longTitle, shortTitle, viewName);
         rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.plannedNotifications");
         rfgFactory.addField(InputFieldFactory.createTextField("recipients", "Recipients", false));
-        rfgFactory
-                        .addField(InputFieldFactory.createTextField("subjectLine", "Subject Line",
-                                        false));
-        rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body",
-                        "Message", false));
+        rfgFactory.addField(InputFieldFactory.createTextField("subjectLine", "Subject Line", false));
+        rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body", "Message", false));
     }
 
     public NotificationsTab() {
@@ -84,8 +81,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
     }
 
     @Override
-    protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         if (CollectionUtils.isEmpty(command.getReportDefinition().getPlannedNotifications())) return;
 
         List<PlannedNotification> plannedNotifications = command.getEmailNotifications();
@@ -96,21 +92,16 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
             i++;
             PlannedEmailNotification nf = (PlannedEmailNotification) plannedNotification;
             // Message
-            if (nf.getNotificationBodyContent() == null
-                            || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())) {
-                errors.rejectValue("tempProperty", "RPD_003",new Object[]{i},
-                                "Message Invalid  in Email Notification(" + i + ")");
+            if (nf.getNotificationBodyContent() == null || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())) {
+                errors.rejectValue("tempProperty", "RPD_003",new Object[]{i}, "Message Invalid  in Email Notification(" + i + ")");
             }
             // Recipients
             if (nf.getRecipients() == null) {
-                errors.rejectValue("tempProperty", "RPD_004",new Object[]{i},
-                                "Invalid Recipient Information in Email Notification (" + i + ")");
+                errors.rejectValue("tempProperty", "RPD_004",new Object[]{i}, "Invalid Recipient Information in Email Notification (" + i + ")");
             } else {
                 for (Recipient recipient : nf.getRecipients()) {
                     if (StringUtils.isEmpty(recipient.getContact())) {
-                        errors.rejectValue("tempProperty", "RPD_004",new Object[]{i},
-                                        "Invalid Recipient Information in Email Notification (" + i
-                                                        + ")");
+                        errors.rejectValue("tempProperty", "RPD_004",new Object[]{i}, "Invalid Recipient Information in Email Notification (" + i + ")");
                         break;
                     }
                     // valid email?
@@ -124,8 +115,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
             }
             // subject line
             if (StringUtils.isEmpty(nf.getSubjectLine())) {
-                errors.rejectValue("tempProperty", "RPD_006",new Object[]{i},
-                                "Subject line Invalid  in Email Notification(" + i + ")");
+                errors.rejectValue("tempProperty", "RPD_006",new Object[]{i}, "Subject line Invalid  in Email Notification(" + i + ")");
             }
         }
     }
