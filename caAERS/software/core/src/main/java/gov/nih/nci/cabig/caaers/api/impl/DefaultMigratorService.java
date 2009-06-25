@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -13,10 +14,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public abstract class DefaultMigratorService {
+public abstract class DefaultMigratorService extends AbstractImportService{
 	
 	private OrganizationDao organizationDao;
-	private OrganizationRepository organizationRepository;
+
 	private static final Log logger = LogFactory.getLog(DefaultMigratorService.class);
 	
 	
@@ -53,14 +54,5 @@ public abstract class DefaultMigratorService {
 		this.organizationDao = organizationDao;
 	}
 
-	public OrganizationRepository getOrganizationRepository() {
-		return organizationRepository;
-	}
-	
-	@Required
-	public void setOrganizationRepository(
-			OrganizationRepository organizationRepository) {
-		this.organizationRepository = organizationRepository;
-	}
     
 }
