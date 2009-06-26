@@ -89,13 +89,13 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         assertEquals("Phase III Trial", updatedStudy.getPhaseCode());
         assertEquals("Temporarily Closed to Accrual", updatedStudy.getStatus());
         assertEquals("BLIND", updatedStudy.getDesign().name());
-//        assertFalse(updatedStudy.getMultiInstitutionIndicator());
-//        assertFalse(updatedStudy.getAdeersReporting());
-//        assertFalse(updatedStudy.getDrugAdministrationTherapyType());
-//        assertFalse(updatedStudy.getRadiationTherapyType());
-//        assertFalse(updatedStudy.getDeviceTherapyType());
-//        assertFalse(updatedStudy.getSurgeryTherapyType());
-//        assertFalse(updatedStudy.getBehavioralTherapyType());
+        assertFalse(updatedStudy.getMultiInstitutionIndicator());
+        assertFalse(updatedStudy.getAdeersReporting());
+        assertFalse(updatedStudy.getDrugAdministrationTherapyType());
+        assertFalse(updatedStudy.getRadiationTherapyType());
+        assertFalse(updatedStudy.getDeviceTherapyType());
+        assertFalse(updatedStudy.getSurgeryTherapyType());
+        assertFalse(updatedStudy.getBehavioralTherapyType());
     }
 
 
