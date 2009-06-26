@@ -15,7 +15,6 @@ public class ListNotificationController extends SimpleFormController {
     private ReportDefinitionDao rdDao;
 
     public ListNotificationController() {
-
         setCommandClass(ListNotificationCommand.class);
         setBindOnNewForm(true);
         setFormView("rule/notification/list");
