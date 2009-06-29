@@ -1,27 +1,12 @@
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title>List Rules</title>
     <tags:dwrJavascriptLink objects="authorRule"/>
-    <style type="text/css">
-        .notify-unit.success {
-            color: #090;
-        }
-
-        .notify-unit.failure {
-            color: #900;
-        }
-    </style>
     <script type="text/javascript">
     
-    Event.observe(window, "load", function() {
-    
-
-
-		});
+    Event.observe(window, "load", function() {});
 		
 		function deployRule(name , divId) {
 			try {
@@ -66,79 +51,100 @@
 					});
 			} catch(e) {alert(e)}
 		}
-		
+
+YAHOO.example.Data = {
+
+    rsList: [
+<c:forEach items="${command.ruleSets}" var="rs" varStatus="status">
+        {
+            rsLevel: "${rs.level}",
+            rsDescription: "${rs.description}",
+            rsOrganization: "${rs.organization}",
+            rsStudyID: "${rs.study}",
+            rsStatus: "${rs.coverage}",
+            rsAction: "<a id='deploy' href=\"javascript:deployRule('${rs.name}', 'status-${rs.id}')\">Enable</a>&nbsp;&nbsp;" +
+                      "<a id='deploy' href=\"javascript:unDeployRule('${rs.name}', 'status-${rs.id}')\">Disable</a>&nbsp;&nbsp;" +
+                      "<a id='deploy' href=\"<c:url value="/pages/rule/export?ruleSetName=${rs.name}"/>\">Export/Download</a><br>" +
+                      "<a id='deploy' href=\"<c:url value="/pages/rule/util?ruleSetName=${rs.name}"/>\"><font color=\"red\">Delete</font></a>"
+
+        }
+        <c:if test="${!status.last}">,</c:if>
+</c:forEach>
+
+    ]
+};
+
+    /////////////////////////////////
+
+YAHOO.util.Event.addListener(window, "load", function() {
+    YAHOO.example.CustomSort = function() {
+
+        var myColumnDefs = [
+            {key:"rsLevel",             label:"Rule Level",         sortable:true,      resizeable:true},
+            {key:"rsDescription",       label:"Rule Set",           sortable:true,      resizeable:true},
+            {key:"rsOrganization",      label:"Organization",       sortable:true,      resizeable:true},
+            {key:"rsStudyID",           label:"Study",              sortable:true,      resizeable:true},
+            {key:"rsStatus",            label:"Status",             sortable:true,      resizeable:true, formatter:"myCustom"},
+            {key:"rsAction",            label:"Action",             sortable:false,     resizeable:true}
+        ];
+
+        var myCustomFormatter = function(elCell, oRecord, oColumn, oData) {
+                        if(oRecord.getData("rsStatus") == "Not Enabled") {
+                            elCell.innerHTML = "<font color='red'>" + oData + "</font>";
+                        }
+                        else {
+                            elCell.innerHTML = "<font color='green'>" + oData + "</font>";
+                        }
+                    };
+
+        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
+                            elCell.innerHTML = 'abc';
+
+
+/*
+        <a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
+        <a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
+
+
+        <!-- <a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>-->
+        <a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>&nbsp;&nbsp;
+        <a href="<c:url value="/pages/rule/util?ruleSetName=${ruleSet.name}"/>"><font color="red">Delete</font></a>&nbsp;&nbsp;
+*/
+
+                    };
+
+        // Add the custom formatter to the shortcuts
+        YAHOO.widget.DataTable.Formatter.myCustom = myCustomFormatter;
+//        YAHOO.widget.DataTable.Formatter.actionFormatter = actionFormatter;
+
+        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.rsList.slice(0,50));
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+        myDataSource.responseSchema = {
+            fields: ["rsLevel", "rsDescription", "rsOrganization", "rsStudyID", "rsStatus", "rsAction"]
+        };
+
+        //Create config
+        var oConfigs = {
+				initialRequest: "results=50",
+				draggableColumns:false
+			};
+        var myDataTable = new YAHOO.widget.DataTable("basic", myColumnDefs, myDataSource, oConfigs);
+
+        return {
+            oDS: myDataSource,
+            oDT: myDataTable
+        };
+    }();
+});
+
+    /////////////////////////////////
+
     </script>
 </head>
 <body>
-<p>
-<tags:instructions code="listrules" />
-</p>
-<c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
-<ec:table
-    items="command.ruleSets"
-    var="ruleSet" imagePath="${ecImagePath}"
-    showPagination="false"
-    cellspacing="0" cellpadding="0" border="0" width="80%"
-    style="margin-left:30px; width:90%;" styleClass="">
-    <c:if test="${ruleSet.name != 'default' }">
-    <ec:row>
-    
-    	<ec:column property="level" title="Rule Level" sortable="false" filterable="false">
-    		${ruleSet.level}
-    	</ec:column>
-    	
-    	<ec:column property="description" title="Rule Set" sortable="false" filterable="false"/>
-    	
-    	<ec:column property="organization" title="Organization" sortable="false" filterable="false">
-    	    		${ruleSet.organization}
-    	</ec:column>
-    	
-    	<ec:column property="study" title="Study" sortable="false" filterable="false">
-    	    		${ruleSet.study}
-    	</ec:column>    	
-    	
-       <ec:column property="status" title="Status" sortable="false" filterable="false">
-		  <div id="status-${ruleSet.id}">
-		   <c:choose>
-            <c:when test="${ruleSet.coverage == 'Not Enabled'}">
-            	<font color="red">${ruleSet.coverage}</font>
-            </c:when>
-            <c:otherwise>
-				<font color="green">${ruleSet.coverage}</font>
-			</c:otherwise>
-		   </c:choose>
-		  </div>
-		  
-        </ec:column>
-        <ec:column property="action" title="Action" sortable="false" filterable="false">
-            	<a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
-            	<a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
-            	
-            	
-            	<!-- <a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>-->
-            	<a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>&nbsp;&nbsp;
-            	<a href="<c:url value="/pages/rule/util?ruleSetName=${ruleSet.name}"/>"><font color="red">Delete</font></a>&nbsp;&nbsp;
-            	
-        </ec:column>
-    </ec:row>
-    </c:if>
-</ec:table>
 
-
-<p>
-
-
-<%--
-<a href="javascript:fireRulesNow('3')">Successful Execution</a>
-
-<br/>
-
-<a href="javascript:fireRulesNow('2')">Non - Successful Execution</a>
-</p>
-
-<a href="javascript:fireRulesNow('1')">Successful Execution 2</a>
---%>
-
+    <p><tags:instructions code="listrules" /></p>
+    <div id="basic" class="yui-skin-sam"></div>
 
 </body>
 </html>
