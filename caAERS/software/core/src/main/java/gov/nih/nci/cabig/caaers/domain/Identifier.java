@@ -130,13 +130,6 @@ public class Identifier extends AbstractMutableDomainObject {
         } else if (!value.equals(other.value)) {
             return false;
         }
-        if (primaryIndicator == null) {
-            if (other.primaryIndicator != null) {
-                return false;
-            }
-        } else if (!primaryIndicator.equals(other.primaryIndicator)) {
-            return false;
-        }
         return true;
     }
 
