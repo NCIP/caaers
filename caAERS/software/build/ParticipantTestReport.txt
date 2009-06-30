@@ -1,0 +1,16 @@
++---------- Auto generated report based on data retrieved from the caAERS database. ----------+
+
+
++---------- INPUT QUERY. ----------+
+Get all Particpant whose subname (first name or last name) is 'Jack'
+
+
++------------Objects Involed . -------+
+Participant , Study, StudySite, StudyParticipantAssignment, ExpeditedAdverseEventReport , AdverseEventResponseDescription, Physician, ContactMechanism, Reporter, 
+DiseaseHistory, CtepStudyDisease, DiseaseTerm, AnatomicSite, ParticipantHistory, RadiationIntervention, SurgeryIntervention, MedicalDevice, ConcomitantMedication
+AdverseEvent, ConcomitantMedicationAttribution, OtherCauseAttribution, CourseAgentAttribution, CourseAgent, Dose, StudyAgent, DiseaseAttribution, DiseaseHistory
+SurgeryAttribution, RadiationAttribution, DeviceAttribution, AdverseEventCtcTerm, Lab, SAEReportPriorTherapy, TreatmentInformation, AdverseEventCourse, CourseAgent, SAEReportPreExistingCondition
+
+
+--- Retrieving  and looping thru Participants ---
+--- Total number of Participants # 0
