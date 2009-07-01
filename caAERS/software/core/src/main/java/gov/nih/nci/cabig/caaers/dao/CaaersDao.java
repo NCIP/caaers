@@ -365,7 +365,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
-    public List<? extends DomainObject> search(final AbstractQuery query){
+    public List<? extends Object> search(final AbstractQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
         return getHibernateTemplate().find(query.getQueryString());
