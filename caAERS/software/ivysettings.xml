@@ -18,17 +18,22 @@
         
         
 		<!--  Semanticbits shared repository [using http] -->
+		
 		<url name="semanticbits-repo-http">
 			<ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>
+	
 
-		<!--  Semanticbits 10.10.10.2 repository [using http] this is temp , c3pr-esb-client shud be published to public repo -->
+<!-- Semanticbits 10.10.10.2 repository [using http] this is temp , c3pr-esb-client shud be published to public repo --> 
+<!--  
 		<url name="semanticbits-dev-http">
 			<ivy pattern="http://10.10.10.2:8030/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
   			<artifact pattern="http://10.10.10.2:8030/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>
-				
+-->
+
+			
 		<!--  Semanticbits shared repository [using http] -->
 		<url name="semanticbits-grid-repo-http">
 			<ivy pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/ivy-[revision].xml" />
