@@ -16,31 +16,41 @@
 			<xs:sequence>
 				<xs:element name="class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
-				<xs:element name="view-column" type="searchui:view-column" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="table-name" type="xs:string"/>
+				<xs:element name="table-alias" type="xs:string"/>
 				<xs:element name="dependent-object" type="searchui:dependent-object" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 		
-		<xs:complexType name="view-column">
-			<xs:sequence>
-				<xs:element name="column-title" type="xs:string"/>
-				<xs:element name="column-attribute" type="xs:string"/>
-			</xs:sequence>
-		</xs:complexType>
-	
 		<xs:complexType name="dependent-object">
 			<xs:sequence>
 				<xs:element name="class-name" type="xs:string"/>
 				<xs:element name="display-name" type="xs:string"/>
+				<xs:element name="inView" type="xs:boolean"/>
+				<xs:element name="table-name" type="xs:string"/>
+				<xs:element name="table-alias" type="xs:string"/>
 				<xs:element name="ui-attribute" type="searchui:ui-attribute" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="view-column" type="searchui:view-column" minOccurs="1" maxOccurs="unbounded" />
 				<xs:element name="ui-association" type="searchui:ui-association" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-		
+
+		<xs:complexType name="view-column">
+			<xs:sequence>
+				<xs:element name="column-title" type="xs:string"/>
+				<xs:element name="column-attribute" type="xs:string"/>
+				<xs:element name="table-title" type="xs:string"/>
+				<xs:element name="selected" type="xs:boolean"/>
+			</xs:sequence>
+		</xs:complexType>
+	
 		<xs:complexType name="ui-association">
 			<xs:sequence>
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="role-name" type="xs:string"/>
+				<xs:element name="table-name" type="xs:string"/>
+				<xs:element name="table-alias" type="xs:string"/>
+				<xs:element name="joining-condition" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 	

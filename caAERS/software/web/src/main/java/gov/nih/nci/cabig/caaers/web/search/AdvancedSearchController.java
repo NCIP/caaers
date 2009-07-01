@@ -163,75 +163,109 @@ public class AdvancedSearchController extends SimpleFormController{
 		for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
 			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted())
 					parameters.add(p);
-			}
-			CQLQuery cql = UICQL2CQL.transform(parameters, command.getSearchTargetObject());
-			String query = CQL2HQL.translate(cql, false, true);
-			System.out.println("query = " + query);
+		}
 		
-			//List<Participant> participantList = (List<Participant>)participantDao.search(new HQLQuery(query));
-			List<DomainObject> objectList = (List<DomainObject>) participantDao.search(new HQLQuery(query)); 
-			//System.out.println("Number of participants  = " + participantList.size());
-			map.put("numberOfResults", objectList.size());
-			//map.put("viewColumnDetails", command.getSearchTargetObject().getViewColumn());
-			SearchResultRowListDTO rowList = new SearchResultRowListDTO();
-			//for(Participant participant: participantList){
-			for(Object object: objectList){
-				SearchResultRowDTO row = new SearchResultRowDTO();
-				SearchResultColumnDTO column = null;
-				BeanWrapper wrapper = new BeanWrapperImpl(object);
-				for(ViewColumn viewColumn: command.getSearchTargetObject().getViewColumn()){
-					column = new SearchResultColumnDTO();
-					column.setColumnHeader(viewColumn.getColumnTitle());
-					column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-					row.getColumnListDTO().getColumnDTOList().add(column);
+		//TODO Setting the viewColumn in the dependentObjects of the targetObject here till its fetched from the UI
+		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+			dObject.setInView(false);
+			for(ViewColumn viewColumn: dObject.getViewColumn())
+				viewColumn.setSelected(false);
+		}
+		// This is to set the dependent object == target object in the view (This is possible as the user might not have any crieteria
+		// on the targetObject)
+		command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
+		for(ViewColumn v: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
+			v.setSelected(true);
+		for(AdvancedSearchCriteriaParameter p: parameters){
+			DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
+			dObject.setInView(true);
+			for(ViewColumn viewColumn: dObject.getViewColumn())
+				viewColumn.setSelected(true);
+		}
+		//TODO till here.
+		
+		String query = CommandToSQL.transform(command.getSearchTargetObject(), parameters, true);
+		System.out.println("query = " + query);
+		List<Object[]> objectList = (List<Object[]>) participantDao.search(new HQLQuery(query)); 
+		map.put("numberOfResults", objectList.size());
+		List<ViewColumn> resultsViewColumnList = new ArrayList<ViewColumn>();
+		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
+			if(dObject.isInView()){
+				resultsViewColumnList.addAll(dObject.getViewColumn());
+			}
+		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
+		for(Object[] objectArr: objectList){
+			SearchResultRowDTO row = new SearchResultRowDTO();
+			SearchResultColumnDTO column = null;
+			int i = 0;
+			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+				if(dObject.isInView()){
+					Object obj = objectArr[i++];
+					BeanWrapper wrapper = new BeanWrapperImpl(obj);
+					for(ViewColumn viewColumn: dObject.getViewColumn()){
+						if(viewColumn.isSelected()){
+							column = new SearchResultColumnDTO();
+							column.setColumnHeader(viewColumn.getColumnTitle());
+							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+							row.getColumnListDTO().getColumnDTOList().add(column);
+						}
+					}
 				}
-				rowList.getRowListDTO().add(row);
 			}
-		
-			map.put("rowList", rowList);
-			map.put("hql", query);
-			map.putAll(errors.getModel());
-			modelAndView = new ModelAndView("search/advancedSearchResults", map);
+			// NOTE TODO - This was commented as ViewColumn was moved from TargetObject to DependentObject
+			//for(ViewColumn viewColumn: command.getSearchTargetObject().getViewColumn()){
+			//	column = new SearchResultColumnDTO();
+			//	column.setColumnHeader(viewColumn.getColumnTitle());
+			//	column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+			//	row.getColumnListDTO().getColumnDTOList().add(column);
+			//}
+			rowList.getRowListDTO().add(row);
+		}
+		map.put("resultsViewColumnList", resultsViewColumnList);
+		map.put("rowList", rowList);
+		map.put("hql", query);
+		map.putAll(errors.getModel());
+		modelAndView = new ModelAndView("search/advancedSearchResults", map);
         
-			// Put searchTargetObject and criteriaParameters in session to create the form when the user clicks "modify criteria" on the 
-			// results page.
-			request.getSession().setAttribute("searchTargetObject", command.getSearchTargetObject());
-			request.getSession().setAttribute("criteriaParameters", command.getCriteriaParameters());
+		// Put searchTargetObject and criteriaParameters in session to create the form when the user clicks "modify criteria" on the 
+		// results page.
+		request.getSession().setAttribute("searchTargetObject", command.getSearchTargetObject());
+		request.getSession().setAttribute("criteriaParameters", command.getCriteriaParameters());
 		if(isSaveSearchSubmission(request)){
-				String loginId = SecurityUtils.getUserLoginName();
-				SaveSearch saveSearch = new SaveSearch();
-				saveSearch.setTargetClassName(command.getSearchTargetObject().getClassName());
-				List<CriteriaParameter> criteriaParameterList = new ArrayList<CriteriaParameter>();
-				CriteriaParameter criteriaParameter = null;
-				for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
-					criteriaParameter = new CriteriaParameter();
-					criteriaParameter.setObjectName(parameter.getObjectName());
-					criteriaParameter.setAttributeName(parameter.getAttributeName());
-					criteriaParameter.setPredicate(parameter.getPredicate());
-					criteriaParameter.setValue(parameter.getValue());
-					criteriaParameter.setDisplayValue(parameter.getDisplayValue());
-					criteriaParameterList.add(criteriaParameter);
-				}
-				saveSearch.setCriteriaParameter(criteriaParameterList);
-				Search search = new Search();
-				search.setCreatedDate(new Date());
-				search.setDescription((String) findInRequest(request,"searchDescription"));
-				search.setLoginId(loginId);
-				search.setName((String) findInRequest(request, "searchName"));
-				
-				// Marshall the saveSearch object into an xml string.
-				Marshaller marshaller;
-				try {
-					marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createMarshaller();
-					StringWriter writer = new StringWriter();
-					marshaller.marshal(saveSearch, writer);
-					search.setCriteriaXml(writer.toString());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				searchDao.save(search);
+			String loginId = SecurityUtils.getUserLoginName();
+			SaveSearch saveSearch = new SaveSearch();
+			saveSearch.setTargetClassName(command.getSearchTargetObject().getClassName());
+			List<CriteriaParameter> criteriaParameterList = new ArrayList<CriteriaParameter>();
+			CriteriaParameter criteriaParameter = null;
+			for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
+				criteriaParameter = new CriteriaParameter();
+				criteriaParameter.setObjectName(parameter.getObjectName());
+				criteriaParameter.setAttributeName(parameter.getAttributeName());
+				criteriaParameter.setPredicate(parameter.getPredicate());
+				criteriaParameter.setValue(parameter.getValue());
+				criteriaParameter.setDisplayValue(parameter.getDisplayValue());
+				criteriaParameterList.add(criteriaParameter);
+			}
+			saveSearch.setCriteriaParameter(criteriaParameterList);
+			Search search = new Search();
+			search.setCreatedDate(new Date());
+			search.setDescription((String) findInRequest(request,"searchDescription"));
+			search.setLoginId(loginId);
+			search.setName((String) findInRequest(request, "searchName"));
+			
+			// Marshall the saveSearch object into an xml string.
+			Marshaller marshaller;
+			try {
+				marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createMarshaller();
+				StringWriter writer = new StringWriter();
+				marshaller.marshal(saveSearch, writer);
+				search.setCriteriaXml(writer.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			searchDao.save(search);
 		}
 		return modelAndView;
 	}

@@ -9,9 +9,9 @@
     YAHOO.example.ColumnShowHide = function() {
         // Define Columns
         var myColumnDefs = [
-				 <c:forEach items="${command.searchTargetObject.viewColumn}" var="viewColumn" varStatus="viewColumnStatus">
+				 <c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 					{key:"${viewColumn.columnTitle}", sortable:true, resizeable:true}
-					<c:if test="${viewColumnStatus.index < fn:length(command.searchTargetObject.viewColumn) - 1}">,</c:if>
+					<c:if test="${viewColumnStatus.index < fn:length(resultsViewColumnList) - 1}">,</c:if>
 				</c:forEach> 
 			];
 
@@ -20,9 +20,9 @@
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
         myDataSource.responseSchema = {
             fields: [
-					<c:forEach items="${command.searchTargetObject.viewColumn}" var="viewColumn" varStatus="viewColumnStatus">
+					<c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 						"${viewColumn.columnTitle }"
-						<c:if test="${viewColumnStatus.index < fn:length(command.searchTargetObject.viewColumn) - 1}">,</c:if>
+						<c:if test="${viewColumnStatus.index < fn:length(resultsViewColumnList) - 1}">,</c:if>
 					</c:forEach>
 				]
         };
@@ -38,7 +38,7 @@
 
         // Create DataTable
         var myDataTable = new YAHOO.widget.DataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
-                    
+        
         // Shows dialog, creating one when necessary
         var newCols = true;
         var showDlg = function(e) {
@@ -168,7 +168,7 @@
 			<table id="resultsTableDataSource">
 				<thead>
 					<tr>
-						<c:forEach items="${command.searchTargetObject.viewColumn}" var="viewColumn" varStatus="viewColumnStatus">
+						<c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 							<td>${viewColumn.columnTitle }</td>
 						</c:forEach>
 					</tr>
