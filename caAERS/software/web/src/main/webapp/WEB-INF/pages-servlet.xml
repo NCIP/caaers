@@ -390,11 +390,9 @@
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   
-  <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>    
-	
-  <bean name="/admin/configure" id="configurationController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
+  <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>    
+  <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
+  <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 	
   <bean name="/admin/happy	" id="diagnosticsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.DiagnosticsController">

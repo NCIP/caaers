@@ -541,6 +541,7 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
+                    <xs:element name="name" type="xs:string" minOccurs="0"/>
                     <xs:element name="ctepCode" type="xs:string" minOccurs="0"/>
                     <xs:element name="meddraCode" type="xs:string" minOccurs="0"/>
                     <xs:element name="otherMeddraCode" type="xs:string"  minOccurs="0"/>

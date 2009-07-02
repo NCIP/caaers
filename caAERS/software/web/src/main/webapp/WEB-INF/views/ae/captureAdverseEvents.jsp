@@ -390,6 +390,14 @@
 					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
 					 
 						<p><tags:instructions code="instruction_ae_oae"/></p>
+
+<%--
+                        <div id="flash-message" class="info" style="width:300px;">
+                            <img src="<c:url value="/images/board.png" />" alt="" align="middle">&nbsp;
+                            <a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}" />">Download Blank AE Print Form</a>
+                        </div>
+--%>
+
  						<tags:aeTermQuery
                        			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
                        			noBackground="true"

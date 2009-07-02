@@ -15,9 +15,10 @@
     		<tbody class="tablebody">
 			 <tr>
 			  <td style="border:0px">&nbsp;</td>
-			  <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.study.activeEpochs}">
-			  <td style="border:0px; text-align:center; border-collapse:collapse;"><c:if test="${!displayOnly}"><a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img src="<c:url value='/images/checkno.gif' ></c:url>"></img>&nbsp;Delete</a></c:if></td>
-			  </c:forEach>
+                 <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.study.activeEpochs}">
+                     <td style="border:0px; text-align:center; border-collapse:collapse;"><c:if test="${!displayOnly}"><a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere">
+                         <img src="<c:url value='/images/checkno.gif' ></c:url>">&nbsp;Delete</a></c:if></td>
+                 </c:forEach>
 			 </tr>
     		    <tr class="head">
     		       <th class="term" >Evaluation Period Type</th>
@@ -28,6 +29,7 @@
                             <c:if test="${!displayOnly}">
                                 <input type="hidden" name="epoch_id" value="${eachEpoch.epochOrder}"/>
                             </c:if>
+                            <a title="Download Blank PDF Form" href="<c:url value='/pages/ae/blankForm?st=${command.study.id}&sb=0&cs=0&ep=${eachEpoch.id}' ></c:url>"><img src="<c:url value='/images/pdf.gif' ></c:url>"></a>
                             <div class="index">
                                 <c:choose>
                                     <c:when test='${statusVar.index != 0 && !displayOnly}'>
@@ -44,7 +46,7 @@
                             </div>
                             <c:if test="${!displayOnly}">
                                 <div class="inst">
-                                    <a href="#jumphere" class="instructionLinks" id="epochs[${statusVar.index}].descriptionText-id">Edit Instructions</a>
+                                    <a href="#jumphere" class="instructionLinks" id="activeEpochs[${statusVar.index}].descriptionText-id">Edit Instructions</a>
                                 </div>
                                 <tags:popupEditInstruction propertyName="study.activeEpochs[${statusVar.index}].descriptionText"></tags:popupEditInstruction>
                                 <a name="jumphere"/>
