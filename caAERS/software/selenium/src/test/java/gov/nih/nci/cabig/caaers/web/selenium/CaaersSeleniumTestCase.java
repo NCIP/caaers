@@ -152,7 +152,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.select("searchCriteria[0].searchType", "label=Identifier");
 		selenium.type("searchCriteria[0].searchText", studyId);
-		selenium.click("//input[@value='Search']");
+		//selenium.click("//input[@value='Search']");
+		selenium.click("//button[@type='button']");
 		aw
 				.waitForElementPresent("//input[@name='ajaxTable_f_primaryIdentifierValue']");
 		Thread.sleep(4000);
@@ -290,7 +291,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		Thread.sleep(3000);
 		selenium.removeSelection("disease-term", "label=All");
 		selenium.addSelection("disease-term", "label=Osteosarcoma");
-		selenium.click("//input[@value='Add disease']");
+		//selenium.click("//input[@value='Add disease']");
+		selenium.click("//button/descendant::td[text()[contains(.,'Add disease')]]");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//div[@id='contentOf-']/center/table/tbody/tr[3]/td[3]/div/a/img");
@@ -332,7 +334,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void populateEditStudyAgents() throws Exception {
 		selenium.click("select-agent-0");
-		aw.addLastPanel("AddStudyAgent", "//div[@id='sa-section-?']");
+		//aw.addLastPanel("AddStudyAgent", "//div[@id='sa-section-?']");
+		aw.addLastPanel("//button/descendant::td[text()[contains(.,'Add Study Agent')]]", "//div[@id='sa-section-?']");
 
 		// selenium.click("select-agent-2");
 		selenium.click(aw.computeLatestElement("select-agent-?", true));
@@ -466,13 +469,13 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.click("addSingleTermBtn");
 		if (selenium.isElementPresent("addMultiTermBtn")) {
 			selenium.click("addMultiTermBtn");
-			aw.waitForElementPresent("//div[@id='categories-div-id']");
-			selenium.removeSelection("categories", "label=AUDITORY/EAR");
-			selenium.addSelection("categories", "label=CARDIAC GENERAL");
-			aw.waitForElementPresent("//option[@title='Hypertension']");
-			selenium.addSelection("terms", "label=Hypertension");
-			selenium.addSelection("terms", "label=Hypotension");
-			selenium.click("addTermsBtn");
+			//aw.waitForElementPresent("//div[@id='categories-div-id']");
+			aw.waitForElementPresent("//a[@title='CARDIAC GENERAL']");
+			selenium.click("//a[@title='CARDIAC GENERAL']");
+			aw.waitForElementPresent("//a[text()='Hypertension']");
+			selenium.click("//a[text()='Hypertension']");
+			selenium.click("//a[text()='Hypotension']");
+			selenium.click("//button/descendant::td[text()[contains(.,'Add Terms')]]");
 		}
 
 	}
@@ -498,12 +501,14 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.removeSelection("disease-term", "label=All");
 		selenium.addSelection("disease-term", "label=Synovial sarcoma");
 
-		selenium.click("//input[@value='Add disease']");
+		//selenium.click("//input[@value='Add disease']");
+		selenium.click("//button/descendant::td[text()[contains(.,'Add disease')]]");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 	}
 
 	public void populateCreateStudyAgents() throws InterruptedException {
-		selenium.click("AddStudyAgent");
+		//selenium.click("AddStudyAgent");
+		selenium.click("//button/descendant::td[text()[contains(.,'Add Study Agent')]]");
 		aw.waitForElementPresent("study.studyAgents[0].agent-input");
 		selenium.click("select-agent-0");
 		aw.typeAutosuggest("study.studyAgents[0].agent-input", "683864",
@@ -563,18 +568,18 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type("study.identifiers[0].value", studyId);
 	}
 
-	public void createInvestigator() throws Exception {
+	public void createInvestigator(String firstName, String lastName) throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_configurationController");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
-		selenium.type("firstName", "Jack");
-		selenium.type("lastName", "Black");
-		selenium.type("emailAddress", "jack.black@xxyyzz.com");
+		selenium.type("firstName", firstName);
+		selenium.type("lastName", lastName);
+		selenium.type("emailAddress", firstName+"."+lastName+"@xxyyzz.com");
 		selenium.type("phoneNumber", "0000000000");
-
+		selenium.type("loginId", firstName+"."+lastName);
 		aw.typeAutosuggest("siteInvestigators[0].organization-input", "nci",
 				"siteInvestigators[0].organization-choices");
 		selenium.select("siteInvestigators[0].statusCode", "label=Active");
@@ -592,6 +597,39 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("link=Search Investigator");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+		selenium.type("firstName", firstName);
+		selenium.type("lastName", lastName);
+		selenium.click("//input[@value='Search']");
+		aw.waitForElementPresent("//td[@title='Sort By First Name']");
+
+	}
+
+	public void createResearchStaff(String firstName, String lastName) throws Exception {
+		selenium.open("/caaers/pages/task");
+		selenium.click("firstlevelnav_configurationController");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+		selenium.click("//a[@id='secondlevelnav_createResearchStaffController']/span");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+		aw.typeAutosuggest("organization-input", "ctep","organization-choices");
+		selenium.type("firstName", firstName);
+		selenium.type("lastName", lastName);
+		selenium.type("nciIdentifier", "mrn-rs-"+firstName+"."+lastName+"-001");
+		selenium.type("emailAddress", firstName+"."+lastName+"@xxyy.com");
+		selenium.type("phoneNumber", "0000000000");
+		selenium.type("loginId", firstName+"."+lastName);
+		selenium.click("//div[text()='Study coordinator']/following-sibling::div/input");
+		selenium.click("flow-next");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+
+	}
+	public void searchResearchStaff(String firstName, String lastName) throws InterruptedException{
+		selenium.open("/caaers/pages/task");
+		selenium.click("firstlevelnav_configurationController");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+		selenium.click("//a[@id='secondlevelnav_createResearchStaffController']/span");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+		selenium.click("link=Search Research Staff");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("firstName", firstName);
 		selenium.type("lastName", lastName);
@@ -618,7 +656,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			System.out.println("Rule file being imported: " + absPath);
 			log("Uploading rule from: " + absPath);
 			selenium.type("ruleSetFile1", absPath);
-			selenium.click("//input[@value='Import']");
+			//selenium.click("//input[@value='Import']");
+			selenium.click("//button[@type='submit']");
 			selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 			if (!selenium
 					.isElementPresent("//p[contains(text(),'Rules imported successfully')]"))

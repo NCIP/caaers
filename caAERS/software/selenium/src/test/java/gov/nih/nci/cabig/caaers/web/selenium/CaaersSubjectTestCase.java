@@ -3,8 +3,9 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 import java.util.Calendar;
 
 public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
-	String firstName = "catherine";
-	String lastName = "jones";
+	String firstName = "catherine2";
+	String lastName = "jones2";
+	String participantIdentifier = "mrn-pt-test-0012347";
 	CaaersSubjectFlowFixtures subFixtures;
 
 	public void setUp() throws Exception {
@@ -27,17 +28,17 @@ public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 				selenium.isTextPresent("regexpi:" + firstName)
 						&& selenium.isTextPresent("regexpi:" + lastName));
 		selenium.open(selenium
-				.getAttribute("//a[text()='mrn-pt-test-001']@href"));
+				.getAttribute("//a[text()='"+participantIdentifier+"']@href"));
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.clickNext("flow-next");
 		selenium
-				.click("//td[text()='University of Alabama at Birmingham']/parent::tr/descendant::input");
+				.click("//td[text()[contains(.,'University of Alabama at Birmingham')]]/parent::tr/descendant::input");
 		aw.clickNext("flow-next");
 	}
 
 	public void testCreateSubject() throws Exception {
 		checkLogin();
-		subFixtures.createSubjectDetails(firstName, lastName);
+		subFixtures.createSubjectDetails(firstName, lastName, participantIdentifier);
 		aw.clickNext("flow-next");
 		subFixtures.createSubjectChooseStudy();
 		aw.clickNext("flow-next");
@@ -62,16 +63,18 @@ public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 		selenium
 				.click("//a[@id='secondlevelnav_assignParticipantController']/span");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
-		selenium.type("searchText", "mrn-pt-test-001");
+		selenium.type("searchText", participantIdentifier);
 		selenium.select("searchType", "label=Identifier");
-		selenium.click("//input[@value='Search']");
-		aw.waitForElementPresent("//td[text()='mrn-pt-test-001']/input");
-		selenium.click("//td[text()='mrn-pt-test-001']/input");
+		//selenium.click("//input[@value='Search']");
+		selenium.click("//button/descendant::td[text()[contains(.,'Search')]]");
+		aw.waitForElementPresent("//td[text()='"+participantIdentifier+"']/input");
+		selenium.click("//td[text()='"+participantIdentifier+"']/input");
 		selenium.click("flow-next");
 		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("searchText_", "n027d");
 		selenium.select("searchType", "label=Identifier");
-		selenium.click("//input[@value='Search']");
+		//selenium.click("//input[@value='Search']");
+		selenium.click("//button/descendant::td[text()[contains(.,'Search')]]");
 		aw.waitForElementPresent("//td[text()='" + fundingSponsorIdentifier
 				+ "']/following-sibling::td/descendant::input[@type='radio']");
 		selenium.click("//td[text()='" + fundingSponsorIdentifier
@@ -80,11 +83,11 @@ public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 		selenium.type("studySubjectIdentifierInput", "ssi-4567");
 		aw.clickNext("flow-next");
 		// do subject medical details here.
-		subFixtures.editSubjectMedHistoryAddPanels();
+//		subFixtures.editSubjectMedHistoryAddPanels();
 		aw.clickNext("flow-next");
-		aw.clickNext("flow-prev");
-		subFixtures.editSubjectMedHistoryRemovePanels();
-		aw.clickNext("flow-next");
+//		aw.clickNext("flow-prev");
+//		subFixtures.editSubjectMedHistoryRemovePanels();
+//		aw.clickNext("flow-next");
 		aw.clickNext("flow-next");
 		// ---------------------------
 		assertTrue(

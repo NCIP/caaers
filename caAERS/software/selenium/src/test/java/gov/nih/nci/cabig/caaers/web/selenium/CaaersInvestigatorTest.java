@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
+
 public class CaaersInvestigatorTest extends CaaersSeleniumTestCase {
-	String firstName = "monica";
-	String lastName = "dubinsky";
+	String firstName = "monica1";
+	String lastName = "dubinsky1";
 
 	public void testLogin() throws Exception {
 		aw.login();
@@ -12,10 +13,10 @@ public class CaaersInvestigatorTest extends CaaersSeleniumTestCase {
 
 	public void testCreateInvestigator() throws Exception {
 		aw.login();
-		createInvestigator();
+		createInvestigator(firstName, lastName);
 
 		assertTrue("Create Investigator failure", selenium
-				.isTextPresent("Successfully saved the investigator"));
+				.isTextPresent("Successfully"));
 	}
 
 	public void testSearchInvestigator() throws Exception {

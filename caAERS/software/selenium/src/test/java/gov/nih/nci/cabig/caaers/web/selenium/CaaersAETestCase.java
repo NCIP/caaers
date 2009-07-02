@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-
 public class CaaersAETestCase extends CaaersSeleniumTestCase {
 
 	AjaxWidgets aw;
@@ -17,39 +16,32 @@ public class CaaersAETestCase extends CaaersSeleniumTestCase {
 		String rpFrom = "01/20/2009";
 		String rpTo = "01/21/2009";
 		aeFixtures.createRPFlow("mrn-pt-0002", "N027D", rpFrom, rpTo);
-		assertTrue(
-				"Could not create new reporting period in CAE flow: ",
-				selenium
-						.isElementPresent("//a[contains(.,'"
-								+ aeFixtures.truncateReportingPeriod(rpFrom)
-								+ "')]/parent::*/parent::*/following-sibling::*/descendant::a[contains(.,'Report')]"));
+		assertTrue("Could not create new reporting period in CAE flow: ",
+				selenium.isElementPresent("//h2[text()='Adverse Events']"));
 
 	}
 
 	public void testExecuteCAEFlow() throws Exception {
 		checkLogin();
-		String rpFrom = "01/20/2009";
-		String rpTo = "01/21/2009";
+		String rpFrom = "01/20/09";
+		String rpTo = "01/21/09";
 		aeFixtures.executeCAEFlow("mrn-pt-0002", "N027D", rpFrom, rpTo);
-		assertTrue(
-				"CAE flow. Could not reach 'Enter AEs' tab in expedited AE flow",
-				selenium.isElementPresent("//h2[text()='Enter AEs']"));
+		assertTrue("Could not edit AEs in reporting period in CAE flow: ",
+				selenium.isElementPresent("//h2[text()='Adverse Events']"));
+
 	}
 
 	public void testExecuteExpeditedAEFlow() throws Exception {
 		checkLogin();
-		aeFixtures
-				.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=1");
-		/*aeFixtures
-		.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=21&study=1&participant=2");*/
+		aeFixtures.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=1");
 		assertTrue("Expedited AE flow did not finish successfully", selenium
-				.isElementPresent("//h2[text()='Submit']"));
+				.getText("//td[@class='completion-messages']").contains("Yes"));
 	}
 
 	public void testSubmitReport() throws Exception {
 		checkLogin();
 		aeFixtures
-				.submitReport("caaers/pages/ae/submitReport?aeReport=21&reportId=21");
+				.submitReport("caaers/pages/ae/submitReport?from=list&aeReport=1&reportId=1");
 
 		assertTrue(
 				"Report was not submitted successfully",
