@@ -61,9 +61,7 @@ import javax.xml.validation.Validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -244,23 +242,23 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     }
 
 
-    private String getXSDLocation(String type) {
+    public String getXSDLocation(String type) {
         if ("study".equals(type)) {
             //return "classpath:gov/nih/nci/cabig/caaers/studyXSD.xsd";
-        	return "classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd";
+        	return "/schema/integration/StudySchema.xsd";
         }
         if ("participant".equals(type)) {
             //return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
-        	return "classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd";
+        	return "/schema/integration/ParticipantSchema.xsd";
         }
         if ("routineAeReport".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/routineAeXSD.xsd";
+            return "/schema/integration/routineAeXSD.xsd";
         }
         if ("investigator".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/Investigator.xsd";
+            return "/schema/integration/Investigator.xsd";
         }  
         if ("researchStaff".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd";
+            return "/schema/integration/ResearchStaff.xsd";
         }        
         return null;
     }
@@ -281,7 +279,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
             // load a WXS schema, represented by a Schema instance
             //Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl).getFile());
-            Source schemaFile = new StreamSource(getResources(xsdUrl)[0].getFile());
+            Source schemaFile = new StreamSource(getResource(xsdUrl));
             Schema schema = schemaFactory.newSchema(schemaFile);
 
             // create a Validator instance, which can be used to validate an instance document
@@ -775,11 +773,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	 * @return
 	 * @throws IOException
 	 */
-	private Resource[] getResources(String pattern) throws IOException {
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+	protected File getResource(String pattern) throws IOException {
+        File file =  new ClassPathResource(pattern).getFile();
         if (logger.isDebugEnabled()) logger.debug("Looking for resources matching " + pattern);
-        Resource[] resources = resolver.getResources(pattern);
-        return resources;
+        return file;
     }
 
 	
