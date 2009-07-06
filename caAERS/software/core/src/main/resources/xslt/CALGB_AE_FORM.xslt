@@ -44,6 +44,9 @@
             <fo:block space-after="20mm" border-width="2mm" text-align="center">
                 CALGB: 80405 ADVERSE EVENT (AE) FORM
             </fo:block>
+
+            <fo:block space-after="10px"/>
+            
         </fo:static-content>
 
         <!-- PAGE FOOTER -->
@@ -187,8 +190,8 @@
             <!---->
 
             <fo:table width="100%" border="0px solid black" >
-                <fo:table-column column-width="45%" />
-                <fo:table-column column-width="55%" />
+                <fo:table-column column-width="50%" />
+                <fo:table-column column-width="50%" />
 
                 <fo:table-header>
                     <fo:table-row>
