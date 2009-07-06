@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -773,10 +774,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	 * @return
 	 * @throws IOException
 	 */
-	protected File getResource(String pattern) throws IOException {
-        File file =  new ClassPathResource(pattern).getFile();
+	protected InputStream getResource(String pattern) throws IOException {
+		InputStream inputStream =  new ClassPathResource(pattern).getInputStream();
         if (logger.isDebugEnabled()) logger.debug("Looking for resources matching " + pattern);
-        return file;
+        return inputStream;
     }
 
 	
