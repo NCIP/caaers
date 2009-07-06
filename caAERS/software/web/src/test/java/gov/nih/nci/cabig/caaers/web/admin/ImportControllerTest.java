@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.io.File;
-
-import org.springframework.core.io.Resource;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 /**
@@ -26,11 +24,8 @@ public class ImportControllerTest extends TestCase {
 	}
 
 	public void testGetResource() throws Exception{
-		File resource = controller.getResource(controller.getXSDLocation("study"));
-		assertNotNull(resource);
-		assertTrue(resource.exists());
-		assertEquals("StudySchema.xsd" , resource.getName());
-		
+		InputStream inputStream  = controller.getResource(controller.getXSDLocation("study"));
+		assertNotNull(inputStream);
 	}
 
 }
