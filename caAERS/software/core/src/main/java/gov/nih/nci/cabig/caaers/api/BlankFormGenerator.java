@@ -137,44 +137,8 @@ public class BlankFormGenerator {
         return sw.toString();
     }
 
-    public void testXMLgeneration() throws Exception {
-        Study s = new Study();
-        s.setShortTitle("Short Title 2");
-        s.setLongTitle("Long Title 2");
-        s.setId(55588);
-
-        Epoch e = new Epoch();
-        e.setName("Pre-Treatment");
-        e.setDescriptionText("Some sort of a dscription text 2");
-        e.setId(88);
-
-        SolicitedAdverseEvent sae = new SolicitedAdverseEvent();
-        s.addEpoch(e);
-        e.addArm(new Arm());
-        List<SolicitedAdverseEvent> sael = new ArrayList<SolicitedAdverseEvent>();
-        SolicitedAdverseEvent sae1 = new SolicitedAdverseEvent();
-        sae1.setCtcterm(new CtcTerm());
-        sae1.getCtcterm().setTerm("Nausea");
-        sael.add(sae1);
-
-        sae1 = new SolicitedAdverseEvent();
-        sae1.setCtcterm(new CtcTerm());
-        sae1.getCtcterm().setTerm("Bone Pain");
-        sael.add(sae1);
-
-        e.getArms().get(0).setSolicitedAdverseEvents(sael);
-        serialize(s, e);
-    }
-
     public static void main(String[] args) {
         BlankFormGenerator gen = new BlankFormGenerator();
-        try {
-             // gen.testXMLgeneration();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-         //if (true) return;
-        
         StringBuffer s = new StringBuffer("");
         try {
             FileReader input = new FileReader(XMLFile);

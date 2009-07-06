@@ -42,7 +42,7 @@
         <!-- PAGE HEADER -->
         <fo:static-content flow-name="xsl-region-before">
             <fo:block space-after="20mm" border-width="2mm" text-align="center">
-                CALGB: 80405 ADVERSE EVENT (AE) FORM
+                80405 ADVERSE EVENT (AE) FORM
             </fo:block>
 
             <fo:block space-after="10px"/>
@@ -320,11 +320,11 @@
         <fo:table-column column-width="5%" />
         <fo:table-body>
             <fo:table-row height="10.5px">
-                <fo:table-cell border="0px gray solid"><fo:block xsl:use-attribute-sets="cellText">CALGB Form</fo:block></fo:table-cell>
+                <fo:table-cell border="0px gray solid"><fo:block xsl:use-attribute-sets="cellText">Form</fo:block></fo:table-cell>
                 <fo:table-cell border="0px gray solid" number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellText" text-align="right">C-1399</fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="10.5px">
-                <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">CALGB Study No.</fo:block></fo:table-cell>
+                <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Study No.</fo:block></fo:table-cell>
                 <fo:table-cell number-columns-spanned="4"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
@@ -334,7 +334,7 @@
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="10.5px">
-                <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">CALGB Patient ID</fo:block></fo:table-cell>
+                <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Patient ID</fo:block></fo:table-cell>
                 <fo:table-cell number-columns-spanned="4"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>

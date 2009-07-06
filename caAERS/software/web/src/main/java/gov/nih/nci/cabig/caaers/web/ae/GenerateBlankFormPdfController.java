@@ -7,11 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.OutputStream;
+import java.io.*;
 import java.rmi.RemoteException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,8 +70,14 @@ public class GenerateBlankFormPdfController extends AbstractCommandController {
 
             int epochIDint = Integer.parseInt(epochID);
             Epoch epoch = epochDao.getById(epochIDint);
+            String xmlData = g.serialize(study, epoch);
 
-            g.generatePdf(g.serialize(study, epoch), PDFAbsolutePath);
+            // Save the XML in temp
+            FileOutputStream out = new FileOutputStream(tempDir + File.separator + "AE-Blank.xml");
+            out.write(xmlData.getBytes());
+            out.close();
+
+            g.generatePdf(xmlData, PDFAbsolutePath);
             generateOutput(PDFAbsolutePath, PDFName, response);
         } catch (NumberFormatException e) {
             e.printStackTrace();
