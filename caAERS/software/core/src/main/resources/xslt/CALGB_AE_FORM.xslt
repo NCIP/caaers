@@ -36,9 +36,9 @@
 
     <fo:layout-master-set>
         <fo:simple-page-master master-name="A4" margin-left="10mm" margin-top="10mm" margin-right="10mm" margin-bottom="10mm">
-            <fo:region-body margin-top="1.7in" margin-bottom="1in"/>
+            <fo:region-body margin-top="2.1in" margin-bottom="1.1in"/>
             <fo:region-before extent="2in"/>
-            <fo:region-after extent="1mm"/>
+            <fo:region-after extent="5mm"/>
         </fo:simple-page-master>
     </fo:layout-master-set>
 
@@ -46,23 +46,21 @@
 
         <!-- PAGE HEADER -->
         <fo:static-content flow-name="xsl-region-before">
+
+            <fo:block border-width="2mm" text-align="center">ADVERSE EVENT (AE) Worksheet</fo:block>
+
             <fo:block border-width="2mm" text-align="center">
                 <fo:table width="100%" border="0px blue dotted">
-                    <fo:table-column column-width="130px"/>
-                    <fo:table-column/>
-
+                    <fo:table-column column-width="100%"/>
                     <fo:table-header>
                         <fo:table-row>
-                            <fo:table-cell border="0px red dotted"><fo:block><fo:external-graphic src="url(https://demo.semanticbits.com/caaers/images/blue/login-logo.png)" content-width="120px"/></fo:block></fo:table-cell>
                             <fo:table-cell border="0px red dotted">
-                                <fo:block border-width="2mm" text-align="center">ADVERSE EVENT (AE) Worksheet</fo:block>
                                 <fo:block border-width="2mm" text-align="left"><xsl:call-template name="CALGB_FORM"></xsl:call-template></fo:block>
                             </fo:table-cell>
                         </fo:table-row>
                     </fo:table-header>
                     <fo:table-body>
                         <fo:table-row>
-                            <fo:table-cell border="0px red dotted"><fo:block></fo:block></fo:table-cell>
                             <fo:table-cell border="0px red dotted"><fo:block></fo:block></fo:table-cell>
                         </fo:table-row>
                     </fo:table-body>
@@ -72,16 +70,19 @@
 
         <!-- PAGE FOOTER -->
         <fo:static-content flow-name="xsl-region-after">
-            <fo:block font-size="8pt" text-align-last="center" border-width="1mm">
-                Page
-                <fo:page-number/>
-                of
-                <fo:page-number-citation ref-id="c-END"/>
-            </fo:block>
-            <fo:block font-size="8pt" text-align-last="right" border-width="1mm">
-                Printed
-                <xsl:value-of select="java:format(java:java.text.SimpleDateFormat.new('MM/d/yyyy'), java:java.util.Date.new())"/>
-            </fo:block>
+            <fo:table width="100%" border="0px solid black" >
+                <fo:table-column column-width="100px"/>
+                <fo:table-column />
+                <fo:table-column column-width="100px"/>
+
+                <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell border="1px red solid"><fo:block xsl:use-attribute-sets="cellText" text-align="center">CONFIDENTIAL</fo:block></fo:table-cell>
+                        <fo:table-cell><fo:block font-size="8pt" text-align-last="center" border-width="1mm">Page <fo:page-number/> of <fo:page-number-citation ref-id="c-END"/></fo:block></fo:table-cell>
+                        <fo:table-cell><fo:block font-size="8pt" text-align-last="right" border-width="1mm">Printed <xsl:value-of select="java:format(java:java.text.SimpleDateFormat.new('MM/d/yyyy'), java:java.util.Date.new())"/></fo:block></fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
         </fo:static-content>
 
         <!-- PAGE BODY -->
@@ -132,12 +133,12 @@
                             <fo:table width="100%" border="0px solid black" >
                                 <fo:table-column />
                                 <fo:table-column column-width="20px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
                                 <fo:table-column column-width="20px" />
 
                             <fo:table-body>
@@ -152,7 +153,7 @@
                                     <fo:table-cell  border="0px red solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Attr. Code **</fo:block></fo:table-cell>
                                 </fo:table-row>
                                 <xsl:for-each select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/solicitedAdverseEvents/ns2:solicitedAdverseEvent/name">
-                                    <fo:table-row height="18px">
+                                    <fo:table-row height="16px">
                                         <fo:table-cell border-bottom-style="dotted" padding-left="10px"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="."/></fo:block></fo:table-cell>
                                         <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
                                         <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
@@ -174,12 +175,12 @@
                             <fo:table width="100%" border="0px solid black" >
                                 <fo:table-column />
                                 <fo:table-column column-width="20px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
-                                <fo:table-column column-width="18px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
+                                <fo:table-column column-width="16px" />
                                 <fo:table-column column-width="20px" />
 
                             <fo:table-body>
@@ -297,17 +298,18 @@
 <!--HEADER RIGHT FORM-->
 <xsl:template name="CALGB_FORM">
     <fo:table width="100%" border="0px solid black" >
-        <fo:table-column column-width="50%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
-        <fo:table-column column-width="5%" />
+        <fo:table-column column-width="45%" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column column-width="16px" />
+        <fo:table-column />
         <fo:table-body>
 <!--
             <fo:table-row height="10.5px">
@@ -315,25 +317,19 @@
                 <fo:table-cell border="0px gray solid" number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellText" text-align="right">C-1399</fo:block></fo:table-cell>
             </fo:table-row>
 -->
-            <fo:table-row height="12.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Study</fo:block></fo:table-cell>
-                <fo:table-cell number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/shortTitle"/></fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11" border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/shortTitle"/></fo:block></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="12.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Study site name</fo:block></fo:table-cell>
-                <fo:table-cell number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellText"><fo:leader leader-length="100%" leader-pattern="dots"/></fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11" border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="10.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Patient ID</fo:block></fo:table-cell>
-                <fo:table-cell number-columns-spanned="4"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11" border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="10.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Patient Initials</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
@@ -355,7 +351,7 @@
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="10.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Course/Cycle start date</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
@@ -368,7 +364,7 @@
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="10.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Course/Cycle end date</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
@@ -394,7 +390,7 @@
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Y</fo:block></fo:table-cell>
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Y</fo:block></fo:table-cell>
             </fo:table-row>
-            <fo:table-row height="10.5px">
+            <fo:table-row height="16px">
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellText">Course/Cycle number</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
@@ -415,7 +411,7 @@
         <xsl:param name="count"/>
         <xsl:param name="iteration">1</xsl:param>
 
-        <fo:table-row height="18px">
+        <fo:table-row height="16px">
             <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
             <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
             <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
