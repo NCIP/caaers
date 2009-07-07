@@ -61,6 +61,9 @@
                 </fo:table-body>
             </fo:table>
 
+            <fo:block><fo:leader leader-length="100%" leader-pattern="rule"/></fo:block>
+            <fo:block space-after="10px"></fo:block>
+
         </fo:static-content>
 
         <!-- PAGE FOOTER -->
@@ -84,134 +87,87 @@
         <fo:flow flow-name="xsl-region-body">
 
             <!--<fo:block space-after="10px"></fo:block>-->
-            <fo:block><fo:leader leader-length="100%" leader-pattern="rule"/></fo:block>
-            <fo:block space-after="10px"></fo:block>
 
-            <fo:table width="100%" border="0px solid black" >
-                <fo:table-column column-width="40%"/>
-                <fo:table-column column-width="13px" />
-                <fo:table-column column-width="13px" />
-                <fo:table-column column-width="40px" />
-                <fo:table-column column-width="13px" />
-                <fo:table-column column-width="13px" />
-                <fo:table-column column-width="40px" />
-                <fo:table-column column-width="80px"/>
-                <fo:table-column column-width="13px"/>
-                <fo:table-column column-width="13px"/>
-                <fo:table-column/>
-
-                <fo:table-body>
-                    <fo:table-row height="10.5px">
-                        <fo:table-cell number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellText">Did any adverse events result in hospitalization or the prolongation of the gospitalization ?!</fo:block></fo:table-cell>
-                    </fo:table-row>
-                    <fo:table-row height="10.5px">
-                        <fo:table-cell number-columns-spanned="10"><fo:block xsl:use-attribute-sets="cellText">If "Yes", please indicate below the adverse events that resulted in hospitalization.</fo:block></fo:table-cell>
-                    </fo:table-row>
-                </fo:table-body>
-            </fo:table>
+            <fo:block xsl:use-attribute-sets="cellText">Did any adverse events result in hospitalization or the prolongation of the gospitalization ?!</fo:block>
+            <fo:block xsl:use-attribute-sets="cellText">If "Yes", please indicate below the adverse events that resulted in hospitalization.</fo:block>
 
             <!--<fo:block space-after="10px"/>-->
             <!--<fo:block><fo:leader leader-length="100%" leader-pattern="rule"/></fo:block>-->
             <fo:block space-after="10px"/>
 
             <!---->
+            <fo:block font-weight="bold" xsl:use-attribute-sets="cellText">SOLICITED ADVERSE EVENTS</fo:block>
 
             <fo:table width="100%" border="0px solid black" >
-                <fo:table-column column-width="50%" />
-                <fo:table-column column-width="50%" />
+                <fo:table-column />
+                <fo:table-column column-width="20px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="20px" />
 
-                <fo:table-header>
-                    <fo:table-row>
-                        <fo:table-cell border="0.5px gray solid">
-                            <fo:block font-weight="bold" xsl:use-attribute-sets="cellText">SOLICITED ADVERSE EVENTS</fo:block>
-
-                            <fo:table width="100%" border="0px solid black" >
-                                <fo:table-column />
-                                <fo:table-column column-width="20px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="20px" />
-
-                            <fo:table-body>
-                                <fo:table-row height="20px">
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center"></fo:block></fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="left" font-weight="bold">AE Term</fo:block></fo:table-cell>
-                                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText"></fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px black solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Grade *</fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px black solid" number-columns-spanned="3"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">Hospitalization (Y/N) ?</fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px red solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Attr. Code **</fo:block></fo:table-cell>
-                                </fo:table-row>
-                                <xsl:for-each select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/solicitedAdverseEvents/ns2:solicitedAdverseEvent/name">
-                                    <fo:table-row height="16px">
-                                        <fo:table-cell border-bottom-style="dotted" padding-left="10px"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="."/></fo:block></fo:table-cell>
-                                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                        <fo:table-cell><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
-                                    </fo:table-row>
-                                </xsl:for-each>
-                            </fo:table-body>
-                            </fo:table>
-
-                        </fo:table-cell>
-                        <fo:table-cell border="0.5px gray solid">
-                            <fo:block font-weight="bold" xsl:use-attribute-sets="cellText "></fo:block>
-
-                            <fo:table width="100%" border="0px solid black" >
-                                <fo:table-column />
-                                <fo:table-column column-width="20px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="16px" />
-                                <fo:table-column column-width="20px" />
-
-                            <fo:table-body>
-                                <fo:table-row height="20px">
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center"></fo:block></fo:table-cell>
-                                </fo:table-row>
-                                <fo:table-row>
-                                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="left" font-weight="bold">AE Term</fo:block></fo:table-cell>
-                                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText"></fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px black solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Grade *</fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px black solid" number-columns-spanned="3"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">Hospitalization (Y/N) ?</fo:block></fo:table-cell>
-                                    <fo:table-cell  border="0px red solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Attr. Code **</fo:block></fo:table-cell>
-                                </fo:table-row>
-
-                                <xsl:call-template name="loop">
-                                    <xsl:with-param name="count">15</xsl:with-param>
-                                </xsl:call-template>
-
-                            </fo:table-body>
-                            </fo:table>
-
-                        </fo:table-cell>
+            <fo:table-header>
+                <fo:table-row height="20px">
+                    <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center"></fo:block></fo:table-cell>
+                </fo:table-row>
+                <fo:table-row>
+                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="left" font-weight="bold">AE Term</fo:block></fo:table-cell>
+                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText"></fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px black solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Grade *</fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px black solid" number-columns-spanned="3"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">Hospitalization (Y/N) ?</fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px red solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Attr. Code **</fo:block></fo:table-cell>
+                </fo:table-row>
+            </fo:table-header>
+                
+            <fo:table-body>
+                <xsl:for-each select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/solicitedAdverseEvents/ns2:solicitedAdverseEvent/name">
+                    <fo:table-row height="16px">
+                        <fo:table-cell border-bottom-style="dotted" padding-left="10px"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="."/></fo:block></fo:table-cell>
+                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border-bottom-style="dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell border="0.5px black solid"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
+                        <fo:table-cell><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
                     </fo:table-row>
-                </fo:table-header>
+                </xsl:for-each>
+            </fo:table-body>
+            </fo:table>
 
-                <fo:table-body>
-                    <fo:table-row>
-                        <fo:table-cell><fo:block></fo:block></fo:table-cell>
-                        <fo:table-cell><fo:block></fo:block></fo:table-cell>
-                    </fo:table-row>
-                    <fo:table-row>
-                        <fo:table-cell><fo:block></fo:block></fo:table-cell>
-                        <fo:table-cell><fo:block></fo:block></fo:table-cell>
-                    </fo:table-row>
-                </fo:table-body>
+            <!---->
+            <fo:table width="100%" border="0px solid black" >
+                <fo:table-column />
+                <fo:table-column column-width="20px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="16px" />
+                <fo:table-column column-width="20px" />
 
+            <fo:table-body>
+                <fo:table-row height="20px">
+                    <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center"></fo:block></fo:table-cell>
+                </fo:table-row>
+                <fo:table-row>
+                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="left" font-weight="bold">AE Term</fo:block></fo:table-cell>
+                    <fo:table-cell border="0px black solid"><fo:block xsl:use-attribute-sets="cellSmallText"></fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px black solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Grade *</fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px black solid" number-columns-spanned="3"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">Hospitalization (Y/N) ?</fo:block></fo:table-cell>
+                    <fo:table-cell  border="0px red solid" number-columns-spanned="2"><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center" font-weight="bold">AE Attr. Code **</fo:block></fo:table-cell>
+                </fo:table-row>
+
+                <xsl:call-template name="loop">
+                    <xsl:with-param name="count">15</xsl:with-param>
+                </xsl:call-template>
+
+            </fo:table-body>
             </fo:table>
 
             <!---->
@@ -293,7 +249,7 @@
 <!--HEADER RIGHT FORM-->
 <xsl:template name="CALGB_FORM">
     <fo:table width="100%" border="0px solid black" >
-        <fo:table-column column-width="45%" />
+        <fo:table-column column-width="100px" />
         <fo:table-column column-width="16px" />
         <fo:table-column column-width="16px" />
         <fo:table-column column-width="16px" />
@@ -313,8 +269,8 @@
             </fo:table-row>
 -->
             <fo:table-row height="16px">
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Study</fo:block></fo:table-cell>
-                <fo:table-cell number-columns-spanned="11" border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/shortTitle"/></fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Study</fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11" border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/shortTitle"/></fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
                 <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Study site name</fo:block></fo:table-cell>
@@ -325,49 +281,49 @@
                 <fo:table-cell number-columns-spanned="11" border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText"></fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Patient Initials</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Patient Initials</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block></fo:block></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block></fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block></fo:block></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block></fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block></fo:block></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted" number-columns-spanned="6"><fo:block></fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted" number-columns-spanned="6"><fo:block></fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="6px">
-                <fo:table-cell><fo:block></fo:block></fo:table-cell>
-                <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Last</fo:block></fo:table-cell>
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">First</fo:block></fo:table-cell>
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Middle</fo:block></fo:table-cell>
+                <fo:table-cell><fo:block></fo:block></fo:table-cell>
+                <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Last</fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle start date</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle start date</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block/></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block/></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle end date</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle end date</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block text-align="center">/</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block/></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block/></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="6px">
                 <fo:table-cell><fo:block></fo:block></fo:table-cell>
@@ -383,10 +339,10 @@
                 <fo:table-cell><fo:block xsl:use-attribute-sets="cellSmallText" text-align="center">Y</fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
-                <fo:table-cell border-bottom="0.5px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle number</fo:block></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle number</fo:block></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
-                <fo:table-cell border-bottom="0.5px black dotted" number-columns-spanned="9"><fo:block/></fo:table-cell>
+                <fo:table-cell border-bottom="0px black dotted" number-columns-spanned="9"><fo:block/></fo:table-cell>
             </fo:table-row>
         </fo:table-body>
 
