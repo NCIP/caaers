@@ -91,9 +91,9 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 
 		InputField startDateField = null;
 		if(ae.getStartDate() != null){
-			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDateAsString", "", false);
+			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDateAsString", "", true);
 		}else{
-			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDate","", false);
+			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDate","", true);
 		}
 		
 		fields.add(startDateField);
