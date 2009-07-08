@@ -156,6 +156,10 @@
             </fo:table-header>
                 
             <fo:table-body>
+                <fo:table-row height="1px">
+                    <fo:table-cell><fo:block/></fo:table-cell>
+                </fo:table-row>
+
                 <xsl:for-each select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/solicitedAdverseEvents/ns2:solicitedAdverseEvent/name">
                     <fo:table-row height="16px">
                         <fo:table-cell border-bottom-style="dotted" padding-left="10px"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="."/></fo:block></fo:table-cell>
