@@ -29,7 +29,7 @@
                             <c:if test="${!displayOnly}">
                                 <input type="hidden" name="epoch_id" value="${eachEpoch.epochOrder}"/>
                             </c:if>
-                            <a title="Download Blank PDF Form" href="<c:url value='/pages/ae/blankForm?st=${command.study.id}&sb=0&cs=0&ep=${eachEpoch.id}' ></c:url>"><img src="<c:url value='/images/pdf.gif' ></c:url>"></a>
+                            <a title="Download AE Worksheet..." href="<c:url value='/pages/ae/blankForm?st=${command.study.id}&sb=0&cs=0&ep=${eachEpoch.id}' ></c:url>"><img src="<c:url value='/images/pdf.gif' ></c:url>"></a>
                             <div class="index">
                                 <c:choose>
                                     <c:when test='${statusVar.index != 0 && !displayOnly}'>

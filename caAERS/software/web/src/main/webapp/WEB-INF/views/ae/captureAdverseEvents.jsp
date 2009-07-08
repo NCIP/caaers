@@ -393,7 +393,7 @@
 
                         <div id="flash-message" class="info" style="width:300px;">
                             <img src="<c:url value="/images/board.png" />" alt="" align="middle">&nbsp;
-                            <a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />">Download Blank AE Print Form</a>
+                            <a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />">Download AE Worksheet...</a>
                         </div>
 
  						<tags:aeTermQuery
