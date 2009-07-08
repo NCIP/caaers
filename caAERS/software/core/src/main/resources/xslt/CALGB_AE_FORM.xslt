@@ -36,9 +36,9 @@
 
     <fo:layout-master-set>
         <fo:simple-page-master master-name="A4" margin-left="10mm" margin-top="5mm" margin-right="5mm" margin-bottom="5mm">
-            <fo:region-body margin-top="2.5in" margin-bottom="0.5in"/>
-            <fo:region-before extent="2.5in"/>
-            <fo:region-after extent="5mm"/>
+            <fo:region-body margin-top="3in" margin-bottom="1.7in"/>
+            <fo:region-before extent="3in"/>
+            <fo:region-after extent="1.7in"/>
         </fo:simple-page-master>
     </fo:layout-master-set>
 
@@ -68,6 +68,39 @@
 
         <!-- PAGE FOOTER -->
         <fo:static-content flow-name="xsl-region-after">
+
+            <fo:block space-after="10px"></fo:block>
+            <fo:table width="100%" border="0px solid black" >
+                <fo:table-column column-width="50%"/>
+                <fo:table-column column-width="50%" />
+                <fo:table-column/>
+
+                <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">(*) AE Grade Codes:</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade -1: Not evaluated</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  0: Evaluated but not present</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  1: Mild</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  2: Moderate</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  3: Severe</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  4: Life threatening and/or disabling</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  5: Death</fo:block>
+                        </fo:table-cell>
+                        <fo:table-cell>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">(**) Attribution is the relatedness of the adverse event to the investigational intervention.</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">Attribution Codes:</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">1: Unrelated to investigational intervention</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">2: Unlikely related</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">3: Possibly related</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">4: Probably related</fo:block>
+                            <fo:block xsl:use-attribute-sets="cellSmallText">5: Definitely related</fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
+            <fo:block space-after="10px"></fo:block>
+            
             <fo:table width="100%" border="0px solid black" >
                 <fo:table-column column-width="100px"/>
                 <fo:table-column />
@@ -206,35 +239,6 @@
             <fo:block><fo:leader leader-length="100%" leader-pattern="rule"/></fo:block>
 
             <!---->
-            <fo:table width="100%" border="0px solid black" >
-                <fo:table-column column-width="50%"/>
-                <fo:table-column column-width="50%" />
-                <fo:table-column/>
-
-                <fo:table-body>
-                    <fo:table-row>
-                        <fo:table-cell>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">(*) AE Grade Codes:</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade -1: Not evaluated</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  0: Evaluated but not present</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  1: Mild</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  2: Moderate</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  3: Severe</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  4: Life threatening and/or disabling</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Grade  5: Death</fo:block>
-                        </fo:table-cell>
-                        <fo:table-cell>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">(**) Attribution is the relatedness of the adverse event to the investigational intervention.</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">Attribution Codes:</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">1: Unrelated to investigational intervention</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">2: Unlikely related</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">3: Possibly related</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">4: Probably related</fo:block>
-                            <fo:block xsl:use-attribute-sets="cellSmallText">5: Definitely related</fo:block>
-                        </fo:table-cell>
-                    </fo:table-row>
-                </fo:table-body>
-            </fo:table>
             
             <fo:block id="c-END"/>
         </fo:flow>
@@ -343,6 +347,10 @@
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border="0.5px black solid"><fo:block/></fo:table-cell>
                 <fo:table-cell border-bottom="0px black dotted" number-columns-spanned="9"><fo:block/></fo:table-cell>
+            </fo:table-row>
+            <fo:table-row height="16px">
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle type</fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/name"/></fo:block></fo:table-cell>
             </fo:table-row>
         </fo:table-body>
 
