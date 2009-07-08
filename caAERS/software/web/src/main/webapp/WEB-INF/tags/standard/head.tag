@@ -5,6 +5,7 @@
 <jwr:style src="/csslib/caaers.zcss" />
 
 <tags:js name="prototype"/>
+<tags:js name="accordion.js" />
 <tags:js name="calendar" />
 <tags:js name="common" />
 
