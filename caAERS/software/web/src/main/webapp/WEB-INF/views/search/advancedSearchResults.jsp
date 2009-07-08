@@ -34,11 +34,12 @@
 					rowsPerPage: 10 
 				}), 
 				initialRequest: "results=${command.numberOfResults}",
-				draggableColumns:true 
+				draggableColumns:true, 
+				width:"70em"
 			};
 
         // Create DataTable
-        var myDataTable = new YAHOO.widget.DataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
+        var myDataTable = new YAHOO.widget.ScrollingDataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
         
         // Shows dialog, creating one when necessary
         var newCols = true;
@@ -149,9 +150,11 @@
 				<chrome:box title="HQL Query for testing">
 					${command.hql }<br>
 				</chrome:box>
-				<div align="right">
-					<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
-				</div>
+				<c:if test="${renderNestedViewButton }">
+					<div align="right">
+						<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
+					</div>
+				</c:if>
 				<chrome:box title="Search results">
 					<div id="resultsTableDiv">
 		   				<div id="dt-options"><a id="dt-options-link" href="fallbacklink.html">Table Options</a></div>

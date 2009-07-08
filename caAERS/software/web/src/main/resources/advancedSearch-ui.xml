@@ -26,6 +26,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>longTitle</name>
@@ -34,6 +35,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>multiInstitutionIndicator</name>
@@ -92,6 +94,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>lastName</name>
@@ -100,6 +103,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<view-column>
 				<column-title>First name</column-title>
@@ -160,6 +164,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<view-column>
 				<column-title>Nci institute code</column-title>
@@ -208,6 +213,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>lastName</name>
@@ -216,6 +222,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<view-column>
 				<column-title>First name</column-title>
@@ -264,6 +271,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>longTitle</name>
@@ -272,6 +280,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>multiInstitutionIndicator</name>
@@ -336,6 +345,22 @@
 			<table-name>adverse_events</table-name>
 			<table-alias>AdverseEvent_xx</table-alias>
 			<ui-attribute>
+				<name>id</name>
+				<label>Adverse Event term</label>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchTerm</ajax-method>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<ui-association>
+					<name>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</name>
+					<role-name>adverseEventTerm</role-name>
+				</ui-association>
+				<ui-association>
+					<name>gov.nih.nci.cabig.caaers.domain.CtcTerm</name>
+					<role-name>term</role-name>
+				</ui-association>
+			</ui-attribute>
+			<ui-attribute>
 				<name>solicited</name>
 				<label>Solicited</label>
 				<data-type>boolean</data-type>
@@ -390,6 +415,10 @@
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
 			</ui-attribute>
+			<view-column>
+				<column-title>Adverse event term</column-title>
+				<column-attribute>adverseEventTerm.term.term</column-attribute>
+			</view-column>
 			<view-column>
 				<column-title>Solicited</column-title>
 				<column-attribute>solicited</column-attribute>
@@ -449,6 +478,22 @@
 			<table-name>adverse_events</table-name>
 			<table-alias>AdverseEvent_xx</table-alias>
 			<ui-attribute>
+				<name>id</name>
+				<label>Adverse Event term</label>
+				<field-type>Autocompleter</field-type>
+				<ajax-method>matchTerms</ajax-method>
+				<operator name="==" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<ui-association>
+					<name>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</name>
+					<role-name>adverseEventTerm</role-name>
+				</ui-association>
+				<ui-association>
+					<name>gov.nih.nci.cabig.caaers.domain.CtcTerm</name>
+					<role-name>term</role-name>
+				</ui-association>
+			</ui-attribute>
+			<ui-attribute>
 				<name>solicited</name>
 				<label>Solicited</label>
 				<data-type>boolean</data-type>
@@ -504,6 +549,10 @@
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
 			</ui-attribute>
 			<view-column>
+				<column-title>Adverse event term</column-title>
+				<column-attribute>adverseEventTerm.term.term</column-attribute>
+			</view-column>
+			<view-column>
 				<column-title>Solicited</column-title>
 				<column-attribute>solicited</column-attribute>
 				<table-title>solicited</table-title>
@@ -550,6 +599,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>longTitle</name>
@@ -558,6 +608,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>multiInstitutionIndicator</name>
@@ -644,6 +695,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<ui-attribute>
 				<name>lastName</name>
@@ -652,6 +704,7 @@
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
 			</ui-attribute>
 			<view-column>
 				<column-title>First name</column-title>

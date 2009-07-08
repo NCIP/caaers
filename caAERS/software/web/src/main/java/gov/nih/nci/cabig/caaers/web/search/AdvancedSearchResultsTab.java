@@ -43,6 +43,15 @@ public class AdvancedSearchResultsTab<T extends AdvancedSearchCommand> extends W
 			}
 			refdata.put("nestedDependentObjects", nestedDependentObjects);
 		}
+		
+		Boolean renderNestedViewButton = false;
+		Integer dependentObjectsInView = 0;
+		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
+			if(dObject.isInView())
+				dependentObjectsInView++;
+		if(dependentObjectsInView > 1)
+			renderNestedViewButton = true;
+		refdata.put("renderNestedViewButton", renderNestedViewButton);
 		return refdata;
 	}
 	

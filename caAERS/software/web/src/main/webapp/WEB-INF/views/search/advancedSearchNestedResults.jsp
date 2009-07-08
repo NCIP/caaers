@@ -11,6 +11,7 @@
 			function renderFlatView(){
 				var form = $('command');
 				form._action.value = 'flatView';
+				form._page.value = '1';
 				form.submit();
 			}
 			
@@ -98,7 +99,7 @@
 										]
 									};
 									
-									dataTable${dependentObjectStatus.index} = new YAHOO.widget.DataTable(
+									dataTable${dependentObjectStatus.index} = new YAHOO.widget.ScrollingDataTable(
 										'tab${dependentObjectStatus.index}',	
 										[
 											<c:forEach items="${command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList}" var="col" varStatus="colStatus">
@@ -106,7 +107,7 @@
 													<c:if test="${colStatus.index < fn:length(command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList) - 1}">,</c:if>
 											</c:forEach> 
 										], 
-										ds
+										ds, {width:"42em"}
 									);
 									
 								}else {
@@ -168,11 +169,12 @@
 								rowsPerPage: 10 
 							}), 
 							initialRequest: "results=${command.numberOfResults}",
-							draggableColumns:true 
+							draggableColumns:true, 
+							width:"70em"
 						};
 						
 						// Create DataTable
-				        var myDataTable = new YAHOO.widget.DataTable("baseTable", myColumnDefs, ds, oConfigs);
+				        var myDataTable = new YAHOO.widget.ScrollingDataTable("baseTable", myColumnDefs, ds, oConfigs);
 				        myDataTable.subscribe('cellClickEvent',function (ev) {
 							var target = YAHOO.util.Event.getTarget(ev);
 							var record = this.getRecord(target);
@@ -198,7 +200,6 @@
 					<tags:button color="green" type="button" id="flat-view" value="Flat View" onclick="javascript:renderFlatView();"/>
 				</div>
 				<chrome:box title="Search results">
-					Ganapati Bappa Morya !!<br>
 					<div class="yui-skin-sam">
 						<div id="bd">
 							<div id="baseTable">

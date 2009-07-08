@@ -24,9 +24,11 @@ import org.springframework.beans.factory.annotation.Required;
 import org.xml.sax.ContentHandler;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
@@ -55,6 +57,8 @@ public class AdvancedSearchAjaxFacade{
 	private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 	
 	private SearchDao searchDao;
+	
+	private CtcTermDao ctcTermDao;
 	
 	static{
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
@@ -253,6 +257,23 @@ public class AdvancedSearchAjaxFacade{
         return studies;
     }
 	
+	public List<CtcTerm> matchTerms(String text){
+		List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), null, null);
+        // cut down objects for serialization
+        for (CtcTerm term : terms) {
+            term.getCategory().setTerms(null);
+            term.getCategory().getCtc().setCategories(null);
+        }
+        while (terms.size() > 20) {
+            terms.remove(terms.size() - 1);
+        }
+        return terms;
+	}
+	
+	private String[] extractSubnames(String text) {
+        return text.split("\\s+");
+    }
+	
 	public List<ParticipantAjaxableDomainObject> matchParticipants(String text) {
 
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
@@ -351,4 +372,11 @@ public class AdvancedSearchAjaxFacade{
     public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
         this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
     }
+
+	/**
+	 * @param ctcTermDao the ctcTermDao to set
+	 */
+	public void setCtcTermDao(CtcTermDao ctcTermDao) {
+		this.ctcTermDao = ctcTermDao;
+	}
 }

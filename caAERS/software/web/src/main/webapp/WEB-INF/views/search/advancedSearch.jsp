@@ -5,6 +5,45 @@
 		<tags:dwrJavascriptLink objects="advSearch"/>
 		<script>
 			var advancedSearchHelper = new AdvancedSearchHelper(advSearch);
+			
+			function acCreate(mode) {
+     	    	new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices", mode.populator, {
+       	    		valueSelector: mode.valueSelector,
+       	    		afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+            			acPostSelect(mode, selectedChoice)
+                	},
+                	indicator: mode.basename + "-indicator"
+            	})
+            	Event.observe(mode.basename + "-clear", "click", function() {
+               		Element.addClassName($(mode.basename + "-input"), "required");
+                	Element.removeClassName($(mode.basename + "-input"), "validField");
+                	Element.removeClassName($(mode.basename + "-input"), "valueOK");
+                	//$(mode.basename + "-selected").hide()
+                	$(mode.basename).value = ""
+                	$(mode.basename + "-input").value = ""
+            	})
+        	}
+	
+			function acPostSelect(mode, selectedChoice) {
+            	Element.removeClassName($(mode.basename + "-input"), "required");
+            	Element.removeClassName($(mode.basename + "-input"), "valueOK");
+            	Element.addClassName($(mode.basename + "-input"), "validField");
+            	$(mode.basename).value = selectedChoice.id;
+            	$(mode.displayName).value = $(mode.basename + "-input").value;
+            	new Effect.Highlight(mode.basename + "-selected")
+            	$(mode.basename + "-input").onblur = function() {
+                	if ($(mode.basename + "-input").hasClassName('validField')) {
+                    	ValidationManager.setNormalState($(mode.basename + "-input"));
+                	}else {
+                    	ValidationManager.setInvalidState($(mode.basename + "-input"));
+                	}
+            	}
+            	$(mode.basename + "-input").onchange = function() {
+                	if (!$(mode.basename + "-input").hasClassName('validField')) {
+                		ValidationManager.setInvalidState($(mode.basename + "-input"));
+                	}
+            	}
+        	}
 		</script>
 	</head>
 	<body>
