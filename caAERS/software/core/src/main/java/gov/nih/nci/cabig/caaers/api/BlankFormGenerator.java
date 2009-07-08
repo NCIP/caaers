@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
 import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
 import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 
 import java.io.*;
 import java.util.List;
@@ -38,8 +39,8 @@ import javax.xml.namespace.QName;
 public class BlankFormGenerator {
 
     protected final Log log = LogFactory.getLog(getClass());
-    private static String XMLFile = "d:/marshalledXML.xml";
-    private static String PDFFile = "D:/b.pdf";
+    private static String XMLFile = "d:/AE-Blank-Test.xml";
+    private static String PDFFile = "d:/AE-Blank-Test.pdf";
     private String XSLFile = "xslt/CALGB_AE_FORM.xslt";
 //    private String XSLFile = "C:\\.SemanticBits\\caAERS\\trunk\\caAERS\\software\\core\\src\\main\\resources\\xslt\\CALGB_AE_FORM.xslt";
 
@@ -130,14 +131,53 @@ public class BlankFormGenerator {
 
         list.add(wsStudy);
         studies.setStudy(list);
-//        JAXBElement jaxbEl = new JAXBElement(new QName("a", "b"), Studies.class, studies);
         marshaller.marshal(studies, sw);
 //        marshaller.marshal(studies, new FileOutputStream(XMLFile));
-//        marshaller.marshal(jaxbEl, new FileOutputStream("d:/a.xml"));
         return sw.toString();
     }
 
-    public static void main(String[] args) {
+    public static void testXMLGenaration() {
+        Study s;
+        Epoch e;
+
+        BlankFormGenerator g;
+        g = new BlankFormGenerator();
+        s = new Study();
+        s.setShortTitle("ST");
+        s.setLongTitle("LT");
+        s.setId(55588);
+
+        e = new Epoch();
+        e.setName("PT");
+        e.setDescriptionText("DT");
+        e.setId(88);
+
+        SolicitedAdverseEvent sae = new SolicitedAdverseEvent();
+        s.addEpoch(e);
+        e.addArm(new Arm());
+        List<SolicitedAdverseEvent> sael = new ArrayList<SolicitedAdverseEvent>();
+        SolicitedAdverseEvent sae1 = new SolicitedAdverseEvent();
+        sae1.setCtcterm(new CtcTerm());
+        sae1.getCtcterm().setTerm("Nausea");
+        sael.add(sae1);
+
+        sae1 = new SolicitedAdverseEvent();
+        sae1.setCtcterm(new CtcTerm());
+        sae1.getCtcterm().setTerm("Bone Pain");
+        sael.add(sae1);
+
+        e.getArms().get(0).setSolicitedAdverseEvents(sael);
+        try {
+            String xml = g.serialize(s, e);
+            FileOutputStream out = new FileOutputStream(XMLFile);
+            out.write(xml.getBytes());
+            out.close();
+        } catch (Exception e1) {
+            e1.printStackTrace();  
+        }
+    }
+
+    public static void testPDFgeneration() {
         BlankFormGenerator gen = new BlankFormGenerator();
         StringBuffer s = new StringBuffer("");
         try {
@@ -155,6 +195,11 @@ public class BlankFormGenerator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        // testXMLGenaration();
+        // testPDFgeneration();
     }
 
 }
