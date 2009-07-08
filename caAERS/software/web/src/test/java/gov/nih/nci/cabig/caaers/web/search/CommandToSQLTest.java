@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -10,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
@@ -28,6 +33,7 @@ public class CommandToSQLTest extends WebTestCase {
 	AdvancedSearchCommand command;
 	List<AdvancedSearchCriteriaParameter> criteriaParameters;
 	SearchTargetObject targetObject;
+	AdvancedSearchUi advancedSearchUi;
 	
 	protected void setUp() throws Exception {
         super.setUp();
@@ -194,7 +200,16 @@ public class CommandToSQLTest extends WebTestCase {
 	}
 
 	public void setupCommand(){
-		command = new AdvancedSearchCommand();
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
+        Unmarshaller unmarshaller;
+		try {
+			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
+			advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		command = new AdvancedSearchCommand(advancedSearchUi);
 	}
 	
 	/**

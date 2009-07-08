@@ -66,11 +66,15 @@ Object.extend(AdvancedSearchHelper.prototype, {
 		if($('searchName').value == '')
 			alert('Search name is required');
 		else{
-			var form = document.getElementById('command');
-			form._action.value = 'saveSearch';
-			form.searchName.value = $('searchName').value;
-			form.searchDescription.value = $('searchDescription').value;
-			form.submit();
+			var searchName = $('searchName').value;
+			var searchDescription = $('searchDescription').value;
+			alert('searchName = ' + searchName);
+			alert('searchDescription = ' + searchDescription);
+			advSearch.saveSearch(searchName, searchDescription, function(ajaxOutput){
+				window.parent.Windows.close('save-popup-id');
+				alert('Search saved successfully');
+				//$('save-popup-id').destroy();
+			});
 		} 
 	},
 	

@@ -1,17 +1,18 @@
-<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
-<head>
+	<head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
-	<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
-	<script>
+		<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+		<script>
+		var advancedSearchHelper = new AdvancedSearchHelper(advSearch);
 		Event.observe(window, "load", function() {
-    YAHOO.example.ColumnShowHide = function() {
+	    YAHOO.example.ColumnShowHide = function() {
         // Define Columns
         var myColumnDefs = [
-				 <c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
+				 <c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 					{key:"${viewColumn.columnTitle}", sortable:true, resizeable:true}
-					<c:if test="${viewColumnStatus.index < fn:length(resultsViewColumnList) - 1}">,</c:if>
+					<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
 				</c:forEach> 
 			];
 
@@ -20,9 +21,9 @@
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
         myDataSource.responseSchema = {
             fields: [
-					<c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
+					<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 						"${viewColumn.columnTitle }"
-						<c:if test="${viewColumnStatus.index < fn:length(resultsViewColumnList) - 1}">,</c:if>
+						<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
 					</c:forEach>
 				]
         };
@@ -32,7 +33,7 @@
 				paginator: new YAHOO.widget.Paginator({ 
 					rowsPerPage: 10 
 				}), 
-				initialRequest: "results=${numberOfResults}",
+				initialRequest: "results=${command.numberOfResults}",
 				draggableColumns:true 
 			};
 
@@ -132,57 +133,93 @@
     }();
 });
 		
+	function renderNestedView(){
+		var form = $('command');
+		form._action.value = 'nestedView';
+		form._page.value = '1';
+		form.submit();
+	}
 		
-	</script>
-	
+	</script>	
 </head>
-<body >
-	<chrome:box title="HQL Query for testing">
-		${hql }<br>
-	</chrome:box>
-	<div align="left">
-		<a href="<c:url value="/pages/search/advancedSearch?modifyCriteria=true"/>">
-							Modify criteria
-		</a>
-	</div>
-	<br>
-	<chrome:box title="Search results">
-		<div id="resultsTableDiv">
-		    <div id="dt-options"><a id="dt-options-link" href="fallbacklink.html">Table Options</a></div>
-    		<div id="columnshowhide" class="yui-skin-sam"></div>
-		</div>
-
-		<div id="dt-dlg">
-		    <span class="corner_tr"></span>
-		    <span class="corner_tl"></span>
-		    <span class="corner_br"></span>
-    		<span class="corner_bl"></span>
-		    <div class="hd">
-		        Choose which columns you would like to see:
-		    </div>
-		    <div id="dt-dlg-picker" class="bd">
-		    </div>
-		</div>
-	</chrome:box>
-	<div id="hiddenResultsTable" style="display:none">
-			<table id="resultsTableDataSource">
-				<thead>
-					<tr>
-						<c:forEach items="${resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
-							<td>${viewColumn.columnTitle }</td>
-						</c:forEach>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${rowList.rowListDTO }" var="row" varStatus="rowStatus">
-						<tr>
-							<c:forEach items="${row.columnListDTO.columnDTOList }" var="col" varStatus="colStatus">
-								<td>${col.value }</td>
+<body>
+		<tags:tabForm tab="${tab}" flow="${flow}" formName="advancedSearchForm" saveButtonLabel="Save Search" hideBox="true">
+			<jsp:attribute name="singleFields">
+				<input type="hidden" name="_action" id="_action" value="">
+				<chrome:box title="HQL Query for testing">
+					${command.hql }<br>
+				</chrome:box>
+				<div align="right">
+					<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
+				</div>
+				<chrome:box title="Search results">
+					<div id="resultsTableDiv">
+		   				<div id="dt-options"><a id="dt-options-link" href="fallbacklink.html">Table Options</a></div>
+    					<div id="columnshowhide" class="yui-skin-sam"></div>
+					</div>
+					<div id="dt-dlg">
+		    			<span class="corner_tr"></span>
+		 			   	<span class="corner_tl"></span>
+		    			<span class="corner_br"></span>
+    					<span class="corner_bl"></span>
+		    			<div class="hd">
+		        			Choose which columns you would like to see:
+		    			</div>
+		    			<div id="dt-dlg-picker" class="bd">
+		    			</div>
+					</div>
+				</chrome:box>
+				<div id="hiddenResultsTable" style="display:none">
+						<table id="resultsTableDataSource">
+							<thead>
+								<tr>
+									<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
+										<td>${viewColumn.columnTitle }</td>
+									</c:forEach>
+								</tr>
+							</thead>
+							<tbody>
+							<c:forEach items="${command.rowList.rowListDTO }" var="row" varStatus="rowStatus">
+								<tr>
+									<c:forEach items="${row.columnListDTO.columnDTOList }" var="col" varStatus="colStatus">
+										<td>${col.value }</td>
+									</c:forEach>
+								</tr>
 							</c:forEach>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</div>
-</body>
+						</tbody>
+					</table>
+				</div>
+				<div id="save_search_popup" style="display:none;text-align:left" >
+					<chrome:box title="Search details" id="popupId">
+						<div>
+							<div class="row">
+				    			<div class="summarylabel">Search name</div>
+				        		<div class="summaryvalue"><ui:text path="searchName" size="20" mandatory="true"/></div>
+							</div>
+				    		<div class="row">
+				    			<div class="summarylabel">Search description</div>
+				    			<div class="summaryvalue"><ui:textarea path="searchDescription" rows="3" cols="40"/></div>
+				    		</div>
+						</div>
+						<div align="right">
+							<tags:button size="small" color="blue" id="save-button" type="button" value="Save"  onclick="javascript:advancedSearchHelper.saveSearch();" />
+						</div>
+					</chrome:box>
+				</div>
+
+			</jsp:attribute>
+			<jsp:attribute name="tabControls">
+      			<div class="content buttons autoclear">
+          			<div class="flow-buttons">
+              			<span class="prev">
+              				<tags:button type="submit" value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
+			  			</span>
+					</div>
+					<div align="right">
+						<tags:button color="green" type="button" id="save-search" value="Save search" onclick="javascript:advancedSearchHelper.renderSaveSearchPopup();"/>
+					</div>
+      			</div>
+			</jsp:attribute>
+		</tags:tabForm>
+	</body>
 </html>

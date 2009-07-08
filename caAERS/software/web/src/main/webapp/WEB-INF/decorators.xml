@@ -31,6 +31,8 @@
         <pattern>/pages/rule/notification/create</pattern>
 		<pattern>/pages/rule/notification/edit</pattern>
         <pattern>/pages/admin/import</pattern>
+        <pattern>/pages/search/advancedSearch</pattern>
+        <pattern>/pages/search/listSearch</pattern>
     </decorator>
     <decorator name="nullDecorator" page="nullDecorator.jsp"/>
 

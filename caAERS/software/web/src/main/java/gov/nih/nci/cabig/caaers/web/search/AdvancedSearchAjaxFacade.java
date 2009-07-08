@@ -40,6 +40,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 
 public class AdvancedSearchAjaxFacade{
 	
@@ -165,6 +166,13 @@ public class AdvancedSearchAjaxFacade{
 		return ajaxOutput;
 	}
 	
+	public AjaxOutput getRowList(){
+		AjaxOutput ajaxOutput = new AjaxOutput();
+		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
+		ajaxOutput.setObjectContent(command.getRowList());
+		return ajaxOutput;
+	}
+	
 	/**
 	 * This method is used to delete the search. The parameter passed to the method is the searchName of the search to be deleted.
 	 */
@@ -226,10 +234,14 @@ public class AdvancedSearchAjaxFacade{
 		
 		searchDao.save(search);
 		Map<String, String> params = new LinkedHashMap<String, String>();
-		params.put("ajax_action", "saveSearch");
-		ajaxOutput.setHtmlContent(renderAjaxView("savedSearchList", params));
 		
 		return ajaxOutput;
+	}
+	
+	public List<ViewColumn> getViewColumnsForDependentObject(String dependentObjectDisplayName){
+		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
+		DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByDisplayName(command.getSearchTargetObject(), dependentObjectDisplayName);
+		return dObject.getViewColumn();
 	}
 	
 	public List<StudyAjaxableDomainObject> matchStudies(String text) {

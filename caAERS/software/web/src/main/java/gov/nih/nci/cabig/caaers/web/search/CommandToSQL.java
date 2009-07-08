@@ -31,11 +31,24 @@ public class CommandToSQL{
 		sqlString.append(" ");
 		sqlString.append(getFromTablesString(targetObject, criteriaParameters));
 		sqlString.append(" where ");
-		sqlString.append(getJoiningConditionString(targetObject, criteriaParameters));
-		sqlString.append(" and ");
+		String joiningConditionString = getJoiningConditionString(targetObject, criteriaParameters);
+		if(!joiningConditionString.equals("")){
+			sqlString.append(joiningConditionString);
+			sqlString.append(" and ");
+		}
 		sqlString.append(getCriteriaConditionString(targetObject, criteriaParameters, caseInsensitive));
+		sqlString.append(" order by ");
+		sqlString.append(getOrderByString(targetObject));
 		
 		return sqlString.toString();
+	}
+	
+	public static boolean isMultipleViewQuery(SearchTargetObject targetObject){
+		int numberOfDependentObjectsInView = 0;
+		for(DependentObject dObject: targetObject.getDependentObject())
+			if(dObject.isInView())
+				numberOfDependentObjectsInView++;
+		return numberOfDependentObjectsInView > 1;
 	}
 	
 	/**
@@ -108,6 +121,27 @@ public class CommandToSQL{
 	}
 	
 	/**
+	 * This method returns the order by string for the HQL. For this it traverses through the dependent objects of the target object
+	 * it receives as a parameter and checks if its in the view. If yes it addeds a clause to the order by string to sort the results
+	 * based on its id.
+	 * @param targetObject
+	 * @return String - orderby String.
+	 */
+	public static String getOrderByString(SearchTargetObject targetObject){
+		StringBuffer orderByStringBuffer = new StringBuffer();
+		for(DependentObject dObject: targetObject.getDependentObject()){
+			if(dObject.isInView()){
+				orderByStringBuffer.append(classToAliasMap.get(dObject.getClassName()));
+				orderByStringBuffer.append(".id, ");
+			}
+		}
+		
+		// Remove the last "," added to the end of the buffer.
+		int indexOfLastComma = orderByStringBuffer.lastIndexOf(",");
+		return orderByStringBuffer.substring(0, indexOfLastComma);
+	}
+	
+	/**
 	 * This method creates the from tables string by simple using the keys in the tableToAliasMap
 	 * @param targetObject
 	 * @param criteriaParameters
@@ -176,7 +210,10 @@ public class CommandToSQL{
 		}
 		
 		int indexOfLastAnd = joiningConditionStringBuffer.lastIndexOf(" and ");
-		return joiningConditionStringBuffer.substring(0, indexOfLastAnd);
+		if(indexOfLastAnd != -1)
+			return joiningConditionStringBuffer.substring(0, indexOfLastAnd);
+		else
+			return joiningConditionStringBuffer.toString();
 	}
 	
 	public static String getCriteriaConditionString(SearchTargetObject targetObject,
@@ -215,7 +252,7 @@ public class CommandToSQL{
 							throw new Exception("Unable to determine type of attribute " + parameter.getAttributeName() + " of class " + parameter.getObjectName());
 						else{
 							typeFlag = childTypeFlag;
-							parameter.setAttributeName(embeddedAttribName);
+							//parameter.setAttributeName(embeddedAttribName);
 						}
 					} catch (ClassNotFoundException ex) {
 						throw new Exception("Object class " + parameter.getObjectName() + "was not found", ex);
@@ -228,7 +265,12 @@ public class CommandToSQL{
 			
 			// Create the fullAttributeName taking into consideration the ObjectAlias.
 			DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, parameter.getObjectName());
-			String fullAttribName = dObject.getTableAlias() + "." + parameter.getAttributeName();
+			
+			String fullAttribName = "";
+			if(parameter.getAttributeName().indexOf(".") != -1)
+				fullAttribName = dObject.getTableAlias() + "." + parameter.getAttributeName().split("\\.")[0];
+			else
+				fullAttribName = dObject.getTableAlias() + "." + parameter.getAttributeName();
 			
 			boolean inClauseCheck = parameter.getPredicate().equals("in") || parameter.getPredicate().equals("not in");
 			caseInsensitive = caseInsensitive && !inClauseCheck;

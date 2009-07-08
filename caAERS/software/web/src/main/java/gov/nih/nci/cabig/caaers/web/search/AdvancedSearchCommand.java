@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 
 
 public class AdvancedSearchCommand{
@@ -24,9 +25,13 @@ public class AdvancedSearchCommand{
 	private SearchTargetObject searchTargetObject;
 	private String searchName;
 	private String searchDescription;
+	private String hql;
+	private SearchResultRowListDTO rowList;
+	private List<ViewColumn> resultsViewColumnList;
+	private Integer numberOfResults;
 	
-	public AdvancedSearchCommand(){
-		setAdvancedSearchUi();
+	public AdvancedSearchCommand(AdvancedSearchUi advancedSearchUi){
+		setAdvancedSearchUi(advancedSearchUi);
 	}
 	
 	public AdvancedSearchUi getAdvancedSearchUi(){
@@ -51,20 +56,8 @@ public class AdvancedSearchCommand{
 		return searchTargetObject;
 	}
 	
-	public void setAdvancedSearchUi(){
-        InputStream inputStream = Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream("advancedSearch-ui.xml");
-
-        Unmarshaller unmarshaller;
-        try {
-            unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui")
-                            .createUnmarshaller();
-            advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            logger.error("Error in reading advancedSearch-ui xml file ");
-            e.printStackTrace();
-        }
+	public void setAdvancedSearchUi(AdvancedSearchUi advancedSearchUi){
+		this.advancedSearchUi = advancedSearchUi;
 	}
 
 	/**
@@ -93,6 +86,62 @@ public class AdvancedSearchCommand{
 	 */
 	public void setSearchDescription(String searchDescription) {
 		this.searchDescription = searchDescription;
+	}
+
+	/**
+	 * @return the hql
+	 */
+	public String getHql() {
+		return hql;
+	}
+
+	/**
+	 * @param hql the hql to set
+	 */
+	public void setHql(String hql) {
+		this.hql = hql;
+	}
+
+	/**
+	 * @return the rowList
+	 */
+	public SearchResultRowListDTO getRowList() {
+		return rowList;
+	}
+
+	/**
+	 * @param rowList the rowList to set
+	 */
+	public void setRowList(SearchResultRowListDTO rowList) {
+		this.rowList = rowList;
+	}
+
+	/**
+	 * @return the resultsViewColumnList
+	 */
+	public List<ViewColumn> getResultsViewColumnList() {
+		return resultsViewColumnList;
+	}
+
+	/**
+	 * @param resultsViewColumnList the resultsViewColumnList to set
+	 */
+	public void setResultsViewColumnList(List<ViewColumn> resultsViewColumnList) {
+		this.resultsViewColumnList = resultsViewColumnList;
+	}
+
+	/**
+	 * @return the numberOfResults
+	 */
+	public Integer getNumberOfResults() {
+		return numberOfResults;
+	}
+
+	/**
+	 * @param numberOfResults the numberOfResults to set
+	 */
+	public void setNumberOfResults(Integer numberOfResults) {
+		this.numberOfResults = numberOfResults;
 	}
 	
 }

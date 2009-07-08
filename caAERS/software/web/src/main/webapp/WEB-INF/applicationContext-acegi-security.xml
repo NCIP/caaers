@@ -70,7 +70,8 @@
         <entry key="/pages/ae/routingAndReview.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
         <entry key="/pages/ae/generateExpeditedfPdf.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
         <entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-        <entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+        <entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+        <entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
         <entry key="/pages/admin/.*" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <!-- TODO: set up correct default -->

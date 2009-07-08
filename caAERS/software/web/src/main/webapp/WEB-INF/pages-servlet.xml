@@ -271,21 +271,17 @@
 	    </list>
 	  </property>
 	</bean>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Advanced Search" p:mainController="advancedSearchController">
-	  <property name="pathMapping"><value>/search/**</value></property>
-	  <!--  <property name="tasks">
-	    <list>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Study search" p:linkName="studyController"/> 
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Subject search" p:linkName="participantController"/>
-		  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Expedited Report search" p:linkName="reportController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Routine AE search" p:linkName="routineReportController"/>
-	    </list>
-	  </property> -->
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType" 
+		p:displayName="Advanced Search" p:mainController="advancedSearchController">
+          <property name="pathMapping"><value>/search/**</value></property>
+          <property name="tasks">
+            <list>
+            	  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" 
+            	  	p:displayName="Search" p:linkName="advancedSearchController"/>
+                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" 
+                  	p:displayName="Manage Search" p:linkName="listSearchController"/>
+            </list>
+          </property>
 	</bean>
       </list>
     </property>
@@ -492,6 +488,9 @@
   
   <bean name="/search/report" id="reportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
+  	
+  <bean name="/search/listSearch" id="listSearchController" autowire="byType"
+  	class="gov.nih.nci.cabig.caaers.web.search.ListSearchController"/>
   
   <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType"
   	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>

@@ -2,75 +2,64 @@ package gov.nih.nci.cabig.caaers.web.search;
 
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
-import gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsCommand;
-import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
-//import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaObject;
-//import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
+import gov.nih.nci.cabig.caaers.web.ae.AdverseEventConfirmTab;
+import gov.nih.nci.cabig.caaers.web.ae.BeginTab;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
-import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import gov.nih.nci.cagrid.cqlquery.CQLQuery;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.validation.BindException;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import com.semanticbits.core.CQL2HQL;
-
-public class AdvancedSearchController extends SimpleFormController{
+/**
+ * This is the controller for the advanced search page.
+ * @author Sameer Sawant
+ */
+public class AdvancedSearchController extends AutomaticSaveAjaxableFormController<AdvancedSearchCommand, Search, SearchDao>{
 	
 	private static final Log log = LogFactory.getLog(AdvancedSearchController.class);
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	public static final String AJAX_ACTION_PARAMETER = "ajax_action";
 	private SearchDao searchDao;
 	private AdvancedSearchUi advancedSearchUi;
 	
-	private ParticipantDao participantDao;
 	
-	public AdvancedSearchController() {
-        setCommandClass(AdvancedSearchCommand.class);
-        setSessionForm(true);
-        setFormView("search/advancedSearch");
-        setSuccessView("search/advancedSearchResults");
-        
-        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
+	public AdvancedSearchController(){
+		setBindOnNewForm(true);
+		setCommandClass(AdvancedSearchCommand.class);
+		
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
         Unmarshaller unmarshaller;
 		try {
 			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
@@ -79,7 +68,45 @@ public class AdvancedSearchController extends SimpleFormController{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+    @SuppressWarnings("unchecked")
+    protected boolean isFormSubmission(HttpServletRequest request) {
+        Set<String> paramNames = request.getParameterMap().keySet();
+        boolean fromSearchListPage = false;
+        fromSearchListPage = paramNames.contains("runSavedQuery");
+        String action = (String) findInRequest(request, "_action");
+        if(fromSearchListPage) 
+        	return true;
+        else if(action != null && (action.equals("flatView") || action.equals("nestedView")))
+        	return true;
+        else
+        	return super.isFormSubmission(request);
     }
+	
+	@Override
+	protected SearchDao getDao() {
+		return null;
+	}
+	
+	@Override
+	protected void onBindOnNewForm(HttpServletRequest request, Object command,BindException errors) throws Exception {
+		super.onBindOnNewForm(request, command, errors);
+	}
+	
+	/**
+	 * Will return the {@link AdverseEventReportingPeriod} 
+	 */
+	@Override
+	protected Search getPrimaryDomainObject(AdvancedSearchCommand cmd) {
+		return new Search();
+	}
+	
+	@Override
+	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
+		return null;
+	}
 	
 	@Override
     protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
@@ -89,18 +116,9 @@ public class AdvancedSearchController extends SimpleFormController{
     }
 	
 	@Override
-    protected Object formBackingObject(HttpServletRequest request) {
-		AdvancedSearchCommand command = new AdvancedSearchCommand();
-		
-		String modifyCriteria = request.getParameter("modifyCriteria");
+	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
+		AdvancedSearchCommand command = new AdvancedSearchCommand(advancedSearchUi);
 		String searchName = request.getParameter("searchName");
-		if(modifyCriteria != null){
-			// This is when the user clicks "modifyCriteria" link on the results page.
-			SearchTargetObject stObject = (SearchTargetObject) request.getSession().getAttribute("searchTargetObject");
-			List<AdvancedSearchCriteriaParameter> criteriaParameters = (List<AdvancedSearchCriteriaParameter>) request.getSession().getAttribute("criteriaParameters");
-			command.setSearchTargetObject(stObject);
-			command.setCriteriaParameters(criteriaParameters);
-		}
 		if(searchName != null){
 			// This is when the user clicks on one of the saved searches.
 			String loginId = SecurityUtils.getUserLoginName();
@@ -130,230 +148,69 @@ public class AdvancedSearchController extends SimpleFormController{
 				e.printStackTrace();
 			}
 			
-		}
-		request.getSession(true).setAttribute(AdvancedSearchController.class.getName() + ".FORM.command", command);
-        return command;
-    }
-	
-	@Override
-    @SuppressWarnings("unchecked")
-    protected boolean isFormSubmission(HttpServletRequest request) {
-		String actionAttribute = (String) findInRequest(request, "_action");
-		if(actionAttribute != null)
-			return true;
-		else
-			return false;
-	}
-	
-	protected boolean isSaveSearchSubmission(HttpServletRequest request){
-		String actionAttribute = (String) findInRequest(request, "_action");
-		if(actionAttribute != null && actionAttribute.equals("saveSearch"))
-			return true;
-		else
-			return false;
-	}
-	
-	@SuppressWarnings("unused")
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
-		
-		AdvancedSearchCommand command = (AdvancedSearchCommand) cmd;
-		Map map = new LinkedHashMap();
-		ModelAndView modelAndView = null;
-		List<AdvancedSearchCriteriaParameter> parameters = new ArrayList<AdvancedSearchCriteriaParameter>();
-		for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
-			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted())
-					parameters.add(p);
-		}
-		
-		//TODO Setting the viewColumn in the dependentObjects of the targetObject here till its fetched from the UI
-		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-			dObject.setInView(false);
-			for(ViewColumn viewColumn: dObject.getViewColumn())
-				viewColumn.setSelected(false);
-		}
-		// This is to set the dependent object == target object in the view (This is possible as the user might not have any crieteria
-		// on the targetObject)
-		command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
-		for(ViewColumn v: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
-			v.setSelected(true);
-		for(AdvancedSearchCriteriaParameter p: parameters){
-			DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
-			dObject.setInView(true);
-			for(ViewColumn viewColumn: dObject.getViewColumn())
+			// Setup the view attributes
+			//Reset the value of selected to false for all the dependentObjects and their attributes- 
+			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+				dObject.setInView(false);
+				for(ViewColumn viewColumn: dObject.getViewColumn())
+					viewColumn.setSelected(false);
+			}
+			//Select the targetObject in the view.
+			command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
+			for(ViewColumn viewColumn: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
 				viewColumn.setSelected(true);
-		}
-		//TODO till here.
-		
-		String query = CommandToSQL.transform(command.getSearchTargetObject(), parameters, true);
-		System.out.println("query = " + query);
-		List<Object[]> objectList = (List<Object[]>) participantDao.search(new HQLQuery(query)); 
-		map.put("numberOfResults", objectList.size());
-		List<ViewColumn> resultsViewColumnList = new ArrayList<ViewColumn>();
-		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
-			if(dObject.isInView()){
-				resultsViewColumnList.addAll(dObject.getViewColumn());
-			}
-		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
-		for(Object[] objectArr: objectList){
-			SearchResultRowDTO row = new SearchResultRowDTO();
-			SearchResultColumnDTO column = null;
-			int i = 0;
-			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-				if(dObject.isInView()){
-					Object obj = objectArr[i++];
-					BeanWrapper wrapper = new BeanWrapperImpl(obj);
-					for(ViewColumn viewColumn: dObject.getViewColumn()){
-						if(viewColumn.isSelected()){
-							column = new SearchResultColumnDTO();
-							column.setColumnHeader(viewColumn.getColumnTitle());
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-							row.getColumnListDTO().getColumnDTOList().add(column);
-						}
-					}
-				}
-			}
-			// NOTE TODO - This was commented as ViewColumn was moved from TargetObject to DependentObject
-			//for(ViewColumn viewColumn: command.getSearchTargetObject().getViewColumn()){
-			//	column = new SearchResultColumnDTO();
-			//	column.setColumnHeader(viewColumn.getColumnTitle());
-			//	column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-			//	row.getColumnListDTO().getColumnDTOList().add(column);
-			//}
-			rowList.getRowListDTO().add(row);
-		}
-		map.put("resultsViewColumnList", resultsViewColumnList);
-		map.put("rowList", rowList);
-		map.put("hql", query);
-		map.putAll(errors.getModel());
-		modelAndView = new ModelAndView("search/advancedSearchResults", map);
-        
-		// Put searchTargetObject and criteriaParameters in session to create the form when the user clicks "modify criteria" on the 
-		// results page.
-		request.getSession().setAttribute("searchTargetObject", command.getSearchTargetObject());
-		request.getSession().setAttribute("criteriaParameters", command.getCriteriaParameters());
-		if(isSaveSearchSubmission(request)){
-			String loginId = SecurityUtils.getUserLoginName();
-			SaveSearch saveSearch = new SaveSearch();
-			saveSearch.setTargetClassName(command.getSearchTargetObject().getClassName());
-			List<CriteriaParameter> criteriaParameterList = new ArrayList<CriteriaParameter>();
-			CriteriaParameter criteriaParameter = null;
-			for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
-				criteriaParameter = new CriteriaParameter();
-				criteriaParameter.setObjectName(parameter.getObjectName());
-				criteriaParameter.setAttributeName(parameter.getAttributeName());
-				criteriaParameter.setPredicate(parameter.getPredicate());
-				criteriaParameter.setValue(parameter.getValue());
-				criteriaParameter.setDisplayValue(parameter.getDisplayValue());
-				criteriaParameterList.add(criteriaParameter);
-			}
-			saveSearch.setCriteriaParameter(criteriaParameterList);
-			Search search = new Search();
-			search.setCreatedDate(new Date());
-			search.setDescription((String) findInRequest(request,"searchDescription"));
-			search.setLoginId(loginId);
-			search.setName((String) findInRequest(request, "searchName"));
 			
-			// Marshall the saveSearch object into an xml string.
-			Marshaller marshaller;
-			try {
-				marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createMarshaller();
-				StringWriter writer = new StringWriter();
-				marshaller.marshal(saveSearch, writer);
-				search.setCriteriaXml(writer.toString());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			searchDao.save(search);
-		}
-		return modelAndView;
-	}
-		
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception{
-		
-		ModelAndView mv = super.showForm(request, response, errors);
-		
-		String ajaxAction = (String) findInRequest(request, AJAX_ACTION_PARAMETER);
-		if(ajaxAction != null){
-			String ajaxSubview = (String)findInRequest(request, AJAX_SUBVIEW_PARAMETER);
-			mv.setViewName("search/ajax/" + ajaxSubview);
-		}
-		return mv;
-	}
-	
-	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
-		throws Exception {
-		
-		// Form submission or new form to show?
-		if (isFormSubmission(request)) {
-			return super.handleRequestInternal(request, response);
-		}else{
-			String ajaxAction = (String) findInRequest(request, AJAX_ACTION_PARAMETER);
-			String action = request.getParameter("_action");
-			if(ajaxAction == null)
-				return super.handleRequestInternal(request, response);
-			else{
-				Object cmd = getCommand(request);
-				ServletRequestDataBinder binder = bindAndValidate(request, cmd);
-				BindException errors = new BindException(binder.getBindingResult());
-				return showForm(request, response, errors);
-			}
-		}
-	}
-	
-	@Override
-    @SuppressWarnings("unchecked")
-    protected Map referenceData(HttpServletRequest request, Object cmd, Errors errors) throws Exception {
-		AdvancedSearchCommand command = (AdvancedSearchCommand) cmd;
-        Map<String, Object> refdata = new HashMap<String, Object>();
-        
-		String ajaxAction = (String) findInRequest(request, AJAX_ACTION_PARAMETER);
-		
-		// This is for adding a new criteria
-		if(ajaxAction != null && ajaxAction.equals("addNewCriteria")){
-			String dependentObjectDisplayName = (String) findInRequest(request, "dependentObjectDisplayName");
-			DependentObject dependentObject = AdvancedSearchUiUtil.getDependentObjectByDisplayName(command.getSearchTargetObject(), dependentObjectDisplayName);
-			refdata.put("dependentObject", dependentObject);
-		}
-		
-		// This is for updating the attribute select element
-		if(ajaxAction != null && ajaxAction.equals("updateAttribute")){
-			String indexString = (String) findInRequest(request, "index");
-			String attributeName = (String) findInRequest(request, "attributeName");
-			Integer index = Integer.parseInt(indexString);
-			refdata.put("index", index);
-			
-			//Put the uiAttribute in refdata. Its needed to provide the metadata to the renderValueColumn.tag
-			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-				if(dObject.getClassName().equals(command.getCriteriaParameters().get(index).getObjectName())){
-					for(UiAttribute uiAttribute: dObject.getUiAttribute())
-						if(uiAttribute.getName().equals(attributeName))
-							refdata.put("uiAttribute", uiAttribute);
+			//Select all the dependentObjects involved in the criteria
+			for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
+				if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted()){
+					DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
+					dObject.setInView(true);
+					for(ViewColumn viewColumn: dObject.getViewColumn())
+						viewColumn.setSelected(true);
 				}
 			}
 		}
-		
-		// Collect the list of saved searches for this user and put it in the refdata.
-		String loginId = SecurityUtils.getUserLoginName();
-		List<Search> searchList = new ArrayList<Search>();
-		List<Search> shortSearchList = new ArrayList<Search>();
-		searchList = searchDao.getByLogin(loginId);
-		int i = 0;
-		for(Search s: searchList){
-			if(i++ > 4) break;
-			shortSearchList.add(s);
-		}
-		refdata.put("savedSearchList", searchList);
-		refdata.put("shortSearchList", shortSearchList);
-        
-		refdata.put("advancedSearchUi", advancedSearchUi);
-		request.getSession(true).setAttribute(AdvancedSearchController.class.getName() + ".FORM.command", command);
-        return refdata;
+		return command;
 	}
+	
+	@Override
+	public FlowFactory<AdvancedSearchCommand> getFlowFactory() {
+		return new FlowFactory<AdvancedSearchCommand>() {
+			public Flow<AdvancedSearchCommand> createFlow(AdvancedSearchCommand cmd) {
+				
+            	/**
+            	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
+            	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
+            	 */
+				Flow<AdvancedSearchCommand> flow = new Flow<AdvancedSearchCommand>("Advanced Search || Enter criteria");
+				flow.addTab(new AdvancedSearchCriteriaTab<AdvancedSearchCommand>());
+				flow.addTab(new AdvancedSearchViewTab<AdvancedSearchCommand>());
+				flow.addTab(new AdvancedSearchResultsTab("Search results", "Search results", "search/advancedSearchResults"));
+				return flow;
+			}
+		};
+	}
+	
+	/**
+	 * Supress the validation in the following cases.
+	 *   1 - When we go back
+	 *   2 - When it is an Ajax request, which dont has form submission
+	 */
+	
+	@Override
+    protected boolean suppressValidation(final HttpServletRequest request) {
+
+        Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+        if (isAjax != null) return true;
+        
+        //Object isFromManageReport = findInRequest(request, "fromManageReport");
+        //if(isFromManageReport != null) return true;
+        //check current page and next page
+        int currPage = getCurrentPage(request);
+    	int targetPage = getTargetPage(request, currPage);
+        return targetPage < currPage;
+
+    }
 	
 	/**
      * Returns the value associated with the <code>attributeName</code>, if present in
@@ -368,13 +225,29 @@ public class AdvancedSearchController extends SimpleFormController{
         return attr;
     }
     
-    public void setParticipantDao(ParticipantDao participantDao){
-    	this.participantDao = participantDao;
+    
+    /**
+     * Adds ajax sub-page view capability. TODO: factor this into main tabbed flow controller.
+     */
+    @Override
+    protected String getViewName(HttpServletRequest request, Object command, int page) {
+    	String action = (String) findInRequest(request, "_action");
+        String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
+        if (subviewName != null) {
+            // for side-effects:
+            super.getViewName(request, command, page);
+            return "search/ajax/" + subviewName;
+        }else if(action != null && action.equals("nestedView")){
+        	return "search/advancedSearchNestedResults";
+        }else {
+            return super.getViewName(request, command, page);
+        }
     }
     
-    public ParticipantDao getParticipantDao(){
-    	return participantDao;
-    }
+    @Override
+	protected boolean shouldSave(HttpServletRequest request,AdvancedSearchCommand command,Tab<AdvancedSearchCommand> tab) {
+		return false;
+	}
     
     public void setSearchDao(SearchDao searchDao){
     	this.searchDao = searchDao;
