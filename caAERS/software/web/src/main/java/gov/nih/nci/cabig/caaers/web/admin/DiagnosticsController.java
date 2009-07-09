@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
@@ -17,6 +18,7 @@ public class DiagnosticsController extends SimpleFormController{
 	private Configuration configuration;
 	protected CaaersJavaMailSender caaersJavaMailSender;
 	protected final Log log = LogFactory.getLog(getClass());
+	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
 	
     public DiagnosticsController() {
     	setCommandClass(DiagnosticsCommand.class);
@@ -27,6 +29,7 @@ public class DiagnosticsController extends SimpleFormController{
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	DiagnosticsCommand diagnosticsCommand =  new DiagnosticsCommand(configuration);
     	diagnosticsCommand.setSmtpTestResult(testSmtp(diagnosticsCommand));
+    	diagnosticsCommand.setServiceMixUp(testServiceMix());
     	return diagnosticsCommand;
     }
 
@@ -57,4 +60,20 @@ public class DiagnosticsController extends SimpleFormController{
 		}
 		return testResult;
 	}
+	private boolean testServiceMix() {
+    	boolean testResult = false;
+	    try {
+	    	messageBroadcastService.initialize();
+		    testResult = true;
+		} catch (Exception e) {
+			testResult = false;
+		}
+		return testResult;
+	}
+
+	public void setMessageBroadcastService(
+			CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService) {
+		this.messageBroadcastService = messageBroadcastService;
+	}	
+	
 }

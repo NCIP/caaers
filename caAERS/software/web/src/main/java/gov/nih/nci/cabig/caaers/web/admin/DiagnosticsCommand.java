@@ -14,6 +14,9 @@ public class DiagnosticsCommand extends ConfigurationCommand{
 	private String smtpPort;
 	private Throwable smtpException;
 	private String smtpError;
+	private boolean serviceMixUp;
+	private String serviceMixUrl;
+	
 	
 	public DiagnosticsCommand(Configuration configuration){
 		super(configuration);
@@ -74,6 +77,19 @@ public class DiagnosticsCommand extends ConfigurationCommand{
 			smtpError = smtpException.getMessage();
 		}
 		return smtpError;
+	}
+
+	public boolean isServiceMixUp() {
+		return serviceMixUp;
+	}
+
+	public void setServiceMixUp(boolean serviceMixUp) {
+		this.serviceMixUp = serviceMixUp;
+	}
+
+	public String getServiceMixUrl() {
+		serviceMixUrl = super.configuration.get(Configuration.ESB_URL);
+		return serviceMixUrl;
 	}
 	
 }
