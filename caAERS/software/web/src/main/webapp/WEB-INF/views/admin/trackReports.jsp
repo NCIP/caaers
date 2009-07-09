@@ -265,7 +265,7 @@ color:#0033FF;
    
    	   		<tr>
 				<td style="padding-top:15px;padding-left:15px;">
-    				<tags:paginationControl isFirstPage="${isFirstPage}" isLastPage="${isLastPage}"/>
+    				<tags:paginationControlTracking isFirstPage="${isFirstPage}" isLastPage="${isLastPage}"/>
 					<div style="color:#808080">
 						${totalResults } results found, displaying ${startIndex } to ${endIndex }
 					</div>
