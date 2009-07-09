@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
@@ -168,7 +169,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		EasyMock.expect(report.getAeReport()).andReturn(aeReport);
 		EasyMock.expect(report.getReportDefinition()).andReturn(rd);
 		replayMocks();
-		service.notifyEmailRecipients(report, xml, pdfFilePaths);
+		ReportTracking reportTracking = new ReportTracking();
+		service.notifyEmailRecipients(report, xml, pdfFilePaths,reportTracking);
 		verifyMocks();
 		
 	}
@@ -179,7 +181,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion);
 		EasyMock.expect(report.getId()).andReturn(5);
 		replayMocks();
-		service.notifyExternalSystems(report, xml, pdfFilePaths);
+		ReportTracking reportTracking = new ReportTracking();
+		service.notifyExternalSystems(report, xml, reportTracking);
 		verifyMocks();
 		
 	}
