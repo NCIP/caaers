@@ -71,6 +71,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     List<ReportContent> contents;
     
+    private List<ReportTracking> reportTrackings;
+    
 
     // ////Logic
     public void addReportContent(ReportContent content){
@@ -263,6 +265,43 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     public void copySubmissionDetails(ReportVersion rv){
     	this.setAssignedIdentifer(rv.getAssignedIdentifer());
     }
+    
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_version_id", nullable = false)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})        
+	public List<ReportTracking> getReportTrackings() {
+		return reportTrackings;
+	}
+    
+    @Transient
+    public ReportTracking getLastReportTracking() {
+
+        return reportTrackings != null && reportTrackings.size() > 0 ? reportTrackings
+                        .get(reportTrackings.size()-1) : null;
+    }
+    
+    @Transient
+    /*
+     * get backward list
+     */
+	public List<ReportTracking> getReportTrackingsForDisplay() {
+    	List<ReportTracking> reverseList = new ArrayList<ReportTracking>();
+    	for (int i=reportTrackings.size()-1; i>=0 ;i--) {
+    		reverseList.add(reportTrackings.get(i));
+    	}
+		return reverseList;
+	}
+    
+
+	public void setReportTrackings(List<ReportTracking> reportTrackings) {
+		this.reportTrackings = reportTrackings;
+	}
+	
+	public void addReportTracking(ReportTracking reportTracking){
+		if (reportTrackings == null) reportTrackings = new ArrayList<ReportTracking>();
+		reportTracking.setReportVersion(this);
+        reportTrackings.add(reportTracking);
+	}
    
     /**
      * This method returns true, if the report version can be submitted.
