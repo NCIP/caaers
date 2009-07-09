@@ -75,6 +75,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private List<ReportDelivery> deliveries;
     
+    private boolean externalSystem;
+    
   
     // //// LOGIC
 
@@ -475,6 +477,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     @Transient
     public boolean isAmendable() {
     	return reportDefinition.getAmendable();
+	}
+    
+    @Transient
+	public boolean getExternalSystem() {
+    	externalSystem =  hasSystemDeliveries();
+    	return externalSystem;
 	}
    
 }
