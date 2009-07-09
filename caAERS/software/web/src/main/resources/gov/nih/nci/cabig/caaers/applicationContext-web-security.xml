@@ -100,6 +100,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/passwordPolicyConfigure"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/trackReports"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
 
         <!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
