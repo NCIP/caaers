@@ -164,6 +164,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportTracking</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportTrackingStatus</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
@@ -340,6 +342,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
+
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
@@ -691,7 +694,10 @@ This applicationContext contains the definition of the DAOs
 
 
     <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
+    
+    <bean id="reportTrackingDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao"/>
 
+	<bean id="reportVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao"/>
     <!-- Factory beans end here-->
 
 </beans>
