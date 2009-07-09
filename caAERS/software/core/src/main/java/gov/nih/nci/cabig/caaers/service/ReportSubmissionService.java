@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -13,9 +14,11 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.utils.Tracker;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.File;
@@ -47,6 +50,7 @@ public class ReportSubmissionService {
     private SchedulerService schedulerService;
     
     private ReportDao reportDao;
+    private ReportTrackingDao reportTrackingDao;
 
     /**
      * Will do the following.
@@ -58,16 +62,39 @@ public class ReportSubmissionService {
      *  5b. Notify email recipients
      */
     public void submitReport(Report report){
+    	ReportTracking reportTracking = new ReportTracking();
+    	// Initiate ...
+    	try {    		
+    		List<ReportTracking> reportTrackings = report.getLastVersion().getReportTrackings();
+    		int attemptNumber = 1;
+            if( reportTrackings != null && reportTrackings.size() > 0) {
+            	attemptNumber = reportTrackings.size()+1;
+            }
+            reportTracking.setAttemptNumber(attemptNumber);  
+    		Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());
+    		report.getLastVersion().addReportTracking(reportTracking);
+    	} catch ( Exception e ) {
+    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
+    	}
+    	
+    	// generate caAERS xml
+    	Date today = nowFactory.getNow();
+    	String caaersXml = "";
+    	try {    		
+    		caaersXml = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
+    		Tracker.logXmlGeneration(reportTracking, true, "",nowFactory.getNow());
+    	} catch (Exception e ) {
+    		Tracker.logXmlGeneration(reportTracking, false, e.getMessage(),nowFactory.getNow());
+    	}
+    	
+    	ReportVersion reportVersion;
+    	boolean hasSystemDeliveries;
+    	ReportStatus status;
     	try {
-    		
-    		Date today = nowFactory.getNow();
-    		//step 1
-    		String caaersXml = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
-
     		//if there is no external system to receive, it is assumed that there are no interim report statuses..
-    		boolean hasSystemDeliveries = report.hasSystemDeliveries();
+    		hasSystemDeliveries = report.hasSystemDeliveries();
     		//step 2
-    		ReportStatus status = (hasSystemDeliveries) ? ReportStatus.INPROCESS : ReportStatus.COMPLETED;
+    		status = (hasSystemDeliveries) ? ReportStatus.INPROCESS : ReportStatus.COMPLETED;
             //BJ - Tweak - I dont remember why this code is here, but cutpasted from SubmitReportController
     		if(!hasSystemDeliveries) schedulerService.unScheduleNotification(report);
     		report.setStatus(status);
@@ -77,7 +104,7 @@ public class ReportSubmissionService {
             report.setSubmissionMessage("");
             report.setSubmittedOn(today);
             
-            ReportVersion reportVersion = report.getLastVersion();
+            reportVersion = report.getLastVersion();
             reportVersion.setReportStatus(status);
             reportVersion.setSubmissionUrl("");
             reportVersion.setSubmissionMessage("");
@@ -87,28 +114,37 @@ public class ReportSubmissionService {
             if(CollectionUtils.isNotEmpty(reportVersion.getContents())){
             	reportVersion.getContents().clear();
             }
-            
+    	} catch (Exception e ) {
+    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
+    	}  
+    	String[] pdfReportPaths;
+    	try {
             //Step 3 - add the report content to report version
-            String[] pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXml);
-            
-            for(String pdfFilePath : pdfReportPaths){
+            pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXml);   
+    		for(String pdfFilePath : pdfReportPaths){
             	File f = new File(pdfFilePath);
             	if(f.exists() && f.canRead()){
             		ReportContent reportContent = new ReportContent("application/pdf", FileCopyUtils.copyToByteArray(f));
             		reportVersion.addReportContent(reportContent);
             	}
             }
-            //step 4 by default add the xml content as well
+    		Tracker.logAttachmentGeneration(reportTracking, true, "",nowFactory.getNow());
             reportVersion.addReportContent(new ReportContent("text/xml", caaersXml.getBytes()));
             reportDao.save(report);
             reportDao.flush();
             
+    	} catch (Exception e ) {    		
+    		Tracker.logAttachmentGeneration(reportTracking, false, e.getMessage() ,nowFactory.getNow());
+            reportDao.save(report);
+            reportDao.flush();
+    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
+    	}  
             
             //Notify the external systems
             if(hasSystemDeliveries){
             	//step 5.a
             	try {
-					notifyExternalSystems(report, caaersXml, pdfReportPaths);
+					notifyExternalSystems(report, caaersXml, reportTracking);					
 				} catch (Exception e) {
 					log.error("Error while sending message to service mix ", e);
 					status = ReportStatus.FAILED;
@@ -119,14 +155,18 @@ public class ReportSubmissionService {
             	
             }else{
             	//step 5.b - notify all email recipients.
-            	notifyEmailRecipients(report, caaersXml, pdfReportPaths);
+            	try {
+            		notifyEmailRecipients(report, caaersXml, pdfReportPaths,reportTracking);
+            	 } catch (Exception e) {
+                 	Tracker.logEmailNotification(reportTracking, false, e.getMessage(),nowFactory.getNow());
+     				log.error("Error while sending email ", e);
+     	            report.getLastVersion().setReportStatus(ReportStatus.FAILED);
+     	            report.getLastVersion().setSubmissionMessage("Error  sending email " + e.getMessage());
+     	            reportDao.save(report);
+
+                 }            	
             }
-            
-   		} catch (Exception e) {
-			 throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
-		}
-		
-    }
+     }
     
     /**
      * This method will generate the message content and forwards it to the caaers mail sender.
@@ -136,7 +176,7 @@ public class ReportSubmissionService {
      * @throws Exception
      */
     
-    public void notifyEmailRecipients(Report report, String xml, String[] pdfFilePaths) throws Exception {
+    public void notifyEmailRecipients(Report report, String xml, String[] pdfFilePaths,ReportTracking reportTracking) throws Exception {
     	List<String> emailRecipients = report.getEmailRecipients();
     	if(!emailRecipients.isEmpty()){
     		 //if email recipents are there, notify them.
@@ -169,8 +209,13 @@ public class ReportSubmissionService {
             }else{
             	content = "An "+formatType.getDisplayName()+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
             }
-            
+
             caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), formatType.getDisplayName(), content, pdfFilePaths);
+            String msg = "Notified to : " ;
+        	for (String e:emailRecipients) {
+        		msg = msg + "," + e;
+        	}
+            Tracker.logEmailNotification(reportTracking, true, msg,nowFactory.getNow());
             
     	}
     }
@@ -184,8 +229,7 @@ public class ReportSubmissionService {
      * @throws Exception
      */
     
-    public void notifyExternalSystems(Report report, String xml, String[] pdfFilePaths) throws Exception{
-    	
+    public void notifyExternalSystems(Report report, String xml, ReportTracking reportTracking) throws Exception {
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();
         StringBuilder sb = new StringBuilder();
@@ -200,9 +244,23 @@ public class ReportSubmissionService {
         sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
-    	messageBroadcastService.initialize();
-    	messageBroadcastService.broadcast(externalXml);
-    
+    	
+    	try {
+    		messageBroadcastService.initialize();
+    	} catch (Exception e) {
+    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error initilizing ESB broadcast",nowFactory.getNow());
+    		e.printStackTrace();
+    		throw new Exception (e);
+    	}
+    	
+    	try {
+    		messageBroadcastService.broadcast(externalXml);
+    	} catch (Exception e) {
+    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error Broadcasting to ESB",nowFactory.getNow());
+    		e.printStackTrace();
+    		throw new Exception (e);
+    	}
+    	Tracker.logConnectionToESB(reportTracking, true, "",nowFactory.getNow());
     }
 
 	
@@ -234,5 +292,10 @@ public class ReportSubmissionService {
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
+
+  //  @Required    
+	public void setReportTrackingDao(ReportTrackingDao reportTrackingDao) {
+		this.reportTrackingDao = reportTrackingDao;
+	}
 
 }
