@@ -59,6 +59,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
         StringBuffer sb = new StringBuffer();
 
         boolean success = true;
+        boolean communicationError = false;
         String ticketNumber = "";
         String url = "";
 
@@ -79,8 +80,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
                 sb.append("VIEWING THE REPORT IN ADEERS:.\n");
                 sb.append("-------------------------------.\n");
 
-                sb
-                                .append("To access the report in AdEERS, simply point your browser to the following URL:.\n\n");
+                sb.append("To access the report in AdEERS, simply point your browser to the following URL:.\n\n");
 
                 // sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
 
@@ -110,6 +110,9 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
                 sb.append(ex.getChild("code").getValue() + "  -  "
                                 + ex.getChild("description").getValue());
                 sb.append(".\n");
+            	if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+            		communicationError=true;
+                }
             }
 
             if (jobInfo.getChild("comments") != null) {
@@ -129,7 +132,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
         try {
             log.debug("Calling notfication service ..");
             messageNotificationService.sendNotificationToReporter(submitterEmail, messages,
-                            caaersAeReportId, reportId, success, ticketNumber, url);
+                            caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

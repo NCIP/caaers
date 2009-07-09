@@ -2,14 +2,17 @@ package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.utils.Tracker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +36,8 @@ public class MessageNotificationService {
     protected Configuration configuration;
 
     protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    
+    private ReportTrackingDao reportTrackingDao;
 
     protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
     
@@ -61,7 +66,7 @@ public class MessageNotificationService {
 
     public void sendNotificationToReporter(String submitterEmail, String messages,
                     String aeReportId, String reportId, boolean success, String ticketNumber,
-                    String url) throws Exception {
+                    String url,boolean communicationError) throws Exception {
         // get AEreport by using this id
 
         WebRequest stubWebRequest = preProcess();
@@ -71,7 +76,6 @@ public class MessageNotificationService {
         Report r = reportDao.getById(Integer.parseInt(reportId));
         reportDao.initialize(r.getScheduledNotifications());
         ReportVersion rv = r.getLastVersion();
-        
         
         //
         List<String> emails = new ArrayList<String>();
@@ -91,16 +95,34 @@ public class MessageNotificationService {
             }
         }
         emails.add(submitterEmail);
-        // get submitter info
-        /*
-         * Reporter reporter = aeReport.getReporter(); Map contact =
-         * reporter.getContactMechanisms();
-         * 
-         * 
-         * //get email String email = contact.get(Reporter.EMAIL).toString();
-         */
-
+        
+        
+       // List<ReportTracking> rts = rv.getReportTrackings();
+        ReportTracking rtToUpdate = rv.getLastReportTracking();
+        System.out.println("ATTEMPT NUMBER" + rtToUpdate.getAttemptNumber());
+        
         postProcess(stubWebRequest);
+        
+        /*
+        for (ReportTracking rt:rts) {
+        	if (rt.getAttemptNumber() == rts.size()) {
+        		rtToUpdate = rt;
+        		break;
+        	}
+        }*/
+        
+        boolean ableToSubmitToWS = true;
+        String submissionMessage = "";
+        if (communicationError) {
+        	ableToSubmitToWS = false;
+        	submissionMessage = messages;
+        }
+        Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
+        //reportTrackingDao.save(rtToUpdate);
+        
+
+
+        
 
         log.debug("Saving data into report versions table");
         if (success) {
@@ -113,7 +135,8 @@ public class MessageNotificationService {
             rv.setSubmissionUrl(url);
             rv.setSubmittedOn(new Date());
             rv.setReportStatus(ReportStatus.COMPLETED);
-            
+            Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
+            //reportTrackingDao.save(rtToUpdate);
             // Unschedule all the notifications, once the report is submitted successfully.
             schedulerService.unScheduleNotification(r);
 
@@ -123,6 +146,10 @@ public class MessageNotificationService {
 
             rv.setSubmittedOn(new Date());
             rv.setReportStatus(ReportStatus.FAILED);
+            if (ableToSubmitToWS) {
+            	Tracker.logSubmissionToExternalSystem(rtToUpdate, false, messages, new Date());
+            }
+            //reportTrackingDao.save(rtToUpdate);
         }
         rv.setSubmissionMessage(messages);
         r.setSubmissionMessage(messages);
@@ -145,12 +172,23 @@ public class MessageNotificationService {
         }
         
         log.debug("send email ");
-        sendMail(emails.toArray(new String[0]), subject, messages, attachment);
+        try {
+        	sendMail(emails.toArray(new String[0]), subject, messages, attachment);
+        	String msg = "Notified to : " ;
+        	for (String e:emails) {
+        		msg = msg + "," + e;
+        	}
+        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, true, msg, new Date());
+        	reportDao.save(r);
+        } catch (Exception  e ) {
+        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, false, e.getMessage(), new Date());
+        	reportDao.save(r);
+        	throw new Exception(" Error in sending email , please check the confiuration " , e);
+        }
     }
 
 	public void sendMail(String[] to, String subject, String content, String attachment) throws Exception {
 		
-		try {		
 			//JavaMailSenderImpl caaersJavaMailSender = new JavaMailSenderImpl();
 			
 			//caaersJavaMailSender.setUsername(configuration.get(Configuration.SMTP_USER));
@@ -174,10 +212,7 @@ public class MessageNotificationService {
 			}
 		    
 		    caaersJavaMailSender.send(message);
-		    
-		} catch (Exception e) {
-		    throw new Exception(" Error in sending email , please check the confiuration " , e);
-		}
+
 	
 	 }
 	
@@ -275,5 +310,9 @@ public class MessageNotificationService {
             return null;
         }
     }
+
+	public void setReportTrackingDao(ReportTrackingDao reportTrackingDao) {
+		this.reportTrackingDao = reportTrackingDao;
+	}
 
 }
