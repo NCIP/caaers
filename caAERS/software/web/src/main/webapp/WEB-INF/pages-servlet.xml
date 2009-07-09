@@ -267,7 +267,13 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Track Report Submissions" p:linkName="trackReportsController"/>	
+		  <!--
+		  	need to fix this to show 9 tabs , only 8 being shown now . 
+		  	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
+		  
+		  -->	    
 	    </list>
 	  </property>
 	</bean>
@@ -389,14 +395,18 @@
   <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>    
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
   <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
-	
-  <bean name="/admin/happy	" id="diagnosticsController" autowire="byType"
+
+  <bean name="/admin/trackReports" id="trackReportsController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.TrackReportsController"/>  
+		
+  <bean name="/admin/happy" id="diagnosticsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.DiagnosticsController">
 	
 	<property name="caaersJavaMailSender" ref="mailer"/>
+	<property name="messageBroadcastService" ref="messageBroadcaster" />
 	
   </bean>
-
+	
   <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController">
     <property name="validator" ref="numInRangeValidator"/>
