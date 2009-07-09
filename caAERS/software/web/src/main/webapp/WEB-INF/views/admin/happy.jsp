@@ -40,6 +40,19 @@
 </head>
 <body>
 
+ <div class="tabpane">
+     <div class="workflow-tabs2">
+  <ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab"><div>
+        <a href="trackReports">Report Logs</a>
+    </div></li>
+    <li id="thirdlevelnav" class="tab selected"><div>
+        <a href="#">System Status</a>
+    </div></li>
+  </ul>
+</div>
+
+
 <div id="main">
  		
 	<div class="pane">
@@ -105,6 +118,35 @@
 	  </div>
   </div>
 
+  <div class="division ">   
+      <div class="content">  
+	      <div class="header"><h3>ServiceMix Configuration</h3> </div>
+      
+        	<div class="leftpanel">
+
+         		<div class="row">
+                	<div class="label">ServiceMix URL</div>
+                	<div class="value">${command.serviceMixUrl}</div>
+            	</div>
+            	           	
+			<c:if test="${command.serviceMixUp}">
+				<div class="row">
+                	<div class="label">ServiceMix Status</div>
+                	<div class="pass">Active</div>
+            	</div> 
+			</c:if>
+			
+            <c:if test="${not command.serviceMixUp}">
+				<div class="row">
+                	<div class="label">ServiceMix Status</div>
+                	<div class="fail">InActive</div>
+            	</div> 
+			</c:if>	
+           	
+            </div>
+	  </div>
+  </div>
+  
   <div class="content buttons autoclear"/>
 </div>
         </div>
