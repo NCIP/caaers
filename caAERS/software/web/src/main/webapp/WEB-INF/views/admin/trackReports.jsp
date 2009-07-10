@@ -282,8 +282,8 @@ color:#0033FF;
 					        <td width="13%" class="tableHeader">Amendment #</td>
 					        <td width="25%" class="tableHeader">Submitter</td>
 					        <td width="15%" class="tableHeader">Status Date</td>
-					        <td width="15%" class="tableHeader">Submission Status</td>
-					        <td width="20%" class="tableHeader">More Info</td>
+					        <td width="20%" class="tableHeader">Submission Status</td>
+					        <td width="15%" class="tableHeader">More Info</td>
 					      </tr>
 					    </thead>
 				      <c:forEach items="${command.searchResultsDTO.filteredResultDto.results}" var="reportVersion" varStatus="rpStatus">
