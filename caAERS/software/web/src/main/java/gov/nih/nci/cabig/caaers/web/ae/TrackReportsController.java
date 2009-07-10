@@ -1,12 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportVersionSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +29,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -28,13 +44,46 @@ public class TrackReportsController extends SimpleFormController {
     
     private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
     
+    private InputFieldGroupMap fieldMap;
+    
 	
 	public TrackReportsController() {
 		setCommandClass(TrackReportsCommand.class);
+		
 		setBindOnNewForm(true);
 		setFormView("admin/trackReports");
         setSuccessView("admin/trackReports");
+        
+        fieldMap = new InputFieldGroupMap();
+        InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
+
+        //0
+        InputField attributionField = InputFieldFactory.createSelectField("actions", "Filter on ", false, createFilterOptions());
+        fieldGroup.getFields().add(attributionField);
+        //1
+        InputField reportIdField = InputFieldFactory.createNumberField("reportId", "Report ID ", false);
+        fieldGroup.getFields().add(reportIdField);
+        
+        //2
+        InputField startDateField = InputFieldFactory.createPastDateField("startDate", "From ", false);
+        fieldGroup.getFields().add(startDateField);
+        
+        //3
+        InputField endDateField = InputFieldFactory.createPastDateField("endDate", "To ", false);
+        fieldGroup.getFields().add(endDateField);
+        
+        fieldMap.addInputFieldGroup(fieldGroup);
 	}
+	
+	protected Map<Object, Object> createFilterOptions() {
+        Map<Object, Object> filterOptions = new LinkedHashMap<Object, Object>();
+        filterOptions.put("month", "Reports submitted in last 30 days");
+        filterOptions.put("none", "All Reports");
+        filterOptions.put("failed", "Failed Reports");
+        filterOptions.put("report", "Report ID");
+        filterOptions.put("daterange", "Date Range");
+        return filterOptions;
+    }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
@@ -42,7 +91,7 @@ public class TrackReportsController extends SimpleFormController {
     	
     	if (!isFormSubmission(request)) {
     		//cmd.setReportVersions(reportVersionDao.getAllWithTracking());
-    		List<ReportVersion> rvs = reportVersionDao.getAllWithTracking();
+    		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30);
     		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
     		searchResultsDTO.setFilteredResultDto(searchResultsDTO.getResultDto());
     		cmd.setSearchResultsDTO(searchResultsDTO);
@@ -50,6 +99,14 @@ public class TrackReportsController extends SimpleFormController {
     	
     	return cmd;
     }
+    
+    @Override
+	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder) throws Exception {
+		super.initBinder(request, binder);
+		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+		//binder.registerCustomEditor(Integer.class, ControllerTools.getDateEditor(false));
+	}
 
     
     /**
@@ -67,43 +124,52 @@ public class TrackReportsController extends SimpleFormController {
     }
     
     @Override
-    protected ModelAndView processFormSubmission(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
-    	TrackReportsCommand cmd = (TrackReportsCommand)command;
-    	ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
-    	if(!errors.hasErrors()){
-    		String actions = request.getParameter("actions");
-    		String reportId = "";
-        	if(actions == null || actions.equals("none")){
+    protected ModelAndView onSubmit(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
+    	TrackReportsCommand trackReportsCommand = (TrackReportsCommand)command;
+    	//ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
+    	
+    		//String actions = request.getParameter("actions");
+
+        	if(trackReportsCommand.getActions() == null || trackReportsCommand.getActions().equals("none")){
         		List<ReportVersion> rvs = reportVersionDao.getAllWithTracking();
         		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResultsDTO);
-        	} else if (actions.equals("failed")){
+        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);
+        	} else if (trackReportsCommand.getActions().equals("failed")){
                 //cmd.setReportVersions(reportVersionDao.getAllFailedReportsWithTracking());
         		List<ReportVersion> rvs = reportVersionDao.getAllFailedReportsWithTracking();
         		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResultsDTO);                
-        	} else if (actions.equals("month")) {
+        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);                
+        	} else if (trackReportsCommand.getActions().equals("month")) {
         		//cmd.setReportVersions(reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30));
         		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30);
         		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResultsDTO);         		
-        	} else if (actions.equals("report")) {
-        		reportId = request.getParameter("reportId");
+        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);         		
+        	} else if (trackReportsCommand.getActions().equals("report")) {
+        		Integer reportId = trackReportsCommand.getReportId();
         		List<ReportVersion> rvs = new ArrayList<ReportVersion>();
-        		if (!StringUtilities.isBlank(reportId)) {
-        			ReportVersion rv = reportVersionDao.getById(Integer.parseInt(reportId));
+        		if (reportId != null) {
+        			ReportVersion rv = reportVersionDao.getById(reportId);
         			rvs.add(rv);
+        		} else {
+        			errors.rejectValue("reportId", "ADM_IND_001", "reportId must not be empty");
         		}
         		//cmd.setReportVersions(rvs);
         		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResultsDTO);          		
+        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);          		
+        	} else if (trackReportsCommand.getActions().equals("daterange")) {
+        		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsByDateRange(trackReportsCommand.getStartDate(),trackReportsCommand.getEndDate());
+        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
+        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);            		
         	}
-        	processPagination(request, cmd, modelAndView);
+        	request.getSession().setAttribute(getFormSessionAttributeName(), trackReportsCommand);
+        	Map map = this.referenceData(request, command, errors);
+            map.putAll(errors.getModel());
+        	ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
+        	processPagination(request, trackReportsCommand, modelAndView);
         	    		
-    		modelAndView.getModel().put("actions", actions);
-    		modelAndView.getModel().put("reportId", reportId);
+    		//modelAndView.getModel().put("actions", actions);
+    		//modelAndView.getModel().put("reportId", reportId);
 
-    	}
     	return modelAndView;
     }
     
@@ -196,12 +262,12 @@ public class TrackReportsController extends SimpleFormController {
     @Override
     protected Map referenceData(final HttpServletRequest request, final Object command,
                     final Errors errors) throws Exception {
-    	//AdvancedSearchCommand cmd = (AdvancedSearchCommand) command;
-        Map<String, Object> refdata = new HashMap<String, Object>();
-        
 
+        Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
+        refDataMap.put("fieldGroups", fieldMap);
 
-        return refdata;
+        return refDataMap;
+
     }
     
 	/**
