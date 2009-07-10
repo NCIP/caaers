@@ -17,15 +17,28 @@
 		<td width="10%" align="center" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">${reportVersion.id }</td>
 		<td width="13%" align="center" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">${reportVersion.reportVersionId}</td>
 		<td width="25%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">${reportVersion.submitter.firstName} ${reportVersion.submitter.lastName}</td>
-		<td width="25%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">
+		<td width="15%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">
 			<tags:formatDate value="${reportVersion.submittedOn}"/>
 		</td>
-		<td width="25%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">
+		<td width="15%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">
 			<ae:oneListReportSubmissionStatus theReport="${reportVersion.report}" reportStatus="${reportVersion.reportStatus}" lastVersion="${reportVersion}"/>
+		</td>
+		<td width="20%" align="left">
+			<a style="cursor:pointer;" onClick="showToolTip(($('_ctx_tt${reportVersion.id}').innerHTML),'Report Information')">
+			click for more info ..</a>
 		</td>
 	</tr>
 
-
+		<div id="_table${reportVersion.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
+			<div id="_ctx_tt${reportVersion.id}">
+        		<b>Study : </b> ${reportVersion.report.aeReport.study.shortTitle} (${reportVersion.report.aeReport.study.primaryIdentifier.value})<br/>
+        		<b>Participant : </b>  ${reportVersion.report.aeReport.participant.firstName} &nbsp; ${reportVersion.report.aeReport.participant.firstName}
+        										(${reportVersion.report.aeReport.participant.primaryIdentifier.value})<br/>
+        		<b>Study Site : </b> ${reportVersion.report.aeReport.assignment.studySite.organization.name} 
+        										(${reportVersion.report.aeReport.assignment.studySite.organization.nciInstituteCode})<br/>
+        		<b> Course : </b> ${reportVersion.report.aeReport.reportingPeriod.name} 
+    		</div>
+    	</div>
       
 <tr id="table${reportVersion.id}" style="display:none;">
 	<td></td>

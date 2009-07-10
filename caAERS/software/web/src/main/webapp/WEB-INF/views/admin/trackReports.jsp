@@ -196,13 +196,19 @@ color:#0033FF;
 		}
 
 	}
+	
+	function showToolTip(text, title) {
+        Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
+    }
+    
+    
 </script>
 </head>
 
 
 
 <body>
-
+<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
  <div class="tabpane">
      <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
@@ -275,8 +281,9 @@ color:#0033FF;
 					        <td width="10%" class="tableHeader">Report ID</td>
 					        <td width="13%" class="tableHeader">Amendment #</td>
 					        <td width="25%" class="tableHeader">Submitter</td>
-					        <td width="25%" class="tableHeader">Status Date</td>
-					        <td width="25%" class="tableHeader">Submission Status</td>
+					        <td width="15%" class="tableHeader">Status Date</td>
+					        <td width="15%" class="tableHeader">Submission Status</td>
+					        <td width="20%" class="tableHeader">More Info</td>
 					      </tr>
 					    </thead>
 				      <c:forEach items="${command.searchResultsDTO.filteredResultDto.results}" var="reportVersion" varStatus="rpStatus">
