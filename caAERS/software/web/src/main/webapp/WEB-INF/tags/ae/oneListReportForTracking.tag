@@ -7,16 +7,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="reportVersion" type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" required="true" description="The report that is being rendered" %>
 
-<script>
-	Event.observe(window, "load", function(){
-		$('actions-${reportVersion.id}').observe('click' , function(clickEvent){
-			Event.stop(clickEvent);//to prevent it from expanding/collapsing the box
-		});
-	});
-	
 
-	
-</script>
 
 
 <c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
