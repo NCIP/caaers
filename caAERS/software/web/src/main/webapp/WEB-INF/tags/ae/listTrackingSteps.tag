@@ -12,7 +12,7 @@
 	color: black;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 17px;
-	font-style: italic;
+
 	text-align: left;
 	padding-right: 3px;
 	padding-left: 3px;
