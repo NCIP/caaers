@@ -267,13 +267,10 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Track Report Submissions" p:linkName="trackReportsController"/>	
-		  <!--
-		  	need to fix this to show 9 tabs , only 8 being shown now . 
+		    p:displayName="Track Reports" p:linkName="trackReportsController"/>	
 		  	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
-		  
-		  -->	    
+	    
 	    </list>
 	  </property>
 	</bean>
