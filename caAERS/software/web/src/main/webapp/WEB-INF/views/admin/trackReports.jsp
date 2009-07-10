@@ -174,21 +174,24 @@ color:#0033FF;
 </style>
 
 <script type="text/javascript">
-
-	window.onload=function(){		
-		$('actions').value = '${actions}';
-		showReportID();
-
-		
+	window.onload = function () { 
+		Event.observe('actions', 'change', showAndHideFields);
+		showAndHideFields();		
 	}
 	
 	
-	function showReportID(){
+	
+	function showAndHideFields(){
 		
 		if ($('actions').value == 'report') {
 			$('reportIdDiv').show();
+			$('datesDiv').hide();
+		} else if ($('actions').value == 'daterange') {
+			$('reportIdDiv').hide();
+			$('datesDiv').show();
 		} else {
 			$('reportIdDiv').hide();
+			$('datesDiv').hide();		
 		}
 
 	}
@@ -222,17 +225,7 @@ color:#0033FF;
               <table>
             		<tr>
             			<td>
-	            			<div class="row">
-	            				<div class="label">Filter on  &nbsp; </div>
-	            				<div class="value">
-	            						<SELECT style="width:250px;" id="actions" name="actions" onChange="showReportID()">
-            								<OPTION selected value="none">Please select</OPTION>
-            								<OPTION  value="failed">Failed Reports</OPTION>
-            								<OPTION  value="month">Reports submitted in last 30 days</OPTION>
-            								<OPTION  value="report">Report ID</OPTION>
-            							</SELECT>
-	            				</div>
-	            			</div>
+                    		<tags:renderRow field="${fieldGroups.main.fields[0]}"/>
             			</td>
             			<td>
             				<tags:button color="blue" type="submit" value="Filter" size="small" icon="search"/>
@@ -240,14 +233,15 @@ color:#0033FF;
             		</tr>
             		<tr id="reportIdDiv" style="display:none">
             			<td>
-            				<div class="row">
-	            				<div class="label">Report ID </div>
-            					<div class="value">
-            						<input name="reportId" type="text" value="${reportId}"/>
-            					</div>
+	            				<tags:renderRow field="${fieldGroups.main.fields[1]}"/>
             			</td>
             		</tr>
-            		
+            		<tr id="datesDiv" style="display:none">
+            			<td>
+	            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
+	            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
+            			</td>
+            		</tr>            		
              </table>	
 
             
