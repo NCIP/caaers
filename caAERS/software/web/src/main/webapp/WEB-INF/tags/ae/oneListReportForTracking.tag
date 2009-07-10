@@ -21,11 +21,11 @@
 			<tags:formatDate value="${reportVersion.submittedOn}"/>
 		</td>
 		<td width="15%" align="left" onclick="expandImageClick('collapseElement${reportVersion.id}', 'table${reportVersion.id}');">
-			<ae:oneListReportSubmissionStatus theReport="${reportVersion.report}" reportStatus="${reportVersion.reportStatus}" lastVersion="${reportVersion}"/>
+			<ae:oneListReportSubmissionStatusForTracking theReport="${reportVersion.report}" reportStatus="${reportVersion.reportStatus}" lastVersion="${reportVersion}"/>
 		</td>
 		<td width="20%" align="left">
 			<a style="cursor:pointer;" onClick="showToolTip(($('_ctx_tt${reportVersion.id}').innerHTML),'Report Information')">
-			click for more info ..</a>
+			<i><u class="${_statusCSS }" > more info .. </ui><i></a>
 		</td>
 	</tr>
 
