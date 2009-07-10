@@ -174,6 +174,7 @@ color:#0033FF;
 </style>
 
 <script type="text/javascript">
+	var _collapsedELs = new Array();
 	window.onload = function () { 
 		Event.observe('actions', 'change', showAndHideFields);
 		showAndHideFields();		
@@ -244,8 +245,6 @@ color:#0033FF;
             		</tr>            		
              </table>	
 
-            
-            <tags:indicator id="indicator" />
         </div>
     
 </chrome:box>
