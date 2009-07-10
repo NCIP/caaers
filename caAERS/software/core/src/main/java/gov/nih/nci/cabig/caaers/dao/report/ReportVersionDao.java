@@ -68,9 +68,30 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     	Calendar cal = Calendar.getInstance();
     	cal.add(Calendar.DAY_OF_YEAR, -days);
     	Date pastDate = cal.getTime();
-    	String hsql = "from ReportVersion s where s.submittedOn >= ?";
+    	String hsql = "from ReportVersion s where s.submittedOn >= ? order by s.id desc";
     	params.add(pastDate);
     	
+    	
+    	List<ReportVersion> fullList =   getHibernateTemplate().find(hsql, params.toArray());
+//    	filter
+      	 List<ReportVersion> withTrackingInfo = new ArrayList<ReportVersion>();
+      	 
+      	 
+      	 for (ReportVersion rv:fullList) {
+      		 if (rv.getReportTrackings().size()>0) {
+      			 withTrackingInfo.add(rv);
+      		 }
+      	 }
+      	return withTrackingInfo;
+    	
+    }
+
+    public List<ReportVersion> getAllSubmittedReportsByDateRange(Date sDate, Date eDate) {
+    	List<Object> params = new ArrayList<Object>();
+
+    	String hsql = "from ReportVersion s where s.submittedOn >= ? and s.submittedOn <= ? order by s.id desc";
+    	params.add(sDate);
+    	params.add(eDate);
     	
     	List<ReportVersion> fullList =   getHibernateTemplate().find(hsql, params.toArray());
 //    	filter
