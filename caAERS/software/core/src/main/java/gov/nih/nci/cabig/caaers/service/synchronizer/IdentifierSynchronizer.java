@@ -33,7 +33,7 @@ public class IdentifierSynchronizer<E extends AbstractIdentifiableDomainObject> 
 						}else{
 							xmlIdentifer.setId(null);
 						}
-					}
+			 		}
 				}
 				if(xmlIdentifer.getId() == null){
 					newIdentifiersList.add(xmlIdentifer);
@@ -42,7 +42,13 @@ public class IdentifierSynchronizer<E extends AbstractIdentifiableDomainObject> 
 		}
 		//Adding the new identifiers to the existing Study.
 		for(Identifier newIdentifier : newIdentifiersList){
-			dbObj.getIdentifiers().add(newIdentifier);
+			String type = newIdentifier.getType();
+			if ("Protocol Authority Identifier".equals(type) || "Coordinating Center Identifier".equals(type)){
+				//FundingSponsor identifier which is of type "Protocol Authority Identifier" cannot be modified.
+				//CoordinatingCenter identifier which is of type "Coordinating Center Identifier" cannot be modified.
+			}else{
+				dbObj.getIdentifiers().add(newIdentifier);
+			}
 		}
 	} //end method
 }
