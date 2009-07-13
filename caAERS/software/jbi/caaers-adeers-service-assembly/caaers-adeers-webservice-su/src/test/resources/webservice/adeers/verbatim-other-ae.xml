@@ -1019,4 +1019,10 @@
 		<referralLetters>false</referralLetters>
 		<irbReport>false</irbReport>
 	</AdditionalInformation>
+		<Report>
+		<ReportDefinition>
+			<duration>1</duration>
+			<timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DAY</timeScaleUnitType>
+		</ReportDefinition>		
+	</Report>
 </AdverseEventReport>
