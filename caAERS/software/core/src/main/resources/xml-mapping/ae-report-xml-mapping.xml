@@ -118,12 +118,30 @@
     <field name="submissionMessage" type="string">
       <bind-xml name="submissionMessage" node="element"/>
     </field>
-
+    <field name="reportDefinition"
+      type="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
+      <bind-xml name="ReportDefinition"/>
+    </field> 
     <field name="reportVersions"
       type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
       <bind-xml name="ReportVersion"/>
     </field>      
   </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
+    <map-to xml="ReportDefinition"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="duration" type="integer">
+      <bind-xml name="duration" node="element"/>
+    </field>
+    <field name="timeScaleUnitType"
+      type="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit">
+      <bind-xml name="timeScaleUnitType"/>
+    </field>      
+  </class>
+
 
   <class name="gov.nih.nci.cabig.caaers.domain.report.ReportVersion">
     <map-to xml="ReportVersion"/>
@@ -149,6 +167,23 @@
     </field>    
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit" verify-constructable="false">
+    <map-to xml="TimeScaleUnit" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="calendarTypeCode" type="integer">
+      <bind-xml name="calendarTypeCode" node="element"/>
+    </field>
+    <field name="milliSecondConversionFactor" type="integer">
+      <bind-xml name="milliSecondConversionFactor" node="element"/>
+    </field>
+        
+    <field name="format" type="string">
+      <bind-xml name="format" node="attribute"/>
+    </field>
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.OutcomeType" verify-constructable="false">
     <map-to xml="OutcomeType" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
     <field name="code" type="integer">
