@@ -1,7 +1,7 @@
 <dataset>
     <report_tracking_status
         id="-100"
-        status="true"
+        status="0"
         status_message="attachment generated"
         recorded_time="2007-05-15"
         
@@ -9,35 +9,35 @@
 
     <report_tracking_status
         id="-101"
-        status="false"
+        status="1"
         status_message="error connecting to esb"
         recorded_time="2007-05-15"
         />
 
     <report_tracking_status
         id="-102"
-        status="false"
+        status="0"
         status_message="error connecting to adeers"
         recorded_time="2007-05-15"
         />
 
     <report_tracking_status
         id="-103"
-        status="false"
+        status="1"
         status_message="email failed"
         recorded_time="2007-05-15"
         />
 
     <report_tracking_status
         id="-104"
-        status="true"
+        status="0"
         status_message="email to submitter success"
         recorded_time="2007-05-15"
         />
         
    <report_tracking_status
         id="-105"
-        status="true"
+        status="0"
         status_message="attachment generated"
         recorded_time="2007-05-15"
         
@@ -45,7 +45,7 @@
 
     <report_tracking_status
         id="-106"
-        status="false"
+        status="1"
         status_message="error connecting to esb"
         recorded_time="2007-05-15"
         />
@@ -118,6 +118,6 @@
         report_version_id="-1001"  
         attempt_number="1"    
         />
-
+	<ind_holders/>
     
 </dataset>
