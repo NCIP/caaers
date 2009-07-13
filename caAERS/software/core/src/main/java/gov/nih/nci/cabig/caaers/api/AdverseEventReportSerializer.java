@@ -256,6 +256,7 @@ public class AdverseEventReportSerializer {
 		   rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   
 		   r.addReportVersion(rv);
+		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
 		 //  r.setAmmendmentNumber(report.getAmmendmentNumber());
 		   
 		   // if report is successfully submitted before , get the ticket id.
@@ -278,6 +279,14 @@ public class AdverseEventReportSerializer {
 */	   		   
 		   return r;
 	   }
+	   private ReportDefinition getReportDefinition(ReportDefinition rd) throws Exception {
+		   
+		   ReportDefinition reportDefinition = new ReportDefinition();
+		   reportDefinition.setId(rd.getId());
+		   reportDefinition.setDuration(rd.getDuration());
+		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());   
+		   return reportDefinition;
+	   }	   
 	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
 		   
 		   AdditionalInformation a = new AdditionalInformation();
