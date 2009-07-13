@@ -67,6 +67,20 @@
 </head>
 <body>
 
+ <div class="tabpane">
+     <div class="workflow-tabs2">
+  <ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab selected"><div>
+        <a href="import">Import</a>
+    </div></li>
+    <li id="thirdlevelnav" class="tab"><div>
+        <a href="importMeddra">Import MedDRA</a>
+    </div></li>
+  </ul>
+</div>
+
+
+
     <tags:tabForm tab="${tab}" flow="${flow}" title="Review & Submit">
     <jsp:attribute name="singleFields">
 	<div>		

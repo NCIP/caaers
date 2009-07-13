@@ -142,6 +142,22 @@ var t= 0 ;
 </script>
 </head>
 <body>
+
+
+ <div class="tabpane">
+     <div class="workflow-tabs2">
+  <ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab"><div>
+        <a href="import">Import</a>
+    </div></li>
+    <li id="thirdlevelnav" class="tab selected"><div>
+        <a href="#">Import MedDRA</a>
+    </div></li>
+  </ul>
+</div>
+
+
+
 	<chrome:box title="Import MedDRA Dictionary" autopad="true">
    <p>
     <tags:instructions code="importmeddra" />
