@@ -260,8 +260,10 @@
 		    p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Import" p:linkName="importController"/> 
+		    <!--
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
+		    -->
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="IND#" p:linkName="createINDController"/>                                                                                
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
