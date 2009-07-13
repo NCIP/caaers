@@ -8,7 +8,24 @@
     </xsl:template>
 
     <xsl:template match="AdverseEventReport">
-
+		<REPORT_TYPE>
+			<xsl:choose>
+				<xsl:when test="Report/ReportDefinition/timeScaleUnitType = 'HOUR' and Report/ReportDefinition/duration = '24'">
+					<xsl:choose>
+						<xsl:when test="Report/assignedIdentifer != '' ">24-hr amendment</xsl:when>
+						<xsl:otherwise>24-hr notification</xsl:otherwise>
+					</xsl:choose>					
+				</xsl:when>
+				<xsl:when test="Report/assignedIdentifer != ''">Regular amendment</xsl:when>
+				<xsl:otherwise>Regular report</xsl:otherwise>
+			</xsl:choose>
+		</REPORT_TYPE>
+        <xsl:if test="Report/assignedIdentifer != '' and Report/ReportVersion/reportVersionId != ''" >
+			<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+			<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
+		</xsl:if>
+		
+		
         <CAEERS_AEREPORT_ID>
             <xsl:value-of select="id"/>
         </CAEERS_AEREPORT_ID>
@@ -21,10 +38,7 @@
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
-        <xsl:if test="Report/assignedIdentifer != '' and Report/ReportVersion/reportVersionId != ''" >
-			<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
-			<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
-		</xsl:if>
+
 
 		
         <REPORTER_INFORMATION>
@@ -856,9 +870,11 @@
                         <xsl:otherwise>Yes</xsl:otherwise>
                     </xsl:choose>
                 </HOSPITALIZATION>
-                <AE_COMMENTS>
+                <xsl:if test="detailsForOther">
+                	<AE_COMMENTS>
                         <xsl:value-of select="detailsForOther"/>
-                </AE_COMMENTS>
+                	</AE_COMMENTS>
+                </xsl:if>
 
                 <xsl:for-each select="ConcomitantMedicationAttribution">
                     <ATTRIBUTION_FOR_AE>
