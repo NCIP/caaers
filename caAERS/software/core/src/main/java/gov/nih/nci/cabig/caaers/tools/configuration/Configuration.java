@@ -27,6 +27,7 @@ public class Configuration extends DatabaseBackedConfiguration {
     public static final ConfigurationProperty<Boolean> ENABLE_WORKFLOW = PROPERTIES.add(new ConfigurationProperty.Bool("enableWorkflow"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_DELAY = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterDelay"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_CHARS = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterChars"));
+    public static final ConfigurationProperty<Boolean> IS_INVESTIGATOR_USER = PROPERTIES.add(new ConfigurationProperty.Bool("isInvestigatorUser"));
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
     }

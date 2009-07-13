@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -45,10 +46,10 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     private static final String INVESTIGATOR_FIELD_GROUP = "investigator";
 
     private ConfigProperty configurationProperty;
-    
-
+    private Configuration configuration;
     private OrganizationDao organizationDao;
     private CSMUserRepository csmUserRepository;
+
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }
@@ -202,9 +203,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
-        InputFieldAttributes.setSize(loginIdField, 30);
-        investigatorFieldGroup.getFields().add(loginIdField);
+        if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
+            InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
+            InputFieldAttributes.setSize(loginIdField, 30);
+            investigatorFieldGroup.getFields().add(loginIdField);
+        }
         
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(investigatorFieldGroup);
@@ -220,11 +223,19 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         super.validate(command, commandBean, fieldGroups, errors);
         
         if (command ==null || command.getId() == null) {
-        	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
-            boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
-            if(loginIdExists){
-            	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
-            }
+        	if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
+            	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
+                boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
+                if(loginIdExists){
+                	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
+                }
+        	}else{
+        		String emailAddress = command.getEmailAddress();
+                boolean loginIdExists = csmUserRepository.loginIDInUse(emailAddress);
+                if(loginIdExists){
+                	 errors.reject("USR_001", new Object[]{emailAddress},  "Email address already in use..!");
+                }
+        	}
         }
         
         List<SiteInvestigator> investigators = command.getSiteInvestigators();
@@ -290,5 +301,14 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     @Required
     public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
 		this.csmUserRepository = csmUserRepository;
+	}
+    
+    @Required
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }

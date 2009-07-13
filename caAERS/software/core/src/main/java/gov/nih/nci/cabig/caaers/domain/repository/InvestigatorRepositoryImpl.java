@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private String authenticationMode;
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
+	private Configuration configuration;
 	
 	private static final Log logger = LogFactory.getLog(InvestigatorRepositoryImpl.class); 
 	 
@@ -50,35 +52,36 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void save(Investigator investigator, String changeURL) {
-		boolean createMode = investigator.getId() == null;
-    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
-    	
-    	if (investigator.getEmailAddress() == null) {
-            throw new CaaersSystemException("Email address is required");
-        }
-    	//loginId cannot be null in websso mode.
-    	if(webSSOAuthentication && StringUtils.isBlank(investigator.getLoginId())){
-    		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
-    	}
-    	//if this is a new one, add the default group, set the login id if websso mode
-    	if(createMode){
-    		investigator.addUserGroupType(UserGroupType.caaers_physician);
-    		investigator.addUserGroupType(UserGroupType.caaers_user);
-    		//login id should be email id , if it is non websso mode
-    		//if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
-    	}
-    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
-    		investigator.setLoginId(investigator.getEmailAddress());
-    	}
-    	MailException mailException = null;
-        try {
-			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
-		} catch (MailException e) {
-			mailException = e;
+		MailException mailException = null;
+		if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
+			boolean createMode = investigator.getId() == null;
+	    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
+	    	
+	    	if (investigator.getEmailAddress() == null) {
+	            throw new CaaersSystemException("Email address is required");
+	        }
+	    	//loginId cannot be null in websso mode.
+	    	if(webSSOAuthentication && StringUtils.isBlank(investigator.getLoginId())){
+	    		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
+	    	}
+	    	//if this is a new one, add the default group, set the login id if websso mode
+	    	if(createMode){
+	    		investigator.addUserGroupType(UserGroupType.caaers_physician);
+	    		investigator.addUserGroupType(UserGroupType.caaers_user);
+	    		//login id should be email id , if it is non websso mode
+	    		//if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
+	    	}
+	    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
+	    		investigator.setLoginId(investigator.getEmailAddress());
+	    	}
+	        try {
+				csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+			} catch (MailException e) {
+				mailException = e;
+			}
 		}
         investigatorDao.save(investigator);
         if(mailException != null) throw mailException;
-        
 	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
@@ -203,6 +206,14 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
 }
