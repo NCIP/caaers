@@ -57,8 +57,8 @@ public class ReportTrackingDaoTest extends DaoTestCase<ReportTrackingDao> {
 		assertEquals("New Site",reportVersion.getReport().getReportDefinition().getOrganization().getName());
 		
 	}
-	
-	public void atestSave() {
+	/*
+	public void testSave() {
 		 NowFactory nowFactory = new NowFactory();
 		ReportTrackingStatus status = new ReportTrackingStatus();
 		status.setStatus(false);
@@ -67,6 +67,7 @@ public class ReportTrackingDaoTest extends DaoTestCase<ReportTrackingDao> {
 		ReportTracking rt = new ReportTracking();
 		rt.setResponseFromExternalSystem(status);
 		rt.setAttemptNumber(1);
+		
 		getDao().save(rt);
 		
 		int id = rt.getId();
@@ -74,10 +75,6 @@ public class ReportTrackingDaoTest extends DaoTestCase<ReportTrackingDao> {
 		System.out.println(savedRT.getResponseFromExternalSystem().getRecordedTime());
 		assertEquals("business rule error from AdEERS",savedRT.getResponseFromExternalSystem().getStatusMessage());
 	}
-	/*
-	public void testDelete(){
-		getDao().deleteById(-1);
-		System.out.println("deleted");
-	}*/
+*/
 
 }
