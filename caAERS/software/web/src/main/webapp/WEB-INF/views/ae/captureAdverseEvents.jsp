@@ -388,13 +388,9 @@
 				
 					<%--  Begining Of Observed AE section --%>
 					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
-					 
-						<p><tags:instructions code="instruction_ae_oae"/></p>
 
-                        <div id="flash-message" class="info" style="width:300px;">
-                            <img src="<c:url value="/images/board.png" />" alt="" align="middle">&nbsp;
-                            <a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />">Download AE Worksheet...</a>
-                        </div>
+                        <div align="right"><a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />"><img src="<c:url value='/images/pdf.gif'></c:url>" border="0">&nbsp;Download AE Worksheet...</a></div>
+						<p><tags:instructions code="instruction_ae_oae"/></p>
 
  						<tags:aeTermQuery
                        			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
