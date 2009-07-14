@@ -280,9 +280,7 @@ Event.observe(window, "load", function() {
 		    <c:forEach begin="4" end="6" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow field="${field}" />
             </c:forEach>
-            <c:if test="${configuration.map.isInvestigatorUser}">
-            	<tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
-            </c:if>	
+            <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
 		</div>
 		<br>
 		<br>

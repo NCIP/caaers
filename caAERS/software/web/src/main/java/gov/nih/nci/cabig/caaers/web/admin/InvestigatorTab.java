@@ -203,11 +203,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
-            InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
-            InputFieldAttributes.setSize(loginIdField, 30);
-            investigatorFieldGroup.getFields().add(loginIdField);
-        }
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
+        InputFieldAttributes.setSize(loginIdField, 30);
+        investigatorFieldGroup.getFields().add(loginIdField);
         
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(investigatorFieldGroup);
@@ -223,7 +221,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         super.validate(command, commandBean, fieldGroups, errors);
         
         if (command ==null || command.getId() == null) {
-        	if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
+        	if(true){
             	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
                 boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
                 if(loginIdExists){

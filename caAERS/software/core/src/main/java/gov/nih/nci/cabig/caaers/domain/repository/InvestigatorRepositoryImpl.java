@@ -39,7 +39,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	private String authenticationMode;
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
-	private Configuration configuration;
 	
 	private static final Log logger = LogFactory.getLog(InvestigatorRepositoryImpl.class); 
 	 
@@ -53,7 +52,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void save(Investigator investigator, String changeURL) {
 		MailException mailException = null;
-		if(configuration.get(Configuration.IS_INVESTIGATOR_USER) != null && configuration.get(Configuration.IS_INVESTIGATOR_USER)){
 			boolean createMode = investigator.getId() == null;
 	    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
 	    	
@@ -79,7 +77,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			} catch (MailException e) {
 				mailException = e;
 			}
-		}
         investigatorDao.save(investigator);
         if(mailException != null) throw mailException;
 	}
@@ -207,13 +204,4 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
-
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
-
 }

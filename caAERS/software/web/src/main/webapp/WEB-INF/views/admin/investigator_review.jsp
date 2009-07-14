@@ -106,7 +106,6 @@ function submitPage(s){
     				<ui:label path="faxNumber" text="Fax"></ui:label>
     			</jsp:attribute>
 			</ui:row>
-		<c:if test="${configuration.map.isInvestigatorUser}">
 	        <ui:row path="loginId">
     			<jsp:attribute name="value">
     				${investigator.loginId}
@@ -115,7 +114,6 @@ function submitPage(s){
     				<ui:label path="loginId" text="Username"></ui:label>
     			</jsp:attribute>
 			</ui:row>
-		</c:if>	
  </div>
 </chrome:division>
 
