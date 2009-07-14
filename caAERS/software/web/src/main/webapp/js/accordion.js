@@ -1,4 +1,4 @@
-/*// accordion.js v2.0
+// accordion.js v2.0
 //
 // Copyright (c) 2007 stickmanlabs
 // Author: Kevin P Miller | http://www.stickmanlabs.com
@@ -10,207 +10,9 @@
 //	    http://www.thinkvitamin.com/features/webapps/serving-javascript-fast
 //      http://rakaz.nl/item/make_your_pages_load_faster_by_combining_and_compressing_javascript_and_css_files
 //
-
------------------------------------------------------------------------------------------------
-
-if (typeof Effect == 'undefined') 
-	throw("accordion.js requires including script.aculo.us' effects.js library!");
-
-var accordion = Class.create();
-accordion.prototype = {
-
-	//
-	//  Setup the Variables
-	//
-	showAccordion : null,
-	currentAccordion : null,
-	duration : null,
-	effects : [],
-	animating : false,
-	
-	//  
-	//  Initialize the accordions
-	//
-	initialize: function(container, options) {
-	  if (!$(container)) {
-	    throw(container+" doesn't exist!");
-	    return false;
-	  }
-	  
-		this.options = Object.extend({
-			resizeSpeed : 8,
-			classNames : {
-				toggle : 'accordion_toggle',
-				toggleActive : 'accordion_toggle_active',
-				content : 'accordion_content'
-			},
-			defaultSize : {
-				height : null,
-				width : null
-			},
-			direction : 'vertical',
-			onEvent : 'click'
-		}, options || {});
-		
-		this.duration = ((11-this.options.resizeSpeed)*0.15);
-
-		var accordions = $$('#'+container+' .'+this.options.classNames.toggle);
-		accordions.each(function(accordion) {
-			Event.observe(accordion, this.options.onEvent, this.activate.bind(this, accordion), false);
-			if (this.options.onEvent == 'click') {
-			  accordion.onclick = function() {return false;};
-			}
-			
-			if (this.options.direction == 'horizontal') {
-				var options = $H({width: '0px', display : 'none'});
-			} else {
-				var options = $H({height: '0px', display:'none'});			
-			}
-			options.merge({display: 'none'});			
-			
-			this.currentAccordion = $(accordion.next(0)).setStyle(options);			
-		}.bind(this));
-	},
-	
-	//
-	//  Activate an accordion
-	//
-	activate : function(accordion) {
-		if (this.animating) {
-			return false;
-		}
-		
-		this.effects = [];
-	
-		this.currentAccordion = $(accordion.next(0));
-		this.currentAccordion.setStyle({
-			display: 'block'
-		});		
-		
-		this.currentAccordion.previous(0).addClassName(this.options.classNames.toggleActive);
-
-		if (this.options.direction == 'horizontal') {
-			this.scaling = $H({
-				scaleX: true,
-				scaleY: false
-			});
-		} else {
-			this.scaling = $H({
-				scaleX: false,
-				scaleY: true
-			});			
-		}
-			
-		if (this.currentAccordion == this.showAccordion) {
-		  this.deactivate();
-		} else {
-		  this._handleAccordion();
-		}
-	},
-	// 
-	// Deactivate an active accordion
-	//
-	deactivate : function() {
-		var options = $H({
-		  duration: this.duration,
-			scaleContent: false,
-			transition: Effect.Transitions.sinoidal,
-			queue: {
-				position: 'end', 
-				scope: 'accordionAnimation'
-			},
-			scaleMode: { 
-				originalHeight: this.options.defaultSize.height ? this.options.defaultSize.height : this.currentAccordion.scrollHeight,
-				originalWidth: this.options.defaultSize.width ? this.options.defaultSize.width : this.currentAccordion.scrollWidth
-			},
-			afterFinish: function() {
-				this.showAccordion.setStyle({
-          height: 'auto',
-					display: 'none'
-				});				
-				this.showAccordion = null;
-				this.animating = false;
-			}.bind(this)
-		});    
-    options.merge(this.scaling);
-
-    this.showAccordion.previous(0).removeClassName(this.options.classNames.toggleActive);
-    
-		new Effect.Scale(this.showAccordion, 0, options);
-	},
-
-  //
-  // Handle the open/close actions of the accordion
-  //
-	_handleAccordion : function() {
-		var options = $H({
-			sync: true,
-			scaleFrom: 0,
-			scaleContent: false,
-			transition: Effect.Transitions.sinoidal,
-			scaleMode: { 
-				originalHeight: this.options.defaultSize.height ? this.options.defaultSize.height : this.currentAccordion.scrollHeight,
-				originalWidth: this.options.defaultSize.width ? this.options.defaultSize.width : this.currentAccordion.scrollWidth
-			}
-		});
-		options.merge(this.scaling);
-		
-		this.effects.push(
-			new Effect.Scale(this.currentAccordion, 100, options)
-		);
-
-		if (this.showAccordion) {
-			this.showAccordion.previous(0).removeClassName(this.options.classNames.toggleActive);
-			
-			options = $H({
-				sync: true,
-				scaleContent: false,
-				transition: Effect.Transitions.sinoidal
-			});
-			options.merge(this.scaling);
-			
-			this.effects.push(
-				new Effect.Scale(this.showAccordion, 0, options)
-			);				
-		}
-		
-    new Effect.Parallel(this.effects, {
-			duration: this.duration, 
-			queue: {
-				position: 'end', 
-				scope: 'accordionAnimation'
-			},
-			beforeStart: function() {
-				this.animating = true;
-			}.bind(this),
-			afterFinish: function() {
-				if (this.showAccordion) {
-					this.showAccordion.setStyle({
-						display: 'none'
-					});				
-				}
-				$(this.currentAccordion).setStyle({
-				  height: 'auto'
-				});
-				this.showAccordion = this.currentAccordion;
-				this.animating = false;
-			}.bind(this)
-		});
-	}
-}
-	*/
-
-
-
-
-
-/* Simple Accordion Script 
- * Requires Prototype and Script.aculo.us Libraries
- * By: Brian Crescimanno <brian.crescimanno@gmail.com>
- * http://briancrescimanno.com
- * This work is licensed under the Creative Commons Attribution-Share Alike 3.0
- * http://creativecommons.org/licenses/by-sa/3.0/us/
- */
+//################################################################################################################
+// BJ : Note - MODIFIED this script
+//################################################################################################################
 
 if (typeof Effect == 'undefined')
   throw("You must have the script.aculo.us library to use this accordion");
@@ -218,8 +20,7 @@ if (typeof Effect == 'undefined')
 var Accordion = Class.create({
 
     initialize: function(id, defaultExpandedCount) {
-        if(!$(id)) throw("Attempted to initalize accordion with id: "+ id + " which was not found.")
-;
+        if(!$(id)) throw("Attempted to initalize accordion with id: "+ id + " which was not found.");
         this.accordion = $(id);
         this.options = {
             toggleClass: "accordion-toggle",
@@ -229,8 +30,7 @@ var Accordion = Class.create({
         this.contents = this.accordion.select('div.'+this.options.contentClass);
         this.isAnimating = false;
         this.maxHeight = 0;
-        this.current = defaultExpandedCount ? this.contents[defaultExpandedCount-1] : this.contents[0
-];
+        this.current = defaultExpandedCount ? this.contents[defaultExpandedCount-1] : this.contents[0];
         this.toExpand = null;
 
         this.checkMaxHeight();
@@ -238,7 +38,10 @@ var Accordion = Class.create({
         this.attachInitialMaxHeight();
 
         var clickHandler =  this.clickHandler.bindAsEventListener(this);
-        this.accordion.observe('click', clickHandler);
+        //this.accordion.observe('click', clickHandler);
+        this.contents.each(function(el){
+        	el.previous(0).observe('click', clickHandler);
+        });
     },
 
     expand: function(el) {
@@ -259,8 +62,7 @@ var Accordion = Class.create({
 
     attachInitialMaxHeight: function() {
 		this.current.previous('div.'+this.options.toggleClass).addClassName(this.options.toggleActive);
-        if(this.current.getHeight() != this.maxHeight) this.current.setStyle({height: this.maxHeight
-+"px"});
+        if(this.current.getHeight() != this.maxHeight) this.current.setStyle({height: this.maxHeight+"px"});
     },
 
     clickHandler: function(e) {
@@ -317,14 +119,12 @@ var Accordion = Class.create({
             },
             beforeStart: function() {
                 this.isAnimating = true;
-                this.current.previous('div.'+this.options.toggleClass).removeClassName(this.options.toggleActive
-);
-                this.toExpand.previous('div.'+this.options.toggleClass).addClassName(this.options.toggleActive
-);
+                this.current.previous('div.'+this.options.toggleClass).removeClassName(this.options.toggleActive);
+                this.toExpand.previous('div.'+this.options.toggleClass).addClassName(this.options.toggleActive);
             }.bind(this),
             afterFinish: function() {
                 this.current.hide();
-                this.toExpand.setStyle({ height: this.maxHeight+"px" });
+                this.toExpand.setStyle({ height: 'auto' });
                 this.current = this.toExpand;
                 this.isAnimating = false;
             }.bind(this)
@@ -332,7 +132,3 @@ var Accordion = Class.create({
     }
 
 });
-
-document.observe("dom:loaded", function(){
-    accordion = new Accordion("test-accordion", 2);
-})
