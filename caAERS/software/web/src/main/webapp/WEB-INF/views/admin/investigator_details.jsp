@@ -135,6 +135,18 @@ Event.observe(window, "load", function() {
 		if(${fn:length(command.externalInvestigators) gt 0}){
 				 displayRemoteInvestigator();
 		}
+
+		if(${(command.id) gt 0}){
+			$('allowedToLogin-row').style.display='none';
+		}
+
+		toggelUserName(${command.allowedToLogin});
+		
+		$('allowedToLogin').observe('click',function(evt){
+			var element = Event.element(evt);
+			toggelUserName(element.checked);
+			});
+		
 	});
 
 	function displayRemoteInvestigator(){
@@ -187,6 +199,14 @@ Event.observe(window, "load", function() {
 		}
 	}
 
+	function toggelUserName(checkBoxChecked){
+		if(checkBoxChecked){
+			$('loginId-row').style.display='';
+			
+		}else{
+			$('loginId-row').style.display='none';
+		}
+	}
 	
 </script>
 
@@ -234,12 +254,12 @@ Event.observe(window, "load", function() {
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab selected">
+            <li id="thirdlevelnav" class="tab0 selected">
                 <div>
                     <a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a>
                 </div>
             </li>
-            <li id="thirdlevelnav" class="tab">
+            <li id="thirdlevelnav" class="tab1">
                 <div>
                     <a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a>
                 </div>
@@ -275,12 +295,13 @@ Event.observe(window, "load", function() {
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
                <tags:renderRow field="${field}"  />
             </c:forEach>
+			<tags:renderRow field="${fieldGroups.investigator.fields[4]}"/>
 		</div>
 		<div class="rightpanel">
-		    <c:forEach begin="4" end="6" items="${fieldGroups.investigator.fields}" var="field">
+		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow field="${field}" />
             </c:forEach>
-            <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
+            <tags:renderRow field="${fieldGroups.investigator.fields[8]}"/>
 		</div>
 		<br>
 		<br>

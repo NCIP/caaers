@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,16 +39,12 @@ import org.hibernate.annotations.Parameter;
 public abstract class Investigator extends User {
 	
 	protected Integer id;
-	
 	protected String nciIdentifier;
-
 	protected final LazyListHelper lazyListHelper;
-	
 	protected String externalId;
-	
 	protected String status;
-	
 	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
+	protected Boolean allowedToLogin = Boolean.TRUE;
 	
     public Investigator() {
         lazyListHelper = new LazyListHelper();
@@ -201,5 +198,14 @@ public abstract class Investigator extends User {
 			return siteInvestigator;
 		}
     }
+    
+    @Column(name = "allowed_to_login")
+	public Boolean getAllowedToLogin() {
+		return allowedToLogin;
+	}
+
+	public void setAllowedToLogin(Boolean allowedToLogin) {
+		this.allowedToLogin = allowedToLogin;
+	}
 
 }

@@ -23,10 +23,10 @@ function submitPage(s){
 <div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
-            <li id="thirdlevelnav" class="tab selected">
+            <li id="thirdlevelnav" class="tab0 selected">
                 <div><a href="createInvestigator"><caaers:message code="investigator.menu.createEditInvestigator"/></a></div>
             </li>
-            <li id="thirdlevelnav" class="tab ">
+            <li id="thirdlevelnav" class="tab1">
                 <div>
                     <a href="searchInvestigator"><caaers:message code="investigator.menu.searchInvestigator"/></a>
                 </div>
@@ -106,6 +106,7 @@ function submitPage(s){
     				<ui:label path="faxNumber" text="Fax"></ui:label>
     			</jsp:attribute>
 			</ui:row>
+			<c:if test="${command.allowedToLogin}">
 	        <ui:row path="loginId">
     			<jsp:attribute name="value">
     				${investigator.loginId}
@@ -114,6 +115,7 @@ function submitPage(s){
     				<ui:label path="loginId" text="Username"></ui:label>
     			</jsp:attribute>
 			</ui:row>
+			</c:if>
  </div>
 </chrome:division>
 

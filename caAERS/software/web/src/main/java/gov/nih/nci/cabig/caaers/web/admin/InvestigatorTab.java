@@ -172,6 +172,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         InputFieldAttributes.setLabelProperty(ncidIdField, "investigator.nciIdentifier");
         investigatorFieldGroup.getFields().add(ncidIdField);
         
+        InputField allowToLoginField = null;
+        allowToLoginField = InputFieldFactory.createCheckboxField("allowedToLogin", "Allow Login");
+        InputFieldAttributes.setLabelProperty(allowToLoginField, "investigator.allowedToLogin");
+        investigatorFieldGroup.getFields().add(allowToLoginField);
+        
         InputField emailAddressField = null;
         if (!remoteEntity) {
         	emailAddressField = InputFieldFactory.createEmailField("emailAddress",
@@ -203,7 +208,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
         InputFieldAttributes.setSize(loginIdField, 30);
         investigatorFieldGroup.getFields().add(loginIdField);
         
@@ -221,7 +226,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         super.validate(command, commandBean, fieldGroups, errors);
         
         if (command ==null || command.getId() == null) {
-        	if(true){
+        	if(command.getAllowedToLogin()){
             	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
                 boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
                 if(loginIdExists){

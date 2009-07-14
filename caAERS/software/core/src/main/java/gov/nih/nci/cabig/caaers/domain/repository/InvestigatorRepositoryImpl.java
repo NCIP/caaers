@@ -52,6 +52,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void save(Investigator investigator, String changeURL) {
 		MailException mailException = null;
+		if(investigator.getAllowedToLogin()){
 			boolean createMode = investigator.getId() == null;
 	    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
 	    	
@@ -77,6 +78,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			} catch (MailException e) {
 				mailException = e;
 			}
+		}
         investigatorDao.save(investigator);
         if(mailException != null) throw mailException;
 	}
