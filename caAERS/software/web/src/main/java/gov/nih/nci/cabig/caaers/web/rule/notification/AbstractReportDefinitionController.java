@@ -80,7 +80,6 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand) cmd;
         reportDefinitionDao.save(rpDefCmd.getReportDefinition());
         Map<String, Object> model = new ModelMap();
-        // model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToNotificationList", model);
     }
 
@@ -98,7 +97,6 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
     public abstract String getFlowName();
 
     private Object findInRequest(HttpServletRequest request, String attributName) {
-
         Object attr = request.getParameter(attributName);
         if (attr == null) attr = request.getAttribute(attributName);
         return attr;

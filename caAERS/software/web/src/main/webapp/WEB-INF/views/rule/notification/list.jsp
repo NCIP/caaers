@@ -19,7 +19,7 @@ YAHOO.example.Data = {
             rdName: "<a href='<c:url value="/pages/rule/notification/edit?repDefId=${rd.id}" />'>${rd.name}</a>",
             rdOrganization: "${rd.organization.fullName}",
             rdFinalReportDue: "${rd.duration} ${rd.timeScaleUnitType.displayName}(s)",
-            rdDescription: "abc",
+            rdDescription: "${rd.description}",
             rdAction: "<a href='<c:url value="/pages/rule/notification/export?repDefId=${rd.id}"/>'>Export/Download</a>"}
             <c:if test="${!status.last}">,</c:if>
 </c:forEach>
