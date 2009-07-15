@@ -14,12 +14,14 @@ import caaers.client.AEReportJobInfo;
  * 24AC - 24 hr Amend Complete
  */
 public class AdeersSubmissionWorkflowTest extends BaseCaller {
-	private String R = "Regular report";
-	private String RA = "Regular amendment";
-	private String _24 = "24-hr notification";
-	private String _24C = "24-hr notification complete";
-	private String _24A = "24-hr amendment";
-	private String _24AC = "24-hr amendment complete";
+	private static String R = "Regular report";
+	private static String RA = "Regular amendment";
+	private static String _24 = "24-hr notification";
+	private static String _24C = "24-hr notification complete";
+	private static String _24A = "24-hr amendment";
+	private static String _24AC = "24-hr amendment complete";
+	private static String RT = "$RT";
+	private static String TN_AN = "<!--TN,AN-->";
 	
 	/*
 	 * Work Flow :
@@ -31,22 +33,22 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		// get XML from file 
 		String adeersXMLFile = "adeers-basic-full.xml";
 		String baseXML = getString(adeersXMLFile);
-		String xml = baseXML.replace("$RT", R);
+		String xml = baseXML.replace(RT, R);
 		// submit report
 		AEReportJobInfo aeReportJobInfo = submit(xml);
 		// assert status
 		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
 		String ticketNumber = aeReportJobInfo.getTicketNumber();
 		// modify XML with ticket number and amendment number 		
-		xml = baseXML.replace("$RT",RA);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT,RA);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo2 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo2.getReportStatus().toString());
 		//modify XML with ticket number and amendment number 		
-		xml = baseXML.replace("$RT",RA);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT,RA);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo3 = submit(xml);
 		//assert status
@@ -64,29 +66,29 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		// get XML from file 
 		String adeersXMLFile = "adeers-basic-full.xml";
 		String baseXML = getString(adeersXMLFile);
-		String xml = baseXML.replace("$RT", _24);
+		String xml = baseXML.replace(RT, _24);
 		// submit report
 		AEReportJobInfo aeReportJobInfo = submit(xml);
 		// assert status
 		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
 		String ticketNumber = aeReportJobInfo.getTicketNumber();
 		// modify XML with ticket number and submit 24C 		
-		xml = baseXML.replace("$RT", _24C);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER>");
+		xml = baseXML.replace(RT, _24C);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo2 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo2.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24A 		
-		xml = baseXML.replace("$RT", _24A);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24A);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo3 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo3.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24AC 		
-		xml = baseXML.replace("$RT", _24AC);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24AC);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo4 = submit(xml);
 		//assert status
@@ -105,36 +107,36 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		// get XML from file 
 		String adeersXMLFile = "adeers-basic-full.xml";
 		String baseXML = getString(adeersXMLFile);
-		String xml = baseXML.replace("$RT", _24);
+		String xml = baseXML.replace(RT, _24);
 		// submit report
 		AEReportJobInfo aeReportJobInfo = submit(xml);
 		// assert status
 		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
 		String ticketNumber = aeReportJobInfo.getTicketNumber();
 		// modify XML with ticket number and submit 24C 		
-		xml = baseXML.replace("$RT", _24C);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER>");
+		xml = baseXML.replace(RT, _24C);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo2 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo2.getReportStatus().toString());
 		// modify XML with ticket number and submit RA 		
-		xml = baseXML.replace("$RT", RA);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, RA);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo2_5 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo2_5.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24A 		
-		xml = baseXML.replace("$RT", _24A);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24A);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo3 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo3.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24AC 		
-		xml = baseXML.replace("$RT", _24AC);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24AC);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo4 = submit(xml);
 		//assert status
@@ -152,29 +154,29 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		// get XML from file 
 		String adeersXMLFile = "adeers-basic-full.xml";
 		String baseXML = getString(adeersXMLFile);
-		String xml = baseXML.replace("$RT", R);
+		String xml = baseXML.replace(RT, R);
 		// submit report
 		AEReportJobInfo aeReportJobInfo = submit(xml);
 		// assert status
 		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
 		String ticketNumber = aeReportJobInfo.getTicketNumber();
 		// modify XML with ticket number and submit RA 		
-		xml = baseXML.replace("$RT", RA);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, RA);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo2_5 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo2_5.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24A 		
-		xml = baseXML.replace("$RT", _24A);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24A);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo3 = submit(xml);
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo3.getReportStatus().toString());
 		// modify XML with ticket number , amendment number and submit 24AC 		
-		xml = baseXML.replace("$RT", _24AC);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24AC);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>2</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo4 = submit(xml);
 		//assert status
@@ -191,7 +193,7 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		// get XML from file 
 		String adeersXMLFile = "adeers-basic-full.xml";
 		String baseXML = getString(adeersXMLFile);
-		String xml = baseXML.replace("$RT", _24);
+		String xml = baseXML.replace(RT, _24);
 		// submit report
 		AEReportJobInfo aeReportJobInfo = submit(xml);
 		// assert status
@@ -199,8 +201,8 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		String ticketNumber = aeReportJobInfo.getTicketNumber();
 		
 		// modify XML with ticket number , amendment number and submit 24A 		
-		xml = baseXML.replace("$RT", _24A);
-		xml = xml.replace("<!--TN,AN-->", "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		xml = baseXML.replace(RT, _24A);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
 		//submit amendment
 		AEReportJobInfo aeReportJobInfo3 = submit(xml);
 
