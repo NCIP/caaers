@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class AbstractReportDefinitionController extends AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-
     private ConfigProperty configurationProperty;
     protected ReportDefinitionDao reportDefinitionDao;
     protected Map<String, String> roles;
@@ -181,5 +182,27 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
 
     public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
         this.configPropertyDao = configPropertyDao;
+    }
+
+    protected void populateOptions(ReportDefinitionCommand command) {
+        // populate the ReportTypeOptions
+        LinkedHashMap<Object, Object> reportTypeOptions = new LinkedHashMap<Object, Object>();
+        List<gov.nih.nci.cabig.caaers.domain.ConfigProperty> list = command.getCpRepository().getByType(ConfigPropertyType.REPORT_TYPE);
+        for (int i = 0; i < list.size(); i++) {
+            reportTypeOptions.put(list.get(i).getId(), list.get(i).getName());
+        }
+        command.setReportTypeOptions(reportTypeOptions);
+
+        // populate the ReportDefinitions
+        LinkedHashMap<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
+        if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
+            List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
+            for (int i = 0; i < rdList.size(); i++) {
+                ReportDefinition rd = rdList.get(i);
+                if (rd.getId() != command.getReportDefinition().getId())
+                    parentOptions.put(rd.getId(), rd.getName());
+            }
+        }
+        command.setParentOptions(parentOptions);
     }
 }

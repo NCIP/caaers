@@ -27,9 +27,8 @@ import org.springframework.validation.Errors;
 public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
     private InputFieldGroupMap map;
-
+    
     public BasicsTab(String longTitle, String shortTitle, String viewName) {
-
         super(longTitle, shortTitle, viewName);
     }
 
@@ -42,8 +41,6 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
     	// TODO Auto-generated method stub
     	return super.referenceData(request, command);
     }
-    
-    
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
@@ -72,18 +69,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
         fields.add(amendableField);
 
-/*
-        InputField expeditedField = InputFieldFactory.createBooleanSelectField("reportDefinition.expedited", "Report is expedited?", true);
-        fields.add(expeditedField);
-
-*/
-        Map<Object, Object> reportTypeOptions = new LinkedHashMap<Object, Object>();
-        List<ConfigProperty> list = command.getCpRepository().getByType(ConfigPropertyType.REPORT_TYPE);
-        for (int i=0; i<list.size(); i++) {
-            reportTypeOptions.put(list.get(i).getId(), list.get(i).getName());
-        }
-        // reportTypeOptions.put("-1", "Create new...");
-        InputField reportType = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report type?", true, reportTypeOptions);
+        InputField reportType = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report type?", true, command.getReportTypeOptions());
         fields.add(reportType);
 
         Map<Object, Object> reportFormatTypesOptions = new LinkedHashMap<Object, Object>();
@@ -104,18 +90,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         Map<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
         parentOptions.put("", "Please select");
 
-        if (command.getMODE().equals("EDIT"))
-            command.getReportDefinitionDao().reassociate(command.getReportDefinition());
-
-        if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
-            List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
-            for (int i=0; i<rdList.size(); i++) {
-                ReportDefinition rd = rdList.get(i);
-                if (rd.getId() != command.getReportDefinition().getId())
-                    parentOptions.put(rd.getId(), rd.getName());
-            }
-        }
-        InputField parentReportDefinition = InputFieldFactory.createSelectField("reportDefinition.parent", "Parent", false, parentOptions);
+        InputField parentReportDefinition = InputFieldFactory.createSelectField("reportDefinition.parent", "Parent", false, command.getParentOptions());
         fields.add(parentReportDefinition);
 
         map.addInputFieldGroup(fieldGroup);
@@ -149,7 +124,4 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         }
     }
 
-    public void onBind(HttpServletRequest request, ReportDefinitionCommand command, Errors errors) {
-        // request.getParameter("")
-    }
 }

@@ -5,11 +5,14 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,7 +59,8 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         reportDefinitionDao.initialize(rpDef);
         reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
         ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
-        rpDefCmd.setMODE("EDIT");
+
+        super.populateOptions(rpDefCmd);
 
         // find the index of the first planned notificaiton
         List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();

@@ -30,7 +30,6 @@ import org.apache.commons.collections15.list.LazyList;
 public class ReportDefinitionCommand {
 
     private ConfigProperty configurationProperty;
-    private String MODE = "CREATE";
 
     // page -4
     private String pointOnScale = "0"; // the selected point in the time scale
@@ -43,13 +42,16 @@ public class ReportDefinitionCommand {
     protected ReportDefinitionDao rpDefDao;
     protected ConfigPropertyRepository cpRepository;
 
-    // flow support variables
+    // flow support variables                                  c
     private String indexToDelete; // index in the list to be deleted
     private String tempProperty;
 
     // hide validation errors
     private boolean hideErrors;
-    
+
+    protected Map<Object, Object> reportTypeOptions;
+    protected Map<Object, Object> parentOptions;
+
     public ReportDefinitionCommand(){
     }
     
@@ -224,11 +226,19 @@ public class ReportDefinitionCommand {
         this.cpRepository = cpRepository;
     }
 
-    public String getMODE() {
-        return MODE;
+    public Map<Object, Object> getReportTypeOptions() {
+        return reportTypeOptions;
     }
 
-    public void setMODE(String MODE) {
-        this.MODE = MODE;
+    public void setReportTypeOptions(Map<Object, Object> reportTypeOptions) {
+        this.reportTypeOptions = reportTypeOptions;
+    }
+
+    public Map<Object, Object> getParentOptions() {
+        return parentOptions;
+    }
+
+    public void setParentOptions(Map<Object, Object> parentOptions) {
+        this.parentOptions = parentOptions;
     }
 }

@@ -50,6 +50,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         populateMandatoryFields(mandatoryFields, expeditedReportTree);
         reportDef.setMandatoryFields(mandatoryFields);
         ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        super.populateOptions(rpDefCmd);
         return rpDefCmd;
     }
 

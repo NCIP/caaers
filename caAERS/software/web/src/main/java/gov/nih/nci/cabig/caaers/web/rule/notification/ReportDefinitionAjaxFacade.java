@@ -132,6 +132,8 @@ public class ReportDefinitionAjaxFacade {
     public AjaxOutput fetchReportDefinitionsByOrganizationName(int organizationID, int repDefID) {
         List<ReportDefinition> rdList = getRepDefDao().getAll(organizationID);
         int i = 0;
+        log.debug("ReportDefinitions fetched for orgID(" + organizationID + "): " + rdList.size());
+        System.out.println("ReportDefinitions fetched for orgID(" + organizationID + "): " + rdList.size());
         while (i < rdList.size()) {
             ReportDefinition rd = rdList.get(i);
             if (repDefID > 0 && rd.getId() == repDefID) {
@@ -139,7 +141,8 @@ public class ReportDefinitionAjaxFacade {
             }
             i++;
         }
-
+        log.debug("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
+        System.out.println("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
         AjaxOutput out = new AjaxOutput();
         out.setObjectContent(rdList.toArray());
         return out;
