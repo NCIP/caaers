@@ -62,6 +62,11 @@
                     var len = output.objectContent.length;
                     $('reportDefinition.parent').options.length = 0;
 
+/*
+                    alert(len);
+                    alert(organizationID);
+*/
+
                     opt = new Option('Please select', '');
                     $('reportDefinition.parent').options.add(opt);
                     for (i=0; i<len; i++) {
