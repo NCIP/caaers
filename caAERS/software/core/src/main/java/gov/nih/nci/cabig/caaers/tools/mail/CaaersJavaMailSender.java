@@ -88,7 +88,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     public void send(SimpleMailMessage message) {
         String fromAddress = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
         if (!StringUtils.isBlank(fromAddress)) message.setFrom(fromAddress);
-//        super.send(message);
+        super.send(message);
     }
     
     @Override
@@ -96,7 +96,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
         try {
 			String fromAddress = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
 			if (!fromAddress.equals("")) message.setFrom(new InternetAddress(fromAddress));
-//			super.send(message);
+			super.send(message);
 		
 		} catch (MessagingException e) {
 			 throw new CaaersSystemException("Error while sending email", e);
