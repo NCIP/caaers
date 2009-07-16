@@ -17,6 +17,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <standard:head/>
     <decorator:head/>
+    <tags:js name="tabbedflow"/>
 </head>
 <body>
 <div class="wide-header"></div>

@@ -77,8 +77,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
      */
     @SuppressWarnings("unchecked")
     public List<ReportDefinition> getAll(int orgId) {
-        return getHibernateTemplate().find("from ReportDefinition t where t.organization.id=?",
-                        new Object[] { orgId });
+        return getHibernateTemplate().find("from ReportDefinition t where t.organization.id=?", new Object[] { orgId });
     }
 
     /**
