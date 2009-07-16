@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
@@ -33,7 +34,7 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 	  private OrganizationDao organizationDao;
 	  private OrganizationRepository organizationRepository;
 	  private SiteInvestigatorDao siteInvestigatorDao;
-	  private ResearchStaffDao researchStaffDao;
+	  private SiteResearchStaffDao siteResearchStaffDao;
 	  
 	/**
 	 * This method will copy the {@link StudyOrganization}s from source to destination
@@ -190,20 +191,18 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
                                         Organization organization, DomainObjectImportOutcome<Study> studyImportOutcome) {
 
         for (StudyPersonnel studyPersonnel : studyOrganization.getStudyPersonnels()) {
-            ResearchStaff researchStaffer = studyPersonnel.getResearchStaff();
-            List<ResearchStaff> researchStaffs = null;
-            
+            ResearchStaff researchStaffer = studyPersonnel.getSiteResearchStaff().getResearchStaff();
+            List<SiteResearchStaff> siteResearchStaffs = null;
             if(researchStaffer.getNciIdentifier() != null && researchStaffer.getNciIdentifier().length() > 0){
             	String[] nciIdentifier = {researchStaffer.getNciIdentifier()};
-            	researchStaffs = researchStaffDao.getByNciIdentifier(nciIdentifier, organization.getId());
+            	siteResearchStaffs = siteResearchStaffDao.getByNciIdentifier(nciIdentifier, organization.getId());
             }else{
-            	String[] investigatorFirstAndLast = {researchStaffer.getFirstName(), researchStaffer.getLastName()};
-                researchStaffs = researchStaffDao.getBySubnames(investigatorFirstAndLast, organization.getId());
+            	String[] researchStaffFirstAndLast = {researchStaffer.getFirstName(), researchStaffer.getLastName()};
+            	siteResearchStaffs = siteResearchStaffDao.getBySubnames(researchStaffFirstAndLast, organization.getId());
             }
-            if (researchStaffs.size() > 0) {
-                ResearchStaff researchStaff = researchStaffs.get(0);
-                studyPersonnel.setResearchStaff(researchStaff);
-                studyPersonnel.setStudyOrganization(studyOrganization);
+            if (siteResearchStaffs.size() > 0) {
+            	studyPersonnel.setSiteResearchStaff(siteResearchStaffs.get(0));
+            	studyPersonnel.setStudyOrganization(studyOrganization);
             } else {
                 studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The selected personnel " +
                         researchStaffer.getFirstName() + " " + researchStaffer.getLastName() + " is not Valid ");
@@ -244,11 +243,6 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
     }
     
     @Required
-    public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
-        this.researchStaffDao = researchStaffDao;
-    }
-    
-    @Required
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
@@ -262,6 +256,9 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
-
-    
+	
+	@Required
+	public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+		this.siteResearchStaffDao = siteResearchStaffDao;
+	}
 }

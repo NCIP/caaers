@@ -28,6 +28,12 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
         assertNotNull("ResearchStaff not found", researchStaff);
         assertEquals("Wrong last name", "Gates", researchStaff.getLastName());
         assertEquals("Wrong first name", "Bill", researchStaff.getFirstName());
+        assertNotNull(researchStaff.getSiteResearchStaffs());
+        assertNotNull(researchStaff.getAddress());
+        assertEquals("Park Centre Road", researchStaff.getAddress().getStreet());
+        assertEquals("Fairfax", researchStaff.getAddress().getCity());
+        assertEquals("Virginia", researchStaff.getAddress().getState());
+        assertEquals("22033", Integer.toString(researchStaff.getAddress().getZip()));
     }
     
     public void testGetByLoginId(){
@@ -55,8 +61,6 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             researchStaff.setPhoneNumber("123-456-789");
             researchStaff.setNciIdentifier("nci id");
 
-            researchStaff.setOrganization(organizationDao.getById(-1000));
-
             getDao().save(researchStaff);
 
             savedId = researchStaff.getId();
@@ -81,7 +85,6 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             ResearchStaff researchStaff = new RemoteResearchStaff();
             researchStaff.setEmailAddress("abc@def.com");
             researchStaff.setExternalId("externalId");
-            researchStaff.setOrganization(organizationDao.getById(-1000));
             
             getDao().save(researchStaff);
 
@@ -96,15 +99,5 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             assertNotNull("Could not reload researchStaff id " + savedId, loaded);
             assertEquals("Wrong emailAddress", "abc@def.com", loaded.getEmailAddress());
         }
-    }
-    
-    public void testGetRemoteObjects(){
-    	List<ResearchStaff> researchStaffs = getDao().getByNciIdentifier(new String[] { "nci" },-1000);
-    	System.out.println(researchStaffs.size());
-    	for (ResearchStaff researchStaff:researchStaffs) {
-    		System.out.println(researchStaff.getClass().getName());
-    		System.out.println(researchStaff.getFirstName() +","+researchStaff.getEmailAddress() +"," + researchStaff.getOrganization().getNciInstituteCode());
-    		
-    	}
     }
 }

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
@@ -16,6 +17,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Role;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
@@ -87,8 +89,13 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     }
     
 	private List<Organization> checkAuthorizedOrganizations (ResearchStaffType researchStaffType) {
-		String nciIntituteCode = researchStaffType.getOrganizationRef().getNciInstituteCode();
-		List<Organization> orgs = getAuthorizedOrganizationsByNameOrNciId(null, nciIntituteCode);
+		List<SiteResearchStaffType> siteResearchStaffTypeList = researchStaffType.getSiteResearchStaff();
+		String nciIntituteCode = "";
+		List<Organization> orgs = new ArrayList<Organization>();
+		for(SiteResearchStaffType siteResearchStaffType : siteResearchStaffTypeList){
+			nciIntituteCode = siteResearchStaffType.getOrganizationRef().getNciInstituteCode();
+			orgs.addAll(getAuthorizedOrganizationsByNameOrNciId(null, nciIntituteCode));
+		}
 		return orgs;
 	}
 	
@@ -163,19 +170,35 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
               researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
               researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
+              
+              List<SiteResearchStaffType> siteRsTypeList= researchStaffDto.getSiteResearchStaff();
+              List<SiteResearchStaff> siteRsList = new ArrayList<SiteResearchStaff>();
+              
+              for (SiteResearchStaffType siteResearchStaffType : siteRsTypeList) {
+              	// create site investigator and make the list 
+            	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+            	siteResearchStaff.setEmailAddress(siteResearchStaffType.getEmailAddress());
+              	
+              	Organization org = fetchOrganization(siteResearchStaffType.getOrganizationRef().getNciInstituteCode());
+              	siteResearchStaff.setOrganization(org);
+              	siteResearchStaff.setResearchStaff(researchStaff);
+              	// ????? siteInvestigator.setStatusDate(siteInvestigatorType.ggetStatusDate());
+              	siteRsList.add(siteResearchStaff);
+              	
+              	
+              	
+              }
+              researchStaff.getSiteResearchStaffsInternal().clear();
+              researchStaff.getSiteResearchStaffs().addAll(siteRsList);
+              
               researchStaff.getUserGroupTypes().clear();
               
-              List<Role> roles = researchStaffDto.getRole();
-              
-              for (Role role:roles) {
-            	  researchStaff.addUserGroupType(UserGroupType.valueOf(role.value()));
-              }
-              
-              //get Organizations 
-              OrganizationRefType organizationRef = researchStaffDto.getOrganizationRef();
-              String nciInstituteCode = organizationRef.getNciInstituteCode();
-              Organization organization = fetchOrganization(nciInstituteCode);
-              researchStaff.setOrganization(organization);
+              //Need to fix roles 
+//              List<Role> roles = researchStaffDto.getRole();
+//              
+//              for (Role role:roles) {
+//            	  researchStaff.addUserGroupType(UserGroupType.valueOf(role.value()));
+//              }
               
               return researchStaff;
 

@@ -11,8 +11,14 @@
         email_address="abc@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="abcd"/>
+        
+   <SITE_RESEARCH_STAFFS
+   	id="-9004"
+   	site_id="-1000"
+   	researchstaff_id="-1000"/>
+   	
+   	        
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />	

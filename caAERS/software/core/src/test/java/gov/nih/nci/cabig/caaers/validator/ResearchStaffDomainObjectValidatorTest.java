@@ -33,8 +33,7 @@ public class ResearchStaffDomainObjectValidatorTest extends CaaersDbTestCase{
 		rStaff.setPhoneNumber("111-111-1111");
 		rStaff.setFaxNumber("111-111-1112");
 		rStaff.setNciIdentifier("JOHN-D2");
-		rStaff.setOrganization(organization);
-		
+
 		errors = domainObjectValidator.validate(rStaff);
 		
 		assertEquals(0,errors.size());

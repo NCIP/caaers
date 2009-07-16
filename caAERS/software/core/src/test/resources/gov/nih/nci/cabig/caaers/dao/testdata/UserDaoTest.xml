@@ -12,8 +12,13 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="1000@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4000" 
+    	site_id="-1000" 
+    	researchstaff_id="-1000"/>        
+        
     <RESEARCH_STAFFS
         id="-1001"
         version="1"
@@ -22,8 +27,13 @@
         email_address="1001@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="1001@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4001" 
+    	site_id="-1000" 
+    	researchstaff_id="-1001"/>        
+        
     <RESEARCH_STAFFS
         id="-1002"
         version="1"
@@ -32,8 +42,13 @@
         email_address="1002@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="1002@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4002" 
+    	site_id="-1000" 
+    	researchstaff_id="-1002"/>        
+        
     <RESEARCH_STAFFS
         id="-1003"
         version="1"
@@ -42,10 +57,14 @@
         email_address="1003@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="1003@def.com"/>
         
-        <INVESTIGATORS
+	<SITE_RESEARCH_STAFFS 
+    	id="-4003" 
+    	site_id="-1000" 
+    	researchstaff_id="-1003"/>        
+        
+    <INVESTIGATORS
         id="-200"
         first_name="karthik"
         last_name="iyer"

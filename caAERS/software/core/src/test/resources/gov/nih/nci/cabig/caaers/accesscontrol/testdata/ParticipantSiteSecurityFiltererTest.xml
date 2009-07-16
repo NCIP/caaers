@@ -23,8 +23,12 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1002"
         login_id="1000@def.com"/>
+      
+    <SITE_RESEARCH_STAFFS
+    	id="-9001"
+    	site_id="-1002"
+    	researchstaff_id="-1000"/>  
                 
 	<ctc_versions
         id="3"
@@ -138,7 +142,7 @@
         />
     <study_personnel 
 			id="-1"
-			research_staffs_id="-1000"
+			site_research_staffs_id="-9001"
 			study_sites_id="-3000"
 			role_code="Adverse Event Coordinator"
 			start_date="2006-12-12"

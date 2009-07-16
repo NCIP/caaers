@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -48,21 +48,29 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id1");
-        sp.getResearchStaff().setLoginId("Id1");
+        SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id1");
+        siteResearchStaff.getResearchStaff().setLoginId("Id1");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id2");
-        sp.getResearchStaff().setLoginId("Id2");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id2");
+        siteResearchStaff.getResearchStaff().setLoginId("Id2");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id3");
-        sp.getResearchStaff().setLoginId("Id3");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id3");
+        siteResearchStaff.getResearchStaff().setLoginId("Id3");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         study.addStudyOrganization(so);
@@ -85,21 +93,30 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id1");
-        sp.getResearchStaff().setLoginId("Id1");
+        SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());        
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id1");
+        siteResearchStaff.getResearchStaff().setLoginId("Id1");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id2");
-        sp.getResearchStaff().setLoginId("Id2");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id2");
+        siteResearchStaff.getResearchStaff().setLoginId("Id2");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id3");
-        sp.getResearchStaff().setLoginId("Id3");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id3");
+        siteResearchStaff.getResearchStaff().setLoginId("Id3");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
         
         study.addStudyOrganization(so);
@@ -125,21 +142,30 @@ public class StudyPersonnelTabTestCase extends AbstractStudyWebTestCase {
 
         StudyPersonnel sp;
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id1");
-        sp.getResearchStaff().setLoginId("Id1");
+        SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id1");
+        siteResearchStaff.getResearchStaff().setLoginId("Id1");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id2");
-        sp.getResearchStaff().setLoginId("Id2");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id2");
+        siteResearchStaff.getResearchStaff().setLoginId("Id2");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         sp = new StudyPersonnel();
-        sp.setResearchStaff(new LocalResearchStaff());
-        sp.getResearchStaff().setNciIdentifier("Id3");
-        sp.getResearchStaff().setLoginId("Id3");
+        siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.setResearchStaff(new LocalResearchStaff());
+        siteResearchStaff.getResearchStaff().setNciIdentifier("Id3");
+        siteResearchStaff.getResearchStaff().setLoginId("Id3");
+        sp.setSiteResearchStaff(siteResearchStaff);
         so.addStudyPersonnel(sp);
 
         study.addStudyOrganization(so);

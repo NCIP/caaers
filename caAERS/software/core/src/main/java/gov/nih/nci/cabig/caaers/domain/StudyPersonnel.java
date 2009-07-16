@@ -29,7 +29,7 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
 
     private String roleCode;
 
-    private ResearchStaff researchStaff;
+    private SiteResearchStaff siteResearchStaff;
 
     private StudyOrganization studyOrganization;
     
@@ -50,16 +50,16 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     	this.startDate = DateUtils.yesterday();
     	this.endDate = null;
     }
-
+    
     @ManyToOne
-    @JoinColumn(name = "research_staffs_id")
-    public ResearchStaff getResearchStaff() {
-        return researchStaff;
-    }
+    @JoinColumn(name = "site_research_staffs_id")
+	public SiteResearchStaff getSiteResearchStaff() {
+		return siteResearchStaff;
+	}
 
-    public void setResearchStaff(ResearchStaff researchStaff) {
-        this.researchStaff = researchStaff;
-    }
+	public void setSiteResearchStaff(SiteResearchStaff siteResearchStaff) {
+		this.siteResearchStaff = siteResearchStaff;
+	}
 
     @ManyToOne
     @JoinColumn(name = "study_sites_id")
@@ -117,7 +117,7 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((researchStaff == null) ? 0 : researchStaff.hashCode());
+        result = prime * result + ((siteResearchStaff == null) ? 0 : siteResearchStaff.hashCode());
         result = prime * result + ((roleCode == null) ? 0 : roleCode.hashCode());
         result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
         result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
@@ -133,9 +133,9 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         final StudyPersonnel other = (StudyPersonnel) obj;
         
         if(this.isRetired() || other.isRetired()) return false;
-        if (researchStaff == null) {
-            if (other.researchStaff != null) return false;
-        } else if (!researchStaff.equals(other.researchStaff)) return false;
+        if (siteResearchStaff == null) {
+            if (other.siteResearchStaff != null) return false;
+        } else if (!siteResearchStaff.equals(other.siteResearchStaff)) return false;
         if (roleCode == null) {
             if (other.roleCode != null) return false;
         } else if (!roleCode.equals(other.roleCode)) return false;
@@ -144,5 +144,4 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         } else if (!studyOrganization.equals(other.studyOrganization)) return false;
         return true;
     }
-
 }

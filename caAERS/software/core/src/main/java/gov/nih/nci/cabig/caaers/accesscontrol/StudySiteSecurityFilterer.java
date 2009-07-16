@@ -172,7 +172,7 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 			List<StudyPersonnel> spList = so.getActiveStudyPersonnel();
 			for (StudyPersonnel sp:spList) {
 				if(sp.isInActive()) continue;
-				if (sp.getResearchStaff().getId().equals(userId)) {
+				if (sp.getSiteResearchStaff().getResearchStaff().getId().equals(userId)) {
 					return true;
 				}
 			}

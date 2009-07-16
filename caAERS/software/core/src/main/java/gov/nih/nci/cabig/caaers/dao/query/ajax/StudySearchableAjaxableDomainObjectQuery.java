@@ -14,14 +14,14 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static String queryString = "Select study.id,study.shortTitle," +
             "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
             "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
-            "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode, stper.researchStaff.id," +
+            "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode, sirs.researchStaff.id," +
             "(select scc.organization.nciInstituteCode from StudyCoordinatingCenter scc  where scc.study.id =study.id) as coordinatingCenter "+
             "from Study study " +
             "left join study.identifiers as identifier " +
            // "left join study.studyOrganizations as ss  " +
             "join study.studyOrganizations as ss left join ss.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as sirs " +
             "order by study.shortTitle ";
-
 
     private static final String FIRST_NAME = "firstName";
 

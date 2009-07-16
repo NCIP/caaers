@@ -24,7 +24,18 @@
         <xs:complexContent>
             <xs:extension base="cct:ResearchStaffType">
                 <xs:sequence>
-                    <xs:element ref="cct:organizationRef" minOccurs="0"/>
+                    <xs:element ref="siteResearchStaff" maxOccurs="unbounded" minOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="siteResearchStaff" type="SiteResearchStaffType"/>
+    <xs:complexType name="SiteResearchStaffType">
+        <xs:complexContent>
+            <xs:extension base="cct:SiteResearchStaffType">
+                <xs:sequence>
+                    <xs:element ref="cct:organizationRef" minOccurs="1"/>
                     <xs:element name="role" type="Role" minOccurs="1" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:extension>

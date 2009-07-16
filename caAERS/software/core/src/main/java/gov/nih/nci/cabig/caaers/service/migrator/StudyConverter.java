@@ -29,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -187,10 +188,13 @@ public class StudyConverter {
 					studyPersonnel.setEndDate(studyPersonnelType.getEndDate().toGregorianCalendar().getTime());
 				}
 				ResearchStaff researchStaff = new LocalResearchStaff();
+				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				researchStaff.setFirstName(studyPersonnelType.getResearchStaff().getFirstName());
 				researchStaff.setLastName(studyPersonnelType.getResearchStaff().getLastName());
 				researchStaff.setNciIdentifier(studyPersonnelType.getResearchStaff().getNciIdentifier());
-				studyPersonnel.setResearchStaff(researchStaff);
+				siteResearchStaff.setResearchStaff(researchStaff);
+				siteResearchStaff.setOrganization(studyOrganization.getOrganization());
+				studyPersonnel.setSiteResearchStaff(siteResearchStaff);
 				studyOrganization.addStudyPersonnel(studyPersonnel);
 			}
 		}

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.ClinicalResearchStaff;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
@@ -94,9 +95,10 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 
 			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
 				site = new RemoteOrganization();
-				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());			
-				remoteResearchStaff.setOrganization(site);
-
+				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+				siteResearchStaff.setResearchStaff(remoteResearchStaff);
+				siteResearchStaff.setOrganization(site);
 			}
 
 		}
@@ -106,8 +108,10 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	public RemoteResearchStaff populateRemoteResearchStaff(Person coppaPerson, String nciIdentifier, IdentifiedOrganization identifiedOrganization){		
 		RemoteResearchStaff remoteResearchStaff = setResearchStaffDetails(coppaPerson,nciIdentifier);		
 		Organization site = new RemoteOrganization();
-		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());		
-		remoteResearchStaff.setOrganization(site);
+		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+		siteResearchStaff.setResearchStaff(remoteResearchStaff);
+		siteResearchStaff.setOrganization(site);
 
 		return remoteResearchStaff;
 	}
@@ -141,10 +145,14 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			return remoteResearchStaffList;
 		}
 		
+		SiteResearchStaff siteResearchStaff = null;
+		if(remoteResearchStaffExample.getSiteResearchStaffs() != null && remoteResearchStaffExample.getSiteResearchStaffs().size() > 0){
+			siteResearchStaff = remoteResearchStaffExample.getSiteResearchStaffs().get(0);
+		}
 		
-		if (remoteResearchStaffExample.getOrganization() != null){
+		if (siteResearchStaff.getOrganization() != null){
 			//get Organization by ctepId 
-			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(remoteResearchStaffExample.getOrganization().getNciInstituteCode());
+			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(siteResearchStaff.getOrganization().getNciInstituteCode());
 			String payload = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationSearchCriteria);
 			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
 			String results =broadcastCOPPA(payload, mData);//
@@ -203,7 +211,6 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			}
 			return remoteResearchStaffList;
 		}
-		
 		
 		
 		

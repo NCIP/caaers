@@ -21,9 +21,14 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="1000@def.com"
         />
+
+     <SITE_RESEARCH_STAFFS
+    	id="-9001"
+    	site_id="-1000"
+    	researchstaff_id="-1000"/> 
+        
     <RESEARCH_STAFFS
         id="-1001"
         version="1"
@@ -31,8 +36,13 @@
         last_name="Bush"
         email_address="abc2@def.com"
         phone_number="123-456-789"
-        nci_identifier="nci id"
-        site_id="-1001"/>
+        nci_identifier="nci id"/>
+     
+    <SITE_RESEARCH_STAFFS
+    	id="-9002"
+    	site_id="-1001"
+    	researchstaff_id="-1001"/>   
+        
     <RESEARCH_STAFFS
         id="-1002"
         version="1"
@@ -40,8 +50,13 @@
         last_name="Franklin"
         email_address="abc3@def.com"
         phone_number="123-456-789"
-        nci_identifier="nci id"
-        site_id="-1000"/>
+        nci_identifier="nci id"/>
+        
+    <SITE_RESEARCH_STAFFS
+    	id="-9003"
+    	site_id="-1000"
+    	researchstaff_id="-1002"/>        
+        
     <RESEARCH_STAFFS
         id="-1003"
         version="1"
@@ -49,8 +64,14 @@
         last_name="Kennedy"
         email_address="abc4@def.com"
         phone_number="123-456-789"
-        nci_identifier="nci id"
-        site_id="-1000"/>
+        nci_identifier="nci id"/>
+        
+    <SITE_RESEARCH_STAFFS
+    	id="-9004"
+    	site_id="-1000"
+    	researchstaff_id="-1003"/>        
+        
+        
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />		

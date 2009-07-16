@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -198,7 +199,9 @@ public class ListAdverseEventsController extends SimpleFormController {
     				Organization ccOrg = listAECmd.getStudy().getStudyCoordinatingCenter().getOrganization();
     				ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
     				if(researchStaff != null && ccOrg != null){
-    					canRenderSubmitReportLink = researchStaff.getOrganization().getId().equals(ccOrg.getId());
+    			    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
+    			    		canRenderSubmitReportLink = siteRs.getOrganization().getId().equals(ccOrg.getId());
+    			    	}
     				}
     			}
     			  

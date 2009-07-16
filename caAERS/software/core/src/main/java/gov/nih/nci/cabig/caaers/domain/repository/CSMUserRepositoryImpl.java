@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -68,7 +69,9 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 			mailException = e;
 		}
         List<Organization> associatedOrgList = new ArrayList<Organization>();
-        associatedOrgList.add(researchStaff.getOrganization());
+    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
+    		associatedOrgList.add(siteRs.getOrganization());
+    	}
         createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
         if(mailException != null) throw mailException;
     }

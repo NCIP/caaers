@@ -224,7 +224,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     	
     	for(StudyPersonnel studyPerson : getStudyPersonnels()){
     		if(StringUtils.equals(studyPerson.getRoleCode(), personRole.getRoleCode())|| StringUtils.equals(studyPerson.getRoleCode(), personRole.getDisplayName())){
-    			users.add(studyPerson.getResearchStaff());
+    			users.add(studyPerson.getSiteResearchStaff().getResearchStaff());
     		}
     	}
     	return users;

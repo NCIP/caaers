@@ -148,7 +148,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     @Transactional(readOnly = false)
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
 
-    	List<ResearchStaff> researchStaffs =  findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
+    	List<ResearchStaff> researchStaffs =  findBySubname(subnames,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     	return researchStaffs;
     }
@@ -165,7 +165,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     @Transactional(readOnly = false)
     public List<ResearchStaff> getByNciIdentifier(final String[] subnames, final int site) {
 
-    	List<ResearchStaff> researchStaffs = findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
+    	List<ResearchStaff> researchStaffs = findBySubname(subnames,
         		NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     	return researchStaffs;
     }

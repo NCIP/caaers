@@ -12,7 +12,11 @@
         email_address="abc@def.com"
         login_id="abc@def.com"
         phone_number="123-456-789"
-        nci_identifier="nci id"
-        site_id="-1000"/>
+        nci_identifier="nci id"/>
+        
+    <SITE_RESEARCH_STAFFS
+    	id="-9001"
+    	site_id="-1000"
+    	researchstaff_id="-1000"/>        
         
 </dataset>

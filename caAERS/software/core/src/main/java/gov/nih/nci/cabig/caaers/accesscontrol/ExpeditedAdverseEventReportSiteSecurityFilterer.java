@@ -129,7 +129,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 				
 				if(sp.isInActive()) continue;
 				
-				if (sp.getResearchStaff().getId().equals(userId)) {
+				if (sp.getSiteResearchStaff().getResearchStaff().getId().equals(userId)) {
 					return true;
 				}
 			}

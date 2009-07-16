@@ -23,9 +23,6 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.semanticbits.coppa.domain.annotations.RemoteProperty;
-import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
-
 /**
  * This class represents the Organization domain object associated with the Adverse event report.
  * 
@@ -47,6 +44,8 @@ public abstract class Organization extends AbstractMutableDomainObject {
     protected String descriptionText;
 
     protected List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+    
+    protected List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
 
     protected List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
 
@@ -86,11 +85,13 @@ public abstract class Organization extends AbstractMutableDomainObject {
         getSiteInvestigators().add(siteInvestigator);
         siteInvestigator.setOrganization(this);
     }
-
-    public void addResearchStaff(ResearchStaff staff) {
-        getResearchStaffs().add(staff);
-        staff.setOrganization(this);
+    
+    
+    public void addSiteResearchStaff(SiteResearchStaff siteResearchStaff) {
+        getSiteResearchStaffs().add(siteResearchStaff);
+        siteResearchStaff.setOrganization(this);
     }
+
 
     public void addReportDefinition(ReportDefinition reportDefinition) {
         if (reportDefinitions == null) reportDefinitions = new ArrayList<ReportDefinition>();
@@ -181,17 +182,17 @@ public abstract class Organization extends AbstractMutableDomainObject {
     public void setSiteInvestigators(List<SiteInvestigator> siteInvestigators) {
         this.siteInvestigators = siteInvestigators;
     }
-
+    
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
-    public List<ResearchStaff> getResearchStaffs() {
-        return researchStaffs;
-    }
+	public List<SiteResearchStaff> getSiteResearchStaffs() {
+		return siteResearchStaffs;
+	}
 
-    public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
-        this.researchStaffs = researchStaffs;
-    }
-
+	public void setSiteResearchStaffs(List<SiteResearchStaff> siteResearchStaffs) {
+		this.siteResearchStaffs = siteResearchStaffs;
+	}
+    
     // Cascade limited to DELETE, Fix for #11452
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })

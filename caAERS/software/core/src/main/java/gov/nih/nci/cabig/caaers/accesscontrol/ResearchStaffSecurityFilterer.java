@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.Iterator;
@@ -46,13 +47,13 @@ public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implem
         	Object domainObject = collectionIter.next();
         	ResearchStaff researchStaffResultObject = (ResearchStaff)domainObject;
         	//if (!researchStaffResultObject.getOrganization().getNciInstituteCode().equals(userOrganization.getNciInstituteCode())) {
-        	if (!userOrganizationCodes.contains(researchStaffResultObject.getOrganization().getNciInstituteCode())) {
-        		filterer.remove(researchStaffResultObject);
+        	for(SiteResearchStaff siteResearchStaff : researchStaffResultObject.getSiteResearchStaffs()){
+        		if (!userOrganizationCodes.contains(siteResearchStaff.getOrganization().getNciInstituteCode())) {
+            		filterer.remove(researchStaffResultObject);
+            	}
         	}
         }
-		
 		return filterer.getFilteredObject();
-		
 	}
 
 	public void setUserDao(UserDao userDao) {

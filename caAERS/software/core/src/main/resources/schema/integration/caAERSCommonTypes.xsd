@@ -179,6 +179,20 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:element name="siteResearchStaff" type="SiteResearchStaffType"/>
+    <xs:complexType name="SiteResearchStaffType">
+        <xs:complexContent>
+            <xs:extension base="DomainObjectType">
+                <xs:sequence>
+                    <xs:element name="emailAddress" type="CustomStringType"/>
+                    <xs:element name="statusCode" type="StatusCodeType"/>
+                    
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
 
     <xs:element name="investigatorRef" type="InvestigatorRefType"/>
     <xs:complexType name="InvestigatorRefType">

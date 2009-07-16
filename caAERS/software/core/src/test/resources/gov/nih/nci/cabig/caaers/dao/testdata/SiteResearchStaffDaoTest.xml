@@ -1,0 +1,120 @@
+<dataset>
+    <ORGANIZATIONS 
+    id="-1000" 
+    name="New Site 1" 
+    grid_id="gridSite1"/>
+    
+    <ORGANIZATIONS 
+    id="-1001" 
+    name="New Site 2" 
+    grid_id="gridSite2"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1000" 
+    version="1" 
+    first_name="Bill" 
+    last_name="Gates" 
+    email_address="abc@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id 1" 
+    login_id="abcd"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1001" 
+    version="1" 
+    first_name="George" 
+    last_name="Bush" 
+    email_address="abc@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id 2"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1002" 
+    version="1" 
+    first_name="Benjamin" 
+    last_name="Franklin" 
+    email_address="abc@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id 3" />
+    
+    <RESEARCH_STAFFS 
+    id="-1003" 
+    version="1" 
+    first_name="JF" 
+    last_name="Kennedy" 
+    email_address="abc@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci_id_4"/>
+	
+	<SITE_RESEARCH_STAFFS 
+    	id="-4004" 
+    	site_id="-1000" 
+    	researchstaff_id="-1000"
+    	street="Park Centre Road"
+    	city="Fairfax"
+    	state="Virginia"
+    	zip="22033"
+    	code="0"
+    	phone_number="321-123-3214"
+    	fax_number="666-777-1234"
+    	email_address="fairfax@rest.com"/>
+   
+   	<SITE_RESEARCH_STAFFS 
+    	id="-4005" 
+    	site_id="-1000" 
+    	researchstaff_id="-1001"
+    	city="Herndon"
+    	state="Virginia"
+    	zip="22033"
+    	code="0"
+    	phone_number="321-123-3214"
+    	fax_number="666-777-1234"
+    	email_address="herndon@rest.com"/> 	
+    	
+    <SITE_RESEARCH_STAFFS 
+    	id="-4006" 
+    	site_id="-1000" 
+    	researchstaff_id="-1002"
+    	city="Reston"
+    	state="Virginia"
+    	zip="22033"
+    	code="0"
+    	phone_number="321-123-3214"
+    	fax_number="666-777-1234"
+    	email_address="Reston@rest.com"/>
+	
+    <SITE_RESEARCH_STAFFS 
+    	id="-4007" 
+    	site_id="-1001" 
+    	researchstaff_id="-1003"
+    	city="BelAir"
+    	state="Virginia"
+    	zip="22033"
+    	code="0"
+    	phone_number="321-123-3214"
+    	fax_number="666-777-1234"
+    	email_address="belair@rest.com"/>
+	
+	<SITE_RESEARCH_STAFF_ROLES
+		id="-7000"
+		role_code="caaers_participant_cd"
+		site_research_staffs_id="-4004"
+		start_date="2006-10-10"
+	/>
+	<SITE_RESEARCH_STAFF_ROLES
+		id="-7001"
+		role_code="caaers_study_cd"
+		site_research_staffs_id="-4004"
+		start_date="2006-10-10"
+	/>
+	<SITE_RESEARCH_STAFF_ROLES
+		id="-7002"
+		role_code="caaers_site_cd"
+		site_research_staffs_id="-4004"
+		start_date="2006-10-10"
+	/>
+	
+    <investigational_new_drugs />
+    <ind_holders />		
+        
+</dataset>

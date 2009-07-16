@@ -212,7 +212,7 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 	
 	//generate a string key based on the values of study personnel
 	private String generateIndexKey(StudyPersonnel sp){
-		ResearchStaff staff = sp.getResearchStaff();
+		ResearchStaff staff = sp.getSiteResearchStaff().getResearchStaff();
 		String nciCode = staff.getNciIdentifier();
 		String firstName = staff.getFirstName();
 		String lastName = staff.getLastName();

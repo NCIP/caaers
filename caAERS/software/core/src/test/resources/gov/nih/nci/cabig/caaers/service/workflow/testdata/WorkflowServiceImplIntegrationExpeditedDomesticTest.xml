@@ -38,8 +38,12 @@
         email_address="pc@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id pc"
-        site_id="-1000"
         login_id="pc@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4000" 
+    	site_id="-1000" 
+    	researchstaff_id="-900"/>        
         
     <!--  associated to caaers_user, caaers_participant_cd -->  
     <CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-2" />
@@ -59,8 +63,12 @@
         email_address="aec@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id aec"
-        site_id="-1000"
         login_id="aec@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4001" 
+    	site_id="-1000" 
+    	researchstaff_id="-901"/>         
         
  	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-2" />
 	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-2" GROUP_ID="-13" />
@@ -97,8 +105,12 @@
         email_address="abc@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"
         login_id="abc@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4002" 
+    	site_id="-1000" 
+    	researchstaff_id="-1000"/>        
         
      <RESEARCH_STAFFS
         id="-1001"
@@ -108,8 +120,13 @@
         email_address="bush@def.com"
         phone_number="123-456-788"
         nci_identifier="nci id1"
-        site_id="-1000"
         login_id="bush@def.com"/>
+        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4003" 
+    	site_id="-1000" 
+    	researchstaff_id="-1001"/>        
+        
         
       <RESEARCH_STAFFS
         id="-1002"
@@ -119,10 +136,13 @@
         email_address="datacoordinator@abc.com"
         phone_number="123-456-788"
         nci_identifier="nci id2"
-        site_id="-1000"
         login_id="datacoordinator@abc.com"/>
      
-        
+	<SITE_RESEARCH_STAFFS 
+    	id="-4004" 
+    	site_id="-1000" 
+    	researchstaff_id="-1002"/>
+    	        
 	<workflow_configuration id="-11" workflow_definition_name="expedited_domestic"	default_assignee="SYSTEM_ADMIN"	enabled="1" />
 	 
 	 <task_configuration id="-1" 

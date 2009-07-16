@@ -6,7 +6,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
  */
 public class ResearchStaffQuery extends AbstractQuery {
 
-    private static String queryString = "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization order by rs.id";
+    private static String queryString = "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs order by rs.id";
 
     private static String FIRST_NAME = "firstName";
 
@@ -31,13 +31,13 @@ public class ResearchStaffQuery extends AbstractQuery {
 
     public void filterByOrganizationName(final String name) {
         String searchString = "%" + name.toLowerCase() + "%";
-        andWhere("lower(rs.organization.name) LIKE :" + ORGANIZATION_NAME);
+        andWhere("lower(srs.organization.name) LIKE :" + ORGANIZATION_NAME);
         setParameter(ORGANIZATION_NAME, searchString);
     }
     
     public void filterByOrganizationNciInstituteCode(final String organizationNciInstituteCode) {
         String searchString = "%" + organizationNciInstituteCode.toLowerCase() + "%";
-        andWhere("lower(rs.organization.nciInstituteCode) LIKE :" + ORGANIZATION_NCI_INSTITUTE_CODE);
+        andWhere("lower(srs.organization.nciInstituteCode) LIKE :" + ORGANIZATION_NCI_INSTITUTE_CODE);
         setParameter(ORGANIZATION_NCI_INSTITUTE_CODE, searchString);
     }
 
@@ -80,7 +80,7 @@ public class ResearchStaffQuery extends AbstractQuery {
     
     public void filterByOrganization(final String organization) {
         String searchString = organization.trim();
-        andWhere("rs.organization.id =:" + ORGANIZATION);
+        andWhere("srs.organization.id =:" + ORGANIZATION);
         setParameter(ORGANIZATION, Integer.parseInt(searchString));
     }
     

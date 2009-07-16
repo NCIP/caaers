@@ -920,7 +920,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         for (StudyOrganization studyOrganization : this.getStudyOrganizations()) {
             for (StudyPersonnel personnel : studyOrganization.getStudyPersonnels()) {
                 if (StringUtils.equals(personnel.getRoleCode(), personnelRole)) {
-                    email = personnel.getResearchStaff().getEmailAddress();
+                    email = personnel.getSiteResearchStaff().getResearchStaff().getEmailAddress();
                     if (StringUtils.isNotEmpty(email)) emails.add(email);
                 }
             }

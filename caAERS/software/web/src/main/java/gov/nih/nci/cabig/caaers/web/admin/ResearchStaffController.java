@@ -104,7 +104,6 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
         	if("saveRemoteRs".equals(request.getParameter("_action"))){
         		
         		ResearchStaff remoteRStoSave = researchStaff.getExternalResearchStaff().get(Integer.parseInt(request.getParameter("_selected")));
-        		remoteRStoSave.setOrganization(researchStaff.getOrganization());
         		researchStaff.setEmailAddress(remoteRStoSave.getEmailAddress());
         		researchStaff.setFirstName(remoteRStoSave.getFirstName());
         		researchStaff.setLastName(remoteRStoSave.getLastFirst());

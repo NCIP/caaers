@@ -10,7 +10,7 @@
             />  
     <ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite" version="1"/>
     
-        <RESEARCH_STAFFS
+    <RESEARCH_STAFFS
         id="-1000"
         version="1"
         first_name="Bill"
@@ -18,9 +18,12 @@
         email_address="1000@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1001"
         login_id="1000@def.com"/>
         
+    <SITE_RESEARCH_STAFFS
+    	id="-9001"
+    	site_id="-1001"
+    	researchstaff_id="-1000"/>    
 
     <!-- ========================== CTC related information ===============================-->
     <ctc_versions id="3" name="CTCAE v3.0"/>
@@ -191,6 +194,14 @@
     <REPORT_SCHEDULES id="-40" 
                       report_id="-1" rct_id="-30"/>
     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
+    
+        
+    <study_personnel 
+		id="-1"
+		site_research_staffs_id="-9001"
+		study_sites_id="-10"
+		role_code="Adverse Event Coordinator"/>
+    
     <!--
          tables which an AE report will reference, but which are not otherwise
          in this file. This is so dbunit will clean them up.
@@ -202,18 +213,9 @@
     <ind_holders/>
     <study_amendments/>
     <study_therapy/>
-    <research_staffs/>
     <mandatory_field_defs/>
     <ae_medical_devices/>
     <ae_radiation_interventions/>
     <ae_reporting_periods/>
-    
-        <study_personnel 
-			id="-1"
-			research_staffs_id="-1000"
-			study_sites_id="-10"
-			role_code="Adverse Event Coordinator"
-		/>
-	
 	
 </dataset>

@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 import java.util.ArrayList;
@@ -73,7 +74,11 @@ public abstract class BaseSecurityFilterer {
 	public List<String> getUserOrganizations(gov.nih.nci.cabig.caaers.domain.User caaersUser) {
 		List<String> userOrganizationCodes = new ArrayList<String>();
 		if (caaersUser instanceof ResearchStaff) {			
-			userOrganizationCodes.add(((ResearchStaff)caaersUser).getOrganization().getNciInstituteCode());
+			ResearchStaff researchStaff = (ResearchStaff)caaersUser;
+			List<SiteResearchStaff> siteResearchStaffs = researchStaff.getSiteResearchStaffs();
+			for (SiteResearchStaff siteResearchStaff:siteResearchStaffs) {
+				userOrganizationCodes.add(siteResearchStaff.getOrganization().getNciInstituteCode());
+			}
 		} else if (caaersUser instanceof Investigator) {
 			Investigator investigator = (Investigator)caaersUser;
 			List<SiteInvestigator> siteInvestigators = investigator.getSiteInvestigators();

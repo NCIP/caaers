@@ -8,7 +8,7 @@ public class ResearchStaffQueryTest extends TestCase {
         ResearchStaffQuery reserachStaffQuery = new ResearchStaffQuery();
         assertEquals(
                         "wrong parsing for constructor",
-                        "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization order by rs.id",
+                        "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs order by rs.id",
                         reserachStaffQuery.getQueryString());
 
     }
@@ -17,7 +17,7 @@ public class ResearchStaffQueryTest extends TestCase {
         ResearchStaffQuery reserachStaffQuery = new ResearchStaffQuery();
         reserachStaffQuery.filterByOrganizationName("a");
         assertEquals(
-                        "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.organization.name) LIKE :name order by rs.id",
+                        "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(srs.organization.name) LIKE :name order by rs.id",
                         reserachStaffQuery.getQueryString());
         assertEquals("wrong number of parameters", reserachStaffQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", reserachStaffQuery.getParameterMap().containsKey(
@@ -34,7 +34,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "firstName"));
         assertEquals("wrong parameter value", "%a%", researchStaffQuery.getParameterMap().get("firstName"));
         assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.firstName) LIKE :firstName order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.firstName) LIKE :firstName order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     
@@ -46,7 +46,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "lastName"));
     	assertEquals("wrong parameter value", "%a%",researchStaffQuery.getParameterMap().get("lastName"));
     	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.lastName) LIKE :lastName order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.lastName) LIKE :lastName order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     
@@ -58,7 +58,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "emailAddress"));
     	assertEquals("wrong parameter value", "%a%", researchStaffQuery.getParameterMap().get("emailAddress"));
     	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.emailAddress) LIKE :emailAddress order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.emailAddress) LIKE :emailAddress order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     
@@ -70,7 +70,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "loginId"));
     	assertEquals("wrong parameter value", "%a%", researchStaffQuery.getParameterMap().get("loginId"));
     	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.loginId) LIKE :loginId order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.loginId) LIKE :loginId order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     
@@ -82,7 +82,7 @@ public class ResearchStaffQueryTest extends TestCase {
         "nciIdentifier"));
     	assertEquals("wrong parameter value", "%a%", researchStaffQuery.getParameterMap().get("nciIdentifier"));
     	assertEquals("Incorrect query created",
-                "SELECT distinct rs from ResearchStaff rs left join fetch rs.organization WHERE lower(rs.nciIdentifier) LIKE :nciIdentifier order by rs.id",
+                "SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.nciIdentifier) LIKE :nciIdentifier order by rs.id",
                 researchStaffQuery.getQueryString());
     }
     

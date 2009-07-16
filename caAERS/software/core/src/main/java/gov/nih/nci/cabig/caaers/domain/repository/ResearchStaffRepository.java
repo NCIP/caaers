@@ -101,8 +101,9 @@ public class ResearchStaffRepository {
     	conRStaff.setMiddleName(remoteResearchStaff.getMiddleName());
     	conRStaff.setPhoneNumber(remoteResearchStaff.getPhoneNumber());
     	conRStaff.setFaxNumber(remoteResearchStaff.getFaxNumber());
-    	ConverterOrganization conOrg = organizationConverterDao.getById(localResearchStaff.getOrganization().getId());
-    	conRStaff.setConverterOrganization(conOrg);
+    	//Commented below 2 lines for ResearchStaff changes. Organization info is captured in SiteResearchStaff 
+    	//ConverterOrganization conOrg = organizationConverterDao.getById(localResearchStaff.getOrganization().getId());
+    	//conRStaff.setConverterOrganization(conOrg);
     	researchStaffConverterDao.save(conRStaff);
     }
 
@@ -138,7 +139,8 @@ public class ResearchStaffRepository {
     	List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(subnames, site);
     	ResearchStaff searchCriteria = new RemoteResearchStaff();
     	Organization org = organizationDao.getById(site);
-    	searchCriteria.setOrganization(org);
+    	//Commented below line for ResearchStaff changes. Organization is captured in SiteResearchStaff
+    	//searchCriteria.setOrganization(org);
     	List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(searchCriteria); 
     	
     	return merge (researchStaffs,remoteResearchStaffs);
@@ -162,7 +164,8 @@ public class ResearchStaffRepository {
 			if (key.equals("organizationNciInstituteCode")) {
 				Organization organization = new RemoteOrganization();
 				organization.setNciInstituteCode(value.toString());
-				searchCriteria.setOrganization(organization);
+				//Commented below line for ResearchStaff changes. Organization is captured in SiteResearchStaff
+				//searchCriteria.setOrganization(organization);
 			}	
         }
     	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria); 
@@ -175,6 +178,9 @@ public class ResearchStaffRepository {
 		for (ResearchStaff remoteResearchStaff:remoteList) {
 			ResearchStaff rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
     		if (rs == null ) {
+    			
+    			//Commented below line for ResearchStaff changes. Organization is captured in SiteResearchStaff
+    			/*
     			// look for his organization ;
     			Organization remoteOrganization = remoteResearchStaff.getOrganization();
     			//if associated organization is not there in our DB
@@ -184,7 +190,7 @@ public class ResearchStaffRepository {
     				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
     			} 
     			remoteResearchStaff.setOrganization(organization);
- 
+ 				*/
     			try {
     				save(remoteResearchStaff,"URL");
     			} catch (MailException e) {

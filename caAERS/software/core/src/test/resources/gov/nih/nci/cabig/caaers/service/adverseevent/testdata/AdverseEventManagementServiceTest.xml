@@ -123,18 +123,44 @@
 		review_status_code="1"
 		/>  
 		
-	<RESEARCH_STAFFS id="-1000" version="1" first_name="Bill" last_name="Gates" email_address="abc@def.com" phone_number="123-456-789" nci_identifier="nci id" site_id="-1" login_id="abcd"/>
-    <RESEARCH_STAFFS id="-1001" version="1" first_name="George" last_name="Bush" email_address="abc@def.com" phone_number="123-456-789" nci_identifier="nci id" site_id="-1"/>
-
+	<RESEARCH_STAFFS 
+		id="-1000" 
+		version="1" 
+		first_name="Bill" 
+		last_name="Gates" 
+		email_address="abc@def.com" 
+		phone_number="123-456-789" 
+		nci_identifier="nci id" 
+		login_id="abcd"/>
+		
+	<SITE_RESEARCH_STAFFS 
+    	id="-4000" 
+    	site_id="-1" 
+    	researchstaff_id="-1000"/>	
+		
+    <RESEARCH_STAFFS 
+    	id="-1001" 
+    	version="1" 
+    	first_name="George" 
+    	last_name="Bush" 
+    	email_address="abc@def.com" 
+    	phone_number="123-456-789" 
+    	nci_identifier="nci id" />
+    	
+	<SITE_RESEARCH_STAFFS 
+    	id="-4001" 
+    	site_id="-1" 
+    	researchstaff_id="-1001"/>    	
+    	
 	<study_personnel
 		id="1001"
-		research_staffs_id="-1000"
+		site_research_staffs_id="-4000"
 		study_sites_id="-10"
 		role_code="caaers_site_cd"
 		/>	
 	<study_personnel
 		id="1002"
-		research_staffs_id="-1001"
+		site_research_staffs_id="-4001"
 		study_sites_id="-10"
 		role_code="caaers_site_cd"
 		/>	

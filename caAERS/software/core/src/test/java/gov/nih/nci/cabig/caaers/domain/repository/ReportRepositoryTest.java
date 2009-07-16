@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
@@ -140,10 +141,12 @@ public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
         site.addStudyInvestigators(studyInvestigator);
 
         ResearchStaff staff = new LocalResearchStaff();
+        SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
         staff.setEmailAddress("aa@kk.com");
+        siteResearchStaff.setResearchStaff(staff);
         StudyPersonnel studyPersonnel = new StudyPersonnel();
         studyPersonnel.setRoleCode("Participant Coordinator");
-        studyPersonnel.setResearchStaff(staff);
+        studyPersonnel.setSiteResearchStaff(siteResearchStaff);
         site.addStudyPersonnel(studyPersonnel);
 
         AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();

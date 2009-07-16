@@ -99,7 +99,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
-<!--                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaff</value>-->
+                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
@@ -280,7 +281,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
-<!--                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaff</value>-->
+                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
@@ -528,7 +530,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao">
     	<property name="remoteSession" ref="remoteSession"/>
     </bean>
-<!--    <bean id="siteResearchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao"/>-->
+    <bean id="siteResearchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao"/>
     <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao">
     	<property name="researchStaffDao" ref="researchStaffDao"/>
     	<property name="investigatorDao" ref="investigatorDao"/>

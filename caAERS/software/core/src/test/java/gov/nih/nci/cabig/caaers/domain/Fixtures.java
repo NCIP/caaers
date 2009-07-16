@@ -266,11 +266,14 @@ public class Fixtures {
         researchStaff.setEmailAddress(name + "@def.com");
         researchStaff.setPhoneNumber("123-5-789");
         researchStaff.setNciIdentifier("nci id");
-
+        
         for (UserGroupType userGroupType : userGroupTypes) {
             researchStaff.addUserGroupType(userGroupType);
         }
-        researchStaff.setOrganization(organization);
+        SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setOrganization(organization);
+        siteResearchStaff.setResearchStaff(researchStaff);
+        researchStaff.getSiteResearchStaffs().add(siteResearchStaff);
         return researchStaff;
     }
 
@@ -398,7 +401,9 @@ public class Fixtures {
     
     public static StudyPersonnel createStudyPersonnel(ResearchStaff staff){
     	StudyPersonnel sp = new StudyPersonnel();
-    	sp.setResearchStaff(staff);
+    	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+    	siteResearchStaff.setResearchStaff(staff);
+    	sp.setSiteResearchStaff(siteResearchStaff);
     	sp.setRoleCode("role");
     	sp.setStartDate(DateUtils.yesterday());
     	return sp;

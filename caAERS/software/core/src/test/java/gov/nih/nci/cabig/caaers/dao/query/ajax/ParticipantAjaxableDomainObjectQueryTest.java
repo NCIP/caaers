@@ -24,7 +24,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
@@ -48,7 +48,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
 		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
@@ -80,7 +80,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
 		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
@@ -128,7 +128,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
 		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
@@ -181,7 +181,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
@@ -210,7 +210,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
@@ -244,7 +244,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
@@ -278,7 +278,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
@@ -327,7 +327,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
     		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
