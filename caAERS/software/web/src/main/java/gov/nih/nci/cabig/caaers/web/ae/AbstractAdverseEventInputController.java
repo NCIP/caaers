@@ -234,6 +234,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         if (displaySummary(page)) {
             refdata.put("aesummary", cmd.getAeReport().getSummary());
         }
+        
+        refdata.put("showReportContextMenu", displayReportContextMenu(page));
+        
        
         return refdata;
     }
@@ -253,7 +256,11 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected boolean displaySummary(int page) {
         return true;
     }
-
+    
+    protected boolean displayReportContextMenu(int page){
+    	return page != SUBMISSION_PAGE;
+    }
+    
     /**
      * Adds ajax sub-page view capability. TODO: factor this into main tabbed flow controller.
      */

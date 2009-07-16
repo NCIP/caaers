@@ -60,53 +60,6 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		controller.setEvaluationService(evaluationService);
 	}
 	
-	/**
-	 * This method tests {@link EditAdverseEventController#onBindOnNewForm(javax.servlet.http.HttpServletRequest, Object)}
-	 * @throws Exception
-	 */
-	public void testOnBindOnNewFormHttpServletRequestObject_EditAction() throws Exception {
-		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
-		aeList.add(Fixtures.createAdverseEvent(666, Grade.DEATH));
-		
-		session.setAttribute("adverseEventList", aeList);
-		session.setAttribute("primaryAEId", 666);
-		
-		EasyMock.expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(new ArrayList<ExpeditedReportSection>());
-		replayMocks();
-		assertEquals(new Integer(0),command.getAeReport().getAdverseEvents().get(0).getId());
-		controller.onBindOnNewForm(request, command);
-		assertNull(session.getAttribute("adverseEventList"));
-		assertNull(session.getAttribute("primaryAEId"));
-		verifyMocks();
-	}
-	
-	/**
-	 * This method tests {@link EditAdverseEventController#onBindOnNewForm(javax.servlet.http.HttpServletRequest, Object)}
-	 * @throws Exception
-	 */
-	public void testOnBindOnNewFormHttpServletRequestObject_CreateAction() throws Exception {
-		command.getAeReport().getAdverseEvents().clear(); //empty the adverse events
-		request.setAttribute("action", "createNew");
-		
-		EasyMock.expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(new ArrayList<ExpeditedReportSection>());
-		replayMocks();
-		controller.onBindOnNewForm(request, command);
-		verifyMocks();
-	}
-	
-	/**
-	 * This method tests {@link EditAdverseEventController#onBindOnNewForm(javax.servlet.http.HttpServletRequest, Object)}
-	 * @throws Exception
-	 */
-	public void testOnBindOnNewFormHttpServletRequestObject_AmendAction() throws Exception {
-		request.setAttribute("action", "amendReport");
-		
-		EasyMock.expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(new ArrayList<ExpeditedReportSection>());
-		replayMocks();
-		controller.onBindOnNewForm(request, command);
-		verifyMocks();
-	}
-	
 	public void testSupressValidation(){
 		Study study = Fixtures.createStudy("test");
 		Fixtures.createCtcV3Terminology(study);
@@ -123,6 +76,15 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		assertTrue(supressValidation);
 		verifyMocks();
 	}
-
+	
+	public void testOnBind_From_CaptureAE(){
+		//BJ : need to fill the testcase once the logic is final
+		assertTrue(true); 
+	}
+	
+	public void testOnBind_From_ManageReports(){
+		//BJ : need to fill the testcase once the logic is final
+		assertTrue(true); 
+	}
 
 }

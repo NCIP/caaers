@@ -49,7 +49,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
 	
 	private ModelAndView handleAeReportRequest(HttpServletRequest request, HttpServletResponse response,String aeReportId){
 		String reportId = request.getParameter("report");
-		String redirectUrl ="edit?aeReport=" + aeReportId;
+		String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;;
 		boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
 		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd)){
 			redirectUrl = "reviewAeReport?aeReport=" + aeReportId + "&report=" + reportId;

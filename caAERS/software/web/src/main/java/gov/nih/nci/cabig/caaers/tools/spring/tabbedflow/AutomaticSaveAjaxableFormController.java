@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 
 import java.io.PrintWriter;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -157,6 +158,6 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
 	}
     
     protected String getMessage(String code, String defaultMsg, Object...objects){
-    	return messageSource.getMessage(code, objects, defaultMsg, null);
+    	return messageSource.getMessage(code, objects, defaultMsg, Locale.getDefault());
     }
 }

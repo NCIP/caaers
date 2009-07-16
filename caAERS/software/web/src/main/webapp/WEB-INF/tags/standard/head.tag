@@ -5,7 +5,6 @@
 <jwr:style src="/csslib/caaers.zcss" />
 
 <tags:js name="prototype"/>
-<tags:js name="accordion.js" />
 <tags:js name="calendar" />
 <tags:js name="common" />
 
@@ -17,6 +16,8 @@
 <tags:js name="scriptaculous/controls"/>
 <tags:js name="scriptaculous/dragdrop"/>
 <tags:js name="scriptaculous/slider"/>
+
+<tags:js name="accordion"/>
 
 <tags:js name="advancedSearch"/>
 <tags:js name="common_help"/>

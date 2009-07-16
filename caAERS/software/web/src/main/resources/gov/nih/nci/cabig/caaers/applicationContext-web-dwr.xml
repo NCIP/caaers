@@ -22,7 +22,7 @@
 	</bean>
     <bean id="captureAeAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade">
-    	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao"></property>
+    	<property name="reportingPeriodDao" ref="adverseEventReportingPeriodDao"></property>
     </bean>
     <bean id="reviewRpAjaxFacade" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodAjaxFacade" parent="captureAeAjaxFacade">

@@ -434,6 +434,7 @@
     <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
       <ae:oneAdverseEvent index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
     </c:forEach>
+    <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
   </jsp:attribute>
   
 </tags:tabForm>

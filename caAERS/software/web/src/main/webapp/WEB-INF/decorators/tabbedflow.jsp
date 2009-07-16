@@ -29,6 +29,14 @@
     <chrome:workflowTabs tab="${tab}" flow="${flow}"/>
 
     <chrome:body title="${flow.name}: ${tab.longTitle}">
+        
+		<c:if test="${showReportContextMenu}">
+			<div style="position: relative;">
+				<div style="position: absolute; right: 0; top: 0; width: 170px; background-color: lime;">
+					<a href="#" id="contextMenu">Change reporting context</a>
+				</div>
+			</div>
+		</c:if>        
         <c:set var="hasSummary" value="${not empty summary}"/>
         <!-- TODO: Summary should be disabled for Overview Pages, need a better logic than this -->
         <c:if test="${hasSummary and tab.viewName != 'study/study_reviewsummary'}">

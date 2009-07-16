@@ -564,7 +564,7 @@ public class CreateAdverseEventAjaxFacade {
             if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
             	
             	//withdraw the report
-                reportRepository.deleteReport(report);
+                reportRepository.withdrawReport(report);
                 
                 //mark these as reported
                 aeReport.updateReportedFlagOnAdverseEvents();

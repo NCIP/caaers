@@ -189,6 +189,7 @@
                 <tags:renderRow field="${field}"/>
             </c:forEach>
         </chrome:division>
+        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

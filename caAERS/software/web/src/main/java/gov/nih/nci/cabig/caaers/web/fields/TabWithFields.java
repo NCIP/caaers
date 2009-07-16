@@ -2,12 +2,14 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.InPlaceEditableTab;
 
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 
 /**
@@ -23,6 +25,7 @@ import org.springframework.validation.Errors;
  */
 public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
+    protected MessageSource messageSource;
 
 
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
@@ -117,5 +120,14 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
         this.autoPopulateHelpKey = autoPopulateHelpKey;
     }
 
-   
+    public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+    public MessageSource getMessageSource() {
+		return messageSource;
+	}
+    
+    protected String getMessage(String code, String defaultMsg, Object...objects){
+    	return messageSource.getMessage(code, objects, defaultMsg, Locale.getDefault());
+    }
 }

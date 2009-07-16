@@ -11,7 +11,7 @@
     	</jsp:attribute>
     </tags:slider>
 
- <script>
+ <script><!--
  	var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
 	var catSel = null;
 	var RPCreatorClass = Class.create();
@@ -63,6 +63,13 @@
 
        
         deleteAdverseEvent:function(indx) {
+
+        	 if (!confirm("Are you sure you want to delete this?"))
+                 return false;
+             captureAE.deleteAdverseEvent(indx, '', function(ajaxOutput) {
+                 $('ae-section-' + indx).remove();
+             }.bind(this));
+            /*  =============== BJ  to be removed
             var repIdArr = new Array();
             var listOfAEIndexes = $$('.submittedAERow');
             var aeSubmitted = 0;
@@ -87,6 +94,7 @@
                     $('ae-section-' + indx).remove();
                 }.bind(this));
             }
+             */
         }
 
     });
@@ -159,7 +167,7 @@
     // ----------------------------------------------------------------------------------------------------------------
 
     function checkSubmittedAEs(event) {
-
+		/*
         var reportIdArray = new Array();
         var totalReportIdCount = 0;
         var listOfAEIndexes = $$('.submittedAERow');
@@ -181,6 +189,7 @@
             displayAmendPopup(event, reportIdArray);
         }
         document.getElementById('command')._amendReportIds.value = reportIdArray;
+        */
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -372,7 +381,7 @@
 
      // ----------------------------------------------------------------------------------------------------------------
  
- </script>
+ --></script>
 
 </head>
 <body>
@@ -405,7 +414,7 @@
 
             			<span id="observedBlankRow"></span>
             			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${not ae.solicited}">
+            				<c:if test="${not ae.solicited and not ae.retired}">
             					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="true" isSolicited="false"/>
             				</c:if> 
             			</c:forEach>   
@@ -417,15 +426,15 @@
 						<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID" autopad="true">
 							<p><tags:instructions code="instruction_ae_sae"/></p>
 							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${ae.solicited}">
+            				<c:if test="${ae.solicited and not ae.retired}">
             					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="false" isSolicited="true"/>
             				</c:if> 
             			</c:forEach>   
  						</chrome:box>
 					</c:if>
 					<%--  End of Solicited AE section --%>
-					
-					<%-- Begin : Sections that will be displayed in Amend PopUp --%>
+<%-- ================================================================================================ 				
+					< % -- Begin : Sections that will be displayed in Amend PopUp -- % >
 					<div id="display_amend_popup" style="display:none;text-align:left" >
 				    	<chrome:box title="Amendments Required" id="popupId">
 				    		<c:if test="${not empty command.participant}">
@@ -481,8 +490,8 @@
       						</div>
     					</chrome:box>	
     				</div>
-					<%-- End : Sections displayed in amend popup --%>
-					
+					< % -- End : Sections displayed in amend popup --  % >
+========================================================================================================================== --%>					
 					
 				</c:if>
 			</div>

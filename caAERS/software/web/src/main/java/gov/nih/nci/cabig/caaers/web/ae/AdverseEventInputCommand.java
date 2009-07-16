@@ -9,7 +9,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
  * @author Krikor Krumlian
  */
 public interface AdverseEventInputCommand {
-
+	
+	Integer ZERO = new Integer(0);
+	
     StudyParticipantAssignment getAssignment();
 
     Participant getParticipant();

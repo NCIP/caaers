@@ -266,33 +266,67 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return referenceData;
 	}
 	
+	
+	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		HttpSession session = request.getSession();
 		
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
+
+		//populate the base date, associated to each report definition.
+		command.getReviewResult().setBaseDateMap(command.findBaseDateMap(command.getReviewResult().getAeReportId()));
+		
+		//populate the report-IDs (for withdraw & amend)
+		command.populateReportsToAmend();
+		command.populateReportsToWithdraw();
+		
+		//populate the reports to un-amend
+		command.populateReportsToUnAmend();
+		
+		//populate the aes- to remove.
+		command.populateAdverseEventsToRemove();
+		
+		//check if this is alone a withdraw ?
+		if(command.getReviewResult().isOnlyActionWithdraw()){
+			//after withdraw stick to current page.
+		}else{
+			//
+		}
+		
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
-		
-		String action = (String)findInRequest(request, "_action");
-		String aeReportIdString = (String)findInRequest(request, "_reportId");
-		Integer aeReportId;
-		
-		// Set the parameters in the session.
-		if(!action.equals(CREATE_NEW_TASK)){
-			aeReportId = Integer.parseInt(aeReportIdString);
-			session.setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
-			model.put("aeReport", aeReportId);
-		}
-		
-		session.setAttribute(ACTION_PARAMETER, action);
-		session.setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
-		session.setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
-		session.setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
-		session.setAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER, command.getPrimaryAdverseEventId());
-		
+	    if(command.getReviewResult().getAeReportId() > 0){
+	    	model.put("aeReport", command.getReviewResult().getAeReportId().intValue());
+	    }
+	    model.put("from", "captureAE");
+	    
+	    session.setAttribute("reviewResult", command.getReviewResult());
 	    return new ModelAndView("redirectToExpeditedAeEdit", model);
+	    
+//	    to be removed....
+	    
+//	    
+//		
+//		String action = (String)findInRequest(request, "_action");
+//		String aeReportIdString = (String)findInRequest(request, "_reportId");
+//		Integer aeReportId;
+//		
+//		// Set the parameters in the session.
+//		if(!action.equals(CREATE_NEW_TASK)){
+//			aeReportId = Integer.parseInt(aeReportIdString);
+//			session.setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
+//			model.put("aeReport", aeReportId);
+//		}
+//		
+//		session.setAttribute(ACTION_PARAMETER, action);
+//		//session.setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
+//		session.setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
+//		session.setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
+//		session.setAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER, command.getPrimaryAdverseEventId());
+		
+	   
 	}
 	
 	/**
@@ -415,7 +449,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("Enter AEs || Select Subject and Study");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());
-				flow.addTab(new AdverseEventConfirmTab("Review and Report", "Review and Report", "ae/ae_reviewsummary"));
+				//flow.addTab(new AdverseEventConfirmTab("Review and Report", "Review and Report", "ae/ae_reviewsummary"));
+				flow.addTab(new ReviewAndReportTab());
 				return flow;
 			}
 		};

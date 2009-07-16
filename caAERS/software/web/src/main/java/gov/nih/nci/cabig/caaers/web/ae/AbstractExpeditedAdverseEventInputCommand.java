@@ -29,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -81,6 +82,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected List<Map<Integer, Boolean>> outcomes;
     protected List<String> outcomeOtherDetails; 
     protected List<ReportDefinition> selectedReportDefinitions;
+
+    private List<ReportDefinition> newlySelectedReportDefinitions;
+    private  List<ReportDefinition> applicableReportDefinitions;
+
     private boolean workflowEnabled;
     protected RenderDecisionManager renderDecisionManager;
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -94,6 +99,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
 
     protected HashMap<String, Boolean> rulesErrors;
+    
+    //from which screen flow, we reached expedited flow
+    private String screenFlowSource;
+    
+    protected EvaluationService evaluationService;
     
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
@@ -115,6 +125,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.outcomeOtherDetails = new ArrayList<String>();
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
         this.selectedReportDefinitions = new ArrayList<ReportDefinition>();
+        this.newlySelectedReportDefinitions = new ArrayList<ReportDefinition>();
+        this.applicableReportDefinitions = new ArrayList<ReportDefinition>();
         this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
     }
 
@@ -128,11 +140,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     
     public void save(){
     	
+//    	BJ========= to be removed
     	//clear reported flag on modified adverse events.
-    	aeReport.clearReportedFlagOnModifiedAdverseEvents();
-    	
-    	//modify the signatures of the adverse events in this report.
-    	aeReport.updateSignatureOfAdverseEvents();
+//    	aeReport.clearReportedFlagOnModifiedAdverseEvents();
+//    	
     	
     	reportDao.save(aeReport);
     }
@@ -188,27 +199,31 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void setMandatorySections(Collection<ExpeditedReportSection> sections) {
         this.mandatorySections = sections;
     }
+   
+    /**
+     * This method will find the mandatory sections associated to expedited report, and the report definitions selected.
+     */
+    public void refreshMandatorySections(){
+    	ReportDefinition[] selected = this.selectedReportDefinitions.toArray(new ReportDefinition[]{});
+        Collection<ExpeditedReportSection> mandatorySections = evaluationService.mandatorySections(aeReport, selected);
+        setMandatorySections(mandatorySections);
+    }
 
+    /**
+     * This method will populate the mandatory fields, based on the selected report definitions
+     */
     public void refreshMandatoryProperties() {
-        if (aeReport.getReports() == null) return;
         mandatoryProperties = new MandatoryProperties(expeditedReportTree);
-        List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         
-        if(aeReport.getId() == null){
-        	for(ReportDefinition reportDef : selectedReportDefinitions){
-        		List<ReportMandatoryFieldDefinition> mFieldList = reportDef.getMandatoryFields();
-        		if(mFieldList != null) mandatoryFields.addAll(mFieldList);
-        	}
-        }else{
-        	for(Report report : aeReport.getActiveReports()){
-        		List<ReportMandatoryFieldDefinition> mFieldList = report.getReportDefinition().getMandatoryFields();
-        		if(mFieldList != null) mandatoryFields.addAll(mFieldList);
-        	}
-        }
-
-        for (ReportMandatoryFieldDefinition field : mandatoryFields) {
-        		mandatoryProperties.add(field);
-        }
+        for(ReportDefinition reportDef : selectedReportDefinitions){
+    		List<ReportMandatoryFieldDefinition> mFieldList = reportDef.getMandatoryFields();
+    		if(mFieldList != null){
+    			for (ReportMandatoryFieldDefinition field : mFieldList) {
+            		mandatoryProperties.add(field);
+    			}
+    		}
+    	}
+        
     }
 
     /**
@@ -407,15 +422,16 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     		}
     	}
     	
-    	for(Report r : getAeReport().getActiveReports()){
-    		ReportDefinition rd = r.getReportDefinition();
-    		map.put(rd.getId(), rd);
-    	}
-    	
-    	//reassociate them with current running session
-    	for(ReportDefinition rd : map.values()){
-    		reportDefinitionDao.reassociate(rd);
-    	}
+//		BJ : to be removed....  
+//    	
+//    	for(Report r : getAeReport().getActiveReports()){
+//    		ReportDefinition rd = r.getReportDefinition();
+//    		map.put(rd.getId(), rd);
+//    	}
+//    	//reassociate them with current running session
+//    	for(ReportDefinition rd : map.values()){
+//    		reportDefinitionDao.reassociate(rd);
+//    	}
     	
     	renderDecisionManager.updateRenderDecision(map.values());
     	
@@ -569,4 +585,30 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void setRulesErrors(HashMap<String, Boolean> rulesErrors) {
         this.rulesErrors = rulesErrors;
     }
+    
+    /**
+     * Tells from which screen flow, we reached into expedited flow
+     * @return
+     */
+    public String getScreenFlowSource() {
+		return screenFlowSource;
+	}
+    public void setScreenFlowSource(String screenFlowSource) {
+		this.screenFlowSource = screenFlowSource;
+	}
+    
+    public List<ReportDefinition> getNewlySelectedReportDefinitions() {
+    	// TODO Auto-generated method stub
+    	return newlySelectedReportDefinitions;
+    }
+    public void setNewlySelectedReportDefinitions(List<ReportDefinition> newlySelectedReportDefinitions) {
+    	this.newlySelectedReportDefinitions = newlySelectedReportDefinitions;
+    }
+    public List<ReportDefinition> getApplicableReportDefinitions() {
+    	return this.applicableReportDefinitions;
+    }
+    public void setApplicableReportDefinitions(List<ReportDefinition> selectedReportDefinitions) {
+    	this.selectedReportDefinitions = selectedReportDefinitions;
+    }
+    
 }

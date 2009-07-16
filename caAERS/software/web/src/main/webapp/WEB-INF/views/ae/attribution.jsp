@@ -82,6 +82,7 @@
         <c:forEach var="offset" begin="0" end="${fn:length(command.aeReport.adverseEvents) - 1}" step="${MAX_COLS}">
             <ae:attributionTable adverseEvents="${command.aeReport.adverseEvents}" blocks="${blocks}"maxAEs="${MAX_COLS}" offset="${offset}"/>
         </c:forEach>
+        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

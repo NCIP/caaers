@@ -111,36 +111,6 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	}
 	
 	/**
-	 * This method tests {@link CaptureAdverseEventInputCommand#getSelectedAesList()}
-	 */
-	public void testGetSelectedAesList(){
-		//refresh the selected ae map.
-		command.getSelectedAesMap().put(1, false);
-		command.getSelectedAesMap().put(2, true);
-		List<AdverseEvent> aeList = command.getSelectedAesList();
-		System.out.println(aeList);
-		assertEquals(1, aeList.size());
-		assertEquals(new Integer(2), aeList.get(0).getId());
-		
-	}
-	
-	/**
-	 * This method tests {@link CaptureAdverseEventInputCommand#getSelectedAesList()}
-	 */
-	public void testGetSelectedAesList_WhenAssociatedToExpeditedReport(){
-		//refresh the selected ae map.
-		command.getSelectedAesMap().put(1, false);
-		command.getSelectedAesMap().put(2, true);
-		command.getAdverseEvents().get(1).setReport(new ExpeditedAdverseEventReport());
-		List<AdverseEvent> aeList = command.getSelectedAesList();
-		assertEquals(0, aeList.size());
-		
-	}
-	
-
-	
-	
-	/**
 	 * This method tests {@link CaptureAdverseEventInputCommand#initializeOutcomes()}
 	 */
 	public void testInitializeOutcomes(){

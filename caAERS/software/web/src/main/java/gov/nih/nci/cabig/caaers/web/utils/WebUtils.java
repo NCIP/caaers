@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.utils;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -193,5 +194,26 @@ public class WebUtils {
             logger.debug("F: This field copied from XML Rules Files to the Mandatory Fields Hashmap: " + key);
         }
     }
+    
+    
+    public static String getStringParameter(HttpServletRequest request, String param){
+    	String value = request.getParameter(param);
+    	if(value == null) value = "";
+    	return value;
+    }
+    
+    public static int getIntParameter(HttpServletRequest request, String param){
+    	return Integer.parseInt(getStringParameter(request, param));
+    }
 
+    public static int[] getIntParameters(HttpServletRequest request, String param){
+    	ArrayList<Integer> values = new ArrayList<Integer>();
+    	int ival =  Integer.parseInt(getStringParameter(request, param));
+    	values.add(ival);
+    	int[] ivals = new  int[values.size()];
+    	for(int i = 0; i < ivals.length; i++){
+    		ivals[i] = values.get(i);
+    	}
+    	return ivals;
+    }
 }

@@ -240,7 +240,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReportBeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventConfirmTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReviewAndReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
 		<!--  Advanced search flow -->

@@ -611,7 +611,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         reportingPeriod.addAeReport(report);
         
         Report r = Fixtures.createReport("test report");
-        r.addReportVersion(new ReportVersion());
         report.addReport(r);
         command.setAeReport(report);
         session.setAttribute(EditAdverseEventController.class.getName() + ".FORM.command", command);

@@ -182,15 +182,16 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
      * This method will find all avaliable report definitions for all the StudyOrganizations. 
      */
     public List<ReportDefinition> findAllReportDefintionNames(){
-    	// evalutate available report definitions per session.
-    	if(this.allReportDefinitions.isEmpty()){
-    		this.allReportDefinitions.addAll(evaluationService.applicableReportDefinitions(this.aeReport.getAssignment()));
-    		//upate the index map
-    		for(ReportDefinition repDef : allReportDefinitions){
-    			reportDefinitionIndexMap.put(repDef.getId(), repDef);
-    		}
-    	}
-    	return this.allReportDefinitions;
+//    	// evalutate available report definitions per session.
+//    	if(this.allReportDefinitions.isEmpty()){
+//    		this.allReportDefinitions.addAll(evaluationService.applicableReportDefinitions(this.aeReport.getAssignment()));
+//    		//upate the index map
+//    		for(ReportDefinition repDef : allReportDefinitions){
+//    			reportDefinitionIndexMap.put(repDef.getId(), repDef);
+//    		}
+//    	}
+//    	return this.allReportDefinitions;
+    	return null;
     }
     
     public List<ReportDefinition> findRequiredReportDefinitions(){
@@ -222,7 +223,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
      * This method will find the newly selected reports.
      * @return
      */
-    public  Collection<ReportDefinition> getNewlySelectedReportDefinitions(){
+    public  List<ReportDefinition> getNewlySelectedReportDefinitions(){
     	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
     	List<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
     	
@@ -236,7 +237,8 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     	}
     	
     	Collection<ReportDefinition> difference =  selectedMap.values();
-    	return difference;
+    	return null;
+    	//return difference;
     }
     /**
      * This method will create new reports by calling evaluation service.
@@ -266,7 +268,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		 }
 		 Collection<Report> reportsToDelete = unselectedMap.values();
 		 for(Report report : reportsToDelete){
-			 reportRepository.deleteReport(report);
+			 reportRepository.withdrawReport(report);
 		 }
 		 
 	}

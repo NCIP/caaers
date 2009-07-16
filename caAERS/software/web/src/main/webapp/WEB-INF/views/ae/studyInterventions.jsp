@@ -266,13 +266,13 @@ function closeAll() {
             </jsp:body>
         </chrome:box>
     </c:if>
-
+	
 <%--
     <c:if test="${hasBehavioral}">
         <chrome:box title="Behavioral" collapsable="true"></chrome:box>
     </c:if>
 --%>
-
+	<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     <tags:tabControls flow="${flow}" tab="${tab}" />
     <tags:tabFields tab="${tab}" />
 </form:form>

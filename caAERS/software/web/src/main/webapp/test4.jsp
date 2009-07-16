@@ -5,12 +5,20 @@
 <script src="js/scriptaculous/effects.js"></script>
 
 <script src="js/accordion.js"></script>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 var myAccordion;
+
+function showMe(){
+	$('newdc').show()
+	var last = $$('.accordion-toggle').last();
+	alert(last);
+	//last.fire('click');
+	myAccordion.expand(last);
+}
 Event.observe(window, 'load',  function(){
 	myAccordion = new Accordion("test-accordion", 2);
 });
-</script>
+--></script>
 <style type="text/css">
 .accordion-toggle {
 			display: block;
@@ -51,7 +59,7 @@ Event.observe(window, 'load',  function(){
 <body>
 <div >
   <h2>Welcome</h2>
-  <a href="#" onclick="{$('newdc').show()}" >Are you a JS geek?</a>
+  <a href="#" onclick="showMe()" >Are you a JS geek?</a>
 </div>
 <div id="test-accordion" class="accordion">
 	<div class="accordion-toggle">At last</div>
@@ -90,6 +98,7 @@ Event.observe(window, 'load',  function(){
 	<div class="accordion-content">
 		<p>
 		 Yes You are!!!!
+		 So get up from your seat!!!!
 		</p>
 	</div>
 	</div>

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -53,9 +54,8 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 		aeReport.setId(1);
 		Report report = new Report();
-		ReportVersion reportVersion = new ReportVersion();
+		ReportVersion reportVersion =  report.getLastVersion();
 		reportVersion.setReportStatus(ReportStatus.COMPLETED);
-		report.addReportVersion(reportVersion);
 		aeReport.addReport(report);
 		SubmitReportAjaxFacade facadeMock = registerMockFor(SubmitReportAjaxFacade.class);
 		expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();

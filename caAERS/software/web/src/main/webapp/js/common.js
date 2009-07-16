@@ -729,4 +729,44 @@ function expandImageClick(imgID, targetID) {
 }
 
 //---------------------------------------------------------------------------------------------------------------------
+Event.observe(window, 'load', function(){
+	Event.observe('contextMenu', 'click' , showContexMenu);
+});
+//this function is used to show the reporting context menu
+ function showContexMenu(evt){
+  var el = Event.element(evt);
+  var xtop = Event.pointerY(evt)- 40;
+  var xleft = Event.pointerX(evt) - 360;
+  var win = new Window({ 
+               id: 'context-window' , 
+               className: "alphacube", 
+               closable : false, 
+               minimizable : false, 
+               maximizable : false, 
+               title: "Edit Reporting Context", 
+               height:100, 
+               width: 250, 
+               top: xtop, 
+               left: xleft
+               });
+           
+  win.setDestroyOnClose(); 
+  win.setContent( 'contextMenuContent', false,false );
+  win.show();
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//this function is invoked, when the reporting context menu is closed.
+function closeContextMenu(btn, refresh){
+   Windows.close('context-window');
+   if(refresh){
+  	updatePage.delay(2);
+   }
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//this function will re-submit the page
+function updatePage(){
+	$("flow-update").click();
+}
 

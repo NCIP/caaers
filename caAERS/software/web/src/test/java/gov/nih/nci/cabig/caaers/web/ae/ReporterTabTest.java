@@ -60,7 +60,6 @@ public class ReporterTabTest extends AeTabTestCase {
     protected AeTab createTab() {
         ReporterTab tab = new ReporterTab();
         tab.setEvaluationService(evaluationService);
-        tab.setConfigurationProperty(configurationProperty);
         return tab;
     }
 
@@ -182,9 +181,8 @@ public class ReporterTabTest extends AeTabTestCase {
     		reportDefinition.setOrganization(Fixtures.createOrganization("test org"));
     		reportDefinition.getOrganization().setNciInstituteCode("test nci code");
     		report.setReportDefinition(reportDefinition);
-    		ReportVersion reportVersion= new ReportVersion();
+    		ReportVersion reportVersion= report.getLastVersion();
     		reportVersion.setReportStatus(ReportStatus.PENDING);
-    		report.addReportVersion(reportVersion);
     		command.getAeReport().addReport(report);
     	}
     }
@@ -205,181 +203,5 @@ public class ReporterTabTest extends AeTabTestCase {
     	rd.setId(10);
     	command.getSelectedReportDefinitions().add(rd);
     }
-    
-    /**
-     * This method tests the postProcess method when the user has chosen the "createNew" option in the review-report page.
-     * @throws Exception
-     */
-    public void testPostProcess() throws Exception{
-    	request.getSession().setAttribute("action", "createNew");
-    	additionalSetupOnCommand();
-    	setupSelectedReportDefintiions();
-    	command.setWorkflowEnabled(false);
-    	expect(command.getEvaluationService().addOptionalReports(command.getAeReport(), command.getReportDefinitionListForCreation(), false)).andReturn(null);
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	replayMocks();
-    	((ReporterTab)tab).postProcess(request, command, errors);
-    	verifyMocks();
-    	assertEquals("ReportDefinitionListForCreation is set incorrectly", 1, command.getReportDefinitionListForCreation().size());
-    }
-    
-    /**
-     * This method tests the onDisplay method when the user has chosen the "edit" option in the review-report page and not selected any new reports.
-     * @throws Exception
-     */
-    public void testOnDisplayEditNoNewReports() throws Exception{
-    	addReportsToAeReport();
-    	additionalSetupOnCommand();
-    	request.getSession().setAttribute("action", "editReport");
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	replayMocks();
-    	((ReporterTab)tab).onDisplay(request, command);
-    	verifyMocks();
-    }
-    
-    /**
-     * This method tests the onDisplay method when the user has chosen the "edit" option in the review-report page and selected new reports whose due date is
-     * earlier than that of the existing report.
-     * @throws Exception
-     */
-    public void testOnDisplayEditNewReportsEarlier() throws Exception{
-    	addReportsToAeReport();
-    	additionalSetupOnCommand();
-    	
-    	// Set the due dates on the existing reports and modify the amendable/expedited properties
-    	ReportDefinition rd = command.getAeReport().getReports().get(0).getReportDefinition();
-    	rd.setAmendable(true);
-    	rd.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
-    	rd.setId(1);
-    	rd.setName("test existing amendable report");
-    	
-    	rd = command.getAeReport().getReports().get(1).getReportDefinition();
-    	rd.setName("test 24 hr notification");
-    	
-    	//command.getAeReport().getReports().get(1).getReportDefinition().setId(10);
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    	Calendar now = GregorianCalendar.getInstance();
-    	now.add(Calendar.DAY_OF_MONTH, 7);
-    	String dateString = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
-    	command.getAeReport().getReports().get(0).setDueOn(formatter.parse(dateString));
-    	command.getAeReport().getReports().get(1).setDueOn(formatter.parse(dateString));
-    	
-    	// Setup the newly Selected ReportDefinition
-    	setupSelectedReportDefintiions();
-    	request.getSession().setAttribute("action", "editReport");
-
-    	// Setup the expect calls
-    	for(ReportDefinition rpdef : command.getSelectedReportDefinitions()){
-    		expect(reportDefinitionDao.merge(rpdef)).andReturn(rpdef);
-    	}
-    	expect(command.getEvaluationService().addOptionalReports(command.getAeReport(), command.getReportDefinitionListForCreation(), false)).andReturn(null);
-    	reportRepository.replaceReport(command.getAeReport().getReports().get(0));
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	
-    	replayMocks();
-    	// actual call to the method being tested.
-    	((ReporterTab)tab).onDisplay(request, command);
-    	verifyMocks();
-    	
-    	assertEquals("Incorrect number of reports for creation", 1, command.getReportDefinitionListForCreation().size());
-    	assertEquals("Incorrect number of reports for withdrawal", 1, command.getReportListForWithdrawal().size());
-    }
-    
-    /**
-     * This method tests the onDisplay method when the user has chosen the "edit" option in the review-report page and selected new reports whose due dates is
-     * later than that of the existing reports.
-     * @throws Exception
-     */
-    public void testOnDisplayEditNewReportsLater() throws Exception{
-    	addReportsToAeReport();
-    	additionalSetupOnCommand();
-    	
-    	// Set the due dates on the existing reports and modify the amendable/expedited properties
-    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
-    	command.getAeReport().getReports().get(1).getReportDefinition().setName("test 24 hr notification");
-    	command.getAeReport().getReports().get(0).getReportDefinition().setId(10);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setName("test existing amendable report");
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    	Calendar now = GregorianCalendar.getInstance();
-    	now.add(Calendar.DAY_OF_MONTH, 3);
-    	String dateString = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DAY_OF_MONTH);
-    	command.getAeReport().getReports().get(0).setDueOn(formatter.parse(dateString));
-    	command.getAeReport().getReports().get(1).setDueOn(formatter.parse(dateString));
-    	
-    	// Setup the newly Selected ReportDefinition
-    	setupSelectedReportDefintiions();
-    	request.getSession().setAttribute("action", "editReport");
-
-    	// Setup the expect calls
-    	//expect(command.getEvaluationService().addOptionalReports(command.getAeReport(), command.getReportDefinitionListForCreation(), false)).andReturn(null);
-    	//reportRepository.replaceReport(command.getAeReport().getReports().get(0));
-    	
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	
-    	replayMocks();
-    	// actual call to the method being tested.
-    	((ReporterTab)tab).onDisplay(request, command);
-    	verifyMocks();
-    	
-    	assertEquals("Incorrect number of reports for creation", 0, command.getReportDefinitionListForCreation().size());
-    	assertEquals("Incorrect number of reports for withdrawal", 0, command.getReportListForWithdrawal().size());
-    }
-    
-    /**
-     * This method tests the onDisplay method when the user has chosen the "amend" option in the review-report page and not selected any new reports.
-     * @throws Exception
-     */
-    public void testOnDisplayAmendNoNewReports() throws Exception{
-    	addReportsToAeReport();
-    	additionalSetupOnCommand();
-    	request.getSession().setAttribute("action", "amendReport");
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	replayMocks();
-    	((ReporterTab)tab).onDisplay(request, command);
-    	verifyMocks();
-    }
-    
-    /**
-     * This method tests the onDisplay method when the user has chosen the "amend" option in the review-report page and selected new reports which are similar
-     * to the existing ones. Example, if the aeReport has a 10day report and the user tries to amend it with a 10day report.
-     * @throws Exception
-     */
-    public void testOnDisplayAmendDifferentNewReports() throws Exception{
-    	addReportsToAeReport();
-    	additionalSetupOnCommand();
-    	
-    	// Set the due dates on the existing reports and modify the amendable/expedited properties
-    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-    	command.getAeReport().getReports().get(0).getReportDefinition().setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
-    	command.getAeReport().getReports().get(1).getReportDefinition().setName("test 24 hr notification");
-    	command.getAeReport().getReports().get(0).getReportDefinition().setId(11);
-    	
-    	command.getAeReport().getReports().get(0).setStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(0).getLastVersion().setSubmittedOn(new Date());
-    	command.getAeReport().getReports().get(0).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(1).setStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(1).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(1).getLastVersion().setSubmittedOn(new Date());
-    	
-    	// Setup the newly Selected ReportDefinition
-    	setupSelectedReportDefintiions();
-    	request.getSession().setAttribute("action", "amendReport");
-
-    	// Setup the expect calls
-    	reportRepository.createAndAmendReport(command.getSelectedReportDefinitions().get(0), command.getAeReport().getReports().get(0), false);
-    	expeditedReportDao.save(command.getAeReport());
-    	expect(command.getEvaluationService().mandatorySections(command.getAeReport())).andReturn(null);
-    	
-    	replayMocks();
-    	// actual call to the method being tested.
-    	((ReporterTab)tab).onDisplay(request, command);
-    	verifyMocks();
-    	
-    }
+   
 }

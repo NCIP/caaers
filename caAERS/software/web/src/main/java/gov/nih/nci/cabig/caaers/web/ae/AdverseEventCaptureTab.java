@@ -285,6 +285,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         List aes = new ArrayList();
         while (it.hasNext()) {
             AdverseEvent ae = (AdverseEvent)it.next();
+            if(ae.isRetired()) continue;
             StringBuffer key = new StringBuffer(ae.getAdverseEventTerm().getTerm().getId().toString());
             if (ae.getAdverseEventTerm().isOtherRequired()) {
                 if (ae.getLowLevelTerm() == null) continue;
@@ -314,6 +315,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // CHECKING VERBATIM LENGTH
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+        	if(ae.isRetired()) continue;
 
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
                 errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");

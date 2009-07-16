@@ -32,6 +32,19 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     List<String> getOutcomeOtherDetails();
     void updateOutcomes();
     
+    //report definitions selected at a given point in time.(used for context switching)
+    void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
+    List<ReportDefinition> getSelectedReportDefinitions();
+    
+    //all the applicable report definitions (used by context switching)
+    void setApplicableReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
+    List<ReportDefinition> getApplicableReportDefinitions();
+    
+    //the report definitions, that are to be created
+    void setNewlySelectedReportDefinitions(List<ReportDefinition> newlySelectedReportDefinitions);
+    List<ReportDefinition> getNewlySelectedReportDefinitions();
+    
+    
     /*
      * attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs in
      * AdverseEventReport and AdverseEvent
@@ -52,8 +65,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void initializeMandatorySectionFields();
     MandatoryProperties getMandatoryProperties();
     List<ReportDefinition> getInstantiatedReportDefinitions();
-    void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
-    List<ReportDefinition> getSelectedReportDefinitions();
+   
     void setNextPage(int page);
     int getNextPage();
     Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm);

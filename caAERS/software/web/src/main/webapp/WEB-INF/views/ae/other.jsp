@@ -56,7 +56,7 @@
             <ae:oneOtherCause index="${status.index}"/>
         </c:forEach>
         <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
-        
+        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
     <jsp:attribute name="localButtons">
     </jsp:attribute>

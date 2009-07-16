@@ -30,6 +30,7 @@
 <c:if test="${not hideBox}">
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
     	<jsp:invoke fragment="header" />
+    	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
             <chrome:flashMessage/><tags:tabFields tab="${tab}"/>
             <chrome:division id="single-fields">
@@ -49,6 +50,7 @@
     </form:form>
 </c:if>
 <c:if test="${hideBox}">
+	<chrome:warningMessage/>
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
     	<jsp:invoke fragment="header" />
     	<chrome:flashMessage/>

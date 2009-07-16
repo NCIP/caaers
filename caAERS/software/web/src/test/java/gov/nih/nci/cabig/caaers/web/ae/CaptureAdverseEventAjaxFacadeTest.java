@@ -68,19 +68,25 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	public void testRefreshReportingPeriodAndGetDetails() {
 		assertTrue(true);
 	}
-
-	public void testDeleteAdverseEventNoAmend() {
+	
+	/**
+	 * Should only mark the AE as retired. 
+	 * Should  save  reporting period.
+	 * 
+	 */
+	public void testDeleteAdverseEvent(){
 		CaptureAdverseEventInputCommand command = setupCaptureAdverseEventCommand();
 		facade.setReportingPeriodDao(adverseEventReportingPeriodDao);
-		CaptureAdverseEventAjaxFacade facadeMock = registerMockFor(CaptureAdverseEventAjaxFacade.class);
 		
-		expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
+		assertFalse(command.getAdverseEventReportingPeriod().getAdverseEvents().get(1).isRetired());
+
 		adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
 		replayMocks();
-		facade.deleteAdverseEvent(1,null);
+		
+		AjaxOutput output = facade.deleteAdverseEvent(1, "");
+		assertTrue(command.getAdverseEventReportingPeriod().getAdverseEvents().get(1).isRetired());
+		assertFalse(output.getError());
 		verifyMocks();
-		assertEquals(4, command.getAdverseEvents().size());
-		assertEquals(3, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
 	}
 	
 	public void testControllers(){

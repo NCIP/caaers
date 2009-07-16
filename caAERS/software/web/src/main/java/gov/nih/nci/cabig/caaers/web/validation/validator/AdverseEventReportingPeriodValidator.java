@@ -4,6 +4,7 @@ import java.util.Date;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -38,8 +39,11 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 * @return boolean
 	 */
 	public boolean validGradeValues(AdverseEventReportingPeriod adverseEventReportingPeriod){
-		if(adverseEventReportingPeriod.getEvaluatedAdverseEvents().size() < adverseEventReportingPeriod.getAdverseEvents().size())
-			return false;
+		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+			if(ae.isRetired()) continue;
+			if(ae.getGrade() == null || ae.getGrade().equals(Grade.NOT_EVALUATED))
+				return false;
+		}
 		return true;
 	}
 	
@@ -50,6 +54,7 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 */
 	public boolean validHospitalization(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+			if(ae.isRetired()) continue;
 			if(ae.getGrade() != null && ae.getGrade().getCode() >= 2 && ae.getHospitalization() == null){
 				return false;
 			}
@@ -64,6 +69,7 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 */
 	public boolean validAttribution(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+			if(ae.isRetired()) continue;
 			if(ae.getGrade() != null && ae.getGrade().getCode() >= 1 && ae.getAttributionSummary() == null){
 				return false;
 			}
@@ -101,6 +107,7 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	 */
 	public boolean validateOtherSpecifyTerms(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+			if(ae.isRetired()) continue;
 			if(ae.getAdverseEventTerm().isOtherRequired()){
 				if(ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
 					return false;

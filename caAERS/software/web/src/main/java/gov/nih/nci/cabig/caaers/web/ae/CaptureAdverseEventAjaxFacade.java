@@ -1,19 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.ajax.AdverseEventReportingPeriodAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -28,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -36,7 +32,6 @@ import org.springframework.validation.ObjectError;
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
-	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 
@@ -161,6 +156,15 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput deleteAdverseEvent(int index, String reportId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
+    	deletedAe.retire(); //soft delete
+    	//save the reporting period
+    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+    	
+    	return new AjaxOutput();
+    	
+    	/* BJ =========== existing code to be removed
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	//command.reassociate();
     	
     	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
@@ -219,6 +223,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	}
     	
     	return new AjaxOutput();
+    	*/
     }
     
     public AjaxOutput addReviewComment(String comment){
@@ -313,10 +318,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	return output;
     }
     
-    @Required
-    public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
-		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-	}
     
     public AjaxOutput fetchCourses(Integer studyId, Integer participantId){
     	Study study = studyDao.getById(studyId);
@@ -350,7 +351,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     }
     
     public AjaxOutput fetchCourseDetails(Integer id){
-    	AdverseEventReportingPeriod rp = adverseEventReportingPeriodDao.getById(id);
+    	AdverseEventReportingPeriod rp = reportingPeriodDao.getById(id);
     	AdverseEventReportingPeriodAjaxableDomainObject rpAjaxable = new AdverseEventReportingPeriodAjaxableDomainObject();
     	rpAjaxable.setId(rp.getId());
     	rpAjaxable.setStartDate(rp.getStartDate());

@@ -58,6 +58,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         createFieldGroups(creator, command);
         return creator.getMap();
     }
+    
 
     /**
      * Template method for subclasses to instantiate their fields via the
@@ -76,7 +77,24 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         populateEmptyMandatoryFieldMap(fieldGroups, command);
         request.setAttribute("empties", emptyFieldNameMap);
         WebUtils.synchronzeErrorFields(emptyFieldNameMap, command.getRulesErrors());
+        String warning = generateWarningMessage(command); 
+        //put the warning message.
+        if(warning != null){
+        	refData.put("warningMessage", warning);
+        }
         return refData;
+    }
+    
+    /**
+     * Check if adverse event is modified, if so, generate warning message.
+     * @param command
+     * @return
+     */
+    public String generateWarningMessage(ExpeditedAdverseEventInputCommand command){
+    	if(!command.getAeReport().getModifiedAdverseEvents().isEmpty()){
+    		return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{});
+    	}
+    	return null;
     }
     
     /**
@@ -250,7 +268,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
     }
-
+    
+    
     // ////
 
     protected class AeInputFieldCreator {

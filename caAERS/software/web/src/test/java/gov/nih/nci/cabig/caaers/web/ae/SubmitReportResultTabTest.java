@@ -65,7 +65,6 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	private void setupCommand(){
 		Report report = Fixtures.createReport("10 day report");
 		report.setId(1);
-		report.addReportVersion(new ReportVersion());
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 		aeReport.addReport(report);
 		command.setReportIndex("0");

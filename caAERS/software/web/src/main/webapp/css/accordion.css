@@ -1,0 +1,24 @@
+/**** The CSS associated to accordions ******/
+.accordion-toggle {
+	display: block;
+	background: url(../images/accordion_toggle.jpg) no-repeat top right #a9d06a;
+	padding: 0 10px 0 10px;
+	line-height: 30px;
+	outline: none;
+	border-bottom: 1px solid #cde99f;
+	cursor: pointer;
+	margin: 0 0 0 0;
+}
+		
+.accordion-toggle-active {
+	background: url(../images/accordion_toggle_active.jpg) no-repeat top right #e0542f;
+	color: #ffffff;
+	border-bottom: 1px solid #f68263;
+}
+		
+.accordion-content {
+	background-color: #ffffff;
+	color: #444444;
+	overflow: hidden;
+	height:auto;
+}

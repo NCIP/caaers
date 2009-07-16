@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,13 +34,11 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
-   
-    private EvaluationService evaluationService;
-   
+
     
+    //BJ----------------- remove variables
     private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
     private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>();
-    List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
     List<ReportDefinition> reportDefinitionListForCreation = new ArrayList<ReportDefinition>();
     List<Report> reportListForWithdrawal = new ArrayList<Report>();
@@ -101,13 +100,14 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
      * @param command
      */
     public void classifyNewlySelectedReportsDefinitons(){
-    	String nciInstituteCode = getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-    	for(ReportDefinition reportDefinition: newlySelectedDefs){
-    		if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode) && reportDefinition.getAmendable() && reportDefinition.getExpedited())
-    			newlySelectedSponsorReports.add(reportDefinition);
-    		else
-    			otherSelectedReports.add(reportDefinition);
-    	}
+    	throw new UnsupportedOperationException("to be removed");
+//    	String nciInstituteCode = getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+//    	for(ReportDefinition reportDefinition: newlySelectedReportDefinitions){
+//    		if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode) && reportDefinition.getAmendable() && reportDefinition.getExpedited())
+//    			newlySelectedSponsorReports.add(reportDefinition);
+//    		else
+//    			otherSelectedReports.add(reportDefinition);
+//    	}
     }
     
     /**
@@ -124,6 +124,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
      * Note :- This method works on the base assumption that there will only be one amendable sponsor report completed at given point in time.
      */
     public void populateCreationAmendmentAndWithdrawlList(){
+    	
+    	throw new UnsupportedOperationException("to be removed");
 //    	BJ: dont delete this comment.
 //    	// For Sponsor/amendable newlySelectedReport take the following action
 //    	//        - create New report if it doesnt exist
@@ -146,13 +148,13 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 //    		}
 //    	}
     	
-    	
-    	
+    	/*
+    	======== BJ remove ========
     	Set<Report> masterSetOfReportToAmmend = new HashSet<Report>();//to prevent double amending reports.
-    	if(newlySelectedDefs != null && !newlySelectedDefs.isEmpty()){
+    	if(newlySelectedReportDefinitions != null && !newlySelectedReportDefinitions.isEmpty()){
     		
     		//find the reports to be amended.
-    		for(ReportDefinition reportDef : newlySelectedDefs){
+    		for(ReportDefinition reportDef : newlySelectedReportDefinitions){
     			List<Report> toAmmendReports = new ArrayList<Report>();
     			
     			if(reportDef.getAmendable()){
@@ -185,6 +187,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     			}
     		}
     	}
+    	*/
     }
     
     
@@ -216,8 +219,12 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     /**
      * This method will amend the reports
      */
-    public void amendReports(){
+    public void amendReports(List<Report> toAmendList){
+    	for(Report report : toAmendList){
+    		reportRepository.amendReport(report);
+    	}
     	
+  /*  	BJ=========================== to be removed
     	//to capture the AE reports on which workflow should be enacted.
     	Map<Integer, ExpeditedAdverseEventReport> aeReportMap = new HashMap<Integer, ExpeditedAdverseEventReport>();
     	
@@ -242,7 +249,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     			}
     		}
     			
-    	}
+    	}*/
     }
 
     /**
@@ -267,21 +274,26 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
     /**
-     * This method creates the reports in the list - reportDefinitionListForCreation.
-     * @param - boolean (useDefaultVersion)
+     * This method creates the reports based on the reports mentioned in newlySelectedDef list.
      */
-    public void createReports(Boolean useDefaultVersion){
-    	if(reportDefinitionListForCreation != null && reportDefinitionListForCreation.size() > 0){
-    		List<Report> newlyCreatedReports = evaluationService.addOptionalReports(getAeReport(), reportDefinitionListForCreation, useDefaultVersion);
+    public void createReports(List<ReportDefinition> toCreateList, Map<Integer, Date> baseDateMap, Map<Integer, Boolean> manualSelectionIndicatorMap){
+    	for(ReportDefinition rd : toCreateList){
+    		Report report = reportRepository.createReport(rd, aeReport, baseDateMap.get(rd.getId()));
+    		report.setManuallySelected(manualSelectionIndicatorMap.get(rd.getId()));
     	}
+    	
+//    	BJ -------- remove
+//    	if(reportDefinitionListForCreation != null && reportDefinitionListForCreation.size() > 0){
+//    		List<Report> newlyCreatedReports = evaluationService.addOptionalReports(getAeReport(), reportDefinitionListForCreation, useDefaultVersion);
+//    	}
     }
     
     /**
-     * This method withdraws the reports in the list reportListForWithdrawal.
+     * This method will withdraw the reports
      */
-    public void withdrawReports(){
-    	for(Report report: reportListForWithdrawal){
-    		reportRepository.replaceReport(report);
+    public void withdrawReports(List<Report> toWithdrawList){
+    	for(Report report: toWithdrawList){
+    		reportRepository.withdrawReport(report);
     	}
     }
 	/**
@@ -350,14 +362,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	
 	public List<ReportDefinition> getOtherSelectedReports() {
 		return otherSelectedReports;
-	}
-	
-	public List<ReportDefinition> getNewlySelectedDefs() {
-		return newlySelectedDefs;
-	}
-	
-	public void setNewlySelectedDefs(List<ReportDefinition> newlySelectedDefs) {
-		this.newlySelectedDefs = newlySelectedDefs;
 	}
 	
 	

@@ -27,230 +27,230 @@ import org.springframework.validation.Errors;
  * @author Sameer Sawant
  */
 public class AdverseEventConfirmTab extends AdverseEventTab{
-	
-	private static final String MAIN_FIELD_GROUP = "main";
-	private static final String RPD_FIELD_GROUP = "rpd";
-	
+//	
+//	private static final String MAIN_FIELD_GROUP = "main";
+//	private static final String RPD_FIELD_GROUP = "rpd";
+//	
 	public AdverseEventConfirmTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
-	
-	@Override
-    public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand command) {
-		final boolean isBaseline = command.getAdverseEventReportingPeriod().isBaselineReportingType();
-		InputFieldGroupMap map = new InputFieldGroupMap();
-		
-		//create fields for AEs
-		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getAllReportedAndReportableAdverseEvents();
-		if(adverseEvents != null){
-			int size = adverseEvents.size();
-			for(int i = 0; i < size; i++){
-				String key = MAIN_FIELD_GROUP + i;
-				final int j = i;
-				InputFieldGroup fieldGroup = new InputFieldGroup(){
-					public List<InputField> getFields() {
-						return createCustomFieldGroup(adverseEvents.get(j),j, isBaseline);
-					}
-					public String getDisplayName() {
-						return "";
-					}
-					public String getName() {
-						return "";
-					}
-				};
-				map.put(key, fieldGroup);
-			}
-		}
-		
-		return map;
-    }
-	
-	/**
-	 * This method will create the fields (list of fileds) that need to be painted in a row on the review page.
-	 * The propery each field is bound-to is more defined by the parameters like <code>isMeddraStudy</code> or <code>isBaseline</code>.
-	 * @param ae
-	 * @param i
-	 * @param isMeddraStudy
-	 * @param isBaseline
-	 * @return
-	 */
-	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isBaseline){
-		//only not-associated-to-aereprot , non-baseline, and graded is selectable
-		boolean notAssociatedToReport = ae.getReport() == null;
-		boolean graded = ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
-		
-		List<InputField> fields= new ArrayList<InputField>();
-		if(notAssociatedToReport && graded && !isBaseline){
-			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
-		}else {
-			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
-		}
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].detailsForOther", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].displayGrade", ""));
-
-		InputField startDateField = null;
-		if(ae.getStartDate() != null){
-			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDateAsString", "", true);
-		}else{
-			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDate","", true);
-		}
-		
-		fields.add(startDateField);
-		InputField selectPrimaryField = InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString());
-		fields.add(selectPrimaryField);
-		
-		return fields;
-	}
-	
-	
-	@Override
-    public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-	
-		int i = 0;
-		
-		
-		
-		//if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
-		//	return refdata;
-		
-		//do the setup stuff
-		
-		//initialize already present reportdef map
-		command.refreshInstantiatedReportDefinitionMap();
-		
-		// evalutate available report definitions per session.
-		command.findAllReportDefintionNames();
-		
-		//find the required report definitions (the map is refreshed by this)
-		command.findRequiredReportDefinitions();
-		
-		//refresh the reportDefinition indicator map
-		command.refreshReportDefinitionRequiredIndicatorMap();
-		
-		//refresh the reportDefinition map.
-		command.refreshReportDefinitionMap();
-		
-		//refresh the status map.
-		command.refreshReportStatusMap();
-		
-		//refresh the selectedAEMap
-		command.refreshSelectedAesMap();
-		
-		//find primary AE
-		//command.findPrimaryAdverseEvent();
-		
-		//Call the super class referenceData, so that the createFieldGroup is executed
-		Map<String, Object> refdata = super.referenceData(request, command);
-		
-		//create the 3 column display for all report definitions.
-		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
-		Map<String, ReportDefinitionDisplayTable> selectedReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
-		
-		for(ReportDefinition rpDef : command.getAllReportDefinitions()){
-			ReportDefinitionDisplayTable rdTable = new ReportDefinitionDisplayTable(command.getReportStatusMap().get(rpDef.getId()),
-					command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()), 
-					InputFieldFactory.createCheckboxField("reportDefinitionMap[" + rpDef.getId() + ']',
-                    		rpDef.getLabel()));
-			
-			allReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable );
-			
-			//find the report definitions for newly added adverse events
-			List<ReportDefinition> reportDefsNonExpeditedAes = command.findRequiredReportDefinitionsForNonExpeditedAdverseEvents();
-			
-			//show the rules result, if there are modified aes
-			List<ReportDefinition> reportDefsForModifiedAes = command.findRequiredReportDefinitionsForModifiedAdverseEvents();
-			//if for modified aes, new kind of report definition is selected? then we should show the alert popup. for easiness, add them
-			//to in reportDefsNonExpeditedAes.
-			for(ReportDefinition reportDefinition : reportDefsForModifiedAes){
-				if(!command.getInstantiatedReportDefinitionMap().containsKey(reportDefinition.getId())){
-					reportDefsNonExpeditedAes.add(reportDefinition);
-				}
-			}
-			
-			
-			// - as we re-fire rules now on all AEs
-			// If new/modified AEs did not suggest report we need to show them as suggested reports
-			// Else, only if they are not already instantiated (ones not available in instantiatedReportDefMap) show them.
-			if(!reportDefsNonExpeditedAes.isEmpty() || !command.getInstantiatedReportDefinitionMap().containsKey(rpDef.getId())){
-				//only add to selected map, if it is 'required' or 'selected' and the
-				if(command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()) || command.getReportDefinitionMap().get(rpDef.getId())){
-					selectedReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable);
-				}
-			}
-			
-			
-			i++;
-		}
-		refdata.put("rpdAllTable", allReportDefDisplayTableMap);
-		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
-		
-		
-		// these tables or statement saying no rows to render.
-		Boolean displayReportableAeTable = false; // For "Select Adverse Events To Report" table.
-		
-		List<AdverseEvent> reportableAdverseEvents = command.getAdverseEventReportingPeriod().getReportableAdverseEvents();
-		
-		
-		if(reportableAdverseEvents.size() > 0)	displayReportableAeTable = true;
-		
-		refdata.put("displayReportableAeTable", displayReportableAeTable);
-		
-		return refdata;
-	}
-	
-	/**
-	 * This method will verify the following
-	 * 1. Makessure that atleast one AE is selected, when there is a report selected.
-	 * 2. Primary AE is mentioned.
-	 * 3. Start date of the primary AE is mentioned.
-	 */
-	@Override
-    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-		
-		// Check if there is a report selected with no aes selected.
-		if(StringUtils.equals(command.get_action(), "createNew") && command.getSelectedReportDefinitions().size() > 0){
-			//Iterate over the selectedAes map to check if atleast one is true. Otherwise throw an error.
-			Boolean noAeSelected = true;
-			for(Integer id: command.getSelectedAesMap().keySet()){
-				if(command.getSelectedAesMap().get(id))
-					noAeSelected = false;
-			}
-			if(noAeSelected)
-				errors.reject("CAE_001","A report cannot be selected without selecting atleast one adverse event.");
-		}
-		//verify whether primary ae and start date is mentioned.
-		if(command.getPrimaryAdverseEventId() == null){
-			errors.reject("CAE_002", "A primary adverse event must be selected inorder to continue expedited reporting");
-		}else{
-			for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
-				if(ae.getId().equals(command.getPrimaryAdverseEventId()) && ae.getStartDate() == null){
-					errors.reject("CAE_003", "Start Date of the primary adverse event must be specified");
-				}
-			}
-		}
-		
-				
-	}
-	
-	@Override
-	public void onDisplay(HttpServletRequest request,	CaptureAdverseEventInputCommand command) {
-		command.reassociate();
-	}
-	
-	/**
-	 * Reassociated the Reporting Period to the running Hibernate session
-	 */
-	@Override
-	public void beforeBind(HttpServletRequest request,CaptureAdverseEventInputCommand command) {
-		command.reassociate();
-	}
-	
-	@Override
-	public void postProcess(HttpServletRequest request,	CaptureAdverseEventInputCommand command, Errors errors) {
-		command.getRequiredReportDefinitionsMap().clear();
-	}
+//	
+//	@Override
+//    public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand command) {
+//		final boolean isBaseline = command.getAdverseEventReportingPeriod().isBaselineReportingType();
+//		InputFieldGroupMap map = new InputFieldGroupMap();
+//		
+//		//create fields for AEs
+//		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getAllReportedAndReportableAdverseEvents();
+//		if(adverseEvents != null){
+//			int size = adverseEvents.size();
+//			for(int i = 0; i < size; i++){
+//				String key = MAIN_FIELD_GROUP + i;
+//				final int j = i;
+//				InputFieldGroup fieldGroup = new InputFieldGroup(){
+//					public List<InputField> getFields() {
+//						return createCustomFieldGroup(adverseEvents.get(j),j, isBaseline);
+//					}
+//					public String getDisplayName() {
+//						return "";
+//					}
+//					public String getName() {
+//						return "";
+//					}
+//				};
+//				map.put(key, fieldGroup);
+//			}
+//		}
+//		
+//		return map;
+//    }
+//	
+//	/**
+//	 * This method will create the fields (list of fileds) that need to be painted in a row on the review page.
+//	 * The propery each field is bound-to is more defined by the parameters like <code>isMeddraStudy</code> or <code>isBaseline</code>.
+//	 * @param ae
+//	 * @param i
+//	 * @param isMeddraStudy
+//	 * @param isBaseline
+//	 * @return
+//	 */
+//	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isBaseline){
+//		//only not-associated-to-aereprot , non-baseline, and graded is selectable
+//		boolean notAssociatedToReport = ae.getReport() == null;
+//		boolean graded = ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
+//		
+//		List<InputField> fields= new ArrayList<InputField>();
+//		if(notAssociatedToReport && graded && !isBaseline){
+//			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
+//		}else {
+//			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
+//		}
+//		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
+//		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].detailsForOther", ""));
+//		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].displayGrade", ""));
+//
+//		InputField startDateField = null;
+//		if(ae.getStartDate() != null){
+//			startDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDateAsString", "", true);
+//		}else{
+//			startDateField = InputFieldFactory.createDateField("adverseEventReportingPeriod.allReportedAndReportableAdverseEvents[" + i + "].startDate","", true);
+//		}
+//		
+//		fields.add(startDateField);
+//		InputField selectPrimaryField = InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString());
+//		fields.add(selectPrimaryField);
+//		
+//		return fields;
+//	}
+//	
+//	
+//	@Override
+//    public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+//	
+//		int i = 0;
+//		
+//		
+//		
+//		//if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
+//		//	return refdata;
+//		
+//		//do the setup stuff
+//		
+//		//initialize already present reportdef map
+//		command.refreshInstantiatedReportDefinitionMap();
+//		
+//		// evalutate available report definitions per session.
+//		command.findAllReportDefintionNames();
+//		
+//		//find the required report definitions (the map is refreshed by this)
+//		command.findRequiredReportDefinitions();
+//		
+//		//refresh the reportDefinition indicator map
+//		command.refreshReportDefinitionRequiredIndicatorMap();
+//		
+//		//refresh the reportDefinition map.
+//		command.refreshReportDefinitionMap();
+//		
+//		//refresh the status map.
+//		command.refreshReportStatusMap();
+//		
+//		//refresh the selectedAEMap
+//		command.refreshSelectedAesMap();
+//		
+//		//find primary AE
+//		//command.findPrimaryAdverseEvent();
+//		
+//		//Call the super class referenceData, so that the createFieldGroup is executed
+//		Map<String, Object> refdata = super.referenceData(request, command);
+//		
+//		//create the 3 column display for all report definitions.
+//		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
+//		Map<String, ReportDefinitionDisplayTable> selectedReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
+//		
+//		for(ReportDefinition rpDef : command.getAllReportDefinitions()){
+//			ReportDefinitionDisplayTable rdTable = new ReportDefinitionDisplayTable(command.getReportStatusMap().get(rpDef.getId()),
+//					command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()), 
+//					InputFieldFactory.createCheckboxField("reportDefinitionMap[" + rpDef.getId() + ']',
+//                    		rpDef.getLabel()));
+//			
+//			allReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable );
+//			
+//			//find the report definitions for newly added adverse events
+//			List<ReportDefinition> reportDefsNonExpeditedAes = command.findRequiredReportDefinitionsForNonExpeditedAdverseEvents();
+//			
+//			//show the rules result, if there are modified aes
+//			List<ReportDefinition> reportDefsForModifiedAes = command.findRequiredReportDefinitionsForModifiedAdverseEvents();
+//			//if for modified aes, new kind of report definition is selected? then we should show the alert popup. for easiness, add them
+//			//to in reportDefsNonExpeditedAes.
+//			for(ReportDefinition reportDefinition : reportDefsForModifiedAes){
+//				if(!command.getInstantiatedReportDefinitionMap().containsKey(reportDefinition.getId())){
+//					reportDefsNonExpeditedAes.add(reportDefinition);
+//				}
+//			}
+//			
+//			
+//			// - as we re-fire rules now on all AEs
+//			// If new/modified AEs did not suggest report we need to show them as suggested reports
+//			// Else, only if they are not already instantiated (ones not available in instantiatedReportDefMap) show them.
+//			if(!reportDefsNonExpeditedAes.isEmpty() || !command.getInstantiatedReportDefinitionMap().containsKey(rpDef.getId())){
+//				//only add to selected map, if it is 'required' or 'selected' and the
+//				if(command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()) || command.getReportDefinitionMap().get(rpDef.getId())){
+//					selectedReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable);
+//				}
+//			}
+//			
+//			
+//			i++;
+//		}
+//		refdata.put("rpdAllTable", allReportDefDisplayTableMap);
+//		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
+//		
+//		
+//		// these tables or statement saying no rows to render.
+//		Boolean displayReportableAeTable = false; // For "Select Adverse Events To Report" table.
+//		
+//		List<AdverseEvent> reportableAdverseEvents = command.getAdverseEventReportingPeriod().getReportableAdverseEvents();
+//		
+//		
+//		if(reportableAdverseEvents.size() > 0)	displayReportableAeTable = true;
+//		
+//		refdata.put("displayReportableAeTable", displayReportableAeTable);
+//		
+//		return refdata;
+//	}
+//	
+//	/**
+//	 * This method will verify the following
+//	 * 1. Makessure that atleast one AE is selected, when there is a report selected.
+//	 * 2. Primary AE is mentioned.
+//	 * 3. Start date of the primary AE is mentioned.
+//	 */
+//	@Override
+//    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
+//                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+//		
+//		// Check if there is a report selected with no aes selected.
+//		if(StringUtils.equals(command.get_action(), "createNew") && command.getSelectedReportDefinitions().size() > 0){
+//			//Iterate over the selectedAes map to check if atleast one is true. Otherwise throw an error.
+//			Boolean noAeSelected = true;
+//			for(Integer id: command.getSelectedAesMap().keySet()){
+//				if(command.getSelectedAesMap().get(id))
+//					noAeSelected = false;
+//			}
+//			if(noAeSelected)
+//				errors.reject("CAE_001","A report cannot be selected without selecting atleast one adverse event.");
+//		}
+//		//verify whether primary ae and start date is mentioned.
+//		if(command.getPrimaryAdverseEventId() == null){
+//			errors.reject("CAE_002", "A primary adverse event must be selected inorder to continue expedited reporting");
+//		}else{
+//			for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
+//				if(ae.getId().equals(command.getPrimaryAdverseEventId()) && ae.getStartDate() == null){
+//					errors.reject("CAE_003", "Start Date of the primary adverse event must be specified");
+//				}
+//			}
+//		}
+//		
+//				
+//	}
+//	
+//	@Override
+//	public void onDisplay(HttpServletRequest request,	CaptureAdverseEventInputCommand command) {
+//		command.reassociate();
+//	}
+//	
+//	/**
+//	 * Reassociated the Reporting Period to the running Hibernate session
+//	 */
+//	@Override
+//	public void beforeBind(HttpServletRequest request,CaptureAdverseEventInputCommand command) {
+//		command.reassociate();
+//	}
+//	
+//	@Override
+//	public void postProcess(HttpServletRequest request,	CaptureAdverseEventInputCommand command, Errors errors) {
+//		command.getRequiredReportDefinitionsMap().clear();
+//	}
 
 	
 	

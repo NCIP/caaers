@@ -26,7 +26,7 @@
     
     <script language="JavaScript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
-
+		
         Event.observe(window, "load", function() {
 			if($("aeReport.responseDescription.studyDrugInterrupted")){
 				Event.observe("aeReport.responseDescription.studyDrugInterrupted", "change", function() { viewSelection() })
@@ -93,6 +93,7 @@
             }
         }
 
+ 
     </script>
 	<!--[if lte IE 6]>
 <style>
@@ -117,7 +118,7 @@
        	<c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
            	<tags:renderRow field="${field}"/>
        	</c:forEach>
-		
+		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

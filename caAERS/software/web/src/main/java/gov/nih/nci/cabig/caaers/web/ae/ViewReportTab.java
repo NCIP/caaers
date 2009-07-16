@@ -29,7 +29,6 @@ import org.springframework.validation.Errors;
  * @author Biju Joseph
  */
 public class ViewReportTab extends AeTab {
-    private MessageSource messageSource;
 
     public ViewReportTab() {
         super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(),"ae/submit");
@@ -82,7 +81,7 @@ public class ViewReportTab extends AeTab {
                 // TODO: there's no chance this actually works -- report.getId() is an Integer and
                 // selected is a String
                 if (report.getId().equals(selected) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-                    reportRepository.withdrawLastReportVersion(report);
+                    reportRepository.withdrawReport(report);
                     break;
                 }
             }
@@ -105,10 +104,5 @@ public class ViewReportTab extends AeTab {
     }
 
     // //// CONFIGURATION
-
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-    
     
 }
