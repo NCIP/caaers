@@ -144,7 +144,7 @@ public class ReportDefinitionAjaxFacade {
         log.debug("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
         System.out.println("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
         AjaxOutput out = new AjaxOutput();
-        out.setObjectContent(rdList.toArray());
+        out.setObjectContent(ObjectTools.reduceAll(rdList, "id", "name"));
         return out;
     }
 
