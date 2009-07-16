@@ -73,13 +73,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
-        lazyListHelper.add(ReportDeliveryDefinition.class,
-                        new InstantiateFactory<ReportDeliveryDefinition>(
-                                        ReportDeliveryDefinition.class));
-        lazyListHelper.add(PlannedNotification.class, new InstantiateFactory<PlannedNotification>(
-                        PlannedNotification.class));
+        lazyListHelper.add(ReportDeliveryDefinition.class, new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
+        lazyListHelper.add(PlannedNotification.class, new InstantiateFactory<PlannedNotification>(PlannedNotification.class));
         attributionRequired = false;
-        
         comprator = new ReportDefinitionComparator();
     }
 
