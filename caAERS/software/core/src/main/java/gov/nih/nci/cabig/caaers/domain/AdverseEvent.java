@@ -53,7 +53,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
-public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableRetireableDomainObject implements ExpeditedAdverseEventReportChild {
     private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
@@ -108,6 +108,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     
     private Date gradedDate;
     
+    private Date postSubmissionUpdatedDate;
+    
     private String signature;
     
     private Boolean reported;
@@ -119,6 +121,19 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     ///LOGIC
     public void addOutcome(Outcome o) {
         this.getOutcomes().add(o);
+    }
+    
+    /**
+     * This method will clear off all the attributions, specified for this adverse event.
+     */
+    public void clearAttributions(){
+    	if(courseAgentAttributions != null) courseAgentAttributions.clear();
+    	if(concomitantMedicationAttributions != null) concomitantMedicationAttributions.clear();
+    	if(otherCauseAttributions != null) otherCauseAttributions.clear();
+    	if(diseaseAttributions != null) diseaseAttributions.clear();
+    	if(surgeryAttributions != null) surgeryAttributions.clear();
+    	if(radiationAttributions != null) radiationAttributions.clear();
+    	if(deviceAttributions != null) deviceAttributions.clear();
     }
 
     // //// BOUND PROPERTIES
@@ -664,6 +679,14 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 		this.gradedDate = gradedDate;
 	}
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getPostSubmissionUpdatedDate() {
+		return postSubmissionUpdatedDate;
+	}
+	public void setPostSubmissionUpdatedDate(Date postSubmissionUpdatedDate) {
+		this.postSubmissionUpdatedDate = postSubmissionUpdatedDate;
+	}
+	
 	/**
 	 * This method will set the graded, date if gradedDate is empty, and grade is set, and is not {@link Grade#NOT_EVALUATED} or 
 	 * {@link Grade#NORMAL}.
@@ -671,6 +694,12 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 	public void initailzeGradedDate(){
 		if(gradedDate == null && grade != null && grade.getCode() > Grade.NORMAL.getCode()){
 			gradedDate = new Date();
+		}
+	}
+	
+	public void initializePostSubmissionUpdatedDate(){
+		if(postSubmissionUpdatedDate == null && grade != null && grade.getCode() > Grade.NORMAL.getCode() && isModified() ){
+			postSubmissionUpdatedDate = new Date();
 		}
 	}
 
@@ -805,6 +834,12 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     	    	
     	//eventLocation
     	sb.append(eventLocation == null ? "" : eventLocation ).append("$$");
+    	
+    	//retired indicator
+    	if(isRetired()){
+    		sb.append("deleted").append("$$");
+    	}
+    	
     	
     	return sb.toString();
     }

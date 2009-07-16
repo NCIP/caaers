@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -52,28 +53,19 @@ public class ReportRepositoryImpl implements ReportRepository {
     private ReportFactory reportFactory;
     private NowFactory nowFactory;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Transient
-    public void withdrawLastReportVersion(Report report) {
-
-        ReportVersion reportVersion = report.getLastVersion();
-        reportVersion.setWithdrawnOn(nowFactory.getNow());
-        reportVersion.setDueOn(null);
-    }
 
     public void withdrawOrReplaceReport(Report report){
     	schedulerService.unScheduleNotification(report);
-        withdrawLastReportVersion(report);
         reportDao.save(report);
     }
     
     @Transactional(readOnly = false)
-    public void deleteReport(Report report) {
+    public void withdrawReport(Report report) {
         assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
         report.setStatus(ReportStatus.WITHDRAWN);
-        report.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
+        report.setWithdrawnOn(nowFactory.getNow());
+        report.setDueOn(null);
+        
         withdrawOrReplaceReport(report);
     }
     
@@ -83,6 +75,8 @@ public class ReportRepositoryImpl implements ReportRepository {
     	assert !report.getStatus().equals(ReportStatus.WITHDRAWN): "Cannot replace a report that is already withdrawn";
     	report.setStatus(ReportStatus.REPLACED);
     	report.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	report.setWithdrawnOn(nowFactory.getNow());
+        report.setDueOn(null);
     	withdrawOrReplaceReport(report);
     }
 
@@ -91,18 +85,31 @@ public class ReportRepositoryImpl implements ReportRepository {
      */
 
     @Transactional(readOnly = false)
-    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
+    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Date baseDate) {
     	
     	//reassociate all the study orgs
     	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
     	
-        Report report = reportFactory.createReport(reportDefinition, aeReport, useDefaultVersion);
+        Report report = reportFactory.createReport(reportDefinition, aeReport, baseDate);
         
+        //update report version, based on latest amendment. 
+        Report lastAmendedReport = aeReport.findLastAmendedReport(reportDefinition);
+        if(lastAmendedReport != null){
+        	report.getLastVersion().copySubmissionDetails(lastAmendedReport.getLastVersion());
+            
+            String strLastVersionNumber = lastAmendedReport.getLastVersion().getReportVersionId();
+            if(StringUtils.isNumeric(strLastVersionNumber)){
+            	int n = Integer.parseInt(strLastVersionNumber) + 1;
+            	report.getLastVersion().setReportVersionId("" + n);
+            }
+        }
+        
+       
         //save the report
         reportDao.save(report);
         
 
-        //schedule the report, if there are scheduled notificaitons.
+        //schedule the report, if there are scheduled notifications.
         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
 
         return report;
@@ -197,14 +204,13 @@ public class ReportRepositoryImpl implements ReportRepository {
      */
     public void createAndAmendReport(ReportDefinition repDef, Report toAmend,Boolean useDefaultVersion) {
     	
-    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), useDefaultVersion);
+    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), null);
     	 
     	 //copy the assigned identifier (in case of AdEERS the ticket number)
-         report.copySubmissionDetails(toAmend);
+         //report.copySubmissionDetails(toAmend);
          
          //amend the toAmend Report, by updating its status
          toAmend.setStatus(ReportStatus.AMENDED);
-         toAmend.getLastVersion().setReportStatus(ReportStatus.AMENDED);
          toAmend.getLastVersion().setAmendedOn(nowFactory.getNow());
          
          //save the amended report
@@ -217,62 +223,26 @@ public class ReportRepositoryImpl implements ReportRepository {
          if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
     	
     }
-  
-
+    
     /**
-     * This method has the logic needed to a report. Basically a new ReportVersion is created and added to the ReportVersions of th
-     * report. The reportVersionId of the lastReportVersion is incremented by 1 and assigned to this reportVersion.
-     * @return void
-     * @author- Sameer Sawant
+     * This method will un-amend, an amended report.
+     * @param report
      */
-    public void amendReport(Report report, Boolean useDefaultVersion){
+    public void unAmendReport(Report report){
     	
-    	try {
-    		
-			participantDao.lock(report.getAeReport().getParticipant());
-			reportDao.reassociate(report);
-			studyDao.lock(report.getAeReport().getStudy());
-			
-			ReportVersion reportVersion = new ReportVersion();
-			reportVersion.setCreatedOn(nowFactory.getNow());
-			reportVersion.setReportStatus(ReportStatus.PENDING);
-			report.setStatus(ReportStatus.PENDING);
-			
-			// Set report due date
-			Date earliestGradedDate = report.getAeReport().getEarliestAdverseEventGradedDate();
-			if(earliestGradedDate == null) earliestGradedDate = nowFactory.getNow();
-			
-			Date expectedDueDate = report.getReportDefinition().getExpectedDueDate(earliestGradedDate);
-			report.setDueOn(expectedDueDate);
-			reportVersion.setDueOn(expectedDueDate);
-			
-			// Logic to update the reportVersionId
-			//ReportVersion lastVersion = report.getLastVersion();
-			//Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
-			//currentVersionId++;
-			//reportVersion.setReportVersionId(currentVersionId.toString());
-			
-			String nciInstituteCode = report.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-			Integer currentBaseVersion = Integer.parseInt(report.getAeReport().getCurrentVersionForSponsorReport(nciInstituteCode));
-			Integer newVersionId = currentBaseVersion + 1;
-			if(useDefaultVersion)
-				reportVersion.setReportVersionId(currentBaseVersion.toString());
-			else
-				reportVersion.setReportVersionId(newVersionId.toString());
-			
-			report.addReportVersion(reportVersion);
-			
-			// Add notifications to the report object
-			reportFactory.addScheduledNotifications(report.getReportDefinition(), report);
-			
-			// Save the report to save the scheduled notifications
-			reportDao.merge(report);
-			//reportDao.initialize(report.getScheduledNotifications());
-			schedulerService.scheduleNotification(report);
-		} catch (Exception e) {
-			log.error("Error while ammending" , e);
-			throw new CaaersSystemException("Error while amending the report", e);
-		}
+    	assert report.getStatus() == ReportStatus.AMENDED;
+    	
+    	report.setStatus(ReportStatus.COMPLETED);
+    	report.setAmendedOn(null);
+    	reportDao.save(report);
+    }
+    
+    
+   /**
+    * This method will amend the report, by setting the report status to {@link ReportStatus#AMENDED}
+    */
+    public void amendReport(Report report){
+    	
     }
     
     

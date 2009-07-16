@@ -6,8 +6,10 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.GENERATE_REPORT_FORM;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.AmendedReportsQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -18,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
@@ -80,7 +83,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
         rs.setDueOn(new Date());
         rs.setSubmittedOn(new Date());
         rs.setGridId("ADEDR99393939");
-        Fixtures.createReportVersion(rs);
+       
         // add deliveries.
 
         rsDao.save(rs);
@@ -88,12 +91,47 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
         assertNotNull("report id is null", rs.getId());
         assertNotNull("report version id is null", rs.getReportVersions().get(0).getId());
     }
+    
+    public void testSave_WithReportedAdverseEvents() {
+    	int id ;
+    	int aeCount = 0;
+    	{
+            Report rs = new Report();
+            rs.setAeReport(null);
+            // rs.setName("My Sample Report");
+            rs.setCreatedOn(new Date());
+            rs.setDueOn(new Date());
+            rs.setSubmittedOn(new Date());
+            rs.setGridId("ADEDR99393939");
+            
+            //add adverse events. 
+            ExpeditedAdverseEventReport aeReport =  aeDao.getById(-1);
+            for(AdverseEvent ae : aeReport.getAdverseEvents()){
+            	rs.getLastVersion().addReportedAdverseEvent(ae);
+            	aeCount++;
+            }
+            
+            // add deliveries.
 
-    public void testGetAllByDueDate() {
-        List<Report> list = rsDao.getAllByDueDate(new Date());
-        log.debug("size::::" + String.valueOf(list));
-        for (Report s : list) {
-            log.debug(s.getId());
+            rsDao.save(rs);
+
+            assertNotNull("report id is null", rs.getId());
+            id = rs.getId();
+            assertNotNull("report version id is null", rs.getReportVersions().get(0).getId());
+    	}
+
+        interruptSession();
+        
+        {
+        	Report rs = rsDao.getById(id);
+        	assertNotNull(rs.getLastVersion());
+        	assertNotNull(rs.getLastVersion().getReportedAdversEvents());
+        	assertEquals(aeCount , rs.getLastVersion().getReportedAdversEvents().size());
+        	for(ReportedAdverseEvent rAE  : rs.getLastVersion().getReportedAdversEvents()){
+        		assertNotNull(rAE);
+        		assertNotNull(rAE.getAdverseEvent());
+        		assertNotNull(rAE.getReportVersion());
+        	}
         }
     }
 
@@ -156,9 +194,14 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
                 ExpeditedAdverseEventReport aeReport = aeDao.getById(-1);
                 Report fromAeReport = aeReport.getReports().get(0);
                 assertNotNull(fromAeReport);
-                assertEquals("Report obtained from AEReport is not correct", reloaded.getId(),
-                                fromAeReport.getId());
-                assertEquals(ReportStatus.PENDING, ReportStatus.PENDING);
+                
+                Report reloadedReport = null;
+                for(Report report : aeReport.getReports()){
+                	if(report.getId().equals(reloaded.getId())){
+                		reloadedReport = report;
+                	}
+                }
+                assertNotNull(reloadedReport);
             }
         });
     }
@@ -443,5 +486,17 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	Report r2 = getDao().getInitializedReportById(-223);
     	interruptSession();
     	r2.getScheduledNotifications().size();
+    }
+    
+    public void testAmendedReportsQueryTest(){
+    	AmendedReportsQuery query = new AmendedReportsQuery();
+    	query.filterByExpeditedAdverseEventReport(-1);
+    	query.filterByOrganization(-1001);
+    	query.filterByReportType(-1);
+    	query.filterByReportStatus(ReportStatus.AMENDED);
+    	
+    	List<Report> reports = (List<Report>) getDao().search(query);
+    	
+    	assertEquals(-224, reports.get(0).getId().intValue());
     }
 }

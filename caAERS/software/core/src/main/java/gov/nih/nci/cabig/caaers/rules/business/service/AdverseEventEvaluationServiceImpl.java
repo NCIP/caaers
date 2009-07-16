@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -45,9 +46,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
     private CaaersRulesEngineService caaersRulesEngineService;
 
-    public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
-
-    public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
+    public static final String CAN_NOT_DETERMINED = CaaersRuleUtil.CAN_NOT_DETERMINED;
+    public static final String SERIOUS_ADVERSE_EVENT = CaaersRuleUtil.SERIOUS_ADVERSE_EVENT;
 
     private static final Log log = LogFactory.getLog(AdverseEventEvaluationServiceImpl.class);
 
@@ -82,70 +82,34 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return CAN_NOT_DETERMINED;
     }
 
-    public Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aes,
-    		Study study) throws Exception {
+    public Map<AdverseEvent, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aes, Study study) throws Exception {
 
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Map<AdverseEvent, List<String>> map = new HashMap<AdverseEvent, List<String>>();
 
-        //List<AdverseEvent> aes = aeReport.getAdverseEvents();
-        List<String> reportDefinitionsForSponsor = new ArrayList<String>();
-
-        // boolean ignore = false ;
+        List<String> reportDefinitionNames;
 
         for (AdverseEvent ae : aes) {
+        	
+        	//try to get the existing list of report def names
+        	reportDefinitionNames = map.get(ae);
+        	if(reportDefinitionNames == null){
+        		reportDefinitionNames = new ArrayList<String>();
+        		map.put(ae, reportDefinitionNames);
+        	}
+        	
+        	//evaluate sponsor rules
             String message = evaluateSponsorTarget(ae, study, null,RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
-
-            System.out.println("message is " + message);
-
-            if (!message.equals(CAN_NOT_DETERMINED)) {
-
-                if (message.indexOf("IGNORE") < 0) {
-                    // add the report definitions to the map
-                    String[] messages = RuleUtil.charSeparatedStringToStringArray(message, "\\|\\|");
-                    for (int i = 0; i < messages.length; i++) {
-                        reportDefinitionsForSponsor.add(messages[i]);
-                    }
-                }
-
+            reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
+            
+            //evaluate institution rules
+            // TO-DO get orgs like FDA, CALGB and add to this list (BJ: this comment was there before refactoring)
+            for (StudyOrganization so : study.getStudyOrganizations()) {
+            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
+                        RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
+            	 reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
             }
         }
 
-        map.put(study.getPrimaryFundingSponsorOrganization().getName(),
-                        reportDefinitionsForSponsor);
-
-        //Study study = aeReport.getStudy();
-
-        // TO-DO get orgs like FDA, CALGB and add to this list
-
-        for (StudyOrganization so : study.getStudyOrganizations()) {
-            List<String> reportDefinitionsForInstitution = new ArrayList<String>();
-
-            for (AdverseEvent ae : aes) {
-                String message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
-                                RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
-
-                if (!message.equals(CAN_NOT_DETERMINED)) {
-
-                    if (message.indexOf("IGNORE") < 0) {
-                        // add the report definitions to the map
-                        String[] messages = RuleUtil.charSeparatedStringToStringArray(message,
-                                        "\\|\\|");
-                        for (int i = 0; i < messages.length; i++) {
-                            reportDefinitionsForInstitution.add(messages[i]);
-                        }
-                    }
-
-                }
-            }
-
-            // chek for key
-            List<String> existingList = map.get(so.getOrganization().getName());
-            if (existingList != null) {
-                reportDefinitionsForInstitution.addAll(existingList);
-            }
-
-            map.put(so.getOrganization().getName(), reportDefinitionsForInstitution);
-        }
 
         return map;
     }

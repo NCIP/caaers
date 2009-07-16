@@ -235,18 +235,44 @@ public abstract class Organization extends AbstractMutableDomainObject {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Organization)) return false;
-
-        Organization organization = (Organization) o;
-
-        if (!ComparisonTools.nullSafeEquals(getNciInstituteCode(), organization.getNciInstituteCode())) return false;
+        Organization other = (Organization) o;
+        
+        //id if same they are same, they are equal
+        if(getId() != null && other.getId() != null){
+        	if(getId().equals(other.getId())) return true;
+        }
+        
+        //nci code same, they are same, they are equal
+        if(getNciInstituteCode() != null && other.getNciInstituteCode() != null){
+    	   if(getNciInstituteCode().equals(other.getNciInstituteCode())) return true;
+        }
+    	   
+        
+        //otherwise check name
+        if (!ComparisonTools.nullSafeEquals(getName(), other.getName())) return false;
 
         return true;
     }
+    
 
     @Override
-    public int hashCode() {
-        return (getNciInstituteCode() != null ? getNciInstituteCode().hashCode() : 0);
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result
+				+ ((descriptionText == null) ? 0 : descriptionText.hashCode());
+		result = prime * result
+				+ ((externalId == null) ? 0 : externalId.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime
+				* result
+				+ ((nciInstituteCode == null) ? 0 : nciInstituteCode.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
 
     @Override
     public String toString() {

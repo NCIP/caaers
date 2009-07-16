@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
@@ -149,6 +150,15 @@ public class Fixtures {
         return def;
     }
     
+    public static ReportDefinition createReportDefinition(String name, Organization org, ConfigProperty reportType) {
+        ReportDefinition def = new ReportDefinition();
+        def.setName(name);
+        def.setOrganization(org);
+        def.addPlannedNotification(createPlannedEmailNotification());
+        def.setReportType(reportType);
+        return def;
+    }
+    
     public static ReportMandatoryFieldDefinition  createMandatoryField(String path, Mandatory m){
     	ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
     	mf.setFieldPath(path);
@@ -167,8 +177,8 @@ public class Fixtures {
         ReportDefinition def = createReportDefinition(name);
         Report rep = new Report();
         rep.setReportDefinition(def);
-        Fixtures.createReportVersion(rep);
         rep.addScheduledNotification(createScheduledEmailNotification());
+        rep.getLastVersion(); //initialize reportversions
         return rep;
     }
     
@@ -190,12 +200,12 @@ public class Fixtures {
         return senf;
     }
 
-    public static void createReportVersion(final Report report) {
+    public static ReportVersion createReportVersion() {
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setReportVersionId("5");
         reportVersion.setCreatedOn(new Timestamp(106));
         reportVersion.setReportStatus(ReportStatus.PENDING);
-        report.addReportVersion(reportVersion);
+        return reportVersion;
     }
 
     public static AeTerminology createCtcV3Terminology(final Study s) {
@@ -329,9 +339,8 @@ public class Fixtures {
         StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
         studyFundingSponsor.setOrganization(organization);
         return studyFundingSponsor;
-
     }
-
+    
     public static FundingSponsor createFundingSponsor(final Organization organization, final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
         FundingSponsor fundingSponsor = new FundingSponsor();
 
@@ -356,7 +365,7 @@ public class Fixtures {
     	dTerminology.setStudy(s);
     	return dTerminology;
     }
-    private static StudyCoordinatingCenter createStudyCoordinatingCenter(final Organization organization) {
+    public static StudyCoordinatingCenter createStudyCoordinatingCenter(final Organization organization) {
         StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
         studyCoordinatingCenter.setOrganization(organization);
         return studyCoordinatingCenter;
@@ -482,6 +491,19 @@ public class Fixtures {
         def.setAmendable(true);
         return def;
     }
+    
+    public static ReportDefinition createReportDefinition(String name, String nciInstituteCode, int duration, TimeScaleUnit timeScale) {
+        ReportDefinition def = new ReportDefinition();
+        def.setName(name);
+        Organization org = createOrganization("testOrg", nciInstituteCode);
+        def.setOrganization(org);
+        def.setAmendable(true);
+        def.setTimeScaleUnitType(timeScale);
+        def.setDuration(duration);
+        return def;
+    }
+    
+   
     
    public static ReportDeliveryDefinition createReportDeliveryDefinition(String endPointType, int entityType){
 	   ReportDeliveryDefinition rd = new ReportDeliveryDefinition();

@@ -12,38 +12,10 @@ public class ReportDefinitionComparator implements Comparator<ReportDefinition> 
      */
 
     public int compare(ReportDefinition o1, ReportDefinition o2) {
-
-        int timeScaleResult = compareTimeScale(o1, o2);
-
-        if (timeScaleResult == 0) {
-            return comparePriority(o1, o2);
-        } else {
-            return timeScaleResult;
-        }
+    	long l1 = o1.getTimeScaleUnitType().getMilliSecondConversionFactor() * o1.getDuration();
+    	long l2 = o2.getTimeScaleUnitType().getMilliSecondConversionFactor() * o2.getDuration();
+    	return (int) (l2 - l1);
+    	
     }
 
-    private int compareTimeScale(ReportDefinition o1, ReportDefinition o2) {
-
-        if (o1.getTimeScaleUnitType().getCode().intValue() > o2.getTimeScaleUnitType().getCode()
-                        .intValue()) {
-            return -1;
-        }
-        if (o1.getTimeScaleUnitType().getCode().intValue() < o2.getTimeScaleUnitType().getCode()
-                        .intValue()) {
-            return 1;
-        }
-
-        return 0;
-
-    }
-
-    private int comparePriority(ReportDefinition o1, ReportDefinition o2) {
-        if (o1.getDuration() > o2.getDuration()) {
-            return -1;
-        }
-        if (o1.getDuration() < o2.getDuration()) {
-            return 1;
-        }
-        return 0;
-    }
 }

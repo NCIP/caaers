@@ -23,6 +23,7 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 	
 	private String processDefinitionName;
 	private Node currentNode;
+	private String description;
 	
 	public CreateTaskJbpmCallback(ExecutionContext context, List<User> taskAssigneesList){
 		this.taskAssigneesList = taskAssigneesList;
@@ -36,6 +37,7 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 		TaskMgmtInstance tmi = context.getTaskMgmtInstance();
 		TaskInstance tInstance = tmi.createTaskInstance(null, context);
 		tInstance.setName(currentNode.getName());
+		tInstance.setDescription(description);
 
 		int userCount = taskAssigneesList.size();
 		String[] pooleActorIds = new String[userCount];
@@ -64,4 +66,14 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 		return context;
 	}
 	
+	public String getTaskName(){
+		return currentNode.getName();
+	}
+	
+	public void setTaskDescription(String description){
+		this.description = description;
+	}
+	public String getTaskDescription(){
+		return description;
+	}
 }

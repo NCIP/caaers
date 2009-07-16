@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 /**
@@ -280,14 +282,23 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 	
 	public void testGetNumberOfReports() throws Exception{
 		reportingPeriod1.addAeReport(new ExpeditedAdverseEventReport());
-		reportingPeriod1.getAeReports().get(0).addReport(Fixtures.createReport("5 day report"));
-		reportingPeriod1.getAeReports().get(0).addReport(Fixtures.createReport("24 hr report"));
+		Report r = Fixtures.createReport("5 day report");
+		r.setStatus(ReportStatus.PENDING);
+		reportingPeriod1.getAeReports().get(0).addReport(r);
+		
+		r = Fixtures.createReport("24 hr report");
+		r.setStatus(ReportStatus.COMPLETED);
+		reportingPeriod1.getAeReports().get(0).addReport(r);
+		
 		reportingPeriod1.addAeReport(new ExpeditedAdverseEventReport());
-		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("10 day report"));
-		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("24 hr report"));
-		reportingPeriod1.getAeReports().get(1).addReport(Fixtures.createReport("5 day report"));
-		reportingPeriod1.getAeReports().get(1).getReports().get(2).setStatus(ReportStatus.REPLACED);
-		assertEquals("Number of reports computed incorrectly", 4, reportingPeriod1.getNumberOfReports());
+		r = Fixtures.createReport("10 day report");
+		r.setStatus(ReportStatus.COMPLETED);
+		reportingPeriod1.getAeReports().get(1).addReport(r);
+		r = Fixtures.createReport("24 hr report");
+		r.setStatus(ReportStatus.REPLACED);
+		reportingPeriod1.getAeReports().get(1).addReport(r);
+		
+		assertEquals("Number of reports computed incorrectly", 3, reportingPeriod1.getNumberOfReports());
 	}
 	
 	public void testGetEarliestAdverseEventGradedDate(){
@@ -398,5 +409,20 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		
 		boolean result = reportingPeriod1.getAllSponsorReportsCompleted();
 		assertTrue(result);
+	}
+	
+	public void testFindEarliestPostSubmissionUpdatedDate(){
+		AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.DEATH);
+		AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.DEATH);
+		AdverseEvent ae3 = Fixtures.createAdverseEvent(3, Grade.DEATH);
+		
+		assertNull( AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(Arrays.asList(ae1, ae2, ae3)));
+		
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, -2);
+		Date d = c.getTime();
+		
+		ae1.setPostSubmissionUpdatedDate(d);
+		assertEquals(d, AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(Arrays.asList(ae1, ae2, ae3)));
 	}
 }

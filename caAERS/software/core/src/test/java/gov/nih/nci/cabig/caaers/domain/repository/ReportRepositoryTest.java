@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
@@ -35,6 +36,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -43,7 +45,7 @@ import org.easymock.EasyMock;
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
-public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
+public class ReportRepositoryTest extends CaaersNoSecurityTestCase {
     private static final Attribution[] SUFFICIENT_ATTRIBUTIONS = new Attribution[]{
             Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE};
 
@@ -88,91 +90,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         expeditedData.getAdverseEvents().get(0).getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
     }
     
-    
-    public void testCreateAndAmendReport(){
-    	Report report = Fixtures.createReport("test");
-    	ReportDefinition repDef = report.getReportDefinition();
-    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-    	aeReport.addReport(report);
-    	
-    	EasyMock.expect(reportFactory.createReport(repDef, aeReport, true)).andReturn(report);
-    	reportDao.save(report);
-    	EasyMock.expectLastCall().times(2);
-    	schedulerService.scheduleNotification(report);
-    	replayMocks();
-    	reportRepository.createAndAmendReport(repDef, report, true);
-    	verifyMocks();
-    }
-
-//    public void testValidateChecksForNoAttribution() throws Exception {
-//        ReportSubmittability actual = validateForAttribution();
-//        assertInsuffientAttributionMessage("No attributions should not be sufficent", actual);
-//    }
-//
-//    public void testValidateAcceptsGrade3Through5ForOtherCause() throws Exception {
-//        OtherCause cause = new OtherCause();
-//        expeditedData.addOtherCause(cause);
-//        OtherCauseAttribution attr = createAttribution(cause, Attribution.POSSIBLE,
-//                        OtherCauseAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getOtherCauseAttributions().add(attr);
-//
-//        assertSufficientAttributionsAreSufficent(attr);
-//    }
-//
-//    public void testValidateAcceptsGrade3Through5ForCourseAgent() throws Exception {
-//        CourseAgent cause = new CourseAgent();
-//        expeditedData.getTreatmentInformation().addCourseAgent(cause);
-//        CourseAgentAttribution attr = createAttribution(cause, Attribution.POSSIBLE,
-//                        CourseAgentAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getCourseAgentAttributions().add(attr);
-//
-//        assertSufficientAttributionsAreSufficent(attr);
-//    }
-
-//    public void testValidateAcceptsGrade3Through5ForConcomitantMedication() throws Exception {
-//        ConcomitantMedication cause = new ConcomitantMedication();
-//        expeditedData.addConcomitantMedication(cause);
-//        ConcomitantMedicationAttribution attr = createAttribution(cause, Attribution.UNRELATED,
-//                ConcomitantMedicationAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getConcomitantMedicationAttributions().add(attr);
-//
-//        assertSufficientAttributionsAreSufficent(attr);
-//    }
-//
-//    public void testValidateAcceptsGrade3Through5ForDisease() throws Exception {
-//        expeditedData.getDiseaseHistory().setOtherPrimaryDisease("Hearing loss");
-//
-//        DiseaseAttribution attr = createAttribution(expeditedData.getDiseaseHistory(),
-//                Attribution.UNRELATED, DiseaseAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getDiseaseAttributions().add(attr);
-//
-//        assertSufficientAttributionsAreSufficent(attr);
-//    }
-//
-//    public void testValidateDoesNotAcceptGrade3Through5ForSurgery() throws Exception {
-//        SurgeryIntervention cause = new SurgeryIntervention();
-//        expeditedData.getSurgeryInterventions().add(cause);
-//
-//        SurgeryAttribution attr = createAttribution(cause, Attribution.UNRELATED,
-//                SurgeryAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getSurgeryAttributions().add(attr);
-//
-//        assertNoAttributionsAreSufficent(attr);
-//    }
-
-//    public void testValidateDoesNotAcceptGrade3Through5ForRadiation() throws Exception {
-//        RadiationIntervention cause = new RadiationIntervention();
-//        expeditedData.getRadiationInterventions().add(cause);
-//
-//        RadiationAttribution attr = createAttribution(cause, Attribution.UNRELATED,
-//                RadiationAttribution.class);
-//        expeditedData.getAdverseEvents().get(0).getRadiationAttributions().add(attr);
-//
-//        assertNoAttributionsAreSufficent(attr);
-//    }
-
-    //
-    public void testFindToAddress() {
+      public void testFindToAddress() {
 
         StudyParticipantAssignment assignment = Fixtures.createAssignment();
         StudySite site = assignment.getStudySite();
@@ -237,6 +155,25 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
 //        assertEquals(1, addresses.size());
 //        List<String> addresses2 = expeditedData.findEmailAddress("PC", impl);
 //        assertEquals(1, addresses2.size());
+    }
+    
+    
+    public void testUnAmendReport(){
+    	Report report = Fixtures.createReport("test");
+    	report.setStatus(ReportStatus.AMENDED);
+    	report.setAmendedOn(new Date());
+    	
+    	reportDao.save(report);
+    	
+    	replayMocks();
+    	
+    	assertNotNull(report.getAmendedOn());
+    	reportRepository.unAmendReport(report);
+    	
+    	assertNull(report.getAmendedOn());
+    	assertEquals(ReportStatus.COMPLETED, report.getLastVersion().getReportStatus());
+    	
+    	verifyMocks();
     }
 
     private void assertNoAttributionsAreSufficent(AdverseEventAttribution attr) {

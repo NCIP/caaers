@@ -2,11 +2,13 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
@@ -533,7 +535,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     
     public void testGetAllSponsorReportsCompletedWithReplacedReports() throws Exception{
     	Report rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
@@ -541,7 +542,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         report.addReport(rep);
 
         rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
         reportDefinition.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
@@ -562,7 +562,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
 
     public void testGetAllSponsorReportsCompleted() throws Exception {
         Report rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
@@ -570,7 +569,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         report.addReport(rep);
 
         rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
         reportDefinition.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
@@ -578,7 +576,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         report.addReport(rep);
 
         rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
         reportDefinition.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
@@ -601,7 +598,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testGetEarliestPendingSponsorReport() throws Exception {
 
         Report rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         rep.setDueOn(new Timestamp(300));
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -609,14 +605,12 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         report.addReport(rep);
 
         rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
         rep = new Report();
-        Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         rep.setDueOn(new Timestamp(200));
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
@@ -780,7 +774,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	assertTrue(report.getPendingReports().isEmpty());
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.COMPLETED);
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -790,7 +783,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
         rep.setId(2);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -819,7 +811,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testFindAmendableReports(){
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.COMPLETED);
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -840,7 +831,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testFindPendingAmendableReports(){
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.COMPLETED);
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -851,7 +841,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
         rep.setId(2);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -862,7 +851,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
         rep.setId(3);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -884,7 +872,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testIsAnActiveReportPresent(){
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -902,7 +889,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testIsAnActiveReportPresentWhenThereAreReplacedReportsOnly(){
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.REPLACED);
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -918,9 +904,8 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     
     
     public void testIsAnActiveReportPresentWhenThereAreReplacedWithdrawnReportsOnly(){
-    	Report rep = new Report();
+    	Report rep =new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.REPLACED);
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -932,7 +917,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.WITHDRAWN);
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -951,7 +935,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testIsAnActiveReportPresentWhenThereAreReplacedWithdrawnAndPendingReportsOnly(){
     	Report rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.REPLACED);
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -963,7 +946,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.WITHDRAWN);
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -975,7 +957,6 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         
         rep = new Report();
     	rep.setId(1);
-        Fixtures.createReportVersion(rep);
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
@@ -992,12 +973,10 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testGetPhysicianSignOff() throws Exception{
     	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
     	Report report1 = Fixtures.createReport("report 1");
-    	report1.addReportVersion(new ReportVersion());
     	report1.getLastVersion().setPhysicianSignoff(true);
     	report1.getReportDefinition().setPhysicianSignOff(true);
     	aeReport.addReport(report1);
     	Report report2 = Fixtures.createReport("report 2");
-    	report2.addReportVersion(new ReportVersion());
     	report2.getLastVersion().setPhysicianSignoff(true);
     	report2.getReportDefinition().setPhysicianSignOff(true);
     	aeReport.addReport(report2);
@@ -1019,15 +998,50 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     public void testSetPhysicianSignOff() throws Exception{
     	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
     	Report report1 = Fixtures.createReport("report 1");
-    	report1.addReportVersion(new ReportVersion());
     	Report report2 = Fixtures.createReport("report 2");
-    	report2.addReportVersion(new ReportVersion());
     	aeReport.addReport(report1);
     	aeReport.addReport(report2);
     	aeReport.setPhysicianSignOff(true);
     	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
     	assertTrue("Physician sign-off not set correctly", aeReport.getReports().get(1).getLastVersion().getPhysicianSignoff());
     }
+    
+    public void testGetManuallySelectedReports(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	
+    	Report report1 = Fixtures.createReport("report 1");
+    	report1.setStatus(ReportStatus.PENDING);
+    	
+    	Report report2 = Fixtures.createReport("report 2");
+    	report2.setStatus(ReportStatus.REPLACED);
+    	
+    	
+    	Report report3= Fixtures.createReport("report 3");
+    	report3.setStatus(ReportStatus.WITHDRAWN);
+    	
+    	Report report4= Fixtures.createReport("report 4");
+    	report4.setStatus(ReportStatus.COMPLETED);
+    	
+    	Report report5= Fixtures.createReport("report 5");
+    	report5.setStatus(ReportStatus.AMENDED);
+    	
+    	
+    	aeReport.addReport(report1);
+    	aeReport.addReport(report2);
+    	aeReport.addReport(report3);
+    	aeReport.addReport(report4);
+    	aeReport.addReport(report5);
+    	
+    	assertTrue(aeReport.getManuallySelectedReports().isEmpty());
+    	
+    	report1.setManuallySelected(true);
+    	assertTrue(1 == aeReport.getManuallySelectedReports().size());
+    	report5.setManuallySelected(true);
+    	
+    	assertTrue(2 == aeReport.getManuallySelectedReports().size());
+    	assertSame(report5, aeReport.getManuallySelectedReports().get(1));
+    }
+    
     
     public void testGetHasAmendableSubmittedReport(){
     	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
@@ -1120,6 +1134,262 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	aeReport.addReport(report3);
     	assertTrue(aeReport.getHasSubmittedAmendableReport());
     	
+    	
+    }
+    
+    /**
+     * RD1 - 10 day 
+     * Expedited Data collection having Report-1 associated to RD1
+     * 
+     * RD2 - 2 Day report
+     * 
+     * RD3 a 11 day report
+     * RD4 a 10 day report
+     * 
+     * 
+     * -----
+     * For RD1 - reports to withdraw should return RD1 
+     * For RD2 - reports to withdraw should be empty
+     * For RD3 - reports to withdraw should be empty
+     * For RD4 - reports to withdraw should be empty
+     * 
+     */
+    public void testFindReportsToEdit(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Organization org = Fixtures.createOrganization("test",  1);
+    	ConfigProperty type = Fixtures.createConfigProperty("abcd");
+    	type.setId(1);
+    	
+    	
+    	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+    	rd1.setId(1);
+    	rd1.setOrganization(org);
+    	rd1.setDuration(10);
+    	rd1.setReportType(type);
+    	rd1.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	
+    	ReportDefinition rd2 = Fixtures.createReportDefinition("rd2");
+    	rd2.setId(2);
+    	rd2.setOrganization(org);
+    	rd2.setDuration(2);
+    	rd2.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd2.setReportType(type);
+    	
+    	ReportDefinition rd3 = Fixtures.createReportDefinition("rd3");
+    	rd3.setId(3);
+    	rd3.setOrganization(org);
+    	rd3.setDuration(11);
+    	rd3.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd3.setReportType(type);
+    	
+    	ReportDefinition rd4 = Fixtures.createReportDefinition("rd4");
+    	rd4.setId(4);
+    	rd4.setOrganization(org);
+    	rd4.setDuration(10);
+    	rd4.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd4.setReportType(type);
+    	
+    	
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setId(1);
+    	r1.setReportDefinition(rd1);
+    	r1.setStatus(ReportStatus.INPROCESS);
+    	r1.getLastVersion().setDueOn(new Date());
+    	r1.getLastVersion().setReportStatus(ReportStatus.INPROCESS);
+    	
+    	aeReport.addReport(r1);
+    	
+    	List<Report> reportsToWithdraw = aeReport.findReportsToEdit(rd1);
+    	assertFalse(reportsToWithdraw.isEmpty());
+    	assertEquals(1, reportsToWithdraw.size());
+    	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
+    	
+    	reportsToWithdraw = aeReport.findReportsToEdit(rd2);
+    	assertTrue(reportsToWithdraw.isEmpty());
+
+    	reportsToWithdraw = aeReport.findReportsToEdit(rd3);
+    	assertTrue(reportsToWithdraw.isEmpty());
+
+    	reportsToWithdraw = aeReport.findReportsToEdit(rd4);
+    	assertTrue(reportsToWithdraw.isEmpty());
+    	
+    	
+    }
+    
+    /**
+     * RD1 - 10 day 
+     * Expedited Data collection having Report-1 associated to RD1
+     * 
+     * RD2 - 2 Day report
+     * 
+     * RD3 a 11 day report
+     * RD4 a 10 day report
+     * 
+     * RDX - 1 Day report ( belonging to different group)
+     * 
+     * -----
+     * For RD2 - reports to withdraw should return RD1 
+     * For RD1 - reports to withdraw should be empty
+     * For RD3 - reports to withdraw should be RD1
+     * For RD4 - reports to withdraw should be RD1
+     * For RDX - reports to withdraw should be empty
+     * 
+     */
+    public void testFindReportsToWithdraw(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Organization org = Fixtures.createOrganization("test",  1);
+    	ConfigProperty type = Fixtures.createConfigProperty("abcd");
+    	type.setId(1);
+    	
+    	ConfigProperty typeX = Fixtures.createConfigProperty("x");
+    	typeX.setId(3);
+    	
+    	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+    	rd1.setId(1);
+    	rd1.setOrganization(org);
+    	rd1.setDuration(10);
+    	rd1.setReportType(type);
+    	rd1.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	
+    	ReportDefinition rd2 = Fixtures.createReportDefinition("rd2");
+    	rd2.setId(2);
+    	rd2.setOrganization(org);
+    	rd2.setDuration(2);
+    	rd2.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd2.setReportType(type);
+    	
+    	ReportDefinition rd3 = Fixtures.createReportDefinition("rd3");
+    	rd3.setId(3);
+    	rd3.setOrganization(org);
+    	rd3.setDuration(11);
+    	rd3.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd3.setReportType(type);
+    	
+    	ReportDefinition rd4 = Fixtures.createReportDefinition("rd4");
+    	rd4.setId(4);
+    	rd4.setOrganization(org);
+    	rd4.setDuration(10);
+    	rd4.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd4.setReportType(type);
+    	
+    	ReportDefinition rdx = Fixtures.createReportDefinition("rdx");
+    	rdx.setId(22);
+    	rdx.setOrganization(org);
+    	rdx.setDuration(1);
+    	rdx.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rdx.setReportType(typeX);
+    	
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setId(1);
+    	r1.setReportDefinition(rd1);
+    	r1.setStatus(ReportStatus.INPROCESS);
+    	r1.getLastVersion().setDueOn(new Date());
+    	r1.getLastVersion().setReportStatus(ReportStatus.INPROCESS);
+    	
+    	aeReport.addReport(r1);
+    	
+    	List<Report> reportsToWithdraw = aeReport.findReportsToWitdraw(rd2);
+    	assertFalse(reportsToWithdraw.isEmpty());
+    	assertEquals(1, reportsToWithdraw.size());
+    	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
+    	
+    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd1);
+    	assertTrue(reportsToWithdraw.isEmpty());
+
+    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd3);
+    	assertFalse(reportsToWithdraw.isEmpty());
+    	assertEquals(1, reportsToWithdraw.size());
+    	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
+    	
+    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd4);
+    	assertFalse(reportsToWithdraw.isEmpty());
+    	assertEquals(1, reportsToWithdraw.size());
+    	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
+    	
+    	reportsToWithdraw = aeReport.findReportsToWitdraw(rdx);
+    	assertTrue(reportsToWithdraw.isEmpty());
+    	
+    	
+    	
+    }
+    
+    public void testHasExistingReportsOfSameOrganizationAndType(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Organization org = Fixtures.createOrganization("test",  1);
+    	ConfigProperty type = Fixtures.createConfigProperty("abcd");
+    	type.setId(1);
+    	
+    	ConfigProperty typeX = Fixtures.createConfigProperty("x");
+    	typeX.setId(3);
+    	
+    	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+    	rd1.setId(1);
+    	rd1.setOrganization(org);
+    	rd1.setDuration(10);
+    	rd1.setReportType(type);
+    	rd1.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	assertFalse(aeReport.hasExistingReportsOfSameOrganizationAndType(rd1));
+    }
+    
+
+    public void testHasExistingReportsOfSameOrganizationAndType_WhenThereIsOne(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Organization org = Fixtures.createOrganization("test",  1);
+    	ConfigProperty type = Fixtures.createConfigProperty("abcd");
+    	type.setId(1);
+    	
+    	ConfigProperty typeX = Fixtures.createConfigProperty("x");
+    	typeX.setId(3);
+    	
+    	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+    	rd1.setId(1);
+    	rd1.setOrganization(org);
+    	rd1.setDuration(10);
+    	rd1.setReportType(type);
+    	rd1.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	
+    	ReportDefinition rd2 = Fixtures.createReportDefinition("rd2");
+    	rd2.setId(2);
+    	rd2.setOrganization(org);
+    	rd2.setDuration(2);
+    	rd2.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd2.setReportType(type);
+    	
+    	ReportDefinition rd3 = Fixtures.createReportDefinition("rd3");
+    	rd3.setId(3);
+    	rd3.setOrganization(org);
+    	rd3.setDuration(11);
+    	rd3.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd3.setReportType(type);
+    	
+    	ReportDefinition rd4 = Fixtures.createReportDefinition("rd4");
+    	rd4.setId(4);
+    	rd4.setOrganization(org);
+    	rd4.setDuration(10);
+    	rd4.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rd4.setReportType(type);
+    	
+    	ReportDefinition rdx = Fixtures.createReportDefinition("rdx");
+    	rdx.setId(22);
+    	rdx.setOrganization(org);
+    	rdx.setDuration(1);
+    	rdx.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	rdx.setReportType(typeX);
+    	
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setId(1);
+    	r1.setReportDefinition(rd1);
+    	r1.setStatus(ReportStatus.INPROCESS);
+    	r1.getLastVersion().setDueOn(new Date());
+    	r1.getLastVersion().setReportStatus(ReportStatus.INPROCESS);
+    	
+    	aeReport.addReport(r1);
+    	
+    	assertTrue(aeReport.hasExistingReportsOfSameOrganizationAndType(rd1));
+    	assertTrue(aeReport.hasExistingReportsOfSameOrganizationAndType(rd2));
+    	assertTrue(aeReport.hasExistingReportsOfSameOrganizationAndType(rd3));
+    	assertTrue(aeReport.hasExistingReportsOfSameOrganizationAndType(rd4));
+    	assertFalse(aeReport.hasExistingReportsOfSameOrganizationAndType(rdx));
     	
     }
 }

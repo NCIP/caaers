@@ -258,10 +258,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void createTaskInstances(CreateTaskJbpmCallback createTaskCallback){
-		jbpmTemplate.execute(createTaskCallback);
 		
-		// Send Notifications
-		try {
+		
 			ExecutionContext context = createTaskCallback.getContext();
 			String expediteReportUrl = " -- ";
 			String reportingPeriodUrl = "--" ;
@@ -277,10 +275,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 			contextVariables.put(REPLACEMENT_EXPEDITED_REPORT_LINK, expediteReportUrl);
 			contextVariables.put(REPLACEMENT_REPORTING_PERIOD_LINK, reportingPeriodUrl);
 			
-			notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList(),contextVariables);
-		} catch (CaaersSystemException e) {
-			log.error("Workflow Service : Error while sending email to task assignees", e);
-		}
+			String taskDescription = generateTaskDescription(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getTaskName(), contextVariables);
+			createTaskCallback.setTaskDescription(taskDescription);
+			
+			//create the tasks
+			jbpmTemplate.execute(createTaskCallback);
+			
+			// Send Notifications
+			try {
+			
+				notifiyTaskAssignees(taskDescription, createTaskCallback.getTaskName(),  createTaskCallback.getTaskAssigneesList());
+			
+			} catch (CaaersSystemException e) {
+				log.error("Workflow Service : Error while sending email to task assignees", e);
+			}
 	}
 	
 	/**
@@ -343,11 +351,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * Will notifiy the assignees about the creation of a task. 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-	public void notifiyTaskAssignees(String workflowDefinitionName,	String taskNodeName, List<User> recipients, Map<Object, Object> contextVariables) {
+	public void notifiyTaskAssignees(String message, String taskNodeName, List<User> recipients) {
 		if(recipients.isEmpty())
 			return;
-		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
-		String message = freeMarkerService.applyRuntimeReplacementsForReport(taskConfig.getMessage(), contextVariables);
 		String subject = "Task : " + taskNodeName;
 		String[] to = new String[recipients.size()];
 		int i = 0;
@@ -356,6 +362,13 @@ public class WorkflowServiceImpl implements WorkflowService {
 			i++;
 		}
 		caaersJavaMailSender.sendMail(to, subject, message, new String[0]);
+	}
+	
+	
+	public String generateTaskDescription(String workflowDefinitionName,String taskNodeName, Map<Object, Object> contextVariables){
+		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
+		String message = freeMarkerService.applyRuntimeReplacementsForReport(taskConfig.getMessage(), contextVariables);
+		return message;
 	}
 	
 	

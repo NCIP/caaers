@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * This is an service class, which is used to obtain the correct address (toAddress) of a recipient.
@@ -21,7 +23,7 @@ public interface ReportRepository {
      * pending scheduled notifications present in the scheduler, by delegating the call to
      * SchedulerService.
      */
-    void deleteReport(Report report);
+    void withdrawReport(Report report);
 
     /**
      * Will mark the report as replaced (ReportStatus = REPLACED). At present it will unschedule the
@@ -36,14 +38,8 @@ public interface ReportRepository {
      * <p/>
      * Also it will schedule the report.
      */
-    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion);
+    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport, Date baseDate);
 
-    /**
-     * Will withdraw the latest version of the report.
-     *
-     * @param report
-     */
-    void withdrawLastReportVersion(Report report);
 
     /**
      * Will tell whether all the mandatory field for this report is duly filled. This method will
@@ -54,11 +50,17 @@ public interface ReportRepository {
     ReportSubmittability validate(Report report);
 
     /**
-     * This method amends the report passed to it. It initiates the associated notifications and increments
-     * the versionId too.
+     * This method amends the report passed to it, by changing the status to {@link ReportStatus#AMENDED}
      */
     
-    void amendReport(Report report, Boolean useDefaultVersion);
+    void amendReport(Report report);
+    
+    /**
+     * This method will change the amended report to completed.  
+     * @param report
+     */
+    
+    void unAmendReport(Report report);
     
     /**
      * This method will

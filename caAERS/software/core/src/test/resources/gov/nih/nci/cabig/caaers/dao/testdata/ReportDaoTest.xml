@@ -8,6 +8,19 @@
         name="New Site"
         grid_id="gridSite"
     />
+	
+	<config_properties id="-1"
+	 code="cp1"
+	 name="cp1"
+	 config_type="1"
+	 />
+	
+	<config_properties id="-2"
+	 code="cp2"
+	 name="cp2"
+	 config_type="1"
+	 />
+	 
 	<report_calendar_templates 
 		id="-222"
 		name="RCT-222"
@@ -17,6 +30,7 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
+		report_type_id="-1"
 		/>
 	
 	<planned_notifications 
@@ -35,6 +49,36 @@
 		role_name="Investigator"
 		version="0"
 		/>
+		
+		 
+	<report_calendar_templates 
+		id="-223"
+		name="RCT-223"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		org_id="-1001"
+		amendable="0"
+		report_type_id="-2"
+		/>
+	
+	<planned_notifications 
+		id="-223"
+		index_on_time_scale="2"
+		subject="Test Subject Line"
+		dtype="email"
+		rct_id="-223"
+		version="0"
+		/>
+	
+	<recipients
+		id="-223"
+		plnf_id="-223"
+		dtype="role"
+		role_name="Investigator"
+		version="0"
+		/>	
 	
 	<!-- Below content is copied from AdverseEventReportDaoTest.xml -->
 	 <ctc_versions
@@ -213,17 +257,65 @@
      ae_rprt_id integer,
      grid_id text,
 	-->
+	
 	<report_schedules 
 		id="-223"
-		due_on="2007-05-16"
-		created_on="2007-05-15"
-		submitted_on="2007-05-18"
 		rct_ID="-222"
         required="1"
         version="0"
+		report_id="-1"
         />
         
-    <report_versions id="-88"    report_id="-223"    list_index="0"  report_version_id="0" status_code="2"/>
+    <report_versions id="-88" 
+	    report_id="-223"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="2"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		/>
+	
+	
+	<report_schedules 
+		id="-224"
+		rct_ID="-222"
+        required="1"
+        version="0"
+		report_id="-1"
+        />
+        
+    <report_versions id="-89" 
+	    report_id="-224"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="7"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		amended_on="2007-05-02"
+		/>
+		
+		
+	<report_schedules 
+		id="-225"
+		rct_ID="-223"
+        required="1"
+        version="0"
+		report_id="-1"
+        />
+        
+    <report_versions id="-90" 
+	    report_id="-225"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="7"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		amended_on="2007-05-01"
+		/>	
+		
     <AE_REPORT_PEOPLE id="-100" report_id="-1" 
            	role="S"
             first_name="Joe" 

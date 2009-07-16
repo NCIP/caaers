@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
@@ -8,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
@@ -55,26 +58,6 @@ public class ReportDao extends GridIdentifiableDao<Report> {
    
 
     /**
-     * Get the list of reports due by given date.
-     * 
-     * @param dueDate
-     *                The due date.
-     * @return The list of reports.
-     */
-    public List<Report> getAllByDueDate(Date dueDate) {
-        return getByDate(2, dueDate);
-    }
-
-
-
-    @SuppressWarnings("unchecked")
-    private List<Report> getByDate(int dateType, Date d) {
-        String column = (dateType == 1) ? "submittedOn" : ((dateType == 2) ? "dueOn" : "createdOn");
-        String hsql = "from Report s where s." + column + "=?";
-        return getHibernateTemplate().find(hsql, new Object[] { d });
-    }
-
-    /**
      * Delete report from db
      * 
      * @param id
@@ -113,9 +96,9 @@ public class ReportDao extends GridIdentifiableDao<Report> {
     public Report getInitializedReportById(int id) {
         Report report = getById(id);
         if (report != null) {
-            if (report.getScheduledNotifications() != null) initialize(report
-                            .getScheduledNotifications());
+            if (report.getScheduledNotifications() != null) initialize(report.getScheduledNotifications());
             if (report.getReportDeliveries() != null) initialize(report.getReportDeliveries());
+            if(report.getReportVersions() != null) initialize(report.getReportVersions());
         }
         return report;
     }
@@ -136,5 +119,27 @@ public class ReportDao extends GridIdentifiableDao<Report> {
 //    	});
     	
     	
+    }
+    
+    @SuppressWarnings({"unchecked"})
+    @Override
+    public List<Report> search(final AbstractQuery query) {
+        String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+        return (List<Report>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+
     }
 }

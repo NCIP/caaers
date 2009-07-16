@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -101,7 +103,8 @@ public class ReportDaoStub extends ReportDao {
         reportDefinition.setName("24 Hr 5Day report");
         reportDefinition.setTimeScaleUnitType(TimeScaleUnit.SECOND);
         reportDefinition.setPlannedNotifications(pnfList);
-
+        
+        
         report = new Report() {
             int callCount = 0;
 
@@ -112,6 +115,7 @@ public class ReportDaoStub extends ReportDao {
                 return super.getStatus();
             }
         };
+       
         report.setStatus(ReportStatus.PENDING);
         // rs.setName("24Hour5Day("+ reportId+")");
         report.setCreatedOn(new Date());

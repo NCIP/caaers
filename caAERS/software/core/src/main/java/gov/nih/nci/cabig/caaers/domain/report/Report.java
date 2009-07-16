@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,8 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +28,6 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
 /**
  * A report sending schedule for an adverse event. The RuleExecutionService, evaluates pre-defined
@@ -52,30 +48,18 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private List<ScheduledNotification> notifications;
 
-    private Date createdOn;
-
-    private Date dueOn;
-
-    private Date submittedOn;
-
     private Submitter submitter;
-
-    private Boolean physicianSignoff;
-
-    private String assignedIdentifer;
-
-    private String submissionUrl;
-
-    private String submissionMessage;
-
-    private ReportStatus status = ReportStatus.PENDING;
 
     private List<ReportVersion> reportVersions;
 
-
     private List<ReportDelivery> deliveries;
     
+    private boolean manuallySelected;
     private boolean externalSystem;
+    
+    public Report(){
+    	//for hibernate
+    }
     
   
     // //// LOGIC
@@ -128,20 +112,95 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     @Transient
     public ReportVersion getLastVersion() {
-
-        return reportVersions != null && reportVersions.size() > 0 ? reportVersions
-                        .get(reportVersions.size() - 1) : null;
+    	if(reportVersions == null || reportVersions.isEmpty()){
+    		ReportVersion defaultVersion = new ReportVersion();
+    		addReportVersion(defaultVersion);
+    	}
+    	return reportVersions.get(reportVersions.size() -1);
     }
 
     // //// BEAN PROPERTIES
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Transient
     public Date getCreatedOn() {
-        return createdOn;
+      return getLastVersion().getCreatedOn();
     }
 
     public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
+       getLastVersion().setCreatedOn(createdOn);
     }
+    
+
+    @Transient
+    public Date getDueOn() {
+        return getLastVersion().getDueOn();
+    }
+
+    public void setDueOn(Date dueOn) {
+        this.getLastVersion().setDueOn(dueOn);
+    }
+
+    @Transient
+    public Date getSubmittedOn() {
+        return getLastVersion().getSubmittedOn();
+    }
+
+    public void setSubmittedOn(Date submittedOn) {
+        getLastVersion().setSubmittedOn(submittedOn);
+    }
+    
+    @Transient
+    public Date getWithdrawnOn(){
+    	return getLastVersion().getWithdrawnOn();
+    }
+    public void setWithdrawnOn(Date withdrawnOn){
+    	getLastVersion().setWithdrawnOn(withdrawnOn);
+    }
+    
+    @Transient
+    public ReportStatus getStatus() {
+        return getLastVersion().getReportStatus();
+    }
+
+    public void setStatus(ReportStatus status) {
+        this.getLastVersion().setReportStatus(status);
+    }
+    
+    @Transient
+    public String getAssignedIdentifer() {
+        return getLastVersion().getAssignedIdentifer();
+    }
+
+    public void setAssignedIdentifer(String assignedIdentifer) {
+        this.getLastVersion().setAssignedIdentifer(assignedIdentifer);
+    }
+    
+    @Transient
+    public String getSubmissionMessage() {
+        return getLastVersion().getSubmissionMessage();
+    }
+
+    public void setSubmissionMessage(String submissionMessage) {
+        getLastVersion().setSubmissionMessage(submissionMessage);
+    }
+    
+    @Transient
+    public String getSubmissionUrl() {
+        return getLastVersion().getSubmissionMessage();
+    }
+
+    public void setSubmissionUrl(String submissionUrl) {
+        this.getLastVersion().setSubmissionUrl(submissionUrl);
+    }
+    
+    @Transient
+    public Date getAmendedOn(){
+    	return this.getLastVersion().getAmendedOn();
+    }
+    
+    public void setAmendedOn(Date amendedOn){
+    	this.getLastVersion().setAmendedOn(amendedOn);
+    }
+
 
     @OneToOne
     @JoinColumn(name = "rct_id")
@@ -175,38 +234,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.aeReport = aeReport;
     }
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    public Date getDueOn() {
-        return dueOn;
-    }
-
-    public void setDueOn(Date dueOn) {
-        this.dueOn = dueOn;
-    }
-
-    @Temporal(value = TemporalType.TIMESTAMP)
-    public Date getSubmittedOn() {
-        return submittedOn;
-    }
-
-    public void setSubmittedOn(Date submittedOn) {
-        this.submittedOn = submittedOn;
-    }
-
     @Transient
     public String getName() {
         return reportDefinition.getName();
     }
 
-    @Column(name = "status_code")
-    @Type(type = "reportStatus")
-    public ReportStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReportStatus status) {
-        this.status = status;
-    }
+   
 
     public boolean isRequired() {
         return required;
@@ -304,6 +337,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setReportVersions(List<ReportVersion> reportVersions) {
         this.reportVersions = reportVersions;
     }
+    
+    public boolean isManuallySelected() {
+		return manuallySelected;
+	}
+    
+    public void setManuallySelected(boolean manuallySelected) {
+		this.manuallySelected = manuallySelected;
+	}
 
     // //// OBJECT METHODS
 
@@ -311,9 +352,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Report [").append("id : ").append(getId()).append(", createdOn :").append(
-                        String.valueOf(createdOn)).append(", submittedOn :").append(
-                        String.valueOf(submittedOn)).append(", dueOn :").append(
-                        String.valueOf(dueOn));
+                        String.valueOf(getCreatedOn())).append(", submittedOn :").append(
+                        String.valueOf(getSubmittedOn())).append(", dueOn :").append(
+                        String.valueOf(getDueOn()));
         sb.append("\r\n notifications :");
         if (notifications != null) {
             for (ScheduledNotification sn : notifications) {
@@ -327,30 +368,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         }
         sb.append("]");
         return sb.toString();
-    }
-
-    public String getAssignedIdentifer() {
-        return assignedIdentifer;
-    }
-
-    public void setAssignedIdentifer(String assignedIdentifer) {
-        this.assignedIdentifer = assignedIdentifer;
-    }
-
-    public String getSubmissionMessage() {
-        return submissionMessage;
-    }
-
-    public void setSubmissionMessage(String submissionMessage) {
-        this.submissionMessage = submissionMessage;
-    }
-
-    public String getSubmissionUrl() {
-        return submissionUrl;
-    }
-
-    public void setSubmissionUrl(String submissionUrl) {
-        this.submissionUrl = submissionUrl;
     }
 
     @Transient
@@ -441,12 +458,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	return reportDefinition.getAttributionRequired();
     }
    
-    public void copySubmissionDetails(Report r){
-    	this.assignedIdentifer = r.getAssignedIdentifer();
-    	//copy the last version also.
-    	getLastVersion().copySubmissionDetails(r.getLastVersion());
-    }
-    
     /**
      * Returns true, if the status of this report is any of the input reportStatus
      * @param reportStatus
@@ -455,6 +466,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     @Transient
     public boolean isHavingStatus(ReportStatus...reportStatus){
     	boolean retVal = false;
+    	ReportStatus status = getStatus();
     	for(ReportStatus rpStatus : reportStatus){
     		retVal = retVal || rpStatus.equals(status);
     	}
@@ -467,6 +479,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
      */
     @Transient
     public boolean isOverdue(){
+    	ReportStatus status = getStatus();
+    	Date dueOn = getDueOn();
+    	
     	if(status != ReportStatus.PENDING || status != ReportStatus.INPROCESS ) return false;
     	return (dueOn != null && new Date().getTime() > dueOn.getTime());
     }
@@ -478,11 +493,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public boolean isAmendable() {
     	return reportDefinition.getAmendable();
 	}
-    
-    @Transient
-	public boolean getExternalSystem() {
-    	externalSystem =  hasSystemDeliveries();
-    	return externalSystem;
-	}
    
+    @Transient
+    public boolean isOfSameOrganizationAndType(ReportDefinition rd){
+    	return getReportDefinition().isOfSameReportTypeAndOrganization(rd);
+    }
 }

@@ -1,0 +1,39 @@
+<dataset>
+	<!-- First populate the Report Calendar, then AEReport and then
+		the ReportSchedule
+	-->
+	<!-- Below content is copied from ReportCalendarTemplateDaoTest.xml -->
+	<ORGANIZATIONS id="-1001" name="New Site" grid_id="gridSite" />
+	
+	<config_properties id="-1" code="cp1" name="cp1" config_type="1" />
+	
+	 <config_properties id="-2" code="cp2" name="cp2" config_type="1" />
+	 
+	<report_calendar_templates id="-222" name="RCT222" description="TestDescription" duration="4"
+		 time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" report_type_id="-1" />
+	
+	<planned_notifications id="-222" index_on_time_scale="2" subject="Test Subject Line"
+		dtype="email" rct_id="-222"	version="0"	/>
+	 
+	<report_calendar_templates id="-223" name="RCT223" description="TestDescription" duration="4"
+		time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" report_type_id="-1" />
+	
+	<planned_notifications id="-223" index_on_time_scale="2" subject="Test Subject Line"
+		dtype="email" rct_id="-223"	version="0"	/>
+		
+ 	<PARTICIPANT_ASSIGNMENTS id="-14" study_site_id="-10" participant_id="-5" date_of_enrollment="2006-09-30"  load_status="1" />
+    <epochs id="-1" name="abcd"  order_no="1"/>
+	
+	<ae_reporting_periods id="-14" assignment_id="-14" start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" />   
+	
+    <AE_REPORTS id="-1" reporting_period_id="-14" created_at="2004-09-04 13:15:30" />
+ 
+ 
+ <report_schedules id="-223" rct_ID="-222"  required="1" version="0" report_id="-1" />
+        
+ <report_versions id="-88" report_id="-223"  list_index="0"  report_version_id="0" status_code="7"
+		due_on="2007-05-16" created_on="2007-05-15" submitted_on="2007-05-18" amended_on="2007-05-05" />
+	
+ 
+</dataset>
+	

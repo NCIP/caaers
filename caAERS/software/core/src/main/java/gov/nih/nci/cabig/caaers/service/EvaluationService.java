@@ -5,14 +5,19 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * This service interface is used to implement various caaers business rules.
@@ -20,11 +25,6 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public interface EvaluationService {
-    /**
-     * @return true if the given adverse event is severe in the context of the provided study, site,
-     *         and participant
-     */
-    boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent);
 
     /**
      * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
@@ -37,12 +37,7 @@ public interface EvaluationService {
     // return type based on the method name, is misleading,need to find a better name.
     ReportSubmittability isSubmittable(Report report);
     
-    /**
-     * Will return a Map consisting of {@link ReportDefinition} as key and List of {@link AdverseEvent} caused as values. 
-     * @param reportingPeriod
-     * @return
-     */
-    public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod);
+    
     /**
      * Will return the ReportDefinition that are marked required at rules engine.
      * 
@@ -53,38 +48,13 @@ public interface EvaluationService {
     List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,Study study);
     
     /**
-     * Will return a list of ReportDefinition retaining just the earliest amenable Report Definition
-     * 
-     * @param Map<String, List<String>> - Where the values are list of reportDefinitionNames
-     * @return - A list of {@link ReportDefinition} objects which has just one amenable ReportDefinition (the earliest)
-     */
-    List<ReportDefinition> filterAmenableReportDefinitions(Map<String, List<String>> map);
-
-    /**
-     * Evaluates the provided data and associates new {@link Report} instances with the given
-     * {@link ExpeditedAdverseEventReport}.
-     * <p>
-     * This method may be called multiple times for the same expedited data. Implementors must be
-     * sure not to add multiple {@link Report}s for the same {@link ReportDefinition}.
-     * Implementors must also <em>not</em> remove
-     * {@link gov.nih.nci.cabig.caaers.domain.report.Report}s if they don't evaluate as required
-     * (e.g., some reports may have been directly selected by the user). Instead, implementors
-     * should update the {@link Report#setRequired} flag.
-     * 
-     * @param expeditedData
-     * @return the report definitions which the evaluation indicated were required.
-     */
-    // @Deprecated
-    // void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
-    /**
      * This method will instantiate and saves the optional reports.
      * 
      * @param expeditedData
      * @param reportDefs -
      *                A list of ReportDefinitions
      */
-    List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion);
+    List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData, Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion);
 
     /**
      * 
@@ -95,11 +65,9 @@ public interface EvaluationService {
     Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions);
 
     /**
-     * @return All the report definitions which might apply to the given study, site, and
-     *         participant
+     * This method will find all the report definitions applicable to the Study
      */
-    // TODO: it might more sense for this to go in ReportService
-    List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment);
+    ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study);
 
     /**
      * Runs through the Business rules set at "FundingSponsor" level, for the section.
@@ -109,5 +77,12 @@ public interface EvaluationService {
      * @return - {@link ValidationErrors}, that contains the errors.
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
+
+    /**
+     * This method evaluates the SAE reporting rules on the reporting period.
+     * @param reportingPeriod
+     * @return
+     */
+	EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod);
 
 }

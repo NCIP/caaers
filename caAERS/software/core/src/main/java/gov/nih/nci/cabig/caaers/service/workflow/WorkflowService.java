@@ -131,7 +131,7 @@ public interface WorkflowService{
 	 * @param workflowDefinitionName
 	 * @param taskNodeName
 	 */
-	public void notifiyTaskAssignees(String workflowDefinitionName, String taskNodeName,List<User> recipients, Map<Object, Object> contextVariables);
+	public void notifiyTaskAssignees(String message, String taskNodeName,List<User> recipients);
 
 
 }

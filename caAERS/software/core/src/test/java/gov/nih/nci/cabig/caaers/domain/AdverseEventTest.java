@@ -206,6 +206,45 @@ public class AdverseEventTest extends AbstractTestCase {
     	assertEquals(1, adverseEvent.getAssociatedReportNames().size());
     	assertEquals("test", adverseEvent.getAssociatedReportNames().get(0));
     }
+    
+    
+    public void testInitializePostSubmissionUpdatedDate(){
+    	AdverseEvent ae = new AdverseEvent();
+    	assertNull(ae.getPostSubmissionUpdatedDate());
+    	ae.initializePostSubmissionUpdatedDate();
+    	assertNull(ae.getPostSubmissionUpdatedDate());
+    }
+    
+    public void testInitializePostSubmissionUpdatedDate_WhenAEModified(){
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setGrade(Grade.NORMAL);
+    	assertNull(ae.getPostSubmissionUpdatedDate());
+    	assertTrue(ae.isModified());
+    	ae.initializePostSubmissionUpdatedDate();
+    	assertNull(ae.getPostSubmissionUpdatedDate());
+    }
+    
+    public void testInitializePostSubmissionUpdatedDate_WhenGraded(){
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setGrade(Grade.LIFE_THREATENING);
+    	assertNull(ae.getPostSubmissionUpdatedDate());
+    	assertTrue(ae.isModified());
+    	ae.initializePostSubmissionUpdatedDate();
+    	assertNotNull(ae.getPostSubmissionUpdatedDate());
+    }
+    
+    
+    public void testInitializePostSubmissionUpdatedDate_Same(){
+    	AdverseEvent ae = new AdverseEvent();
+    	Date d = new Date();
+    	ae.setPostSubmissionUpdatedDate(d);
+    	ae.setGrade(Grade.LIFE_THREATENING);
+    	assertTrue(ae.isModified());
+    	ae.initializePostSubmissionUpdatedDate();
+    	assertNotNull(ae.getPostSubmissionUpdatedDate());
+    	assertSame(d, ae.getPostSubmissionUpdatedDate());
+    }
+    
 //
 //    public void testCopyAdverseEventTerm() {
 //

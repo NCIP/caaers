@@ -4,6 +4,9 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
 
@@ -144,5 +147,65 @@ public class ReportDefinitionTest extends AbstractTestCase {
     	displayDueDate = def.getExpectedDisplayDueDate();
     	assertNotNull("Error in generating expectedDisplayDueDate", displayDueDate);
     	assertEquals("Error in generating expectedDisplayDuedate", displayDueDate, "Due in 5 seconds");
+    }
+    
+    
+    /**
+     * RD0 grp1 org1
+     * RD1 grp1 org1
+     * RD2 grp2 org1
+     * 
+     * RD3 grp1 org2
+     * RD3 grp2 org3
+     * 
+     * expected result
+     * rd1<>rd0 = true
+     * rd1<>rd1 = true;
+     * rd1<>rd2 = false;
+     * rd1<>rd3 = false;
+     * rd1<>rd4 = false;
+     */
+    public void testIsOfSameReportTypeAndOrganization(){
+    	Organization org1 = Fixtures.createOrganization("test1");
+    	org1.setId(1);
+    	Organization org2 = Fixtures.createOrganization("test2");
+    	org2.setId(2);
+    	
+    	ConfigProperty cp1 = Fixtures.createConfigProperty("cp1");
+    	cp1.setId(1);
+    	ConfigProperty cp2 = Fixtures.createConfigProperty("cp2");
+    	cp1.setId(2);
+    	
+    	ReportDefinition rd0 = Fixtures.createReportDefinition("rd0");
+    	rd0.setReportType(cp1);
+    	rd0.setOrganization(org1);
+    	rd0.setId(0);
+    	
+    	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+    	rd1.setReportType(cp1);
+    	rd1.setOrganization(org1);
+    	rd1.setId(1);
+    	
+    	ReportDefinition rd2 = Fixtures.createReportDefinition("rd2");
+    	rd2.setReportType(cp2);
+    	rd2.setOrganization(org1);
+    	rd2.setId(2);
+    	
+    	ReportDefinition rd3 = Fixtures.createReportDefinition("rd3");
+    	rd3.setReportType(cp1);
+    	rd3.setOrganization(org2);
+    	rd3.setId(3);
+    	
+    	ReportDefinition rd4 = Fixtures.createReportDefinition("rd4");
+    	rd4.setReportType(cp2);
+    	rd4.setOrganization(org2);
+    	rd4.setId(4);
+    	
+    	
+    	assertTrue(rd1.isOfSameReportTypeAndOrganization(rd0));
+    	assertTrue(rd1.isOfSameReportTypeAndOrganization(rd1));
+    	assertFalse(rd1.isOfSameReportTypeAndOrganization(rd2));
+    	assertFalse(rd1.isOfSameReportTypeAndOrganization(rd3));
+    	assertFalse(rd1.isOfSameReportTypeAndOrganization(rd4));
     }
 }

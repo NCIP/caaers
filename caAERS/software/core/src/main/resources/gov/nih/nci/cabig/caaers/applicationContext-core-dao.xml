@@ -199,6 +199,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
+				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -376,6 +377,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
+				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
             </list>
         </property>
         <!--

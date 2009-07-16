@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -71,10 +72,19 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     List<ReportContent> contents;
     
+    //adverse events, that got added/reported in this report.
+    List<ReportedAdverseEvent> reportedAdversEvents;
+    
     private List<ReportTracking> reportTrackings;
     
 
     // ////Logic
+    public void addReportedAdverseEvent(AdverseEvent ae){
+    	if(reportedAdversEvents == null) reportedAdversEvents = new ArrayList<ReportedAdverseEvent>();
+    	ReportedAdverseEvent reportedAE = new ReportedAdverseEvent(this, ae);
+    	reportedAdversEvents.add(reportedAE);
+    }
+    
     public void addReportContent(ReportContent content){
     	if(contents == null) contents = new ArrayList<ReportContent>();
     	contents.add(content);
@@ -245,6 +255,16 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 	}
     public void setContents(List<ReportContent> contents) {
 		this.contents = contents;
+	}
+    
+    @OneToMany(mappedBy="reportVersion")
+    @Cascade(value={CascadeType.SAVE_UPDATE, CascadeType.REMOVE, CascadeType.EVICT, CascadeType.DELETE_ORPHAN})
+    public List<ReportedAdverseEvent> getReportedAdversEvents() {
+		return reportedAdversEvents;
+	}
+    public void setReportedAdversEvents(
+			List<ReportedAdverseEvent> reportedAdversEvents) {
+		this.reportedAdversEvents = reportedAdversEvents;
 	}
     
     /**

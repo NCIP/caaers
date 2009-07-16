@@ -188,15 +188,13 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         List<Report> actual = getDao().getById(-1).getReports();
         assertNotNull(actual);
         assertEquals("Wrong number of reports", 2, actual.size());
-        assertEquals("Wrong report 0", -40, (int) actual.get(0).getId());
+        assertEquals("Wrong report 0", -40, (int) actual.get(1).getId());
 
-        Report actualReport1 = actual.get(1);
+        Report actualReport1 = actual.get(0);
         assertNotNull(actualReport1);
         assertEquals("Wrong report 1", -41, (int) actualReport1.getId());
         assertEquals("Wrong def for report 1", -30, (int) actualReport1.getReportDefinition()
                         .getId());
-        assertDayOfDate("Wrong due date for report 1", 2007, Calendar.MAY, 5, actualReport1
-                        .getDueOn());
     }
 
     public void testGetReporter() throws Exception {

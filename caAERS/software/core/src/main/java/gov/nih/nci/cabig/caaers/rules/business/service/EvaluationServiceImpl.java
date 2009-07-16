@@ -8,9 +8,13 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -20,16 +24,13 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,229 +48,321 @@ public class EvaluationServiceImpl implements EvaluationService {
     private ReportRepository reportRepository;
     
     private OrganizationDao organizationDao;
-
-    /**
-     * @return true if the given adverse event is severe in the context of the provided study, site,
-     *         and participant
-     */
-    public boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent) {
-        boolean isSevere = false;
-
-        try {
-            String msg = adverseEventEvaluationService.assesAdverseEvent(adverseEvent, assignment
-                            .getStudySite().getStudy());
-            if ("SERIOUS_ADVERSE_EVENT".equals(msg)) {
-                isSevere = true;
-            }
-        } catch (Exception e) {
-            throw new CaaersSystemException("Could not assess the given AE", e);
-        }
-
-        return isSevere;
-    }
     
-    /**
-     * This method will return a Map, whose keys are the {@link ReportDefinition} and values are the {@link AdverseEvent} that caused the {@link ReportDefinition}.
-     * Note:- For every AdverseEvent, the list of report definition is obtained. A map is created with ReportDefinition as key and AdverseEvent as value. 
-     * @param reportingPeriod
-     * @return
-     */
-    public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod){
-    	Map<ReportDefinition, List<AdverseEvent>> map = new HashMap<ReportDefinition, List<AdverseEvent>>();
-    	List<AdverseEvent> adverseEventsToEvaluate =reportingPeriod.getModifiedReportableAdverseEvents();
-    		for(AdverseEvent ae : adverseEventsToEvaluate){
-    			List<ReportDefinition> reportDefs = findRequiredReportDefinitions(null, Arrays.asList(ae), reportingPeriod.getStudy());
-    			for(ReportDefinition reportDef : reportDefs){
-    				if(map.containsKey(reportDef)){
-    					map.get(reportDef).add(ae);
-    				}else {
-    					List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
-    					aeList.add(ae);
-    					map.put(reportDef, aeList);
-    				}
-    			}
-    		}
-    		
-    		// Now we will filter out the amenable ReportDefinitions. 
-    		// Prepare the Map needed for filterAmenableReportDefinitions method in EvaluationServiceImpl
-    		Map<String, List<String>> repDefinitionNamesMap = new HashMap<String,List<String>>();
-    		List<String> repDefnNames = new ArrayList<String>();
-    		for(ReportDefinition rDef: map.keySet()){
-    			if(rDef != null)
-    				repDefnNames.add(rDef.getName());
-    		}
-    		repDefinitionNamesMap.put("RepDefnNames", repDefnNames);
-    		
-    		// Call filterAmenableReportDefinitions in EvaluationServiceImpl passing repDefinitionNamesMap
-    		// The List returned is a list of ReportDefinitions with the earliest amenable reportDefinition
-    		List<ReportDefinition> amenableFilterRepDefn = filterAmenableReportDefinitions(repDefinitionNamesMap);
-    		Map<ReportDefinition, List<AdverseEvent>> filteredRepDefnToAeMap = updateReportDefnAesMap(map, 
-    				amenableFilterRepDefn);  
-    	return map;
-    }
-    /**
-     * The report definitions that are marked as mandatory at rules engine. Bug fix : 12770, will
-     * filter already instantiated reports (that are not in WITHDRAWN) status.
-     * 
-     * @param expeditedData -
-     *                The {@link ExpeditedAdverseEventReport}
-     * @return - The list of {@link ReportDefinition} objects, that are associated to this report.
-     */
-    public List<ReportDefinition> findRequiredReportDefinitions(
-                    ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study) {
-        Map<String, List<String>> map;
-        List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
-
-        try {
-            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
-        } catch (Exception e) {
-            throw new CaaersSystemException(
-                            "Could not determine the reports necessary for the given expedited adverse event data",
-                            e);
-        }
-        
-        defList = filterAmenableReportDefinitions(map);
-        List<ReportDefinition> filterdReportDefs = new ArrayList<ReportDefinition>();
-    	
-        // Bug fix - 12770
-        if(expeditedData != null){
-        	if (defList.isEmpty() || expeditedData.getActiveReports().isEmpty()) return defList;
-        	// Will filter already instantiated reports.
-        	for (Report report : expeditedData.getActiveReports()) {
-        		for (ReportDefinition def : defList) {
-        			if (!def.getId().equals(report.getReportDefinition().getId())) {
-        				filterdReportDefs.add(def);
-        			}
-        		}
-
-        	}
-        	return filterdReportDefs;
-        }
-
-        return defList;
-    }
+    ReportDefinitionFilter reportDefinitionFilter;
     
-    /**
-     * This method received a map of the reportDefinitions that are triggered by the rules for aes provided.
-     * It in turns filters out the amenable reportDefinitions retaining the one with shortest time-frame.
-     * It returns a list of reportDefinitions.
-     * @params Map<String, List<String>>
-     * @return
-     */
-    public List<ReportDefinition> filterAmenableReportDefinitions(Map<String,List<String>> map){
-    	List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
-    	// this comparator is used to find the highest ranked report definition
-        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
-
-        Set<String> keys = map.keySet();
-        for (String key : keys) {
-            List<String> reportDefNames = map.get(key);
-            if (reportDefNames == null) continue;
-
-            TreeSet<ReportDefinition> reportDefTreeSet = new TreeSet<ReportDefinition>(c);
-            for (String reportDefName : reportDefNames) {
-                ReportDefinition reportDef = reportDefinitionDao.getByName(reportDefName);
-                if (reportDef.getAmendable()) {
-                    reportDefTreeSet.add(reportDef);
-                } else {
-                    defList.add(reportDef);
-                }
-            }
-
-            if (!reportDefTreeSet.isEmpty()) {
-                defList.add(reportDefTreeSet.last());
-            }
-        }
-        return defList;
-    }
-    
-    /**
-	 * Filter the ReportDefinition - Ae Map so that only the earliest Amendabe ReportDefinition is retained in the map.
-	 * 
-	 * @param map, the initial ReportDefinition to AdverseEvent List Map.
-	 * @param repDefnList, the list containing the ReportDefinition to be retained.
-	 * @return map, the final ReportDefinition to AdverseEvent List Map which has only one (earliest) amendable ReportDefinition.
-	 */
-	public Map<ReportDefinition, List<AdverseEvent>>updateReportDefnAesMap(Map<ReportDefinition, List<AdverseEvent>> map 
-						, List<ReportDefinition> repDefnList){
-		Map<ReportDefinition, Boolean> retainedDefns = new HashMap<ReportDefinition, Boolean>();
-		for(ReportDefinition rd: repDefnList){
-			retainedDefns.put(rd, Boolean.TRUE);
-		}
-		// Create a list of AdverseEvents that will be migrated to the only amenable reportDefinition retained in the result map
-		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
-		List<ReportDefinition> removeRepDefn = new ArrayList<ReportDefinition>(); // This will have the list of reportDefinition 
-		// that are to be removed from the map.
-		
-		for(ReportDefinition rd: map.keySet()){
-			if(!retainedDefns.containsKey(rd)){
-				for(AdverseEvent ae: map.get(rd))
-					aeList.add(ae);
-				removeRepDefn.add(rd);
-			}
-		}
-		
-		// Now remove the ReportDefinitions in the list removeRepDefn from the map
-		for(ReportDefinition rd: removeRepDefn){
-			map.remove(rd);
-		}
-		
-		// Now the adverseEvents in aeList are appended to the list of adverseEvents associated to the only amenable ReportDefinition
-		// in the filteredMap 
-		Map<AdverseEvent, Boolean> existingAeMap = new HashMap<AdverseEvent, Boolean>();
-		for(ReportDefinition rd: map.keySet()){
-			if(rd.getAmendable()){
-				for(AdverseEvent ae: map.get(rd))
-					existingAeMap.put(ae, Boolean.TRUE);
-				// Now add the AdverseEvents from aeList to this list
-				for(AdverseEvent ae: aeList)
-					if(!existingAeMap.containsKey(ae))
-						map.get(rd).add(ae);
-			}
-		}
-		return map;
+    public EvaluationServiceImpl() {
+    	reportDefinitionFilter = new ReportDefinitionFilter();
 	}
 
     /**
-     * Evaluates the provided data and associates new {@link Report} instances with the given
-     * {@link ExpeditedAdverseEventReport}.
-     * <p>
-     * This method may be called multiple times for the same expedited data. Implementors must be
-     * sure not to add multiple {@link Report}s for the same {@link ReportDefinition}.
-     * Implementors must also <em>not</em> remove
-     * {@link gov.nih.nci.cabig.caaers.domain.report.Report}s if they don't evaluate as required
-     * (e.g., some reports may have been directly selected by the user). Instead, implementors
-     * should update the {@link Report#setRequired} flag.
-     * 
-     * @param expeditedData
-     * @return the report definitions which the evaluation indicated were required.
+     * This method evaluates the SAE reporting rules on the reporting period.
+     * @param reportingPeriod
+     * @return
      */
-    /*
-     * @Transactional(readOnly=false) public void addRequiredReports(ExpeditedAdverseEventReport
-     * expeditedData) { Map<String,List<String>> map; List<String> reportDefinitionNames = new
-     * ArrayList<String>(); try { map =
-     * adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData); } catch (Exception e) {
-     * throw new CaaersSystemException( "Could not determine the reports necessary for the given
-     * expedited adverse event data", e); }
+    public EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod){
+    	assert reportingPeriod != null : "Reporting period should not be null";
+    	EvaluationResultDTO  result = new EvaluationResultDTO();
+    	
+    	List<ExpeditedAdverseEventReport> aeReports = reportingPeriod.getAeReports();
+    	
+    	//determine discrete set of AdverseEvents, against which the rules should be fired.
+    	List<AdverseEvent> newlyAddedAdverseEvents = reportingPeriod.getNonExpeditedAdverseEvents();
+    	
+    	//find the evaluation for default (new data collection)
+    	findRequiredReportDefinitions(null, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
+    	result.addAllAdverseEvents(new Integer(0), newlyAddedAdverseEvents);
+    	
+    	//for each data collection (existing) find the evaluation
+    	if(CollectionUtils.isNotEmpty(aeReports)){
+    		for(ExpeditedAdverseEventReport aeReport : aeReports){
+    			List<AdverseEvent> evaluatableAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
+        		if(aeReport.isActive()){
+        			//New and existing AEs
+        			evaluatableAdverseEvents.addAll(aeReport.getActiveAdverseEvents());
+        		}else{
+        			//new and modified AEs
+        			evaluatableAdverseEvents.addAll(aeReport.getActiveModifiedAdverseEvents());
+        		}
+        		
+        		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
+        		allAdverseEvents.addAll(aeReport.getAdverseEvents());
+        		findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
+        		result.addAllAdverseEvents(aeReport.getId(), allAdverseEvents);
+    		}
+    	}
+    	
+    	if(log.isInfoEnabled()){
+    		log.info("============== Evaluation result =============");
+    		log.info(result.toString());
+    		log.info("==============================================");
+    	}
+    	
+    	System.out.println("****************************************************");
+    	System.out.println(result);
+    	System.out.println("****************************************************");
+    	
+    	return result;
+    }
+    //TODO : BJ, to be removed
+    public List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study) {
+    	EvaluationResultDTO evaluationResult = new EvaluationResultDTO();
+    	findRequiredReportDefinitions(expeditedData, aeList, study, evaluationResult);
+    	List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
+    	if(expeditedData == null){
+    		reportDefinitions.addAll(evaluationResult.getAeReportIndexMap().get(new Integer(0)));
+    	}else{
+    		reportDefinitions.addAll(evaluationResult.getAeReportIndexMap().get(expeditedData.getId()));
+    	}
+    	return reportDefinitions;
+    }
+    
+    
+    /**
+     * This method invokes the {@link AdverseEventEvaluationService} to obtain the report definitions suggested. 
+     * Then process that information, to get the adverse event result {@link EvaluationResultDTO}
      * 
-     * Set<String> keys = map.keySet(); for (String key : keys) { List<String> reportDefNames =
-     * map.get(key); // TO-DO need to clarify this ranking incase of multi actions in rules if
-     * (reportDefNames.size() != 0) { String reportDefName =
-     * extractTopPriorityReportDefintionName(reportDefNames); System.out.println("adding ..." +
-     * reportDefName); reportDefinitionNames.add(reportDefName); }
-     * 
-     * //uncomment the above part and comment the below code after figuring oout ranking. //for
-     * (String reportDefName : reportDefNames) { //reportDefinitionNames.add(reportDefName); //} }
-     * 
-     * for (Object reportDefinitionName : reportDefinitionNames) {
-     * 
-     * ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString()); Report
-     * report = existingReportWithDef(expeditedData, def);
-     * 
-     * if (report == null) { report = reportService.createReport(def, expeditedData);
-     * //expeditedAdverseEventReportDao.save(expeditedData); } report.setRequired(true); }
-     *  }
+     * Overview on extra processing
+     *   1. If child report is active , parent report suggested by rules is ignored. 
+     *   2. All manually selected active reports are suggested by caAERS
+     *   3. If there is a manual selection, ignore the others suggested by rules
+     *   4. If there is an AE modified, which is part of submitted report, force amend it. 
+     *   5. If any, Withdraw all active reports (non manually selected), that are not suggested.
+     *   
+     * @param expeditedData - The {@link ExpeditedAdverseEventReport}
      */
+    public void findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
+        Map<AdverseEvent, List<String>> map;
+        List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+        boolean alertNeeded = false;
+        Integer aeReportId = expeditedData == null ? new Integer(0) : expeditedData.getId();
+
+        try {
+        	//evaluate the SAE reporting rules
+            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
+            
+            //find out the unique report definition names, then load them. 
+            Set<String> reportDefinitionNames = new  HashSet<String>();
+            for(AdverseEvent ae : map.keySet()){
+            	List<String> nameList = map.get(ae);
+            	ae.setRequiresReporting(!nameList.isEmpty());
+            	alertNeeded |= (!nameList.isEmpty());
+            	reportDefinitionNames.addAll(nameList);
+            	
+            }
+            
+            //logging
+            if(log.isDebugEnabled()){
+            	log.debug("Rules Engine Result for : " + aeReportId + ", " + String.valueOf(map));
+            }
+            
+            //set the alert needed
+            evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
+            
+            
+            //load all report definitions
+            for(String reportDefName : reportDefinitionNames){
+            	ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
+            	if(rd != null){
+            		defList.add(rd);
+            	}
+            }
+            
+            //  - If child report is active, select that instead of parent. 
+            // - If there is a manual selection, ignore rules engine suggestions from the same group
+            // - If the manual selection is always a preferred one (ie. by default add active manual selected reports). 
+            // - If there is an ae modified, which is part of completed report, force amending it.
+            List<Report> activeReports = null;
+            if(expeditedData != null){
+            	activeReports = expeditedData.getActiveReports();
+            	List<Report> manuallySelectedReports = expeditedData.getManuallySelectedReports();
+            	
+            	//a temporary list
+            	List<ReportDefinition> tmplist = new ArrayList<ReportDefinition>(defList);
+            	
+            	//keep active child report instead of parent.
+            	for(Report activeReport : activeReports){
+            		ReportDefinition rdParent = activeReport.getReportDefinition().getParent();
+            		ReportDefinition rdFound = findReportDefinition(tmplist, rdParent);
+            		
+            		if(rdFound != null){
+            			//remove parent and keep child
+            			defList.remove(rdFound);
+            			defList.add(activeReport.getReportDefinition());
+            		}
+            	}
+            	
+            	//throw away all suggestions of rules engine, (if they belong to the same group as that of manually selected)
+            	for(Report manualReport : manuallySelectedReports){
+            		ReportDefinition rdManual = manualReport.getReportDefinition();
+            		
+            		for(ReportDefinition rdSuggested : tmplist){
+            			if(rdSuggested.isOfSameReportTypeAndOrganization(rdManual) && manualReport.isActive() ){
+            				//remove it from rules engine suggestions
+            				defList.remove(rdSuggested);
+            				
+            			}
+            		}
+            		
+            		//if manual selection, and active, add it.
+            		if(manualReport.isActive()){
+            			defList.add(rdManual);
+            		}
+            		
+            	}
+            	
+            	List<AdverseEvent> modifiedAdverseEvents = expeditedData.getModifiedAdverseEvents();
+            	
+            	//modify the alert necessary flag, based on eventual set of report definitions
+            	alertNeeded = (!defList.isEmpty() ) || (!modifiedAdverseEvents.isEmpty());
+            	evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
+            	
+            	//any ae modified/got completed reports ? add those report definitions.
+            	if(CollectionUtils.isNotEmpty(modifiedAdverseEvents)){
+            		List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
+                	//Any completed report, suggest amending it to proceed (but no alert).
+                	for(Report report : completedReports){
+         				
+         				ReportDefinition rdCompleted = report.getReportDefinition();
+         				
+         				if(!rdCompleted.getAmendable()) continue;
+         				
+         				boolean sameGroupSuggested = false;
+         				//do we have a report def suggested, that belongs to same category? Yes, then ignore
+         				for(ReportDefinition rdSuggested : defList){
+         					if(rdSuggested.isOfSameReportTypeAndOrganization(rdCompleted)){
+         						sameGroupSuggested = true;
+         						break;
+         					}
+         				}
+         				
+         				if(!sameGroupSuggested) defList.add(rdCompleted);
+         				
+         			}
+            	}
+            	
+            }
+            
+            
+           //logging 
+           if(log.isDebugEnabled()){
+        	 log.debug("Report Definitions before filtering for aeReportId: " + aeReportId + ", " + String.valueOf(defList));  
+           }
+           
+           //filter the report definitions
+           List<ReportDefinition> reportDefinitions =  reportDefinitionFilter.filter(defList);
+           
+           
+           //logging 
+           if(log.isDebugEnabled()){
+        	 log.debug("Report Definitions after filtering for aeReportId: " + aeReportId + ", " + String.valueOf(reportDefinitions));  
+           }
+
+           //now go through each report definition and set amend/create edit/withdraw/create maps properly
+           Set<ReportDefinitionWrapper> rdCreateSet = new HashSet<ReportDefinitionWrapper>();
+           Set<ReportDefinitionWrapper> rdEditSet = new HashSet<ReportDefinitionWrapper>();
+           Set<ReportDefinitionWrapper> rdWithdrawSet = new HashSet<ReportDefinitionWrapper>();
+           Set<ReportDefinitionWrapper> rdAmmendSet = new HashSet<ReportDefinitionWrapper>();
+           
+           ReportDefinitionWrapper wrapper;
+           for(ReportDefinition rd : reportDefinitions){
+        	  
+        	 if(expeditedData == null){  
+        		  //all report definitions, should go in the createMap.
+        		  wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
+        		  wrapper.setStatus("Not started");
+        		  rdCreateSet.add(wrapper);
+        	 }else{
+        		 
+         	  	  //find reports getting amended
+	        	  List<Report> reportsAmmended = expeditedData.findReportsToAmmend(rd); 
+	        	  for(Report report : reportsAmmended){
+	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.AMEND);
+	        		  wrapper.setStatus(report.getLastVersion().getStatusAsString());
+	        		  wrapper.setSubmittedOn(report.getSubmittedOn());
+	        		  rdAmmendSet.add(wrapper);
+	        	  }
+	        	  
+	        	  //find reports getting withdrawn
+	        	  List<Report> reportsWithdrawn = expeditedData.findReportsToWitdraw(rd);
+	        	  for(Report report : reportsWithdrawn){
+	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.WITHDRAW);
+	        		  wrapper.setStatus("In process");
+	        		  wrapper.setDueOn(report.getDueOn());
+	        		  rdWithdrawSet.add(wrapper);
+	        	  }
+	        	  
+
+	        	  //find the reports getting edited
+	        	  List<Report> reportsEdited = expeditedData.findReportsToEdit(rd);
+	        	  for(Report report : reportsEdited){
+	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.EDIT);
+	        		  wrapper.setStatus("In process");
+	        		  wrapper.setDueOn(report.getDueOn());
+	        		  rdEditSet.add(wrapper);
+	        	  }
+	        	  
+	        	  //Nothing getting edited,  add in this report def in create list
+	        	  if(CollectionUtils.isEmpty(reportsEdited)){
+	        		 wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
+	         		 wrapper.setStatus("Not started");
+	         		 rdCreateSet.add(wrapper);
+	        	  }
+	        	  
+              }//if expeditedData  
+         	 
+           }//for rd
+           
+           //Check if there is a need to withdraw any active report. 
+           if(expeditedData != null && CollectionUtils.isNotEmpty(activeReports)){
+        	   for(Report report : activeReports){
+        		   ReportDefinition rdActive = report.getReportDefinition();
+        		   if(report.isManuallySelected()) continue;
+        		   boolean toBeWithdrawn = true;
+        		   for(ReportDefinitionWrapper editWrapper : rdEditSet){
+        			   if(editWrapper.getDef().equals(rdActive)){
+        				   toBeWithdrawn = false;
+        				   break;
+        			   }
+        		   }
+        		   
+        		   if(toBeWithdrawn){
+        			   for(ReportDefinitionWrapper withdrawWrapper :rdWithdrawSet){
+            			   if(withdrawWrapper.getDef().equals(rdActive)){
+            				   toBeWithdrawn = false;
+            				   break;
+            			   }
+            		   }  
+        		   }
+        		   
+        		   if(toBeWithdrawn){
+        			  wrapper = new ReportDefinitionWrapper(rdActive, null, ActionType.WITHDRAW);
+        			  wrapper.setDueOn(report.getDueOn());
+ 	        		  wrapper.setStatus("In process");
+ 	        		  rdWithdrawSet.add(wrapper);
+        		   }
+        	   }
+           }
+           
+           //add everything to the result.
+           evaluationResult.getCreateMap().put(aeReportId, rdCreateSet);
+           evaluationResult.getAmendmentMap().put(aeReportId, rdAmmendSet);
+           evaluationResult.getEditMap().put(aeReportId, rdEditSet);
+           evaluationResult.getWithdrawalMap().put(aeReportId, rdWithdrawSet);
+           
+           
+           //update the result object
+           evaluationResult.addEvaluatedAdverseEvents(aeReportId, aeList);
+           evaluationResult.addResult(aeList, reportDefinitions);
+           if(expeditedData != null){
+        	   evaluationResult.addResult(expeditedData, reportDefinitions);
+           }
+            
+        } catch (Exception e) {
+            throw new CaaersSystemException("Could not determine the reports necessary for the given expedited adverse event data", e);
+        }
+        
+    }
     /**
      * Will create the Report by calling ReportService, then saves the ExpeditedAdverseEventReport
      */
@@ -278,7 +371,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                     Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
     	List<Report> reports = new ArrayList<Report>();
         for (ReportDefinition def : reportDefs) {
-            Report r = reportRepository.createReport(def, expeditedData, useDefaultVersion);
+            Report r = reportRepository.createReport(def, expeditedData, null);
             // Set useDefaultVersion to true. So that incase there are multiple reports , the reportVersion is correctly set for the 
             // first report and the same reportVersion is used for the remaining reports in the list
             
@@ -291,33 +384,16 @@ public class EvaluationServiceImpl implements EvaluationService {
         return reports;
     }
 
-    private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData,
-                    ReportDefinition def) {
-        for (Report report : expeditedData.getReports()) {
-            log.debug("Examining Report with def " + report.getReportDefinition().getName()
-                            + " (id: " + report.getReportDefinition().getId() + "; hash: "
-                            + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
-            if (report.getReportDefinition().equals(def)) {
-                log.debug("Matched");
-                return report;
-            }
-        }
-        log.debug("No Report with def matching " + def.getName() + " (id: " + def.getId()
-                        + "; hash: " + Integer.toHexString(def.hashCode()) + ") found in EAER "
-                        + expeditedData.getId());
-        return null;
-    }
 
     /**
-     * @return All the report definitions which might apply to the given study, site, and
-     *         participant
+     * This method will find all the report definitions belonging to the Study
      */
-    // TODO: it might more sense for this to go in ReportService
-    public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
+    public ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study) {
+    	
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
         // Same organization play multiple roles.
         Set<Integer> orgIdSet = new HashSet<Integer>();
-        List<StudyOrganization> studyOrgs =  assignment.getStudySite().getStudy().getStudyOrganizations();
+        List<StudyOrganization> studyOrgs =  study.getStudyOrganizations();
         for (StudyOrganization studyOrganization : studyOrgs) {
         	if(orgIdSet.add(studyOrganization.getOrganization().getId()))
         		reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
@@ -327,24 +403,17 @@ public class EvaluationServiceImpl implements EvaluationService {
          * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
          * report definitions also . TEMP fix
          */
-        Organization primarySponsor = assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization();
+        Organization primarySponsor = study.getPrimaryFundingSponsorOrganization();
         if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
         	reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
         }
         
-        return reportDefinitions;
-    }
-
-    @Deprecated
-    private String extractTopPriorityReportDefinition(List<ReportDefinition> reportDefs) {
-
-        // XXX: You could do this without the array conversion using Collections.sort
-        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
-        ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
-        java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
-
-        ReportDefinition reportDefinition = reportDefArray[reportDefArray.length - 1];
-        return reportDefinition.getName();
+        ApplicableReportDefinitionsDTO dto = new ApplicableReportDefinitionsDTO();
+        for(ReportDefinition rd : reportDefinitions){
+    	  dto.addReportDefinition(rd);
+        }
+        
+       return dto;
     }
 
     public Collection<ExpeditedReportSection> mandatorySections( ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions) {
@@ -386,6 +455,15 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new CaaersSystemException("Error while evaluating business rules", e);
         }
     }
+    
+    /////move this else where
+    private ReportDefinition findReportDefinition(List<ReportDefinition> rdList, ReportDefinition toFind){
+    	if(toFind == null) return null;
+    	for(ReportDefinition rd : rdList){
+    		if(rd.getId().equals( toFind.getId())) return rd;
+    	}
+    	return null;
+    }
 
     // //// CONFIGURATION
 
@@ -415,3 +493,4 @@ public class EvaluationServiceImpl implements EvaluationService {
 		this.organizationDao = organizationDao;
 	}
 }
+

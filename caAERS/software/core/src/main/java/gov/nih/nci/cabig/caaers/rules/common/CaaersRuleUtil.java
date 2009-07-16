@@ -16,6 +16,10 @@ import com.semanticbits.rules.brxml.MetaData;
 import com.semanticbits.rules.utils.RuleUtil;
 
 public class CaaersRuleUtil {
+	
+    public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
+    public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
+	 
 	private static final Log log = LogFactory.getLog(CaaersRuleUtil.class);
 
     public static Category getSponsorSpecificCategory(RuleAuthoringService authService,
@@ -375,6 +379,28 @@ public class CaaersRuleUtil {
                         + "/"
                         + RuleUtil.getStringWithoutSpaces(sponsorName);
         return studySponsorSpecificPath;
+    }
+    
+    /**
+     * This method will parse the rules result and return the list of 
+     * report definition names.
+     * @param message
+     * @return
+     */
+    public static List<String> parseRulesResult(String message){
+    	List<String> reportDefinitionNames = new ArrayList<String>();
+    	if (!message.equals(CAN_NOT_DETERMINED)) {
+
+            if (message.indexOf("IGNORE") < 0) {
+                // add the report definitions to the map
+                String[] messages = RuleUtil.charSeparatedStringToStringArray(message, "\\|\\|");
+                for (int i = 0; i < messages.length; i++) {
+                    reportDefinitionNames.add(messages[i]);
+                }
+            }
+
+        }
+    	return reportDefinitionNames;
     }
 
 

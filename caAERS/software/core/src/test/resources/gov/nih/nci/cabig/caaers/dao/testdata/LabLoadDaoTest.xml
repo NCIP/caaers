@@ -188,15 +188,13 @@
         />
     <REPORT_SCHEDULES
         id="-41"
-        due_on="2007-05-05"
-        created_on="2007-04-24"
+       
         report_id="-1"
         rct_id="-30"
         />
     <REPORT_SCHEDULES
         id="-40"
-        due_on="2007-05-03"
-        created_on="2007-04-22"
+      
         report_id="-1"
         rct_id="-30"
         />

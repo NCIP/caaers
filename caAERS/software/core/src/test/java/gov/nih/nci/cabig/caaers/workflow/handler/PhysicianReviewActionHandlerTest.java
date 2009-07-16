@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import static org.easymock.EasyMock.expect;
 
@@ -48,8 +49,10 @@ public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
 	public void testExecuteForApproveReport() throws Exception{
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		Report report = Fixtures.createReport("report 1");
+		report.setStatus(ReportStatus.PENDING);
 		aeReport.addReport(report);
 		report = Fixtures.createReport("report 2");
+		report.setStatus(ReportStatus.PENDING);
 		aeReport.addReport(report);
 		Transition transition = new Transition(PHYSICIAN_APPROVE_TRANSITION);
 		expect(context.getProcessInstance()).andReturn(pInstance);
@@ -68,8 +71,10 @@ public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
 	public void testExecuteForAdditionalInfoNeeded() throws Exception{
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		Report report = Fixtures.createReport("report 1");
+		report.setStatus(ReportStatus.PENDING);
 		aeReport.addReport(report);
 		report = Fixtures.createReport("report 2");
+		report.setStatus(ReportStatus.PENDING);
 		aeReport.addReport(report);
 		Transition transition = new Transition(ADDITIONAL_INFO_NEEDED_TRANSITION);
 		expect(context.getProcessInstance()).andReturn(pInstance);

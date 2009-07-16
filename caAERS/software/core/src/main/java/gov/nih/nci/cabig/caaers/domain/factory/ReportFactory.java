@@ -33,41 +33,20 @@ public class ReportFactory {
     
     private FreeMarkerService freeMarkerService;
 
-    public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
+    public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Date baseDate) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
         
         Date now = nowFactory.getNow();
-        Date baseDate = aeReport.getEarliestAdverseEventGradedDate();
-        if(baseDate == null) baseDate = now;
         
         Report report = reportDefinition.createReport();
         report.setCreatedOn(now);
-
-        ReportVersion reportVersion = new ReportVersion();
-        reportVersion.setCreatedOn(now);
-        reportVersion.setReportStatus(ReportStatus.PENDING);
-        Integer currentBaseVersion = getCurrentReportVersion(aeReport);
-        if(useDefaultVersion){
-        	// Set the new version with the current version number
-        	// This will happen in edit mode
-        	reportVersion.setReportVersionId(currentBaseVersion.toString());
-        }
-        else{
-        	// Increment the current version number and assign it to the new report instance
-        	// This will happen in createNew and amend mode.
-        	Integer newVersionId = currentBaseVersion + 1;
-        	reportVersion.setReportVersionId(newVersionId.toString());
-        }
-        report.addReportVersion(reportVersion);
+        Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
+        report.setDueOn(dueDate);
+        report.getLastVersion().setReportVersionId("0"); //default
 
         //attach the aeReport to report
         aeReport.addReport(report);
-
-        //set the due date
-        Date dueDate = reportDefinition.getExpectedDueDate(baseDate);
-        report.setDueOn(dueDate);
-        reportVersion.setDueOn(dueDate);
 
         //populate the delivery definitions
         if (reportDefinition.getDeliveryDefinitions() != null) {

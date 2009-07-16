@@ -171,10 +171,8 @@
 		 
 		 
 		
-    <REPORT_SCHEDULES id="-41" due_on="2007-05-05"
-                      created_on="2007-04-24" report_id="-1" rct_id="-30"/>
-    <REPORT_SCHEDULES id="-40" due_on="2007-05-03"
-                      created_on="2007-04-22" report_id="-1" rct_id="-30"/>
+    <REPORT_SCHEDULES id="-41"  report_id="-1" rct_id="-30"/>
+    <REPORT_SCHEDULES id="-40"  report_id="-1" rct_id="-30"/>
     <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
     
     		<mandatory_field_defs id="-330"

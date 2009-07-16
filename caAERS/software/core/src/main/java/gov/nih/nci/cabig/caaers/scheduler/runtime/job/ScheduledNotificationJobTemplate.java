@@ -146,8 +146,8 @@ public abstract class ScheduledNotificationJobTemplate implements Job {
             report = reportDao.getInitializedReportById(reportId);
             notification = report.fetchScheduledNotification(scheduledNFId);
 
-            boolean reportStatus = verifyAeReportStatus();
-            if (reportStatus) {
+            boolean pending = verifyAeReportStatus();
+            if (pending) {
                 DeliveryStatus deliveryStatus = processNotification();
                 logger.info("Delivery status of the notification :" + deliveryStatus);
                 // update the delivery status.

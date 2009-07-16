@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.rules.business.service.ReportDefinitionComparator;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -49,7 +50,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "REPORT_CALENDAR_TEMPLATES")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_calendar_templat_id") })
-public class ReportDefinition extends AbstractMutableDomainObject implements Serializable {
+public class ReportDefinition extends AbstractMutableDomainObject implements Serializable , Comparable<ReportDefinition>{
     private static final Log log = LogFactory.getLog(ReportDefinition.class);
 
     private String name;
@@ -67,6 +68,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private ConfigProperty reportType;
     private ReportDefinition parent;
     
+    protected ReportDefinitionComparator comprator;
+    
+    
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
@@ -75,6 +79,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         lazyListHelper.add(PlannedNotification.class, new InstantiateFactory<PlannedNotification>(
                         PlannedNotification.class));
         attributionRequired = false;
+        
+        comprator = new ReportDefinitionComparator();
     }
 
     // //// LOGIC
@@ -293,6 +299,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         return new StringBuilder(getClass().getSimpleName()).append('[').append(getName()).append(
                         ", ").append(getOrganization()).append(']').toString();
     }
+	
+	public int compareTo(ReportDefinition o) {
+		return comprator.compare(this, o);
+	}
 
     @Override
     public int hashCode() {
@@ -308,7 +318,20 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
                         + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
         return result;
     }
-
+    
+    /**
+     * Returns true, if the other report definition belongs to same organization and report type
+     * @param other
+     * @return
+     */
+    public boolean isOfSameReportTypeAndOrganization(ReportDefinition other){
+    	if(this == other) return true;
+    	if(this.getId().equals(other.getId())) return true;
+    	if(!this.getOrganization().getId().equals(other.getOrganization().getId())) return false;
+    	if(!this.getReportType().getCode().equals(other.getReportType().getCode())) return false;
+    	return true;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         return equals(obj, false);
@@ -329,7 +352,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         final ReportDefinition other = (ReportDefinition) obj;
 
-        if(getId()!= null && getId().equals(other.getId()))
+        if(getId()!= null && other.getId() != null && getId().equals(other.getId()))
         	return true;
         
         if (!ComparisonTools.nullSafeEquals(getDescription(), other.getDescription())) {
@@ -351,6 +374,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         if (!ComparisonTools.nullSafeEquals(getTimeScaleUnitType(), other.getTimeScaleUnitType())) {
             if (trace) log.debug("!= time scale units");
             return false;
+        }
+        if(!ComparisonTools.nullSafeEquals(getReportType(), other.getReportType())){
+        	if(trace) log.debug("!= reportType");
+        	return false;
         }
         if (trace) log.debug("== by properties");
         return true;
@@ -424,4 +451,12 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		if(reportType == null) return false;
 		return reportType.getCode().equals("RT_EXPEDITED");
 	}
+	
+	@Transient
+	public String getDisplayDuration(){
+		if(duration > 0) return duration + " " + timeScaleUnitType.getDisplayName() + "s";
+		 return duration + " " + timeScaleUnitType.getDisplayName();
+	}
+	
+	
 }

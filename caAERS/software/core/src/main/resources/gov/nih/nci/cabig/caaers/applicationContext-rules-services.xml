@@ -48,8 +48,7 @@
 		<property name="repositoryService" ref="jcrService" />
 	</bean>
 	
-	<bean id="evaluationService" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"/>
+	<bean id="evaluationService" autowire="byType" class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl" />
         
     <bean id="adverseEventEvaluationService" class="gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl" autowire="no">
     	<property name="caaersRulesEngineService" ref="caaersRulesEngineService" />

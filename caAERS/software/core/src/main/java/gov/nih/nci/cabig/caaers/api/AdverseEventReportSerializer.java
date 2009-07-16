@@ -221,9 +221,8 @@ public class AdverseEventReportSerializer {
 	    			if (reportId == report.getId()) {
 	    				Report latestReport = getReport(report);
 	    				ReportVersion reportVersion = report.getLastVersion();
-	    				ReportVersion latestVersion = new ReportVersion();
+	    				ReportVersion latestVersion = latestReport.getLastVersion();
 	    				latestVersion.setReportVersionId(reportVersion.getReportVersionId());
-	    				latestReport.addReportVersion(latestVersion);
 	    				aer.addReport(latestReport);
 	    			}
 	    		} 
@@ -250,12 +249,11 @@ public class AdverseEventReportSerializer {
 		   r.setId(report.getId());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
 		   r.setSubmissionMessage(report.getSubmissionMessage());
-		   ReportVersion rv = new ReportVersion();
+		   ReportVersion rv =  r.getLastVersion();
 		   
 		   //rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
 		   rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   
-		   r.addReportVersion(rv);
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
 		 //  r.setAmmendmentNumber(report.getAmmendmentNumber());
 		   

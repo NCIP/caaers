@@ -151,6 +151,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getEvaluatedAdverseEvents(){
     	List<AdverseEvent> evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: this.getAdverseEvents()){
+    		if(ae.isRetired()) continue;
     		if(ae.getGrade() != null && !(ae.getGrade().equals(Grade.NOT_EVALUATED)))
     			evaluatedAdverseEvents.add(ae);
     	}
@@ -181,6 +182,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent>  getAllReportedAndReportableAdverseEvents(){
     	List<AdverseEvent> events = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getAdverseEvents()){
+    		if(ae.isRetired()) continue;
     		//this is already associated with expedited report
     		if(ae.getReport() != null) {
     			events.add(ae); 
@@ -500,6 +502,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
      */
     public boolean hasDiffrentAEWithSameTerm(AdverseEvent otherAE){
     	for(AdverseEvent ae : getAdverseEvents()){
+    		if(ae.isRetired()) continue;
     		if(ae.getId().equals(otherAE.getId())) continue;
     		if(ae.getAdverseEventTerm() == null || otherAE.getAdverseEventTerm() == null)  continue;
     		if(ae.getAdverseEventTerm().equals(otherAE.getAdverseEventTerm())) return true;
@@ -522,8 +525,36 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
      */
     @Transient
     public Date getEarliestAdverseEventGradedDate(){
+    	return AdverseEventReportingPeriod.findEarliestGradedDate(getReportableAdverseEvents());
+    }
+    
+    /**
+     * This method will return the earliest post submission updated date of report-able adverse events. 
+     * @return
+     */
+    @Transient
+    public Date getEarliestPostSubmissionUpdatedDate(){
+    	return AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(getReportableAdverseEvents());
+    }
+    
+    public static Date findEarliestPostSubmissionUpdatedDate(List<AdverseEvent> adverseEvents){
     	Date d = null;
-    	for(AdverseEvent ae : getReportableAdverseEvents()){
+    	for(AdverseEvent ae : adverseEvents){
+    		if(ae.getPostSubmissionUpdatedDate() == null) continue;
+    		
+    		if(d == null){
+    			d = ae.getPostSubmissionUpdatedDate();
+    		}else{
+    			d = (DateUtils.compateDateAndTime(ae.getPostSubmissionUpdatedDate(), d) < 0) ? ae.getPostSubmissionUpdatedDate() : d;
+    		}
+    	}
+    	return d;
+    }
+    
+    
+    public static Date findEarliestGradedDate(List<AdverseEvent> adverseEvents){
+    	Date d = null;
+    	for(AdverseEvent ae : adverseEvents){
     		if(ae.getGradedDate() == null) continue;
     		
     		if(d == null){
@@ -533,6 +564,18 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     		}
     	}
     	return d;
+    }
+    
+    /**
+     * This method finds the adverse event, defined in this reporting period, identified by the ID
+     * @param id
+     * @return
+     */
+    public AdverseEvent findAdverseEventById(Integer id){
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		if(ae.getId().equals(id)) return ae;
+    	}
+    	return null;
     }
     
     /**

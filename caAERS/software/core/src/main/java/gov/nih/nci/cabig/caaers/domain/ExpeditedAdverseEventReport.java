@@ -73,6 +73,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     private ReviewStatus reviewStatus;
     private Integer workflowId;
     private List<ReportReviewComment> reviewComments;
+    
 
 
     // TODO
@@ -289,6 +290,35 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
     
     /**
+     * List of adverse events that are not retired
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getActiveAdverseEvents(){
+    	List<AdverseEvent> activeEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		if(ae.isRetired()) continue;
+    		activeEvents.add(ae);
+    	}
+    	return activeEvents;
+    }
+    
+    /**
+     * List of active adverse events, that are modified.
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getActiveModifiedAdverseEvents(){
+    	List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getActiveAdverseEvents()){
+    		if(ae.isModified()){
+    			adverseEvents.add(ae);
+    		}
+    	}
+    	return adverseEvents;
+    }
+    
+    /**
      * This method will return all the adverse events,which got modified.
      * It is obtained by comparing the saved signature and newly calculated signature.
      * @return
@@ -303,7 +333,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return adverseEvents;
     }
-
+    
+    
     public void addLab(Lab lab) {
         getLabsInternal().add(lab);
         if (lab != null) lab.setReport(this);
@@ -645,7 +676,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
-    @OrderBy("dueOn")
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT,
             CascadeType.LOCK, CascadeType.REMOVE})
     // Manually manage update-style reassociates and saves
@@ -654,6 +684,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return reports;
     }
     
+    /**
+     * True,when at least one Report is active
+     * @return
+     */
+    @Transient
+    public boolean isActive(){
+    	for(Report report : getReports()){
+    		if(report.isActive()) return true;
+    	}
+    	return false;
+    }
 
     /**
      * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN or {@link ReportStatus}.REPLACED.
@@ -664,11 +705,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public List<Report> getActiveReports() {
         List<Report> reports = getReports();
         if (reports.isEmpty()) return reports;
-        List<Report> submitableReports = new ArrayList<Report>();
+        List<Report> activeReports = new ArrayList<Report>();
         for (Report report : reports) {
-            if (report.isActive()) submitableReports.add(report);
+            if (report.isActive()) activeReports.add(report);
         }
-        return submitableReports;
+        return activeReports;
     }
     
     /**
@@ -1142,4 +1183,136 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	for(Report report: getReports())
     		report.setPhysicianSignoff(physicianSignOff);
     }
+    
+    /**
+     * List all the reports that were created manually. 
+     * @return - all {@link Report}s whose manuallySelected flag is set.
+     */
+    @Transient
+    public List<Report> getManuallySelectedReports(){
+    	ArrayList<Report> manuallySelectedReports = new ArrayList<Report>();
+    	for(Report report : getReports()){
+    		if(report.isManuallySelected()) manuallySelectedReports.add(report);
+    	}
+    	return manuallySelectedReports;
+    }
+    
+    
+    
+    /**
+     * Lists out the report that completed, belonging to the same group and organization
+     * of the {@link ReportDefinition} param rd.
+     * @param rd
+     * @return
+     */
+    public List<Report> findReportsToAmmend(ReportDefinition rd){
+    	List<Report> reports = listReportsHavingStatus(ReportStatus.COMPLETED);
+    	List<Report> reportsToAmmend = new ArrayList<Report>();
+    	//check if the reports are amendable and belongs to same organization & group.
+    	for(Report report : reports){
+    		ReportDefinition rdOther = report.getReportDefinition();
+    		if(!rdOther.getAmendable()) continue;
+    		if(!rdOther.getOrganization().getId().equals(rd.getOrganization().getId())) continue;
+    		if(!rdOther.getReportType().getCode().equals(rd.getReportType().getCode())) continue;
+    		
+    		reportsToAmmend.add(report);
+    	}
+    	return reportsToAmmend;
+    }
+    
+    public List<Report> findReportsToWitdraw(ReportDefinition rd){
+    	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
+    	List<Report> reportsToWitdraw = new ArrayList<Report>();
+    	//check if they belong to same group/organization and rd is less than rdOther
+    	for(Report report : reports){
+    		ReportDefinition rdOther = report.getReportDefinition();
+    		if(rdOther.getId().equals(rd.getId())) continue;
+    		if(!rdOther.getOrganization().getId().equals(rd.getOrganization().getId())) continue;
+    		if(!rdOther.getReportType().getCode().equals(rd.getReportType().getCode())) continue;
+//    		int delta = rd.compareTo(rdOther);
+//    		if( delta < 0) continue;
+    		reportsToWitdraw.add(report);
+    	}
+    	return reportsToWitdraw;
+    }
+    
+    public List<Report> findReportsToEdit(ReportDefinition rd){
+    	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
+    	List<Report> reportsToEdit = new ArrayList<Report>();
+    	//check if they belong to the same report definition. 
+    	for(Report report :reports){
+    		if(report.getReportDefinition().getId().equals(rd.getId())){
+    			reportsToEdit.add(report);
+    		}
+    	}
+    	return reportsToEdit;
+    }
+    
+    /**
+     * This method will find the recently amended report, that belongs to the same group and organization.
+     */
+    public Report findLastAmendedReport(ReportDefinition rd){
+    	List<Report> reports = listReportsHavingStatus(ReportStatus.AMENDED);
+    	Report theReport = null;
+    	for(Report report : reports){
+    		if(report.isOfSameOrganizationAndType(rd)){
+    			if(theReport == null){
+    				theReport = report;
+    			}else{
+    				if(DateUtils.compateDateAndTime(theReport.getAmendedOn(), report.getAmendedOn()) < 0){
+    					theReport = report;
+    				}
+    			}
+    		}
+    	}
+    	return theReport;
+    }
+    
+    
+    public List<Report> listReportsHavingStatus(ReportStatus... statuses){
+    	List<Report> reports = new ArrayList<Report>();
+    	for(Report report : getReports()){
+    		if(report.isHavingStatus(statuses)) reports.add(report);
+    	}
+    	return reports;
+    }
+    
+    /**
+     * Will return true, if there is an organization of same group and type is already instantiated 
+     * on this expedited report. 
+     * @param rd
+     * @return
+     */
+    public boolean hasExistingReportsOfSameOrganizationAndType(ReportDefinition rd){
+    	for(Report report : getReports()){
+    		if(report.isOfSameOrganizationAndType(rd)) return true;
+    	}
+    	return false;
+    }
+    
+    
+    /**
+     * This method will return the AdverseEvent that is associated with this data collection, identified by ID
+     * @param id
+     * @return
+     */
+    public AdverseEvent findAdverseEventById(Integer id){
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		if(ae.getId().equals(id)) return ae;
+    	}
+    	return null;
+    }
+    
+    /**
+     * This method will return the Report associated to this data collection, identified by ID
+     * @param id
+     * @return
+     */
+    public Report findReportById(Integer id){
+    	for(Report report : getReports()){
+    		if(report.getId().equals(id)) return report;
+    	}
+    	return null;
+    }
+    
 }
