@@ -91,7 +91,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 		else{
 			singleObjectList = (List<Object>) participantDao.search(new HQLQuery(query));
 			//command.setNumberOfResults(singleObjectList.size());
-			command.setRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
+			command.setAdvancedSearchRowList(processSingleObjectList(singleObjectList, command.getSearchTargetObject().getDependentObject().get(0)));
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
 				if(dObject.isInView()){
 					for(ViewColumn vColumn: dObject.getViewColumn())
@@ -100,18 +100,18 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 				}
 		}
 		command.setResultsViewColumnList(resultsViewColumnList);
-		command.setNumberOfResults(command.getRowList().getRowListDTO().size());
+		command.setNumberOfResults(command.getAdvancedSearchRowList().size());
 	}
 	
 	/**
 	 * This method processes the result object list when there are multiple objects in the view
 	 */
-	private void processMultipleObjectsList(List<Object[]> objectList, AdvancedSearchCommand command){
+	public void processMultipleObjectsList(List<Object[]> objectList, AdvancedSearchCommand command){
 		command.setNumberOfResults(objectList.size());
-		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
+		List<AdvancedSearchRow> rowList = new ArrayList<AdvancedSearchRow>();
 		for(Object[] objectArr: objectList){
-			SearchResultRowDTO row = new SearchResultRowDTO();
-			SearchResultColumnDTO column = null;
+			AdvancedSearchRow row = new AdvancedSearchRow();
+			AdvancedSearchColumn column = null;
 			int i = 0;
 			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
 				if(dObject.isInView()){
@@ -119,29 +119,27 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 					BeanWrapper wrapper = new BeanWrapperImpl(obj);
 					for(ViewColumn viewColumn: dObject.getViewColumn()){
 						if(viewColumn.isSelected()){
-							column = new SearchResultColumnDTO();
+							column = new AdvancedSearchColumn();
 							column.setColumnHeader(viewColumn.getColumnTitle());
 							if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
 								column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
 							else
 								column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-							row.getColumnListDTO().getColumnDTOList().add(column);
+							row.getColumnList().add(column);
 						}
 					}
 				}
 			}
-			rowList.getRowListDTO().add(row);
+			rowList.add(row);
 		}
-		
-		command.setRowList(rowList);
+		command.setAdvancedSearchRowList(rowList);
 	}
+	
 	
 	/**
 	 * This method processes the result object list when there are multiple objects in the view and the user demands nested view.
 	 */
-	private void processMultipleObjectsListForNestedView(List<Object[]> objectList, AdvancedSearchCommand command){
-		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
-		DependentObject groupingDependentObject = command.getSearchTargetObject().getDependentObject().get(0);
+	public void processMultipleObjectsListForNestedView(List<Object[]> objectList, AdvancedSearchCommand command) {
 		// Create the list of dependentObjects in the view which will be used to create inner tables.
 		List<DependentObject> dependentObjectsList = new ArrayList<DependentObject>();
 		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject())
@@ -150,76 +148,93 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 		
 		int start = 0;
 		int curr = 0;
-		while(start < objectList.size()){
-			Object[] startObjectArr = null;
-			Object[] currObjectArr = null;
-			if(curr < objectList.size()){
-				startObjectArr = objectList.get(start);
-				currObjectArr = objectList.get(curr);
-			}
-			if(curr < objectList.size() && startObjectArr[0].equals(currObjectArr[0])){
-				// we are dealing with the same grouping object.
-				curr++;
-			}else{
-				// the grouping object is different than the earlier grouping object.
-				// Add a row for the grouping object
-				Object[] objectArr = objectList.get(start);
-				BeanWrapper wrapper = new BeanWrapperImpl(objectArr[0]);
-				SearchResultRowDTO row = new SearchResultRowDTO();
-				SearchResultColumnDTO column = null;
-				for(ViewColumn viewColumn: groupingDependentObject.getViewColumn()){
-					if(viewColumn.isSelected()){
-						column = new SearchResultColumnDTO();
-						column.setColumnHeader(viewColumn.getColumnTitle());
-						if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
-						else
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-						row.getColumnListDTO().getColumnDTOList().add(column);
-					}
-				}
-				
-				// Create innerTables here.
-				Map<Object, Boolean> addedObjectsMap = new HashMap<Object, Boolean>();
-				for(int j = 1; j < dependentObjectsList.size(); j++){
-					addedObjectsMap.clear();
-					List<Object> resultObjectList = new ArrayList<Object>();
-					for(int k = start; k < curr; k++){
-						Object[] depObjectArr = objectList.get(k);
-						if(!addedObjectsMap.containsKey(depObjectArr[j])){
-							addedObjectsMap.put(depObjectArr[j], true);
-							resultObjectList.add(depObjectArr[j]);
-						}
-					}
-					row.getListOfRowList().add(processSingleObjectList(resultObjectList, dependentObjectsList.get(j)));
-				}
-				
-				rowList.getRowListDTO().add(row);
-				start = curr;
-			}
-		}
-		
-		command.setRowList(rowList);
+		int end = objectList.size() - 1;
+		int nestingLevel = 0;
+		//x(0, end, 0, rowList, dependentObjectsList, objectList);
+		List<AdvancedSearchRow> advancedSearchRowList = new ArrayList<AdvancedSearchRow>();
+		buildRowList(0, end, 0, advancedSearchRowList, dependentObjectsList, objectList);
+		command.setAdvancedSearchRowList(advancedSearchRowList);
 	}
 	
-	private SearchResultRowListDTO processSingleObjectList(List<Object> objectList, DependentObject dObject){
-		SearchResultRowListDTO rowList = new SearchResultRowListDTO();
+	public void buildRowList(int start, int end, int nestingLevel, List<AdvancedSearchRow> rowList, List<DependentObject> dependentObjectsList, List<Object[]> objectList){
+		if(nestingLevel == dependentObjectsList.size() - 1){
+			for(int i = start; i <= end; i++){
+				AdvancedSearchRow row = new AdvancedSearchRow();
+				row.setRowList(null);
+				List<AdvancedSearchColumn> colList = new ArrayList<AdvancedSearchColumn>();
+				row.setColumnList(colList);
+				Object[] valueArr = objectList.get(i);
+				BeanWrapper wrapper = new BeanWrapperImpl(valueArr[nestingLevel]);
+				for(ViewColumn v: dependentObjectsList.get(nestingLevel).getViewColumn()){
+					if(v.isSelected()){
+						AdvancedSearchColumn col = new AdvancedSearchColumn();
+						col.setColumnHeader(v.getColumnTitle());
+						if(wrapper.getPropertyValue(v.getColumnAttribute())  != null)
+							col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()).toString());
+						else
+							col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()));
+						row.getColumnList().add(col);
+					}
+				}
+				rowList.add(row);
+			}
+		}// if nestingLevel == dependentObjectsList.size - 1
+		else if(nestingLevel < (dependentObjectsList.size() - 1)){
+			int curr = start;
+			while (start <= end){
+				Object[] startValueArr = null;
+				Object[] currValueArr = null;
+				if(curr <= end){
+					startValueArr = objectList.get(start);
+					currValueArr = objectList.get(curr);
+				}
+				if(curr <= end && startValueArr[nestingLevel].equals(currValueArr[nestingLevel])){
+					curr++;
+				}else{
+					AdvancedSearchRow row = new AdvancedSearchRow();
+					row.setRowList(new ArrayList<AdvancedSearchRow>());
+					List<AdvancedSearchColumn> colList = new ArrayList<AdvancedSearchColumn>();
+					row.setColumnList(colList);
+					Object[] valueArr = objectList.get(start);
+					BeanWrapper wrapper = new BeanWrapperImpl(valueArr[nestingLevel]);
+					for(ViewColumn v: dependentObjectsList.get(nestingLevel).getViewColumn()){
+						if(v.isSelected()){
+							AdvancedSearchColumn col = new AdvancedSearchColumn();
+							col.setColumnHeader(v.getColumnTitle());
+							if(wrapper.getPropertyValue(v.getColumnAttribute()) != null)
+								col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()).toString());
+							else
+								col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()));
+							row.getColumnList().add(col);
+						}
+					}
+					rowList.add(row);
+					buildRowList(start, curr - 1, nestingLevel + 1, row.getRowList(), dependentObjectsList, objectList);
+					start = curr;
+				}	
+			}
+			
+		}
+	}
+	
+	public List<AdvancedSearchRow> processSingleObjectList(List<Object> objectList, DependentObject dObject){
+		List<AdvancedSearchRow> rowList = new ArrayList<AdvancedSearchRow>();
 		for(Object object: objectList){
-			SearchResultRowDTO row = new SearchResultRowDTO();
-			SearchResultColumnDTO column = null;
+			AdvancedSearchRow row = new AdvancedSearchRow();
+			AdvancedSearchColumn column = null;
 			BeanWrapper wrapper = new BeanWrapperImpl(object);
 			for(ViewColumn viewColumn: dObject.getViewColumn()){
 				if(viewColumn.isSelected()){
-					column = new SearchResultColumnDTO();
+					column = new AdvancedSearchColumn();
 					column.setColumnHeader(viewColumn.getColumnTitle());
 					if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
 						column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
 					else
 						column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-					row.getColumnListDTO().getColumnDTOList().add(column);
+					row.getColumnList().add(column);
 				}
 			}
-			rowList.getRowListDTO().add(row);
+			rowList.add(row);
 		}
 		return rowList;
 	}

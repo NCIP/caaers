@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-
-public class SearchResultColumnDTO{
-	
+public class AdvancedSearchColumn{
 	private String columnHeader;
 	
 	private Object value;

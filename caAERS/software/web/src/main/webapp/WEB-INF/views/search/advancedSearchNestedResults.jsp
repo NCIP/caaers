@@ -22,171 +22,92 @@
 				});	
 			}
 			
+			function getAncestorTrElement(iconElement){
+				var arr =  iconElement.ancestors();
+				var trElement;
+				for(var i = 0; i < arr.length; i++){
+					if(arr[i].nodeName == 'TR'){
+						trElement = arr[i];
+						break;
+					}
+				}
+   				return trElement;
+			}
 			
-	
+			function expandTable(index, nestingLevel){
+				var iconId = 'expand-' + nestingLevel + '-' + index;
+				var iconElement = document.getElementById(iconId);
+				var trElement = getAncestorTrElement(iconElement);
+				var tableContent = $('deleteMeTableDataSource').innerHTML;
+				var newTR = document.createElement('tr');
+				var newTD1 = document.createElement('td');
+				var newTD2 = document.createElement('td');
+				var newTD3 = document.createElement('td');
+				newTD3.colSpan = 4;
+				newTD3.appendChild($('deleteMeTableDataSource'));
+				
+				newTR.appendChild(newTD1);
+				newTR.appendChild(newTD2);
+				newTR.appendChild(newTD3);
+				
+				alert('newTR = ' + newTR.innerHTML);
+				var parentElement = trElement.parentNode;
+				parentElement.insertBefore(newTR, trElement.nextSibling);
+				
+				//var html = '<tr><td/><td/><td colspan=4>' + tableContent + '</td></tr>';
+				
+				//new Insertion.After(trElement, html);
+				//trElement.insert(html);
+				
+				
+				//var deleteMeColumnDefs = [{key: "Short title"},{key: "Long title"},{key: "Gender"},{key: "Age"}];
+				//var deleteMeDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("deleteMeTableDataSource"));
+		        //deleteMeDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+      			//deleteMeDataSource.responseSchema = {
+      			//		fields: ["Short title", "Long title", "Gender", "Age"] 
+      			//}; 
+      			
+				//var myDataTable = new YAHOO.widget.ScrollingDataTable("pleaseDeleteMeActualYUITable", deleteMeColumnDefs, deleteMeDataSource);
+			}
+			
 			Event.observe(window, "load", function() {
 				getRowListFromFacade();
-				var loader = new YAHOO.util.YUILoader();
-				loader.loadOptional = true;
-				//loader.require("reset-fonts-grids","base","datatable", "tabview","calendar","container");
-				loader.insert({
-					onSuccess: function() {
-						var panel = new YAHOO.widget.Panel("PanelDetalle", {visible:false, draggable:true, close:true, width:'600px' } );   
-						panel.setHeader('');   
-						panel.setBody('');   
-						panel.render(YAHOO.util.Dom.get('bd'));
-						var tabView = new YAHOO.widget.TabView();
-						<c:forEach items="${nestedDependentObjects}" var="dependentObject" varStatus="dependentObjectStatus">
-							tabView.addTab( new YAHOO.widget.Tab({
-								label: '${dependentObject.displayName}',
-								content: '<div id="tab${dependentObjectStatus.index}"></div>',
-								active: true
-							}));
-						</c:forEach>
-						tabView.appendTo(panel.body);
-		
-						// this variables hold information for the table content generator
-						// Since you can only pass the function a single string argument
-						// using this variables is the only way to pass it 4 arguments
-						// without encoding and parsing a silly string.
-						var baseRecordId;
-						var tableId;
-						var rows;
-						var cols;
-						
-						var tableContentGenerator = function() {
-							//alert('entered tableContentGenerator');
-							var response = [];
-							for (var row = 0;row < rows;row++) {
-								var dataRow ={};
-								for (var col = 0;col < cols;col++) {
-									dataRow[rowList.rowListDTO[baseRecordId].listOfRowList[tableId].rowListDTO[row].columnListDTO.columnDTOList[col].columnHeader] = rowList.rowListDTO[baseRecordId].listOfRowList[tableId].rowListDTO[row].columnListDTO.columnDTOList[col].value;
-								}
-								response.push(dataRow);
-							}
-							return response;
-						};
-						
-						<c:forEach items="${nestedDependentObjects}" var="nestedDependentObject" varStatus="dependentObjectStatus">
-							var dataTable${dependentObjectStatus.index};
-							var lastBaseIdShown${dependentObjectStatus.index};
-							var setTable${dependentObjectStatus.index} = function (){
-								//alert('entered setTable');
-								if (lastBaseIdShown${dependentObjectStatus.index} == baseRecordId) return;
-								lastBaseIdShown${dependentObjectStatus.index} = baseRecordId;
-								
-								// set arguments for tableContentGenerator
-								tableId = ${dependentObjectStatus.index};
-								cols = ${fn:length(command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList)};
-								//rows = ${fn:length(command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO)};
-								rows = rowList.rowListDTO[baseRecordId].listOfRowList[tableId].rowListDTO.size();
-								
-								// if this table does not yet exist, create it
-								if (dataTable${dependentObjectStatus.index} === undefined) {
-									//alert('entered undefined');
-									// notice the argument is a reference to the content generator
-									var ds = new YAHOO.util.DataSource(tableContentGenerator);
-									// this tells the datasource that the content generator will return an array
-									ds.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-									
-									var x;
-									ds.responseSchema = {
-										fields: [
-											<c:forEach items="${command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList}" var="col" varStatus="colStatus">
-												"${col.columnHeader}"
-												<c:if test="${colStatus.index < fn:length(command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList) - 1}">,</c:if>
-											</c:forEach> 
-										]
-									};
-									
-									dataTable${dependentObjectStatus.index} = new YAHOO.widget.ScrollingDataTable(
-										'tab${dependentObjectStatus.index}',	
-										[
-											<c:forEach items="${command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList}" var="col" varStatus="colStatus">
-												{key:"${col.columnHeader}", sortable:true, resizeable:true}
-													<c:if test="${colStatus.index < fn:length(command.rowList.rowListDTO[0].listOfRowList[dependentObjectStatus.index].rowListDTO[0].columnListDTO.columnDTOList) - 1}">,</c:if>
-											</c:forEach> 
-										], 
-										ds, {width:"42em"}
-									);
-									
-								}else {
-									dataTable${dependentObjectStatus.index}.getDataSource().sendRequest(
-										'', 
-										dataTable${dependentObjectStatus.index}.onDataReturnInitializeTable,
-										dataTable${dependentObjectStatus.index}
-									);
-								}
-							};//setTable
-						</c:forEach>
-						
-						var show = function (recordId,caption,cell) {
+				
+				// Define Columns
+        var myColumnDefs = [
+        			{key: ""},
+				 <c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
+					{key:"${viewColumn.columnTitle}", sortable:true, resizeable:true}
+					<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
+				</c:forEach> 
+			];
 
-							baseRecordId = recordId;
-							panel.setHeader(caption);
-							panel.cfg.setProperty("context", [cell, "tl", "bl"]);
-							panel.cfg.setProperty("visible", true);
-							tabView.set('activeIndex', 0); 
-							tabView.selectTab(0);
-						};
+        // Create DataSource
+        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("resultsTableDataSource"));
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+        myDataSource.responseSchema = {
+            fields: [   "",
+					<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
+						"${viewColumn.columnTitle }"
+						<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
+					</c:forEach>
+				]
+        };
+        
+        //Create config
+        var oConfigs = { 
+				paginator: new YAHOO.widget.Paginator({ 
+					rowsPerPage: 10 
+				}), 
+				initialRequest: "results=${command.numberOfResults}",
+				draggableColumns:true, 
+				width:"70em"
+			};
 
-						var hide = function () {
-							panel.cfg.setProperty("visible", false);
-						};
-						
-						tabView.on('activeTabChange', function (ev) {
-							//alert('entered activeTabChange event');
-							switch(tabView.getTabIndex(ev.newValue)) {
-								<c:forEach items="${nestedDependentObjects}" var="nestedDependentObject" varStatus="dependentObjectStatus">
-									case ${dependentObjectStatus.index}:
-										setTable${dependentObjectStatus.index}();
-										break;
-								</c:forEach>
-							}
-						});
-						
-						var myColumnDefs = [
-							<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
-								{key:"${viewColumn.columnTitle}", sortable:true, resizeable:true}
-								<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
-							</c:forEach> 
-						];
-						
-						var ds = new YAHOO.util.DataSource(YAHOO.util.Dom.get("resultsTableDataSource"));
-						ds.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-						ds.responseSchema = {
-				            fields: [
-							<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
-								"${viewColumn.columnTitle }"
-								<c:if test="${viewColumnStatus.index < fn:length(command.resultsViewColumnList) - 1}">,</c:if>
-							</c:forEach>
-							]
-        				};
-        				
-        				//Create config
-				        var oConfigs = { 
-							paginator: new YAHOO.widget.Paginator({ 
-								rowsPerPage: 10 
-							}), 
-							initialRequest: "results=${command.numberOfResults}",
-							draggableColumns:true, 
-							width:"70em"
-						};
-						
-						// Create DataTable
-				        var myDataTable = new YAHOO.widget.ScrollingDataTable("baseTable", myColumnDefs, ds, oConfigs);
-				        myDataTable.subscribe('cellClickEvent',function (ev) {
-							var target = YAHOO.util.Event.getTarget(ev);
-							var record = this.getRecord(target);
-							show(record.getId().substring(7),'Data for row - ' + record.getId().substring(7),target);
-						})
-						
-					}//onSuccess	 
-				});//loader.insert
+        // Create DataTable
+        var myDataTable = new YAHOO.widget.ScrollingDataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
+        
 			}); //event.observe
-			
-			
-			// Done with script for YUI.
 		</script>
 	</head>
 	<body>
@@ -200,32 +121,75 @@
 					<tags:button color="green" type="button" id="flat-view" value="Flat View" onclick="javascript:renderFlatView();"/>
 				</div>
 				<chrome:box title="Search results">
-					<div class="yui-skin-sam">
-						<div id="bd">
-							<div id="baseTable">
-							</div>
-						</div>
+					<div id="resultsTableDiv">
+    					<div id="columnshowhide" class="yui-skin-sam"></div>
 					</div>
+					
 					<div id="hiddenResultsTable" style="display:none">
 						<table id="resultsTableDataSource">
 							<thead>
 								<tr>
+										<td/>
 									<c:forEach items="${command.resultsViewColumnList}" var="viewColumn" varStatus="viewColumnStatus">
 										<td>${viewColumn.columnTitle }</td>
 									</c:forEach>
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${command.rowList.rowListDTO }" var="row" varStatus="rowStatus">
+								<c:forEach items="${command.advancedSearchRowList }" var="row" varStatus="rowStatus">
+									<tr>
+										<td>
+											<img id="expand-1-${rowStatus.index }" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(${rowStatus.index }, 1)" style='cursor:pointer;'>
+										</td>
+										<c:forEach items="${row.columnList }" var="col" varStatus="colStatus">
+											<td>${col.value }</td>
+										</c:forEach>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+					
+					<%--  <div id="pleaseDeleteMeTableDiv">
+						<div id="pleaseDeleteMeActualYUITable" class="yui-skin-sam"></div>
+					</div> --%>
+					
+					<div id="pleaseDeleteMeTable" style="display:none">
+						<table id="deleteMeTableDataSource">
 								<tr>
-									<c:forEach items="${row.columnListDTO.columnDTOList }" var="col" varStatus="colStatus">
-										<td>${col.value }</td>
-									</c:forEach>
+									<td/><td background-color="#2B4186" align="center">Short title</td><td background-color="#2B4186" align="center">
+									Long title</td><td background-color="#2B4186" align="center">Gender</td><td background-color="#2B4186" align="center">Age</td>
 								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
+								<tr>
+									<td>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+									</td>
+									<td>short title 1</td>
+									<td>long title 1 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+									<td>Male</td>
+									<td>33</td>
+								</tr>
+								<tr>
+									<td>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+									</td>
+									<td>short title 2</td>
+									<td>long title 2gagasgasrgasrgaasgsssssssssssssssssssssssssssgggggggggggggggggggggggg</td>
+									<td>Female</td>
+									<td>66</td>
+								</tr>
+								<tr>
+									<td>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+									</td>
+									<td>short title 3</td>
+									<td>long title 3asrgrgggggggggggggggggggggggggggggggggggggggggggggggggggggggggg</td>
+									<td>Male</td>
+									<td>943</td>
+								</tr>
+						</table>
+					</div>
+					
 				</chrome:box>
 			</jsp:attribute>
 		</tags:tabForm>

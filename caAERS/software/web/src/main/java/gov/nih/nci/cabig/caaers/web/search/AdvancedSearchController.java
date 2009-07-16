@@ -37,6 +37,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.SelectedColumn;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -143,6 +144,16 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 					parameter.setDisplayValue(criteriaParameter.getDisplayValue());
 					command.getCriteriaParameters().add(parameter);
 				}
+				// Setup the view selected.
+				for(SelectedColumn selectedColumn: savedSearch.getSelectedColumn()){
+					DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), 
+							selectedColumn.getDependentObjectClassName());
+					dObject.setInView(true);
+					for(ViewColumn vCol: dObject.getViewColumn()){
+						if(selectedColumn.getColumnAttribute().equals(vCol.getColumnAttribute()))
+							vCol.setSelected(true);
+					}
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -150,7 +161,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 			
 			// Setup the view attributes
 			//Reset the value of selected to false for all the dependentObjects and their attributes- 
-			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+			/*for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
 				dObject.setInView(false);
 				for(ViewColumn viewColumn: dObject.getViewColumn())
 					viewColumn.setSelected(false);
@@ -168,7 +179,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 					for(ViewColumn viewColumn: dObject.getViewColumn())
 						viewColumn.setSelected(true);
 				}
-			}
+			}*/
 		}
 		return command;
 	}

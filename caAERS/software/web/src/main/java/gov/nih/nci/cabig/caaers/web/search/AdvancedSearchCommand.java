@@ -26,9 +26,9 @@ public class AdvancedSearchCommand{
 	private String searchName;
 	private String searchDescription;
 	private String hql;
-	private SearchResultRowListDTO rowList;
 	private List<ViewColumn> resultsViewColumnList;
 	private Integer numberOfResults;
+	private List<AdvancedSearchRow> advancedSearchRowList;
 	
 	public AdvancedSearchCommand(AdvancedSearchUi advancedSearchUi){
 		setAdvancedSearchUi(advancedSearchUi);
@@ -103,20 +103,6 @@ public class AdvancedSearchCommand{
 	}
 
 	/**
-	 * @return the rowList
-	 */
-	public SearchResultRowListDTO getRowList() {
-		return rowList;
-	}
-
-	/**
-	 * @param rowList the rowList to set
-	 */
-	public void setRowList(SearchResultRowListDTO rowList) {
-		this.rowList = rowList;
-	}
-
-	/**
 	 * @return the resultsViewColumnList
 	 */
 	public List<ViewColumn> getResultsViewColumnList() {
@@ -142,6 +128,23 @@ public class AdvancedSearchCommand{
 	 */
 	public void setNumberOfResults(Integer numberOfResults) {
 		this.numberOfResults = numberOfResults;
+	}
+
+	/**
+	 * @return the advancedSearchRowList
+	 */
+	public List<AdvancedSearchRow> getAdvancedSearchRowList() {
+		if(advancedSearchRowList == null)
+			advancedSearchRowList = new ArrayList<AdvancedSearchRow>();
+		return advancedSearchRowList;
+	}
+
+	/**
+	 * @param advancedSearchRowList the advancedSearchRowList to set
+	 */
+	public void setAdvancedSearchRowList(
+			List<AdvancedSearchRow> advancedSearchRowList) {
+		this.advancedSearchRowList = advancedSearchRowList;
 	}
 	
 }

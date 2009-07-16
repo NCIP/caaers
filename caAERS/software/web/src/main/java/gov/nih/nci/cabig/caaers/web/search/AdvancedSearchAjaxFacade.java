@@ -41,6 +41,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.SelectedColumn;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 
@@ -87,7 +88,7 @@ public class AdvancedSearchAjaxFacade{
 		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
 		
 		// This is when the user selects "please select" in the searchTargetObject. The searchtargetObject is set to null in the command.
-		if(targetObjectClassName.equals("")){
+		if(targetObjectClassName.equals("") || targetObjectClassName.equals("none")){
 			command.setSearchTargetObject(null);
 			command.setCriteriaParameters(null);
 			ajaxOutput.setHtmlContent("");
@@ -173,7 +174,7 @@ public class AdvancedSearchAjaxFacade{
 	public AjaxOutput getRowList(){
 		AjaxOutput ajaxOutput = new AjaxOutput();
 		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
-		ajaxOutput.setObjectContent(command.getRowList());
+		ajaxOutput.setObjectContent(command.getAdvancedSearchRowList());
 		return ajaxOutput;
 	}
 	
@@ -218,6 +219,20 @@ public class AdvancedSearchAjaxFacade{
 			criteriaParameterList.add(criteriaParameter);
 		}
 		saveSearch.setCriteriaParameter(criteriaParameterList);
+		
+		// set the view-selected attribute of the SaveSearch object.
+		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+			if(dObject.isInView()){
+				for(ViewColumn vCol: dObject.getViewColumn()){
+					if(vCol.isSelected()){
+						SelectedColumn selectedColumn = new SelectedColumn();
+						selectedColumn.setDependentObjectClassName(dObject.getClassName());
+						selectedColumn.setColumnAttribute(vCol.getColumnAttribute());
+						saveSearch.getSelectedColumn().add(selectedColumn);
+					}
+				}
+			}
+		}
 		Search search = new Search();
 		search.setCreatedDate(new Date());
 		search.setDescription(searchDescription);

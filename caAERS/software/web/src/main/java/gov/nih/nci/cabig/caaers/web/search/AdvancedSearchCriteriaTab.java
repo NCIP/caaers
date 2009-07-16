@@ -68,8 +68,35 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 	
 	@Override
     public void validate(T command, Errors errors) {
-		if(command.getSearchTargetObject() == null)
+		// Test if the targetObject is selected.
+		if(command.getSearchTargetObject() == null){
 			errors.rejectValue("searchTargetObject", "ASC_001", "Missing target object");
+			return;
+		}
+		
+		// Test if there is atleast one criterion specified.
+		boolean atleastOneCriteriaFilled = false;
+		for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
+			if(!parameter.isDeleted() && parameter.isFilled())
+				atleastOneCriteriaFilled = true;
+		}
+		
+		if(!atleastOneCriteriaFilled)
+			errors.reject("ASC_002", "Atleast one criterion must be entered");
+		
+		// Test if there is any incomplete criterion.
+		for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
+			if(!parameter.isDeleted()){
+				Boolean validAttributeSelected = parameter.getAttributeName() != null && !parameter.getAttributeName().equals("") && !parameter.getAttributeName().equals("none");
+				Boolean validPredicateSelected = parameter.getPredicate() != null && !parameter.getPredicate().equals("") && !parameter.getPredicate().equals("none");
+				if( validAttributeSelected && parameter.getPredicate().equals("none")) 
+					errors.reject("ASC_003", "Incomplete criteirion, missing predicate");
+				if(validAttributeSelected && validPredicateSelected && parameter.getValue() == null)
+					errors.reject("ASC_004", "Incomplete criterion, missing value");
+				if(validAttributeSelected && validPredicateSelected && parameter.getValue() != null && parameter.getValue().equals("none"))
+					errors.reject("ASC_004", "Incomplete criterion, missing value");
+			}
+		}
     }
 	
 	@Override

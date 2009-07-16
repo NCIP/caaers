@@ -150,11 +150,11 @@
 				<chrome:box title="HQL Query for testing">
 					${command.hql }<br>
 				</chrome:box>
-				<c:if test="${renderNestedViewButton }">
+				<%-- <c:if test="${renderNestedViewButton }">
 					<div align="right">
 						<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
 					</div>
-				</c:if>
+				</c:if> --%>
 				<chrome:box title="Search results">
 					<div id="resultsTableDiv">
 		   				<div id="dt-options"><a id="dt-options-link" href="fallbacklink.html">Table Options</a></div>
@@ -182,9 +182,9 @@
 								</tr>
 							</thead>
 							<tbody>
-							<c:forEach items="${command.rowList.rowListDTO }" var="row" varStatus="rowStatus">
+							<c:forEach items="${command.advancedSearchRowList }" var="row" varStatus="rowStatus">
 								<tr>
-									<c:forEach items="${row.columnListDTO.columnDTOList }" var="col" varStatus="colStatus">
+									<c:forEach items="${row.columnList }" var="col" varStatus="colStatus">
 										<td>${col.value }</td>
 									</c:forEach>
 								</tr>

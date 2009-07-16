@@ -81,4 +81,10 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 			return this.getAttributeName().compareToIgnoreCase(parameter.getAttributeName());
 		return this.getObjectName().compareToIgnoreCase(parameter.getObjectName());
 	}
+	
+	public boolean isFilled(){
+		if(this.objectName == null || this.attributeName == null || this.predicate == null || this.value == null)
+			return false;
+		return true;
+	}
 }
