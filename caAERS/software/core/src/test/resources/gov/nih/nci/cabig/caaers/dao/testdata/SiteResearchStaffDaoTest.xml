@@ -95,19 +95,19 @@
     	fax_number="666-777-1234"
     	email_address="belair@rest.com"/>
 	
-	<SITE_RESEARCH_STAFF_ROLES
+	<site_rs_staff_roles
 		id="-7000"
 		role_code="caaers_participant_cd"
 		site_research_staffs_id="-4004"
 		start_date="2006-10-10"
 	/>
-	<SITE_RESEARCH_STAFF_ROLES
+	<site_rs_staff_roles
 		id="-7001"
 		role_code="caaers_study_cd"
 		site_research_staffs_id="-4004"
 		start_date="2006-10-10"
 	/>
-	<SITE_RESEARCH_STAFF_ROLES
+	<site_rs_staff_roles
 		id="-7002"
 		role_code="caaers_site_cd"
 		site_research_staffs_id="-4004"

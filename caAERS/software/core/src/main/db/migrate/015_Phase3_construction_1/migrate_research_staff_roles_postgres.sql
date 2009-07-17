@@ -1,5 +1,5 @@
-insert into site_research_staff_roles (id,role_code,site_research_staffs_id,start_date)
-select nextval('site_research_staff_roles_id_seq'), cg.group_name, srs.id, '2008-01-01'
+insert into site_rs_staff_roles (id,role_code,site_research_staffs_id,start_date)
+select nextval('site_rs_staff_roles_id_seq'), cg.group_name, srs.id, '2008-01-01'
 from 
 	csm_user cu,csm_user_group cug,csm_group cg,research_staffs rs,site_research_staffs srs
 where
