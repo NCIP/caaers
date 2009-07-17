@@ -1,5 +1,5 @@
 insert into site_research_staff_roles (id,role_code,site_research_staffs_id,start_date)
-select site_research_staff_roles_id_seq.nextval, cg.group_name, srs.id, to_date('2008-01-01', 'yyyy/mm/dd')
+select seq_site_research_staff_roles_id.nextval, cg.group_name, srs.id, to_date('2008-01-01', 'yyyy/mm/dd')
 from 
 	csm_user cu,csm_user_group cug,csm_group cg,research_staffs rs,site_research_staffs srs
 where
