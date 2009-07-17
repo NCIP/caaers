@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -26,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -50,122 +53,159 @@ public class ReportSubmissionService {
     private SchedulerService schedulerService;
     
     private ReportDao reportDao;
-    private ReportTrackingDao reportTrackingDao;
-
+    private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    
     /**
-     * Will do the following.
-     *  1. Generate the caaers-xml
-     *  2. Identify the status of the report (some reports dont require submission, so they will directly transition to Completed) 
-     *  3. Generate the PDF
-     *  4. Save the ReportVersion
-     *  5a. Notify the report to external system
-     *  5b. Notify email recipients
+     * This method will generate the PDF and xml content. 
+     * @param context
      */
-    public void submitReport(Report report){
-    	ReportTracking reportTracking = new ReportTracking();
-    	// Initiate ...
-    	try {    		
-    		List<ReportTracking> reportTrackings = report.getLastVersion().getReportTrackings();
-    		int attemptNumber = 1;
-            if( reportTrackings != null && reportTrackings.size() > 0) {
-            	attemptNumber = reportTrackings.size()+1;
-            }
-            reportTracking.setAttemptNumber(attemptNumber);  
-    		Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());
-    		report.getLastVersion().addReportTracking(reportTracking);
-    	} catch ( Exception e ) {
-    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
-    	}
+    public void generateReportContent(ReportSubmissionContext context){
+    	Report report = context.report;
+    	ReportTracking reportTracking = context.report.getLastVersion().getLastReportTracking();
     	
-    	// generate caAERS xml
-    	Date today = nowFactory.getNow();
-    	String caaersXml = "";
+    	//1. generate caaers xml
     	try {    		
-    		caaersXml = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
+    		context.caaersXML = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
     		Tracker.logXmlGeneration(reportTracking, true, "",nowFactory.getNow());
     	} catch (Exception e ) {
     		Tracker.logXmlGeneration(reportTracking, false, e.getMessage(),nowFactory.getNow());
+    		throw new RuntimeException(e);
     	}
     	
-    	ReportVersion reportVersion;
-    	boolean hasSystemDeliveries;
-    	ReportStatus status;
+    	//2. generate pdf
+    	try{
+    		context.pdfReportPaths = adeersReportGenerator.generateExternalReports(report, context.caaersXML);  
+    		Tracker.logAttachmentGeneration(reportTracking, true, "",nowFactory.getNow());
+    	}catch(Exception exp){
+    		Tracker.logAttachmentGeneration(reportTracking, false, exp.getMessage() ,nowFactory.getNow());
+    		throw new RuntimeException(exp);
+    	}
+    }
+    /**
+     * This method will do the pre submission initializations. 
+     *  - Will start the report tracking. 
+     *  - Will generate the PDF and XMLs of the report. 
+     *  - Will attach report content to report version.
+     *  - Will associate AEs to report version.
+     * @param context
+     */
+    public void doPreSubmitReport(ReportSubmissionContext context){
+    	
+    	Report report = context.report;
+    	ReportVersion reportVersion = report.getLastVersion();
+    	
+    	// start tracking.
+    	ReportTracking reportTracking = new ReportTracking();
+    	Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());
+    	context.report.getLastVersion().addReportTracking(reportTracking);
+    	
+    	generateReportContent(context);
+    	
     	try {
-    		//if there is no external system to receive, it is assumed that there are no interim report statuses..
-    		hasSystemDeliveries = report.hasSystemDeliveries();
-    		//step 2
-    		status = (hasSystemDeliveries) ? ReportStatus.INPROCESS : ReportStatus.COMPLETED;
-            //BJ - Tweak - I dont remember why this code is here, but cutpasted from SubmitReportController
-    		if(!hasSystemDeliveries) schedulerService.unScheduleNotification(report);
-    		report.setStatus(status);
     		
-    		//Generate and save the report version
-            report.setSubmissionUrl("");
-            report.setSubmissionMessage("");
-            report.setSubmittedOn(today);
-            
-            reportVersion = report.getLastVersion();
-            reportVersion.setReportStatus(status);
-            reportVersion.setSubmissionUrl("");
-            reportVersion.setSubmissionMessage("");
-            reportVersion.setSubmittedOn(today);
-            
-            //remove existing report contents (if any)
-            if(CollectionUtils.isNotEmpty(reportVersion.getContents())){
-            	reportVersion.getContents().clear();
-            }
-    	} catch (Exception e ) {
-    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
-    	}  
-    	String[] pdfReportPaths;
-    	try {
-            //Step 3 - add the report content to report version
-            pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXml);   
-    		for(String pdfFilePath : pdfReportPaths){
+    		//clear off debris from previous submission.
+    		reportVersion.clear();
+    		
+    		// part1 - add the report content to report version
+    		for(String pdfFilePath : context.pdfReportPaths){
             	File f = new File(pdfFilePath);
             	if(f.exists() && f.canRead()){
             		ReportContent reportContent = new ReportContent("application/pdf", FileCopyUtils.copyToByteArray(f));
             		reportVersion.addReportContent(reportContent);
             	}
             }
-    		Tracker.logAttachmentGeneration(reportTracking, true, "",nowFactory.getNow());
-            reportVersion.addReportContent(new ReportContent("text/xml", caaersXml.getBytes()));
-            reportDao.save(report);
-            reportDao.flush();
+            reportVersion.addReportContent(new ReportContent("text/xml", context.caaersXML.getBytes()));
             
-    	} catch (Exception e ) {    		
-    		Tracker.logAttachmentGeneration(reportTracking, false, e.getMessage() ,nowFactory.getNow());
-            reportDao.save(report);
-            reportDao.flush();
-    		throw new CaaersSystemException("Unable to submit report [" + e.getMessage() + "]" , e);
-    	}  
+          
+            // part2 - update the adverse events being reported
+            for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
+            	reportVersion.addReportedAdverseEvent(ae);
+            }
             
-            //Notify the external systems
-            if(hasSystemDeliveries){
-            	//step 5.a
-            	try {
-					notifyExternalSystems(report, caaersXml, reportTracking);					
+    	} catch (Exception e ) {  
+    		throw new RuntimeException(e);
+    	}
+    	
+    }
+    
+    /**
+     * This method will do the post submission activities. 
+     * This method also could be invoked from ESB response processing (if submission was successful). 
+     * @param context
+     */
+    public void doPostSubmitReport(ReportSubmissionContext context){
+    	Report report = context.report;
+    	
+    	//un-schedule all the notifications
+    	schedulerService.unScheduleNotification(report);
+    	
+    	//now update the post submission updated date on submitted adverse events. 
+    	report.getAeReport().clearPostSubmissionUpdatedDate();
+    	
+    	//update the reported flag on the adverse events.
+    	report.getAeReport().updateReportedFlagOnAdverseEvents();
+    }
+    
+    
+
+    /**
+     * Will do the following.
+     *  1. Do the pre submission initializations
+     *  2a. Notify the report to external system
+     *  2b. Notify email recipients
+     *  3. Do post submit activities.
+     */
+    public final void submitReport(Report report){
+    	//create the context
+    	ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
+    	
+    	try {
+			//do Per-submission activities
+			doPreSubmitReport(context);
+			
+			//update the reportVersion
+			report.setStatus(ReportStatus.INPROCESS);
+			report.setSubmittedOn(nowFactory.getNow());
+			
+			ReportTracking reportTracking = report.getLastVersion().getLastReportTracking();
+			
+			//now sent the report to the report recipients
+			boolean hasSystemDeliveries = report.hasSystemDeliveries();
+			if(hasSystemDeliveries){
+				//notify first external systems
+				try {
+					notifyExternalSystems(context);			
 				} catch (Exception e) {
 					log.error("Error while sending message to service mix ", e);
-					status = ReportStatus.FAILED;
-		            report.getLastVersion().setReportStatus(status);
-		            report.getLastVersion().setSubmissionMessage("Problem communicating with ESB <br> Please try to resubmit the report <br>" + e.getMessage());
-		            reportDao.save(report);
+					report.setStatus(ReportStatus.FAILED);
+			        report.setSubmissionMessage("Problem communicating with ESB <br> Please try to resubmit the report <br>" + e.getMessage());
 				}
-            	
-            }else{
-            	//step 5.b - notify all email recipients.
-            	try {
-            		notifyEmailRecipients(report, caaersXml, pdfReportPaths,reportTracking);
-            	 } catch (Exception e) {
-                 	Tracker.logEmailNotification(reportTracking, false, e.getMessage(),nowFactory.getNow());
-     				log.error("Error while sending email ", e);
-     	            report.getLastVersion().setReportStatus(ReportStatus.FAILED);
-     	            report.getLastVersion().setSubmissionMessage("Error  sending email " + e.getMessage());
-     	            reportDao.save(report);
+			}else{
+				//notify email recipients
+				try {
+					notifyEmailRecipients(context);
+					report.setStatus(ReportStatus.COMPLETED);
+				 } catch (Exception e) {
+			     	Tracker.logEmailNotification(reportTracking, false, e.getMessage(),nowFactory.getNow());
+					log.error("Error while sending email ", e);
+					report.setStatus(ReportStatus.FAILED);
+					report.setSubmissionMessage("Error  sending email " + e.getMessage());
+			     } 
+				 
+			}
+			
+			//do the post submission
+			doPostSubmitReport(context);
+		} catch (Exception e) {
+			log.error("Error while trying to submit report",e);
+			throw new CaaersSystemException("Unable to submit report", e);
+		}
+    	
+    	//save the report
+    	reportDao.save(context.report);
+    	expeditedAdverseEventReportDao.save(report.getAeReport());
+    	reportDao.flush();
 
-                 }            	
-            }
      }
     
     /**
@@ -176,7 +216,12 @@ public class ReportSubmissionService {
      * @throws Exception
      */
     
-    public void notifyEmailRecipients(Report report, String xml, String[] pdfFilePaths,ReportTracking reportTracking) throws Exception {
+    public void notifyEmailRecipients(ReportSubmissionContext context) throws Exception {
+    	Report report = context.report;
+    	String xml = context.caaersXML;
+    	String[] pdfFilePaths = context.pdfReportPaths;
+    	ReportTracking reportTracking = report.getLastVersion().getLastReportTracking();
+    	
     	List<String> emailRecipients = report.getEmailRecipients();
     	if(!emailRecipients.isEmpty()){
     		 //if email recipents are there, notify them.
@@ -229,7 +274,11 @@ public class ReportSubmissionService {
      * @throws Exception
      */
     
-    public void notifyExternalSystems(Report report, String xml, ReportTracking reportTracking) throws Exception {
+    public void notifyExternalSystems(ReportSubmissionContext context) throws Exception {
+    	Report report = context.report;
+    	String xml = context.caaersXML;
+    	ReportTracking reportTracking = report.getLastVersion().getLastReportTracking();
+    	
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();
         StringBuilder sb = new StringBuilder();
@@ -283,6 +332,7 @@ public class ReportSubmissionService {
                     CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService) {
         this.messageBroadcastService = messageBroadcastService;
     }
+    
     @Required
 	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
 		this.caaersJavaMailSender = caaersJavaMailSender;
@@ -292,10 +342,32 @@ public class ReportSubmissionService {
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
-
-  //  @Required    
-	public void setReportTrackingDao(ReportTrackingDao reportTrackingDao) {
-		this.reportTrackingDao = reportTrackingDao;
+    
+    @Required
+    public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}
-
+    
+	
+	/**
+	 * This class maintains the submission context, across various template methods.
+	 * @author Biju Joseph
+	 *
+	 */
+	public static class ReportSubmissionContext {
+		public final Report report;
+		public String[] pdfReportPaths;
+		public String caaersXML; 
+		public boolean asynchronousResponse = false;
+		
+		private ReportSubmissionContext(Report report) {
+			this.report = report;
+		}
+		
+		public static ReportSubmissionContext getSubmissionContext(Report report){
+			return new ReportSubmissionContext(report);
+		}
+	}
+	
+	
 }

@@ -7,10 +7,14 @@ import java.util.Vector;
 
 import javax.jms.Destination;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * 
  * @author Srini Akkala
+ * @author Biju Joseph (added Transactional annotation)
  */
+
 public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
 	
 	// Monish Dombla CAAERS-145
@@ -18,6 +22,7 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
         this.configuration = configuration;
     }
 	
+	@Transactional
     public void broadcast(String message) throws BroadcastException {
         // TODO Auto-generated method stub
         if (!isProvider()) {

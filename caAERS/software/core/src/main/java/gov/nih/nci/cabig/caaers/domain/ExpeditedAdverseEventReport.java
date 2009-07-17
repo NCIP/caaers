@@ -1157,6 +1157,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     }
     
+    /**
+     * This method will clear the post submission updated date on each of the adverse events. 
+     */
+    public void clearPostSubmissionUpdatedDate(){
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		ae.setPostSubmissionUpdatedDate(null);
+    	}
+    }
+    
     @Transient
     public boolean isPhysicianSignOffRequired(){
     	boolean physicianSignOffRequired = false;

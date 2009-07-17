@@ -90,6 +90,27 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     	contents.add(content);
     }
     
+    /**
+     * This method will clear off the previous submission debris if-any
+     */
+    public void clear(){
+    	if(contents != null) contents.clear();
+    	if(reportedAdversEvents != null) reportedAdversEvents.clear();
+    	setSubmissionMessage("");
+    	setSubmissionUrl("");
+    }
+    
+    /**
+     * Will initialize the reportTrackings list if need be, and adds the reportTracking after updating the attemptnumber. 
+     * @param reportTracking
+     */
+    public void addReportTracking(ReportTracking reportTracking){
+		if (reportTrackings == null) reportTrackings = new ArrayList<ReportTracking>();
+		if(reportTracking.getAttemptNumber() == null) reportTracking.setAttemptNumber(reportTrackings.size() + 1);
+		reportTracking.setReportVersion(this);
+        reportTrackings.add(reportTracking);
+	}
+    
     @Transient
     public String getStatusAsString(){
     	if(reportStatus == ReportStatus.PENDING){
@@ -292,18 +313,21 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 	public List<ReportTracking> getReportTrackings() {
 		return reportTrackings;
 	}
+    public void setReportTrackings(List<ReportTracking> reportTrackings) {
+		this.reportTrackings = reportTrackings;
+	}
+    
     
     @Transient
     public ReportTracking getLastReportTracking() {
-
-        return reportTrackings != null && reportTrackings.size() > 0 ? reportTrackings
-                        .get(reportTrackings.size()-1) : null;
+        return reportTrackings != null && reportTrackings.size() > 0 ? reportTrackings.get(reportTrackings.size()-1) : null;
     }
     
-    @Transient
+   
     /*
      * get backward list
      */
+    @Transient
 	public List<ReportTracking> getReportTrackingsForDisplay() {
     	List<ReportTracking> reverseList = new ArrayList<ReportTracking>();
     	for (int i=reportTrackings.size()-1; i>=0 ;i--) {
@@ -311,18 +335,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     	}
 		return reverseList;
 	}
-    
-
-	public void setReportTrackings(List<ReportTracking> reportTrackings) {
-		this.reportTrackings = reportTrackings;
-	}
 	
-	public void addReportTracking(ReportTracking reportTracking){
-		if (reportTrackings == null) reportTrackings = new ArrayList<ReportTracking>();
-		reportTracking.setReportVersion(this);
-        reportTrackings.add(reportTracking);
-	}
-   
     /**
      * This method returns true, if the report version can be submitted.
      * The following statuses cannot be submitted : REPLACED, WITDRAWN, COMPLETED, AMENDED. 

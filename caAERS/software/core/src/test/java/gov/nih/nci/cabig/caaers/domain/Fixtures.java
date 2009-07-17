@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
@@ -178,7 +179,7 @@ public class Fixtures {
         Report rep = new Report();
         rep.setReportDefinition(def);
         rep.addScheduledNotification(createScheduledEmailNotification());
-        rep.getLastVersion(); //initialize reportversions
+        rep.getLastVersion().addReportTracking(new ReportTracking()); //initialize reportversions
         return rep;
     }
     
