@@ -30,7 +30,9 @@ import org.apache.commons.collections15.map.LazyMap;
  * @author Rhett Sutphin
  */
 public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
-    public AttributionMap(ExpeditedAdverseEventReport aeReport) {
+   	private static final long serialVersionUID = -3837154972850863432L;
+
+	public AttributionMap(ExpeditedAdverseEventReport aeReport) {
         super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(aeReport));
     }
 

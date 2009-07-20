@@ -36,7 +36,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	${ae.adverseEventTerm.universalTerm}
 		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new.gif" />" /></c:if>
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
-		      	
+		      	(${ae.reported })
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		      ${ae.grade.code}:${ae.grade.displayName }

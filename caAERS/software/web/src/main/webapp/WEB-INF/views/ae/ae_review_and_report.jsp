@@ -54,7 +54,7 @@
  //to store all the report definitionIds
  AE.reportDefinitions = new Array();
  
- //to store GrouId - reportDefinitionId
+ //to  reportDefinitionId - groupId
  AE.reportDefinitionGroupHash = new Hash();
 
  //to store the reportDefinitionId - ReportDefinition object.
@@ -262,17 +262,33 @@ function generateMessages(aeReportId){
 		
 		var rdObj = AE.reportDefinitionHash.get(rdId);
 		var actualAction = $('rd_'+aeReportId+'_'+rdId+'_actualaction').value;
+		var grpRdArray = AE.groupDefinitions.get(aeReportId).get(rdObj.group);
 		
 		processed.push(rdId);
 		
 		var msg = "";
 		var connector = "";
 		if(actualAction){
-			msg = actualAction + " " + rdObj.name;
-			
-			if(actualAction == 'Withdraw'){
+			if(actualAction == 'Create'){
+				var otherActionAmendOrWithdraw = false;
+				if(grpRdArray){
+					grpRdArray.each(function(otherRdId){
+						var otherAction = $('rd_'+aeReportId+'_'+otherRdId+'_actualaction').value;
+						if(otherAction == 'Withdraw' || otherAction == 'Amend'){
+							otherActionAmendOrWithdraw = true;
+						}
+					});
+				}
+				if(!otherActionAmendOrWithdraw){
+					msg = actualAction + " " + rdObj.name;
+				}
+			}else if(actualAction == 'Edit'){
+				msg = actualAction + " " + rdObj.name;	
+			}else if(actualAction == 'Withdraw'){
+				msg = actualAction + " " + rdObj.name;
 				connector = " replace with";
 			}else if(actualAction == 'Amend'){
+				msg = actualAction + " " + rdObj.name;
 				connector = " with";
 			}
 
@@ -288,8 +304,7 @@ function generateMessages(aeReportId){
 				}
 			}
 
-
-			messages.push(msg);
+			if(msg) messages.push(msg);
 			
 		}
 		
@@ -462,7 +477,7 @@ function validate(aeReportId){
 	<chrome:division id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName} " 
 		collapsable="true" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
 	--%>
-	<div id="new-dc-section-0" style="display:none;">
+	<div id="new-dc-section-0" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
 	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName}" >
 		
 		<!--  Rules Message -->

@@ -17,8 +17,8 @@
         </layout>
     </appender>
 	
-    <logger name="gov.nih.nci"><level value="debug"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.web.rule.notification"><level value="debug"/></logger>
+    <logger name="gov.nih.nci"><level value="info"/></logger>
+    <logger name="gov.nih.nci.cabig.caaers.web.rule.notification"><level value="info"/></logger>
 	<logger name="org"><level value="error"/></logger>
 	
 <logger name="org.hibernate"><level value="error"/></logger>

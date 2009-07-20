@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -35,6 +36,7 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		command.generateReadableRulesMessage();
 		command.refreshRecommendedReportTable();
 		command.refreshApplicableReportTable();
+		command.refreshAeReportIdIndex();
 		
 		replayMocks();
 		tab.referenceData(request, command);
@@ -65,6 +67,7 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		
 		//aes
 		request.setParameter("ae_1", new String[] {"1", "2"});
+		request.setParameter("ae_0_primary", "1");
 		
 		tab.onBind(request, command, errors);
 		
@@ -102,6 +105,7 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		
 		//aes
 		request.setParameter("ae_0", new String[] {"1", "2"});
+		request.setParameter("ae_0_primary", "1");
 		
 		tab.onBind(request, command, errors);
 		
@@ -116,12 +120,14 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		
 	}
 
-	public void testValidateCaptureAdverseEventInputCommandBeanWrapperMapOfStringInputFieldGroupErrors() {
-		fail("Not yet implemented");
-	}
+	
 	
 	public CaptureAdverseEventInputCommand createCommand(){
 		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand();
+		
+		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
+		reportingPeriod.setId(3);
+		command.setAdverseEventReportingPeriod(reportingPeriod);
 		
 		final Map<Integer, ReportDefinition> rdMap = new LinkedHashMap<Integer, ReportDefinition>();
 

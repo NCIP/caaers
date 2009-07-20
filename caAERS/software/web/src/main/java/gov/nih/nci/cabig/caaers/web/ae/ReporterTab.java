@@ -172,11 +172,12 @@ public class ReporterTab extends AeTab {
     	if(errors.hasErrors()) return;
     	if(!(cmd instanceof EditExpeditedAdverseEventCommand)) return;
     	
+    	//- review result from session. 
+		ReviewAndReportResult reviewResult = (ReviewAndReportResult)request.getSession().getAttribute("reviewResult"); 
+    	
 		EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
-		if(StringUtils.equals("captureAE", command.getScreenFlowSource())){
-			//- review result from session. 
-			ReviewAndReportResult reviewResult = (ReviewAndReportResult)request.getSession().getAttribute("reviewResult"); 
-        	
+		if(reviewResult != null){
+			
 			//modify the signatures of the adverse events in this report.
 	    	command.getAeReport().updateSignatureOfAdverseEvents();
 	    	
