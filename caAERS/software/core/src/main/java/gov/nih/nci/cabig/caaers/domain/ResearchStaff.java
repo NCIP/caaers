@@ -3,7 +3,11 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
@@ -183,5 +187,32 @@ public abstract class ResearchStaff extends User {
 			siteResearchStaff.setResearchStaff(researchStaff);
 			return siteResearchStaff;
 		}
+	}
+	
+	@Transient
+	public List<String> getAllRoles(){
+		Set<String> roleSet = new HashSet<String>();
+		for(SiteResearchStaff siteResearchStaff : getSiteResearchStaffs()){
+			for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
+				roleSet.add(siteResearchStaffRole.getRoleCode());
+			}
+		}
+		List<String> roleList = new ArrayList<String>();  
+		roleList.addAll(roleSet);
+		return roleList;
+	}
+	
+	@Transient
+	public Map<String,List<String>> getSiteRolesMapping(){
+		Map<String, List<String>> siteRolesMap = new HashMap<String,List<String>>();
+		List<String> roleCodeList = null;
+		for(SiteResearchStaff siteResearchStaff : getSiteResearchStaffs()){
+			for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
+				roleCodeList = new ArrayList<String>();
+				roleCodeList.add(siteResearchStaffRole.getRoleCode());
+				siteRolesMap.put(siteResearchStaff.getOrganization().getNciInstituteCode(), roleCodeList);
+			}
+		}
+		return siteRolesMap;
 	}
 }
