@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +13,6 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAssociation;
-import gov.nih.nci.cagrid.data.QueryProcessingException;
 import gov.nih.nci.cagrid.data.cql.cacore.AttributeTypeDetector;
 import gov.nih.nci.cagrid.data.cql.cacore.ClassAccessUtilities;
 
@@ -277,7 +280,8 @@ public class CommandToSQL{
 			useLowercase = useLowercase && !inClauseCheck;
 			
 			if (typeFlag == AttributeTypeDetector.DATE_TYPE){
-				//TODO
+				String dateQueryString = createDateQuery(fullAttribName, parameter.getValue(), parameter.getPredicate());
+				criteriaConditionStringBuffer.append(dateQueryString);
 			}else{
 				if (useLowercase) {
 					criteriaConditionStringBuffer.append("lower(");
@@ -317,5 +321,44 @@ public class CommandToSQL{
 		
 		int indexOfLastAnd = criteriaConditionStringBuffer.lastIndexOf(" and ");
 		return criteriaConditionStringBuffer.substring(0, indexOfLastAnd);
+	}
+	
+	
+	public static String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
+		Date dateValue = null;
+		try {
+			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
+			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	        dateValue = (Date)formatter.parse(dateString);
+	    
+		} catch (Exception ex) {
+			throw new Exception("Error parsing date " + dateString + ": " + ex.getMessage(), ex);
+		}
+		String highPredicate = null;
+		String lowPredicate = null;
+		if (predicate.equals(">")) {
+			highPredicate = ">=";
+			lowPredicate = ">";
+		} else if (predicate.equals("<")) {
+			highPredicate = "<=";
+			lowPredicate = "<";
+		} else {
+			highPredicate = predicate;
+			lowPredicate = highPredicate;
+		}
+		StringBuilder dateQuery = new StringBuilder();
+		// parse the date value into a Java Date object
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dateValue);
+		dateQuery.append("(");
+		// break down each part of the date and query for it with the prefix
+		dateQuery.append("year(").append(fullAttributeName).append(") ").append(highPredicate)
+			.append(" '").append(cal.get(Calendar.YEAR)).append("' AND ");
+		dateQuery.append("month(").append(fullAttributeName).append(") ").append(highPredicate)
+			.append(" '").append(cal.get(Calendar.MONTH)).append("' AND ");
+		dateQuery.append("day(").append(fullAttributeName).append(") ").append(lowPredicate)
+			.append(" '").append(cal.get(Calendar.DAY_OF_MONTH)).append("'");
+		dateQuery.append(")");
+		return dateQuery.toString();
 	}
 }
