@@ -4,19 +4,20 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
-import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Role;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffRoleType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -89,7 +90,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     }
     
 	private List<Organization> checkAuthorizedOrganizations (ResearchStaffType researchStaffType) {
-		List<SiteResearchStaffType> siteResearchStaffTypeList = researchStaffType.getSiteResearchStaff();
+		List<SiteResearchStaffType> siteResearchStaffTypeList = researchStaffType.getSiteResearchStaffs().getSiteResearchStaff();
 		String nciIntituteCode = "";
 		List<Organization> orgs = new ArrayList<Organization>();
 		for(SiteResearchStaffType siteResearchStaffType : siteResearchStaffTypeList){
@@ -101,7 +102,8 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	
     public CaaersServiceResponse saveResearchStaff(Staff staff) {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
-    	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
+    	ResearchStaff xmlResearchStaff = null;
+    	ResearchStaff dbResearchStaff = null;
     	
     	List<WsError> wsErrors = new ArrayList<WsError>();
     	CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
@@ -116,17 +118,27 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			wsErrors.add(err);
     		}
     		try {
-    			researchStaff = buildResearchStaff(researchStaffType);
-    			saveResearchStaff(researchStaff);
-    			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-    			researchStaffImportOutcome.setImportedDomainObject(researchStaff);
+    			xmlResearchStaff = buildResearchStaff(researchStaffType);
+    			String email = researchStaffType.getEmailAddress();
+                String loginId = researchStaffType.getLoginId();
+                if (StringUtils.isEmpty(loginId)) {
+              	  loginId = email;
+                }
+                dbResearchStaff = fetchResearchStaff(loginId);
+    			if(dbResearchStaff == null){
+        			saveResearchStaff(xmlResearchStaff);
+        			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
+        			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+    			}else{
+    				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
+    			}
     		} catch (CaaersSystemException e) {
-    			researchStaff = new LocalResearchStaff();
-    			researchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
-    			researchStaff.setFirstName(researchStaffType.getFirstName());
-    			researchStaff.setLastName(researchStaffType.getLastName());
+    			xmlResearchStaff = new LocalResearchStaff();
+    			xmlResearchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
+    			xmlResearchStaff.setFirstName(researchStaffType.getFirstName());
+    			xmlResearchStaff.setLastName(researchStaffType.getLastName());
             	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-            	researchStaffImportOutcome.setImportedDomainObject(researchStaff);
+            	researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
             	researchStaffImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
  
     			WsError err = new WsError();
@@ -153,52 +165,67 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               if (StringUtils.isEmpty(loginId)) {
             	  loginId = email;
               }
-              ResearchStaff researchStaff = fetchResearchStaff(loginId);
-              if (researchStaff == null ) {
-              	// build new 
-              	researchStaff = new LocalResearchStaff();
+              
+              	ResearchStaff researchStaff = new LocalResearchStaff();
               	researchStaff.setNciIdentifier(nciIdentifier); 
               	if (StringUtils.isEmpty(loginId)) {
               		researchStaff.setLoginId(researchStaffDto.getEmailAddress());
               	} else {
               		researchStaff.setLoginId(loginId);
-              	}              	
-              } 
-              researchStaff.setFirstName(researchStaffDto.getFirstName());
-              researchStaff.setLastName(researchStaffDto.getLastName());
-              researchStaff.setMiddleName(researchStaffDto.getMiddleName());              
-              researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
-              researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
-              researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
-              
-              List<SiteResearchStaffType> siteRsTypeList= researchStaffDto.getSiteResearchStaff();
-              List<SiteResearchStaff> siteRsList = new ArrayList<SiteResearchStaff>();
-              
-              for (SiteResearchStaffType siteResearchStaffType : siteRsTypeList) {
-              	// create site investigator and make the list 
-            	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
-            	siteResearchStaff.setEmailAddress(siteResearchStaffType.getEmailAddress());
-              	
-              	Organization org = fetchOrganization(siteResearchStaffType.getOrganizationRef().getNciInstituteCode());
-              	siteResearchStaff.setOrganization(org);
-              	siteResearchStaff.setResearchStaff(researchStaff);
-              	// ????? siteInvestigator.setStatusDate(siteInvestigatorType.ggetStatusDate());
-              	siteRsList.add(siteResearchStaff);
-              	
-              	
-              	
-              }
-              researchStaff.getSiteResearchStaffsInternal().clear();
-              researchStaff.getSiteResearchStaffs().addAll(siteRsList);
+              	} 
+                researchStaff.setFirstName(researchStaffDto.getFirstName());
+                researchStaff.setLastName(researchStaffDto.getLastName());
+                researchStaff.setMiddleName(researchStaffDto.getMiddleName());              
+                researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
+                researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
+                researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
+                Address researchStaffAddress = new Address();
+                researchStaffAddress.setStreet(researchStaffDto.getStreet());
+                researchStaffAddress.setCity(researchStaffDto.getCity());
+                researchStaffAddress.setState(researchStaffDto.getState());
+                if(researchStaffDto.getZip() != null & !StringUtils.isEmpty(researchStaffDto.getZip())){
+              	 researchStaffAddress.setZip(Integer.parseInt(researchStaffDto.getZip()));
+                }
+                researchStaff.setAddress(researchStaffAddress);
+                
+                List<SiteResearchStaffType> siteRsTypeList= researchStaffDto.getSiteResearchStaffs().getSiteResearchStaff();
+                Address siteResearchStaffAddress = null;
+                SiteResearchStaffRole siteResearchStaffRole = null;
+                List<SiteResearchStaffRoleType> srsRoleTypes = null;
+                for (SiteResearchStaffType siteResearchStaffType : siteRsTypeList) {
+	              	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+	              	siteResearchStaff.setEmailAddress(siteResearchStaffType.getEmailAddress());
+	              	siteResearchStaff.setPhoneNumber(siteResearchStaffType.getPhoneNumber());
+	              	siteResearchStaff.setFaxNumber(siteResearchStaffType.getFaxNumber());
+	              	siteResearchStaffAddress = new Address();
+	              	siteResearchStaffAddress.setStreet(siteResearchStaffType.getStreet());
+	              	siteResearchStaffAddress.setCity(siteResearchStaffType.getCity());
+	              	siteResearchStaffAddress.setState(siteResearchStaffType.getState());
+	              	if(siteResearchStaffType.getZip() != null & !StringUtils.isEmpty(siteResearchStaffType.getZip())){
+	              		siteResearchStaffAddress.setZip(Integer.parseInt(siteResearchStaffType.getZip()));
+	              	}
+	              	siteResearchStaff.setAddress(siteResearchStaffAddress);
+	                	
+	              	Organization org = fetchOrganization(siteResearchStaffType.getOrganizationRef().getNciInstituteCode());
+	                	
+	              	srsRoleTypes = 	siteResearchStaffType.getSiteResearchStaffRoles().getSiteResearchStaffRole();
+	              	for(SiteResearchStaffRoleType srsRoleType : srsRoleTypes){
+	              		siteResearchStaffRole = new SiteResearchStaffRole();
+	              		siteResearchStaffRole.setRoleCode(srsRoleType.getRole().value());
+	              		siteResearchStaffRole.setStartDate(srsRoleType.getStartDate().toGregorianCalendar().getTime());
+	              		siteResearchStaffRole.setEndDate(srsRoleType.getEndDate().toGregorianCalendar().getTime());
+	              		siteResearchStaffRole.setSiteResearchStaff(siteResearchStaff);
+	              		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
+	              	}
+	                	siteResearchStaff.setOrganization(org);
+	                	siteResearchStaff.setResearchStaff(researchStaff);
+	                	researchStaff.addSiteResearchStaff(siteResearchStaff);
+                }              	
               
               researchStaff.getUserGroupTypes().clear();
-              
-              //Need to fix roles 
-//              List<Role> roles = researchStaffDto.getRole();
-//              
-//              for (Role role:roles) {
-//            	  researchStaff.addUserGroupType(UserGroupType.valueOf(role.value()));
-//              }
+              for (String roleCode : researchStaff.getAllRoles()) {
+            	  researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
+              }
               
               return researchStaff;
 
@@ -225,6 +252,15 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         
 	}
 	
+	/**
+	 * 
+	 * @param xmlResearchStaff
+	 * @param dbResearchStaff
+	 */
+	private void syncResearchStaff(ResearchStaff xmlResearchStaff, ResearchStaff dbResearchStaff){
+		
+	}
+	
 	//CONFIGURATION
 
     @Required
@@ -246,5 +282,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
 	}
+	
+	
 
 }

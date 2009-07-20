@@ -11,12 +11,32 @@
         <nciIdentifier>NCI</nciIdentifier>
         <phoneNumber>657-678-0098</phoneNumber> 
         <loginId>jchapman</loginId>
-        <statusCode>ACT</statusCode>       
-        <ns1:organizationRef>
-            <nciInstituteCode>DCP</nciInstituteCode>
-        </ns1:organizationRef>
-        <role>caaers_participant_cd</role>
-        <role>caaers_study_cd</role>
+        <street>13921 Park Center Road</street>
+        <city>Herndon</city>
+        <state>VA</state>
+        <zip>20171</zip> 
+        <siteResearchStaffs>
+        	<ns2:siteResearchStaff>
+        		<ns1:street>13921 Park Center Road</ns1:street>
+        		<ns1:city>Herndon</ns1:city>
+        		<ns1:state>VA</ns1:state>
+        		<ns1:zip>20171</ns1:zip>
+        		<ns1:organizationRef>
+            		<nciInstituteCode>NCI</nciInstituteCode>
+        		</ns1:organizationRef>
+        		<siteResearchStaffRoles>
+        			<ns2:siteResearchStaffRole>
+        				<role>caaers_participant_cd</role>
+        				<startDate>2009-01-01</startDate>
+        				<endDate>2010-01-01</endDate>
+        			</ns2:siteResearchStaffRole>
+        			<ns2:siteResearchStaffRole>
+        				<role>caaers_study_cd</role>
+        				<startDate>2008-01-01</startDate>
+        				<endDate>2010-01-01</endDate>
+        			</ns2:siteResearchStaffRole>
+        		</siteResearchStaffRoles>
+        	</ns2:siteResearchStaff>
+        </siteResearchStaffs>
     </ns2:researchStaff>
-    
 </ns2:staff>

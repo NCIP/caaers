@@ -23,9 +23,15 @@
     <xs:complexType name="ResearchStaffType">
         <xs:complexContent>
             <xs:extension base="cct:ResearchStaffType">
-                <xs:sequence>
-                    <xs:element ref="siteResearchStaff" maxOccurs="unbounded" minOccurs="1"/>
-                </xs:sequence>
+            <xs:sequence>
+                <xs:element name="siteResearchStaffs">
+                     <xs:complexType>
+                         <xs:sequence>
+                             <xs:element ref="siteResearchStaff" minOccurs="1" maxOccurs="unbounded"/>
+                         </xs:sequence>
+                     </xs:complexType>
+                </xs:element>
+            </xs:sequence>    
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -36,10 +42,26 @@
             <xs:extension base="cct:SiteResearchStaffType">
                 <xs:sequence>
                     <xs:element ref="cct:organizationRef" minOccurs="1"/>
-                    <xs:element name="role" type="Role" minOccurs="1" maxOccurs="unbounded"/>
+	                <xs:element name="siteResearchStaffRoles">
+	                     <xs:complexType>
+	                         <xs:sequence>
+	                         	 	
+	                             <xs:element ref="siteResearchStaffRole" minOccurs="1" maxOccurs="unbounded"/>
+	                         </xs:sequence>
+	                     </xs:complexType>
+	                </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="siteResearchStaffRole" type="SiteResearchStaffRoleType"/>
+    <xs:complexType name="SiteResearchStaffRoleType">
+         <xs:sequence>
+            <xs:element name="role" type="Role" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
+            <xs:element name="endDate" type="xs:date" />
+         </xs:sequence>
     </xs:complexType>
     
     <xs:simpleType name="Role">

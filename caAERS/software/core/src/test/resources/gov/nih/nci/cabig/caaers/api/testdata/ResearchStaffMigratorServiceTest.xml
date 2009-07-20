@@ -27,5 +27,7 @@
         <SITE_INVESTIGATORS />
         
         <csm_user/>
+        <site_research_staffs/>
+        <site_rs_staff_roles/>
       
 </dataset>

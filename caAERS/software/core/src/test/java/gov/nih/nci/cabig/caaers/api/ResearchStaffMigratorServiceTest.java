@@ -47,14 +47,12 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 	public void testResearchStaffByLoginIdSave(){
 		try {
 			//Create or update , whatever it is new data will be populated ..
-			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml");
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
-			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/UpdateInvestigatorTest.xml");
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveResearchStaff(staff);
@@ -66,7 +64,11 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertEquals("879-345-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
-			//assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
+			assertNotNull(updatedResearchStaff.getAddress());
+			assertEquals("13921 Park Center Road", updatedResearchStaff.getAddress().getStreet());
+			assertEquals("Herndon", updatedResearchStaff.getAddress().getCity());
+			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
+			assertEquals(1,updatedResearchStaff.getSiteResearchStaffs().size());
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,14 +82,12 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 	public void testResearchStaffByEmailSave(){
 		try {
 			//Create or update , whatever it is new data will be populated ..
-			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml");
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest2.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
-			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/UpdateInvestigatorTest.xml");
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffTest2.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveResearchStaff(staff);
@@ -98,7 +98,6 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			assertEquals("980-090-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-093-0098", updatedResearchStaff.getPhoneNumber());
-			//assertEquals("DCP", updatedResearchStaff.getOrganization().getNciInstituteCode());
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -134,6 +133,5 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
-
 
 }
