@@ -258,6 +258,7 @@ This applicationContext contains the definition of the concrete services
 	    	<property name="reportDao" ref="reportDao" />
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
+			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 	</bean>	
 	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />
 	
