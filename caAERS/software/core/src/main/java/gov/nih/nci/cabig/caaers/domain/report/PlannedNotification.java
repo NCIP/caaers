@@ -41,7 +41,9 @@ import org.hibernate.annotations.Parameter;
 public abstract class PlannedNotification extends AbstractMutableDomainObject implements
         Serializable {
 
-    /**
+	private static final long serialVersionUID = 6921536076182762022L;
+
+	/**
      * The actual mark selected on the time scale
      */
     @Column(name = "index_on_time_scale")

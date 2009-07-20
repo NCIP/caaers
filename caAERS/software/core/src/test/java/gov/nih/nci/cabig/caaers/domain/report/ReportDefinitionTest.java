@@ -34,6 +34,9 @@ public class ReportDefinitionTest extends AbstractTestCase {
     public void testEqualsIfOneIsSubclass() throws Exception {
         ReportDefinition def1 = new ReportDefinition();
         ReportDefinition def2 = new ReportDefinition() {
+
+			private static final long serialVersionUID = 1L;
+        	
         }; // anonymous subclass
 
         assertEquals(def1, def2);

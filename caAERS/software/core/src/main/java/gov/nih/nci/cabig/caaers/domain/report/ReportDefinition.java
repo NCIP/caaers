@@ -51,7 +51,10 @@ import org.hibernate.annotations.Type;
 @Table(name = "REPORT_CALENDAR_TEMPLATES")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_calendar_templat_id") })
 public class ReportDefinition extends AbstractMutableDomainObject implements Serializable , Comparable<ReportDefinition>{
-    private static final Log log = LogFactory.getLog(ReportDefinition.class);
+ 
+	private static final long serialVersionUID = 6196679267140283638L;
+
+	private static final Log log = LogFactory.getLog(ReportDefinition.class);
 
     private String name;
     private String label;

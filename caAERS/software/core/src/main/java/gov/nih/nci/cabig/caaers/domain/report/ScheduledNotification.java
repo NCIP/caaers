@@ -40,7 +40,10 @@ import org.hibernate.annotations.Type;
 public abstract class ScheduledNotification extends AbstractMutableDomainObject implements
                 Serializable {
 
-    protected DeliveryStatus deliveryStatus;
+    
+	private static final long serialVersionUID = 7953320109252988556L;
+
+	protected DeliveryStatus deliveryStatus;
 
     protected Date createdOn;
 

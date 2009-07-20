@@ -17,7 +17,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("email")
 public class ScheduledEmailNotification extends ScheduledNotification {
 
-    String fromAddress;
+	private static final long serialVersionUID = -475181649630877114L;
+
+	String fromAddress;
 
     String toAddress;
 

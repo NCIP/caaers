@@ -40,7 +40,10 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "REPORT_SCHEDULES")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_schedules_id") })
 public class Report extends AbstractMutableDomainObject implements Serializable {
-    private boolean required;
+
+	private static final long serialVersionUID = 4001323963140432224L;
+
+	private boolean required;
 
     private ExpeditedAdverseEventReport aeReport;
 

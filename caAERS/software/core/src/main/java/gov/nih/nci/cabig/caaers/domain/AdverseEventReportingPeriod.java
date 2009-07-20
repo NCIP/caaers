@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +45,10 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "ae_reporting_periods")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_reporting_periods_id") })
-public class AdverseEventReportingPeriod extends AbstractMutableDomainObject implements WorkflowAware{
+public class AdverseEventReportingPeriod extends AbstractMutableDomainObject implements WorkflowAware, Serializable{
+	
+	private static final long serialVersionUID = -5343583772734352886L;
+
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
 	
 	private String description;

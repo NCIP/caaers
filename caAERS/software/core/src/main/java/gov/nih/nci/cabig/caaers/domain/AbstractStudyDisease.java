@@ -34,7 +34,9 @@ import org.hibernate.annotations.Parameter;
 // should be ignored
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_diseases_id") })
 public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableRetireableDomainObject implements Serializable {
-    private T term;
+  
+	private static final long serialVersionUID = 4312939165182797807L;
+	private T term;
     private Study study;
 
     // //// BEAN PROPERTIES

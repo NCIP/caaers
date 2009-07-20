@@ -15,7 +15,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("email")
 public class PlannedEmailNotification extends PlannedNotification {
 
-    /** The subject line of the email */
+	private static final long serialVersionUID = 2854154055470551938L;
+	/** The subject line of the email */
     private String subjectLine;
 
     // //// LOGIC

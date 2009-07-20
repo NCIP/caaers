@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,9 +35,10 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "treatments")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_treatments_id")})
-public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
+public class TreatmentInformation extends AbstractExpeditedReportSingleChild implements Serializable {
     
-    private List<CourseAgent> courseAgentsInternal;
+	private static final long serialVersionUID = 6642120445894121790L;
+	private List<CourseAgent> courseAgentsInternal;
     private List<CourseAgent> courseAgents;
     private Date firstCourseDate;
     private CourseDate adverseEventCourse;

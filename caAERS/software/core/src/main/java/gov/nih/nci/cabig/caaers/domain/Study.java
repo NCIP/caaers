@@ -43,7 +43,8 @@ import org.hibernate.annotations.Where;
 @Where(clause = "load_status > 0")
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
-    public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
+	private static final long serialVersionUID = 2524271609924679883L;
+	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
     private String shortTitle;

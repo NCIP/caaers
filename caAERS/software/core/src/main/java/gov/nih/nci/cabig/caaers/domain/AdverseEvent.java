@@ -12,9 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -34,7 +34,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -53,8 +52,11 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
-public class AdverseEvent extends AbstractMutableRetireableDomainObject implements ExpeditedAdverseEventReportChild {
-    private AbstractAdverseEventTerm adverseEventTerm;
+public class AdverseEvent extends AbstractMutableRetireableDomainObject implements ExpeditedAdverseEventReportChild , Serializable{
+   
+	private static final long serialVersionUID = 782543033828114683L;
+
+	private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
 

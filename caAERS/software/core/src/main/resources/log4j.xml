@@ -38,7 +38,7 @@
   <logger name="gov.nih.nci.cabig.ctms"><level value="error" /></logger>
   <logger name="edu.northwestern.bioinformatics"><level value="error"></level></logger>
   <root>
-    <priority value="debug"/>
+    <priority value="warn"/>
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>
   </root>

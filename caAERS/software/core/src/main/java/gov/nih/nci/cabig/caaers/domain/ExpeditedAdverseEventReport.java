@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,8 +53,10 @@ import org.springframework.beans.BeanUtils;
                 @Parameter(name = "sequence", value = "seq_ae_reports_id")
         }
 )
-public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  WorkflowAware {
-    private Timestamp createdAt;
+public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  WorkflowAware , Serializable{
+   
+	private static final long serialVersionUID = -3747213703166595074L;
+	private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
     private AdverseEventResponseDescription responseDescription;

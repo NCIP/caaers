@@ -19,7 +19,10 @@ import org.hibernate.annotations.Type;
 public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements
                 Serializable {
 
-    private String fieldPath;
+
+	private static final long serialVersionUID = -3133021814678700402L;
+
+	private String fieldPath;
 
     private Mandatory mandatory;
 

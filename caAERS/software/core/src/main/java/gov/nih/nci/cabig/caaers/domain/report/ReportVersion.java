@@ -41,7 +41,9 @@ import org.hibernate.annotations.Type;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_versions_id") })
 public class ReportVersion extends AbstractMutableDomainObject implements Serializable {
 
-    private Date createdOn;
+	private static final long serialVersionUID = 446860490773763452L;
+
+	private Date createdOn;
 
     private Date dueOn;
 

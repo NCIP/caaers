@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,9 +29,10 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @Table(name = "course_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_course_agents_id")})
-public class CourseAgent extends AbstractMutableDomainObject {
+public class CourseAgent extends AbstractMutableDomainObject implements Serializable{
 
-    private TreatmentInformation treatmentInformation;
+	private static final long serialVersionUID = 383521569507666095L;
+	private TreatmentInformation treatmentInformation;
     private StudyAgent studyAgent;
     private Dose dose;
     private String durationAndSchedule;

@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * 
  * @author Rhett Sutphin
  */
-public enum Attribution implements CodedEnum<Integer> {
+public enum Attribution implements CodedEnum<Integer>{
     UNRELATED(1), UNLIKELY(2), POSSIBLE(3), PROBABLE(4), DEFINITE(5);
 
     private int code;

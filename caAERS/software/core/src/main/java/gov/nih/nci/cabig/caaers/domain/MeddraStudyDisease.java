@@ -18,7 +18,8 @@ import javax.persistence.Transient;
 @DiscriminatorValue("meddra")
 public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
 
-    private String meddraCode;
+	private static final long serialVersionUID = -2191830866356536610L;
+	private String meddraCode;
 
     public String getMeddraCode() {
         return meddraCode;

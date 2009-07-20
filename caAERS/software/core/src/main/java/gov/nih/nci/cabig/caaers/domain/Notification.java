@@ -20,7 +20,9 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_notifications_id") })
 public class Notification extends AbstractMutableDomainObject implements Serializable {
 
-    private String email;
+	private static final long serialVersionUID = 6073805433214950491L;
+
+	private String email;
 
     private String content;
 

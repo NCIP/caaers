@@ -16,7 +16,9 @@ import javax.persistence.Transient;
 @DiscriminatorValue("ctep")
 public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
 
-    private Boolean leadDisease;
+    
+	private static final long serialVersionUID = 7943849778109284695L;
+	private Boolean leadDisease;
 
     public Boolean getLeadDisease() {
         return leadDisease;
