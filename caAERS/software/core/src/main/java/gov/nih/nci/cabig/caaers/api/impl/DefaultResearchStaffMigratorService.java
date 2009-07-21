@@ -24,11 +24,15 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -259,6 +263,83 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	 */
 	private void syncResearchStaff(ResearchStaff xmlResearchStaff, ResearchStaff dbResearchStaff){
 		
+		//do the basic property sync
+		
+		//do the site research staff sync
+		if(CollectionUtils.isEmpty(xmlResearchStaff.getSiteResearchStaffs())) return;  //nothing provided in xml input
+		List<SiteResearchStaff> existingSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
+		List<SiteResearchStaff> newSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
+		for(SiteResearchStaff xmlSiteResearchStaff : xmlResearchStaff.getSiteResearchStaffs()){
+			SiteResearchStaff existing = dbResearchStaff.findSiteResearchStaff(xmlSiteResearchStaff);
+			if(existing != null){
+				//sync the roles
+				List<SiteResearchStaffRole> unwantedRoles = new ArrayList<SiteResearchStaffRole>();
+				List<SiteResearchStaffRole> existingRoles = new ArrayList<SiteResearchStaffRole>();
+				List<SiteResearchStaffRole> newRoles = new ArrayList<SiteResearchStaffRole>();
+				if(CollectionUtils.isNotEmpty(xmlSiteResearchStaff.getSiteResearchStaffRoles())){
+					for(SiteResearchStaffRole xmlRole : xmlSiteResearchStaff.getSiteResearchStaffRoles()){
+						SiteResearchStaffRole existingRole = existing.findSiteResearchStaffRole(xmlRole);
+						if(existingRole != null){
+							existingRoles.add(existingRole);
+							existingRole.setStartDate(xmlRole.getStartDate());
+							existingRole.setEndDate(xmlRole.getEndDate());
+						}else{
+							xmlRole.setSiteResearchStaff(existing);
+							newRoles.add(xmlRole);
+						}
+					}
+					
+					//populate the unwanted roles. 
+					for(SiteResearchStaffRole dbRole : existing.getSiteResearchStaffRoles()){
+						boolean isRolePresent = false;
+						for(SiteResearchStaffRole existingRole : existingRoles){
+							if(dbRole == existingRole){
+								isRolePresent = true;
+								break;
+							}
+						}
+						if(!isRolePresent){
+							unwantedRoles.add(dbRole);
+						}
+					}
+					
+					//throw away unwanted roles
+					for(SiteResearchStaffRole unwantedRole : unwantedRoles){
+						existing.getSiteResearchStaffRoles().remove(unwantedRole);
+					}
+					
+					//add new roles
+					existing.getSiteResearchStaffRoles().addAll(newRoles);
+				}
+				
+			}else {
+				xmlSiteResearchStaff.setResearchStaff(dbResearchStaff);
+				newSiteResearchStaffs.add(xmlSiteResearchStaff);
+			}
+			
+		}
+		
+		//remove the unwanted ones.
+		List<SiteResearchStaff> unwantedSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
+		for(SiteResearchStaff dbSiteResearchStaff : dbResearchStaff.getSiteResearchStaffs()){
+			boolean isPresentInXML = false;
+			for(SiteResearchStaff existingResearchStaff : existingSiteResearchStaffs){
+				if(dbSiteResearchStaff == existingResearchStaff){
+					isPresentInXML = true; 
+					break;
+				}
+			}
+			if(!isPresentInXML){
+				unwantedSiteResearchStaffs.add(dbSiteResearchStaff);
+			}
+		}
+		
+		//throw away the items in unwanted
+		for(SiteResearchStaff unwanted : unwantedSiteResearchStaffs){
+			dbResearchStaff.getSiteResearchStaffs().remove(unwanted);
+		}
+		//add the items in new
+		dbResearchStaff.getSiteResearchStaffs().addAll(newSiteResearchStaffs);
 	}
 	
 	//CONFIGURATION
