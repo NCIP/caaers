@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -33,6 +34,15 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
     private String phoneNumber;
     private String faxNumber; 
     private Address address;
+    
+    
+    ///LOGIC
+    public SiteResearchStaffRole findSiteResearchStaffRole(SiteResearchStaffRole other){
+    	for(SiteResearchStaffRole role : siteResearchStaffRoles){
+    		if(StringUtils.equals(role.getRoleCode(), other.getRoleCode())) return role;
+    	}
+    	return null;
+	}
     
     @OneToMany(mappedBy = "siteResearchStaff", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
