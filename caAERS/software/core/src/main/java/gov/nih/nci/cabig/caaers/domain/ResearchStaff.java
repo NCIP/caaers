@@ -215,4 +215,15 @@ public abstract class ResearchStaff extends User {
 		}
 		return siteRolesMap;
 	}
+	
+	public SiteResearchStaff findSiteResearchStaff(SiteResearchStaff other){
+		for(SiteResearchStaff siteResearchStaff : getSiteResearchStaffs()){
+			if(siteResearchStaff.getOrganization().equals(other.getOrganization())){
+				return siteResearchStaff;
+			}
+		}
+		return null;
+	}
+	
+	
 }
