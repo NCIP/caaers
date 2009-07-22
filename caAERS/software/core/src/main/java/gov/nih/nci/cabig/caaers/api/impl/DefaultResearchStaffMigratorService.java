@@ -70,21 +70,36 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     }
     
     
-    public DomainObjectImportOutcome<ResearchStaff> processResearchStaff(ResearchStaffType xmlResearchStaff){
+    public DomainObjectImportOutcome<ResearchStaff> processResearchStaff(ResearchStaffType researchStaffType){
     	
     	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = null;
-    	ResearchStaff researchStaff = null;
+    	ResearchStaff xmlResearchStaff = null;
+    	ResearchStaff dbResearchStaff = null;
 		try {
-			researchStaff = buildResearchStaff(xmlResearchStaff);
-			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-			researchStaffImportOutcome.setImportedDomainObject(researchStaff);
+			xmlResearchStaff = buildResearchStaff(researchStaffType);
+			String email = researchStaffType.getEmailAddress();
+            String loginId = researchStaffType.getLoginId();
+            if (StringUtils.isEmpty(loginId)) {
+          	  loginId = email;
+            }
+            dbResearchStaff = fetchResearchStaff(loginId);
+			if(dbResearchStaff == null){
+    			saveResearchStaff(xmlResearchStaff);
+    			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
+    			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+			}else{
+				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
+				saveResearchStaff(dbResearchStaff);
+    			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
+    			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+			}
 		} catch (CaaersSystemException e) {
-			researchStaff = new LocalResearchStaff();
-			researchStaff.setNciIdentifier(xmlResearchStaff.getNciIdentifier());
-			researchStaff.setFirstName(xmlResearchStaff.getFirstName());
-			researchStaff.setLastName(xmlResearchStaff.getLastName());
+			xmlResearchStaff = new LocalResearchStaff();
+			xmlResearchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
+			xmlResearchStaff.setFirstName(researchStaffType.getFirstName());
+			xmlResearchStaff.setLastName(researchStaffType.getLastName());
         	researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-        	researchStaffImportOutcome.setImportedDomainObject(researchStaff);
+        	researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
         	researchStaffImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
 		}
     	return researchStaffImportOutcome;
@@ -134,7 +149,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
     				saveResearchStaff(dbResearchStaff);
         			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-        			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+        			researchStaffImportOutcome.setImportedDomainObject(dbResearchStaff);
     			}
     		} catch (CaaersSystemException e) {
     			xmlResearchStaff = new LocalResearchStaff();
