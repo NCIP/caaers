@@ -7,28 +7,28 @@
         <lastName>Doe</lastName>
         <middleName>H</middleName>
         <emailAddress>jd@nci.org</emailAddress>
-        <faxNumber>101-202-3333</faxNumber>
+        <faxNumber>870-098-0989</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
-        <phoneNumber>101-202-4444</phoneNumber>
-
+        <phoneNumber>908-098-0099</phoneNumber>
+        <allowedToLogin>true</allowedToLogin>
+		<loginId>l1</loginId>
         <ns1:siteInvestigator>
-            <emailAddress>jd@dcp.org</emailAddress>
+            <emailAddress>jb@nci.gov</emailAddress>
             <statusCode>ACT</statusCode>
-            
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>
             <ns2:organizationRef>
                 <nciInstituteCode>NCI</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
         <ns1:siteInvestigator>
-            <emailAddress>jb@nci.gov</emailAddress>
+            <emailAddress>jb@ctep.gov</emailAddress>
             <statusCode>ACT</statusCode>
-           
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>
             <ns2:organizationRef>
                 <nciInstituteCode>CTEP</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
-        
     </ns1:investigator>
-
-  
 </ns1:staff>

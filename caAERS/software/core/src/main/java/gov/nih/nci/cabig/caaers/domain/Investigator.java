@@ -199,6 +199,16 @@ public abstract class Investigator extends User {
 		}
     }
     
+    
+	public SiteInvestigator findSiteInvestigator(SiteInvestigator other){
+		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){
+			if(siteInvestigator.getOrganization().equals(other.getOrganization())){
+				return siteInvestigator;
+			}
+		}
+		return null;
+	}
+    
     @Column(name = "allowed_to_login")
 	public Boolean getAllowedToLogin() {
 		return allowedToLogin;

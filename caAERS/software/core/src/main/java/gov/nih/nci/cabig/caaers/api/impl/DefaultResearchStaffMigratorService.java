@@ -232,7 +232,9 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	              		siteResearchStaffRole = new SiteResearchStaffRole();
 	              		siteResearchStaffRole.setRoleCode(srsRoleType.getRole().value());
 	              		siteResearchStaffRole.setStartDate(srsRoleType.getStartDate().toGregorianCalendar().getTime());
-	              		siteResearchStaffRole.setEndDate(srsRoleType.getEndDate().toGregorianCalendar().getTime());
+	              		if(srsRoleType.getEndDate() != null){
+	              			siteResearchStaffRole.setEndDate(srsRoleType.getEndDate().toGregorianCalendar().getTime());
+	              		}
 	              		siteResearchStaffRole.setSiteResearchStaff(siteResearchStaff);
 	              		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 	              	}
@@ -301,9 +303,9 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 					for(SiteResearchStaffRole xmlRole : xmlSiteResearchStaff.getSiteResearchStaffRoles()){
 						SiteResearchStaffRole existingRole = existing.findSiteResearchStaffRole(xmlRole);
 						if(existingRole != null){
-							existingRoles.add(existingRole);
 							existingRole.setStartDate(xmlRole.getStartDate());
 							existingRole.setEndDate(xmlRole.getEndDate());
+							existingRoles.add(existingRole);
 						}else{
 							xmlRole.setSiteResearchStaff(existing);
 							newRoles.add(xmlRole);
@@ -316,7 +318,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 				}
 				
 			}else {
-				xmlSiteResearchStaff.setResearchStaff(dbResearchStaff);
+				xmlSiteResearchStaff.setResearchStaff(xmlResearchStaff);
 				newSiteResearchStaffs.add(xmlSiteResearchStaff);
 			}
 			

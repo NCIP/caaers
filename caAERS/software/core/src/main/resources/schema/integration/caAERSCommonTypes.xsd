@@ -179,7 +179,6 @@
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
                     <xs:element name="statusCode" type="StatusCodeType"/>
-                    
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -219,6 +218,7 @@
                     <xs:element name="faxNumber" type="xs:string"/>
                     <xs:element name="nciIdentifier" type="xs:string"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
+                    <xs:element name="allowedToLogin" type="xs:boolean" />
                     <xs:element name="loginId" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>

@@ -7,17 +7,18 @@
         <lastName>Doe</lastName>
         <middleName>H</middleName>
         <emailAddress>jd@nci.org</emailAddress>
-        <faxNumber>870-098-7777</faxNumber>
+        <faxNumber>111-098-0989</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
-        <phoneNumber>888-098-0099</phoneNumber>
+        <phoneNumber>111-098-0099</phoneNumber>
+        <allowedToLogin>true</allowedToLogin>        
         <loginId>l1</loginId>
-        
-
         <ns1:siteInvestigator>
-            <emailAddress>jd@rtog.org</emailAddress>
+            <emailAddress>jb@nci.gov</emailAddress>
             <statusCode>ACT</statusCode>
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>            
             <ns2:organizationRef>
-                <nciInstituteCode>RTOG</nciInstituteCode>
+                <nciInstituteCode>NCI</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
     </ns1:investigator>

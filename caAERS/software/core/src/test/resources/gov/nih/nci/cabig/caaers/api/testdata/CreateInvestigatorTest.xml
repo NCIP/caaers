@@ -10,11 +10,13 @@
         <faxNumber>870-098-0989</faxNumber>
         <nciIdentifier>sr-1</nciIdentifier>
         <phoneNumber>908-098-0099</phoneNumber>
+        <allowedToLogin>true</allowedToLogin>
 		<loginId>l1</loginId>
-
         <ns1:siteInvestigator>
             <emailAddress>jb@nci.gov</emailAddress>
             <statusCode>ACT</statusCode>
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>
             <ns2:organizationRef>
                 <nciInstituteCode>NCI</nciInstituteCode>
             </ns2:organizationRef>

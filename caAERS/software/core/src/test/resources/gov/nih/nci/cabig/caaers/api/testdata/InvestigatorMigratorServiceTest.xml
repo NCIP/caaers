@@ -23,7 +23,8 @@
         nci_institute_code="CTEP"
         grid_id="gridSite_3"/> 
         <ind_holders/>
-        <SITE_INVESTIGATORS />
+        <csm_user/>
+        <investigators/>
+        <site_investigators/>
         <study_investigators />
-        
 </dataset>

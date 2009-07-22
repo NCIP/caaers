@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
-import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
@@ -26,6 +25,7 @@ import java.util.List;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,24 +61,43 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         return rsList.get(0);
     }
 
-	public DomainObjectImportOutcome<Investigator> processInvestigator(InvestigatorType xmlInvestigator){
+	public DomainObjectImportOutcome<Investigator> processInvestigator(InvestigatorType investigatorType){
     	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = null;
-    	Investigator investigator = null;
+    	Investigator xmlInvestigator = null;
+    	Investigator dbInvestigator = null;
+    	
 		try {
-			investigator = buildInvestigator(xmlInvestigator);
-			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-			investigatorImportOutcome.setImportedDomainObject(investigator);
+			xmlInvestigator = buildInvestigator(investigatorType);
+			String email = investigatorType.getEmailAddress();
+            String loginId = investigatorType.getLoginId();
+            if (StringUtils.isEmpty(loginId)) {
+          	  loginId = email;
+            }
+            dbInvestigator = fetchInvestigator(loginId);
+			if(dbInvestigator == null){
+    			saveInvestigator(xmlInvestigator);
+    			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+    			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
+			}else{
+				syncInvestigator(xmlInvestigator,dbInvestigator);
+				saveInvestigator(dbInvestigator);
+    			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+    			investigatorImportOutcome.setImportedDomainObject(dbInvestigator);
+			}
 		} catch (CaaersSystemException e) {
-			investigator = new LocalInvestigator();
-			investigator.setNciIdentifier(xmlInvestigator.getNciIdentifier());
-			investigator.setFirstName(xmlInvestigator.getFirstName());
-			investigator.setLastName(xmlInvestigator.getLastName());
+			xmlInvestigator = new LocalInvestigator();
+			xmlInvestigator.setNciIdentifier(investigatorType.getNciIdentifier());
+			xmlInvestigator.setFirstName(investigatorType.getFirstName());
+			xmlInvestigator.setLastName(investigatorType.getLastName());
 			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-			investigatorImportOutcome.setImportedDomainObject(investigator);
+			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
 			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
 		}
+    	
     	return investigatorImportOutcome;
 	}
+	
+	
 	private String checkAuthorizedOrganizations (InvestigatorType investigatorType) {
 		for (SiteInvestigatorType si:investigatorType.getSiteInvestigator()){
 			String nciIntituteCode = si.getOrganizationRef().getNciInstituteCode();
@@ -92,7 +111,10 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	
     public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
-    	Investigator investigator = null;
+    	
+    	Investigator xmlInvestigator = null;
+    	Investigator dbInvestigator = null;
+    	
     	getImportableInvestigators().clear();
     	getNonImportableInvestigators().clear();
     	
@@ -109,27 +131,38 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
        			err.setException("User not authorized on this Organization : " + orgCheck);
     			wsErrors.add(err);
     		}
-     		try {
-    			investigator = buildInvestigator(investigatorType);
-    			saveInvestigator(investigator);
-    			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-    			investigatorImportOutcome.setImportedDomainObject(investigator);
-    			addImportableInvestigators(investigatorImportOutcome);
+    		
+    		try {
+    			xmlInvestigator = buildInvestigator(investigatorType);
+    			String email = investigatorType.getEmailAddress();
+                String loginId = investigatorType.getLoginId();
+                if (StringUtils.isEmpty(loginId)) {
+              	  loginId = email;
+                }
+                dbInvestigator = fetchInvestigator(loginId);
+    			if(dbInvestigator == null){
+        			saveInvestigator(xmlInvestigator);
+        			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+        			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
+    			}else{
+    				syncInvestigator(xmlInvestigator,dbInvestigator);
+    				saveInvestigator(dbInvestigator);
+        			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+        			investigatorImportOutcome.setImportedDomainObject(dbInvestigator);
+    			}
     		} catch (CaaersSystemException e) {
-    			investigator = new LocalInvestigator();
-            	investigator.setNciIdentifier(investigatorType.getNciIdentifier());
-            	investigator.setFirstName(investigatorType.getFirstName());
-            	investigator.setLastName(investigatorType.getLastName());
-            	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-    			investigatorImportOutcome.setImportedDomainObject(investigator);
+    			xmlInvestigator = new LocalInvestigator();
+    			xmlInvestigator.setNciIdentifier(investigatorType.getNciIdentifier());
+    			xmlInvestigator.setFirstName(investigatorType.getFirstName());
+    			xmlInvestigator.setLastName(investigatorType.getLastName());
+    			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+    			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
     			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
-    			addNonImportableInvestigators(investigatorImportOutcome);
-    			
+ 
     			WsError err = new WsError();
     			err.setErrorDesc("Failed to process Investigator ::: nciIdentifier : "+investigatorType.getNciIdentifier() + " ::: firstName : "+investigatorType.getFirstName()+ " ::: lastName : "+investigatorType.getLastName()) ;
     			err.setException(e.getMessage());
-    			wsErrors.add(err);
-    			//throw new RemoteException("Unable to import investigator", e);
+    			wsErrors.add(err);           	
     		}
     	}
     	serviceResponse.setWsError(wsErrors);
@@ -147,23 +180,12 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             String nciIdentifier = investigatorDto.getNciIdentifier();
             String email = investigatorDto.getEmailAddress();
             String loginId = investigatorDto.getLoginId();
-            
-             if (StringUtils.isEmpty(loginId)) {
+            if (StringUtils.isEmpty(loginId)) {
           	  loginId = email;
             }
-            Investigator investigator = null;
-
-            if (StringUtils.isEmpty(nciIdentifier)){
-            	investigator = new LocalInvestigator();
-            } else {
-            	investigator = fetchInvestigator(loginId);
-                if (investigator == null ) {
-                	// build new 
-                	investigator = new LocalInvestigator();
-                	investigator.setNciIdentifier(nciIdentifier);
-
-                }
-            }
+        	// build new 
+        	Investigator investigator = new LocalInvestigator();
+        	investigator.setNciIdentifier(nciIdentifier);
             investigator.setLoginId(loginId);
             investigator.setFirstName(investigatorDto.getFirstName());
             investigator.setLastName(investigatorDto.getLastName());
@@ -171,26 +193,24 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             investigator.setEmailAddress(investigatorDto.getEmailAddress());
             investigator.setFaxNumber(investigatorDto.getFaxNumber());
             investigator.setPhoneNumber(investigatorDto.getPhoneNumber());
-            //get site investigaor
+            investigator.setAllowedToLogin(investigatorDto.isAllowedToLogin());
             
+            //get site investigaor
             List<SiteInvestigatorType> siteInvTypeList= investigatorDto.getSiteInvestigator();
-            List<SiteInvestigator> siteInvList = new ArrayList<SiteInvestigator>();
+            SiteInvestigator siteInvestigator  = null;
             for (SiteInvestigatorType siteInvestigatorType : siteInvTypeList) {
             	// create site investigator and make the list 
-            	SiteInvestigator siteInvestigator = new SiteInvestigator();
+            	siteInvestigator = new SiteInvestigator();
             	siteInvestigator.setEmailAddress(siteInvestigatorType.getEmailAddress());
-            	
+            	siteInvestigator.setStartDate(siteInvestigatorType.getStartDate().toGregorianCalendar().getTime());
+            	if(siteInvestigatorType.getEndDate() != null){
+            		siteInvestigator.setEndDate(siteInvestigatorType.getEndDate().toGregorianCalendar().getTime());
+            	}
             	Organization org = fetchOrganization(siteInvestigatorType.getOrganizationRef().getNciInstituteCode());
             	siteInvestigator.setOrganization(org);
-            	siteInvestigator.setInvestigator(investigator);
-            	// ????? siteInvestigator.setStatusDate(siteInvestigatorType.ggetStatusDate());
-            	siteInvList.add(siteInvestigator);
+            	investigator.addSiteInvestigator(siteInvestigator);
             }
-            investigator.getSiteInvestigatorsInternal().clear();
-            investigator.getSiteInvestigators().addAll(siteInvList);
-            
             return investigator;
-
         } catch (Exception e) {
             logger.error("Error while building investigator", e);
             throw new CaaersSystemException(e.getMessage(), e);
@@ -208,6 +228,32 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             logger.error("Error while creating investigator", e);
             throw new CaaersSystemException("Unable to create investigator", e);
         }	
+	}
+	
+	
+	private void syncInvestigator(Investigator xmlInvestigator, Investigator dbInvestigator){
+		//do the basic property sync
+		dbInvestigator.setEmailAddress(xmlInvestigator.getEmailAddress());
+		dbInvestigator.setPhoneNumber(xmlInvestigator.getPhoneNumber());
+		dbInvestigator.setFaxNumber(xmlInvestigator.getFaxNumber());
+		
+		//do the site research staff sync
+		if(CollectionUtils.isEmpty(xmlInvestigator.getSiteInvestigators())) return;  //nothing provided in xml input
+		
+		List<SiteInvestigator> newSiteInvestigators = new ArrayList<SiteInvestigator>();
+		for(SiteInvestigator xmlSiteInvestigator : xmlInvestigator.getSiteInvestigators()){
+			SiteInvestigator existing = dbInvestigator.findSiteInvestigator(xmlSiteInvestigator);
+			if(existing != null){
+				existing.setStartDate(xmlSiteInvestigator.getStartDate());
+				existing.setEndDate(xmlSiteInvestigator.getEndDate());
+			}else {
+				newSiteInvestigators.add(xmlSiteInvestigator);
+			}
+		}
+		//add the items in new
+		for(SiteInvestigator si : newSiteInvestigators){
+			dbInvestigator.addSiteInvestigator(si);
+		}
 	}
 	
 	//CONFIGURATION
@@ -231,14 +277,6 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		return nonImportableInvestigators;
 	}
 	
-	private void addImportableInvestigators(DomainObjectImportOutcome<Investigator> domainObjectImportInvestigator) {
-			this.getImportableInvestigators().add(domainObjectImportInvestigator);
-	}
-	
-	private void addNonImportableInvestigators(DomainObjectImportOutcome<Investigator> domainObjectImportInvestigator) {
-		this.getNonImportableInvestigators().add(domainObjectImportInvestigator);
-	}
-
 	public InvestigatorRepository getInvestigatorRepository() {
 		return investigatorRepository;
 	}
