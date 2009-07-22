@@ -120,7 +120,7 @@ public class ReportTableRow {
 	}
 	
 	public String getGroup(){
-		return "grp-" + reportDefinition.getOrganization().getId() + "-"+reportDefinition.getReportType().getId();
+		return "grp-" + reportDefinition.getOrganization().getId() + "-"+reportDefinition.getGroup().getId();
 	}
 	
 	public static ReportTableRow createReportTableRow(ReportDefinition rd, Date baseDate, ActionType action){

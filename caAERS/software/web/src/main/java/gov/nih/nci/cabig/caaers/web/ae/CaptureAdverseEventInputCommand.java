@@ -287,7 +287,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				aeReport.getAdverseEvents().size();
 				for(Report report : aeReport.getReports()){
 					report.getReportDefinition().getParent();
-					report.getLastVersion();
+					report.getLastVersion().getReportedAdversEvents().size();
 				}
 			}
 			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
@@ -1094,6 +1094,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         	if(CollectionUtils.isNotEmpty(evaluatedAdverseEvents)){
         		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(evaluatedAdverseEvents);
         		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(evaluatedAdverseEvents);
+        	}else{
+        		List<AdverseEvent> applicableAdverseEvents = evaluationResult.getAllAeMap().get(aeReportId);
+        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(applicableAdverseEvents);
+        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(applicableAdverseEvents);
         	}
         		
         	if(updatedDate == null) updatedDate = new Date();

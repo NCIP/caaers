@@ -215,7 +215,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("treatmentInformation.treatmentAssignment",Mandatory.MANDATORY));
     		
     		reportDefinition.setAmendable(false);
-    		reportDefinition.setReportType(Fixtures.createConfigProperty("NOT_EXPEDITED"));
+    		reportDefinition.setGroup(Fixtures.createConfigProperty("NOT_EXPEDITED"));
     		reportDefinition.setName("repDefn " + i);
     		reportDefinition.setId(i);
     		report.setReportDefinition(reportDefinition);

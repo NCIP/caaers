@@ -176,7 +176,7 @@ public class ReporterTabTest extends AeTabTestCase {
     		ReportDefinition reportDefinition = new ReportDefinition();
     		reportDefinition.setId(i+1);
     		reportDefinition.setAmendable(false);
-    		reportDefinition.setReportType(Fixtures.createConfigProperty("not expedited"));
+    		reportDefinition.setGroup(Fixtures.createConfigProperty("not expedited"));
     		reportDefinition.setName("repDefn " + i);
     		reportDefinition.setOrganization(Fixtures.createOrganization("test org"));
     		reportDefinition.getOrganization().setNciInstituteCode("test nci code");
@@ -197,7 +197,7 @@ public class ReporterTabTest extends AeTabTestCase {
     public void setupSelectedReportDefintiions(){
     	ReportDefinition rd = Fixtures.createReportDefinition("test 5 day report", "test nci code");
     	rd.setAmendable(true);
-    	rd.setReportType(Fixtures.createConfigProperty("RT_EXPEDITED"));
+    	rd.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
     	rd.setTimeScaleUnitType(TimeScaleUnit.DAY);
     	rd.setDuration(5);
     	rd.setId(10);
