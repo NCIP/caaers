@@ -68,6 +68,9 @@
 	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="reportFormatType">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReportFormatType</param>
     </typedef>
+	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="reportType">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.ReportType</param>
+    </typedef>
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="mandatoryType">
     	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.Mandatory</param>
     </typedef>

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
@@ -22,6 +23,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -500,5 +502,25 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     @Transient
     public boolean isOfSameOrganizationAndType(ReportDefinition rd){
     	return getReportDefinition().isOfSameReportTypeAndOrganization(rd);
+    }
+    
+    /**
+     * This method will return true, if the adverse event is reported in this report. 
+     * @param ae
+     * @return
+     */
+    @Transient
+    public boolean isReported(AdverseEvent ae){
+    	if(BooleanUtils.isTrue(ae.getReported())){
+    		List<ReportedAdverseEvent> reportedAdverseEvents = getLastVersion().getReportedAdversEvents();
+    		if(reportedAdverseEvents != null){
+    			for(ReportedAdverseEvent reportedAe : reportedAdverseEvents){
+    				if(ae.getId().equals(reportedAe.getAdverseEvent().getId())){
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	return false;
     }
 }

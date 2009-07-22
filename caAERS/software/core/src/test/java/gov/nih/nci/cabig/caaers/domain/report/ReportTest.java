@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
@@ -118,7 +120,7 @@ public class ReportTest extends TestCase {
     	rd1.setId(1);
     	rd1.setOrganization(org);
     	rd1.setDuration(10);
-    	rd1.setReportType(type);
+    	rd1.setGroup(type);
     	rd1.setTimeScaleUnitType(TimeScaleUnit.DAY);
     	
     	ReportDefinition rdx = Fixtures.createReportDefinition("rdx");
@@ -126,7 +128,7 @@ public class ReportTest extends TestCase {
     	rdx.setOrganization(org);
     	rdx.setDuration(1);
     	rdx.setTimeScaleUnitType(TimeScaleUnit.DAY);
-    	rdx.setReportType(typeX);
+    	rdx.setGroup(typeX);
     	
     	Report r1 = Fixtures.createReport("r1");
     	r1.setId(1);
@@ -137,6 +139,23 @@ public class ReportTest extends TestCase {
     	
     	assertTrue(r1.isOfSameOrganizationAndType(rd1));
     	assertFalse(r1.isOfSameOrganizationAndType(rdx));
+		
+	}
+	
+	public void testIsReported(){
+		AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.NORMAL);
+		AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.NORMAL);
+		AdverseEvent ae3 = Fixtures.createAdverseEvent(3, Grade.NORMAL);
+		
+		ae1.setReported(true);
+		ae2.setReported(false);
+		
+		r.getLastVersion().addReportedAdverseEvent(ae1);
+		r.getLastVersion().addReportedAdverseEvent(ae2);
+		
+		assertTrue(r.isReported(ae1));
+		assertFalse(r.isReported(ae2));
+		assertFalse(r.isReported(ae3));
 		
 	}
 }

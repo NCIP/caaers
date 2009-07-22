@@ -68,7 +68,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private Boolean attributionRequired;
     private ReportFormatType reportFormatType;
     private Boolean physicianSignOff;
-    private ConfigProperty reportType;
+    private ConfigProperty group;
+    private ReportType reportType;
     private ReportDefinition parent;
     
     protected ReportDefinitionComparator comprator;
@@ -282,12 +283,12 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	}
     
 	@ManyToOne
-	@JoinColumn(name="report_type_id")
-	public ConfigProperty getReportType() {
-		return reportType;
+	@JoinColumn(name="group_id")
+	public ConfigProperty getGroup() {
+		return group;
 	}
-	public void setReportType(ConfigProperty reportType) {
-		this.reportType = reportType;
+	public void setGroup(ConfigProperty reportType) {
+		this.group = reportType;
 	}
 	
     // //// OBJECT METHODS
@@ -311,7 +312,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
         result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
         result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
-        result = PRIME * result + ((getReportType() == null) ? 0 : getReportType().hashCode());
+        result = PRIME * result + ((getGroup() == null) ? 0 : getGroup().hashCode());
         result = PRIME
                         * result
                         + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
@@ -327,7 +328,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     	if(this == other) return true;
     	if(this.getId().equals(other.getId())) return true;
     	if(!this.getOrganization().getId().equals(other.getOrganization().getId())) return false;
-    	if(!this.getReportType().getCode().equals(other.getReportType().getCode())) return false;
+    	if(!this.getGroup().getCode().equals(other.getGroup().getCode())) return false;
     	return true;
     }
     
@@ -374,8 +375,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
             if (trace) log.debug("!= time scale units");
             return false;
         }
-        if(!ComparisonTools.nullSafeEquals(getReportType(), other.getReportType())){
-        	if(trace) log.debug("!= reportType");
+        if(!ComparisonTools.nullSafeEquals(getGroup(), other.getGroup())){
+        	if(trace) log.debug("!= group");
         	return false;
         }
         if (trace) log.debug("== by properties");
@@ -435,6 +436,15 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public void setReportFormatType(ReportFormatType reportFormatType) {
 		this.reportFormatType = reportFormatType;
 	}
+	
+	@Type(type = "reportType")
+	@Column(name="report_type")
+	public ReportType getReportType() {
+		return reportType;
+	}
+	public void setReportType(ReportType reportType) {
+		this.reportType = reportType;
+	}
 
 	@Column(name = "physician_signoff")
 	public Boolean getPhysicianSignOff() {
@@ -447,8 +457,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	
 	@Transient
 	public boolean getExpedited(){
-		if(reportType == null) return false;
-		return reportType.getCode().equals("RT_EXPEDITED");
+		if(group == null) return false;
+		return group.getCode().equals("RT_EXPEDITED");
 	}
 	
 	@Transient

@@ -245,13 +245,13 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		Study study = Fixtures.createStudy("test");
 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("rd1", "rd1", 1,TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		ReportDefinition rd2 = Fixtures.createReportDefinition("rd2", "rd2", 2,TimeScaleUnit.DAY);
-		rd2.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd2.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd2.getOrganization().setId(2);
 		ReportDefinition rd3 = Fixtures.createReportDefinition("rd3", "rd3", 3,TimeScaleUnit.DAY);
-		rd3.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd3.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd3.getOrganization().setId(3);
 
 		AdverseEventReportingPeriod reportingPeriod = registerMockFor(AdverseEventReportingPeriod.class);
@@ -329,13 +329,13 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		Study study = Fixtures.createStudy("test");
 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("rd1", "rd1", 1,TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		ReportDefinition rd2 = Fixtures.createReportDefinition("rd2", "rd2", 2,TimeScaleUnit.DAY);
-		rd2.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd2.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd2.getOrganization().setId(1);
 		ReportDefinition rd3 = Fixtures.createReportDefinition("rd3", "rd3", 3,TimeScaleUnit.DAY);
-		rd3.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd3.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd3.getOrganization().setId(1);
 
 		AdverseEventReportingPeriod reportingPeriod = registerMockFor(AdverseEventReportingPeriod.class);
@@ -433,12 +433,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		//rd1 and rd2 belongs to same group and org. 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
 		rd1.setId(1);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		
 		ReportDefinition rd2 = Fixtures.createReportDefinition("RD2", "001", 2, TimeScaleUnit.DAY);
 		rd2.setId(2);
-		rd2.setReportType(rd1.getReportType());
+		rd2.setGroup(rd1.getGroup());
 		rd2.setOrganization(rd1.getOrganization());
 		
 		Report r1 = Fixtures.createReport("test");
@@ -566,12 +566,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		//rd1 and rd2 belongs to same group and org. 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
 		rd1.setId(1);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		
 		ReportDefinition rd2 = Fixtures.createReportDefinition("RD2", "001", 2, TimeScaleUnit.DAY);
 		rd2.setId(2);
-		rd2.setReportType(rd1.getReportType());
+		rd2.setGroup(rd1.getGroup());
 		rd2.setOrganization(rd1.getOrganization());
 		
 		Report r1 = Fixtures.createReport("test");
@@ -697,12 +697,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		//rd1 and rd2 belongs to same group and org. 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
 		rd1.setId(1);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		
 		ReportDefinition rd2 = Fixtures.createReportDefinition("RD2", "001", 2, TimeScaleUnit.DAY);
 		rd2.setId(2);
-		rd2.setReportType(rd1.getReportType());
+		rd2.setGroup(rd1.getGroup());
 		rd2.setOrganization(rd1.getOrganization());
 		rd2.setParent(rd1); //set the hierarchy
 		
@@ -823,16 +823,16 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ReportDefinition rdz = Fixtures.createReportDefinition("RZ", "00z", 2, TimeScaleUnit.DAY);
 		rdz.getOrganization().setId(5);
-		rdz.setReportType(Fixtures.createConfigProperty("zzz"));
+		rdz.setGroup(Fixtures.createConfigProperty("zzz"));
 		rdz.setId(33);
 		
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		rd1.setId(1);
 		
 		ReportDefinition rd2 = Fixtures.createReportDefinition("RD2", "001", 2, TimeScaleUnit.DAY);
-		rd2.setReportType(rd1.getReportType());
+		rd2.setGroup(rd1.getGroup());
 		rd2.setOrganization(rd1.getOrganization());
 		rd2.setId(2);
 		
@@ -934,7 +934,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList2.add(ae2);
 		
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		rd1.setId(1);
 		
@@ -1053,11 +1053,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
     	ReportDefinition rd1 =  Fixtures.createReportDefinition("RD1", "test", 1, TimeScaleUnit.DAY);
     	rd1.setId(1);
     	rd1.setOrganization(org1);
-    	rd1.setReportType(cp);
+    	rd1.setGroup(cp);
     	
     	ReportDefinition rdx =  Fixtures.createReportDefinition("RDX", "test", 1, TimeScaleUnit.DAY);
     	rdx.setOrganization(org2);
-    	rdx.setReportType(cp);
+    	rdx.setGroup(cp);
     	rdx.setId(2);
     	
     	Report r1 = Fixtures.createReport("test");
@@ -1177,7 +1177,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList2.add(ae2);
 		
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		rd1.setId(1);
 		
@@ -1287,7 +1287,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList2.add(ae2);
 		
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		rd1.setId(1);
 		
@@ -1387,7 +1387,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList2.add(ae2);
 		
 		ReportDefinition rd1 = Fixtures.createReportDefinition("RD1", "001", 1, TimeScaleUnit.DAY);
-		rd1.setReportType(Fixtures.createConfigProperty("expedited"));
+		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		rd1.setId(1);
 		

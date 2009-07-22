@@ -38,10 +38,10 @@ public class ApplicableReportDefinitionsDTO implements Serializable{
 			organizationTypeMap.put(rd.getOrganization(), typeMap);
 		}
 		
-		List<ReportDefinition> rdSet = typeMap.get(rd.getReportType().getName());
+		List<ReportDefinition> rdSet = typeMap.get(rd.getGroup().getName());
 		if(rdSet == null){
 			rdSet = new ArrayList<ReportDefinition>();
-			typeMap.put(rd.getReportType().getName(), rdSet);
+			typeMap.put(rd.getGroup().getName(), rdSet);
 		}
 		rdSet.add(rd);
 	}

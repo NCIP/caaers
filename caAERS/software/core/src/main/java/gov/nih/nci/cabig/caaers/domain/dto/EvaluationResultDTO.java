@@ -40,6 +40,8 @@ public class EvaluationResultDTO {
 	//stores report definition and adverse events.
 	Map<ReportDefinition, Set<AdverseEvent>> reportDefAeIndexMap = new HashMap<ReportDefinition, Set<AdverseEvent>>();
 	
+	Map<Integer, List<ReportDefinition>> reportedAEIndexMap = new HashMap<Integer, List<ReportDefinition>>();
+	
 	//aeReportId - ReportDefinitions
 	Map<Integer, Set<ReportDefinitionWrapper>> amendmentMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	Map<Integer, Set<ReportDefinitionWrapper>> withdrawalMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
@@ -192,6 +194,15 @@ public class EvaluationResultDTO {
 	}
 	
 	
+	public Map<Integer, List<ReportDefinition>> getReportedAEIndexMap() {
+		return reportedAEIndexMap;
+	}
+
+	public void setReportedAEIndexMap(
+			Map<Integer, List<ReportDefinition>> reportedAEIndexMap) {
+		this.reportedAEIndexMap = reportedAEIndexMap;
+	}
+
 	public boolean isAlertRecommended(){
 		boolean retVal = false;
 		for(Boolean b : aeReportAlertMap.values()){
@@ -206,6 +217,7 @@ public class EvaluationResultDTO {
 		.append("\n aeReportAlertMap :" ).append(aeReportAlertMap)
 		.append("\n evaluatedAeMap").append(evaluatedAeMap.toString())
 		.append("\n allAeMap").append(allAeMap.toString())
+		.append("\n reportedAEIndexMap").append(reportedAEIndexMap.toString())
 		.append("\n ammendmentMap : ").append(amendmentMap.toString())
 		.append("\n withdrawMap : ").append(withdrawalMap.toString())
 		.append("\n editMap : ").append(editMap.toString())

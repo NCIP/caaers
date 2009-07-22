@@ -34,8 +34,8 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		
 		assertNotNull(reportDefinitionDomain);
 		assertEquals("TEST CTEP 24 Hour SAE Notification", reportDefinitionDomain.getName());
-		assertNotNull(reportDefinitionDomain.getReportType());
-		assertEquals("RT_INST", reportDefinitionDomain.getReportType().getCode());
+		assertNotNull(reportDefinitionDomain.getGroup());
+		assertEquals("RT_INST", reportDefinitionDomain.getGroup().getCode());
 		assertEquals(reportDefinitionDto.getDeliveryDefinition().size(), reportDefinitionDomain.getDeliveryDefinitions().size());
 		assertEquals(reportDefinitionDto.getMandatoryField().size(), reportDefinitionDomain.getMandatoryFields().size());
 		assertEquals(reportDefinitionDto.getPlannedNotificaiton().size(), reportDefinitionDomain.getPlannedNotifications().size());
@@ -49,10 +49,10 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
 		assertNotNull(reportDefinitionDomain);
 		assertEquals("TEST CTEP 24 Hour SAE Notification", reportDefinitionDomain.getName());
-		assertNotNull(reportDefinitionDomain.getReportType());
-		assertEquals("RT_INST", reportDefinitionDomain.getReportType().getCode());
-		assertNotNull(reportDefinitionDomain.getReportType().getConfigType());
-		assertEquals(ConfigPropertyType.REPORT_TYPE, reportDefinitionDomain.getReportType().getConfigType());
+		assertNotNull(reportDefinitionDomain.getGroup());
+		assertEquals("RT_INST", reportDefinitionDomain.getGroup().getCode());
+		assertNotNull(reportDefinitionDomain.getGroup().getConfigType());
+		assertEquals(ConfigPropertyType.REPORT_TYPE, reportDefinitionDomain.getGroup().getConfigType());
 		
 		reportDefinitions = reportDefinitionConverter.domainToDto(reportDefinitionDomain);
 		reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);

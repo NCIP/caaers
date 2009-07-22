@@ -351,4 +351,5 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     			reportStatus.equals(ReportStatus.REPLACED)   || 
     			reportStatus.equals(ReportStatus.WITHDRAWN));
     }
+    
 }

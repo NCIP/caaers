@@ -32,7 +32,7 @@ class ReportDefinitionFilter {
 
 	protected String generateKey(ReportDefinition rd) {
 		return rd.getOrganization().getId() + ":"
-				+ rd.getReportType().getCode();
+				+ rd.getGroup().getCode();
 	}
 
 	public List<ReportDefinition> filter(List<ReportDefinition> list) {

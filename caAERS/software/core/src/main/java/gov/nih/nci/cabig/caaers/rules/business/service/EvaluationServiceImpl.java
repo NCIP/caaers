@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,14 @@ public class EvaluationServiceImpl implements EvaluationService {
 	}
 
     /**
-     * This method evaluates the SAE reporting rules on the reporting period.
+     * This method evaluates the SAE reporting rules on the reporting period. The output evaluation result will have the following
+     *  - For new data collection , what are the suggestions
+     *  - For existing data collection, what are the suggestions.
+     *  - An index relating which AdverseEvent is evaluated for a data collection.
+     *  - An index relating which AdverseEvent is associated to which completed reports
+     *  - An index mapping which AdverseEvent is associated which suggested report definition.
+     *  - Report definitions, getting amended, withdrawn, edited and created. 
+     *  
      * @param reportingPeriod
      * @return
      */
@@ -77,18 +85,27 @@ public class EvaluationServiceImpl implements EvaluationService {
     	if(CollectionUtils.isNotEmpty(aeReports)){
     		for(ExpeditedAdverseEventReport aeReport : aeReports){
     			List<AdverseEvent> evaluatableAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
-        		if(aeReport.isActive()){
-        			//New and existing AEs
-        			evaluatableAdverseEvents.addAll(aeReport.getActiveAdverseEvents());
-        		}else{
-        			//new and modified AEs
-        			evaluatableAdverseEvents.addAll(aeReport.getActiveModifiedAdverseEvents());
-        		}
+    			List<AdverseEvent> existingAdverseEvents = aeReport.isActive() ? aeReport.getActiveAdverseEvents() : aeReport.getActiveModifiedAdverseEvents() ;
+        		evaluatableAdverseEvents.addAll(existingAdverseEvents);
         		
         		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
         		allAdverseEvents.addAll(aeReport.getAdverseEvents());
         		findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
         		result.addAllAdverseEvents(aeReport.getId(), allAdverseEvents);
+        		
+        		//populate the reported adverse event - report definition map.
+        		List<Report> completedAmendableReports = aeReport.findCompletedAmendableReports();
+        		for(AdverseEvent ae : aeReport.getAdverseEvents()){
+        			List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
+        			for(Report completedReport : completedAmendableReports){
+            			if(completedReport.isReported(ae)){
+            				rdList.add(completedReport.getReportDefinition());
+            			}
+            		}
+        			result.getReportedAEIndexMap().put(ae.getId(), rdList);
+    			}
+        		
+        		
     		}
     	}
     	
@@ -123,7 +140,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * Then process that information, to get the adverse event result {@link EvaluationResultDTO}
      * 
      * Overview on extra processing
-     *   1. If child report is active , parent report suggested by rules is ignored. 
+     *   1. If child report or a report of the same group is active , parent report suggested by rules is ignored. 
      *   2. All manually selected active reports are suggested by caAERS
      *   3. If there is a manual selection, ignore the others suggested by rules
      *   4. If there is an AE modified, which is part of submitted report, force amend it. 

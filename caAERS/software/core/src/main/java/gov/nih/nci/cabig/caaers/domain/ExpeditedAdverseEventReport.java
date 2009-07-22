@@ -741,33 +741,18 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return false;
     }
     
-    public List<Report> findPendingAmendableReports(String nciInstituteCode){
-    	return findAmendableReports(nciInstituteCode, ReportStatus.PENDING);
-    }
-    
-    public List<Report> findCompletedAmendableReports(String nciInstituteCode){
-    	return findAmendableReports(nciInstituteCode, ReportStatus.COMPLETED);
-    }
-    
-    public List<Report> findAmendableReports(String nciInstituteCode, ReportStatus... statuses){
-    	List<Report> reports = new ArrayList<Report>();
-    	for(Report report : getReports()){
-    		if(!report.getReportDefinition().getAmendable()) continue;
-    		
-    		String nciCode = report.getReportDefinition().getOrganization().getNciInstituteCode();
-    		if(!StringUtils.equals(nciCode, nciInstituteCode)) continue;
-    		
-    		for(ReportStatus status : statuses){
-    			if(report.getStatus().equals(status)){
-    				reports.add(report); 
-    				break;
-    			}
-    		}
-    		
+    /**
+     * Lists the reports that are completed and is amendable. 
+     * @return
+     */
+    public List<Report> findCompletedAmendableReports(){
+    	List<Report> completedReports = listReportsHavingStatus(ReportStatus.COMPLETED);
+    	List<Report> amendableReports = new ArrayList<Report>();
+    	for(Report report : completedReports){
+    		if(report.isAmendable()) amendableReports.add(report);
     	}
-    	return reports;
+    	return amendableReports;
     }
-    
     
     public void setReports(List<Report> reports) {
         this.reports = reports;
@@ -1225,7 +1210,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		ReportDefinition rdOther = report.getReportDefinition();
     		if(!rdOther.getAmendable()) continue;
     		if(!rdOther.getOrganization().getId().equals(rd.getOrganization().getId())) continue;
-    		if(!rdOther.getReportType().getCode().equals(rd.getReportType().getCode())) continue;
+    		if(!rdOther.getGroup().getCode().equals(rd.getGroup().getCode())) continue;
     		
     		reportsToAmmend.add(report);
     	}
@@ -1240,7 +1225,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		ReportDefinition rdOther = report.getReportDefinition();
     		if(rdOther.getId().equals(rd.getId())) continue;
     		if(!rdOther.getOrganization().getId().equals(rd.getOrganization().getId())) continue;
-    		if(!rdOther.getReportType().getCode().equals(rd.getReportType().getCode())) continue;
+    		if(!rdOther.getGroup().getCode().equals(rd.getGroup().getCode())) continue;
 //    		int delta = rd.compareTo(rdOther);
 //    		if( delta < 0) continue;
     		reportsToWitdraw.add(report);

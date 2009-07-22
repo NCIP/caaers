@@ -15,14 +15,15 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ObjectFactory;
 import gov.nih.nci.cabig.caaers.reportdefinition.OrganizationType;
 import gov.nih.nci.cabig.caaers.reportdefinition.RecipientType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
-import gov.nih.nci.cabig.caaers.reportdefinition.ReportType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +77,9 @@ public class ReportDefinitionConverter {
 		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
 		//populate the correct config property
-		reportDefinitionDomain.setReportType(configPropertyDao.getByTypeAndCode(ConfigPropertyType.valueOf(reportDefinitionDto.getReportType().getConfigType()), 
-							reportDefinitionDto.getReportType().getCode()));
+		reportDefinitionDomain.setGroup(configPropertyDao.getByTypeAndCode(ConfigPropertyType.valueOf(reportDefinitionDto.getGroup().getConfigType()), 
+							reportDefinitionDto.getGroup().getCode()));
+		reportDefinitionDomain.setReportType(ReportType.valueOf(reportDefinitionDto.getReportType().name()));
 		
 		if("CAAERSXML".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CAAERSXML);
@@ -196,11 +198,14 @@ public class ReportDefinitionConverter {
 		org.setNciInstituteCode(reportDefinitionDomain.getOrganization().getNciInstituteCode());
 		reportDefinitionDto.setOrganization(org);
 		reportDefinitionDto.setAttributionRequired(reportDefinitionDomain.getAttributionRequired());
+		//set the group
+		GroupType groupType = new GroupType();
+		groupType.setCode(reportDefinitionDomain.getGroup().getCode());
+		groupType.setConfigType(reportDefinitionDomain.getGroup().getConfigType().name());
+		reportDefinitionDto.setGroup(groupType);
+		
 		//set the report type
-		ReportType reportType = new ReportType();
-		reportType.setCode(reportDefinitionDomain.getReportType().getCode());
-		reportType.setConfigType(reportDefinitionDomain.getReportType().getConfigType().name());
-		reportDefinitionDto.setReportType(reportType);
+		reportDefinitionDto.setReportType(gov.nih.nci.cabig.caaers.reportdefinition.ReportType.valueOf(reportDefinitionDomain.getReportType().name()));
 		
 		reportDefinitionDto.setExpectedDisplayDueDate(reportDefinitionDomain.getExpectedDisplayDueDate());
 		reportDefinitionDto.setReportFormat(reportDefinitionDomain.getReportFormatType().getName());

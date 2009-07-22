@@ -180,27 +180,27 @@ public class ReportDefinitionTest extends AbstractTestCase {
     	cp1.setId(2);
     	
     	ReportDefinition rd0 = Fixtures.createReportDefinition("rd0");
-    	rd0.setReportType(cp1);
+    	rd0.setGroup(cp1);
     	rd0.setOrganization(org1);
     	rd0.setId(0);
     	
     	ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
-    	rd1.setReportType(cp1);
+    	rd1.setGroup(cp1);
     	rd1.setOrganization(org1);
     	rd1.setId(1);
     	
     	ReportDefinition rd2 = Fixtures.createReportDefinition("rd2");
-    	rd2.setReportType(cp2);
+    	rd2.setGroup(cp2);
     	rd2.setOrganization(org1);
     	rd2.setId(2);
     	
     	ReportDefinition rd3 = Fixtures.createReportDefinition("rd3");
-    	rd3.setReportType(cp1);
+    	rd3.setGroup(cp1);
     	rd3.setOrganization(org2);
     	rd3.setId(3);
     	
     	ReportDefinition rd4 = Fixtures.createReportDefinition("rd4");
-    	rd4.setReportType(cp2);
+    	rd4.setGroup(cp2);
     	rd4.setOrganization(org2);
     	rd4.setId(4);
     	
