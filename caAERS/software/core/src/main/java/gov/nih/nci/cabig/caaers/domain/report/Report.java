@@ -62,6 +62,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private boolean manuallySelected;
     private boolean externalSystem;
     
+    private String adeersReportTypeIndicator;
+    
     public Report(){
     	//for hibernate
     }
@@ -523,4 +525,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	}
     	return false;
     }
+    
+    @Transient
+	public String getAdeersReportTypeIndicator() {
+		return adeersReportTypeIndicator;
+	}
+
+
+	public void setAdeersReportTypeIndicator(String adeersReportTypeIndicator) {
+		this.adeersReportTypeIndicator = adeersReportTypeIndicator;
+	}
 }
