@@ -5,8 +5,8 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,8 +61,8 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			assertNotNull(updatedResearchStaff);
 			
-			assertEquals("879-345-0983", updatedResearchStaff.getFaxNumber());
-			assertEquals("657-678-0098", updatedResearchStaff.getPhoneNumber());
+			assertEquals("111-345-0983", updatedResearchStaff.getFaxNumber());
+			assertEquals("111-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
 			assertNotNull(updatedResearchStaff.getAddress());
 			assertEquals("13921 Park Center Road", updatedResearchStaff.getAddress().getStreet());
@@ -107,6 +107,80 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			fail("Error running test: " + e.getMessage());
 		}		
 	}
+	
+	
+	public void testSiteRsAdd(){
+		
+		try {
+			//Create or update , whatever it is new data will be populated ..
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
+			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			
+			svc.saveResearchStaff(staff);	
+			
+			//update with modified data ..
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffSiteRsAdd.xml")[0].getFile();
+			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			svc.saveResearchStaff(staff);
+			
+			updatedResearchStaff = fetchResearchStaff("jchapman");
+			
+			assertNotNull(updatedResearchStaff);
+			
+			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
+			assertEquals(2,updatedResearchStaff.getSiteResearchStaffs().size());
+			for(SiteResearchStaff siteResearchStaff : updatedResearchStaff.getSiteResearchStaffs()){
+				assertNotNull(siteResearchStaff.getSiteResearchStaffRoles());
+				assertEquals(2, siteResearchStaff.getSiteResearchStaffRoles().size());
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		}
+		
+	}
+	
+	
+	public void testSiteRsRemove(){
+		
+		try {
+			//Create or update , whatever it is new data will be populated ..
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffWithTwoSiteRs.xml")[0].getFile();
+			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			
+			svc.saveResearchStaff(staff);	
+			
+			//update with modified data ..
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffRemoveSiteRs.xml")[0].getFile();
+			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			svc.saveResearchStaff(staff);
+			
+			updatedResearchStaff = fetchResearchStaff("jchapman");
+			
+			assertNotNull(updatedResearchStaff);
+			
+			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
+			assertEquals(1,updatedResearchStaff.getSiteResearchStaffs().size());
+			for(SiteResearchStaff siteResearchStaff : updatedResearchStaff.getSiteResearchStaffs()){
+				assertNotNull(siteResearchStaff.getSiteResearchStaffRoles());
+				assertEquals(2, siteResearchStaff.getSiteResearchStaffRoles().size());
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		}
+		
+	}
+	
+	
 
 	/**
      * Fetches the research staff from the DB
