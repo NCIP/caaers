@@ -37,17 +37,13 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author Saurabh
  */
-public abstract class ResearchStaffController<C extends ResearchStaff> extends
-        AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
+public abstract class ResearchStaffController<C extends ResearchStaffCommand> extends AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
+    public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
-
     protected ResearchStaffRepository researchStaffRepository;
-
     private OrganizationDao organizationDao;
-
     protected WebControllerValidator webControllerValidator;
-
     private String authenticationMode;
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
@@ -55,18 +51,20 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     }
 
     public ResearchStaffController() {
-        setCommandClass(ResearchStaff.class);
+        setCommandClass(ResearchStaffCommand.class);
         Flow<C> flow = new Flow<C>("Create Research Staff");
         layoutTabs(flow);
         setFlow(flow);
+/*
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
+*/
     }
 
     // /LOGIC
     @Override
     protected ResearchStaff getPrimaryDomainObject(final C command) {
-        return command;
+        return command.getResearchStaff();
     }
 
     @Required
@@ -82,8 +80,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                              final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
@@ -93,30 +90,26 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
     @SuppressWarnings("unchecked")
 	@Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                                         final HttpServletResponse response, final Object command,
-                                         final BindException errors) throws Exception {
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
 
-        ResearchStaff researchStaff = (ResearchStaff) command;
+        ResearchStaffCommand researchStaffCommand = (ResearchStaffCommand)command;
+        ResearchStaff researchStaff = researchStaffCommand.getResearchStaff();
+        
         ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
         String emailSendingErrorMessage = "";
         try {
-        	if("saveRemoteRs".equals(request.getParameter("_action"))){
-        		
-        		ResearchStaff remoteRStoSave = researchStaff.getExternalResearchStaff().get(Integer.parseInt(request.getParameter("_selected")));
-        		researchStaff.setEmailAddress(remoteRStoSave.getEmailAddress());
-        		researchStaff.setFirstName(remoteRStoSave.getFirstName());
-        		researchStaff.setLastName(remoteRStoSave.getLastFirst());
-        		researchStaff.setPhoneNumber(remoteRStoSave.getPhoneNumber());
-        		researchStaff.setFaxNumber(remoteRStoSave.getFaxNumber());
-        		researchStaffRepository.save(remoteRStoSave, ResetPasswordController.getURL(request
-                        .getScheme(), request.getServerName(), request.getServerPort(), request
-                        .getContextPath()));
-        	}else{
-        		researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
-                        .getScheme(), request.getServerName(), request.getServerPort(), request
-                        .getContextPath()));
-        	}
+            if ("saveRemoteRs".equals(request.getParameter("_action"))) {
+
+                ResearchStaff remoteRStoSave = researchStaff.getExternalResearchStaff().get(Integer.parseInt(request.getParameter("_selected")));
+                researchStaff.setEmailAddress(remoteRStoSave.getEmailAddress());
+                researchStaff.setFirstName(remoteRStoSave.getFirstName());
+                researchStaff.setLastName(remoteRStoSave.getLastFirst());
+                researchStaff.setPhoneNumber(remoteRStoSave.getPhoneNumber());
+                researchStaff.setFaxNumber(remoteRStoSave.getFaxNumber());
+                researchStaffRepository.save(remoteRStoSave, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+            } else {
+                researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+            }
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
@@ -137,19 +130,23 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
     }
 
+
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                                     BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        System.out.println("--- onBindAndValidate");
         super.onBindAndValidate(request, command, errors, page);
-        //webControllerValidator.validate(request, command, errors);
-        ResearchStaff researchStaff = (ResearchStaff) command;
-        if(researchStaff.getId() == null){
+
+/*
+        ResearchStaffCommand researchStaffCommand = (ResearchStaffCommand)command;
+        ResearchStaff researchStaff = researchStaffCommand.getResearchStaff();
+        
+        if(researchStaff.getId() == null) {
     		if(!"saveRemoteRs".equals(request.getParameter("_action"))){
     			ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-    			researchStaffQuery.filterByLoginId(researchStaff.getEmailAddress());
+    			researchStaffQuery.filterByLoginId(researchStaff.getLoginId());
     			List<ResearchStaff> localRs = researchStaffRepository.getResearchStaff(researchStaffQuery);
     			if(localRs != null && localRs.size() > 0){
-    				errors.reject("LOCAL_RS_EXISTS","ResearchStaff with EmailAddress " +researchStaff.getEmailAddress()+ " already exisits");
+    				errors.reject("LOCAL_RS_EXISTS","ResearchStaff with LoginID " +researchStaff.getLoginId() + " already exisits");
     				return;
     			}
         		List<ResearchStaff> remoteRs = researchStaffRepository.getRemoteResearchStaff(researchStaff);
@@ -159,6 +156,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
         		}
         	}
         }
+*/
     }
 
     @Required
@@ -167,8 +165,17 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     }
 
     @Override
-    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
-            throws Exception {
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        System.out.println("--- suppressValidation");
+        return true;
+/*
+        if (isAjaxRequest(request)) return true;
+        return super.suppressValidation(request, command);
+*/
+    }
+    
+    @Override
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map refData = super.referenceData(request, oCommand, errors, page);
         refData.put("authenticationMode", getAuthenticationMode());
         return refData;
@@ -181,4 +188,23 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     public void setAuthenticationMode(String authenticationMode) {
         this.authenticationMode = authenticationMode;
     }
+
+    @Override
+    protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
+        Object subviewName = findInRequest(request, ResearchStaffController.AJAX_SUBVIEW_PARAMETER);
+        if (subviewName != null) {
+            return "admin/ajax/" + subviewName;
+        } else {
+            return super.getViewName(request, command, page);
+        }
+    }
+
+    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
+
 }

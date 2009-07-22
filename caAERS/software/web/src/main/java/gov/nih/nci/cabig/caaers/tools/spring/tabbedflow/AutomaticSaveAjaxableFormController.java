@@ -24,16 +24,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kruttik
  * 
  */
-public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDomainObject, A extends MutableDomainObjectDao<D>>
-                extends AutomaticSaveFlowFormController<C, D, A> {
+public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDomainObject, A extends MutableDomainObjectDao<D>> extends AutomaticSaveFlowFormController<C, D, A> {
 
 	 protected static final Log log = LogFactory.getLog(AutomaticSaveAjaxableFormController.class);
 	 
 	 protected MessageSource messageSource;
 	 
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request,
-                    HttpServletResponse response) throws Exception {
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (isAjaxRequest(request)) {
             synchronized (this) {
                 ModelAndView superModelAndView = super.handleRequestInternal(request, response);

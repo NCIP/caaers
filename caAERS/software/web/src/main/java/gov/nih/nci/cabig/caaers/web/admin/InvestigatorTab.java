@@ -67,8 +67,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Investigator command,
-                            final Errors errors) {
+    public void postProcess(final HttpServletRequest request, final Investigator command, final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeInvestigator".equals(action)) {
@@ -76,8 +75,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         }
     }
 
-    protected Map<Object, Object> collectOptions(final List list, final String nameProperty,
-                                                 final String valueProperty) {
+    protected Map<Object, Object> collectOptions(final List list, final String nameProperty, final String valueProperty) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
         options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));

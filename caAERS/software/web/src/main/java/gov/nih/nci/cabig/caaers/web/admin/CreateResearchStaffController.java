@@ -12,27 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Saurabh Agrawal
  */
-public class CreateResearchStaffController extends ResearchStaffController<ResearchStaff> {
+public class CreateResearchStaffController extends ResearchStaffController<ResearchStaffCommand> {
 
     @Override
-    protected void layoutTabs(final Flow<ResearchStaff> flow) {
+    protected void layoutTabs(final Flow<ResearchStaffCommand> flow) {
         flow.addTab(new ResearchStaffTab());
     }
 
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
-
-        ResearchStaff researchStaff = new LocalResearchStaff();
-        return researchStaff;
-    }
-
-    @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        // supress validation when target page is less than current page.
-        int curPage = getCurrentPage(request);
-        int targetPage = getTargetPage(request, curPage);
-        if (targetPage < curPage) return true;
-        return super.suppressValidation(request, command);
+        ResearchStaff rs = new LocalResearchStaff();
+        ResearchStaffCommand command = new ResearchStaffCommand();
+        command.setResearchStaff(rs);
+        return command;
     }
 
 }

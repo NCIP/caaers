@@ -140,8 +140,7 @@ public abstract class ResearchStaff extends User {
 		return lazyListHelper.getInternalList(SiteResearchStaff.class);
 	}
 
-	public void setSiteResearchStaffsInternal(
-			final List<SiteResearchStaff> researchstaffs) {
+	public void setSiteResearchStaffsInternal(final List<SiteResearchStaff> researchstaffs) {
 		lazyListHelper.setInternalList(SiteResearchStaff.class, researchstaffs);
 	}
 	

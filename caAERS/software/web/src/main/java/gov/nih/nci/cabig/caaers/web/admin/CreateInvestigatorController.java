@@ -47,8 +47,7 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
     }
     
     @Override
-    protected boolean shouldSave(HttpServletRequest request,
-    		Investigator command, Tab<Investigator> tab) {
+    protected boolean shouldSave(HttpServletRequest request, Investigator command, Tab<Investigator> tab) {
     	
     	if(isAjaxRequest(request)) return false;
     	return super.shouldSave(request, command, tab);

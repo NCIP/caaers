@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -22,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Saurbah Agrawal
  */
-public class EditResearchStaffController extends ResearchStaffController<ResearchStaff> {
+public class EditResearchStaffController extends ResearchStaffController<ResearchStaffCommand> {
 
     private static final Log log = LogFactory.getLog(EditResearchStaffController.class);
 
@@ -40,16 +41,15 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
         if (log.isDebugEnabled()) {
             log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
         }
-
-        return researchStaff;
+        ResearchStaffCommand command = new ResearchStaffCommand();
+        command.setResearchStaff(researchStaff);
+        return command;
     }
-    
+/*
+
     @SuppressWarnings("unchecked")
 	@Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                                         final HttpServletResponse response, final Object command,
-                                         final BindException errors) throws Exception {
-
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         ResearchStaff researchStaff = (ResearchStaff) command;
         ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
         String emailSendingErrorMessage = "";
@@ -88,10 +88,11 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
         return modelAndView;
     }
     
-    
+*/
+
+/*
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                                     BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         ResearchStaff researchStaff = (ResearchStaff) command;
         if("syncResearchStaff".equals(request.getParameter("_action"))){
         	
@@ -108,14 +109,15 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
     		}
         }
     }
+*/
 
     @Override
-    protected void layoutTabs(final Flow<ResearchStaff> flow) {
+    protected void layoutTabs(final Flow<ResearchStaffCommand> flow) {
         flow.addTab(new ResearchStaffTab());
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final ResearchStaff command, final Tab<ResearchStaff> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final ResearchStaffCommand command, final Tab<ResearchStaffCommand> tab) {
         // supress for ajax and delete requests
         return super.shouldSave(request, command, tab);
     }

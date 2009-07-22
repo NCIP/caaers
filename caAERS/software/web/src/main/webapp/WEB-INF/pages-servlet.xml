@@ -10,6 +10,7 @@
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <property name="basenames">
     	<list>
@@ -252,14 +253,10 @@
 	  <property name="pathMapping"><value>/admin/**</value></property>
 	  <property name="tasks">
 	    <list>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Configure caAERS" p:linkName="configurationController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Investigator" p:linkName="createInvestigatorController"/>            
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Import" p:linkName="importController"/> 
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="createInvestigatorController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
 		    <!--
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
@@ -467,12 +464,12 @@
 	class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >
   </bean>
   
-  <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
+  <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
     <property name="sessionForm"><value>true</value></property>
     <property name="webControllerValidator" ref="webControllerValidator"/>
     <property name="authenticationMode" ref="authenticationMode"/>         
   </bean>
+
   <bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController">
 	<property name="authenticationMode" ref="authenticationMode"/>   

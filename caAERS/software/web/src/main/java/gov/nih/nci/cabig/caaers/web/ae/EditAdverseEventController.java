@@ -118,6 +118,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      */
     @Override
     protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
+        System.out.println("--- onBind");
         super.onBindOnNewForm(request, cmd);
         
         HttpSession session = request.getSession();
@@ -407,6 +408,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      */
     @Override
     protected boolean suppressValidation(HttpServletRequest request,Object command) {
+         System.out.println("--- suppressValidation");
     	 if (super.suppressValidation(request, command)) return true;
     	 EditExpeditedAdverseEventCommand aeCommand = (EditExpeditedAdverseEventCommand) command;
     	 
