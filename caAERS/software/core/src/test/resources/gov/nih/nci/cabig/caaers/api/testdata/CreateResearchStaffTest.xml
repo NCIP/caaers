@@ -17,10 +17,13 @@
         <zip>20171</zip> 
         <siteResearchStaffs>
         	<ns2:siteResearchStaff>
-        		<ns1:street>13921 Park Center Road</ns1:street>
-        		<ns1:city>Herndon</ns1:city>
-        		<ns1:state>VA</ns1:state>
-        		<ns1:zip>20171</ns1:zip>
+        		<emailAddress>john.c@nci.com</emailAddress>
+        		<phoneNumber>657-678-0098</phoneNumber>
+        		<faxNumber>879-345-0983</faxNumber>
+        		<street>13921 Park Center Road</street>
+        		<city>Herndon</city>
+        		<state>VA</state>
+        		<zip>20171</zip>
         		<ns1:organizationRef>
             		<nciInstituteCode>NCI</nciInstituteCode>
         		</ns1:organizationRef>

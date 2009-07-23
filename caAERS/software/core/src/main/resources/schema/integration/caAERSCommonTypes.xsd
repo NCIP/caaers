@@ -189,7 +189,7 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"/>
+                    <xs:element name="emailAddress" type="xs:string"/>
                     <xs:element name="phoneNumber" type="xs:string"/>
                     <xs:element name="faxNumber" type="xs:string"/>
                     <xs:element name="street" type="xs:string"/>
