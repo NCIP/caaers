@@ -17,9 +17,12 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -62,7 +65,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     }
 
 	public DomainObjectImportOutcome<Investigator> processInvestigator(InvestigatorType investigatorType){
-    	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = null;
+    	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     	Investigator xmlInvestigator = null;
     	Investigator dbInvestigator = null;
     	
@@ -75,11 +78,11 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             }
             dbInvestigator = fetchInvestigator(loginId);
 			if(dbInvestigator == null){
-    			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+				validateInvestigator(xmlInvestigator,investigatorImportOutcome,null,false);
     			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
 			}else{
+				validateInvestigator(xmlInvestigator,investigatorImportOutcome,null,true);
 				syncInvestigator(xmlInvestigator,dbInvestigator);
-    			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     			investigatorImportOutcome.setImportedDomainObject(dbInvestigator);
 			}
 		} catch (CaaersSystemException e) {
@@ -120,6 +123,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     	CaaersServiceResponse caaersServiceresponse = new CaaersServiceResponse();
     	ServiceResponse serviceResponse = new ServiceResponse();
     	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
+    	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     	
     	for (InvestigatorType investigatorType:investigatorTypeList) {
     		String orgCheck = checkAuthorizedOrganizations(investigatorType);
@@ -139,21 +143,22 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
                 }
                 dbInvestigator = fetchInvestigator(loginId);
     			if(dbInvestigator == null){
-        			saveInvestigator(xmlInvestigator);
-        			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-        			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
+    				validateInvestigator(xmlInvestigator,investigatorImportOutcome,wsErrors,false);
+    				if(wsErrors.size() == 0){
+    					saveInvestigator(xmlInvestigator);
+    				}
     			}else{
-    				syncInvestigator(xmlInvestigator,dbInvestigator);
-    				saveInvestigator(dbInvestigator);
-        			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
-        			investigatorImportOutcome.setImportedDomainObject(dbInvestigator);
+    				validateInvestigator(dbInvestigator,investigatorImportOutcome,wsErrors,true);
+    				if(wsErrors.size() == 0){
+        				syncInvestigator(xmlInvestigator,dbInvestigator);
+        				saveInvestigator(dbInvestigator);
+    				}
     			}
     		} catch (CaaersSystemException e) {
     			xmlInvestigator = new LocalInvestigator();
     			xmlInvestigator.setNciIdentifier(investigatorType.getNciIdentifier());
     			xmlInvestigator.setFirstName(investigatorType.getFirstName());
     			xmlInvestigator.setLastName(investigatorType.getLastName());
-    			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
     			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
  
@@ -252,6 +257,51 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		for(SiteInvestigator si : newSiteInvestigators){
 			dbInvestigator.addSiteInvestigator(si);
 		}
+	}
+	
+	
+	private void validateInvestigator(Investigator investigator,DomainObjectImportOutcome<Investigator> investigatorImportOutcome, List<WsError> wsErrors, boolean isExisting) throws CaaersSystemException{
+        List<SiteInvestigator> investigators = investigator.getSiteInvestigators();
+        Date now = new Date();
+        WsError err = null;
+        for (int i = 0; i < investigators.size(); i++) {
+            SiteInvestigator siteInvestigator = investigators.get(i);
+            
+            if(siteInvestigator.getId() == null & !isExisting){
+            	//startdate cannot be less than today's date
+                if(siteInvestigator.getStartDate() != null){
+                	if(DateUtils.compareDate(siteInvestigator.getStartDate(),now) < 0){
+                		investigatorImportOutcome.addErrorMessage("Start date cannot be before today's date, at " +siteInvestigator.getOrganization().getNciInstituteCode(), Severity.ERROR);
+                		if(wsErrors != null){
+                			err = new WsError();
+                			err.setErrorDesc("Start date cannot be before today's date, at " +siteInvestigator.getOrganization().getNciInstituteCode());
+                			wsErrors.add(err);
+                		}                		
+                	}
+                }
+            }
+            
+            if(siteInvestigator.getEndDate() != null){
+            	if(DateUtils.compareDate(siteInvestigator.getEndDate(),now) < 0){
+            		investigatorImportOutcome.addErrorMessage("End date cannot be before today's date at " +siteInvestigator.getOrganization().getNciInstituteCode(), Severity.ERROR);
+            		if(wsErrors != null){
+            			err = new WsError();
+            			err.setErrorDesc("End date cannot be before today's date at " +siteInvestigator.getOrganization().getNciInstituteCode());
+            			wsErrors.add(err);
+            		}            		
+                }
+            }
+            if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
+            	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
+            		investigatorImportOutcome.addErrorMessage("End date cannot be before Start date at " +siteInvestigator.getOrganization().getNciInstituteCode(), Severity.ERROR);
+            		if(wsErrors != null){
+            			err = new WsError();
+            			err.setErrorDesc("End date cannot be before Start date at " +siteInvestigator.getOrganization().getNciInstituteCode());
+            			wsErrors.add(err);
+            		}
+            	}
+            }
+        }
 	}
 	
 	//CONFIGURATION

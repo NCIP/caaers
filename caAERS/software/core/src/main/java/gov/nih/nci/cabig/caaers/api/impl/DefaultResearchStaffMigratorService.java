@@ -22,8 +22,10 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchSta
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -72,7 +74,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     
     public DomainObjectImportOutcome<ResearchStaff> processResearchStaff(ResearchStaffType researchStaffType){
     	
-    	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = null;
+    	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
     	ResearchStaff xmlResearchStaff = null;
     	ResearchStaff dbResearchStaff = null;
 		try {
@@ -84,11 +86,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             }
             dbResearchStaff = fetchResearchStaff(loginId);
 			if(dbResearchStaff == null){
-    			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
+    			validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,null,false);
     			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
 			}else{
+				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,null,true);
 				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
-    			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
     			researchStaffImportOutcome.setImportedDomainObject(dbResearchStaff);
 			}
 		} catch (CaaersSystemException e) {
@@ -124,6 +126,8 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     	ServiceResponse serviceResponse = new ServiceResponse();
     	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
     	
+    	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
+    	
     	for (ResearchStaffType researchStaffType:researchStaffList) {
     		if (checkAuthorizedOrganizations(researchStaffType).size() == 0){
     			WsError err = new WsError();
@@ -131,6 +135,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			err.setException("User not authorized on this Organization : " + researchStaffType.getNciIdentifier());
     			wsErrors.add(err);
     		}
+    		
     		try {
     			xmlResearchStaff = buildResearchStaff(researchStaffType);
     			String email = researchStaffType.getEmailAddress();
@@ -140,21 +145,22 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                 }
                 dbResearchStaff = fetchResearchStaff(loginId);
     			if(dbResearchStaff == null){
-        			saveResearchStaff(xmlResearchStaff);
-        			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-        			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+    				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,wsErrors,false);
+    				if(wsErrors.size() == 0){
+    					saveResearchStaff(xmlResearchStaff);
+    				}
     			}else{
-    				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
-    				saveResearchStaff(dbResearchStaff);
-        			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-        			researchStaffImportOutcome.setImportedDomainObject(dbResearchStaff);
+    				validateResearchStaff(xmlResearchStaff,researchStaffImportOutcome,wsErrors,true);
+    				if(wsErrors.size() == 0){
+        				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
+        				saveResearchStaff(dbResearchStaff);
+    				}
     			}
     		} catch (CaaersSystemException e) {
     			xmlResearchStaff = new LocalResearchStaff();
     			xmlResearchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
     			xmlResearchStaff.setFirstName(researchStaffType.getFirstName());
     			xmlResearchStaff.setLastName(researchStaffType.getLastName());
-            	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
             	researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
             	researchStaffImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
  
@@ -345,6 +351,53 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 		dbResearchStaff.getSiteResearchStaffs().addAll(newSiteResearchStaffs);
 	}
 	
+	
+	private void validateResearchStaff(ResearchStaff researchStaff ,DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome, List<WsError> wsErrors,boolean isExisting) throws CaaersSystemException{
+		Date now = new Date();
+		WsError err = null;
+        List<SiteResearchStaff> siteResearchStaffs = researchStaff.getSiteResearchStaffs();
+        for(SiteResearchStaff siteResearchStaff : siteResearchStaffs){
+        	for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
+                
+        		if(siteResearchStaff.getId() == null & !isExisting){
+                	//startdate cannot be less than today's date
+                    if(siteResearchStaffRole.getStartDate() != null){
+                    	if(DateUtils.compareDate(siteResearchStaffRole.getStartDate(),now) < 0){
+                    		researchStaffImportOutcome.addErrorMessage("Start date cannot be before today's date for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
+                    		if(wsErrors != null){
+                    			err = new WsError();
+                    			err.setErrorDesc("Start date cannot be before today's date for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
+                    			wsErrors.add(err);
+                    		}
+                    	}
+                    }
+                }
+                
+                if(siteResearchStaffRole.getEndDate() != null){
+                	if(DateUtils.compareDate(siteResearchStaffRole.getEndDate(),now) < 0){
+                		researchStaffImportOutcome.addErrorMessage("End date cannot be before today's date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
+                		if(wsErrors != null){
+                			err = new WsError();
+                			err.setErrorDesc("End date cannot be before today's date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
+                			wsErrors.add(err);
+                		}
+                    }
+                }
+                if(siteResearchStaffRole.getStartDate() != null && siteResearchStaffRole.getEndDate() != null){
+                	if(DateUtils.compareDate(siteResearchStaffRole.getEndDate(), siteResearchStaffRole.getStartDate()) < 0){
+                		researchStaffImportOutcome.addErrorMessage("End date cannot be before Start date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode(), Severity.ERROR);
+                		if(wsErrors != null){
+                			err = new WsError();
+                			err.setErrorDesc("End date cannot be before Start date, for role " +siteResearchStaffRole.getRoleCode()+ " at " +siteResearchStaff.getOrganization().getNciInstituteCode());
+                			wsErrors.add(err);
+                		}
+                	}
+                }
+        	}
+        }
+	}
+	
+	
 	//CONFIGURATION
 
     @Required
@@ -366,7 +419,4 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
 	}
-	
-	
-
 }
