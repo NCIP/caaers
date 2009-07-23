@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -26,8 +27,7 @@ public class Agent extends AbstractMutableDomainObject {
 
     private String nscNumber;
 
-    
-    
+    private String displayName;
 
     @Column(name = "description")
     public String getDescription() {
@@ -55,6 +55,15 @@ public class Agent extends AbstractMutableDomainObject {
 
     public void setNscNumber(String nsc) {
         this.nscNumber = nsc;
+    }
+    
+    @Transient
+    public String getDisplayName(){
+    	return name;
+    }
+    
+    public void setDisplayName(String displayName){
+    	this.displayName = displayName;
     }
 
     public boolean equals(Object o) {
