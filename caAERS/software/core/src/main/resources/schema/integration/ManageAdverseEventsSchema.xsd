@@ -204,7 +204,6 @@
           
     <xs:simpleType name="GradeType">
         <xs:restriction base="xs:int">
-            <xs:enumeration value="-1"/>
             <xs:enumeration value="0"/>
             <xs:enumeration value="1"/>
             <xs:enumeration value="2"/>
