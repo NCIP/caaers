@@ -33,6 +33,7 @@
 	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
 	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	 		<copy-resources src="${webservice.xsd.src}" dest="${webservice.xsd.dest}" filter="false"/>
 	  </target>
 	
 	<!-- ==================================================================
@@ -59,7 +60,6 @@
 	 	
 	 <target name="war" depends="clean-war, init-war, resolve-dist">
 	 	<!-- copy the resources related to webservices -->
-	 	<copy-resources src="${webservice.xsd.src}" dest="${webservice.xsd.dest}" filter="false"/>
 		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
 	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
@@ -88,6 +88,7 @@
 		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
 		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes"  filter="false" />
 		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib"  filter="false" />
+		<copy-resources src="${webservice.xsd.src}" dest="${webservice.xsd.dest}" filter="false"/>
 		<echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml">&lt;Context path="/caaers" docBase="${main.src}/../webapp/" reloadable="true" debug="9" /></echo>
 	</target>
 	

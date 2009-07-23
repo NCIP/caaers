@@ -75,12 +75,10 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             }
             dbInvestigator = fetchInvestigator(loginId);
 			if(dbInvestigator == null){
-    			saveInvestigator(xmlInvestigator);
     			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     			investigatorImportOutcome.setImportedDomainObject(xmlInvestigator);
 			}else{
 				syncInvestigator(xmlInvestigator,dbInvestigator);
-				saveInvestigator(dbInvestigator);
     			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     			investigatorImportOutcome.setImportedDomainObject(dbInvestigator);
 			}

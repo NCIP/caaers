@@ -17,6 +17,9 @@
         <zip>20171</zip> 
         <siteResearchStaffs>
         	<ns2:siteResearchStaff>
+        		<emailAddress></emailAddress>
+        		<phoneNumber></phoneNumber>
+        		<faxNumber></faxNumber>        	
         		<street>13921 Park Center Road</street>
         		<city>Herndon</city>
         		<state>VA</state>
@@ -38,6 +41,9 @@
         		</siteResearchStaffRoles>
         	</ns2:siteResearchStaff>
          	<ns2:siteResearchStaff>
+        		<emailAddress></emailAddress>
+        		<phoneNumber></phoneNumber>
+        		<faxNumber></faxNumber>         	
         		<street>13922 Park Center Road</street>
         		<city>Reston</city>
         		<state>VA</state>

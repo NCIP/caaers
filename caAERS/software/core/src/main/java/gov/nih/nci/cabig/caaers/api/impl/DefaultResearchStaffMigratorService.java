@@ -84,14 +84,12 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             }
             dbResearchStaff = fetchResearchStaff(loginId);
 			if(dbResearchStaff == null){
-    			saveResearchStaff(xmlResearchStaff);
     			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
     			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
 			}else{
 				syncResearchStaff(xmlResearchStaff,dbResearchStaff);
-				saveResearchStaff(dbResearchStaff);
     			researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
-    			researchStaffImportOutcome.setImportedDomainObject(xmlResearchStaff);
+    			researchStaffImportOutcome.setImportedDomainObject(dbResearchStaff);
 			}
 		} catch (CaaersSystemException e) {
 			xmlResearchStaff = new LocalResearchStaff();

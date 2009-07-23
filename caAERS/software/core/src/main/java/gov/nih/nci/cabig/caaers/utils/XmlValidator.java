@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
@@ -19,6 +20,7 @@ import javax.xml.validation.Validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -51,6 +53,7 @@ public class XmlValidator {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             // load a WXS schema, represented by a Schema instance
             Source schemaFile = new StreamSource(getResources(xsdUrl)[0].getFile());
+            
             Schema schema = schemaFactory.newSchema(schemaFile);
             // create a Validator instance, which can be used to validate an instance document
             Validator validator = schema.newValidator();

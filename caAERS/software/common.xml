@@ -488,6 +488,7 @@
 	<target name="clean-generated-src" description="--> clean the generated sources dir">
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${generated.src.dir}" />
+		<delete includeemptydirs="true" dir="${webservice.xsd.dest}" />
 	</target>
 	
     <!-- ================================= 

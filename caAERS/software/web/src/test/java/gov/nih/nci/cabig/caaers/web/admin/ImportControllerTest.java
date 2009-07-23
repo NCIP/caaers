@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.io.InputStream;
-
 import junit.framework.TestCase;
 /**
  * 
@@ -22,10 +20,4 @@ public class ImportControllerTest extends TestCase {
 		assertEquals("/schema/integration/Investigator.xsd", controller.getXSDLocation("investigator"));
 		assertEquals("/schema/integration/ResearchStaff.xsd", controller.getXSDLocation("researchStaff"));
 	}
-
-	public void testGetResource() throws Exception{
-		InputStream inputStream  = controller.getResource(controller.getXSDLocation("study"));
-		assertNotNull(inputStream);
-	}
-
 }

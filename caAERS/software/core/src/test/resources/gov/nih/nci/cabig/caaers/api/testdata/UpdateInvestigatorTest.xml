@@ -13,15 +13,13 @@
         <allowedToLogin>true</allowedToLogin>        
         <loginId>l1</loginId>
         <ns1:siteInvestigator>
-            <emailAddress>jb@nci.gov</emailAddress>
-            <statusCode>ACT</statusCode>
-            <startDate>2009-01-01</startDate>
-            <endDate>2010-01-01</endDate>            
+           <emailAddress>jb@nci.gov</emailAddress>
+            <statusCode>ACT</statusCode>        
             <ns2:organizationRef>
                 <nciInstituteCode>NCI</nciInstituteCode>
             </ns2:organizationRef>
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>            
         </ns1:siteInvestigator>
     </ns1:investigator>
-
-   
 </ns1:staff>
