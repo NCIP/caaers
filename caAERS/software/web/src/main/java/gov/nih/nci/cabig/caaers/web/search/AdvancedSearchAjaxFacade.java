@@ -24,10 +24,12 @@ import org.springframework.beans.factory.annotation.Required;
 import org.xml.sax.ContentHandler;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.SearchDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
@@ -35,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
 import gov.nih.nci.cabig.caaers.web.search.ui.CriteriaParameter;
@@ -60,6 +63,8 @@ public class AdvancedSearchAjaxFacade{
 	private SearchDao searchDao;
 	
 	private CtcTermDao ctcTermDao;
+	
+	private AgentDao agentDao;
 	
 	static{
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
@@ -102,10 +107,15 @@ public class AdvancedSearchAjaxFacade{
 		command.setCriteriaParameters(null);
 		// For each dependent object in the targetObject add a default criteriaParameter to the criteriaParameters list
 		for(int i = 0; i < targetObject.getDependentObject().size(); i++){
-			AdvancedSearchCriteriaParameter criteriaParameter = new AdvancedSearchCriteriaParameter();
-			criteriaParameter.setDeleted(false);
-			criteriaParameter.setObjectName(targetObject.getDependentObject().get(i).getClassName());
-			command.getCriteriaParameters().add(criteriaParameter);
+			//if(!targetObject.getDependentObject().get(i).isHidden()){
+				AdvancedSearchCriteriaParameter criteriaParameter = new AdvancedSearchCriteriaParameter();
+				if(targetObject.getDependentObject().get(i).isHidden())
+					criteriaParameter.setDeleted(true);
+				else
+					criteriaParameter.setDeleted(false);
+				criteriaParameter.setDependentObjectName(targetObject.getDependentObject().get(i).getClassName());
+				command.getCriteriaParameters().add(criteriaParameter);
+			//}
 		}
 		
 		Map<String, String> params = new LinkedHashMap<String, String>();
@@ -119,15 +129,29 @@ public class AdvancedSearchAjaxFacade{
 	 * This method is called when an attribute is updated. Here we need to pass the possible operators in a list within the ajaxOutput
 	 * value returned. While the html of the value column is returned through ajaxOutput's htmlContent.
 	 */
-	public AjaxOutput updateAttribute(String attributeName, Integer index){
+	public AjaxOutput updateAttribute(String attributeName, String attributeLabel, Integer index){
 		AjaxOutput ajaxOutput = new AjaxOutput();
 		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
 		
-		String dependentObjectName = command.getCriteriaParameters().get(index).getObjectName();
+		String dependentObjectName = command.getCriteriaParameters().get(index).getDependentObjectName();
 		DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), dependentObjectName);
 		for(UiAttribute uiAttribute: dObject.getUiAttribute()){
-			if(uiAttribute.getName().equals(attributeName))
+			if(uiAttribute.getName().equals(attributeName) && uiAttribute.getLabel().equals(attributeLabel)){
+				command.getCriteriaParameters().get(index).setObjectName(dObject.getClassName());
 				ajaxOutput.setObjectContent(uiAttribute.getOperator());
+			}
+		}
+		if(dObject.getClassName().equals(command.getSearchTargetObject().getClassName())){
+			for(DependentObject dObj: command.getSearchTargetObject().getDependentObject()){
+				if(dObj.isHidden()){
+					for(UiAttribute uiAttribute: dObj.getUiAttribute()){
+						if(uiAttribute.getName().equals(attributeName) && uiAttribute.getLabel().equals(attributeLabel)){
+							command.getCriteriaParameters().get(index).setObjectName(dObj.getClassName());
+							ajaxOutput.setObjectContent(uiAttribute.getOperator());
+						}
+					}
+				}
+			}
 		}
 
 		Map<String, String> params = new LinkedHashMap<String, String>();
@@ -160,7 +184,7 @@ public class AdvancedSearchAjaxFacade{
 		DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByDisplayName(command.getSearchTargetObject(), dependentObjectDisplayName);
 		AdvancedSearchCriteriaParameter parameter = new AdvancedSearchCriteriaParameter();
 		parameter.setDeleted(false);
-		parameter.setObjectName(dObject.getClassName());
+		parameter.setDependentObjectName(dObject.getClassName());
 		command.getCriteriaParameters().add(parameter);
 		
 		Map<String, String> params = new LinkedHashMap<String, String>();
@@ -212,6 +236,7 @@ public class AdvancedSearchAjaxFacade{
 		CriteriaParameter criteriaParameter = null;
 		for(AdvancedSearchCriteriaParameter parameter: command.getCriteriaParameters()){
 			criteriaParameter = new CriteriaParameter();
+			criteriaParameter.setDependentObjectName(parameter.getDependentObjectName());
 			criteriaParameter.setObjectName(parameter.getObjectName());
 			criteriaParameter.setAttributeName(parameter.getAttributeName());
 			criteriaParameter.setPredicate(parameter.getPredicate());
@@ -260,6 +285,15 @@ public class AdvancedSearchAjaxFacade{
 	public List<ViewColumn> getViewColumnsForDependentObject(String dependentObjectDisplayName){
 		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
 		DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByDisplayName(command.getSearchTargetObject(), dependentObjectDisplayName);
+		List<ViewColumn> viewColumnList = new ArrayList();
+		if(dObject.getClassName().equals(command.getSearchTargetObject().getClassName())){
+			viewColumnList.addAll(command.getSearchTargetObject().getDependentObject().get(0).getViewColumn());
+			for(DependentObject dependentObject: command.getSearchTargetObject().getDependentObject()){
+				if(dependentObject.isHidden())
+					viewColumnList.addAll(dependentObject.getViewColumn());
+			}
+			return viewColumnList;
+		}
 		return dObject.getViewColumn();
 	}
 	
@@ -270,6 +304,11 @@ public class AdvancedSearchAjaxFacade{
         domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
         return studies;
+    }
+	
+	public List<Agent> matchAgents(String text) {
+        List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
+        return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description", "displayName");
     }
 	
 	public List<CtcTerm> matchTerms(String text){
@@ -393,5 +432,9 @@ public class AdvancedSearchAjaxFacade{
 	 */
 	public void setCtcTermDao(CtcTermDao ctcTermDao) {
 		this.ctcTermDao = ctcTermDao;
+	}
+	
+	public void setAgentDao(AgentDao agentDao){
+		this.agentDao = agentDao;
 	}
 }

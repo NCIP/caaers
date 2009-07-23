@@ -8,6 +8,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="dependentObject" type="gov.nih.nci.cabig.caaers.web.search.ui.DependentObject" required="true" description="The dependent object for which the criteria row is being added" %>
 <%@attribute name="criteriaParameter" type="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaParameter" required="false" description="This is the criteria parameter row in command that needs to be rendered" %>
+<%@attribute name="searchTargetObject" type="gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject" required="true" description="The search target object" %>
 
 <c:if test="${criteriaParameter == null}">
 	<tr id="criteria-${index }">
@@ -18,6 +19,15 @@
 				<c:forEach items="${dependentObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
 					<OPTION value="${uiAttribute.name }">${uiAttribute.label }</OPTION>
 				</c:forEach>
+				<c:if test="${dependentObject.className == searchTargetObject.className}">
+					<c:forEach items="${searchTargetObject.dependentObject}" var="dObject" varStatus="dObjectStatus">
+						<c:if test="${dObject.hidden == true}">
+							<c:forEach items="${dObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
+								<OPTION value="${uiAttribute.name }">${uiAttribute.label }</OPTION>
+							</c:forEach>
+						</c:if>
+					</c:forEach>
+				</c:if>
 			</SELECT> 
 		</td>
 		<td align="center" id="operator-td-${index }">
@@ -47,6 +57,20 @@
 						<OPTION value="${uiAttribute.name }">${uiAttribute.label }</OPTION>
 					</c:if>
 				</c:forEach>
+				<c:if test="${dependentObject.className == searchTargetObject.className}">
+					<c:forEach items="${searchTargetObject.dependentObject}" var="dObject" varStatus="dObjectStatus">
+						<c:if test="${dObject.hidden == true}">
+							<c:forEach items="${dObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
+								<c:if test="${uiAttribute.name == criteriaParameter.attributeName}">
+									<OPTION value="${uiAttribute.name }" selected>${uiAttribute.label }</OPTION>
+								</c:if>
+								<c:if test="${uiAttribute.name != criteriaParameter.attributeName}">
+									<OPTION value="${uiAttribute.name }">${uiAttribute.label }</OPTION>
+								</c:if>
+							</c:forEach>
+						</c:if>
+					</c:forEach>
+				</c:if>
 			</SELECT> 
 		</td>
 		<td align="center" id="operator-td-${index }">
@@ -65,6 +89,26 @@
 						</c:forEach>
 					</c:if>
 				</c:forEach>
+				
+				<c:if test="${dependentObject.className == searchTargetObject.className}">
+					<c:forEach items="${searchTargetObject.dependentObject}" var="dObject" varStatus="dObjectStatus">
+						<c:if test="${dObject.hidden == true}">
+							<c:forEach items="${dObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
+								<c:if test="${uiAttribute.name == criteriaParameter.attributeName }">
+									<c:forEach items="${uiAttribute.operator}" var="operator" varStatus="operatorStatus">
+										<c:if test="${operator.name == criteriaParameter.predicate}">
+											<option value="${operator.name }" selected>${operator.displayUri }</option>
+										</c:if>
+										<c:if test="${operator.name != criteriaParameter.predicate}">
+											<option value="${operator.name }">${operator.displayUri }</option>
+										</c:if>
+									</c:forEach>
+								</c:if>
+							</c:forEach>
+						</c:if>
+					</c:forEach>
+				</c:if>
+				
 			</style>
 		</td>
 		<td align="center" id="value-td-${index }">
@@ -73,6 +117,17 @@
 					<search:renderValueColumn index="${index}" criteriaParameter="${criteriaParameter}" uiAttribute="${uiAttribute }"/>
 				</c:if>
 			</c:forEach>
+			<c:if test="${dependentObject.className == searchTargetObject.className}">
+				<c:forEach items="${searchTargetObject.dependentObject}" var="dObject" varStatus="dObjectStatus">
+					<c:if test="${dObject.hidden == true}">
+						<c:forEach items="${dObject.uiAttribute}" var="uiAttr" varStatus="uiAttrStatus">
+							<c:if test="${uiAttr.name == criteriaParameter.attributeName}">
+								<search:renderValueColumn index="${index}" criteriaParameter="${criteriaParameter }" uiAttribute="${uiAttr }" />
+							</c:if>
+						</c:forEach>
+					</c:if>
+				</c:forEach>
+			</c:if>
 		</td>
 		<td align="center" id="delete-td-${index }">
 			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:advancedSearchHelper.deleteCriteria(${index });"/>

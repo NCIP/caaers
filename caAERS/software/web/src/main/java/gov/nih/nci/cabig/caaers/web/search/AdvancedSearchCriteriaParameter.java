@@ -9,6 +9,9 @@ package gov.nih.nci.cabig.caaers.web.search;
  */
 public class AdvancedSearchCriteriaParameter implements Comparable{
 	
+	// This represents the dependentObject under which this attribute will be rendered in the UI.
+	private String dependentObjectName;
+	
 	// This represents the object whose attribute is used in the criteria
 	private String objectName;
 	
@@ -73,6 +76,14 @@ public class AdvancedSearchCriteriaParameter implements Comparable{
 	
 	public void setDisplayValue(String displayValue){
 		this.displayValue = displayValue;
+	}
+	
+	public String getDependentObjectName(){
+		return dependentObjectName;
+	}
+	
+	public void setDependentObjectName(String dependentObjectName){
+		this.dependentObjectName = dependentObjectName;
 	}
 	
 	public int compareTo(Object object){

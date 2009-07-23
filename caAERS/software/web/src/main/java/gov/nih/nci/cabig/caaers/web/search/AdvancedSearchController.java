@@ -138,6 +138,7 @@ public class AdvancedSearchController extends AutomaticSaveAjaxableFormControlle
 				for(CriteriaParameter criteriaParameter: savedSearch.getCriteriaParameter()){
 					AdvancedSearchCriteriaParameter parameter = new AdvancedSearchCriteriaParameter();
 					parameter.setObjectName(criteriaParameter.getObjectName());
+					parameter.setDependentObjectName(criteriaParameter.getDependentObjectName());
 					parameter.setAttributeName(criteriaParameter.getAttributeName());
 					parameter.setPredicate(criteriaParameter.getPredicate());
 					parameter.setValue(criteriaParameter.getValue());

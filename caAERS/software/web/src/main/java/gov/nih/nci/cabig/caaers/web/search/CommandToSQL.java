@@ -334,30 +334,36 @@ public class CommandToSQL{
 		} catch (Exception ex) {
 			throw new Exception("Error parsing date " + dateString + ": " + ex.getMessage(), ex);
 		}
-		String highPredicate = null;
-		String lowPredicate = null;
-		if (predicate.equals(">")) {
-			highPredicate = ">=";
-			lowPredicate = ">";
-		} else if (predicate.equals("<")) {
-			highPredicate = "<=";
-			lowPredicate = "<";
-		} else {
-			highPredicate = predicate;
-			lowPredicate = highPredicate;
-		}
+		String yearPredicate = null;
+		String monthPredicate = null;
+		
+		if (predicate.equals(">") || predicate.equals(">=")) {
+			yearPredicate = ">";
+			monthPredicate = ">";
+		} else if (predicate.equals("<") || predicate.equals("<=")) {
+			yearPredicate = "<=";
+			monthPredicate = "<";
+		} 
+
 		StringBuilder dateQuery = new StringBuilder();
 		// parse the date value into a Java Date object
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(dateValue);
 		dateQuery.append("(");
-		// break down each part of the date and query for it with the prefix
-		dateQuery.append("year(").append(fullAttributeName).append(") ").append(highPredicate)
-			.append(" '").append(cal.get(Calendar.YEAR)).append("' AND ");
-		dateQuery.append("month(").append(fullAttributeName).append(") ").append(highPredicate)
-			.append(" '").append(cal.get(Calendar.MONTH)).append("' AND ");
-		dateQuery.append("day(").append(fullAttributeName).append(") ").append(lowPredicate)
-			.append(" '").append(cal.get(Calendar.DAY_OF_MONTH)).append("'");
+		
+		if(!predicate.equals("=")){
+			String yearQuery = "year(" + fullAttributeName + ") " + yearPredicate + " '" + cal.get(Calendar.YEAR) + "'";
+			String monthQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
+					"month(" + fullAttributeName + ") " + monthPredicate + " '" + cal.get(Calendar.MONTH) + "'";
+			String dayQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
+				"month(" + fullAttributeName + ") = '" + cal.get(Calendar.MONTH) + "' AND " +
+				"day(" + fullAttributeName + ") " + predicate + " '" + cal.get(Calendar.DAY_OF_MONTH) + "'";
+			dateQuery.append(yearQuery).append(" OR (").append(monthQuery).append(") OR (").append(dayQuery).append(")");
+		}else{
+			dateQuery.append("year(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.YEAR)).append("' AND ")
+					.append("month(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.MONTH)).append("' AND")
+					.append("day(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.DAY_OF_MONTH)).append("' AND");
+		}
 		dateQuery.append(")");
 		return dateQuery.toString();
 	}

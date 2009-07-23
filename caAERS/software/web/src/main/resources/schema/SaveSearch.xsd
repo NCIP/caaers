@@ -16,6 +16,7 @@
   
 	<xs:complexType name="criteriaParameter">
 		<xs:sequence>
+			<xs:element name="dependentObjectName" type="xs:string" />
 			<xs:element name="objectName" type="xs:string"/>
 			<xs:element name="attributeName" type="xs:string"/>
 			<xs:element name="predicate" type="xs:string"/>

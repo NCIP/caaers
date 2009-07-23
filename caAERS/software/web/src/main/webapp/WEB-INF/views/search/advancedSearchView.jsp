@@ -177,7 +177,7 @@
 					<c:if test="${viewColumn.selected == true}">
 						catSel.addTerm('ae-added-terms', '${viewColumn.columnAttribute}', '${viewColumn.columnTitle}', ${dependentObjectStatus.index}, ${viewColumnStatus.index});
 					</c:if>
-				</c:forEach>		
+				</c:forEach>
 			</c:forEach> 
         },
 
@@ -235,7 +235,9 @@
                 <div style="overflow:auto; height:460px;">
                 <ul id="categories" class="ae-category">
                     <c:forEach var="dependentObject" items="${command.searchTargetObject.dependentObject}" varStatus="dependentObjectStatus">
-                        <li id="li_${dependentObject.displayName}"><a id="category_${dependentObject.displayName}" onclick="catSel.showTerms('${dependentObject.displayName}', ${ dependentObjectStatus.index});" class='ae-category' title="${dependentObject.displayName}">${dependentObject.displayName}</a>
+                    	<c:if test="${dependentObject.hidden == false}">
+	                        <li id="li_${dependentObject.displayName}"><a id="category_${dependentObject.displayName}" onclick="catSel.showTerms('${dependentObject.displayName}', ${ dependentObjectStatus.index});" class='ae-category' title="${dependentObject.displayName}">${dependentObject.displayName}</a></li>
+	                    </c:if>
                     </c:forEach>
                 </ul>
                 </div>

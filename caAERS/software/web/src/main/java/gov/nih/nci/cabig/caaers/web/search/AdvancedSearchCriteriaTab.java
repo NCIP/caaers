@@ -121,6 +121,13 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 		for(ViewColumn viewColumn: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
 			viewColumn.setSelected(true);
 		
+		//Select all the dependentObject that are hidden and set their viewColumns selected attribute to true
+		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+			if(dObject.isHidden())
+				for(ViewColumn vCol: dObject.getViewColumn())
+					vCol.setSelected(true);
+		}
+		
 		//Select all the dependentObjects involved in the criteria
 		for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
 			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted()){

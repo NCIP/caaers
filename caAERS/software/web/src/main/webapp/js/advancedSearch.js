@@ -17,8 +17,11 @@ Object.extend(AdvancedSearchHelper.prototype, {
 	},
 	
 	updateAttribute: function(index){
+		
 		var attributeId = 'attribute-' + index;
 		var attributeValue = $(attributeId).value;
+		var selectedIndex = $(attributeId).selectedIndex;
+		var attributeText = $(attributeId)[selectedIndex].text; 
 		var operatorSelectId = 'operator-' + index;
 		var selectElement = $(operatorSelectId);
 		var valueTdId = 'value-td-' + index;
@@ -31,7 +34,7 @@ Object.extend(AdvancedSearchHelper.prototype, {
 		if(attributeValue == 'none'){
 			$(valueTdId).innerHTML = '';		
 		}else{
-			this.ajaxFacade.updateAttribute(attributeValue, index, function(ajaxOutput){
+			this.ajaxFacade.updateAttribute(attributeValue, attributeText, index, function(ajaxOutput){
 				// here we have to update the dropdown options of the respective operator dropdown with the the values in ajaxOutput
 				// and the html content of the value td should be updated with the htmlContent of ajaxOutput
 				for(i = 0; i< ajaxOutput.objectContent.length; i++){
