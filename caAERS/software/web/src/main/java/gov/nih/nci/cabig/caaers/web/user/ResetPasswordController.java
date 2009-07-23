@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
@@ -21,8 +22,10 @@ public class ResetPasswordController extends SimpleFormController {
     private CSMUserRepository csmUserRepository;
 
     private String emailPretext, emailPosttext;
+    
+    private UserDao userDao;
 
-    public ResetPasswordController() {
+	public ResetPasswordController() {
         setFormView("user/resetPassword");
         setBindOnNewForm(true);
         initEmailText();
@@ -36,11 +39,14 @@ public class ResetPasswordController extends SimpleFormController {
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
         UserName userName = (UserName) command;
-        
+        User dbUser = userDao.getByLoginId(userName.getUserName());
+        // Srini Akkala , CAAERS-2356
+        String userEmail = dbUser.getEmailAddress();
         //find the user object, preference given to researchstaff
         
         User user = passwordManagerService.requestToken(userName.getUserName());
-        csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
+        //csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
+        csmUserRepository.sendUserEmail(userEmail, "Reset caAERS Password", emailPretext
                 + userName.getURL() + "&token=" + user.getToken() + emailPosttext);
         return new ModelAndView("user/emailSent");
     }
@@ -73,7 +79,11 @@ public class ResetPasswordController extends SimpleFormController {
     public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
     }
-
+    
+    @Required
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
 
     public static String getURL(String scheme, String serverName, int serverPort, String contextPath) {
         return scheme + "://" + serverName + ":" + serverPort + contextPath + UserName.CHANGE_PATH;
