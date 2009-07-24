@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -63,6 +64,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private boolean externalSystem;
     
     private String adeersReportTypeIndicator;
+    
+    private  String _REGULAR_REPORT = "Regular report";
+    private  String _24HR_NOTIFICATION = "24-hr notification";
+    private  String _24HR_NOTIFICATION_COMPLETE = "24-hr notification complete";
+    private  String _24HR_AMENDMENT = "24-hr amendment";
+    private  String _24HR_AMENDMENT_COMPLETE = "24-hr amendment complete";
+    private  String _REGULAR_AMENDMENT = "Regular amendment";
     
     public Report(){
     	//for hibernate
@@ -525,13 +533,77 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	}
     	return false;
     }
+    public String deriveAdeersReportTypeIndicator() {
+    	ReportType reportType = getReportDefinition().getReportType();
+    	//Get Reports that are completed and amended.
+		List<Report> reportList = getAeReport().listReportsHavingStatus(ReportStatus.AMENDED,ReportStatus.COMPLETED);
+		//Filter above reports to get reports of same Group(example:AdEERS ) and Organization of the report.
+		List<Report> reportListOfSameGroupAndOrg = new ArrayList<Report>();
+		//Notification reports Count.
+		int ReportsWithTypeNotificationCnt = 0;
+		for (Report rep:reportList) {
+			if (isOfSameOrganizationAndType(rep.getReportDefinition())) {
+				reportListOfSameGroupAndOrg.add(rep);
+				if (rep.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)){
+					ReportsWithTypeNotificationCnt++;
+				}
+			}
+		}
+		//find last submitted report from above list 
+		Report lastSubmittedReport = findLastSubmittedReport(reportListOfSameGroupAndOrg);
+		// if type is notification 
+		if (reportType.equals(ReportType.NOTIFICATION)) {
+			if (reportListOfSameGroupAndOrg.size() == 0) {
+				return _24HR_NOTIFICATION;
+			} else {
+				return _24HR_AMENDMENT;
+			}
+		}
+		// if type is report 
+		if (reportType.equals(ReportType.REPORT)) {
+			if (reportListOfSameGroupAndOrg.size() == 0) {
+				return _REGULAR_REPORT;
+			} 
+			// if last submitted report is REPORT 
+			if (lastSubmittedReport != null && lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.REPORT)) {
+				return _REGULAR_AMENDMENT;
+			// if last submitted report is NOTIFICATION
+			} else if (lastSubmittedReport != null && lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)) {
+				// first COMPLETE the notofication 
+				if (ReportsWithTypeNotificationCnt == 1) {
+					return _24HR_NOTIFICATION_COMPLETE;
+				}
+				// then AMEND the COMPLETEd report
+				if (ReportsWithTypeNotificationCnt > 1) {
+					return _24HR_AMENDMENT_COMPLETE;
+				}
+			}
+		}    	
+		return null;
+    }
+
+    /**
+     * This method will find the recently submitted report
+     */
+    private Report findLastSubmittedReport(List<Report> reports){
+    	Report theReport = null;
+		for(Report report : reports){
+    			if(theReport == null){
+    				theReport = report;
+    			}else{
+    				if(DateUtils.compateDateAndTime(theReport.getSubmittedOn(), report.getSubmittedOn()) < 0){
+    					theReport = report;
+    				}
+    			}
+    	}
+    	return theReport;
+    }
     
     @Transient
 	public String getAdeersReportTypeIndicator() {
-		return adeersReportTypeIndicator;
+    	return adeersReportTypeIndicator;
 	}
-
-
+    
 	public void setAdeersReportTypeIndicator(String adeersReportTypeIndicator) {
 		this.adeersReportTypeIndicator = adeersReportTypeIndicator;
 	}
