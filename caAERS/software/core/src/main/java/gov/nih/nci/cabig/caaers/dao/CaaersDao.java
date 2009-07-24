@@ -365,11 +365,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
-    public List<? extends Object> search(final AbstractQuery query){
+    @SuppressWarnings("unchecked")
+	public List<? extends Object> search(final AbstractQuery query){
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
-        return getHibernateTemplate().find(query.getQueryString());
-        /*return (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+       return (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
@@ -382,6 +382,6 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                 return hibernateQuery.list();
             }
 
-        });*/
+        });
     }
 }

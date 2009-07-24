@@ -537,14 +537,14 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	Report rep = new Report();
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
         rep = new Report();
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
@@ -564,21 +564,21 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         Report rep = new Report();
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
         rep = new Report();
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
         rep = new Report();
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
@@ -777,7 +777,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.setStatus(ReportStatus.COMPLETED);
         rep.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
         
@@ -786,7 +786,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.setStatus(ReportStatus.PENDING);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
         assertEquals(1, report.getPendingReports().size());
@@ -814,7 +814,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	rep.setId(1);
         rep.setStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -823,7 +823,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	rep1.setId(2);
         rep1.setStatus(ReportStatus.COMPLETED);
         ReportDefinition reportDefinition1 = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
-        reportDefinition1.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition1.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition1.setAmendable(false);
         rep1.setReportDefinition(reportDefinition1);
         report.addReport(rep1);
@@ -841,7 +841,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -858,7 +858,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -875,7 +875,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -886,7 +886,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -904,7 +904,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.REPLACED);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -915,7 +915,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
@@ -926,7 +926,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
         reportDefinition.setId(55);
-        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
         reportDefinition.setAmendable(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);

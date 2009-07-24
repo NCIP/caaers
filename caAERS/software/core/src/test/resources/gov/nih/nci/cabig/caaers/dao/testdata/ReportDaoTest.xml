@@ -30,7 +30,8 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
-		report_type_id="-1"
+		group_id="-1" 
+		report_type="2"
 		/>
 	
 	<planned_notifications 
@@ -60,7 +61,8 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
-		report_type_id="-2"
+		group_id="-2"
+		report_type="2"
 		/>
 	
 	<planned_notifications 

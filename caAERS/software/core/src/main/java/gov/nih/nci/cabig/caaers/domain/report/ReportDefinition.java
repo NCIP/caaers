@@ -287,8 +287,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public ConfigProperty getGroup() {
 		return group;
 	}
-	public void setGroup(ConfigProperty reportType) {
-		this.group = reportType;
+	public void setGroup(ConfigProperty group) {
+		this.group = group;
 	}
 	
     // //// OBJECT METHODS
@@ -458,7 +458,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	@Transient
 	public boolean getExpedited(){
 		if(group == null) return false;
-		return group.getCode().equals("RT_EXPEDITED");
+		return group.getCode().equals("RT_AdEERS");
 	}
 	
 	@Transient

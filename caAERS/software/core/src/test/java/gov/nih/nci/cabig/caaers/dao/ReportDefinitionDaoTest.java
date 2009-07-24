@@ -8,6 +8,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
@@ -235,6 +236,19 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     public void testGetAllByNameAndOrganizationId(){
     	ReportDefinition actual = getDao().getByName("RCT-222",-1001);
     	assertEquals("TestDescription", actual.getDescription());
+    }
+    
+    public void testSearch_ReportDefinitionQuery(){
+    	ReportDefinitionQuery query = new ReportDefinitionQuery();
+    	query.filterByOrganizationId(-1001);
+    	assertEquals(2, getDao().search(query).size());
+    }
+    
+    public void testSearch_ReportDefinitionQuery_FilterOffReportDefinition(){
+    	ReportDefinitionQuery query = new ReportDefinitionQuery();
+    	query.filterByOrganizationId(-1001);
+    	query.filterOffReportDefinitionId(-221);
+    	assertEquals(1, getDao().search(query).size());
     }
     
     public void testReassociate(){

@@ -24,10 +24,10 @@ public class ConfigPropertyDaoTest extends DaoTestCase<ConfigPropertyDao> {
 	}
 	
 	public void testGetByType() {
-		List<ConfigProperty> props = getDao().getByType(ConfigPropertyType.REPORT_TYPE);
+		List<ConfigProperty> props = getDao().getByType(ConfigPropertyType.REPORT_GROUP);
 		assertEquals(2, props.size());
 		assertEquals("EXP1", props.get(0).getCode());
-		assertEquals(ConfigPropertyType.REPORT_TYPE, props.get(0).getConfigType());
+		assertEquals(ConfigPropertyType.REPORT_GROUP, props.get(0).getConfigType());
 	}
 	
 	public void testGetAll(){
@@ -36,10 +36,10 @@ public class ConfigPropertyDaoTest extends DaoTestCase<ConfigPropertyDao> {
 	}
 	
 	public void testGetByTypeAndCode(){
-		ConfigProperty cp = getDao().getByTypeAndCode(ConfigPropertyType.REPORT_TYPE, "EXP1");
+		ConfigProperty cp = getDao().getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "EXP1");
 		assertNotNull(cp);
 		assertEquals("Expedited Report", cp.getName());
-		cp = getDao().getByTypeAndCode(ConfigPropertyType.REPORT_TYPE, "RT_xx");
+		cp = getDao().getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "RT_xx");
 		assertNull(cp);
 	}
 	

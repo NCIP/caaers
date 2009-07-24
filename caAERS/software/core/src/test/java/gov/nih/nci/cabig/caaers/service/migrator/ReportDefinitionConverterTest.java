@@ -52,7 +52,7 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		assertNotNull(reportDefinitionDomain.getGroup());
 		assertEquals("RT_INST", reportDefinitionDomain.getGroup().getCode());
 		assertNotNull(reportDefinitionDomain.getGroup().getConfigType());
-		assertEquals(ConfigPropertyType.REPORT_TYPE, reportDefinitionDomain.getGroup().getConfigType());
+		assertEquals(ConfigPropertyType.REPORT_GROUP, reportDefinitionDomain.getGroup().getConfigType());
 		
 		reportDefinitions = reportDefinitionConverter.domainToDto(reportDefinitionDomain);
 		reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);

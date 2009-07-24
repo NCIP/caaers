@@ -13,7 +13,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  *
  */
 public enum ConfigPropertyType implements CodedEnum<Integer>, Serializable {
-	REPORT_TYPE(1, "Report Definition Type"),
+	REPORT_GROUP(1, "Report Definition Group"),
 	RESEARCH_STAFF_ROLE_TYPE(2, "ResearchStaff role types"),
 	UNKNOWN(100,"Unknown");
 	

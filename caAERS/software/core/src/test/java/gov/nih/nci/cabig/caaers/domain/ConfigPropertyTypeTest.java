@@ -13,11 +13,11 @@ public class ConfigPropertyTypeTest extends TestCase {
 	}
 
 	public void testGetCode() {
-		assertEquals(new Integer(1), ConfigPropertyType.REPORT_TYPE.getCode());
+		assertEquals(new Integer(1), ConfigPropertyType.REPORT_GROUP.getCode());
 	}
 
 	public void testGetDisplayName() {
-		assertEquals("Report Definition Type", ConfigPropertyType.REPORT_TYPE.getDisplayName());
+		assertEquals("Report Definition Type", ConfigPropertyType.REPORT_GROUP.getDisplayName());
 	}
 
 }

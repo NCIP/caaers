@@ -10,13 +10,15 @@
 	 <config_properties id="-2" code="cp2" name="cp2" config_type="1" />
 	 
 	<report_calendar_templates id="-222" name="RCT222" description="TestDescription" duration="4"
-		 time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" report_type_id="-1" />
+		 time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" 
+		  group_id="-1" report_type="2" />
 	
 	<planned_notifications id="-222" index_on_time_scale="2" subject="Test Subject Line"
 		dtype="email" rct_id="-222"	version="0"	/>
 	 
 	<report_calendar_templates id="-223" name="RCT223" description="TestDescription" duration="4"
-		time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" report_type_id="-1" />
+		time_scale_unit_code="2" version="0" org_id="-1001" amendable="0" group_id="-1"
+		report_type="2" />
 	
 	<planned_notifications id="-223" index_on_time_scale="2" subject="Test Subject Line"
 		dtype="email" rct_id="-223"	version="0"	/>

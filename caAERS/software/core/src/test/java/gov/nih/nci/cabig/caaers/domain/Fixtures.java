@@ -147,7 +147,7 @@ public class Fixtures {
         org.setName("Test");
         def.setOrganization(org);
         def.addPlannedNotification(createPlannedEmailNotification());
-        def.setGroup(createConfigProperty("RT_EXPEDITED"));
+        def.setGroup(createConfigProperty("RT_AdEERS"));
         return def;
     }
     

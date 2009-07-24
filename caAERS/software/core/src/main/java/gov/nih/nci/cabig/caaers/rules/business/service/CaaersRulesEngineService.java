@@ -799,7 +799,7 @@ public class CaaersRulesEngineService {
         if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName()) && !orgName.equals("Division of Cancer Prevention")) {
         	
         	//find the "Expedited" - ConfigProperty 
-        	ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_TYPE, "RT_EXPEDITED");
+        	ConfigProperty expeditedConfigProperty = configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_GROUP, "RT_AdEERS");
             // check report definitions for this org
             for (String rd : reportDefinitions) {
                 ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
