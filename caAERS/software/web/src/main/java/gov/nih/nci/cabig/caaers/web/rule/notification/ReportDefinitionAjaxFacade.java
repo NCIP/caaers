@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
@@ -21,6 +22,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -128,33 +130,37 @@ public class ReportDefinitionAjaxFacade {
             return page.substring(contextPath.length());
         }
     }
-
-    public AjaxOutput fetchReportDefinitionsByOrganizationName(int organizationID, int repDefID) {
-        List<ReportDefinition> rdList = getRepDefDao().getAll(organizationID);
-        int i = 0;
-        log.debug("ReportDefinitions fetched for orgID(" + organizationID + "): " + rdList.size());
-        System.out.println("ReportDefinitions fetched for orgID(" + organizationID + "): " + rdList.size());
-        while (i < rdList.size()) {
-            ReportDefinition rd = rdList.get(i);
-            if (repDefID > 0 && rd.getId() == repDefID) {
-                rdList.remove(i);
-            }
-            i++;
-        }
-        log.debug("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
-        System.out.println("ReportDefinitions left for orgID(" + organizationID + "): " + rdList.size());
-        AjaxOutput out = new AjaxOutput();
-        out.setObjectContent(ObjectTools.reduceAll(rdList, "id", "name"));
-        return out;
+    
+    /**
+     * This method will fetch the report definitions to be displayed in the parent list. 
+     * @param organizationID
+     * @return
+     */
+    public AjaxOutput fetchParentReportDefinitions(int organizationID){
+    	WebContext webCtx = WebContextFactory.get();
+        HttpServletRequest request = webCtx.getHttpServletRequest();
+        ReportDefinitionCommand cmd = getCommand(request);
+    	cmd.refreshParentOptions(organizationID);
+    	AjaxOutput out = new AjaxOutput();
+    	out.setObjectContent(cmd.getParentOptions());
+    	return out;
     }
-
-    public AjaxOutput fetchReportTypes() {
-        List<ConfigProperty> rdList = cpDao.getByType(ConfigPropertyType.REPORT_TYPE);
-        AjaxOutput out = new AjaxOutput();
-        out.setObjectContent(rdList.toArray());
-        return out;
+    
+    /**
+     * This method will refresh the report groups in the command, and will return the new set of groups. 
+     * @return
+     */
+    public AjaxOutput fetchReportGroups(){
+    	WebContext webCtx = WebContextFactory.get();
+        HttpServletRequest request = webCtx.getHttpServletRequest();
+        ReportDefinitionCommand cmd = getCommand(request);
+        cmd.refreshGroupOptions();
+        
+    	AjaxOutput out = new AjaxOutput();
+    	out.setObjectContent(cmd.getGroupOptions());
+    	return out;
     }
-
+    
     // /BEAN PROPERTIES
     public void setOrganizationDao(OrganizationDao orgDao) {
         this.orgDao = orgDao;

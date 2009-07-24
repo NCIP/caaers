@@ -10,8 +10,11 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="recommendedTableRows" required="true" type="java.util.List" description="The recommended report definitions to show" %>
 <%@attribute name="applicableTableRows" required="true" type="java.util.List" description="The applicable report definitions to show" %>
 
-<c:if test="${not empty recommendedTableRows}">
-<div id="reports-header-dc-${aeReportId}" class="row" >
+<div id="no-recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ not empty recommendedTableRows ? 'display:none;' : ''}">
+Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message key="instruction_ae_manualselection_note" />
+</div>
+
+<div id="reports-header-dc-${aeReportId}" class="row" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 	<div class="leftpanel">
 	  <b>Reports</b>
 	</div>
@@ -22,10 +25,9 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 </div>
 
 <a name="report-dc-${aeReportId}"></a>
-
-<div id="recommended-reports-dc-${aeReportId}" class="recommended-reports">
+<div id="recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 <table width="100%" class="tablecontent">
-    <tr>
+    <tr class="header" id="tr-header-${aeReportId}">
       <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
       <th scope="col" align="center" style="text-align:center;" width="30%">Report</th>
       <th scope="col" align="left" ><b>Status</b> </th>
@@ -33,7 +35,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
       <th scope="col" align="left"><b>Action</b> </th>
     </tr>
     <c:forEach var="row" items="${recommendedTableRows}">
-     <tr>
+     <tr class="recommended-tr">
     	   <td align="center">
     	     <span>
     	   	  <img src="<chrome:imageUrl name="../${( (row.action eq 'Create') or (row.action eq 'Edit')) ?'check.png' : 'checkno.gif'}" />" />
@@ -48,16 +50,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
     
 </table>	
 </div>   
-</c:if>
 
-<c:if test="${empty recommendedTableRows}">
-<div id="recommended-reports-dc-${aeReportId}" class="recommended-reports">
-
-<a name="report-dc-${aeReportId}"></a>
-
-Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message key="instruction_ae_manualselection_note" />
-</div>
-</c:if>
 
 <div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
 <table width="100%" class="tablecontent">
@@ -77,7 +70,7 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	  	   		type="checkbox" name="rd_${aeReportId}_checked" 
 	  	   		class="chk_${aeReportId} ${row.group}"
 	  	   		value="${ row.reportDefinition.id}"
-	  	   		onclick="deSelectItemsOfSameGroup(${aeReportId},${row.reportDefinition.id})"
+	  	   		onclick="handleReportSelection(${aeReportId},${row.reportDefinition.id})"
 	  	   		/> 
 	  	   	</td>
 	  	   <td>

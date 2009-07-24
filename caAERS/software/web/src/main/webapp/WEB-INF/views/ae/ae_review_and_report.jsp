@@ -43,10 +43,12 @@
   	 
  </style>
  
- <script type="text/javascript">
+ <script type="text/javascript"><!--
  
  //to store the recommended options (aeReportId - {reportDefinitionId} 
  AE.recommendedOptions = new Hash();
+ //to store the actual recomendations (so that we could reconcile recommended options) (aeReportId  -{reportDefinitionId})
+ AE.referenceRecomendedOptions = new Hash();
  
  //to store group report definitions (aeReportId -{GroupId - {reportDefinitionId}}
  AE.groupDefinitions = new Hash();
@@ -60,6 +62,19 @@
  //to store the reportDefinitionId - ReportDefinition object.
  AE.reportDefinitionHash = new Hash();
 
+ //to store the details of applicable report definition
+ //[aeReportId - {reportDefinitionId - reportDefintion}]
+ AE.applicableReportDefinitionHash = new Hash();
+//same as applicable report definition, but will keep for getting 
+//rules suggestion at a later point. 
+ AE.referenceReportDefinitionHash = new Hash();
+
+//store all aes and the reports in which they are submitted.
+//[adverseEventId : {reportDefinitionId}]
+ AE.reportedAEHash = new Hash();
+
+ var checkImgSrc = '<chrome:imageUrl name="../check.png" />';
+ var checkNoImgSrc ='<chrome:imageUrl name="../checkno.gif" />';
  var manualSelectMessage='<spring:message code="instruction_ae_override_confirmation" text="Not found key: instruction_ae_override_confirmation " />';
  var allCssClassNames = ['create', 'edit', 'withdraw', 'amend'];
 
@@ -68,10 +83,149 @@
  //create an object to hold report definition details.
  var jsReportDefinition = Class.create();
  Object.extend(jsReportDefinition.prototype, {
-   initialize: function(id, name, group ) {
+   initialize: function(id, aeReportId, name, group , typeCode, status, grpStatus, otherStatus, due, grpDue, otherDue, action, grpAction, otherAction) {
 	   this.id = id;
+	   this.aeReportId = aeReportId;
 	   this.name = name;
 	   this.group = group;
+	   this.typeCode = typeCode;
+
+	   this.status = status;
+	   this.grpStatus = grpStatus;
+	   this.otherStatus = otherStatus;
+
+	   this.due = due;
+	   this.grpDue = grpDue;
+	   this.otherDue = otherDue;
+
+	   this.action = action;
+	   this.grpAction = grpAction;
+	   this.otherAction = otherAction;
+	   
+   },
+   toString : function(){
+	   return "#{id},#{aeReportId},#{name}".interpolate({id:this.id, aeReportId:this.aeReportId, name:this.name});
+   },
+   select: function(){
+	   $("rd_"+this.aeReportId+"_"+this.id).checked = true;
+   },
+   deSelect: function(){
+	   $("rd_"+this.aeReportId+"_"+this.id).checked = false;
+   },
+   getActualAction : function(){
+	   return $("rd_"+this.aeReportId+"_"+this.id + "_actualaction").value;
+   },
+   /*Returns true, if the current report definition is checked*/
+   isChecked:function(){
+	  return $("rd_"+this.aeReportId+"_"+this.id).checked
+   },
+   /* Returns true if any report definition in the group is selected, including the current one.*/
+   isAnyInGroupChecked : function(){
+	   var retVal = false;
+	   $('applicable-reports-dc-' + this.aeReportId).select('.' + this.group).each(function(chkBox){
+			if(chkBox.checked){
+				retVal = true;
+			}
+	   });
+	   
+	   return retVal;
+   },
+   /*This function will insert the recomended display rows in the recomended display area*/
+   insertAmendRecomendation : function(){
+	   var trTemplate = '<tr class="forced-tr">' + 
+	   '<td align="center"><span><img src="#{imgSrc}"/></span></td>' + 
+  	   '<td><span>#{name}</span></td>' +
+  	   '<td><span>#{status}</span></td>' +
+  	   '<td><span>#{due}</span></td>' +
+  	   '<td><span>#{action}</span></td>' +
+       '</tr>';
+
+       var content = trTemplate.interpolate({imgSrc: checkNoImgSrc, name : this.name, status : this.grpStatus, due : '', action : this.action}) + 
+         trTemplate.interpolate({imgSrc: checkImgSrc, name : this.name, status : 'Not Started', due : this.due, action : 'Create'}); 
+       
+       //now insert the content.
+       $('tr-header-'+this.aeReportId).insert({after:content});
+   },
+   /*function will change the status & due dates of a single report definition row.*/
+   updateDisplayTextOfRow: function(){
+	   	 var rowIdPrefix = "rd_"+this.aeReportId+"_"+this.id;
+
+		 var _status = "";
+		 var _due = "";
+		 var _action = "";
+		 
+		 if(this.isChecked()){
+			_status = this.status;
+			_action = this.action;
+			_due = this.due;
+		 }else{
+			if(this.isAnyInGroupChecked()){
+				_status = this.grpStatus;
+				_action = this.grpAction;
+				_due = this.grpDue;
+			}else {
+				_status = this.otherStatus;
+				_action = this.otherAction;
+				_due = this.otherDue;
+			}
+		 } 
+		 $(rowIdPrefix+"-reportStatus").innerHTML = _status;
+		 $(rowIdPrefix+"-reportDue").innerHTML = _due;
+		 $(rowIdPrefix+"-reportAction").innerHTML = _action;
+	
+		 $(rowIdPrefix+"_actualstatus").value = _status;
+		 $(rowIdPrefix+"_actualdue").value = _due;
+		 $(rowIdPrefix+"_actualaction").value = _action;
+	 
+		 //update the CSS classes
+		 var newCssClass = '';
+		 if(_action){
+			 newCssClass = _action.toLowerCase();
+		 }
+		 var tr = $($(rowIdPrefix+"_actualaction").parentNode.parentNode);
+		 allCssClassNames.each(function(cssClass){
+			 tr.removeClassName(cssClass);
+		 });
+	
+		 tr.childElements().each(function(td){
+			 allCssClassNames.each(function(cssClass){
+				 td.removeClassName(cssClass);
+			 });
+		 });
+	
+		 
+		 if(newCssClass){
+			 tr.addClassName(newCssClass);
+			 tr.childElements().each(function(td){
+				 td.addClassName(newCssClass);
+			 });
+		 }
+   },
+   /*This method will set the object attributes to the values it should have when it is getting amended.*/
+   forceAmend : function(){
+	   this.status = "Being ammended";
+	   this.grpStatus = "Being ammended";
+	   this.otherStatus = "";
+
+	   this.grpDue = "Submitted";
+	   this.otherStatus = "";
+	   
+	   this.action = "Amend";
+	   this.grpAction ="Amend";
+   },
+   /*This method will set the manual selection flag*/
+   setManualSelectionFlag:function(){
+	   $('rd_' + this.aeReportId + '_' + this.id +'_manual').value=1;
+   },
+   /*This method will unset the manual selection flag*/
+   unsetManualSelectionFlag:function(){
+	   $('rd_' + this.aeReportId + '_' + this.id +'_manual').value=0;
+   },
+   deepCopy:function(){
+	   return new jsReportDefinition(this.id, this.aeReportId,  this.name, this.group, this.typeCode, 
+			   this.status, this.grpStatus, this.otherStatus, 
+			   this.due, this.grpDue, this.otherDue, 
+			   this.action, this.grpAction, this.otherAction);
    }
  });
 
@@ -81,6 +235,7 @@
 	 var answer = confirm(manualSelectMessage);
 	 if(!answer) return;
 	 $(applicableSectionId).appear();
+	 $('no-recommended-reports-dc-' + aeReportId).hide();
  }
  
  //=================================================================================
@@ -100,6 +255,13 @@
 	 
  }
  //=================================================================================
+ //will unset the manual indicatior flag.
+ function clearManualIndicatorFlag(aeReportId){
+	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+	   rdObj.unsetManualSelectionFlag();
+	 });
+ }
+ //=================================================================================
  //will show recommended options and will hide manually select DIV
  function restoreRecommended(recommendedSectionId, applicableSectionId, aeReportId){
 	selectRecommendedReports(aeReportId);
@@ -108,9 +270,7 @@
 	$(applicableSectionId).fade();
 	$(recommendedSectionId).appear();
 
-	$$(".manual-indicator-"+aeReportId).each(function(el){
-		el.value=0;
-	}); 
+	clearManualIndicatorFlag(aeReportId);
 	
 	$('dc-' + aeReportId + '-override').show();
 	$('dc-' + aeReportId + '-restore').hide();
@@ -118,59 +278,167 @@
  //=================================================================================
  //function will check the recommended items
  function selectRecommendedReports(aeReportId){
-	 
-	 var sectionId = "applicable-reports-dc-" + aeReportId;
-	//uncheck all select boxes
-	 $$(".chk_"+aeReportId).each(function(el){
-		 el.checked=false;
-	  });
-	  
+	var rpHash = AE.applicableReportDefinitionHash.get(aeReportId);
+	//deselect all
+	rpHash.values().each(function(rdObj){
+		 rdObj.deSelect();
+	});
+
 	 //check the recommended ones
 	 AE.recommendedOptions.get(aeReportId).each(function(rdId){
-		 $("rd_"+aeReportId+"_"+rdId).checked = true;
+		 rpHash.get(rdId).select();
 	 });
 
  }
- //=================================================================================
- //function will deselect other items selected in the same group.
- function deSelectItemsOfSameGroup(aeReportId, rdId){
-	 $('rd_' + aeReportId + '_' + rdId +'_manual').value=1;//shows that this is manually selected
-	 var groupName = AE.reportDefinitionGroupHash.get(rdId);
-	 var grpMap = AE.groupDefinitions.get(aeReportId);
-	 if(grpMap){
-		 var grpRdArray = grpMap.get(groupName);
-		 grpRdArray.each(function(rd){
-			 if(rd != rdId){
-				 $("rd_"+aeReportId+"_"+rd).checked = false;
-				 $('rd_' + aeReportId + '_' + rd +'_manual').value=0;
-			 }
-		 })
-	 }
-	 updateDisplayTexts(aeReportId);
+//=================================================================================
+ //deselect reports of the same group.
+ function deselectOtherReportsOfSameGroup(aeReportId, rdId, group){
+	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		if((rdId != rdObj.id) && (rdObj.group == group)){
+			rdObj.deSelect();
+			rdObj.unsetManualSelectionFlag();
+		}
+	});
+ }
+//=================================================================================
+ /*This function handles, when someone clicks on  a report definition */	
+ function handleReportSelection(aeReportId, rdId){
+	//deselect reports of the same group.
+	var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
+	curRdObject.setManualSelectionFlag();
+	deselectOtherReportsOfSameGroup(aeReportId,rdId, curRdObject.group);
+	//update the display text.
+	updateDisplayTexts(aeReportId);
  }
 
 //=================================================================================
- //function will change the status & due dates of other report definitions.
- function updateDisplayTexts(aeReportId){
-	 var idPrefix = "rd_"+aeReportId+"_";
-	 var allReportDef = AE.reportDefinitions;
-	 allReportDef.each(function(rdId){
-		 var curEl = $(idPrefix + rdId);
-		 if(curEl.checked){
-			 updateDisplayTextOfRow(aeReportId, rdId, 'current');
-		 }else {
-			 //is any in my group checked?
-			 if(isAnyInGroupChecked(aeReportId,rdId)){
-				 //update me with group status
-				 updateDisplayTextOfRow(aeReportId, rdId, 'group');
-			 }else{
-				//update me with other status
-				 updateDisplayTextOfRow(aeReportId, rdId, 'other');
-			 }
-		 }
+/*This function return an array of all the aes that unselected currently , under a datacollection*/
+function findDeselectedAdverseEvents(aeReportId){
+	var aes = new Array();
+	$('adverseEvents-dc-' + aeReportId).select('.ae_'+aeReportId).each(function(chkBox){
+		if(!chkBox.checked){
+			aes.push(chkBox.value);
+		}
+	});
+	return aes;
+}
+ 
+//=================================================================================
+ /*This function will handle the click associated to ae*/
+ function handleAdverseEventSelection(aeReportId, aeId, chkBox){
+
+	 //reset every thing, so that we are on the orignal state. 
+	 resetRecommendedOptions(aeReportId);
+	 resetApplicableReportDefinitions(aeReportId);
+	 resetRecommendedReportDefinitions(aeReportId); 
+
+		
+	//find the deselected adverse events
+	 var deselectedAEs = findDeselectedAdverseEvents(aeReportId);
+	 var forceAmendList = new Array();
+	 if(deselectedAEs.length > 0){
+		//see if the action of that rd is amend or withdraw. If not then...force amend it.
+		 deselectedAEs.each(function (deselectedAeId){
+			 AE.reportedAEHash.get(deselectedAeId).each(function(rdId){
+				 var rdObj = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
+				 var actualAction = rdObj.getActualAction();
+				 if(actualAction != 'Amend' ){
+				 	forceAmendList.push(rdObj);
+				 }
+			 });
+		 });
+
+	 }
+
+	 forceAmendList.each(function(rdObj){
+		 //force amend
+		 rdObj.forceAmend();
+		 //push it to recomended options.
+		 AE.recommendedOptions.get(aeReportId).push(rdObj.id);
 		 
+		 //insert the text to display as recomended options.
+		 rdObj.insertAmendRecomendation();
+
+		 //deselect others from the same group.
+		 deselectOtherReportsOfSameGroup(aeReportId,rdObj.id, rdObj.group);
 	 });
 
+	 //clear off all manual selection flag
+	 clearManualIndicatorFlag(aeReportId);
+	 
+	 //select recomended reports.
+	 selectRecommendedReports(aeReportId);
+	 
+
+	 //update the display.
+	 updateDisplayTexts(aeReportId);
+
+	 var applicableDiv = $('applicable-reports-dc-' + aeReportId);
+	 var headerDiv = $('reports-header-dc-' + aeReportId);
+	 var noRecomendationDiv = $('no-recommended-reports-dc-' + aeReportId);
+	 var recomendationDiv =  $('recommended-reports-dc-' + aeReportId);
+	 var recomendedOptions = AE.recommendedOptions.get(aeReportId);
+	 var reqMsgDiv =  $('rulesMessage-'+ aeReportId + '-required');
+	 var notReqMsgDiv =  $('rulesMessage-'+ aeReportId + '-not-required')
+
+	 //if there are recomended options, header should be visible & noRecomendation should be hidden
+	 if(recomendedOptions.length > 0){
+		 noRecomendationDiv.hide();
+		 notReqMsgDiv.hide();
+		 reqMsgDiv.appear();
+		 headerDiv.appear();
+		 //if applicableDiv is hidden, then only show recomendationDiv
+		 if(!applicableDiv.visible()){
+			 recomendationDiv.appear();
+			 $('dc-' + aeReportId + '-override').show();
+			 $('dc-' + aeReportId + '-restore').hide();
+		 }else{
+			 $('dc-' + aeReportId + '-override').hide();
+			 $('dc-' + aeReportId + '-restore').show();
+		 }
+	 }else{
+		 if(!applicableDiv.visible()){
+		 	noRecomendationDiv.appear();
+		 }
+		 notReqMsgDiv.appear();
+		 reqMsgDiv.hide();
+		 headerDiv.hide();
+		 recomendationDiv.hide();
+	 }
+
+ }
+//=================================================================================
+ /*This function will reset the recommended options*/
+ function resetRecommendedOptions(aeReportId){
+	 AE.recommendedOptions.unset(aeReportId);
+	 AE.recommendedOptions.set(aeReportId, AE.referenceRecomendedOptions.get(aeReportId).clone());
+ }
+//=================================================================================
+  /*This method will reset the recomended report defs display*/
+ function resetRecommendedReportDefinitions(aeReportId){
+	 //remove every tr having .forced-tr class
+	$('recommended-reports-dc-' + aeReportId).select('.forced-tr').each(function(tr){
+		tr.remove();
+	}); 
+ }
+ //=================================================================================
+ /*Will reset the applicable report definition hash, from the reference. */
+ function resetApplicableReportDefinitions(aeReportId){
+	var refHash =  AE.referenceReportDefinitionHash.get(aeReportId);
+	var newHash = new Hash();
+	refHash.each(function(pair){
+		newHash.set(pair.key, pair.value.deepCopy());
+	});
+	 
+	 AE.applicableReportDefinitionHash.unset(aeReportId);
+	 AE.applicableReportDefinitionHash.set(aeReportId,newHash);
+ }
+//=================================================================================
+ //function will change the status & due dates of other report definitions.
+ function updateDisplayTexts(aeReportId){
+	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		 rdObj.updateDisplayTextOfRow();
+	 });
 
 	//update the rules engine messages area.
 	var msgs = generateMessages(aeReportId);
@@ -179,71 +447,6 @@
 		htmlMsg = htmlMsg + "<li>" + msg + "</li>";
 	});
 	$('rulesMessageList-' + aeReportId).innerHTML = htmlMsg;
- }
-
-//=================================================================================
- //function will change the status & due dates of a single report definition row.
- function updateDisplayTextOfRow(aeReportId, rdId, state){
-	 var rowIdPrefix = "rd_"+aeReportId+"_"+rdId;
-	 var elNamePrefix = "";
-	 
-	 if(state == 'current'){
-		 elNamePrefix ="";
-	 }
-	 if(state == 'group'){
-		 elNamePrefix ="grp";
-	 }
-	 if(state == 'other'){
-		 elNamePrefix = "other";
-	 }
-
-	 $(rowIdPrefix+"-reportStatus").innerHTML = $(rowIdPrefix+ "_" + elNamePrefix + "status").value;
-	 $(rowIdPrefix+"-reportDue").innerHTML = $(rowIdPrefix+ "_" + elNamePrefix +"due").value;
-	 $(rowIdPrefix+"-reportAction").innerHTML = $(rowIdPrefix+ "_" + elNamePrefix +"action").value;
-
-	 $(rowIdPrefix+"_actualstatus").value = $(rowIdPrefix+ "_" + elNamePrefix + "status").value;
-	 $(rowIdPrefix+"_actualdue").value = $(rowIdPrefix+ "_" + elNamePrefix +"due").value;
-	 var elActualAction = $(rowIdPrefix+"_actualaction");
-	 elActualAction.value = $(rowIdPrefix+ "_" + elNamePrefix +"action").value;
-
-	 //update the CSS classes
-	 var newCssClass = '';
-	 if(elActualAction.value){
-		 newCssClass = elActualAction.value.toLowerCase();
-	 }
-	 var tr = $(elActualAction.parentNode.parentNode);
-	 allCssClassNames.each(function(cssClass){
-		 tr.removeClassName(cssClass);
-	 });
-
-	 tr.childElements().each(function(td){
-		 allCssClassNames.each(function(cssClass){
-			 td.removeClassName(cssClass);
-		 });
-	 });
-
-	 
-	 if(newCssClass){
-		 tr.addClassName(newCssClass);
-		 tr.childElements().each(function(td){
-			 td.addClassName(newCssClass);
-		 });
-	 }
- }
-//=================================================================================
- //function will return true, if any report definition of this report definitions group is checked. 
- function isAnyInGroupChecked(aeReportId, rdId){
-	 var groupName = AE.reportDefinitionGroupHash.get(rdId);
-	 var grpRdArray = AE.groupDefinitions.get(aeReportId).get(groupName);
-	 var retVal = false;
-	 grpRdArray.each(function(rd){
-		 if(rd != rdId){
-			 if($("rd_"+aeReportId+"_"+rd).checked){
-				  retVal = true;
-			 }
-		 }
-	 });
-	 return retVal;
  }
 //=================================================================================
 function showNewDataCollection(){
@@ -260,7 +463,7 @@ function generateMessages(aeReportId){
 		
 		if(processed.indexOf(rdId) > 0) return;
 		
-		var rdObj = AE.reportDefinitionHash.get(rdId);
+		var rdObj = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
 		var actualAction = $('rd_'+aeReportId+'_'+rdId+'_actualaction').value;
 		var grpRdArray = AE.groupDefinitions.get(aeReportId).get(rdObj.group);
 		
@@ -297,7 +500,7 @@ function generateMessages(aeReportId){
 				if(otherSelected.length > 0){
 					msg = msg + connector;
 					otherSelected.each(function(otherId){
-						var rdOther = AE.reportDefinitionHash.get(otherId);
+						var rdOther = AE.applicableReportDefinitionHash.get(aeReportId).get(otherId);
 						msg = msg + " " + rdOther.name;
 						processed.push(otherId);
 					});
@@ -358,7 +561,7 @@ function validate(aeReportId){
 	}
 }
 
- </script>
+ --></script>
  
  </head>
  <body>
@@ -370,16 +573,29 @@ function validate(aeReportId){
    Event.observe(window, "load", function() {
 		//initialize accordion
 		theAccordion = new Accordion("review-content", 1);
-		
+		//initialize the submitted ae datastructure
+		<c:forEach var="aeEntry" items="${command.evaluationResult.reportedAEIndexMap}">
+			var rdIdArr = new Array();
+			<c:forEach var="rd" items="${aeEntry.value}" >
+			 rdIdArr.push(${rd.id});
+			</c:forEach>
+			AE.reportedAEHash.set(${aeEntry.key}, rdIdArr);
+		</c:forEach>
 	   //initialize the datastructure. 
 	   <c:forEach var="entry" items="${command.applicableReportTableMap}" >
 	    AE.recommendedOptions.set(${entry.key}, new Array());
+	    AE.referenceRecomendedOptions.set(${entry.key}, new Array());
 	    AE.groupDefinitions.set(${entry.key}, new Hash());
+	    
+	    AE.applicableReportDefinitionHash.set(${entry.key}, new Hash());
+	    AE.referenceReportDefinitionHash.set(${entry.key}, new Hash());
+	    
 	    var grp_${entry.key} = null;
 	    
 	    <c:forEach var="row" items="${entry.value}">
 	     <c:if test="${row.preSelected}">
 	      AE.recommendedOptions.get(${entry.key}).push(${row.reportDefinition.id});
+	      AE.referenceRecomendedOptions.get(${entry.key}).push(${row.reportDefinition.id});
 	     </c:if>
 
 	     //add the group info
@@ -395,12 +611,17 @@ function validate(aeReportId){
 	     //put the reportdefintion-id : group
 	     AE.reportDefinitionGroupHash.set(${row.reportDefinition.id}, '${row.group}');
 
-		 //create & populate the report definition objects.
-	     var rdObject = AE.reportDefinitionHash.get(${row.reportDefinition.id});
-	     if(!rdObject){
-		     rdObject =  new jsReportDefinition(${row.reportDefinition.id}, "${row.reportDefinition.label}" , "${row.group}" );
-	    	 AE.reportDefinitionHash.set(${row.reportDefinition.id}, rdObject );
-	     }
+	     //create and store applicableReportDefinitions.
+		 var rdObject =  new jsReportDefinition(${row.reportDefinition.id}, ${entry.key},
+			     "${row.reportDefinition.label}" , "${row.group}" , "${row.reportDefinition.reportType.code}",
+			     "${row.status}", "${row.grpStatus}", "${row.otherStatus}",
+			     "${row.due}", "${row.grpDue}", "${row.otherDue}",
+			     "${row.action}", "${row.grpAction}", "${row.otherAction}" );
+
+		 AE.applicableReportDefinitionHash.get(${entry.key}).set(rdObject.id, rdObject);
+
+		 AE.referenceReportDefinitionHash.get(${entry.key}).set(rdObject.id, rdObject.deepCopy());
+		 
 	    </c:forEach>
 
 	    AE.reportDefinitions = AE.reportDefinitions.uniq();

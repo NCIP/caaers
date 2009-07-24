@@ -595,6 +595,6 @@
   <bean name="/rule/deploy" id="deployRuleController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController" />
   <bean name="/rule/notification/export" id="exportReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ExportReportDefinitionController" />
   <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
-  <bean name="/rule/notification/createReportType" id="createReportTypeController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportTypeController" />
+  <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
 
 </beans>

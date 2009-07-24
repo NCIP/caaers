@@ -44,14 +44,16 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
      */
     @Override
     public Object formBackingObject(HttpServletRequest request) {
-        ReportDefinition reportDef = new ReportDefinition();
-        reportDef.setAmendable(true);
+        ReportDefinition reportDefinition = new ReportDefinition();
+        reportDefinition.setAmendable(true);
         List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         populateMandatoryFields(mandatoryFields, expeditedReportTree);
-        reportDef.setMandatoryFields(mandatoryFields);
-        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
-        super.populateOptions(rpDefCmd);
-        return rpDefCmd;
+        reportDefinition.setMandatoryFields(mandatoryFields);
+        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        command.refreshParentOptions(null);
+        command.refreshGroupOptions();
+        
+        return command;
     }
 
     @Required

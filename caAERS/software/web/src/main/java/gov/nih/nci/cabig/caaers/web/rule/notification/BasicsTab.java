@@ -69,9 +69,12 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
         fields.add(amendableField);
 
-        InputField reportType = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report type?", true, command.getReportTypeOptions());
-        fields.add(reportType);
-
+        InputField reportGroupField = InputFieldFactory.createSelectField("reportDefinition.group", "Report Group", true, command.getGroupOptions());
+        fields.add(reportGroupField);
+        
+        InputField reportTypeField = InputFieldFactory.createSelectField("reportDefinition.reportType", "Report Type", true, command.collectReportTypeOptions());
+        fields.add(reportTypeField);
+        
         Map<Object, Object> reportFormatTypesOptions = new LinkedHashMap<Object, Object>();
         reportFormatTypesOptions.put("", "Please select");
         reportFormatTypesOptions.putAll(WebUtils.collectOptions(Arrays.asList(ReportFormatType.values()), "name", "displayName"));

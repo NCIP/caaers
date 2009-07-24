@@ -6,8 +6,8 @@
 <head>
  
 <script>
-    window.parent.win.close();
-    window.parent.refreshReportTypes();
+  window.parent.fetchReportGroups();
+  window.parent.win.close();
 </script>
 
 </head>

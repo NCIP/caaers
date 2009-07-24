@@ -118,7 +118,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      */
     @Override
     protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
-        System.out.println("--- onBind");
         super.onBindOnNewForm(request, cmd);
         
         HttpSession session = request.getSession();
@@ -368,21 +367,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 		}
 		
 		//now refresh the not applicable/mandatory fields.
+		editCommand.refreshMandatorySections();
 		editCommand.initializeNotApplicableFields();
 		editCommand.refreshMandatoryProperties();
     }
 
-    /*
-     * Attempt at not rebinding the aeReport with every request. Exposes flow to lazy init
-     * exceptions, so it is disabled for now. TODO: make it work. // Same as the
-     * super-implementation, except that it skips binding the aeReport parameter @Override protected
-     * ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws
-     * Exception { ServletRequestDataBinder binder = new ServletRequestDataBinder(command,
-     * getCommandName()) { @Override public void bind(ServletRequest request) {
-     * MutablePropertyValues mpvs = new ServletRequestParameterPropertyValues(request);
-     * mpvs.removePropertyValue("aeReport"); doBind(mpvs); } }; prepareBinder(binder);
-     * initBinder(request, binder); return binder; }
-     */
 
     @Override
     @SuppressWarnings("unchecked")
@@ -408,7 +397,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      */
     @Override
     protected boolean suppressValidation(HttpServletRequest request,Object command) {
-         System.out.println("--- suppressValidation");
     	 if (super.suppressValidation(request, command)) return true;
     	 EditExpeditedAdverseEventCommand aeCommand = (EditExpeditedAdverseEventCommand) command;
     	 

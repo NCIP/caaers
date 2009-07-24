@@ -9,23 +9,20 @@
 	</div>
 </div>
 <div id="rulesMessage-${aeReportId}" class="rulesMessage">
-<c:if test="${not empty rulesMessages}">
-<div>
+
+<div id="rulesMessage-${aeReportId}-required" style="${empty rulesMessages ? 'display:none;' : ''}" >
 	<tags:message key="instruction_ae_require_reporting" />
 </div>
+<div id="rulesMessage-${aeReportId}-not-required" style="${not empty rulesMessages ? 'display:none;' : ''}">
+	<tags:message key="instruction_ae_not_require_reporting" />
+</div>
+
 <ul id="rulesMessageList-${aeReportId}">
+<c:if test="${not empty rulesMessages}">
  <c:forEach var="msg" items="${rulesMessages}">
  <li>${msg}</li>
  </c:forEach>
-</ul>
 </c:if>
-<c:if test="${ empty rulesMessages}">
-<div>
-	<tags:message key="instruction_ae_not_require_reporting" />
-</div>
-<ul id="rulesMessageList-${aeReportId}">
-
 </ul>
-</c:if>
 
 </div>

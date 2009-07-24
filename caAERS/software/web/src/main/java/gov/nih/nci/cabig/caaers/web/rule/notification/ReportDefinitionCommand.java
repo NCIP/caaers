@@ -1,13 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
@@ -49,7 +52,9 @@ public class ReportDefinitionCommand {
     // hide validation errors
     private boolean hideErrors;
 
+    protected Map<Object, Object> groupOptions;
     protected Map<Object, Object> reportTypeOptions;
+    
     protected Map<Object, Object> parentOptions;
 
     public ReportDefinitionCommand(){
@@ -80,7 +85,14 @@ public class ReportDefinitionCommand {
             i++;
         }
     }
-
+     
+    protected Map<Object, Object> collectReportTypeOptions(){
+    	if(reportTypeOptions == null){
+    		reportTypeOptions = WebUtils.collectOptions(ReportType.values(), "Please select");
+    	}
+    	return reportTypeOptions;
+    }
+    
     protected Map<Object, Object> collectRoleOptions() {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
@@ -89,6 +101,31 @@ public class ReportDefinitionCommand {
         options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"), "code", "desc"));
 
         return options;
+    }
+    
+    /**
+     * Will populate the report group options. 
+     */
+    public void refreshGroupOptions(){
+    	groupOptions = WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.REPORT_GROUP), "id", "name", "Please select");
+    	groupOptions.put(" ", "Create New");
+    }
+    
+    /**
+     * This method will refresh the parentOptions. 
+     * @param organizationID
+     */
+    public void refreshParentOptions(Integer organizationID){
+    	List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
+    	
+    	if(organizationID != null){
+    		ReportDefinitionQuery query = new ReportDefinitionQuery();
+        	query.filterByOrganizationId(organizationID);
+        	query.filterOffReportDefinitionId(this.rpDef.getId());
+        	rdList = (List<ReportDefinition>)rpDefDao.search(query);
+    	}
+    	
+    	parentOptions = WebUtils.collectOptions(rdList, "id", "label", "Please select");
     }
 
     // /BEAN PROPERTIES
@@ -226,12 +263,12 @@ public class ReportDefinitionCommand {
         this.cpRepository = cpRepository;
     }
 
-    public Map<Object, Object> getReportTypeOptions() {
-        return reportTypeOptions;
+    public Map<Object, Object> getGroupOptions() {
+        return groupOptions;
     }
 
-    public void setReportTypeOptions(Map<Object, Object> reportTypeOptions) {
-        this.reportTypeOptions = reportTypeOptions;
+    public void setGroupOptions(Map<Object, Object> reportTypeOptions) {
+        this.groupOptions = reportTypeOptions;
     }
 
     public Map<Object, Object> getParentOptions() {

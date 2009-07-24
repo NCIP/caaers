@@ -22,11 +22,18 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 	         <th scope="col" align="left"><b><tags:requiredIndicator></tags:requiredIndicator>Select Primary</b> </th>
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
-      	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''}" />
+      	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />
+      	<c:set var="_jsHandler" value="javascript:void(0)" />
+      	<c:if test="${ae.reported}">
+      		<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, this)" />
+      	</c:if>
 	      <tr class="${_cssClass}">
 		      <td align="center" class="${_cssClass}">
 		      	<c:if test="${not ae.retired}">
-		      	<input type="checkbox" ${ae.requiresReporting or not empty ae.report ?'checked' : '' } value="${ae.id}" class="ae" name="ae_${aeReportId}"/>
+		      	 <input type="checkbox" ${ae.requiresReporting or not empty ae.report ?'checked' : '' } 
+		      		value="${ae.id}" class="ae ae_${aeReportId}" 
+		      		name="ae_${aeReportId}"
+		      	 	onclick="${_jsHandler}" />
 		      	</c:if>
 		      </td>
 		      <td align="center" class="${_cssClass}">
@@ -36,7 +43,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	${ae.adverseEventTerm.universalTerm}
 		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new.gif" />" /></c:if>
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
-		      	(${ae.reported })
+		      	(${_cssClass })
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		      ${ae.grade.code}:${ae.grade.displayName }

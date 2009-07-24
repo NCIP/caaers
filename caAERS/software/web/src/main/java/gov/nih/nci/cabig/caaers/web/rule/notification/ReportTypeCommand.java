@@ -8,11 +8,12 @@ public class ReportTypeCommand {
     private String code;
     private String name;
     private String description;
+    private ConfigPropertyType configPropertyType;
 
     public ReportTypeCommand() {
         if (cp == null) { 
             cp = new ConfigProperty();
-            cp.setConfigType(ConfigPropertyType.REPORT_TYPE);
+            cp.setConfigType(ConfigPropertyType.REPORT_GROUP);
         }
     }
 
@@ -47,4 +48,11 @@ public class ReportTypeCommand {
     public void setCp(ConfigProperty cp) {
         this.cp = cp;
     }
+    
+    public ConfigPropertyType getConfigPropertyType() {
+		return configPropertyType;
+	}
+    public void setConfigPropertyType(ConfigPropertyType configPropertyType) {
+		this.configPropertyType = configPropertyType;
+	}
 }

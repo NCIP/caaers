@@ -197,7 +197,7 @@ public class ReporterTabTest extends AeTabTestCase {
     public void setupSelectedReportDefintiions(){
     	ReportDefinition rd = Fixtures.createReportDefinition("test 5 day report", "test nci code");
     	rd.setAmendable(true);
-    	rd.setGroup(Fixtures.createConfigProperty("RT_EXPEDITED"));
+    	rd.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
     	rd.setTimeScaleUnitType(TimeScaleUnit.DAY);
     	rd.setDuration(5);
     	rd.setId(10);

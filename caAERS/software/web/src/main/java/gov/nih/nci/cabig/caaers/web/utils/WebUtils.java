@@ -21,10 +21,26 @@ import org.springframework.validation.FieldError;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 public class WebUtils {
 
     private static final Log logger = LogFactory.getLog(WebUtils.class);
+    
+    /**
+     * This method will create, options from an enumeration.
+     * @param codedEnum
+     * @param blankValueLabel
+     * @return
+     */
+    public static Map<Object, Object> collectOptions(CodedEnum<? extends Object>[] codedEnumValues, String blankValueLabel){
+    	 Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+    	 if (blankValueLabel != null) options.put("", blankValueLabel);
+    	 for (int i = 0; i < codedEnumValues.length; i++){
+    		 options.put(((Enum)codedEnumValues[i]).name(), codedEnumValues[i].getDisplayName());
+    	 }
+    	 return options;
+    }
 
     /**
      * Creates and options map using the same principles as spring's <code>form:options</code>

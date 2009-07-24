@@ -5,14 +5,11 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,21 +51,20 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         // fetch report definition Id
         Integer rpDefId = Integer.valueOf(req.getParameter("repDefId"));
         // feth the ReportDefinition by Id
-        ReportDefinition rpDef = reportDefinitionDao.getById(rpDefId);
+        ReportDefinition reportDefinition = reportDefinitionDao.getById(rpDefId);
         // initialize all the lazy collections in rpDef
-        reportDefinitionDao.initialize(rpDef);
-        reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
-        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
-
-        super.populateOptions(rpDefCmd);
-
+        reportDefinitionDao.initialize(reportDefinition);
+        reconcileMandatoryFields(reportDefinition.getMandatoryFields(), expeditedReportTree);
+        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        command.refreshParentOptions(reportDefinition.getOrganization().getId());
+        command.refreshGroupOptions();
+        
         // find the index of the first planned notificaiton
-        List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();
+        List<PlannedNotification> pnfList = reportDefinition.getPlannedNotifications();
         PlannedNotification pnf = (pnfList.size() > 0) ? pnfList.get(0) : null;
-        if (pnf != null) rpDefCmd.setPointOnScale("" + pnf.getIndexOnTimeScale());
-        // TODO: uncomment this
-        // rpDefCmd.populate();
-        return rpDefCmd;
+        if (pnf != null) command.setPointOnScale("" + pnf.getIndexOnTimeScale());
+        
+        return command;
 
     }
 

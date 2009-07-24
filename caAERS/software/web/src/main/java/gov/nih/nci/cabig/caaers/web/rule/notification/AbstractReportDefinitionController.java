@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -74,6 +75,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
         ControllerTools.registerEnumEditor(binder, ReportFormatType.class);
         ControllerTools.registerEnumEditor(binder, Mandatory.class);
+        ControllerTools.registerEnumEditor(binder, ReportType.class);
     }
 
     @Override
@@ -182,27 +184,5 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
 
     public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
         this.configPropertyDao = configPropertyDao;
-    }
-
-    protected void populateOptions(ReportDefinitionCommand command) {
-        // populate the ReportTypeOptions
-        LinkedHashMap<Object, Object> reportTypeOptions = new LinkedHashMap<Object, Object>();
-        List<gov.nih.nci.cabig.caaers.domain.ConfigProperty> list = command.getCpRepository().getByType(ConfigPropertyType.REPORT_TYPE);
-        for (int i = 0; i < list.size(); i++) {
-            reportTypeOptions.put(list.get(i).getId(), list.get(i).getName());
-        }
-        command.setReportTypeOptions(reportTypeOptions);
-
-        // populate the ReportDefinitions
-        LinkedHashMap<Object, Object> parentOptions = new LinkedHashMap<Object, Object>();
-        if (command.getReportDefinition() != null && command.getReportDefinition().getOrganization() != null) {
-            List<ReportDefinition> rdList = command.getReportDefinitionDao().getAll(command.getReportDefinition().getOrganization().getId());
-            for (int i = 0; i < rdList.size(); i++) {
-                ReportDefinition rd = rdList.get(i);
-                if (rd.getId() != command.getReportDefinition().getId())
-                    parentOptions.put(rd.getId(), rd.getName());
-            }
-        }
-        command.setParentOptions(parentOptions);
     }
 }
