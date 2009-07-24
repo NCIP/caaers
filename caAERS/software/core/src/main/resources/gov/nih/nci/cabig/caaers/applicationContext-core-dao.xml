@@ -623,15 +623,9 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
 
-    <bean id="studySearchableAjaxableDomainObjectRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository"
-          parent="daoTemplate">
-    </bean>
+    <bean id="studySearchableAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository" parent="daoTemplate" />
 
-    <bean id="participantAjaxableDomainObjectRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository"
-          parent="daoTemplate">
-    </bean>
+    <bean id="participantAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository" parent="daoTemplate" />
     
     <bean id="studySiteAjaxableDomainObjectRepository"
           class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository"

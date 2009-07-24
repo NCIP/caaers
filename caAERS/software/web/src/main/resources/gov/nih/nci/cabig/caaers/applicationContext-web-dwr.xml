@@ -33,8 +33,7 @@
     <bean id="advSearchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchAjaxFacade">
     </bean>
 
-    <bean id="participantAjaxFacade"
-          class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">
+    <bean id="participantAjaxFacade" class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">
         <property name="organizationDao" ref="organizationDao"/>
         <property name="organizationRepository" ref="organizationRepository"/>
         <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
@@ -49,6 +48,7 @@
     <bean id="searchStudyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade">
         <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
+
     <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade">
     	<property name="repositoryService" ref="jcrService" />
     </bean>

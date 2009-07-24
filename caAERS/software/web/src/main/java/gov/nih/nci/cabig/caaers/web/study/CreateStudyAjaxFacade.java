@@ -99,7 +99,8 @@ public class CreateStudyAjaxFacade {
     protected LowLevelTermDao lowLevelTermDao;
     protected CtcTermDao ctcTermDao;
 
-    StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
+    private StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
+    private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
 
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
@@ -578,13 +579,23 @@ public class CreateStudyAjaxFacade {
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
+
     public StudySiteAjaxableDomainObjectRepository getStudySiteAjaxableDomainObjectRepository() {
-		return studySiteAjaxableDomainObjectRepository;
-            }
-    public void setStudySiteAjaxableDomainObjectRepository(	StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository) {
-		this.studySiteAjaxableDomainObjectRepository = studySiteAjaxableDomainObjectRepository;
+        return studySiteAjaxableDomainObjectRepository;
     }
 
+    public void setStudySiteAjaxableDomainObjectRepository(StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository) {
+        this.studySiteAjaxableDomainObjectRepository = studySiteAjaxableDomainObjectRepository;
+    }
+
+    public StudySearchableAjaxableDomainObjectRepository getStudySearchableAjaxableDomainObjectRepository() {
+        return studySearchableAjaxableDomainObjectRepository;
+    }
+
+    public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository) {
+        this.studySearchableAjaxableDomainObjectRepository = studySearchableAjaxableDomainObjectRepository;
+    }
+    
     protected void saveCommand(Object cmd) {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
@@ -763,18 +774,16 @@ public class CreateStudyAjaxFacade {
 		return organizationRepository;
 	}
 	@Required
-	public void setOrganizationRepository(
-			OrganizationRepository organizationRepository) {
+	public void setOrganizationRepository(OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
 
-	public void setResearchStaffRepository(
-			ResearchStaffRepository researchStaffRepository) {
+	public void setResearchStaffRepository(ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
 	}
 
-	public void setInvestigatorRepository(
-			InvestigatorRepository investigatorRepository) {
+	public void setInvestigatorRepository(InvestigatorRepository investigatorRepository) {
 		this.investigatorRepository = investigatorRepository;
 	}
+
 }
