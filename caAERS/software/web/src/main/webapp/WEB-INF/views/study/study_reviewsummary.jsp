@@ -325,10 +325,10 @@
                     <tr class="results">
                     
                         <td>
-                    <c:if test="${studyPersonnel.researchStaff.externalId != null}">
+                    <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>  
-                        ${studyPersonnel.researchStaff.fullName}
+                        ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
                         </td>
                         <td>${studyPersonnel.roleCode}</td>
                         <td>-to be filled-</td>

@@ -36,7 +36,7 @@
             	this.index = index;
             	this.siteIndex = $F('studySiteIndex');
             	this.sitePersonnelName = sitePersonnelName;
-            	this.sitePersonnelPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
+            	this.sitePersonnelPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].siteResearchStaff.researchStaff";
             	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
