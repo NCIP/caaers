@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -42,6 +43,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
     protected ResearchStaffRepository researchStaffRepository;
+    protected ConfigPropertyRepositoryImpl configPropertyRepository;
     private OrganizationDao organizationDao;
     protected WebControllerValidator webControllerValidator;
     private String authenticationMode;
@@ -165,16 +167,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     }
 
     @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        System.out.println("--- suppressValidation");
-        return true;
-/*
-        if (isAjaxRequest(request)) return true;
-        return super.suppressValidation(request, command);
-*/
-    }
-    
-    @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map refData = super.referenceData(request, oCommand, errors, page);
         refData.put("authenticationMode", getAuthenticationMode());
@@ -207,4 +199,11 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         return attr;
     }
 
+    public ConfigPropertyRepositoryImpl getConfigPropertyRepository() {
+        return configPropertyRepository;
+    }
+
+    public void setConfigPropertyRepository(ConfigPropertyRepositoryImpl configPropertyRepository) {
+        this.configPropertyRepository = configPropertyRepository;
+    }
 }

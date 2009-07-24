@@ -29,15 +29,15 @@
   </appender>
   
   <!-- disable really verbose logging from libraries.  Switch to debug if necessary. -->
-  <logger name="org.hibernate">        <level value="error"/></logger>
-    <logger name="org.springframework">        <level value="error"/></logger>
+  <logger name="org.hibernate"><level value="error"/></logger>
+  <logger name="org.springframework"><level value="error"/></logger>
   <logger name="org.apache.commons.digester"><level value="error"/></logger>
-  <logger name="org.apache.catalina">        <level value="error"/></logger>
-  <logger name="org.apache.jasper">          <level value="error"/></logger>
+  <logger name="org.apache.catalina"><level value="error"/></logger>
+  <logger name="org.apache.jasper"><level value="error"/></logger>
   <logger name="gov.nih.nci"><level value="error"/></logger>
   <logger name="gov.nih.nci.cabig.ctms"><level value="error" /></logger>
   <logger name="edu.northwestern.bioinformatics"><level value="error"></level></logger>
-  <logger name="edu.northwestern.bioinformatics.bering"><level value="debug" /></logger>
+  <logger name="edu.northwestern.bioinformatics.bering"><level value="error" /></logger>
   <root>
     <priority value="warn"/>
     <appender-ref ref="stdout"/>

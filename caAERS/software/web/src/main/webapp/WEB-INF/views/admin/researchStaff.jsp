@@ -53,13 +53,12 @@
     <caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
     <chrome:division title="${rsOrganizations}">
         <jsp:attribute name="titleFragment">
-            <tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization"  onclick="addSiteResearchStaff();" />
+            <tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization"  onclick="addSiteResearchStaff();" />&nbsp;<tags:indicator id="_organizationsDIV_indicator" />
         </jsp:attribute>
         <jsp:body>
-                    <div style="padding-left:20px; border:1px blue dotted;">
-                            <tags:indicator id="organization_AjaxIndicator" />
+                    <div style="padding-left:20px; border:0px blue dotted;">
                             <div id="_organizationsDIV">
-                                <c:set var="size" value="0" />
+                                <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
                                 <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="radiation">
                                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
                                     <rs:oneSiteResearchStaff index="${newIndex}" collapsed="false" />

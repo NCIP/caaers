@@ -35,14 +35,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     Map<String, String> methodNameMap = new HashMap<String, String>();
     
-    private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {
-            UserGroupType.caaers_ae_cd,
-            UserGroupType.caaers_participant_cd,
-            UserGroupType.caaers_site_cd,
-            UserGroupType.caaers_study_cd,
-            UserGroupType.caaers_central_office_sae_cd,
-            UserGroupType.caaers_data_cd
-    };
     private CSMUserRepository csmUserRepository;
 
     public ResearchStaffTab() {
@@ -54,35 +46,40 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ResearchStaffCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
-        for (UserGroupType type : ASSIGNABLE_USER_GROUP_TYPES) {
-            refdata.put(type.name(), command.getResearchStaff().isAssociatedToUserGroup(type));
-        }
+        refdata.put("allRoles", command.getAllRoles());
         return refdata;
     }
 
     @Override
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
+        for (SiteResearchStaff rss: command.getResearchStaff().getSiteResearchStaffs()) {
+            // System.out.println(rss.getOrganization().getFullName());
+        }
 
         // populate the user groups correctly.
-        command.getResearchStaff().getUserGroupTypes().clear();
-        for (UserGroupType type : ASSIGNABLE_USER_GROUP_TYPES) {
+        // command.getResearchStaff().getUserGroupTypes().clear();
+/*
+        for (command.getConfigPropertyRepository().getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE) type : ) {
             if (BooleanUtils.toBoolean(request.getParameter(type.name()))) {
                 command.getResearchStaff().getUserGroupTypes().add(UserGroupType.valueOf(type.name()));
             }
         }
+*/
     }
 
     @Override
     protected void validate(final ResearchStaffCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         HashSet<String> set = new HashSet<String>();
-        List<UserGroupType> userGroupTypes = command.getResearchStaff().getUserGroupTypes();
+        // List<UserGroupType> userGroupTypes = command.getResearchStaff().getUserGroupTypes();
 
+/*
         if (userGroupTypes == null || userGroupTypes.isEmpty()) {
             errors.reject("USR_002", "You must select at least one user role..!");
         }
-        
+St*/
+
         if (command == null || command.getResearchStaff().getId() == null) {
         	String loginId = (StringUtils.isEmpty(command.getResearchStaff().getLoginId())) ? command.getResearchStaff().getEmailAddress() : command.getResearchStaff().getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
@@ -90,6 +87,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }
+        errors.reject("USR_002", "STOP here on red.");
     }
 
     @Override
@@ -169,7 +167,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         srs.setResearchStaff(command.getResearchStaff());
 
         ModelAndView modelAndView = new ModelAndView("admin/ajax/researchStaffFormSection");
-        modelAndView.getModel().put("objects", command.getResearchStaff().getSiteResearchStaffs());
+        // modelAndView.getModel().put("objects", command.getResearchStaff().getSiteResearchStaffs());
         modelAndView.getModel().put("indexes", new Integer[]{command.getResearchStaff().getSiteResearchStaffs().size() - 1});
         return modelAndView;
     }

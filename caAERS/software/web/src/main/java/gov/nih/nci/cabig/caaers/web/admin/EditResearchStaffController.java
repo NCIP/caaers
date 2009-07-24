@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -43,6 +44,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
         }
         ResearchStaffCommand command = new ResearchStaffCommand();
         command.setResearchStaff(researchStaff);
+        command.setAllRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
         return command;
     }
 /*
@@ -122,4 +124,9 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
         return super.shouldSave(request, command, tab);
     }
 
+    @Override
+    protected boolean suppressValidation(HttpServletRequest httpServletRequest, Object o) {
+        System.out.println("--- suppressValidation");
+        return super.suppressValidation(httpServletRequest, o);
+    }
 }

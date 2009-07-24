@@ -12,6 +12,14 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         paramHash.set('decorator', 'nullDecorator');
     },
 
+    _showIndicator:function(indicatorElement) {
+        if (indicatorElement) indicatorElement.removeClassName("indicator");
+    },
+
+    _hideIndicator:function(indicatorElement) {
+        if (indicatorElement) indicatorElement.addClassName("indicator");
+    },
+
     _addItem: function(itemType, src, val, location, options, tabNumber) {
         var container = $(location);
         var paramHash = new Hash();
@@ -22,7 +30,8 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         this._populateDeafultParameters(itemType, paramHash, tabNumber);
 
         var url = $('command').action + "?subview";
-        this._insertContent(container, url, paramHash, function() {}.bind(this));
+        this._showIndicator($(container.id + "_indicator"));
+        this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator"));}.bind(this));
     },
 
     formElementsInSection : function(container) {
