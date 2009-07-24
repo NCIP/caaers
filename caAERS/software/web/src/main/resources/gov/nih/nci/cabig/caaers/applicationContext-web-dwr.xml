@@ -8,35 +8,26 @@
      default-lazy-init="true"   >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean id="createAeAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
+    <bean id="createAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
         <property name="reportRepository" ref="reportRepository"/>
-        <property name="studySearchableAjaxableDomainObjectRepository"
-                  ref="studySearchableAjaxableDomainObjectRepository"/>
+        <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository"/>
         <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
 	
-	<bean id="submitReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportAjaxFacade"
-		parent="createAeAjaxFacade"/>
-	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade">
-	</bean>
-    <bean id="captureAeAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade">
+	<bean id="submitReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportAjaxFacade" parent="createAeAjaxFacade"/>
+	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade"></bean>
+    <bean id="captureAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade">
     	<property name="reportingPeriodDao" ref="adverseEventReportingPeriodDao"></property>
     </bean>
-    <bean id="reviewRpAjaxFacade" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodAjaxFacade" parent="captureAeAjaxFacade">
-   	</bean>
-   	<bean id="reviewAeReportAjaxFacade" autowire="byType"
-   		  class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportAjaxFacade" parent="createAeAjaxFacade">
-	</bean>
-    <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
+    <bean id="reviewRpAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewEvaluationPeriodAjaxFacade" parent="captureAeAjaxFacade"></bean>
+   	<bean id="reviewAeReportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportAjaxFacade" parent="createAeAjaxFacade"></bean>
+    <bean id="adverseEventHistoryAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>
     </bean>
 
     <bean id="studyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade">
     	<property name="studySiteAjaxableDomainObjectRepository" ref="studySiteAjaxableDomainObjectRepository"/>
+        <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
     
     <bean id="advSearchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchAjaxFacade">

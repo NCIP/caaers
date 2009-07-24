@@ -49,8 +49,6 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
     public StudySearchableAjaxableDomainObjectQuery() {
         super(queryString);
-
-
     }
 
     public void filterStudiesByStudySiteBySiteId(Integer siteId) {
@@ -83,23 +81,14 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
         }
     }
     
-    public void filterByParticipant(String firstName, String lastName, String ethnicity,
-                                    final String identifierValue, String gender, DateValue dateOfBirth) {
-
+    public void filterByParticipant(String firstName, String lastName, String ethnicity,final String identifierValue, String gender, DateValue dateOfBirth) {
         leftJoin("ss.studyParticipantAssignments as spa left join spa.participant as p");
-
         filterByParticipantIdentifierValue(identifierValue);
-
         filterByFirstName(firstName);
         filterByLastName(lastName);
-
         filteryByEthnicity(ethnicity);
-
         filterByHavingRace(gender);
-
         filterByDateOfBirth(dateOfBirth);
-
-
     }
 
     private void filterByDateOfBirth(DateValue dateOfBirth) {

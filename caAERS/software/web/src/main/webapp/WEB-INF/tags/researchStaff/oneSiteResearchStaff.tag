@@ -15,6 +15,32 @@
     <table width="100%">
         <tr>
             <td>
+                <div class="row">
+                    <div class="label">Site:</div>
+                    <div class="value">
+                        <ui:autocompleter path="researchStaff.siteResearchStaffs[${index}].organization">
+                            <jsp:attribute name="embededJS"></jsp:attribute>
+                            <jsp:attribute name="optionsJS">
+                                {
+                                    afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                                        postSiteSelected(${index}, selectedChoice.id);
+                                    }
+                                }
+                            </jsp:attribute>
+                            <jsp:attribute name="populatorJS">
+                                function(autocompleter, text) {
+                                    createStudy.restrictOrganizations(text, function(values) { autocompleter.setChoices(values);})
+                                }
+                            </jsp:attribute>
+                            <jsp:attribute name="selectorJS">
+                                function(obj){
+                                    return obj.name;
+                                }
+                            </jsp:attribute>
+                        </ui:autocompleter>
+                    </div>
+                </div>
+                <br>
                 <caaers:message code="researchstaff.details.contact" var="contacts"/>
                 <b>${contacts}</b>
                 <chrome:division id="staff-details" title="">
@@ -72,9 +98,11 @@
                     <caaers:message code="researchstaff.details.studiesSection" var="studiesSectionTitle"/>
                     <chrome:division id="studies-details" title="${studiesSectionTitle}">
                         <div style="overflow:auto; height:150px;">
-                            <c:forEach begin="0" end="20">
-                                    <input type="checkbox" name="srsStudy" value="">&nbsp;Study short name<br>
-                            </c:forEach>
+                            <div id="_studies_${index}">
+                                        <c:forEach begin="0" end="20">
+                                                <input type="checkbox" name="srsStudy" value="">&nbsp;Study short name<br>
+                                        </c:forEach>
+                            </div>
                         </div>
                     </chrome:division>
                 </div>

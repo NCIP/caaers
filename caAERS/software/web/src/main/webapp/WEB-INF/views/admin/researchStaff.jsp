@@ -4,6 +4,7 @@
 <html>
 <head>
     <script src="<c:url value="/js/ui/researchStaffPage.js"/>"></script>
+    <tags:dwrJavascriptLink objects="createStudy,searchStudy"/>
 </head>
 <body>
 
@@ -88,6 +89,17 @@
     ajaxCRUD = new AJAX_CRUD_HELPER();
     function addSiteResearchStaff() {
         ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, ${tab.number});
+    }
+
+    function postSiteSelected(siteResearchStaffIndex, organizationID) {
+        var _sts;
+        searchStudy.getObjects("st", "%", organizationID, false, function(values) {
+            refreshStudies(values, siteResearchStaffIndex);
+        });
+    }
+
+    function refreshStudies(values, i) {
+        $('_studies_' + i).innerHTML = values.length;
     }
 
 </script>
