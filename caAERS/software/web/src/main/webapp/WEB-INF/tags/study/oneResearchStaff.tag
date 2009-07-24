@@ -26,38 +26,21 @@
 	 </td>
 	 <td style="border-right:none;">
 	 <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
-	 <%--
-	 <c:if test="${readOnly}">
-		<c:set var="_staffRoleValue"><caaers:value path="${_staffRoleField.propertyName}" /></c:set>
-	 	${_staffRoleField.attributes.options[_staffRoleValue]}
-	 </c:if>
-	 <c:if test="${not readOnly}">
-	 --%>
+	 <%-- 
 	 	<ui:select options="${_staffRoleField.attributes.options}" 
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
 	 		validationJSClass="${_staffRoleField.validatorClassName}" />
-	<%--
-	 </c:if>
-	--%>		
+	 --%>		
+	 		
 	 </td>
 	 <td style="border-right:none;">
 	 <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
-	 <%--
-	 <c:if test="${readOnly}">
-	 	<c:set var="_staffStatusValue"><caaers:value path="${_staffStatusField.propertyName}" /></c:set>
-		${_staffStatusField.attributes.options[_staffStatusValue]}
-	 </c:if>
-	 --%>
-	 <%--
-	 <c:if test="${not readOnly}">
-	 --%>
+	 <%-- 
 	 	<ui:select options="${_staffStatusField.attributes.options}" 
 	 		path="${_staffStatusField.propertyName}" 
 	 		required="true"
 	 		validationJSClass="${_staffStatusField.validatorClassName}" />
-	 <%--		
-	 </c:if>
 	 --%>		
 	 </td>
 	<td style="border-left:none;">

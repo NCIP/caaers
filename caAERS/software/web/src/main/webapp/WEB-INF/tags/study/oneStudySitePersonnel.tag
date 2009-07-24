@@ -14,9 +14,8 @@
 		<th width="20%" class="tableHeader"><tags:requiredIndicator />Status</th>
 		<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
  	  </tr>
-	  
+ 	   
 	  <c:forEach var="sp" items="${command.study.activeStudyOrganizations[index].studyPersonnels}" varStatus="status">
-	  
 	  <c:if test="${not sp.retired}">
 	  	<study:oneResearchStaff cssClass="ssi-table-row" index="${status.index}" readOnly="${not empty sp.siteResearchStaff.researchStaff}"/>
 	  	<c:if test="${empty sp.siteResearchStaff.researchStaff}">
@@ -24,7 +23,6 @@
       	</c:if>
       </c:if>
 	  </c:forEach>
-	  
 	  <c:if  test="${fn:length(command.study.activeStudyOrganizations[index].studyPersonnels) lt 1}">
 	   <tr id="ssi-empty-row" class="ssi-empty-row"><td colspan="4">There are no personnel associated to this study site.</td></tr>
 	  </c:if>
