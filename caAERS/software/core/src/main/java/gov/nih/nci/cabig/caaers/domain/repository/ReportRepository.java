@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This is an service class, which is used to obtain the correct address (toAddress) of a recipient.
@@ -39,8 +40,15 @@ public interface ReportRepository {
      * Also it will schedule the report.
      */
     Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport, Date baseDate);
-
-
+    
+    /**
+     * This method will create all the child reports of the given report.
+     * 
+     * @param report
+     * @return
+     */
+    List<Report> createChildReports(Report report);
+    
     /**
      * Will tell whether all the mandatory field for this report is duly filled. This method will
      * validate against all the sections defined in {@link gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection}

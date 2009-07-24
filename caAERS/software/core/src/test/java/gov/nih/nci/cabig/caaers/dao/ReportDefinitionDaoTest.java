@@ -251,6 +251,27 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     	assertEquals(1, getDao().search(query).size());
     }
     
+    /**
+     * fetch the exsting report defs, assign a parent and save, then search.
+     */
+    public void testSearch_ReportDefinitionQuery_FilterByParent(){
+    	{
+    		ReportDefinition rd221 = getDao().getById(-221);
+    		ReportDefinition rd222 = getDao().getById(-222);
+    		
+    		rd222.setParent(rd221);
+    		getDao().save(rd222);
+    		
+    	}
+    	interruptSession();
+    	{
+    		ReportDefinitionQuery query = new ReportDefinitionQuery();
+        	query.filterByParent(-221);
+        	assertEquals(1, getDao().search(query).size());
+    	}
+    	
+    }
+    
     public void testReassociate(){
     	 ReportDefinition rct = null;
     	 

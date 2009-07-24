@@ -22,4 +22,10 @@ public class ReportDefinitionQuery extends AbstractQuery {
     	andWhere(" rd.id <> :rdid");
     	setParameter("rdid", id);
 	}
+	
+	public void filterByParent(Integer id){
+		if(id == null) return;
+		andWhere(" rd.parent.id = :parentId");
+		setParameter("parentId" , id);
+	}
 }

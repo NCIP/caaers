@@ -256,6 +256,7 @@ This applicationContext contains the definition of the concrete services
 	    	<property name="adeersReportGenerator" ref="adeersReportGenerator" />
 	    	<property name="messageBroadcastService" ref="messageBroadcaster" />
 	    	<property name="reportDao" ref="reportDao" />
+			<property name="reportDefinitionDao" ref="reportDefinitionDao"/>
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
 			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />

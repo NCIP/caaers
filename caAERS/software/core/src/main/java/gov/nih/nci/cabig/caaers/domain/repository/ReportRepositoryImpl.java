@@ -3,7 +3,9 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -21,6 +23,8 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -31,6 +35,8 @@ import java.util.List;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +51,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     private static final Log log = LogFactory.getLog(ReportRepositoryImpl.class);
     private ReportDao reportDao;
+    private ReportDefinitionDao reportDefinitionDao;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
     private ExpeditedReportTree expeditedReportTree;
@@ -113,6 +120,28 @@ public class ReportRepositoryImpl implements ReportRepository {
         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
 
         return report;
+    }
+    
+    public List<Report> createChildReports(Report report) {
+    	
+    	List<Report> instantiatedReports = null;
+    	//check if there is children
+    	ReportDefinitionQuery query = new ReportDefinitionQuery();
+    	query.filterByParent(report.getReportDefinition().getId());
+    	List<ReportDefinition> rdChildren = (List<ReportDefinition>) reportDefinitionDao.search(query);
+    	if(CollectionUtils.isNotEmpty(rdChildren)){
+    		if(BooleanUtils.isTrue(report.isAmendable())){
+    			amendReport(report);
+    		}
+    		
+    		instantiatedReports = new ArrayList<Report>();
+    		for(ReportDefinition rdChild : rdChildren){
+    			Report childReport = createReport(rdChild, report.getAeReport(), nowFactory.getNow());
+    			instantiatedReports.add(childReport);
+    		}
+    	}
+    	
+    	return instantiatedReports;
     }
 
     /**
@@ -203,24 +232,24 @@ public class ReportRepositoryImpl implements ReportRepository {
      * from toAmend to the newly created report.
      */
     public void createAndAmendReport(ReportDefinition repDef, Report toAmend,Boolean useDefaultVersion) {
-    	
-    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), null);
-    	 
-    	 //copy the assigned identifier (in case of AdEERS the ticket number)
-         //report.copySubmissionDetails(toAmend);
-         
-         //amend the toAmend Report, by updating its status
-         toAmend.setStatus(ReportStatus.AMENDED);
-         toAmend.getLastVersion().setAmendedOn(nowFactory.getNow());
-         
-         //save the amended report
-         reportDao.save(toAmend);
-         
-         //save the report
-         reportDao.save(report);
-
-         //schedule the report, if there are scheduled notifications.
-         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
+//    	------ BJ : throw away this method --------------
+//    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), null);
+//    	 
+//    	 //copy the assigned identifier (in case of AdEERS the ticket number)
+//         //report.copySubmissionDetails(toAmend);
+//         
+//         //amend the toAmend Report, by updating its status
+//         toAmend.setStatus(ReportStatus.AMENDED);
+//         toAmend.getLastVersion().setAmendedOn(nowFactory.getNow());
+//         
+//         //save the amended report
+//         reportDao.save(toAmend);
+//         
+//         //save the report
+//         reportDao.save(report);
+//
+//         //schedule the report, if there are scheduled notifications.
+//         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
     	
     }
     
@@ -242,7 +271,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     * This method will amend the report, by setting the report status to {@link ReportStatus#AMENDED}
     */
     public void amendReport(Report report){
-    	
+    	report.setDueOn(null);
+    	report.setStatus(ReportStatus.AMENDED);
+    	report.setAmendedOn(nowFactory.getNow());
+    	reportDao.save(report);
     }
     
     
@@ -280,6 +312,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
-   
+    
+    @Required
+    public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
+	}
   
 }

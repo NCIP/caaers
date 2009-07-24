@@ -15,9 +15,11 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.Tracker;
@@ -51,6 +53,7 @@ public class ReportSubmissionService {
     protected CaaersJavaMailSender caaersJavaMailSender;
     private AdeersReportGenerator adeersReportGenerator;
     private SchedulerService schedulerService;
+    private ReportRepository reportRepository;
     
     private ReportDao reportDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
@@ -144,6 +147,9 @@ public class ReportSubmissionService {
     	
     	//update the reported flag on the adverse events.
     	report.getAeReport().updateReportedFlagOnAdverseEvents();
+    	
+    	//create child reports
+    	reportRepository.createChildReports(report);
     }
     
     
@@ -155,7 +161,7 @@ public class ReportSubmissionService {
      *  2b. Notify email recipients
      *  3. Do post submit activities.
      */
-    public final void submitReport(Report report){
+    public  void submitReport(Report report){
     	//create the context
     	ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
     	
@@ -346,6 +352,11 @@ public class ReportSubmissionService {
     @Required
     public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
 		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+    
+    @Required
+    public void setReportRepository(ReportRepository reportRepository) {
+		this.reportRepository = reportRepository;
 	}
     
 	
