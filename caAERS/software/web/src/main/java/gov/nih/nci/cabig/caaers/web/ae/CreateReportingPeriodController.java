@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -89,6 +90,17 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, mode);
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+        //set the last selected treatment assignment in create mode.
+        if(command.getReportingPeriod().getId() == null){
+        	List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getReportingPeriods();
+        	if(CollectionUtils.isNotEmpty(existingReportingPeriods)){
+        		TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
+        		command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
+        	}
+        }
+        
+        
+        
         return command;
     }
 

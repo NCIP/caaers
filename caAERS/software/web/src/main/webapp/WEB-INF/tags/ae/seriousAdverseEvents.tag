@@ -3,6 +3,7 @@
 ae_review_report.jsp uses this to display a list of serious adverse events. 
 --%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -14,12 +15,12 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <div id="adverseEvents-dc-${aeReportId}" class="serious-aes">
 <table width="100%" class="tablecontent">
 	       <tr>
-	         <th scope="col" align="center" style="text-align:center;"><b>Select</b></th>
-	         <th scope="col" align="center" style="text-align:center;">Requires<br>expedited<br> reporting?</th>
-	         <th scope="col" align="left" width="30%"><b>Term</b> </th>
-	         <th scope="col" align="left"><b>Grade</b> </th>
-	         <th scope="col" align="left"><b>Start Date</b> </th>
-	         <th scope="col" align="left"><b><tags:requiredIndicator></tags:requiredIndicator>Select Primary</b> </th>
+	         <th scope="col" align="center" style="text-align:center;" width="5%"><b>Select</b></th>
+	         <th scope="col" align="center" style="text-align:center;" width="10%">Requires<br>expedited<br> reporting?</th>
+	         <th scope="col" align="left" width="35%"><b>Term</b> </th>
+	         <th scope="col" align="left" width="25%"><b>Grade</b> </th>
+	         <th scope="col" align="left" width="15%"><b>Start Date</b> </th>
+	         <th scope="col" align="left" width="10%"><b><tags:requiredIndicator></tags:requiredIndicator>Select Primary</b> </th>
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
       	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />
@@ -43,13 +44,19 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	${ae.adverseEventTerm.universalTerm}
 		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new.gif" />" /></c:if>
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
-		      	(${_cssClass })
+		      	<!-- (${_cssClass }) -->
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		      ${ae.grade.code}:${ae.grade.displayName }
 		      </td>
 		      <td align="center" class="${_cssClass}">
-		        <tags:formatDate value="${ae.startDate}" />
+		      	<c:if test="${empty ae.startDate}">
+		      	 <ui:date path="adverseEvents[${aeStatus.index}].startDate" />
+		      	</c:if>
+		      	<c:if test="${not empty ae.startDate}">
+		      	 <tags:formatDate value="${ae.startDate}" />
+		      	</c:if>
+		       
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		        <c:if test="${not ae.retired}">

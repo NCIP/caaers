@@ -219,6 +219,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         command.synchronizeOutcome();
         
         command.initialize();
+        /* BJ --------------------- to be reomved
         // Amend the reports if AEs associated to it are modified and the user is OK with the amendment.
         String action = (String)findInRequest(request, "_action");
         if(action.equals("amendmentRequired")){
@@ -263,6 +264,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	}
         	
         }
+        */
     }
 
     @Override
