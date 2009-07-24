@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.report;
-
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.toStringHelper;
+import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 /**
  * 
@@ -17,6 +19,7 @@ public enum ReportType implements CodedEnum<Integer>{
 	private ReportType(int code, String displayName){
 		this.code = code;
 		this.displayName = displayName;
+		register(this);
 	}
 	
 	public String getDisplayName() {
@@ -32,8 +35,11 @@ public enum ReportType implements CodedEnum<Integer>{
 	
 	@Override
 	public String toString() {
-		return displayName;
+		return toStringHelper(this);
 	}
 	
+	public String getName(){
+		return name();
+	}
 	
 }
