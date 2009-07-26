@@ -1,47 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="1.4">
-	
-    	<info organisation="gov.nih.nci.cabig.caaers"
-          	module="selenium"
-          	status="integration"/>
-        
-        <configurations>
-        	<conf name="default" visibility="public" extends="publish,runtime" 
-        		description="Dependencies needed for default setting"  />
-        	<conf name="build" visibility="public" 
-        		description="Dependencies required for build time, all classpath should have this"/>
-        	<conf name="publish" visibility="public" 
-        		description="Dependencies along with this module is published in repository" />
-        	<conf name="distGrid" visibility="public"  extends="publish"
-        		description="Dependencies that are required in grid distribution of this module" />
-        	<conf name="dist" visibility="public"  extends="publish"
-        		description="Dependencies needed for standalone distribution" />
-        	<conf name="runtime" visibility="public"
-        		description="The dependencies that are needed for runtime" extends="build" />
-        	<conf name="test" visibility="public" 
-        		description="Dependencies needed for testing purposes"/>
-        </configurations>
-        
-         <publications>
-    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
-  		</publications>
-        
-        <!-- dependencies for the web module -->
-        <dependencies>
-        	<!--dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
-				conf="test->default(*)"/-->
-				
-			<!-- Testing dependencies -->
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->default(*)" rev="latest.integration"/>
-        	
-            <dependency org="org.openqa.selenium.client-drivers" name="selenium-java-client-driver" rev="0.9.2" conf="test->default(*)"/>
-            <dependency org="ant-contrib" name="ant-contrib" rev="1.0b2" transitive="false"/>
-            <dependency org="commons-logging" name="commons-logging" rev="1.1" conf="test->default(*)"/>
-           <dependency org="org.springframework" name="spring" rev="2.0.2" conf="test->default(*)"/>
-           <dependency org="ant" name="ant" rev="1.6.5" conf="test->master(*)"/>
-           <!--  Spring and Spring Modules -->
 
-			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" conf="test->default" />   
-           <!--dependency org="org.springframework" name="spring-context" rev="2.0.2" conf="test->default"/-->
-        </dependencies>
+	<info organisation="gov.nih.nci.cabig.caaers" module="caaers-perf"
+		status="integration" />
+
+	<configurations>
+		<conf name="default" visibility="public" extends="publish,runtime"
+			description="Dependencies needed for default setting" />
+		<conf name="build" visibility="public"
+			description="Dependencies required for build time, all classpath should have this" />
+		<conf name="publish" visibility="public"
+			description="Dependencies along with this module is published in repository" />
+		<conf name="distGrid" visibility="public" extends="publish"
+			description="Dependencies that are required in grid distribution of this module" />
+		<conf name="dist" visibility="public" extends="publish"
+			description="Dependencies needed for standalone distribution" />
+		<conf name="runtime" visibility="public"
+			description="The dependencies that are needed for runtime" extends="build" />
+		<conf name="test" visibility="public"
+			description="Dependencies needed for testing purposes" />
+	</configurations>
+
+	<publications>
+		<artifact name="${ivy.module}" conf="default,publish,dist,distGrid"
+			type="jar" />
+	</publications>
+
+	<!-- dependencies for the web module -->
+	<dependencies>
+		<!--  dependency on aspectJ -->
+		<dependency org="aspectj" name="aspectjrt" rev="1.6.5"
+			force="true" conf="build->compile(*),runtime(*),master(*)" />
+		<dependency org="aspectj" name="aspectjweaver" rev="1.6.5"
+			force="true" conf="build->compile(*),runtime(*),master(*)" />
+		<!-- Performance Testing dependencies -->
+		<dependency org="net.sf.infrared.aspects.aj" name="infrared"
+			rev="2.4.1.BETA" conf="build->default(*)">
+			<exclude org="trove" name="trove" />
+			<exclude org="qdox" name="qdox" />
+			<exclude org="jrexx" name="jrexx" />
+		</dependency>
+	</dependencies>
 </ivy-module>
