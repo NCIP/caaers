@@ -86,6 +86,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 
                 ticketNumber = jobInfo.getChild("ticketNumber").getValue();
                 url = jobInfo.getChild("reportURL").getValue();
+                sb.append(url);
 
             }
 
