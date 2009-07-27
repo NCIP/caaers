@@ -8,23 +8,17 @@
     </xsl:template>
 
     <xsl:template match="AdverseEventReport">
-		<REPORT_TYPE>
-			<xsl:choose>
-				<xsl:when test="Report/ReportDefinition/timeScaleUnitType = 'HOUR' and Report/ReportDefinition/duration = '24'">
+					<REPORT_TYPE><xsl:value-of select="Report/adeersReportTypeIndicator"/></REPORT_TYPE>
 					<xsl:choose>
-						<xsl:when test="Report/assignedIdentifer != '' ">24-hr amendment</xsl:when>
-						<xsl:otherwise>24-hr notification</xsl:otherwise>
+						<xsl:when test="Report/adeersReportTypeIndicator = '24-hr notification complete'">
+							<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+						</xsl:when>
+						<xsl:when test="Report/adeersReportTypeIndicator = 'Regular amendment' or Report/adeersReportTypeIndicator = '24-hr amendment' or Report/adeersReportTypeIndicator = '24-hr amendment complete'">
+							<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+							<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
+						</xsl:when>						
 					</xsl:choose>					
-				</xsl:when>
-				<xsl:when test="Report/assignedIdentifer != ''">Regular amendment</xsl:when>
-				<xsl:otherwise>Regular report</xsl:otherwise>
-			</xsl:choose>
-		</REPORT_TYPE>
-        <xsl:if test="Report/assignedIdentifer != '' and Report/ReportVersion/reportVersionId != ''" >
-			<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
-			<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
-		</xsl:if>
-		
+
 		
         <CAEERS_AEREPORT_ID>
             <xsl:value-of select="id"/>
@@ -469,7 +463,6 @@
             </SUSPECT_MEDICAL_DEVICE>
         </xsl:if>
 
-
         <DESCRIPTION_OF_EVENT>
             <xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
                 <EVENT_DESCRIPTION>
@@ -539,6 +532,8 @@
             </xsl:if>
 
         </DESCRIPTION_OF_EVENT>
+
+ 
         <PATIENT_INFORMATION>
             <xsl:attribute name="PATIENT_ID">
                 <xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/>
