@@ -249,32 +249,16 @@ public class AdverseEventReportSerializer {
 		   r.setId(report.getId());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
 		   r.setSubmissionMessage(report.getSubmissionMessage());
-		   ReportVersion rv =  r.getLastVersion();
+
+		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
+		   ReportVersion rv = new ReportVersion();
+
 		   
-		   //rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
+		   
+		   rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
 		   rv.setReportVersionId(report.getLastVersion().getReportVersionId());
-		   
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
-		 //  r.setAmmendmentNumber(report.getAmmendmentNumber());
-		   
-		   // if report is successfully submitted before , get the ticket id.
-//		   if (report.getAssignedIdentifer() != null) {
-	//		   return r;
-		//   }
-/*		   
-		   // check if any of the previous version is successfully submitted . if  so , ammend it for same ticket number.
-		   List<ReportVersion> rvs = report.getReportVersions();
-		   for (ReportVersion rv: rvs) {
-			   if (rv.getAssignedIdentifer() !=null ) {
-				   Report r1 = new Report();
-				   r1.setId(report.getId());
-				   r1.setAssignedIdentifer(rv.getAssignedIdentifer());
-				   r1.setSubmissionMessage(rv.getSubmissionMessage());
-				   return r1;
-			   }
-	    	}		   
-		   
-*/	   		   
+	   		   
 		   return r;
 	   }
 	   private ReportDefinition getReportDefinition(ReportDefinition rd) throws Exception {
