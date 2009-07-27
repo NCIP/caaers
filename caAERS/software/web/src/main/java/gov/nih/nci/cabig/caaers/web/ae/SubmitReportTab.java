@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -57,8 +58,16 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
                     Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
-        String emailString = command.getAeReport().getReports().get(
-                        ((int) Integer.parseInt(reportIndex))).getLastVersion().getCcEmails();
+        Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
+        
+        if(!report.isActive()){
+			errors.reject("SAE_032", new Object[]{report.getStatus().getDisplayName()},
+					"Cannot submit this report, as it is already submitted/withdrawn/amended/replaced");
+		}
+        
+        ReportVersion lastVersion = report.getLastVersion();
+        
+        String emailString =lastVersion.getCcEmails();
 
         if (emailString != null) {
             String[] emails = emailString.split(",");
@@ -93,7 +102,6 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
         Report report = aeReport.getReports().get(((int) reportIndex));
         if(!command.getReportSubmitted()){
-        	aeReport.updateReportedFlagOnAdverseEvents();
         	reportSubmissionService.submitReport(report);
         }
     }

@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -10,6 +13,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Kulasekaran
@@ -60,6 +65,19 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
 
     private InputField createContactField(String base, String contactType, String displayName, boolean required) {
         return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']', displayName, required);
+    }
+    
+    @Override
+    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    	//check if the report is in submittable state?
+    	String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
+    	if(StringUtils.isNotEmpty(reportIndex)){
+    		Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
+    		if(!report.isActive()){
+    			errors.reject("SAE_032", new Object[]{report.getStatus().getDisplayName()},
+    					"Cannot submit this report, as it is already submitted/withdrawn/amended/replaced");
+    		}
+    	}
     }
 
 
