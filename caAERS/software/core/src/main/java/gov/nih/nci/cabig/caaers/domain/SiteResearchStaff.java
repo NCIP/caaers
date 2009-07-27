@@ -175,7 +175,8 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
         return true;
     }
 
-    public Boolean isAssociateAllStudies() {
+    @Column(name = "associate_all_studies")
+    public Boolean getAssociateAllStudies() {
         return associateAllStudies;
     }
 
