@@ -534,8 +534,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	return false;
     }
     public String deriveAdeersReportTypeIndicator() {
-    	return this._REGULAR_REPORT;
-    	/*
+    	//return this._REGULAR_REPORT;
+    	
     	ReportType reportType = getReportDefinition().getReportType();
     	//Get Reports that are completed and amended.
 		List<Report> reportList = getAeReport().listReportsHavingStatus(ReportStatus.AMENDED,ReportStatus.COMPLETED);
@@ -581,7 +581,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 				}
 			}
 		}    	
-		return null;*/
+		return null;
     }
 
     /**
@@ -608,5 +608,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     
 	public void setAdeersReportTypeIndicator(String adeersReportTypeIndicator) {
 		this.adeersReportTypeIndicator = adeersReportTypeIndicator;
+	}
+	
+
+    
+    @Transient
+	public boolean getExternalSystem() {
+    	externalSystem =  hasSystemDeliveries();
+    	return externalSystem;
 	}
 }
