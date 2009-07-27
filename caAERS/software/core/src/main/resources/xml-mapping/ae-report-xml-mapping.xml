@@ -118,6 +118,9 @@
     <field name="submissionMessage" type="string">
       <bind-xml name="submissionMessage" node="element"/>
     </field>
+    <field name="adeersReportTypeIndicator" type="string">
+      <bind-xml name="adeersReportTypeIndicator" node="element"/>
+    </field>    
     <field name="reportDefinition"
       type="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
       <bind-xml name="ReportDefinition"/>
