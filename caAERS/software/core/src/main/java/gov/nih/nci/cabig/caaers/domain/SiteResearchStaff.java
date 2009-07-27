@@ -34,6 +34,7 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
     private String phoneNumber;
     private String faxNumber; 
     private Address address;
+    private Boolean allStudies;
     
     
     ///LOGIC
@@ -172,5 +173,13 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
             if (other.organization != null) return false;
         } else if (!organization.equals(other.organization)) return false;
         return true;
+    }
+
+    public Boolean isAllStudies() {
+        return allStudies;
+    }
+
+    public void setAllStudies(Boolean allStudies) {
+        this.allStudies = allStudies;
     }
 }
