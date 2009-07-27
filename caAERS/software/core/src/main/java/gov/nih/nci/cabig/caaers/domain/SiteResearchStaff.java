@@ -34,7 +34,7 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
     private String phoneNumber;
     private String faxNumber; 
     private Address address;
-    private Boolean allStudies;
+    private Boolean associateAllStudies;
     
     
     ///LOGIC
@@ -175,11 +175,11 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
         return true;
     }
 
-    public Boolean isAllStudies() {
-        return allStudies;
+    public Boolean isAssociateAllStudies() {
+        return associateAllStudies;
     }
 
-    public void setAllStudies(Boolean allStudies) {
-        this.allStudies = allStudies;
+    public void setAssociateAllStudies(Boolean associateAllStudies) {
+        this.associateAllStudies = associateAllStudies;
     }
 }
