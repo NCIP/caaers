@@ -1188,7 +1188,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @Transient
     public List<Report> getManuallySelectedReports(){
     	ArrayList<Report> manuallySelectedReports = new ArrayList<Report>();
-    	for(Report report : getReports()){
+    	for(Report report : getActiveReports()){
     		if(report.isManuallySelected()) manuallySelectedReports.add(report);
     	}
     	return manuallySelectedReports;
@@ -1265,6 +1265,23 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return theReport;
     }
     
+    /**
+     * The report that is instantiated last, and is belonging to same organization and type.
+     * @param rd
+     * @return
+     */
+    public Report findRecentlyInstantiatedReport(ReportDefinition rd){
+    	List<Report> reports = getReports();
+    	Report theReport = null;
+    	for(Report report : reports){
+    		if(report.isOfSameOrganizationAndType(rd)){
+    			if(theReport == null || report.getId().intValue() > theReport.getId().intValue()){
+    				theReport = report;
+    			}
+    		}
+    	}
+    	return theReport;
+    }
     
     public List<Report> listReportsHavingStatus(ReportStatus... statuses){
     	List<Report> reports = new ArrayList<Report>();

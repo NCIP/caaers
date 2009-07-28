@@ -158,6 +158,24 @@ public class EvaluationServiceImpl implements EvaluationService {
         	//evaluate the SAE reporting rules
             map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
             
+            //throw away rules suggestion
+            if(expeditedData != null){
+            	List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
+            	if(CollectionUtils.isNotEmpty(completedReports)){
+            		for(AdverseEvent adverseEvent : aeList){
+            			if(adverseEvent.isModified() || adverseEvent.getReport() == null) continue;
+            			List<String> nameList = map.get(adverseEvent);
+            			for(Report report : completedReports){
+            				if(report.isReported(adverseEvent)){
+            					nameList.remove(report.getName());
+            				}
+            			}
+            			
+            		}
+            	}
+            }
+            
+            
             //find out the unique report definition names, then load them. 
             Set<String> reportDefinitionNames = new  HashSet<String>();
             for(AdverseEvent ae : map.keySet()){

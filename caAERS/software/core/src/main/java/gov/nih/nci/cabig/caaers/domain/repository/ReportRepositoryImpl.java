@@ -100,15 +100,21 @@ public class ReportRepositoryImpl implements ReportRepository {
         Report report = reportFactory.createReport(reportDefinition, aeReport, baseDate);
         
         //update report version, based on latest amendment. 
-        Report lastAmendedReport = aeReport.findLastAmendedReport(reportDefinition);
-        if(lastAmendedReport != null){
-        	report.getLastVersion().copySubmissionDetails(lastAmendedReport.getLastVersion());
-            
-            String strLastVersionNumber = lastAmendedReport.getLastVersion().getReportVersionId();
-            if(StringUtils.isNumeric(strLastVersionNumber)){
+        Report lastInstantiatedReport = aeReport.findRecentlyInstantiatedReport(reportDefinition);
+        if(lastInstantiatedReport != null){
+        	report.getLastVersion().copySubmissionDetails(lastInstantiatedReport.getLastVersion());
+        	
+        	String strLastVersionNumber = lastInstantiatedReport.getLastVersion().getReportVersionId();
+        	ReportStatus status = lastInstantiatedReport.getStatus();
+            if(status.equals(ReportStatus.COMPLETED) || status.equals(ReportStatus.AMENDED)){
+            	//increase the amendment number.
             	int n = Integer.parseInt(strLastVersionNumber) + 1;
             	report.getLastVersion().setReportVersionId("" + n);
+            }else{
+            	//use the same number
+            	report.getLastVersion().setReportVersionId(strLastVersionNumber);
             }
+           
         }
         
        

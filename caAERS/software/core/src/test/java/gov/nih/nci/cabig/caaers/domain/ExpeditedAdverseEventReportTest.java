@@ -2,12 +2,10 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
@@ -1003,8 +1001,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	assertTrue(1 == aeReport.getManuallySelectedReports().size());
     	report5.setManuallySelected(true);
     	
-    	assertTrue(2 == aeReport.getManuallySelectedReports().size());
-    	assertSame(report5, aeReport.getManuallySelectedReports().get(1));
+    	assertTrue(1 == aeReport.getManuallySelectedReports().size());
     }
     
     

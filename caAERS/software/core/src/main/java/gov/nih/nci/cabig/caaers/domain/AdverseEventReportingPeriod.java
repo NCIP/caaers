@@ -583,6 +583,18 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     }
     
     /**
+     * Will return the {@link ExpeditedAdverseEventReport} associated to this course, identified by id.
+     * @param id
+     * @return
+     */
+    public ExpeditedAdverseEventReport findExpeditedAdverseEventReport(Integer id){
+    	for(ExpeditedAdverseEventReport aeReport : getAeReports()){
+    		if(aeReport.getId().equals(id)) return aeReport;
+    	}
+    	return null;
+    }
+    
+    /**
      * Returns true, if all sponsor reports associated to all the data collections is complete. 
      * @return
      */
