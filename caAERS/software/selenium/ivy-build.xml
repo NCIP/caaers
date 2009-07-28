@@ -1,0 +1,184 @@
+
+<project name="selenium-tests" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property name="parent.dir" value="${basedir}/.." />
+	<property file="${parent.dir}/build.properties" />
+	<property name="test.dir" value="${basedir}/src/test" />
+	<property name="test.resources" value="${test.dir}/resources" />
+	<property name="local.lib.dir" value="${test.dir}/lib/" />
+	<import file="${parent.dir}/common.xml" />
+
+
+
+	<target name="upload-rules">
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10" />
+
+		<!--delete dir="${test.lib.dir}" failonerror="false" verbose="true"/-->
+
+		<antcall target="test" inheritall="false" inheritrefs="false">
+			<param name="test" value="CaaersRulesSeleniumTestCase" />
+
+		</antcall>
+	</target>
+
+
+	<!--
+	<target name="copy-caaers-context">
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/classes" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
+		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes" filter="false" />
+		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib" filter="false" />
+		<echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml">&lt;Context path="/caaers" docBase="${main.src}/../webapp/" reloadable="true" debug="9" /></echo>
+	</target>
+-->
+	<!--=================================================================
+		target :undeploy-caaers
+	==================================================================== -->
+	<!--	<target name="undeploy-caaers">
+		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml" />
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
+	</target>
+-->
+	<!--=================================================================
+		target :deploy-caaers
+	==================================================================== -->
+	<!--	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
+
+	<target name="TomStart">
+		<java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+			<jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}" />
+		</java>
+	</target>
+
+	<target name="TomStop">
+		<java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+			<jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}" />
+			<arg line="stop" />
+		</java>
+	</target>
+	-->
+	<!-- ================================= 
+          target: test-ui              
+         ================================= -->
+	<target name="test-ui" depends="clean-classes-test, resolve,resolve-test, reset-db,upload-rules,test-report" description=" test caaers UI using selenium">
+		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
+			<classpath location="${test.dir}/java" />
+			<classpath refid="${java.class.path}" />
+			<classpath refid="test.classpath"/>
+			<formatter type="plain" />
+			<formatter type="xml" />
+			<test name="CaaersStudyTestCase"/>
+		</junit>
+		<antcall target="shutdown-selenium-server" /-->
+	</target>
+	<!-- ================================= 
+          target: test-ui-local              
+         ================================= -->
+    <target name="test-ui-local" depends="clean-classes-test, resolve,resolve-test, upload-rules,test-report" description=" Target for testing. Do not invoke in normal usage.">
+        
+    </target>
+
+	<!-- ================================= 
+          target: reset-db              
+         ================================= -->
+	<target name="reset-db" description="reset the db to a good baseline dump.">
+
+		<copy file="${test.resources}/lib/jsch-0.1.41.jar" todir="${ant.library.dir}" />
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<!--classpath refid="test.run.classpath" /-->
+			<classpath>
+				<pathelement location="${test.resources}/lib/ant-contrib-0.6.jar" />
+			</classpath>
+		</taskdef>
+
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/stopall.sh" />
+
+		<scp trust="true" todir="oracle:Oracle123!@sbhost02.semanticbits.com:/home/oracle">
+			<fileset dir="${test.resources}">
+				<include name="refreshSelenium.sql" />
+				<include name="refreshSeleniumDB.sh" />
+			</fileset>
+		</scp>
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
+	<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" />
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10" />
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/droprules.sh" />
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10" />
+	</target>
+	<!-- ================================= 
+          target: start-selenium-server              
+         ================================= -->
+	<target name="start-selenium-server" description="description">
+		<condition property="selenium.on" value="true">
+			<http url="http://localhost:4444" errorsbeginat="500" />
+		</condition>
+		<echo message="Status of selenium server: ${selenium.on}" />
+		<if>
+			<not>
+				<equals arg1="${selenium.on}" arg2="true" />
+			</not>
+			<then>
+				<java jar="${local.lib.dir}/selenium-server.jar" fork="true" spawn="true">
+					<arg value="-firefoxProfileTemplate" />
+					<arg value="${test.resources}/firefox-profile" />
+				</java>
+			</then>
+		</if>
+	</target>
+	<!-- ================================= 
+          target: shutdown-selenium-server              
+         ================================= -->
+	<target name="shutdown-selenium-server" description="description">
+		<echo message="shutdown failed" file="selenium-shutdown-result.txt" />
+		<get src="http://localhost:4444/selenium-server/driver/?cmd=shutDown" dest="selenium-shutdown-result.txt" ignoreerrors="true" />
+		<loadfile property="selenium.shutdown.results" srcfile="selenium-shutdown-result.txt" />
+		<echo message="selenium shutdown status: ${selenium.shutdown.results}" />
+	</target>
+	<!-- ================================= 
+          target: test-local              
+         ================================= -->
+	<target name="test-local" description="---> Used for testing build scripts. Do not invoke in normal usage.">
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="exp caaers_qa/caaers_qa Full=y File=caaers_oracle_qa.dmp COMPRESS=Y GRANTS=Y" />
+	</target>
+	<!-- ================================= 
+          target: upload-rules              
+         ================================= -->
+	<target name="upload-rules-old" description="upload rules" depends="resolve, resolve-test,compile-test">
+		<condition property="selenium.on" value="true">
+			<http url="http://${selenium.url}:${selenium.port}" errorsbeginat="500" />
+		</condition>
+
+		<echo message="Selenium is on at http://${selenium.url}:${selenium.port}?: ${selenium.on}" />
+		<fail message="Selenium is not running.">
+			<condition>
+				<not>
+					<equals arg1="${selenium.on}" arg2="true" />
+				</not>
+			</condition>
+		</fail>
+		<property name="win.classpath" refid="test.run.classpath" />
+		<echo message="saruabh classpath is ${win.classpath}" />
+
+		<taskdef name="uploadRules" classname="gov.nih.nci.cabig.caaers.web.selenium.CaaersRulesTestBootstrap">
+			<classpath refid="test.run.classpath" />
+			<classpath>
+				<fileset dir="${test.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+
+		</taskdef>
+		<!--uploadRules rulesdir="${test.resources}/rules" /-->
+		<uploadRules rulesdir="C:\workspace\caaers-trunk\selenium\src\test\resources\rules" />
+	</target>
+</project>
+<!-- TODO 
+1> Run through tests that have failed.
+2> Set up Db data accordingly [possibly using selenium]
+-->
