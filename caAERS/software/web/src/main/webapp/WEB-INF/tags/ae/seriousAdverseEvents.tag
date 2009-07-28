@@ -28,10 +28,12 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
       	<c:if test="${ae.reported}">
       		<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, true)" />
       	</c:if>
+      	
+      	  <!-- cssClass : ${_cssClass } -->
 	      <tr class="${_cssClass}">
 		      <td align="center" class="${_cssClass}">
 		      	<c:if test="${not ae.retired}">
-		      	 <input type="checkbox" ${ae.requiresReporting or not empty ae.report ?'checked' : '' } 
+		      	 <input id="ae-${aeReportId}-${ae.id}" type="checkbox" checked 
 		      		value="${ae.id}" class="ae ae_${aeReportId}" 
 		      		name="ae_${aeReportId}"
 		      	 	onclick="${_jsHandler}" />
@@ -44,7 +46,6 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	${ae.adverseEventTerm.universalTerm}
 		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new.gif" />" /></c:if>
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
-		      	<!-- (${_cssClass }) -->
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		      ${ae.grade.code}:${ae.grade.displayName }
@@ -60,7 +61,9 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		        <c:if test="${not ae.retired}">
-		        <input type="radio" name="ae_${aeReportId}_primary" value="${ae.id}" ${ae.id eq primaryAeId ? 'checked' :''} onclick="updatePrimaryAdverseEvent( ${aeReportId}, '${ae.adverseEventTerm.universalTerm}', '${ae.grade.code}:${ae.grade.displayName }')" />
+		        <input id="ae-${aeReportId}-${ae.id}-primary" type="radio" name="ae_${aeReportId}_primary" 
+		        value="${ae.id}" ${ae.id eq primaryAeId ? 'checked' :''} class="ae_${aeReportId}_primary"
+		        onclick="handlePrimaryAdverseEvent( ${aeReportId},${ae.id},'${ae.adverseEventTerm.universalTerm}', '${ae.grade.code}:${ae.grade.displayName }')" />
 		        </c:if>
 		      </td>
 	      </tr>

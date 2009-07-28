@@ -392,10 +392,25 @@ function findSelectedAdverseEvents(aeReportId){
  /*This function will handle the click associated to ae*/
  function handleAdverseEventSelection(aeReportId, aeId, reportedFlag){
 
+	  //enable /disable primary ae radio button
+	  if(!$("ae-" + aeReportId + "-" + aeId).checked){
+		 var primaryField = $("ae-" + aeReportId + "-" + aeId + "-primary")
+		 primaryField.checked = false;
+		 primaryField.disabled = true;
+	  }else{
+		  var primaryField = $("ae-" + aeReportId + "-" + aeId + "-primary")
+	      primaryField.disabled = false;
+	  }
+			   
+	 
 	 //find all selected adverse events. 
 	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
-	 alert(selectedAEs);
 	 if(selectedAEs.length < 1){
+
+		 //make sure we disable the report button
+		 $('report-btn-' + aeReportId).disabled = true;
+
+	/*	 === not required --
 		 //none of the AEs are selected,so deselect all the report definitions.
 		 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
 			rdObj.deSelect();
@@ -406,8 +421,12 @@ function findSelectedAdverseEvents(aeReportId){
 
 		 //update the display.
 		 updateDisplayTexts(aeReportId);
+
+	*/	 
 			 
 	 }else if(reportedFlag){
+
+		 $('report-btn-' + aeReportId).disabled = false;
 			
 		 //reset every thing, so that we are on the orignal state. 
 		 resetRecommendedOptions(aeReportId);
@@ -491,8 +510,9 @@ function findSelectedAdverseEvents(aeReportId){
  
 //=================================================================================
 /*This function will update the header for primary AE*/	
-function updatePrimaryAdverseEvent(aeReportId, aeTerm, grade){
+function handlePrimaryAdverseEvent(aeReportId, aeId, aeTerm, grade){
 	$('dc-section-' + aeReportId).innerHTML= aeTerm + ", " + grade;
+	$("ae-" + aeReportId + "-" + aeId ).checked = true;
 }
  
 //=================================================================================
@@ -626,6 +646,10 @@ function selectedReportDefinitionsFromGroup(aeReportId, groupName){
 //=================================================================================
 //function will submit the report to server. 
 function forwardToReport(aeReportId, frm){
+
+	if(!validate(aeReportId)){
+		return;
+	}
 	
 	$('activeAeReportId').value = aeReportId;
 
@@ -662,20 +686,44 @@ function validate(aeReportId){
 	var createOrEditAction = false;
 	var noActualAction = true;
 	var onlyWithdrawAction = true;
+	var noPrimaryAE = true;
 
+	var selectedAEs = findSelectedAdverseEvents(aeReportId);
+	if(selectedAEs.length < 1){
+		alert("At least one adverse event should be selected");
+		return false;
+	}
+
+	//check for actual action.
+	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		if(rdObj.getActualAction()){
+			noActualAction = false;
+		}
+	});
 	
 	
 	//make sure, atleast one actual action is there. 
 	if(noActualAction){
+		alert("At least one report should be selected");
+		return false;
 	}
+
+	$$('.ae_' + aeReportId + '_primary').each(function (el){
+		if(el.checked){
+			noPrimaryAE = false;
+		}
+	});
 	
-	if(createOrEditAction){
-		//make sure at least one ae is selected
+	if(noPrimaryAE){
+		alert('At least one primary adverse event should be selected');
+		return false;
 	}
 
 	if(onlyWithdrawAction){
 		//make sure no ae is selected
 	}
+
+	return true;
 }
 
  --></script>
@@ -800,7 +848,7 @@ function validate(aeReportId){
 				primaryAeId="${_primaryAE.id}" />
 				
 			<div class="row" style="text-align:right;">
-		 		<tags:button type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
+		 		<tags:button id="report-btn-${_aeReportId}"  type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
 			</div>
 		</chrome:accordion>
 		<%-- 
@@ -834,7 +882,7 @@ function validate(aeReportId){
 			primaryAeId="${_primaryAE.id}" />
 		
 		<div class="row" style="text-align:right;">
-		 <tags:button type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
+		 <tags:button id="report-btn-${_aeReportId}" type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
 		</div>
 	</chrome:accordion>	
 	</div>

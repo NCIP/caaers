@@ -39,8 +39,8 @@
             
             aesEditor = new ListEditor("ae-section", createAE, "AdverseEventMeddra", {
                 addParameters: [aeReportId],
-                reorderable: true,
-                deletable: true,
+                reorderable: false,
+                deletable: false,
                 minimizeable: false,
                 addCallback: function(nextIndex) {
                 },
@@ -114,6 +114,7 @@
            <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">
+        <%--
         <tags:aeTermQuery isMeddra="true"
   						hideAddMultiple="true"
                        	noBackground="true"
@@ -123,6 +124,7 @@
                        	version="${command.assignment.studySite.study.aeTerminology.meddraVersion.id}"
                        	title="Select New Adverse Event Terms">
     	</tags:aeTermQuery>
+    	--%>
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
                 <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
             </c:forEach>

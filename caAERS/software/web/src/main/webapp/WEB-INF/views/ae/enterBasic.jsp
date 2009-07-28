@@ -271,8 +271,8 @@
                        else el.innerHTML = '';
                    });
                 },
-                reorderable: true,
-                deletable: true, 
+                reorderable: false,
+                deletable: false, 
                 minimizeable: false
             }, "aeReport.adverseEvents")
 
@@ -421,6 +421,7 @@
     <tags:instructions code="instruction_ae_enterBasics" />
   </jsp:attribute>
   <jsp:attribute name="repeatingFields">
+  <%--
   	<tags:aeTermQuery	isMeddra="false"
   						hideAddMultiple="true"
                        	noBackground="true"
@@ -431,6 +432,7 @@
                        	version="${command.assignment.studySite.study.aeTerminology.ctcVersion.id}"
                        	title="Select New Adverse Event Terms">
     </tags:aeTermQuery>
+    --%>
     <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
       <ae:oneAdverseEvent index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
     </c:forEach>
