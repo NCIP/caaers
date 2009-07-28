@@ -11,11 +11,15 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -36,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -78,6 +83,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private EvaluationService evaluationService;
 	private ReportDefinitionDao reportDefinitionDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private ReportRepository reportRepository;
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	
@@ -270,6 +276,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
+		
 		HttpSession session = request.getSession();
 		
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
@@ -284,26 +291,57 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		//populate the reports to un-amend
 		command.populateReportsToUnAmend();
 		
-		//populate the aes- to remove.
-		command.populateAdverseEventsToRemove();
 		
-		//check if this is alone a withdraw ?
-		if(command.getReviewResult().isOnlyActionWithdraw()){
-			//after withdraw stick to current page.
-		}else{
-			//
-		}
-		
+		//create the model to return
+		ModelAndView modelAndView = null;
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
-	    if(command.getReviewResult().getAeReportId() > 0){
-	    	model.put("aeReport", command.getReviewResult().getAeReportId().intValue());
-	    }
-	    model.put("from", "captureAE");
-	    
-	    session.setAttribute("reviewResult", command.getReviewResult());
-	    return new ModelAndView("redirectToExpeditedAeEdit", model);
+		
+		//check if this is alone a withdraw ?
+		if(command.getReviewResult().isOnlyActionWithdraw()){
+			ExpeditedAdverseEventReport aeReport = command.getAdverseEventReportingPeriod().findExpeditedAdverseEventReport(command.getReviewResult().getAeReportId());
+			if(aeReport != null && CollectionUtils.isNotEmpty(command.getReviewResult().getUnwantedAEList())){
+				expeditedAdverseEventReportDao.lock(aeReport);
+				
+				//remove all the deselected aes. 
+				for(Integer aeId : command.getReviewResult().getUnwantedAEList()){
+					AdverseEvent ae = aeReport.findAdverseEventById(aeId);
+					aeReport.getAdverseEvents().remove(ae);
+					
+					ae.clearAttributions();
+					ae.setReport(null);
+				}
+				
+				expeditedAdverseEventReportDao.save(aeReport);
+			}
+			
+			
+			//after withdraw stick to current page.
+			for(Report report : command.getReviewResult().getReportsToWithdraw()){
+				reportRepository.withdrawReport(report);
+			}
+			for(Report report : command.getReviewResult().getReportsToUnAmendList()){
+				reportRepository.unAmendReport(report);
+			}
+			model.put("adverseEventReportingPeriod", command.getAdverseEventReportingPeriod().getId());
+			model.put("addReportingPeriodBinder", "true");
+			model.put("displayReportingPeriod", "true");
+			model.put("_page", "0");
+			model.put("_target2", "2");
+			modelAndView = new ModelAndView("redirectToCaptureAe", model);
+		}else{
+			//continuing to expedited flow
+		    if(command.getReviewResult().getAeReportId() > 0){
+		    	model.put("aeReport", command.getReviewResult().getAeReportId().intValue());
+		    }
+		    model.put("from", "captureAE");
+		    
+		    session.setAttribute("reviewResult", command.getReviewResult());
+			modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
+		}
+		
+		return modelAndView;
 	    
 //	    to be removed....
 	    
@@ -626,6 +664,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	}
 	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
 		return expeditedAdverseEventReportDao;
+	}
+	
+	@Required
+	public void setReportRepository(ReportRepository reportRepository) {
+		this.reportRepository = reportRepository;
 	}
 	
 }

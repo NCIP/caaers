@@ -24,9 +24,9 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
       	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />
-      	<c:set var="_jsHandler" value="javascript:void(0)" />
+      	<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, false)" />
       	<c:if test="${ae.reported}">
-      		<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, this)" />
+      		<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, true)" />
       	</c:if>
 	      <tr class="${_cssClass}">
 		      <td align="center" class="${_cssClass}">
@@ -51,7 +51,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		      	<c:if test="${empty ae.startDate}">
-		      	 <ui:date path="adverseEvents[${aeStatus.index}].startDate" />
+		      	 <ui:date path="evaluationResult.allAeMap[${aeReportId}][${aeStatus.index}].startDate" />
 		      	</c:if>
 		      	<c:if test="${not empty ae.startDate}">
 		      	 <tags:formatDate value="${ae.startDate}" />
@@ -60,7 +60,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      </td>
 		      <td align="center" class="${_cssClass}">
 		        <c:if test="${not ae.retired}">
-		        <input type="radio" name="ae_${aeReportId}_primary" value="${ae.id}" ${ae.id eq primaryAeId ? 'checked' :''} />
+		        <input type="radio" name="ae_${aeReportId}_primary" value="${ae.id}" ${ae.id eq primaryAeId ? 'checked' :''} onclick="updatePrimaryAdverseEvent( ${aeReportId}, '${ae.adverseEventTerm.universalTerm}', '${ae.grade.code}:${ae.grade.displayName }')" />
 		        </c:if>
 		      </td>
 	      </tr>

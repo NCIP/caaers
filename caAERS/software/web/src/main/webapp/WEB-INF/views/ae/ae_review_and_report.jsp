@@ -76,6 +76,7 @@
  var checkImgSrc = '<chrome:imageUrl name="../check.png" />';
  var checkNoImgSrc ='<chrome:imageUrl name="../checkno.gif" />';
  var manualSelectMessage='<spring:message code="instruction_ae_override_confirmation" text="Not found key: instruction_ae_override_confirmation " />';
+ var reportsWithdawnMessage = '<spring:message code="instruction_ae_report_withdrawn" text="Not found key: instruction_ae_report_withdrawn " />';
  var allCssClassNames = ['create', 'edit', 'withdraw', 'amend'];
 
  var theAccordion;
@@ -101,6 +102,14 @@
 	   this.action = action;
 	   this.grpAction = grpAction;
 	   this.otherAction = otherAction;
+
+	   this.trTemplate = '<tr class="#{cssClass}">' + 
+	   '<td align="center"><span><img src="#{imgSrc}"/></span></td>' + 
+	   '<td><span>#{action}</span></td>' +
+  	   '<td><span>#{name}</span></td>' +
+  	   '<td><span>#{status}</span></td>' +
+  	   '<td><span>#{due}</span></td>' +
+       '</tr>';
 	   
    },
    toString : function(){
@@ -130,21 +139,57 @@
 	   
 	   return retVal;
    },
-   /*This function will insert the recomended display rows in the recomended display area*/
-   insertAmendRecomendation : function(){
-	   var trTemplate = '<tr class="forced-tr">' + 
-	   '<td align="center"><span><img src="#{imgSrc}"/></span></td>' + 
-  	   '<td><span>#{name}</span></td>' +
-  	   '<td><span>#{status}</span></td>' +
-  	   '<td><span>#{due}</span></td>' +
-  	   '<td><span>#{action}</span></td>' +
-       '</tr>';
+   /* function will create and insert a recomended row, for this report definition.*/
+   insertRecommendedRow : function(){
+	   	var _status = "";
+		var _due = "";
+		var _action = "";
+		var _checked = this.isChecked();
 
-       var content = trTemplate.interpolate({imgSrc: checkNoImgSrc, name : this.name, status : this.grpStatus, due : '', action : this.action}) + 
-         trTemplate.interpolate({imgSrc: checkImgSrc, name : this.name, status : 'Not Started', due : this.due, action : 'Create'}); 
-       
-       //now insert the content.
-       $('tr-header-'+this.aeReportId).insert({after:content});
+		if(_checked){
+			_status = this.status;
+			_action = this.action;
+			_due = this.due;
+		 }else{
+			if(this.isAnyInGroupChecked()){
+				_status = this.grpStatus;
+				_action = this.grpAction;
+				_due = this.grpDue;
+			}else {
+				_status = this.otherStatus;
+				_action = this.otherAction;
+				_due = this.otherDue;
+			}
+		}
+		
+		//insert a row 
+		if(_action.length > 0){
+			var content = "";
+			if(_action == 'Amend'){
+				if(_checked){
+					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : this.grpStatus, due : this.grpDue, action : this.grpAction});
+					content = content + this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkImgSrc, name : this.name, status : 'No Started', due : _due, action : 'Create'})
+				}else{
+					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : _status, due : _due, action : _action})
+				}
+				
+			}else if(_action == 'Withdraw'){
+				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : _status, due : _due, action : _action})
+			}else {
+				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkImgSrc, name : this.name, status : _status, due : _due, action : _action})
+			}
+
+			var recommendedTRs = $('recommended-reports-dc-' + this.aeReportId).select('.recommended-tr');
+			if(recommendedTRs.length > 0){
+				recommendedTRs.last().insert({after:content});
+			}else{
+				$('tr-header-'+ this.aeReportId).insert({after:content});	
+			}
+			
+			
+		}
+		
+		 
    },
    /*function will change the status & due dates of a single report definition row.*/
    updateDisplayTextOfRow: function(){
@@ -203,12 +248,12 @@
    },
    /*This method will set the object attributes to the values it should have when it is getting amended.*/
    forceAmend : function(){
-	   this.status = "Being ammended";
-	   this.grpStatus = "Being ammended";
+	   this.status = "Being amended";
+	   this.grpStatus = "Being amended";
 	   this.otherStatus = "";
 
 	   this.grpDue = "Submitted";
-	   this.otherStatus = "";
+	   this.otherDue = "";
 	   
 	   this.action = "Amend";
 	   this.grpAction ="Amend";
@@ -303,8 +348,15 @@
 //=================================================================================
  /*This function handles, when someone clicks on  a report definition */	
  function handleReportSelection(aeReportId, rdId){
+	 var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
+	 
+	 //check if there is at least one ae. 
+	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
+	 if(selectedAEs.length == 0){
+		 curRdObject.deSelect();
+		 return;
+	 }
 	//deselect reports of the same group.
-	var curRdObject = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
 	curRdObject.setManualSelectionFlag();
 	deselectOtherReportsOfSameGroup(aeReportId,rdId, curRdObject.group);
 	//update the display text.
@@ -322,91 +374,127 @@ function findDeselectedAdverseEvents(aeReportId){
 	});
 	return aes;
 }
+
+
+//=================================================================================
+/*This function return an array of all the aes that selected , under a datacollection*/
+function findSelectedAdverseEvents(aeReportId){
+	var aes = new Array();
+	$('adverseEvents-dc-' + aeReportId).select('.ae_'+aeReportId).each(function(chkBox){
+		if(chkBox.checked){
+			aes.push(chkBox.value);
+		}
+	});
+	return aes;
+}
  
 //=================================================================================
  /*This function will handle the click associated to ae*/
- function handleAdverseEventSelection(aeReportId, aeId, chkBox){
+ function handleAdverseEventSelection(aeReportId, aeId, reportedFlag){
 
-	 //reset every thing, so that we are on the orignal state. 
-	 resetRecommendedOptions(aeReportId);
-	 resetApplicableReportDefinitions(aeReportId);
-	 resetRecommendedReportDefinitions(aeReportId); 
+	 //find all selected adverse events. 
+	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
+	 alert(selectedAEs);
+	 if(selectedAEs.length < 1){
+		 //none of the AEs are selected,so deselect all the report definitions.
+		 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+			rdObj.deSelect();
+		});	 
+			
+		//clear off all manual selection flag
+		clearManualIndicatorFlag(aeReportId);
 
-		
-	//find the deselected adverse events
-	 var deselectedAEs = findDeselectedAdverseEvents(aeReportId);
-	 var forceAmendList = new Array();
-	 if(deselectedAEs.length > 0){
-		//see if the action of that rd is amend or withdraw. If not then...force amend it.
-		 deselectedAEs.each(function (deselectedAeId){
-			 AE.reportedAEHash.get(deselectedAeId).each(function(rdId){
-				 var rdObj = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
-				 var actualAction = rdObj.getActualAction();
-				 if(actualAction != 'Amend' ){
-				 	forceAmendList.push(rdObj);
-				 }
+		 //update the display.
+		 updateDisplayTexts(aeReportId);
+			 
+	 }else if(reportedFlag){
+			
+		 //reset every thing, so that we are on the orignal state. 
+		 resetRecommendedOptions(aeReportId);
+		 resetApplicableReportDefinitions(aeReportId);
+
+			
+		//find the deselected adverse events
+		 var deselectedAEs = findDeselectedAdverseEvents(aeReportId);
+		 var forceAmendList = new Array();
+		 if(deselectedAEs.length > 0){
+			//see if the action of that rd is amend or withdraw. If not then...force amend it.
+			 deselectedAEs.each(function (deselectedAeId){
+				 AE.reportedAEHash.get(deselectedAeId).each(function(rdId){
+					 var rdObj = AE.applicableReportDefinitionHash.get(aeReportId).get(rdId);
+					 var actualAction = rdObj.getActualAction();
+					 if(actualAction != 'Amend' ){
+					 	forceAmendList.push(rdObj);
+					 }
+				 });
 			 });
+
+		 }
+
+		 forceAmendList.each(function(rdObj){
+			 //force amend
+			 rdObj.forceAmend();
+			 //push it to recomended options.
+			 AE.recommendedOptions.get(aeReportId).push(rdObj.id);
+			 //deselect others from the same group.
+			 deselectOtherReportsOfSameGroup(aeReportId,rdObj.id, rdObj.group);
 		 });
 
-	 }
-
-	 forceAmendList.each(function(rdObj){
-		 //force amend
-		 rdObj.forceAmend();
-		 //push it to recomended options.
-		 AE.recommendedOptions.get(aeReportId).push(rdObj.id);
+		
 		 
-		 //insert the text to display as recomended options.
-		 rdObj.insertAmendRecomendation();
+		 //select recomended reports.
+		 selectRecommendedReports(aeReportId);
 
-		 //deselect others from the same group.
-		 deselectOtherReportsOfSameGroup(aeReportId,rdObj.id, rdObj.group);
-	 });
+		 //clear off all manual selection flag
+		 clearManualIndicatorFlag(aeReportId);
 
-	 //clear off all manual selection flag
-	 clearManualIndicatorFlag(aeReportId);
-	 
-	 //select recomended reports.
-	 selectRecommendedReports(aeReportId);
-	 
+		 //update the display.
+		 updateDisplayTexts(aeReportId);
 
-	 //update the display.
-	 updateDisplayTexts(aeReportId);
+		 var applicableDiv = $('applicable-reports-dc-' + aeReportId);
+		 var headerDiv = $('reports-header-dc-' + aeReportId);
+		 var noRecomendationDiv = $('no-recommended-reports-dc-' + aeReportId);
+		 var recomendationDiv =  $('recommended-reports-dc-' + aeReportId);
+		 var recomendedOptions = AE.recommendedOptions.get(aeReportId);
+		 var reqMsgDiv =  $('rulesMessage-'+ aeReportId + '-required');
+		 var notReqMsgDiv =  $('rulesMessage-'+ aeReportId + '-not-required')
 
-	 var applicableDiv = $('applicable-reports-dc-' + aeReportId);
-	 var headerDiv = $('reports-header-dc-' + aeReportId);
-	 var noRecomendationDiv = $('no-recommended-reports-dc-' + aeReportId);
-	 var recomendationDiv =  $('recommended-reports-dc-' + aeReportId);
-	 var recomendedOptions = AE.recommendedOptions.get(aeReportId);
-	 var reqMsgDiv =  $('rulesMessage-'+ aeReportId + '-required');
-	 var notReqMsgDiv =  $('rulesMessage-'+ aeReportId + '-not-required')
-
-	 //if there are recomended options, header should be visible & noRecomendation should be hidden
-	 if(recomendedOptions.length > 0){
-		 noRecomendationDiv.hide();
-		 notReqMsgDiv.hide();
-		 reqMsgDiv.appear();
-		 headerDiv.appear();
-		 //if applicableDiv is hidden, then only show recomendationDiv
-		 if(!applicableDiv.visible()){
-			 recomendationDiv.appear();
-			 $('dc-' + aeReportId + '-override').show();
-			 $('dc-' + aeReportId + '-restore').hide();
+		 //if there are recomended options, header should be visible & noRecomendation should be hidden
+		 if(recomendedOptions.length > 0){
+			 noRecomendationDiv.hide();
+			 notReqMsgDiv.hide();
+			 reqMsgDiv.appear();
+			 headerDiv.appear();
+			 //if applicableDiv is hidden, then only show recomendationDiv
+			 if(!applicableDiv.visible()){
+				 recomendationDiv.appear();
+				 $('dc-' + aeReportId + '-override').show();
+				 $('dc-' + aeReportId + '-restore').hide();
+			 }else{
+				 $('dc-' + aeReportId + '-override').hide();
+				 $('dc-' + aeReportId + '-restore').show();
+			 }
 		 }else{
-			 $('dc-' + aeReportId + '-override').hide();
-			 $('dc-' + aeReportId + '-restore').show();
+			 if(!applicableDiv.visible()){
+			 	noRecomendationDiv.appear();
+			 }
+			 notReqMsgDiv.appear();
+			 reqMsgDiv.hide();
+			 headerDiv.hide();
+			 recomendationDiv.hide();
 		 }
-	 }else{
-		 if(!applicableDiv.visible()){
-		 	noRecomendationDiv.appear();
-		 }
-		 notReqMsgDiv.appear();
-		 reqMsgDiv.hide();
-		 headerDiv.hide();
-		 recomendationDiv.hide();
 	 }
-
+	
  }
+
+
+ 
+//=================================================================================
+/*This function will update the header for primary AE*/	
+function updatePrimaryAdverseEvent(aeReportId, aeTerm, grade){
+	$('dc-section-' + aeReportId).innerHTML= aeTerm + ", " + grade;
+}
+ 
 //=================================================================================
  /*This function will reset the recommended options*/
  function resetRecommendedOptions(aeReportId){
@@ -415,9 +503,9 @@ function findDeselectedAdverseEvents(aeReportId){
  }
 //=================================================================================
   /*This method will reset the recomended report defs display*/
- function resetRecommendedReportDefinitions(aeReportId){
+ function clearRecommendedReportsDisplay(aeReportId){
 	 //remove every tr having .forced-tr class
-	$('recommended-reports-dc-' + aeReportId).select('.forced-tr').each(function(tr){
+	$('recommended-reports-dc-' + aeReportId).select('.recommended-tr').each(function(tr){
 		tr.remove();
 	}); 
  }
@@ -434,10 +522,15 @@ function findDeselectedAdverseEvents(aeReportId){
 	 AE.applicableReportDefinitionHash.set(aeReportId,newHash);
  }
 //=================================================================================
- //function will change the status & due dates of other report definitions.
+ //function will change the status , recommended display & due dates of report definitions.
  function updateDisplayTexts(aeReportId){
+	 
+	 //remove the recomended display options. 
+	 clearRecommendedReportsDisplay(aeReportId);
+	 
 	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
 		 rdObj.updateDisplayTextOfRow();
+		 rdObj.insertRecommendedRow();
 	 });
 
 	//update the rules engine messages area.
@@ -455,6 +548,7 @@ function showNewDataCollection(){
 	theAccordion.expand($('dc-section-0'));
 }
 //=================================================================================
+/*This function will generate the summary display*/	
 function generateMessages(aeReportId){
 	var processed = new Array();
 	var messages = new Array();
@@ -536,9 +630,30 @@ function forwardToReport(aeReportId, frm){
 	$('activeAeReportId').value = aeReportId;
 
 	//validations
+	
+	//confirm withdrawls
+	 var withdrawnReports = "";
+	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		 if(rdObj.getActualAction() == 'Withdraw'){
+			 if(withdrawnReports.length > 0){
+				 withdrawnReports = withdrawnReports + ",";
+			 }
+			 withdrawnReports = withdrawnReports +  rdObj.name;
+		 }
+	 });
 
-	//submit the form
-	frm.submit();
+	 if(withdrawnReports.length > 0){
+		if(confirm(withdrawnReports + reportsWithdawnMessage)){
+			//submit the form
+			frm.submit();
+		} 
+	
+	 }else{
+		//submit the form
+		frm.submit();
+	 }
+	
+	
 	
 }
 
@@ -547,6 +662,8 @@ function validate(aeReportId){
 	var createOrEditAction = false;
 	var noActualAction = true;
 	var onlyWithdrawAction = true;
+
+	
 	
 	//make sure, atleast one actual action is there. 
 	if(noActualAction){
@@ -571,6 +688,10 @@ function validate(aeReportId){
    <script type="text/javascript">
    
    Event.observe(window, "load", function() {
+
+		//remove the query string from form url
+		removeQueryStringFromForm('command');
+	   
 		//initialize accordion
 		theAccordion = new Accordion("review-content", 1);
 		//initialize the submitted ae datastructure

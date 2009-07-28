@@ -35,6 +35,11 @@
         <property name="contextRelative"><value>true</value></property>
         <property name="url"><value>/pages/ae/edit</value></property>
     </bean>
+	
+	  <bean id="redirectToCaptureAe" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/ae/captureRoutine</value></property>
+    </bean>
     
     <bean id="redirectToSearchInStudyTab" class="org.springframework.web.servlet.view.RedirectView">
         <property name="contextRelative"><value>true</value></property>

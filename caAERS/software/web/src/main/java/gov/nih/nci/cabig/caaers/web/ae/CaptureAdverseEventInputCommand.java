@@ -1186,8 +1186,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     				row.setAction(ActionType.AMEND);
     				row.setGrpAction(ActionType.AMEND);
     				
-    				row.setStatus("Being ammended");
-        			row.setGrpStatus("Being ammended");
+    				row.setStatus("Being amended");
+        			row.setGrpStatus("Being amended");
         			row.setOtherStatus("");
         			
         			row.setGrpDue("Submitted on " + DateUtils.formatDate(wrapper.getSubmittedOn()));
@@ -1312,11 +1312,5 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	}//aeReport 
     }
     
-    /**
-     * Will populate the adverse events that are to be removed. 
-     */
-    public void populateAdverseEventsToRemove(){
-    	
-    }
     
 }

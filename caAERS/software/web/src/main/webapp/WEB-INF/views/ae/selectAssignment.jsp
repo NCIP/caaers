@@ -245,6 +245,10 @@
             rpCreator = new RPCreatorClass('course-input','edit_button');
             rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
             $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
+
+    		//remove the query string from form url
+    		removeQueryStringFromForm('command');
+    		
         })
     </script>
 </head>

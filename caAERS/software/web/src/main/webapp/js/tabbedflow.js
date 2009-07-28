@@ -39,3 +39,14 @@ Event.observe(window, "load", function() {
     if ($("flow-update")) Event.observe("flow-update", "click", AE.tabbedFlowUpdateTarget)
     if ($("flow-next")) Event.observe("flow-next", "click", AE.tabbedFlowDisableTarget)
 })
+
+//updates the forms action, by chopping off the query string in action.
+function removeQueryStringFromForm(frm){
+	var frmObj = $(frm)
+	var _action = frmObj.action;
+	var queryIndex = _action.indexOf('?');
+	if(queryIndex > 0){
+		var _newAction = _action.substring(0, queryIndex);
+		frmObj.action = _newAction;
+	}
+}

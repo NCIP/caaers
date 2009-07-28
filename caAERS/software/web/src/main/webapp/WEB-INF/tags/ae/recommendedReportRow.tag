@@ -29,25 +29,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <table width="100%" class="tablecontent">
     <tr class="header" id="tr-header-${aeReportId}">
       <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
+      <th scope="col" align="left"><b>Action</b> </th>
       <th scope="col" align="center" style="text-align:center;" width="30%">Report</th>
       <th scope="col" align="left" ><b>Status</b> </th>
       <th scope="col" align="left"><b>Due</b> </th>
-      <th scope="col" align="left"><b>Action</b> </th>
     </tr>
-    <c:forEach var="row" items="${recommendedTableRows}">
-     <tr class="recommended-tr">
-    	   <td align="center">
-    	     <span>
-    	   	  <img src="<chrome:imageUrl name="../${( (row.action eq 'Create') or (row.action eq 'Edit')) ?'check.png' : 'checkno.gif'}" />" />
-    	     </span>
-    	   </td>
-	  	   <td><span>${row.reportDefinition.label}</span></td>
-	  	   <td><span>${row.status }</span></td>
-	  	   <td><span>${row.due }</span></td>
-	  	   <td><span>${row.action }</span></td>
-     </tr>
-    </c:forEach>
-    
 </table>	
 </div>   
 
@@ -56,10 +42,10 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <table width="100%" class="tablecontent">
     <tr>
       <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
+      <th scope="col" align="left"><b>Action</b> </th>
       <th scope="col" align="center" style="text-align:center;" width="30%">Report</th>
       <th scope="col" align="left" ><b>Status</b> </th>
       <th scope="col" align="left"><b>Due</b> </th>
-      <th scope="col" align="left"><b>Action</b> </th>
     </tr>
     
  	<c:forEach var="row" items="${applicableTableRows}">
@@ -73,6 +59,12 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	  	   		onclick="handleReportSelection(${aeReportId},${row.reportDefinition.id})"
 	  	   		/> 
 	  	   	</td>
+	  	   <td><span id="${_elID}-reportAction">${row.action }</span>
+	  	   <input type="hidden" id="${_elID}_action" value="${row.action }" />
+	  	   <input type="hidden" id="${_elID}_grpaction" value="${row.grpAction }" />
+	  	   <input type="hidden" id="${_elID}_otheraction" value="${row.otherAction }" />
+	  	   <input type="hidden" id="${_elID}_actualaction" name="${_elID}_actualaction" value="" class="actualAction" />
+	  	   </td>
 	  	   <td>
 	  	   	<span id="${_elID}-reportName">${row.reportDefinition.label}</span>
 	  	   	<input type="hidden" name="rd_${aeReportId}" value="${row.reportDefinition.id}" />
@@ -91,12 +83,6 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	  	   <input type="hidden" id="${_elID}_grpdue" value="${row.grpDue }" />
 	  	   <input type="hidden" id="${_elID}_otherdue" value="${row.otherDue }" />
 	  	   <input type="hidden" id="${_elID}_actualdue" name="${_elID}_actualdue" value="" />
-	  	   </td>
-	  	   <td><span id="${_elID}-reportAction">${row.action }</span>
-	  	   <input type="hidden" id="${_elID}_action" value="${row.action }" />
-	  	   <input type="hidden" id="${_elID}_grpaction" value="${row.grpAction }" />
-	  	   <input type="hidden" id="${_elID}_otheraction" value="${row.otherAction }" />
-	  	   <input type="hidden" id="${_elID}_actualaction" name="${_elID}_actualaction" value="" class="actualAction" />
 	  	   </td>
     </tr>
 	</c:forEach>    

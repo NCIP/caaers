@@ -3,11 +3,6 @@
 
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="rulesMessages" required="true" type="java.util.List" description="The messages from rules engine,  to show" %>
-<div class="row">
-	<div class="rightpanel" style="text-align:right;">
-	 <tags:button type="button" onclick="forwardToReport(${aeReportId}, this.form);" value="Report" color="green" icon="continue" />
-	</div>
-</div>
 <div id="rulesMessage-${aeReportId}" class="rulesMessage">
 
 <div id="rulesMessage-${aeReportId}-required" style="${empty rulesMessages ? 'display:none;' : ''}" >

@@ -109,15 +109,10 @@
  		Event.observe('flow-next', 'click', checkSubmittedAEs);
  		Event.observe('flow-prev', 'click', checkSubmittedAEs);
  		Event.observe('flow-update', 'click', checkSubmittedAEs);
- 		
- 		var url = document.addRoutineAeForm.action;
- 		var stripped_url = '';
- 		var index = -1;
- 		index = url.indexOf("?");
- 		if(index != -1){
-			stripped_url = url.substr(0,index);
-			document.addRoutineAeForm.action = stripped_url;
-		}
+
+
+		//remove the query string from form url
+		removeQueryStringFromForm('command');
 		
  		rpCreator = new RPCreatorClass('detailSection');
 
