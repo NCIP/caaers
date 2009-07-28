@@ -247,16 +247,17 @@ public class AdverseEventReportSerializer {
 		   
 		   Report r = new Report();
 		   r.setId(report.getId());
-		   r.setAssignedIdentifer(report.getAssignedIdentifer());
+		   
 		   r.setSubmissionMessage(report.getSubmissionMessage());
 
 		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
-		   ReportVersion rv = new ReportVersion();
+		   r.setAssignedIdentifer(report.getAssignedIdentifer());
+		  // ReportVersion rv = new ReportVersion();
 
 		   
 		   
-		   rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
-		   rv.setReportVersionId(report.getLastVersion().getReportVersionId());
+		 //  rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
+		 //  rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
 	   		   
 		   return r;
