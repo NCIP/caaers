@@ -217,6 +217,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                 List<SiteResearchStaffRoleType> srsRoleTypes = null;
                 for (SiteResearchStaffType siteResearchStaffType : siteRsTypeList) {
 	              	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+	              	siteResearchStaff.setAssociateAllStudies(siteResearchStaffType.isAssociateAllStudies());
 	              	siteResearchStaff.setEmailAddress(siteResearchStaffType.getEmailAddress());
 	              	siteResearchStaff.setPhoneNumber(siteResearchStaffType.getPhoneNumber());
 	              	siteResearchStaff.setFaxNumber(siteResearchStaffType.getFaxNumber());

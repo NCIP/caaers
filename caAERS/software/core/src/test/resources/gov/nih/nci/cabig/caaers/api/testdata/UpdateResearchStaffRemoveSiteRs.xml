@@ -39,6 +39,7 @@
         				<endDate>2010-01-01</endDate>
         			</ns2:siteResearchStaffRole>
         		</siteResearchStaffRoles>
+        		<associateAllStudies>false</associateAllStudies>
         	</ns2:siteResearchStaff>
         </siteResearchStaffs>
     </ns2:researchStaff>
