@@ -3,17 +3,23 @@
 		<aspect name="gov.nih.nci.cabig.caaers.tools.perf.DomainLayerAspect" />
 		<aspect name="gov.nih.nci.cabig.caaers.tools.perf.WebLayerAspect" />
 		<aspect name="gov.nih.nci.cabig.caaers.tools.perf.DaoLayerAspect" />
+		<aspect name="gov.nih.nci.cabig.caaers.tools.logging.CaaersLoggingAspect"/>
+		<aspect name="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"/>
+		<!--aspect name="gov.nih.nci.cabig.caaers.security.TestAuthenticationAspect"/-->
 		<!-- aspect name="edu.duke.cabig.c3pr.aspects.ajc.InfrastructureLayerAspect" /-->
 		<include within="gov.nih.nci.cabig.caaers..*"/>
 		<exclude within="org.springframework..*" />
 	</aspects>
 
 	<weaver options="-Xreweavable">
-		<include within="gov.nih.nci.cabig.caaers.domain..*" />
-		<include within="gov.nih.nci.cabig.caaers.dao..*" />
-		<include within="gov.nih.nci.cabig.caaers.web..*" />
+		<!-- include within="gov.nih.nci.cabig.caaers.domain..*" /-->
+		<!-- include within="gov.nih.nci.cabig.caaers.dao..*" /-->
+		<!-- include within="gov.nih.nci.cabig.caaers.web..*" /-->
+		<include within="gov.nih.nci.cabig.caaers..*"/>
 		<!-- Do not weave types within the "ajc" pakage  -->
 		<exclude within="gov.nih.nci.cabig.caaers.tools.perf..*" />
+		<!--exclude within="gov.nih.nci.cabig.caaers.security..*" /-->
+		<!--exclude within="gov.nih.nci.cabig.caaers.tools.logging..*" /-->
 		<!--exclude within="gov.nih.nci.cabig.caaers.dao..*" /-->
 
 	</weaver>
