@@ -766,9 +766,9 @@ function validate(aeReportId){
   
    <!--  ALERT -->
    <c:if test="${command.evaluationResult.alertRecommended}">
-    <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
-		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
-		<div style="font-size:20px; margin-bottom:5px;"><tags:message key="instruction_ae_action_recommended" /></div>
+    <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px; margin-left:150px; width:600px;">
+		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:40px;" />
+		<div style="font-size:20px; margin-bottom:5px; margin-top:35px;"><tags:message key="instruction_ae_action_recommended" /></div>
     </div>
    </c:if>
    <!--  ALERT END -->
