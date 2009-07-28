@@ -89,10 +89,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         		
                 AdverseEvent ae = cmd.getAdverseEvents().get(i);
                 if (ae == null) continue;
-        		
+                
+                boolean unRetired = !ae.isRetired();
+                
                 //other MedDRA
-        		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false) :
-        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true);
+        		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
+        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true & unRetired);
         		//only add otherMedDRA on non MedDRA and otherRequired=true
                 if(ae.getAdverseEventTerm().isOtherRequired()){
                 	mainFieldFactory.addField(otherMeddraField);
@@ -104,19 +106,19 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(verbatimField);
                 
                 //grade
-                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", !ae.getSolicited(), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", !ae.getSolicited() & unRetired, createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
                 
                 //startDate
-                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", false);
+                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", false & unRetired);
                 mainFieldFactory.addField(startDateField);
                 
                 //endDate
-                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", false);
+                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", false & unRetired);
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false, createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false & unRetired, createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Event time
@@ -125,7 +127,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
             	amPmOption.put("0", "AM");
             	amPmOption.put("1", "PM");
-            	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
+            	InputField amPmField = InputFieldFactory.createSelectField("type", "",false & unRetired, amPmOption);
             	InputFieldAttributes.setSize(hrField, 2);
             	InputFieldAttributes.setSize(mmField, 2);
             	InputField timeOfEventField =  new CompositeField("eventApproximateTime", new DefaultInputFieldGroup(null,"Event time").addField(hrField).addField(mmField).addField(amPmField));
@@ -136,11 +138,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(eventLocationField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false, createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false & unRetired, createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
-                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", false, createExpectedOptions());
+                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", false & unRetired, createExpectedOptions());
                 mainFieldFactory.addField(expectednessField);
                 
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
