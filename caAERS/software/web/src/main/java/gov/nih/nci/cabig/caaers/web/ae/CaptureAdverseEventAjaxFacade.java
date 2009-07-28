@@ -357,11 +357,18 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	rpAjaxable.setStartDate(rp.getStartDate());
     	rpAjaxable.setEndDate(rp.getEndDate());
     	rpAjaxable.setEpochName(rp.getEpoch().getName());
-    	rpAjaxable.setCycleNumber(rp.getCycleNumber());
+    	
+    	Integer cycleNumber = rp.getCycleNumber();
+    	rpAjaxable.setCycleNumber((cycleNumber != null)? cycleNumber.toString() : "");
 
         if (rp.getTreatmentAssignment() != null) {
-        rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
-    	rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
+        	
+        	String tac = rp.getTreatmentAssignment().getCode();
+        	rpAjaxable.setTacCode((tac == null) ? "" : tac);
+        	
+        	String tacDescription = rp.getTreatmentAssignment().getDescription();
+        	rpAjaxable.setTacDescription((tacDescription != null)? tacDescription : "");
+        	
         } else if (!StringUtils.isEmpty(rp.getTreatmentAssignmentDescription())) {
             rpAjaxable.setTacDescription(rp.getTreatmentAssignmentDescription());
         }
