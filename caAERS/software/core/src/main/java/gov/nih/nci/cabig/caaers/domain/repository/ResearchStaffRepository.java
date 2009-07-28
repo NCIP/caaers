@@ -68,19 +68,17 @@ public class ResearchStaffRepository {
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
     	
-    	if (researchStaff.getEmailAddress() == null) {
-            throw new CaaersSystemException("Email address is required");
-        }
     	if( webSSOAuthentication && StringUtils.isBlank(researchStaff.getLoginId())){
     		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
     	}
     	//update the loginId to email address if this is not webSSO mode
     	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(researchStaff.getLoginId())) {
-    		researchStaff.setLoginId(researchStaff.getEmailAddress());
+    		researchStaff.setLoginId(researchStaff.getLoginId());
     	}
     	MailException mailException = null;
     	try{
-    		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+            // this should be fixed... 
+    		// csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
     	}catch(MailException e){
     		mailException = e;
     	}
@@ -130,13 +128,14 @@ public class ResearchStaffRepository {
         try {
             gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
             List<Group> groups = new ArrayList(userProvisioningManager.getGroups(String.valueOf(csmUser.getUserId())));
+/*
             for (Group group : groups) {
-                UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(
-                        group.getGroupId()).intValue());
+                UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(group.getGroupId()).intValue());
                 if (userGroupType != null) {
                     researchStaff.addUserGroupType(userGroupType);
                 }
             }
+*/
         } catch (CSObjectNotFoundException e) {
             throw new CaaersSystemException("Error while retriving research staff", e);
         }

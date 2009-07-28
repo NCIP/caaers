@@ -32,6 +32,7 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         System.out.println("--- suppressValidation");
+        if (isAjaxRequest(request)) return true;
         return super.suppressValidation(request, command); 
     }
 }

@@ -97,7 +97,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         ResearchStaffCommand researchStaffCommand = (ResearchStaffCommand)command;
         ResearchStaff researchStaff = researchStaffCommand.getResearchStaff();
         
-        ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
+        ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {
             if ("saveRemoteRs".equals(request.getParameter("_action"))) {
@@ -122,10 +122,12 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
             }
+/*
             request.setAttribute("statusMessage", statusMessage);
             modelAndView.getModel().put("flashMessage", statusMessage);
+*/
         }
-        request.setAttribute("_noStdFlashMessage", true);
+//        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
         return modelAndView;

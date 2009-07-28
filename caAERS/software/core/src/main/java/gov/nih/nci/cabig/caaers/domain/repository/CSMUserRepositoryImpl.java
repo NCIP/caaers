@@ -51,31 +51,31 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
         MailException mailException = null;
-        
+
         try {
-			if (researchStaff.getId() == null) {
-			    csmUser = createCSMUser(researchStaff);
-			    sendCreateAccountEmail(researchStaff, changeURL);
-			} else {
-			    csmUser = updateCSMUser(researchStaff);
-			    if(csmUser == null){
-			    	csmUser = createCSMUser(researchStaff);
-			    	sendCreateAccountEmail(researchStaff, changeURL);
-			    }else{
-			    	sendUpdateAccountEmail(researchStaff);
-			    }
-			}
-		} catch (MailException e) {
-			mailException = e;
-		}
+            if (researchStaff.getId() == null) {
+                csmUser = createCSMUser(researchStaff);
+                // sendCreateAccountEmail(researchStaff, changeURL);
+            } else {
+                csmUser = updateCSMUser(researchStaff);
+                if (csmUser == null) {
+                    csmUser = createCSMUser(researchStaff);
+                    sendCreateAccountEmail(researchStaff, changeURL);
+                } else {
+                    // sendUpdateAccountEmail(researchStaff);
+                }
+            }
+        } catch (MailException e) {
+            mailException = e;
+        }
         List<Organization> associatedOrgList = new ArrayList<Organization>();
-    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
-    		associatedOrgList.add(siteRs.getOrganization());
-    	}
+        for (SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()) {
+            associatedOrgList.add(siteRs.getOrganization());
+        }
         createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
-        if(mailException != null) throw mailException;
+        if (mailException != null) throw mailException;
     }
-    
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
     	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
@@ -108,6 +108,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private void createCSMUserGroups(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final User user, List<Organization> allowedOrgs) {
         try {
             List<String> groupIds = new ArrayList<String>();
+            if (user instanceof ResearchStaff)
             for (UserGroupType group : user.getUserGroupTypes()) {
                 groupIds.add(group.getCode().toString());
             }

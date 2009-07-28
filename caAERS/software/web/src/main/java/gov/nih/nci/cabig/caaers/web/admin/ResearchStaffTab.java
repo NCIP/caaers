@@ -53,41 +53,86 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     @Override
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
-        for (SiteResearchStaff rss: command.getResearchStaff().getSiteResearchStaffs()) {
-            // System.out.println(rss.getOrganization().getFullName());
-        }
+        System.out.println("...onBind");
 
-        // populate the user groups correctly.
-        // command.getResearchStaff().getUserGroupTypes().clear();
 /*
-        for (command.getConfigPropertyRepository().getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE) type : ) {
-            if (BooleanUtils.toBoolean(request.getParameter(type.name()))) {
-                command.getResearchStaff().getUserGroupTypes().add(UserGroupType.valueOf(type.name()));
-            }
+        command.getResearchStaff().getUserGroupTypes().clear();
+        for (String roleCode : command.getResearchStaff().getAllRoles()) {
+            command.getResearchStaff().addUserGroupType(UserGroupType.valueOf(roleCode));
         }
 */
+
+        int i = 0;
+        String[][] rsRoles = new String[command.getResearchStaff().getSiteResearchStaffs().size()][];
+/*
+        for (SiteResearchStaff rss: command.getResearchStaff().getSiteResearchStaffs()) {
+            SiteResearchStaff srs = command.getResearchStaff().getSiteResearchStaffs().get(i);
+
+            // getting roles
+            String[] roles = request.getParameterValues(String.format("srRoles[%d]", i));
+            if (roles == null) continue;
+
+            rsRoles[i] = roles;
+
+            List<SiteResearchStaffRole> siteResearchStaffRoles = new ArrayList<SiteResearchStaffRole>();
+
+            for (int j=0; j<roles.length; j++) {
+                SiteResearchStaffRole srsr = new SiteResearchStaffRole();
+                srsr.setRoleCode(roles[j]);
+                srsr.setSiteResearchStaff(srs);
+                srsr.setStartDate(new Date(System.currentTimeMillis()));
+            }
+
+            srs.setSiteResearchStaffRoles(siteResearchStaffRoles);
+            i++;
+        }
+        command.setSelectedRoles(rsRoles);
+
+*/
+        System.out.println("allRSsRoles="+rsRoles);
     }
 
     @Override
     protected void validate(final ResearchStaffCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         HashSet<String> set = new HashSet<String>();
-        // List<UserGroupType> userGroupTypes = command.getResearchStaff().getUserGroupTypes();
 
-/*
-        if (userGroupTypes == null || userGroupTypes.isEmpty()) {
-            errors.reject("USR_002", "You must select at least one user role..!");
+        List<SiteResearchStaff> srs = command.getResearchStaff().getSiteResearchStaffs();
+        for (int i=0; i<srs.size(); i++) {
+            if (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null)
+                errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
         }
-St*/
 
-        if (command == null || command.getResearchStaff().getId() == null) {
-        	String loginId = (StringUtils.isEmpty(command.getResearchStaff().getLoginId())) ? command.getResearchStaff().getEmailAddress() : command.getResearchStaff().getLoginId();
+
+        if (command.getSrs() != null) {
+            if (command.getSrs().size() != command.getResearchStaff().getSiteResearchStaffs().size()) {
+                log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+            } else {
+                byte i = 0;
+                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                    boolean hasRoles = false;
+                    if (srsch == null || srsch.getRsRoles() == null) {
+                        log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+                    } else {
+                        for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
+                            if (srsrch.getChecked()) hasRoles = true;
+                        }
+                    }
+                    if (!hasRoles) errors.reject("USR_003", "");
+                    i++;
+                }
+            }
+        } else {
+            log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+        }
+
+        if (command != null && command.getResearchStaff() != null) {
+        	String loginId = command.getResearchStaff().getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
             if(loginIdExists){
             	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }
-        errors.reject("USR_002", "STOP here on red.");
     }
 
     @Override
@@ -125,6 +170,10 @@ St*/
         }
         InputFieldAttributes.setSize(lastNameField, 30);
         researchStaffFieldGroup.getFields().add(lastNameField);
+
+        InputField emailField = InputFieldFactory.createTextField("researchStaff.emailAddress", "Primary Email", true);
+        InputFieldAttributes.setSize(emailField, 30);
+        researchStaffFieldGroup.getFields().add(emailField);
 
         InputField loginIdField = InputFieldFactory.createTextField("researchStaff.loginId", "Username", true);
         InputFieldAttributes.setSize(loginIdField, 30);
@@ -165,6 +214,7 @@ St*/
         SiteResearchStaff srs = new SiteResearchStaff();
         command.getResearchStaff().addSiteResearchStaff(srs);
         srs.setResearchStaff(command.getResearchStaff());
+        command.addSiteResearchStaffCommandHelper();
 
         ModelAndView modelAndView = new ModelAndView("admin/ajax/researchStaffFormSection");
         // modelAndView.getModel().put("objects", command.getResearchStaff().getSiteResearchStaffs());

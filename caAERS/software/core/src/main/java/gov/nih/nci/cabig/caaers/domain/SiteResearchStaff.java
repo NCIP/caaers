@@ -2,8 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -182,5 +181,18 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 
     public void setAssociateAllStudies(Boolean associateAllStudies) {
         this.associateAllStudies = associateAllStudies;
+    }
+
+    @Transient
+    public Date getActiveDate() {
+        SortedSet<Date> dates = new TreeSet<Date>();
+        if (this.getSiteResearchStaffRoles() == null) return new Date(System.currentTimeMillis());
+        
+        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
+            if (srsr.getStartDate() == null) srsr.setStartDate(new Date(System.currentTimeMillis()));
+            dates.add(srsr.getStartDate());
+        }
+
+        if (dates.size() > 0) return dates.first(); else return null;
     }
 }

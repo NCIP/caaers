@@ -2,12 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
@@ -224,5 +219,12 @@ public abstract class ResearchStaff extends User {
 		return null;
 	}
 	
-	
+    @Transient
+    public Date getActiveDate() {
+        SortedSet<Date> dates = new TreeSet<Date>();
+        for (SiteResearchStaff srs : this.getSiteResearchStaffs()) {
+            dates.add(srs.getActiveDate());
+        }
+        if (dates.size() > 0) return dates.first(); else return null;
+    }
 }

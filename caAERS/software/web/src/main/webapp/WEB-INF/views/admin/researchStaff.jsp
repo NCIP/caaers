@@ -60,9 +60,9 @@
                     <div style="padding-left:20px; border:0px blue dotted;">
                             <div id="_organizationsDIV">
                                 <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
-                                <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="radiation">
+                                <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="rss">
                                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                                    <rs:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
+                                    <researchStaff:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
                                 </c:forEach>
                             </div>
                     </div>
@@ -92,14 +92,17 @@
     }
 
     function postSiteSelected(siteResearchStaffIndex, organizationID) {
-        var _sts;
+        return 0;
+//        var _sts;
+/*
         searchStudy.getObjects("st", "%", organizationID, false, function(values) {
             refreshStudies(values, siteResearchStaffIndex);
         });
+*/
     }
 
     function refreshStudies(values, i) {
-        $('_studies_' + i).innerHTML = values.length;
+        // $('_studies_' + i).innerHTML = values.length;
     }
 
 </script>
