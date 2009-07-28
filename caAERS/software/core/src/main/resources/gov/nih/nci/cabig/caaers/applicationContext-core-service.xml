@@ -158,6 +158,7 @@ This applicationContext contains the definition of the concrete services
 	<bean id="studyParticipantAssignmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator">
 		<property name="studySiteDao" ref="studySiteDao" />
 		<property name="studyDao" ref="studyDao" />
+		<property name="studyRepository" ref="studyRepository" />
 		<property name="organizationRepository" ref="organizationRepository" />
 		<property name="organizationDao" ref="organizationDao" />
 	</bean>

@@ -84,4 +84,10 @@ public class ResearchStaffQuery extends AbstractQuery {
         setParameter(ORGANIZATION, Integer.parseInt(searchString));
     }
     
+    public void filterByAssociateAllStudies(boolean associateAllStudies) {
+        if (associateAllStudies) {
+            andWhere("srs.associateAllStudies = :associateAllStudies");
+            setParameter("associateAllStudies", true);
+        }
+    }
 }

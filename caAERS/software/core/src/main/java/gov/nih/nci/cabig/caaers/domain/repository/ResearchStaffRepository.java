@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -48,7 +49,8 @@ public class ResearchStaffRepository {
     private UserProvisioningManager userProvisioningManager;
     private String authenticationMode;
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
-
+    private StudyRepository studyRepository;
+    
     public List<ResearchStaff> getAll() {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
         return getResearchStaff(researchStaffQuery);
@@ -83,6 +85,13 @@ public class ResearchStaffRepository {
     		mailException = e;
     	}
     	researchStaffDao.save(researchStaff);
+
+		try{
+			studyRepository.associateStudyPersonnel(researchStaff);
+		}catch(Exception e){
+			throw new CaaersSystemException("Failed to associte researchstaff to all studies");
+		}
+    	
         if(mailException != null) throw mailException;
         
     }

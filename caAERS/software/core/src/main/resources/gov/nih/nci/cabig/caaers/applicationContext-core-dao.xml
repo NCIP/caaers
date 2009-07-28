@@ -620,6 +620,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
+        <property name="researchStaffDao" ref="researchStaffDao"></property>
     </bean>
 
 
@@ -652,6 +653,7 @@ This applicationContext contains the definition of the DAOs
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
         <property name="organizationConverterDao" ref="organizationConverterDao"/>
+        <property name="studyRepository" ref="studyRepository"/>
     </bean>
 	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
 		<property name="authenticationMode" ref="authenticationMode"/>

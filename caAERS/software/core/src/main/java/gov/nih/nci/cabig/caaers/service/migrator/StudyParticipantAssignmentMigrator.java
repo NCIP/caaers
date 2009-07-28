@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -29,6 +30,7 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
 	private OrganizationDao organizationDao;
 	private OrganizationRepository organizationRepository;
 	private StudyDao studyDao;
+	private StudyRepository studyRepository;
 	  
 	public void migrate(Participant src, Participant dest,DomainObjectImportOutcome<Participant> outcome) {
 
@@ -68,8 +70,9 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                                         + " \" is nonexistant");
                 	}else{
                 		study.addStudySite(studySite);
-                	//	studyDao.save(study);
-                		studyDao.updateStudyForServiceUseOnly(study);
+                	//	studyDao.updateStudyForServiceUseOnly(study);
+                		//Introduced this call  
+                		studyRepository.save(study);
                 	}
                 }
                 StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);
@@ -120,6 +123,10 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
 
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 	    
 }

@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
@@ -34,13 +33,13 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
@@ -96,6 +95,7 @@ public class CreateStudyAjaxFacade {
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private InvestigatorRepository investigatorRepository;
     private StudyDao studyDao;
+    private StudyRepository studyRepository;
     protected LowLevelTermDao lowLevelTermDao;
     protected CtcTermDao ctcTermDao;
 
@@ -460,7 +460,7 @@ public class CreateStudyAjaxFacade {
 
     private void saveIfAlreadyPersistent(Study study) {
         if (study.getId() != null) {
-            this.studyDao.save(study);
+            this.studyRepository.save(study);
         }
     }
 
@@ -784,6 +784,10 @@ public class CreateStudyAjaxFacade {
 
 	public void setInvestigatorRepository(InvestigatorRepository investigatorRepository) {
 		this.investigatorRepository = investigatorRepository;
+	}
+	@Required
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 
 }

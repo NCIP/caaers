@@ -74,6 +74,7 @@
 		<property name="studyDao" ref="studyDao" />  
 		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
 		<property name="organizationRepository" ref="organizationRepository" />
+		<property name="studyRepository" ref="studyRepository" />
    </bean>
 
    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>

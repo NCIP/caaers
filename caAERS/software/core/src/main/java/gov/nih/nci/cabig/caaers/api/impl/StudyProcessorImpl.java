@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -46,6 +47,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	//Injected through spring
 	private StudyImportServiceImpl studyImportService;
 	private StudyDao studyDao;
+	private StudyRepository studyRepository;
 	private StudyConverter studyConverter;
 	private StudySynchronizer studySynchronizer;
 	private ApplicationContext applicationContext;
@@ -195,7 +197,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			}
 			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 			if(studyImportOutcome.isSavable() && errors.size() == 0){
-				studyDao.save(studyImportOutcome.getImportedDomainObject());
+				try {
+					studyRepository.save(studyImportOutcome.getImportedDomainObject());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				studyServiceResponse.setResponsecode("0");
 				studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 				logger.info("Study Created");
@@ -263,7 +270,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				if(dbStudy != null){
 					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
 					studyImportOutcome.setImportedDomainObject(dbStudy);
-					studyDao.save(studyImportOutcome.getImportedDomainObject());
+					try {
+						studyRepository.save(studyImportOutcome.getImportedDomainObject());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					studyServiceResponse.setResponsecode("0");
 					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
 					logger.info("Study Updated");
@@ -323,4 +335,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		this.messageSource = messageSource;
 	}
 
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
+	}
 }

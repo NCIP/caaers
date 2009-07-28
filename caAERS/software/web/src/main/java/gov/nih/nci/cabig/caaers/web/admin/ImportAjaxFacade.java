@@ -2,9 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -15,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
@@ -56,6 +55,8 @@ public class ImportAjaxFacade {
     private ParticipantDao participantDao;
 
     private StudyDao studyDao;
+    
+    private StudyRepository studyRepository;
     
     protected ResearchStaffRepository researchStaffRepository;
     
@@ -144,7 +145,7 @@ public class ImportAjaxFacade {
         HttpServletRequest request = getHttpServletRequest();
         ImportCommand importCommand = getImportCommand(request);
         for (DomainObjectImportOutcome<Study> importOutcome : importCommand.getImportableStudies()) {
-    		studyDao.save(importOutcome.getImportedDomainObject());
+        	studyRepository.save(importOutcome.getImportedDomainObject());
         }
         return "DONE";
     }
@@ -275,8 +276,6 @@ public class ImportAjaxFacade {
 		this.adverseEventEvaluationService = adverseEventEvaluationService;
 	}
 
-
-
 	public void setResearchStaffRepository(
 			ResearchStaffRepository researchStaffRepository) {
 		this.researchStaffRepository = researchStaffRepository;
@@ -285,5 +284,9 @@ public class ImportAjaxFacade {
 	public void setInvestigatorRepository(
 			InvestigatorRepository investigatorRepository) {
 		this.investigatorRepository = investigatorRepository;
+	}
+
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 }

@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -53,6 +54,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 	private MessageSource messageSource;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
+    private StudyRepository studyRepository;
     private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
@@ -368,5 +370,8 @@ public class ParticipantServiceImpl extends AbstractImportService implements Par
 	}
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+	public void setStudyRepository(StudyRepository studyRepository) {
+		this.studyRepository = studyRepository;
 	}
 }
