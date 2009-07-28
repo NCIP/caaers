@@ -558,6 +558,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 			if (reportListOfSameGroupAndOrg.size() == 0) {
 				return _24HR_NOTIFICATION;
 			} else {
+				setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 				return _24HR_AMENDMENT;
 			}
 		}
@@ -568,15 +569,18 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 			} 
 			// if last submitted report is REPORT 
 			if (lastSubmittedReport != null && lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.REPORT)) {
+				setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 				return _REGULAR_AMENDMENT;
 			// if last submitted report is NOTIFICATION
 			} else if (lastSubmittedReport != null && lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)) {
 				// first COMPLETE the notofication 
 				if (ReportsWithTypeNotificationCnt == 1) {
+					setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 					return _24HR_NOTIFICATION_COMPLETE;
 				}
 				// then AMEND the COMPLETEd report
 				if (ReportsWithTypeNotificationCnt > 1) {
+					setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 					return _24HR_AMENDMENT_COMPLETE;
 				}
 			}
