@@ -191,6 +191,8 @@ public class ReportSubmissionService {
 				try {
 					notifyEmailRecipients(context);
 					report.setStatus(ReportStatus.COMPLETED);
+					//do the post submission
+					doPostSubmitReport(context);
 				 } catch (Exception e) {
 			     	Tracker.logEmailNotification(reportTracking, false, e.getMessage(),nowFactory.getNow());
 					log.error("Error while sending email ", e);
@@ -200,8 +202,7 @@ public class ReportSubmissionService {
 				 
 			}
 			
-			//do the post submission
-			doPostSubmitReport(context);
+
 		} catch (Exception e) {
 			log.error("Error while trying to submit report",e);
 			throw new CaaersSystemException("Unable to submit report", e);
