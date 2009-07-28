@@ -15,7 +15,7 @@ public class AdverseEventReportingPeriodAjaxableDomainObject extends AbstractAja
 	private String epochName;
 	private String tacCode;
 	private String tacDescription;
-	private Integer cycleNumber;
+	private String cycleNumber;
 	
 	public void setName(String name){
 		this.name = name;
@@ -73,11 +73,11 @@ public class AdverseEventReportingPeriodAjaxableDomainObject extends AbstractAja
 		return tacDescription;
 	}
 	
-	public void setCycleNumber(Integer cycleNumber){
+	public void setCycleNumber(String cycleNumber){
 		this.cycleNumber = cycleNumber;
 	}
 	
-	public Integer getCycleNumber(){
+	public String getCycleNumber(){
 		return cycleNumber;
 	}
 }
