@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- CSM configuration is partially here and partially in migrations.
+     Migrations should contain global configuration; anything that will be the same
+     in every caAERS deployment.  This file should contain development data; e.g.,
+     users for testing different roles, etc.
+-->
+
+<dataset>
+		
+	<!--==================== USERS ====================-->
+	<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
+		FIRST_NAME="SYSTEM_ADMIN" LAST_NAME="SYSTEM_ADMIN"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="system_admin@caaers.org"
+		START_DATE="2007-01-27" 
+		UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER USER_ID="-2" LOGIN_NAME="study_cd1"
+		FIRST_NAME="Study" LAST_NAME="Coordinator1"
+		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
+		EMAIL_ID="study_cd1@caaers.org"
+		START_DATE="2007-01-27" 
+		UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER USER_ID="-3" LOGIN_NAME="study_cd2"
+		FIRST_NAME="Study" LAST_NAME="Coordinator2"
+		PASSWORD="wWQipoB72NCq4RawigB4Ig==" 
+		EMAIL_ID="study_cd2@caaers.org"
+		START_DATE="2007-01-27"
+		UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER USER_ID="-4" LOGIN_NAME="participant_cd1"
+		FIRST_NAME="Participant" LAST_NAME="Coordinator1"
+		PASSWORD="OI/ZpclGdfXCOfcyX1L/EA==" 
+		EMAIL_ID="participant_cd1@caaers.org"
+		START_DATE="2007-01-27" 
+		UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER USER_ID="-5" LOGIN_NAME="user_1"
+		FIRST_NAME="User" LAST_NAME="One"
+		PASSWORD="mdzR1TPqWxs="
+		EMAIL_ID="user_1@caaers.org"
+		START_DATE="2007-01-27" 
+		UPDATE_DATE="2007-01-27" />	
+		
+		
+	<!--==================== GRID GROUPS =====================-->
+	
+	
+	<!--==================== GRID GROUP PRIVILEGES =====================-->
+
+		
+		
+	<!--==================== USER TO GROUP MAPPINGS ====================-->
+	
+	<!-- 
+			SYSTEM_ADMIN is in all groups.
+	-->
+	<CSM_USER_GROUP USER_GROUP_ID="-1" USER_ID="-1" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-2" USER_ID="-1" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-3" USER_ID="-1" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-4" USER_ID="-1" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-5" USER_ID="-1" GROUP_ID="-5" />
+
+	<!-- 
+		study_cd1 is in:
+			- caaers_user
+			- caaers_study_cd 
+	-->
+	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-2" GROUP_ID="-4" />
+
+	<!-- 
+		study_cd2 is in:
+			- caaers_user 
+	-->
+	<CSM_USER_GROUP USER_GROUP_ID="-8" USER_ID="-3" GROUP_ID="-2" />
+
+	
+	<!-- 
+		participant_cd1 is in:
+			- caaers_user
+			- caaers_participant_cd 
+	-->
+	<CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-10" USER_ID="-4" GROUP_ID="-5" />
+	
+	
+	<!--==================== USER TO PROTECTION ELEMENT MAPPINGS ==================-->
+	<!-- SYSTEM_ADMIN owns the caAERS Application -->
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-1"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-1" UPDATE_DATE="2007-01-27" />
+
+		
+</dataset>
