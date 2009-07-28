@@ -207,9 +207,9 @@ a#firstlevelnav_listAdverseEventsController {
 	margin-right: -5px;
 }
 a#firstlevelnav_listAdverseEventsController:link { background-position:0px 0px; }
-a#firstlevelnav_listAdverseEventsController:hover { background-position:0px -45px; }
+a#firstlevelnav_listAdverseEventsController:hover, a#firstlevelnav_listAdverseEventsController.fthover { background-position:0px -45px; }
 a#firstlevelnav_listAdverseEventsController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_listAdverseEventsController { background-image: url(../images/blue/adverseEvents_btn_selected.png); }
+.selected a#firstlevelnav_listAdverseEventsController { background-position:0px -135px; }
 a#firstlevelnav_searchStudyController {
 	background-image: url(../images/blue/studies_btn.png);
 	height: 0px;
@@ -220,9 +220,9 @@ a#firstlevelnav_searchStudyController {
 	margin-left: -5px;
 }
 a#firstlevelnav_searchStudyController:link { background-position:0px 0px; }
-a#firstlevelnav_searchStudyController:hover { background-position:0px -45px; }
+a#firstlevelnav_searchStudyController:hover, a#firstlevelnav_searchStudyController.fthover { background-position:0px -45px; }
 a#firstlevelnav_searchStudyController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_searchStudyController { background-image: url(../images/blue/studies_btn_selected.png); }
+.selected a#firstlevelnav_searchStudyController { background-position:0px -135px; }
 a#firstlevelnav_searchParticipantController {
 	background-image: url(../images/blue/subjects_btn.png);
 	height: 0px;
@@ -233,9 +233,9 @@ a#firstlevelnav_searchParticipantController {
 	margin-left: -5px;
 }
 a#firstlevelnav_searchParticipantController:link { background-position:0px 0px; }
-a#firstlevelnav_searchParticipantController:hover { background-position:0px -45px; }
+a#firstlevelnav_searchParticipantController:hover, a#firstlevelnav_searchParticipantController.fthover { background-position:0px -45px; }
 a#firstlevelnav_searchParticipantController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_searchParticipantController { background-image: url(../images/blue/subjects_btn_selected.png); }
+.selected a#firstlevelnav_searchParticipantController { background-position:0px -135px; }
 a#firstlevelnav_createRuleController {
 	background-image: url(../images/blue/rules_btn.png);
 	height: 0px;
@@ -246,9 +246,9 @@ a#firstlevelnav_createRuleController {
 	margin-left: -5px;
 }
 a#firstlevelnav_createRuleController:link { background-position:0px 0px; }
-a#firstlevelnav_createRuleController:hover { background-position:0px -45px; }
+a#firstlevelnav_createRuleController:hover, a#firstlevelnav_createRuleController.fthover { background-position:0px -45px; }
 a#firstlevelnav_createRuleController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_createRuleController { background-image: url(../images/blue/rules_btn_selected.png); }
+.selected a#firstlevelnav_createRuleController { background-position:0px -135px; }
 a#firstlevelnav_reportController {
 	background-image: url(../images/blue/advancedSearch_btn.png);
 	height: 0px;
@@ -259,9 +259,9 @@ a#firstlevelnav_reportController {
 	margin-left: -5px;
 }
 a#firstlevelnav_reportController:link { background-position:0px 0px; }
-a#firstlevelnav_reportController:hover { background-position:0px -45px; }
+a#firstlevelnav_reportController:hover, a#firstlevelnav_reportController.fthover { background-position:0px -45px; }
 a#firstlevelnav_reportController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_reportController { background-image: url(../images/blue/advancedSearch_btn_selected.png); }
+.selected a#firstlevelnav_reportController { background-position:0px -135px; }
 a#firstlevelnav_configurationController {
 	background-image: url(../images/blue/administration_btn.png);
 	height: 0px;
@@ -272,9 +272,9 @@ a#firstlevelnav_configurationController {
 	margin-left: -5px;
 }
 a#firstlevelnav_configurationController:link { background-position:0px 0px; }
-a#firstlevelnav_configurationController:hover { background-position:0px -45px; }
+a#firstlevelnav_configurationController:hover, a#firstlevelnav_configurationController.fthover { background-position:0px -45px; }
 a#firstlevelnav_configurationController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_configurationController { background-image: url(../images/blue/administration_btn_selected.png); }
+.selected a#firstlevelnav_configurationController { background-position:0px -135px; }
 
 
 a#firstlevelnav_advancedSearchController {
@@ -287,9 +287,9 @@ a#firstlevelnav_advancedSearchController {
 	margin-left: -5px;
 }
 a#firstlevelnav_advancedSearchController:link { background-position:0px 0px; }
-a#firstlevelnav_advancedSearchController:hover { background-position:0px -45px; }
+a#firstlevelnav_advancedSearchController:hover, a#firstlevelnav_advancedSearchController.fthover { background-position:0px -45px; }
 a#firstlevelnav_advancedSearchController:active { background-position:0px -90px; }
-.selected a#firstlevelnav_advancedSearchController { background-image: url(../images/blue/advancedSearch_btn_selected.png); }
+.selected a#firstlevelnav_advancedSearchController { background-position:0px -135px; }
 
 
 #sso-form { display: none }

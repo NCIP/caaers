@@ -1,6 +1,6 @@
 
 #floatingTaskbar {
-	background: url(../images/blue/floatingTaskbar_BG.png) repeat-x top;
+	background: transparent url(../images/blue/floatingTaskbar_BG.png) repeat-x top;
 	height: 51px;
 	width: 970px;
 	font-size: 12pt;
@@ -41,11 +41,11 @@
 	margin-right: 2px;
 }
 #floatingTaskbar li.gt4 a:hover {
-	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-image: url(../images/blue/ftsecondlevelnav_hover_gt4.png);
 	background-repeat: no-repeat;
 }
 #floatingTaskbar li.gt4 a:active {
-	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-image: url(../images/blue/ftsecondlevelnav_hover_gt4.png);
 	background-repeat: no-repeat;
 }
 #floatingTaskbar li.lte4 img {
@@ -54,12 +54,12 @@
 }
 #floatingTaskbar li a:hover {
 	color:#fff;
-	background-image: url(../images/blue/secondlevelnav_hover.png);
+	background-image: url(../images/blue/ftsecondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
 #floatingTaskbar li a:active {
-	color:#ffe9a5;
-	background-image: url(../images/blue/secondlevelnav_hover.png);
+	color:#bbcaf0;
+	background-image: url(../images/blue/ftsecondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
 #floatingTaskbar li.lte4 img.imagegt18 {

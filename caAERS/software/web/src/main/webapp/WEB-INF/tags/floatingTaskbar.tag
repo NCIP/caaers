@@ -20,7 +20,7 @@
             ];
 
     var FloatingTaskbar = Class.create({
-        ms      : 100,
+        ms      : 1500,
         hidden  : true,
         initialize: function() {
         },
@@ -50,16 +50,25 @@
         },
 
         checkSubmenu: function() {
-            if (ft.hidden) $('floatingTaskbar').hide();
+            if (ft.hidden) {
+				$('floatingTaskbar').hide();
+				selectedFirstLevel.removeClassName("fthover");
+			}
         }
     });
 
     var ft = new FloatingTaskbar();
-
+	var selectedFirstLevel;
+	
     $$('#sections.tabs li a').each(function(element) {
         Event.observe(element, "mouseover", function() {
+			$$('#sections.tabs li a').each(function(element){
+				element.removeClassName('fthover')
+				});
+			selectedFirstLevel = element;
             ft.show(Element.readAttribute(element, 'index'));
             ft.hidden = false;
+			element.addClassName("fthover");
         });
         Event.observe(element, "mouseout", function() {
             ft.hidden = true;
