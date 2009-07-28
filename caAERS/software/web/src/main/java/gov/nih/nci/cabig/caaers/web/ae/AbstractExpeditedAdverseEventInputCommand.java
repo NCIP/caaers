@@ -451,6 +451,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	ExpeditedAdverseEventReport aeReport = getAeReport();
     	TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
     	treatmentInformation.setTreatmentAssignment(aeReport.getReportingPeriod().getTreatmentAssignment());
+    	treatmentInformation.setTreatmentDescription(aeReport.getReportingPeriod().getTreatmentAssignmentDescription());
     	treatmentInformation.setFirstCourseDate(aeReport.getAssignment().getStartDateOfFirstCourse());
     	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
     	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
