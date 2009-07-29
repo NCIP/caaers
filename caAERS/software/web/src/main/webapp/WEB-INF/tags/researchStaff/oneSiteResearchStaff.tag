@@ -123,7 +123,9 @@
                             <div id="_studies_${index}">
                                 <div class="row">
                                     <div class="label">Associate to all studies:</div>
-                                    <div class="value"><ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies"/></div>
+                                    <div class="value">
+                                        <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

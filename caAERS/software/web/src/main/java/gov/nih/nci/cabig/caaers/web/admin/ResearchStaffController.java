@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -104,6 +105,9 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         short i = 0;
         for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
             SiteResearchStaff srs = researchStaff.getSiteResearchStaffs().get(i);
+
+            // this list is null on CREATE new SiteResearchStaff
+            if (srs.getSiteResearchStaffRoles() == null) srs.setSiteResearchStaffRoles(new ArrayList<SiteResearchStaffRole>());
             srs.getSiteResearchStaffRoles().clear();
             
             for (short j=0; j<srsch.getRsRoles().size(); j++) {

@@ -31,7 +31,7 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
 
         var url = $('command').action + "?subview";
         this._showIndicator($(container.id + "_indicator"));
-        this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator"));}.bind(this));
+        this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this));
     },
 
     formElementsInSection : function(container) {
