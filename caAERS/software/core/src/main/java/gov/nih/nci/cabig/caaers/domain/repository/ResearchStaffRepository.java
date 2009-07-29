@@ -125,20 +125,20 @@ public class ResearchStaffRepository {
 
     @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
+/*
         try {
             gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
             List<Group> groups = new ArrayList(userProvisioningManager.getGroups(String.valueOf(csmUser.getUserId())));
-/*
             for (Group group : groups) {
                 UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(group.getGroupId()).intValue());
                 if (userGroupType != null) {
                     researchStaff.addUserGroupType(userGroupType);
                 }
             }
-*/
         } catch (CSObjectNotFoundException e) {
             throw new CaaersSystemException("Error while retriving research staff", e);
         }
+*/
         return researchStaff;
     }
     

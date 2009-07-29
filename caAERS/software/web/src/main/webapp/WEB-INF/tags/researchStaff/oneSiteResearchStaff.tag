@@ -14,6 +14,8 @@
 <%@attribute name="siteResearchStaff" type="gov.nih.nci.cabig.caaers.domain.SiteResearchStaff" %>
 
 <c:set var="orgName" value="${command.researchStaff.siteResearchStaffs[index].organization}" />
+<c:set var="editMode" value="${command.researchStaff.id > 0}" />
+
 <chrome:division id="siteResearchStaff_${index}" collapsable="true" collapsed="false" enableDelete="true" title="&nbsp;${orgName}">
 
                 <c:if test="${!readOnly || empty orgName}">
@@ -88,12 +90,16 @@
                 <div class="leftpanel">
                     <c:if test="${!readOnly}">
                         <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
-                        <chrome:division id="roles-details" title="${roleSectionTitle}">
+                        <chrome:division id="roles-details" title="${roleSectionTitle}  Roles Size:${fn:length(command.researchStaff.siteResearchStaffs[index].siteResearchStaffRoles)}">
                             <table cellpadding="0" cellspacing="0">
                             <c:forEach items="${command.srs[index].rsRoles}" var="role" varStatus="j">
                                 <tr>
-                                    <td><ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}
-                                    <td><ui:date path="srs[${index}].rsRoles[${j.index}].startDate" />
+                                    <td>
+                                        <c:if test="${!role.checked}"><ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${role.checked}"><ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
+                                    <td>
+                                        <c:if test="${role.checked}"><tags:formatDate value="${role.startDate}" />&nbsp;<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate"></c:if>
+                                        <c:if test="${!role.checked}"><ui:date path="srs[${index}].rsRoles[${j.index}].startDate" /></c:if>
                                 <tr>
                             </c:forEach>
                             </table>
@@ -101,9 +107,11 @@
                     </c:if>
                     <c:if test="${readOnly}">
                         <caaers:message code="researchstaff.details.roles" var="roles"/>
-                        <chrome:division id="roles-details" title="${roles}">
-                            <c:forEach items="${siteResearchStaff.siteResearchStaffRoles}" var="srsr">
-                                <%--1.<${srsr}>--%>
+                        <chrome:division id="roles-details" title="${roles} Roles Size:${fn:length(command.researchStaff.siteResearchStaffs[index].siteResearchStaffRoles)}">
+                            <br>
+                            <c:forEach items="${command.srs[index].rsRoles}" var="role" varStatus="j">
+                                <c:if test="${role.checked}">&nbsp;&nbsp;<ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
+                                <c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.startDate}" /><br></c:if>
                             </c:forEach>
                         </chrome:division>
                     </c:if>

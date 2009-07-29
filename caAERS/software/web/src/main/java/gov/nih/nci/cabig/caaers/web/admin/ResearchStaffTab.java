@@ -62,9 +62,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         }
 */
 
+/*
         int i = 0;
         String[][] rsRoles = new String[command.getResearchStaff().getSiteResearchStaffs().size()][];
-/*
         for (SiteResearchStaff rss: command.getResearchStaff().getSiteResearchStaffs()) {
             SiteResearchStaff srs = command.getResearchStaff().getSiteResearchStaffs().get(i);
 
@@ -87,9 +87,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             i++;
         }
         command.setSelectedRoles(rsRoles);
+        System.out.println("allRSsRoles="+rsRoles);
 
 */
-        System.out.println("allRSsRoles="+rsRoles);
     }
 
     @Override
@@ -126,10 +126,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
         }
 
-        if (command != null && command.getResearchStaff() != null) {
+        // validate only create mode
+        if (command.getResearchStaff().getId() == null) {
         	String loginId = command.getResearchStaff().getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
-            if(loginIdExists){
+            if(loginIdExists) {
             	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
         }

@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 
 import java.util.Date;
 import java.util.List;
@@ -39,6 +42,43 @@ public class ResearchStaffCommand {
 
     public void setSrs(List<SiteResearchStaffCommandHelper> srs) {
         this.srs = srs;
+    }
+
+    public SiteResearchStaffRole getSiteResearchStaffRoleByCode(List<SiteResearchStaffRole> roles, String code) {
+        for (SiteResearchStaffRole srsr: roles) {
+            if (srsr.getRoleCode().equals(code)) return srsr;
+        }
+        return null;
+    }
+
+    public void buildResearchStaffCommandHelpers() {
+        if (this.getSrs() == null) this.setSrs(new ArrayList<SiteResearchStaffCommandHelper>());
+
+        for (SiteResearchStaff srs : getResearchStaff().getSiteResearchStaffs()) {
+            SiteResearchStaffCommandHelper srsch = new SiteResearchStaffCommandHelper();
+            srsch.setRsRoles(new ArrayList<SiteResearchStaffRoleCommandHelper>());
+            
+            List<SiteResearchStaffRole> roles = srs.getSiteResearchStaffRoles();
+
+            for (ConfigProperty cp : this.getAllRoles()) {
+                SiteResearchStaffRole srsr = getSiteResearchStaffRoleByCode(roles, cp.getCode());
+                SiteResearchStaffRoleCommandHelper role = new SiteResearchStaffRoleCommandHelper();
+                role.setRoleCode(cp.getCode());
+                
+                if (srsr != null) {
+                    role.setStartDate(srsr.getStartDate());
+                    role.setEndDate(srsr.getEndDate());
+                    role.setChecked(Boolean.TRUE);
+                } else {
+                    role.setStartDate(new Date(System.currentTimeMillis()));
+                    role.setChecked(Boolean.FALSE);
+                }
+
+                srsch.getRsRoles().add(role);
+            }
+            getSrs().add(srsch);
+        }
+        
     }
 
     public void addSiteResearchStaffCommandHelper() {

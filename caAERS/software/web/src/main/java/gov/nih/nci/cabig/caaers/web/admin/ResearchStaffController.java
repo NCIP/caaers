@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -13,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
 import java.util.List;
@@ -92,11 +95,31 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
     @SuppressWarnings("unchecked")
 	@Override
-    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object researchStaffCommand, final BindException errors) throws Exception {
 
-        ResearchStaffCommand researchStaffCommand = (ResearchStaffCommand)command;
-        ResearchStaff researchStaff = researchStaffCommand.getResearchStaff();
-        
+        ResearchStaffCommand command = (ResearchStaffCommand)researchStaffCommand;
+        ResearchStaff researchStaff = command.getResearchStaff();
+
+        // sync the Sites Roles
+        short i = 0;
+        for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+            SiteResearchStaff srs = researchStaff.getSiteResearchStaffs().get(i);
+            srs.getSiteResearchStaffRoles().clear();
+            
+            for (short j=0; j<srsch.getRsRoles().size(); j++) {
+                if (srsch.getRsRoles().get(j).getChecked()) {
+                    SiteResearchStaffRole srsr = new SiteResearchStaffRole();
+                    srsr.setRoleCode(srsch.getRsRoles().get(j).getRoleCode());
+                    srsr.setStartDate(srsch.getRsRoles().get(j).getStartDate());
+                    srsr.setEndDate(srsch.getRsRoles().get(j).getEndDate());
+                    srsr.setSiteResearchStaff(srs);
+                    srs.addSiteResearchStaffRole(srsr);
+                }
+            }
+            i++;
+        }
+        //
+
         ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {
@@ -122,16 +145,10 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
             }
-/*
-            request.setAttribute("statusMessage", statusMessage);
-            modelAndView.getModel().put("flashMessage", statusMessage);
-*/
         }
-//        request.setAttribute("_noStdFlashMessage", true);
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
         return modelAndView;
-
     }
 
 
@@ -207,5 +224,12 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
     public void setConfigPropertyRepository(ConfigPropertyRepositoryImpl configPropertyRepository) {
         this.configPropertyRepository = configPropertyRepository;
+    }
+
+    @Override
+    protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> cTab) {
+        System.out.println("...shouldSave.");
+        if (isAjaxRequest(request)) return false;
+        return super.shouldSave(request, command, cTab);
     }
 }
