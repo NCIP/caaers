@@ -142,9 +142,9 @@
                     <xsl:value-of select="TreatmentInformation/TreatmentAssignment/code"/>
                 </TREATMENT_ASSIGNMENT_CODE>
             </xsl:if>
-            <!--
-            <OTHER_TREATMENT_ASSIGNMENT></OTHER_TREATMENT_ASSIGNMENT>
-            -->
+           <xsl:if test="TreatmentInformation/treatmentDescription != '' ">
+            <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
+           </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
         <COURSE_INFORMATION>
             <xsl:if test="TreatmentInformation/firstCourseDate != ''">
