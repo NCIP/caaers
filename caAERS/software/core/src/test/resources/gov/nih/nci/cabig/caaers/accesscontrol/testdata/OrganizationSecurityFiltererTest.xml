@@ -21,7 +21,14 @@
     <SITE_RESEARCH_STAFFS
     	id="-9001"
     	site_id="-1004"
-    	researchstaff_id="-1000"/>    
+    	researchstaff_id="-1000"/>
+    	
+    <site_rs_staff_roles
+    	id="-6001"
+    	site_research_staffs_id="-9001"
+    	role_code="caaers_site_cd"
+    	start_date="2008-01-01"
+    />	    
 
     <ORGANIZATIONS
         id="-1001"

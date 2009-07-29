@@ -323,33 +323,15 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 				}
 				
 			}else {
-				xmlSiteResearchStaff.setResearchStaff(xmlResearchStaff);
 				newSiteResearchStaffs.add(xmlSiteResearchStaff);
 			}
 			
 		}
 		
-		//remove the unwanted ones.
-		List<SiteResearchStaff> unwantedSiteResearchStaffs = new ArrayList<SiteResearchStaff>();
-		for(SiteResearchStaff dbSiteResearchStaff : dbResearchStaff.getSiteResearchStaffs()){
-			boolean isPresentInXML = false;
-			for(SiteResearchStaff existingSiteResearchStaff : existingSiteResearchStaffs){
-				if(dbSiteResearchStaff == existingSiteResearchStaff){
-					isPresentInXML = true; 
-					break;
-				}
-			}
-			if(!isPresentInXML){
-				unwantedSiteResearchStaffs.add(dbSiteResearchStaff);
-			}
-		}
-		
-		//throw away the items in unwanted
-		for(SiteResearchStaff unwanted : unwantedSiteResearchStaffs){
-			dbResearchStaff.getSiteResearchStaffs().remove(unwanted);
-		}
 		//add the items in new
-		dbResearchStaff.getSiteResearchStaffs().addAll(newSiteResearchStaffs);
+		for(SiteResearchStaff sRs : newSiteResearchStaffs){
+			dbResearchStaff.addSiteResearchStaff(sRs);
+		}
 	}
 	
 	

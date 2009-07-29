@@ -7,14 +7,22 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffRoleType;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.Resource;
@@ -44,17 +52,18 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		researchStaffRepository = (ResearchStaffRepository)getDeployedApplicationContext().getBean("researchStaffRepository");
 	}
 
-	public void testResearchStaffByLoginIdSave(){
+	public void testResearchStaffByLoginIdSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
-			
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
@@ -79,17 +88,18 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		}		
 	}
 	
-	public void testResearchStaffByEmailSave(){
+	public void testResearchStaffByEmailSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest2.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
-			
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffTest2.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);
 			
 			updatedResearchStaff = fetchResearchStaff("caaers.rock@gmail.com");
@@ -109,18 +119,19 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 	}
 	
 	
-	public void testSiteRsAdd(){
+	public void testSiteRsAdd() throws Exception{
 		
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
-			
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffSiteRsAdd.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
@@ -145,18 +156,19 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 	}
 	
 	
-	public void testSiteRsRemove(){
+	public void testSiteRsRemove() throws Exception{
 		
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffWithTwoSiteRs.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
-			
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffRemoveSiteRs.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveResearchStaff(staff);
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
@@ -164,7 +176,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			assertNotNull(updatedResearchStaff);
 			
 			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
-			assertEquals(1,updatedResearchStaff.getSiteResearchStaffs().size());
+			assertEquals(2,updatedResearchStaff.getSiteResearchStaffs().size());
 			for(SiteResearchStaff siteResearchStaff : updatedResearchStaff.getSiteResearchStaffs()){
 				assertNotNull(siteResearchStaff.getSiteResearchStaffRoles());
 				assertEquals(2, siteResearchStaff.getSiteResearchStaffRoles().size());
@@ -207,5 +219,32 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
+	
+	private void modifyDates(gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff) throws Exception{
+		
+		DatatypeFactory df = DatatypeFactory.newInstance();
+		Calendar gcNow = GregorianCalendar.getInstance();
+		int year = gcNow.get(Calendar.YEAR); 
+		int month = gcNow.get(Calendar.MONTH)+1;
+		int day = gcNow.get(Calendar.DAY_OF_MONTH);
+		int tz = DatatypeConstants.FIELD_UNDEFINED;
+		
+		XMLGregorianCalendar currXmlCal = df.newXMLGregorianCalendarDate(year, month, day, tz);
+		XMLGregorianCalendar furXmlCal = df.newXMLGregorianCalendarDate(year+1, month, day, tz);
+		
+		List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
+		List<SiteResearchStaffType> siteRsTypeList;
+		List<SiteResearchStaffRoleType> siteRsRoleTypeList;
+		for (ResearchStaffType researchStaffType:researchStaffList) {
+			siteRsTypeList = researchStaffType.getSiteResearchStaffs().getSiteResearchStaff();
+			for(SiteResearchStaffType sRsType : siteRsTypeList){
+				siteRsRoleTypeList = sRsType.getSiteResearchStaffRoles().getSiteResearchStaffRole();
+				for(SiteResearchStaffRoleType sRsRoleType : siteRsRoleTypeList){
+					sRsRoleType.setStartDate(currXmlCal);
+					sRsRoleType.setEndDate(furXmlCal);
+				}
+			}
+		}
+	}
 
 }

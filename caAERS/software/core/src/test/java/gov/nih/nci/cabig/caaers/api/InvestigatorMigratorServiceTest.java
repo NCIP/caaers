@@ -8,15 +8,24 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.io.Resource;
@@ -47,16 +56,18 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 
 	}
 
-	public void testInvestigatorSave(){
+	public void testInvestigatorSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveInvestigator(staff);	
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateInvestigatorTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveInvestigator(staff);
 			
 			updatedInvestigator = fetchInvestigator("l1");
@@ -75,16 +86,18 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
 	}
 	
 	
-	public void testSiAdd(){
+	public void testSiAdd() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveInvestigator(staff);
 	
 //			update site investigators data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateSiteInvestigatorsTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
+			modifyDates(staff);
 			svc.saveInvestigator(staff);
 			
 
@@ -138,4 +151,28 @@ public class InvestigatorMigratorServiceTest extends CaaersDbNoSecurityTestCase 
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
+	
+	private void modifyDates(Staff staff) throws Exception{
+		
+		DatatypeFactory df = DatatypeFactory.newInstance();
+		Calendar gcNow = GregorianCalendar.getInstance();
+		int year = gcNow.get(Calendar.YEAR); 
+		int month = gcNow.get(Calendar.MONTH)+1;
+		int day = gcNow.get(Calendar.DAY_OF_MONTH);
+		int tz = DatatypeConstants.FIELD_UNDEFINED;
+		
+		XMLGregorianCalendar currXmlCal = df.newXMLGregorianCalendarDate(year, month, day, tz);
+		XMLGregorianCalendar furXmlCal = df.newXMLGregorianCalendarDate(year+1, month, day, tz);
+		
+		if(staff != null){
+			List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
+			for (InvestigatorType investigatorType:investigatorTypeList) {
+				for(SiteInvestigatorType siType : investigatorType.getSiteInvestigator()){
+					siType.setStartDate(currXmlCal);
+					siType.setEndDate(furXmlCal);
+				}
+			}
+		}
+		
+	}
 }
