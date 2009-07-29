@@ -83,7 +83,11 @@
             opt = new Option(optLabel, optValue);
             selBox.options.add(opt);
         },
-
+		rpCtrlSetValue : function(val){
+        	$A(this.rpCtrl.options).each(function(opt){
+            	if(opt.value == val) opt.selected = true;
+        	});
+        },
         rpCtrlOnChange : function() {
             if (this.rpCtrl.value == -1) {
                 this.displayRPPopup(); //create reporting period flow
@@ -104,10 +108,10 @@
             if (this.rpCtrl.value > 0) {
                 this.rpEditCtrl.show();
                 this.fetchCourseDetails();
-                $('course-details').style.display='';
+                $('course-details').show();
             } else {
                 this.rpEditCtrl.hide();
-                $('course-details').style.display='none';
+                $('course-details').hide();
             }
         },
         
@@ -127,7 +131,9 @@
         	// This method takes care of clearing the contents of the course dropdown.
         	this.rpCtrl.options.length = 0;
         	this.addOptionToSelectBox(this.rpCtrl, 'Please Select', '');
-        	$('course-details').style.display='none';
+        	$('course-details').hide();
+        	$('adverseEventReportingPeriod').value ='';
+        	this.rpCtrl.value='';
         },
         
         populateRPCrlOptions:function(defaultVal){
@@ -147,9 +153,10 @@
 
 					//select the default value
 					if(defaultVal){
-						rpCreator.rpCtrl.value = defaultVal;
+						this.rpCtrlSetValue(defaultVal);
+						this.showOrHideEditRPCtrl();
 					}
-        		});
+        		}.bind(this));
         	}
         },
         
@@ -243,9 +250,9 @@
             updateSelectedDisplay(studyAutocompleterProps);
             initSearchField();
             rpCreator = new RPCreatorClass('course-input','edit_button');
-            rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
             $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
-
+            rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
+           
     		//remove the query string from form url
     		removeQueryStringFromForm('command');
     		
@@ -293,7 +300,8 @@
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
         	<form:hidden path="adverseEventReportingPeriod" />
         	<tags:requiredIndicator/>
-        	<select id="course-input" style="width:20em" value="${command.adverseEventReportingPeriod.id }" class="required">
+        	${command.adverseEventReportingPeriod.id }
+        	<select id="course-input" style="width:20em" class="required">
 				<option value="">Please select</option>
 			</select>
             <tags:button id="edit_button" type="button" value="Edit" color="blue" icon="edit" size="small"/>
