@@ -19,13 +19,17 @@
     <div class="flow-buttons">
         <span class="prev">
             <c:if test="${tabNumber > 0}">
+              <csmauthz:accesscontrol domainObject="${flow.tabs[tabNumber - 1]}" authorizationCheckName="tabAuthorizationCheck">
                 <tags:button type="submit" color="blue" icon="${willSave ? 'Save &amp; ' : ''}Back" id="flow-prev" cssClass="tab${tabNumber - 1}" value="${willSave ? 'Save &amp; ' : ''}Back"/>
+             </csmauthz:accesscontrol>
             </c:if>
         </span>
         <span class="next">
 			<jsp:invoke fragment="customNextButton"/>
             <c:if test="${not isLast  and willSave}">
-                <tags:button type="submit" color="blue" icon="save" id="flow-update" cssClass="tab${tabNumber}" value="Save"/>
+            	<csmauthz:accesscontrol domainObject="${tab}" authorizationCheckName="tabAuthorizationCheck">
+                	<tags:button type="submit" color="blue" icon="save" id="flow-update" cssClass="tab${tabNumber}" value="Save"/>
+                </csmauthz:accesscontrol>
             </c:if>
 			<c:set var="saveText" value="${not empty saveButtonLabel ? saveButtonLabel : 'Save'}" />
             <c:set var="continueLabel" value="${isLast || willSave ? saveText : ''}"/>
@@ -35,7 +39,9 @@
             <c:if test="${not isLast}">
                 <c:set var="continueLabel" value="${continueLabel}Continue"/>
             </c:if>
+            <csmauthz:accesscontrol domainObject="${flow.tabs[tabNumber + 1]}" authorizationCheckName="tabAuthorizationCheck">
             <tags:button type="submit" icon="${continueLabel}" color="green" id="flow-next" value="${continueLabel}"/>
+            </csmauthz:accesscontrol>
         </span>
     </div>
 </div>
