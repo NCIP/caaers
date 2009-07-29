@@ -12,6 +12,7 @@
 <decorator:head/>
 </head>
 <body>
+	<tags:js name="wz_tooltip/wz_tooltip"/>
 	<div class="wide-header"></div>
 <div id="all">
 <standard:header/>

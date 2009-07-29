@@ -22,7 +22,7 @@
 <tags:js name="advancedSearch"/>
 <tags:js name="common_help"/>
 <tags:js name="side-bar/side-bar"/>
-<tags:js name="wz_tooltip"/>
+
 <tags:js name="date"/>
 <tags:js name="D2H_ctxt"/>
 <tags:js name="dropdown_menu"/>
@@ -50,8 +50,16 @@
 <![endif]-->
 
 <script type="text/javascript">
-    AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
-    AE.autocompleterChars = ${configuration.map.autoCompleterChars};
+// hotlinking
+// https://wiki.nci.nih.gov/x/ygqG
+CCTS.appShortName = 'caaers';
+
+// this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE
+var _collapsedELs = new Array();
+
+//for autocompleters to work.
+AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
+AE.autocompleterChars = ${configuration.map.autoCompleterChars};
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>

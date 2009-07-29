@@ -20,6 +20,7 @@
     <tags:js name="tabbedflow"/>
 </head>
 <body>
+<tags:js name="wz_tooltip/wz_tooltip"/>
 <div class="wide-header"></div>
 <!-- ALL DIV start -->
 
