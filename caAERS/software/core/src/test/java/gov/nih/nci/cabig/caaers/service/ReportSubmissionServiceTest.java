@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService.ReportSubmissionContext;
@@ -35,13 +36,14 @@ import org.easymock.classextension.EasyMock;
  * @author Biju Joseph
  *
  */
-public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
+public class ReportSubmissionServiceTest extends AbstractTestCase {
 	
 	ReportSubmissionService service;
  	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
     protected CaaersJavaMailSender caaersJavaMailSender;
     private AdeersReportGenerator adeersReportGenerator;
     private SchedulerService schedulerService;
+    private ReportRepository reportRepository;
     
     private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
@@ -64,9 +66,11 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		caaersJavaMailSender = registerMockFor(CaaersJavaMailSender.class);
 		adeersReportGenerator = registerMockFor(AdeersReportGenerator.class);
 		schedulerService = registerMockFor(SchedulerService.class);
+		reportRepository = registerMockFor(ReportRepository.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		
+		service.setReportRepository(reportRepository);
 		service.setAdeersReportGenerator(adeersReportGenerator);
 		service.setSchedulerService(schedulerService);
 		service.setNowFactory(new NowFactory() {
@@ -191,6 +195,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 
 	public void testDoPostSubmitReport() {
 		
+		EasyMock.expect(reportRepository.createChildReports(report)).andReturn(new ArrayList<Report>());
+		
 		ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
 		
 		assertNull(context.caaersXML);
@@ -212,15 +218,14 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		String xml = "<AdverseEventReport><id>110</id><biju>Joseph</biju></AdverseEventReport>";
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn(xml);
 		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,xml)).andReturn(new String[]{"dummy.pdf"});
-		schedulerService.unScheduleNotification(report);
 		reportDao.flush();
 		reportDao.save(report);
 		expeditedAdverseEventReportDao.save(aeReport);
 		replayMocks();
 		service.submitReport(report);
 		assertNotNull(report.getLastVersion().getContents());
-		assertNull(ae1.getPostSubmissionUpdatedDate());
-		assertNull(ae2.getPostSubmissionUpdatedDate());
+		assertNotNull(ae1.getPostSubmissionUpdatedDate());
+		assertNotNull(ae2.getPostSubmissionUpdatedDate());
 		verifyMocks();
 	}
 
