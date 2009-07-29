@@ -56,7 +56,9 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	  	   		onclick="handleReportSelection(${aeReportId},${row.reportDefinition.id})"
 	  	   		/> 
 	  	   	</td>
-	  	   <td><span id="${_elID}-reportAction">${row.action }</span>
+	  	   <td>
+	  	   	<span id="${_elID}-reportAction">
+	  	   	${row.action }</span>
 	  	   <input type="hidden" id="${_elID}_action" value="${row.action }" />
 	  	   <input type="hidden" id="${_elID}_grpaction" value="${row.grpAction }" />
 	  	   <input type="hidden" id="${_elID}_otheraction" value="${row.otherAction }" />

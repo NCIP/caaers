@@ -738,3 +738,6 @@ div.row.instructions div.value {
 .rulesMessage {
 	float:left;
 }
+.rulesMessageBottom ul, .rulesMessageBottom ul li {
+	list-style-type:none;
+}

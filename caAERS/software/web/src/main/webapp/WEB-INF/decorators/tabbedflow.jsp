@@ -32,8 +32,8 @@
     <chrome:body title="${flow.name}: ${tab.longTitle}">
         
 		<c:if test="${showReportContextMenu}">
-			<div style="position: relative;">
-				<div style="position: absolute; right: 0; top: 0; width: 170px; background-color: lime;">
+			<div style="float:right;">
+				<div>
 					<a href="#" id="contextMenu">Change reporting context</a>
 				</div>
 			</div>

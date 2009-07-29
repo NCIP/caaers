@@ -105,7 +105,7 @@
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
 	   '<td align="center"><span><img src="#{imgSrc}"/></span></td>' + 
-	   '<td><span>#{action}</span></td>' +
+	   '<td><span><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
   	   '<td><span>#{name}</span></td>' +
   	   '<td><span>#{status}</span></td>' +
   	   '<td><span>#{due}</span></td>' +
@@ -216,7 +216,7 @@
 		 } 
 		 $(rowIdPrefix+"-reportStatus").innerHTML = _status;
 		 $(rowIdPrefix+"-reportDue").innerHTML = _due;
-		 $(rowIdPrefix+"-reportAction").innerHTML = _action;
+		 $(rowIdPrefix+"-reportAction").innerHTML = "<img src='<chrome:imageUrl name='../blue/" + _action + "-icon.png' />' alt='' /> " + _action;
 	
 		 $(rowIdPrefix+"_actualstatus").value = _status;
 		 $(rowIdPrefix+"_actualdue").value = _due;
@@ -597,15 +597,15 @@ function generateMessages(aeReportId){
 					});
 				}
 				if(!otherActionAmendOrWithdraw){
-					msg = actualAction + " " + rdObj.name;
+					msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
 				}
 			}else if(actualAction == 'Edit'){
-				msg = actualAction + " " + rdObj.name;	
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;	
 			}else if(actualAction == 'Withdraw'){
-				msg = actualAction + " " + rdObj.name;
-				connector = " replace with";
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
+				connector = " and replace with";
 			}else if(actualAction == 'Amend'){
-				msg = actualAction + " " + rdObj.name;
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
 				connector = " with";
 			}
 
@@ -847,8 +847,12 @@ function validate(aeReportId){
 			<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
 				primaryAeId="${_primaryAE.id}" />
 			<!--  Rules Message Bottom -->
-		 	<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
-			
+			<div class="rulesMessageBottom">
+			 	<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
+				<div class="row" style="text-align:right;">
+			 		<tags:button id="report-btn-${_aeReportId}" type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
+				</div>
+			</div>
 		</chrome:accordion>
 		<%-- 
 		</chrome:division>	
