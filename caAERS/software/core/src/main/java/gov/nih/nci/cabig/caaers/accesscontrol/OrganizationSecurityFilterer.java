@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +43,12 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
 
         
 		Filterer filterer = (Filterer)returnObject;
+		String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_study_cd.getSecurityRoleName()};
+		List<String> rolesToExclude = Arrays.asList(roles);
+		if (!organizationFilteringRequired(grantedAuthorities,rolesToExclude)) {
+			return filterer.getFilteredObject();
+		}
+		
 		Iterator collectionIter = filterer.iterator();
 		
 		while (collectionIter.hasNext()) {
@@ -56,6 +64,19 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
 		
 	}
 
+	public boolean organizationFilteringRequired(GrantedAuthority[] grantedAuthorities, List<String> rolesToExclude) {
+		boolean organizationFilteringRequired = true ; 
+		//GrantedAuthority[] grantedAuthorities = user.getAuthorities();
+		for (int i=0; i<grantedAuthorities.length; i++) {
+        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
+        	if (rolesToExclude.contains(grantedAuthority.toString())) {
+        		return false;
+        	}
+        }	
+		
+		return organizationFilteringRequired;
+	}
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
