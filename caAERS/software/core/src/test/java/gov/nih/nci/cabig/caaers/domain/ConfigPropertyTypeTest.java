@@ -17,7 +17,7 @@ public class ConfigPropertyTypeTest extends TestCase {
 	}
 
 	public void testGetDisplayName() {
-		assertEquals("Report Definition Type", ConfigPropertyType.REPORT_GROUP.getDisplayName());
+		assertEquals("Report Definition Group", ConfigPropertyType.REPORT_GROUP.getDisplayName());
 	}
 
 }
