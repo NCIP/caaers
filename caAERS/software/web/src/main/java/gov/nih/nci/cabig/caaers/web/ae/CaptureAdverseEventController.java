@@ -278,6 +278,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		
 		HttpSession session = request.getSession();
+		session.removeAttribute("reviewResult");
 		
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
 
@@ -301,35 +302,39 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		//check if this is alone a withdraw ?
 		if(command.getReviewResult().isOnlyActionWithdraw()){
 			ExpeditedAdverseEventReport aeReport = command.getAdverseEventReportingPeriod().findExpeditedAdverseEventReport(command.getReviewResult().getAeReportId());
-			if(aeReport != null && CollectionUtils.isNotEmpty(command.getReviewResult().getUnwantedAEList())){
+			if(aeReport != null){
 				expeditedAdverseEventReportDao.lock(aeReport);
-				
-				//remove all the deselected aes. 
-				for(Integer aeId : command.getReviewResult().getUnwantedAEList()){
-					AdverseEvent ae = aeReport.findAdverseEventById(aeId);
-					aeReport.getAdverseEvents().remove(ae);
+				if(CollectionUtils.isNotEmpty(command.getReviewResult().getUnwantedAEList())){
 					
-					ae.clearAttributions();
-					ae.setReport(null);
+					
+					//remove all the deselected aes. 
+					for(Integer aeId : command.getReviewResult().getUnwantedAEList()){
+						AdverseEvent ae = aeReport.findAdverseEventById(aeId);
+						aeReport.getAdverseEvents().remove(ae);
+						
+						ae.clearAttributions();
+						ae.setReport(null);
+					}
+					
+					expeditedAdverseEventReportDao.save(aeReport);
 				}
+
 				
-				expeditedAdverseEventReportDao.save(aeReport);
+				//after withdraw stick to current page.
+				for(Report report : command.getReviewResult().getReportsToWithdraw()){
+					reportRepository.withdrawReport(report);
+				}
+				for(Report report : command.getReviewResult().getReportsToUnAmendList()){
+					reportRepository.unAmendReport(report);
+				}
+				model.put("adverseEventReportingPeriod", command.getAdverseEventReportingPeriod().getId());
+				model.put("addReportingPeriodBinder", "true");
+				model.put("displayReportingPeriod", "true");
+				model.put("_page", "0");
+				model.put("_target2", "2");
+				modelAndView = new ModelAndView("redirectToCaptureAe", model);
 			}
 			
-			
-			//after withdraw stick to current page.
-			for(Report report : command.getReviewResult().getReportsToWithdraw()){
-				reportRepository.withdrawReport(report);
-			}
-			for(Report report : command.getReviewResult().getReportsToUnAmendList()){
-				reportRepository.unAmendReport(report);
-			}
-			model.put("adverseEventReportingPeriod", command.getAdverseEventReportingPeriod().getId());
-			model.put("addReportingPeriodBinder", "true");
-			model.put("displayReportingPeriod", "true");
-			model.put("_page", "0");
-			model.put("_target2", "2");
-			modelAndView = new ModelAndView("redirectToCaptureAe", model);
 		}else{
 			//continuing to expedited flow
 		    if(command.getReviewResult().getAeReportId() > 0){
