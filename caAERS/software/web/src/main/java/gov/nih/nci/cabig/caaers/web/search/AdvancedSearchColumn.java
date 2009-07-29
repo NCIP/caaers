@@ -5,12 +5,22 @@ public class AdvancedSearchColumn{
 	
 	private Object value;
 	
+	private Object lengthyValue;
+	
 	public void setValue(Object value){
 		this.value = value;
 	}
 	
 	public Object getValue(){
 		return value;
+	}
+	
+	public void setLengthyValue(Object lengthyValue){
+		this.lengthyValue = lengthyValue;
+	}
+	
+	public Object getLengthyValue(){
+		return lengthyValue;
 	}
 	
 	public void setColumnHeader(String columnHeader){

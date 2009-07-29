@@ -77,7 +77,12 @@
 
 <%-- This is for handling Date type input --%>
 <c:if test="${uiAttribute.fieldType eq 'date-field' }">
-	<input id="criteriaParameters[${index }].value" class="date validate-DATE" type="text" value="" name="criteriaParameters[${index }].value"/>
+	<c:if test="${criteriaParameter == null}">
+		<input id="criteriaParameters[${index }].value" class="date validate-DATE" type="text" value="" name="criteriaParameters[${index }].value"/>
+	</c:if>
+	<c:if test="${criteriaParameter != null}">
+		<input id="criteriaParameters[${index }].value" class="date validate-DATE" type="text" value="${criteriaParameter.value }" name="criteriaParameters[${index }].value"/>
+	</c:if>
 	<a id="criteriaParameters[${index }].value-calbutton" style="cursor:pointer;">
     	<img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/>
 	</a>

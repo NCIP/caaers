@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<tags:dwrJavascriptLink objects="advSearch"/>
-		<script>
+		<script type="text/javascript">
 			var advancedSearchHelper = new AdvancedSearchHelper(advSearch);
 			
 			function acCreate(mode) {
@@ -44,17 +44,75 @@
                 	}
             	}
         	}
+        
+        function updateSearchTargetObject(){
+			$('criteria-section-id').style.display = 'none';
+			$('targetObjectProgessIndicator').style.display = '';
+			advSearch.updateSearchTargetObject($('target-object-id').value , function(ajaxOutput) {
+				$('criteria-section-id').innerHTML = ajaxOutput.htmlContent;
+				//new Insertion.Top($('criteria-section-id'), ajaxOutput.htmlContent);
+				$('criteria-section-id').style.display='';
+				$('targetObjectProgessIndicator').style.display = 'none';
+			});
+		}
+		
+		function updateAttribute(index){
+		
+			var attributeId = 'attribute-' + index;
+			var attributeValue = $(attributeId).value;
+			var selectedIndex = $(attributeId).selectedIndex;
+			var attributeText = $(attributeId)[selectedIndex].text; 
+			var operatorSelectId = 'operator-' + index;
+			var selectElement = $(operatorSelectId);
+			var valueTdId = 'value-td-' + index;
+			selectElement.options.length = 0;
+			selectElement.options[0] = new Option('Please select', 'none');
+				
+			// This is if the value is set to 'Please select'
+			if(attributeValue == 'none'){
+				$(valueTdId).innerHTML = '';		
+			}else{
+				advSearch.updateAttribute(attributeValue, attributeText, index, function(ajaxOutput){
+					// here we have to update the dropdown options of the respective operator dropdown with the the values in ajaxOutput
+					// and the html content of the value td should be updated with the htmlContent of ajaxOutput
+					for(i = 0; i< ajaxOutput.objectContent.length; i++){
+						var operator = ajaxOutput.objectContent[i];
+						selectElement.options[i+1] = new Option(operator.displayUri, operator.name);
+					}
+					$(valueTdId).innerHTML = '';
+					new Insertion.Top($(valueTdId), ajaxOutput.htmlContent);
+				});
+			}
+		}
+		
+		function updateOperator(index){
+			//alert('update operator');
+		}
+		
+		function addCriteria(dependentObjectDisplayName){
+			advSearch.addCriteria(dependentObjectDisplayName, function(ajaxOutput){
+				var blankRowId = dependentObjectDisplayName + '-blank-row';
+				$(blankRowId).insert({before: ajaxOutput.htmlContent});
+			});	
+		}
+	
+		function deleteCriteria(index){
+			advSearch.deleteCriteria(index, function(ajaxOutput){
+				var rowId = 'criteria-' + index;
+				$(rowId).style.display = 'none';
+			});
+		}
+		
 		</script>
 	</head>
 	<body>
 		<tags:tabForm tab="${tab}" flow="${flow}" formName="advancedSearchForm" hideBox="true">
 			<jsp:attribute name="singleFields">
 	      		<input type="hidden" name="_action" id="_action" value="">
-	      		
 	      		<c:if test="${command.searchTargetObject == null}">
     				<div>
 					   	<b>Search for:</b> 
-					   		<SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
+					   		<SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:updateSearchTargetObject();">
 								<OPTION selected value="none">Please select</OPTION>
 								<c:forEach items="${command.advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
 									<OPTION value="${searchTargetObject.className }">${searchTargetObject.displayName }</OPTION>
@@ -69,7 +127,7 @@
 				<c:if test="${command.searchTargetObject != null }">
 					<div>
 					   	<b>Search for:</b>
-					   	<SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:advancedSearchHelper.updateSearchTargetObject();">
+					   	<SELECT style="width:200px;" id="target-object-id" name="actions" onChange="javascript:updateSearchTargetObject();">
 							<OPTION selected value="none">Please select</OPTION>
 							<c:forEach items="${command.advancedSearchUi.searchTargetObject}" var="searchTargetObject" varStatus="tartgetObjectStatus">
 								<OPTION value="${searchTargetObject.className }" <c:if test="${searchTargetObject.className == command.searchTargetObject.className }"> selected </c:if>>${searchTargetObject.displayName }</OPTION>
@@ -81,7 +139,15 @@
 					<div id="criteria-section-id">
 						<c:forEach items="${command.searchTargetObject.dependentObject}" varStatus="status" var="dependentObject">
 							<c:if test="${dependentObject.hidden == false}">
-								<chrome:division title="${dependentObject.displayName} search criteria" collapsable="true" collapsed="${dependentObject.className != command.searchTargetObject.className}" id="${dependentObject.displayName}">
+								<c:set var="expandChromeDivision" value="true"/>
+								<c:forEach items="${command.criteriaParameters}" var="p" varStatus="parameterStatus">
+									<c:if test="${p.objectName != null && p.attributeName != null && p.predicate != null && p.value != null && !p.deleted}">
+										<c:if test="${p.dependentObjectName == dependentObject.className}">
+											<c:set var="expandChromeDivision" value="false"/>
+										</c:if>
+									</c:if>
+								</c:forEach>
+								<chrome:division title="${dependentObject.displayName} search criteria" collapsable="true" collapsed="${expandChromeDivision}" id="${dependentObject.displayName}">
 									<div class="eXtremeTable" id="${dependentObject.displayName}-div-id" style="text-align:left">
 										<table width="100%" border="0" cellspacing="0" class="tableRegion">
 											<tr align="center" class="label">
@@ -97,8 +163,8 @@
 											</c:forEach> 
 											<tr id="${dependentObject.displayName }-blank-row"/>
 										</table>
-										<br>
-										<tags:button size="small" color="blue" icon="add" id="${dependentObject.displayName}-add-button" type="button" value="Add"  onclick="javascript:advancedSearchHelper.addCriteria('${dependentObject.displayName }');" />
+										<tags:button size="small" color="blue" icon="add" id="${dependentObject.displayName}-add-button" type="button" value="Add"  onclick="javascript:addCriteria('${dependentObject.displayName }');" />
+										<br><br><br>
 									</div>
 								</chrome:division>
 							</c:if>

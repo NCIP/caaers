@@ -17,8 +17,8 @@
 					<search:oneCriteriaRow index="${status.index}" dependentObject="${dependentObject}" searchTargetObject="${command.searchTargetObject}"/> 
 					<tr id="${dependentObject.displayName }-blank-row"/>
 				</table>
-				<br>
-				<tags:button size="small" color="blue" icon="add" id="${dependentObject.displayName}-add-button" type="button" value="Add"  onclick="javascript:advancedSearchHelper.addCriteria('${dependentObject.displayName }');" />
+				<tags:button size="small" color="blue" icon="add" id="${dependentObject.displayName}-add-button" type="button" value="Add"  onclick="javascript:addCriteria('${dependentObject.displayName }');" />
+				<br><br><br>
 			</div>
 		</chrome:division>
 	</c:if>

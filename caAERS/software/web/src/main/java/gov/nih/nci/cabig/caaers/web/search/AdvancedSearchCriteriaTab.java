@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +26,8 @@ import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
  * @author Sameer Sawant
  */
 public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends WorkFlowTab<T> {
-	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	public static final String AJAX_ACTION_PARAMETER = "ajax_action";
+	private static final String AJAX_SUBVIEW_PARAMETER = "subview";
+	private static final String AJAX_ACTION_PARAMETER = "ajax_action";
 	
 	public AdvancedSearchCriteriaTab() {
         super("Enter criteria", "Enter criteria", "search/advancedSearch");
@@ -97,6 +101,7 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 					errors.reject("ASC_004", "Incomplete criterion, missing value");
 			}
 		}
+		
     }
 	
 	@Override
@@ -110,31 +115,37 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 		//However there is an issue here as the user can reach the criteria tab by clicking on the saved search but change the criteria
 		//on the criteria page, then what should the view page show ? the saved view or new view as per the criteria.
 
-		//Reset the value of selected to false for all the dependentObjects and their attributes- 
-		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-			dObject.setInView(false);
-			for(ViewColumn viewColumn: dObject.getViewColumn())
-				viewColumn.setSelected(false);
-		}
-		//Select the targetObject in the view.
-		command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
-		for(ViewColumn viewColumn: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
-			viewColumn.setSelected(true);
-		
-		//Select all the dependentObject that are hidden and set their viewColumns selected attribute to true
-		for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
-			if(dObject.isHidden())
-				for(ViewColumn vCol: dObject.getViewColumn())
-					vCol.setSelected(true);
-		}
-		
-		//Select all the dependentObjects involved in the criteria
-		for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
-			if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted()){
-				DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
-				dObject.setInView(true);
+		//Reset the value of selected to false for all the dependentObjects and their attributes-
+		Set<String> paramNames = request.getParameterMap().keySet();
+        boolean fromSearchListPage = false;
+        fromSearchListPage = paramNames.contains("runSavedQuery");
+        
+		if(!fromSearchListPage){
+			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+				dObject.setInView(false);
 				for(ViewColumn viewColumn: dObject.getViewColumn())
-					viewColumn.setSelected(true);
+					viewColumn.setSelected(false);
+			}
+			//Select the targetObject in the view.
+			command.getSearchTargetObject().getDependentObject().get(0).setInView(true);
+			for(ViewColumn viewColumn: command.getSearchTargetObject().getDependentObject().get(0).getViewColumn())
+				viewColumn.setSelected(true);
+		
+			//Select all the dependentObject that are hidden and set their viewColumns selected attribute to true
+			for(DependentObject dObject: command.getSearchTargetObject().getDependentObject()){
+				if(dObject.isHidden())
+					for(ViewColumn vCol: dObject.getViewColumn())
+						vCol.setSelected(true);
+			}
+		
+			//Select all the dependentObjects involved in the criteria
+			for(AdvancedSearchCriteriaParameter p: command.getCriteriaParameters()){
+				if(p.getAttributeName()!= null && !p.getAttributeName().equals("") && !p.getAttributeName().equals("none") && !p.isDeleted()){
+					DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(command.getSearchTargetObject(), p.getObjectName());
+					dObject.setInView(true);
+					for(ViewColumn viewColumn: dObject.getViewColumn())
+						viewColumn.setSelected(true);
+				}
 			}
 		}
 	}

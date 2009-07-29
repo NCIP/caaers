@@ -234,12 +234,39 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
+				<lengthy>true</lengthy>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</name>
 				<role-name>study</role-name>
 				<table-alias>TreatmentAssignment_xx</table-alias>
 				<joining-condition>Study_xx = TreatmentAssignment_xx.study</joining-condition>
+			</ui-association>
+		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.Organization</class-name>
+			<display-name>Organization</display-name>
+			<table-alias>Organization_xx</table-alias>
+			<hidden>true</hidden>
+			<view-column>
+				<column-attribute>name</column-attribute>
+				<column-title>Organization name</column-title>
+			</view-column>
+			<view-column>
+				<column-attribute>nciInstituteCode</column-attribute>
+				<column-title>Organization nci code</column-title>
+			</view-column>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
+				<role-name>study</role-name>
+				<table-alias>StudyOrganization_xx</table-alias>
+				<joining-condition>Study_xx = StudyOrganization_xx.study</joining-condition>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.Organization</name>
+				<role-name>organization</role-name>
+				<table-alias>Organization_xx</table-alias>
+				<joining-condition>StudyOrganization_xx.organization = Organization_xx</joining-condition>
 			</ui-association>
 		</dependent-object>
 		<dependent-object>
@@ -803,7 +830,7 @@
 				<role-name>assignment</role-name>
 				<table-name>participant_assignments</table-name>
 				<table-alias>StudyParticipantAssignment_xx</table-alias>
-				<joining-condition>AdverseEventReportingPeriod_xx.assigment = StudyParticipantAssignment_xx</joining-condition>
+				<joining-condition>AdverseEventReportingPeriod_xx.assignment = StudyParticipantAssignment_xx</joining-condition>
 			</ui-association>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.Participant</name>
@@ -1020,10 +1047,6 @@
 				<column-title>Name</column-title>
 			</view-column>
 			<view-column>
-				<column-attribute>amendable</column-attribute>
-				<column-title>Amendable</column-title>
-			</view-column>
-			<view-column>
 				<column-attribute>organization.name</column-attribute>
 				<column-title>Organization</column-title>
 			</view-column>
@@ -1189,6 +1212,7 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
+				<lengthy>true</lengthy>
 			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
@@ -1224,10 +1248,6 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 			</ui-attribute>
-			<view-column>
-				<column-attribute>investigationalAgentAdministered</column-attribute>
-				<column-title>Investigational agent administered</column-title>
-			</view-column>
 			<ui-association>
 				<name>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</name>
 				<role-name>aeReport</role-name>
@@ -1367,6 +1387,7 @@
 			<view-column>
 				<column-attribute>eventDescription</column-attribute>
 				<column-title>Event description</column-title>
+				<lengthy>true</lengthy>
 			</view-column>
 			<view-column>
 				<column-title>Event present status</column-title>

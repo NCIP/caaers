@@ -13,7 +13,7 @@
 <c:if test="${criteriaParameter == null}">
 	<tr id="criteria-${index }">
 		<td align="center" id="attribute-td-${index }">
-			<SELECT style="width:200px;" id="attribute-${index }" onChange="javascript:advancedSearchHelper.updateAttribute(${index });"
+			<SELECT style="width:200px;" id="attribute-${index }" onChange="javascript:updateAttribute(${index });"
 					name="criteriaParameters[${index }].attributeName">
 				<OPTION selected value="none">Please select</OPTION>
 				<c:forEach items="${dependentObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
@@ -31,7 +31,7 @@
 			</SELECT> 
 		</td>
 		<td align="center" id="operator-td-${index }">
-			<select style="width:200px;" id="operator-${index}" onChange="javascript:advancedSearchHelper.updateOperator(${index });"
+			<select style="width:200px;" id="operator-${index}" onChange="javascript:updateOperator(${index });"
 					name="criteriaParameters[${index }].predicate">
 				<option selected value="none">Please select</option>
 			</style>
@@ -39,14 +39,14 @@
 		<td align="center" id="value-td-${index }">
 		</td>
 		<td align="center" id="delete-td-${index }">
-			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:advancedSearchHelper.deleteCriteria(${index });"/>
+			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
 		</td>
 	</tr>
 </c:if>
 <c:if test="${criteriaParameter != null}">
 	<tr id="criteria-${index }">
 		<td align="center" id="attribute-td-${index }">
-			<SELECT style="width:200px;" id="attribute-${index }" onChange="javascript:advancedSearchHelper.updateAttribute(${index });"
+			<SELECT style="width:200px;" id="attribute-${index }" onChange="javascript:updateAttribute(${index });"
 					name="criteriaParameters[${index }].attributeName">
 				<OPTION selected value="none">Please select</OPTION>
 				<c:forEach items="${dependentObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
@@ -74,7 +74,7 @@
 			</SELECT> 
 		</td>
 		<td align="center" id="operator-td-${index }">
-			<select style="width:200px;" id="operator-${index}" onChange="javascript:advancedSearchHelper.updateOperator(${index });"
+			<select style="width:200px;" id="operator-${index}" onChange="javascript:updateOperator(${index });"
 					name="criteriaParameters[${index }].predicate">
 				<option selected value="none">Please select</option>
 				<c:forEach items="${dependentObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
@@ -130,7 +130,7 @@
 			</c:if>
 		</td>
 		<td align="center" id="delete-td-${index }">
-			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:advancedSearchHelper.deleteCriteria(${index });"/>
+			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
 		</td>
 	</tr>
 </c:if>

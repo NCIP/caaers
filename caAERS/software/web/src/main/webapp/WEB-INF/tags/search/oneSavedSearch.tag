@@ -11,6 +11,6 @@
 		<a href="<c:url value="/pages/search/advancedSearch?searchName=${search.name }"/>">${search.name }</a>
 	</td>
 	<td align="right" width="20%">
-		<img src="<c:url value="/images/checkno.gif" />" id="delete-search-${index}" onClick="javascript:advancedSearchHelper.deleteSavedSearch('${search.name }');"/>
+		<img src="<c:url value="/images/checkno.gif" />" id="delete-search-${index}" onClick="javascript:deleteSavedSearch('${search.name }');"/>
 	</td>
 </tr>

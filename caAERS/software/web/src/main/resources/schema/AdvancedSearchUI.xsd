@@ -40,6 +40,7 @@
 			<xs:sequence>
 				<xs:element name="column-title" type="xs:string"/>
 				<xs:element name="column-attribute" type="xs:string"/>
+				<xs:element name="lengthy" type="xs:boolean"/>
 				<xs:element name="table-title" type="xs:string"/>
 				<xs:element name="selected" type="xs:boolean"/>
 			</xs:sequence>

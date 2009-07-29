@@ -7,6 +7,6 @@
 </c:forEach>
 <c:if test="${fn:length(savedSearchList) > 5}">
 	<tr>
-		<td><a onclick="javascript:advancedSearchHelper.renderFullSearchList();" href="#">more</a></td><td/>
+		<td><a onclick="javascript:renderFullSearchList();" href="#">more</a></td><td/>
 	</tr>
 </c:if>

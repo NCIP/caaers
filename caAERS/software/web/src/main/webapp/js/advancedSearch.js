@@ -6,13 +6,20 @@ Object.extend(AdvancedSearchHelper.prototype, {
 	},
 	
 	updateSearchTargetObject: function(){
+		alert('Bappa 1');
 		$('criteria-section-id').style.display = 'none';
+		alert('Bappa 2');
 		$('targetObjectProgessIndicator').style.display = '';
+		alert('Bappa 3');
 		this.ajaxFacade.updateSearchTargetObject($('target-object-id').value , function(ajaxOutput) {
+			alert('Bappa 4');
 			$('criteria-section-id').innerHTML = ajaxOutput.htmlContent;
+			alert('Bappa 5');
 			//new Insertion.Top($('criteria-section-id'), ajaxOutput.htmlContent);
 			$('criteria-section-id').style.display='';
+			alert('Bappa 6');
 			$('targetObjectProgessIndicator').style.display = 'none';
+			alert('Bappa 7');
 		}.bind(this));
 	},
 	
@@ -41,7 +48,7 @@ Object.extend(AdvancedSearchHelper.prototype, {
 					var operator = ajaxOutput.objectContent[i];
 					selectElement.options[i+1] = new Option(operator.displayUri, operator.name);
 				}
-				//$(valueTdId).innerHTML = ajaxOutput.htmlContent;
+				$(valueTdId).innerHTML = '';
 				new Insertion.Top($(valueTdId), ajaxOutput.htmlContent);
 			}.bind(this));
 		}
@@ -71,8 +78,6 @@ Object.extend(AdvancedSearchHelper.prototype, {
 		else{
 			var searchName = $('searchName').value;
 			var searchDescription = $('searchDescription').value;
-			alert('searchName = ' + searchName);
-			alert('searchDescription = ' + searchDescription);
 			advSearch.saveSearch(searchName, searchDescription, function(ajaxOutput){
 				window.parent.Windows.close('save-popup-id');
 				alert('Search saved successfully');
