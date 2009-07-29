@@ -951,7 +951,7 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput updatePhysicianSignOff(Boolean physicianSignOff){
     	AjaxOutput output = new AjaxOutput();
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	aeReportDao.refresh(command.getAeReport());
+    	command.reassociate();
     	command.getAeReport().getReports();
     	command.getAeReport().setPhysicianSignOff(physicianSignOff);
     	saveIfAlreadyPersistent(command);
