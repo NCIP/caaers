@@ -36,7 +36,7 @@ import org.easymock.classextension.EasyMock;
  * @author Biju Joseph
  *
  */
-public class ReportSubmissionServiceTest extends AbstractTestCase {
+public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	
 	ReportSubmissionService service;
  	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
