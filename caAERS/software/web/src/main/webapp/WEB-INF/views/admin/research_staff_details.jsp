@@ -246,10 +246,12 @@
 	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
 	 	
 	 		<jsp:attribute name="customNextButton">
+	 			<csmauthz:accesscontrol domainObject="${tab}" authorizationCheckName="tabAuthorizationCheck">
 	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalResearchStaff'}">
 	 				<tags:button type="submit" value="Sync" color="blue"
 									id="sync-rs" onclick="javascript:syncResearchStaff();" />
 				</c:if>
+				</csmauthz:accesscontrol>
 	 		</jsp:attribute>
 	 	</tags:tabControls>
 	 </jsp:attribute>

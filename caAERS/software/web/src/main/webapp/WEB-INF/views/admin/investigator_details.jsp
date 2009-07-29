@@ -354,10 +354,12 @@ Event.observe(window, "load", function() {
 	<jsp:attribute name="tabControls">
 	 	<tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
 	 		<jsp:attribute name="customNextButton">
+	 		 <csmauthz:accesscontrol domainObject="${tab}" authorizationCheckName="tabAuthorizationCheck">
 	 			<c:if test="${command.id != null && command.class.name eq 'gov.nih.nci.cabig.caaers.domain.LocalInvestigator'}">
 	 				<tags:button type="submit" value="Sync" color="blue"
 									id="sync-rs" onclick="javascript:syncInvestigator();" />
 				</c:if>
+				</csmauthz:accesscontrol>
 	 		</jsp:attribute>
 	 	</tags:tabControls>
 	 </jsp:attribute>		
