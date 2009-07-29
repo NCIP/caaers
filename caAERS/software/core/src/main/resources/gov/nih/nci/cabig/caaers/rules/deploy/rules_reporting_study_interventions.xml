@@ -303,9 +303,8 @@
     
     <!-- ==========================================================================
     RuleName : PAG_BR4_CHK
-    Rule : 'Date Last Administered' must be provided for an investigational agent."
+    Rule : 'Was an investigational agent administered on this protocol?' must be 'Yes' if one of the Agents is Investigational Agent.
     Error Code : PAG_BR4_ERR
-    Error Message : LAST_ADMINISTERED_DATE must be entered for an investigational agent.
     ============================================================================= -->
     <rule name="PAG_BR4_CHK">
         <lhs>
@@ -336,7 +335,47 @@
         </rhs>
     </rule>
     
-    
+
+    <!-- ==========================================================================
+    RuleName : PAG_BR4B_CHK
+    Rule : If investigational agent administered = 'YES', then there must be an investigational agent listed
+    Error Code : PAG_BR4B_ERR
+    ============================================================================= -->
+    <rule name="PAG_BR4B_CHK">
+        <lhs>
+            <pattern identifier="aeReport"
+                object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors"
+                object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    TreatmentInformation ti = aeReport.getTreatmentInformation();
+                    if(ti == null) return SUCCESS;
+                    int indAgentCount = 0;
+                    if(ti.getCourseAgents() == null) {
+                    	indAgentCount = 0;
+                    } else {
+		                 for(CourseAgent ca : ti.getCourseAgents()) {
+		                    if(ca.getStudyAgent() == null ) continue;
+		                    if(ti.getInvestigationalAgentAdministered() == null ) break;
+		                    if (ca.getStudyAgent().getInvestigationalNewDrugIndicator()) {
+		                    	indAgentCount++;
+		                    }
+		                 }                   
+                    }
+                    if(ti.getInvestigationalAgentAdministered() != null ) {
+ 	                	if (ti.getInvestigationalAgentAdministered() &amp;&amp; (indAgentCount == 0)) {
+	                    	errors.addValidationError("PAG_BR4B_ERR", "If investigational agent administered = 'YES', then there must be an investigational agent listed  ",1).addFieldNames("aeReport.treatmentInformation.investigationalAgentAdministered"); 
+	               	    }                   	
+                    }
+
+                return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+        
     <!-- ==========================================================================
     RuleName : PAG_BR5_CHK
     Rule : 'Protocol Agent' must be active."
