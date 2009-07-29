@@ -14,7 +14,7 @@ public class ReportDefinitionQuery extends AbstractQuery {
 	
 	public void filterByOrganizationId(Integer orgId){
 		andWhere(" rd.organization.id = :orgId");
-    	setParameter("oid", orgId);
+    	setParameter("orgId", orgId);
 	}
 	
 	public void filterOffReportDefinitionId(Integer id){
