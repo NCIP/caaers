@@ -14,11 +14,8 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message key="instruction_ae_manualselection_note" />
 </div>
 
-<div id="reports-header-dc-${aeReportId}" class="row" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
-	<div class="leftpanel">
-	  <b>Reports</b>
-	</div>
-	<div class="rightpanel" style="text-align:right;">
+<div id="reports-header-dc-${aeReportId}" class="reportsHeader" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
+	<div class="reportsHeader-right" style="text-align:right;">
 	 <span id="dc-${aeReportId}-restore" style="display:none;"><a href="#report-dc-${aeReportId}" onclick="restoreRecommended('recommended-reports-dc-${aeReportId}','applicable-reports-dc-${aeReportId}',${aeReportId})" >Restore recommended action</a></span>
 	 <span id="dc-${aeReportId}-override" ><a href="#report-dc-${aeReportId}" onclick="overrideRecommendedActions('recommended-reports-dc-${aeReportId}','applicable-reports-dc-${aeReportId}',${aeReportId})" >Override</a></span>
 	</div>
@@ -30,7 +27,7 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
     <tr class="header" id="tr-header-${aeReportId}">
       <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
       <th scope="col" align="left"><b>Action</b> </th>
-      <th scope="col" align="center" style="text-align:center;" width="30%">Report</th>
+      <th scope="col" align="left" width="30%">Report</th>
       <th scope="col" align="left" ><b>Status</b> </th>
       <th scope="col" align="left"><b>Due</b> </th>
     </tr>
@@ -43,7 +40,7 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
     <tr>
       <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
       <th scope="col" align="left"><b>Action</b> </th>
-      <th scope="col" align="center" style="text-align:center;" width="30%">Report</th>
+      <th scope="col" align="left" width="30%">Report</th>
       <th scope="col" align="left" ><b>Status</b> </th>
       <th scope="col" align="left"><b>Due</b> </th>
     </tr>

@@ -11,13 +11,4 @@
 <div id="rulesMessage-${aeReportId}-not-required" style="${not empty rulesMessages ? 'display:none;' : ''}">
 	<tags:message key="instruction_ae_not_require_reporting" />
 </div>
-
-<ul id="rulesMessageList-${aeReportId}">
-<c:if test="${not empty rulesMessages}">
- <c:forEach var="msg" items="${rulesMessages}">
- <li>${msg}</li>
- </c:forEach>
-</c:if>
-</ul>
-
 </div>

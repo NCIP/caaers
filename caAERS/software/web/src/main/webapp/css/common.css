@@ -721,3 +721,20 @@ div.row.instructions div.value {
 .reportsFailed, .reportsOverdue {
 	color:red;
 }
+.rulesMessageBottom {
+	background-color:#DBDFEC;
+	float:right;
+	margin:5px;
+	padding:5px;
+	width:430px;
+}
+.reportsHeader {
+	display:inline;
+	overflow:auto;
+}
+.reportsHeader-right {
+	float:right;
+}
+.rulesMessage {
+	float:left;
+}
