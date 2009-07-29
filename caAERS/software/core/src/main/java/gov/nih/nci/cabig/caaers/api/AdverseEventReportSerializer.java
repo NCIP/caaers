@@ -781,6 +781,7 @@ public class AdverseEventReportSerializer {
 	    		treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 		    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
 		    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
+		    	treatmentInformation.setTreatmentDescription(trtInf.getTreatmentDescription());
 	    		if (!notApplicableFieldPaths.contains("treatmentInformation.investigationalAgentAdministered")) {	
 	    			treatmentInformation.setInvestigationalAgentAdministered(trtInf.getInvestigationalAgentAdministered());
 	    		}
