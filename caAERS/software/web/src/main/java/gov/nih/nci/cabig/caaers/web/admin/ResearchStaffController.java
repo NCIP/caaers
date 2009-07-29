@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -122,8 +123,13 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             }
             i++;
         }
-        //
-
+        
+        //Union of roles for csm
+        researchStaff.getUserGroupTypes().clear();
+        for (String roleCode : researchStaff.getAllRoles()) {
+        	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
+        }
+        
         ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {

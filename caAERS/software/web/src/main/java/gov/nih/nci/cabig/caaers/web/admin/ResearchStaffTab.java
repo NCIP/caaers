@@ -51,13 +51,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
         System.out.println("...onBind");
-
-/*
-        command.getResearchStaff().getUserGroupTypes().clear();
-        for (String roleCode : command.getResearchStaff().getAllRoles()) {
-            command.getResearchStaff().addUserGroupType(UserGroupType.valueOf(roleCode));
-        }
-*/
     }
 
     @Override

@@ -77,8 +77,7 @@ public class ResearchStaffRepository {
     	}
     	MailException mailException = null;
     	try{
-            // this should be fixed... 
-    		// csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+    		 csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
     	}catch(MailException e){
     		mailException = e;
     	}
