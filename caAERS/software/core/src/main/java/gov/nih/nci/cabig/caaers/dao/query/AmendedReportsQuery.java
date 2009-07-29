@@ -25,9 +25,9 @@ public class AmendedReportsQuery extends AbstractQuery {
 		setParameter("orgId", orgId);
 	}
 	
-	public void filterByReportType(Integer reportTypeId){
-		andWhere("rd.reportType.id =:" + "reportTypeId");
-		setParameter("reportTypeId", reportTypeId);
+	public void filterByGroup(Integer groupId){
+		andWhere("rd.group.id =:" + "groupId");
+		setParameter("groupId", groupId);
 	}
 	
 	public void filterByExpeditedAdverseEventReport(Integer aeReportId){

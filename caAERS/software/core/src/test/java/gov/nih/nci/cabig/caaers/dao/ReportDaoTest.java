@@ -492,7 +492,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	AmendedReportsQuery query = new AmendedReportsQuery();
     	query.filterByExpeditedAdverseEventReport(-1);
     	query.filterByOrganization(-1001);
-    	query.filterByReportType(-1);
+    	query.filterByGroup(-1);
     	query.filterByReportStatus(ReportStatus.AMENDED);
     	
     	List<Report> reports = (List<Report>) getDao().search(query);

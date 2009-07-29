@@ -23,7 +23,7 @@ public class ReportDefinitionQueryTest extends TestCase {
 	public void testFilterOffReportDefinitionId() {
 		
 		query.filterOffReportDefinitionId(4);
-		assertEquals( "select rd from ReportDefinition rd WHERE  rd.id != :rdid" , query.getQueryString());
+		assertEquals( "select rd from ReportDefinition rd WHERE  rd.id <> :rdid" , query.getQueryString());
 	}
 
 }

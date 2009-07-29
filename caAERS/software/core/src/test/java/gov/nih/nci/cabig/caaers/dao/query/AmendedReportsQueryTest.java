@@ -23,7 +23,7 @@ public class AmendedReportsQueryTest extends TestCase {
 	}
 
 	public void testFilterByReportType() {
-		query.filterByReportType(5);
+		query.filterByGroup(5);
 		assertEquals("select r from ReportVersion rv join rv.report as r join " +
 				"r.reportDefinition as rd WHERE rd.reportType.id =:reportTypeId " +
 				"order by rv.amendedOn desc", query.getQueryString());
@@ -47,7 +47,7 @@ public class AmendedReportsQueryTest extends TestCase {
 		query.filterByExpeditedAdverseEventReport(5);
 		query.filterByOrganization(5);
 		query.filterByReportStatus(ReportStatus.FAILED);
-		query.filterByReportType(5);
+		query.filterByGroup(5);
 		assertEquals("select r from ReportVersion rv join rv.report as r " +
 				"join r.reportDefinition as rd " +
 				"WHERE r.aeReport.id =:aeReportId AND rd.organization.id =:orgId AND " +
