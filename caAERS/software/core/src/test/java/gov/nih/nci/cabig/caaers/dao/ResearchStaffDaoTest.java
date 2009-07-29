@@ -4,6 +4,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -99,5 +100,22 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             assertNotNull("Could not reload researchStaff id " + savedId, loaded);
             assertEquals("Wrong emailAddress", "abc@def.com", loaded.getEmailAddress());
         }
+    }
+    
+    
+    public void testGetByExactLoginId(){
+    	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	rsQuery.filterByExactLoginId("abcd");
+    	List<ResearchStaff> rsList = getDao().searchResearchStaff(rsQuery);
+    	assertNotNull(rsList);
+    	assertEquals(1, rsList.size());
+    	
+    	rsQuery = new ResearchStaffQuery();
+    	rsQuery.filterByExactLoginId("ab");
+    	rsList = getDao().searchResearchStaff(rsQuery);
+    	assertNotNull(rsList);
+    	assertEquals(0, rsList.size());
+    	
+    	
     }
 }

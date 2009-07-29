@@ -14,7 +14,7 @@
     version="1" 
     first_name="Bill" 
     last_name="Gates" 
-    email_address="abc@def.com" 
+    email_address="big@def.com" 
     phone_number="123-456-789" 
     nci_identifier="nci id" 
     login_id="abcd"
@@ -29,7 +29,7 @@
     version="1" 
     first_name="George" 
     last_name="Bush" 
-    email_address="abc@def.com" 
+    email_address="gb@def.com" 
     phone_number="123-456-789" 
     nci_identifier="nci id"/>
     
@@ -38,7 +38,7 @@
     version="1" 
     first_name="Benjamin" 
     last_name="Franklin" 
-    email_address="abc@def.com" 
+    email_address="bf@def.com" 
     phone_number="123-456-789" 
     nci_identifier="nci id" />
     
@@ -47,7 +47,7 @@
     version="1" 
     first_name="JF" 
     last_name="Kennedy" 
-    email_address="abc@def.com" 
+    email_address="jfk@def.com" 
     phone_number="123-456-789" 
     nci_identifier="nci id"/>
 	

@@ -88,10 +88,15 @@ public class ResearchStaffQueryTest extends TestCase {
     
     public void testFilterByAssociateAllStudies_And_Organization() throws Exception{
     	ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-    	
     	researchStaffQuery.filterByAssociateAllStudies(true);
     	researchStaffQuery.filterByOrganization(Integer.toString(-1001));
-    	
     	assertEquals("SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE srs.associateAllStudies = :associateAllStudies AND srs.organization.id =:organization order by rs.id",researchStaffQuery.getQueryString());
+    }
+    
+    public void testFilterByExactLoginId() throws Exception{
+    	ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+    	researchStaffQuery.filterByExactLoginId("loginId");
+    	assertEquals("SELECT distinct rs from ResearchStaff rs left join fetch rs.siteResearchStaffsInternal srs WHERE lower(rs.loginId) = :loginId order by rs.id",researchStaffQuery.getQueryString());
+    	
     }
 }
