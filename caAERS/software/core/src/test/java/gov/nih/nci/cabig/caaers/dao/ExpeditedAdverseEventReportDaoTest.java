@@ -732,6 +732,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 
     	assertEquals(xml,getStringFromFile());
     }*/
+    
 
     public void testHasSubmittedReport(){
     	ExpeditedAdverseEventReport loaded = getDao().getById(-1);

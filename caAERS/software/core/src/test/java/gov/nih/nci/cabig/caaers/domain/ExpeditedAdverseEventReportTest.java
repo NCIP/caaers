@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -805,7 +806,111 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	}
     	
     }
+    
+    public void testFindLastAmendedReport(){
+    	
+    	ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
+        reportDefinition.setAmendable(true);
+    	
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setId(1);
+    	Report r2 = Fixtures.createReport("r2");
+    	r2.setId(2);
+    	Report r3 = Fixtures.createReport("r3");
+    	r3.setId(3);
+    	Report r4 = Fixtures.createReport("r4");
+    	r4.setId(4);
+    	
+    	Calendar c1 = Calendar.getInstance();
+    	
+    	r1.setSubmittedOn(c1.getTime());
+    	r1.setAmendedOn(c1.getTime());
+    	r1.setStatus(ReportStatus.COMPLETED);
+    	r1.setReportDefinition(reportDefinition);
+    	
+    	
+    	c1.add(Calendar.HOUR, -2);
+    	
+    	r2.setSubmittedOn(c1.getTime());
+    	r2.setAmendedOn(c1.getTime());
+    	r2.setStatus(ReportStatus.AMENDED);
+    	r2.setReportDefinition(reportDefinition);
+    	
+    	c1.add(Calendar.HOUR, 5);
+    	
+    	r3.setSubmittedOn(c1.getTime());
+    	r3.setAmendedOn(c1.getTime());
+    	r3.setStatus(ReportStatus.COMPLETED);
+    	r3.setReportDefinition(reportDefinition);
+    	
+    	c1.add(Calendar.HOUR, 1);
+    	r4.setSubmittedOn(c1.getTime());
+    	r4.setAmendedOn(c1.getTime());
+    	r4.setStatus(ReportStatus.AMENDED);
+    	r4.setReportDefinition(reportDefinition);
+    	
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	aeReport.addReport(r1);
+    	aeReport.addReport(r2);
+    	aeReport.addReport(r3);
+    	aeReport.addReport(r4);
+    	
+    	assertSame(r4, aeReport.findLastAmendedReport(reportDefinition));
+    	
+    }
+    
+    public void testFindSubmittedReport(){
 
+    	ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setGroup(Fixtures.createConfigProperty("RT_AdEERS"));
+        reportDefinition.setAmendable(true);
+    	
+        Report r1 = Fixtures.createReport("r1");
+    	r1.setId(1);
+    	Report r2 = Fixtures.createReport("r2");
+    	r2.setId(2);
+    	Report r3 = Fixtures.createReport("r3");
+    	r3.setId(3);
+    	Report r4 = Fixtures.createReport("r4");
+    	r4.setId(4);
+    	
+    	Calendar c1 = Calendar.getInstance();
+    	
+    	r1.setSubmittedOn(c1.getTime());
+    	r1.setAmendedOn(c1.getTime());
+    	r1.setStatus(ReportStatus.COMPLETED);
+    	r1.setReportDefinition(reportDefinition);
+    	
+    	
+    	c1.add(Calendar.HOUR, 12);
+    	
+    	r2.setSubmittedOn(c1.getTime());
+    	r2.setAmendedOn(c1.getTime());
+    	r2.setStatus(ReportStatus.AMENDED);
+    	r2.setReportDefinition(reportDefinition);
+    	
+    	c1.add(Calendar.HOUR, -11);
+    	
+    	r3.setSubmittedOn(c1.getTime());
+    	r3.setAmendedOn(c1.getTime());
+    	r3.setStatus(ReportStatus.COMPLETED);
+    	r3.setReportDefinition(reportDefinition);
+    	
+    	c1.add(Calendar.HOUR, 1);
+    	r4.setSubmittedOn(c1.getTime());
+    	r4.setAmendedOn(c1.getTime());
+    	r4.setStatus(ReportStatus.AMENDED);
+    	r4.setReportDefinition(reportDefinition);
+    	
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	aeReport.addReport(r1);
+    	aeReport.addReport(r2);
+    	aeReport.addReport(r3);
+    	aeReport.addReport(r4);
+    	
+    	assertSame(r2, aeReport.findLastSubmittedReport(reportDefinition));
+    }
     
     public void testFindCompletedAmendableReports(){
     	Report rep = new Report();

@@ -1270,13 +1270,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param rd
      * @return
      */
-    public Report findRecentlyInstantiatedReport(ReportDefinition rd){
-    	List<Report> reports = getReports();
+    public Report findLastSubmittedReport(ReportDefinition rd){
+    	List<Report> reports = listReportsHavingStatus(ReportStatus.AMENDED, ReportStatus.COMPLETED);
     	Report theReport = null;
     	for(Report report : reports){
     		if(report.isOfSameOrganizationAndType(rd)){
-    			if(theReport == null || report.getId().intValue() > theReport.getId().intValue()){
+    			if(theReport == null){
     				theReport = report;
+    			}else{
+    				if(DateUtils.compateDateAndTime(theReport.getSubmittedOn(), report.getSubmittedOn()) < 0){
+    					theReport = report;
+    				}
     			}
     		}
     	}
