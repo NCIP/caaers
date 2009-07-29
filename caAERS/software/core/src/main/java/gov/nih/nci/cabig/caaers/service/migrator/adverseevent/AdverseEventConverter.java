@@ -1,9 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
-import java.util.Locale;
-
-import org.springframework.context.MessageSource;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdverseEventManagementService;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -12,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -21,6 +18,12 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventMeddraLowLevelTermType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.OutcomeType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.context.MessageSource;
 
 public class AdverseEventConverter {
 	private CtcTermDao ctcTermDao = null;
@@ -159,7 +162,17 @@ public class AdverseEventConverter {
 						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
 					}
 				}
-				
+				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
+				boolean gradeAllowed = false;
+				for (CtcGrade ctcGrade:ctcGrades) {
+					if (ctcGrade.getGrade().getCode() == adverseEventDto.getGrade()) {
+						gradeAllowed = true;
+						break;
+					}
+				}
+				if (!gradeAllowed) {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtcTerm().getCtepTerm()},"",Locale.getDefault()));
+				}
 				AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
 				adverseEventCtcTerm.setCtcTerm(ctcTerm);
 				adverseEventCtcTerm.setAdverseEvent(adverseEvent);
