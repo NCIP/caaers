@@ -25,9 +25,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author Saurabh Agrawal
- */
 public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     protected static final Log log = LogFactory.getLog(ResearchStaffTab.class);
@@ -60,35 +57,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         for (String roleCode : command.getResearchStaff().getAllRoles()) {
             command.getResearchStaff().addUserGroupType(UserGroupType.valueOf(roleCode));
         }
-*/
-
-/*
-        int i = 0;
-        String[][] rsRoles = new String[command.getResearchStaff().getSiteResearchStaffs().size()][];
-        for (SiteResearchStaff rss: command.getResearchStaff().getSiteResearchStaffs()) {
-            SiteResearchStaff srs = command.getResearchStaff().getSiteResearchStaffs().get(i);
-
-            // getting roles
-            String[] roles = request.getParameterValues(String.format("srRoles[%d]", i));
-            if (roles == null) continue;
-
-            rsRoles[i] = roles;
-
-            List<SiteResearchStaffRole> siteResearchStaffRoles = new ArrayList<SiteResearchStaffRole>();
-
-            for (int j=0; j<roles.length; j++) {
-                SiteResearchStaffRole srsr = new SiteResearchStaffRole();
-                srsr.setRoleCode(roles[j]);
-                srsr.setSiteResearchStaff(srs);
-                srsr.setStartDate(new Date(System.currentTimeMillis()));
-            }
-
-            srs.setSiteResearchStaffRoles(siteResearchStaffRoles);
-            i++;
-        }
-        command.setSelectedRoles(rsRoles);
-        System.out.println("allRSsRoles="+rsRoles);
-
 */
     }
 
@@ -172,13 +140,17 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         InputFieldAttributes.setSize(lastNameField, 30);
         researchStaffFieldGroup.getFields().add(lastNameField);
 
-        InputField emailField = InputFieldFactory.createTextField("researchStaff.emailAddress", "Primary Email", true);
+        InputField emailField = InputFieldFactory.createTextField("researchStaff.emailAddress", "Primary email", true);
         InputFieldAttributes.setSize(emailField, 30);
         researchStaffFieldGroup.getFields().add(emailField);
 
-        InputField loginIdField = InputFieldFactory.createTextField("researchStaff.loginId", "Username", true);
+        InputField loginIdField = InputFieldFactory.createTextField("researchStaff.loginId", "Login ID", true);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
+
+        InputField activeDate = InputFieldFactory.createDateField("researchStaff.activeDate", "Active date", true);
+        InputFieldAttributes.setSize(activeDate, 10);
+        researchStaffFieldGroup.getFields().add(activeDate);
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(researchStaffFieldGroup);
