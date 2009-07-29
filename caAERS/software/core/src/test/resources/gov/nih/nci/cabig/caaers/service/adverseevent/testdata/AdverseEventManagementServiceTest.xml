@@ -89,7 +89,121 @@
         select_ae=""
         ctep_code="-19"
         other_required="1"
-        /> 
+        />
+     <ctc_grades 
+     	id="1"
+     	term_id="3001"
+     	grade_code="0"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="2"
+     	term_id="3001"
+     	grade_code="1"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="3"
+     	term_id="3001"
+     	grade_code="2"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="4"
+     	term_id="3001"
+     	grade_code="3"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="5"
+     	term_id="3001"
+     	grade_code="4"
+     	grade_text="test"
+     />     
+     <ctc_grades 
+     	id="6"
+     	term_id="3001"
+     	grade_code="5"
+     	grade_text="test"
+     />  
+     
+     
+     <ctc_grades 
+     	id="11"
+     	term_id="3002"
+     	grade_code="0"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="12"
+     	term_id="3002"
+     	grade_code="1"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="13"
+     	term_id="3002"
+     	grade_code="2"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="14"
+     	term_id="3002"
+     	grade_code="3"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="15"
+     	term_id="3002"
+     	grade_code="4"
+     	grade_text="test"
+     />     
+     <ctc_grades 
+     	id="16"
+     	term_id="3002"
+     	grade_code="5"
+     	grade_text="test"
+     />      
+
+
+     <ctc_grades 
+     	id="111"
+     	term_id="3003"
+     	grade_code="0"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="112"
+     	term_id="3003"
+     	grade_code="1"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="113"
+     	term_id="3003"
+     	grade_code="2"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="114"
+     	term_id="3003"
+     	grade_code="3"
+     	grade_text="test"
+     />
+     <ctc_grades 
+     	id="115"
+     	term_id="3003"
+     	grade_code="4"
+     	grade_text="test"
+     />     
+     <ctc_grades 
+     	id="116"
+     	term_id="3003"
+     	grade_code="5"
+     	grade_text="test"
+     /> 
+     
+                
 	 <MEDDRA_VERSIONS
     	id="9"
     	name="MedDRA v9"/>   
