@@ -45,12 +45,14 @@
             checkbox = document.createElement("input");
             checkbox.type = 'checkbox';
             //checkbox.name = termText;
-            //checkbox.name = 'searchTargetObject.dependentObject[' + dependentObjectIndex + '].viewColumn[' + attributeIndex + '].selected';
+            // checkbox.name = 'searchTargetObject.dependentObject[' + dependentObjectIndex + '].viewColumn[' + attributeIndex + '].selected';
             //checkbox.defaultChecked = true;
             //checkbox.value = 'true';
             //checkbox.checked = true;
             checkbox.setAttribute("checked", "");
-            checkbox.setAttribute("onclick", "this.checked?$('" + elementName + "').value='true':$('" + elementName + "').value='false';");
+            //checkbox.setAttribute("onclick", "clickCheckBox('" + elementName + "', '" + termID + "')");
+            //checkbox.onclick = function() { clickCheckBox(elementName, termID)};
+            //checkbox.addEventListener("onclick", function() { clickCheckBox(elementName, termID)}, false);
             
             checkbox.id = "chkID" + termID;
             checkbox.setAttribute("id", "chk" + termID);
@@ -72,10 +74,14 @@
             li.innerHTML = hiddenVarStr;
             li.appendChild(checkbox);
             checkbox.checked = true;
-            //li.appendChild(hiddenVar);
             li.appendChild(a);
             ul.appendChild(li)
-            $(elementName).name = elementName;
+
+			if(Prototype.Browser.IE){
+				// TODO.
+			}else{
+				checkbox.setAttribute("onclick", "clickCheckBox('" + elementName + "', '" + termID + "')");
+			}
 
             catSel.termList[termID] = true;
             //$("liTerm" + termID).addClassName("ae-disabled");
@@ -146,6 +152,11 @@
  		Event.observe(window, "load", function(){
  			catSel.initializeViewAttributes();
  		});
+ 		
+ 		function clickCheckBox(attributeId, termID) {
+			$(attributeId).value = $('chk'+termID).checked; 
+		}
+ 		
 		</script>
 <style>
     ul.ae-category {
