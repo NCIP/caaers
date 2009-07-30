@@ -246,7 +246,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     
     public void testUpdatePhysicianSignOff() throws Exception{
     	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-    	aeReportDao.refresh(command.getAeReport());
+    	assignmentDao.reassociate(command.getAeReport().getAssignment());
     	expect(webContext.getCurrentPage()).andReturn("pages/ae/edit");
     	expect(webContext.forwardToString("pages/ae/edit?aeReport=0&subview=submitReportValidationSection")).andReturn("The Html");
     	replayMocks();
