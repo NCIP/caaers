@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 
@@ -26,6 +27,7 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 	private StudySiteDao studySiteDao;
 	private OrganizationDao organizationDao;
 	private StudyDao studyDao;
+	private StudyRepository studyRepository;
 	private OrganizationRepository organizationRepository;
 	StudyParticipantAssignmentMigrator migrator;
 	private SystemAssignedIdentifier systemAssignedIdentifier;
@@ -48,12 +50,14 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
 		 studySiteDao = registerDaoMockFor(StudySiteDao.class);
 		 organizationDao = registerDaoMockFor(OrganizationDao.class);
 		 studyDao = registerDaoMockFor(StudyDao.class);
+		 studyRepository = registerMockFor(StudyRepository.class); 
 		 organizationRepository = registerMockFor(OrganizationRepository.class);
 		 migrator = new StudyParticipantAssignmentMigrator();
 		 migrator.setStudySiteDao(studySiteDao);
 		 migrator.setOrganizationDao(organizationDao);
 		 migrator.setOrganizationRepository(organizationRepository);
 		 migrator.setStudyDao(studyDao);
+		 migrator.setStudyRepository(studyRepository);
 		 
 	}
 	 
@@ -98,6 +102,7 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
                 organizationAssignedIdentifier.getType())).andReturn(null);
         EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
         studyDao.updateStudyForServiceUseOnly(study);
+        studyRepository.save(study);
         replayMocks();
 
         migrator.migrate(xstreamParticipant, participant, outcome);
