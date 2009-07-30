@@ -8,17 +8,17 @@
 
 <%@attribute name="allReportDefinitions" required="true" type="java.util.List" description="All report definitions to show" %>
 <%@attribute name="selectedReportDefinitions" required="true" type="java.util.List" description="Selected report definitions to show" %>
-<div id="contextMenuOuter" style="display:none;">
-<div id="contextMenuContent" style="display:none;">
+<div id="contextMenuOuter">
+<div id="contextMenuContent">
 	<c:forEach var="rd" items="${allReportDefinitions}">
 		<div style="clear:both;">
 		<input class="rdContext${rd.id}" type="checkbox" name="reportingContextRdId" value="${rd.id}" /> ${rd.label}
 		</div>
 	</c:forEach>
-	<div style="clear:both;">
-	<tags:button color="blue" value="Apply Now" onclick="closeContextMenu(this, true)" size="small" icon="check"></tags:button>
+	<div style="clear:both; margin-top:15px;">
+	<tags:button color="red" value="Cancel" onclick="closeContextMenu(this, false)" size="small" icon="x"></tags:button>
 	&nbsp;&nbsp;&nbsp;
-	<tags:button color="blue" value="Cancel" onclick="closeContextMenu(this, false)" size="small" icon="x"></tags:button>
+	<tags:button color="blue" value="Apply Now" onclick="closeContextMenu(this, true)" size="small" icon="check"></tags:button>
 	</div>
 </div>
 <script>

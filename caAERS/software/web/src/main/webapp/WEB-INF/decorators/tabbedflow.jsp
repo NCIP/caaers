@@ -35,7 +35,8 @@
 		<c:if test="${showReportContextMenu}">
 			<div style="float:right;">
 				<div>
-					<a href="#" id="contextMenu">Change reporting context</a>
+					
+					<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
 				</div>
 			</div>
 		</c:if>        
