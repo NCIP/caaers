@@ -38,7 +38,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         super("Research Staff Details", "Research Staff Details", "admin/researchStaff");
         setAutoPopulateHelpKey(true);
         methodNameMap.put("addsiteResearchStaff", "addSiteResearchStaff");
-        methodNameMap.put("removeendDate", "deactivate");
     }
 
     @Override
@@ -223,15 +222,5 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         modelAndView.getModel().put("indexes", new Integer[]{command.getResearchStaff().getSiteResearchStaffs().size() - 1});
         return modelAndView;
     }
-
-/*
-    public ModelAndView deactivate(HttpServletRequest request, Object object, Errors errors) {
-        System.out.println("--- deactivate");
-        ResearchStaffCommand  command = (ResearchStaffCommand)object;
-        ModelAndView modelAndView = new ModelAndView("admin/ajax/deactivate");
-        return modelAndView;
-    }
-
-*/
 
 }
