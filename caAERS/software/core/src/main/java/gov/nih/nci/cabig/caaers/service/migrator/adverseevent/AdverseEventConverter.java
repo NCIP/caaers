@@ -15,11 +15,12 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventMeddraLowLevelTermType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.OutcomeType;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,9 +48,18 @@ public class AdverseEventConverter {
 			populateAttributionSummary(adverseEventDto,adverseEvent);
 			adverseEvent.setComments(adverseEventDto.getComments());
 			if(adverseEventDto.getStartDate() != null){
+				//check for future date .
+				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getStartDate().toGregorianCalendar().getTime());
+				if (dateCompare == -1) {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
+				}
 				adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
 			}
 			if(adverseEventDto.getEndDate() != null){
+				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getEndDate().toGregorianCalendar().getTime());
+				if (dateCompare == -1) {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
+				}
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
 
