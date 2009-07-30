@@ -132,11 +132,6 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-		<fileset dir="${classes.dir}" excludes="**/*.class">
-			<include name="**/*.xsd" />
-			<include name="**/*.xml" />
-			<include name="**/*.properties" />
-	    </fileset>
 	</path>
 	
 	<!-- This path will contain all the classes that are required to 
