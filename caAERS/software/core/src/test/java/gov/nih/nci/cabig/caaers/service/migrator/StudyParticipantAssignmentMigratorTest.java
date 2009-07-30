@@ -101,7 +101,7 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(null);
         EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
-        studyDao.updateStudyForServiceUseOnly(study);
+        //studyDao.updateStudyForServiceUseOnly(study);
         studyRepository.save(study);
         replayMocks();
 
