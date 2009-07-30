@@ -104,6 +104,9 @@ public class StudyRepository {
     	List<Study> studies = null;
     	StudyPersonnel studyPersonnel = null;
     	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
+    		if(siteResearchStaff.getAssociateAllStudies() == null){
+    			siteResearchStaff.setAssociateAllStudies(Boolean.FALSE);
+    		}
     		if(siteResearchStaff.getAssociateAllStudies()){
     			query = new StudyQuery();
     			query.joinStudyOrganization();
