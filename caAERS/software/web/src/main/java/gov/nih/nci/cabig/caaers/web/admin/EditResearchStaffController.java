@@ -32,8 +32,6 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
-        System.out.println("...formBackingObject");
-
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request.getParameter("researchStaffId")));
 

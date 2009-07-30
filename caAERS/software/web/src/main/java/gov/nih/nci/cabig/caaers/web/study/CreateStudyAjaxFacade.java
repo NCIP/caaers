@@ -151,8 +151,6 @@ public class CreateStudyAjaxFacade {
 
     // TODO: Need to refactor this to a different class (may be a common super class)
     private void updateStudyCommand(HttpServletRequest request, StudyCommand studyCommand) {
-
-        System.out.println("... updateStudyCommand.");
         if (studyCommand.getStudy().getId() == null) return;
 
         Study study = studyDao.getStudyDesignById(studyCommand.getStudy().getId());
