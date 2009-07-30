@@ -297,6 +297,16 @@ public class AdvancedSearchAjaxFacade{
 		return dObject.getViewColumn();
 	}
 	
+	public AjaxOutput putCommandDataInSession(){
+		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
+		WebContext webContext = getWebContext();
+		webContext.getHttpServletRequest().getSession().removeAttribute("resultsViewColumnList");
+		webContext.getHttpServletRequest().getSession().removeAttribute("searchResultsRowList");
+		webContext.getHttpServletRequest().getSession().setAttribute("resultsViewColumnList", command.getResultsViewColumnList());
+		webContext.getHttpServletRequest().getSession().setAttribute("searchResultsRowList", command.getAdvancedSearchRowList());
+		return null;
+	}
+	
 	public List<StudyAjaxableDomainObject> matchStudies(String text) {
 
         StudySearchableAjaxableDomainObjectQuery domainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();

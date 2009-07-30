@@ -63,7 +63,6 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 			errors.reject("EXP", "There was an exception while generating the HQL :" + e.getMessage());
 		}
 		command.setHql(query);
-		System.out.println("query = " + query);
 		List<Object> singleObjectList = new ArrayList<Object>();
 		List<Object[]> multipleObjectList = new ArrayList<Object[]>();
 		if(CommandToSQL.isMultipleViewQuery(command.getSearchTargetObject())){

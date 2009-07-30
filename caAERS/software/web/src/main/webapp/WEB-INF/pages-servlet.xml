@@ -388,7 +388,8 @@
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   
-  <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>    
+  <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>
+  <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>    
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
   <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 

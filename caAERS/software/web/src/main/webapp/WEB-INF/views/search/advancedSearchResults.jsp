@@ -143,6 +143,14 @@
 		form.submit();
 	}
 	
+	function exportSearchResults(){
+		//advSearch.saveSearch('exportSearch', 'exportSearchDescription', function(ajaxOutput){
+		//	alert('Search saved successfully');
+		//});
+		advSearch.putCommandDataInSession(function(ajaxOutput){});
+		return true;
+	}
+	
 	function getPosition(e) {
     e = e || window.event;
     var cursor = {x:0, y:0};
@@ -175,6 +183,9 @@
 						<tags:button color="green" type="button" id="nested-view" value="Nested View" onclick="javascript:renderNestedView();"/>
 					</div>
 				</c:if> --%>
+				<div align="right">
+					<a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/search/exportSearchResults"/>" onclick="javascript:exportSearchResults();" />&nbsp;Export search results...</a>
+				</div>
 				<chrome:box title="Search results">
 					<div id="resultsTableDiv">
     					<div id="columnshowhide" class="yui-skin-sam"></div>

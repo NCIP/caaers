@@ -30,6 +30,10 @@ public class AdvancedSearchCommand{
 	private Integer numberOfResults;
 	private List<AdvancedSearchRow> advancedSearchRowList;
 	
+	public AdvancedSearchCommand(){
+		
+	}
+	
 	public AdvancedSearchCommand(AdvancedSearchUi advancedSearchUi){
 		setAdvancedSearchUi(advancedSearchUi);
 	}
