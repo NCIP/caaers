@@ -12,10 +12,12 @@
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
     		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
-    			<include name="include"/>
-    			<exclude name="exclude"/>
-			</fileset>
+    	    	<include name="include"/>
+    	    	<exclude name="exclude"/>
+    		</fileset>
+    	
 <!--
+
     		<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/introduce/AdverseEventConsumerService1.2/ivy-build.xml" /> 
@@ -91,7 +93,13 @@
 	<target name="clean-cache" depends="load-ivy" description="Cleans the ivy cache">
 		<ivy:cleancache/>
 	</target>
-	
+	<!-- ==================================================================
+		target : clean-caaers-cache
+	====================================================================== -->
+	<target name="clean-caaers-cache" depends="load-ivy" description="Cleans the ivy cache">
+		<!--<ivy:cleancache/> -->
+		<delete dir="${ivy.jar.dir}/../cache/gov.nih.nci.cabig.caaers"/>
+	</target>
 	
 	<!-- ==========================================================
 		target : migrate
@@ -293,5 +301,22 @@
     <target name="autobuild-ci" description="--> Tasks Related to Continious Integration"
     	depends="set-run-review-reports,debug-info,recreate-db-hudson,migrate,insert-csm-policy,clean,publish-all">
     </target>
+	
+	<target name="backup">
+		<copy includeemptydirs="true" overwrite="false" todir="/Users/bijujoseph/backup/today">
+			<fileset dir=".">
+				<include name="**/src/**/*.*"/>
+				<include name="**/webapp/**/*.*"/>
+				<exclude name=".svn"/>
+				<exclude name="*.jar"/>
+				<exclude name="*.zip"/>
+				<exclude name="*.classes"/>
+				<exclude name="**/webapp/help"/>
+				<exclude name="**/webapp/images"/>
+				<exclude name="**/WEB-INF/classes"/>
+				<exclude name="**/WEB-INF/lib"/>
+			</fileset>
+		</copy>
+	</target>	
 	
 </project>
