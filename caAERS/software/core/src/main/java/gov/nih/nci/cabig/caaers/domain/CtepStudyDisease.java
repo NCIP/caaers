@@ -56,7 +56,9 @@ public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
         if (o == null || getClass() != o.getClass()) return false;
 
         final CtepStudyDisease that = (CtepStudyDisease) o;
-
+        
+        if(this.isRetired() || that.isRetired()) return false;
+        
         if (this.getTerm() != null ? !this.getTerm().equals(that.getTerm()) : that.getTerm() != null) return false;
 
         return true;

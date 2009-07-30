@@ -48,7 +48,9 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
         if (o == null || getClass() != o.getClass()) return false;
 
         final MeddraStudyDisease that = (MeddraStudyDisease) o;
-
+        
+        if(this.isRetired() || that.isRetired()) return false;
+        
         if (getTerm() != null ? !getTerm().equals(that.getTerm()) : that.getTerm() != null) return false;
 
         return true;
