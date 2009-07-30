@@ -200,7 +200,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
         EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
-        studyDao.updateStudyForServiceUseOnly(study);
+        //studyDao.updateStudyForServiceUseOnly(study);
         studyRepository.save(study);
         replayMocks();
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
