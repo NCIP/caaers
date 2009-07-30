@@ -38,6 +38,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         super("Research Staff Details", "Research Staff Details", "admin/researchStaff");
         setAutoPopulateHelpKey(true);
         methodNameMap.put("addsiteResearchStaff", "addSiteResearchStaff");
+        methodNameMap.put("removeendDate", "deactivate");
     }
 
     @Override
@@ -51,6 +52,47 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
         System.out.println("...onBind");
+
+        if (request.getParameter("_action") != null && request.getParameter("_action").equals("deactivate")) {
+            int srsID = Integer.parseInt(request.getParameter("srsID"));
+            String srsrID = request.getParameter("srsrID");
+
+            ResearchStaff rs = command.getResearchStaff();
+            SiteResearchStaffCommandHelper siteResearchStaff = null;
+
+            if (srsID > 0) {
+                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                    if (srsch.getId() == srsID) { siteResearchStaff = srsch; break;}
+                }
+            }
+
+            // role click
+            if (srsID > 0 && !srsrID.equals("0")) {
+                for (SiteResearchStaffRoleCommandHelper srsrch : siteResearchStaff.getRsRoles()) {
+                    if (srsrch.getRoleCode().equals(srsrID)) {
+                        srsrch.setEndDate(new Date(System.currentTimeMillis()));
+                        srsrch.setChecked(false);
+                        System.out.println("... Setting end date for " + srsrch.getRoleCode());
+                    }
+                }
+            } else if (srsID > 0 && srsrID.equals("")) {
+                for (SiteResearchStaffRoleCommandHelper srsrch : siteResearchStaff.getRsRoles()) {
+                    srsrch.setEndDate(new Date(System.currentTimeMillis()));
+                    srsrch.setChecked(false);
+                    System.out.println("... Setting end date for " + srsrch.getRoleCode());
+                }
+            } else {
+                // ResearchStaff Click
+                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                    for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
+                        srsrch.setEndDate(new Date(System.currentTimeMillis()));
+                        srsrch.setChecked(false);
+                        System.out.println("... Setting end date for " + srsrch.getRoleCode());
+                    }
+                }
+            }
+        }
+        
     }
 
     @Override
@@ -141,9 +183,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
 
+/*
         InputField activeDate = InputFieldFactory.createDateField("researchStaff.activeDate", "Active date", true);
         InputFieldAttributes.setSize(activeDate, 10);
         researchStaffFieldGroup.getFields().add(activeDate);
+*/
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(researchStaffFieldGroup);
@@ -168,6 +212,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         System.out.println("--- getMethodName");
     	String currentItem = request.getParameter("currentItem");
     	String task = request.getParameter("task");
+        System.out.println(methodNameMap.get(task + currentItem));
     	return methodNameMap.get(task + currentItem);
     }
 
@@ -188,5 +233,14 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         return modelAndView;
     }
 
+/*
+    public ModelAndView deactivate(HttpServletRequest request, Object object, Errors errors) {
+        System.out.println("--- deactivate");
+        ResearchStaffCommand  command = (ResearchStaffCommand)object;
+        ModelAndView modelAndView = new ModelAndView("admin/ajax/deactivate");
+        return modelAndView;
+    }
+
+*/
 
 }

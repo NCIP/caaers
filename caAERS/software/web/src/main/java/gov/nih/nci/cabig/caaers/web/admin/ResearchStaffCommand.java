@@ -19,6 +19,7 @@ public class ResearchStaffCommand {
     protected List<ConfigProperty> allRoles;
 
     protected List<SiteResearchStaffCommandHelper> srs;
+    protected Date activeDate; 
 
     public ResearchStaff getResearchStaff() {
         return researchStaff;
@@ -56,6 +57,7 @@ public class ResearchStaffCommand {
 
         for (SiteResearchStaff srs : getResearchStaff().getSiteResearchStaffs()) {
             SiteResearchStaffCommandHelper srsch = new SiteResearchStaffCommandHelper();
+            srsch.setId(srs.getId());
             srsch.setRsRoles(new ArrayList<SiteResearchStaffRoleCommandHelper>());
             
             List<SiteResearchStaffRole> roles = srs.getSiteResearchStaffRoles();
@@ -93,5 +95,13 @@ public class ResearchStaffCommand {
             srs.getRsRoles().add(role);
         }
         this.getSrs().add(srs);
+    }
+
+    public Date getActiveDate() {
+        return activeDate;
+    }
+
+    public void setActiveDate(Date activeDate) {
+        this.activeDate = activeDate;
     }
 }

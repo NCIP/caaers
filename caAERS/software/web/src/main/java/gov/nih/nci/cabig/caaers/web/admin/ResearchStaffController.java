@@ -102,7 +102,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         ResearchStaffCommand command = (ResearchStaffCommand)researchStaffCommand;
         ResearchStaff researchStaff = command.getResearchStaff();
 
-        // sync the Sites Roles
+        // START sync the Sites Roles
         short i = 0;
         for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
             SiteResearchStaff srs = researchStaff.getSiteResearchStaffs().get(i);
@@ -123,13 +123,22 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             }
             i++;
         }
-        
+        // STOP sync the Sites Roles
+
         //Union of roles for csm
         researchStaff.getUserGroupTypes().clear();
         for (String roleCode : researchStaff.getAllRoles()) {
         	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
         }
-        
+
+
+        // START sync the active date
+        for (SiteResearchStaff srs : researchStaff.getSiteResearchStaffs()) {
+//            researchStaffCommand.getA
+//            if (researchStaffCommand.getAct)
+        }
+        // END sync the active date
+
         ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {
@@ -239,6 +248,11 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     @Override
     protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> cTab) {
         System.out.println("...shouldSave.");
+/*
+        if (request.getParameter("action") != null && request.getParameter("action").equals("deactivate")) {
+            return true;
+        }
+*/
         if (isAjaxRequest(request)) return false;
         return super.shouldSave(request, command, cTab);
     }

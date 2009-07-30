@@ -195,4 +195,13 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 
         if (dates.size() > 0) return dates.first(); else return null;
     }
+
+    @Transient
+    public void setEndDate(Date date) {
+        if (getSiteResearchStaffRoles() == null) return;
+        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
+            srsr.setEndDate(date);
+        }
+    }
+
 }

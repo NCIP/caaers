@@ -227,4 +227,13 @@ public abstract class ResearchStaff extends User {
         }
         if (dates.size() > 0) return dates.first(); else return null;
     }
+
+    @Transient
+    public void setEndDate(Date date) {
+        if (getSiteResearchStaffs() == null) return;
+        for (SiteResearchStaff srs : this.getSiteResearchStaffs()) {
+            srs.setEndDate(date);
+        }
+    }
+
 }
