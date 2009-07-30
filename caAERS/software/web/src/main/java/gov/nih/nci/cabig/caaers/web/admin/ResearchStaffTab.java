@@ -51,7 +51,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     @Override
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
-        System.out.println("...onBind");
 
         if (request.getParameter("_action") != null && request.getParameter("_action").equals("deactivate")) {
             int srsID = Integer.parseInt(request.getParameter("srsID"));
@@ -72,14 +71,12 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                     if (srsrch.getRoleCode().equals(srsrID)) {
                         srsrch.setEndDate(new Date(System.currentTimeMillis()));
                         srsrch.setChecked(false);
-                        System.out.println("... Setting end date for " + srsrch.getRoleCode());
                     }
                 }
             } else if (srsID > 0 && srsrID.equals("")) {
                 for (SiteResearchStaffRoleCommandHelper srsrch : siteResearchStaff.getRsRoles()) {
                     srsrch.setEndDate(new Date(System.currentTimeMillis()));
                     srsrch.setChecked(false);
-                    System.out.println("... Setting end date for " + srsrch.getRoleCode());
                 }
             } else {
                 // ResearchStaff Click
@@ -87,7 +84,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                     for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
                         srsrch.setEndDate(new Date(System.currentTimeMillis()));
                         srsrch.setChecked(false);
-                        System.out.println("... Setting end date for " + srsrch.getRoleCode());
                     }
                 }
             }
@@ -203,13 +199,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     @Override
     protected boolean methodInvocationRequest(HttpServletRequest request) {
-        System.out.println("--- methodInvocationRequest");
     	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
     }
 
     @Override
     public String getMethodName(HttpServletRequest request) {
-        System.out.println("--- getMethodName");
     	String currentItem = request.getParameter("currentItem");
     	String task = request.getParameter("task");
         System.out.println(methodNameMap.get(task + currentItem));
@@ -218,9 +212,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     //
     public ModelAndView addSiteResearchStaff(HttpServletRequest request, Object object, Errors errors) {
-        System.out.println("--- addSiteResearchStaff");
-        System.err.println("addSiteResearchStaff");
-
         ResearchStaffCommand  command = (ResearchStaffCommand)object;
         SiteResearchStaff srs = new SiteResearchStaff();
         command.getResearchStaff().addSiteResearchStaff(srs);

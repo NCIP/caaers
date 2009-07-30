@@ -120,20 +120,12 @@
 
     function postSiteSelected(siteResearchStaffIndex, organizationID) {
         return 0;
-//        var _sts;
-/*
-        searchStudy.getObjects("st", "%", organizationID, false, function(values) {
-            refreshStudies(values, siteResearchStaffIndex);
-        });
-*/
     }
 
     function refreshStudies(values, i) {
-        // $('_studies_' + i).innerHTML = values.length;
     }
 
     function deactivate(rsID, srsID, srsrID) {
-        // alert(rsID + ", " + srsID + ", " + srsrID);
         if (confirm('Are you sure you want to deactivate the element ?')) {
 
             var _f = $('command');
@@ -142,32 +134,6 @@
             _f.srsID.value = srsID;
             _f.srsrID.value = srsrID;
             _f.submit();
-
-/*
-            var url = $('command').action + "&subview";;
-
-            var params = new Hash();
-            var target = '_target' + ${tab.number};
-            
-            params.set('action', 'deactivate');
-            params.set('rsID', rsID);
-            params.set('srsID', srsID);
-            params.set('srsrID', srsrID);
-            params.set('_page', ${tab.number});
-            params.set(target, ${tab.number});
-            params.set('_asynchronous', true);
-            params.set('decorator', 'nullDecorator');
-            params.set('task', 'remove');
-            params.set('currentItem', "endDate");
-
-            new Ajax.Request(url, {
-            parameters: params.toQueryString(),
-            onSuccess: function(transport) {
-                var sURL = unescape(window.location.pathname) + window.location.search + "";
-                window.location.href = sURL;
-            }
-        });
-*/
         }
     }
 </script>

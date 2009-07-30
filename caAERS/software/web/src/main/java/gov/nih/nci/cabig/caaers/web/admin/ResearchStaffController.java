@@ -62,10 +62,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         Flow<C> flow = new Flow<C>("Create Research Staff");
         layoutTabs(flow);
         setFlow(flow);
-/*
-        setAllowDirtyBack(false);
-        setAllowDirtyForward(false);
-*/
     }
 
     // /LOGIC
@@ -131,14 +127,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
         }
 
-
-        // START sync the active date
-        for (SiteResearchStaff srs : researchStaff.getSiteResearchStaffs()) {
-//            researchStaffCommand.getA
-//            if (researchStaffCommand.getAct)
-        }
-        // END sync the active date
-
         ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {
@@ -173,30 +161,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
-        System.out.println("--- onBindAndValidate");
         super.onBindAndValidate(request, command, errors, page);
-
-/*
-        ResearchStaffCommand researchStaffCommand = (ResearchStaffCommand)command;
-        ResearchStaff researchStaff = researchStaffCommand.getResearchStaff();
-        
-        if(researchStaff.getId() == null) {
-    		if(!"saveRemoteRs".equals(request.getParameter("_action"))){
-    			ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-    			researchStaffQuery.filterByLoginId(researchStaff.getLoginId());
-    			List<ResearchStaff> localRs = researchStaffRepository.getResearchStaff(researchStaffQuery);
-    			if(localRs != null && localRs.size() > 0){
-    				errors.reject("LOCAL_RS_EXISTS","ResearchStaff with LoginID " +researchStaff.getLoginId() + " already exisits");
-    				return;
-    			}
-        		List<ResearchStaff> remoteRs = researchStaffRepository.getRemoteResearchStaff(researchStaff);
-        		if(remoteRs != null && remoteRs.size() > 0){
-        			researchStaff.setExternalResearchStaff(remoteRs);
-        			errors.reject("REMOTE_RS_EXISTS","ResearchStaff with EmailAddress " +researchStaff.getEmailAddress()+ " exisits in external system");
-        		}
-        	}
-        }
-*/
     }
 
     @Required
@@ -247,12 +212,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
     @Override
     protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> cTab) {
-        System.out.println("...shouldSave.");
-/*
-        if (request.getParameter("action") != null && request.getParameter("action").equals("deactivate")) {
-            return true;
-        }
-*/
         if (isAjaxRequest(request)) return false;
         return super.shouldSave(request, command, cTab);
     }
