@@ -18,7 +18,7 @@ public class XmlValidatorTest extends TestCase {
 		xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
 		String xmlContent = FileUtils.readFileToString(xmlFile);
 		StringBuffer sb = new StringBuffer();
-		XmlValidator.validateAgainstSchema(xmlContent, "classpath*:gov/nih/nci/cabig/caaers/ResearchStaff.xsd", sb);
+		XmlValidator.validateAgainstSchema(xmlContent, "classpath*:schema/integration/ResearchStaff.xsd", sb);
 		System.out.println(sb.toString());
 	}
 	
