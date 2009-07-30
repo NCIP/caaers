@@ -32,14 +32,7 @@
 
     <chrome:body title="${flow.name}: ${tab.longTitle}">
         
-		<c:if test="${showReportContextMenu}">
-			<div style="float:right;">
-				<div>
-					
-					<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
-				</div>
-			</div>
-		</c:if>        
+		      
         <c:set var="hasSummary" value="${not empty summary}"/>
         <!-- TODO: Summary should be disabled for Overview Pages, need a better logic than this -->
         <c:if test="${hasSummary and tab.viewName != 'study/study_reviewsummary'}">
@@ -70,6 +63,20 @@
 			    <div class="summarylabel">Course</div>
 			    <div class="summaryvalue">${aesummary['Course']}</div>
 			  </div>
+			  <c:if test="${showReportContextMenu}">
+                  <div class="row">
+                      <div class="summarylabel">
+                          Report(s)
+                      </div>
+                      <div class="summaryvalue">
+                          <div>
+                              <tags:noform>
+                                  <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+                              </tags:noform>
+                          </div>
+                      </div>
+                  </div>
+              </c:if>
             </div>
 		</c:if>
         
@@ -88,6 +95,20 @@
 			    <div class="summarylabel">Course</div>
 			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
 			  </div>
+              <c:if test="${showReportContextMenu}">
+                  <div class="row">
+                      <div class="summarylabel">
+                          Report(s)
+                      </div>
+                      <div class="summaryvalue">
+                          <div>
+                              <tags:noform>
+                                  <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+                              </tags:noform>
+                          </div>
+                      </div>
+                  </div>
+              </c:if>
 			</div>
 		</c:if>
         <div id="main${hasSummary ? '' : '-no-summary'}-pane" class="pane">

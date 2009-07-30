@@ -104,7 +104,7 @@
 	   this.otherAction = otherAction;
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
-	   '<td align="center"><span><img src="#{imgSrc}"/></span></td>' + 
+	   '<td align="center"><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
 	   '<td><span><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
   	   '<td><span>#{name}</span></td>' +
   	   '<td><span>#{status}</span></td>' +
@@ -167,16 +167,16 @@
 			var content = "";
 			if(_action == 'Amend'){
 				if(_checked){
-					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : this.grpStatus, due : this.grpDue, action : this.grpAction});
-					content = content + this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkImgSrc, name : this.name, status : 'No Started', due : _due, action : 'Create'})
+					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: '', name : this.name, status : this.grpStatus, due : this.grpDue, action : this.grpAction});
+					content = content + this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: 'checked="checked"', name : this.name, status : 'No Started', due : _due, action : 'Create'})
 				}else{
-					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : _status, due : _due, action : _action})
+					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: '', name : this.name, status : _status, due : _due, action : _action})
 				}
 				
 			}else if(_action == 'Withdraw'){
-				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkNoImgSrc, name : this.name, status : _status, due : _due, action : _action})
+				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: '', name : this.name, status : _status, due : _due, action : _action})
 			}else {
-				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', imgSrc: checkImgSrc, name : this.name, status : _status, due : _due, action : _action})
+				content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: 'checked="checked"', name : this.name, status : _status, due : _due, action : _action})
 			}
 
 			var recommendedTRs = $('recommended-reports-dc-' + this.aeReportId).select('.recommended-tr');

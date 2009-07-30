@@ -3,7 +3,7 @@
 
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="rulesMessages" required="true" type="java.util.List" description="The messages from rules engine,  to show" %>
-<div id="rulesMessage-${aeReportId}" class="rulesMessage">
+<div id="rulesMessageTop-${aeReportId}" class="rulesMessage">
 
 <div id="rulesMessage-${aeReportId}-required" style="${empty rulesMessages ? 'display:none;' : ''}" >
 	<tags:message key="instruction_ae_require_reporting" />
