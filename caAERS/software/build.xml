@@ -35,7 +35,7 @@
 	<!-- ==================================================================
 		target : publish-all
 	====================================================================== -->
-  	<target name="publish-all" depends="buildlist, clean-all, clean-repo" 
+  	<target name="publish-all" depends="buildlist, clean-all, clean-repo , clean-caaers-cache" 
   			description="compile, jar and publish all projects in the right order, publishes them into local repository">
    		 <subant target="publish-local" buildpathref="build-path" />
   	</target>
