@@ -58,6 +58,7 @@
 		<property name="studyImportService" ref="studyImportService" />
 		<property name="studyConverter" ref="studyConverter" />
 		<property name="studyDao" ref="studyDao" />
+		<property name="studyRepository" ref="studyRepository" />
 		<property name="studySynchronizer" ref="studySynchronizer" />
 		<property name="domainObjectValidator" ref="domainObjectValidator" />
 		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
