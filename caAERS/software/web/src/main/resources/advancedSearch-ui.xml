@@ -640,6 +640,38 @@
 			</view-column>
 		</dependent-object>
 		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.CtcTerm</class-name>
+			<display-name>Ctc Term</display-name>
+			<table-name>ctc_terms</table-name>
+			<table-alias>CtcTerm_xx</table-alias>
+			<hidden>true</hidden>
+			<ui-attribute>
+				<name>term</name>
+				<label>CTCAE term</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
+			</ui-attribute>
+			<view-column>
+				<column-attribute>term</column-attribute>
+				<column-title>CTCAE term</column-title>
+			</view-column>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</name>
+				<role-name>adverseEventTerm</role-name>
+				<table-alias>AbstractAdverseEventTerm_xx</table-alias>
+				<joining-condition>AdverseEvent_xx = AbstractAdverseEventTerm_xx.adverseEvent</joining-condition>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.CtcTerm</name>
+				<role-name>term</role-name>
+				<table-alias>CtcTerm_xx</table-alias>
+				<joining-condition>AbstractAdverseEventTerm_xx.term = CtcTerm_xx</joining-condition>
+			</ui-association>
+		</dependent-object>
+		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
 			<display-name>Study</display-name>
 			<table-name>studies</table-name>
