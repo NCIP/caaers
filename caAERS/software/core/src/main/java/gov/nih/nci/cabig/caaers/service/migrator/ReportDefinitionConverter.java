@@ -77,9 +77,17 @@ public class ReportDefinitionConverter {
 		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
 		//populate the correct config property
-		reportDefinitionDomain.setGroup(configPropertyDao.getByTypeAndCode(ConfigPropertyType.valueOf(reportDefinitionDto.getGroup().getConfigType()), 
-							reportDefinitionDto.getGroup().getCode()));
-		reportDefinitionDomain.setReportType(ReportType.valueOf(reportDefinitionDto.getReportType().name()));
+		if(reportDefinitionDto.getGroup() == null){
+			reportDefinitionDomain.setGroup(configPropertyDao.getByTypeAndCode(ConfigPropertyType.REPORT_GROUP,"RT_AdEERS"));
+		}else{
+			reportDefinitionDomain.setGroup(configPropertyDao.getByTypeAndCode(ConfigPropertyType.valueOf(reportDefinitionDto.getGroup().getConfigType()), 
+					reportDefinitionDto.getGroup().getCode()));
+		}
+		if(reportDefinitionDto.getReportType() == null){
+			reportDefinitionDomain.setReportType(ReportType.REPORT);
+		}else{
+			reportDefinitionDomain.setReportType(ReportType.valueOf(reportDefinitionDto.getReportType().name()));
+		}
 		
 		if("CAAERSXML".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CAAERSXML);
