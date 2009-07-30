@@ -49,7 +49,7 @@ public class OrganizationSecurityFiltererTest extends DaoTestCase {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(organizations); 
 		ArrayList filteredList = (ArrayList)organizationSecurityFilterer.filter(authentication, "ACCESS", filterer);
-		assertEquals(filteredList.size(),1);
+		assertEquals(filteredList.size(),4);
 	
 	}
 }
