@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator;
@@ -43,12 +44,14 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
     private StudyDao studyDao;
+    private StudyRepository studyRepository;
     
     private StudyParticipantAssignment studyParticipantAssignment;
     private Study study;
 
     protected void setUp() throws Exception {
         super.setUp();
+        studyRepository = registerMockFor(StudyRepository.class);
         participantRepository = registerMockFor(ParticipantRepository.class);
         studySiteDao = registerMockFor(StudySiteDao.class);
         organizationDao = registerMockFor(OrganizationDao.class);
@@ -63,6 +66,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         ParticipantMigrator migrator = new ParticipantMigrator();
         migrator.setChildren(migrators);
 
+        spaMigrator.setStudyRepository(studyRepository);
         spaMigrator.setStudySiteDao(studySiteDao);
         spaMigrator.setOrganizationDao(organizationDao);
         spaMigrator.setStudyDao(studyDao);
@@ -197,6 +201,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
         studyDao.updateStudyForServiceUseOnly(study);
+        studyRepository.save(study);
         replayMocks();
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
         verifyMocks();
