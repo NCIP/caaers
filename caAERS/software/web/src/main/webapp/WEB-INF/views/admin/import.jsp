@@ -62,19 +62,6 @@
 </head>
 <body>
 
- <div class="tabpane">
-     <div class="workflow-tabs2">
-  <ul id="" class="tabs autoclear">
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="#">Import</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="importMeddra">Import MedDRA</a>
-    </div></li>
-  </ul>
-</div>
-
-
 <p id="instructions">
         Import Studies/Protocols or Subjects into caAERS
 </p>
@@ -90,6 +77,8 @@
         <tags:button id="investigator_button" type="button" value="Import Investigator" size="small" color="blue" icon="add" /><br><br>
         <tags:button id="research_staff_button" type="button" value="Import Research Staff" size="small" color="blue" icon="add" /><br><br>
         <tags:button id="routine_ae_report_button" type="button" value="Import Routine AEs" size="small" color="blue" icon="add" /><br><br>
+            		
+        <a href="importMeddra" >Import MedDRA</a>    		
             		
 		 <tags:errors path="*"/>
     	 
