@@ -885,9 +885,10 @@ function validate(aeReportId){
 			primaryAeId="${_primaryAE.id}" />
 		<!--  Rules Message Bottom -->
 		<div class="rulesMessageBottom">
-		<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="0" />
-		<div class="row" style="text-align:right;">
-			 <tags:button id="report-btn-0" type="button" onclick="forwardToReport(0, this.form);" value="Report" color="green" icon="continue" />
+			<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="0" />
+			<div class="row" style="text-align:right;">
+			 	<tags:button id="report-btn-0" type="button" onclick="forwardToReport(0, this.form);" value="Report" color="green" icon="continue" />
+			</div>
 		</div>
 	</chrome:accordion>	
 	</div>
