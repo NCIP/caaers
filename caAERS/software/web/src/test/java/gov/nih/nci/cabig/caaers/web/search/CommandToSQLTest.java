@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -29,7 +30,7 @@ import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
  * Query4 - Show all studies that have sponsor X and/or coordinating center Y and or site Z
  * @author Sameer Sawant
  */
-public class CommandToSQLTest extends WebTestCase {
+public class CommandToSQLTest extends AbstractTestCase {
 	AdvancedSearchCommand command;
 	List<AdvancedSearchCriteriaParameter> criteriaParameters;
 	SearchTargetObject targetObject;
@@ -54,7 +55,7 @@ public class CommandToSQLTest extends WebTestCase {
 		createDataForQuery2();
 		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
 		String projectionString = CommandToSQL.getProjectionString(targetObject);
-		String expectedProjectionString = "select AdverseEvent_xx, Report_xx";
+		String expectedProjectionString = "select AdverseEvent_xx";
 		assertEquals("Projection String is created incorrectly", expectedProjectionString, projectionString);
 		assert(true);
 	}
@@ -93,9 +94,7 @@ public class CommandToSQLTest extends WebTestCase {
 		createDataForQuery2();
 		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
 		String fromTablesString = CommandToSQL.getFromTablesString(targetObject, criteriaParameters);
-		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.AdverseEvent AdverseEvent_xx, " +
-			"gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport ExpeditedAdverseEventReport_xx, " + 
-			"gov.nih.nci.cabig.caaers.domain.report.Report Report_xx";
+		String expectedFromTablesString = "from gov.nih.nci.cabig.caaers.domain.AdverseEvent AdverseEvent_xx";
 		assertEquals("From tables string is created incorrectly", expectedFromTablesString, fromTablesString);
 		assert(true);
 	}
@@ -129,16 +128,6 @@ public class CommandToSQLTest extends WebTestCase {
 		String expectedJoiningString = "AdverseEvent_xx.reportingPeriod = AdverseEventReportingPeriod_xx and " +
 			"AdverseEventReportingPeriod_xx.assignment = StudyParticipantAssignment_xx and " +
 			"StudyParticipantAssignment_xx.studySite = StudyOrganization_xx and StudyOrganization_xx.study = Study_xx";
-		assertEquals("Joining string is created incorrectly", expectedJoiningString, joiningString);
-		assert(true);
-	}
-
-	public void testGetJoiningConditionStringForQuery2() throws Exception{
-		createDataForQuery2();
-		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
-		String joiningString = CommandToSQL.getJoiningConditionString(targetObject, criteriaParameters);
-		String expectedJoiningString = "AdverseEvent_xx.report = ExpeditedAdverseEventReport_xx and " +
-			"ExpeditedAdverseEventReport_xx = Report_xx.aeReport";
 		assertEquals("Joining string is created incorrectly", expectedJoiningString, joiningString);
 		assert(true);
 	}
