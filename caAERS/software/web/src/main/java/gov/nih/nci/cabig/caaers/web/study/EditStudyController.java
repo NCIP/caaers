@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -59,12 +60,13 @@ public class EditStudyController extends StudyController<StudyCommand> {
             log.debug("Retrieved Study :" + String.valueOf(study));
         }
 
-        StudyCommand cmd = new StudyCommand(studyDao);
+        StudyCommand command = new StudyCommand(studyDao);
 
-        cmd.setStudy(study);
+        command.setStudy(study);
+        command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
         
-        cmd.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
-        return cmd;
+        command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+        return command;
     }
 
     @Override

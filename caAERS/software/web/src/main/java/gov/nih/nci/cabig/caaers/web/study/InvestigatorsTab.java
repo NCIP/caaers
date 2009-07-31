@@ -34,8 +34,9 @@ class InvestigatorsTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
-        addConfigMapToRefdata(refdata, "invRoleCodeRefData");
+        // addConfigMapToRefdata(refdata, "invRoleCodeRefData");
         addConfigMapToRefdata(refdata, "invStatusCodeRefData");
+        refdata.put("allPersonnelRoles", command.getAllPersonnelRoles());
         return refdata;
     }
 

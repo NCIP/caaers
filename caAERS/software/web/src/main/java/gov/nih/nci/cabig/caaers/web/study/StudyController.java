@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
@@ -49,6 +50,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private MeddraVersionDao meddraVersionDao;
     private ConditionDao conditionDao;
+    protected ConfigPropertyRepositoryImpl configPropertyRepository;
 
     private LowLevelTermDao lowLevelTermDao;
     
@@ -272,5 +274,13 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
         this.siteResearchStaffDao = siteResearchStaffDao;
+    }
+
+    public ConfigPropertyRepositoryImpl getConfigPropertyRepository() {
+        return configPropertyRepository;
+    }
+
+    public void setConfigPropertyRepository(ConfigPropertyRepositoryImpl configPropertyRepository) {
+        this.configPropertyRepository = configPropertyRepository;
     }
 }

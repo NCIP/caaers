@@ -25,11 +25,11 @@
 			initialDisplayValue="Begin typing here..." />
 	 </td>
 	 <td style="border-right:none; width:300px;">
-	 <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
+	    <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
 	 	<ui:select options="${_staffRoleField.attributes.options}"
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
-	 		validationJSClass="${_staffRoleField.validatorClassName}" readonly="true"/>
+	 		validationJSClass="${_staffRoleField.validatorClassName}" disabled="${readOnly}"/>
 
 	 </td>
 	 <td style="border-right:none;">

@@ -65,7 +65,7 @@ class PersonnelTab extends StudyTab {
             fields = new ArrayList<InputField>();
             InputField investigatorField = InputFieldFactory.createAutocompleterField("siteResearchStaff", "Research Staff", false);
             fields.add(investigatorField);
-            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, collectOptionsFromConfig("studyPersonnelRoleRefData", "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, WebUtils.collectOptions(command.getAllPersonnelRoles(), "code", "name", "")));
             //TODO: BJ need to show startDate and endDate and deactivate/activate
             fields.add(InputFieldFactory.createLabelField("active", "Status", false));
         }

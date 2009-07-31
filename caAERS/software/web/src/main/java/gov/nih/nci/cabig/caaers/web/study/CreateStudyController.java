@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import javax.servlet.ServletException;
@@ -53,10 +49,10 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-        StudyCommand cmd = new StudyCommand(studyDao);
+        StudyCommand command = new StudyCommand(studyDao);
         Study study = new Study(); 
         study.setDataEntryStatus(false);
-        cmd.setStudy(study);
+        command.setStudy(study);
 
         StudyFundingSponsor sponsor = new StudyFundingSponsor();
         sponsor.setPrimary(true);
@@ -77,9 +73,10 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
         study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
         
-        cmd.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+        command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+        command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
         
-        return cmd;
+        return command;
     }
 
     @Override

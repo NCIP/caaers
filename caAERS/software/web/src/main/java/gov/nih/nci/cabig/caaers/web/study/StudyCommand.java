@@ -1,19 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
-import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Design;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Retireable;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 
 import java.util.ArrayList;
@@ -34,8 +22,10 @@ public class StudyCommand {
     private int studySiteIndex = -1; 
     private String[] diseaseTermIds;
     private String diseaseCategoryAsText;
+
     private String diseaseLlt;
     private String condition;
+    protected List<ConfigProperty> allPersonnelRoles;
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -359,4 +349,13 @@ public class StudyCommand {
 
          setStudy(mergedStudy);
     }
+
+    public List<ConfigProperty> getAllPersonnelRoles() {
+        return allPersonnelRoles;
+    }
+
+    public void setAllPersonnelRoles(List<ConfigProperty> allPersonnelRoles) {
+        this.allPersonnelRoles = allPersonnelRoles;
+    }
+    
 }

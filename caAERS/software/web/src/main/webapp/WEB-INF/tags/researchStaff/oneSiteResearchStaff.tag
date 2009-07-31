@@ -107,14 +107,14 @@
                                 <th>Role name
                                 <th>Start date
 
-                            <c:forEach items="${command.srs[index].rsRoles}" var="role" varStatus="j">
+                            <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
                                 <tr>
                                     <td>
-                                        <c:if test="${!role.checked}"><ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}</c:if>
-                                        <c:if test="${role.checked}"><ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
                                     <td>
                                         <c:if test="${role.checked}"><tags:formatDate value="${role.startDate}" />&nbsp;<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"></c:if>
-                                        <c:if test="${!role.checked}"><ui:date path="srs[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate"/></c:if>
+                                        <c:if test="${!role.checked}"><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate"/></c:if>
                                 <tr>
                             </c:forEach>
                             </table>
@@ -128,10 +128,10 @@
                                 <tr>
                                 <th>Role name
                                 <th>Start date
-                                <c:forEach items="${command.srs[index].rsRoles}" var="role" varStatus="j">
+                                <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
                                         <c:if test="${role.checked}">
                                             <tr>
-                                                <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<ui:checkbox path="srs[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
+                                                <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
                                                 <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.startDate}" /><br></c:if>
                                         </c:if>
                                 </c:forEach>
