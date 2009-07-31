@@ -118,6 +118,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite);
 		expect(studySite.getStudy()).andReturn(study);
 		expect(assignment.getParticipant()).andReturn(participant);
+		expect(reportingPeriod.getId()).andReturn(5).anyTimes();
 		replayMocks();
 		
 		ReportingPeriodCommand command  = (ReportingPeriodCommand)controller.formBackingObject(request);
@@ -144,6 +145,8 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite);
 		expect(studySite.getStudy()).andReturn(study);
 		expect(assignment.getParticipant()).andReturn(participant);
+		expect(assignment.getReportingPeriods()).andReturn(null);
+		
 		replayMocks();
 		
 		ReportingPeriodCommand command  = (ReportingPeriodCommand)controller.formBackingObject(request);
