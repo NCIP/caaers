@@ -166,12 +166,12 @@ public class ExpeditedReportTreeTest extends TestCase {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
 
         assertUnsatisfiedProperties("Should be initially unsatisfied",
-                        "diseaseHistory.ctepStudyDisease", report,
-                        "diseaseHistory.ctepStudyDisease");
+                        "diseaseHistory.abstractStudyDisease", report,
+                        "diseaseHistory.abstractStudyDisease");
 
         report.setDiseaseHistory(new DiseaseHistory());
         report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
-        assertNoUnsatisfiedProperties("Coded didn't satisfy it", "diseaseHistory.ctepStudyDisease",
+        assertNoUnsatisfiedProperties("Coded didn't satisfy it", "diseaseHistory.abstractStudyDisease",
                         report);
     }
 
@@ -179,12 +179,12 @@ public class ExpeditedReportTreeTest extends TestCase {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
 
         assertUnsatisfiedProperties("Should be initially unsatisfied",
-                        "diseaseHistory.ctepStudyDisease", report,
-                        "diseaseHistory.ctepStudyDisease");
+                        "diseaseHistory.abstractStudyDisease", report,
+                        "diseaseHistory.abstractStudyDisease");
 
         report.setDiseaseHistory(new DiseaseHistory());
         report.getDiseaseHistory().setOtherPrimaryDisease("Hoolitis");
-        assertNoUnsatisfiedProperties("Other didn't satisfy it", "diseaseHistory.ctepStudyDisease",
+        assertNoUnsatisfiedProperties("Other didn't satisfy it", "diseaseHistory.abstractStudyDisease",
                         report);
     }
     
