@@ -69,27 +69,6 @@ This applicationContext contains the definition of the concrete services
 	<bean id="messageNotificationService" class="gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService" autowire="byType"/>
 	<!-- XXX: may want to put this in a different app context -->
 	<bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
-	<!--  This bean that implements the service  -->
-	
-	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-	  <property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
-	  <property name="jobDataAsMap">
-	    <map>
-	      <entry key="reportVersionRepository">
-				<ref bean="reportVersionRepository"/>
-		  </entry>
-	    </map>
-	  </property>
-   </bean>
-	<!-- trigger every 5 minutes -->
-	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-	    <property name="jobDetail" ref="reportStatusResetJob" />
-	    <property name="startDelay" value="0" />
-	    <property name="repeatInterval" value="3000000" />
-	</bean>
-	
-	
-	
 	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">
 		<property name="scheduler">
 			<ref bean="schedulerFactory"/>

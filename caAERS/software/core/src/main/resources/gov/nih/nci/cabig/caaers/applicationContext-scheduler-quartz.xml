@@ -23,5 +23,35 @@
 				<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?</prop>
 			</props>
 		</property>
+		<property name="jobDetails">
+        	<list> 
+        		<ref bean="reportStatusResetJob" />
+        	</list>
+     	</property>
+    	 <property name="triggers">
+        	<list> 
+        		<ref bean="reportStatusResetTrigger" /> 
+        	</list>
+     	</property>
+	</bean>
+	
+	
+		<!--  This bean that implements the service  -->
+	
+	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	  <property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
+	  <property name="jobDataAsMap">
+	    <map>
+	      <entry key="reportVersionRepository">
+				<ref bean="reportVersionRepository"/>
+		  </entry>
+	    </map>
+	  </property>
+   </bean>
+	<!-- trigger every 5 minutes -->
+	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+	    <property name="jobDetail" ref="reportStatusResetJob" />
+	    <property name="startDelay" value="0" />
+	    <property name="repeatInterval" value="300000" />
 	</bean>
 </beans>
