@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.reportdefinition.ReportType;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -105,8 +106,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         	report.getLastVersion().copySubmissionDetails(lastSubmittedReport.getLastVersion());
         	
         	String strLastVersionNumber = lastSubmittedReport.getLastVersion().getReportVersionId();
-        	ReportStatus status = lastSubmittedReport.getStatus();
-            if(status.equals(ReportStatus.COMPLETED) || status.equals(ReportStatus.AMENDED)){
+            if(lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.REPORT) ){
             	//increase the amendment number.
             	int n = Integer.parseInt(strLastVersionNumber) + 1;
             	report.getLastVersion().setReportVersionId("" + n);
