@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.*;
 
@@ -137,16 +138,12 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 		this.address = address;
 	}
 
-	@Transient
-    public boolean isActive(){
-    	//return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
-		return true;
-    }
-
     @Transient
-    public boolean isInActive(){
-    	//return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
-    	return false;
+    public boolean isActive() {
+        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
+            if (srsr.isActive()) return true;
+        }
+        return false;
     }
     
     // /OBJECT METHODS

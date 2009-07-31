@@ -24,22 +24,23 @@
 			enableClearButton="${_staffField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here..." />
 	 </td>
-	 <td style="border-right:none; width:300px;">
+
+    <td style="border-right:none; width:300px;">
 	    <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
 	 	<ui:select options="${_staffRoleField.attributes.options}"
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
 	 		validationJSClass="${_staffRoleField.validatorClassName}" disabled="${readOnly}"/>
+	 </td>
 
-	 </td>
-	 <td style="border-right:none;">
-	 <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
-	 	<ui:select options="${_staffStatusField.attributes.options}"
-	 		path="${_staffStatusField.propertyName}" 
-	 		required="true"
-	 		validationJSClass="${_staffStatusField.validatorClassName}" readonly="true"/>
-	 </td>
-	<td style="border-left:none;">
+    <td style="border-left:none;">
+    <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
+        <c:set var="isActive"><jsp:attribute name="value"><caaers:value path="${_staffStatusField.propertyName}"/></jsp:attribute></c:set>
+        <c:if test="${isActive}">Active</c:if>
+        <c:if test="${!isActive}">Inactive</c:if>
+    </td>
+
+    <td style="border-left:none;">
 		<a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
 			<img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle">
 		</a> 

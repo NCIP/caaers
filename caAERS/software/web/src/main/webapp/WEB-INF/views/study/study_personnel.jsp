@@ -115,10 +115,11 @@ margin:5px;
 	<input type="hidden" name="_selectedPersonnel" value="">
 	<input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
 	<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.activeStudyOrganizations[command.studySiteIndex].studyPersonnels)}">
-	  
+
+    
 	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
-		<td width="70%" valign="top" >
+		<td width="65%" valign="top" >
 			<tags:instructions code="study.study_personnel.site" />
 			<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
 			<br />
@@ -131,19 +132,13 @@ margin:5px;
                 <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" /></div>
 			</div>
 	    </td>
-      	<td valign="top" width="25%">
-			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
+      	<td valign="top" width="35%">
+			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
-						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
- 					</div>
- 					<div class="">Personnel Assigned: <b> ${fn:length(studySite.activeStudyPersonnel)} </b>
- 					</div>
- 				
+ 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study"><font size="2"><b>${studySite.organization.name}</b></font></a> (${fn:length(studySite.activeStudyPersonnel)})</div>
+ 					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
- 				<div>
- 				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
- 				</div>
+ 				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>
  			</chrome:box>
 		</td>
 	  </tr>

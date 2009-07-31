@@ -40,10 +40,9 @@
 
     <td style="border-right:none;">
         <c:set var="_invStatusField" value="${fieldGroups[mainGroup].fields[2]}"/>
-        <ui:select options="${_invStatusField.attributes.options}"
-                   path="${_invStatusField.propertyName}"
-                   required="true"
-                   validationJSClass="${_invStatusField.validatorClassName}" readonly="true"/>
+        <c:set var="isActive"><jsp:attribute name="value"><caaers:value path="${_invStatusField.propertyName}"/></jsp:attribute></c:set>
+        <c:if test="${isActive}">Active</c:if>
+        <c:if test="${!isActive}">Inactive</c:if>
     </td>
 
     <td style="border-left:none;">

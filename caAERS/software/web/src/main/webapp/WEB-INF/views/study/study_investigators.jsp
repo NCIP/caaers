@@ -111,7 +111,7 @@
 
  <table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
-		<td width="70%" valign="top" >
+		<td width="65%" valign="top" >
 		<p><tags:instructions code="study.study_investigators.top" /></p>
 		<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
 		<br />
@@ -124,13 +124,10 @@
 			<span id="ss-bookmark" />
 		</div>
 	    </td>
-      	<td valign="top" width="45%">
-			<chrome:box title="Summary" id="participant-entry2" autopad="true">
+      	<td valign="top" width="35%">
+			<chrome:box title="Assigned Investigators" id="participant-entry2" autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class ="">
-                         <a href="#" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study"> <font size="-1"> <b>${studySite.organization.name}</b></font></a>
- 					</div>
-                     <div class="">Investigators Assigned: <b> ${fn:length(studySite.activeStudyInvestigators)}</b></div>
+ 					<div class =""><a style="cursor:pointer;" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study"> <font size="-1"> <b>${studySite.organization.name}</b></font></a> (${fn:length(studySite.activeStudyInvestigators)})</div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />

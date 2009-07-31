@@ -16,11 +16,15 @@
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
 <tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top">
+    
     <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="fstatus">
         <c:if test="${not fn:contains(exclusions, field.displayName)}">
 		    <td style="border-right:none;">
-                <c:set var="fValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
-                <tags:renderInputs field="${field}" disabled="${identifiers and (index lt 2) and (fstatus.index ne 4)}"/>
+                <c:if test="${fstatus.index != 2}">
+                    <c:set var="fValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
+                    <tags:renderInputs field="${field}" disabled="${identifiers and (index lt 2) and (fstatus.index ne 4)}"/>
+                </c:if>
+                <c:if test="${fstatus.index == 2}">Inactive</c:if>
             </td>
 		</c:if>
 	</c:forEach>
