@@ -102,7 +102,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true" willSave="${not empty command.study.id}">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="false" willSave="${not empty command.study.id}">
 <jsp:attribute name="singleFields">
  <input type="hidden" name="_action" value="">
  <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">

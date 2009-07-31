@@ -86,17 +86,11 @@ class InvestigatorsTab extends StudyTab {
     @Override
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        int soIndex = -1;
-
-        for (StudyOrganization studyOrg : command.getStudy().getActiveStudyOrganizations()) {
-            soIndex++;
-            int siIndex = -1;
-            HashSet<StudyInvestigator> hSet = new HashSet<StudyInvestigator>();
-            for (StudyInvestigator si : studyOrg.getStudyInvestigators()) {
-                siIndex++;
-                if (!hSet.add(si)) {
-                    errors.rejectValue("study.activeStudyOrganizations[" + soIndex + "].studyInvestigators[" + siIndex + "].siteInvestigator", "STU_012", "Duplicate entry");
-                }
+        StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+        HashSet<StudyInvestigator> hSet = new HashSet<StudyInvestigator>();
+        for (StudyInvestigator si : so.getStudyInvestigators()) {
+            if (!hSet.add(si)) {
+                errors.reject("STU_012", new Object[] {si.getSiteInvestigator().getInvestigator().getFullName()}, "Duplicate entry");
             }
         }
     }
