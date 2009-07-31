@@ -8,11 +8,13 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 public class ReportVersionRepository {
 
 		private ReportVersionDao reportVersionDao;
 
-
+		@Transactional(readOnly = false)
 	    public void updateInProcessReports() {
 	    	List<ReportVersion> rvs = reportVersionDao.getAllInProcessReports();
 	    	NowFactory nowFactory = new NowFactory();
