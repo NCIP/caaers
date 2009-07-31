@@ -8,10 +8,11 @@
 	cursor: pointer;
 	margin: 0 0 0 0;
 	color: #ffffff;
+	border-bottom:1px solid;
 }
 		
 .accordion-toggle-active {
-	background-color:#e0542f;
+	background-color:#D15300;
 	color: #ffffff;
 }
 		
