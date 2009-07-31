@@ -171,16 +171,16 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         
-        Object command = getCommand(request);
-        if(command != null){
-        	AbstractExpeditedAdverseEventInputCommand expeditedCommand = (AbstractExpeditedAdverseEventInputCommand) command;
-        	binder.registerCustomEditor(AbstractStudyDisease.class, new AbstractStudyDiseaseEditor(expeditedCommand.getStudy().getActiveStudyDiseases()));
-        	
-        }
+//        Object command = getCommand(request);
+//        if(command != null){
+//        	AbstractExpeditedAdverseEventInputCommand expeditedCommand = (AbstractExpeditedAdverseEventInputCommand) command;
+//        	binder.registerCustomEditor(AbstractStudyDisease.class, new AbstractStudyDiseaseEditor(expeditedCommand.getStudy().getActiveStudyDiseases()));
+//        	
+//        }
 
-//        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
-//        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
-//        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
 
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
@@ -296,6 +296,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     	
     	try {
 			log.debug("In currentFormObject :" + oCommand );
+			
 			((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
 			log.debug("After calling reassociate");
 			oCommand = super.currentFormObject(request, oCommand);
