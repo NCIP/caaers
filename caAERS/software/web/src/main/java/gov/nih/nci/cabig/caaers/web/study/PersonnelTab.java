@@ -63,7 +63,7 @@ class PersonnelTab extends StudyTab {
 
         if (fields == null) {
             fields = new ArrayList<InputField>();
-            InputField investigatorField = InputFieldFactory.createAutocompleterField("siteResearchStaff.researchStaff", "Research Staff", true);
+            InputField investigatorField = InputFieldFactory.createAutocompleterField("siteResearchStaff", "Research Staff", true);
             fields.add(investigatorField);
             fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, collectOptionsFromConfig("studyPersonnelRoleRefData", "desc", "desc")));
             //TODO: BJ need to show startDate and endDate and deactivate/activate
@@ -86,18 +86,15 @@ class PersonnelTab extends StudyTab {
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         int soIndex = -1;
-
-        for (StudyOrganization studyOrg : command.getStudy().getActiveStudyOrganizations()) {
-            soIndex++;
-            int spIndex = -1;
-            HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
-            for (StudyPersonnel sp : studyOrg.getStudyPersonnels()) {
-                spIndex++;
-                if (!hSet.add(sp)) {
-                    errors.rejectValue("study.activeStudyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].siteResearchStaff.researchStaff", "STU_012", "Duplicate entry");
-                }
+        StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+        soIndex++;
+        int spIndex = -1;
+        HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
+        for (StudyPersonnel sp : so.getStudyPersonnels()) {
+            spIndex++;
+            if (!hSet.add(sp)) {
+                errors.rejectValue("study.activeStudyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].siteResearchStaff.researchStaff", "STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
             }
-
         }
     }
 

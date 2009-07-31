@@ -26,8 +26,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_investigators")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_investigators_id") })
-public class StudyInvestigator extends AbstractMutableRetireableDomainObject implements
-                StudyOrganizationChild {
+public class StudyInvestigator extends AbstractMutableRetireableDomainObject implements StudyOrganizationChild {
 
     private String roleCode;
 

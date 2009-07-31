@@ -50,14 +50,11 @@ public class ControllerTools {
         binder.registerCustomEditor(dao.domainClass(), new DaoBasedEditor(dao));
     }
 
-    public static void registerGridDomainObjectEditor(ServletRequestDataBinder binder,
-                    String field, GridIdentifiableDao<?> dao) {
-        binder.registerCustomEditor(dao.domainClass(), field, new GridIdentifiableDaoBasedEditor(
-                        dao));
+    public static void registerGridDomainObjectEditor(ServletRequestDataBinder binder, String field, GridIdentifiableDao<?> dao) {
+        binder.registerCustomEditor(dao.domainClass(), field, new GridIdentifiableDaoBasedEditor(dao));
     }
 
-    public static <E extends Enum<E>> void registerEnumEditor(ServletRequestDataBinder binder,
-                    Class<E> enumClass) {
+    public static <E extends Enum<E>> void registerEnumEditor(ServletRequestDataBinder binder, Class<E> enumClass) {
         binder.registerCustomEditor(enumClass, new EnumByNameEditor<E>(enumClass));
     }
 

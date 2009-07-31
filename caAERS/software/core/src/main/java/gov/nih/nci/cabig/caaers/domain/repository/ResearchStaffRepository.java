@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
@@ -42,6 +39,7 @@ public class ResearchStaffRepository {
 
     private CSMUserRepository csmUserRepository;
     private ResearchStaffDao researchStaffDao;
+    private SiteResearchStaffDao siteResearchStaffDao;
     private ResearchStaffConverterDao researchStaffConverterDao;
     private OrganizationConverterDao organizationConverterDao;
     private OrganizationRepository organizationRepository;
@@ -142,17 +140,23 @@ public class ResearchStaffRepository {
     }
     
     @Transactional(readOnly = false)
+    public List<SiteResearchStaff> getSiteResearchStaffBySubnames(final String[] subnames, final int site) {
+    	List<SiteResearchStaff> researchStaffs = siteResearchStaffDao.getBySubnames(subnames, site);
+    	return researchStaffs;
+    }
+    
+    @Transactional(readOnly = false)
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
     	List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(subnames, site);
     	ResearchStaff searchCriteria = new RemoteResearchStaff();
     	Organization org = organizationDao.getById(site);
     	//Commented below line for ResearchStaff changes. Organization is captured in SiteResearchStaff
     	//searchCriteria.setOrganization(org);
-    	List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(searchCriteria); 
-    	
+    	List<ResearchStaff> remoteResearchStaffs = getRemoteResearchStaff(searchCriteria);
+
     	return merge (researchStaffs,remoteResearchStaffs);
     }
-    
+
     @Transactional(readOnly = false)
     public List<ResearchStaff> getResearchStaff(final ResearchStaffQuery query){
     	//Get all the RS from caAERS DB
@@ -284,5 +288,12 @@ public class ResearchStaffRepository {
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
 	}
-    
+
+    public SiteResearchStaffDao getSiteResearchStaffDao() {
+        return siteResearchStaffDao;
+    }
+
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+        this.siteResearchStaffDao = siteResearchStaffDao;
+    }
 }

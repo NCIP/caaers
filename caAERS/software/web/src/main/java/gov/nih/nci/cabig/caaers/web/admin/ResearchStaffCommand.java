@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
-import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 
 import java.util.Date;
 import java.util.List;
@@ -18,8 +17,8 @@ public class ResearchStaffCommand {
     protected ResearchStaff researchStaff;
     protected List<ConfigProperty> allRoles;
 
-    protected List<SiteResearchStaffCommandHelper> srs;
-    protected Date activeDate; 
+    protected List<SiteResearchStaffCommandHelper> siteResearchStaffCommandHelper;
+    protected Date activeDate;
 
     public ResearchStaff getResearchStaff() {
         return researchStaff;
@@ -37,12 +36,12 @@ public class ResearchStaffCommand {
         this.allRoles = allRoles;
     }
 
-    public List<SiteResearchStaffCommandHelper> getSrs() {
-        return srs;
+    public List<SiteResearchStaffCommandHelper> getSiteResearchStaffCommandHelper() {
+        return siteResearchStaffCommandHelper;
     }
 
-    public void setSrs(List<SiteResearchStaffCommandHelper> srs) {
-        this.srs = srs;
+    public void setSiteResearchStaffCommandHelper(List<SiteResearchStaffCommandHelper> siteResearchStaffCommandHelper) {
+        this.siteResearchStaffCommandHelper = siteResearchStaffCommandHelper;
     }
 
     public SiteResearchStaffRole getSiteResearchStaffRoleByCode(List<SiteResearchStaffRole> roles, String code) {
@@ -53,7 +52,7 @@ public class ResearchStaffCommand {
     }
 
     public void buildResearchStaffCommandHelpers() {
-        if (this.getSrs() == null) this.setSrs(new ArrayList<SiteResearchStaffCommandHelper>());
+        if (this.getSiteResearchStaffCommandHelper() == null) this.setSiteResearchStaffCommandHelper(new ArrayList<SiteResearchStaffCommandHelper>());
 
         for (SiteResearchStaff srs : getResearchStaff().getSiteResearchStaffs()) {
             SiteResearchStaffCommandHelper srsch = new SiteResearchStaffCommandHelper();
@@ -78,13 +77,13 @@ public class ResearchStaffCommand {
 
                 srsch.getRsRoles().add(role);
             }
-            getSrs().add(srsch);
+            getSiteResearchStaffCommandHelper().add(srsch);
         }
         
     }
 
     public void addSiteResearchStaffCommandHelper() {
-        if (this.getSrs() == null) this.setSrs(new ArrayList<SiteResearchStaffCommandHelper>());
+        if (this.getSiteResearchStaffCommandHelper() == null) this.setSiteResearchStaffCommandHelper(new ArrayList<SiteResearchStaffCommandHelper>());
         SiteResearchStaffCommandHelper srs = new SiteResearchStaffCommandHelper();
         if (srs.getRsRoles() == null) srs.setRsRoles(new ArrayList<SiteResearchStaffRoleCommandHelper>());
         for (ConfigProperty cp : this.getAllRoles()) {
@@ -94,7 +93,7 @@ public class ResearchStaffCommand {
             role.setChecked(Boolean.FALSE);
             srs.getRsRoles().add(role);
         }
-        this.getSrs().add(srs);
+        this.getSiteResearchStaffCommandHelper().add(srs);
     }
 
     public Date getActiveDate() {

@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -10,14 +9,11 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.axis.utils.StringUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -59,7 +55,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             SiteResearchStaffCommandHelper siteResearchStaff = null;
 
             if (srsID > 0) {
-                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
                     if (srsch.getId() == srsID) { siteResearchStaff = srsch; break;}
                 }
             }
@@ -79,7 +75,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                 }
             } else {
                 // ResearchStaff Click
-                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
                     for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
                         srsrch.setEndDate(new Date(System.currentTimeMillis()));
                         srsrch.setChecked(false);
@@ -102,12 +98,12 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         }
 
 
-        if (command.getSrs() != null) {
-            if (command.getSrs().size() != command.getResearchStaff().getSiteResearchStaffs().size()) {
+        if (command.getSiteResearchStaffCommandHelper() != null) {
+            if (command.getSiteResearchStaffCommandHelper().size() != command.getResearchStaff().getSiteResearchStaffs().size()) {
                 log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
             } else {
                 byte i = 0;
-                for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+                for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
                     boolean hasRoles = false;
                     if (srsch == null || srsch.getRsRoles() == null) {
                         log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");

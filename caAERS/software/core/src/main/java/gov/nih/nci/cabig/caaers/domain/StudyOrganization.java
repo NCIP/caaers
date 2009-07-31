@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -44,11 +45,8 @@ import org.hibernate.annotations.Type;
 public abstract class StudyOrganization extends AbstractMutableRetireableDomainObject implements StudyChild {
 	
     private Study study;
-
     private Organization organization;
-
     private LazyListHelper lazyListHelper;
-    
     private Date startDate;
     private Date endDate;
 
@@ -102,6 +100,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
 
     @OneToMany(mappedBy = "studyOrganization")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @UniqueObjectInCollection(message = "Duplicates found in StudyInvestigator list")
     public List<StudyInvestigator> getStudyInvestigatorsInternal() {
         return lazyListHelper.getInternalList(StudyInvestigator.class);
     }
@@ -125,6 +124,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
 
     @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @UniqueObjectInCollection(message = "Duplicates found in StudyPersonnel list")
     public List<StudyPersonnel> getStudyPersonnelsInternal() {
         return lazyListHelper.getInternalList(StudyPersonnel.class);
     }

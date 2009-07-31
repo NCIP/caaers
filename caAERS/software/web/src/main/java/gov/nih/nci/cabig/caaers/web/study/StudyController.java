@@ -1,14 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.ConditionDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.INDType;
@@ -52,6 +44,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private AgentDao agentDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
+    private SiteResearchStaffDao siteResearchStaffDao;
     private CtcDao ctcDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private MeddraVersionDao meddraVersionDao;
@@ -98,6 +91,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
+        ControllerTools.registerDomainObjectEditor(binder, siteResearchStaffDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
         ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
         ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
@@ -271,4 +265,12 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+
+    public SiteResearchStaffDao getSiteResearchStaffDao() {
+        return siteResearchStaffDao;
+    }
+
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+        this.siteResearchStaffDao = siteResearchStaffDao;
+    }
 }

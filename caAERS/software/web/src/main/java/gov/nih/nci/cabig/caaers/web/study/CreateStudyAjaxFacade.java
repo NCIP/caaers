@@ -12,26 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Retireable;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
@@ -116,11 +97,21 @@ public class CreateStudyAjaxFacade {
     }
 
     public List<ResearchStaff> matchResearch(final String text, final int indexId) {
-
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<ResearchStaff> researchStaff = researchStaffRepository.getBySubnames(new String[] { text }, siteId);
         return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName", "externalId");
+    }
+
+    public List<SiteResearchStaff> matchSiteResearchStaff(final String text, final int indexId) {
+        StudyCommand command = getStudyCommand(getHttpServletRequest());
+        int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
+        List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(new String[] { text }, siteId);
+        for (SiteResearchStaff srs : siteResearchStaffs) {
+            srs.setResearchStaff(ObjectTools.reduce(srs.getResearchStaff(), "firstName", "lastName"));
+        }
+        List<SiteResearchStaff> reduced = ObjectTools.reduceAll(siteResearchStaffs, "id", "researchStaff");
+        return reduced;
     }
 
     private StudyCommand getStudyFromSession(final HttpServletRequest request) {

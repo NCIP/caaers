@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
@@ -19,7 +18,6 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
@@ -100,7 +98,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
         // START sync the Sites Roles
         short i = 0;
-        for (SiteResearchStaffCommandHelper srsch : command.getSrs()) {
+        for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
             SiteResearchStaff srs = researchStaff.getSiteResearchStaffs().get(i);
 
             // this list is null on CREATE new SiteResearchStaff

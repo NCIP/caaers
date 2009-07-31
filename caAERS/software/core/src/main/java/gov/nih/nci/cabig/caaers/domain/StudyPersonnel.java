@@ -28,18 +28,15 @@ import org.hibernate.annotations.Parameter;
 public class StudyPersonnel extends AbstractMutableRetireableDomainObject implements StudyOrganizationChild {
 
     private String roleCode;
-
     private SiteResearchStaff siteResearchStaff;
-
     private StudyOrganization studyOrganization;
-    
     private Date startDate;
     private Date endDate;
     
     /**
      * This method will deactivate a user, by setting the termEndDate to a past date.
      */
-    public void deactivate(){
+    public void deactivate() {
     	this.endDate = DateUtils.yesterday();
     }
     
@@ -105,7 +102,7 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     	return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
     
-   
+
     @Transient
     public boolean isInActive(){
     	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
