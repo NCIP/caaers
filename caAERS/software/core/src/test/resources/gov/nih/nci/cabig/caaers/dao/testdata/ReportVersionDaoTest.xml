@@ -1,1 +1,370 @@
-<dataset></dataset>
+<dataset>
+	<!-- First populate the Report Calendar, then AEReport and then
+		the ReportSchedule
+	-->
+	<!-- Below content is copied from ReportCalendarTemplateDaoTest.xml -->
+	<ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"
+    />
+	
+	<config_properties id="-1"
+	 code="cp1"
+	 name="cp1"
+	 config_type="1"
+	 />
+	
+	<config_properties id="-2"
+	 code="cp2"
+	 name="cp2"
+	 config_type="1"
+	 />
+	 
+	<report_calendar_templates 
+		id="-222"
+		name="RCT-222"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		org_id="-1001"
+		amendable="0"
+		group_id="-1" 
+		report_type="2"
+		/>
+	
+	<planned_notifications 
+		id="-222"
+		index_on_time_scale="2"
+		subject="Test Subject Line"
+		dtype="email"
+		rct_id="-222"
+		version="0"
+		/>
+	
+	<recipients
+		id="-222"
+		plnf_id="-222"
+		dtype="role"
+		role_name="Investigator"
+		version="0"
+		/>
+		
+		 
+	<report_calendar_templates 
+		id="-223"
+		name="RCT-223"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		org_id="-1001"
+		amendable="0"
+		group_id="-2"
+		report_type="2"
+		/>
+	
+	<planned_notifications 
+		id="-223"
+		index_on_time_scale="2"
+		subject="Test Subject Line"
+		dtype="email"
+		rct_id="-223"
+		version="0"
+		/>
+	
+	<recipients
+		id="-223"
+		plnf_id="-223"
+		dtype="role"
+		role_name="Investigator"
+		version="0"
+		/>	
+	
+	<!-- Below content is copied from AdverseEventReportDaoTest.xml -->
+	 <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="301"
+        name="allergy/immunology"
+        version_id="3"
+        />
+    <ctc_categories
+        id="302"
+        name="auditory/ear"
+        version_id="3"
+        />
+    <ctc_categories
+        id="303"
+        name="blood/bone marrow"
+        version_id="3"
+        />
+    <ctc_terms
+        id="3007"
+        category_id="302"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term="Ear disorder"
+        ctep_code="10014004"
+        other_required="1"
+        />
+    <ctc_terms
+        category_id="302"
+        id="3012"
+        term="Tinnitus"
+        ctep_term="Tinnitus"
+        ctep_code="10043882"
+        other_required="0"
+        />
+    <ctc_grades/> <!-- to delete in case of existing refs -->
+    <agents id="-101"/>
+
+    <PARTICIPANT_ASSIGNMENTS
+        id="-14"
+        study_site_id="-10"
+        participant_id="-5"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+    <epochs id="-1" name="abcd"  order_no="1"/>
+	<ae_reporting_periods id="-14" assignment_id="-14" start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" />   
+	
+    <AE_REPORTS
+        id="-1"
+       reporting_period_id="-14"
+        created_at="2004-09-04 13:15:30"
+        />
+    <ADVERSE_EVENTS
+        id="-11"
+        report_id="-1"
+        list_index="1"
+        />
+    <ADVERSE_EVENTS
+        id="-70"
+        report_id="-1"
+        list_index="0"
+        />
+    <AE_LABS
+        id="-20"
+        report_id="-1"
+        list_index="1"
+        units="hectares/liter"
+        baseline_value="3.66"
+        baseline_date="2003-04-17"
+        nadir_value="0.4"
+        nadir_date="2007-03-14"
+        recovery_value="3.54"
+        recovery_date="2007-03-19"
+        />
+    <AE_LABS
+        id="-21"
+        report_id="-1"
+        list_index="0"
+        />
+    <AE_LABS
+        id="-22"
+        report_id="-1"
+        list_index="2"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-30"
+        list_index="1"
+        report_id="-1"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-31"
+        list_index="0"
+        report_id="-1"
+        />
+    <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70" cause_id="-31" cause_type="CM" attribution_code="4"/>
+
+    <TREATMENTS
+        id="-10"
+        report_id="-1"
+        first_course_date="2005-06-04"
+        adverse_event_course_date="2006-07-09"
+        adverse_event_course_number="8"
+        />
+    <COURSE_AGENTS
+        id="-20"
+        treatment_id="-10"
+        list_index="1"
+        administration_delay_minutes="240"
+        dose_amount="17.4"
+        dose_units="mg"
+        dose_route="aural"
+        modified_dose_amount="10"
+        modified_dose_units="mg"
+        modified_dose_route="aural"
+        total_dose_this_course="7"
+        duration_and_schedule="8 times every third hour"
+        last_administered_date="2006-07-10"
+        />
+    <COURSE_AGENTS
+        id="-19"
+        treatment_id="-10"
+        list_index="0"
+        dose_amount=".33"
+        dose_units="kg"
+        dose_route="oral"
+        total_dose_this_course=".84"
+        duration_and_schedule="daily"
+        />
+
+    <OTHER_CAUSES
+        id="-82"
+        report_id="-1"
+        list_index="2"
+        cause_text="Tire fire"
+        />
+    <OTHER_CAUSES
+        id="-81"
+        report_id="-1"
+        list_index="0"
+        cause_text="Cuyahoga river"
+        />
+    <OTHER_CAUSES
+        id="-80"
+        report_id="-1"
+        list_index="1"
+        cause_text="Crossed against light"
+        />
+
+    <AE_REPORT_DESCRIPTIONS
+        id="-10"
+        report_id="-1"
+        present_status_code="3"
+        event_description="It was real bad"
+        retreated="0"
+        recovery_date="2012-03-04"
+        />
+               <!-- tables which an AE report will reference, but which are not otherwise
+        in this file.  This is so dbunit will clean them up. -->
+    <DISEASE_HISTORIES/>
+    <PARTICIPANT_HISTORIES/>
+	<ae_prior_therapies />
+    <!--
+	
+	report_schedules
+    ================
+	 id serial NOT NULL,
+     name character varying(50) NOT NULL,
+     due_on timestamp without time zone NOT NULL,
+     created_on timestamp without time zone NOT NULL,
+     submitted_on timestamp without time zone NOT NULL,
+     version integer,
+     rprt_clndr_tmpl_id integer,
+     ae_rprt_id integer,
+     grid_id text,
+	-->
+	
+	<report_schedules 
+		id="-223"
+		rct_ID="-222"
+        required="1"
+        version="0"
+		report_id="-1"
+        />
+        
+    <report_versions id="-88" 
+	    report_id="-223"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="2"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		/>
+	
+	
+	<report_schedules 
+		id="-224"
+		rct_ID="-222"
+        required="1"
+        version="0"
+		report_id="-1"
+        />
+        
+    <report_versions id="-89" 
+	    report_id="-224"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="4"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2009-07-31 00:50:13.991"
+		/>
+
+    <report_versions id="-91" 
+	    report_id="-225"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="4"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2009-07-31 00:55:13.991"
+		amended_on="2007-05-01"
+		/>
+				
+		
+	<report_schedules 
+		id="-225"
+		rct_ID="-223"
+        required="1"
+        version="0"
+		report_id="-1"
+        />
+        
+    <report_versions id="-90" 
+	    report_id="-225"  
+		list_index="0"  
+		report_version_id="0" 
+		status_code="7"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		amended_on="2007-05-01"
+		/>	
+		
+    <AE_REPORT_PEOPLE id="-100" report_id="-1" 
+           	role="S"
+            first_name="Joe" 
+            last_name="DiMaggio" title="Mr" 
+            street="160 Laurelway" city="Herndon" state="VA" 
+            report_version_id="-88"
+                      zip="20170"/>
+    <AE_REPORT_PEOPLE id="-422" first_name="FA" last_name="KE" role="R" report_id="-1"/>
+    <AE_REPORT_PEOPLE id="-423" first_name="FA" last_name="KE" role="P" report_id="-1"/>
+
+
+    <mandatory_field_defs />
+
+    <report_delivery_defs id="-221" format="0" entity_name="testentity1" end_point="11111111" entity_type="2" end_point_type="phone" rct_id="-222" />
+    <report_delivery_defs id="-222" format="0" entity_name="testentity2" end_point="11111112" entity_type="2" end_point_type="phone" rct_id="-222" />
+    
+    <!--  We have some investigational new drugs pre-loaded for CTEP -->
+    <investigational_new_drugs />    
+    <ind_holders />   
+    <research_staffs />
+    <ae_pre_existing_conds />
+    <additional_information />
+    <ae_radiation_interventions />
+    <report_contents />
+    
+    <!--  Hack, we need to clear all miss-fired triggers from quartz tables for easy execution of 
+     	  SchedulerServiceTest. So adding certain of the quartz related tables so that when this 
+     	  test case executes, it will be cleared off. 
+     -->
+        <qrtz_blob_triggers />
+        <qrtz_cron_triggers />  
+        <qrtz_fired_triggers />
+        <qrtz_job_details />
+        <qrtz_job_listeners />
+        <qrtz_paused_trigger_grps />
+        <qrtz_scheduler_state />
+        <qrtz_simple_triggers />
+        <qrtz_trigger_listeners />
+        <qrtz_triggers />
+</dataset>
