@@ -34,15 +34,10 @@ import org.hibernate.annotations.Parameter;
 public class SiteInvestigator extends AbstractMutableDomainObject {
 
     private Organization organization;
-
     private Investigator investigator;
-
     private String emailAddress;
-
     private Date startDate;
-    
     private Date endDate;
-    
     private String status;
 
     private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();

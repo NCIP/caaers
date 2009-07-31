@@ -29,11 +29,8 @@ import org.hibernate.annotations.Parameter;
 public class StudyInvestigator extends AbstractMutableRetireableDomainObject implements StudyOrganizationChild {
 
     private String roleCode;
-
     private SiteInvestigator siteInvestigator;
-
     private StudyOrganization studyOrganization;
-    
     
     private Date startDate;
     private Date endDate;

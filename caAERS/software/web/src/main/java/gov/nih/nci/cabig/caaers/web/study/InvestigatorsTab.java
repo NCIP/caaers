@@ -35,7 +35,7 @@ class InvestigatorsTab extends StudyTab {
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         addConfigMapToRefdata(refdata, "invRoleCodeRefData");
-//        addConfigMapToRefdata(refdata, "invStatusCodeRefData");
+        addConfigMapToRefdata(refdata, "invStatusCodeRefData");
         return refdata;
     }
 
@@ -71,7 +71,6 @@ class InvestigatorsTab extends StudyTab {
             InputField investigatorField = InputFieldFactory.createAutocompleterField("siteInvestigator", "Investigator", true);
             fields.add(investigatorField);
             fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, collectOptionsFromConfig("invRoleCodeRefData", "desc", "desc")));
-            //TODO: BJ need to show endDate and endDate
             fields.add(InputFieldFactory.createLabelField("active", "Status", false));
         }
 
