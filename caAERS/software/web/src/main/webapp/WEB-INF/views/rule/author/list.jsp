@@ -11,7 +11,6 @@
 		function deployRule(name , divId) {
 			try {
 				authorRule.deployRuleSet(name, function(values) {
-							alert(divId);
 							alert("Successfully Enabled");
 							document.getElementById(divId).innerHTML = "<font color='green'>Enabled</font>";
 					});
