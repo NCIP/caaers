@@ -11,6 +11,7 @@
 		function deployRule(name , divId) {
 			try {
 				authorRule.deployRuleSet(name, function(values) {
+							alert(divId);
 							alert("Successfully Enabled");
 							document.getElementById(divId).innerHTML = "<font color='green'>Enabled</font>";
 					});
@@ -61,7 +62,7 @@ YAHOO.example.Data = {
             rsDescription: "${rs.description}",
             rsOrganization: "${rs.organization}",
             rsStudyID: "${rs.study}",
-            rsStatus: "${rs.coverage}",
+            rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>",
             rsAction: "<a id='deploy' href=\"javascript:deployRule('${rs.name}', 'status-${rs.id}')\">Enable</a>&nbsp;&nbsp;" +
                       "<a id='deploy' href=\"javascript:unDeployRule('${rs.name}', 'status-${rs.id}')\">Disable</a>&nbsp;&nbsp;" +
                       "<a id='deploy' href=\"<c:url value="/pages/rule/export?ruleSetName=${rs.name}"/>\">Export/Download</a><br>" +
