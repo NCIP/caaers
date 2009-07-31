@@ -108,7 +108,6 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private void createCSMUserGroups(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final User user, List<Organization> allowedOrgs) {
         try {
             List<String> groupIds = new ArrayList<String>();
-            if (user instanceof ResearchStaff)
             for (UserGroupType group : user.getUserGroupTypes()) {
                 groupIds.add(group.getCode().toString());
             }
