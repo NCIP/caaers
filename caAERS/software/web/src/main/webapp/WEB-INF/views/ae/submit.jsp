@@ -211,7 +211,7 @@
      	<input type="hidden" name="_finish"/>
 	
         </chrome:box>
-        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+
     </jsp:attribute>    
     <jsp:attribute name="tabControls">
   		<div class="content buttons autoclear">

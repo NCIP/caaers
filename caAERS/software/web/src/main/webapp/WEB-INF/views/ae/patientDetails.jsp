@@ -565,7 +565,7 @@
 
     </jsp:body>
 </chrome:box>
-  <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+
   <tags:tabControls flow="${flow}" tab="${tab}" />
 </form:form>
 </body>

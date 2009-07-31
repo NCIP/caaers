@@ -60,7 +60,7 @@
          </div>
 
         </div>
-        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+
     </jsp:attribute>
 </tags:tabForm>
 </body>
