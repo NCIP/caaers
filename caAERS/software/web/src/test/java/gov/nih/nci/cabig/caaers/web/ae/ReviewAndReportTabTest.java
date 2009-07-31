@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 /**
@@ -67,7 +70,7 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		
 		//aes
 		request.setParameter("ae_1", new String[] {"1", "2"});
-		request.setParameter("ae_0_primary", "1");
+		request.setParameter("ae_1_primary", "1");
 		
 		tab.onBind(request, command, errors);
 		
@@ -79,7 +82,7 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		assertSame(command.getApplicableReportDefinitions().getReportDefinitionMap().get(new Integer(1)),command.getReviewResult().getAmendList().get(0));
 		assertTrue(command.getReviewResult().getEditList().isEmpty());
 		assertEquals(1,command.getReviewResult().getWithdrawList().size());
-		assertEquals(new Integer(2), command.getReviewResult().getWithdrawList().get(0));
+		assertEquals(new Integer(2), command.getReviewResult().getWithdrawList().get(0).getId());
 		
 	}
 	
@@ -124,6 +127,10 @@ public class ReviewAndReportTabTest extends WebTestCase {
 	
 	public CaptureAdverseEventInputCommand createCommand(){
 		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand();
+		EvaluationResultDTO evaluationResult = new EvaluationResultDTO();
+		evaluationResult.getAllAeMap().put(new Integer(0), new ArrayList<AdverseEvent>());
+		evaluationResult.getAllAeMap().put(new Integer(1), new ArrayList<AdverseEvent>());
+		command.setEvaluationResult(evaluationResult);
 		
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
 		reportingPeriod.setId(3);
@@ -136,12 +143,12 @@ public class ReviewAndReportTabTest extends WebTestCase {
 		rdMap.put(new Integer(1), rd1);
 		
 		ReportDefinition rd2 = Fixtures.createReportDefinition("2");
-		rd1.setId(new Integer(2));
+		rd2.setId(new Integer(2));
 		rdMap.put(new Integer(2), rd2);
 		
 		
 		ReportDefinition rd3 = Fixtures.createReportDefinition("3");
-		rd1.setId(new Integer(3));
+		rd3.setId(new Integer(3));
 		rdMap.put(new Integer(3), rd3);
 		
 		
