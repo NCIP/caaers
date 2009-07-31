@@ -75,8 +75,8 @@ This applicationContext contains the definition of the concrete services
 	  <property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
 	  <property name="jobDataAsMap">
 	    <map>
-	      <entry key="reportVersionDao">
-				<ref bean="reportVersionDao"/>
+	      <entry key="reportVersionRepository">
+				<ref bean="reportVersionRepository"/>
 		  </entry>
 	    </map>
 	  </property>
