@@ -125,6 +125,10 @@
                        	title="Select New Adverse Event Terms">
     	</tags:aeTermQuery>
     	--%>
+    	 <div>
+    		<tags:button color="blue" size="small" value="Add Adverse Event" icon="+" 
+    			href="captureRoutine?study=${command.study.id}&participant=${command.participant.id}&adverseEventReportingPeriod=${command.aeReport.reportingPeriod.id}&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
+   		</div>
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status" var="ae">
                 <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}" adverseEvent="${ae}"/>
             </c:forEach>

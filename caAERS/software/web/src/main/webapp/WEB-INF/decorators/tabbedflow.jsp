@@ -95,20 +95,6 @@
 			    <div class="summarylabel">Course</div>
 			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
 			  </div>
-              <c:if test="${showReportContextMenu}">
-                  <div class="row">
-                      <div class="summarylabel">
-                          Report(s)
-                      </div>
-                      <div class="summaryvalue">
-                          <div>
-                              <tags:noform>
-                                  <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
-                              </tags:noform>
-                          </div>
-                      </div>
-                  </div>
-              </c:if>
 			</div>
 		</c:if>
         <div id="main${hasSummary ? '' : '-no-summary'}-pane" class="pane">

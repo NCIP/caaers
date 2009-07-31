@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
@@ -25,6 +26,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,6 +147,7 @@ public class PatientDetailsTab extends AeTab {
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }
+    
     /**
      * Create fields related to diseases history
      * 
@@ -154,11 +157,11 @@ public class PatientDetailsTab extends AeTab {
 
         DiseaseCodeTerm dct = command.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
         if (dct == DiseaseCodeTerm.MEDDRA) {
-            studyDiseaseField = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
         } else if (dct == DiseaseCodeTerm.OTHER) {
-            studyDiseaseField = InputFieldFactory.createSelectField("otherCondition", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.OTHER));
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.OTHER));
         } else {
-            studyDiseaseField = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
         }
 
     	InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);

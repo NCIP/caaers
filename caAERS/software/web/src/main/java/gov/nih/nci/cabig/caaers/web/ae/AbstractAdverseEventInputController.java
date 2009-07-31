@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
@@ -38,13 +39,16 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.tools.editors.AbstractStudyDiseaseEditor;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.Map;
 
@@ -166,10 +170,17 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
 
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
+        
+        Object command = getCommand(request);
+        if(command != null){
+        	AbstractExpeditedAdverseEventInputCommand expeditedCommand = (AbstractExpeditedAdverseEventInputCommand) command;
+        	binder.registerCustomEditor(AbstractStudyDisease.class, new AbstractStudyDiseaseEditor(expeditedCommand.getStudy().getActiveStudyDiseases()));
+        	
+        }
 
-        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
+//        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
+//        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
+//        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
 
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);

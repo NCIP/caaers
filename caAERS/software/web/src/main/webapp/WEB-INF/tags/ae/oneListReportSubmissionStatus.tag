@@ -14,14 +14,9 @@
   Class : dueOn -  for link
   Class : submittedOn for non links
 --%>
-
-<script>
-    
-</script>
-
 <c:set var="_statusCSS" value="${theReport.overdue ? 'reportsOverdue' : (reportStatus eq 'INPROCESS' or reportStatus eq 'PENDING') ? 'reportsDue' : reportStatus eq 'FAILED' ? 'reportsFailed' : 'reportsCompleted'}" />
 
-<c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED')  }" />
+<c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED') or (reportStatus eq 'AMENDED') }" />
 
 <c:if test="${detailsEnabled}">
 	<span class="${_statusCSS }"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u class="${_statusCSS }" >${lastVersion.statusAsString}</u></i></a></span>
@@ -37,15 +32,12 @@
                 <i>Submission to AdEERS  failed!</i>
                 ${fn:replace(lastVersion.submissionMessage,".","<br>")}
             </c:when>
-            <c:when test="${reportStatus eq 'COMPLETED'}">${fn:replace(lastVersion.submissionMessage,".","<br>")}<br><a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a></c:when>
+            <c:when test="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'AMENDED')}">
+            ${fn:replace(lastVersion.submissionMessage,".","<br>")}<br><a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
+            </c:when>
         </c:choose>
         </div>
 
-        <c:choose>
-            <c:when test="${reportStatus eq 'COMPLETED'}">
-            <a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
-            </c:when>
-        </c:choose>
     </div>
 </c:if>
 

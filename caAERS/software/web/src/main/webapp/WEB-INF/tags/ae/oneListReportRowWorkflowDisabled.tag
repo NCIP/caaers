@@ -8,7 +8,7 @@
 <c:set var="lastVersion" value="${report.lastVersion}" />
 <c:set var="reportStatus" value="${lastVersion.reportStatus}" />
 
-<c:if test="${reportStatus ne 'REPLACED' and reportStatus ne 'AMENDED'}">
+<c:if test="${reportStatus ne 'REPLACED'}">
 	<tr align="center" id="row${rpIndex}" class="${repcurrClass}">
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
