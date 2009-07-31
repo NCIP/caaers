@@ -644,6 +644,10 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
 
+    <bean id="reportVersionRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository">
+        <property name="reportVersionDao" ref="reportVersionDao"/>
+    </bean>
+    
     <bean id="researchStaffRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
         <property name="researchStaffDao" ref="researchStaffDao"/>
         <property name="organizationDao" ref="organizationDao"/>
