@@ -81,11 +81,11 @@ This applicationContext contains the definition of the concrete services
 	    </map>
 	  </property>
    </bean>
-	
+	<!-- trigger every 5 minutes -->
 	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 	    <property name="jobDetail" ref="reportStatusResetJob" />
 	    <property name="startDelay" value="0" />
-	    <property name="repeatInterval" value="10000" />
+	    <property name="repeatInterval" value="3000000" />
 	</bean>
 	
 	
