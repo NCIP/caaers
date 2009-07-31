@@ -23,6 +23,7 @@
 				<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?</prop>
 			</props>
 		</property>
+		<!-- 
 		<property name="jobDetails">
         	<list> 
         		<ref bean="reportStatusResetJob" />
@@ -33,8 +34,9 @@
         		<ref bean="reportStatusResetTrigger" /> 
         	</list>
      	</property>
-	</bean>
 	
+	-->
+	</bean>
 	
 		<!--  This bean that implements the service  -->
 	
