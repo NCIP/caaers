@@ -575,12 +575,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 			} else if (lastSubmittedReport != null && lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)) {
 				String reportVersionIdStr = lastSubmittedReport.getReportVersions().get(0).getReportVersionId();
 				int reportVersionId = Integer.parseInt(reportVersionIdStr);
-				// first COMPLETE the notofication if the only NOTIFICATION is 24-HR Notification (not AMEND of a Regular Report).
+				//  COMPLETE the notofication if the only NOTIFICATION is 24-HR Notification (not AMEND of a Regular Report).
 				if (ReportsWithTypeNotificationCnt == 1 && reportVersionId == 0) {
 					setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 					return _24HR_NOTIFICATION_COMPLETE;
 				}
-				// amend  the notofication if the only NOTIFICATION  AMEND of a Regular Report (24-HR amend)
+				// amend  the notofication if the only NOTIFICATION  is AMEND of a Regular Report (24-HR amend)
 				if (ReportsWithTypeNotificationCnt == 1 && reportVersionId > 0) {
 					setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
 					return _24HR_AMENDMENT_COMPLETE;
