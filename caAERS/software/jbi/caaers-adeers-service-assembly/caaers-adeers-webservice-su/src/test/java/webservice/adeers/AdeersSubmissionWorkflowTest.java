@@ -182,6 +182,39 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		//assert status
 		assertEquals("SUCCESS", aeReportJobInfo4.getReportStatus().toString());		
 	}
+
+	/*
+	 * Work Flow :
+	 * 	1. Submit a new Regular Report , obtain ticket number 
+	 *  3. Submit 24-hr amendment with ticket number and amendment # 1
+	 *  4. Submit 24-hr amendment complete with ticket number and amendment # 1
+	 */
+	public void test_R_24A_24AC_Success() throws Exception{
+		// get XML from file 
+		String adeersXMLFile = "adeers-basic-full.xml";
+		String baseXML = getString(adeersXMLFile);
+		String xml = baseXML.replace(RT, R);
+		// submit report
+		AEReportJobInfo aeReportJobInfo = submit(xml);
+		// assert status
+		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
+		String ticketNumber = aeReportJobInfo.getTicketNumber();
+
+		// modify XML with ticket number , amendment number and submit 24A 		
+		xml = baseXML.replace(RT, _24A);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		//submit amendment
+		AEReportJobInfo aeReportJobInfo3 = submit(xml);
+		//assert status
+		assertEquals("SUCCESS", aeReportJobInfo3.getReportStatus().toString());
+		// modify XML with ticket number , amendment number and submit 24AC 		
+		xml = baseXML.replace(RT, _24AC);
+		xml = xml.replace(TN_AN, "<TICKET_NUMBER>"+ticketNumber+"</TICKET_NUMBER><AMENDMENT_NUMBER>1</AMENDMENT_NUMBER>");
+		//submit amendment
+		AEReportJobInfo aeReportJobInfo4 = submit(xml);
+		//assert status
+		assertEquals("SUCCESS", aeReportJobInfo4.getReportStatus().toString());		
+	}
 	
 	/*
 	 * Work Flow :
