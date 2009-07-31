@@ -50,23 +50,8 @@ public class EditResearchStaffControllerTest extends WebTestCase {
         	
         });
     }
-	
-	/**
-	 * 
-	 * @throws Exception
-	 */
-	public void testProcessFinish() throws Exception {
-        request.setMethod("POST");
-        request.setParameter("_action", "saveRemoteRs");
-        request.setParameter("_selected", "0");
-        request.setParameter("researchStaffId", "109");
-        ResearchStaff command = new LocalResearchStaff();
-        ResearchStaff l1 = new LocalResearchStaff();
-        command.getExternalResearchStaff().add(l1);
-        BindException errors = new BindException(command, "command");
-        ModelAndView mv = controller.processFinish(request, response, command, errors);
-        assertEquals("admin/research_staff_review", mv.getViewName());
-	}
+
+
 	
 	/**
 	 * 
