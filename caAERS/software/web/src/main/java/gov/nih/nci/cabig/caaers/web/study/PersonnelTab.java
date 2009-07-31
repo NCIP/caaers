@@ -21,7 +21,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
- * @author Rhett Sutphin
+ * @author Ion C. Olaru
  * @author Biju Joseph
  */
 class PersonnelTab extends StudyTab {

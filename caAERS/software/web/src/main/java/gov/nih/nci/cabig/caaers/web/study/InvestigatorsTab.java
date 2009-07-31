@@ -21,7 +21,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
- * @author Rhett Sutphin
+ * @author Ion C. Olaru
  * @author Biju Joseph
  */
 class InvestigatorsTab extends StudyTab {
@@ -34,9 +34,6 @@ class InvestigatorsTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
-        // addConfigMapToRefdata(refdata, "invRoleCodeRefData");
-        addConfigMapToRefdata(refdata, "invStatusCodeRefData");
-        refdata.put("allPersonnelRoles", command.getAllPersonnelRoles());
         return refdata;
     }
 
@@ -71,7 +68,7 @@ class InvestigatorsTab extends StudyTab {
             fields = new ArrayList<InputField>();
             InputField investigatorField = InputFieldFactory.createAutocompleterField("siteInvestigator", "Investigator", true);
             fields.add(investigatorField);
-            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, collectOptionsFromConfig("invRoleCodeRefData", "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, WebUtils.collectOptions(command.getAllPersonnelRoles(), "code", "name", "")));
             fields.add(InputFieldFactory.createLabelField("active", "Status", false));
         }
 
