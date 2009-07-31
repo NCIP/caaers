@@ -228,7 +228,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		 ),
                         		//fields related to diseases history
                         		 property("diseaseHistory",
-                                         	codedOrOther("ctepStudyDisease", "Disease name","otherPrimaryDisease","Other (disease)"),
+                                         	codedOrOther("abstractStudyDisease", "Disease name","otherPrimaryDisease","Other (disease)"),
                                          	codedOrOther("codedPrimaryDiseaseSite", "Primary site of disease", "otherPrimaryDiseaseSite", "Other (site of primary disease)"),
                                          	property("diagnosisDate","Date of initial diagnosis"),
 			                        		//fields related to metastatic diseases
