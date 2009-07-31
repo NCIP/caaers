@@ -36,7 +36,7 @@
             	this.index = index;
             	this.siteIndex = $F('studySiteIndex');
             	this.sitePersonnelName = sitePersonnelName;
-            	this.sitePersonnelPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].siteResearchStaff.researchStaff";
+            	this.sitePersonnelPropertyName = "study.activeStudyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].siteResearchStaff";
             	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
@@ -45,20 +45,19 @@
             	);
             },            
             sitePersonnelPopulator: function(autocompleter, text) {
-         		createStudy.matchResearch(text,this.siteIndex, function(values) {
+         		createStudy.matchSiteResearchStaff(text,this.siteIndex, function(values) {
          			autocompleter.setChoices(values)
          		})
         	},
         	
-        	sitePersonnelSelector: function(sPersonnel) { 
+        	sitePersonnelSelector: function(sPersonnel) {
         	 	  var image;
-        	 	  if(sPersonnel.externalId != null){
+        	 	  if(sPersonnel.researchStaff.externalId != null){
                           image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
                   } else {
                           image = '';
                   }
-               //  alert (image);
-        		return (image + "" + sPersonnel.fullName)
+        		return (image + "" + sPersonnel.researchStaff.fullName)
         	}
         	
      });

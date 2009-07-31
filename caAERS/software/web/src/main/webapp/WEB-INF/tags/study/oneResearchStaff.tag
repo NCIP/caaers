@@ -15,7 +15,7 @@
 	 <td style="border-right:none;">
 	 <c:set var="_staffField" value="${fieldGroups[mainGroup].fields[0]}" />
 	 <ui:autocompleter path="${_staffField.propertyName}" 
-	 		displayNamePath="${_staffField.propertyName}.fullName"
+	 		displayNamePath="${_staffField.propertyName}.researchStaff.fullName"
 			required="${_staffField.required}" 
 			validationJSClass="${_staffField.validatorClassName}" 
 			readonly="${readOnly}" 
@@ -24,24 +24,20 @@
 			enableClearButton="${_staffField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here..." />
 	 </td>
-	 <td style="border-right:none;">
+	 <td style="border-right:none; width:300px;">
 	 <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
-	 <%-- 
-	 	<ui:select options="${_staffRoleField.attributes.options}" 
+	 	<ui:select options="${_staffRoleField.attributes.options}"
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
-	 		validationJSClass="${_staffRoleField.validatorClassName}" />
-	 --%>		
-	 		
+	 		validationJSClass="${_staffRoleField.validatorClassName}" readonly="true"/>
+
 	 </td>
 	 <td style="border-right:none;">
 	 <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
-	 <%-- 
-	 	<ui:select options="${_staffStatusField.attributes.options}" 
+	 	<ui:select options="${_staffStatusField.attributes.options}"
 	 		path="${_staffStatusField.propertyName}" 
 	 		required="true"
-	 		validationJSClass="${_staffStatusField.validatorClassName}" />
-	 --%>		
+	 		validationJSClass="${_staffStatusField.validatorClassName}" readonly="true"/>
 	 </td>
 	<td style="border-left:none;">
 		<a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
