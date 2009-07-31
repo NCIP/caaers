@@ -1,13 +1,18 @@
 package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(readOnly = true)
 public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
 	
 	/*
@@ -105,6 +110,41 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
       	 }
       	return withTrackingInfo;
     	
+    }
+    
+    public List<ReportVersion> getAllInProcessReports() {
+    	List<Object> params = new ArrayList<Object>();
+
+    	String hsql = "from ReportVersion s where s.reportStatus = 4";
+    	return getHibernateTemplate().find(hsql);
+    }
+    
+    @Transactional(readOnly = false)
+    public void updateInProcessReports() {
+    	List<ReportVersion> rvs = getAllInProcessReports();
+    	NowFactory nowFactory = new NowFactory();
+    	//System.out.println(rvs.size());
+    	for (ReportVersion rv:rvs) {
+    		Date submittedOrAmendedDate = null;
+    		if (rv.getAmendedOn() != null) {
+    			submittedOrAmendedDate = rv.getAmendedOn();
+    		} else if (rv.getSubmittedOn() != null){
+    			submittedOrAmendedDate = rv.getSubmittedOn();
+    		}
+    		if (submittedOrAmendedDate != null) {
+    			long timeDiff = (nowFactory.getNowTimestamp().getTime() - rv.getSubmittedOn().getTime())/60000;
+    			System.out.println(timeDiff);
+    			if (timeDiff > 5) {
+    				rv.setReportStatus(ReportStatus.FAILED);
+    				rv.setSubmissionMessage("Submission failed for unknown reason , Please resubmit");
+    				save(rv);
+    				
+    				System.out.println(rv.getId() +" : " +rv.getReportStatus());
+    				System.out.println(rv.getSubmissionMessage());
+    			}
+
+    		}
+    	}    	
     }
     
 
