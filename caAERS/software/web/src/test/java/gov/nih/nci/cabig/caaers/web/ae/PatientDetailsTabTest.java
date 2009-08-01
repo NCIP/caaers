@@ -124,7 +124,7 @@ public class PatientDetailsTabTest extends AeTabTestCase {
     }
 
     public void testStaticDiseaseFieldsPresent() throws Exception {
-        assertFieldProperties("disease", "aeReport.diseaseHistory.ctepStudyDisease",
+        assertFieldProperties("disease", "aeReport.diseaseHistory.abstractStudyDisease",
                         "aeReport.diseaseHistory.otherPrimaryDisease",
                         "aeReport.diseaseHistory.codedPrimaryDiseaseSite",
                         "aeReport.diseaseHistory.otherPrimaryDiseaseSite",
@@ -132,23 +132,6 @@ public class PatientDetailsTabTest extends AeTabTestCase {
     }
 
    
-//    public void testBaselineOptions() throws Exception {
-//        // TODO: baseline status is going to change into an enum
-//        Map<Object, Object> actualOptions = getActualSelectFieldOptions("participant",
-//                        "aeReport.participantHistory.baselinePerformanceStatus");
-//        assertEquals("Wrong number of options: " + actualOptions, 4, actualOptions.size());
-//        Iterator<Map.Entry<Object, Object>> iterator = actualOptions.entrySet().iterator();
-//        Map.Entry<Object, Object> entry = iterator.next();
-//        assertKeyAndValue("Null value missing", "", "Please select", entry);
-//        entry = iterator.next();
-//        assertKeyAndValue("Wrong 0th option", "0 = zero", "0 = zero", entry);
-//        entry = iterator.next();
-//        assertKeyAndValue("Wrong 1st option", "1 = one", "1 = one", entry);
-//        entry = iterator.next();
-//        assertKeyAndValue("Wrong 2nd option", "2 = two", "2 = two", entry);
-//        assertFalse(iterator.hasNext());
-//    }
-
     public void testHeightOptions() throws Exception {
         Map<Object, Object> actualOptions = getMeasureUnitFieldOptions("height");
         assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
