@@ -71,7 +71,7 @@
                       <div class="summaryvalue">
                           <div>
                               <tags:noform>
-                                  <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+                                  <ae:reportingContext checkBoxMode="true" allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
                               </tags:noform>
                           </div>
                       </div>

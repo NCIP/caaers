@@ -300,7 +300,6 @@
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
         	<form:hidden path="adverseEventReportingPeriod" />
         	<tags:requiredIndicator/>
-        	${command.adverseEventReportingPeriod.id }
         	<select id="course-input" style="width:20em" class="required">
 				<option value="">Please select</option>
 			</select>

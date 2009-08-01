@@ -8,6 +8,9 @@ AE.hash = new Hash();
 // and hence the flag 'checkForModification is set to "false" in that case.
 AE.checkForModification = true; 
 
+//will store the selected reports
+AE.checkedReports = new Array();
+
 // this stuff should technically be synchronized.  Let see if it causes a problem.
 AE.showIndicator = function(id) {
     if (!AE.INDICATOR_REF_COUNTS[id]) AE.INDICATOR_REF_COUNTS[id] = 0;
@@ -757,11 +760,15 @@ Event.observe(window, 'load', function(){
 
 //---------------------------------------------------------------------------------------------------------------------
 //this function is invoked, when the reporting context menu is closed.
-function closeContextMenu(btn, refresh){
-   Windows.close('context-window');
-   if(refresh){
-  	updatePage.delay(2);
-   }
+function updateReportingContext(){
+   $('contextMenuContent').select('.rdCheckbox').each(function (el){
+   	  if(el.checked){
+	  	$('rdContext-' + el.value).checked= true;
+	  }else{
+	  	$('rdContext-' + el.value).checked= false;
+	  }
+   });
+   updatePage();
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -769,4 +776,23 @@ function closeContextMenu(btn, refresh){
 function updatePage(){
 	$("flow-update").click();
 }
+//---------------------------------------------------------------------------------------------------------------------
+//this function will enable or disable the apply button
+function toggleApplyBtn(){
+ 	$('btn-apply-now').disabled=true;
+	if(AE.checkedReports.length < 1){
+		$('contextMenuContent').select('.rdCheckbox').each(function(rdEl){
+			if(rdEl.checked){
+				$('btn-apply-now').disabled=false;
+			} 
+		})
+	}else{
+		AE.checkedReports.each(function(rdId){
+			if(!$('rdContextChk-' + rdId).checked){
+				$('btn-apply-now').disabled=false;
+			} 
+		})
+	}
+	
+ }
 

@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -44,6 +45,7 @@ import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFor
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -171,17 +173,18 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         
-//        Object command = getCommand(request);
-//        if(command != null){
-//        	AbstractExpeditedAdverseEventInputCommand expeditedCommand = (AbstractExpeditedAdverseEventInputCommand) command;
-//        	binder.registerCustomEditor(AbstractStudyDisease.class, new AbstractStudyDiseaseEditor(expeditedCommand.getStudy().getActiveStudyDiseases()));
-//        	
-//        }
-
-        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
-
+        DiseaseCodeTerm diseaseCodingTerm = (DiseaseCodeTerm)request.getAttribute("diseaseCodingTerm");
+        if(diseaseCodingTerm != null){
+        	if(diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)){
+        		binder.registerCustomEditor(AbstractStudyDisease.class, new DaoBasedEditor(meddraStudyDiseaseDao));
+            }else if(diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)){
+            	binder.registerCustomEditor(AbstractStudyDisease.class, new DaoBasedEditor(studyConditionDao));
+            }else {
+            	binder.registerCustomEditor(AbstractStudyDisease.class, new DaoBasedEditor(ctepStudyDiseaseDao));
+            }
+        }
+        
+        
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
@@ -293,19 +296,26 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
-    	
+    	ExpeditedAdverseEventInputCommand expeditedCommand = (ExpeditedAdverseEventInputCommand) oCommand;
     	try {
 			log.debug("In currentFormObject :" + oCommand );
-			
-			((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
+		
+			expeditedCommand.reassociate();
 			log.debug("After calling reassociate");
-			oCommand = super.currentFormObject(request, oCommand);
+			
+			 if(expeditedCommand.getStudy() != null){
+				 DiseaseCodeTerm diseaseCodingTerm = expeditedCommand.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
+				 request.setAttribute("diseaseCodingTerm", diseaseCodingTerm);
+			 }
+			
+			expeditedCommand = (ExpeditedAdverseEventInputCommand)super.currentFormObject(request, oCommand);
 			log.debug("After calling super class currentFormObject :" + oCommand);
+			
 		} catch (HibernateOptimisticLockingFailureException  e) {
 			log.warn("Optimistic locking error, while reassociating the report", e);
 			request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
 		}
-        return oCommand;
+        return expeditedCommand;
     }
 
     @Override

@@ -97,6 +97,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     
+    
    @Override
    public Map<String, Object> referenceData(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command) {
 	   Map<String, Object> refData = super.referenceData(request, command);
@@ -156,14 +157,14 @@ public class PatientDetailsTab extends AeTab {
     private void createDiseaseInformantionFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
     	InputField studyDiseaseField = null;
 
-    	 DiseaseCodeTerm dct = command.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
-         if (dct == DiseaseCodeTerm.MEDDRA) {
-             studyDiseaseField = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
-         } else if (dct == DiseaseCodeTerm.OTHER) {
-             studyDiseaseField = InputFieldFactory.createSelectField("otherCondition", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.OTHER));
-         } else {
-             studyDiseaseField = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
-         }
+        DiseaseCodeTerm dct = command.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
+        if (dct == DiseaseCodeTerm.MEDDRA) {
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
+        } else if (dct == DiseaseCodeTerm.OTHER) {
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.OTHER));
+        } else {
+            studyDiseaseField = InputFieldFactory.createSelectField("abstractStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
+        }
 
     	InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
         InputFieldAttributes.setSize(diseaseSite, 40);
