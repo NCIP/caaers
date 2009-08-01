@@ -101,7 +101,7 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         log.debug("Report Index :" + reportIndex.intValue());
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
         Report report = aeReport.getReports().get(((int) reportIndex));
-        if(!command.getReportSubmitted()){
+        if(report.isActive() && (!command.getReportSubmitted()) ){
         	reportSubmissionService.submitReport(report);
         }
     }
