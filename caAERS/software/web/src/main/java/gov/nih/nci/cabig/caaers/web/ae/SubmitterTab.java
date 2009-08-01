@@ -67,18 +67,6 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
         return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']', displayName, required);
     }
     
-    @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-    	//check if the report is in submittable state?
-    	String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
-    	if(StringUtils.isNotEmpty(reportIndex)){
-    		Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
-    		if(!report.isActive()){
-    			errors.reject("SAE_032", new Object[]{report.getStatus().getDisplayName()},
-    					"Cannot submit this report, as it is already submitted/withdrawn/amended/replaced");
-    		}
-    	}
-    }
 
 
 }
