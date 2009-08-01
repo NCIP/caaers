@@ -77,7 +77,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			
     			//if report is completed xml should be obtained from saved data.
     			String xml = null;
-    			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
+    			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)){
     				//obtain the saved xml report
     				ReportContent reportContent = reportDao.getReportContent(report);
     				if(reportContent == null){
