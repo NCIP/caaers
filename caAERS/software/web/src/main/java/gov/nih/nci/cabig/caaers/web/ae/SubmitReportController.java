@@ -118,4 +118,9 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 	   this.reportSubmissionService = reportSubmissionService;
    }
    
+   @Override
+   protected boolean displayReportContextMenu(int page) {
+	return false;
+   }
+   
 }
