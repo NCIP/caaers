@@ -118,7 +118,7 @@
        	<c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
            	<tags:renderRow field="${field}"/>
        	</c:forEach>
-
+		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

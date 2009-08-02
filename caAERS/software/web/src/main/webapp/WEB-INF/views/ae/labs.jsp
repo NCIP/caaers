@@ -166,7 +166,7 @@
             <ae:oneLab index="${status.index}" lab="${lab}"/>
         </c:forEach>
         <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
-
+		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
     <jsp:attribute name="localButtons">
     </jsp:attribute>

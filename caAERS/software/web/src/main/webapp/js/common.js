@@ -787,8 +787,16 @@ function toggleApplyBtn(){
 			} 
 		})
 	}else{
+		//check any unchecked?
 		AE.checkedReports.each(function(rdId){
 			if(!$('rdContextChk-' + rdId).checked){
+				$('btn-apply-now').disabled=false;
+			} 
+		})
+		
+		//check any new checked?
+		$('contextMenuContent').select('.rdCheckbox').each(function(rdEl){
+			if(rdEl.checked && (AE.checkedReports.indexOf(rdEl.value) < 0)){
 				$('btn-apply-now').disabled=false;
 			} 
 		})

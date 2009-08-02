@@ -189,7 +189,7 @@
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
             	
 			</chrome:division>
-
+        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
         </jsp:attribute>
 
         <jsp:attribute name="localButtons">
