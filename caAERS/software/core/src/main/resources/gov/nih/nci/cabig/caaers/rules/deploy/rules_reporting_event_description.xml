@@ -8,6 +8,10 @@
 	<import name="com.semanticbits.rules.utils.DateUtil" />
 	<import name="com.semanticbits.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="org.apache.commons.lang.ObjectUtils" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="java.util.HashSet" />
+	<import name="com.semanticbits.rules.utils.NumberUtil" />
 	
 	<!-- ==========================================================================
 	RuleName : DSC_BR1A_CHK
@@ -120,4 +124,34 @@
 		</rhs>
 	</rule>
 	
+	<!-- ==========================================================================
+	RuleName : DSC_BR6_CHK
+	Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report. 
+	Error Code : DSC_BR6_ERR
+	Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
+	============================================================================= -->
+	<rule name="DSC_BR6_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<eval>new ExpeditedAdverseEventValidator() {
+					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					
+						if(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.code").equals(6)){
+							for(AdverseEvent ae : aeReport.getAdverseEvents()){
+								if(ae.getGrade() == null) continue;
+								if(ae.getGrade().equals(Grade.DEATH)) return false;
+							}
+							return true;
+						}	
+						return false;				
+					}
+					
+				  }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("DSC_BR6_ERR","Present status can have 'Fatal/Died' only when there is a Grade 5 Adverse Event").addFieldNames("aeReport.responseDescription.presentStatus");
+		</rhs>
+	</rule>	
 </package>

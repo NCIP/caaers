@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.deploy;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -29,6 +30,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
 
         try {
             ExpeditedAdverseEventReport aeReport = createAEReport();
+            aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
             aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
             aeReport.getResponseDescription().setRecoveryDate(new Date());
             ValidationErrors errors = fireRules(aeReport);
@@ -165,6 +167,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
 
     public void testRetreatedNo_WithPresentStatusDEAD() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setRetreated(Boolean.FALSE); // No
         ValidationErrors errors = fireRules(aeReport);
@@ -195,6 +198,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
 
     public void testRetreatedYes_WithPresentStatusDEAD() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setRetreated(Boolean.TRUE); // No
         ValidationErrors errors = fireRules(aeReport);
@@ -212,6 +216,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
 
     public void testRetreatedNull_WithPresentStatusDEAD() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setRetreated(null); // No
         ValidationErrors errors = fireRules(aeReport);
@@ -243,6 +248,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
      */
     public void testDateRemovedFromProtocol_WhenPresentStatusIsDEAD() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setDateRemovedFromProtocol(new Date());
         aeReport.getResponseDescription().setRecoveryDate(new Date());
@@ -260,6 +266,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
      */
     public void testDateRemovedFromProtocolNull_WhenPresentStatusIsDEAD() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setDateRemovedFromProtocol(null);
         ValidationErrors errors = fireRules(aeReport);
@@ -295,6 +302,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         Date removedDate = DateUtils.createDate(2007, 11, 20);
         Date recoveryDate = DateUtils.createDate(2007, 11, 22);
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
         aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
@@ -336,6 +344,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         Date removedDate = DateUtils.createDate(2007, 11, 24);
         Date recoveryDate = DateUtils.createDate(2007, 11, 22);
         ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
         aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
@@ -366,5 +375,42 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         assertEquals("No errors when dateRemoved greater than DateOfRecovery and status not DEAD",0, errors.getErrorCount());
 
     }
+    
+    /**
+     RuleName : DSC_BR6_CHK
+	 Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report. 
+	 Error Code : DSC_BR6_ERR
+	 Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
+     */
+    public void testFatalDied_WhenGrade5() throws Exception{
+    	Date recoveryDate = DateUtils.createDate(2007, 11, 25);
+    	 Date removedDate = DateUtils.createDate(2007, 11, 24);
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
+        aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
+        aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
+        aeReport.getAdverseEvents().get(1).setGrade(Grade.DEATH);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors, "No error should be there, when DEATH , and Grade 5");
+    }
+    
+    
+    /**
+     RuleName : DSC_BR6_CHK
+	 Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report. 
+	 Error Code : DSC_BR6_ERR
+	 Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
+     */
+    public void testFatalDied_WhenNotGrade5() throws Exception{
+    	Date recoveryDate = DateUtils.createDate(2007, 11, 22);
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
+        aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
+        ValidationErrors errors = fireRules(aeReport);
+        assertTrue(errors.hasErrors());
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.responseDescription.presentStatus");
+        assertHasErrorsHavingCode(errors, "DSC_BR6_ERR");
+    }
+
 
 }

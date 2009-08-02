@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.objectgraph;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -62,11 +63,10 @@ public class NullSafeFieldExtractorTest extends AbstractNoSecurityTestCase {
             );
 
         }
-        aeReport.getResponseDescription().setPresentStatus(null);
+        aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         Object o = NullSafeFieldExtractor.extractField(aeReport,
-                "responseDescription.presentStatus.displayName");
-        System.out.println(o);
-    	assertTrue(true);
+                "responseDescription.presentStatus.code");
+        assertTrue(o.equals( 6));
     }
 
     public void testExtractFieldNullInput() {
