@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -225,9 +227,17 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         //find the mandatory sections.
         command.refreshMandatorySections();
         
-    	// pre-init the mandatory section fields
+    	// pre-init the mandatory section fields & set present status
         if(aeReport.getId() == null){
         	command.initializeMandatorySectionFields();
+        	
+        	//present status. 
+        	for(AdverseEvent ae : aeReport.getAdverseEvents()){
+        		if(ae.getGrade().equals(Grade.DEATH)){
+        			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
+        			break;
+        		}
+        	}
         }
         
         
