@@ -324,7 +324,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	if(ae.isRetired()) continue;
         	
         	
-        	if(ae.getGrade().equals(Grade.DEATH)){
+        	if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)){
         		if(foundGrade5){
         			errors.rejectValue("adverseEvents[" + i + "].grade", "SAE_033", "Only one adverse event with grade DEATH is allowed in a course.");
         		}
