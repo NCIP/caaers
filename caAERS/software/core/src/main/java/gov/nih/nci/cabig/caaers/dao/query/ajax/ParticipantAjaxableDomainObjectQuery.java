@@ -19,8 +19,8 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -28,6 +28,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "order by participant.firstName ";
 
     private static final String IDENTIFIER_VALUE = "identifierValue";
