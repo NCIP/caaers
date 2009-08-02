@@ -26,6 +26,8 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -33,9 +35,12 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -85,6 +90,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private AdverseEventReportingPeriodDao reportingPeriodDao;
     
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    
+    private ReportRepository reportRepository;
 
     @Override
     protected void setUp() throws Exception {
@@ -102,6 +109,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         studySite = registerMockFor(StudySite.class);
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
         adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
+        reportRepository = registerMockFor(ReportRepository.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -113,6 +121,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setLowLevelTermDao(lowLevelTermDao);
         facade.setInteroperationService(interoperationService);
         facade.setExpeditedReportTree(new ExpeditedReportTree());
+        facade.setReportRepository(reportRepository);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -124,7 +133,101 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setConfigurationProperty(configProperty);
     }
 
+    public void testWithdrawReportVersion(){
+    	
+    	Organization ctep = Fixtures.createOrganization("CTEP", 1);
+		gov.nih.nci.cabig.caaers.domain.ConfigProperty expedited = Fixtures.createConfigProperty("expedited");
 
+		ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",ctep, expedited);
+		rd1.setId(1);
+		rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+		rd1.setDuration(1);
+		
+		
+    	
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	ExpeditedAdverseEventReport aeReport = command.getAeReport();
+    	aeReport.setId(1);
+    	Report report = aeReport.getReports().get(0);
+    	report.setStatus(ReportStatus.INPROCESS);
+    	report.setId(1);
+    	report.setReportDefinition(rd1);
+    	
+    	expect(aeReportDao.getById(1)).andReturn(aeReport);
+    	aeReportDao.save(aeReport);
+    	reportRepository.withdrawReport(report);
+    	
+    	replayMocks();
+    	facade.withdrawReportVersion(1, 1);
+    	verifyMocks();
+    	
+    }
+    
+    public void testWithdrawReportVersion_ReportAlreadyWithdrawn(){
+    	
+    	Organization ctep = Fixtures.createOrganization("CTEP", 1);
+		gov.nih.nci.cabig.caaers.domain.ConfigProperty expedited = Fixtures.createConfigProperty("expedited");
+
+		ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",ctep, expedited);
+		rd1.setId(1);
+		rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+		rd1.setDuration(1);
+		
+		
+    	
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	ExpeditedAdverseEventReport aeReport = command.getAeReport();
+    	aeReport.setId(1);
+    	Report report = aeReport.getReports().get(0);
+    	report.setStatus(ReportStatus.WITHDRAWN);
+    	report.setId(1);
+    	report.setReportDefinition(rd1);
+    	
+    	expect(aeReportDao.getById(1)).andReturn(aeReport);
+    	
+    	replayMocks();
+    	facade.withdrawReportVersion(1, 1);
+    	verifyMocks();
+    	
+    }
+    
+    public void testWithdrawReportVersion_OneReportBeingAmended(){
+    	
+    	Organization ctep = Fixtures.createOrganization("CTEP", 1);
+		gov.nih.nci.cabig.caaers.domain.ConfigProperty expedited = Fixtures.createConfigProperty("expedited");
+
+		ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",ctep, expedited);
+		rd1.setId(1);
+		rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+		rd1.setDuration(1);
+		
+		
+		Report report2 = Fixtures.createReport("abcd");
+		report2.setReportDefinition(rd1);
+		report2.setId(2);
+		report2.setStatus(ReportStatus.AMENDED);
+    	
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	ExpeditedAdverseEventReport aeReport = command.getAeReport();
+    	aeReport.setId(1);
+    	Report report = aeReport.getReports().get(0);
+    	report.setStatus(ReportStatus.INPROCESS);
+    	report.setId(1);
+    	report.setReportDefinition(rd1);
+    	aeReport.addReport(report2);
+    	
+    	
+    	expect(aeReportDao.getById(1)).andReturn(aeReport);
+    	aeReportDao.save(aeReport);
+    	reportRepository.withdrawReport(report);
+    	reportRepository.unAmendReport(report2);
+    	
+    	replayMocks();
+    	facade.withdrawReportVersion(1, 1);
+    	verifyMocks();
+    	
+    }
+    
     public void testMatchLabTestNames() throws Exception {
         List<Lov> labNames = facade.matchLabTestNames("Chloride");
         assertTrue("There should be at least one lab name containing 'Chloride'",

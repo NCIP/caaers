@@ -558,24 +558,22 @@ public class CreateAdverseEventAjaxFacade {
 
     public String withdrawReportVersion(int aeReportId, int reportId) {
         ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
-        
-        for (Report report : aeReport.getReports()) {
+        Report report = aeReport.findReportById(reportId);
+        if(report != null && report.isActive()){
+        	if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
         	
-            if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-            	
-            	//withdraw the report
-                reportRepository.withdrawReport(report);
-                
-                //mark these as reported
-                aeReport.updateReportedFlagOnAdverseEvents();
-                aeReportDao.save(aeReport);
-                
-                break;
-            }
+        	//withdraw report.
+        	reportRepository.withdrawReport(report);
+        	
+        	//unamend last amended report. 
+        	Report lastAmendedReport = aeReport.findLastAmendedReport(report.getReportDefinition());
+        	if(lastAmendedReport != null){
+        		reportRepository.unAmendReport(lastAmendedReport);
+        	}
+        	
+        	aeReportDao.save(aeReport);
         }
-       
-        
-        
+         
         return "Success";
     }
 
