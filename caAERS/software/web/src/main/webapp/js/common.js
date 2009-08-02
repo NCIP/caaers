@@ -804,3 +804,21 @@ function toggleApplyBtn(){
 	
  }
 
+//---------------------------------------------------------------------------------------------------------------------
+//this function will clear all the input fields, available under the container
+function clearFields(parentContainer){
+	$(parentContainer).select("input").each(function (el){
+		if(el.type == 'text' || el.type == ''){
+			el.value = '';
+		}
+	});
+	
+	$(parentContainer).select("select").each(function (el){
+		el.selectedIndex = 0;
+	});
+	
+	$(parentContainer).select("textarea").each(function (el){
+		el.value = '';
+	});
+	
+}

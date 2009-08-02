@@ -12,7 +12,8 @@
 
 <c:set var="fieldGroupName">lab${index}</c:set>
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
-<chrome:division title="&nbsp;${empty lab.labTerm.term ? (empty lab.other ? '' : lab.other) : lab.labTerm.term}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="${!empties[v] && !expanded}">
+<chrome:division title="&nbsp;${empty lab.labTerm.term ? (empty lab.other ? '' : lab.other) : lab.labTerm.term}" 
+	cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="${!empties[v] && !expanded}">
 	 <div class="row">
             <div class="label"><label for="aeReport.labs[${index}].lab-category">Lab category</label></div>
             <div class="value">

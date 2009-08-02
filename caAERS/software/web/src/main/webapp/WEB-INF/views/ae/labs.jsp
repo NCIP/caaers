@@ -83,7 +83,10 @@
 		  },
 		  
 		  updateTermDropDown: function(onload) {
-		    var kk = onload
+			if(!(onload == true)){
+				$('not-microbiology-'+this.index).hide();
+				$('microbiology-'+this.index).hide();
+			}
 		  	this.isTriggerOnLoad = (onload == true) ? true : false;
 		  	catId= $F(this.categoryProperty)
 		   	createAE.getLabTermsByCategory( catId ,this.populateTermDropDown.bind(this));
