@@ -54,6 +54,14 @@ public class NullSafeFieldExtractorTest extends AbstractNoSecurityTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
+    
+    public void testExtractFieldWithNull(){
+    	 ExpeditedAdverseEventReport aeReport = createAEReport();
+    	 aeReport.getLabs().get(0);
+    	 Object o = NullSafeFieldExtractor.extractField(aeReport,
+         "labs[0].labTerm.category.name");
+    	 assertTrue(o.equals("null"));
+    }
 
     public void testExtractField() {
         ExpeditedAdverseEventReport aeReport = createAEReport();

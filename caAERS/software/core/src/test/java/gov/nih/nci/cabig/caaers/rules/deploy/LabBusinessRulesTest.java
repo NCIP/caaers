@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.rules.deploy;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -162,9 +164,23 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         LabValue bv1 = new LabValue();
         bv1.setValue("33");
         bv1.setDate(new Date());
-
+        
+        LabTerm labTerm1 = new LabTerm();
+        labTerm1.setTerm("test1");
+        labTerm1.setCategory(new LabCategory());
+        labTerm1.getCategory().setName("test");
+        
+        LabTerm labTerm2 = new LabTerm();
+        labTerm2.setTerm("test2");
+        labTerm2.setCategory(new LabCategory());
+        labTerm2.getCategory().setName("test2");
+        
+        aeReport.getLabs().get(0).setLabTerm(labTerm1);
+        aeReport.getLabs().get(1).setLabTerm(labTerm2);
+        
         aeReport.getLabs().get(0).setBaseline(bv1);
         aeReport.getLabs().get(1).setBaseline(bv1);
+        
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "LAB_BR2B_ERR");
         assertSameErrorCount(errors, 2);
@@ -195,6 +211,19 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         wv1.setValue("33");
         wv1.setDate(new Date());
 
+        LabTerm labTerm1 = new LabTerm();
+        labTerm1.setCategory(new LabCategory());
+        labTerm1.getCategory().setName("test");
+        labTerm1.setTerm("test1");
+        
+        LabTerm labTerm2 = new LabTerm();
+        labTerm2.setCategory(new LabCategory());
+        labTerm2.getCategory().setName("test2");
+        labTerm2.setTerm("test2");
+        
+        aeReport.getLabs().get(0).setLabTerm(labTerm1);
+        aeReport.getLabs().get(1).setLabTerm(labTerm2);
+        
         aeReport.getLabs().get(0).setNadir(wv1);
         aeReport.getLabs().get(1).setNadir(wv1);
         ValidationErrors errors = fireRules(aeReport);
@@ -325,6 +354,19 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
         rv1.setValue("33");
         rv1.setDate(new Date());
 
+        LabTerm labTerm1 = new LabTerm();
+        labTerm1.setCategory(new LabCategory());
+        labTerm1.getCategory().setName("test");
+        labTerm1.setTerm("term1");
+        
+        LabTerm labTerm2 = new LabTerm();
+        labTerm2.setCategory(new LabCategory());
+        labTerm2.getCategory().setName("test2");
+        labTerm2.setTerm("term2");
+        
+        aeReport.getLabs().get(0).setLabTerm(labTerm1);
+        aeReport.getLabs().get(1).setLabTerm(labTerm2);
+        
         aeReport.getLabs().get(0).setRecovery(rv1);
         aeReport.getLabs().get(1).setRecovery(rv1);
         ValidationErrors errors = fireRules(aeReport);

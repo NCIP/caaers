@@ -82,7 +82,8 @@
 	RuleName : LAB_BR2B_CHK
 	Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must  be provided if “Lab Category” is not ‘Microbiology’.
 	Error Code : LAB_BR2B_ERR
-	Error Message : "BASELINE_DATE,  BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM, RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must be provided if LAB_CATEGORY is not ""Microbiology"".
+	Error Message : "Baseline value," "Worst value," and "Recovery values" must be provided when the "Lab category" has the following values:
+				         "Bone marrow biopsy," "Chemistry," "Coagulation," "Hematologic," and "Respiratory."
 	============================================================================= -->
 	<rule name="LAB_BR2B_CHK">
 		<lhs>
@@ -98,11 +99,14 @@
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
 					for(Lab l : aeReport.getLabs()){
-						if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
-							if(isLabValueEmpty(l.getBaseline()) || isLabValueEmpty(l.getNadir()) || isLabValueEmpty(l.getRecovery()) ){
-								errors.addValidationError("LAB_BR2B_ERR", "'Baseline' , 'Worst' and 'Recovery' values must be provided when Lab category is not 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+						if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("null")){
+							if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
+								if(isLabValueEmpty(l.getBaseline()) || isLabValueEmpty(l.getNadir()) || isLabValueEmpty(l.getRecovery()) ){
+									errors.addValidationError("LAB_BR2B_ERR", "'Baseline' , 'Worst' and 'Recovery' values must be provided when Lab category is not 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+								}
 							}
 						}
+						
                         i++;
 					}
 					return errors.hasErrors() ? FAIL : SUCCESS;
