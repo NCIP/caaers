@@ -46,17 +46,23 @@
 		
 		function viewSelection(){
 			if ($('aeReport.responseDescription.studyDrugInterrupted').options[1].selected){
-                $('aeReport.responseDescription.reducedDose').removeAttribute('readOnly')
-                $('aeReport.responseDescription.daysNotGiven').removeAttribute('readOnly')
-                $('aeReport.responseDescription.reducedDate').removeAttribute('readOnly')
+                if($('aeReport.responseDescription.reducedDose')) $('aeReport.responseDescription.reducedDose').removeAttribute('readOnly')
+                if($('aeReport.responseDescription.daysNotGiven')) $('aeReport.responseDescription.daysNotGiven').removeAttribute('readOnly')
+                if($('aeReport.responseDescription.reducedDate')) $('aeReport.responseDescription.reducedDate').removeAttribute('readOnly')
 			}else{
-				$('aeReport.responseDescription.reducedDose').setAttribute('readOnly',true);
-                $('aeReport.responseDescription.daysNotGiven').setAttribute('readOnly',true);
-                $('aeReport.responseDescription.reducedDate').setAttribute('readOnly',true);
-                
-                $('aeReport.responseDescription.reducedDose').value=""
-                $('aeReport.responseDescription.daysNotGiven').value=""
-                $('aeReport.responseDescription.reducedDate').value=""
+				if($('aeReport.responseDescription.reducedDose')){
+					 $('aeReport.responseDescription.reducedDose').setAttribute('readOnly',true);
+					 $('aeReport.responseDescription.reducedDose').value=""
+				}
+                if($('aeReport.responseDescription.daysNotGiven')){
+                    $('aeReport.responseDescription.daysNotGiven').setAttribute('readOnly',true);
+                    $('aeReport.responseDescription.daysNotGiven').value=""
+                }
+                if($('aeReport.responseDescription.reducedDate')){
+                	$('aeReport.responseDescription.reducedDate').setAttribute('readOnly',true);
+                    $('aeReport.responseDescription.reducedDate').value=""
+                    
+                }
                 
 			}
 		}
@@ -75,8 +81,14 @@
                         if ($('aeReport.responseDescription.autopsyPerformed-row')) $('aeReport.responseDescription.autopsyPerformed-row').show();
                         if ($('aeReport.responseDescription.causeOfDeath-row')) $('aeReport.responseDescription.causeOfDeath-row').show();
                     } else {
-                        if ($('aeReport.responseDescription.autopsyPerformed-row')) $('aeReport.responseDescription.autopsyPerformed-row').hide();
-                        if ($('aeReport.responseDescription.causeOfDeath-row')) $('aeReport.responseDescription.causeOfDeath-row').hide();
+                        if ($('aeReport.responseDescription.autopsyPerformed-row')){
+                             $('aeReport.responseDescription.autopsyPerformed-row').hide();
+                             $('aeReport.responseDescription.autopsyPerformed').checked = false;
+                        }
+                        if ($('aeReport.responseDescription.causeOfDeath-row')){
+                             $('aeReport.responseDescription.causeOfDeath-row').hide();
+                             $('aeReport.responseDescription.causeOfDeath').clear();
+                        }
                     }
             }
 
