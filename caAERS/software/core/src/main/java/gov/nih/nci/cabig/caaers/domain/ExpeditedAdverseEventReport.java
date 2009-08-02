@@ -414,7 +414,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
-    @UniqueObjectInCollection(message = "Duplicate pre existing condition")
+//    @UniqueObjectInCollection(message = "Duplicate pre existing condition")
     public List<SAEReportPreExistingCondition> getSaeReportPreExistingConditions() {
         return lazyListHelper.getLazyList(SAEReportPreExistingCondition.class);
     }

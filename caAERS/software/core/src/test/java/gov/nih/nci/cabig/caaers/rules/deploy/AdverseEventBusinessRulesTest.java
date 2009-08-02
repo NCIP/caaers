@@ -7,6 +7,9 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
+import java.util.Date;
+import java.util.Calendar;
+
 public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
@@ -197,6 +200,26 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         aeReport.getAdverseEvents().get(1).setEndDate(null);
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors, "When Only StartDate is present on all AES");
+    }
+
+    /**
+     * RuleName : AER_BR5_CHK Logic : "'End date' must be greater than or equal to 'Start date' for
+     * adverse event" Error Code : AER_BR5_ERR Error Message : AE_END_DATE must be later than OR
+     * equal to AE_START_DATE
+     */
+    public void testEndDateBeforeStartDate() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        Calendar c = Calendar.getInstance();
+
+        c.set(2009, 8, 01);
+        aeReport.getAdverseEvents().get(0).setEndDate(c.getTime());
+        c.set(2009, 7, 1);
+        aeReport.getAdverseEvents().get(0).setStartDate(c.getTime());
+
+        aeReport.getAdverseEvents().get(1).setEndDate(null);
+        ValidationErrors errors = fireRules(aeReport);
+        assertSameErrorCount(errors, 1);
+        
     }
 
     /**

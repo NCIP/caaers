@@ -143,7 +143,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @Transient
-    @UniqueObjectInCollection(message = "Duplicate metastatic disease site")
+//    @UniqueObjectInCollection(message = "Duplicate metastatic disease site")
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSites() {
         return listHelper.getLazyList(MetastaticDiseaseSite.class);
     }
