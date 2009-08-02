@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
@@ -316,15 +317,26 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         }
         // STOP -> AE VALIDATION //
 
-        // CHECKING VERBATIM LENGTH
+        boolean foundGrade5 = false;
+        
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
         	if(ae.isRetired()) continue;
-
+        	
+        	
+        	if(ae.getGrade().equals(Grade.DEATH)){
+        		if(foundGrade5){
+        			errors.rejectValue("adverseEvents[" + i + "].grade", "SAE_033", "Only one adverse event with grade DEATH is allowed in a course.");
+        		}
+        		foundGrade5 = true;
+        	}
+        	
+        	 // CHECKING VERBATIM LENGTH
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
                 errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
-
+            
+            
             // If grade is greater than 2 then hospitalization cannot be null.
             if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
                 if (ae.getGrade() != null) {
