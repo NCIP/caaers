@@ -155,7 +155,7 @@
 						  		</fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  			<xsl:variable name="currYear" select="java:format(java:java.text.SimpleDateFormat.new ('yyyy'), java:java.util.Date.new())"/>				      
-						  			<xsl:variable name="birthYear" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>				      
+						  			<xsl:variable name="birthYear" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>				      
 						  			<xsl:variable name="age" select="$currYear - $birthYear"/>
 						  			<xsl:value-of select="$age"/>
 						  		</fo:block>
@@ -206,7 +206,7 @@
 						  		Day
 						  		</fo:block>   
 						  		<fo:block xsl:use-attribute-sets="normal">   
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>  
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>  
 						  		</fo:block>    													  		
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
@@ -214,7 +214,7 @@
 						  		Month
 						  		</fo:block>  
 						  		<fo:block xsl:use-attribute-sets="normal">   
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>  
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>
 						  		</fo:block>    													  		
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
@@ -222,7 +222,7 @@
 						  		Year
 						  		</fo:block>     
 						  		<fo:block xsl:use-attribute-sets="normal">   
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>  
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>  
 						  		</fo:block> 													  		
       						</fo:table-cell>
 
@@ -259,9 +259,9 @@
 						  				<xsl:value-of select="labTerm/term"/>
 							  			<xsl:value-of select="other"/> - 
 							  			
-							  			Baseline value : <xsl:value-of select="baseline/value"/> <xsl:value-of select="units"/>, 
-							  			Worst Value :	<xsl:value-of select="nadir/value"/> <xsl:value-of select="units"/>, 
-							  			Recovery value : <xsl:value-of select="recovery/value"/> <xsl:value-of select="units"/>
+							  			Baseline value : <xsl:value-of select="baseline/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>, 
+							  			Worst Value :	<xsl:value-of select="nadir/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>, 
+							  			Recovery value : <xsl:value-of select="recovery/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
 							  		</fo:block>
 						  		</xsl:for-each>											  		
       						</fo:table-cell>
@@ -310,9 +310,11 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			15. DAILY DOSE(S) 
 							  		</fo:block>      										  					
-							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-							  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
-							  		</fo:block>
+							  		<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+							  			<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  				<xsl:value-of select="StudyAgent/Agent/name"/> : <xsl:value-of select="Dose/amount"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="Dose/units"/>
+							  			</fo:block>
+							  		</xsl:for-each>  							  		
 	      						</fo:table-cell>
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" > 

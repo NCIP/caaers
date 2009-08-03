@@ -177,7 +177,7 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			<fo:inline font-weight="bold"> 1.  Study Participant # or  PID #  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text></fo:inline> 
-						  			 <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/Identifier/value"/>
+						  			 <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier"/>
 						  		</fo:block> 
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
@@ -319,9 +319,11 @@
 						  			<xsl:for-each select="AdverseEventReport/AdverseEvent">
 										<xsl:if test="substring(gridId,1,3) = 'PRY'">
 				                    	  <fo:block xsl:use-attribute-sets="normal" >
-				                    		 <xsl:value-of select="eventApproximateTime/hour"/> : <xsl:value-of select="eventApproximateTime/minute"/>
-				                    		 <xsl:if test="eventApproximateTime/type = '0'"> AM </xsl:if>
-				                    		 <xsl:if test="eventApproximateTime/type = '1'"> PM </xsl:if>
+				                    	     <xsl:if test="eventApproximateTime/hour">
+					                    		 <xsl:value-of select="eventApproximateTime/hour"/> : <xsl:value-of select="eventApproximateTime/minute"/>
+					                    		 <xsl:if test="eventApproximateTime/type = '0'"> AM </xsl:if>
+					                    		 <xsl:if test="eventApproximateTime/type = '1'"> PM </xsl:if>
+					                         </xsl:if>
 				                    	  </fo:block>
 				                    	</xsl:if>                   					
 									</xsl:for-each>	
@@ -372,6 +374,7 @@
 										<xsl:value-of select="Dose/amount"/> 
 										<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 										<xsl:value-of select="Dose/units"/>
+										<fo:block/>
 						  			</xsl:for-each>
 						  		</fo:block>      				 						  					
       						</fo:table-cell>
@@ -682,26 +685,29 @@
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  		     <fo:inline font-weight="bold"> d.  Did event abate after study agent was stopped or dose reduced? </fo:inline>
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>           	
-						  		     [  ] NA     
+						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NA'">x</xsl:if>
+						  		     ]  NA     
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">x</xsl:if>
+						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'YES'">x</xsl:if>
 						  		     ] Yes     
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">x</xsl:if>
+						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NO'">x</xsl:if>
 						  		     ] No  
 						  		</fo:block> 
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  		     <fo:inline font-weight="bold"> e.  Did event reappear after study agent was reintroduced ? </fo:inline>    
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>                    	
-						  		     [  ] NA     
+						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NA'">x</xsl:if>
+						  		     ] NA     
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">x</xsl:if>
+						  		     [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'YES'">x</xsl:if>
 						  		     ] Yes    
 						  		     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  		      [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'false'">x</xsl:if>
+						  		      [  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NO'">x</xsl:if>
 						  		      ] No 
 						  		</fo:block> 
+						  		
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
  						  		  				
       						</fo:table-cell>		  			
@@ -930,7 +936,7 @@
 	      						</fo:table-cell>
 	       						<fo:table-cell xsl:use-attribute-sets="small-cell" >
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-							  			<xsl:value-of select="nadir/value"/>   <xsl:value-of select="units"/>
+							  			<xsl:value-of select="nadir/value"/>   <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
 							  		</fo:block>      				
 	      						</fo:table-cell>     						
 	       						<fo:table-cell xsl:use-attribute-sets="small-cell" >
