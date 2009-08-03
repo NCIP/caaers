@@ -480,7 +480,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		//expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1);
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
-		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		replayMocks();
@@ -588,7 +588,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
 		expect(aeReport1.getAdverseEvents()).andReturn(aeList1).anyTimes();
 		expect(aeReport1.isActive()).andReturn(false);
-		expect(aeReport1.getManuallySelectedReports()).andReturn(Arrays.asList(r1));
+		expect(aeReport1.getManuallySelectedReports()).andReturn(EMPTY_REPORT_LIST);
 		expect(aeReport1.getActiveReports()).andReturn(new ArrayList<Report>());
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1));
@@ -601,7 +601,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
-		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
@@ -752,7 +752,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).times(2);
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToEdit(rd2)).andReturn(Arrays.asList(r2));
+		expect(aeReport1.findReportsToEdit(rd2)).andReturn(Arrays.asList(r2)).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(EMPTY_REPORT_LIST);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(EMPTY_REPORT_LIST);
@@ -763,7 +763,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(ZERO));
-		assertTrue(result.getAeReportAlertMap().get(aeReport1.getId()));
+		assertFalse(result.getAeReportAlertMap().get(aeReport1.getId()));
 		
 		//amend, create, edit, withdraw maps.
 		//aeReport -0
@@ -884,7 +884,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
-		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdz)).andReturn(Arrays.asList(rz));
@@ -985,7 +985,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
 		
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
-		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
@@ -1117,7 +1117,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdx)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToEdit(rdx)).andReturn(Arrays.asList(rx));
+		expect(aeReport1.findReportsToEdit(rdx)).andReturn(Arrays.asList(rx)).times(2);
 		expect(aeReport1.findReportsToWitdraw(rdx)).andReturn(new ArrayList<Report>());
     	
     	replayMocks();
@@ -1229,13 +1229,13 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1));
+		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
 		assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
-		assertTrue(result.getAeReportAlertMap().get(new Integer(1)));
+		assertFalse(result.getAeReportAlertMap().get(new Integer(1)));
 		
 		Set<ReportDefinitionWrapper> wrappers = result.getAmendmentMap().get(new Integer(0));
 		assertTrue(wrappers.isEmpty());
@@ -1444,13 +1444,13 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
 		
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1));
+		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
 		assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
-		assertTrue(result.getAeReportAlertMap().get(new Integer(1)));
+		assertFalse(result.getAeReportAlertMap().get(new Integer(1)));
 		
 		Set<ReportDefinitionWrapper> wrappers = result.getAmendmentMap().get(new Integer(0));
 		assertTrue(wrappers.isEmpty());
