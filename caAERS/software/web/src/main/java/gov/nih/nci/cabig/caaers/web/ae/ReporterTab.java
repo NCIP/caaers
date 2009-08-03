@@ -97,6 +97,7 @@ public class ReporterTab extends AeTab {
             return InputFieldFactory.createEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         }
     }
+    
 /*
  * BJ =============== Commented
     @Override

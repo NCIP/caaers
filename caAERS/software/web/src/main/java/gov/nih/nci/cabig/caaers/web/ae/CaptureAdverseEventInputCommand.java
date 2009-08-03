@@ -1014,12 +1014,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         	List<ReportTableRow> tableRows = new ArrayList<ReportTableRow>();
         	
         	//for the default data collection (which will be new)
-        	List<AdverseEvent> evaluatedAdverseEvents = evaluationResult.getEvaluatedAeMap().get(aeReportId);
+        	List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
         	Date updatedDate = null;
         	Date gradedDate = null;
-        	if(CollectionUtils.isNotEmpty(evaluatedAdverseEvents)){
-        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(evaluatedAdverseEvents);
-        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(evaluatedAdverseEvents);
+        	if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
+        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
+        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
             	
         	}
         		
@@ -1088,12 +1088,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		
     		//find the earliest graded date, used while evaluating the aes. 
     		//for the default data collection (which will be new)
-        	List<AdverseEvent> evaluatedAdverseEvents = evaluationResult.getEvaluatedAeMap().get(aeReportId);
+        	List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
         	Date updatedDate = null;
         	Date gradedDate = null;
-        	if(CollectionUtils.isNotEmpty(evaluatedAdverseEvents)){
-        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(evaluatedAdverseEvents);
-        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(evaluatedAdverseEvents);
+        	if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
+        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
+        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
         	}else{
         		List<AdverseEvent> applicableAdverseEvents = evaluationResult.getAllAeMap().get(aeReportId);
         		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(applicableAdverseEvents);
