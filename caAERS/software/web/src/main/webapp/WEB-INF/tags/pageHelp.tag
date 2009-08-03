@@ -7,5 +7,5 @@
  <c:set var="roboHelpKey">ROBOHELP_${currentTask.linkName}${_tabNum gt 0 ? '_' : ''}${_tabNum gt 0 ? _tabNum : ''}</c:set>
  <spring:message var="roboHelpLink" code="${roboHelpKey}" text="NO_${roboHelpKey}"/>
  <script>
-  Event.observe(window, "load", ('${_caaersHelpURL}','${roboHelpLink}'));
+  Event.observe(window, "load", updateHelpLink('${_caaersHelpURL}','${roboHelpLink}'));
  </script>
