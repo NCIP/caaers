@@ -180,6 +180,7 @@ public class Fixtures {
         rep.setReportDefinition(def);
         rep.addScheduledNotification(createScheduledEmailNotification());
         rep.getLastVersion().addReportTracking(new ReportTracking()); //initialize reportversions
+        rep.getLastVersion().setId(10);
         return rep;
     }
     
