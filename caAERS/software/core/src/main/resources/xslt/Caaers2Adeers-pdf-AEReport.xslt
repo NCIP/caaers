@@ -113,13 +113,18 @@
 				    </fo:inline>
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal"> 						 
-						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/SiteInvestigator"> 
+					<fo:inline xsl:use-attribute-sets="normal"> 
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/SiteInvestigator/firstName"/>
+						<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator/SiteInvestigator/SiteInvestigator/lastName"/>
+						
+						<!--						 
+						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/SiteInvestigator/"> 
 								
 								<xsl:value-of select="Investigator/firstName"/>
 								<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 								<xsl:value-of select="Investigator/lastName"/>
-						</for-each>
+						</for-each>-->
 					</fo:inline>	
 				</fo:block>
 
@@ -636,7 +641,7 @@
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
 					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="70%"/>
 										
 		  			<fo:table-body>
 		  	      					
@@ -662,7 +667,15 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  			<xsl:choose>
+						  				<xsl:when test="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description">
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  				</xsl:when>
+						  				<xsl:otherwise>
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentDescription"/>
+						  				</xsl:otherwise>
+						  			</xsl:choose>
+						  			
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -948,7 +961,7 @@
     				
 		  		<fo:table>
 					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="70%"/>
 										
 		  			<fo:table-body>
 		  	      					
@@ -974,7 +987,14 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  			<xsl:choose>
+						  				<xsl:when test="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description">
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  				</xsl:when>
+						  				<xsl:otherwise>
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentDescription"/>
+						  				</xsl:otherwise>
+						  			</xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -987,7 +1007,40 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/RadiationIntervention/treatmentArm"/>
+								  <xsl:choose>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'BT_HDR' ">
+					                         Brachytherapy HDR 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'BT_LDR' ">
+					                         Brachytherapy LDR 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'BT_NOS' ">
+					                         Brachytherapy NOS 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'EB_NOS' ">
+					                         External Beam NOS 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'EB_2D' ">
+					                         External Beam, 2D 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'EB_3D' ">
+					                         External Beam, 3D 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'EB_IMRT' ">
+					                         External Beam, IMRT 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'EB_PROTON' ">
+					                         External Beam, Proton 
+					                    </xsl:when>
+					                    <xsl:when test="AdverseEventReport/RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
+					                         Systemic radiotherapy 
+					                    </xsl:when>
+					                    <xsl:otherwise>
+					                         
+					                            <xsl:value-of select="AdverseEventReport/RadiationIntervention/administration"/>
+					                         
+					                    </xsl:otherwise>
+					                </xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1112,7 +1165,14 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  			<xsl:choose>
+						  				<xsl:when test="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description">
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+						  				</xsl:when>
+						  				<xsl:otherwise>
+						  					<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentDescription"/>
+						  				</xsl:otherwise>
+						  			</xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1339,7 +1399,20 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/DeviceOperator"/>
+				                    <xsl:choose>
+				                        <xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
+				                            Health Professional
+				                        </xsl:when>
+				                        <xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'PATIENT'">
+				                            Lay User/Patient
+				                        </xsl:when>
+				                        <xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'OTHER'">
+				                            Other
+				                        </xsl:when>
+				                        <xsl:otherwise>
+				                                <xsl:value-of select="AdverseEventReport/MedicalDevice/DeviceOperator"/>
+				                        </xsl:otherwise>
+				                    </xsl:choose>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1379,7 +1452,14 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/DeviceReprocessed"/>
+					                <xsl:choose>
+					                    <xsl:when test="AdverseEventReport/MedicalDevice/DeviceReprocessed = 'YES'">
+					                        Yes
+					                    </xsl:when>
+					                    <xsl:otherwise>
+					                        No
+					                    </xsl:otherwise>
+					                </xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1415,7 +1495,23 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/EvaluationAvailability"/>
+				                <xsl:choose>
+				                    <xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'YES'">
+				                        Yes
+				                    </xsl:when>
+				                    <xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'NO'">
+				                        No
+				                    </xsl:when>
+				                    <xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'RETURNED'">
+				                        Returned
+				                    </xsl:when>
+				                    <xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'UNKNOWN'">
+				                       Unknown
+				                    </xsl:when>
+				                    <xsl:otherwise>
+				                            <xsl:value-of select="AdverseEventReport/MedicalDevice/EvaluationAvailability"/>
+				                    </xsl:otherwise>
+				                </xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1674,12 +1770,26 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="comments"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+					                <xsl:if test="AgentAdjustment='DOSE_INCREASED'">
+					                	Dose increased
+					                </xsl:if>
+					                <xsl:if test="AgentAdjustment='DOSE_NOTCHANGED'">
+					                	Dose not changed
+					                </xsl:if>
+					                <xsl:if test="AgentAdjustment='DOSE_REDUCED'">
+					                	Dose reduced
+					                </xsl:if>
+					                <xsl:if test="AgentAdjustment='DRUG_WITHDRAWN'">
+					                	Drug withdrawn
+					                </xsl:if>
+					                <xsl:if test="AgentAdjustment='NA'">
+					                	Not applicable
+					                </xsl:if>						  			
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>

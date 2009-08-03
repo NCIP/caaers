@@ -152,7 +152,7 @@
 													<fo:block xsl:use-attribute-sets="label">1. Patient Identifier</fo:block>
 													<fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
 													<fo:block xsl:use-attribute-sets="normal" > 
-						  								<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/Identifier/value"/>
+						  								<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier"/>
 						  							</fo:block> 
 													<fo:block padding-top="4mm" font-size="6.5pt" text-align="center">In confidence</fo:block>
 												</fo:table-cell>
@@ -447,7 +447,7 @@
 													</fo:block>
 													<xsl:for-each select="AdverseEventReport/Lab">
 														<fo:block xsl:use-attribute-sets="normal">
-															Lab-<xsl:number format="1 "/> <fo:block/>
+															<xsl:value-of select="labTerm/term"/> <fo:block/>
 															Base Line value :
 															
 															<xsl:value-of select="baseline/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
