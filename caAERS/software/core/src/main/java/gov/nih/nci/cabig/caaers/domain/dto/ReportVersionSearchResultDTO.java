@@ -10,6 +10,7 @@ public class ReportVersionSearchResultDTO {
 	List<ReportVersion> results;
 	
 	public List<ReportVersion> getResults() {
+		if(results == null) results = new ArrayList<ReportVersion>();
 		return results;
 	}
 	public void setResults(List<ReportVersion> results) {
