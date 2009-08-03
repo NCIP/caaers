@@ -405,10 +405,8 @@ function findSelectedAdverseEvents(aeReportId){
 	 
 	 //find all selected adverse events. 
 	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
+	 $('report-btn-' + aeReportId).disabled = (selectedAEs.length < 1);
 	 if(selectedAEs.length < 1){
-
-		 //make sure we disable the report button
-		 $('report-btn-' + aeReportId).disabled = true;
 
 	/*	 === not required --
 		 //none of the AEs are selected,so deselect all the report definitions.
@@ -426,8 +424,6 @@ function findSelectedAdverseEvents(aeReportId){
 			 
 	 }else if(reportedFlag){
 
-		 $('report-btn-' + aeReportId).disabled = false;
-			
 		 //reset every thing, so that we are on the orignal state. 
 		 resetRecommendedOptions(aeReportId);
 		 resetApplicableReportDefinitions(aeReportId);
