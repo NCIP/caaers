@@ -24,17 +24,11 @@
 			</props>
 		</property>
 		<!-- 
-		<property name="jobDetails">
-        	<list> 
-        		<ref bean="reportStatusResetJob" />
-        	</list>
-     	</property>
     	 <property name="triggers">
         	<list> 
         		<ref bean="reportStatusResetTrigger" /> 
         	</list>
      	</property>
-	
 	-->
 	</bean>
 	
@@ -42,13 +36,6 @@
 	
 	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
 	  <property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
-	  <property name="jobDataAsMap">
-	    <map>
-	      <entry key="reportVersionRepository">
-				<ref bean="reportVersionRepository"/>
-		  </entry>
-	    </map>
-	  </property>
    </bean>
 	<!-- trigger every 5 minutes -->
 	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
