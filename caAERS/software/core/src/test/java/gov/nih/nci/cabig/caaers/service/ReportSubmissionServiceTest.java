@@ -145,7 +145,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 
 	public void testGenerateReportContent() throws Exception{
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
-		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello")).andReturn(new String[]{"testing"});
+		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getId())).andReturn(new String[]{"testing"});
 		replayMocks();
 		
 		ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
@@ -166,7 +166,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 
 	public void testDoPreSubmitReport() throws Exception{
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
-		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello")).andReturn(new String[]{"testing"});
+		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getId())).andReturn(new String[]{"testing"});
 		
 		assertTrue(report.getLastVersion().getReportedAdversEvents() == null);
 		assertTrue(report.getLastVersion().getContents() == null);
@@ -217,7 +217,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		report.setReportDeliveries(systemDeliveries);
 		String xml = "<AdverseEventReport><id>110</id><biju>Joseph</biju></AdverseEventReport>";
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn(xml);
-		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,xml)).andReturn(new String[]{"dummy.pdf"});
+		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,xml,report.getId())).andReturn(new String[]{"dummy.pdf"});
 		reportDao.flush();
 		reportDao.save(report);
 		expeditedAdverseEventReportDao.save(aeReport);
