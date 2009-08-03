@@ -141,4 +141,14 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         } else if (!studyOrganization.equals(other.studyOrganization)) return false;
         return true;
     }
+    
+    @Transient
+    public void syncDates(){
+    	for(SiteResearchStaffRole srsRole : this.getSiteResearchStaff().getSiteResearchStaffRoles()){
+    		if(this.roleCode.equals(srsRole.getRoleCode())){
+    			this.setStartDate(srsRole.getStartDate());
+    			this.setEndDate(srsRole.getEndDate());
+    		}
+    	}
+    }
 }

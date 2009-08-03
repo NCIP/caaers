@@ -99,36 +99,34 @@ public class StudyRepository {
     		if(siteResearchStaff.getAssociateAllStudies() == null){
     			siteResearchStaff.setAssociateAllStudies(Boolean.FALSE);
     		}
-    			query = new StudyQuery();
-    			query.joinStudyOrganization();
-    			query.filterByStudyOrganizationNameExactMatch(siteResearchStaff.getOrganization().getName());
-    			studies = studyDao.find(query);
-    			for(Study study : studies){
-    				for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
-    					if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
-        					for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-        						studyPersonnel = new StudyPersonnel();
-            					studyPersonnel.setSiteResearchStaff(siteResearchStaff);
-            					studyPersonnel.setStudyOrganization(studyOrganization);
-            					studyPersonnel.setRoleCode(siteResearchStaffRole.getRoleCode());
-            					studyPersonnel.setStartDate(siteResearchStaffRole.getStartDate());
-            					studyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
-            					boolean studyPersonnelExists = false;
-            					for(StudyPersonnel existingStudyPersonnel : studyOrganization.getStudyPersonnels()){
-            						if(existingStudyPersonnel.equals(studyPersonnel)){
-            							studyPersonnelExists = true;
-            							existingStudyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
-            							break;
-            						}
-            					}
-            					if(!studyPersonnelExists & siteResearchStaff.getAssociateAllStudies()){
-            						studyOrganization.addStudyPersonnel(studyPersonnel);
-            					}
-        	    			}
-    					}
-    				}
-    				studyDao.save(study);	
-    			}
+			query = new StudyQuery();
+			query.joinStudyOrganization();
+			query.filterByStudyOrganizationNameExactMatch(siteResearchStaff.getOrganization().getName());
+			studies = studyDao.find(query);
+			for(Study study : studies){
+				for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
+					if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
+    					for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
+    						studyPersonnel = new StudyPersonnel();
+        					studyPersonnel.setSiteResearchStaff(siteResearchStaff);
+        					studyPersonnel.setStudyOrganization(studyOrganization);
+        					studyPersonnel.setRoleCode(siteResearchStaffRole.getRoleCode());
+        					boolean studyPersonnelExists = false;
+        					for(StudyPersonnel existingStudyPersonnel : studyOrganization.getStudyPersonnels()){
+        						if(existingStudyPersonnel.equals(studyPersonnel)){
+        							studyPersonnelExists = true;
+        							break;
+        						}
+        					}
+        					if(!studyPersonnelExists & siteResearchStaff.getAssociateAllStudies()){
+        						studyOrganization.addStudyPersonnel(studyPersonnel);
+        					}
+    	    			}
+					}
+					studyOrganization.syndStudyPersonnelDates();
+				}
+				studyDao.save(study);	
+			}
     	}
     }
 
