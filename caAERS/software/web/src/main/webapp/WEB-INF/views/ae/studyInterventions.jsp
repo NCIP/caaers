@@ -202,7 +202,9 @@ function closeAll() {
                     <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
                         <c:set var="collapsed" value="${agent.studyAgent != null}" />
-                        <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="${collapsed}"/>
+                        <c:if test="${!agent.studyAgent.retiredIndicator}">
+                        	<ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="${collapsed}"/>
+                        </c:if>	
                     </c:forEach>
                 </div>
                 </div>
