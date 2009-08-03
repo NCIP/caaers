@@ -91,10 +91,10 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			}
     			
                 
-    			
+    			int reportVersionId = report.getLastVersion().getId();
     			if (format.equals("pdf")) {
     			
-	    			String pdfOutFile = "expeditedAdverseEventReport-"+aeReportId+".pdf";
+	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportVersionId+".pdf";
 	    	        // generate report and send ...
 	    			//AdeersReportGenerator gen = new AdeersReportGenerator();
 	    			adeersReportGenerator.generatePdf(xml,tempDir+File.separator+pdfOutFile);
@@ -102,28 +102,28 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("medwatchpdf")) {
  
-	    			String pdfOutFile = "MedWatchReport-"+aeReportId+".pdf";
+	    			String pdfOutFile = "MedWatchReport-"+reportVersionId+".pdf";
 	    			
 	    			adeersReportGenerator.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("dcp")) {
-    				String pdfOutFile = "dcp-"+aeReportId+".pdf";
+    				String pdfOutFile = "dcp-"+reportVersionId+".pdf";
     				adeersReportGenerator.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("cioms")) {
-    				String pdfOutFile = "cioms-"+aeReportId+".pdf";
+    				String pdfOutFile = "cioms-"+reportVersionId+".pdf";
     				adeersReportGenerator.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("ciomssae")) {
-    				String pdfOutFile = "ciomssae-"+aeReportId+".pdf";
+    				String pdfOutFile = "ciomssae-"+reportVersionId+".pdf";
     				adeersReportGenerator.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else  {
-	    			String xmlOutFile = "expeditedAdverseEventReport-"+aeReportId+".xml";
+	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportVersionId+".xml";
 	    			
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);
