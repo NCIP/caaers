@@ -2,6 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://jawr.net/tags" prefix="jwr" %>
 
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
 <jwr:style src="/csslib/caaers.zcss" />
 
 <tags:js name="prototype"/>

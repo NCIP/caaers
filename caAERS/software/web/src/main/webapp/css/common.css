@@ -726,7 +726,7 @@ div.row.instructions div.value {
 	float:right;
 	margin:5px;
 	padding:5px;
-	width:430px;
+	width:480px;
 }
 .reportsHeader {
 	display:inline;
@@ -740,4 +740,17 @@ div.row.instructions div.value {
 }
 .rulesMessageBottom ul, .rulesMessageBottom ul li {
 	list-style-type:none;
+}
+.action-cell {
+	font-size:1.7em;
+}
+.action-cell img {
+	vertical-align:middle;
+}
+.action-icon {
+	vertical-align:middle;
+	margin-bottom:5px;
+}
+td.create img, td.edit img, td.ammend img, td.withdraw img {
+	vertical-align:middle;
 }

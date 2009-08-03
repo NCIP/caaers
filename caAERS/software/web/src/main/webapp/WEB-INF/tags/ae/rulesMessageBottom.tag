@@ -3,7 +3,7 @@
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection" %>
 <%@attribute name="rulesMessages" required="true" type="java.util.List" description="The messages from rules engine,  to show" %>
 <div id="rulesMessage-${aeReportId}">
-	When you press the Report button, you will initiate the following actions:
+	<b>When you press the Report button, you will initiate the following actions:</b>
     <ul id="rulesMessageList-${aeReportId}">
         <c:if test="${not empty rulesMessages}">
             <c:forEach var="msg" items="${rulesMessages}">

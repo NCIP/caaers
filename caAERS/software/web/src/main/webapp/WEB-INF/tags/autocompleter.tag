@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="propertyName"  required="true" %>
@@ -13,7 +14,7 @@
  <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}" onkeydown="suppressEnter(event);"/>
  <tags:indicator id="${propertyName}-indicator"/>
  <c:if test="${enableClear and not disabled}">
-        <tags:button cssClass="foo" id="${propertyName}-clear" color="blue" value="Clear" icon="x" type="button" onclick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" size="small"/>
+        <a id="${propertyName}-clear" onclick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
  </c:if>
  <div id="${propertyName}-choices" class="autocomplete" style="display: none"></div>
  <input type="hidden" name="${propertyName}" id="${propertyName}" value="${initialValue}"/>

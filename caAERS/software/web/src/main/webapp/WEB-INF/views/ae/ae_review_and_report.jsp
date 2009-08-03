@@ -105,8 +105,8 @@
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
 	   '<td align="center"><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
-	   '<td><span><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
-  	   '<td><span>#{name}</span></td>' +
+	   '<td><span class="action-cell"><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
+  	   '<td><span><b>#{name}</b></span></td>' +
   	   '<td><span>#{status}</span></td>' +
   	   '<td><span>#{due}</span></td>' +
        '</tr>';
@@ -597,15 +597,15 @@ function generateMessages(aeReportId){
 					});
 				}
 				if(!otherActionAmendOrWithdraw){
-					msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
+					msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' class='action-icon' /> <span style='font-weight:bold'>" + actualAction + "</span> " + rdObj.name;
 				}
 			}else if(actualAction == 'Edit'){
-				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;	
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' class='action-icon' /> <span style='font-weight:bold'>" + actualAction + "</span> " + rdObj.name;	
 			}else if(actualAction == 'Withdraw'){
-				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' class='action-icon' /> <span style='font-weight:bold'>" + actualAction + "</span> " + rdObj.name;
 				connector = " and replace with";
 			}else if(actualAction == 'Amend'){
-				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' /> " + actualAction + " " + rdObj.name;
+				msg = "<img src='<chrome:imageUrl name='../blue/" + actualAction + "-icon.png' />' alt='' class='action-icon' /> <span style='font-weight:bold'>" + actualAction + "</span> " + rdObj.name;
 				connector = " with";
 			}
 
