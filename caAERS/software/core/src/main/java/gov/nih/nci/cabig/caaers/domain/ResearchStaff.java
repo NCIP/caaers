@@ -187,7 +187,9 @@ public abstract class ResearchStaff extends User {
 		Set<String> roleSet = new HashSet<String>();
 		for(SiteResearchStaff siteResearchStaff : getSiteResearchStaffs()){
 			for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-				roleSet.add(siteResearchStaffRole.getRoleCode());
+				if(siteResearchStaffRole.isActive()){
+					roleSet.add(siteResearchStaffRole.getRoleCode());
+				}
 			}
 		}
 		List<String> roleList = new ArrayList<String>();  

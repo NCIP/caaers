@@ -8,6 +8,6 @@ class InsertResearchStaffRoleTypeConfig extends edu.northwestern.bioinformatics.
 		insert("config_properties", [ code: 'caaers_data_cd' , 			version: '0',	name : 'Data coordinator', description: 'caAERS Data coordinator', config_type:'2'])		                            
 	}
 	void down(){
-		execute("delete config_properties")
+		execute("delete config_properties where config_type=2 ")
 	}
 }

@@ -200,5 +200,21 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
             srsr.setEndDate(date);
         }
     }
-
+    
+    /**
+     * This method returns all the available roles in this Site
+     * @return
+     */
+	@Transient
+	public List<String> getAvailableRoles(){
+		Set<String> roleSet = new HashSet<String>();
+		for(SiteResearchStaffRole siteResearchStaffRole : this.getSiteResearchStaffRoles()){
+			if(siteResearchStaffRole.isActive()){
+				roleSet.add(siteResearchStaffRole.getRoleCode());
+			}
+		}
+		List<String> roleList = new ArrayList<String>();  
+		roleList.addAll(roleSet);
+		return roleList;
+	}
 }
