@@ -299,9 +299,9 @@
 							  		20. DID REACTION ABATE AFTER STOPPING DRUG 
 							  		</fo:block> 
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">x</xsl:if> ] YES 
-							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">x</xsl:if> ] NO 
-							  			[ ] NA   
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'YES'">x</xsl:if> ] YES 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NO'">x</xsl:if> ] NO 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'NA'">x</xsl:if> ]  NA   
 							  		</fo:block>  													  		
 	      						</fo:table-cell>
 	      				</fo:table-row>
@@ -326,9 +326,9 @@
 								  		21. DID REACTION REAPPEAR AFTER REINTRODUCTION?
 							  		</fo:block>  
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">x</xsl:if> ] YES 
-							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">x</xsl:if> ] NO 
-							  			[ ] NA   
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'YES'">x</xsl:if> ] YES 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NO'">x</xsl:if> ] NO 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NA'">x</xsl:if> ] NA   
 							  		</fo:block> 							  															  		
 	      						</fo:table-cell>
 	      				</fo:table-row>
