@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
@@ -13,7 +14,7 @@ public class ResearchStaffLinkDisplayCell extends AbstractCell {
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
-        ResearchStaff researchStaff = (ResearchStaff) model.getCurrentRowBean();
+        ResearchStaff researchStaff = ((SiteResearchStaff)model.getCurrentRowBean()).getResearchStaff();
         String cellValue = column.getValueAsString();
         
         String image = "";

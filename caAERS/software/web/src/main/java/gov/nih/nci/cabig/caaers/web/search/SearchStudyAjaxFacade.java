@@ -12,14 +12,10 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
@@ -73,11 +69,8 @@ public class SearchStudyAjaxFacade {
     private InvestigatorRepository investigatorRepository; 
     private ResearchStaffDao researchStaffDao;
     private ResearchStaffRepository researchStaffRepository;
-
     private AdverseEventDao adverseEventDao;
-
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     public SearchStudyAjaxFacade() {
@@ -233,11 +226,11 @@ public class SearchStudyAjaxFacade {
         return model.assemble();
     }
 
-    public Object buildResearchStaff(final TableModel model, final List<ResearchStaff> researchStaffs) throws Exception {
+    public Object buildResearchStaff(final TableModel model, final List<SiteResearchStaff> siteResearchStaffs) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
         table.setForm("assembler");
-        table.setItems(researchStaffs);
+        table.setItems(siteResearchStaffs);
         table.setAction(model.getContext().getContextPath() + "/pages/admin/editResearchStaff");
         table.setTitle("");
         table.setShowPagination(true);
@@ -255,18 +248,18 @@ public class SearchStudyAjaxFacade {
         model.addRow(row);
 
         Column columnFirstName = model.getColumnInstance();
-        columnFirstName.setProperty("firstName");
+        columnFirstName.setProperty("researchStaff.firstName");
         columnFirstName.setTitle("First name");
         columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffLinkDisplayCell");
         model.addColumn(columnFirstName);
 
         Column columnMiddleName = model.getColumnInstance();
-        columnMiddleName.setProperty("middleName");
+        columnMiddleName.setProperty("researchStaff.middleName");
         columnMiddleName.setTitle("Middle name");
         model.addColumn(columnMiddleName);
 
         Column columnLastName = model.getColumnInstance();
-        columnLastName.setProperty("lastName");
+        columnLastName.setProperty("researchStaff.lastName");
         columnLastName.setTitle("Last name");
         model.addColumn(columnLastName);
 
@@ -277,8 +270,8 @@ public class SearchStudyAjaxFacade {
         model.addColumn(columnOrganizationNameName);
 
         Column columnStatus = model.getColumnInstance();
-        columnStatus.setProperty("status");
-        columnStatus.setTitle("Status");
+        columnStatus.setProperty("active");
+        columnStatus.setTitle("Active");
         model.addColumn(columnStatus);
         
         return model.assemble();
@@ -815,16 +808,16 @@ public class SearchStudyAjaxFacade {
     }
 
     @SuppressWarnings("finally")
-    private List<ResearchStaff> constructExecuteResearchStaffQuery(final String type, final String text) {
+    private List<SiteResearchStaff> constructExecuteSiteResearchStaffQuery(final String type, final String text) {
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");
         log.debug("type :: " + type);
         log.debug("text :: " + text);
         String sType, sText;
-        List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
+        List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
 
-        ResearchStaffQuery query = new ResearchStaffQuery();
+        SiteResearchStaffQuery query = new SiteResearchStaffQuery();
 
         while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
             sType = typeToken.nextToken();
@@ -839,13 +832,13 @@ public class SearchStudyAjaxFacade {
         }
 
         try {
-            researchStaffs = researchStaffRepository.getResearchStaff(query);
+            siteResearchStaffs = researchStaffRepository.getSiteResearchStaff(query);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
         }
         finally {
-            return researchStaffs;
+            return siteResearchStaffs;
         }
     }
 
@@ -1081,14 +1074,12 @@ public class SearchStudyAjaxFacade {
         return "";
     }
 
-    public String getResearchStaffTable(final Map parameterMap, final String type, final String text,
-                                        final HttpServletRequest request) {
-
-        List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
+    public String getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
+        List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
         if (type != null && text != null) {
-            researchStaffs = constructExecuteResearchStaffQuery(type, text);
+            siteResearchStaffs = constructExecuteSiteResearchStaffQuery(type, text);
         }
-        log.debug("ResearchStaffs :: " + researchStaffs.size());
+        log.debug("ResearchStaffs :: " + siteResearchStaffs.size());
 
         Context context = null;
         if (parameterMap == null) {
@@ -1098,13 +1089,8 @@ public class SearchStudyAjaxFacade {
         }
 
         TableModel model = new TableModelImpl(context);
-        // LimitFactory limitFactory = new TableLimitFactory(context);
-        // Limit limit = new TableLimit(limitFactory);
-        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
-        // model.setLimit(limit);
-
         try {
-            return buildResearchStaff(model, researchStaffs).toString();
+            return buildResearchStaff(model, siteResearchStaffs).toString();
         }
         catch (Exception e) {
             e.printStackTrace();

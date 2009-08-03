@@ -81,8 +81,7 @@ public abstract class ResearchStaff extends User {
 		if (!super.equals(o))
 			return false;
 		ResearchStaff that = (ResearchStaff) o;
-		if (emailAddress != null ? !emailAddress.equals(that.emailAddress)
-				: that.emailAddress != null)
+		if (emailAddress != null ? !emailAddress.equals(that.emailAddress) : that.emailAddress != null)
 			return false;
 		return true;
 	}

@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -80,9 +82,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     	String queryString = query.getQueryString();
         log.debug("::: " + queryString.toString());
         List<ResearchStaff> researchStaffs = (List<ResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
-
-            public Object doInHibernate(final Session session) throws HibernateException,
-                            SQLException {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {
@@ -97,6 +97,32 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
         return researchStaffs;
     }
     
+    /**
+     * This method queries the caAERS DB to get all the matching SiteResearchStaff for the given query.
+     * @param query
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = false)
+	public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query){
+    	String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+        List<SiteResearchStaff> researchStaffs = (List<SiteResearchStaff>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+        return researchStaffs;
+    }
+
     /**
      * This method queries the external system to fetch all the matching ResearchStaff
      * @param researchStaff

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -179,11 +180,18 @@ public class ResearchStaffRepository {
 				//searchCriteria.setOrganization(organization);
 			}	
         }
-    	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria); 
+    	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
     	//Merge and Return
     	return merge (researchStaffs,remoteResearchStaffs);
     }
     
+    @Transactional(readOnly = false)
+    public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query){
+    	//Get all the RS from caAERS DB
+        List<SiteResearchStaff> siteResearchStaffs = researchStaffDao.getSiteResearchStaff(query);
+    	return (siteResearchStaffs);
+    }
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<ResearchStaff> merge(List<ResearchStaff> localList , List<ResearchStaff> remoteList) {
 		for (ResearchStaff remoteResearchStaff:remoteList) {

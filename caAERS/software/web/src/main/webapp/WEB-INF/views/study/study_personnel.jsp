@@ -51,12 +51,14 @@
         	},
         	
         	sitePersonnelSelector: function(sPersonnel) {
-        	 	  var image;
+        	 	  var image = "";
+<%--
         	 	  if(sPersonnel.researchStaff.externalId != null){
                           image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
                   } else {
                           image = '';
                   }
+--%>
         		return (image + "" + sPersonnel.researchStaff.fullName)
         	}
         	
