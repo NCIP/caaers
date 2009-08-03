@@ -13,11 +13,11 @@ class MigrateSPandSIRoles extends edu.northwestern.bioinformatics.bering.Migrati
 		execute("update study_personnel set role_code = 'caaers_data_cd' where role_code = 'Data Coordinator' ");
 		
 		if (databaseMatches('oracle')) {
-        	execute("update study_personnel set start_date = '2008-01-01' ");
-        	execute("update study_investigators set start_date = '2008-01-01' ");
-        }else{
-         	execute("update study_personnel set start_date = to_date('2008-01-01', 'yyyy/mm/dd') ");
+			execute("update study_personnel set start_date = to_date('2008-01-01', 'yyyy/mm/dd') ");
          	execute("update study_investigators set start_date = to_date('2008-01-01', 'yyyy/mm/dd') ");
+        }else{
+			execute("update study_personnel set start_date = '2008-01-01' ");
+        	execute("update study_investigators set start_date = '2008-01-01' ");         	
         }
 	}
 	void down(){
