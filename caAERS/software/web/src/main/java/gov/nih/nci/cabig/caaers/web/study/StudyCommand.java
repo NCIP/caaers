@@ -26,6 +26,7 @@ public class StudyCommand {
     private String diseaseLlt;
     private String condition;
     protected List<ConfigProperty> allPersonnelRoles;
+    protected List<ConfigProperty> allInvestigatorRoles;
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -357,5 +358,12 @@ public class StudyCommand {
     public void setAllPersonnelRoles(List<ConfigProperty> allPersonnelRoles) {
         this.allPersonnelRoles = allPersonnelRoles;
     }
-    
+
+    public List<ConfigProperty> getAllInvestigatorRoles() {
+        return allInvestigatorRoles;
+    }
+
+    public void setAllInvestigatorRoles(List<ConfigProperty> allInvestigatorRoles) {
+        this.allInvestigatorRoles = allInvestigatorRoles;
+    }
 }

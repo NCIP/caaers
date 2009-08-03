@@ -68,7 +68,7 @@ class InvestigatorsTab extends StudyTab {
             fields = new ArrayList<InputField>();
             InputField investigatorField = InputFieldFactory.createAutocompleterField("siteInvestigator", "Investigator", true);
             fields.add(investigatorField);
-            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, WebUtils.collectOptions(command.getAllPersonnelRoles(), "code", "name", "")));
+            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, WebUtils.collectOptions(command.getAllInvestigatorRoles(), "code", "name", "")));
             fields.add(InputFieldFactory.createLabelField("active", "Status", false));
         }
 
