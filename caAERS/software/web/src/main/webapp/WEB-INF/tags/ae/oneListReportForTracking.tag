@@ -31,12 +31,15 @@
 
 		<div id="_table${reportVersion.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
 			<div id="_ctx_tt${reportVersion.id}">
+        		<b> Report Name : </b> ${reportVersion.report.reportDefinition.name} <br/>
+        		<b> External Ticket # : </b> ${reportVersion.assignedIdentifer} 			<br/>
         		<b>Study : </b> ${reportVersion.report.aeReport.study.shortTitle} (${reportVersion.report.aeReport.study.primaryIdentifier.value})<br/>
         		<b>Participant : </b>  ${reportVersion.report.aeReport.participant.firstName} &nbsp; ${reportVersion.report.aeReport.participant.firstName}
         										(${reportVersion.report.aeReport.participant.primaryIdentifier.value})<br/>
         		<b>Study Site : </b> ${reportVersion.report.aeReport.assignment.studySite.organization.name} 
         										(${reportVersion.report.aeReport.assignment.studySite.organization.nciInstituteCode})<br/>
         		<b> Course : </b> ${reportVersion.report.aeReport.reportingPeriod.name} 
+
     		</div>
     	</div>
       

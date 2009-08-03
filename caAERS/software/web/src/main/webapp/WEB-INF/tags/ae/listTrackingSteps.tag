@@ -61,13 +61,7 @@
 			
 			<ae:oneTrackingStep step="2" stepDesc="Generate caAERS XML" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.submissionInitiated}"  />
 		
-		<c:choose>
-		  <c:when test="${reportVersion.report.externalSystem == false}">
-			<ae:oneTrackingStep step="3" stepDesc="Generate caAERS attachment(PDF)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.attachmentGenerated}"  />
 
-			<ae:oneTrackingStep step="4" stepDesc="Notify Email Recipients with caAERS attachment " reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.emailNotification}"  />
-		  </c:when>
-		  <c:otherwise>
 			<ae:oneTrackingStep step="5" stepDesc="Send Message to ESB" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.connectedToESB}"  />
 
 			<ae:oneTrackingStep step="6" stepDesc="Connect to External System (AdEERS Web Service)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.connectedToExternalSystem}"  />
@@ -75,8 +69,7 @@
 			<ae:oneTrackingStep step="7" stepDesc="Submit to External System (AdEERS Web Service)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.submissionToExternalSystem}"  />
 
 			<ae:oneTrackingStep step="8" stepDesc="Notify Submitter with Submission Status" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.notificationToSubmitter}"  />
-		  </c:otherwise>
-		</c:choose>
+
 		
 		</table>
 		</div>			
