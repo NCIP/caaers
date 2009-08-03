@@ -187,7 +187,6 @@ public class EvaluationServiceImpl implements EvaluationService {
             for(AdverseEvent ae : map.keySet()){
             	List<String> nameList = map.get(ae);
             	ae.setRequiresReporting(!nameList.isEmpty());
-            	alertNeeded |= (!nameList.isEmpty());
             	reportDefinitionNames.addAll(nameList);
             	
             }
@@ -196,10 +195,6 @@ public class EvaluationServiceImpl implements EvaluationService {
             if(log.isDebugEnabled()){
             	log.debug("Rules Engine Result for : " + aeReportId + ", " + String.valueOf(map));
             }
-            
-            //set the alert needed
-            evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
-            
             
             //load all report definitions
             for(String reportDefName : reportDefinitionNames){
@@ -254,12 +249,6 @@ public class EvaluationServiceImpl implements EvaluationService {
             	
             	List<AdverseEvent> modifiedAdverseEvents = expeditedData.getModifiedAdverseEvents();
             	
-            	//modify the alert necessary flag, based on eventual set of report definitions
-            	alertNeeded = !modifiedAdverseEvents.isEmpty();
-            	for(ReportDefinition reportDefinition : defList){
-            		alertNeeded |= expeditedData.findReportsToEdit(reportDefinition).isEmpty();
-            	}
-            	evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
             	
             	//any ae modified/got completed reports ? add those report definitions.
             	if(CollectionUtils.isNotEmpty(modifiedAdverseEvents)){
@@ -302,6 +291,16 @@ public class EvaluationServiceImpl implements EvaluationService {
            //filter the report definitions
            List<ReportDefinition> reportDefinitions =  reportDefinitionFilter.filter(defList);
            
+          //modify the alert necessary flag, based on eventual set of report definitions
+          if(expeditedData == null){
+        	  alertNeeded = !reportDefinitions.isEmpty();
+          }else{
+        	  for(ReportDefinition reportDefinition : reportDefinitions){
+             	alertNeeded |= expeditedData.findReportsToEdit(reportDefinition).isEmpty();
+              }
+          }
+       	  evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
+       	
            
            //logging 
            if(log.isDebugEnabled()){

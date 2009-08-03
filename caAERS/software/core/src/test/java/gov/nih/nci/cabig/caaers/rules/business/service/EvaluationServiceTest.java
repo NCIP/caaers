@@ -879,6 +879,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
+		expect(aeReport1.findReportsToEdit(rdz)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdz)).andReturn(Arrays.asList(rz));
@@ -1107,7 +1108,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(2);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
-		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdx)).andReturn(new ArrayList<Report>());
