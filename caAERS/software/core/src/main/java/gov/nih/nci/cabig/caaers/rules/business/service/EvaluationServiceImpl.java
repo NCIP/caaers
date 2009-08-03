@@ -109,6 +109,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     		}
     	}
     	
+    	result.refreshAdverseEventIndexMap();
+
     	if(log.isInfoEnabled()){
     		log.info("============== Evaluation result =============");
     		log.info(result.toString());
@@ -402,9 +404,7 @@ public class EvaluationServiceImpl implements EvaluationService {
            //update the result object
            evaluationResult.addEvaluatedAdverseEvents(aeReportId, aeList);
 //           evaluationResult.addResult(aeList, reportDefinitions);
-           if(expeditedData != null){
-        	   evaluationResult.addResult(expeditedData, reportDefinitions);
-           }
+           evaluationResult.addResult(expeditedData, reportDefinitions);
             
         } catch (Exception e) {
             throw new CaaersSystemException("Could not determine the reports necessary for the given expedited adverse event data", e);

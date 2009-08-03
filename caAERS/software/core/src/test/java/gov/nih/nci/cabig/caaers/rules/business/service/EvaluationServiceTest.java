@@ -238,8 +238,8 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList.add(ae2);
 		
 		Map<AdverseEvent, List<String>> map = new HashMap<AdverseEvent, List<String>>();
-		map.put(ae1, Arrays.asList(new String[] { "one", "two" }));
-		map.put(ae2, Arrays.asList(new String[] { "one", "two", "three"}));
+		map.put(ae1, Arrays.asList(new String[] { "rd1", "rd2" }));
+		map.put(ae2, Arrays.asList(new String[] { "rd1", "rd2", "rd3"}));
 		
 
 		Study study = Fixtures.createStudy("test");
@@ -260,26 +260,20 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
 
 		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andReturn(map);
-		EasyMock.expect(reportDefinitionDao.getByName("one")).andReturn(rd1);
-		EasyMock.expect(reportDefinitionDao.getByName("two")).andReturn(rd2);
-		EasyMock.expect(reportDefinitionDao.getByName("three")).andReturn(rd3);
+		EasyMock.expect(reportDefinitionDao.getByName("rd1")).andReturn(rd1);
+		EasyMock.expect(reportDefinitionDao.getByName("rd2")).andReturn(rd2);
+		EasyMock.expect(reportDefinitionDao.getByName("rd3")).andReturn(rd3);
 
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+	
+		assertEquals(3, result.getAdverseEventIndexMap().get(ZERO).get(ae2).size());
+		assertTrue( result.getAdverseEventIndexMap().get(ZERO).get(ae2).containsAll(Arrays.asList(rd1, rd2, rd3)));
+		
+		assertEquals(2, result.getAdverseEventIndexMap().get(ZERO).get(ae1).size());
+		assertTrue( result.getAdverseEventIndexMap().get(ZERO).get(ae1).containsAll(Arrays.asList(rd1, rd2)));
 
-//		assertEquals(3, result.getAeIndexMap().get(ae1).size());
-//		assertEquals(3, result.getAeIndexMap().get(ae2).size());
-//		assertTrue(result.getAeIndexMap().get(ae2).containsAll(Arrays.asList(new ReportDefinition[] { rd1, rd2, rd3 })));
-//
-//		assertEquals(2, result.getReportDefAeIndexMap().get(rd1).size());
-//		assertEquals(2, result.getReportDefAeIndexMap().get(rd2).size());
-//		assertEquals(2, result.getReportDefAeIndexMap().get(rd3).size());
-//
-//		assertTrue(result.getReportDefAeIndexMap().get(rd2).containsAll(aeList));
-
-		assertTrue(result.getReportDefAeReportIndexMap().isEmpty());
-		assertTrue(result.getAeReportIndexMap().isEmpty());
 		assertTrue(result.getAeReportAlertMap().get(new Integer(0)));
 		
 		assertTrue(result.getAmendmentMap().get(new Integer(0)).isEmpty());
@@ -329,12 +323,15 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		Study study = Fixtures.createStudy("test");
 
 		ReportDefinition rd1 = Fixtures.createReportDefinition("rd1", "rd1", 1,TimeScaleUnit.DAY);
+		rd1.setId(1);
 		rd1.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd1.getOrganization().setId(1);
 		ReportDefinition rd2 = Fixtures.createReportDefinition("rd2", "rd2", 2,TimeScaleUnit.DAY);
+		rd2.setId(2);
 		rd2.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd2.getOrganization().setId(1);
 		ReportDefinition rd3 = Fixtures.createReportDefinition("rd3", "rd3", 3,TimeScaleUnit.DAY);
+		rd3.setId(3);
 		rd3.setGroup(Fixtures.createConfigProperty("expedited"));
 		rd3.getOrganization().setId(1);
 
@@ -359,9 +356,6 @@ public class EvaluationServiceTest extends AbstractTestCase {
 //		assertEquals(2, result.getReportDefAeIndexMap().get(rd1).size());
 //		assertTrue(result.getReportDefAeIndexMap().get(rd1).containsAll(aeList));
 
-		assertTrue(result.getReportDefAeReportIndexMap().isEmpty());
-		assertTrue(result.getAeReportIndexMap().isEmpty());
-		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(new Integer(0)));
 		

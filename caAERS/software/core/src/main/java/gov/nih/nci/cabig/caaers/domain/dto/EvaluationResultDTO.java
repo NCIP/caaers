@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -40,13 +41,12 @@ public class EvaluationResultDTO {
 	Map<Integer, Map<AdverseEvent, List<String>>> rulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent, List<String>>>();
 	Map<Integer, Map<AdverseEvent, Set<String>>> processedRulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent,Set<String>>>();
 	
+	//will store [aeReportId - {adverseEventId - [ReportDefinitionId] }]
+	Map<Integer, Map<AdverseEvent,Set<ReportDefinition>>> adverseEventIndexMap = new HashMap<Integer, Map<AdverseEvent,Set<ReportDefinition>>>();
+	
 	//stores report definition and aeReports associated
-	Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> reportDefAeReportIndexMap = new HashMap<ReportDefinition, Set<ExpeditedAdverseEventReport>>();
-//	//stores adverse event and report definitions
-//	Map<AdverseEvent, Set<ReportDefinition>> aeIndexMap = new HashMap<AdverseEvent, Set<ReportDefinition>>();
-//	//stores report definition and adverse events.
-//	Map<ReportDefinition, Set<AdverseEvent>> reportDefAeIndexMap = new HashMap<ReportDefinition, Set<AdverseEvent>>();
-//	
+//	Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> reportDefAeReportIndexMap = new HashMap<ReportDefinition, Set<ExpeditedAdverseEventReport>>();
+
 	//stores adverseEventId - {report definition}, tells which ae got reported in which report.
 	Map<Integer, List<ReportDefinition>> reportedAEIndexMap = new HashMap<Integer, List<ReportDefinition>>();
 	
@@ -56,6 +56,54 @@ public class EvaluationResultDTO {
 	Map<Integer, Set<ReportDefinitionWrapper>> editMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	Map<Integer, Set<ReportDefinitionWrapper>> createMap = new  HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	
+	/**
+	 * Will find the report definition, matching by name, from aeReportIndexMap.
+	 * @param aeReportId
+	 * @param reportDefinitionName
+	 * @return
+	 */
+	private ReportDefinition findReportDefinition(Integer aeReportId, String reportDefinitionName){
+		Set<ReportDefinition> reportDefinitions = aeReportIndexMap.get(aeReportId);
+		
+		if(reportDefinitions != null){
+			for(ReportDefinition rd : reportDefinitions){
+				if(rd.getName().equals(reportDefinitionName)) return rd;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Will re-index the adverseEventIndexMap.
+	 */
+	public void refreshAdverseEventIndexMap(){
+		adverseEventIndexMap.clear();
+		
+		for(Integer aeReportId : processedRulesEngineResultMap.keySet()){
+			
+			Map<AdverseEvent , Set<ReportDefinition>> aeMap = new HashMap<AdverseEvent, Set<ReportDefinition>>();
+			adverseEventIndexMap.put(aeReportId, aeMap);
+			
+			Map<AdverseEvent, Set<String>> reportNameMap = processedRulesEngineResultMap.get(aeReportId);
+			if(reportNameMap != null){
+				for(AdverseEvent adverseEvent : reportNameMap.keySet()){
+					Set<ReportDefinition> rdSet = new HashSet<ReportDefinition>();
+					aeMap.put(adverseEvent, rdSet);
+					
+					Set<String> reportNameSet = reportNameMap.get(adverseEvent);
+					if(reportNameSet != null){
+						for(String reportDefinitionName : reportNameSet){
+							ReportDefinition rd = findReportDefinition(aeReportId, reportDefinitionName);
+							if(rd != null){
+								rdSet.add(rd);
+							}
+						}//for reportDefinitionName
+					}
+				}//for adverseEvent
+			}
+		}//for aeReportId
+	}
 	
 	public void addRulesEngineResult(Integer aeReportId, Map<AdverseEvent, List<String>> map){
 		
@@ -84,16 +132,18 @@ public class EvaluationResultDTO {
 	}
 	
 	public void addResult(ExpeditedAdverseEventReport aeReport, List<ReportDefinition> reportDefintions){
-		aeReportIndexMap.put(aeReport.getId(), new HashSet<ReportDefinition>(reportDefintions));
+		Integer aeReportId = (aeReport == null) ? new Integer(0) : aeReport.getId();
 		
-		for(ReportDefinition reportDefinition : reportDefintions){
-			Set<ExpeditedAdverseEventReport> aeReports = reportDefAeReportIndexMap.get(reportDefinition);
-			if(aeReports == null){
-				aeReports = new HashSet<ExpeditedAdverseEventReport>();
-				reportDefAeReportIndexMap.put(reportDefinition, aeReports);
-			}
-			aeReports.add(aeReport);
-		}
+		aeReportIndexMap.put(aeReportId, new HashSet<ReportDefinition>(reportDefintions));
+		
+//		for(ReportDefinition reportDefinition : reportDefintions){
+//			Set<ExpeditedAdverseEventReport> aeReports = reportDefAeReportIndexMap.get(reportDefinition);
+//			if(aeReports == null){
+//				aeReports = new HashSet<ExpeditedAdverseEventReport>();
+//				reportDefAeReportIndexMap.put(reportDefinition, aeReports);
+//			}
+//			aeReports.add(aeReport);
+//		}
 	}
 	
 //	
@@ -173,15 +223,15 @@ public class EvaluationResultDTO {
 	}
 
 
-	public Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> getReportDefAeReportIndexMap() {
-		return reportDefAeReportIndexMap;
-	}
-
-
-	public void setReportDefAeReportIndexMap(
-			Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> reportDefAeReportIndexMap) {
-		this.reportDefAeReportIndexMap = reportDefAeReportIndexMap;
-	}
+//	public Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> getReportDefAeReportIndexMap() {
+//		return reportDefAeReportIndexMap;
+//	}
+//
+//
+//	public void setReportDefAeReportIndexMap(
+//			Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> reportDefAeReportIndexMap) {
+//		this.reportDefAeReportIndexMap = reportDefAeReportIndexMap;
+//	}
 
 //
 //	public Map<AdverseEvent, Set<ReportDefinition>> getAeIndexMap() {
@@ -252,6 +302,9 @@ public class EvaluationResultDTO {
 		this.allAeMap = allAeMap;
 	}
 	
+	public Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> getAdverseEventIndexMap() {
+		return adverseEventIndexMap;
+	}
 	
 	public Map<Integer, List<ReportDefinition>> getReportedAEIndexMap() {
 		return reportedAEIndexMap;
@@ -278,9 +331,22 @@ public class EvaluationResultDTO {
 		return retVal;
 	}
 	
+	public List<AdverseEvent> getSeriousAdverseEvents(Integer aeReportId){
+		List<AdverseEvent> seriousAdverseEvents = new ArrayList<AdverseEvent>();
+		Map<AdverseEvent, Set<String>> aeMap = processedRulesEngineResultMap.get(aeReportId);
+		for(AdverseEvent adverseEvent : aeMap.keySet()){
+			if(CollectionUtils.isNotEmpty(aeMap.get(adverseEvent))){
+				seriousAdverseEvents.add(adverseEvent);
+			}
+		}
+		return seriousAdverseEvents;
+	}
+	
 	public String toString(){
 		StringBuilder sb = new StringBuilder("Evaluation Result {\n");
 		sb.append("\n rulesEngineResultMap").append(String.valueOf(rulesEngineResultMap))
+		.append("\n processedRulesEngineResultMap").append(String.valueOf(processedRulesEngineResultMap))
+		.append("\n adverseEventIndexMap").append(String.valueOf(adverseEventIndexMap))
 		.append("\n aeReportIndexMap : ").append(aeReportIndexMap.toString())
 		.append("\n aeReportAlertMap :" ).append(aeReportAlertMap)
 		.append("\n evaluatedAeMap").append(evaluatedAeMap.toString())
