@@ -43,7 +43,7 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
 
         
 		Filterer filterer = (Filterer)returnObject;
-		String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_study_cd.getSecurityRoleName()};
+		String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_study_cd.getSecurityRoleName(),UserGroupType.caaers_participant_cd.getSecurityRoleName()};
 		List<String> rolesToExclude = Arrays.asList(roles);
 		if (!organizationFilteringRequired(grantedAuthorities,rolesToExclude)) {
 			return filterer.getFilteredObject();

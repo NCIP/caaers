@@ -114,7 +114,7 @@ public class MessageNotificationService implements ApplicationContextAware{
         Report r = reportDao.getById(Integer.parseInt(reportId));
         reportDao.initialize(r.getScheduledNotifications());
         ReportVersion rv = r.getLastVersion();
-        
+        messages = messages.replace("Report # "+reportId, "Report # "+rv.getId());
         //
         List<String> emails = new ArrayList<String>();
         
@@ -198,13 +198,13 @@ public class MessageNotificationService implements ApplicationContextAware{
         String attachment = null;
         if (success) {
             messages = messages + url;
-            subject = "Submission of Expedited Report(" + aeReportId + ") to AdEERS";  
+            subject = "Submission of Expedited Report(" + rv.getId() + ") to AdEERS";  
             //this pdf has already been generated in AdeersReportGenerator , we are just attching here incase of successfull submission.
             String tempDir = System.getProperty("java.io.tmpdir");
-            attachment = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+            attachment = tempDir + "/expeditedAdverseEventReport-" + rv.getId() + ".pdf";
             System.out.println("attachement is "+ attachment);
         } else {
-        	subject = "Problem with Submission of Expedited Report(" + aeReportId + ") to AdEERS";
+        	subject = "Problem with Submission of Expedited Report(" + rv.getId() + ") to AdEERS";
         	// send only to submitter incase of failure
         	emails = new ArrayList<String>();
         	emails.add(submitterEmail);

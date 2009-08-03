@@ -103,32 +103,32 @@ public class AdeersReportGenerator {
      * @return
      * @throws Exception
      */
-    public String[] generateExternalReports(Report report, String caaersXml) throws Exception {
+    public String[] generateExternalReports(Report report, String caaersXml,int reportIdOrReportVersionId) throws Exception {
     	assert report != null;
     	ReportFormatType formatType = report.getReportDefinition().getReportFormatType();
-    	Integer aeReportId = report.getAeReport().getId();
+    	
     	
     	String pdfOutFile = System.getProperty("java.io.tmpdir");
     	
     	switch (formatType) {
 			case DCPSAEFORM:
-				pdfOutFile += "/dcpSAEForm-" + aeReportId + ".pdf";
+				pdfOutFile += "/dcpSAEForm-" + reportIdOrReportVersionId + ".pdf";
 	        	this.generateDcpSaeForm(caaersXml, pdfOutFile);
 				break;
 			case MEDWATCHPDF:
-				pdfOutFile += "/medWatchReport-" + aeReportId + ".pdf";
+				pdfOutFile += "/medWatchReport-" + reportIdOrReportVersionId + ".pdf";
 	        	this.generateMedwatchPdf(caaersXml, pdfOutFile);
 				break;
 			case CIOMSFORM:
-				pdfOutFile += "/CIOMSForm-" + aeReportId + ".pdf";
+				pdfOutFile += "/CIOMSForm-" + reportIdOrReportVersionId + ".pdf";
 	        	this.generateCIOMS(caaersXml, pdfOutFile);
 				break;
 			case CIOMSSAEFORM:
-				pdfOutFile += "/CIOMS-SAE-Form-" + aeReportId + ".pdf";
+				pdfOutFile += "/CIOMS-SAE-Form-" + reportIdOrReportVersionId + ".pdf";
 	        	this.generateCIOMSTypeForm(caaersXml, pdfOutFile);
 				break;
 			default: //adders /caaersxml (BJ)
-				pdfOutFile  += "/expeditedAdverseEventReport-" + report.getAeReport().getId() + ".pdf";
+				pdfOutFile  += "/expeditedAdverseEventReport-" + reportIdOrReportVersionId + ".pdf";
 				generatePdf(caaersXml, pdfOutFile);
 				break;
 		}
@@ -143,7 +143,7 @@ public class AdeersReportGenerator {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/Users/sakkala/tech/adeers/expeditedAdverseEventReport-1.xml");
+            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-149.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -153,7 +153,7 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
+            aeg.generateCIOMS(str1, "/Users/sakkala/tech/adeers/cioms.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

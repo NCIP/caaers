@@ -67,9 +67,10 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 
             List<Element> exceptions = jobInfo.getChildren("jobExceptions");
             // sb.append("REPORT STATUS : " + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
+            
 
             if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
-                sb.append("Report # " + caaersAeReportId
+                sb.append("Report # " + reportId
                                 + " has been successfully submitted to AdEERS. \n\n");
 
                 sb.append("TICKET NUMBER :. \n");
@@ -91,7 +92,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
             }
 
             if (exceptions.size() > 0) {
-                sb.append("Report # " + caaersAeReportId
+                sb.append("Report # " + reportId
                                 + " was NOT successfully submitted to AdEERS. \n\n");
                 sb.append("The following problem was encountered:. \n");
                 for (Element ex : exceptions) {

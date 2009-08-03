@@ -77,7 +77,7 @@ public class ReportSubmissionService {
     	
     	//2. generate pdf
     	try{
-    		context.pdfReportPaths = adeersReportGenerator.generateExternalReports(report, context.caaersXML);  
+    		context.pdfReportPaths = adeersReportGenerator.generateExternalReports(report, context.caaersXML,report.getLastVersion().getId());  
     		Tracker.logAttachmentGeneration(reportTracking, true, "",nowFactory.getNow());
     	}catch(Exception exp){
     		Tracker.logAttachmentGeneration(reportTracking, false, exp.getMessage() ,nowFactory.getNow());
