@@ -24,8 +24,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -33,6 +33,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "order by participant.firstName ";
         
         assertEquals("wrong parsing for constructor",qry.trim(), query.getQueryString().trim());
@@ -43,20 +44,21 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterByStudy(1);        
         
-        String qry = "Select participant.id,participant.firstName,participant.lastName"+
+        String qry =     		"Select participant.id,participant.firstName,participant.lastName"+
 		",participant.gender,participant.race,participant.ethnicity " +
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
         "left join participant.assignments as spa join spa.studySite as ss "+
         "join ss.study as study "+
         "join study.identifiers as sIdentifier "+
         "join study.studyOrganizations as studyOrgs "+
-        "left join studyOrgs.studyPersonnelsInternal as stper WHERE study.id =:studyId " +
+        "left join studyOrgs.studyPersonnelsInternal as stper " +
+        "left join stper.siteResearchStaff as siteResearchStaff WHERE study.id =:studyId " +
         "order by participant.firstName ";
         
         assertEquals(qry.trim(), query.getQueryString().trim());
@@ -75,20 +77,21 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText("a");
 
-        String qry = "Select participant.id,participant.firstName,participant.lastName"+
+        String qry =     		"Select participant.id,participant.firstName,participant.lastName"+
 		",participant.gender,participant.race,participant.ethnicity " +
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
         "left join participant.assignments as spa join spa.studySite as ss "+
         "join ss.study as study "+
         "join study.identifiers as sIdentifier "+
         "join study.studyOrganizations as studyOrgs "+
-        "left join studyOrgs.studyPersonnelsInternal as stper WHERE " +
+        "left join studyOrgs.studyPersonnelsInternal as stper " +
+        "left join stper.siteResearchStaff as siteResearchStaff WHERE " +
         "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue) "+
         "order by participant.firstName ";
         
@@ -123,20 +126,21 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         query.filterParticipantsWithMatchingText("a");
         query.filterByStudy(1);
         
-        String qry = "Select participant.id,participant.firstName,participant.lastName"+
+        String qry =     		"Select participant.id,participant.firstName,participant.lastName"+
 		",participant.gender,participant.race,participant.ethnicity " +
 		",identifier.value,identifier.primaryIndicator " +
 		",study.shortTitle as st , study.id as studyId"+
 		",sIdentifier.value, sIdentifier.primaryIndicator "+
-		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode "+
+		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
         "from Participant participant "+
         "left join participant.identifiers as identifier "+
         "left join participant.assignments as spa join spa.studySite as ss "+
         "join ss.study as study "+
         "join study.identifiers as sIdentifier "+
         "join study.studyOrganizations as studyOrgs "+
-        "left join studyOrgs.studyPersonnelsInternal as stper WHERE " +
+        "left join studyOrgs.studyPersonnelsInternal as stper " +
+        "left join stper.siteResearchStaff as siteResearchStaff WHERE " +
         "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue) AND study.id =:studyId "+
         "order by participant.firstName ";
         
@@ -181,8 +185,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -190,6 +194,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "WHERE identifier.primaryIndicator is true and sIdentifier.primaryIndicator is true "+
             "order by participant.firstName ";
     	
@@ -210,8 +215,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -219,6 +224,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "WHERE lower(sIdentifier.value) LIKE :studyIdentifierValue "+
             "order by participant.firstName ";
     	
@@ -244,8 +250,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -253,6 +259,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "WHERE lower(study.shortTitle) LIKE :shortTitle "+
             "order by participant.firstName ";
     	
@@ -278,8 +285,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -287,6 +294,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "WHERE (lower(study.shortTitle) LIKE :shortTitle ) "+
             "order by participant.firstName ";
     	
@@ -327,8 +335,8 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     		",identifier.value,identifier.primaryIndicator " +
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
@@ -336,6 +344,7 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
             "join study.identifiers as sIdentifier "+
             "join study.studyOrganizations as studyOrgs "+
             "left join studyOrgs.studyPersonnelsInternal as stper " +
+            "left join stper.siteResearchStaff as siteResearchStaff " +
             "WHERE lower(identifier.value) LIKE :identifierValue AND lower(participant.firstName) LIKE :firstName AND "+
             "lower(participant.lastName) LIKE :lastName AND participant.ethnicity = :ethnicity AND participant.gender = :race AND  "+
             "participant.dateOfBirth.year = :year AND  participant.dateOfBirth.month = :month AND  participant.dateOfBirth.day = :day "+
