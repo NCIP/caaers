@@ -60,10 +60,6 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
         Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
         
-        if(!report.isActive()){
-			errors.reject("SAE_032", new Object[]{report.getStatus().getDisplayName()},
-					"Cannot submit this report, as it is already submitted/withdrawn/amended/replaced");
-		}
         
         ReportVersion lastVersion = report.getLastVersion();
         
