@@ -158,6 +158,9 @@ public class EvaluationServiceImpl implements EvaluationService {
         	//evaluate the SAE reporting rules
             map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
             
+            //save this for reference.
+            evaluationResult.addRulesEngineResult(aeReportId, map);
+            
             //throw away rules suggestion
             if(expeditedData != null){
             	List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
@@ -168,6 +171,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             			for(Report report : completedReports){
             				if(report.isReported(adverseEvent)){
             					nameList.remove(report.getName());
+            					evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, report.getName());
             				}
             			}
             			
@@ -224,6 +228,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             			//remove parent and keep child
             			defList.remove(rdFound);
             			defList.add(activeReport.getReportDefinition());
+            			evaluationResult.replaceReportDefinitionName(aeReportId, rdFound.getName(), activeReport.getName());
             		}
             	}
             	
@@ -235,21 +240,23 @@ public class EvaluationServiceImpl implements EvaluationService {
             			if(rdSuggested.isOfSameReportTypeAndOrganization(rdManual) && manualReport.isActive() ){
             				//remove it from rules engine suggestions
             				defList.remove(rdSuggested);
-            				
+            				evaluationResult.replaceReportDefinitionName(aeReportId, rdSuggested.getName(), rdManual.getName());
             			}
             		}
             		
-            		//if manual selection, and active, add it.
-            		if(manualReport.isActive()){
-            			defList.add(rdManual);
-            		}
+            		//now add the manually selected report.
+            		defList.add(rdManual);
+            		evaluationResult.addReportDefinitionName(aeReportId, rdManual.getName());
             		
             	}
             	
             	List<AdverseEvent> modifiedAdverseEvents = expeditedData.getModifiedAdverseEvents();
             	
             	//modify the alert necessary flag, based on eventual set of report definitions
-            	alertNeeded = (!defList.isEmpty() ) || (!modifiedAdverseEvents.isEmpty());
+            	alertNeeded = !modifiedAdverseEvents.isEmpty();
+            	for(ReportDefinition reportDefinition : defList){
+            		alertNeeded |= expeditedData.findReportsToEdit(reportDefinition).isEmpty();
+            	}
             	evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
             	
             	//any ae modified/got completed reports ? add those report definitions.
@@ -271,7 +278,13 @@ public class EvaluationServiceImpl implements EvaluationService {
          					}
          				}
          				
-         				if(!sameGroupSuggested) defList.add(rdCompleted);
+         				if(!sameGroupSuggested){
+         					defList.add(rdCompleted);
+         					for(AdverseEvent ae : modifiedAdverseEvents){
+         						evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
+         					}
+         					
+         				}
          				
          			}
             	}
@@ -388,7 +401,7 @@ public class EvaluationServiceImpl implements EvaluationService {
            
            //update the result object
            evaluationResult.addEvaluatedAdverseEvents(aeReportId, aeList);
-           evaluationResult.addResult(aeList, reportDefinitions);
+//           evaluationResult.addResult(aeList, reportDefinitions);
            if(expeditedData != null){
         	   evaluationResult.addResult(expeditedData, reportDefinitions);
            }

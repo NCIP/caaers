@@ -167,7 +167,6 @@ public class MockEvaluationService implements EvaluationService {
 			dto.addEvaluatedAdverseEvents(aeReport.getId(), aes);
 		}
 		List<AdverseEvent> aeList = reportingPeriod.getEvaluatedAdverseEvents();
-		dto.addResult(aeList, ctepReportDefs);
 		dto.addEvaluatedAdverseEvents(new Integer(0), aeList);
 		
 		//update the createMap (for new data collection).
