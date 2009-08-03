@@ -217,6 +217,9 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         			command.getSelectedReportDefinitions().add(report.getReportDefinition());
         		}
         		command.getApplicableReportDefinitions().add(report.getReportDefinition());
+        		
+        		//pre-init the mandatory fields.
+        		report.getReportDefinition().getMandatoryFields().size();
         	}
         	
         }
