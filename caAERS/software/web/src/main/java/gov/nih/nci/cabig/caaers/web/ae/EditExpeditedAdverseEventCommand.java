@@ -296,6 +296,16 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		reportRepository.withdrawReport(report);
     	}
     }
+    
+    /**
+     * This method will unamend the reports. 
+     * @param toUnamendList
+     */
+    public void unAmendReports(List<Report> toUnamendList){
+    	for(Report report : toUnamendList){
+    		reportRepository.unAmendReport(report);
+    	}
+    }
 	/**
 	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
 	 * @return

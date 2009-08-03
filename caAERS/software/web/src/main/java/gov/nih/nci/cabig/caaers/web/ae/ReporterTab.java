@@ -18,6 +18,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -202,11 +203,19 @@ public class ReporterTab extends AeTab {
 			command.withdrawReports(toWithdrawList);
 			
 			
+			//unamend the reports
+			List<Report> toUnamendList = new ArrayList<Report>();
+			for(Report report : reviewResult.getReportsToUnAmendList()){
+				Report toUnamend = command.getAeReport().findReportById(report.getId());
+				if(toUnamend != null) toUnamendList.add(toUnamend);
+			}
+			command.unAmendReports(toUnamendList);
+			
 			//-create reports & enact workflow.
 			command.createReports(command.getNewlySelectedReportDefinitions(), reviewResult.getBaseDateMap(), reviewResult.getManualSelectionIndicatorMap());
 			
 			//-enact workflow
-			if(command.getWorkflowEnabled()){
+			if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
 				command.enactWorkflow(command.getAeReport());
 			}
 			

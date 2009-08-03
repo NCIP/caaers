@@ -135,11 +135,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	command.getNewlySelectedReportDefinitions().clear();
     	command.getSelectedReportDefinitions().clear();
     	command.getApplicableReportDefinitions().clear();
-        
+    	
+    	
+    	ReviewAndReportResult reviewResult = (ReviewAndReportResult)session.getAttribute("reviewResult"); 
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
-        if(StringUtils.equals("captureAE", screenFlowSource)){
-        	
-        	ReviewAndReportResult reviewResult = (ReviewAndReportResult)session.getAttribute("reviewResult"); 
+        if( (reviewResult != null) && StringUtils.equals("captureAE", screenFlowSource)){
         	
         	//If a new data collection?
         	if(reviewResult.getAeReportId() == 0){
