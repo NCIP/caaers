@@ -108,10 +108,13 @@ public class StudyRepository {
         					studyPersonnel.setSiteResearchStaff(siteResearchStaff);
         					studyPersonnel.setStudyOrganization(studyOrganization);
         					studyPersonnel.setRoleCode(siteResearchStaffRole.getRoleCode());
+        					studyPersonnel.setStartDate(siteResearchStaffRole.getStartDate());
+        					studyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
         					boolean studyPersonnelExists = false;
         					for(StudyPersonnel existingStudyPersonnel : studyOrganization.getStudyPersonnels()){
-        						if(existingStudyPersonnel.equals(studyPersonnel)){
+        						if(existingStudyPersonnel.equals(studyPersonnel) & existingStudyPersonnel.isActive()){
         							studyPersonnelExists = true;
+        							existingStudyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
         							break;
         						}
         					}
@@ -119,8 +122,8 @@ public class StudyRepository {
         						studyOrganization.addStudyPersonnel(studyPersonnel);
         					}
     	    			}
+    					//studyOrganization.syndStudyPersonnelDates();	
     				}
-    				studyOrganization.syndStudyPersonnelDates();
     			}
     			studyDao.save(study);	
     		}
