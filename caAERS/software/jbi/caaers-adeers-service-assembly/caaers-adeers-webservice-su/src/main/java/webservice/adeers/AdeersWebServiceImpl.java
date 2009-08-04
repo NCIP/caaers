@@ -69,7 +69,6 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         //attach the id to the returned message
         s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportJobInfo>");
         log.info("Response Received from adEERS");
-        
         return s;
 		
 	}

@@ -98,9 +98,9 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		
 		try {
 			aeReportJobInfoStr = this.adeersWebService.callWebService(inXml);
-			log.debug("------------Response From Adeers Begin---------");
-			log.debug(aeReportJobInfoStr);
-			log.debug("------------Response From Adeers End---------");
+			log.info("------------Response From Adeers Begin---------");
+			log.info(aeReportJobInfoStr);
+			log.info("------------Response From Adeers End---------");
 		} catch (Exception e) {
 			//CAAERS-101 - Monish Dombla
 			log.error("--Exception While Invoking adEERS WebService--", e);			
@@ -109,7 +109,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
     	NormalizedMessage response = exchange.createMessage();
         response.setContent(new StreamSource(new StringReader(aeReportJobInfoStr)));
         exchange.setMessage(response, "out");        
-        log.debug("Sending Reply....");
+        log.info("Sending Reply to caAERS");
         send(exchange);               
     }
     
