@@ -174,24 +174,7 @@
                 </TOTAL_NUMBER_OF_COURSES>
             </xsl:if>
             
-            <!--
-			<xsl:variable name="flg">
-	  			<xsl:for-each select="TreatmentInformation/CourseAgent">
-	  				<xsl:if test="StudyAgent/INDType = 'DCP_IND'">Yes</xsl:if>
-	  				<xsl:if test="StudyAgent/INDType = 'CTEP_IND'">Yes</xsl:if>
-	  				<xsl:if test="StudyAgent/INDType = 'OTHER'">Yes</xsl:if>
-	  			</xsl:for-each>
-	  		</xsl:variable>
-	  		
-	  		<xsl:choose>
-	  			<xsl:when test="string-length($flg)=0">
-	  				<INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
-	  			</xsl:when>
-	  			<xsl:otherwise>
-	  				<INV_AGENT_ADMIN><xsl:value-of select="substring($flg,1,3)"/></INV_AGENT_ADMIN>
-	  			</xsl:otherwise>
-	  		</xsl:choose>
- 		    -->
+
  		    <xsl:choose>
 	  			<xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'true'">
 	  				<INV_AGENT_ADMIN>Yes</INV_AGENT_ADMIN>
@@ -200,10 +183,7 @@
 	  				<INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
 	  			</xsl:when>
 	  		</xsl:choose>
- 		    
- 		    
-            
-            <!-- no info -->
+
         </COURSE_INFORMATION>
 
         <xsl:if test="RadiationIntervention/administration != '' ">
@@ -242,16 +222,20 @@
                         </TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:otherwise>
                 </xsl:choose>
-
-                <TOTAL_DOSE_TO_DATE>
-                    <xsl:value-of select="RadiationIntervention/dosage"/>
-                </TOTAL_DOSE_TO_DATE>
-                <DATE_OF_LAST_TREATMENT>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date" select="RadiationIntervention/lastTreatmentDate"
-                        />
-                    </xsl:call-template>
-                </DATE_OF_LAST_TREATMENT>
+                
+				<xsl:if test="RadiationIntervention/dosage != '' ">
+	                <TOTAL_DOSE_TO_DATE>
+	                    <xsl:value-of select="RadiationIntervention/dosage"/>
+	                </TOTAL_DOSE_TO_DATE>
+                </xsl:if>
+                
+                <xsl:if test="RadiationIntervention/lastTreatmentDate != '' ">
+	                <DATE_OF_LAST_TREATMENT>
+	                    <xsl:call-template name="standard_date">
+	                        <xsl:with-param name="date" select="RadiationIntervention/lastTreatmentDate"/>
+	                    </xsl:call-template>
+	                </DATE_OF_LAST_TREATMENT>
+                </xsl:if>
 
                 <xsl:if test="RadiationIntervention/fractionNumber != '' ">
                     <SCHEDULE_NUMBER_OF_FRACTIONS>
@@ -264,11 +248,13 @@
                         <xsl:value-of select="RadiationIntervention/daysElapsed"/>
                     </SCHEDULE_NUMBER_OF_ELAPSED_DAYS>
                 </xsl:if>
-
-                <UNIT_OF_MEASURE>
-                    <xsl:value-of select="RadiationIntervention/dosageUnit"/>
-                </UNIT_OF_MEASURE>
-
+				
+				<xsl:if test="RadiationIntervention/dosageUnit != '' ">
+	                <UNIT_OF_MEASURE>
+	                    <xsl:value-of select="RadiationIntervention/dosageUnit"/>
+	                </UNIT_OF_MEASURE>
+				</xsl:if>
+				
                 <xsl:if test="RadiationIntervention/adjustment != '' ">
                     <ADJUSTMENT>
                         <xsl:value-of select="RadiationIntervention/adjustment"/>
@@ -368,30 +354,27 @@
                     </OTHER_NUMBER>
                 </xsl:if>
 
-
-                <AE_DEVICE_OPERATOR>
-                    <xsl:choose>
-                        <xsl:when test="MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
-                            <DEVICE_OPERATOR>Health Professional</DEVICE_OPERATOR>
-                        </xsl:when>
-                        <xsl:when test="MedicalDevice/DeviceOperator = 'PATIENT'">
-                            <DEVICE_OPERATOR>Lay User/Patient</DEVICE_OPERATOR>
-                        </xsl:when>
-                        <xsl:when test="MedicalDevice/DeviceOperator = 'OTHER'">
-                            <DEVICE_OPERATOR>Other</DEVICE_OPERATOR>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <DEVICE_OPERATOR>
-                                <xsl:value-of select="MedicalDevice/DeviceOperator"/>
-                            </DEVICE_OPERATOR>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <!--
-                <DEVICE_OPERATOR_OTHER>
-                    <xsl:value-of select="MedicalDevice/otherDeviceOperator"/>
-                </DEVICE_OPERATOR_OTHER>
-                -->
-                </AE_DEVICE_OPERATOR>
+				
+				<xsl:if test="MedicalDevice/DeviceOperator != ''">
+	                <AE_DEVICE_OPERATOR>
+	                    <xsl:choose>
+	                        <xsl:when test="MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
+	                            <DEVICE_OPERATOR>Health Professional</DEVICE_OPERATOR>
+	                        </xsl:when>
+	                        <xsl:when test="MedicalDevice/DeviceOperator = 'PATIENT'">
+	                            <DEVICE_OPERATOR>Lay User/Patient</DEVICE_OPERATOR>
+	                        </xsl:when>
+	                        <xsl:when test="MedicalDevice/DeviceOperator = 'OTHER'">
+	                            <DEVICE_OPERATOR>Other</DEVICE_OPERATOR>
+	                        </xsl:when>
+	                        <xsl:otherwise>
+	                            <DEVICE_OPERATOR>
+	                                <xsl:value-of select="MedicalDevice/DeviceOperator"/>
+	                            </DEVICE_OPERATOR>
+	                        </xsl:otherwise>
+	                    </xsl:choose>
+	                </AE_DEVICE_OPERATOR>
+                </xsl:if>
 
                 <xsl:if test="MedicalDevice/implantedDate != ''">
                     <IMPLANTED_DATE>
@@ -431,26 +414,27 @@
                     </REPROCESSOR_ADDRESS>
                 </xsl:if>
 
-
-                <xsl:choose>
-                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'YES'">
-                        <EVAL_DEVICE>Yes</EVAL_DEVICE>
-                    </xsl:when>
-                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'NO'">
-                        <EVAL_DEVICE>No</EVAL_DEVICE>
-                    </xsl:when>
-                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'RETURNED'">
-                        <EVAL_DEVICE>Returned</EVAL_DEVICE>
-                    </xsl:when>
-                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'UNKNOWN'">
-                        <EVAL_DEVICE>Unknown</EVAL_DEVICE>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <EVAL_DEVICE>
-                            <xsl:value-of select="MedicalDevice/EvaluationAvailability"/>
-                        </EVAL_DEVICE>
-                    </xsl:otherwise>
-                </xsl:choose>
+				<xsl:if test="MedicalDevice/EvaluationAvailability != ''">
+	                <xsl:choose>
+	                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'YES'">
+	                        <EVAL_DEVICE>Yes</EVAL_DEVICE>
+	                    </xsl:when>
+	                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'NO'">
+	                        <EVAL_DEVICE>No</EVAL_DEVICE>
+	                    </xsl:when>
+	                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'RETURNED'">
+	                        <EVAL_DEVICE>Returned</EVAL_DEVICE>
+	                    </xsl:when>
+	                    <xsl:when test="MedicalDevice/EvaluationAvailability = 'UNKNOWN'">
+	                        <EVAL_DEVICE>Unknown</EVAL_DEVICE>
+	                    </xsl:when>
+	                    <xsl:otherwise>
+	                        <EVAL_DEVICE>
+	                            <xsl:value-of select="MedicalDevice/EvaluationAvailability"/>
+	                        </EVAL_DEVICE>
+	                    </xsl:otherwise>
+	                </xsl:choose>
+                </xsl:if>
 
                 <xsl:if test="MedicalDevice/returnedDate != ''">
                     <RETURNED_DATE>
@@ -540,13 +524,6 @@
                 <xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/>
             </xsl:attribute>
 
-            <!--
-                <xsl:for-each select="StudyParticipantAssignment/Participant/Identifier">
-                    <xsl:if test="primaryIndicator='true'">
-                        <xsl:value-of select="value"/>
-                    </xsl:if>
-                </xsl:for-each>
-                -->
             <BIRTH_DATE>
                 <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>-<xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>
                 <!--2002-09-->
@@ -609,11 +586,6 @@
 
             <xsl:if test="DiseaseHistory/diagnosisDate != ''">
                 <DATE_OF_INITIAL_DIAGNOSIS>
-                    <!--
-                    <xsl:call-template name="standard_date_yymm">
-                        <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
-                    </xsl:call-template>
-                    -->
                     <xsl:value-of select="DiseaseHistory/diagnosisDate/yearString"/>-<xsl:value-of select="DiseaseHistory/diagnosisDate/monthString"/>
                     <!--2002-09-->
                 </DATE_OF_INITIAL_DIAGNOSIS>
@@ -630,8 +602,8 @@
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
                 </OTHER_PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-            
         </PATIENT_INFORMATION>
+        
         <xsl:for-each select="SAEReportPriorTherapy">
             <PRIOR_THERAPY>
                 <xsl:if test="PriorTherapy/text != ''">
@@ -1109,11 +1081,7 @@
                 <ADDITIONAL_INFO_NAME>OBA Form</ADDITIONAL_INFO_NAME>
             </ADDITIONAL_INFORMATION>
         </xsl:if>
-        <!--
-            <xsl:if test="AdditionalInformation/other = 'true'">
-                <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
-            </xsl:if>
-            -->
+
         <xsl:if test="AdditionalInformation/pathologyReport = 'true'">
             <ADDITIONAL_INFORMATION>
                 <ADDITIONAL_INFO_NAME>Pathology Report</ADDITIONAL_INFO_NAME>
