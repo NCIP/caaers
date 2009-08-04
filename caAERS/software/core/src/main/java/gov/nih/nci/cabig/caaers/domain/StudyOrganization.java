@@ -290,7 +290,6 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     		if(studyPersonnel.isActive()){
     			studyPersonnel.syncDates();
     		}
-    		
     	}
     }
     

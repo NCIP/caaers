@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -83,7 +84,18 @@ public class ResearchStaffRepository {
     	researchStaffDao.save(researchStaff);
 
 		try{
-			studyRepository.associateStudyPersonnel(researchStaff);
+			List<SiteResearchStaff> siteRsList = new ArrayList<SiteResearchStaff>();
+			for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
+				if(siteResearchStaff.getAssociateAllStudies() == null){
+					siteResearchStaff.setAssociateAllStudies(Boolean.FALSE);
+				}
+				if(siteResearchStaff.getAssociateAllStudies()){
+					siteRsList.add(siteResearchStaff);
+				}
+			}
+			if(siteRsList.size() > 0){
+				studyRepository.associateStudyPersonnel(siteRsList);
+			}
 		}catch(Exception e){
 			throw new CaaersSystemException("Failed to associte researchstaff to all studies");
 		}

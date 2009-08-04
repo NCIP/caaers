@@ -91,21 +91,18 @@ public class StudyRepository {
     }
     
     //Associate the ResearchStaff to all the Studies 
-    public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
+    public void associateStudyPersonnel(List<SiteResearchStaff> siteRsList) throws Exception{
     	StudyQuery query = null;
     	List<Study> studies = null;
     	StudyPersonnel studyPersonnel = null;
-    	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-    		if(siteResearchStaff.getAssociateAllStudies() == null){
-    			siteResearchStaff.setAssociateAllStudies(Boolean.FALSE);
-    		}
-			query = new StudyQuery();
-			query.joinStudyOrganization();
-			query.filterByStudyOrganizationNameExactMatch(siteResearchStaff.getOrganization().getName());
-			studies = studyDao.find(query);
-			for(Study study : studies){
-				for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
-					if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
+    	for(SiteResearchStaff siteResearchStaff : siteRsList){
+    		query = new StudyQuery();
+    		query.joinStudyOrganization();
+    		query.filterByStudyOrganizationNameExactMatch(siteResearchStaff.getOrganization().getName());
+    		studies = studyDao.find(query);
+    		for(Study study : studies){
+    			for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
+    				if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
     					for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
     						studyPersonnel = new StudyPersonnel();
         					studyPersonnel.setSiteResearchStaff(siteResearchStaff);
@@ -118,15 +115,15 @@ public class StudyRepository {
         							break;
         						}
         					}
-        					if(!studyPersonnelExists & siteResearchStaff.getAssociateAllStudies()){
+        					if(!studyPersonnelExists){
         						studyOrganization.addStudyPersonnel(studyPersonnel);
         					}
     	    			}
-					}
-					studyOrganization.syndStudyPersonnelDates();
-				}
-				studyDao.save(study);	
-			}
+    				}
+    				studyOrganization.syndStudyPersonnelDates();
+    			}
+    			studyDao.save(study);	
+    		}
     	}
     }
 
