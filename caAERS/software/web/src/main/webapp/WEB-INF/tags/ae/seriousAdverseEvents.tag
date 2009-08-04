@@ -12,16 +12,16 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="adverseEvents" required="true" type="java.util.List" description="List of adverse events to be displayed"%>
 <%@attribute name="primaryAeId" required="true" type="java.lang.Integer" description="The primary adverse event ID" %>
 <c:if test="${not empty adverseEvents}">
-<b><spring:message key="captureAdverseEvents.heading.adverseEvents" /></b>
+<b><spring:message code="captureAdverseEvents.heading.adverseEvents" /></b>
 <div id="adverseEvents-dc-${aeReportId}" class="serious-aes">
 <table width="100%" class="tablecontent">
 	       <tr>
-	         <th scope="col"  width="5%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
-	         <th scope="col"   width="10%"><spring:message key="captureAdverseEvents.tableHeader.requiresReporting" /></th>
-	         <th scope="col"  width="35%"><spring:message key="captureAdverseEvents.tableHeader.term" /> </th>
-	         <th scope="col"  width="25%"><spring:message key="captureAdverseEvents.tableHeader.grade" /> </th>
-	         <th scope="col"  width="15%"><spring:message key="captureAdverseEvents.tableHeader.startDate" /></th>
-	         <th scope="col"  width="10%"><tags:requiredIndicator></tags:requiredIndicator><spring:message key="captureAdverseEvents.tableHeader.primary" /> </th>
+	         <th scope="col"  width="5%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
+	         <th scope="col"   width="10%"><spring:message code="captureAdverseEvents.tableHeader.requiresReporting" /></th>
+	         <th scope="col"  width="35%"><spring:message code="captureAdverseEvents.tableHeader.term" /> </th>
+	         <th scope="col"  width="25%"><spring:message code="captureAdverseEvents.tableHeader.grade" /> </th>
+	         <th scope="col"  width="15%"><spring:message code="captureAdverseEvents.tableHeader.startDate" /></th>
+	         <th scope="col"  width="10%"><tags:requiredIndicator></tags:requiredIndicator><spring:message code="captureAdverseEvents.tableHeader.primary" /> </th>
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
       	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />

@@ -12,7 +12,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="applicableTableRows" required="true" type="java.util.List" description="The applicable report definitions to show" %>
 
 <div id="no-recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ not empty recommendedTableRows ? 'display:none;' : ''}">
-Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message key="instruction_ae_manualselection_note" />
+Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message code="instruction_ae_manualselection_note" />
 </div>
 
 <div id="reports-header-dc-${aeReportId}" class="reportsHeader" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
@@ -26,11 +26,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 <table width="100%" class="tablecontent">
     <tr class="header" id="tr-header-${aeReportId}">
-      <th scope="col"   width="3%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
-      <th scope="col" ><spring:message key="captureAdverseEvents.tableHeader.action" /></th>
-      <th scope="col"  width="30%"><spring:message key="captureAdverseEvents.tableHeader.report" /></th>
-      <th scope="col"  ><spring:message key="captureAdverseEvents.tableHeader.status" /> </th>
-      <th scope="col" ><spring:message key="captureAdverseEvents.tableHeader.due" /> </th>
+      <th scope="col"   width="3%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col" ><spring:message code="captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col"  width="30%"><spring:message code="captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col"  ><spring:message code="captureAdverseEvents.tableHeader.status" /> </th>
+      <th scope="col" ><spring:message code="captureAdverseEvents.tableHeader.due" /> </th>
     </tr>
 </table>	
 </div>   
@@ -39,11 +39,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
 <table width="100%" class="tablecontent">
     <tr>
-      <th scope="col"   width="3%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
-      <th scope="col" ><spring:message key="captureAdverseEvents.tableHeader.action" /></th>
-      <th scope="col"  width="30%"><spring:message key="captureAdverseEvents.tableHeader.report" /></th>
-      <th scope="col"  ><spring:message key="captureAdverseEvents.tableHeader.status" /></th>
-      <th scope="col" ><spring:message key="captureAdverseEvents.tableHeader.due" /></th>
+      <th scope="col"   width="3%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col" ><spring:message code="captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col"  width="30%"><spring:message code="captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col"  ><spring:message code="captureAdverseEvents.tableHeader.status" /></th>
+      <th scope="col" ><spring:message code="captureAdverseEvents.tableHeader.due" /></th>
     </tr>
     
  	<c:forEach var="row" items="${applicableTableRows}">
