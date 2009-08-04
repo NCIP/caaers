@@ -446,7 +446,7 @@
 
             </SUSPECT_MEDICAL_DEVICE>
         </xsl:if>
-
+	<xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
         <DESCRIPTION_OF_EVENT>
             <xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
                 <EVENT_DESCRIPTION>
@@ -485,7 +485,7 @@
             </xsl:if>
             	
 
-            
+
                 <xsl:choose>
                     <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol = '1678-01-01T00:00:00.000-05:00'"></xsl:when>
                     <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol"><REMOVED_FROM_PROTOCOL_TRT>Yes</REMOVED_FROM_PROTOCOL_TRT></xsl:when>                    
@@ -517,7 +517,7 @@
             </xsl:if>
 
         </DESCRIPTION_OF_EVENT>
-
+	</xsl:if>
  
         <PATIENT_INFORMATION>
             <xsl:attribute name="PATIENT_ID">
