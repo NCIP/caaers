@@ -21,8 +21,9 @@
         <c:if test="${not empty orgName}">
             <c:if test="${editMode}">
                 <span style="margin-left:100px;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
-                <c:if test="${!readOnly}">
-                    <img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, 0)"></c:if>
+                    <c:if test="${!readOnly}">
+                        <tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '0')"/>
+                    </c:if>
                 </c:if>
         </c:if>
     </jsp:attribute>
@@ -113,8 +114,17 @@
                                         <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}</c:if>
                                         <c:if test="${role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
                                     <td>
-                                        <c:if test="${role.checked}"><tags:formatDate value="${role.startDate}" />&nbsp;<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"></c:if>
+                                        <c:if test="${role.checked}">
+                                                <tags:formatDate value="${role.startDate}" />&nbsp;
+
+                                            <c:set var="isActive" value="${command.siteResearchStaffCommandHelper[index].rsRoles[j.index].active}" />
+                                                <c:if test="${isActive}"><tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"/></c:if>
+                                                <c:if test="${!isActive}"><tags:button type="button" color="red" cssClass="" value="Activate" size="small"onclick="activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"/></c:if>
+
+                                                <%--<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate()">--%>
+                                        </c:if>
                                         <c:if test="${!role.checked}"><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate"/></c:if>
+
                                 <tr>
                             </c:forEach>
                             </table>

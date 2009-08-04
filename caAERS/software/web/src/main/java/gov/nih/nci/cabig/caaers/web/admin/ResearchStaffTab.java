@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import com.semanticbits.rules.utils.DateUtil;
 
 public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
@@ -47,7 +49,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     public void onBind(HttpServletRequest request, ResearchStaffCommand command, Errors errors) {
         super.onBind(request, command, errors);
 
-        if (request.getParameter("_action") != null && request.getParameter("_action").equals("deactivate")) {
+        if (request.getParameter("_action") != null && (request.getParameter("_action").equals("deactivate") || request.getParameter("_action").equals("activate"))) {
+
+            boolean activate = request.getParameter("_action").equals("activate");
+
             int srsID = Integer.parseInt(request.getParameter("srsID"));
             String srsrID = request.getParameter("srsrID");
 
@@ -64,21 +69,30 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             if (srsID > 0 && !srsrID.equals("0")) {
                 for (SiteResearchStaffRoleCommandHelper srsrch : siteResearchStaff.getRsRoles()) {
                     if (srsrch.getRoleCode().equals(srsrID)) {
-                        srsrch.setEndDate(new Date(System.currentTimeMillis()));
-                        srsrch.setChecked(false);
+                        if (!activate) srsrch.setEndDate(DateUtils.yesterday());
+                        else {
+                            srsrch.setStartDate(DateUtils.today());
+                            srsrch.setEndDate(null);
+                        }
                     }
                 }
             } else if (srsID > 0 && srsrID.equals("")) {
                 for (SiteResearchStaffRoleCommandHelper srsrch : siteResearchStaff.getRsRoles()) {
-                    srsrch.setEndDate(new Date(System.currentTimeMillis()));
-                    srsrch.setChecked(false);
+                    if (!activate) srsrch.setEndDate(DateUtils.yesterday());
+                    else {
+                        srsrch.setStartDate(DateUtils.today());
+                        srsrch.setEndDate(null);
+                    }
                 }
             } else {
                 // ResearchStaff Click
                 for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
                     for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
-                        srsrch.setEndDate(new Date(System.currentTimeMillis()));
-                        srsrch.setChecked(false);
+                        if (!activate) srsrch.setEndDate(DateUtils.yesterday());
+                        else {
+                            srsrch.setStartDate(DateUtils.today());
+                            srsrch.setEndDate(null);
+                        }
                     }
                 }
             }

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -43,15 +44,39 @@ class PersonnelTab extends StudyTab {
         String selectedPersonnel = request.getParameter("_selectedPersonnel");
         String prevSiteIndex = request.getParameter("_prevSite");
         int selectedIndex = command.getStudySiteIndex();
+
+        int selectedPersonnelIndex;
+        if (request.getParameter("_selectedPersonnel") != null && !request.getParameter("_selectedPersonnel").equals(""))
+            selectedPersonnelIndex = Integer.parseInt(selectedPersonnel);
+        else
+            selectedPersonnelIndex = -1;
+
         if ("removeStudyPersonnel".equals(action) && selectedIndex >= 0) {
-        	command.deleteStudyPersonAtIndex(selectedIndex, Integer.parseInt(selectedPersonnel));
+            command.deleteStudyPersonAtIndex(selectedIndex, Integer.parseInt(selectedPersonnel));
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
             command.setStudySiteIndex(siteIndex);
             if (siteIndex >= 0) {
                 command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
             }
+        } else if ("activate".equals(action)) {
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyPersonnels().get(selectedPersonnelIndex).activate();
+        } else if ("deactivate".equals(action)) {
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyPersonnels().get(selectedPersonnelIndex).deactivate();
         }
+
+        if (command.getStudySiteIndex() >= 0) {
+            StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+            for (StudyPersonnel sp : so.getStudyPersonnels()) {
+                if (sp.getId() == null && sp.getSiteResearchStaff() != null) {
+                    System.out.println("The role is: " + sp.getRoleCode());
+                    sp.setStartDate(sp.getSiteResearchStaff().getActiveDate());
+                    sp.setEndDate(null);
+                }
+            }
+        }
+
+
     }
 
     @Override

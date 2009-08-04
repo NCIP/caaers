@@ -69,7 +69,7 @@
                     <div class="label">Active Date</div>
                     <div class="value"><tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
                         <c:if test="${!readOnly}">
-                            <img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" onclick="deactivate(${command.researchStaff.id}, 0, 0)" class="hand">
+                            <tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${command.researchStaff.id}, 0, 0)"/>
                         </c:if>
                     </div>
                 </div>
@@ -123,6 +123,18 @@
     }
 
     function refreshStudies(values, i) {
+    }
+
+    function activate(rsID, srsID, srsrID) {
+        if (confirm('Are you sure you want to deactivate the element ?')) {
+
+            var _f = $('command');
+            _f._target.name = '_noname';
+            _f._action.value = 'activate';
+            _f.srsID.value = srsID;
+            _f.srsrID.value = srsrID;
+            _f.submit();
+        }
     }
 
     function deactivate(rsID, srsID, srsrID) {

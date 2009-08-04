@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import java.util.List;
 import java.util.Date;
 
@@ -39,5 +41,9 @@ public class SiteResearchStaffRoleCommandHelper {
 
     public void setChecked(Boolean checked) {
         this.checked = checked;
+    }
+
+    public boolean getActive() {
+        return (startDate != null && DateUtils.between(new Date(), startDate, endDate));
     }
 }

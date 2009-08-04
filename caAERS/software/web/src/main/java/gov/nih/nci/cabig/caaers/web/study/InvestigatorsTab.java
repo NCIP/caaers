@@ -69,7 +69,6 @@ class InvestigatorsTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             for (StudyInvestigator si : so.getStudyInvestigators()) {
                 if (si.getId() == null) {
-                    System.out.println("new SI created;");
                     si.setStartDate(si.getSiteInvestigator().getStartDate());
                     si.setEndDate(si.getSiteInvestigator().getEndDate());
                 }

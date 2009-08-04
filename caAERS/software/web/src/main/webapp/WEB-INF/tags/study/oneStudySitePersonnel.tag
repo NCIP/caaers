@@ -16,14 +16,10 @@
  	  </tr>
  	   
 	  <c:forEach var="sp" items="${command.study.activeStudyOrganizations[index].studyPersonnels}" varStatus="status">
-	  <c:if test="${not sp.retired}">
-	  	<study:oneResearchStaff cssClass="ssi-table-row" index="${status.index}" readOnly="${not empty sp.siteResearchStaff.researchStaff}"/>
-<%--
+	  	<study:oneResearchStaff cssClass="ssi-table-row" index="${status.index}" readOnly="${not empty sp.siteResearchStaff.researchStaff}" sp="${sp}"/>
 	  	<c:if test="${empty sp.siteResearchStaff.researchStaff}">
       		<script>new jsPersonnel(${status.index}, '${sp.siteResearchStaff.researchStaff.fullName}');</script>
       	</c:if>
---%>
-      </c:if>
 	  </c:forEach>
 
 	  <c:if  test="${fn:length(command.study.activeStudyOrganizations[index].studyPersonnels) lt 1}">
