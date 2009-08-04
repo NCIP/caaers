@@ -12,18 +12,13 @@
 	<tr align="center" id="row${rpIndex}" class="${repcurrClass}">
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
-			<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus != 'Reports Completed'}">
-						<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${report.aeReport.id}&viewOnly=true&report=${report.id }"/>">
-							${report.reportDefinition.label}
-						</a>
-					</c:if>
-					<c:if test="${report.aeReport.reportingPeriod.reportStatus == 'Reports Completed'}">
-						${report.reportDefinition.label }
-					</c:if>
+			<c:if test="${report.active}">
+				<a href="<c:url value="/pages/ae/reviewResolver?aeReport=${report.aeReport.id}&viewOnly=true&report=${report.id }"/>">
+					${report.reportDefinition.label}
+				</a>
 			</c:if>
-			<c:if test="${report.reportDefinition.amendable and !report.isLatestVersion}">
-				${report.reportDefinition.label}
+			<c:if test="${not report.active}">
+				${report.reportDefinition.label }
 			</c:if>
 		</td>
 		<c:if test="${report.reportDefinition.amendable == true}">

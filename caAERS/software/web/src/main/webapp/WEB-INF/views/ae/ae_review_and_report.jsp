@@ -104,7 +104,7 @@
 	   this.otherAction = otherAction;
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
-	   '<td align="center"><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
+	   '<td><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
 	   '<td><span class="action-cell"><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
   	   '<td><span><b>#{name}</b></span></td>' +
   	   '<td><span>#{status}</span></td>' +
@@ -830,7 +830,7 @@ function validate(aeReportId){
 		<chrome:division id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName}" 
 			collapsable="true">
 		--%>	
-		<chrome:accordion id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName}" >
+		<chrome:accordion id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code} : ${_primaryAE.grade.displayName}" >
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 			<!--  Rules Message Top -->
 			 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
@@ -867,7 +867,7 @@ function validate(aeReportId){
 		collapsable="true" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
 	--%>
 	<div id="new-dc-section-0" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
-	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName}" >
+	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code} : ${_primaryAE.grade.displayName}" >
 		
 		<!--  Rules Message Top -->
 		 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
