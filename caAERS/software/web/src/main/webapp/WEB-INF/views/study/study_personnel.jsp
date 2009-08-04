@@ -30,6 +30,14 @@
 	    }
      }
 
+     function deactivate(index) {
+         fireAction("deactivate", index);
+     }
+
+     function activate(index) {
+         fireAction("activate", index);
+     }     
+
      var jsPersonnel = Class.create();
      Object.extend(jsPersonnel.prototype, {
            initialize: function(index, sitePersonnelName) {
@@ -59,7 +67,7 @@
                           image = '';
                   }
 --%>
-        		return (image + "" + sPersonnel.researchStaff.fullName)
+        		return (image + "" + sPersonnel)
         	}
         	
      });
@@ -137,7 +145,7 @@ margin:5px;
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.activeStudyPersonnel)})</b></div>
+ 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.studyPersonnels)})</b></div>
  					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
  				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>
