@@ -832,6 +832,7 @@ function validate(aeReportId){
 		--%>	
 		<chrome:accordion id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code} : ${_primaryAE.grade.displayName}" >
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
+			<chrome:division title="Recommended Actions">
 			<!--  Rules Message Top -->
 			 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
 			
@@ -839,6 +840,7 @@ function validate(aeReportId){
 			<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" 
 				recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}"
 			    aeReportId="${_aeReportId}" />
+			</chrome:division>
 			<!--  Listing of adverse events -->
 			<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
 				primaryAeId="${_primaryAE.id}" />
@@ -868,7 +870,7 @@ function validate(aeReportId){
 	--%>
 	<div id="new-dc-section-0" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
 	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code} : ${_primaryAE.grade.displayName}" >
-		
+		<chrome:division title="Recommended Actions">
 		<!--  Rules Message Top -->
 		 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
 		
@@ -876,6 +878,7 @@ function validate(aeReportId){
 		<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" 
 				recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}"
 			    aeReportId="${_aeReportId}" />
+		</chrome:division>
 		<!--  Listing of adverse events -->
 		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
 			primaryAeId="${_primaryAE.id}" />

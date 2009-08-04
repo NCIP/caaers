@@ -88,7 +88,7 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	</c:forEach>    
 </table>	
 </div>  
- 
+
 <%--
 <div id="reports-footer-dc-${aeReportId}" class="row" >
 	<div class="rightpanel" style="text-align:right;">

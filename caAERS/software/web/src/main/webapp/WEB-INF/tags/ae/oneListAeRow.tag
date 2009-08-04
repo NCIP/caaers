@@ -8,7 +8,7 @@
 <% String currClass=index%2==0? "odd":"even"; %>
 <tr align="center"  class="<%= currClass %>">
 	<td width="${width}" align="left">${ae.adverseEventTerm.universalTerm}
-	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
+	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../deleted_icon.png" />" /></c:if>
 	</td>
 	<td width="${width}">${ae.grade.code}</td>
 	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>

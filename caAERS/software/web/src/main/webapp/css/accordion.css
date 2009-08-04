@@ -9,11 +9,16 @@
 	margin: 0 0 0 0;
 	color: #ffffff;
 	border-bottom:1px solid;
+	background-image:url(../images/maximize-20px.png);
+	background-position:900px 5px;
+	background-repeat:no-repeat;
+	font-weight:bolder;
 }
 		
 .accordion-toggle-active {
 	background-color:#D15300;
 	color: #ffffff;
+	background-image:none;
 }
 		
 .accordion-content {

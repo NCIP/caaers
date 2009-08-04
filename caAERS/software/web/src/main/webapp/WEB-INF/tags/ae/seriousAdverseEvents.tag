@@ -12,7 +12,8 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="adverseEvents" required="true" type="java.util.List" description="List of adverse events to be displayed"%>
 <%@attribute name="primaryAeId" required="true" type="java.lang.Integer" description="The primary adverse event ID" %>
 <c:if test="${not empty adverseEvents}">
-<b><spring:message code="captureAdverseEvents.heading.adverseEvents" /></b>
+<c:set var="aeDivTitle"><spring:message code="captureAdverseEvents.heading.adverseEvents" /></c:set>
+<chrome:division title="${aeDivTitle}">
 <div id="adverseEvents-dc-${aeReportId}" class="serious-aes">
 <table width="100%" class="tablecontent">
 	       <tr>
@@ -45,8 +46,8 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      </td>
 		      <td class="${_cssClass}">
 		      	${ae.adverseEventTerm.universalTerm}
-		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new.gif" />" /></c:if>
-		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../redexclamation.gif" />" /></c:if>
+		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new_icon.png" />" /></c:if>
+		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../deleted_icon.png" />" /></c:if>
 		      </td>
 		      <td  class="${_cssClass}">
 		      ${ae.grade.code} : ${ae.grade.displayName }
@@ -73,4 +74,5 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
         
  </table>
  </div>
+ </chrome:division>
 </c:if>
