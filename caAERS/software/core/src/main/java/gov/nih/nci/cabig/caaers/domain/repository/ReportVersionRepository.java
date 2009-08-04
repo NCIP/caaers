@@ -16,6 +16,9 @@ public class ReportVersionRepository {
 
 		@Transactional(readOnly = false)
 	    public void updateInProcessReports() {
+			
+			System.out.println("resetting reports");
+			
 	    	List<ReportVersion> rvs = reportVersionDao.getAllInProcessReports();
 	    	NowFactory nowFactory = new NowFactory();
 	    	System.out.println(rvs.size());
