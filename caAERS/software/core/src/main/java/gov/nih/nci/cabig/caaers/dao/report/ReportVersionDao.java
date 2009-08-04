@@ -118,8 +118,6 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
     	String hsql = "from ReportVersion s where s.reportStatus = 4";
     	return getHibernateTemplate().find(hsql);
     }
-    
-
-    
+  
 
 }
