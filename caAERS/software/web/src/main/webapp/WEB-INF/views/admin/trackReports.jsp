@@ -3,11 +3,12 @@
 <html>
 <head>
 <title>Track Reports</title>
-
+<tags:dwrJavascriptLink objects="reportDef"/>
 
 <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+
 
 
 <style type="text/css">
@@ -201,7 +202,13 @@ color:#0033FF;
         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
     }
     
-    
+    function resetReports() {
+    			try {
+					reportDef.resetReports(function(values) { 
+						alert("Successfully Reset");
+					})
+				} catch(e) {alert(e)}
+	}
 </script>
 </head>
 
@@ -248,7 +255,12 @@ color:#0033FF;
 	            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
 	            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
             			</td>
-            		</tr>            		
+            		</tr>   
+             		<tr id="reportResetDiv">
+            			<td>
+	            				<a href="javascript:resetReports()">reset submission in process reports </a>
+            			</td>
+            		</tr>           		         		
              </table>	
 
         </div>
