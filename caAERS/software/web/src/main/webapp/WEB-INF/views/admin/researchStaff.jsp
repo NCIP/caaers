@@ -63,7 +63,14 @@
 	<caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
     <chrome:division title="${detailsSectionTitle}">
         <div class="leftpanel">
-            <c:forEach items="${fieldGroups.researchStaff.fields}" var="field"><tags:renderRow field="${field}"/></c:forEach>
+            <c:forEach items="${fieldGroups.researchStaff.fields}" var="field" begin="0" end="3"><tags:renderRow field="${field}"/></c:forEach>
+
+            <div class="row">
+                <div class="label">Login ID.</div>
+                <div class="value"><ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required"/>
+                </div>
+            </div>
+            
             <c:if test="${editMode}">
                 <div class="row">
                     <div class="label">Active Date</div>
