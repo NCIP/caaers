@@ -313,7 +313,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
-    	study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators().get(index).retire();
+    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getActiveStudyInvestigators(), index);
     }
     
     /**
@@ -322,7 +322,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteStudyPersonAtIndex(int studyOrgIndex, int index){
-    	study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels().get(index).retire();
+    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyPersonnels(), index);
     }
     
     /**

@@ -72,6 +72,7 @@ public class StudyCommandTest extends AbstractTestCase {
 	public void testDeleteStudyAgentAtIndex() {
 		assertEquals(2, command.getStudy().getStudyAgents().size());
 		assertFalse(command.getStudy().getStudyAgents().get(1).isRetired());
+		command.getStudy().getStudyAgents().get(1).setId(55);
 		command.deleteStudyAgentAtIndex(1);
 		assertEquals(2, command.getStudy().getStudyAgents().size());
 		assertTrue(command.getStudy().getStudyAgents().get(1).isRetired());
@@ -82,6 +83,7 @@ public class StudyCommandTest extends AbstractTestCase {
 	public void testDeleteTreatmentAssignmentsAtIndex() {
 		assertEquals(2, command.getStudy().getTreatmentAssignments().size());
 		assertFalse(command.getStudy().getTreatmentAssignments().get(1).isRetired());
+		command.getStudy().getTreatmentAssignments().get(1).setId(44);
 		command.deleteTreatmentAssignmentAtIndex(1);
 		assertEquals(2, command.getStudy().getTreatmentAssignments().size());
 		assertTrue(command.getStudy().getTreatmentAssignments().get(1).isRetired());
@@ -91,6 +93,7 @@ public class StudyCommandTest extends AbstractTestCase {
 	public void testDeleteStudySiteAtIndex() {
 		assertEquals(2, command.getStudy().getStudySites().size());
 		assertFalse(command.getStudy().getStudySites().get(1).isRetired());
+		command.getStudy().getStudySites().get(1).setId(55);
 		command.deleteStudySiteAtIndex(1);
 		assertEquals(2, command.getStudy().getStudySites().size());
 		assertTrue(command.getStudy().getStudySites().get(1).isRetired());
@@ -103,8 +106,8 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertEquals(2, command.getStudy().getCtepStudyDiseases().size());
 		assertFalse(command.getStudy().getCtepStudyDiseases().get(1).isRetired());
 		command.deleteCtepStudyDiseaseAtIndex(1);
-		assertEquals(2, command.getStudy().getCtepStudyDiseases().size());
-		assertTrue(command.getStudy().getCtepStudyDiseases().get(1).isRetired());
+		assertEquals(1, command.getStudy().getCtepStudyDiseases().size());
+		assertFalse(command.getStudy().getCtepStudyDiseases().get(0).isRetired());
 	}
 
 	public void testDeleteMeddraStudyDiseaseAtIndex(){
@@ -114,6 +117,8 @@ public class StudyCommandTest extends AbstractTestCase {
 		command.getStudy().addMeddraStudyDisease(Fixtures.createMeddraStudyDisease(command.getStudy(), null));
 		assertEquals(2, command.getStudy().getMeddraStudyDiseases().size());
 		assertFalse(command.getStudy().getMeddraStudyDiseases().get(1).isRetired());
+		command.getStudy().getMeddraStudyDiseases().get(1).setId(2);
+		command.getStudy().getMeddraStudyDiseases().get(0).setId(1);
 		command.deleteMeddraStudyDiseaseAtIndex(1);
 		assertEquals(2, command.getStudy().getMeddraStudyDiseases().size());
 		assertTrue(command.getStudy().getMeddraStudyDiseases().get(1).isRetired());
@@ -127,6 +132,9 @@ public class StudyCommandTest extends AbstractTestCase {
 	    Fixtures.createStudyCondition(command.getStudy(), null);
 		assertEquals(2, command.getStudy().getStudyConditions().size());
 		assertFalse(command.getStudy().getStudyConditions().get(1).isRetired());
+		command.getStudy().getStudyConditions().get(1).setId(1);
+		command.getStudy().getStudyConditions().get(0).setId(2);
+		
 		command.deleteStudyConditionAtIndex(1);
 		assertEquals(2, command.getStudy().getStudyConditions().size());
 		assertTrue(command.getStudy().getStudyConditions().get(1).isRetired());
@@ -145,7 +153,11 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertEquals(2, command.getStudy().getStudySites().size());
 		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().size());
 		
+		command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(0).setId(1);
+		command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(1).setId(2);
+		
 		command.deleteSiteInvestigatorAtIndex(0, 1);
+		
 		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().size());
 		assertFalse(command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(0).isRetired());
 		assertTrue(command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(1).isRetired());
@@ -172,6 +184,9 @@ public class StudyCommandTest extends AbstractTestCase {
 		
 		assertEquals(2, command.getStudy().getStudySites().size());
 		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().size());
+		
+		command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().get(0).setId(1);
+		command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().get(1).setId(2);
 		
 		command.deleteStudyPersonAtIndex(0, 1);
 		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyPersonnels().size());

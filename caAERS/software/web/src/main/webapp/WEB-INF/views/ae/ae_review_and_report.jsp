@@ -897,7 +897,7 @@ function validate(aeReportId){
    <!--  Add new DC Button -->		
    <c:if test="${(noOfAEReports gt 0) and (noOfNewAe gt 0)}">
     <div id="add-dc-btn-row">
-   	 <tags:button type="button" icon="add" id="add-dc-btn" value="Add Data Collection" color="green"  size="small" onclick="showNewDataCollection()" />
+   	 <tags:button type="button" icon="add" id="add-dc-btn" value="Add Report Collection" color="green"  size="small" onclick="showNewDataCollection()" />
     </div>
    </c:if>
    </jsp:attribute>
