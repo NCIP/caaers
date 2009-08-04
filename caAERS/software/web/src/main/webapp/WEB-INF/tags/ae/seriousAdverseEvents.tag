@@ -50,7 +50,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../deleted_icon.png" />" /></c:if>
 		      </td>
 		      <td  class="${_cssClass}">
-		      ${ae.grade.code} : ${ae.grade.displayName }
+		      ${ae.grade.code}: ${ae.grade.displayName }
 		      </td>
 		      <td  class="${_cssClass}">
 		      	<c:if test="${empty ae.startDate}">
