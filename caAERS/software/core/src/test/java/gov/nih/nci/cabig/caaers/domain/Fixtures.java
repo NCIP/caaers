@@ -278,7 +278,7 @@ public class Fixtures {
         researchStaff.getSiteResearchStaffs().add(siteResearchStaff);
         return researchStaff;
     }
-
+    
     public static SystemAssignedIdentifier createSystemAssignedIdentifier(final String value) {
         SystemAssignedIdentifier systemAssignedIdentifier = new SystemAssignedIdentifier();
         systemAssignedIdentifier.setSystemName("system assigned identifier:");

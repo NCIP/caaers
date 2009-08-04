@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- CSM configuration is partially here and partially in migrations.
+     Migrations should contain global configuration; anything that will be the same
+     in every caAERS deployment.  This file should contain development data; e.g.,
+     users for testing different roles, etc.
+-->
+
+<dataset>
+		
+	<!--==================== USERS ====================-->
+		
+	<CSM_USER USER_ID="-20" LOGIN_NAME="biju"
+		FIRST_NAME="biju" LAST_NAME="Joseph"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />		
+	<CSM_USER USER_ID="-21" LOGIN_NAME="paul"
+		FIRST_NAME="Paul" LAST_NAME="Paul"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />	
+				
+	<CSM_USER USER_ID="-22" LOGIN_NAME="ram"
+		FIRST_NAME="Ram" LAST_NAME="Ram"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />	
+		
+		<CSM_USER USER_ID="-23" LOGIN_NAME="karthik"
+		FIRST_NAME="karthik" LAST_NAME="karthik"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />	
+		
+		<CSM_USER USER_ID="-24" LOGIN_NAME="vinay"
+		FIRST_NAME="vinay" LAST_NAME="vinay"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />			
+
+		<CSM_USER USER_ID="-25" LOGIN_NAME="srini"
+		FIRST_NAME="srini" LAST_NAME="srini"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />		
+		
+		<CSM_USER USER_ID="-26" LOGIN_NAME="sameer"
+		FIRST_NAME="sameer" LAST_NAME="sameer"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />				
+		
+		
+		<CSM_USER USER_ID="-27" LOGIN_NAME="monish"
+		FIRST_NAME="monish" LAST_NAME="monish"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />				
+		
+		
+		<CSM_USER USER_ID="-28" LOGIN_NAME="ion"
+		FIRST_NAME="ion" LAST_NAME="ion"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="biju.joseph@semanticbits.com" 
+		UPDATE_DATE="2007-01-27" />							
+		
+	<!--==================== GRID GROUPS =====================-->
+	
+	
+	<!--==================== GRID GROUP PRIVILEGES =====================-->
+
+		
+		
+	<!--==================== USER TO GROUP MAPPINGS ====================-->
+	
+	<!-- 
+			SYSTEM_ADMIN is in all groups.
+	-->
+
+	<CSM_USER_GROUP USER_GROUP_ID="-101" USER_ID="-20" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-102" USER_ID="-20" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-103" USER_ID="-20" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-104" USER_ID="-20" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-105" USER_ID="-20" GROUP_ID="-5" />
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-106" USER_ID="-21" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-107" USER_ID="-21" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-108" USER_ID="-21" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-109" USER_ID="-21" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-110" USER_ID="-21" GROUP_ID="-5" />
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-111" USER_ID="-22" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-112" USER_ID="-22" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-113" USER_ID="-22" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-114" USER_ID="-22" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-115" USER_ID="-22" GROUP_ID="-5" />
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-116" USER_ID="-23" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-117" USER_ID="-23" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-118" USER_ID="-23" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-119" USER_ID="-23" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-120" USER_ID="-23" GROUP_ID="-5" />
+	
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-121" USER_ID="-24" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-122" USER_ID="-24" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-123" USER_ID="-24" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-124" USER_ID="-24" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-125" USER_ID="-24" GROUP_ID="-5" />
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-126" USER_ID="-25" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-127" USER_ID="-25" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-128" USER_ID="-25" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-129" USER_ID="-25" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-130" USER_ID="-25" GROUP_ID="-5" />
+	
+	
+	
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-131" USER_ID="-26" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-132" USER_ID="-26" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-133" USER_ID="-26" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-134" USER_ID="-26" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-135" USER_ID="-26" GROUP_ID="-5" />
+	
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-136" USER_ID="-27" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-137" USER_ID="-27" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-138" USER_ID="-27" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-139" USER_ID="-27" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-140" USER_ID="-27" GROUP_ID="-5" />
+	
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-141" USER_ID="-27" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-142" USER_ID="-27" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-143" USER_ID="-27" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-144" USER_ID="-27" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-145" USER_ID="-27" GROUP_ID="-5" />
+	
+	<!--==================== USER TO PROTECTION ELEMENT MAPPINGS ==================-->
+	<!-- SYSTEM_ADMIN owns the caAERS Application -->
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-20"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-20" UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-21"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-21" UPDATE_DATE="2007-01-27" />
+			
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-22"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-22" UPDATE_DATE="2007-01-27" />
+			
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-23"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-23" UPDATE_DATE="2007-01-27" />	
+		
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-24"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-24" UPDATE_DATE="2007-01-27" />	
+		
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-25"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-25" UPDATE_DATE="2007-01-27" />
+		
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-26"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-26" UPDATE_DATE="2007-01-27" />			
+
+		
+</dataset>
