@@ -1,20 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
-import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -42,7 +39,11 @@ public class ReportDefinitionAjaxFacade {
     private ReportDefinitionDao repDefDao;
     private ConfigPropertyDao cpDao;
     private OrganizationRepository organizationRepository;
-
+    private ReportVersionRepository reportVersionRepository;
+    
+    public void resetReports(){
+    	reportVersionRepository.updateInProcessReports();
+    }
     // /LOGIC
     public String addReportDeliveryDefinition(int index, int type) {
         WebContext webCtx = WebContextFactory.get();
@@ -189,4 +190,9 @@ public class ReportDefinitionAjaxFacade {
     public void setCpDao(ConfigPropertyDao cpDao) {
         this.cpDao = cpDao;
     }
+
+	public void setReportVersionRepository(
+			ReportVersionRepository reportVersionRepository) {
+		this.reportVersionRepository = reportVersionRepository;
+	}
 }
