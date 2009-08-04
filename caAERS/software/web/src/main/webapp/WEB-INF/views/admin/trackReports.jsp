@@ -205,7 +205,7 @@ color:#0033FF;
     function resetReports() {
     			try {
 					reportDef.resetReports(function(values) { 
-						alert("Reports Stuck for more than 5 minutes are reset to Failed Status , Please Resubmit.");
+						alert("Reports stuck for more than 5 minutes are reset to 'Failed' status , Please resubmit.");
 					})
 				} catch(e) {alert(e)}
 	}
