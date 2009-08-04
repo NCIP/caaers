@@ -24,18 +24,18 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		super.setUp();
 		repository = new ResearchStaffRepository();
 		csmUserRepository = registerMockFor(CSMUserRepository.class);
+		studyRepository = registerMockFor(StudyRepository.class);
 		repository.setCsmUserRepository(csmUserRepository);
 		researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
 		repository.setResearchStaffDao(researchStaffDao);
 		repository.setAuthenticationMode("local");
-		studyRepository = new StudyRepository();
 		repository.setStudyRepository(studyRepository);
-		
 	}
 
 	public void testSave() throws Exception {
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
+		List<SiteResearchStaff> sRsList = new ArrayList<SiteResearchStaff>();
 		groupList.add(UserGroupType.caaers_study_cd);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
@@ -45,12 +45,14 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		siteResearchStaffRole.setRoleCode("caaers_study_cd");
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
+		siteResearchStaff.setAssociateAllStudies(Boolean.TRUE);
 		staff.addSiteResearchStaff(siteResearchStaff);
+		sRsList.add(siteResearchStaff);
 		staff.setLoginId("Joel@def.com");
 		String changeUrl = "/pages/url";
 		researchStaffDao.save(staff);
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
-		studyRepository.associateStudyPersonnel(staff);
+		studyRepository.associateStudyPersonnel(sRsList);
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();
@@ -62,6 +64,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
+		List<SiteResearchStaff> sRsList = new ArrayList<SiteResearchStaff>();
 		groupList.add(UserGroupType.caaers_study_cd);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
@@ -72,11 +75,11 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		staff.addSiteResearchStaff(siteResearchStaff);
+		sRsList.add(siteResearchStaff);
 		staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
 		researchStaffDao.save(staff);
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
-		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();
