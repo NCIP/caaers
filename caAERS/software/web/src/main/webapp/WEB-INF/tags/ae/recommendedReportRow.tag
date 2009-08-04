@@ -5,6 +5,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="recommendedTableRows" required="true" type="java.util.List" description="The recommended report definitions to show" %>
@@ -25,11 +26,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 <table width="100%" class="tablecontent">
     <tr class="header" id="tr-header-${aeReportId}">
-      <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
-      <th scope="col" align="left"><b>Action</b> </th>
-      <th scope="col" align="left" width="30%">Report</th>
-      <th scope="col" align="left" ><b>Status</b> </th>
-      <th scope="col" align="left"><b>Due</b> </th>
+      <th scope="col" align="center" style="text-align:center;" width="3%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col" align="left"><spring:message key="captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col" align="left" width="30%"><spring:message key="captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col" align="left" ><spring:message key="captureAdverseEvents.tableHeader.status" /> </th>
+      <th scope="col" align="left"><spring:message key="captureAdverseEvents.tableHeader.due" /> </th>
     </tr>
 </table>	
 </div>   
@@ -38,11 +39,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
 <table width="100%" class="tablecontent">
     <tr>
-      <th scope="col" align="center" style="text-align:center;" width="3%"><b>Select</b></th>
-      <th scope="col" align="left"><b>Action</b> </th>
-      <th scope="col" align="left" width="30%">Report</th>
-      <th scope="col" align="left" ><b>Status</b> </th>
-      <th scope="col" align="left"><b>Due</b> </th>
+      <th scope="col" align="center" style="text-align:center;" width="3%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col" align="left"><spring:message key="captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col" align="left" width="30%"><spring:message key="captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col" align="left" ><spring:message key="captureAdverseEvents.tableHeader.status" /></th>
+      <th scope="col" align="left"><spring:message key="captureAdverseEvents.tableHeader.due" /></th>
     </tr>
     
  	<c:forEach var="row" items="${applicableTableRows}">
