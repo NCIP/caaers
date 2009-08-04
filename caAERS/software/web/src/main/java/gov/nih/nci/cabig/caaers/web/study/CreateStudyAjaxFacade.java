@@ -107,11 +107,12 @@ public class CreateStudyAjaxFacade {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteResearchStaff> siteResearchStaffs =  researchStaffRepository.getSiteResearchStaffBySubnames(new String[] { text }, siteId);
-        for (SiteResearchStaff srs : siteResearchStaffs) {
-            srs.setResearchStaff(ObjectTools.reduce(srs.getResearchStaff(), "firstName", "lastName"));
-        }
-        List<SiteResearchStaff> reduced = ObjectTools.reduceAll(siteResearchStaffs, "id", "researchStaff");
-        return reduced;
+        return ObjectTools.reduceAll(siteResearchStaffs,
+                new ObjectTools.Initializer<SiteResearchStaff>() {
+                    public void initialize(final SiteResearchStaff instance) {
+                        instance.setResearchStaff(new LocalResearchStaff());
+                    }
+                }, "id", "researchStaff.firstName", "researchStaff.lastName", "researchStaff.externalId");
     }
 
     private StudyCommand getStudyFromSession(final HttpServletRequest request) {

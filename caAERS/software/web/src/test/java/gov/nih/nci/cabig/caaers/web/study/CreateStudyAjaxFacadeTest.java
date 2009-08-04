@@ -9,15 +9,22 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 
 import java.util.Arrays;
@@ -40,6 +47,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     
     private InvestigatorRepository investigatorRepository;
+    private ResearchStaffRepository researchStaffRepository;
     
     private StudyDao studyDao;
 
@@ -49,10 +57,14 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         siteInvestigatorDao = registerDaoMockFor(SiteInvestigatorDao.class);
         investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
         investigatorRepository = this.registerMockFor(InvestigatorRepositoryImpl.class);
+        researchStaffRepository = registerMockFor(ResearchStaffRepository.class);
+        
         facade = new CreateStudyAjaxFacade();
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
         facade.setInvestigatorRepository(investigatorRepository);
+        facade.setResearchStaffRepository(researchStaffRepository);
+        
         studyDao = registerDaoMockFor(StudyDao.class);
         command = new StudyCommand(studyDao);
         study = new Study();
@@ -112,6 +124,80 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
 		replayMocks();
     	assertEquals("Complete", facade.openStudy());
     	verifyMocks();
+    	
+    }
+    
+    public void testMatchSiteResearchStaff(){
+    	
+    	Organization organization = Fixtures.createOrganization("test");
+    	organization.setId(new Integer(5));
+    	
+    	StudyOrganization studyOrg = Fixtures.createStudyCoordinatingCenter(organization);
+    	studyOrg.setId(new Integer(5));
+    
+    	
+    	ResearchStaff rs1 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.caaers_admin), "Jank");
+    	rs1.setId(1);
+    	
+    	SiteResearchStaff srs1 = rs1.getSiteResearchStaffs().get(0);
+    	srs1.setId(1);
+    	srs1.setGridId("89899");
+    	
+    	ResearchStaff rs2 = Fixtures.createResearchStaff(organization, Arrays.asList(UserGroupType.caaers_admin), "Sank");
+    	rs2.setId(2);
+    	SiteResearchStaff srs2 = rs2.getSiteResearchStaffs().get(0);
+    	srs2.setId(2);
+    	srs2.setGridId("9900e");
+    	
+
+    	List<SiteResearchStaff> srsList = Arrays.asList(srs1, srs2);
+
+    	command.getStudy().getStudyOrganizations().add(studyOrg);
+    	
+    	String text = "abcd";
+    	
+    	expect(researchStaffRepository.getSiteResearchStaffBySubnames(aryEq(new String[] { "abcd" }), eq(5))).andReturn(srsList);
+    	
+    	replayMocks();
+    	
+    	assertFalse(srsList.get(0).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	assertFalse(srsList.get(1).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	
+    	
+    	List<SiteResearchStaff> reducedList = facade.matchSiteResearchStaff(text, 0);
+    	
+    	
+    	assertFalse(srsList.get(0).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	assertFalse(srsList.get(1).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	
+    	
+    	assertNotNull(reducedList);
+    	assertEquals(2, reducedList.size());
+    	
+    	assertEquals(new Integer(1), reducedList.get(0).getId());
+    	assertEquals(new Integer(2), reducedList.get(1).getId());
+    	
+    	assertNull(reducedList.get(0).getGridId());
+    	assertNull(reducedList.get(1).getGridId());
+    	
+    	assertNotNull(reducedList.get(0).getResearchStaff());
+    	assertNotNull(reducedList.get(1).getResearchStaff());
+    	
+     	assertNull(reducedList.get(0).getOrganization());
+    	assertNull(reducedList.get(1).getOrganization());
+   
+    	
+    	assertTrue(reducedList.get(0).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	assertTrue(reducedList.get(1).getResearchStaff().getSiteResearchStaffs().isEmpty());
+    	
+    	assertNull(reducedList.get(0).getResearchStaff().getNciIdentifier());
+    	assertNull(reducedList.get(1).getResearchStaff().getNciIdentifier());
+    	
+    	assertNotNull(reducedList.get(0).getResearchStaff().getFirstName());
+    	assertNotNull(reducedList.get(1).getResearchStaff().getFirstName());
+    	
+    	//verifyMocks();
+    	
     	
     }
 }
