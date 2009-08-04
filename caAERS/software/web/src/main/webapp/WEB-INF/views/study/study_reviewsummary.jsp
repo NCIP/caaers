@@ -1,14 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%@taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
 <head>
@@ -292,10 +282,12 @@
                     <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>  
-                        
                         ${studyInvestigator.siteInvestigator.investigator.fullName}</td>
-                        <td>${studyInvestigator.roleCode}</td>
-                        <td>-to be filled -</td>
+                        <td>${command.studyInvestigatorRoles[studyInvestigator.roleCode]}</td>
+                        <td>
+                            <c:if test="${studyInvestigator.active}">Active</c:if>
+                            <c:if test="${!studyInvestigator.active}">Inactive</c:if>
+                        </td>
                     </tr>
                     <c:set var="invCnt" value="${invCnt + 1}" />
                 </c:forEach>
@@ -307,7 +299,7 @@
             </c:if>
         </table>
     	</chrome:division>
-   
+
     <chrome:division title="Personnel">
     	<!--[if lte IE 6]>
 		<br>
@@ -330,8 +322,11 @@
                 	</c:if>  
                         ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
                         </td>
-                        <td>${studyPersonnel.roleCode}</td>
-                        <td>-to be filled-</td>
+                        <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
+                        <td>
+                            <c:if test="${studyPersonnel.active}">Active</c:if>
+                            <c:if test="${!studyPersonnel.active}">Inactive</c:if>
+                        </td>
                     </tr>
                     <c:set var="staffCnt" value="${invCnt + 1}" />
                 </c:forEach>

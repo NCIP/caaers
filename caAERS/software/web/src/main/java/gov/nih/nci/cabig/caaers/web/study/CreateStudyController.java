@@ -76,7 +76,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
         command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
         command.setAllInvestigatorRoles(configPropertyRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE));
-
+        command.populateRoleNamesMap();
         return command;
     }
 

@@ -6,10 +6,13 @@ import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.collections.map.HashedMap;
 
 /**
  * User: Ion C. Olaru
@@ -27,6 +30,8 @@ public class StudyCommand {
     private String condition;
     protected List<ConfigProperty> allPersonnelRoles;
     protected List<ConfigProperty> allInvestigatorRoles;
+    protected Map<String, String> studyPersonnelRoles;
+    protected Map<String, String> studyInvestigatorRoles;
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -72,6 +77,8 @@ public class StudyCommand {
 
     public StudyCommand(StudyDao studyDao) {
     	this.studyDao = studyDao;
+        this.studyPersonnelRoles = new HashMap<String, String>();
+        this.studyInvestigatorRoles = new HashMap<String, String>();
     }
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
@@ -365,5 +372,30 @@ public class StudyCommand {
 
     public void setAllInvestigatorRoles(List<ConfigProperty> allInvestigatorRoles) {
         this.allInvestigatorRoles = allInvestigatorRoles;
+    }
+
+    public void populateRoleNamesMap() {
+        for (ConfigProperty pr : getAllPersonnelRoles()) {
+            this.studyPersonnelRoles.put(pr.getCode(), pr.getName());
+        }
+        for (ConfigProperty pr : getAllInvestigatorRoles()) {
+            this.studyInvestigatorRoles.put(pr.getCode(), pr.getName());
+        }
+    }
+
+    public Map<String, String> getStudyPersonnelRoles() {
+        return studyPersonnelRoles;
+    }
+
+    public void setStudyPersonnelRoles(Map<String, String> studyPersonnelRoles) {
+        this.studyPersonnelRoles = studyPersonnelRoles;
+    }
+
+    public Map<String, String> getStudyInvestigatorRoles() {
+        return studyInvestigatorRoles;
+    }
+
+    public void setStudyInvestigatorRoles(Map<String, String> studyInvestigatorRoles) {
+        this.studyInvestigatorRoles = studyInvestigatorRoles;
     }
 }
