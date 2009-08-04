@@ -287,7 +287,10 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     @Transient
     public void syndStudyPersonnelDates(){
     	for(StudyPersonnel studyPersonnel : this.getStudyPersonnels()){
-    		studyPersonnel.syncDates();
+    		if(studyPersonnel.isActive()){
+    			studyPersonnel.syncDates();
+    		}
+    		
     	}
     }
     
