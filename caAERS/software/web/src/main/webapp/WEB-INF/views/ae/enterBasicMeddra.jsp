@@ -125,7 +125,7 @@
                        	title="Select New Adverse Event Terms">
     	</tags:aeTermQuery>
     	--%>
-    	 <div>
+    	 <div style="margin-left:20px; margin-bottom:10px;">
     		<tags:button color="blue" size="small" value="Add Adverse Event" icon="+"  markupWithTag="a"
     			href="captureRoutine?study=${command.study.id}&participant=${command.participant.id}&adverseEventReportingPeriod=${command.aeReport.reportingPeriod.id}&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
    		</div>

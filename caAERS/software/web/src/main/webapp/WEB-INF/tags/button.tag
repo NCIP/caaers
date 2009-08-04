@@ -22,16 +22,14 @@
 	<c:if test="${not empty disabled && markupWithTag!='a'}">
 		disabled="${disabled}"
 	</c:if>
-	<c:if test="${not empty href}">
-    	href="${href}"
-	</c:if>
+	
 	<c:if test="${not empty id}">
 		id="${id}" 
 	</c:if>
 	<c:if test="${not empty onclick}">
     	onclick="${onclick}"
 	</c:if>>
-	<table>
+	<table onclick="location.href='<c:if test="${not empty href}">${href}</c:if>';">
 		<tr>
 			<td class="l"></td>
 			<td class="m">
@@ -65,7 +63,7 @@
 						</c:otherwise>
 					</c:choose>
 				</c:if>
-				<c:if test="${fn:toLowerCase(icon) == 'add'}">
+				<c:if test="${fn:toLowerCase(icon) == 'add' || fn:toLowerCase(icon) =='+'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
 		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/add_icon_small.png"/>" alt="" />
