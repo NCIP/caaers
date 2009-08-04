@@ -655,15 +655,15 @@ function forwardToReport(aeReportId, frm){
 	 var withdrawnReports = "";
 	 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
 		 if(rdObj.getActualAction() == 'Withdraw'){
-			 if(withdrawnReports.length > 0){
-				 withdrawnReports = withdrawnReports + ",";
+			 if (withdrawnReports.length > 0){
+				 withdrawnReports = withdrawnReports + "\n";
 			 }
 			 withdrawnReports = withdrawnReports +  rdObj.name;
 		 }
 	 });
 
 	 if(withdrawnReports.length > 0){
-		if(confirm(withdrawnReports + reportsWithdawnMessage)){
+		if(confirm(reportsWithdawnMessage + "\n\n" + withdrawnReports)){
 			//submit the form
 			frm.submit();
 		} 

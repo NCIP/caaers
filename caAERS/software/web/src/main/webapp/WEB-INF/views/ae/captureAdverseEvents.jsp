@@ -393,7 +393,7 @@
 					<%--  Begining Of Observed AE section --%>
 					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
 
-                        <div align="right"><a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />"><img src="<c:url value='/images/pdf.gif'></c:url>" border="0">&nbsp;Download AE Worksheet...</a></div>
+                        <div align="right"><a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />"><img src="<c:url value='/images/pdf.gif'></c:url>" border="0">&nbsp;</a></div>
 						<p><tags:instructions code="instruction_ae_oae"/></p>
 						<p>${command.adverseEventReportingPeriod.epoch.descriptionText}</p>
 
