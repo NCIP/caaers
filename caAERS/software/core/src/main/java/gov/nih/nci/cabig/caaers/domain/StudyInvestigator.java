@@ -54,6 +54,18 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
         this.setEndDate(getSiteInvestigator().getEndDate());
         this.endDate = null;
     }
+    
+    /**
+     * This method will take care of synchronizing the start and end dates.
+     *  By copying it from {@link SiteInvestigator}
+     */
+    public void syncDates(){
+    	if(siteInvestigator == null) return;
+    	
+    	startDate = siteInvestigator.getStartDate();
+    	endDate = siteInvestigator.getEndDate();
+    }
+    
 
     @ManyToOne
     @JoinColumn(name = "site_investigators_id")
