@@ -11,7 +11,7 @@ public interface Retireable {
 	 * Will set the retired indicator
 	 */
 	public abstract void retire();
-
+	public abstract Integer getId();
 	public abstract boolean isRetired();
 	public abstract Boolean getRetiredIndicator();
 	public abstract void setRetiredIndicator(Boolean retiredIndicator);

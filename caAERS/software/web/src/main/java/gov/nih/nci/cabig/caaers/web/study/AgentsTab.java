@@ -73,14 +73,16 @@ public class AgentsTab extends StudyTab {
         for (int i = 0; i < command.getStudy().getStudyAgents().size(); i++) {
             studyAgent = studyAgents.get(i);
             
-            if (studyAgent.getAgent() == null && studyAgent.getOtherAgent() == null) {
-                isAgentEmpty = true;
-                errors.rejectValue("study.studyAgents[" + i + "].otherAgent", "STU_007","Select either Agent or Other ");
-                continue;
-            }
+            if(!studyAgent.isRetired()){
+                if (studyAgent.getAgent() == null && studyAgent.getOtherAgent() == null) {
+                    isAgentEmpty = true;
+                    errors.rejectValue("study.studyAgents[" + i + "].otherAgent", "STU_007","Select either Agent or Other ");
+                    continue;
+                }
 
-            if (studyAgent.getAgent() != null) {
-                studyAgent.setOtherAgent(null);
+                if (studyAgent.getAgent() != null) {
+                    studyAgent.setOtherAgent(null);
+                }
             }
         }
 

@@ -331,7 +331,11 @@ public class StudyCommand {
      * @param index
      */
     public void delete(List<? extends Retireable> source, int index){
+    	if(source.get(index).getId() != null){
     		source.get(index).retire();
+    	}else{
+    		source.remove(index);
+    	}
     }
    
     /**
