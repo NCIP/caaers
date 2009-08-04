@@ -654,6 +654,9 @@ img.indicator { visibility: hidden; }
 /*
   Styles for Table Data 
 */
+.accordion-content .tablecontent th, .accordion-content .tablecontent td {
+	border:1px solid #AFAFAF;
+}
 table.tablecontent { border-collapse: collapse; }
 .tablecontent td, .tablecontent th { padding: 0.2em; }
 .tablecontent .tableHeader th, .tablecontent .even td, .tablecontent .odd td { text-align: left; }

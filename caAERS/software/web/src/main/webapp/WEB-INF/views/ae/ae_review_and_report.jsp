@@ -104,7 +104,7 @@
 	   this.otherAction = otherAction;
 
 	   this.trTemplate = '<tr class="#{cssClass}">' + 
-	   '<td><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
+	   '<td style="text-align:center;"><input type="checkbox" #{checked} disabled="disabled" /></td>' + 
 	   '<td><span class="action-cell"><img src="<chrome:imageUrl name="../blue/#{action}-icon.png" />" alt="" /> #{action}</span></td>' +
   	   '<td><span><b>#{name}</b></span></td>' +
   	   '<td><span>#{status}</span></td>' +

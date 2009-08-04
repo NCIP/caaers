@@ -16,12 +16,12 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <div id="adverseEvents-dc-${aeReportId}" class="serious-aes">
 <table width="100%" class="tablecontent">
 	       <tr>
-	         <th scope="col"  width="5%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
-	         <th scope="col"   width="10%"><spring:message code="captureAdverseEvents.tableHeader.requiresReporting" /></th>
-	         <th scope="col"  width="35%"><spring:message code="captureAdverseEvents.tableHeader.term" /> </th>
-	         <th scope="col"  width="25%"><spring:message code="captureAdverseEvents.tableHeader.grade" /> </th>
-	         <th scope="col"  width="15%"><spring:message code="captureAdverseEvents.tableHeader.startDate" /></th>
-	         <th scope="col"  width="10%"><tags:requiredIndicator></tags:requiredIndicator><spring:message code="captureAdverseEvents.tableHeader.primary" /> </th>
+	         <th scope="col" style="text-align:center;" width="5%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
+	         <th scope="col" style="text-align:center;" width="10%"><spring:message code="captureAdverseEvents.tableHeader.requiresReporting" /></th>
+	         <th scope="col" width="35%"><spring:message code="captureAdverseEvents.tableHeader.term" /> </th>
+	         <th scope="col" width="25%"><spring:message code="captureAdverseEvents.tableHeader.grade" /> </th>
+	         <th scope="col" width="15%"><spring:message code="captureAdverseEvents.tableHeader.startDate" /></th>
+	         <th scope="col" width="10%"><tags:requiredIndicator></tags:requiredIndicator><spring:message code="captureAdverseEvents.tableHeader.primary" /> </th>
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
       	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />
@@ -32,7 +32,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
       	
       	  <!-- cssClass : ${_cssClass } -->
 	      <tr class="${_cssClass}">
-		      <td  class="${_cssClass}">
+		      <td style="text-align:center;" class="${_cssClass}">
 		      	<c:if test="${not ae.retired}">
 		      	 <input id="ae-${aeReportId}-${ae.id}" type="checkbox" checked 
 		      		value="${ae.id}" class="ae ae_${aeReportId}" 
@@ -40,7 +40,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      	 	onclick="${_jsHandler}" />
 		      	</c:if>
 		      </td>
-		      <td  class="${_cssClass}">
+		      <td align="center" class="${_cssClass}">
 		      	<span class="${ae.requiresReporting ? 'reportingYes' : 'reportingNo' }">${ae.requiresReporting? 'Yes' : 'No' }</span>
 		      </td>
 		      <td class="${_cssClass}">
