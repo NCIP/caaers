@@ -6,21 +6,22 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="adverseEvents" required="true" type="java.util.List" description="List of adverse events to be displayed"%>
 <%@attribute name="primaryAeId" required="true" type="java.lang.Integer" description="The primary adverse event ID" %>
 <c:if test="${not empty adverseEvents}">
-<b>Adverse events</b>
+<b><spring:message key="captureAdverseEvents.heading.adverseEvents" /></b>
 <div id="adverseEvents-dc-${aeReportId}" class="serious-aes">
 <table width="100%" class="tablecontent">
 	       <tr>
-	         <th scope="col" align="center" style="text-align:center;" width="5%"><b>Select</b></th>
-	         <th scope="col" align="center" style="text-align:center;" width="10%">Requires<br>expedited<br> reporting?</th>
-	         <th scope="col" align="left" width="35%"><b>Term</b> </th>
-	         <th scope="col" align="left" width="25%"><b>Grade</b> </th>
-	         <th scope="col" align="left" width="15%"><b>Start Date</b> </th>
-	         <th scope="col" align="left" width="10%"><b><tags:requiredIndicator></tags:requiredIndicator>Select Primary</b> </th>
+	         <th scope="col" align="center" style="text-align:center;" width="5%"><spring:message key="captureAdverseEvents.tableHeader.select" /></th>
+	         <th scope="col" align="center" style="text-align:center;" width="10%"><spring:message key="captureAdverseEvents.tableHeader.requiresReporting" /></th>
+	         <th scope="col" align="left" width="35%"><spring:message key="captureAdverseEvents.tableHeader.term" /> </th>
+	         <th scope="col" align="left" width="25%"><spring:message key="captureAdverseEvents.tableHeader.grade" /> </th>
+	         <th scope="col" align="left" width="15%"><spring:message key="captureAdverseEvents.tableHeader.startDate" /></th>
+	         <th scope="col" align="left" width="10%"><tags:requiredIndicator></tags:requiredIndicator><spring:message key="captureAdverseEvents.tableHeader.primary" /> </th>
 	       </tr>
       <c:forEach var="ae" items="${adverseEvents}" varStatus="aeStatus">
       	<c:set var="_cssClass" value="${ae.retired ? 'retired' : ''} ${ae.modified ? 'modified':''} ${ae.reported ? 'reported' :''}" />
