@@ -66,15 +66,20 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		$('entire-slider').show();
 	},
 	retrieveReviewCommentsAndActions : function(){
-		this.ajaxFacade.retrieveReviewCommentsAndActions(function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent);
-			if(this.workflowType == 'reportingPeriod' || this.workflowType == 'reviewAeReport'){
-				var sbox = $('sliderWFAction');
-				var sboxIndicator = $('sliderWFAction-indicator');
-				this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
-			}
-		}.bind(this)) ;
-		$('entire-slider').show();
+		try{
+			this.ajaxFacade.retrieveReviewCommentsAndActions(function(ajaxOutput){
+				this.updateCommentElementContent(ajaxOutput.htmlContent);
+				if(this.workflowType == 'reportingPeriod' || this.workflowType == 'reviewAeReport'){
+					var sbox = $('sliderWFAction');
+					var sboxIndicator = $('sliderWFAction-indicator');
+					this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+				}
+			}.bind(this)) ;
+			$('entire-slider').show();
+		}catch(err){
+			caaersLog(err);
+		}
+		
 	},
 	updateWorkflowActions : function(){
 		var sbox = $('sliderWFAction');

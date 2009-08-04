@@ -47,7 +47,6 @@ public class ReviewEvaluationPeriodController extends SimpleFormController{
 		String reportingPeriodId = request.getParameter("adverseEventReportingPeriod");
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodId));
 		command.setAdverseEventReportingPeriod(reportingPeriod);
-		command.initialize();
 		return command;
 	}
 	

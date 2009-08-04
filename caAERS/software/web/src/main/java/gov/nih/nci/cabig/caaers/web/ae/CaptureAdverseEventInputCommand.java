@@ -270,13 +270,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
 			boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
 			if(isCTCStudy){
+				getCtcCategories();
 				for(AdverseEvent ae : getAdverseEvents()){
-					if(ae.getAdverseEventCtcTerm() == null) continue;//to handle special case when we deal with empty AEs added via CreateExpeditedFlow
+					if(ae.getAdverseEventTerm() == null) continue;
 					
 					ae.getAdverseEventTerm().isOtherRequired();
 					if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
 						ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-	                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+	                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades().size();
 					}
 				}
 			}
