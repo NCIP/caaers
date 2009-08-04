@@ -37,7 +37,7 @@
     				<th scope="col" align="left"><b>Amendment #</b> </th>
     				<th scope="col" align="left"><b>Ready to submit?</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
-    				<th scope="col" align="left"><b>Options</b> </th>
+    				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
     			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
     			<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED'}">

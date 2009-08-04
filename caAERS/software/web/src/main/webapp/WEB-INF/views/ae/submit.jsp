@@ -195,7 +195,7 @@
     	<c:if test="${command.workflowEnabled == true}">
     		<table class="tablecontent" width="40%">
     			<tr>
-    				<th scope="col" align="left"><b>Actions</b></th>
+    				<th scope="col" align="left"><b>Report Review Options</b></th>
     			</tr>
     			<tr>
     				<td class="completion-messages">
