@@ -44,6 +44,11 @@ public class DateUtils {
 		return c.getTime();
 	}
 	
+	public static Date today(){
+		Calendar c = Calendar.getInstance();
+		return c.getTime();
+	}
+
     /**
      * Compares two dates. The time fields are ignored.
      * 

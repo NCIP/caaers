@@ -137,7 +137,7 @@ margin:5px;
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Personnel" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study"><font size="2"><b>${studySite.organization.name}</b></font></a> (${fn:length(studySite.activeStudyPersonnel)})</div>
+ 					<div class =""><a style="cursor:pointer;" onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit research staff assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.activeStudyPersonnel)})</b></div>
  					<%--<div class="">Personnel Assigned: <b>  </b></div>--%>
  				</c:forEach>
  				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>

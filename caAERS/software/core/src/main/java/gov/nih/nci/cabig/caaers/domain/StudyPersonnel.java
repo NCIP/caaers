@@ -44,10 +44,12 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
      *  This method will activate a {@link StudyPersonnel}
      */
     public void activate(){
-    	this.startDate = DateUtils.yesterday();
+        if (getSiteResearchStaff().getResearchStaff().getActiveDate().compareTo(DateUtils.today()) > 0) {
+            this.setStartDate(getSiteResearchStaff().getResearchStaff().getActiveDate());
+       } else this.startDate = DateUtils.today();
     	this.endDate = null;
     }
-    
+
     @ManyToOne
     @JoinColumn(name = "site_research_staffs_id")
 	public SiteResearchStaff getSiteResearchStaff() {

@@ -36,7 +36,7 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
     private Date endDate;
     
     /**
-     * This method will deactivate a {@link StudyInvestigator}, by setting the termEndDate to a past date.
+     * This method will deactivate a {@link StudyInvestigator}, by setting the EndDate to a past date.
      */
     public void deactivate(){
     	this.endDate = DateUtils.yesterday();
@@ -46,7 +46,13 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
      * This method will activate, by setting the termEndDate to a past date.
      */
     public void activate(){
-    	this.startDate = DateUtils.yesterday();
+        if (getSiteInvestigator().getStartDate().compareTo(DateUtils.today()) > 0) {
+            this.setStartDate(getSiteInvestigator().getStartDate());
+        } else {
+            this.setStartDate(DateUtils.today());
+        }
+        this.setEndDate(getSiteInvestigator().getEndDate());
+        this.endDate = null;
     }
 
     @ManyToOne
@@ -120,12 +126,10 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
 
         StudyInvestigator that = (StudyInvestigator) o;
         if(this.isRetired() || that.isRetired()) return false;
-        
+
         if (roleCode != null ? !roleCode.equals(that.roleCode) : that.roleCode != null) return false;
-        if (siteInvestigator != null ? !siteInvestigator.equals(that.siteInvestigator) : that.siteInvestigator != null)
-            return false;
-        if (studyOrganization != null ? !studyOrganization.equals(that.studyOrganization) : that.studyOrganization != null)
-            return false;
+        if (siteInvestigator != null ? !siteInvestigator.equals(that.siteInvestigator) : that.siteInvestigator != null) return false;
+        if (studyOrganization != null ? !studyOrganization.equals(that.studyOrganization) : that.studyOrganization != null) return false;
 
         return true;
     }

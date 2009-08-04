@@ -43,16 +43,36 @@ class InvestigatorsTab extends StudyTab {
         String selectedInvestigator = request.getParameter("_selectedInvestigator");
         String prevSiteIndex = request.getParameter("_prevSite");
         int selectedIndex = command.getStudySiteIndex();
-        
+        int selectedInvestigatorIndex;
+
+        if (request.getParameter("_selectedInvestigator") != null && !request.getParameter("_selectedInvestigator").equals(""))
+            selectedInvestigatorIndex = Integer.parseInt(selectedInvestigator);
+        else
+            selectedInvestigatorIndex = -1;
+
         if ("removeInv".equals(action) && selectedIndex >= 0) {
         	int index = Integer.parseInt(selectedInvestigator);
         	command.deleteSiteInvestigatorAtIndex(selectedIndex, index);
-
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
             command.setStudySiteIndex(siteIndex);
             if (siteIndex >= 0) {
                 command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
+            }
+        } else if ("activate".equals(action)) {
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).activate();
+        } else if ("deactivate".equals(action)) {
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
+        }
+
+        if (command.getStudySiteIndex() >= 0) {
+            StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+            for (StudyInvestigator si : so.getStudyInvestigators()) {
+                if (si.getId() == null) {
+                    System.out.println("new SI created;");
+                    si.setStartDate(si.getSiteInvestigator().getStartDate());
+                    si.setEndDate(si.getSiteInvestigator().getEndDate());
+                }
             }
         }
     }
@@ -86,13 +106,34 @@ class InvestigatorsTab extends StudyTab {
     @Override
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
-        HashSet<StudyInvestigator> hSet = new HashSet<StudyInvestigator>();
-        for (StudyInvestigator si : so.getStudyInvestigators()) {
-            if (!hSet.add(si)) {
-                errors.reject("STU_012", new Object[] {si.getSiteInvestigator().getInvestigator().getFullName()}, "Duplicate entry");
+
+        if (command.getStudySiteIndex() >= 0) {
+            HashSet<String> hSet = new HashSet<String>();
+            HashSet<String> hSetPrincipal = new HashSet<String>();
+            boolean hasSIDuplicates = false;
+
+            StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+
+            for (StudyInvestigator si : so.getStudyInvestigators()) {
+
+                if (si.isActive())
+                    if (!hSet.add(si.getRoleCode() + si.getSiteInvestigator().getInvestigator().getId().toString())) {
+                        errors.reject("STU_012", new Object[]{si.getSiteInvestigator().getInvestigator().getFullName()}, "Duplicate entry");
+                    }
+
+                if (si.getRoleCode().equals("PI") && si.isActive()) {
+                    if (!hSetPrincipal.add(si.getRoleCode())) {
+                        si.deactivate();
+                        hasSIDuplicates = true;
+                    }
+                }
             }
+
+            if (hasSIDuplicates)
+                errors.reject("STU_019");
+                
         }
+
     }
 
 }

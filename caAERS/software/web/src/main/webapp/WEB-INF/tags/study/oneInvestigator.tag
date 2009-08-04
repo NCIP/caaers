@@ -7,6 +7,7 @@
 <%@attribute name="style" %>
 <%@attribute name="cssClass" required="true" %>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
+<%@attribute name="isNew" type="java.lang.Boolean" %>
 
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
@@ -42,8 +43,14 @@
     </td>
 
     <td style="border-left:none;">
+        <c:if test="${!isNew}">
+            <c:if test="${isActive}"><tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
+            <c:if test="${!isActive}"><tags:button type="button" color="red" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+        </c:if>
+<%--
         <a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
             <img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle">
         </a>
+--%>
     </td>
 </tr>

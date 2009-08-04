@@ -18,12 +18,10 @@
         </tr>
 
         <c:forEach var="si" items="${command.study.activeStudyOrganizations[index].studyInvestigators}" varStatus="status">
-        	<c:if test="${not si.retired}">
         		<study:oneInvestigator cssClass="ssi-table-row" index="${status.index}" readOnly="${not empty si.siteInvestigator}" />
         		<c:if test="${empty si.siteInvestigator}">
         			<script>new jsInvestigator(${status.index}, "${si.siteInvestigator.investigator.fullName}");</script>
         		</c:if>
-            </c:if>
         </c:forEach>
         <c:if test="${fn:length(command.study.activeStudyOrganizations[index].activeStudyInvestigators) lt 1}">
             <tr id="ssi-empty-row" class="ssi-empty-row">

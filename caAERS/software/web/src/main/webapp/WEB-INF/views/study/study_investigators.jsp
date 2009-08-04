@@ -19,7 +19,15 @@
 		if(!confirmation) return; //return if not agreed.
 	    fireAction('removeInv', selected);
   }
-	
+
+  function deactivate(index) {
+      fireAction("deactivate", index);
+  }
+
+  function activate(index) {
+      fireAction("activate", index);
+  }
+
   function fireAction(action, selectedInvestigator){
       if (action == 'addInv') {
 
@@ -76,7 +84,7 @@
 	 //init the list editor
 	 invListEditor = new ListEditor('ssi-table-row', createStudy, "Investigator",{
              addParameters: [],
-             addFirstAfter: "ssi-table-head",
+             addFirstAfter: "ssi-empty-row",
              nextIndexCallback : function(){
      			return $('_ITEM_COUNT').value;
  			 },
@@ -117,17 +125,17 @@
 		<br />
 		<hr>
 		<div id="content-section">
+            <span id="ssi-bookmark" />
             <c:if test="${command.studySiteIndex > -1 }">
 				<study:oneStudySiteInvestigator index="${command.studySiteIndex}"/>
 			</c:if>
             <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
-			<span id="ss-bookmark" />
 		</div>
 	    </td>
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Investigators" id="participant-entry2" autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study"> <font size="-1"> <b>${studySite.organization.name}</b></font></a> (${fn:length(studySite.activeStudyInvestigators)})</div>
+ 					<div class =""><a style="cursor:pointer;" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.studyInvestigators)})</b></div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
