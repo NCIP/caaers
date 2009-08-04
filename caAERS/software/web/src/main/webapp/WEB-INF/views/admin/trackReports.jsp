@@ -258,7 +258,7 @@ color:#0033FF;
             		</tr>   
              		<tr id="reportResetDiv">
             			<td>
-	            				<a href="javascript:resetReports()">Reset Stuck Reports ('Submission In Process') </a>
+	            				<a href="javascript:resetReports()">Reset Stuck Reports ('Submission to AdEERS in process') </a>
             			</td>
             		</tr>           		         		
              </table>	
