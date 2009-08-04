@@ -140,6 +140,9 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
 
     @Transient
     public boolean isActive() {
+    	
+    	if(siteResearchStaffRoles == null) return false;
+    	
         for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
             if (srsr.isActive()) return true;
         }
