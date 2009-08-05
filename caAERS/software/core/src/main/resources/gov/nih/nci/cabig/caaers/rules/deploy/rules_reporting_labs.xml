@@ -220,8 +220,9 @@
 			
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
-					String labCategoryName = NullSafeFieldExtractor.extractField(l, "labTerm.category.name");
+					
 					for(Lab l : aeReport.getLabs()){
+						String labCategoryName = NullSafeFieldExtractor.extractField(l, "labTerm.category.name");
 						if(labCategoryName.equals("Bone Marrow Biopsy") || labCategoryName.equals("Chemistry") || labCategoryName.equals("Coagulation") || labCategoryName.equals("Hematologic") ||  labCategoryName.equals("Respiratory")){
 							if(l.getSite() != null || l.getInfectiousAgent() != null || l.getLabDate() != null){
 								errors.addValidationError("LAB_BR5B_ERR", "'Site','Date' and 'Infectious Agent' must not be provided if 'Lab Category' is not 'Microbiology'", i).addFieldNames("aeReport.labs[" + i +"].site", "aeReport.labs[" + i +"].labDate", "aeReport.labs[" + i +"].infectiousAgent", "aeReport.labs[" + i +"].lab-category");
