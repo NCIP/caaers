@@ -19,8 +19,9 @@
 <chrome:division title="Regular Tasks">
     <table id="test" class="autoclear" width="100%">
         <tr class="results" >
-            <td align="left" valign="top" width="30%">
+            
                 <c:forEach begin="0" end="1" items="${taskgroups}" var="taskGroup">
+                	<td align="left" valign="top" width="30%">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
 
@@ -37,12 +38,13 @@
                         </ul>
 
                     </csmauthz:accesscontrol>
+					</td>
                 </c:forEach>
 
-            </td>
+            
 
-            <td align="left" valign="top" width="30%">
-                <c:forEach begin="2" end="2" items="${taskgroups}" var="taskGroup">
+   <%--           <td align="left" valign="top" width="30%">
+              <c:forEach begin="2" end="2" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
 
@@ -60,7 +62,7 @@
                     </csmauthz:accesscontrol>
                 </c:forEach>
 
-            </td>
+            </td>--%>
             <td align="left" valign="top" width="30%">
                 <c:forEach begin="3" end="3" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
