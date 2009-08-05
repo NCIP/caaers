@@ -104,3 +104,6 @@ select.required {
 	background-color:#F4F4F5;
 	border:1px solid #809EBA;
 }
+#floatingTaskbar {
+	width: 971px;
+}
