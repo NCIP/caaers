@@ -136,11 +136,12 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 		// check if user is part of co-ordinating center 
 		if (studyDomainObj == null ) {
 			//if (researchStaffOrganization.equals(study.getCoordinatingCenterCode())) return true;
-			if (userOrganizations.contains((study.getCoordinatingCenterCode()))) return true;
+			if (userOrganizations.contains(study.getCoordinatingCenterCode()) || userOrganizations.contains(study.getPrimarySponsorCode()) ) return true;
 			studyDomainObj = studyDao.getById(study.getId()) ;
 		} else  {
 			//if (researchStaffOrganization.equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
-			if (userOrganizations.contains(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+			if (userOrganizations.contains(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode()) || 
+					userOrganizations.contains(studyDomainObj.getPrimarySponsorCode()) ) return true;
 		}
 		return isUserOrganizationPartOfStudySites(userOrganizations,studyDomainObj);
 		
