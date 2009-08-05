@@ -826,8 +826,11 @@ function clearFields(parentContainer){
 //---------------------------------------------------------------------------------------------------------------------
 //will log the error in the page. 
 function caaersLog(err){
-	var _logEl = $('caaersJSDebug')
-	if(_logEl){
-		_logEl.innerHTML = _logEl.innerHTML + err;
-	}
+    try {
+        var _logEl = $('caaersJSDebug')
+        if (_logEl) {
+            _logEl.innerHTML = _logEl.innerHTML + err;
+        }
+    } catch(e) {
+    }
 }

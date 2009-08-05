@@ -556,25 +556,36 @@ public class CreateAdverseEventAjaxFacade {
         return false;
     }
 
-    public String withdrawReportVersion(int aeReportId, int reportId) {
-        ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
-        Report report = aeReport.findReportById(reportId);
-        if(report != null && report.isActive()){
-        	if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
-        	
-        	//withdraw report.
-        	reportRepository.withdrawReport(report);
-        	
-        	//unamend last amended report. 
-        	Report lastAmendedReport = aeReport.findLastAmendedReport(report.getReportDefinition());
-        	if(lastAmendedReport != null){
-        		reportRepository.unAmendReport(lastAmendedReport);
-        	}
-        	
-        	aeReportDao.save(aeReport);
+    public AjaxOutput withdrawReportVersion(int aeReportId, int reportId) {
+        AjaxOutput out = new AjaxOutput();
+
+        try {
+            ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
+            Report report = aeReport.findReportById(reportId);
+            if(report != null && report.isActive()){
+                if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
+
+                //withdraw report.
+                reportRepository.withdrawReport(report);
+
+                //unamend last amended report.
+                Report lastAmendedReport = aeReport.findLastAmendedReport(report.getReportDefinition());
+                if(lastAmendedReport != null){
+                    reportRepository.unAmendReport(lastAmendedReport);
+                }
+
+                aeReportDao.save(aeReport);
+            }
+            out.setObjectContent("Success");
+            
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            out.setError(true);
+            out.setErrorMessage(e.getMessage());
         }
-         
-        return "Success";
+        
+        return out;
     }
 
     /**
@@ -948,25 +959,40 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput updatePhysicianSignOff(Boolean physicianSignOff){
     	AjaxOutput output = new AjaxOutput();
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
-    	command.getAeReport().getReports();
-    	command.getAeReport().setPhysicianSignOff(physicianSignOff);
-    	saveIfAlreadyPersistent(command);
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	String html = renderAjaxView("submitReportValidationSection", 0, params);
-    	output.setHtmlContent(html);
-    	
-    	return output;
+
+        try {
+            ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+            command.reassociate();
+            command.getAeReport().getReports();
+            command.getAeReport().setPhysicianSignOff(physicianSignOff);
+            saveIfAlreadyPersistent(command);
+            Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+            String html = renderAjaxView("submitReportValidationSection", 0, params);
+            output.setHtmlContent(html);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            output.setError(true);
+            output.setErrorMessage(e.getMessage());
+        }
+        return output;
     }
     
     public AjaxOutput refreshSubmitReportValidationSection(){
-    	AjaxOutput output = new AjaxOutput();
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	String html = renderAjaxView("submitReportValidationSection", 0, params);
-    	output.setHtmlContent(html);
-    	
-    	return output;
+    	AjaxOutput out = new AjaxOutput();
+
+        try {
+            Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+            String html = renderAjaxView("submitReportValidationSection", 0, params);
+            out.setHtmlContent(html);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            out.setError(true);
+            out.setErrorMessage(e.getMessage());
+        }
+
+        return out;
     }
     
     public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
@@ -1008,13 +1034,20 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public AjaxOutput advanceWorkflow(String transitionToTake){
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
-    	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), 
-    			transitionToTake, command.getAeReport(), getUserId());
-    	AjaxOutput output = new AjaxOutput();
-    	output.setObjectContent(transitions.toArray());
-    	return output;
+        AjaxOutput out = new AjaxOutput();
+        try {
+            ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+            command.reassociate();
+            List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), transitionToTake, command.getAeReport(), getUserId());
+            out.setObjectContent(transitions.toArray());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            out.setError(true);
+            out.setErrorMessage(e.getMessage());
+
+        }
+        return out;
     }
 
     /**

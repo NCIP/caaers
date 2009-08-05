@@ -188,25 +188,35 @@ color:#0033FF;
 	}
 	
 	function doAction(action, aeReportId, reportId) {
-        if(action == 'withdraw'){
-	        createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
-	           	//AE.hideIndicator("notify-indicator-" + aeReportId)
-	           	var statusColumn = $("status"+reportId)
-	     		var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
-	      
-	      		var optionColumn = $("action"+reportId)
-	      		optionColumnData = $("action"+reportId).innerHTML;
-	      
-	      		Element.update(statusColumn, statusColumnData)
-	      		Element.update(optionColumn, optionColumnData)
-	        });
-		} else if(action =='submit') {
-            var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
-			window.location = url;
-		} else if(action =='amend') {
-            var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
-			window.location = url; 
-		}
+        try {
+            AjaxResult = null;
+            if (action == 'withdraw') {
+                createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+                    ajaxResult = result;
+                    if (ajaxResult.error) {
+                        caaersLog(ajaxResult.errorMessage);
+                    } else {
+                        //AE.hideIndicator("notify-indicator-" + aeReportId)
+                        var statusColumn = $("status" + reportId)
+                        var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+
+                        var optionColumn = $("action" + reportId)
+                        optionColumnData = $("action" + reportId).innerHTML;
+
+                        Element.update(statusColumn, statusColumnData)
+                        Element.update(optionColumn, optionColumnData)
+                    }
+                });
+            } else if (action == 'submit') {
+                var url = '<c:url value="/pages/ae/submitReport?from=list" />' + '&aeReport=' + aeReportId + '&reportId=' + reportId;
+                window.location = url;
+            } else if (action == 'amend') {
+                var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
+                window.location = url;
+            }
+        } catch(e) {
+            caaersLog(e);
+        }
         
     }  
 

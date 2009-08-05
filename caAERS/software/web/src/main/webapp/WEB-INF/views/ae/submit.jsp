@@ -21,27 +21,34 @@
     <script type="text/javascript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
-        
-        function fireAction(action, selected){
-       
-      	document.getElementById('command')._target.name='_noname';
-        document.viewReport._action.value=action;
-        document.viewReport._selected.value=selected;
-        document.viewReport.submit();
-    }
-    
-    	function withdrawReport(aeReportId, reportId){
-		    createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
-	           	//AE.hideIndicator("notify-indicator-" + aeReportId)
-	           	var statusColumn = $('report-status')
-	     		var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
-	      
-	      
-	      		Element.update(statusColumn, statusColumnData)
-	        });
-	     }
-    
-    Event.observe(window, "load", function() {
+
+        function fireAction(action, selected) {
+
+            document.getElementById('command')._target.name = '_noname';
+            document.viewReport._action.value = action;
+            document.viewReport._selected.value = selected;
+            document.viewReport.submit();
+        }
+
+        function withdrawReport(aeReportId, reportId) {
+            try {
+                createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+                    ajaxResult = result;
+                    if (ajaxResult.error) {
+                        caaersLog(ajaxResult.errorMessage);
+                    } else {
+                        //AE.hideIndicator("notify-indicator-" + aeReportId)
+                        var statusColumn = $('report-status')
+                        var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+                        Element.update(statusColumn, statusColumnData)
+                    }
+                });
+            } catch(e) {
+                caaersLog(e);
+            }
+        }
+
+        Event.observe(window, "load", function() {
     	 $('flow-next').value="Go to Manage Reports ";	 
     	 
     	 //only show the workflow tab, if it is associated to workflow
@@ -54,11 +61,20 @@
        
        
     function updatePhysicianSignOff(){
-    	createAE.updatePhysicianSignOff($('aeReport.physicianSignOff').checked, function(output){
-    		$('report-validation-section').innerHTML = output.htmlContent;
-    		if(${command.workflowEnabled == true})
-	    		routingHelper.updateWorkflowActions.bind(routingHelper)();
-    	});
+        try {
+            createAE.updatePhysicianSignOff($('aeReport.physicianSignOff').checked, function(output) {
+                ajaxResult = output;
+                if (ajaxResult.error) {
+                    caaersLog(ajaxResult.errorMessage);
+                } else {
+                    $('report-validation-section').innerHTML = output.htmlContent;
+                    if (${command.workflowEnabled == true})
+                        routingHelper.updateWorkflowActions.bind(routingHelper)();
+                }
+            });
+        } catch(e) {
+            caaersLog(e)
+        }
     }   
     
 	function executeAction(reportId, url, aeReportId, submissionUrl){
@@ -82,25 +98,35 @@
 	}
 	
 	function doAction(action, aeReportId, reportId) {
-		if(action == 'withdraw'){
-			createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
-				//AE.hideIndicator("notify-indicator-" + aeReportId)
-				var statusColumn = $("report-status-"+reportId)
-				var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
-	      
-				//var optionColumn = $("action"+reportId)
-				//optionColumnData = $("action"+reportId).innerHTML;
-	      
-				Element.update(statusColumn, statusColumnData)
-				//Element.update(optionColumn, optionColumnData)
-			});
-		} else if(action =='submit') {
-			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
-			window.location = url;
-		} else if(action =='amend') {
-			var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
-			window.location = url; 
-		}
+        var ajaxResult = null;
+        try {
+            if (action == 'withdraw') {
+                createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+                    ajaxResult = result;
+                    if (ajaxResult.error) {
+                        caaersLog(ajaxResult.errorMessage);
+                    } else {
+                        //AE.hideIndicator("notify-indicator-" + aeReportId)
+                        var statusColumn = $("report-status-" + reportId)
+                        var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+
+                        //var optionColumn = $("action"+reportId)
+                        //optionColumnData = $("action"+reportId).innerHTML;
+
+                        Element.update(statusColumn, statusColumnData)
+                        //Element.update(optionColumn, optionColumnData)
+                    }
+                });
+            } else if (action == 'submit') {
+                var url = '<c:url value="/pages/ae/submitReport?from=list" />' + '&aeReport=' + aeReportId + '&reportId=' + reportId;
+                window.location = url;
+            } else if (action == 'amend') {
+                var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
+                window.location = url;
+            }
+        } catch(e) {
+            caaersLog(e)
+        }
 	}
 	
 	function updateDropDownAfterWithdraw(reportId) {
@@ -114,36 +140,48 @@
 	}
 	
 	function advanceWorkflow(){
-		var sbox = $('sliderWFAction');
-		
-		var sbox = $('sliderWFAction');
+        try {
+            var sbox = $('sliderWFAction');
+            var sbox = $('sliderWFAction');
 		if(sbox.value == '' || sbox.value == 'Please select') return;
-		if(confirm('Are you sure you want to take the action - ' + sbox.value)){
-			var sboxIndicator = $('sliderWFAction-indicator');
-			var selected_sbox_value = sbox.value;		
-			sbox.disable();
-			sboxIndicator.style.display='';
-			createAE.advanceWorkflow(sbox.value, function(ajaxOutput){
-				routingHelper.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
-				if(${command.aeReport.physicianSignOffRequired}){
-				if(selected_sbox_value == 'Approve Report' || selected_sbox_value == 'Request Additional Information'){
-					if(selected_sbox_value == 'Approve Report'){
-						$('aeReport.physicianSignOff').checked = true;
-					}
-					else{
-						$('aeReport.physicianSignOff').checked = false;
-					}
-					createAE.refreshSubmitReportValidationSection( function(output){
-    					$('report-validation-section').innerHTML = output.htmlContent;
-    					routingHelper.retrieveReviewComments();
-    				});
-				}
-			}
-				
-			});
-		}else{
-			return false;
-		}
+            if (confirm('Are you sure you want to take the action - ' + sbox.value)) {
+                var sboxIndicator = $('sliderWFAction-indicator');
+                var selected_sbox_value = sbox.value;
+                sbox.disable();
+                sboxIndicator.style.display = '';
+                createAE.advanceWorkflow(sbox.value, function(ajaxOutput) {
+                    var ajaxResult = ajaxOutput;
+                    if (ajaxResult.error) {
+                        caaersLog(ajaxResult.errorMessage);
+                    } else {
+                        routingHelper.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+                        if (${command.aeReport.physicianSignOffRequired}) {
+                            if (selected_sbox_value == 'Approve Report' || selected_sbox_value == 'Request Additional Information') {
+                                if (selected_sbox_value == 'Approve Report') {
+                                    $('aeReport.physicianSignOff').checked = true;
+                                }
+                                else {
+                                    $('aeReport.physicianSignOff').checked = false;
+                                }
+                                createAE.refreshSubmitReportValidationSection(function(output) {
+                                    var ajaxResult = output;
+                                    if (ajaxResult.error) {
+                                        caaersLog(ajaxResult.errorMessage);
+                                    } else {
+                                        $('report-validation-section').innerHTML = output.htmlContent;
+                                        routingHelper.retrieveReviewComments();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        } catch(e) {
+            caaersLog(e);
+        }
 		
 	}
         
