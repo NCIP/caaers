@@ -110,13 +110,14 @@ class PersonnelTab extends StudyTab {
     @Override
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
-        HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
-        for (StudyPersonnel sp : so.getStudyPersonnels()) {
-            if (!hSet.add(sp)) {
-                errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
+        if (command.getStudySiteIndex() >= 0) {
+            StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+            HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
+            for (StudyPersonnel sp : so.getStudyPersonnels()) {
+                if (!hSet.add(sp)) {
+                    errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
+                }
             }
         }
     }
-
 }
