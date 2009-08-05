@@ -51,7 +51,7 @@ public class BlankFormGenerator {
     public BlankFormGenerator() {
     }
 
-    public void generatePdf(String xml, String pdfOutFileName) throws Exception {
+    public synchronized void  generatePdf(String xml, String pdfOutFileName) throws Exception {
         FopFactory fopFactory = FopFactory.newInstance();
 
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
