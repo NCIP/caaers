@@ -80,7 +80,7 @@ public class StudyInterventionsTab extends AeTab {
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(collectOptions(Arrays.asList(RadiationAdministration.values()), null, "displayName"));
-        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit", "Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"), true));
+        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit", "Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please select"), true));
         InputField fractionNumberField = createTextField("fractionNumber", "Schedule number of fractions", false);
         fractionNumberField.getAttributes().put(InputField.HELP, "ae.radiationIntervention.aeReport.radiationInterventions.fractionNumber");
 
@@ -91,7 +91,7 @@ public class StudyInterventionsTab extends AeTab {
                 createPastDateField("lastTreatmentDate", "Date of last treatment", false),
                 fractionNumberField,
                 createTextField("daysElapsed", " Number of elapsed days", false),
-                createSelectField("adjustment", "Adjustment", false, WebUtils.collectOptions(configurationProperty.getMap().get("radiationAdjustmentRefData"), "code","desc", "Please Select")));
+                createSelectField("adjustment", "Adjustment", false, WebUtils.collectOptions(configurationProperty.getMap().get("radiationAdjustmentRefData"), "code","desc", "Please select")));
     }
 
     private void createSurgeryFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
@@ -109,13 +109,13 @@ public class StudyInterventionsTab extends AeTab {
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", true, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
-        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"), true));
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
         InputFieldAttributes.setRows(commentsField, 4);
         //InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
-        InputField modifiedDoseField = InputFieldFactory.createSelectField("agentAdjustment", "Dose Modification?", false, WebUtils.collectOptions(Arrays.asList(AgentAdjustment.values()), null, "displayName","Please Select"));
+        InputField modifiedDoseField = InputFieldFactory.createSelectField("agentAdjustment", "Dose Modification?", false, WebUtils.collectOptions(Arrays.asList(AgentAdjustment.values()), null, "displayName","Please select"));
        // modifiedDoseField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
         InputField investigationalAgentAdministeredField = InputFieldFactory.createSelectField("treatmentInformation.investigationalAgentAdministered", "Was an investigational agent administered on this protocol?" , false, createInvestigationalAgentAdministeredOptions());
         investigationalAgentAdministeredField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.investigationalAgentAdministered");

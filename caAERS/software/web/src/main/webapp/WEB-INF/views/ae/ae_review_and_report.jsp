@@ -834,7 +834,7 @@ function validate(aeReportId){
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 			<chrome:division title="Recommended Actions">
 			<!--  Rules Message Top -->
-			 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
+			 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}"  alertShown="${command.evaluationResult.aeReportAlertMap[_aeReportId]}"/>
 			
 			<!--  Listing the reports -->
 			<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" 
@@ -872,7 +872,7 @@ function validate(aeReportId){
 	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}" >
 		<chrome:division title="Recommended Actions">
 		<!--  Rules Message Top -->
-		 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
+		 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" alertShown="${command.evaluationResult.aeReportAlertMap[_aeReportId]}"/>
 		
 		<!--  Listing the reports -->
 		<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" 

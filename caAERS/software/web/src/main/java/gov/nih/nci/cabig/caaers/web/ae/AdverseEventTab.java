@@ -87,7 +87,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	protected Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.put("", "Please Select");
+        hospitalizationOptions.put("", "Please select");
         hospitalizationOptions.putAll(WebUtils.collectOptions(HOSPITALIZATION, "name", "displayName"));
         return hospitalizationOptions;
     }

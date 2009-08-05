@@ -124,7 +124,7 @@ color:#0033FF;
 	function advanceWorkflow(selectBox,wfId, entityId, entityType){
 		var sb = $(selectBox);
 		var newStatus = sb.value;
-		if(sb.value == '' || sb.value == 'Please Select') return;
+		if(sb.value == '' || sb.value == 'Please select') return;
 		if(confirm('Are you sure you want to take the action - ' + sb.value)){
 			sb.disable();
 			
@@ -135,7 +135,7 @@ color:#0033FF;
 				
 							if(output.objectContent){
 								sb.options.length = 0;
-								var pleaseSelectOpt = new Option('Please Select', 'Please Select');
+								var pleaseSelectOpt = new Option('Please select', 'Please select');
 								sb.options.add(pleaseSelectOpt);
 								var i = 0;
 								for(i = 0; i< output.objectContent.length; i++){

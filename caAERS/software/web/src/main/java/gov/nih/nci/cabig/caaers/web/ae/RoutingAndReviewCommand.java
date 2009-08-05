@@ -35,7 +35,7 @@ public class RoutingAndReviewCommand{
     
     public RoutingAndReviewCommand() {
     	REVIEW_STATUS.addAll(Arrays.asList(ReviewStatus.values()));
-    	reviewStatusOptionsMap.put("", "Please Select..");
+    	reviewStatusOptionsMap.put("", "Please select");
     	reviewStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REVIEW_STATUS, "name", "code", "displayName", ":  "));
     	reviewStatusOptionsMap.putAll(WebUtils.collectOptions(REVIEW_STATUS, "name", "displayName"));
         

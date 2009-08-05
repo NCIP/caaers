@@ -97,7 +97,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         boolean studySiteArray = (command.getStudy() == null || command.getStudy().getId() == null);
 
         if (studySiteArray) {
-            errors.rejectValue("studySiteArray", "PT_012", "Please Select a Study to Continue");
+            errors.rejectValue("studySiteArray", "PT_012", "Please select a Study to Continue");
         }
 
         if (StringUtils.isEmpty(command.assignment.getStudySubjectIdentifier())) {

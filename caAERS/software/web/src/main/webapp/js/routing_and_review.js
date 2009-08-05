@@ -92,7 +92,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	},
 	updateSelectBoxContent : function(sb, sbIndicator, objectContent){
 		sb.options.length = 0;
-		var pleaseSelectOpt = new Option('Please Select', '');
+		var pleaseSelectOpt = new Option('Please select', '');
 		sb.options.add(pleaseSelectOpt);
 		if(objectContent){
 			var i = 0;

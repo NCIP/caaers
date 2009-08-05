@@ -30,7 +30,7 @@
 		</a>
 	<td width="25%">
 		<select onChange="advanceWorkflow(this,${reportingPeriod.workflowId }, ${reportingPeriod.id }, 'reportingPeriod')" class="wf${reportingPeriod.workflowId }" style="width: 150px">
-			<option value="Please Select">Please Select</option>
+			<option value="Please Select">Please select</option>
 			<c:forEach items="${reportingPeriod.possibleActions}" var="aStatus">
 				<option value="${aStatus }">${aStatus}</option>
 			</c:forEach>

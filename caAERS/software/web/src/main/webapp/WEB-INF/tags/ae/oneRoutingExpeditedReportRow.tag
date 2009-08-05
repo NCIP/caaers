@@ -35,7 +35,7 @@
 	</td>
 	<td width="25%" align="center">
 		<select onChange="advanceWorkflow(this,${aeReport.workflowId }, ${aeReport.id }, 'aeReport')" class="wf${aeReport.workflowId }" style="width: 100px">
-			<option value="Please Select">Please Select</option>
+			<option value="Please Select">Please select</option>
 			<c:forEach items="${aeReport.possibleActions}" var="rAction">
 				<option value="${rAction}">${rAction}</option>
 			</c:forEach>

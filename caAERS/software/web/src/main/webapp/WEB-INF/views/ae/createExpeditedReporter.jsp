@@ -217,7 +217,7 @@
                 <div class="label">Reporter</div>
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.user">
-                        <option value="">please select--</option>
+                        <option value="">please select</option>
                         <optgroup label="Research staff">
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
                             <option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
@@ -242,7 +242,7 @@
                 <div class="label">Physician</div>
                 <div class="value">
                     <select id="physician" name="aeReport.physician.user">
-                        <option value="">please select--</option>
+                        <option value="">please select</option>
                         <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
                             <option value="${siteInv.investigator.id}" ${siteInv.investigator.id eq command.aeReport.physician.user.id ? 'SELECTED' : '' }>${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
                         </c:forEach>

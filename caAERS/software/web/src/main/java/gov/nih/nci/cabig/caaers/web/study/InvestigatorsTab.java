@@ -64,13 +64,13 @@ class InvestigatorsTab extends StudyTab {
         } else if ("deactivate".equals(action)) {
             command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
         }
-
+        
+        //will sync the start and end date. 
         if (command.getStudySiteIndex() >= 0) {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             for (StudyInvestigator si : so.getStudyInvestigators()) {
                 if (si.getId() == null) {
-                    si.setStartDate(si.getSiteInvestigator().getStartDate());
-                    si.setEndDate(si.getSiteInvestigator().getEndDate());
+                  si.syncDates();
                 }
             }
         }

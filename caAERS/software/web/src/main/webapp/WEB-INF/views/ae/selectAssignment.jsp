@@ -130,7 +130,7 @@
         	// If the value in study or participant is cleared, then the course dropdown should be cleared.
         	// This method takes care of clearing the contents of the course dropdown.
         	this.rpCtrl.options.length = 0;
-        	this.addOptionToSelectBox(this.rpCtrl, 'Please Select', '');
+        	this.addOptionToSelectBox(this.rpCtrl, 'Please select', '');
         	$('course-details').hide();
         	$('adverseEventReportingPeriod').value ='';
         	this.rpCtrl.value='';
