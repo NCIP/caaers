@@ -92,7 +92,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      */
     public String generateWarningMessage(ExpeditedAdverseEventInputCommand command){
     	if(!command.getAeReport().getModifiedAdverseEvents().isEmpty()){
-    		return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId(), command.getParticipant().getId(), command.getAdverseEventReportingPeriod().getId()});
+    		return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId().toString(), command.getParticipant().getId().toString(), command.getAdverseEventReportingPeriod().getId().toString()});
     	}
     	return null;
     }
