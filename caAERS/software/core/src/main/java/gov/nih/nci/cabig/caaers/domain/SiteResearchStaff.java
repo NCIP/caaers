@@ -149,6 +149,29 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
         return false;
     }
     
+
+    @Transient
+    public Date getActiveDate() {
+        SortedSet<Date> dates = new TreeSet<Date>();
+        if (this.getSiteResearchStaffRoles() == null) return new Date(System.currentTimeMillis());
+        
+        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
+            if (srsr.getStartDate() == null) srsr.setStartDate(new Date(System.currentTimeMillis()));
+            dates.add(srsr.getStartDate());
+        }
+
+        if (dates.size() > 0) return dates.first(); else return null;
+    }
+
+    @Transient
+    public void setEndDate(Date date) {
+        if (getSiteResearchStaffRoles() == null) return;
+        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
+            srsr.setEndDate(date);
+        }
+    }
+    
+    
     // /OBJECT METHODS
     @Override
     public int hashCode() {
@@ -183,41 +206,4 @@ public class SiteResearchStaff extends AbstractMutableDomainObject{
         this.associateAllStudies = associateAllStudies;
     }
 
-    @Transient
-    public Date getActiveDate() {
-        SortedSet<Date> dates = new TreeSet<Date>();
-        if (this.getSiteResearchStaffRoles() == null) return new Date(System.currentTimeMillis());
-        
-        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
-            if (srsr.getStartDate() == null) srsr.setStartDate(new Date(System.currentTimeMillis()));
-            dates.add(srsr.getStartDate());
-        }
-
-        if (dates.size() > 0) return dates.first(); else return null;
-    }
-
-    @Transient
-    public void setEndDate(Date date) {
-        if (getSiteResearchStaffRoles() == null) return;
-        for (SiteResearchStaffRole srsr : this.getSiteResearchStaffRoles()) {
-            srsr.setEndDate(date);
-        }
-    }
-    
-    /**
-     * This method returns all the available roles in this Site
-     * @return
-     */
-	@Transient
-	public List<String> getAvailableRoles(){
-		Set<String> roleSet = new HashSet<String>();
-		for(SiteResearchStaffRole siteResearchStaffRole : this.getSiteResearchStaffRoles()){
-			if(siteResearchStaffRole.isActive()){
-				roleSet.add(siteResearchStaffRole.getRoleCode());
-			}
-		}
-		List<String> roleList = new ArrayList<String>();  
-		roleList.addAll(roleSet);
-		return roleList;
-	}
 }
