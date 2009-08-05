@@ -60,15 +60,15 @@ class InvestigatorsTab extends StudyTab {
                 command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
             }
         } else if ("activate".equals(action)) {
-            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).activate();
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getActiveStudyInvestigators().get(selectedInvestigatorIndex).activate();
         } else if ("deactivate".equals(action)) {
-            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getActiveStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
         }
         
         //will sync the start and end date. 
         if (command.getStudySiteIndex() >= 0) {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
-            for (StudyInvestigator si : so.getStudyInvestigators()) {
+            for (StudyInvestigator si : so.getActiveStudyInvestigators()) {
                 if (si.getId() == null) {
                   si.syncDates();
                 }

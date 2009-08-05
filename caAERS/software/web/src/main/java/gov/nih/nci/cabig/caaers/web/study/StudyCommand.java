@@ -313,7 +313,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
-    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getActiveStudyInvestigators(), index);
+    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators(), study.getActiveStudyOrganizations().get(studyOrgIndex).getActiveStudyInvestigators().get(index));
     }
     
     /**
@@ -338,6 +338,14 @@ public class StudyCommand {
     	}
     }
    
+    public void delete(List<? extends Retireable> source, Retireable obj){
+    	if(obj.getId() != null){
+    		obj.retire();
+    	}else{
+    		source.remove(obj);
+    	}
+    }
+
     /**
      * This method will save a study into the DB
      */

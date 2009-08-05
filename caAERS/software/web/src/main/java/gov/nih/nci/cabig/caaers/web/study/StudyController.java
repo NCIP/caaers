@@ -35,7 +35,8 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
+public abstract class
+        StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
 
     private static final Log log = LogFactory.getLog(StudyController.class);
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";

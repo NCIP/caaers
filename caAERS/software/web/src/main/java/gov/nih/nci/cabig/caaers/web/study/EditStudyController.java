@@ -189,7 +189,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
             return false;
         }
         
-        if(StringUtils.equals(action, "removeInv") )  return true;
+        if(StringUtils.equals(action, "removeInv") )  return false;
 
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
