@@ -55,14 +55,14 @@ var Accordion = Class.create({
     checkMaxHeight: function() {
         for(var i=0; i<this.contents.length; i++) {
             if(this.contents[i].getHeight() > this.maxHeight) {
-                this.maxHeight = this.contents[i].getHeight();
+                this.maxHeight = 'auto';
             }
         }
     },
 
     attachInitialMaxHeight: function() {
 		this.current.previous('div.'+this.options.toggleClass).addClassName(this.options.toggleActive);
-        if(this.current.getHeight() != this.maxHeight) this.current.setStyle({height: this.maxHeight+"px"});
+        if(this.current.getHeight() != this.maxHeight) this.current.setStyle({height: this.maxHeight});
     },
 
     clickHandler: function(e) {
