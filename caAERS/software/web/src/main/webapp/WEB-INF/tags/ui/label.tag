@@ -9,7 +9,7 @@
 
 <%@attribute name="required" type="java.lang.Boolean" description="Tells that this field is a required (red asterisk)"%>
 <%@attribute name="mandatory" type="java.lang.Boolean" description="Tells that this field is mandatory (green symbol)" %>
-<caaers:message var="_lblNameText" code="${not empty labelProperty? labelProperty : path}" text="${text}." />
+<caaers:message var="_lblNameText" code="${not empty labelProperty? labelProperty : path}" text="${text}" />
 <form:label path="${path}">
 <span id="${path}-indicator"><c:if test="${path eq 'aeReport.adverseEvents[0].startDate'}"><tags:requiredIndicator/></c:if></span>
 <c:if test="${required or mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${_lblNameText}
