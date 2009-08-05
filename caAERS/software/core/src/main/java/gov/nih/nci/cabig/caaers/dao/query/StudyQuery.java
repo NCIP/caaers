@@ -126,6 +126,11 @@ public class StudyQuery extends AbstractQuery {
     	setParameter("studyOrgName", studyOrgName);
     }
     
+    public void filterByOrganizationId(Integer id){
+    	andWhere("ss.organization.id = :id");
+    	setParameter("id", id);
+    }
+    
     /**
      * If true, will return only DATA ENTRY completed studies.
      * @param ignoreNonQCedStudy

@@ -35,7 +35,6 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	public void testSave() throws Exception {
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		List<SiteResearchStaff> sRsList = new ArrayList<SiteResearchStaff>();
 		groupList.add(UserGroupType.caaers_study_cd);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
@@ -47,12 +46,11 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		siteResearchStaff.setAssociateAllStudies(Boolean.TRUE);
 		staff.addSiteResearchStaff(siteResearchStaff);
-		sRsList.add(siteResearchStaff);
 		staff.setLoginId("Joel@def.com");
 		String changeUrl = "/pages/url";
 		researchStaffDao.save(staff);
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
-		studyRepository.associateStudyPersonnel(sRsList);
+		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();
@@ -64,7 +62,6 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		List<SiteResearchStaff> sRsList = new ArrayList<SiteResearchStaff>();
 		groupList.add(UserGroupType.caaers_study_cd);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
@@ -75,11 +72,11 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		staff.addSiteResearchStaff(siteResearchStaff);
-		sRsList.add(siteResearchStaff);
 		staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
 		researchStaffDao.save(staff);
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
+		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
 		verifyMocks();

@@ -1,24 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffConverterDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.util.StringUtilities;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,18 +82,7 @@ public class ResearchStaffRepository {
     	researchStaffDao.save(researchStaff);
 
 		try{
-			List<SiteResearchStaff> siteRsList = new ArrayList<SiteResearchStaff>();
-			for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-				if(siteResearchStaff.getAssociateAllStudies() == null){
-					siteResearchStaff.setAssociateAllStudies(Boolean.FALSE);
-				}
-				if(siteResearchStaff.getAssociateAllStudies()){
-					siteRsList.add(siteResearchStaff);
-				}
-			}
-			if(siteRsList.size() > 0){
-				studyRepository.associateStudyPersonnel(siteRsList);
-			}
+			studyRepository.associateStudyPersonnel(researchStaff);
 		}catch(Exception e){
 			throw new CaaersSystemException("Failed to associte researchstaff to all studies");
 		}

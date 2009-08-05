@@ -23,6 +23,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -230,6 +231,37 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     	return users;
     }
     
+    /**
+     * 
+     * @param siteResearchStaff
+     */
+    public void syncStudyPersonnel(SiteResearchStaff siteResearchStaff){
+    	for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
+    		StudyPersonnel studyPersonnel =  findStudyPersonnel(siteResearchStaffRole);
+    		if(studyPersonnel == null){
+    			studyPersonnel = new StudyPersonnel();
+    			if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+    				addStudyPersonnel(studyPersonnel);
+    			}
+    		}
+    		studyPersonnel.syncRole(siteResearchStaffRole);
+    	}
+    }
+    
+    /**
+     * 
+     * @param siteResearchStaffRole
+     * @return
+     */
+    public StudyPersonnel findStudyPersonnel(SiteResearchStaffRole siteResearchStaffRole){
+    	for(StudyPersonnel studyPersonnel : this.getStudyPersonnelsInternal()){
+    		if(studyPersonnel.getRoleCode().equals(siteResearchStaffRole.getRoleCode())){
+    			return studyPersonnel;
+    		}
+    	}
+    	return null;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -284,13 +316,5 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
         }
     }
     
-    @Transient
-    public void syndStudyPersonnelDates(){
-    	for(StudyPersonnel studyPersonnel : this.getStudyPersonnels()){
-    		if(studyPersonnel.isActive()){
-    			studyPersonnel.syncDates();
-    		}
-    	}
-    }
-    
+
 }

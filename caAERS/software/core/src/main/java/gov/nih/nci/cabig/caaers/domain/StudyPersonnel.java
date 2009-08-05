@@ -145,14 +145,14 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     }
     
     @Transient
-    public void syncDates(){
-    	if(this.getSiteResearchStaff() != null & this.getSiteResearchStaff().getSiteResearchStaffRoles() != null){
-        	for(SiteResearchStaffRole srsRole : this.getSiteResearchStaff().getSiteResearchStaffRoles()){
-        		if(this.roleCode.equals(srsRole.getRoleCode())){
-        			this.setStartDate(srsRole.getStartDate());
-        			this.setEndDate(srsRole.getEndDate());
-        		}
-        	}
+    public void syncRole(SiteResearchStaffRole siteResearchStaffRole){
+    	if(this.getId() == null){
+    		this.setSiteResearchStaff(siteResearchStaffRole.getSiteResearchStaff());
+        	this.setStartDate(siteResearchStaffRole.getStartDate());
+        	this.setRoleCode(siteResearchStaffRole.getRoleCode());
+        	this.setEndDate(siteResearchStaffRole.getEndDate());
+    	}else if(isActive()){
+    		this.setEndDate(siteResearchStaffRole.getEndDate());
     	}
     }
 }

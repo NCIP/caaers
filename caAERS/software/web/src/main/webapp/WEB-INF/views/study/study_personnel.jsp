@@ -5,10 +5,12 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
+
 <html>
  <head>
  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>${tab.longTitle}</title>
+  
    <tags:dwrJavascriptLink objects="createStudy"/>
    <script language="JavaScript" type="text/JavaScript">
      var personnelListEditor;

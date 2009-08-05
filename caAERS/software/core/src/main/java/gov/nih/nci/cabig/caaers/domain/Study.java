@@ -1184,5 +1184,34 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
         return null;
     }
+    
+    
+    /**
+     * This method synchronizes StudyPersonnel associated to a StudyOrganization with the given ResearchStaff  
+     * @param researchStaff
+     */
+    public void syncStudyPersonnel(ResearchStaff researchStaff){
+    	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
+    		List<StudyOrganization> studyOrgsList = findActiveStudyOrganizations(siteResearchStaff.getOrganization());
+    		for(StudyOrganization studyOrganization : studyOrgsList){
+    			studyOrganization.syncStudyPersonnel(siteResearchStaff);
+    		}
+    	}
+    }
+    
+    /**
+     * This method returns a list of study organizations contained by the study have the given organization.
+     * @param organization
+     * @return
+     */
+    public List<StudyOrganization> findActiveStudyOrganizations(Organization organization){
+    	List<StudyOrganization> studyOrgsList = new ArrayList<StudyOrganization>();
+    	for(StudyOrganization studyOrganization : getActiveStudyOrganizations()){
+    		if(studyOrganization.getOrganization().equals(organization)){
+    			studyOrgsList.add(studyOrganization);
+    		}
+    	}
+    	return studyOrgsList;
+    }
 
 }

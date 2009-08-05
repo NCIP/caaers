@@ -44,8 +44,8 @@
 
     <td style="border-left:none;">
         <c:if test="${!isNew}">
-            <c:if test="${isActive}"><tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
-            <c:if test="${!isActive}"><tags:button type="button" color="red" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+            <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
+            <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
         </c:if>
 <%--
         <a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">

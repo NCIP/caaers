@@ -91,40 +91,16 @@ public class StudyRepository {
     }
     
     //Associate the ResearchStaff to all the Studies 
-    public void associateStudyPersonnel(List<SiteResearchStaff> siteRsList) throws Exception{
+    public void associateStudyPersonnel(ResearchStaff researchStaff) throws Exception{
     	StudyQuery query = null;
     	List<Study> studies = null;
-    	StudyPersonnel studyPersonnel = null;
-    	for(SiteResearchStaff siteResearchStaff : siteRsList){
+    	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
     		query = new StudyQuery();
     		query.joinStudyOrganization();
-    		query.filterByStudyOrganizationNameExactMatch(siteResearchStaff.getOrganization().getName());
+    		query.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
     		studies = studyDao.find(query);
     		for(Study study : studies){
-    			for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
-    				if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
-    					for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-    						studyPersonnel = new StudyPersonnel();
-        					studyPersonnel.setSiteResearchStaff(siteResearchStaff);
-        					studyPersonnel.setStudyOrganization(studyOrganization);
-        					studyPersonnel.setRoleCode(siteResearchStaffRole.getRoleCode());
-        					studyPersonnel.setStartDate(siteResearchStaffRole.getStartDate());
-        					studyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
-        					boolean studyPersonnelExists = false;
-        					for(StudyPersonnel existingStudyPersonnel : studyOrganization.getStudyPersonnels()){
-        						if(existingStudyPersonnel.equals(studyPersonnel) & existingStudyPersonnel.isActive()){
-        							studyPersonnelExists = true;
-        							existingStudyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
-        							break;
-        						}
-        					}
-        					if(!studyPersonnelExists){
-        						studyOrganization.addStudyPersonnel(studyPersonnel);
-        					}
-    	    			}
-    					//studyOrganization.syndStudyPersonnelDates();	
-    				}
-    			}
+    			study.syncStudyPersonnel(researchStaff);
     			studyDao.save(study);	
     		}
     	}
