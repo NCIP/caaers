@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class HospitalizationTest extends CaaersTestCase {
     public void testToString() throws Exception {
-        assertEquals("0: Please Select", Hospitalization.NONE.toString());
+        assertEquals("0: Please select", Hospitalization.NONE.toString());
         assertEquals("2: No", Hospitalization.NO
                         .toString());
         assertEquals("1: Yes", Hospitalization.YES.toString());
