@@ -15,7 +15,7 @@
 .division .header { margin-bottom:5px; }
 </style>
 </head>
-<body><chrome:box title="Task">
+<body><chrome:box title="Welcome">
 <chrome:division title="Regular Tasks">
     <table id="test" class="autoclear" width="100%">
         <tr class="results" >
