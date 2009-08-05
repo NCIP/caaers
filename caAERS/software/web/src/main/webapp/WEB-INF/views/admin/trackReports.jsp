@@ -231,7 +231,7 @@ color:#0033FF;
 
 <form:form name="command" id="command" method="post">
  
-<chrome:box title="Filter Criteria" autopad="true">
+<chrome:box title="Search" autopad="true">
    
         <div class="content">
         
@@ -242,7 +242,7 @@ color:#0033FF;
                     		<tags:renderRow field="${fieldGroups.main.fields[0]}"/>
             			</td>
             			<td>
-            				<tags:button color="blue" type="submit" value="Filter" size="small" icon="search"/>
+            				<tags:button color="blue" type="submit" value="Find" size="small" icon="search"/>
             			</td>
             		</tr>
             		<tr id="reportIdDiv" style="display:none">
