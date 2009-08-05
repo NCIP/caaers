@@ -155,7 +155,7 @@ public class MessageNotificationService implements ApplicationContextAware{
         	ableToSubmitToWS = false;
         	submissionMessage = messages;
         }
-        Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
+     //1   Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
         //reportTrackingDao.save(rtToUpdate);
         
 
@@ -175,7 +175,7 @@ public class MessageNotificationService implements ApplicationContextAware{
             rv.setReportStatus(ReportStatus.COMPLETED);
             ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(r);
             doPostSubmitReport(context);
-            Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
+   //2         Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
         } else {
             r.setSubmittedOn(new Date());
             r.setStatus(ReportStatus.FAILED);
@@ -183,7 +183,7 @@ public class MessageNotificationService implements ApplicationContextAware{
             rv.setSubmittedOn(new Date());
             rv.setReportStatus(ReportStatus.FAILED);
             if (ableToSubmitToWS) {
-            	Tracker.logSubmissionToExternalSystem(rtToUpdate, false, messages, new Date());
+   //3         	Tracker.logSubmissionToExternalSystem(rtToUpdate, false, messages, new Date());
             }
             //reportTrackingDao.save(rtToUpdate);
         }
@@ -217,10 +217,10 @@ public class MessageNotificationService implements ApplicationContextAware{
         	for (String e:emails) {
         		msg = msg + "," + e;
         	}
-        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, true, msg, new Date());
+   //4     	Tracker.logEmailNotificationToSubmitter(rtToUpdate, true, msg, new Date());
         	reportDao.save(r);
         } catch (Exception  e ) {
-        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, false, e.getMessage(), new Date());
+    //5    	Tracker.logEmailNotificationToSubmitter(rtToUpdate, false, e.getMessage(), new Date());
         	reportDao.save(r);
         	throw new Exception(" Error in sending email , please check the confiuration " , e);
         }
