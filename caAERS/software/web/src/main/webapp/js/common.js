@@ -177,6 +177,7 @@ Object.extend(ListEditor.prototype, {
             reorderable: false,
             deletable: false,
             minimizeable:false,
+			addOnTop:false,
             changeHeaderNames:false
         }, options)
 
@@ -285,6 +286,9 @@ Object.extend(ListEditor.prototype, {
         args = args.concat([
             function(html) {
                 var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
+				if(this.options.addOnTop){
+					after = this.options.addFirstAfter;
+				}
                 new Insertion.After(after, html)
                 var newId = this.divisionClass + "-" + nextIndex;
                 AE.slideAndShow(newId)

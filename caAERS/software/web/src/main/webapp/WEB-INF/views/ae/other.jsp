@@ -24,8 +24,9 @@
         Element.observe(window, "load", function() {
             new ListEditor("otherCause", createAE, "OtherCause", {
                 addParameters: [aeReportId],
-                addFirstAfter: "single-fields",
-                deletable: true
+                addFirstAfter: "add-otherCause-button",
+                deletable: true,
+                addOnTop:true
             }, 'aeReport.otherCauses')
             
             //only show the workflow tab, if it is associated to workflow
@@ -52,10 +53,10 @@
      <tags:instructions code="instruction_ae_otherCause" />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
+   		 <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
         <c:forEach items="${command.aeReport.otherCauses}" varStatus="status">
             <ae:oneOtherCause index="${status.index}"/>
         </c:forEach>
-        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
         <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
     <jsp:attribute name="localButtons">

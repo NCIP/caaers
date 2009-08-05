@@ -136,12 +136,13 @@
         Element.observe(window, "load", function() {
             new ListEditor("lab", createAE, "Lab", {
                 addParameters: [aeReportId],
-                addFirstAfter: "single-fields",
+                addFirstAfter: "add-lab-button",
                 addCallback: function(index) {
                     new EnterLab(index,null);
                 },
                 deletable: true,
-                reorderable: true
+                reorderable: true,
+                addOnTop:true
             }, 'aeReport.labs')
             <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
             	new EnterLab(${status.index},"${lab.labTerm.id}","${lab.labTerm.category.id}");
@@ -165,10 +166,11 @@
 		</c:if>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
+     <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
         <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
             <ae:oneLab index="${status.index}" lab="${lab}"/>
         </c:forEach>
-        <tags:listEditorAddButton divisionClass="lab" label="Add a lab" buttonCssClass="ae-list-editor-button"/>
+       
 		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
     <jsp:attribute name="localButtons">
