@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
@@ -20,6 +21,7 @@ public class ReportTrackingDao extends GridIdentifiableDao<ReportTracking> {
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ReportTracking> domainClass() {
         return ReportTracking.class;
     }

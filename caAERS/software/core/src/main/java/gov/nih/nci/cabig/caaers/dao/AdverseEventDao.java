@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Example;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -29,6 +30,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<AdverseEvent> domainClass() {
         return AdverseEvent.class;
     }

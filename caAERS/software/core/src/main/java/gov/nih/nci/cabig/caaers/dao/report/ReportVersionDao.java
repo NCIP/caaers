@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
@@ -26,6 +27,7 @@ public class ReportVersionDao extends GridIdentifiableDao<ReportVersion> {
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ReportVersion> domainClass() {
         return ReportVersion.class;
     }

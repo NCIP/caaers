@@ -6,12 +6,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * This class implements the Data access related operations for the PreExistingCondition domain
  * object.
  * 
  * @author Krikor Krumlian
  */
+@Transactional(readOnly=true)
 public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("text",
                     "meddraLlt");
@@ -23,6 +27,7 @@ public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<PreExistingCondition> domainClass() {
         return PreExistingCondition.class;
     }

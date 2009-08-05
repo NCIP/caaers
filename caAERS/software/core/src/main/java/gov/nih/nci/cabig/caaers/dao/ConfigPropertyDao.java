@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 
@@ -9,9 +12,11 @@ import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
  * @author Biju Joseph
  *
  */
+@Transactional
 public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
 	
 	@Override
+	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
 	public Class<ConfigProperty> domainClass() {
 		return ConfigProperty.class;
 	}

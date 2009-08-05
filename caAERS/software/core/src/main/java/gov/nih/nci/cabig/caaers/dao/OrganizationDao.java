@@ -17,6 +17,7 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.semanticbits.coppa.infrastructure.RemoteSession;
@@ -50,6 +51,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Organization> domainClass() {
         return Organization.class;
     }

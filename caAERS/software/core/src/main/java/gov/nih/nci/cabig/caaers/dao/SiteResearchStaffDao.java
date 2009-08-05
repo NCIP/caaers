@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author monish
  */
+@Transactional(readOnly=true)
 public class SiteResearchStaffDao extends GridIdentifiableDao<SiteResearchStaff> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("researchStaff.firstName", "researchStaff.lastName");
@@ -28,6 +30,7 @@ public class SiteResearchStaffDao extends GridIdentifiableDao<SiteResearchStaff>
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<SiteResearchStaff> domainClass() {
         return SiteResearchStaff.class;
     }

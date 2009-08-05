@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,6 +29,7 @@ public class LabTermDao extends CaaersDao<LabTerm> {
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<LabTerm> domainClass() {
         return LabTerm.class;
     }

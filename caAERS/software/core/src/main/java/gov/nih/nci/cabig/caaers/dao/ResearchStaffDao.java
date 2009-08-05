@@ -17,6 +17,7 @@ import java.util.Map;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.semanticbits.coppa.infrastructure.RemoteSession;
@@ -47,6 +48,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ResearchStaff> domainClass() {
         return ResearchStaff.class;
     }

@@ -16,6 +16,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -35,6 +36,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<AdverseEventReportingPeriod> domainClass() {
         return AdverseEventReportingPeriod.class;
     }

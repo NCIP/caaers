@@ -5,6 +5,7 @@ import java.util.List;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -23,6 +24,7 @@ public class SearchDao extends GridIdentifiableDao<Search> implements MutableDom
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Search> domainClass() {
         return Search.class;
     }

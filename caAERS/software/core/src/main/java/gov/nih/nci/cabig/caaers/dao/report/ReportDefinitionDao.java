@@ -43,6 +43,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ReportDefinition> domainClass() {
         return ReportDefinition.class;
     }

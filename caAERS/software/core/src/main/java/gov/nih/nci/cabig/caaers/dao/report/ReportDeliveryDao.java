@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao.report;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,6 +27,7 @@ public class ReportDeliveryDao extends GridIdentifiableDao<ReportDelivery> {
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ReportDelivery> domainClass() {
         return ReportDelivery.class;
     }

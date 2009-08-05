@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,6 +27,7 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<AnatomicSite> domainClass() {
         return AnatomicSite.class;
     }

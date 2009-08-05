@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class implements the Data access related operations for the PriorTherapy domain object.
@@ -14,6 +16,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * @author Krikor Krumlian
  * @author Biju Joseph
  */
+@Transactional(readOnly=true)
 public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("text",
                     "meddraTerm", "meddraCode");
@@ -25,6 +28,7 @@ public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<PriorTherapy> domainClass() {
         return PriorTherapy.class;
     }

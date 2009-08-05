@@ -7,11 +7,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * This class implements the Data access related operations for the DiseaseCategory domain object.
  * 
  * @author Krikor Krumlian
  */
+@Transactional(readOnly=true)
 public class DiseaseCategoryDao extends CaaersDao<DiseaseCategory> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
@@ -23,6 +27,7 @@ public class DiseaseCategoryDao extends CaaersDao<DiseaseCategory> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<DiseaseCategory> domainClass() {
         return DiseaseCategory.class;
     }

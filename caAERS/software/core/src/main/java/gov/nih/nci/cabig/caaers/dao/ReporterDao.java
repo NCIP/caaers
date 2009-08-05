@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -16,6 +17,7 @@ public class ReporterDao extends GridIdentifiableDao<Reporter> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Reporter> domainClass() {
         return Reporter.class;
     }

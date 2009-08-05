@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,6 +19,7 @@ public class EpochDao extends GridIdentifiableDao<Epoch> implements MutableDomai
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Epoch> domainClass() {
         return Epoch.class;
     }

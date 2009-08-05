@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -27,6 +28,7 @@ public class UserDao extends GridIdentifiableDao<User> implements MutableDomainO
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
+    @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<User> domainClass() {
         return User.class;
     }

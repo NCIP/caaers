@@ -4,12 +4,14 @@ import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 public class ResearchStaffConverterDao extends CaaersDao<ConverterResearchStaff>{
 
 	@Override
+	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
 	public Class<ConverterResearchStaff> domainClass() {
 		return ConverterResearchStaff.class;
 	}

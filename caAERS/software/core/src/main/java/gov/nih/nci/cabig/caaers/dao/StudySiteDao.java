@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -19,6 +20,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<StudySite> domainClass() {
         return StudySite.class;
     }

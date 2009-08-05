@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,6 +19,7 @@ public class CtcDao extends CaaersDao<Ctc> {
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+	 @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<Ctc> domainClass() {
         return Ctc.class;
     }

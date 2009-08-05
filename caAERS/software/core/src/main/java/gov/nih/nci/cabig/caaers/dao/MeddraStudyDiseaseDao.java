@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 
 /**
@@ -14,6 +17,7 @@ public class MeddraStudyDiseaseDao extends GridIdentifiableDao<MeddraStudyDiseas
      * 
      * @return Class representation of the domain object that this DAO is representing.
      */
+	@Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<MeddraStudyDisease> domainClass() {
         return MeddraStudyDisease.class;
     }
