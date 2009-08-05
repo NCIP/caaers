@@ -69,7 +69,7 @@
                           image = '';
                   }
 --%>
-        		return (image + "" + sPersonnel)
+        		return (image + "" + sPersonnel.researchStaff.fullName)
         	}
         	
      });
