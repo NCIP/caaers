@@ -15,6 +15,8 @@ import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.impl.RuleServiceContext;
+import com.semanticbits.rules.utils.RepositoryCleaner;
+import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
 
 /**
  * This is a unit TestCase for RulesEngineServiceImpl class.
@@ -29,6 +31,7 @@ public class CaaersRulesEngineServiceTest extends CaaersTestCase{
 	private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private RuleSet ruleSet;
+    RulesPropertiesFileLoader propertiesBean;
 	
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
         InputStream testDataStream = ResourceRetriever.getResource(getClass().getPackage(), testDataFileName);
@@ -38,6 +41,11 @@ public class CaaersRulesEngineServiceTest extends CaaersTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		
+		propertiesBean = RulesPropertiesFileLoader.getLoadedInstance();
+        String url = propertiesBean.getProperties().getProperty("rules.repository");
+        new RepositoryCleaner(url);
+        
 		caaersRulesEngineService = (CaaersRulesEngineService)getDeployedApplicationContext().getBean("caaersRulesEngineService");
 		rulesEngineService = (RulesEngineService)getDeployedApplicationContext().getBean("ruleEngineService");
 		repositoryService = (RepositoryService)getDeployedApplicationContext().getBean("jcrService");
