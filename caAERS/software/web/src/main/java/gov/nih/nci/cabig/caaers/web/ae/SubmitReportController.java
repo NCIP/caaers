@@ -42,8 +42,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	log.debug("In form backing object");
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-        SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
-                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao,
+        SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao,
                         expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
