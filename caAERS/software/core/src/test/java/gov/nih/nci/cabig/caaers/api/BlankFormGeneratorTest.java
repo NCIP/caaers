@@ -29,6 +29,13 @@ public class BlankFormGeneratorTest extends CaaersTestCase {
         s.setShortTitle("ST");
         s.setLongTitle("LT");
         s.setId(55588);
+        
+        List<Identifier> i = new ArrayList<Identifier>();
+        Identifier id = new Identifier();
+        id.setPrimaryIndicator(true);
+        id.setValue("1222");
+        i.add(new Identifier());
+        s.setIdentifiers(i);
 
         e = new Epoch();
         e.setName("PT");
