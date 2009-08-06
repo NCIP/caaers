@@ -835,7 +835,7 @@ function caaersLog(err){
     try {
         var _logEl = $('caaersJSDebug')
         if (_logEl) {
-            _logEl.innerHTML = _logEl.innerHTML + err;
+            _logEl.innerHTML = _logEl.innerHTML + err + '<br>';
         }
     } catch(e) {
     }
@@ -845,7 +845,32 @@ function caaersLog(err){
 //will handle the exception occured in DWR method calls. 
 function handleDWRError(err){
     try {
+	   hideDWRLoadingIndicator();
        caaersLog(err);
     } catch(e) {
     }
 }
+
+
+//---------------------------------------------------------------------------------------------------------------------
+//will show indicator for DWR method calls. 
+function showDWRLoadingIndicator(){
+    try {
+     var elIndicator =  $('ajax-loading-indictor');
+	 if(elIndicator)
+	 	elIndicator.show();
+    } catch(e) {
+    }
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//will show indicator for DWR method calls. 
+function hideDWRLoadingIndicator(){
+    try {
+        var elIndicator =  $('ajax-loading-indictor');
+		if(elIndicator)
+			elIndicator.hide();
+    } catch(e) {
+    }
+}
+

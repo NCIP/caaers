@@ -8,6 +8,9 @@
 if(!AE.DWR_ERROR_HANDLER_REGISTERED){
 	//register dwr error handler. 
 	dwr.engine.setErrorHandler(handleDWRError);
+	//dwr.engine.setOrdered(true);
+	dwr.engine.setPreHook(showDWRLoadingIndicator);
+	dwr.engine.setPostHook(hideDWRLoadingIndicator);
 	AE.DWR_ERROR_HANDLER_REGISTERED=true;
 }
 </script>
