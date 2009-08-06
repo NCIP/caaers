@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -311,7 +312,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_version_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})        
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
+    @OrderBy(value = "attemptNumber ASC")
 	public List<ReportTracking> getReportTrackings() {
 		return reportTrackings;
 	}
@@ -322,7 +324,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
     @Transient
     public ReportTracking getLastReportTracking() {
-        return reportTrackings != null && reportTrackings.size() > 0 ? reportTrackings.get(reportTrackings.size()-1) : null;
+        return getReportTrackings() != null && getReportTrackings().size() > 0 ? getReportTrackings().get(getReportTrackings().size()-1) : null;
     }
     
    
@@ -332,8 +334,8 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     @Transient
 	public List<ReportTracking> getReportTrackingsForDisplay() {
     	List<ReportTracking> reverseList = new ArrayList<ReportTracking>();
-    	for (int i=reportTrackings.size()-1; i>=0 ;i--) {
-    		reverseList.add(reportTrackings.get(i));
+    	for (int i=getReportTrackings().size()-1; i>=0 ;i--) {
+    		reverseList.add(getReportTrackings().get(i));
     	}
 		return reverseList;
 	}
