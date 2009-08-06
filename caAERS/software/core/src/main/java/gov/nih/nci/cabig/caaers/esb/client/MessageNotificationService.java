@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -41,6 +42,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
 
 public class MessageNotificationService implements ApplicationContextAware{
@@ -61,6 +63,8 @@ public class MessageNotificationService implements ApplicationContextAware{
     protected CaaersJavaMailSender caaersJavaMailSender;
     
     private ApplicationContext applicationContext;
+    
+    private ReportTrackingDao reportTrackingDao;
     
 	public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
@@ -93,7 +97,7 @@ public class MessageNotificationService implements ApplicationContextAware{
     	//create child reports
     	reportRepository.createChildReports(report);
     }
-
+   // @Transactional(readOnly = false)
     public void sendNotificationToReporter(String submitterEmail, String messages,
                     String aeReportId, String reportId, boolean success, String ticketNumber,
                     String url,boolean communicationError) throws Exception {
@@ -155,9 +159,12 @@ public class MessageNotificationService implements ApplicationContextAware{
         	ableToSubmitToWS = false;
         	submissionMessage = messages;
         }
-     //1   Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
-        //reportTrackingDao.save(rtToUpdate);
         
+
+
+        	Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
+
+        	reportDao.save(r);
 
 
         
@@ -175,7 +182,9 @@ public class MessageNotificationService implements ApplicationContextAware{
             rv.setReportStatus(ReportStatus.COMPLETED);
             ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(r);
             doPostSubmitReport(context);
-   //2         Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
+
+            Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
+
         } else {
             r.setSubmittedOn(new Date());
             r.setStatus(ReportStatus.FAILED);
@@ -183,7 +192,9 @@ public class MessageNotificationService implements ApplicationContextAware{
             rv.setSubmittedOn(new Date());
             rv.setReportStatus(ReportStatus.FAILED);
             if (ableToSubmitToWS) {
-   //3         	Tracker.logSubmissionToExternalSystem(rtToUpdate, false, messages, new Date());
+
+            	Tracker.logSubmissionToExternalSystem(rtToUpdate, false, messages, new Date());
+
             }
             //reportTrackingDao.save(rtToUpdate);
         }
@@ -217,10 +228,14 @@ public class MessageNotificationService implements ApplicationContextAware{
         	for (String e:emails) {
         		msg = msg + "," + e;
         	}
-   //4     	Tracker.logEmailNotificationToSubmitter(rtToUpdate, true, msg, new Date());
+
+        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, true, msg, new Date());
+
         	reportDao.save(r);
         } catch (Exception  e ) {
-    //5    	Tracker.logEmailNotificationToSubmitter(rtToUpdate, false, e.getMessage(), new Date());
+
+        	Tracker.logEmailNotificationToSubmitter(rtToUpdate, false, e.getMessage(), new Date());
+
         	reportDao.save(r);
         	throw new Exception(" Error in sending email , please check the confiuration " , e);
         }
@@ -379,6 +394,10 @@ public class MessageNotificationService implements ApplicationContextAware{
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext= applicationContext;
 		
+	}
+
+	public void setReportTrackingDao(ReportTrackingDao reportTrackingDao) {
+		this.reportTrackingDao = reportTrackingDao;
 	}
 
 
