@@ -10,8 +10,7 @@
         }
     </style>
 
-<tags:dwrJavascriptLink objects="createInvestigator" />
-<tags:dwrJavascriptLink objects="createIND"/>
+<tags:dwrJavascriptLink objects="createInvestigator,createIND" />
 <script language="JavaScript" type="text/JavaScript">
 
 var today = '<tags:formatDate value="${today}"/>'

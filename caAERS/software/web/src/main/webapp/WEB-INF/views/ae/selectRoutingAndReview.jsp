@@ -23,8 +23,7 @@
         }
 
     </style>
-    <tags:dwrJavascriptLink objects="createAE"/>
-	<tags:dwrJavascriptLink objects="createStudy"/>
+    <tags:dwrJavascriptLink objects="createAE,createStudy"/>
     <script type="text/javascript">
         var participantAutocompleterProps = {
             basename: "participant",

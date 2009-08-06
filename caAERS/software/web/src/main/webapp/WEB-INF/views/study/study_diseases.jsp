@@ -12,8 +12,7 @@
 
 <title>${tab.longTitle}</title>
 
-<tags:dwrJavascriptLink objects="createStudy" />
-<tags:dwrJavascriptLink objects="createAE" />
+<tags:dwrJavascriptLink objects="createStudy,createAE" />
 <script type="text/javascript">
 
 Event.observe(window, "load", function() {

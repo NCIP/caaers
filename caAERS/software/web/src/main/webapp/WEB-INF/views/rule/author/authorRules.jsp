@@ -2,8 +2,7 @@
 
 <html>
 <head>
-<tags:dwrJavascriptLink objects="authorRule" />
-<tags:dwrJavascriptLink objects="createAE" />
+<tags:dwrJavascriptLink objects="authorRule,createAE" />
 <script type="text/javascript">
       
       Event.observe(window, "load", function() {

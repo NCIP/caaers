@@ -4,8 +4,7 @@
 <html>
 <head>
     <title>caAERS || Review Comment</title>
-    <tags:dwrJavascriptLink objects="createAE"/>
-	<tags:dwrJavascriptLink objects="createStudy"/>
+    <tags:dwrJavascriptLink objects="createAE,createStudy"/>
 <style type="text/css">
 	#main{
 			text-align: left;

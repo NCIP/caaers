@@ -10,8 +10,7 @@
 
     <title><caaers:message code="investigator.search.pageTitle"/></title>
     <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
-    <tags:dwrJavascriptLink objects="search"/>
-	<tags:dwrJavascriptLink objects="createInvestigator" />
+    <tags:dwrJavascriptLink objects="search,createInvestigator"/>
 	
     <script>
 

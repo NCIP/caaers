@@ -3,8 +3,7 @@
 <html>
 <head>
 <title>Manage Reports</title>
-<tags:dwrJavascriptLink objects="createAE"/>
-<tags:dwrJavascriptLink objects="adverseEventHistory"/>
+<tags:dwrJavascriptLink objects="createAE,adverseEventHistory"/>
 <%-- <tags:slider renderComments="false" renderAlerts="true" display="">
     <jsp:attribute name="labs">
     	<div id="labs-id" style="display:none;">

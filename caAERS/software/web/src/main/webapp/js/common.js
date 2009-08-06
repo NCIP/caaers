@@ -1,6 +1,8 @@
 // Namespace for caAERS-specific shared functions and classes
 var AE = { }
 
+AE.DWR_ERROR_HANDLER_REGISTERED=false;
+
 AE.INDICATOR_REF_COUNTS = { };
 AE.hash = new Hash();
 // This is checked when the user tries to go away from the captureAdverseEvents page.
@@ -835,6 +837,15 @@ function caaersLog(err){
         if (_logEl) {
             _logEl.innerHTML = _logEl.innerHTML + err;
         }
+    } catch(e) {
+    }
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+//will handle the exception occured in DWR method calls. 
+function handleDWRError(err){
+    try {
+       caaersLog(err);
     } catch(e) {
     }
 }
