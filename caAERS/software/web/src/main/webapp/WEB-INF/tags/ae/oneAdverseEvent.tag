@@ -23,9 +23,10 @@
 <c:set var="title_grade">${command.aeReport.adverseEvents[index].grade.code}</c:set>
 <c:set var="title_lowlevel">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="v" value="aeReport.adverseEvents[${index}]" />
+<c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 
 <a name="adverseEventTerm-${command.aeReport.adverseEvents[index].adverseEventTerm.term.id}"></a>
-<chrome:division title="${title} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" 
+<chrome:division title="${title_term} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}" 
 	cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
