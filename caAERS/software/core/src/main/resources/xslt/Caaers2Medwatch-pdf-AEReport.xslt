@@ -495,6 +495,7 @@
 													<fo:block xsl:use-attribute-sets="normal">Disease: 
 														<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
 														<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
+														<xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
 													</fo:block>
 													<fo:block xsl:use-attribute-sets="normal">Disease Site: <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/></fo:block>
 													<fo:block xsl:use-attribute-sets="normal">Date of initial diagnosis: 
@@ -615,6 +616,7 @@
 															-->
 															<fo:inline font-size="6.5pt">  
 																<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+																<xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
 															</fo:inline>
 														</fo:block>
 													<!--</xsl:for-each>-->
