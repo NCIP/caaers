@@ -630,7 +630,12 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM) {
-        return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
+        try {
+			return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return 0.0;
     }
     
     public String addAdverseEvent( int index, Integer aeReportId ){
