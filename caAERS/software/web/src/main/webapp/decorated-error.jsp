@@ -1,4 +1,4 @@
-<!-- BEGIN decorated-error.jsp -->
+
 
 <%@page language="java" isErrorPage="true" %>
 <%@page isErrorPage="true" %>
@@ -19,9 +19,9 @@
     <head>
         <style>
             div.error {
-                font-size: 36px;
+                font-size: 26px;
                 text-align: left;
-                color: #cc0033;
+                color: #333366;
 				margin-left:-2px;
 				padding-bottom:16px;
             }
@@ -43,20 +43,18 @@
             }
         </style>
         
-        <title>Error</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <title>Oops! You found a bug</title>
+
         <script type="text/javascript" language="JavaScript">
             function PanelCombo(element) {
                 panelDiv = $(element + "-interior");
-                imageId = element + '-image';
-                imageSource = document.getElementById(imageId).src;
                 
                 if (panelDiv.style.display == 'none') {
                     new Effect.OpenUp(panelDiv, arguments[1] || {});
-                    document.getElementById(imageId).src = imageSource.replace('minimize', 'maximize');
+					$('errorlink').innerHTML = "Hide error code";
                 } else {
                     new Effect.CloseDown(panelDiv, arguments[1] || {});
-                    document.getElementById(imageId).src = imageSource.replace('maximize', 'minimize');
+					$('errorlink').innerHTML = "View error code";
                 }
             }
             
@@ -81,123 +79,148 @@
         </script>
     </head>
     <body>
-    <div align="center">
-
-<table width="900" border="0">
-<tr>
-    <td valign="top" width="1px"><img src="<c:url value="/images/blue/error.png" />"></td>
-    <td valign="top">
-        <div style="float:left; padding-left:20px; padding-top:12px;">
-            <div class="error">ERROR</div>
-            <div class="errorMessage">The system encountered an error. Please contact your system administrator.</div>
+    <div style="overflow:auto; margin-bottom:10px;">
+        <img src="<c:url value="/images/blue/bigbug_toon.jpg" />" style="float:left; overflow:auto;">
+        <div style="float:left; padding-left:20px; padding-top:12px;width:560px;">
+            <div class="error">
+                Oops! We thought we squashed that bug.
+            </div>
+            <div class="errorMessage">
+                Try refreshing the page, if that doesn't work you may need to start over.
+            </div>
             <br/>
-            <div class="errorMessage"><a href="<c:url value="/"/>">Return Home</a></div>
+            <div class="errorMessage">
+            	<!--[if IE]>
+					&nbsp;&nbsp;
+				<![endif]-->
+            	<tags:button color="blue" onclick="javascript:location.reload(true)"  value="Refresh" />
+				<c:set var="homeHref">
+					<c:url value='/'/>
+				</c:set>
+				<!--[if IE]>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<![endif]-->
+				<tags:button color="blue" onclick="javascript:location.href='${homeHref}'"  value="Go Home" />
+				<br/><br/>
+    			<a id="errorlink" href="javascript:PanelCombo('error');">View error code</a>
+            </div>
         </div>
-    </td>
-</tr>
-<tr>
-    <td colspan="2" valign="top">
-        <table width="900" border="0">
-            <tr style="border-bottom: 1px black dotted">
-                <td align="left"><h2 style="float:left">Detailed Error</h2> &nbsp;&nbsp;<a href="javascript:PanelCombo('error');"><img id="error-image" src="/caaers/images/chrome/minimize.gif" border="0" alt="Expand"/></a></td>
-                <td align="right"></td>
-            </tr>
-            <tr>
-                <td align="left" colspan="2">
-                    <div id="error-interior" class="interior" style="display:none;">
-                        <TABLE class="errortd" WIDTH="100%" cellspacing="1">
-                          <TR>
-                            <td width="100px"><B><font color="blue">Status Code</font></B></TD>
-                            <TD><%= statusCode %></TD>
-                          </TR>
-                          <TR>
-                            <TD><B><font color="blue">Exception Type</font></B></TD>
-                            <TD><%= exceptionType %></TD>
-                          </TR>
-                          <TR>
-                            <TD><B><font color="blue">Message</font></B></TD>
-                            <TD><%= message %></TD>
-                          </TR>
-                        </TABLE>
-
-                        <br/>
-                        <b>Header List:</b>
-                        <table class="errortd" width="100%" cellspacing="1">
-                          <tr>
-                            <td width="100px"><b>Name</b></td>
-                            <td><b>Value</b></td>
-                          </tr>
-                          <%
-                                    String name  = "";
-                                    String value = "";
-
-                                    java.util.Enumeration headers = request.getHeaderNames();
-                                    while(headers.hasMoreElements())
-                                    {
-                                        name  = (String) headers.nextElement();
-                                        value = request.getHeader(name);
-                                %>
-                          <tr>
-                            <td><font color="blue"><%=name%></font></td>
-                            <td><%=value%></td>
-                          </tr>
-                          <%
-                                    }
-                                %>
-                        </table>
-
-                        <br />
-                        <b>Attribute List:</b>
-                        <table class="errortd" width="100%" cellspacing="1">
-                          <%
-                                    java.util.Enumeration attributes = request.getAttributeNames();
-                                    while(attributes.hasMoreElements())
-                                    {
-                                        name  = (String) attributes.nextElement();
-
-                                        if (request.getAttribute(name) == null)
-                                        {
-                                            value = "null";
-                                        }
-                                        else
-                                        {
-                                            value = request.getAttribute(name).toString();
-                                        }
-                                %>
-                          <tr>
-                            <td><font color="blue"><%=name%></font></td>
-                            <td><%=value%></td>
-                          </tr>
-                          <%
-                                    }
-                                %>
-                          <tr>
-                            <td colspan="2"><b>StackTrace :</b><br />
-                              <pre>
-                                         <%
-                                             exception.printStackTrace(new PrintWriter(out));
-                                         %>
-                              </pre>
-                            </td>
-                          </tr>
-                        </table>
-
-                    </div>
-                </td>
-            </tr>
+		</div>
+		<div>
+            <div id="error-interior" class="interior" style="display:none;">
+                <TABLE class="errortd" WIDTH="100%" cellspacing="1">
+                    <TR>
+                    <td width="100px">
+                    <B>
+                        <font color="blue">
+                            Status Code
+                        </font>
+                    </B>
+                    </TD>
+                    <TD>
+                        <%= statusCode %>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>
+                        <B>
+                            <font color="blue">
+                                Exception Type
+                            </font>
+                        </B>
+                    </TD>
+                    <TD>
+                        <%= exceptionType %>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>
+                        <B>
+                            <font color="blue">
+                                Message
+                            </font>
+                        </B>
+                    </TD>
+                    <TD>
+                        <%= message %>
+                    </TD>
+                </TR>
+                </TABLE>
+                <br/>
+                <b>Header List:</b>
+                <table class="errortd" width="100%" cellspacing="1">
+                    <tr>
+                        <td width="100px">
+                            <b>Name</b>
+                        </td>
+                        <td>
+                            <b>Value</b>
+                        </td>
+                    </tr>
+                    <%                String name  = "";
+                    String value = "";
+                    java.util.Enumeration headers = request.getHeaderNames();
+                    while(headers.hasMoreElements())
+                    {
+                    name  = (String) headers.nextElement();
+                    value = request.getHeader(name); %>
+                    <tr>
+                        <td>
+                            <font color="blue">
+                                <%=name %>
+                            </font>
+                        </td>
+                        <td>
+                            <%=value %>
+                        </td>
+                    </tr>
+                    <%                } %>
+                </table>
+                <br/>
+                <b>Attribute List:</b>
+                <table class="errortd" width="100%" cellspacing="1">
+                    <%                java.util.Enumeration attributes = request.getAttributeNames();
+                    while(attributes.hasMoreElements())
+                    {
+                    name  = (String) attributes.nextElement();
+                    if (request.getAttribute(name) == null)
+                    {
+                    value = "null";
+                    }
+                    else
+                    {
+                    value = request.getAttribute(name).toString();
+                    } %>
+                    <tr>
+                        <td>
+                            <font color="blue">
+                                <%=name %>
+                            </font>
+                        </td>
+                        <td>
+                            <%=value %>
+                        </td>
+                    </tr>
+                    <%                } %>
+                    <tr>
+                        <td colspan="2">
+                            <b>StackTrace :</b>
+                            <br/>
+                            <pre>
+                                             <%
+                                                 exception.printStackTrace(new PrintWriter(out));
+                                             %>
+                                  </pre>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </td>
+        </tr>
         </table>
-    </td>
-</tr>
-</table>
+		</div>
 
-<%--
-
-
-
---%>
-
-    </div>
     </body>
     </html>
-</page:applyDecorator>
+    </page:applyDecorator>
 <!-- END decorated-error.jsp -->

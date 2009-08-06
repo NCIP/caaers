@@ -29,7 +29,7 @@
 	<c:if test="${not empty onclick}">
     	onclick="${onclick}"
 	</c:if>>
-	<table onclick="location.href='<c:if test="${not empty href}">${href}</c:if>';">
+	<table <c:if test="${not empty href}">onclick="location.href='${href}';"</c:if>>
 		<tr>
 			<td class="l"></td>
 			<td class="m">
