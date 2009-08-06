@@ -13,14 +13,7 @@
             'contactMechanisms[e-mail]', 'contactMechanisms[phone]', 'contactMechanisms[fax]'
         ])
 
-        function chooseStaff() {
-            var id = document.getElementById("staff").value;
-            if (id == -1) {
-                clear();
-            } else {
-                createAE.getResearchStaff(id, updateReporterFromStaff)
-            }
-        }
+      
 
         function updateReporterFromStaff(staff) {
             NAME_FIELDS.each(function(field) {
@@ -80,7 +73,6 @@
         }
 
         Event.observe(window, "load", function() {
-            //$('staff').observe("change", chooseStaff)
             $('reporter_same_as_submitter').observe("click", updateSubmitterWithReporter)
             $('physician_same_as_submitter').observe("click", updateSubmitterWithPhysician)
 

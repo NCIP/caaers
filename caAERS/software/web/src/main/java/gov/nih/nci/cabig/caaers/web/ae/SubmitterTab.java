@@ -36,7 +36,6 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
             throw new CaaersSystemException("Report Index Not Defined");
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(createPersonGroup("reporter", null));
         map.addInputFieldGroup(createPersonGroup("reports[" + reportIndex + "].lastVersion.submitter", "submitter"));
         return map;
     }
