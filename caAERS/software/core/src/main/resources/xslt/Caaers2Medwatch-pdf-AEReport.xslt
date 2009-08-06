@@ -447,7 +447,9 @@
 													</fo:block>
 													<xsl:for-each select="AdverseEventReport/Lab">
 														<fo:block xsl:use-attribute-sets="normal">
-															<xsl:value-of select="labTerm/term"/> <fo:block/>
+															<xsl:value-of select="labTerm/term"/> 
+															<xsl:value-of select="other"/>
+															<fo:block/>
 															Base Line value :
 															
 															<xsl:value-of select="baseline/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
