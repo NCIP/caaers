@@ -70,10 +70,10 @@
 		  </c:when>
 		  <c:otherwise>
 			<ae:oneTrackingStep step="5" stepDesc="Send Message to ESB" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.connectedToESB}"  />
-<!--
+
 			<ae:oneTrackingStep step="6" stepDesc="Connect to External System (AdEERS Web Service)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.connectedToExternalSystem}"  />
 				
--->			<ae:oneTrackingStep step="7" stepDesc="Submit to External System (AdEERS Web Service)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.submissionToExternalSystem}"  />
+			<ae:oneTrackingStep step="7" stepDesc="Submit to External System (AdEERS Web Service)" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.submissionToExternalSystem}"  />
 
 			<ae:oneTrackingStep step="8" stepDesc="Notify Submitter with Submission Status" reportTracking="${reportTracking}" reportVersionId="${reportVersion.id}" reportTrackingStatus="${reportTracking.notificationToSubmitter}"  />
 		  </c:otherwise>
