@@ -80,8 +80,8 @@
     </head>
     <body>
     <div style="overflow:auto; margin-bottom:10px;">
-        <img src="<c:url value="/images/blue/bigbug_toon.jpg" />" style="float:left; overflow:auto;">
-        <div style="float:left; padding-left:20px; padding-top:12px;width:560px;">
+        <img src="<c:url value="/images/blue/error.png" />" style="float:left; margin:10px;">
+        <div style="float:left; padding-left:20px; padding-top:12px;">
             <div class="error">
                 Oops! We thought we squashed that bug.
             </div>
@@ -90,22 +90,22 @@
             </div>
             <br/>
             <div class="errorMessage">
-            	<!--[if IE]>
-					&nbsp;&nbsp;
-				<![endif]-->
-            	<tags:button color="blue" onclick="javascript:location.reload(true)"  value="Refresh" />
-				<c:set var="homeHref">
-					<c:url value='/'/>
-				</c:set>
-				<!--[if IE]>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<![endif]-->
-				<tags:button color="blue" onclick="javascript:location.href='${homeHref}'"  value="Go Home" />
-				<br/><br/>
-    			<a id="errorlink" href="javascript:PanelCombo('error');">View error code</a>
+                <!--[if IE]>
+                    &nbsp;&nbsp;
+                <![endif]--><tags:button color="blue" onclick="javascript:location.reload(true)" value="Refresh" />
+                <c:set var="homeHref">
+                    <c:url value='/'/>
+                </c:set>
+                <!--[if IE]>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <![endif]--><tags:button color="blue" onclick="javascript:location.href='${homeHref}'" value="Go Home" />
+                <br/>
+                <br/>
+                <a id="errorlink" href="javascript:PanelCombo('error');">View error code</a>
             </div>
+			<br style="clear:both;"/>
         </div>
-		</div>
+    </div>
 		<div>
             <div id="error-interior" class="interior" style="display:none;">
                 <TABLE class="errortd" WIDTH="100%" cellspacing="1">
