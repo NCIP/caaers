@@ -34,7 +34,7 @@ public class BlankFormGeneratorTest extends CaaersTestCase {
         Identifier id = new Identifier();
         id.setPrimaryIndicator(true);
         id.setValue("1222");
-        i.add(new Identifier());
+        i.add(id);
         s.setIdentifiers(i);
 
         e = new Epoch();
@@ -71,10 +71,18 @@ public class BlankFormGeneratorTest extends CaaersTestCase {
         try {
             String xml = g.serialize(s, e);
             assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                    "<ns2:studies xmlns:ns2=\"http://webservice.caaers.cabig.nci.nih.gov\"><ns2:study id=\"55588\"><shortTitle>ST</shortTitle><longTitle>LT</longTitle><multiInstitutionIndicator>false</multiInstitutionIndicator><adeersReporting>false</adeersReporting><drugAdministrationTherapyType>false</drugAdministrationTherapyType><deviceTherapyType>false</deviceTherapyType><radiationTherapyType>false</radiationTherapyType><surgeryTherapyType>false</surgeryTherapyType><behavioralTherapyType>false</behavioralTherapyType><evaluationPeriods><ns2:evaluationPeriod><name>PT</name><descriptionText>DT</descriptionText><epochOrder>0</epochOrder><solicitedAdverseEvents><ns2:solicitedAdverseEvent><name>Nausea</name></ns2:solicitedAdverseEvent><ns2:solicitedAdverseEvent><name>Bone Pain</name></ns2:solicitedAdverseEvent></solicitedAdverseEvents></ns2:evaluationPeriod></evaluationPeriods></ns2:study></ns2:studies>".trim(), xml.trim());
-            FileOutputStream fos = new FileOutputStream("d:/1.xml");
-            fos.write(xml.getBytes());
-            fos.close();
+                    "<ns2:studies xmlns:ns2=\"http://webservice.caaers.cabig.nci.nih.gov\">" +
+                    "<ns2:study id=\"55588\"><shortTitle>ST</shortTitle><longTitle>LT</longTitle>" +
+                    "<multiInstitutionIndicator>false</multiInstitutionIndicator><adeersReporting>false</adeersReporting>" +
+                    "<drugAdministrationTherapyType>false</drugAdministrationTherapyType>" +
+                    "<deviceTherapyType>false</deviceTherapyType><radiationTherapyType>false</radiationTherapyType>" +
+                    "<surgeryTherapyType>false</surgeryTherapyType><behavioralTherapyType>false</behavioralTherapyType>" +
+                    "<identifiers><ns2:systemAssignedIdentifier><value>1222</value><primaryIndicator>true</primaryIndicator></ns2:systemAssignedIdentifier></identifiers>" +
+                    "<evaluationPeriods><ns2:evaluationPeriod><name>PT</name><descriptionText>DT</descriptionText><epochOrder>0</epochOrder>" +
+                    "<solicitedAdverseEvents><ns2:solicitedAdverseEvent><name>Nausea</name></ns2:solicitedAdverseEvent>" +
+                    "<ns2:solicitedAdverseEvent><name>Bone Pain</name></ns2:solicitedAdverseEvent></solicitedAdverseEvents>" +
+                    "</ns2:evaluationPeriod></evaluationPeriods></ns2:study></ns2:studies>".trim(), xml.trim());
+          
         } catch (Exception e1) {
             e1.printStackTrace();  
         }
