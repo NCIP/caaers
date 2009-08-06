@@ -4,9 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
-import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 
 import java.io.*;
@@ -98,6 +97,15 @@ public class BlankFormGenerator {
         wsStudy.setShortTitle(study.getShortTitle());
         wsStudy.setLongTitle(study.getLongTitle());
         wsStudy.setId(BigInteger.valueOf(study.getId()));
+
+        gov.nih.nci.cabig.caaers.webservice.Study.Identifiers studyIdentifiers = new gov.nih.nci.cabig.caaers.webservice.Study.Identifiers();
+        SystemAssignedIdentifierType i = new SystemAssignedIdentifierType();
+        i.setPrimaryIndicator(true);
+        i.setValue(study.getPrimaryIdentifier().getValue());
+        List<SystemAssignedIdentifierType> iSystemAssigned = new ArrayList<SystemAssignedIdentifierType>();
+        iSystemAssigned.add(i);
+        studyIdentifiers.setSystemAssignedIdentifier(iSystemAssigned);
+        wsStudy.setIdentifiers(studyIdentifiers);
 
         EvaluationPeriodType ept = new EvaluationPeriodType();
         ept.setName(epoch.getName());
