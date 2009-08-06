@@ -211,7 +211,7 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         ExpeditedAdverseEventReport aeReport = createAEReport();
         Calendar c = Calendar.getInstance();
 
-        c.set(2009, 8, 01);
+        c.set(2009, 6, 01);
         aeReport.getAdverseEvents().get(0).setEndDate(c.getTime());
         c.set(2009, 7, 1);
         aeReport.getAdverseEvents().get(0).setStartDate(c.getTime());
