@@ -249,7 +249,7 @@
 -->
             <fo:table-row height="16px">
                 <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Study ID</fo:block></fo:table-cell>
-                <fo:table-cell number-columns-spanned="11" border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/@id"/></fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11" border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/identifiers/ns2:systemAssignedIdentifier/value"/></fo:block></fo:table-cell>
             </fo:table-row>
             <fo:table-row height="16px">
                 <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Study title</fo:block></fo:table-cell>
