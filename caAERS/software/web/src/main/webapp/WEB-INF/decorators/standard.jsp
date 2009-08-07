@@ -14,7 +14,6 @@
 <body>
 	<tags:js name="wz_tooltip/wz_tooltip"/>
 	<div class="wide-header"></div>
-	<standard:ajaxLoadingIndicator />
 <div id="all">
 <standard:header/>
 
@@ -29,5 +28,6 @@
 
 <standard:footer/>
 </div>
+<standard:ajaxLoadingIndicator />
 </body>
 </html>

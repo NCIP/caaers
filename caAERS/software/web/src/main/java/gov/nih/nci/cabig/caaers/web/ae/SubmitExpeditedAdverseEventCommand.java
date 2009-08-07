@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
@@ -47,6 +48,17 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
         	aeReport.getReports().get(((int) (Integer.parseInt(reportIndex)))).getLastVersion()
                         .addSubmitter();
         }
+    }
+    
+    public Report findReportToSubmit(){
+    	Report report = null;
+    	if(reportId != null){
+    		for(Report r : getAeReport().getReports()){
+        		if(r.getId().toString().equals(reportId)) report = r;
+        	}
+    	}
+    	
+    	return report;
     }
 
     public String getReportIndex() {

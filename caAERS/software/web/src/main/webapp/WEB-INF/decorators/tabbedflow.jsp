@@ -22,7 +22,6 @@
 <body>
 <tags:js name="wz_tooltip/wz_tooltip"/>
 <div class="wide-header"></div>
-<standard:ajaxLoadingIndicator />
 <!-- ALL DIV start -->
 
 <div id="all">
@@ -108,7 +107,7 @@
 </div>
 
 <!-- ALL DIV end -->
-
+<standard:ajaxLoadingIndicator />
 </body>
 </html>
 <!-- END decorators\tabbedflow.jsp -->
