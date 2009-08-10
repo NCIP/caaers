@@ -240,6 +240,7 @@ public class Fixtures {
     	cTerm.setCtepTerm(ctepTerm);
     	cTerm.setTerm(ctepTerm);
     	cTerm.setCtepCode(ctepCode);
+    	cTerm.setContextualGrades(new ArrayList<CtcGrade>());
     	return cTerm;
     }
 
