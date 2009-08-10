@@ -3,7 +3,10 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@attribute name="path" required="true" %>
 <%@attribute name="code" required="true" %>
-<spring:message var="msgText" code="${code}" text="NA" />
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+
+<caaers:message var="msgText" code="${code}" text="NA" />
+    
 <c:if test="${msgText ne 'NA'}">
 <a id="${path}-help-control" onmouseover="$('${path}-help-content').style.display='inline'"	onmouseout="$('${path}-help-content').style.display='none'">
     <img src="<c:url value="/images/q.gif"/>" alt="Help">
