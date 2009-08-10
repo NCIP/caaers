@@ -82,7 +82,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 			ae.addOutcome(o3);
 			
 			aeList.add(ae);
-		}
+		} 
 		return aeList;
 	} 
 
