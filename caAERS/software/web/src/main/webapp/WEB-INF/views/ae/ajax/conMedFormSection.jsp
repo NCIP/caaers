@@ -4,7 +4,7 @@
 <tags:noform>
 <c:forEach items="${indexes}" var="index" varStatus="cmIdxSt">
 	<c:set var="cMed" value="${concomitantMedications[index]}" />
-	<ae:oneConMed index="${index}" concomitantMedication="${cMed}" collapsed="${cmIdxSt.index gt 0}"/>
+	<ae:oneConMed index="${index}" concomitantMedication="${cMed}" collapsed="false"/>
 </c:forEach>
 </tags:noform>
 <%-- 

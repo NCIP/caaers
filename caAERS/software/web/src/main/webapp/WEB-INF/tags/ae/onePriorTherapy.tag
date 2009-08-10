@@ -15,7 +15,7 @@
  <c:set var="v" value="aeReport.saeReportPriorTherapies[${index}]" />
  <c:set var="mainGroup">priorTherapy${index}</c:set>
  <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" 
- 	collapsed="${!empties[v]}" collapsable="true" 
+ 	collapsed="${!empties[v] && collapsed}" collapsable="true" 
  	deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
 	<jsp:attribute name="title">

@@ -3,7 +3,7 @@
 <c:set var="size" value="${fn:length(indexes)}" />
 <c:forEach items="${indexes}" var="index" varStatus="ptIndxSt">
 	<c:set var="pt" value="${priorTherapies[index]}" />
-	<ae:onePriorTherapy index="${index}" priorTherapy="${pt}" collapsed="${ptIndxSt.index gt 0}" showNoPriorTherapy="${index eq 0  and empty pt.priorTherapy}"/>
+	<ae:onePriorTherapy index="${index}" priorTherapy="${pt}" collapsed="false" showNoPriorTherapy="${index eq 0  and empty pt.priorTherapy}"/>
 </c:forEach>
 <c:if test="${size eq 0}">
 <script type="text/javascript">

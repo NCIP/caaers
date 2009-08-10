@@ -13,7 +13,7 @@
 <c:set var="conMedField" value="${fieldGroups[mainGroup].fields[0]}" />
 <c:set var="v" value="aeReport.concomitantMedications[${index}]" />
 
-<chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="${!empties[v]}">
+<chrome:division id="aeReport.concomitantMedications[${index}]" collapsable="true" deleteParams="'concomitantMedication', ${index}, 'anchorConcomitantMedication', {}" enableDelete="true" collapsed="${!empties[v] && collapsed}">
 
     <jsp:attribute name="title">
 		${concomitantMedication.agentName}
