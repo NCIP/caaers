@@ -26,7 +26,7 @@
 	 </td>
 	<td style="border-left:none;">
 		<a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
-			<img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle">
+			<img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="">
 		</a> 
 	</td>
 </tr>
