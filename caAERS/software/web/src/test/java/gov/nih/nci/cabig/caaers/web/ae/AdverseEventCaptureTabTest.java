@@ -37,7 +37,6 @@ import org.springframework.validation.Errors;
  *
  */
 public class AdverseEventCaptureTabTest extends WebTestCase {
-	
 	AdverseEventCaptureTab tab;
 	CaptureAdverseEventInputCommand command;
 	Errors errors;
