@@ -123,6 +123,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         event.getAdverseEventCtcTerm().setCtcTerm(new CtcTerm());
         event.setStartDate(NOW);
         event.setEndDate(NOW);
+        event.setSignature(event.getCurrentSignature());
         
         Outcome o = new Outcome();
         o.setDate(new Date());
