@@ -84,7 +84,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 			aeList.add(ae);
 		}
 		return aeList;
-	}
+	} 
 
 	public void testCreateFieldGroupsCaptureAdverseEventInputCommand() {
 		command.initializeOutcomes();
