@@ -24,51 +24,34 @@
 
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName">
-            <value>s[datasource.driver]</value>
-        </property>
-        <property name="url">
-            <value>s[datasource.url]</value>
-        </property>
-        <property name="username">
-            <value>s[datasource.username]</value>
-        </property>
-        <property name="password">
-            <value>s[datasource.password]</value>
-        </property>
+        <property name="driverClassName"><value>s[datasource.driver]</value></property>
+        <property name="url"><value>s[datasource.url]</value></property>
+        <property name="username"><value>s[datasource.username]</value></property>
+        <property name="password"><value>s[datasource.password]</value></property>
     </bean>
+
     <bean id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
-        <property name="databaseConfigurationName">
-            <value>test</value>
-        </property>
+        <property name="databaseConfigurationName"><value>test</value></property>
     </bean>
+
     <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
-
-        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
-     at build time -->
-        <property name="placeholderPrefix">
-            <value>s[</value>
-        </property>
-        <property name="placeholderSuffix">
-            <value>]</value>
-        </property>
-        <property name="useNullForUnresolvablePlaceholders">
-            <value>true</value>
-        </property>
+        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything at build time -->
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
     </bean>
-	<bean id="rulesPropertiesFileLoader"
-				class="com.semanticbits.rules.utils.RulesPropertiesFileLoader">
+
+	<bean id="rulesPropertiesFileLoader" class="com.semanticbits.rules.utils.RulesPropertiesFileLoader">
 		<property name="databaseConfigurationName" value="test" />
 		<property name="applicationDirectoryName" value="caaers" />
 	</bean>
-   
 
     <!-- Unable to load study participant assignment -->
-    <bean id="studyParticipantAssignmentAspect"
-          class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect">
+    <bean id="studyParticipantAssignmentAspect" class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect">
         <property name="securityInterceptor" ref="daoSecurity"/>
     </bean>
+    
     <bean id="mailer" class="gov.nih.nci.cabig.caaers.service.MailerStub">
     	<property name="configuration" ref="configuration" />
     </bean>
