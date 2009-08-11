@@ -134,7 +134,6 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
         StudyInvestigator that = (StudyInvestigator) o;
         if(this.isRetired() || that.isRetired()) return false;
@@ -148,11 +147,11 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
 
     @Override
     public int hashCode() {
-        int result = roleCode != null ? roleCode.hashCode() : 0;
-        result = 31 * result + (siteInvestigator != null ? siteInvestigator.hashCode() : 0);
-        result = 31 * result + (studyOrganization != null ? studyOrganization.hashCode() : 0);
-        result = 31 * result + ((endDate == null) ? 0 : endDate.hashCode());
-        result = 31 * result + ((startDate == null) ? 0 : startDate.hashCode());
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((siteInvestigator == null) ? 0 : siteInvestigator.hashCode());
+        result = prime * result + ((roleCode == null) ? 0 : roleCode.hashCode());
+        result = prime * result + ((studyOrganization == null) ? 0 : studyOrganization.hashCode());
         return result;
     }
     
