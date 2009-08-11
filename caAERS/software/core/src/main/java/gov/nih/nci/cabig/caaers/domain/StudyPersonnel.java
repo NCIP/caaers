@@ -118,8 +118,6 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
         int result = 1;
         result = prime * result + ((siteResearchStaff == null) ? 0 : siteResearchStaff.hashCode());
         result = prime * result + ((roleCode == null) ? 0 : roleCode.hashCode());
-        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
         result = prime * result + ((studyOrganization == null) ? 0 : studyOrganization.hashCode());
         return result;
     }
@@ -128,7 +126,7 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        
         final StudyPersonnel other = (StudyPersonnel) obj;
         
         if(this.isRetired() || other.isRetired()) return false;
