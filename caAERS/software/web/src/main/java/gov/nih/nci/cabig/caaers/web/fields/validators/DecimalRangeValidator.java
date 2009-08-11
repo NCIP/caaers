@@ -23,15 +23,14 @@ public class DecimalRangeValidator extends FieldValidator {
 
     @Override
     public String getValidatorCSSClassName() {
-
         return "DECIMAL";
     }
 
     @Override
     public boolean isValid(Object fieldValue) {
-        if (fieldValue != null) return NumberUtils.isNumber(fieldValue.toString());
-        double d = Double.parseDouble(fieldValue.toString());
-        return d <= end && d >= begin;
+        if (fieldValue != null && NumberUtils.isNumber(fieldValue.toString()))
+            return Double.parseDouble(fieldValue.toString()) <= end && Double.parseDouble(fieldValue.toString()) >= begin;
+        return false;
     }
 
 }

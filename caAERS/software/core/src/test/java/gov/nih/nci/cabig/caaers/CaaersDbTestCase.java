@@ -135,8 +135,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     }
 
     private List<OpenSessionInViewInterceptor> interceptors() {
-        return Arrays.asList((OpenSessionInViewInterceptor) getApplicationContext().getBean(
-                        "openSessionInViewInterceptor"));
+        return Arrays.asList((OpenSessionInViewInterceptor) getApplicationContext().getBean("openSessionInViewInterceptor"));
     }
 
     private List<OpenSessionInViewInterceptor> reverseInterceptors() {
