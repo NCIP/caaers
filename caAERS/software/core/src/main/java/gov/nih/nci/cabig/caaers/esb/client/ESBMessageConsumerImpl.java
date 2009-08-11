@@ -1,51 +1,162 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.jdom.Document;
+
+/**
+ * This class handles the AdEERS submission response (from ServiceMix).
+ * 
+ * @author Biju Joseph (Refactored)
+ *
+ */
+
+/*
+ * BJ :
+ *   TODO : How this can handle responses related to non-AdEERS submission ?
+ */
 
 public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 
-    private MessageNotificationService messageNotificationService;
-
     protected final Log log = LogFactory.getLog(getClass());
+  
+	//will delegate further processing to Notification service. 
+    private MessageNotificationService messageNotificationService;
+    
+    //will be used to obtain resource bundle messages
+    protected MessageSource messageSource;
 
-    private Element getJobInfo(String message) {
+    /**
+     * This method will parse the XML message obtained from ServiceMix.
+     * @param message
+     * @return
+     */
+    protected Element getJobInfo(String message) {
 
         SAXBuilder saxBuilder = new SAXBuilder("org.apache.xerces.parsers.SAXParser");
         Reader stringReader = new StringReader(message);
         Element jobInfo = null;
         try {
-            org.jdom.Document jdomDocument = saxBuilder.build(stringReader);
-            org.jdom.Element root = jdomDocument.getRootElement();
+        	
+            Document jdomDocument = saxBuilder.build(stringReader);
+            Element root = jdomDocument.getRootElement();
 
             Element body = root.getChild("Body", root.getNamespace());
             Element response = body.getChild("submitAEDataXMLAsAttachmentResponse");
             Namespace n = ((Element) response.getChildren().get(0)).getNamespace();
             jobInfo = response.getChild("AEReportJobInfo", n);
 
-        } catch (JDOMException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+           log.error("Error while parsing the response xml", e);
         }
         return jobInfo;
     }
+    
+    
+    /**
+     * This method is invoked by {@link gov.nih.nci.cabig.caaers.esb.client.impl.JmsServiceImpl#onMessage(javax.jms.Message)}, to process the 
+     * submission response from AdEERS (from ServiceMix)
+     */
+    public void processMessage(String message){
+    	
+    	  boolean success = true;
+          boolean communicationError = false;
+          String caaersAeReportId =""; 
+          String reportId = "";
+          String ticketNumber = "";
+          String reportURL = "";
+          String submitterEmail = "";
+          
+          StringBuffer sb = new StringBuffer();
+          
+    	 log.debug("ESB Listner - message recieved");
+         log.debug(message);
+         
+         //find the AEReportJobInfo node from XML message
+         Element jobInfo = getJobInfo(message);
+         
+         if(jobInfo == null){
+        	 //Unknown XML format, there is a parsing error.
+        	 communicationError = true;
+        	 success = false;
+        	 
+         }else{
+        	 
+        	 //find the parameters such as caaersAeReportId, reportId, submitterEmail from XML request
+        	 caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID").getValue();
+             reportId = jobInfo.getChild("REPORT_ID").getValue();
+             submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL").getValue();
+        	 
+        	 //Is a successful submission ?
+        	 if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
+        		 ticketNumber = jobInfo.getChild("ticketNumber").getValue();
+                 reportURL = jobInfo.getChild("reportURL").getValue();
+                 
+        		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
+        				 new Object[]{reportId, ticketNumber,  reportURL}, Locale.getDefault());
+        		 
+        		 sb.append(submissionMessage);
+        		
+        	 }else{
+        		 success = false;
+            	 //find the exception elements
+            	 List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+            	 if(!exceptions.isEmpty()){
+            		 StringBuffer exceptionMsgBuffer = new StringBuffer();
+            		 for (Element ex : exceptions) {
+            			 exceptionMsgBuffer.append(ex.getChild("code").getValue()).append( "  -  ").append(ex.getChild("description").getValue()).append("\n");
 
-    public void processMessage(String message) {
+            			 if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+                     		communicationError=true;
+                         }
+                     }
+            		 
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{reportId, exceptionMsgBuffer.toString()}, Locale.getDefault());
+            		 sb.append(submissionMessage);
+            		 
+            	 }//if exceptions
+            	 
+        	 }
+        	 
+        	 if (jobInfo.getChild("comments") != null) {
+            	 String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+                 sb.append(commentsMessage);
+             }
+        	 
+        	 
+         }
+         
+         
+         
+         
+         try {
+             log.debug("Calling notfication service ..");
+             messageNotificationService.sendNotificationToReporter(submitterEmail, sb.toString(),caaersAeReportId, 
+            		 reportId, success, ticketNumber, reportURL,communicationError);
+         } catch (Exception e) {
+        	 log.error("Error while notifying ServiceMix response", e);
+         }
+    }
+    
+    
+/*---------------------------#########----------------------------------------------
+ * BJ : Below was the original processMessage() method before refactoring..
+ * TODO: Code Reviewer, PLEASE remove the commented code, once the code-review is DONE.
+ * -----------------------------******--------------------------------------------
+    public void processMessage2(String message) {
 
         log.debug("ESB Listner - message recieved");
         log.debug(message);
@@ -140,7 +251,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
             e.printStackTrace();
         }
     }
-
+*/
     public static void main(String[] ars) {
         try {
             StringBuffer sb = new StringBuffer();
@@ -196,10 +307,16 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
             e.printStackTrace();
         }
     }
-
+    
+    @Required
     public void setMessageNotificationService(MessageNotificationService messageNotificationService) {
         this.messageNotificationService = messageNotificationService;
     }
+    
+    @Required
+    public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
 }
 
