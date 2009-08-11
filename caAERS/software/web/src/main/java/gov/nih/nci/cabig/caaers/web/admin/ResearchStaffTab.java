@@ -114,13 +114,13 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
         if (command.getSiteResearchStaffCommandHelper() != null) {
             if (command.getSiteResearchStaffCommandHelper().size() != command.getResearchStaff().getSiteResearchStaffs().size()) {
-                log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+                log.error("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
             } else {
                 byte i = 0;
                 for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
                     boolean hasRoles = false;
                     if (srsch == null || srsch.getRsRoles() == null) {
-                        log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+                        log.error("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
                     } else {
                         for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
                             if (srsrch.getChecked()) hasRoles = true;
@@ -131,7 +131,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                 }
             }
         } else {
-            log.fatal("Error while tryign to get the prepopulated roles for SiteResearchStaff objects");
+            errors.reject("USR_005", "Provide at least one  organization");
         }
 
         // validate only create mode

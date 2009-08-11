@@ -17,8 +17,7 @@ public class TaskController extends AbstractController {
 
     private List<TaskGroup> taskGroups = new ArrayList<TaskGroup>();
 
-    public ModelAndView handleRequestInternal(HttpServletRequest request,
-                    HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mav = new ModelAndView("main/mainPage");
         mav.addObject("taskgroups", taskGroups);
         return mav;

@@ -54,16 +54,16 @@
   <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
     <property name="taskGroups">
       <list>
-	<ref bean="routineReportTaskGroup"/>
-	<ref bean="reportCalendarTaskGroup"/>
-	<ref bean="advanceSearchTaskGroup"/>
-	<ref bean="ruleTaskGroup"/>
-	<ref bean="userTaskGroup"/>
-	<ref bean="studyTaskGroup"/>
-	<ref bean="participantTaskGroup"/>
-	<ref bean="personalTaskGroup"/>
-	<ref bean="medraTaskGroup"/>
-	<ref bean="organizationTaskGroup"/> 
+            <ref bean="routineReportTaskGroup"/>
+            <ref bean="reportCalendarTaskGroup"/>
+            <ref bean="advanceSearchTaskGroup"/>
+            <ref bean="ruleTaskGroup"/>
+            <ref bean="userTaskGroup"/>
+            <ref bean="studyTaskGroup"/>
+            <ref bean="participantTaskGroup"/>
+            <ref bean="personalTaskGroup"/>
+            <ref bean="medraTaskGroup"/>
+            <ref bean="organizationTaskGroup"/>
       </list>
     </property>
   </bean>
@@ -71,12 +71,11 @@
   <bean id="advanceSearchTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="Analysis and Review">
     <property name="taskList">
       <list>
-	<!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review AEs" p:linkName="adverseEventController"/>-->
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Expedited Reports" p:linkName="reportController"/>
-	<!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Routine AEs" p:linkName="routineReportController"/>-->
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Studies" p:linkName="studyController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Subjects" p:linkName="participantController"/>
-
+        <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review AEs" p:linkName="adverseEventController"/>-->
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Expedited Reports" p:linkName="reportController"/>
+        <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Routine AEs" p:linkName="routineReportController"/>-->
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Studies" p:linkName="studyController"/>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search Subjects" p:linkName="participantController"/>
       </list>
     </property>
   </bean>
