@@ -43,7 +43,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String fileSeparator = System.getProperty("file.separator");
 		String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
 
-		//log.info("PATH " + clientAbsoluteTrustStore);
+		log.info("PATH " + clientAbsoluteTrustStore);
 		System.setProperty("javax.net.ssl.trustStore", clientAbsoluteTrustStore);
 		AEReportXMLServiceSoapBindingStub binding;
         try {
