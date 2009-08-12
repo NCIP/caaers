@@ -628,17 +628,56 @@
     
     <xs:simpleType name="RoleCodeType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Site Principal Investigator"/>
-            <xs:enumeration value="Site Investigator"/>
-            <xs:enumeration value="Principal Investigator"/>
+            <xs:enumeration value="SPI">
+            	<xs:annotation>
+					  <xs:documentation>Site Principal Investigator</xs:documentation>
+ 				</xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SI">
+                <xs:annotation>
+					  <xs:documentation>Site Investigator</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+            <xs:enumeration value="PI">
+                <xs:annotation>
+					  <xs:documentation>Principal Investigator</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     
     <xs:simpleType name="PersonnelRoleCodeType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Participant Coordinator"/>
-            <xs:enumeration value="Study Coordinator"/>
-            <xs:enumeration value="Adverse Event Coordinator"/>
+            <xs:enumeration value="caaers_participant_cd">
+            	<xs:annotation>
+					  <xs:documentation>Subject coordinator </xs:documentation>
+ 				</xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="caaers_study_cd">
+                <xs:annotation>
+					  <xs:documentation>Study coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+            <xs:enumeration value="caaers_ae_cd">
+                <xs:annotation>
+					  <xs:documentation>Adverse event coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+            <xs:enumeration value="caaers_site_cd">
+               <xs:annotation>
+					  <xs:documentation>Site coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+ 			<xs:enumeration value="caaers_data_cd">
+               <xs:annotation>
+					  <xs:documentation>Coordinating center data coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+ 			<xs:enumeration value="caaers_central_office_sae_cd">
+               <xs:annotation>
+					  <xs:documentation>Central office report reviewer</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     
