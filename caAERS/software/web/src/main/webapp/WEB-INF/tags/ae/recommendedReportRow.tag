@@ -46,9 +46,10 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
       <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.due" /></th>
     </tr>
     
+    <c:set var="_prevGroupName" value="xx" />
  	<c:forEach var="row" items="${applicableTableRows}">
     <c:set var="_elID" value="rd_${aeReportId}_${row.reportDefinition.id}" />
-    <tr id="${_elID}-row" class="optional" >
+    <tr id="${_elID}-row" class="optional ${ _prevGroupName eq row.group ? '' : 'newGroup' }" >
 	  	   <td style="text-align:center;">
 	  	   <input id="${_elID}" 
 	  	   		type="checkbox" name="rd_${aeReportId}_checked" 
@@ -85,6 +86,8 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 	  	   <input type="hidden" id="${_elID}_actualdue" name="${_elID}_actualdue" value="" />
 	  	   </td>
     </tr>
+    
+    <c:set var="_prevGroupName" value="${row.group}" />
 	</c:forEach>    
 </table>	
 </div>  
