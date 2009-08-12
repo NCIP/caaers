@@ -74,7 +74,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		List<StudyPersonnelType> studyPersonnelList = new ArrayList<StudyPersonnelType>();
 		StudyPersonnelType person = new StudyPersonnelType();
 		person.setStartDate(now);
-		person.setRoleCode(PersonnelRoleCodeType.ADVERSE_EVENT_COORDINATOR);
+		person.setRoleCode(PersonnelRoleCodeType.CAAERS_AE_CD);
 		gov.nih.nci.cabig.caaers.webservice.ResearchStaffType staff = new gov.nih.nci.cabig.caaers.webservice.ResearchStaffType();
 		staff.setFirstName("abc");
 		staff.setLastName("hov");
@@ -87,7 +87,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		StudyInvestigators studyInvestigators =  new gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyInvestigators();
 		List<StudyInvestigatorType> studyInvestigatorList = new ArrayList<StudyInvestigatorType>();
 		StudyInvestigatorType inv = new StudyInvestigatorType();
-		inv.setRoleCode(RoleCodeType.PRINCIPAL_INVESTIGATOR);
+		inv.setRoleCode(RoleCodeType.PI);
 		inv.setStartDate(now);
 		
 		SiteInvestigatorType siteInv = new SiteInvestigatorType();
