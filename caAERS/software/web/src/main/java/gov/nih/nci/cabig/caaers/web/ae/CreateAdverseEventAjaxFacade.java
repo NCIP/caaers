@@ -285,7 +285,8 @@ public class CreateAdverseEventAjaxFacade {
         query.filterByStudy(studyId);
 
         List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
-        return participantAjaxableDomainObjects;
+        // cut down objects for serialization
+        return reduceAll(participantAjaxableDomainObjects, "firstName", "lastName", "id", "primaryIdentifierValue");
     }
 
 
@@ -304,7 +305,7 @@ public class CreateAdverseEventAjaxFacade {
         domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
         domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
-        return studies;
+        return reduceAll(studies, "primaryIdentifierValue", "shortTitle" , "id");
     }
 
 
