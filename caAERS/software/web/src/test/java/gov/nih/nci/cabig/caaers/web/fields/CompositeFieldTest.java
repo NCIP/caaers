@@ -1,18 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.validation.Errors;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class CompositeFieldTest extends AbstractTestCase {
     
@@ -46,14 +48,36 @@ public class CompositeFieldTest extends AbstractTestCase {
     }
 
     public void testValidateCompositeField() throws Exception {
-        List<InputField> fields = new ArrayList<InputField>();
-        fields.add(InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999)));
-        fields.add(InputFieldFactory.createSelectField("unit", "units", false, null));
-        group.setFields(fields);
-        field.setPropertyName("compositeName");
-        List<InputField> subfields = field.createSubfields();
-        assertEquals("Wrong number of subfields", 2, subfields.size());
-        assertEquals("Wrong name for subfield", "compositeName.quantity", subfields.get(0).getPropertyName());
+    	ParticipantHistory history = new ParticipantHistory();
+    	history.getWeight();
+    	
+    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
+    	group.addField(textField);
+    	
+    	field = new CompositeField("weight", group);
+    	
+    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
+		BindException errors = new BindException(binder.getBindingResult());
+		
+		field.validate(new BeanWrapperImpl(history), errors);
+		
+		assertFalse(errors.hasErrors());
+    }
+    
+    public void testValidateCompositeField_InvalidValue() throws Exception {
+    	ParticipantHistory history = new ParticipantHistory();
+    	history.getWeight().setQuantity(new BigDecimal(-99));
+    	
+    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
+    	group.addField(textField);
+    	
+    	field = new CompositeField("weight", group);
+    	
+    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
+		BindException errors = new BindException(binder.getBindingResult());
+		
+		field.validate(new BeanWrapperImpl(history), errors);
+		assertTrue(errors.hasErrors());
     }
 
 }

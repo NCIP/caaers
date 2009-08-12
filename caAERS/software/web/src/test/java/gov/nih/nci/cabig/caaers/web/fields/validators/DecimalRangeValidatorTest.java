@@ -19,6 +19,7 @@ public class DecimalRangeValidatorTest extends TestCase {
 		assertFalse(dv.isValid("-99.99"));
 		assertTrue(dv.isValid("99.99"));
 		assertFalse(dv.isValid("-9x9.99"));
+		assertTrue(dv.isValid(null));
 	}
 
 	public void testGetMessagePrefix() {

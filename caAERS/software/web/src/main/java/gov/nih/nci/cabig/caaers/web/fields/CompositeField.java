@@ -53,9 +53,8 @@ public class CompositeField extends AbstractInputField {
 
     @Override
     public void validate(BeanWrapper commandBean, Errors errors) {
-        BeanWrapper bw = new BeanWrapperImpl(commandBean.getPropertyValue(getPropertyName()));
-        for (InputField field : getGroup().getFields()) {
-            field.validate(bw, errors);
+        for (InputField field : CompositeField.getSubfields(this)) {
+            field.validate(commandBean, errors);
         }
     }
 

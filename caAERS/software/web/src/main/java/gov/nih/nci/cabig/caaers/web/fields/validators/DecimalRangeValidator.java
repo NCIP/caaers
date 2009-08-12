@@ -28,7 +28,8 @@ public class DecimalRangeValidator extends FieldValidator {
 
     @Override
     public boolean isValid(Object fieldValue) {
-        if (fieldValue != null && NumberUtils.isNumber(fieldValue.toString()))
+    	if(fieldValue == null) return true;
+        if ( NumberUtils.isNumber(fieldValue.toString()))
             return Double.parseDouble(fieldValue.toString()) <= end && Double.parseDouble(fieldValue.toString()) >= begin;
         return false;
     }
