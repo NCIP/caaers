@@ -16,7 +16,7 @@ public class DecimalRangeValidatorTest extends TestCase {
 
 	public void testIsValid() {
 		assertTrue(dv.isValid("99.99"));
-		assertTrue(dv.isValid("-99.99"));
+		assertFalse(dv.isValid("-99.99"));
 		assertTrue(dv.isValid("99.99"));
 		assertFalse(dv.isValid("-9x9.99"));
 	}
