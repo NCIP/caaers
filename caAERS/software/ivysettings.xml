@@ -71,7 +71,7 @@
 			<ibiblio name="java.net" root="http://download.java.net/maven/1/" pattern="[organization]/jars/[module]-[revision].[ext]" />
 			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT" />
             <ibiblio name="download-java-net" m2compatible="true" root="http://download.java.net/maven/2" changingPattern=".*SNAPSHOT" />
-            		
+            <ibiblio name="maven-repo2"  m2compatible="true" root="http://repo2.maven.org/maven2"	changingPattern=".*SNAPSHOT" />
 			<!--  SemanticBits shared repository [using sftp] -->
 <!--
 	 		<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
