@@ -58,7 +58,7 @@
 			<dependency org="commons-validator" name="commons-validator" rev="1.1.4" />
         	
 
-			<dependency org="org.directwebremoting" name="dwr" rev="2.0.rc2" />
+			<dependency org="org.directwebremoting" name="dwr" rev="2.0.3" />
 			<dependency org="org.extremecomponents" name="extremecomponents" rev="1.0.1" />
 			<dependency org="jdom" name="jdom" rev="1.0" />
 			
