@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
 import org.apache.commons.lang.StringUtils;
-
+/**
+ * 
+ * @author Biju Joseph
+ * @author Ion
+ */
 public class PhoneNumberValidator extends FieldValidator {
 
     @Override
