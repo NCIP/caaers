@@ -26,11 +26,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 <table width="100%" class="tablecontent">
     <tr class="header" id="tr-header-${aeReportId}">
-      <th scope="col" align="center" width="3%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.action" /></th>
-      <th scope="col" width="30%"><spring:message code="captureAdverseEvents.tableHeader.report" /></th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.status" /> </th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.due" /> </th>
+      <th scope="col" align="center" width="3%"><spring:message code="LBL_captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col" width="30%"><spring:message code="LBL_captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.status" /> </th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.due" /> </th>
     </tr>
 </table>	
 </div>   
@@ -39,11 +39,11 @@ Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" on
 <div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
 <table width="100%" class="tablecontent">
     <tr>
-      <th scope="col" style="text-align:center;" width="3%"><spring:message code="captureAdverseEvents.tableHeader.select" /></th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.action" /></th>
-      <th scope="col" width="30%"><spring:message code="captureAdverseEvents.tableHeader.report" /></th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.status" /></th>
-      <th scope="col"><spring:message code="captureAdverseEvents.tableHeader.due" /></th>
+      <th scope="col" style="text-align:center;" width="3%"><spring:message code="LBL_captureAdverseEvents.tableHeader.select" /></th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.action" /></th>
+      <th scope="col" width="30%"><spring:message code="LBL_captureAdverseEvents.tableHeader.report" /></th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.status" /></th>
+      <th scope="col"><spring:message code="LBL_captureAdverseEvents.tableHeader.due" /></th>
     </tr>
     
     <c:set var="_prevGroupName" value="xx" />

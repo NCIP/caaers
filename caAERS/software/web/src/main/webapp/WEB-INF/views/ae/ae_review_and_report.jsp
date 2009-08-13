@@ -826,10 +826,6 @@ function validate(aeReportId){
 		<c:set var="_aeReportId" value="${aeReport.id}" />
 		<c:set var ="_primaryAE" value="${aeReport.adverseEvents[0]}" />
 		<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
-		<%-- 
-		<chrome:division id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName}" 
-			collapsable="true">
-		--%>	
 		<chrome:accordion id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}" >
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 			<chrome:division title="Recommended Actions">
@@ -852,10 +848,6 @@ function validate(aeReportId){
 				</div>
 			</div>
 		</chrome:accordion>
-		<%-- 
-		</chrome:division>	
-		<hr></hr>	
-		--%>
 			
 		</c:forEach>
 	</c:if>
@@ -864,10 +856,6 @@ function validate(aeReportId){
 	<c:set var="_aeReportId" value="${command.zero}" />
 	<c:set var ="_primaryAE" value="${command.evaluationResult.allAeMap[_aeReportId][0]}" />
 	<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
-	<%--
-	<chrome:division id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}:${_primaryAE.grade.displayName} " 
-		collapsable="true" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
-	--%>
 	<div id="new-dc-section-0" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
 	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}" >
 		<chrome:division title="Recommended Actions">
@@ -893,9 +881,6 @@ function validate(aeReportId){
 	</div>
 	
    </div>
-	<%--
-	</chrome:division>	
-	--%>
 	
    <!--  Add new DC Button -->		
    <c:if test="${(noOfAEReports gt 0) and (noOfNewAe gt 0)}">
