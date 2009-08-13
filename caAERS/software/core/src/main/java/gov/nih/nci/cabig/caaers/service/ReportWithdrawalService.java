@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ReportWithdrawalService {
 	/**
-	 * 
+	 * This method will withdraw the report from external agency, by delegating the call to service mix. 
 	 * @param report - Report to withdraw from external agency
 	 */
 	public void withdrawExternalReport(Report report){
