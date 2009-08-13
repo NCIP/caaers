@@ -646,7 +646,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 		<antcall target="caaers:datasource:properties:config"/>
 		<antcall target="caaers:csm_jass:config"/>
-		<antcall target="caaers:migrate"/>
 	</target>
 	
 	<!-- caaers datasource.properties file copy and configure -->
@@ -710,26 +709,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<echo file="${tomcat.home}/conf/catalina.properties" append="true">&#x0A;
 			java.security.auth.login.config=${catalina.home}/conf/cabig/csm_jaas.config
 		</echo>		
-	</target>	
-	
-	<!-- caaers database migrate -->
-	<target name="caaers:migrate">
-		<exec osfamily="unix" executable="ant" dir="${software.dir}/../../../" failonerror="true">
-			<arg value="-Ddatasource.driver=${database.driver}" />
-			<arg value="-Dbering.dialect=${bering.dialect}" />
-			<arg value="-Ddatasource.url=${database.url}" />
-			<arg value="-Ddatasource.username=${database.user}" />
-			<arg value="-Ddatasource.password=${database.password}" />
-			<arg value="migrate" />
-		</exec>
-		<exec osfamily="windows" executable="ant.bat" dir="@{software.dir}/../../../" failonerror="true">
-			<arg value="-Ddatasource.driver=${database.driver}" />
-			<arg value="-Dbering.dialect=${bering.dialect}" />
-			<arg value="-Ddatasource.url=${database.url}" />
-			<arg value="-Ddatasource.username=${database.user}" />
-			<arg value="-Ddatasource.password=${database.password}" />
-			<arg value="migrate" />
-		</exec>		
 	</target>	
 	
 	<target name="install:tomcat:caAERS-webapp" description="Deploy caAERS-webapp and common libraries to tomcat installation" unless="exclude.tomcat" depends="init:install,init:common">
