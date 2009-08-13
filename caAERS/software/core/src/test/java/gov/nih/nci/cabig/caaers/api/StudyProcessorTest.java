@@ -380,11 +380,11 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                     for (StudyInvestigator studyInvestigator : studySite.getStudyInvestigators()) {
                         if ("George".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getFirstName()) &&
                                 "Clinton".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getLastName())) {
-                            assertEquals("Site Investigator", studyInvestigator.getRoleCode());
+                            assertEquals("SI", studyInvestigator.getRoleCode());
                         }
                         if ("Gerry".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getFirstName()) &&
                                 "Elbridge".equals(studyInvestigator.getSiteInvestigator().getInvestigator().getLastName())) {
-                            assertEquals("Site Principal Investigator", studyInvestigator.getRoleCode());
+                            assertEquals("SPI", studyInvestigator.getRoleCode());
                         }
                     }
                 }
