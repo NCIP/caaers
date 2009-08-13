@@ -32,7 +32,7 @@
         <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->master(*),runtime(default);distGrid->master(*),runtime(default)"  >
 			<exclude conf="*" name="cglib" />
 			<exclude conf="*" name="asm-attrs" />
-
+			<exclude conf="*" name="asm-1*" />
 			
 			<dependency org="ehcache" name="ehcache" rev="1.2.3"/>
 			
