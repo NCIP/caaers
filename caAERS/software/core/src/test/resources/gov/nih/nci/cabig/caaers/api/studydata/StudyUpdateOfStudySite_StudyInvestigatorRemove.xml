@@ -53,7 +53,7 @@
                 </p:organization>
                 <studyInvestigators>
                     <p:studyInvestigator>
-                        <roleCode>Site Principal Investigator</roleCode>
+                        <roleCode>SPI</roleCode>
                         <statusCode>Active</statusCode>
                         <p:siteInvestigator>
                             <p:investigator>
@@ -66,7 +66,7 @@
                 </studyInvestigators>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <statusCode>Active</statusCode>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
@@ -83,7 +83,7 @@
                 </p:organization>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <statusCode>Active</statusCode>
                         <p:researchStaff>
                             <firstName>Allan</firstName>

@@ -55,7 +55,7 @@
                 <p:startDate>2002-02-02</p:startDate>
                 <studyInvestigators>
                     <p:studyInvestigator>
-                        <roleCode>Site Principal Investigator</roleCode>
+                        <roleCode>SPI</roleCode>
                         <p:startDate>2002-02-02</p:startDate>
                         <p:siteInvestigator>
                             <p:investigator>
@@ -66,7 +66,7 @@
                         </p:siteInvestigator>
                     </p:studyInvestigator>
                     <p:studyInvestigator>
-                        <roleCode>Site Investigator</roleCode>
+                        <roleCode>SI</roleCode>
                         <p:startDate>2002-02-02</p:startDate>
                         <p:siteInvestigator>
                             <p:investigator>
@@ -79,7 +79,7 @@
                 </studyInvestigators>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                        <p:startDate>2002-02-02</p:startDate>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
@@ -96,7 +96,7 @@
                 </p:organization>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <p:startDate>2002-02-02</p:startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>

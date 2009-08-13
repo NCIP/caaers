@@ -54,7 +54,7 @@
                 <startDate>2002-02-02</startDate>
                 <studyInvestigators>
                     <p:studyInvestigator>
-                        <roleCode>Site Principal Investigator</roleCode>
+                        <roleCode>SPI</roleCode>
                         <startDate>2002-02-02</startDate>
                         <p:siteInvestigator>
                             <p:investigator>
@@ -65,7 +65,7 @@
                         </p:siteInvestigator>
                     </p:studyInvestigator>
                     <p:studyInvestigator>
-                        <roleCode>Site Investigator</roleCode>
+                        <roleCode>SI</roleCode>
                         <startDate>2002-02-02</startDate>
                         <p:siteInvestigator>
                             <p:investigator>
@@ -78,7 +78,7 @@
                 </studyInvestigators>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
@@ -96,7 +96,7 @@
                 <startDate>2002-02-02</startDate>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>
@@ -114,7 +114,7 @@
                 <startDate>2002-02-02</startDate>
                 <studyPersonnels>
                     <p:studyPersonnel>
-                        <roleCode>Participant Coordinator</roleCode>
+                        <roleCode>caaers_participant_cd</roleCode>
                         <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Monish</firstName>
