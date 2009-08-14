@@ -54,6 +54,8 @@ function validateFields(formFields, displayError) {
                     (element.pattern.toLowerCase() == 'numeric' && isNumeric(element.value, true) == false) ||
                     (element.pattern.toLowerCase() == 'alphabetic' && isAlphabetic(element.value, true) == false) ||
                     (element.pattern.toLowerCase().indexOf('date') == 0 && isCorrectDate(element.value) == false) ||
+                    (element.pattern.toLowerCase().indexOf('positive') == 0 && element.value < 0) ||
+                    (element.pattern.toLowerCase().indexOf('negative') == 0 && element.value >= 0) ||
                     (element.pattern.toLowerCase().indexOf('decimal') ==0 && !isDecimal(element.value) )) {
                     if (displayError) ValidationManager.showError(element, element.patternError);
                     validForm = false;

@@ -109,21 +109,13 @@ public class DisplayRuleSetsTab extends DefaultTab {
             CaaersRulesEngineService caaersRulesEngineService = createRuleCommand.getCaaersRulesEngineService();
 
             if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel())) {
-                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsor(createRuleCommand
-                                .getSponsorName());
-            } else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand
-                            .getLevel())) {
-                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsorDefinedStudy(
-                                createRuleCommand.getCategoryIdentifier(), createRuleCommand
-                                                .getSponsorName());
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsor(createRuleCommand.getSponsorName());
+            } else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForSponsorDefinedStudy(createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
             } else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equals(createRuleCommand.getLevel())) {
-                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitution(createRuleCommand
-                                .getInstitutionName());
-            } else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand
-                            .getLevel())) {
-                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitutionDefinedStudy(
-                                createRuleCommand.getCategoryIdentifier(), createRuleCommand
-                                                .getInstitutionName());
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitution(createRuleCommand.getInstitutionName());
+            } else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
+                ruleSets = caaersRulesEngineService.getAllRuleSetsForInstitutionDefinedStudy(createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
             }
 
         } catch (Exception ex) {
@@ -145,7 +137,6 @@ public class DisplayRuleSetsTab extends DefaultTab {
 
     @Override
     public void validate(RuleInputCommand cmd, Errors errors) {
-
         CreateRuleCommand command = (CreateRuleCommand) cmd;
         if (command != null) {
             String ruleSetName = command.getRuleSetName();

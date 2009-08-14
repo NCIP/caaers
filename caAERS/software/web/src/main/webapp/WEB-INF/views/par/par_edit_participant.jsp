@@ -142,7 +142,7 @@ function removeSystemIdentifier(container, index) {
 					<ui:label path="participant.firstName" text="First Name" required="true" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:text path="participant.firstName" required="true" title="First name" />
+                    <ui:text path="${fieldGroups.participant.fields[0].propertyName}" title="${fieldGroups.participant.fields[0].displayName}" validationJSClass="${fieldGroups.participant.fields[0].validatorClassName}" required="true"/>
 				</jsp:attribute>
 			</ui:row>
 			<ui:row path="participant.lastName">
@@ -150,7 +150,7 @@ function removeSystemIdentifier(container, index) {
 					<ui:label path="participant.lastName" text="Last Name" required="true" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:text path="participant.lastName" required="true" title="Last name"/>
+					<ui:text path="${fieldGroups.participant.fields[1].propertyName}" title="${fieldGroups.participant.fields[1].displayName}" validationJSClass="${fieldGroups.participant.fields[1].validatorClassName}" required="true"/>
 				</jsp:attribute>
 			</ui:row>
 			<ui:row path="participant.maidenName">
@@ -158,7 +158,7 @@ function removeSystemIdentifier(container, index) {
 					<ui:label path="participant.maidenName" text="Maiden Name" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:text path="participant.maidenName" title="Maiden name"/>
+					<ui:text path="${fieldGroups.participant.fields[2].propertyName}" title="${fieldGroups.participant.fields[2].displayName}" validationJSClass="${fieldGroups.participant.fields[2].validatorClassName}"/>
 				</jsp:attribute>
 			</ui:row>
 			<ui:row path="participant.middleName">
@@ -166,7 +166,7 @@ function removeSystemIdentifier(container, index) {
 					<ui:label path="participant.middleName" text="Middle Name" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:text path="participant.middleName" title="Middle name" />
+					<ui:text path="${fieldGroups.participant.fields[3].propertyName}" title="${fieldGroups.participant.fields[3].displayName}" validationJSClass="${fieldGroups.participant.fields[3].validatorClassName}"/>
 				</jsp:attribute>
 			</ui:row>
         </td>

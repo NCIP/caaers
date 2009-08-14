@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.HashMap;
@@ -68,11 +69,10 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         Map<Object, Object> options = null;
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", true));
-
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", true));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
 
         InputField dobYear = InputFieldFactory.createTextField("yearString", "Year", true);
         InputFieldAttributes.setSize(dobYear, 4);
@@ -115,7 +115,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 String s = "participant.systemAssignedIdentifiers[" + i + "]." ;
                 idtFieldGroupSys = new DefaultInputFieldGroup("mainSys" + i);
 
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", true));
+                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true,options));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "systemName", "System Name", true));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));
@@ -127,7 +127,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 String s = "participant.organizationIdentifiers[" + j + "]." ;
                 idtFieldGroupOrg = new DefaultInputFieldGroup("mainOrg" + j);
                 
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", true));
+                idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createAutocompleterField(s + "organization", "Organization Identifier", true));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));

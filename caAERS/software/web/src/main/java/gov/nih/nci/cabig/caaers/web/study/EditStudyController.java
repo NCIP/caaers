@@ -138,28 +138,23 @@ public class EditStudyController extends StudyController<StudyCommand> {
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
             if (study.getShortTitle() != null) {
-                summary.add(new ListValues(getMessage("study.shortTitle", "Short title."), 
-                		study.getShortTitle()));
+                summary.add(new ListValues(getMessage("study.shortTitle", "Short title."), study.getShortTitle()));
             }
 
             if (study.getPrimaryIdentifier() != null) {
-                summary.add(new ListValues(getMessage("study.primaryIdentifier", "Primary identifier."), 
-                		study.getPrimaryIdentifier().toString()));
+                summary.add(new ListValues(getMessage("study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
             }
 
             if (study.getPhaseCode() != null) {
-                summary.add(new ListValues(getMessage("study.phase", "Phase."), 
-                		study.getPhaseCode().toString()));
+                summary.add(new ListValues(getMessage("study.phase", "Phase."), study.getPhaseCode().toString()));
             }
 
             if (study.getPrimarySponsorCode() != null) {
-                summary.add(new ListValues(getMessage("study.primaryFundingSponsorOrganization","Funding sponsor."), 
-                		study.getPrimaryFundingSponsorOrganization().getName()));
+                summary.add(new ListValues(getMessage("LBL_study.primaryFundingSponsorOrganization", "Funding sponsor."), study.getPrimaryFundingSponsorOrganization().getName()));
             }
 
             if (study.getStudyCoordinatingCenter().getOrganization() != null) {
-                summary.add(new ListValues(getMessage("study.studyCoordinatingCenter.organization","Coordinating center."), 
-                		study.getStudyCoordinatingCenter().getOrganization().getName()));
+                summary.add(new ListValues(getMessage("LBL_study.studyCoordinatingCenter.organization", "Coordinating center."), study.getStudyCoordinatingCenter().getOrganization().getName()));
             }
 
             refdata.put("studySummary", summary);

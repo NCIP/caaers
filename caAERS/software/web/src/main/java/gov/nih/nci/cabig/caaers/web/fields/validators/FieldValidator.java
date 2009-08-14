@@ -7,22 +7,21 @@ package gov.nih.nci.cabig.caaers.web.fields.validators;
 public abstract class FieldValidator {
 
     public static final FieldValidator NOT_NULL_VALIDATOR;
-
     public static final FieldValidator EMAIL_VALIDATOR;
-
     public static final FieldValidator PHONE_VALIDATOR;
-
     public static final FieldValidator PAST_DATE_VALIDATOR;
     public static final FieldValidator FUTURE_DATE_VALIDATOR;
-
     public static final FieldValidator DATE_VALUE_VALIDATOR;
     public static final FieldValidator DATE_VALIDATOR;
-
     public static final FieldValidator NUMBER_VALIDATOR;
     public static final FieldValidator HOUR_VALIDATOR;
     public static final FieldValidator MINUTE_VALIDATOR;
     public static final FieldValidator ZIP_CODE_VALIDATOR;
     public static final FieldValidator DECIMAL_VALIDATOR;
+    public static final FieldValidator ALPHANUMERIC_VALIDATOR;
+    public static final FieldValidator POSITIVE_VALIDATOR;
+
+    private boolean positive;
 
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
@@ -37,6 +36,8 @@ public abstract class FieldValidator {
         FUTURE_DATE_VALIDATOR = new FutureDateValidator();
         DATE_VALIDATOR = new DateValidator();
         DECIMAL_VALIDATOR = new DecimalValidator();
+        ALPHANUMERIC_VALIDATOR = new AlphanumericValidator();
+        POSITIVE_VALIDATOR = new PositiveValidator(true);
     }
 
     static NumberRangeValidator createNumberRangeValidator(int begin, int end) {

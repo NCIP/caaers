@@ -19,6 +19,8 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.PositiveValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -86,7 +88,7 @@ public class StudyInterventionsTab extends AeTab {
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions", new SimpleNumericDisplayNameCreator("Radiation"),
                 createSelectField("administration", "Type of radiation administration", true, statusOpts),
-                createTextField("dosage", "Total dose (to date)", FieldValidator.NUMBER_VALIDATOR),
+                createTextField("dosage", "Total dose (to date)", new DecimalValidator(14, 6)),
                 doseUOMField,
                 createPastDateField("lastTreatmentDate", "Date of last treatment", false),
                 fractionNumberField,
@@ -107,8 +109,7 @@ public class StudyInterventionsTab extends AeTab {
 
     private void createAgentFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", true, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
-        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
-        InputFieldAttributes.setSize(totalDoseField, 4);
+        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", new PositiveValidator(true));
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);

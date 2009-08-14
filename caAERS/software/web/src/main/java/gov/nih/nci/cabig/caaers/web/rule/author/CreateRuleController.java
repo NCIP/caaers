@@ -22,6 +22,7 @@ import com.semanticbits.rules.api.RuleAuthoringService;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
+ * @author Ion C. Olaru
  */
 public class CreateRuleController extends AbstractRuleInputController<CreateRuleCommand> {
 
@@ -85,6 +86,21 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         getFlow().addTab(new DisplayRuleSetsTab());
         getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
+    }
+
+
+    /*
+    *
+    * The methos is responsible for the cases when the page validation should be skipped on Submit,
+    * in this case when the user goes back in the flow.
+    *
+    * */
+    @Override
+    protected boolean suppressValidation(HttpServletRequest httpServletRequest) {
+        int curPage = getCurrentPage(httpServletRequest);
+        int targetPage = getTargetPage(httpServletRequest, curPage);
+        if (targetPage < curPage) return true;
+        return super.suppressValidation(httpServletRequest);
     }
 
     public RuleAuthoringService getRuleAuthoringService() {

@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.HashMap;
@@ -59,10 +60,10 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("organization", "Site", true, options));
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", true));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", true));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
 
         InputField dobField = InputFieldFactory.createSplitDateField("participant.dateOfBirth", "Date of birth", false, true, true, true);
 
@@ -81,8 +82,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         repeatingFieldGroupFactoryOrg = new RepeatingFieldGroupFactory("mainOrg", "participant.organizationIdentifiers");
         repeatingFieldGroupFactorySys = new RepeatingFieldGroupFactory("mainSys", "participant.systemAssignedIdentifiers");
 
-        repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createTextField("value", "Identifier", true));
-        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("value", "Identifier", true));
+        repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
 
         options = new LinkedHashMap<Object, Object>();
         List<Lov> list = configurationProperty.getMap().get("participantIdentifiersType");
