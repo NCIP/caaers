@@ -59,13 +59,13 @@
             		<tr>
             			<td>
 	            			<div class="row">
-	            				<div class="label"><caaers:message code="firstName"/>&nbsp; </div>
+	            				<div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
 	            				<div class="value"><input id="prop0" name="firstName" type="text"/></div>
 	            			</div>
             			</td>
             			<td style="vertical-align:top">
             				<div class="row">
-            					<div class="label"><caaers:message code="lastName"/>&nbsp; </div>
+            					<div class="label"><caaers:message code="LBL_lastName"/>&nbsp; </div>
                     			<div class="value"><input id="prop1" name="lastName" type="text"/></div>
                     		</div>
             			</td>
@@ -73,13 +73,13 @@
             		<tr>
             			<td style="vertical-align:top">
             				<div class="row">
-                    			<div class="label"><caaers:message code="investigator.nciIdentifier"/>&nbsp; </div>
+                    			<div class="label"><caaers:message code="LBL_investigator.nciIdentifier"/>&nbsp; </div>
                     			<div class="value"><input id="prop2" type="text" name="nciIdentifier"/></div>
                 			</div>
             			</td>
             			<td style="vertical-align:top">
             					<div class="row">
-                    				<div class="label"><caaers:message code="organization"/>&nbsp; </div>
+                    				<div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
                     				<div class="value">
                     					<ui:autocompleter path="organization"
 										  initialDisplayValue="Begin typing here..." enableClearButton="true">

@@ -2,8 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -217,5 +216,14 @@ public abstract class Investigator extends User {
 	public void setAllowedToLogin(Boolean allowedToLogin) {
 		this.allowedToLogin = allowedToLogin;
 	}
+
+    @Transient
+    public boolean getActive() {
+        for (SiteInvestigator si : this.getSiteInvestigators()) {
+            if (si.isActive()) return true;
+        }
+        return false;
+    }
+
 
 }

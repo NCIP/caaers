@@ -83,7 +83,7 @@ VVVIIIIIEEEEEWWWW
     				${researchStaff.nciIdentifier}
     			</jsp:attribute>
     			<jsp:attribute name="label">
-    				<ui:label path="nciIdentifier" labelProperty="researchStaff.nciIdentifier" text="Researcher ID"></ui:label>
+    				<ui:label path="nciIdentifier" labelProperty="LBL_researchStaff.nciIdentifier" text="Researcher ID"></ui:label>
     			</jsp:attribute>
 			</ui:row>
     	</div>

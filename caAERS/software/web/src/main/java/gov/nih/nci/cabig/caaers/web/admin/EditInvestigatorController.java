@@ -37,8 +37,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
 
         request.getSession().removeAttribute(InvestigatorAjaxFacade.CREATE_INVESTIGATOR_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        Investigator investigator = investigatorDao.getInvestigatorById(Integer.parseInt(request
-                        .getParameter("investigatorId")));
+        Investigator investigator = investigatorDao.getInvestigatorById(Integer.parseInt(request.getParameter("investigatorId")));
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Investigator :" + String.valueOf(investigator));
@@ -72,8 +71,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final Investigator command,
-                    final Tab<Investigator> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final Investigator command, final Tab<Investigator> tab) {
     	
     	if(isAjaxRequest(request)) return false;
         String action = (String) super.findInRequest(request, "_action");

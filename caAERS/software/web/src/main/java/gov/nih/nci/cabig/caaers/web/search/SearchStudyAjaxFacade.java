@@ -223,6 +223,11 @@ public class SearchStudyAjaxFacade {
         columnNciInstituteCode.setTitle("Investigator number");
         model.addColumn(columnNciInstituteCode);
         
+        Column columnStatus = model.getColumnInstance();
+        columnStatus.setTitle("Status");
+        model.addColumn(columnStatus);
+        columnStatus.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorStatusDisplayCell");
+
         return model.assemble();
     }
 
@@ -270,8 +275,9 @@ public class SearchStudyAjaxFacade {
         model.addColumn(columnOrganizationNameName);
 
         Column columnStatus = model.getColumnInstance();
-        columnStatus.setProperty("active");
-        columnStatus.setTitle("Active");
+//        columnStatus.setProperty("active");
+        columnStatus.setTitle("Status");
+        columnStatus.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffStatusDisplayCell");
         model.addColumn(columnStatus);
         
         return model.assemble();

@@ -62,7 +62,7 @@
                         <div class="leftpanel">
                             <div class="row">
                                 <div class="label">Email address:</div>
-                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].emailAddress" cssClass="validate-EMAIL" readonly="${readOnly}"/></div>
+                                <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].emailAddress" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
                                 <div class="label">Phone:</div>

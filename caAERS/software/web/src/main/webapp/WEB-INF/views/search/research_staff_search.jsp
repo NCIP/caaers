@@ -65,17 +65,17 @@ function buildTable(form) {
 		<caaers:message code="researchstaff.search.criteriaSection" var="criteriaSectionTitle"/>
         <chrome:box title="${criteriaSectionTitle}" cssClass="mpaired" autopad="false">
             <div class="row">
-                <div class="label"><caaers:message code="firstName"/>&nbsp; </div>
+                <div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
                 <div class="value"><input id="prop0" name="firstName" type="text"/></div>
             </div>
 
             <div class="row">
-                <div class="label"><caaers:message code="lastName"/>&nbsp; </div>
+                <div class="label"><caaers:message code="LBL_lastName"/>&nbsp; </div>
                 <div class="value"><input id="prop1" name="lastName" type="text"/></div>
             </div>
 
             <div class="row">
-				<div class="label"><caaers:message code="organization"/>&nbsp; </div>
+				<div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
 					<div class="value">
 						<ui:autocompleter path="organization"
 							initialDisplayValue="Begin typing here..." enableClearButton="true">
