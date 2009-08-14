@@ -36,10 +36,6 @@
   	padding-top: 0.2em;
   	padding-bottom: 1.3em;
   }
-  div.applicable-reports{
-  	padding-top: 0.2em;
-  	padding-bottom: 1.3em;
-  }
   	 
  </style>
  

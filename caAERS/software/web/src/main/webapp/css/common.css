@@ -654,8 +654,21 @@ img.indicator { visibility: hidden; }
 /*
   Styles for Table Data 
 */
-.accordion-content .tablecontent th, .accordion-content .tablecontent td {
-	border:1px solid #AFAFAF;
+.accordion-content .applicable-reports td{
+	border-top:1px solid #dfdfdf;
+	border-bottom:1px solid #dfdfdf;
+	border-left:1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+.accordion-content .applicable-reports {
+	border-bottom:1px solid #ccc;
+	margin-top:5px;
+}
+.accordion-content .tablecontent th {
+	border:1px solid #ccc;
+}
+.accordion-content .tablecontent tr.newGroup, .accordion-content .tablecontent tr.newGroup td {
+	border-top:2px solid #ccc;
 }
 table.tablecontent { border-collapse: collapse; }
 .tablecontent td, .tablecontent th { padding: 0.2em; }
