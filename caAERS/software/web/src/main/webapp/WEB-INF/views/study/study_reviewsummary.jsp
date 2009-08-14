@@ -272,6 +272,7 @@
         <table class="tablecontent" width="100%" >
             <tr>
                 <th scope="col">Investigator</th>
+                <th scope="col">Organization</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
@@ -279,10 +280,12 @@
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>
-                    <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
-                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-                	</c:if>  
-                        ${studyInvestigator.siteInvestigator.investigator.fullName}</td>
+                            <c:if test="${studyInvestigator.siteInvestigator.investigator.externalId != null}">
+                                <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                            </c:if>
+                                ${studyInvestigator.siteInvestigator.investigator.fullName}
+                        </td>
+                        <td>${studyInvestigator.siteInvestigator.organization}</td>
                         <td>${command.studyInvestigatorRoles[studyInvestigator.roleCode]}</td>
                         <td>
                             <c:if test="${studyInvestigator.active}">Active</c:if>
@@ -309,6 +312,7 @@
         <table class="tablecontent" width="100%" >
             <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Organization</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
@@ -317,11 +321,12 @@
                     <tr class="results">
                     
                         <td>
-                    <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
-                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-                	</c:if>  
-                        ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
+                            <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
+                                <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
+                            </c:if>
+                                ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
                         </td>
+                        <td>${studyPersonnel.siteResearchStaff.organization}</td>
                         <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
                         <td>
                             <c:if test="${studyPersonnel.active}">Active</c:if>
