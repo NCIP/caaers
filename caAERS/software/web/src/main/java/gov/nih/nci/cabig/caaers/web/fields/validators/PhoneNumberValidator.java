@@ -7,6 +7,7 @@ import java.util.regex.*;
  * 
  * @author Biju Joseph
  * @author Ion
+ * @author Karthik Iyer
  */
 public class PhoneNumberValidator extends FieldValidator {
 
@@ -18,7 +19,6 @@ public class PhoneNumberValidator extends FieldValidator {
 		 Pattern p = Pattern.compile(regex);
 		 Matcher m = p.matcher(strVal);
 		 return m.matches();
-		 
 	}
 
 	@Override
