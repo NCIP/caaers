@@ -37,7 +37,7 @@
     </ul>
 </div>
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false">
 
 <jsp:attribute name="repeatingFields">
 	<input type="hidden" name="_action" value="">

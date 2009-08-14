@@ -126,7 +126,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                             if (srsrch.getChecked()) hasRoles = true;
                         }
                     }
-                    if (!hasRoles) errors.reject("USR_003", "");
+                    if (!hasRoles) errors.reject("USR_003", "Please provide research staff roles for every organization.");
                     i++;
                 }
             }
