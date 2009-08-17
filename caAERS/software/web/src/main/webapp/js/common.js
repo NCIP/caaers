@@ -2,6 +2,7 @@
 var AE = { }
 
 AE.DWR_ERROR_HANDLER_REGISTERED=false;
+AE.SUBMISSION_INPROGRESS=false;
 
 AE.INDICATOR_REF_COUNTS = { };
 AE.hash = new Hash();
@@ -861,6 +862,9 @@ function hideDWRLoadingIndicator(){
 //---------------------------------------------------------------------------------------------------------
 //will register ajax handlers , calendars, SSO
 Event.observe(window, "load", function() {
+	
+	//hide the dwr indicator
+	hideDWRLoadingIndicator();
 	
 	//AJAX handlers
 	Ajax.Responders.register({
