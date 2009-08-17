@@ -1,6 +1,7 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <jsp:useBean id="today" class="java.util.Date" scope="request" />
 <c:set var="editMode" value="${command.researchStaff.id > 0}" />
+<jsp:useBean id="date" class="java.util.Date" />
 
 <html>
 <head>
@@ -18,6 +19,20 @@
         cursor:pointer;
     }
 </style>
+
+<script>
+    function applyRole(srsIndex, roleIndex) {
+        var dt = "";
+        var field = $('siteResearchStaffCommandHelper[' + srsIndex + '].rsRoles[' + roleIndex + '].startDate'); 
+        if ($('siteResearchStaffCommandHelper[' + srsIndex + '].rsRoles[' + roleIndex + '].checked').checked) {
+            dt = "<tags:formatDate value="${date}" />";
+            // field.enable();
+        } else {
+            // field.disable();
+        }
+        field.value = dt;
+    }
+</script>
 
 <div id="display_remote_rs" style="display:none;text-align:left" >
 	<chrome:box title="Please select a ResearchStaff to be saved in caAERS" id="popupId">

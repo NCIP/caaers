@@ -111,7 +111,7 @@
                             <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
                                 <tr>
                                     <td>
-                                        <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" />&nbsp;${allRoles[j.index].name}</c:if>
+                                        <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${allRoles[j.index].name}</c:if>
                                         <c:if test="${role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
                                     <td>
                                         <c:if test="${role.checked}">
@@ -123,7 +123,13 @@
 
                                                 <%--<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate()">--%>
                                         </c:if>
-                                        <c:if test="${!role.checked}"><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate"/></c:if>
+                                        <c:if test="${!role.checked}">
+                                                <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate" />
+                                            <script type="text/javascript">
+                                                $('siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate').value = '';
+                                                // $('siteResearchStaffCommandHelper[' + srsIndex + '].rsRoles[' + roleIndex + '].startDate').disable();
+                                            </script>
+                                        </c:if>
 
                                 <tr>
                             </c:forEach>
