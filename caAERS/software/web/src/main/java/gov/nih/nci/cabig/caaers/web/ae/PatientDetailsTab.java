@@ -344,6 +344,17 @@ public class PatientDetailsTab extends AeTab {
                 propertyName = String.format("aeReport.saeReportPriorTherapies[%d].priorTherapy", i);
                 errors.rejectValue(propertyName, "SAE_028", "Missing Prior Therapy");
             }
+
+/*
+            int j = 0;
+            for (PriorTherapyAgent ptAgent : pt.getPriorTherapyAgents()) {
+                String agentPropertyName = String.format("aeReport.saeReportPriorTherapies[%d].priorTherapyAgents[%d].chemoAgent", i, j);
+                if (ptAgent == null || ptAgent.getName() == null || ptAgent.getName().trim().equals("")) {
+                    errors.rejectValue(agentPropertyName, "SAE_034", "Missing Prior Therapy Agent");
+                }
+                j++;
+            }
+*/
             i++;
         }
     }
