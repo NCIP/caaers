@@ -118,15 +118,10 @@ var ValidationManager = {
         }
     },
     submitPostProcess: function(formElement, validationFlag, submit) {
-        //tabbedflow.js will disable the button on click,so if there is
-        // validation error, makesure we enable the button back.
-
-        if (!validationFlag) {
-            if ((AE.clickSrc != null) && (!AE.clickSrc.visible())) {
-                AE.clickSrc.show();
-            }
-        }
-        AE.clickSrc = null;
+    	if(!validationFlag){
+    		hideDWRLoadingIndicator();
+        	AE.SUBMISSION_INPROGRESS = false;
+    	}
         return validationFlag;
     },
     submitPreProcess: function(formElement) {
