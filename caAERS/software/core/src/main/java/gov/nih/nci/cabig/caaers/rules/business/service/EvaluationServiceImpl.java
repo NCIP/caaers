@@ -410,27 +410,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         
     }
-    /**
-     * Will create the Report by calling ReportService, then saves the ExpeditedAdverseEventReport
-     */
-    @Transactional(readOnly = false)
-    public List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
-    	List<Report> reports = new ArrayList<Report>();
-        for (ReportDefinition def : reportDefs) {
-            Report r = reportRepository.createReport(def, expeditedData, null);
-            // Set useDefaultVersion to true. So that incase there are multiple reports , the reportVersion is correctly set for the 
-            // first report and the same reportVersion is used for the remaining reports in the list
-            
-            // eg. if 5 day and 24hr are selected, then the reportVersion becomes 1 for 5 day and 2 for 24 hr report.
-            // rather it should be 1 for both the reports.
-            useDefaultVersion = true;
-            reports.add(r);
-        }
-        expeditedAdverseEventReportDao.save(expeditedData);
-        return reports;
-    }
-
 
     /**
      * This method will find all the report definitions belonging to the Study

@@ -262,7 +262,6 @@ This applicationContext contains the definition of the concrete services
 			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 	</bean>
 	<bean id="reportWithdrawalService" class="gov.nih.nci.cabig.caaers.service.ReportWithdrawalService" autowire="byType" lazy-init="true" />
-	
 	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>

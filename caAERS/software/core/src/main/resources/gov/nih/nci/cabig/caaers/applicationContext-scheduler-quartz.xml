@@ -29,14 +29,13 @@
         		<ref bean="reportStatusResetTrigger" /> 
         	</list>
      	</property>
-	-->
+	 -->
 	</bean>
 	
-		<!--  This bean that implements the service  -->
-	
+	<!--  This bean that implements the service  -->
 	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-	  <property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
-   </bean>
+  		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
+  	</bean>
 	<!-- trigger every 5 minutes -->
 	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 	    <property name="jobDetail" ref="reportStatusResetJob" />

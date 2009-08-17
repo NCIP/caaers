@@ -19,19 +19,24 @@ import java.util.List;
  * @since 1.0
  */
 public interface ReportRepository {
-    /**
+	
+	/**
+	 * This method will amend/unamend/withdraw/create the reports. 
+	 * @param aeReport- The expedited report
+	 * @param toAmendList - The list of reports to amend
+	 * @param toUnAmendList - The list of reports to unamend
+	 * @param toWithdrawList - The list of reports to withdraw
+	 * @param toCreateList - The list of reports to create
+	 */
+	void processReports(ExpeditedAdverseEventReport aeReport, List<Report> toAmendList, List<Report> toUnAmendList, 
+			List<Report> toWithdrawList,  List<ReportDefinition> toCreateList );
+   
+	/**
      * Will mark the report as deleted (ReportStatus = WITHDRAWN). At present it will unschedule the
      * pending scheduled notifications present in the scheduler, by delegating the call to
      * SchedulerService.
      */
     void withdrawReport(Report report);
-
-    /**
-     * Will mark the report as replaced (ReportStatus = REPLACED). At present it will unschedule the
-     * pending scheduled notifications present inthe scheduler, by delegating the call to 
-     * SchedulerService.
-     */
-    void replaceReport(Report report);
     
     /**
      * Creates a report from the given definition and associates it with the given aeReport and
@@ -39,7 +44,7 @@ public interface ReportRepository {
      * <p/>
      * Also it will schedule the report.
      */
-    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport, Date baseDate);
+    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
     
     /**
      * This method will create all the child reports of the given report.

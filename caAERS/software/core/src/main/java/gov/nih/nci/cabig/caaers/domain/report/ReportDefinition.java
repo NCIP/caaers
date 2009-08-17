@@ -72,8 +72,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private ReportType reportType;
     private ReportDefinition parent;
     
+    //PURE FABRICATED VARIABLES.
     protected ReportDefinitionComparator comprator;
-    
+    protected boolean manuallySelected; //will store the manually selected indicator.
+    protected Date baseDate; //will store the base date, (for new report creation)
     
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
@@ -467,5 +469,23 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		 return duration + " " + timeScaleUnitType.getDisplayName();
 	}
 	
+	
+	//This is a purely fabricated method, used only while creating new report. 
+	@Transient
+	public Date getBaseDate() {
+		return baseDate;
+	}
+	public void setBaseDate(Date baseDate) {
+		this.baseDate = baseDate;
+	}
+	
+	//This is a purely fabricated method, used only while creating new report. 
+	@Transient
+	public boolean isManuallySelected() {
+		return manuallySelected;
+	}
+	public void setManuallySelected(boolean manuallySelected) {
+		this.manuallySelected = manuallySelected;
+	}
 	
 }

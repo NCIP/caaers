@@ -48,15 +48,6 @@ public interface EvaluationService {
     List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,Study study);
     
     /**
-     * This method will instantiate and saves the optional reports.
-     * 
-     * @param expeditedData
-     * @param reportDefs -
-     *                A list of ReportDefinitions
-     */
-    List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData, Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion);
-
-    /**
      * 
      * @param expeditedData
      * @param reportDefinitions

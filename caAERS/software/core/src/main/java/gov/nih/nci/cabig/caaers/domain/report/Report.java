@@ -629,4 +629,5 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	externalSystem =  hasSystemDeliveries();
     	return externalSystem;
 	}
+    
 }

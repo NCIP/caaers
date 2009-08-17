@@ -149,13 +149,11 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
      */
     public void initialize(ReportDefinition rpDef) {
         // this method will initialize all the lazy collections
-        // of a report definition
-        super.initialize(rpDef.getPlannedNotifications());
-        super.initialize(rpDef.getDeliveryDefinitionsInternal());
-        super.initialize(rpDef.getMandatoryFields());
+    	rpDef.getDeliveryDefinitions().size();
+    	rpDef.getMandatoryFields().size();
         for (PlannedNotification nf : rpDef.getPlannedNotifications()) {
-            super.initialize(nf.getRecipients());
-            super.initialize(nf.getAttachments());
+        	nf.getRecipients().size();
+        	nf.getAttachments().size();
         }
     }
     

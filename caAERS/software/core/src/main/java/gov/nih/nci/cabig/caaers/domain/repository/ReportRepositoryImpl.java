@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
+import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
@@ -46,19 +47,88 @@ public class ReportRepositoryImpl implements ReportRepository {
     private static final Log log = LogFactory.getLog(ReportRepositoryImpl.class);
     private ReportDao reportDao;
     private ReportDefinitionDao reportDefinitionDao;
-    private ParticipantDao participantDao;
     private StudyDao studyDao;
     private ExpeditedReportTree expeditedReportTree;
     private SchedulerService schedulerService;
+    private ReportWithdrawalService reportWithdrawalService;
 
     private ReportFactory reportFactory;
     private NowFactory nowFactory;
 
 
-    public void withdrawOrReplaceReport(Report report){
-    	schedulerService.unScheduleNotification(report);
-        reportDao.save(report);
+	/**
+	 * This method will amend/unamend/withdraw/create the reports. 
+	 * @param aeReport- The expedited report
+	 * @param toAmendList - The list of reports to amend
+	 * @param toUnAmendList - The list of reports to unamend
+	 * @param toWithdrawList - The list of reports to withdraw
+	 * @param toCreateList - The list of reports to create
+	 */
+    @Transactional(readOnly = false)
+    public void processReports(ExpeditedAdverseEventReport aeReport,List<Report> toAmendList,List<Report> toUnAmendList,
+    		List<Report> toWithdrawList, List<ReportDefinition> toCreateList) {
+    	
+    	//amend report to amend
+    	if(CollectionUtils.isNotEmpty(toAmendList)){
+    		for(Report report : toAmendList){
+    			Report reportToAmend = aeReport.findReportById(report.getId()); 
+    			amendReport(reportToAmend);
+    		}
+    	}
+    	
+    	//un amend the reports
+    	if(CollectionUtils.isNotEmpty(toUnAmendList)){
+    		for(Report report : toUnAmendList){
+    			Report reportToUnAmend = aeReport.findReportById(report.getId());
+    			unAmendReport(reportToUnAmend);
+    		}
+    	}
+    	
+    	//figure out the reports that are getting only withdrawn 
+    	List<Report> beingWithdrawnList = new ArrayList<Report>();
+    	if(CollectionUtils.isNotEmpty(toWithdrawList)){
+    		for(Report report : toWithdrawList){
+        		Report reportToWithdraw = aeReport.findReportById(report.getId());
+        		if(!isGettingReplaced(reportToWithdraw, toCreateList)){
+        			beingWithdrawnList.add(reportToWithdraw);
+        		}
+        		withdrawReport(reportToWithdraw);
+        	}
+    	}
+    	
+    	//create new reports
+    	if(CollectionUtils.isNotEmpty(toCreateList)){
+    		for(ReportDefinition reportDefinition : toCreateList){
+    			Report report = createReport(reportDefinition, aeReport);
+    		}
+    	}
+    	
+
+    	//withdraw reports from external agency if needed. 
+    	if(CollectionUtils.isNotEmpty(beingWithdrawnList)){
+    		for(Report report : beingWithdrawnList){
+    			Report reportToWithdraw = aeReport.findLastSubmittedReport(report.getReportDefinition());
+    			if(reportToWithdraw != null && reportToWithdraw.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)){
+    				reportWithdrawalService.withdrawExternalReport(reportToWithdraw);
+    			}
+    		}
+    	}
+    	
     }
+    
+    /**
+     * This method will return true, if same category (group-organization) report definition is 
+     * available in the report definitions list
+     */
+    protected boolean isGettingReplaced(Report report, List<ReportDefinition> reportDefinitionList){
+    	if(CollectionUtils.isEmpty(reportDefinitionList)) return false;
+    	for(ReportDefinition reportDefinition : reportDefinitionList){
+    		if(reportDefinition.isOfSameReportTypeAndOrganization(report.getReportDefinition())) return true;
+    	}
+    	
+    	return false;
+    }
+    
     
     @Transactional(readOnly = false)
     public void withdrawReport(Report report) {
@@ -66,32 +136,24 @@ public class ReportRepositoryImpl implements ReportRepository {
         report.setStatus(ReportStatus.WITHDRAWN);
         report.setWithdrawnOn(nowFactory.getNow());
         report.setDueOn(null);
-        
-        withdrawOrReplaceReport(report);
+        schedulerService.unScheduleNotification(report);
+        reportDao.save(report);
     }
     
-    @Transactional(readOnly = false)
-    public void replaceReport(Report report){
-    	assert !report.getStatus().equals(ReportStatus.REPLACED) : "Cannot replace a report that is already replaced";
-    	assert !report.getStatus().equals(ReportStatus.WITHDRAWN): "Cannot replace a report that is already withdrawn";
-    	report.setStatus(ReportStatus.REPLACED);
-    	report.getLastVersion().setReportStatus(ReportStatus.REPLACED);
-    	report.setWithdrawnOn(nowFactory.getNow());
-        report.setDueOn(null);
-    	withdrawOrReplaceReport(report);
-    }
 
     /**
      * {@inheritDoc}
      */
 
     @Transactional(readOnly = false)
-    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Date baseDate) {
+    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport) {
     	
     	//reassociate all the study orgs
     	studyDao.reassociateStudyOrganizations(aeReport.getStudy().getStudyOrganizations());
     	
-        Report report = reportFactory.createReport(reportDefinition, aeReport, baseDate);
+//    	reportDefinitionDao.lock(reportDefinition);
+    	
+        Report report = reportFactory.createReport(reportDefinition, aeReport, reportDefinition.getBaseDate());
         
         //update report version, based on latest amendment. 
         Report lastSubmittedReport = aeReport.findLastSubmittedReport(reportDefinition);
@@ -110,6 +172,8 @@ public class ReportRepositoryImpl implements ReportRepository {
            
         }
         
+        //set the manually selected flag.
+        report.setManuallySelected(reportDefinition.isManuallySelected());
        
         //save the report
         reportDao.save(report);
@@ -135,7 +199,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     		
     		instantiatedReports = new ArrayList<Report>();
     		for(ReportDefinition rdChild : rdChildren){
-    			Report childReport = createReport(rdChild, report.getAeReport(), nowFactory.getNow());
+    			Report childReport = createReport(rdChild, report.getAeReport());
     			instantiatedReports.add(childReport);
     		}
     	}
@@ -283,11 +347,6 @@ public class ReportRepositoryImpl implements ReportRepository {
 	}
     
     @Required
-    public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
-	}
-    
-    @Required
     public void setReportDao(final ReportDao reportDao) {
         this.reportDao = reportDao;
     }
@@ -317,4 +376,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
   
+    @Required
+    public void setReportWithdrawalService(ReportWithdrawalService reportWithdrawalService) {
+		this.reportWithdrawalService = reportWithdrawalService;
+	}
 }
