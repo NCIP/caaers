@@ -412,7 +412,7 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
     			<c:forEach items="${command.study.studyConditions}" var="studyConditions" varStatus="status">
-    			<c:if test="${not meddraStudyDisease.retired}">
+    			<c:if test="${not studyConditions.retired}">
     			<tr>
             		<td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
             		<td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
