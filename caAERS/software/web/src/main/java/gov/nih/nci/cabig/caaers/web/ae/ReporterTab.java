@@ -107,7 +107,7 @@ public class ReporterTab extends AeTab {
 	    	//process the reports
 	    	reviewResult.updateBaseDateOnCreateList();
 	    	reportRepository.processReports(command.getAeReport(), reviewResult.getReportsToAmmendList(), reviewResult.getReportsToUnAmendList(), 
-	    			reviewResult.getReportsToWithdraw(), reviewResult.getCreateList());
+	    			reviewResult.getReportsToWithdraw(), command.getNewlySelectedReportDefinitions());
 	    	
 			//-enact workflow
 			if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
