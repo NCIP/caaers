@@ -19,6 +19,18 @@ AE.tabbedFlowUpdateTarget = function(evt) {
     }
 }
 
+
+AE.tabbedFlowDisableTarget = function(evt) {
+	if(!AE.SUBMISSION_INPROGRESS){
+		AE.SUBMISSION_INPROGRESS = true;
+		AE.checkForModification = false;
+	    showDWRLoadingIndicator();
+	}else{
+    	//stop the event.
+   	 	Event.stop(evt);
+   }
+}
+
 AE.tabbedFlowSelectAndSubmit = function(click) {
     Event.stop(click)
     if(!AE.SUBMISSION_INPROGRESS){
@@ -35,7 +47,7 @@ Event.observe(window, "load", function() {
     })
     if ($("flow-prev")) Event.observe("flow-prev", "click", AE.tabbedFlowUpdateTarget)
     if ($("flow-update")) Event.observe("flow-update", "click", AE.tabbedFlowUpdateTarget)
-    if ($("flow-next")) Event.observe("flow-next", "click",  AE.tabbedFlowUpdateTarget)
+    if ($("flow-next")) Event.observe("flow-next", "click",  AE.tabbedFlowDisableTarget)
 })
 
 //updates the forms action, by chopping off the query string in action.
