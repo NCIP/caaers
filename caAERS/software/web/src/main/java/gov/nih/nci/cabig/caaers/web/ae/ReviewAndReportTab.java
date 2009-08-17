@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Map;
 
@@ -36,6 +37,13 @@ public class ReviewAndReportTab extends AdverseEventTab {
 	public Map<String, Object> referenceData(HttpServletRequest request,CaptureAdverseEventInputCommand command) {
 		
 		Map<String, Object> refData = super.referenceData(request, command);
+		
+		//initialize outcomes if necessary
+		int previousPage = WebUtils.getPreviousPage(request);
+		int targetPage = WebUtils.getTargetPage(request);
+		if(previousPage == 0 && targetPage == 2){
+			command.initializeOutcomes();
+		}
 		
 		//find the applicable report definitions(only once per page flow)
 		command.findApplicableReportDefinitions();

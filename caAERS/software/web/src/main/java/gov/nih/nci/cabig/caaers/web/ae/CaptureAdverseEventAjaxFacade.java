@@ -154,76 +154,27 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         return ajaxOutput;
     }
     
+    /**
+     * Will delete (soft delete) the adverse event from course.
+     * @param index
+     * @param reportId
+     * @return
+     */
     public AjaxOutput deleteAdverseEvent(int index, String reportId){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
-    	deletedAe.retire(); //soft delete
-    	//save the reporting period
-    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
-    	
-    	return new AjaxOutput();
-    	
-    	/* BJ =========== existing code to be removed
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	//command.reassociate();
-    	
-    	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
-    	boolean reportsGotAmmended = false;
-    	ExpeditedAdverseEventReport ammendedReport = null;
-    	//Remove the AE from expedited report, if needed
-    	if(deletedAe.getReport() != null){
-    		
-			for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
-				if(aeReport.getId().equals(deletedAe.getReport().getId())){
-					ammendedReport = aeReport;
-					aeReport.getAdverseEvents().remove(deletedAe);
-					break;
-				}
-			}
-			
-			//ammend the report if needed
-			if(StringUtils.isNotEmpty(reportId) && ammendedReport != null){
-				Boolean useDefaultVersion = false;
-				List<Report> reportsOfAeReport = new ArrayList<Report>(ammendedReport.getReports());
-				for(Report report: reportsOfAeReport){
-					if(report.getReportDefinition().getAmendable()){
-						reportRepository.createAndAmendReport(command.reassociateReportDefinition(report.getReportDefinition()), 
-								report, useDefaultVersion);
-						reportsGotAmmended = true;
-						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
-						// and just incremented for the 1st one in the list.
-						useDefaultVersion = true;
-					}
-				}
-			}
-			
-			deletedAe.setReport(null);
+    	AjaxOutput ajaxOutput = new AjaxOutput();
+    	try {
+			CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+			AdverseEvent deletedAe = command.getAdverseEvents().get(index);
+			deletedAe.retire(); //soft delete
+			reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+		} catch (Exception e) {
+			log.error("unable to delete adverse event", e);
+			ajaxOutput.setError(true);
+			ajaxOutput.setErrorMessage(e.getMessage());
 		}
+    	return ajaxOutput;
+    	
     
-    	// Remove the adverseEvent from the list of AEs assosicated to the report which has id = deletedId
-    	command.getAdverseEvents().remove(index);
-    	deletedAe.setReportingPeriod(null);
-    	
-    	//if reports got amended , update the earliest graded date
-    	if(reportsGotAmmended)
-    		ammendedReport.updateAdverseEventGradedDate();
-    	
-    	//save the expedited report
-    	if(ammendedReport != null)
-    		aeReportDao.save(ammendedReport);
-    	
-    	//save the reporting period
-    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
-    	
-    	if(command.getWorkflowEnabled() && command.isAssociatedToWorkflow()){
-    		//enable new expedited report workflow, if the reports are ammended
-    		if(reportsGotAmmended){
-    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(ammendedReport);    		
-    		}
-    	}
-    	
-    	return new AjaxOutput();
-    	*/
     }
     
     public AjaxOutput addReviewComment(String comment){

@@ -379,15 +379,6 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
         return c;
     }
     
-    public void testInitializeExistingReportMap() throws Exception{
-    	addReportsToAeReport();
-    	command.getAeReport().getReports().get(1).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	command.getAeReport().getReports().get(3).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	
-    	command.initializeExistingReportMap();
-    	assertEquals(4, command.getExistingReportMap().size());
-    }
-  
     
     /**
      * Test the scenario when all reports, are selected. 

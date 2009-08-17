@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -140,7 +141,18 @@ public class WebUtils {
     	if(StringUtils.isEmpty(pg)) return -1;
     	return Integer.parseInt(pg);
     }
-
+    
+    public static int getTargetPage(HttpServletRequest request){
+    	Enumeration paramNames = request.getParameterNames();
+		while (paramNames.hasMoreElements()) {
+			String paramName = (String) paramNames.nextElement();
+			if (paramName.startsWith("_target")) {
+				return Integer.parseInt(paramName.substring(7));
+			}
+		}
+		return -1;
+    }
+    
     /*
     * Sort a map
     * 

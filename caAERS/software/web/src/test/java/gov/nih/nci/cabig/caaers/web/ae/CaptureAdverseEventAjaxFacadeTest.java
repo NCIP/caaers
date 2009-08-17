@@ -89,6 +89,8 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		verifyMocks();
 	}
 	
+
+	
 	public void testControllers(){
 		Class<?>[] controllers = facade.controllers();
 		assertEquals(1, controllers.length);

@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFor
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -56,14 +57,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	private static final String AE_REPORT_ID_PARAMETER = "aeReportId";
-	private static final String ACTION_PARAMETER = "action";
-	private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
-	private static final String AE_LIST_PARAMETER = "adverseEventList";
-	private static final String CREATE_NEW_TASK = "createNew";
-	private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
-	private static final String AMEND_REPORT = "amendReport";
-	private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
 	
 	
 	private static final String SELECTED_STUDY_ID = "pre_selected_study_id";
@@ -96,140 +89,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		setCommandClass(CaptureAdverseEventInputCommand.class);
 	}
 	
-    /*@Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors, int page) throws Exception {
-    	String action = (String) findInRequest(request, "_action");
-		if(org.apache.commons.lang.StringUtils.isEmpty(action))
-			super.onBindAndValidate(request, command, errors, page);
-    }*/
-	
 	@Override
 	protected AdverseEventReportingPeriodDao getDao() {
 		return null;
 	}
-	
-	@Override
-	protected void onBindOnNewForm(HttpServletRequest request, Object command,BindException errors) throws Exception {
-		super.onBindOnNewForm(request, command, errors);
-		String rpId = request.getParameter("adverseEventReportingPeriod");
-		CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
-		if(!StringUtils.isEmpty(rpId)) {
-			cmd.refreshAssignment(Integer.parseInt(rpId));
-		}
-	}
-	
-	/**
-	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
-	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
-	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
-	 *  events will be bound to the command object.
-	 *  
-	 *  
-	 *  NOTE - There are 2 flows from where the Capture AE page can be reached. One is from "Enter AEs" and other is from "Manage reports"
-	 *  If we enter from "Manage Reports", the reportingPeriodId is passed as a parameter in the url and we have to bind it to the reporting
-	 *  Period in command. So we check for the parameter "addReportingPeriodBinder" which is passed in the url while coming from "Manage 
-	 *  reports" and allow/disallow AdverseEventReportingPeriod Binder based on its value.
-	 */
-	
-	@Override
-	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
-		CaptureAdverseEventInputCommand aeCommand = (CaptureAdverseEventInputCommand) command;
-		ServletRequestDataBinder binder = super.createBinder(request, aeCommand);
-		prepareBinder(binder);
-		initBinder(request,binder, aeCommand);
-		return binder;
-	}
 
-	
-	@Override
-    @SuppressWarnings("unchecked")
-    protected boolean isFormSubmission(HttpServletRequest request) {
-        Set<String> paramNames = request.getParameterMap().keySet();
-        boolean fromListPage = false;
-        fromListPage = paramNames.contains("displayReportingPeriod") && paramNames.contains("adverseEventReportingPeriod");
-        if(fromListPage) 
-        	return true;
-        else
-        	return super.isFormSubmission(request);
-    }
-
-	/**
-	 * The Capture AE page can be entered from 2 flows. One is through "Enter AEs" and other is from "Manage Reports". If we enter from
-	 * the later, there is a possibility that the form object is not found in the session and an exception is thrown. So the controll goes 
-	 * to handleInvalidSubmit method. The default implementation in AbstractWizardFormController renders the first page of the flow. So we 
-	 * need to override that method. It creates the command object, binds the attributes in the url and calls processFormSubmission.
-	 */
-	
-	@Override
-	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		Set<String> paramNames = request.getParameterMap().keySet();
-        boolean fromListPage = false;
-        fromListPage = paramNames.contains("displayReportingPeriod");
-        if(fromListPage){
-        	Object command = formBackingObject(request);
-    		ServletRequestDataBinder binder = bindAndValidate(request, command);
-    		BindException errors = new BindException(binder.getBindingResult());
-    		return processFormSubmission(request, response, command, errors);
-        }
-        else {
-            response.sendRedirect("captureRoutine");
-            // return new ModelAndView("ae/selectAssignment"); // super.handleInvalidSubmit(request, response);
-            return null;
-        }
-    }
-	
-	/**
-	 * If the request is from the Manage Reports page (link has displayReportingPeriod), 
-	 *  - If there is a valid adverseEventReportingPeriod, we need to synchronize the assignment.
-	 *  - If there is no valid adverseEventReportingPeriod, we need to make the assignment null, so that it is refreshed 
-	 *  	from Study-Participant combination (this is for createNew link in Manage reports)
-	 */
-	@Override
-	protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
-		super.onBind(request, command, errors); //binding is done.
-		CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
-		cmd.set_action(request.getParameter("_action"));
-		
-        boolean fromListPage =  request.getParameterMap().keySet().contains("displayReportingPeriod");
-		
-        if (fromListPage) {
-          
-            AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
-            
-            if (reportingPeriod != null) {
-                try {
-                    int rpId = ServletRequestUtils.getIntParameter(request, "adverseEventReportingPeriod");
-                    cmd.setAssignment(reportingPeriod.getAssignment());
-                } catch (ServletRequestBindingException e) {
-                    cmd.setAssignment(null);
-                    cmd.setAdverseEventReportingPeriod(null);
-                }
-            } else {
-                cmd.setAssignment(null);
-            }
-        }else{
-        	//the binding should be manual, when it is the first page, as the parameter in the url will have old study and participants.
-        	int curPage = getCurrentPage(request);
-        	if(curPage == 0){
-        		String strStudyId = request.getParameter("study");
-        		if(StringUtils.isNotEmpty(strStudyId) && StringUtils.isNumeric(strStudyId)){
-        			cmd.setStudy(studyDao.getById(Integer.parseInt(strStudyId)));
-        		}
-        		
-        		String strSubjectId = request.getParameter("participant");
-        		if(StringUtils.isNotEmpty(strSubjectId) && StringUtils.isNumeric(strSubjectId)){
-        			cmd.setParticipant(participantDao.getById(Integer.parseInt(strSubjectId)));
-        		}
-        		
-        		String strCourseId = request.getParameter("adverseEventReportingPeriod");
-        		if(StringUtils.isNotEmpty(strCourseId) && StringUtils.isNumeric(strCourseId)){
-        			cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(Integer.parseInt(strCourseId)));
-        		}
-        	}
-        }
-    }
-	
 	/**
 	 * Will return the {@link AdverseEventReportingPeriod} 
 	 */
@@ -318,15 +182,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 					
 					expeditedAdverseEventReportDao.save(aeReport);
 				}
+				
+				//process the reports. 
+				reportRepository.processReports(aeReport, null, command.getReviewResult().getReportsToUnAmendList(), command.getReviewResult().getReportsToWithdraw(), null);
 
 				
-				//after withdraw stick to current page.
-				for(Report report : command.getReviewResult().getReportsToWithdraw()){
-					reportRepository.withdrawReport(report);
-				}
-				for(Report report : command.getReviewResult().getReportsToUnAmendList()){
-					reportRepository.unAmendReport(report);
-				}
 				model.put("adverseEventReportingPeriod", command.getAdverseEventReportingPeriod().getId());
 				model.put("addReportingPeriodBinder", "true");
 				model.put("displayReportingPeriod", "true");
@@ -347,137 +207,105 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		}
 		
 		return modelAndView;
-	    
-//	    to be removed....
-	    
-//	    
-//		
-//		String action = (String)findInRequest(request, "_action");
-//		String aeReportIdString = (String)findInRequest(request, "_reportId");
-//		Integer aeReportId;
-//		
-//		// Set the parameters in the session.
-//		if(!action.equals(CREATE_NEW_TASK)){
-//			aeReportId = Integer.parseInt(aeReportIdString);
-//			session.setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
-//			model.put("aeReport", aeReportId);
-//		}
-//		
-//		session.setAttribute(ACTION_PARAMETER, action);
-//		//session.setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
-//		session.setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
-//		session.setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
-//		session.setAttribute(PRIMARY_ADVERSE_EVENT_ID_PARAMETER, command.getPrimaryAdverseEventId());
-		
-	   
 	}
 	
+	
 	/**
-	 * The binder for reporting period, should look in the command and fetch the object.
-	 * 
-	 * @param request
-	 * @param binder
-	 * @param command
-	 * @throws Exception
+	 * Will bind editors for this flow
 	 */
-	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder, final CaptureAdverseEventInputCommand command) throws Exception {
-		ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
-        ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
-        ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
-
-		ControllerTools.registerDomainObjectEditor(binder, "participantID", participantDao);
-        ControllerTools.registerDomainObjectEditor(binder, "studyID", studyDao);
+	@Override
+	protected void initBinder(HttpServletRequest request,ServletRequestDataBinder binder) throws Exception {
+		ControllerTools.registerDomainObjectEditor(binder,  participantDao);
+        ControllerTools.registerDomainObjectEditor(binder,  studyDao);
+        ControllerTools.registerDomainObjectEditor(binder,  adverseEventReportingPeriodDao);
 
         ControllerTools.registerDomainObjectEditor(binder, "adverseEvent", adverseEventDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
-        ControllerTools.registerDomainObjectEditor(binder, adverseEventReportingPeriodDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
         ControllerTools.registerEnumEditor(binder, OutcomeType.class);
-        
 	}
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
 		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 		
-		//restore the values from session if they are available. 
-		HttpSession session = request.getSession();
+		if(findInRequest(request, "study") == null){
 
-		Integer studyId = (Integer) session.getAttribute(SELECTED_STUDY_ID);
-		if(studyId != null){
-			cmd.setStudy(studyDao.getById(studyId));
+			//restore the values from session if they are available. 
+			HttpSession session = request.getSession();
+
+			Integer studyId = (Integer) session.getAttribute(SELECTED_STUDY_ID);
+			if(studyId != null){
+				cmd.setStudy(studyDao.getById(studyId));
+			}
+			
+			Integer subjectId = (Integer) session.getAttribute(SELECTED_PARTICIPANT_ID);
+			if(subjectId != null){
+				cmd.setParticipant(participantDao.getById(subjectId));
+			}
+			
+			Integer courseId = (Integer) session.getAttribute(SELECTED_COURSE_ID);
+			if(courseId != null){
+				cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
+			}
+
 		}
-		
-		Integer subjectId = (Integer) session.getAttribute(SELECTED_PARTICIPANT_ID);
-		if(subjectId != null){
-			cmd.setParticipant(participantDao.getById(subjectId));
-		}
-		
-		Integer courseId = (Integer) session.getAttribute(SELECTED_COURSE_ID);
-		if(courseId != null){
-			cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
-		}
-		
+				
 		return cmd;
 	}
-
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        /*
-        * This is to treat the first page as a fresh start of the flow
-        *
-        * */
-        int currPage = 0;
-        int targetPage = 0;
-        try {
-        	
-			try {
-				currPage = getCurrentPage(request);
-				targetPage = getTargetPage(request, currPage);
-			} catch (Exception e) {
-				return super.handleRequestInternal(request, response);
+	
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		
+		//force clear off the session attribute if the request is re-directed (from Manage Report/Review And Report). 
+		String displayReportingPeriod = WebUtils.getStringParameter(request, "displayReportingPeriod");
+		if(StringUtils.isNotEmpty(displayReportingPeriod)){
+			
+			String formAttributeName = getFormSessionAttributeName(request);
+			HttpSession session = request.getSession();
+			if(session != null){
+				session.removeAttribute(formAttributeName);
 			}
-			
-			String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
-			Set<String> paramNames = request.getParameterMap().keySet();
-			
-			// This is the case when there are no courses added to the assignment and the user clicks on the link
-			// in the Manage Reports page to create new courses.
-			if(paramNames.contains("displayReportingPeriod") && !paramNames.contains("addReportingPeriodBinder")){
-				String particpiantID = request.getParameter("participant");
-				String studyID = request.getParameter("study");
-				response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
-				return null;
-			}
-			
-			
-			if (currPage !=0 && targetPage == 0) {
-				CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
-
-				String particpiantID = "";
-				String studyID = "";
-				
-				if (cmd != null) {
-				    particpiantID = cmd.getParticipant().getId().toString();
-				    studyID = cmd.getStudy().getId().toString();
-				}
-
-				response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
-				return null;
-			} else {
-			    return super.handleRequestInternal(request, response);
-			}
-		} catch (Exception e) {
-			log.error("Error while handling the request", e);
-			throw e;
 		}
-        
+		
+		return super.handleRequestInternal(request, response);
+	}
+	
+	/**
+	 * Will return true if we are entering into capture flow from Manage Reports or through some other redirection. 
+	 */
+	@Override
+    protected boolean isFormSubmission(HttpServletRequest request) {
+		String displayReportingPeriod = WebUtils.getStringParameter(request, "displayReportingPeriod");
+		if(StringUtils.isNotEmpty(displayReportingPeriod)) return true;
+		return super.isFormSubmission(request);
+    }
+	
+
+	/**
+	 * If the entry to capture adverse event is from Manage reports, we need to handle the invalid submit case, as it the isFormSubmission is flaged 'true'. 
+	 */
+	
+	@Override
+	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String displayReportingPeriod = WebUtils.getStringParameter(request, "displayReportingPeriod");
+		if(StringUtils.isEmpty(displayReportingPeriod)) return  super.handleInvalidSubmit(request, response);
+		
+		//generate the form, validate , processFormSubmission.
+		Object command = formBackingObject(request);
+		ServletRequestDataBinder binder = bindAndValidate(request, command);
+		BindException errors = new BindException(binder.getBindingResult());
+		
+		return processFormSubmission(request, response, command, errors);
+		
     }
 
     @Override
@@ -492,7 +320,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("Enter AEs || Select Subject and Study");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());
-				//flow.addTab(new AdverseEventConfirmTab("Review and Report", "Review and Report", "ae/ae_reviewsummary"));
 				flow.addTab(new ReviewAndReportTab());
 				return flow;
 			}
@@ -511,8 +338,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (isAjax != null) return true;
         
-        //Object isFromManageReport = findInRequest(request, "fromManageReport");
-        //if(isFromManageReport != null) return true;
         //check current page and next page
         int currPage = getCurrentPage(request);
     	int targetPage = getTargetPage(request, currPage);

@@ -246,7 +246,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     public void instantiateNewlySelectedReports(){
     	Collection<ReportDefinition> newlySelectedReports = getNewlySelectedReportDefinitions();
     	if(newlySelectedReports != null){
-    		evaluationService.addOptionalReports(aeReport, newlySelectedReports, false);
+    	//	evaluationService.addOptionalReports(aeReport, newlySelectedReports, false);
     	}
     }
     

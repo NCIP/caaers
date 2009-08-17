@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -31,14 +33,6 @@ import org.springframework.validation.Errors;
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
-    private static final String REPORT_DEFN_LIST_PARAMETER = "reportDefnList";
-    private static final String REPORT_ID_PARAMETER = "reportId";
-    private static final String ACTION_PARAMETER = "action";
-
-
-    protected NowFactory nowFactory;
-
-    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter", "ae/reporter");
@@ -98,58 +92,45 @@ public class ReporterTab extends AeTab {
         }
     }
     
-/*
- * BJ =============== Commented
-    @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd) {
-    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
-        super.onDisplay(request, command);
+    
+    public void processReports(HttpServletRequest request,EditExpeditedAdverseEventCommand command){
+    	ReviewAndReportResult reviewResult = (ReviewAndReportResult)request.getSession().getAttribute("reviewResult"); 
+    	if(reviewResult != null){
+    		
+    		//modify the signatures of the adverse events in this report.
+	    	command.getAeReport().updateSignatureOfAdverseEvents();
+	    
 
-        boolean severe = true;
-        request.setAttribute("oneOrMoreSevere", severe);
-        
-        //only process if we are editing the expedited report (ammend or edit flow)
-        if (command.getAeReport().getId() != null) {
-        	//Initialize, the newly selected report definition.
-        	command.setNewlySelectedDefs(command.getSelectedReportDefinitions());
-        	
-        	//classify the newlySelectedReports into 2 list - 
-            // a. newlySelectedSponsorReports
-            // b. otherSelectedReports
-        	command.classifyNewlySelectedReportsDefinitons();
-        	
-        	//Populate a map existingReportMap with the reports already existing.
-        	command.initializeExistingReportMap();
-
-        	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
-            if(StringUtils.equals("amendReport", action)){
-            	processAmendReportFlow(command);
-            	command.createReports(true);
-            	
-            	// Amend the reports to be amended
-                command.amendReports();
-            }else if(StringUtils.equals("editReport", action)){
-            	processEditReportFlow(command);
-            	command.createReports(false);
-            }
-            // Withdraw the reports to be withdrawn
-            command.withdrawReports();
-
-            if (command.getAeReport().getReports().size() > 0) {
-                command.save();
-            }
-            
-            //refresh the mandatory sections and properties
-            command.refreshMandatorySectionsAndProperties();
-
-            command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
-            
-            // Remove the attributes from the session
-            request.getSession().removeAttribute(ACTION_PARAMETER);
-        }
-        
+	    	//save the data collection. 
+	    	command.save();
+	    	
+	    	//process the reports
+	    	reviewResult.updateBaseDateOnCreateList();
+	    	reportRepository.processReports(command.getAeReport(), reviewResult.getReportsToAmmendList(), reviewResult.getReportsToUnAmendList(), 
+	    			reviewResult.getReportsToWithdraw(), reviewResult.getCreateList());
+	    	
+			//-enact workflow
+			if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
+				command.enactWorkflow(command.getAeReport());
+			}
+	    	
+			//- remove review result from session.
+			request.getSession().removeAttribute("reviewResult"); 
+    	}
+    	
     }
-*/
+    
+    @Override
+    public void onDisplay(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
+    	
+    	if(!(command instanceof EditExpeditedAdverseEventCommand)) return;
+    	
+    	ExpeditedAdverseEventReport aeReport = command.getAeReport();
+    	if(aeReport.getId() != null && aeReport.getReporter().isSavable()){
+    		processReports(request, (EditExpeditedAdverseEventCommand)command);
+    	}
+    }
+
     /**
      * There is a chance of modification in reporter page, so suppress the warning
      * if it is from capture adverse events. 
@@ -174,207 +155,11 @@ public class ReporterTab extends AeTab {
     	if(errors.hasErrors()) return;
     	if(!(cmd instanceof EditExpeditedAdverseEventCommand)) return;
     	
-    	//- review result from session. 
-		ReviewAndReportResult reviewResult = (ReviewAndReportResult)request.getSession().getAttribute("reviewResult"); 
-    	
-		EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
-		if(reviewResult != null){
-			
-			//modify the signatures of the adverse events in this report.
-	    	command.getAeReport().updateSignatureOfAdverseEvents();
-	    	
-	    	//save the data collection. 
-	    	command.save();
-			
-			//- amend reports
-	    	List<Report> toAmendList = new ArrayList<Report>();
-	    	for(Report report : reviewResult.getReportsToAmmendList()){
-	    		Report toAmend = command.getAeReport().findReportById(report.getId());
-	    		if(toAmend != null) toAmendList.add(toAmend);
-	    	}
-			command.amendReports(toAmendList);
-			
-	    	
-			//-withdraw reports
-			List<Report> toWithdrawList = new ArrayList<Report>();
-	    	for(Report report : reviewResult.getReportsToWithdraw()){
-	    		Report toWithdraw = command.getAeReport().findReportById(report.getId());
-	    		if(toWithdraw != null) toWithdrawList.add(toWithdraw);
-	    	}
-			command.withdrawReports(toWithdrawList);
-			
-			
-			//unamend the reports
-			List<Report> toUnamendList = new ArrayList<Report>();
-			for(Report report : reviewResult.getReportsToUnAmendList()){
-				Report toUnamend = command.getAeReport().findReportById(report.getId());
-				if(toUnamend != null) toUnamendList.add(toUnamend);
-			}
-			command.unAmendReports(toUnamendList);
-			
-			//-create reports & enact workflow.
-			command.createReports(command.getNewlySelectedReportDefinitions(), reviewResult.getBaseDateMap(), reviewResult.getManualSelectionIndicatorMap());
-			
-			//-enact workflow
-			if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
-				command.enactWorkflow(command.getAeReport());
-			}
-			
-        	
-			//- remove review result from session.
-			request.getSession().removeAttribute("reviewResult"); 
-		}
-		
-        /*
-        BJ : ===========================
-        String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
-        if (StringUtils.equals("createNew", action)) {
-        	processForCreateNewFlow(command);
-        	// Remove the attributes from the session
-            request.getSession().removeAttribute(ACTION_PARAMETER);
-        }*/
-       
-    }
-    
-    
-//    
-//    /**
-//     * This method takes care of extra-processing incase of Amend-Report flow.
-//     *  - Find the reports that are to be amended, based on the newly selected report. 
-//     *     ie. we will ammend an amendable report only if the newly selected reports list, has an amendable report from the same organization.
-//     *     
-//     */
-//    public void processAmendReportFlow(EditExpeditedAdverseEventCommand command){
-//
-//    	
-//    	command.populateCreationAmendmentAndWithdrawlList();
-//    	
-////    	// Check if existing amendable & submitted reports are present in the newlySelectedDefs.
-////    	// If not they are withdrawn.
-////    	// This is needed for the following scenario - 
-////    	// The aeReport contains a 10 day report (SUBMITTED)
-////    	// The users amends it with a 5 day reportDefinition
-////    	// In this case we want to change the status of the 10 day report to ReportStatus.REPLACED.
-////    	Map<ReportDefinition, Boolean> newlySelectedReportDefinitionsMap = new HashMap<ReportDefinition, Boolean>();
-////    	for(ReportDefinition rd: command.getNewlySelectedDefs()){
-////    		if(!newlySelectedReportDefinitionsMap.containsKey(rd))
-////    			newlySelectedReportDefinitionsMap.put(rd, true);
-////    	}
-////    	for(Report report: command.getAeReport().getReports()){
-////    		if(report.isSubmitted() && report.getReportDefinition().getAmendable() && !newlySelectedReportDefinitionsMap.containsKey(report.getReportDefinition()))
-////    			command.getReportListForWithdrawal().add(report);
-////    	}
-//    }
-//    
-//    /**
-//     * This method takes care of extra-processing incase of Edit-Report flow.
-//     *  - If there is a PENDING, INPROCESS, FAILED report already available, dont create them. 
-//     *  -
-//     * @param command
-//     */
-//    public void processEditReportFlow(EditExpeditedAdverseEventCommand command){
-//    	
-//    	if(command.getNewlySelectedReportDefinitions() != null){
-//    		//check if there is already a report persent, if not they should be created.
-//    		for(ReportDefinition repDef : command.getNewlySelectedReportDefinitions()){
-//    			if(!command.getAeReport().isAnActiveReportPresent(repDef)){
-//    				command.getReportDefinitionListForCreation().add(command.reassociateReportDefinitionToSession(repDef));
-//    			}
-//    		}
-//    		
-//    		//If there are reports to create, make sure, other Reports already present belonging to the same 
-//    		// organization is REPLACED. 
-//    		if(!command.getReportDefinitionListForCreation().isEmpty()){
-//    			for(ReportDefinition repDef : command.getReportDefinitionListForCreation()){
-//    				String nciInstituteCode = repDef.getOrganization().getNciInstituteCode();
-//    				command.getReportListForWithdrawal().addAll(command.getAeReport().findPendingAmendableReports(nciInstituteCode));
-//    			}
-//    		}
-//    	}
-//    	
-////    	BJ: Do not delete the below commented lines, as we may need it later. 
-////    	
-////    	if(command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
-////    		if(command.isNewlySelectedSponsorReportEarlier()) {
-////    			// Case(A) Newly selected amendable sponsor report is earlier
-////    			//         - withdraw the existing amendable sponsor report
-////    			Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
-////                for (ReportDefinition reportDefinition : command.getNewlySelectedSponsorReports())
-////                    sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
-////
-////                String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-////
-////                for (Report report : command.getAeReport().getReports()) {
-////                    if (report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
-////                            && report.getReportDefinition().getAmendable()) {
-////                        command.getExistingReportMap().remove(report.getReportDefinition());
-////                        command.getReportListForWithdrawal().add(report);
-////                    }
-////                }
-////       	 	}else{
-////       		 	// Case(B) Newly selected amendable sponsor report is later
-////       		 	//			- ignore the newly selected amendable sponsor report
-////       		 	command.setNewlySelectedDefs(command.getOtherSelectedReports());
-////       	 	}
-////        }
-////
-////   	command.populateCreationAndAmendmentList();
-//    }
-//        
-//    public void processForCreateNewFlow(EditExpeditedAdverseEventCommand command){
-//    	if(true) throw new UnsupportedOperationException("to be removed");
-//    	//command.initializeNewlySelectedReportDefinitions();
-//        command.setNewlySelectedReportDefinitions(command.getSelectedReportDefinitions());
-//        command.classifyNewlySelectedReportsDefinitons();
-//
-//        command.getReportDefinitionListForCreation().addAll(command.getNewlySelectedReportDefinitions());
-//        // Create the newly Selected Reports that need to be created.
-//        if(command.getReportDefinitionListForCreation().size() > 0){
-//        	command.createReports(null, null, null);
-//        	command.save();
-//        	
-//        	//call workflow
-//        	if(command.getWorkflowEnabled())   	
-//        		command.enactWorkflow(command.getAeReport());
-//        }
-//
-//        //figureout the mandatory sections
-//        command.refreshMandatorySectionsAndProperties();
-//        command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
-//    }
-//    
-
-    public NowFactory getNowFactory() {
-        return nowFactory;
-    }
-
-    public void setNowFactory(NowFactory nowFactory) {
-        this.nowFactory = nowFactory;
+    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
+    	processReports(request, (EditExpeditedAdverseEventCommand)command);
     }
     
    
-    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
-		return adverseEventRoutingAndReviewRepository;
-	}
-    
-    public void setAdverseEventRoutingAndReviewRepository(
-			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
-	}
-    
-    /**
-     * Returns the value associated with the <code>attributeName</code>, if present in
-     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
-     */
-    protected Object findInRequest(final ServletRequest request, final String attributName) {
-
-        Object attr = request.getParameter(attributName);
-        if (attr == null) {
-            attr = request.getAttribute(attributName);
-        }
-        return attr;
-    }
-    
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
     	super.validate(command, commandBean, fieldGroups, errors);

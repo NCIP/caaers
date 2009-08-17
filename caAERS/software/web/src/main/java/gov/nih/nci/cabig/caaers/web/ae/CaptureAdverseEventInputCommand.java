@@ -76,31 +76,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     private Map<Integer, List<ReportTableRow>> recommendedReportTableMap;
     private Map<Integer, List<ReportTableRow>> applicableReportTableMap;
-    private Map<Integer, List<ReportTableRow>> existingReportTableMap;
     
     //aeReportId - aeReport
     private Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap;
     
     private ReviewAndReportResult reviewResult;
     
-//	
-//	// Added for Post processing in Confirmation page
-//	private List<ReportDefinition> allReportDefinitions;
-//	private Map<ReportDefinition, List<AdverseEvent>> requiredReportDefinitionsMap;
-//
-//	private Map<Integer, String> reportStatusMap;
-//	private Map<Integer, Boolean> requiredReportDefinitionIndicatorMap;
-//	
-//	private Map<Integer, Boolean> reportDefinitionMap;//will store user selection
-//	
-//	//this map is used for internal purpouses
-//	private Map<Integer, ReportDefinition> reportDefinitionIndexMap;
-//	
-//	//this map will store the report definitions, already associated with active Expedited Reports of this reporting period.
-//	private Map<Integer, ReportDefinition> instantiatedReportDefinitionMap;
-//	
-//	private Map<Integer, Boolean> selectedAesMap;
-	
 	private Ctc ctcVersion;
 	
 	private boolean workflowEnabled = false;
@@ -113,14 +94,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	public CaptureAdverseEventInputCommand(){
 
-//		this.selectedAesMap = new HashMap<Integer, Boolean>();
-//        this.allReportDefinitions = new ArrayList<ReportDefinition>();
-//        this.requiredReportDefinitionsMap = new HashMap<ReportDefinition, List<AdverseEvent>>();
-//        this.reportStatusMap = new HashMap<Integer, String>();
-//        this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
-//        this.reportDefinitionMap = new HashMap<Integer, Boolean>();
-//        this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
-//        this.instantiatedReportDefinitionMap = new HashMap<Integer, ReportDefinition>();
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
         this.outcomeOtherDetails = new ArrayList<String>();
         this.rulesMessageMap = new LinkedHashMap<Integer, List<String>>();
@@ -301,6 +274,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			if(this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs() != null){
 				this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs().size();
 			}
+			
+			this.adverseEventReportingPeriod.isBaselineReportingType();
 			
 		}
     }

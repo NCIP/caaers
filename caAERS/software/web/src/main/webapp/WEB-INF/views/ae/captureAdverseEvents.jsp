@@ -69,32 +69,6 @@
              captureAE.deleteAdverseEvent(indx, '', function(ajaxOutput) {
                  $('ae-section-' + indx).remove();
              }.bind(this));
-            /*  =============== BJ  to be removed
-            var repIdArr = new Array();
-            var listOfAEIndexes = $$('.submittedAERow');
-            var aeSubmitted = 0;
-            for (var i = 0; i < listOfAEIndexes.length; i++)
-            {
-                if (listOfAEIndexes[i].value == indx) {
-                    aeSubmitted = 1;
-                    deleteIndex = indx;
-                    var repElementId = 'ae-section-' + indx + '-reportID';
-                    repIdArr[0] = document.getElementById(repElementId).value;
-                    var form = document.getElementById('command');
-                    form._action.value = 'deleteAE';
-                    displayAmendPopup('', repIdArr);
-                    document.getElementById('command')._amendReportIds.value = repIdArr;
-                }
-            }
-            if (aeSubmitted == 0)
-            {
-                if (!confirm("Are you sure you want to delete this?"))
-                    return false;
-                captureAE.deleteAdverseEvent(indx, '', function(ajaxOutput) {
-                    $('ae-section-' + indx).remove();
-                }.bind(this));
-            }
-             */
         }
 
     });
@@ -106,11 +80,6 @@
  	var rpCreator = null; 
  	Event.observe(window, "load", function(){
  	
- 		Event.observe('flow-next', 'click', checkSubmittedAEs);
- 		Event.observe('flow-prev', 'click', checkSubmittedAEs);
- 		Event.observe('flow-update', 'click', checkSubmittedAEs);
-
-
 		//remove the query string from form url
 		removeQueryStringFromForm('command');
 		
@@ -159,33 +128,6 @@
     	return false;
     }
 
-    // ----------------------------------------------------------------------------------------------------------------
-
-    function checkSubmittedAEs(event) {
-		/*
-        var reportIdArray = new Array();
-        var totalReportIdCount = 0;
-        var listOfAEIndexes = $$('.submittedAERow');
-
-        for (var i = 0; i < listOfAEIndexes.length; i++) {
-            var signature = createSignature(listOfAEIndexes[i].value);
-            var oldSignatureId = 'ae-section-' + listOfAEIndexes[i].value + '-signature';
-            var oldSignature = document.getElementById(oldSignatureId).value;
-            if (signature != oldSignature) {
-                // The ae was modified.
-                var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
-                reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
-            }
-        }
-
-        if (totalReportIdCount != 0) {
-            var form = document.getElementById('command');
-            form._action.value = 'amendmentRequired';
-            displayAmendPopup(event, reportIdArray);
-        }
-        document.getElementById('command')._amendReportIds.value = reportIdArray;
-        */
-    }
 
     // ----------------------------------------------------------------------------------------------------------------
     

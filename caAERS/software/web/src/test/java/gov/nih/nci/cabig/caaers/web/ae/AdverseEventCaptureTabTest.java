@@ -57,7 +57,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
-		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);
 		
 		command = new CaptureAdverseEventInputCommand(null, null, null, reportDefinitionDao, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
@@ -66,7 +65,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		errors = new BindException(command, "command");
 		
 		tab.setReportRepository(reportRepository);
-		tab.setAdverseEventRoutingAndReviewRepository(adverseEventRoutingAndReviewRepository);
 	}
 	
 	public List<AdverseEvent> createAdverseEventList(){

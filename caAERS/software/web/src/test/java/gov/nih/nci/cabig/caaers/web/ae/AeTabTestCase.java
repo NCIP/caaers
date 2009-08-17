@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.service.MockEvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -14,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.InvalidPropertyException;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.StaticMessageSource;
 import org.springframework.validation.ObjectError;
 
@@ -34,7 +32,6 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         messageSource.addMessage("instruction_ae_modification_detected", Locale.getDefault(), "Testing");
         tab = createTab();
         tab.setMessageSource(messageSource);
-        tab.setEvaluationService(new MockEvaluationService());
         tab.setExpeditedReportTree(expeditedReportTree);
     }
 

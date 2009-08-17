@@ -1,13 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -21,13 +18,11 @@ import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,7 +40,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     //max characters allowed for Verbatim
     private static final Integer VERBATIM_MAX_SIZE = 65;
-    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     public AdverseEventCaptureTab() {
         super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
@@ -181,28 +175,8 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     @Override
     public Map<String, Object> referenceData(CaptureAdverseEventInputCommand command) {
-    	 // Setup the categories list for aeTermQuery tag.
-        boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
-
-        // initialize lazy
-        if (isCTCStudy) {
-            command.getCtcCategories();
-            if (command.getAdverseEvents() != null)
-                for (AdverseEvent ae: command.getAdverseEvents()) {
-                	if(ae == null) continue;
-                    ae.getAdverseEventTerm().isOtherRequired();
-                    if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
-                    	ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                        ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
-                    }
-                }
-        }
-        
-       
-
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
-
     	return super.referenceData(command);
     }
 
@@ -221,64 +195,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         //sync the seriousness outcomes
         command.synchronizeOutcome();
         
-        command.initialize();
-        /* BJ --------------------- to be reomved
-        // Amend the reports if AEs associated to it are modified and the user is OK with the amendment.
-        String action = (String)findInRequest(request, "_action");
-        if(action.equals("amendmentRequired")){
-        	String reportIds = (String) findInRequest(request, "_amendReportIds");
-        	StringTokenizer st = new StringTokenizer(reportIds, ",");
-        	HashMap<Integer, Boolean> reportIdMap = new HashMap<Integer, Boolean>();
-        	while(st.hasMoreTokens()){
-        		String repId = st.nextToken();
-        		if(!reportIdMap.containsKey(Integer.decode(repId)));
-        			reportIdMap.put(Integer.parseInt(repId), Boolean.TRUE);
-        	}
-        	Set<ExpeditedAdverseEventReport> aeReportsAmmended = new HashSet<ExpeditedAdverseEventReport>();
-        	
-        	for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
-        		if(reportIdMap.containsKey(aeReport.getId())){
-        			command.reassociate(aeReport);
-
-                	//update the graded date on aes, as we are going to amend the report.
-                	aeReport.updateAdverseEventGradedDate();
-                	
-        			Boolean useDefaultVersion = false;
-        			List<Report> reportsOfAeReport = new ArrayList<Report>(aeReport.getReports());
-        	    	for(Report report: reportsOfAeReport){
-        	    		if(report.getReportDefinition().getAmendable() && report.getIsLatestVersion()){
-        	    			reportRepository.createAndAmendReport(command.reassociateReportDefinition(report.getReportDefinition()), 
-        	    					report, useDefaultVersion);
-        	    			aeReportsAmmended.add(aeReport);
-        	    			
-        	    			// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
-        	    			// and just incremented for the 1st one in the list.
-        	    			useDefaultVersion = true;
-        	    		}
-        	    	}
-        		}
-        	}
-        	
-        	if(command.getWorkflowEnabled() && command.isAssociatedToWorkflow()){
-        		//update the workflow for every expedited report, whose Report is ammended
-        		for(ExpeditedAdverseEventReport aeReport : aeReportsAmmended){
-        			adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
-        		}
-        	}
-        	
-        }
-        */
     }
 
-    @Override
-    public void onBind(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
-        String rpId = request.getParameter("adverseEventReportingPeriod");
-        Set<String> paramNames = request.getParameterMap().keySet();
-        boolean fromListPage = false;
-        fromListPage = paramNames.contains("displayReportingPeriod");
-        if (fromListPage)
-            command.refreshAssignment(Integer.parseInt(rpId));
-    }
+
 
     public AdverseEvent checkAEsUniqueness(CaptureAdverseEventInputCommand command) {
         List AEs = null;
@@ -307,7 +226,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
         // START -> AE VALIDATION //
-        boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
         AdverseEvent adverseEvent = checkAEsUniqueness(command);
         if (adverseEvent != null) {
             String name = null;
@@ -352,8 +270,5 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         WebUtils.populateErrorFieldNames(command.getErrorsForFields(), errors);
     }
     
-    public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
-	}
     
 }

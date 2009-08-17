@@ -124,8 +124,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         HttpSession session = request.getSession();
         
-        String strStudyId = request.getParameter("study");
-        String strParticipantId = request.getParameter("participant");
         String screenFlowSource = request.getParameter("from");
         
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
@@ -190,11 +188,13 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	//reload- the report definitions (from create & edit list)
             for(ReportDefinition rd : reviewResult.getCreateList()){
             	ReportDefinition loaded = reportDefinitionDao.getById(rd.getId());
+            	reportDefinitionDao.initialize(loaded);
             	command.getSelectedReportDefinitions().add(loaded);
             	command.getNewlySelectedReportDefinitions().add(loaded);
             }
             for(ReportDefinition rd : reviewResult.getEditList()){
-            	command.getSelectedReportDefinitions().add(reportDefinitionDao.getById(rd.getId()));
+            	ReportDefinition loaded = reportDefinitionDao.getById(rd.getId());
+            	command.getSelectedReportDefinitions().add(loaded);
             }
             
             //update the applicable report definitions.

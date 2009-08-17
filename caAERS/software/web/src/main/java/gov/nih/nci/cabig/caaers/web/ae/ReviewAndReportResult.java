@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.BooleanUtils;
 /**
  * This object, will store the review results.
  * @author Biju Joseph
@@ -142,6 +144,14 @@ public class ReviewAndReportResult {
 	
 	public boolean isOnlyActionWithdraw(){
 		return amendList.isEmpty() && editList.isEmpty() && createList.isEmpty() && (!withdrawList.isEmpty());
+	}
+	
+	public void updateBaseDateOnCreateList(){
+		if(baseDateMap == null) return;
+		for(ReportDefinition rd : createList){
+			rd.setBaseDate(baseDateMap.get(rd.getId()));
+			rd.setManuallySelected(BooleanUtils.isTrue(manualSelectionIndicatorMap.get(rd.getId())));
+		}
 	}
 	
 }

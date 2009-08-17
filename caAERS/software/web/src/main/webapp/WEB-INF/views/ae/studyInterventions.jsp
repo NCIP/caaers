@@ -75,7 +75,7 @@ function closeAll() {
 --%>
 
         interventionInstance = new InterventionClass();
-        <c:if test="${command.investigationalAgentAdministeredForPreviousReports == 'true'}">
+        <c:if test="${command.investigationalAgentAdministeredForPreviousReports}">
             if($('aeReport.treatmentInformation.investigationalAgentAdministered').value == '') {
                 $('aeReport.treatmentInformation.investigationalAgentAdministered').value = 'true';
             }

@@ -139,12 +139,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
     
     public void save(){
-    	
-//    	BJ========= to be removed
-    	//clear reported flag on modified adverse events.
-//    	aeReport.clearReportedFlagOnModifiedAdverseEvents();
-//    	
-    	
     	reportDao.save(aeReport);
     }
     
@@ -299,17 +293,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     }
 
-    public Collection<ReportDefinition> getSubmittedReportDefinitions() {
-        Set<ReportDefinition> defs = new HashSet<ReportDefinition>();
-        if (getAeReport().getReports() != null) {
-            for (Report report : getAeReport().getReports()) {
-                if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-                    defs.add(report.getReportDefinition());
-                }
-            }
-        }
-        return null;
-    }
 
     public boolean getIgnoreCompletedStudy() {
         return true;
@@ -364,18 +347,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         return ExpeditedAdverseEventInputCommand.ZERO;
     }
     
-    /**
-     * Returns the value associated with the <code>attributeName</code>, if present in
-     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
-     */
-    protected Object findInRequest(final ServletRequest request, final String attributName) {
-
-        Object attr = request.getParameter(attributName);
-        if (attr == null) {
-            attr = request.getAttribute(attributName);
-        }
-        return attr;
-    }
     public void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions) {
     	this.selectedReportDefinitions.clear();
     	if(selectedReportDefinitions != null) this.selectedReportDefinitions.addAll(selectedReportDefinitions);
@@ -421,17 +392,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     			map.put(rd.getId(), rd);
     		}
     	}
-    	
-//		BJ : to be removed....  
-//    	
-//    	for(Report r : getAeReport().getActiveReports()){
-//    		ReportDefinition rd = r.getReportDefinition();
-//    		map.put(rd.getId(), rd);
-//    	}
-//    	//reassociate them with current running session
-//    	for(ReportDefinition rd : map.values()){
-//    		reportDefinitionDao.reassociate(rd);
-//    	}
     	
     	renderDecisionManager.updateRenderDecision(map.values());
     	
@@ -570,14 +530,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		return false;
 	}
     
-    /**
-     * This method will reassociate a report definition, by merging it to the session.
-     * @param reportDefinition
-     * @return
-     */
-    public ReportDefinition reassociateReportDefinitionToSession(ReportDefinition reportDefinition){
-    	return reportDefinitionDao.merge(reportDefinition);
-    }
 
     public HashMap<String, Boolean> getRulesErrors() {
         return rulesErrors;
