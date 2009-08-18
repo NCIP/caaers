@@ -22,7 +22,13 @@
             <c:if test="${editMode}">
                 <span style="margin-left:100px;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
                     <c:if test="${!readOnly}">
-                        <tags:button type="button" color="red" cssClass="" value="Deactivate" size="small" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '0')"/>
+                        <tags:button type="button"
+                                     color="${true ? 'red' : 'green'}"
+                                     cssClass=""
+                                     value="${true ? 'Deactivate' : 'Activate'}"
+                                     size="small"
+                                     onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}', ${index}, -1)"
+                                     icon="${true ? 'x' : 'check'}"/>
                     </c:if>
                 </c:if>
         </c:if>
@@ -98,42 +104,69 @@
                     </div>
 
     <div class="row">
-                <div class="leftpanel">
+
+<%--
+        <caaers:message code="researchstaff.details.studiesSection" var="studiesSectionTitle"/>
+        <chrome:division id="studies-details" title="${studiesSectionTitle}">
+            <div>
+                <div id="_studies_${index}">
+                    <div class="row">
+                        <div class="label">Associate to all studies:</div>
+                        <div class="value">
+                            <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </chrome:division>
+--%>
+
+                <div>
                     <c:if test="${!readOnly}">
                         <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
                         <chrome:division id="roles-details" title="${roleSectionTitle}">
                             <br>
-                            <table cellpadding="1" cellspacing="0">
-                                <tr>
+                            Associate to all studies: <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/>  
+                            <tags:table bgColor="#cccccc" contentID="Role_${command.researchStaff.id}_${command.researchStaff.siteResearchStaffs[index].id}">
+                            <table cellpadding="3" cellspacing="1" width="100%">
+                                <tr bgcolor="#eeeeee">
                                 <th>Role name
                                 <th>Start date
+                                <c:if test="${editMode}">
+                                    <th>End date
+                                    <th>
+                                </c:if>
 
                             <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
-                                <tr>
+                                <c:set var="isActive" value="${command.siteResearchStaffCommandHelper[index].rsRoles[j.index].active}" />
+                                <tr bgcolor="white">
                                     <td>
                                         <c:if test="${!role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" onclick="applyRole(${index}, ${j.index})"/>&nbsp;${allRoles[j.index].name}</c:if>
                                         <c:if test="${role.checked}"><ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${allRoles[j.index].name}</c:if>
                                     <td>
-                                        <c:if test="${role.checked}">
-                                                <tags:formatDate value="${role.startDate}" />&nbsp;
-
-                                            <c:set var="isActive" value="${command.siteResearchStaffCommandHelper[index].rsRoles[j.index].active}" />
-                                                <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"/></c:if>
-                                                <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}')"/></c:if>
-
-                                                <%--<img src="<c:url value="/images/checkno.gif" />" alt="Deactivate" title="Deactivate" class="hand" onclick="deactivate()">--%>
-                                        </c:if>
+                                        <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate SiteResearchStaffRoleStartDateCSS${index}" />
                                         <c:if test="${!role.checked}">
-                                                <ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate" cssClass="CSSDate" />
                                             <script type="text/javascript">
                                                 $('siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].startDate').value = '';
-                                                // $('siteResearchStaffCommandHelper[' + srsIndex + '].rsRoles[' + roleIndex + '].startDate').disable();
                                             </script>
                                         </c:if>
-
-                                <tr>
+                                <c:if test="${editMode}">
+                                    <td><ui:date path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].endDate" cssClass="CSSDate ${role.checked ? 'CSSEndDate SiteResearchStaffRoleEndDateCSS' : ''}${role.checked ? index : ''}" />
+                                    <td>
+                                        <c:if test="${role.checked}">
+                                                <tags:button type="button" 
+                                                             color="${isActive ? 'red' : 'green'}"
+                                                             cssClass=""
+                                                             value="${isActive ? 'Deactivate' : 'Activate'}"
+                                                             size="small"
+                                                             onclick="${isActive ? 'de' : ''}activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}', ${index}, ${j.index})"
+                                                             icon="${isActive ? 'x' : 'check'}"/>
+                                        </c:if>
+                                </c:if>
+                                </tr>
                             </c:forEach>
                             </table>
+                            </tags:table>
                         </chrome:division>
                     </c:if>
                     <c:if test="${readOnly}">
@@ -144,31 +177,18 @@
                                 <tr>
                                 <th>Role name
                                 <th>Start date
+                                <th>Start date
                                 <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
                                         <c:if test="${role.checked}">
                                             <tr>
                                                 <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
                                                 <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.startDate}" /><br></c:if>
+                                                <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.endDate}" /><br></c:if>
                                         </c:if>
                                 </c:forEach>
                             </table>
                         </chrome:division>
                     </c:if>
-                </div>
-                <div class="rightpanel">
-                    <caaers:message code="researchstaff.details.studiesSection" var="studiesSectionTitle"/>
-                    <chrome:division id="studies-details" title="${studiesSectionTitle}">
-                        <div>
-                            <div id="_studies_${index}">
-                                <div class="row">
-                                    <div class="label">Associate to all studies:</div>
-                                    <div class="value">
-                                        <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </chrome:division>
                 </div>
     </div>
     </jsp:body>

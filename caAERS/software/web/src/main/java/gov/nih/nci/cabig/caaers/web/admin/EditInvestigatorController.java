@@ -106,9 +106,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
         		statusMessage = "Successfully synched Investigator";
         	}else{
         		try{
-        			getInvestigatorRepository().save(investigator, ResetPasswordController.getURL(request
-                            .getScheme(), request.getServerName(), request.getServerPort(), request
-                            .getContextPath()));
+        			getInvestigatorRepository().save(investigator, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         			statusMessage = "Successfully updated Investigator";
         		}catch(MailException e){
         			emailSendingErrorMessage = "Could not send email to user.";
@@ -128,8 +126,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     }
     
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                                     BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command,BindException errors, int page) throws Exception {
         Investigator investigator = (Investigator) command;
         if("syncInvestigator".equals(request.getParameter("_action"))){
         	Investigator remoteInvestigator = new RemoteInvestigator();   

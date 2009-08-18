@@ -101,8 +101,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
     }
 
     @Override
-    protected String getViewName(final HttpServletRequest request, final Object command,
-                    final int page) {
+    protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
         Object subviewName = findInRequest(request, "_subview");
         if (subviewName != null) {
             return "par/ajax/" + subviewName;

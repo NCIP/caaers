@@ -82,10 +82,8 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         return options;
     }
 
-    protected Map<Object, Object> collectOptionsFromConfig(final String configPropertyName,
-                                                           final String nameProperty, final String valueProperty) {
-        return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,
-                valueProperty);
+    protected Map<Object, Object> collectOptionsFromConfig(final String configPropertyName, final String nameProperty, final String valueProperty) {
+        return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,valueProperty);
     }
 
     @Override

@@ -19,10 +19,6 @@
 
 <c:set var="__decorator_title"><decorator:title/></c:set>
 <chrome:body title="${__decorator_title}">
-	<c:if test="${not _noStdFlashMessage}">
-		<chrome:flashMessage/>
-	</c:if>
-	
     <decorator:body/>
 </chrome:body>
 

@@ -111,8 +111,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             if (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null)
                 errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
 
-            String email = srs.get(i).getEmailAddress().trim();
-            if (!email.equals("") && !GenericValidator.isEmail(email))
+            String email = srs.get(i).getEmailAddress();
+            if (email != null && !email.trim().equals("") && !GenericValidator.isEmail(email))
                 errors.rejectValue(String.format("researchStaff.siteResearchStaffs[%d].emailAddress", i), "USR_006", "Invalid email");
         }
 
@@ -146,6 +146,29 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
             if(loginIdExists) {
             	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
             }
+        }
+
+
+        byte i = 0;
+        for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
+            byte j = 0;
+                for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
+                    if (srsrch.getChecked()) {
+/*
+                        if (srsrch.getStartDate() != null && DateUtils.compareDate(srsrch.getStartDate(), DateUtils.today()) < 0){
+                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].startDate", i, j), "USR_007", "Start date cannot be before today's date.");
+                        }
+                        if (srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), DateUtils.today()) < 0){
+                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j), "USR_008", "End date cannot be before today's date.");
+                        }
+*/
+                        if (srsrch.getStartDate() != null && srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), srsrch.getStartDate()) < 0){
+                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j),"USR_009","End date cannot be before Start date.");
+                        }
+                    }
+                    j++;
+                }
+            i++;
         }
     }
 

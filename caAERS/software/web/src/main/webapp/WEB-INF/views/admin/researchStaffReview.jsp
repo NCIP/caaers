@@ -16,6 +16,7 @@
 </div>
 
 <chrome:flashMessage/>
+
 <chrome:box title="${command.researchStaff.lastName}, ${researchStaff.firstName}">
     <form:form>
 

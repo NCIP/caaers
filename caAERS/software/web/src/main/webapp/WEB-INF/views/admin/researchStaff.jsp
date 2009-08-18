@@ -91,7 +91,13 @@
                     <div class="label">Active Date</div>
                     <div class="value"><tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
                         <c:if test="${!readOnly}">
-                            <tags:button type="button" color="green" cssClass="" value="Deactivate"size="small" onclick="deactivate(${command.researchStaff.id}, 0, 0)"/>
+                            <tags:button type="button"
+                                     color="${true ? 'red' : 'green'}"
+                                     cssClass=""
+                                     value="${true ? 'Deactivate' : 'Activate'}"
+                                     size="small"
+                                     onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)"
+                                     icon="${true ? 'x' : 'check'}"/>
                         </c:if>
                     </div>
                 </div>
@@ -147,27 +153,45 @@
     function refreshStudies(values, i) {
     }
 
-    function activate(rsID, srsID, srsrID) {
-        if (confirm('Are you sure you want to deactivate the element ?')) {
-
-            var _f = $('command');
-            _f._target.name = '_noname';
-            _f._action.value = 'activate';
-            _f.srsID.value = srsID;
-            _f.srsrID.value = srsrID;
-            _f.submit();
+    function activate(rsID, srsID, srsrID, i, j) {
+        if (confirm('Are you sure you want to activate ?')) {
+            
+            if (j >= 0) {
+                var startDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].startDate';
+                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
+                var dt = "<tags:formatDate value="${date}" />";
+                $(startDateFieldString).value = dt;
+                $(endDateFieldString).value = '';
+            } else {
+                $$('input.SiteResearchStaffRoleStartDateCSS' + i).each(function(field) {
+                    field.value = dt;
+                })
+                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
+                    field.value = '';
+                })
+            }
         }
     }
 
-    function deactivate(rsID, srsID, srsrID) {
-        if (confirm('Are you sure you want to deactivate the element ?')) {
+    function deactivate(rsID, srsID, srsrID, i, j) {
+        if (confirm('Are you sure you want to deactivate ?')) {
+            var dt = "<tags:formatDate value="${date}" />";
 
-            var _f = $('command');
-            _f._target.name = '_noname';
-            _f._action.value = 'deactivate';
-            _f.srsID.value = srsID;
-            _f.srsrID.value = srsrID;
-            _f.submit();
+            if (i == -1 && j == -1) {
+                $$('input.CSSEndDate').each(function(field) {
+                    field.value = dt;
+                })
+                return;
+            }
+
+            if (j >= 0 ) {
+                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
+                $(endDateFieldString).value = dt;
+            } else {
+                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
+                    field.value = dt;
+                })
+            }
         }
     }
 </script>

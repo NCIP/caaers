@@ -145,11 +145,13 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
             logger.error("Could not send email to user.", e);
         }
         if (!errors.hasErrors()) {
-            String statusMessage = "Successfully created ResearchStaff.";
+            String statusMessage = "ResearchStaff successfully created ";
             
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
             }
+
+            modelAndView.getModel().put("flashMessage", statusMessage);
         }
         modelAndView.addAllObjects(errors.getModel());
         modelAndView.addObject("researchStaff", researchStaff);
