@@ -13,7 +13,7 @@ public class PastDateValidatorTest extends TestCase {
 		boolean valid = pastDateValidator.isValid(now);
 		assertTrue(valid);
 		
-		Date startDate1 = new GregorianCalendar(2009, 07, 14, 14, 00).getTime();
+		Date startDate1 = new GregorianCalendar(2019, 07, 14, 14, 00).getTime();
 		boolean notValid = pastDateValidator.isValid(startDate1);
 		assertFalse(notValid);
 		
