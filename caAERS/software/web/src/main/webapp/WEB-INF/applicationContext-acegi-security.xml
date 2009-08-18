@@ -74,8 +74,7 @@
         <entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
         <entry key="/pages/admin/.*" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-        <!-- TODO: set up correct default -->
-		<entry key="/pages/.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/.*" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
 	</util:map>
 
 	<bean id="filterPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
