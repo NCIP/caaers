@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
@@ -109,6 +110,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         for (int i=0; i<srs.size(); i++) {
             if (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null)
                 errors.reject("USR_004", new Object[] {new Integer(i)}, "Provide the organization");
+
+            String email = srs.get(i).getEmailAddress().trim();
+            if (!email.equals("") && !GenericValidator.isEmail(email))
+                errors.rejectValue(String.format("researchStaff.siteResearchStaffs[%d].emailAddress", i), "USR_006", "Invalid email");
         }
 
 
