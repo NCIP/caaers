@@ -52,8 +52,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
         EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
         ctcBasicsTab.setEvaluationService(evaluationServiceMock);
-        EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),
-                                        ExpeditedReportSection.BASICS_SECTION)).andReturn(new ValidationErrors()).anyTimes();
+        EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(), ctcBasicsTab.section())).andReturn(new ValidationErrors()).anyTimes();
         ctcDao = registerDaoMockFor(CtcDao.class);
         ctcBasicsTab.setCtcDao(ctcDao);
         return ctcBasicsTab;
