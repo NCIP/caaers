@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.PositiveValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -38,6 +39,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.Position;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -146,7 +148,7 @@ public class PatientDetailsTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(InputFieldFactory.createTextField("quantity", "", new DecimalValidator(5, 2)))
+                .addField(InputFieldFactory.createTextField("quantity", "", new PositiveValidator(true), new DecimalValidator(5, 2)))
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }
