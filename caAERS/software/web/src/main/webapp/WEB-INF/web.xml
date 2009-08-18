@@ -204,6 +204,11 @@
     	<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
     
+	<error-page>
+        <error-code>403</error-code>
+        <location>/accessDenied.jsp</location>
+    </error-page>
+
     <error-page>
         <error-code>500</error-code>
         <location>/decorated-error.jsp</location>
