@@ -18,7 +18,7 @@ public class FutureDateValidatorTest extends TestCase {
 		valid = futureDateValidator.isValid(now);
 		assertFalse(valid);
 		
-		Date futureDate = new GregorianCalendar(2009, 07, 14, 14, 00).getTime();
+		Date futureDate = new GregorianCalendar(2019, 07, 14, 14, 00).getTime();
 		valid = futureDateValidator.isValid(futureDate);
 		assertTrue(valid);
 		
