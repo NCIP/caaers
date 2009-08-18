@@ -9,8 +9,10 @@ import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -21,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.classextension.EasyMock;
 import org.springframework.validation.ObjectError;
 /**
  * 
@@ -55,6 +58,9 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 	protected AeTab createTab() {
 		PatientDetailsTab pdt =  new PatientDetailsTab();
 		pdt.setConfigurationProperty(configurationProperty);
+		EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
+		pdt.setEvaluationService(evaluationServiceMock);
+        EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(), pdt.section())).andReturn(new ValidationErrors()).anyTimes();
 		pdt.setPreExistingConditionDao(new PreExistingConditionDao() {
             @Override
             public List<PreExistingCondition> getAll() {
