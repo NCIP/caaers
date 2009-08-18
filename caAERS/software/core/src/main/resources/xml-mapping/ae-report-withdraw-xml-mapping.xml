@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
+
+<mapping>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport">
+    <map-to xml="AdverseEventReport"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="assignment" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
+      <bind-xml name="StudyParticipantAssignment"/>
+    </field>    
+    <field name="reports"
+      type="gov.nih.nci.cabig.caaers.domain.report.Report" collection="arraylist">
+      <bind-xml name="Report"/>
+    </field> 
+    
+  </class>
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.report.Report">
+    <map-to xml="Report"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="assignedIdentifer" type="string">
+      <bind-xml name="assignedIdentifer" node="element"/>
+    </field>   
+    <field name="reportVersions"
+      type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
+      <bind-xml name="ReportVersion"/>
+    </field>      
+  </class>    
+
+  <class name="gov.nih.nci.cabig.caaers.domain.report.ReportVersion">
+    <map-to xml="ReportVersion"/>
+
+    <field name="reportVersionId" type="string">
+      <bind-xml name="reportVersionId" node="element"/>
+    </field>    
+  </class>
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
+    <map-to xml="StudyParticipantAssignment"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="studySite" type="gov.nih.nci.cabig.caaers.domain.StudySite">
+      <bind-xml name="StudySite"/>
+    </field>
+    <field name="studySubjectIdentifier" type="string">
+      <bind-xml name="studySubjectIdentifier" node="element"/>
+    </field>    
+  </class>
+  
+ <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
+    <map-to xml="StudySite"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
+      <bind-xml name="Study"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Study">
+    <map-to xml="Study"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
+      <bind-xml name="Identifier"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
+    <map-to xml="Identifier"/>
+    <field name="type" type="string">
+      <bind-xml name="type" node="element"/>
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="element"/>
+    </field>
+    <field name="primaryIndicator" type="boolean">
+      <bind-xml name="primaryIndicator" node="element"/>
+    </field>
+  </class>
+      
+</mapping>
