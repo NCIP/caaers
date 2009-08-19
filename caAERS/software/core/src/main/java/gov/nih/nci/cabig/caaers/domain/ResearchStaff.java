@@ -205,8 +205,8 @@ public abstract class ResearchStaff extends User {
 			for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
 				roleCodeList = new ArrayList<String>();
 				roleCodeList.add(siteResearchStaffRole.getRoleCode());
-				siteRolesMap.put(siteResearchStaff.getOrganization().getNciInstituteCode(), roleCodeList);
 			}
+			siteRolesMap.put(siteResearchStaff.getOrganization().getNciInstituteCode(), roleCodeList);
 		}
 		return siteRolesMap;
 	}
