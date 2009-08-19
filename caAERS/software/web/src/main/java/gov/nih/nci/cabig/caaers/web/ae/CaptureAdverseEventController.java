@@ -156,6 +156,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		//populate the reports to un-amend
 		command.populateReportsToUnAmend();
 		
+		command.save();
+		
 		
 		//create the model to return
 		ModelAndView modelAndView = null;
