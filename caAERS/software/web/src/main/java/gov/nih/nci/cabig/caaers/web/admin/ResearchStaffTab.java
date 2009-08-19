@@ -150,25 +150,27 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
 
         byte i = 0;
-        for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
-            byte j = 0;
-                for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
-                    if (srsrch.getChecked()) {
-/*
-                        if (srsrch.getStartDate() != null && DateUtils.compareDate(srsrch.getStartDate(), DateUtils.today()) < 0){
-                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].startDate", i, j), "USR_007", "Start date cannot be before today's date.");
+        if (command.getSiteResearchStaffCommandHelper() != null) {
+            for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
+                byte j = 0;
+                    for (SiteResearchStaffRoleCommandHelper srsrch : srsch.getRsRoles()) {
+                        if (srsrch.getChecked()) {
+    /*
+                            if (srsrch.getStartDate() != null && DateUtils.compareDate(srsrch.getStartDate(), DateUtils.today()) < 0){
+                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].startDate", i, j), "USR_007", "Start date cannot be before today's date.");
+                            }
+                            if (srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), DateUtils.today()) < 0){
+                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j), "USR_008", "End date cannot be before today's date.");
+                            }
+    */
+                            if (srsrch.getStartDate() != null && srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), srsrch.getStartDate()) < 0){
+                                errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j),"USR_009","End date cannot be before Start date.");
+                            }
                         }
-                        if (srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), DateUtils.today()) < 0){
-                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j), "USR_008", "End date cannot be before today's date.");
-                        }
-*/
-                        if (srsrch.getStartDate() != null && srsrch.getEndDate() != null && DateUtils.compareDate(srsrch.getEndDate(), srsrch.getStartDate()) < 0){
-                            errors.rejectValue(String.format("siteResearchStaffCommandHelper[%d].rsRoles[%d].endDate", i, j),"USR_009","End date cannot be before Start date.");
-                        }
+                        j++;
                     }
-                    j++;
-                }
-            i++;
+                i++;
+            }
         }
     }
 
