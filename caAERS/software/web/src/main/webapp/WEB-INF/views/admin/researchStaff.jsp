@@ -91,13 +91,15 @@
                     <div class="label">Active Date</div>
                     <div class="value"><tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
                         <c:if test="${!readOnly}">
-                            <tags:button type="button"
-                                     color="${true ? 'red' : 'green'}"
-                                     cssClass=""
-                                     value="${true ? 'Deactivate' : 'Activate'}"
-                                     size="small"
-                                     onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)"
-                                     icon="${true ? 'x' : 'check'}"/>
+                            <c:if test="${command.researchStaff.active}">
+                                <tags:button type="button"
+                                         color="${true ? 'red' : 'green'}"
+                                         cssClass=""
+                                         value="${true ? 'Deactivate' : 'Activate'}"
+                                         size="small"
+                                         onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, 0,0,-1,-1)"
+                                         icon="${true ? 'x' : 'check'}"/>
+                            </c:if>
                         </c:if>
                     </div>
                 </div>

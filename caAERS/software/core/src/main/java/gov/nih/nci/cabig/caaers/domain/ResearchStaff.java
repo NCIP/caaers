@@ -237,4 +237,14 @@ public abstract class ResearchStaff extends User {
         }
     }
 
+    @Transient
+    public boolean isActive() {
+    	if(getSiteResearchStaffs() == null) return false;
+
+        for (SiteResearchStaff srs : this.getSiteResearchStaffs()) {
+            if (srs.isActive()) return true;
+        }
+        return false;
+    }
+    
 }

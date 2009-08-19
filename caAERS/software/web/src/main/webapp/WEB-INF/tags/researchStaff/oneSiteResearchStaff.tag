@@ -22,13 +22,15 @@
             <c:if test="${editMode}">
                 <span style="margin-left:100px;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
                     <c:if test="${!readOnly}">
-                        <tags:button type="button"
-                                     color="${true ? 'red' : 'green'}"
-                                     cssClass=""
-                                     value="${true ? 'Deactivate' : 'Activate'}"
-                                     size="small"
-                                     onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}', ${index}, -1)"
-                                     icon="${true ? 'x' : 'check'}"/>
+                        <c:if test="${command.researchStaff.siteResearchStaffs[index].active}">
+                            <tags:button type="button"
+                                         color="${true ? 'red' : 'green'}"
+                                         cssClass=""
+                                         value="${true ? 'Deactivate' : 'Activate'}"
+                                         size="small"
+                                         onclick="${true ? 'de' : ''}activate(${command.researchStaff.id}, ${command.researchStaff.siteResearchStaffs[index].id}, '${role.roleCode}', ${index}, -1)"
+                                         icon="${true ? 'x' : 'check'}"/>
+                        </c:if>
                     </c:if>
                 </c:if>
         </c:if>
