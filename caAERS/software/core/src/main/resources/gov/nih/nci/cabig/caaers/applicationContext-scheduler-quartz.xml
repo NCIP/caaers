@@ -46,6 +46,7 @@
 	<bean id="reportStatusResetTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.ReportStatusResetTrigger">
 	    <property name="jobName" value="reportStatusResetJob" />
 	    <property name="jobGroup" value="DEFAULT" />
+	    <property name="volatility" value="true" />
 	    <property name="misfireInstruction" value="0" />
 	</bean>
 
