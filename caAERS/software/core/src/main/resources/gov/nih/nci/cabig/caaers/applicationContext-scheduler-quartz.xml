@@ -44,7 +44,6 @@
   	</bean>
 	<!-- trigger every 5 minutes -->
 	<bean id="reportStatusResetTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.ReportStatusResetTrigger">
-		<constructor-arg index="0" value="20000" />
 	    <property name="jobName" value="reportStatusResetJob" />
 	    <property name="jobGroup" value="DEFAULT" />
 	    <property name="misfireInstruction" value="0" />
