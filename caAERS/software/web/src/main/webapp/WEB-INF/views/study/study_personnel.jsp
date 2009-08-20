@@ -51,7 +51,25 @@
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
             		this.sitePersonnelPopulator.bind(this),
-            		this.sitePersonnelSelector.bind(this)
+            		this.sitePersonnelSelector.bind(this),
+           {
+               afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                   var hidden = inputElement.name.substr(0, inputElement.name.indexOf("-input"));
+                   var rolesField = $(inputElement.name.substr(0, inputElement.name.indexOf(".siteResearchStaff-input")) + ".roleCode");
+                   $(hidden).value = selectedChoice.id;
+                   ValidationManager.setValidState(inputElement.name);
+
+                    createStudy.fetchSiteReseachStaffActiveRoles(selectedChoice.id, function(ajaxResult) {
+                        rolesField.options.length = 0;
+                        rolesField.options.add(new Option("Please select...", "-1"))
+                        for (i in ajaxResult.objectContent) {
+                            rolesField.options.add(new Option(ajaxResult.objectContent[i], i));
+                        }
+                    });
+                   
+               }
+
+           }
             	);
             },            
             sitePersonnelPopulator: function(autocompleter, text) {

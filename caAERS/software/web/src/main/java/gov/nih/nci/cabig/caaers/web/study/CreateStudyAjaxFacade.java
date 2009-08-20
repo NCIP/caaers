@@ -1,15 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -26,10 +18,7 @@ import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +59,7 @@ public class CreateStudyAjaxFacade {
     private DiseaseTermDao diseaseTermDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
+    private SiteResearchStaffDao siteResearchStaffDao;
     private ResearchStaffRepository researchStaffRepository;
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
@@ -780,4 +770,25 @@ public class CreateStudyAjaxFacade {
 		this.studyRepository = studyRepository;
 	}
 
+    public AjaxOutput fetchSiteReseachStaffActiveRoles(int rsID){
+    	WebContext webCtx = WebContextFactory.get();
+        HttpServletRequest request = webCtx.getHttpServletRequest();
+        StudyCommand command = (StudyCommand)extractCommand();
+        SiteResearchStaff srs = siteResearchStaffDao.getById(rsID);
+    	AjaxOutput out = new AjaxOutput();
+        HashMap hm = new HashMap();
+        for (SiteResearchStaffRole role : srs.getSiteResearchStaffRoles()) {
+            if (role.isActive()) hm.put(role.getRoleCode(), command.getStudyPersonnelRoles().get(role.getRoleCode()));
+        }
+    	out.setObjectContent(hm);
+    	return out;
+    }
+
+    public SiteResearchStaffDao getSiteResearchStaffDao() {
+        return siteResearchStaffDao;
+    }
+
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+        this.siteResearchStaffDao = siteResearchStaffDao;
+    }
 }
