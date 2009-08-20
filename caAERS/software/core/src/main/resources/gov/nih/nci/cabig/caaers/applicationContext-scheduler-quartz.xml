@@ -9,6 +9,7 @@
  	 	<property name="autoStartup"><value>true</value></property>
  	 	<property name="startupDelay"><value>2</value></property>
 		<property name="applicationContextSchedulerContextKey"><value>applicationContext</value></property>
+		 <property name="overwriteExistingJobs" value="true"/>
         <property name="dataSource" ref="dataSource"/>
 		<property name="quartzProperties">
 			<props>
@@ -23,23 +24,32 @@
 				<prop key="org.quartz.jobStore.selectWithLockSQL">SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?</prop>
 			</props>
 		</property>
-		<!-- 
+		<property name="jobDetails">
+			<list>
+			<ref bean="reportStatusResetJob" /> 
+			</list>
+		</property>
     	 <property name="triggers">
         	<list> 
         		<ref bean="reportStatusResetTrigger" /> 
         	</list>
      	</property>
-	 -->
 	</bean>
 	
 	<!--  This bean that implements the service  -->
 	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
   		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
+  		<property name="group" value="DEFAULT"/>
+  		<property name="name" value="reportStatusResetJob"/>
   	</bean>
 	<!-- trigger every 5 minutes -->
-	<bean id="reportStatusResetTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-	    <property name="jobDetail" ref="reportStatusResetJob" />
-	    <property name="startDelay" value="300000" />
-	    <property name="repeatInterval" value="300000" />
+	<bean id="reportStatusResetTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.ReportStatusResetTrigger">
+		<constructor-arg index="0" value="20000" />
+	    <property name="jobName" value="reportStatusResetJob" />
+	    <property name="jobGroup" value="DEFAULT" />
+	    <property name="misfireInstruction" value="0" />
 	</bean>
+
+
+
 </beans>
