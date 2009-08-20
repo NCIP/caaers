@@ -60,7 +60,7 @@
          <xs:sequence>
             <xs:element name="role" type="Role" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
-            <xs:element name="endDate" type="xs:date" />
+            <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
          </xs:sequence>
     </xs:complexType>
     

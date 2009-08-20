@@ -117,9 +117,9 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="descriptionText" type="CustomStringType"/>
-                    <xs:element name="name" type="CustomStringType"/>
-                    <xs:element name="nciInstituteCode" type="CustomStringType"/>
+                    <xs:element name="descriptionText" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="name" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="nciInstituteCode" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -128,7 +128,7 @@
     <xs:element name="organizationRef" type="OrganizationRefType"/>
     <xs:complexType name="OrganizationRefType">
         <xs:sequence>
-            <xs:element name="nciInstituteCode" type="CustomStringType"/>
+            <xs:element name="nciInstituteCode" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -137,9 +137,9 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType"/>
-                    <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="middleName" type="xs:string"/>
+                    <xs:element name="firstName" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="lastName" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="middleName" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -148,7 +148,7 @@
     <xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
     <xs:complexType name="ResearchStaffRefType">
         <xs:sequence>
-            <xs:element name="nciIdentifier" type="xs:string"/>
+            <xs:element name="nciIdentifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -157,15 +157,15 @@
         <xs:complexContent>
             <xs:extension base="PersonType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="xs:string"/>
+                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="faxNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="nciIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="phoneNumber" type="CustomStringType"/>
                     <xs:element name="loginId" type="xs:string"/>
-					<xs:element name="street" type="xs:string"/>
-                    <xs:element name="city" type="xs:string"/>
-                    <xs:element name="state" type="xs:string"/>
-                    <xs:element name="zip" type="xs:string"/>
+					<xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="zip" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     
                 </xs:sequence>
             </xs:extension>
@@ -189,13 +189,13 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="xs:string"/>
-                    <xs:element name="phoneNumber" type="xs:string"/>
-                    <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="street" type="xs:string"/>
-                    <xs:element name="city" type="xs:string"/>
-                    <xs:element name="state" type="xs:string"/>
-                    <xs:element name="zip" type="xs:string"/>
+                    <xs:element name="emailAddress" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="phoneNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="faxNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="zip" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -215,11 +215,11 @@
             <xs:extension base="PersonType">
                 <xs:sequence>
                     <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="faxNumber" type="xs:string"/>
-                    <xs:element name="nciIdentifier" type="xs:string"/>
-                    <xs:element name="phoneNumber" type="CustomStringType"/>
-                    <xs:element name="allowedToLogin" type="xs:boolean" />
-                    <xs:element name="loginId" type="xs:string"/>
+                    <xs:element name="faxNumber" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="nciIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="phoneNumber" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="allowedToLogin" type="xs:boolean"/>
+                    <xs:element name="loginId" type="xs:string" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
