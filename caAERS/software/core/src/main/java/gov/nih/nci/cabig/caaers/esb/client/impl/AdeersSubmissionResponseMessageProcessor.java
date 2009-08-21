@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
+import org.jdom.Namespace;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService;
@@ -13,17 +14,29 @@ import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 public class AdeersSubmissionResponseMessageProcessor extends ResponseMessageProcessor{
 	
 	protected final Log log = LogFactory.getLog(getClass());
-	private MessageNotificationService messageNotificationService;
+	
 	
 	@Override
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
         
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
+        Namespace emptyNS=null;
+        for (Object obj:jobInfo.getChildren()) {
+				Element e = (Element)obj;
+				if (e.getName().equals("CAEERS_AEREPORT_ID")) {
+					emptyNS = e.getNamespace();
+				}
+		}
         
-        String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID").getValue();
-        String reportId = jobInfo.getChild("REPORT_ID").getValue();
-        String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL").getValue();
+        log.debug("got JobInfo");
+        
+        String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
+        log.debug("ID 1 : " + caaersAeReportId);
+        String reportId = jobInfo.getChild("REPORT_ID",emptyNS).getValue();
+        log.debug("ID 2 : " + reportId);
+        String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
+        log.debug("email : " + submitterEmail);
 
         // buld error messages
         StringBuffer sb = new StringBuffer();
@@ -103,7 +116,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 
         try {
             log.debug("Calling notfication service ..");
-            messageNotificationService.sendNotificationToReporter(submitterEmail, messages,
+            this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
                             caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -112,9 +125,6 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 		
 	}
 
-	public void setMessageNotificationService(
-			MessageNotificationService messageNotificationService) {
-		this.messageNotificationService = messageNotificationService;
-	}
+
 
 }

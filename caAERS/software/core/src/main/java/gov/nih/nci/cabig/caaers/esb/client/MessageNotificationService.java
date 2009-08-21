@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportTrackingDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -42,7 +41,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
 
 public class MessageNotificationService implements ApplicationContextAware{
@@ -64,7 +62,8 @@ public class MessageNotificationService implements ApplicationContextAware{
     
     private ApplicationContext applicationContext;
     
-    private ReportTrackingDao reportTrackingDao;
+
+
     
 	public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
@@ -97,7 +96,80 @@ public class MessageNotificationService implements ApplicationContextAware{
     	//create child reports
     	reportRepository.createChildReports(report);
     }
-   // @Transactional(readOnly = false)
+    
+    private List<String> getEmailList(Report r , String submitterEmail){
+    	List<String> emails = new ArrayList<String>();
+    	ReportVersion rv = r.getLastVersion();
+        for (ReportDelivery delivery : r.getReportDeliveries()) {
+            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
+            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
+                String ep = delivery.getEndPoint();
+                emails.add(ep);
+            }
+        }
+        
+        String[] emailAddresses = rv.getEmailAsArray();
+        if (emailAddresses != null) {
+            for (String email : emailAddresses) {
+                emails.add(email.trim());
+            }
+        }
+        emails.add(submitterEmail);    
+        return emails;
+    }
+    public void sendWithdrawNotificationToReporter(String submitterEmail, String messages,
+            String aeReportId, String reportId, boolean success, String ticketNumber,
+            String url,boolean communicationError) throws Exception {
+    	
+    	WebRequest stubWebRequest = preProcess();
+        
+		boolean authorizationOnByDefault = enableAuthorization(false);
+		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+        
+        String info = configuration.get(Configuration.ESB_URL);
+        gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo.setLocal(new DataAuditInfo("SYSTEM_ADMIN",
+                info, new Date(), info));   
+        
+        Report r = reportDao.getById(Integer.parseInt(reportId));
+        List<String> emails = getEmailList(r,submitterEmail);
+        
+        
+        if (success) {
+        	reportRepository.withdrawReport(r);
+        } else {
+            r.setStatus(ReportStatus.WITHDRAW_FAILED);
+            r.setSubmissionMessage(messages);
+
+            reportDao.save(r);
+        }
+        
+        postProcess(stubWebRequest);
+        
+        String subject = "";
+        String attachment = null;
+        if (success) {
+            subject = "Withdraw of Expedited Report(" + r.getLastVersion().getId() + ") to AdEERS";  
+            
+        } else {
+        	subject = "Problem with Withdraw of Expedited Report(" + r.getLastVersion().getId() + ") to AdEERS";
+        	// send only to submitter incase of failure
+        	emails = new ArrayList<String>();
+        	emails.add(submitterEmail);
+        }
+        
+        log.debug("send email ");
+        try {
+        	sendMail(emails.toArray(new String[0]), subject, messages, attachment);
+
+        } catch (Exception  e ) {
+
+        	throw new Exception(" Error in sending email , please check the confiuration " , e);
+        }
+        
+        enableAuthorization(authorizationOnByDefault);
+		switchUser(null);
+    	
+    }
     public void sendNotificationToReporter(String submitterEmail, String messages,
                     String aeReportId, String reportId, boolean success, String ticketNumber,
                     String url,boolean communicationError) throws Exception {
@@ -120,23 +192,7 @@ public class MessageNotificationService implements ApplicationContextAware{
         ReportVersion rv = r.getLastVersion();
         messages = messages.replace("Report # "+reportId, "Report # "+rv.getId());
         //
-        List<String> emails = new ArrayList<String>();
-        
-        for (ReportDelivery delivery : r.getReportDeliveries()) {
-            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
-            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
-                String ep = delivery.getEndPoint();
-                emails.add(ep);
-            }
-        }
-        
-        String[] emailAddresses = rv.getEmailAsArray();
-        if (emailAddresses != null) {
-            for (String email : emailAddresses) {
-                emails.add(email.trim());
-            }
-        }
-        emails.add(submitterEmail);
+        List<String> emails = getEmailList(r,submitterEmail);
         
         
        // List<ReportTracking> rts = rv.getReportTrackings();
@@ -395,11 +451,5 @@ public class MessageNotificationService implements ApplicationContextAware{
 		this.applicationContext= applicationContext;
 		
 	}
-
-	public void setReportTrackingDao(ReportTrackingDao reportTrackingDao) {
-		this.reportTrackingDao = reportTrackingDao;
-	}
-
-
 
 }

@@ -124,7 +124,7 @@ public class JmsServiceImpl implements MessageListener {
                 } else {
                     System.out.println("No Message Consumer Provided...");
                 }
-            } catch (JMSException e) {
+            } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

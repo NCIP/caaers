@@ -9,11 +9,11 @@ import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
+import org.jdom.Namespace;
 
 public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProcessor{
 	
 	protected final Log log = LogFactory.getLog(getClass());
-	private MessageNotificationService messageNotificationService;
 	
 	@Override
 	public void processMessage(String message) throws CaaersSystemException {
@@ -22,9 +22,21 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 		log.debug("AdeersWithdrawResponseMessageProcessor - message recieved");
         
         Element cancelInfo = this.getResponseElement(message,"withdrawAEReportResponse","AEReportCancelInfo");
-        String caaersAeReportId = cancelInfo.getChild("CAEERS_AEREPORT_ID").getValue();
-        String reportId = cancelInfo.getChild("REPORT_ID").getValue();
-        String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL").getValue();
+        Namespace emptyNS=null;
+        Namespace ctepNS = null;
+        for (Object obj:cancelInfo.getChildren()) {
+				Element e = (Element)obj;
+				if (e.getName().equals("CAEERS_AEREPORT_ID")) {
+					emptyNS = e.getNamespace();
+				}
+ 				if (e.getName().equals("reportStatus")) {
+ 					ctepNS = e.getNamespace();
+ 				} 	
+		}
+        
+        String caaersAeReportId = cancelInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
+        String reportId = cancelInfo.getChild("REPORT_ID",emptyNS).getValue();
+        String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         
 //      buld error messages
         StringBuffer sb = new StringBuffer();
@@ -36,23 +48,23 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 
         try {
 
-            List<Element> exceptions = cancelInfo.getChildren("jobExceptions");
+            List<Element> exceptions = cancelInfo.getChildren("jobExceptions",ctepNS);
             // sb.append("REPORT STATUS : " + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
             
 
-            if (cancelInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
+            if (cancelInfo.getChild("reportStatus",ctepNS).getValue().equals("SUCCESS")) {
                 sb.append("Report # " + reportId
                                 + " has been successfully withdrawn from AdEERS. \n\n");
 
                 sb.append("TICKET NUMBER :. \n");
                 sb.append("---------------.\n");
                 sb.append("Your AdEERS ticket number is "
-                                + cancelInfo.getChild("ticketNumber").getValue() + ".\n\n");
+                                + cancelInfo.getChild("ticketNumber",ctepNS).getValue() + ".\n\n");
 
  
                 // sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
 
-                ticketNumber = cancelInfo.getChild("ticketNumber").getValue();
+                ticketNumber = cancelInfo.getChild("ticketNumber",ctepNS).getValue();
 
 
             }
@@ -83,8 +95,8 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
                 }
             }
 
-            if (cancelInfo.getChild("comments") != null) {
-                sb.append("COMMENTS : ." + cancelInfo.getChild("comments").getValue() + "\n");
+            if (cancelInfo.getChild("comments",ctepNS) != null) {
+                sb.append("COMMENTS : ." + cancelInfo.getChild("comments",ctepNS).getValue() + "\n");
             }
 
         } catch (Exception e) {
@@ -99,12 +111,13 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 
         try {
             log.debug("Calling notfication service ..");
-            messageNotificationService.sendNotificationToReporter(submitterEmail, messages,
+            this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
                             caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }       
 	}
+
 
 }

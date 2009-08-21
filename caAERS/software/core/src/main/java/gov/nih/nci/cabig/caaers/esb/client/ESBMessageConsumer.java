@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
-public interface ESBMessageConsumer {
-    public void processMessage(String message);
+import org.springframework.context.ApplicationContextAware;
+
+public interface ESBMessageConsumer extends ApplicationContextAware{
+    public void processMessage(String message) throws Exception;
 }
