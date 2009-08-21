@@ -128,7 +128,12 @@
     <field name="reportVersions"
       type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
       <bind-xml name="ReportVersion"/>
-    </field>      
+    </field>   
+    <field name="emailRecipients"
+      type="string" collection="arraylist">
+      <bind-xml name="emailRecipient"/>
+    </field>     
+       
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
