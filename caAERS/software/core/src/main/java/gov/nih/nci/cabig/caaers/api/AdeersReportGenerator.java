@@ -95,6 +95,10 @@ public class AdeersReportGenerator {
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
     	return adverseEventReportSerializer.serialize(aeReport,report );
     }
+
+    public String generateCaaersWithdrawXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
+    	return adverseEventReportSerializer.serializeWithdrawXML(aeReport,report );
+    }
     
     /**
      * This method will generate the PDF file and store it in the file system and return its path.
@@ -143,7 +147,7 @@ public class AdeersReportGenerator {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-149.xml");
+            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-220.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -153,7 +157,7 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generateCIOMS(str1, "/Users/sakkala/tech/adeers/cioms.pdf");
+            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
