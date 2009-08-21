@@ -9,11 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "REPORT_TRACKING_STATUS")
