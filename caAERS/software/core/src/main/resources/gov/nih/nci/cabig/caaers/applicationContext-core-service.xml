@@ -277,5 +277,9 @@ This applicationContext contains the definition of the concrete services
 	</bean>
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />
+
+   <bean id="submitAEDataXMLAsAttachmentResponse" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor" />
+
+   <bean id="withdrawAEReportResponse" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersWithdrawResponseMessageProcessor" />
  
 </beans>
