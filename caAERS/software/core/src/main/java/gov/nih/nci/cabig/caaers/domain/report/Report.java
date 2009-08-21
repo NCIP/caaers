@@ -65,6 +65,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     
     private String adeersReportTypeIndicator;
     
+    private List<String> emailAddresses;
+    
     private  String _REGULAR_REPORT = "Regular report";
     private  String _24HR_NOTIFICATION = "24-hr notification";
     private  String _24HR_NOTIFICATION_COMPLETE = "24-hr notification complete";
@@ -308,10 +310,10 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
      */
     @Transient
     public List<String> getEmailRecipients(){
-    	List<String> emailAddresses = new ArrayList<String>();
+    	List<String> emailAddressesTemp = new ArrayList<String>();
     	if(deliveries != null){
     		for(ReportDelivery rd : deliveries){
-    			if(rd.isEmailType()) emailAddresses.add(rd.getEndPoint());
+    			if(rd.isEmailType()) emailAddressesTemp.add(rd.getEndPoint());
     		}
     	}
     	//now include the CC emails.
@@ -322,12 +324,16 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     		if(ccEmails != null){
     			for(String ccEmail : ccEmails){
     				String email = ccEmail.trim();
-    				if(StringUtils.isNotEmpty(email))	emailAddresses.add(email);
+    				if(StringUtils.isNotEmpty(email))	emailAddressesTemp.add(email);
     			}
     		}
     	}
     	
-    	return emailAddresses;
+    	return emailAddressesTemp;
+    }
+    @Transient
+    public void setEmailRecipients(List<String> emailAddresses) {
+    	this.emailAddresses=emailAddresses;
     }
     
     @Transient
