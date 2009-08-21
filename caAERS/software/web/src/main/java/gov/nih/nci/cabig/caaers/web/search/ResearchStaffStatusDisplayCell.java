@@ -15,6 +15,6 @@ public class ResearchStaffStatusDisplayCell extends AbstractCell {
         ResearchStaff researchStaff = ((SiteResearchStaff)model.getCurrentRowBean()).getResearchStaff();
         String cellValue = column.getValueAsString();
 
-        if (cellValue.equals("true")) return "Active"; else return "Inactive";
+        if (researchStaff.isActive()) return "Active"; else return "Inactive";
     }
 }
