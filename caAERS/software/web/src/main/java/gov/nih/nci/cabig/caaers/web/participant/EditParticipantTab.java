@@ -115,7 +115,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 String s = "participant.systemAssignedIdentifiers[" + i + "]." ;
                 idtFieldGroupSys = new DefaultInputFieldGroup("mainSys" + i);
 
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true,options));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "systemName", "System Name", true));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));
@@ -127,7 +127,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 String s = "participant.organizationIdentifiers[" + j + "]." ;
                 idtFieldGroupOrg = new DefaultInputFieldGroup("mainOrg" + j);
                 
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+                idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createAutocompleterField(s + "organization", "Organization Identifier", true));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));

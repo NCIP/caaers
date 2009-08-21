@@ -20,6 +20,7 @@ public abstract class FieldValidator {
     public static final FieldValidator DECIMAL_VALIDATOR;
     public static final FieldValidator ALPHANUMERIC_VALIDATOR;
     public static final FieldValidator POSITIVE_VALIDATOR;
+    public static final FieldValidator IDENTIFIER_VALIDATOR;
 
     private boolean positive;
 
@@ -38,6 +39,7 @@ public abstract class FieldValidator {
         DECIMAL_VALIDATOR = new DecimalValidator();
         ALPHANUMERIC_VALIDATOR = new AlphanumericValidator();
         POSITIVE_VALIDATOR = new PositiveValidator(true);
+        IDENTIFIER_VALIDATOR = new IdentifierValidator();
     }
 
     static NumberRangeValidator createNumberRangeValidator(int begin, int end) {

@@ -82,8 +82,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         repeatingFieldGroupFactoryOrg = new RepeatingFieldGroupFactory("mainOrg", "participant.organizationIdentifiers");
         repeatingFieldGroupFactorySys = new RepeatingFieldGroupFactory("mainSys", "participant.systemAssignedIdentifiers");
 
-        repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
-        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
+        repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
+        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
 
         options = new LinkedHashMap<Object, Object>();
         List<Lov> list = configurationProperty.getMap().get("participantIdentifiersType");
