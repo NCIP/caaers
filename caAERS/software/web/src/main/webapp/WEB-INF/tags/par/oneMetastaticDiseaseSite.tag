@@ -3,6 +3,8 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+
 <%@attribute name="index" required="true"%>
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
 
@@ -15,7 +17,7 @@
     <jsp:body>
 
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
-    <jsp:attribute name="label">${siteField.displayName}</jsp:attribute>
+    <jsp:attribute name="label"><caaers:message code="LBL_subject.medical.history.site.name" /></jsp:attribute>
     <jsp:attribute name="value">
 
                       <c:if test="${empty anatomicSite.name}">
