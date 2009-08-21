@@ -77,7 +77,58 @@ public class AdverseEventReportSerializer {
 	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
 		   return this.serialize(adverseEventReportDataObject, null);
 	   }
+	   
+	   public synchronized String serializeWithdrawXML (ExpeditedAdverseEventReport adverseEventReportDataObject,Report rpt) throws Exception{
+		    String xml = "";
+			XmlMarshaller marshaller = new XmlMarshaller();
+			ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
+			aer.setId(adverseEventReportDataObject.getId());
+			AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+		    aer.setReportingPeriod(reportingPeriod);
+			
+			List<Report> reports = adverseEventReportDataObject.getReports();
+			int reportId = rpt == null ? 0 : rpt.getId();
+	    	for (Report report: reports) {
+	    		if (reportId > 0 ) {
+	    			// generate report data only for selected report (when submitting to AdEERS)
+	    			if (reportId == report.getId()) {
+	    				   
+	    				//Report latestReport = getReport(report);
+	    				
+	    				   Report latestReport = new Report();
+	    				   latestReport.setId(report.getId());
+	    				   latestReport.setAssignedIdentifer(report.getAssignedIdentifer());
+	    				
+	    				
+	    				ReportVersion reportVersion = report.getLastVersion();
+	    				ReportVersion latestVersion = latestReport.getLastVersion();
+	    				latestVersion.setReportVersionId(reportVersion.getReportVersionId());
+	    				aer.addReport(latestReport);
+	    			}
+	    		} 
 
+	    	}
+	    	
+	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
+	    	
+	    	StudySite studySite = new StudySite();
+	    	Study s = new Study();
+		    	
+	    	List<Identifier> ids = adverseEventReportDataObject.getAssignment().getStudySite().getStudy().getIdentifiers();
+	    	//s.setIdentifiers(new ArrayList<Identifier>());
+	    	for (Identifier id:ids) {
+	    		s.addIdentifier(getIdentifier(id));
+	    	}
+	    	studySite.setStudy(s);
+	    	
+	    	studyParticipantAssignment.setStudySite(studySite);
+		    studyParticipantAssignment.setStudySubjectIdentifier(adverseEventReportDataObject.getAssignment().getStudySubjectIdentifier());
+	    	
+		    aer.setAssignment(studyParticipantAssignment);
+			xml = marshaller.toXML(aer,"xml-mapping/ae-report-withdraw-xml-mapping.xml");
+		
+			return xml;		   
+	   }
 	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,Report report) throws Exception{
 		   int reportId = report == null ? 0 : report.getId();
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
@@ -259,6 +310,7 @@ public class AdverseEventReportSerializer {
 		 //  rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
 		 //  rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
+		   r.setEmailRecipients(report.getEmailRecipients());
 	   		   
 		   return r;
 	   }
@@ -843,12 +895,19 @@ public class AdverseEventReportSerializer {
 			//
 			DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			try {
-				Date a = dfm.parse("1678-06-06 00:00:00");
+				ExpeditedAdverseEventReport e = new ExpeditedAdverseEventReport();
+				StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 
-				AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
-				adverseEventResponseDescription.setDateRemovedFromProtocol(a);
-				System.out.println(adverseEventResponseDescription.getDateRemovedFromProtocol());
-			} catch (ParseException e) {
+				
+				AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+				e.setReportingPeriod(reportingPeriod);
+				e.setAssignment(studyParticipantAssignment);
+				e.setId(1);
+				XmlMarshaller marshaller = new XmlMarshaller();
+				String xml = marshaller.toXML(e,"xml-mapping/ae-report-withdraw-xml-mapping.xml");
+				
+
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
