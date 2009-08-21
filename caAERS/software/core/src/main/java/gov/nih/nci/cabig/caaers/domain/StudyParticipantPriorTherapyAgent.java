@@ -75,7 +75,7 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        
         final StudyParticipantPriorTherapyAgent other = (StudyParticipantPriorTherapyAgent) obj;
         if (priorTherapy == null) {
             if (other.priorTherapy != null) return false;
@@ -90,9 +90,7 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
     public static StudyParticipantPriorTherapyAgent createAssignmentPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
         if (priorTherapyAgent != null) {
             StudyParticipantPriorTherapyAgent studyParticipantPriorTherapyAgent = new StudyParticipantPriorTherapyAgent();
-            BeanUtils.copyProperties(priorTherapyAgent, studyParticipantPriorTherapyAgent, new String[]{"id", "gridId", "version"
-                    , "priorTherapy"});
-
+            BeanUtils.copyProperties(priorTherapyAgent, studyParticipantPriorTherapyAgent, new String[]{"id", "gridId", "version", "priorTherapy"});
             return studyParticipantPriorTherapyAgent;
         }
         return null;

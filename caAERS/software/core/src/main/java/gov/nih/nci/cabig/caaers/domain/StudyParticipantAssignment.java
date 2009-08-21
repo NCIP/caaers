@@ -322,24 +322,43 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
     
     /**
-     * Will return true, if the priorTherapy is assigned to the PriorTherapy, via {@link StudyParticipantPriorTherapy}
+     * Will return the Prior therapy equal to the one provided, if any
+      Accordingly to business rules, 2 prior therapies are equals if they have the same name, othername, startDate.YEAR, startDate.MONTH
      * @param priorTherapy
      */
-    public boolean containsPriorTherapy(SAEReportPriorTherapy priorTherapy){
-    	if(priorTherapy == null) return true;
-    	if(priorTherapy.getPriorTherapy() == null && priorTherapy.getOther() == null) return true;
-    	for(StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()){
-    		if(priorTherapy.equals(spaPriorTherapy.getPriorTherapy(), spaPriorTherapy.getOther())) return true;
-    	}
-    	return false;
+    public StudyParticipantPriorTherapy containsPriorTherapy(SAEReportPriorTherapy priorTherapy) {
+        if (priorTherapy == null) return null;
+        if (priorTherapy.getPriorTherapy() == null && priorTherapy.getOther() == null) return null;
+
+        for (StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()) {
+            if (spaPriorTherapy.getName().equals(priorTherapy.getName()) &&
+                    spaPriorTherapy.getStartDate().getYear().equals(priorTherapy.getStartDate().getYear()) &&
+                    spaPriorTherapy.getStartDate().getMonth().equals(priorTherapy.getStartDate().getMonth()))
+                return spaPriorTherapy;
+        }
+        return null;
     }
-    
+
+    /*
+    * Synchronizes the PriorTherapy from ExpeditedFlow(Report) to ParticipantFlow(Assignment).
+    * Accordingly to business rules, 2 prior therapies are equals if they have the same name, othername, startDate.YEAR, startDate.MONTH
+    * In the process of synchronization only non-repeating objects are cloned from AE Flow to Participant Flow. The existing PTs are updated copying
+    * all other information which is not included in the equal rule.   
+    * */
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
 
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
-            if (!containsPriorTherapy(saeReportPriorTherapy)) {
+            StudyParticipantPriorTherapy spaPT = containsPriorTherapy(saeReportPriorTherapy);
+
+            if (spaPT == null) {
                 StudyParticipantPriorTherapy priorTherapy = StudyParticipantPriorTherapy.createAssignmentPriorTherapy(saeReportPriorTherapy);
                 addPriorTherapy(priorTherapy);
+            } else {
+                spaPT.setEndDate(saeReportPriorTherapy.getEndDate());
+                spaPT.getStartDate().setDay(saeReportPriorTherapy.getStartDate().getDay());
+                for (PriorTherapyAgent priorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgents()) {
+                    spaPT.addUniquePriorTherapyAgent(StudyParticipantPriorTherapyAgent.createAssignmentPriorTherapyAgent(priorTherapyAgent));
+                }
             }
         }
 

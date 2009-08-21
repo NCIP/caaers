@@ -93,6 +93,19 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         if (priorTherapyAgent != null) priorTherapyAgent.setPriorTherapy(this);
     }
 
+    public void addUniquePriorTherapyAgent(StudyParticipantPriorTherapyAgent newAgent) {
+        if (getPriorTherapyAgents() == null) {
+            priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
+        }
+
+        for (StudyParticipantPriorTherapyAgent existingAgent : getPriorTherapyAgents()) {
+            if (existingAgent.getName().equals(newAgent.getName())) return;
+        }
+
+        getPriorTherapyAgents().add(newAgent);
+        if (newAgent != null) newAgent.setPriorTherapy(this);
+    }
+
     /**
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
@@ -197,21 +210,14 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     public static StudyParticipantPriorTherapy createAssignmentPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) {
-
         if (saeReportPriorTherapy != null) {
             StudyParticipantPriorTherapy studyParticipantPriorTherapy = new StudyParticipantPriorTherapy();
-            BeanUtils.copyProperties(saeReportPriorTherapy, studyParticipantPriorTherapy, new String[]{"id", "gridId", "version"
-                    , "priorTherapyAgents", "assignment", "priorTherapyAgentsInternal"});
-
+            BeanUtils.copyProperties(saeReportPriorTherapy, studyParticipantPriorTherapy, new String[]{"id", "gridId", "version", "priorTherapyAgents", "assignment", "priorTherapyAgentsInternal"});
             for (PriorTherapyAgent priorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgents()) {
                 studyParticipantPriorTherapy.addPriorTherapyAgent(StudyParticipantPriorTherapyAgent.createAssignmentPriorTherapyAgent(priorTherapyAgent));
             }
-
-
             return studyParticipantPriorTherapy;
-
         }
         return null;
-
     }
 }
