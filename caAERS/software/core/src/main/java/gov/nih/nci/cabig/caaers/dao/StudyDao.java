@@ -1,16 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -168,8 +159,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
             }
             ht.initialize(studyOrg.getStudyInvestigatorsInternal());
             ht.initialize(studyOrg.getStudyPersonnelsInternal());
+            for (StudyPersonnel sp : studyOrg.getStudyPersonnels()) {
+                ht.initialize(sp.getSiteResearchStaff());
+                ht.initialize(sp.getSiteResearchStaff().getSiteResearchStaffRoles());
+            }
             if(studyOrg instanceof StudySite)
-            ht.initialize(((StudySite)studyOrg).getWorkflowConfigs());
+                ht.initialize(((StudySite)studyOrg).getWorkflowConfigs());
         }
         ht.initialize(study.getStudyConditions());
         ht.initialize(study.getMeddraStudyDiseases());

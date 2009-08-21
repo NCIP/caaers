@@ -69,7 +69,6 @@ class PersonnelTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             for (StudyPersonnel sp : so.getStudyPersonnels()) {
                 if (sp.getId() == null && sp.getSiteResearchStaff() != null) {
-                    System.out.println("The role is: " + sp.getRoleCode());
                     sp.setStartDate(sp.getSiteResearchStaff().getActiveDate());
                     sp.setEndDate(null);
                 }

@@ -21,6 +21,7 @@ import org.hibernate.annotations.Parameter;
  * 
  * @author Kulasekaran
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 @Entity
 @Table(name = "study_personnel")
@@ -42,12 +43,14 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     
     /**
      *  This method will activate a {@link StudyPersonnel}
+     *  This will check the active date of the associated {@link gov.nih.nci.cabig.caaers.domain.SiteResearchStaff}
      */
     public void activate(){
-        if (getSiteResearchStaff().getResearchStaff().getActiveDate().compareTo(DateUtils.today()) > 0) {
-            this.setStartDate(getSiteResearchStaff().getResearchStaff().getActiveDate());
-       } else this.startDate = DateUtils.today();
-    	this.endDate = null;
+        Date d = getSiteResearchStaff().getActiveDate();
+        if (d.compareTo(DateUtils.today()) > 0) {
+            this.setStartDate(d);
+        } else this.startDate = DateUtils.today();
+        this.endDate = null;
     }
 
     @ManyToOne
