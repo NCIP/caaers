@@ -8,16 +8,48 @@
     </xsl:template>
 
     <xsl:template match="AdverseEventReport">
-					<REPORT_TYPE><xsl:value-of select="Report/adeersReportTypeIndicator"/></REPORT_TYPE>
-					<xsl:choose>
-						<xsl:when test="Report/adeersReportTypeIndicator = '24-hr notification complete'">
-							<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
-						</xsl:when>
-						<xsl:when test="Report/adeersReportTypeIndicator = 'Regular amendment' or Report/adeersReportTypeIndicator = '24-hr amendment' or Report/adeersReportTypeIndicator = '24-hr amendment complete'">
-							<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
-							<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
-						</xsl:when>						
-					</xsl:choose>					
+    <xsl:choose>
+     <xsl:when test="WITHDRAW = 'true'">
+     	<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+     	<xsl:if test="Report/ReportVersion/reportVersionId">
+     		<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
+     	</xsl:if>
+     	<NCI_PROTOCOL_NUMBER> 
+                 <xsl:for-each select="StudyParticipantAssignment/StudySite/Study/Identifier">
+                    <xsl:if test="primaryIndicator='true'">
+                        <xsl:value-of select="value"/>
+                    </xsl:if>
+                </xsl:for-each>    	
+     	</NCI_PROTOCOL_NUMBER>
+     	<PATIENT_ID><xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/></PATIENT_ID>
+     	
+     	<CAEERS_AEREPORT_ID>
+            <xsl:value-of select="id"/>
+        </CAEERS_AEREPORT_ID>
+        <EXTERNAL_SYSTEMS>
+            <xsl:value-of select="EXTERNAL_SYSTEMS"/>
+        </EXTERNAL_SYSTEMS>
+        <REPORT_ID>
+            <xsl:value-of select="REPORT_ID"/>
+        </REPORT_ID>
+        <SUBMITTER_EMAIL>
+            <xsl:value-of select="SUBMITTER_EMAIL"/>
+        </SUBMITTER_EMAIL>
+        <WITHDRAW>true</WITHDRAW>
+        
+     </xsl:when>
+     
+     <xsl:otherwise>
+		<REPORT_TYPE><xsl:value-of select="Report/adeersReportTypeIndicator"/></REPORT_TYPE>
+		<xsl:choose>
+			<xsl:when test="Report/adeersReportTypeIndicator = '24-hr notification complete'">
+				<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+			</xsl:when>
+			<xsl:when test="Report/adeersReportTypeIndicator = 'Regular amendment' or Report/adeersReportTypeIndicator = '24-hr amendment' or Report/adeersReportTypeIndicator = '24-hr amendment complete'">
+				<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+				<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
+			</xsl:when>						
+		</xsl:choose>					
 
 		
         <CAEERS_AEREPORT_ID>
@@ -1116,7 +1148,12 @@
                 </ADDITIONAL_INFO_OTHER>
             </ADDITIONAL_INFORMATION>
         </xsl:if>
+         <xsl:for-each select="Report/emailRecipient">
+            <EMAIL_RECIPIENTS> <xsl:value-of select="."/></EMAIL_RECIPIENTS> 
 
+        </xsl:for-each>       
+	 </xsl:otherwise>
+	 </xsl:choose>
     </xsl:template>
 
     <xsl:template name="standard_date">
