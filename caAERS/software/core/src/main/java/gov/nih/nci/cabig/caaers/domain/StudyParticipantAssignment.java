@@ -349,7 +349,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
                 if (y1 == null) y1 = new Integer(0);
                 if (y2 == null) y2 = new Integer(0);
-                if (m1 == null) m2 = new Integer(0);
+                if (m1 == null) m1 = new Integer(0);
                 if (m2 == null) m2 = new Integer(0);
                 
                 if (y1.equals(y2) && m1.equals(m2)) return spaPriorTherapy;
