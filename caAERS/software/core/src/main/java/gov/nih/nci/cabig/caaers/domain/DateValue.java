@@ -158,7 +158,6 @@ public class DateValue implements Comparable<DateValue> {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
         final DateValue other = (DateValue) obj;
         if (day == null) {
             if (other.day != null) return false;
@@ -197,8 +196,7 @@ public class DateValue implements Comparable<DateValue> {
     }
 
     public Date toDate() {
-        return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month-1,
-                day == null ? 0 : day).getTime();
+        return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month-1, day == null ? 0 : day).getTime();
     }
 
     public boolean checkIfDateIsInValid() {

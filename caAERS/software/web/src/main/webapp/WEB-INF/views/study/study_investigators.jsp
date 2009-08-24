@@ -89,6 +89,10 @@
      			return $('_ITEM_COUNT').value;
  			 },
              addCallback: function(nextIndex) {
+                 if ($('ssi-table-row-TABLE')) {
+                     $('ssi-table-row-TABLE').show();
+                 }
+
 		 	   $('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
           	   new jsInvestigator(nextIndex);
           	   if ($('ssi-empty-row')){

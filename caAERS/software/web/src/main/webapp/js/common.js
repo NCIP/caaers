@@ -261,9 +261,6 @@ Object.extend(ListEditor.prototype, {
 
         // if (this.options.addButton) this.options.addButton.disable()
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
-        if ($(this.divisionClass + '-TABLE')) {
-            $(this.divisionClass + '-TABLE').show();
-        }
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
         if(this.options.nextIndexCallback){

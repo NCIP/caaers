@@ -331,10 +331,19 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         if (priorTherapy.getPriorTherapy() == null && priorTherapy.getOther() == null) return null;
 
         for (StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()) {
-            if (spaPriorTherapy.getName().equals(priorTherapy.getName()) &&
-                    spaPriorTherapy.getStartDate().getYear().equals(priorTherapy.getStartDate().getYear()) &&
-                    spaPriorTherapy.getStartDate().getMonth().equals(priorTherapy.getStartDate().getMonth()))
-                return spaPriorTherapy;
+            if (spaPriorTherapy.getName().equals(priorTherapy.getName())) {
+                boolean a = spaPriorTherapy.getStartDate() == null;
+                boolean b = priorTherapy.getStartDate() == null;
+
+                // both are null
+                if (a && b) return spaPriorTherapy;
+
+                // exactly one is null
+                if (!(a & b) && (a | b)) continue;
+
+                // both are not null
+                if (spaPriorTherapy.getStartDate().getYear().equals(priorTherapy.getStartDate().getYear()) && spaPriorTherapy.getStartDate().getMonth().equals(priorTherapy.getStartDate().getMonth())) return spaPriorTherapy;
+            } 
         }
         return null;
     }
