@@ -341,8 +341,18 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
                 // exactly one is null
                 if (!(a & b) && (a | b)) continue;
 
-                // both are not null
-                if (spaPriorTherapy.getStartDate().getYear().equals(priorTherapy.getStartDate().getYear()) && spaPriorTherapy.getStartDate().getMonth().equals(priorTherapy.getStartDate().getMonth())) return spaPriorTherapy;
+                // both dates are not null
+                Integer y1 = spaPriorTherapy.getStartDate().getYear();
+                Integer y2 = priorTherapy.getStartDate().getYear();
+                Integer m1 = spaPriorTherapy.getStartDate().getMonth();
+                Integer m2 = priorTherapy.getStartDate().getMonth();
+
+                if (y1 == null) y1 = 0;
+                if (y2 == null) y2 = 0;
+                if (m1 == null) m2 = 0;
+                if (m2 == null) m2 = 0;
+                
+                if (y1 == y2 && m1 == m2) return spaPriorTherapy;
             } 
         }
         return null;
