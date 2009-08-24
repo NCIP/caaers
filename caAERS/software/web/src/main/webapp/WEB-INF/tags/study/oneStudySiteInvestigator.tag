@@ -9,7 +9,7 @@
 	<p id="instructions" align="left"><p><tags:instructions code="study.study_investigator.1" /></p>
     <br>
 
-    <table width="100%" class="tablecontent" valign="top">
+    <table width="100%" class="tablecontent" valign="top" id="ssi-table-row-TABLE" style="display:${fn:length(command.study.activeStudyOrganizations[index].activeStudyInvestigators) lt 1 ? 'none' : 'inline;'};">
         <tr id="ssi-table-head" class="ssi-table-head">
             <th width="55%" class="tableHeader"><tags:requiredIndicator/>Investigator</th>
             <th width="20%" class="tableHeader"><tags:requiredIndicator/>Role</th>
