@@ -48,7 +48,12 @@ body {
 	top:-21px;
 	left:-18px;
 }
-
+#welcome-user {
+	position:absolute;
+	color:#fff;
+	right:160px;
+	top:2px;
+}
 
 #thirdlevelnav { margin:5px; }
 #thirdlevelnav div {

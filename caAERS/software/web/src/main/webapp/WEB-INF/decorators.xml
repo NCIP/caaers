@@ -11,6 +11,7 @@
     <decorator name="standard" page="standard.jsp">
         <pattern>/pages/*</pattern>
         <pattern>/public/*</pattern>
+		<pattern>/accessDenied*</pattern>
     </decorator>
 
     <decorator name="tabbedflow" page="tabbedflow.jsp">
