@@ -18,7 +18,7 @@
                       <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" 
                       	initialDisplayValue="${initValue}"
                       	readonly="${not empty agent.chemoAgent}"
-                      	displayNamePath="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName">
+                      	displayNamePath="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName" required="true">
                           <jsp:attribute name="populatorJS">
                               function(autocompleter, text){
                                   createAE.matchChemoAgents(text, function(values) {

@@ -23,10 +23,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.PositiveValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 

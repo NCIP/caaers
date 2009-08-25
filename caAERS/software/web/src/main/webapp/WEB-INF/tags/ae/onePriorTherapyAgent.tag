@@ -17,7 +17,7 @@
           <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"
             displayNamePath="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName"
             readonly="${not empty agent.chemoAgent}" required="true"
-          	initialDisplayValue="${initValue}" enableClearButton="true">
+          	initialDisplayValue="${initValue}" enableClearButton="true" required="true" cssClass="validate-NOTEMPTY">
               <jsp:attribute name="populatorJS">
                   function(autocompleter, text){
                       createAE.matchChemoAgents(text, function(values) {

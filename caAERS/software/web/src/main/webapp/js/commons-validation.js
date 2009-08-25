@@ -19,7 +19,7 @@ function validateFields(formFields, displayError) {
             if (displayError) element.value = trimWhitespace(element.value);
 
             // required element
-            if (element.required && element.value == '') {
+            if (element.required && (element.value == '' || element.value.strip() == 'Begin typing here...')) {
                 if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
