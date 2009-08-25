@@ -1,6 +1,5 @@
 package webservice;
 
-import caaers.client.AEReportJobInfo;
 
 public interface AdeersWebService {
 
