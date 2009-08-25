@@ -13,8 +13,12 @@
 <form action="dummy">
 <div id="contextMenuContent">
 	<c:forEach var="rd" items="${allReportDefinitions}" >
+	 	<c:set var="_rdChecked" value="${false}" scope="page" />
+	 	<c:forEach var="rdS" items="${selectedReportDefinitions}">
+			<c:set var="_rdChecked" value="${_rdChecked or (rd.id eq rdS.id)}" scope="page" />
+	 	</c:forEach>
 		<div>
-		<input id="rdContextChk-${rd.id}" class="rdCheckbox" type="checkbox" name="reportingContextRdId" value="${rd.id}" onclick="toggleApplyBtn()" /> ${rd.label}
+		<input id="rdContextChk-${rd.id}" class="rdCheckbox" type="checkbox" name="reportingContextRdId" value="${rd.id}" onclick="toggleApplyBtn()"  ${_rdChecked ? 'checked' : '' }/> ${rd.label}
 		</div>
 	</c:forEach>
 	<div style="clear:both; margin-top:5px;">
@@ -22,13 +26,9 @@
 	</div>
 </div>
 <script>
-Event.observe(window, "load", function() {
   <c:forEach var="rd" items="${selectedReportDefinitions}">
-	 $('rdContextChk-${rd.id}').checked=true;
 	 AE.checkedReports.push(${rd.id});
   </c:forEach>
- });
- 
 </script>
 </form>
 </div>
@@ -36,15 +36,11 @@ Event.observe(window, "load", function() {
 <c:if test="${not checkBoxMode}">
 <div id="contextMenuContent-hidden" style="display:none;">
 <c:forEach var="rd" items="${allReportDefinitions}" >
-<input id="rdContext-${rd.id}" class="rdCheckbox" type="checkbox" name="reportingContextRdId" value="${rd.id}" />
+	<c:set var="_rdChecked" value="${false}" scope="page" />
+	<c:forEach var="rdS" items="${selectedReportDefinitions}">
+		<c:set var="_rdChecked" value="${_rdChecked or (rd.id eq rdS.id)}" scope="page" />
+	</c:forEach>
+	<input id="rdContext-${rd.id}" class="rdCheckbox" type="checkbox" name="reportingContextRdId" value="${rd.id}" ${_rdChecked ? 'checked' : '' } />
 </c:forEach>
 </div>
-<script>
-Event.observe(window, "load", function() {
-	 <c:forEach var="rd" items="${selectedReportDefinitions}" varStatus="rowCounter">
-	 $('rdContext-${rd.id}').checked=true;
-	 </c:forEach>
- });
- 
-</script>
 </c:if>

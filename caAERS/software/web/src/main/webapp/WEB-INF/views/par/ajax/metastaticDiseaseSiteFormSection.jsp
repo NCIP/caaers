@@ -7,6 +7,6 @@
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
 	<c:set var="mSite" value="${metastaticDiseaseSites[index]}" />
-	<par:oneMetastaticDiseaseSite index="${index}" anatomicSite="${mSite.codedSite}" />
+	<par:oneMetastaticDiseaseSite index="${index}" anatomicSite="${mSite.codedSite}" metastaticSite="${mSite}" />
 </c:forEach>
 </tags:noform>

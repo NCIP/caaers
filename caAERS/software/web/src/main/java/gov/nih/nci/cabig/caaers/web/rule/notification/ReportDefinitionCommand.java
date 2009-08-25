@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.list.LazyList;
 
@@ -27,12 +27,12 @@ import org.apache.commons.collections15.list.LazyList;
  * 
  * @author Sujith Vellat Thayyilthodi
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : May 22, 2007
+ * @author Ion
  * @version %I%, %G%
  * @since 1.0
  */
 public class ReportDefinitionCommand {
 
-    private ConfigProperty configurationProperty;
 
     // page -4
     private String pointOnScale = "0"; // the selected point in the time scale
@@ -56,14 +56,15 @@ public class ReportDefinitionCommand {
     protected Map<Object, Object> reportTypeOptions;
     
     protected Map<Object, Object> parentOptions;
+    
+    protected Map<Object, Object> recipientRoleOptions;
 
     public ReportDefinitionCommand(){
     }
     
-    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao, ConfigProperty configurationProperty, ConfigPropertyRepository cpRepo) {
+    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao, ConfigPropertyRepository cpRepo) {
         this.rpDef = rpDef;
         this.rpDefDao = rpDefDao;
-        this.configurationProperty = configurationProperty;
         this.cpRepository = cpRepo;
         initializeMandatoryFieldMap();
     }
@@ -77,12 +78,14 @@ public class ReportDefinitionCommand {
     // /LOGIC
     public void initializeMandatoryFieldMap() {
         mandatoryFieldMap = new LinkedHashMap<String, Integer>();
-        String path;
-        int i = 0;
-        for (ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()) {
-            path = mf.getFieldPath();
-            mandatoryFieldMap.put(path, i);
-            i++;
+        if(CollectionUtils.isNotEmpty(rpDef.getMandatoryFields())){
+        	String path;
+            int i = 0;
+            for (ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()) {
+                path = mf.getFieldPath();
+                mandatoryFieldMap.put(path, i);
+                i++;
+            }
         }
     }
      
@@ -93,14 +96,19 @@ public class ReportDefinitionCommand {
     	return reportTypeOptions;
     }
     
-    protected Map<Object, Object> collectRoleOptions() {
-        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.put("", "Please select");
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"), "code", "desc"));
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"), "code", "desc"));
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"), "code", "desc"));
-
-        return options;
+    /**
+     * Will populate the roles that is to be displayed in email notification recipient drop-down
+     * @return
+     */
+    protected Map<Object, Object> collectRecipientRoleOptions() {
+    	if(recipientRoleOptions == null){
+    		recipientRoleOptions = new LinkedHashMap<Object, Object>();
+    		recipientRoleOptions.put("", "Please select");
+    		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.REPORT_ROLE_TYPE), "code", "name"));
+    		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE), "code", "name"));
+    		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE), "code", "name"));
+    	}
+        return recipientRoleOptions;
     }
     
     /**
@@ -130,13 +138,6 @@ public class ReportDefinitionCommand {
 
     // /BEAN PROPERTIES
 
-    public void setConfigurationProperty(ConfigProperty configurationProperty) {
-        this.configurationProperty = configurationProperty;
-    }
-
-    public ConfigProperty getConfigurationProperty() {
-        return configurationProperty;
-    }
 
     /**
      * Will tell the index of the PlannedNotification to be deleted.
@@ -187,7 +188,7 @@ public class ReportDefinitionCommand {
     }
 
     public Map<Object, Object> getRoles() {
-        return collectRoleOptions();
+        return collectRecipientRoleOptions();
     }
 
     public Map<String, Integer> getMandatoryFieldMap() {

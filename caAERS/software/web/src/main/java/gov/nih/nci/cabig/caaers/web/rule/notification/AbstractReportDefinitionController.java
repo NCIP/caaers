@@ -35,7 +35,6 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class AbstractReportDefinitionController extends AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-    private ConfigProperty configurationProperty;
     protected ReportDefinitionDao reportDefinitionDao;
     protected Map<String, String> roles;
     protected OrganizationDao organizationDao;
@@ -162,13 +161,6 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         this.organizationDao = organizationDao;
     }
 
-    public ConfigProperty getConfigurationProperty() {
-        return configurationProperty;
-    }
-
-    public void setConfigurationProperty(ConfigProperty configurationProperty) {
-        this.configurationProperty = configurationProperty;
-    }
 
     public ConfigPropertyRepositoryImpl getConfigPropertyRepository() {
         return configPropertyRepository;

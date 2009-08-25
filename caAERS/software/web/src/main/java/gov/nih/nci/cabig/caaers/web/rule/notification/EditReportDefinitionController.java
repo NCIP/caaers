@@ -55,7 +55,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         // initialize all the lazy collections in rpDef
         reportDefinitionDao.initialize(reportDefinition);
         reconcileMandatoryFields(reportDefinition.getMandatoryFields(), expeditedReportTree);
-        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao,  configPropertyRepository);
         command.refreshParentOptions(reportDefinition.getOrganization().getId());
         command.refreshGroupOptions();
         

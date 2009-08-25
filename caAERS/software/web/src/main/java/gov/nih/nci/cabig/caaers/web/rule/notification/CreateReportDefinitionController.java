@@ -49,7 +49,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         populateMandatoryFields(mandatoryFields, expeditedReportTree);
         reportDefinition.setMandatoryFields(mandatoryFields);
-        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, getConfigurationProperty(), configPropertyRepository);
+        ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, configPropertyRepository);
         command.refreshParentOptions(null);
         command.refreshGroupOptions();
         

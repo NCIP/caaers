@@ -3,6 +3,9 @@
 <html>
   <head>
 	<style type="text/css">
+		.hidden{
+			display: none;
+		}
 		.divOther{
 			font-size:8pt;
 	 		border-color:#6E81A6;
@@ -364,7 +367,7 @@
                     <c:forEach items="${command.assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
                         <c:set var="mSite" value="${command.assignment.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
-                        <par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}"/>
+                        <par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" metastaticSite="${mSite}"/>
                     </c:forEach>
                 </div>
             </div>
