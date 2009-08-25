@@ -35,23 +35,9 @@ public abstract class ReportPerson extends PersonContact {
 
     private ExpeditedAdverseEventReport expeditedReport;
 
-    private ReportVersion report;
-    
 	private Investigator investigator;
 	private ResearchStaff researchStaff;
 	
-
-    // //// BOUND PROPERTIES
-
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "report_version_id")
-    public ReportVersion getReport() {
-        return report;
-    }
-
-    public void setReport(ReportVersion report) {
-        this.report = report;
-    }
 
     // ////BOUND PROPERTIES
 

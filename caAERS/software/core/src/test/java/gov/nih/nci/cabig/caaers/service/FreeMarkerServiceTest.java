@@ -19,6 +19,13 @@ public class FreeMarkerServiceTest extends TestCase {
 		String replacedText = service.applyRuntimeReplacementsForReport(text, varMap);
 		assertEquals("Hello World!!", replacedText);
 		
+		varMap.put("patientId", "111");
+		varMap.put("reportId", "222");
+		varMap.put("reportURL", "/pages/ae/edit?aeReport=33&report=44");
+		text = "Hello ${patientId}, you got a report ${reportId}, to access go to url ${reportURL}";
+		replacedText = service.applyRuntimeReplacementsForReport(text, varMap);
+		assertEquals(replacedText, "Hello 111, you got a report 222, to access go to url /pages/ae/edit?aeReport=33&report=44");
+		
 	}
 	public void testApplyRuntimeReplacementsForReport_ThrowException() {
 		try {

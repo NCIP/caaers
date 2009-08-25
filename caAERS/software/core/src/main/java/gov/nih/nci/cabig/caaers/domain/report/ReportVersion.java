@@ -201,7 +201,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     }
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
-    @OneToOne(mappedBy = "report")
+    @OneToOne(mappedBy = "reportVersion")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public Submitter getSubmitter() {
         return submitter;
@@ -209,7 +209,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 
     public void setSubmitter(Submitter submitter) {
         this.submitter = submitter;
-        if (submitter != null) submitter.setReport(this);
+        if (submitter != null) submitter.setReportVersion(this);
     }
 
     @Column(name = "physician_signoff")

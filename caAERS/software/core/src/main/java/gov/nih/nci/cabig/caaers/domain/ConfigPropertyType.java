@@ -16,6 +16,7 @@ public enum ConfigPropertyType implements CodedEnum<Integer>, Serializable {
 	REPORT_GROUP(1, "Report Definition Group"),
 	RESEARCH_STAFF_ROLE_TYPE(2, "ResearchStaff role types"),
 	INVESTIGATOR_ROLE_TYPE(3, "Investigator role types"),
+	REPORT_ROLE_TYPE(4, "Expedited Adverse Event Reporting Roles"),
 	UNKNOWN(100,"Unknown");
 	
 	private Integer code;

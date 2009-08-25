@@ -1,39 +1,53 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
-import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.service.ScheduledNotificationProcessService;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import java.io.Serializable;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.springframework.context.ApplicationContext;
 
 /**
- * This Job will send an email reminder notifaction,based on a Report.
+ * This Job will send an email reminder notification, based on a Report.
  * 
  * @author Biju Joseph
  * 
  */
-public class ReminderEmailJob extends ScheduledNotificationJobTemplate {
+@SuppressWarnings("serial")
+public class ReminderEmailJob implements Job, Serializable {
 
-    @Override
-    public DeliveryStatus processNotification() {
-        logger.debug("\n\r\n\r\nProceeding with emailing...[ \r\n\r\n" + String.valueOf(report)
-                        + "\r\n]\r\n\r\n");
-        ScheduledEmailNotification scheduledNotification = (ScheduledEmailNotification) notification;
-        
-        SimpleMailMessage mailMsg = new SimpleMailMessage();
-        mailMsg.setTo(scheduledNotification.getToAddress());
-        mailMsg.setSentDate(scheduledNotification.getScheduledOn());
-        mailMsg.setSubject(scheduledNotification.getSubjectLine());
-        mailMsg.setText(new String(scheduledNotification.getBody()));
+	protected static final Log logger = LogFactory.getLog(ReminderEmailJob.class);
+	
+	/**
+	 * This job will retrieve the scheduled notification details from context and delegates the call to {@link ScheduledNotificationProcessService}
+	 */
+	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
+		if(logger.isDebugEnabled()) logger.debug("Processing Reminder Email Job.... [started]");
+		
+		try {
+			Scheduler scheduler = jobContext.getScheduler();
+			JobDetail jobDetail = jobContext.getJobDetail();
+			ApplicationContext applicationContext = (ApplicationContext) scheduler.getContext().get("applicationContext");
+			JobDataMap jobDataMap = jobDetail.getJobDataMap();
+			Integer scheduledNFId = jobDataMap.getInt("scheduledNotifiction.id");
+			Integer reportId = jobDataMap.getInt("report.id");
+			
+			ScheduledNotificationProcessService scheduledNotificationProcessService = (ScheduledNotificationProcessService)applicationContext.getBean("scheduledNotificationProcessService");
+			scheduledNotificationProcessService.process(reportId, scheduledNFId);
+			
+		} catch (SchedulerException e) {
+			logger.error(e);
+		}
+		
+		if(logger.isDebugEnabled()) logger.debug("Processing Reminder Email Job.... [finished]");
+	}
 
-        try {
-            JavaMailSenderImpl mailer = (JavaMailSenderImpl) applicationContext.getBean("mailer");
-            mailer.send(mailMsg);
-            return DeliveryStatus.DELIVERED;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error("Error while trying to email", ex);
-        }
-        return DeliveryStatus.ERROR;
-    }
 }

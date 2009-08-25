@@ -433,9 +433,18 @@ This applicationContext contains the definition of the DAOs
             <value>FLUSH_NEVER</value>
         </property>
     </bean>
+	
+    <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+		<property name="flushModeName">
+            <value>FLUSH_NEVER</value>
+        </property>
+    </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
-          autowire="byName"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
 
     <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
           autowire="byType">
@@ -696,7 +705,6 @@ This applicationContext contains the definition of the DAOs
     <!-- Factor beans starts here-->
     <bean id="reportFactory" class="gov.nih.nci.cabig.caaers.domain.factory.ReportFactory">
         <property name="nowFactory" ref="nowFactory"></property>
-        <property name="freeMarkerService" ref="freeMarkerService" />
     </bean>
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>

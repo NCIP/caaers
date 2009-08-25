@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -53,8 +54,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private ReportDefinition reportDefinition;
 
     private List<ScheduledNotification> notifications;
-
-    private Submitter submitter;
 
     private List<ReportVersion> reportVersions;
 
@@ -276,21 +275,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.deliveries = deliveries;
     }
 
-    @Transient
-    public void addSubmitter() {
-        if (submitter == null) setSubmitter(new Submitter());
-    }
-
-    @Transient
-    public Submitter getSubmitter() {
-        // if (submitter == null) setSubmitter(new Submitter());
-        return submitter;
-    }
-
-    @Transient
-    public void setSubmitter(Submitter submitter) {
-        this.submitter = submitter;
-    }
     
     @Transient
     public Boolean getPhysicianSignoff() {
@@ -301,7 +285,21 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	getLastVersion().setPhysicianSignoff(physicianSignoff);
     }
 
-    
+    public List<String> findEmailAddressByRole(String roleName){
+    	List<String> emails = new ArrayList<String>();
+    	if(StringUtils.equals(roleName, "REP")){
+    		if(getReporter() != null){
+    			String email = getReporter().getEmailAddress();
+        		if(StringUtils.isNotEmpty(email)) emails.add(email);
+    		}
+    	}else if(StringUtils.equals(roleName, "SUB")){
+    		if(getSubmitter() != null){
+    			String email = getSubmitter().getEmailAddress();
+        		if(StringUtils.isNotEmpty(email)) emails.add(email);
+    		}
+    	}
+    	return emails;
+    }
     
     /**
      * This method will return the list of email recipients associated with this report. 
@@ -400,7 +398,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         String primaryIdentifier = getAeReport().getAssignment().getParticipant().getPrimaryIdentifierValue();
         map.put("patientId", primaryIdentifier == null ? "xxxx" : primaryIdentifier);//Patient ID
         map.put("reportId", getAeReport().getId());//Report ID
-        map.put("reportURL", "caaers/pages/ae/edit?aeReport=" + getAeReport().getId());//URL To Report
+        map.put("reportURL", "/pages/ae/edit?aeReport=" + getAeReport().getId() + "&report=" + getId());//URL To Report
         map.put("report", this);
         map.put("study", getAeReport().getStudy());
         return map;
@@ -635,5 +633,19 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	externalSystem =  hasSystemDeliveries();
     	return externalSystem;
 	}
+    
+    @Transient
+    public Reporter getReporter(){
+    	return aeReport.getReporter();
+    }
+    
+    @Transient
+    public Submitter getSubmitter(){
+    	return getLastVersion().getSubmitter();
+    }
+    public void setSubmitter(Submitter submitter){
+    	getLastVersion().setSubmitter(submitter);
+    }
+    
     
 }

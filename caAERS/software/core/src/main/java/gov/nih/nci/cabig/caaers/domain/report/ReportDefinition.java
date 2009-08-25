@@ -117,6 +117,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         return plannedNotificaitons;
     }
+    
+    public PlannedNotification findPlannedNotificationById(Integer id){
+    	for(PlannedNotification pn : getPlannedNotifications()){
+    		if(pn.getId().equals(id)) return pn;
+    	}
+    	return null;
+    }
 
     /**
      * This method will add a PlannedNotification to the plannedNotifications list.

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -184,5 +185,19 @@ public class StudyTest extends TestCase {
 		d1.retire();
 		
 		assertTrue(study.getActiveStudyDiseases().isEmpty());
+	}
+	
+	public void testFindEmailAddressByRole(){
+		Organization org = Fixtures.createOrganization("test");
+		StudyOrganization studyOrg = Fixtures.createStudyFundingSponsor(org);
+		ResearchStaff staff = Fixtures.createResearchStaff(org, Arrays.asList(UserGroupType.caaers_ae_cd), "test");
+		StudyPersonnel sp = Fixtures.createStudyPersonnel(staff);
+		studyOrg.addStudyPersonnel(sp);
+		sp.setRoleCode(UserGroupType.caaers_ae_cd.getCsmName());
+		study.addStudyOrganization(studyOrg);
+		
+		List<String> emails = study.findEmailAddressByRole("caaers_ae_cd");
+		assertEquals(1, emails.size());
+		assertEquals("test@def.com", emails.get(0));
 	}
 }

@@ -21,6 +21,7 @@ import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
 /**
  * This is a unit TestCase for RulesEngineServiceImpl class.
  * @author Monish Dombla
+ * @author Biju Joseph
  *
  */
 public class CaaersRulesEngineServiceTest extends CaaersTestCase{

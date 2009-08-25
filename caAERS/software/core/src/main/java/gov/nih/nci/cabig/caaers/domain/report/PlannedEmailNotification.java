@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -26,6 +28,8 @@ public class PlannedEmailNotification extends PlannedNotification {
         ScheduledEmailNotification notification = new ScheduledEmailNotification();
         notification.setPlanedNotificaiton(this);
         notification.setToAddress((String) objTo);
+        notification.setDeliveryStatus(DeliveryStatus.CREATED);
+        notification.setCreatedOn(new Date());
         return notification;
     }
 

@@ -1,14 +1,20 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -19,10 +25,13 @@ import junit.framework.TestCase;
  */
 public class ReportTest extends TestCase {
 	Report r;
+	ExpeditedAdverseEventReport aeReport;
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		r = Fixtures.createReport("joel");
+		aeReport = new ExpeditedAdverseEventReport();
+		aeReport.addReport(r);
 		
 	}
 	public void testHasSystemDeliveries() {
@@ -156,6 +165,38 @@ public class ReportTest extends TestCase {
 		assertTrue(r.isReported(ae1));
 		assertFalse(r.isReported(ae2));
 		assertFalse(r.isReported(ae3));
+		
+	}
+
+	
+	public void testFindEmailAddressByRole(){
+		aeReport.setReporter(new Reporter());
+		aeReport.getReporter().setEmailAddress("abc@abc.com");
+		Submitter submitter = new Submitter();
+		submitter.setEmailAddress("kk@kk.com");
+		r.getLastVersion().setSubmitter(submitter);
+		assertEquals(1, r.findEmailAddressByRole("REP").size());
+		assertEquals(1, r.findEmailAddressByRole("SUB").size());
+		assertEquals(0, r.findEmailAddressByRole("MMM").size());
+		assertEquals("abc@abc.com", r.findEmailAddressByRole("REP").get(0));
+		assertEquals("kk@kk.com", r.findEmailAddressByRole("SUB").get(0));
+	}
+	
+	public void testGetContextVariables(){
+		r.setId(55);
+		aeReport.setId(44);
+		
+		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
+		StudyParticipantAssignment assignment = Fixtures.createAssignment();
+		
+		aeReport.setReportingPeriod(reportingPeriod);
+		aeReport.setAssignment(assignment);
+		Map<Object, Object> map = r.getContextVariables();
+		
+		assertEquals("/pages/ae/edit?aeReport=44&report=55", map.get("reportURL"));
+		assertEquals("xxxx", map.get("patientId"));
+		assertEquals(44, map.get("reportId"));
+		assertSame(r, map.get("report"));
 		
 	}
 }

@@ -101,43 +101,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         ctcTerm.setTerm(TERM);
         expeditedData.getAdverseEvents().get(0).getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
     }
-    
-      public void testFindToAddress() {
-
-        StudyParticipantAssignment assignment = Fixtures.createAssignment();
-        StudySite site = assignment.getStudySite();
-        StudyInvestigator studyInvestigator = new StudyInvestigator();
-        studyInvestigator.setRoleCode("Site Principal Investigator");
-        SiteInvestigator siteInvestigator = new SiteInvestigator();
-        Investigator investigator = new LocalInvestigator();
-        investigator.setEmailAddress("biju@kk.com");
-        siteInvestigator.setInvestigator(investigator);
-        studyInvestigator.setSiteInvestigator(siteInvestigator);
-        site.addStudyInvestigators(studyInvestigator);
-        AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-        reportingPeriod.setAssignment(assignment);
-        expeditedData.setReportingPeriod(reportingPeriod);
-
-        PlannedEmailNotification penf = new PlannedEmailNotification();
-        RoleBasedRecipient recipient = new RoleBasedRecipient();
-        recipient.setRoleName("SPI");
-
-        List<Recipient> recipients = new ArrayList<Recipient>();
-        recipients.add(recipient);
-        penf.setRecipients(recipients);
-
-        ReportDefinition reportDef = Fixtures.createReportDefinition("test");
-        reportDef.addPlannedNotification(penf);
-
-        Report report = new Report();
-        report.setReportDefinition(reportDef);
-        report.setAeReport(expeditedData);
-
-        ReportRepositoryImpl impl = (ReportRepositoryImpl) reportRepository;
-        List<String> addresses = penf.findToAddressesForReport(report);
-        assertEquals(1, addresses.size());
-
-    }
 
     public void testFindEmailAddress() {
         StudyParticipantAssignment assignment = Fixtures.createAssignment();

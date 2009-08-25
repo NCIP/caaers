@@ -19,6 +19,7 @@ public class StudyParticipantMetastaticDiseaseSiteTest extends AbstractTestCase 
         metastaticDiseaseSite.setGridId("grid id");
 
         codedSite = new AnatomicSite();
+        codedSite.setName("codedSite");
         metastaticDiseaseSite.setCodedSite(codedSite);
         otherSite = "other site";
         metastaticDiseaseSite.setOtherSite(otherSite);
@@ -26,6 +27,14 @@ public class StudyParticipantMetastaticDiseaseSiteTest extends AbstractTestCase 
         metastaticDiseaseSite.setVersion(2);
 
 
+    }
+    
+    public void testGetName(){
+    	StudyParticipantMetastaticDiseaseSite studyParticipantMetastaticDiseaseSite = new StudyParticipantMetastaticDiseaseSite();
+    	assertNull(studyParticipantMetastaticDiseaseSite.getName());
+    	studyParticipantMetastaticDiseaseSite = StudyParticipantMetastaticDiseaseSite.
+        createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite);
+    	assertEquals("codedSite - other site", studyParticipantMetastaticDiseaseSite.getName());
     }
 
     public void testcreateAssignmentMetastaticDiseaseSiteForBasicProperties() {

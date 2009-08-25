@@ -122,19 +122,4 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
         getRecipients().add(rr);
     }
 
-    @Transient
-    public List<String> findToAddressesForReport(Report report) {
-        assert this != null : "PlannedNotification should not be null";
-        List<String> toAddressList = new ArrayList<String>();
-        for (Recipient recipient : getRecipients()) {
-            if (recipient instanceof ContactMechanismBasedRecipient) {
-                if (StringUtils.isNotEmpty(recipient.getContact())) toAddressList.add(recipient.getContact());
-            } else if (recipient instanceof RoleBasedRecipient && this instanceof PlannedEmailNotification) {
-                toAddressList.addAll(report.getAeReport().findEmailAddress(recipient.getContact()));
-            }
-
-        }//for each r
-
-        return toAddressList;
-    }
 }

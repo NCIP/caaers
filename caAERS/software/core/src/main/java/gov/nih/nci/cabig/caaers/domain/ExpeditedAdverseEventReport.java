@@ -143,6 +143,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
     }
+    
+    @Transient
+    public StudySite getStudySite() {
+        StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
+        return ss;
+    }
 
 // BJ : NOT REFFERED     
 //    /*
@@ -796,38 +802,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public void setPublicIdentifier(String strId) {
     }
 
-    @Transient
-    public List<String> findEmailAddress(String role) {
-        List<String> addresses = new ArrayList<String>();
-        String address = null;
-        final Study study = getStudy();
-
-        try {
-            if (StringUtils.equals("REP", role)) {//Reporter
-                address = getReporter().getContactMechanisms().get(PersonContact.EMAIL);
-                if (StringUtils.isNotEmpty(address)) addresses.add(address);
-            } else if (StringUtils.equals(role, "SUB")) {//Submitter
-                address = getReports().get(0).getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
-                if (StringUtils.isNotEmpty(address)) addresses.add(address);
-            } else if (StringUtils.equals(role, "SPI")) {//Site Principal Investigator
-                addresses.addAll(study.findEmailsOfSiteInvestigators("Site Principal Investigator"));
-            } else if (StringUtils.equals(role, "SI")) {//Site Investigator
-                addresses.addAll(study.findEmailsOfSiteInvestigators("Site Investigator"));
-            } else if (StringUtils.equals(role, "PI")) {//Principal Investigator
-                addresses.addAll(study.findEmailsOfSiteInvestigators("Principal Investigator"));
-            } else if (StringUtils.equals(role, "PC")) {//Participant Coordinator
-                addresses.addAll(study.findEmailsOfResearchStaff("Participant Coordinator"));
-            } else if (StringUtils.equals(role, "SC")) {//Study Coordinator
-                addresses.addAll(study.findEmailsOfResearchStaff("Study Coordinator"));
-            } else if (StringUtils.equals(role, "AEC")) {//Adverse Event Coordinator
-                addresses.addAll(study.findEmailsOfResearchStaff("Adverse Event Coordinator"));
-            }
-        } catch (Exception e) {
-            log.warn("Unable to fetch the email address of Role :" + role + ", mechanismType : EMAIL", e);
-        }
-        return addresses;
-    }
-
+ 
     @Transient
     List<String> findPhoneNumbers(String role) {
         assert false : "Not implemented";

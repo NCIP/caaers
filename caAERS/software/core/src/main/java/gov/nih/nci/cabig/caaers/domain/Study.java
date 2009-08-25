@@ -914,35 +914,21 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.addStudyTherapy(studyTherapy);
     }
 
-    @Transient
-    public List<String> findEmailsOfResearchStaff(String personnelRole) {
+    /**
+     * This method will find the email address of people associated with the role. 
+     * @param roleName
+     * @return
+     */
+    public List<String> findEmailAddressByRole(String roleName){
         List<String> emails = new ArrayList<String>();
-        String email = null;
-        for (StudyOrganization studyOrganization : this.getStudyOrganizations()) {
-            for (StudyPersonnel personnel : studyOrganization.getStudyPersonnels()) {
-                if (StringUtils.equals(personnel.getRoleCode(), personnelRole)) {
-                    email = personnel.getSiteResearchStaff().getResearchStaff().getEmailAddress();
-                    if (StringUtils.isNotEmpty(email)) emails.add(email);
-                }
+        if(CollectionUtils.isNotEmpty(getStudyOrganizations())){
+        	for(StudyOrganization studyOrg : studyOrganizations){
+            	emails.addAll(studyOrg.findEmailAddressByRole(roleName));
             }
         }
         return emails;
     }
 
-    @Transient
-    public List<String> findEmailsOfSiteInvestigators(String investigatorRole) {
-        List<String> emails = new ArrayList<String>();
-        String email = null;
-        for (StudyOrganization studyOrganization : this.getStudyOrganizations()) {
-            for (StudyInvestigator studyInvestigator : studyOrganization.getStudyInvestigators()) {
-                if (StringUtils.equals(studyInvestigator.getRoleCode(), investigatorRole)) {
-                    email = studyInvestigator.getSiteInvestigator().getInvestigator().getEmailAddress();
-                    if (StringUtils.isNotEmpty(email)) emails.add(email);
-                }
-            }
-        }
-        return emails;
-    }
     
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})

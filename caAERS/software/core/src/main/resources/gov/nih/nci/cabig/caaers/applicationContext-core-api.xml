@@ -22,12 +22,6 @@
           class="gov.nih.nci.cabig.caaers.api.impl.DefaultAdverseEventService"/>
 -->
 
-	<bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor"> 
-		<property name="sessionFactory"> 
-			<ref bean="sessionFactory"/>
-		</property> 
-	</bean>
-
 	<bean id="studyServiceAPITarget" autowire="byName" lazy-init="true" 
 		class="gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService"> 
 	</bean> 

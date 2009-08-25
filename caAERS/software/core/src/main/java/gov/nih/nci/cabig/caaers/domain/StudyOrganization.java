@@ -118,7 +118,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     public List<StudyInvestigator> getActiveStudyInvestigators(){
     	List<StudyInvestigator> investigators = new ArrayList<StudyInvestigator>();
     	for(StudyInvestigator si : getStudyInvestigators()){
-    		if(!si.isRetired()) investigators.add(si);
+    		if(!si.isRetired() && si.isActive()) investigators.add(si);
     	}
     	return investigators;
     }
@@ -142,11 +142,13 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     @Transient
     public List<StudyPersonnel> getActiveStudyPersonnel(){
     	List<StudyPersonnel> personnel = new ArrayList<StudyPersonnel>();
-    	for(StudyPersonnel si : getStudyPersonnels()){
-    		if(!si.isRetired()) personnel.add(si);
+    	for(StudyPersonnel sp : getStudyPersonnels()){
+    		if(sp.isActive() && !sp.isRetired()) personnel.add(sp);
     	}
     	return personnel;
     }
+    
+    //BJ : wrong spelling.
     @Transient
     public List<StudyPersonnel> getStudyPersonnels() {
         return lazyListHelper.getLazyList(StudyPersonnel.class);
@@ -260,6 +262,31 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     		}
     	}
     	return null;
+    }
+    
+    /**
+     * This method will find the email address of people associated with the role. 
+     * @param roleName
+     * @return
+     */
+    public List<String> findEmailAddressByRole(String roleName){
+    	List<String> emails = new ArrayList<String>();
+    	
+    	//check in personnel
+    	for(StudyPersonnel personnel : getStudyPersonnels()){
+    		if(StringUtils.equals(personnel.getRoleCode(), roleName)){
+    			emails.add(personnel.getEmailAddress());
+    		}
+    	}
+    	
+    	//check among investigators
+    	for(StudyInvestigator investigator : getStudyInvestigators()){
+    		if(StringUtils.equals(investigator.getRoleCode(), roleName)){
+    			emails.add(investigator.getEmailAddress());
+    		}
+    	}
+    	
+    	return emails;
     }
     
     @Override

@@ -1,0 +1,656 @@
+<dataset>
+    <!-- Research - Staffs -->
+    <RESEARCH_STAFFS
+     id="-1000"
+     version="1"
+     first_name="Bill"
+     last_name="Gates"
+     email_address="big@cc.com"
+     phone_number="123-456-789"
+     nci_identifier="cc_rs_1"
+     login_id="bill1"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    <RESEARCH_STAFFS
+     id="-1001"
+     version="1"
+     first_name="Gill"
+     last_name="Moore"
+     email_address="gill@cc.com"
+     phone_number="123-456-789"
+     nci_identifier="cc_rs_2"
+     login_id="gill1"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    <RESEARCH_STAFFS
+     id="-1002"
+     version="1"
+     first_name="John"
+     last_name="Park"
+     email_address="john@site1.com"
+     phone_number="123-456-789"
+     nci_identifier="site1_rs_1"
+     login_id="rs1_site1"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    <RESEARCH_STAFFS
+     id="-1003"
+     version="1"
+     first_name="James"
+     last_name="Park"
+     email_address="james@site1.com"
+     phone_number="123-456-789"
+     nci_identifier="site1_rs_2"
+     login_id="rs2_site1"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    <RESEARCH_STAFFS
+     id="-1004"
+     version="1"
+     first_name="Sam"
+     last_name="Joseph"
+     email_address="sam@site2.com"
+     phone_number="123-456-789"
+     nci_identifier="site2_rs_1"
+     login_id="rs1_site2"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    <RESEARCH_STAFFS
+     id="-1005"
+     version="1"
+     first_name="Sunny"
+     last_name="Joseph"
+     email_address="sunny@site2.com"
+     phone_number="123-456-789"
+     nci_identifier="site2_rs_2"
+     login_id="rs2_site2"
+     street="Park Centre Road"
+     city="Fairfax"
+     state="Virginia"
+     zip="22033"
+     code="0"/>
+    
+    <!-- Investigators -->
+    <INVESTIGATORS
+     id="-3004"
+     first_name="Aaron"
+     last_name="Burr"
+     email_address="ab@nci.com"
+     phone_number="312-555-0102"
+     nci_identifier="NCI_ID-01"/>
+    
+    <INVESTIGATORS
+     id="-3005"
+     first_name="Ramses"
+     last_name="Pinto"
+     email_address="pinto@nci.com"
+     phone_number="312-555-0102"
+     nci_identifier="NCI_ID-02"/>
+    
+    <INVESTIGATORS
+     id="-3006"
+     first_name="Razool"
+     last_name="Raj"
+     email_address="razool@nci.com"
+     phone_number="312-555-0102"
+     nci_identifier="NCI_ID-03"/>
+    
+    <!-- Sponsors -->
+    <ORGANIZATIONS
+     id="-1000"
+     version="1"
+     name="CTEP"
+     description_text="CTEP"
+     nci_institute_code="CTEP"
+    />
+    <!-- Coordinating Center -->
+    <ORGANIZATIONS
+     id="-1001"
+     version="1"
+     name="CALGB"
+     description_text="CALGB"
+     nci_institute_code="DEFAULT"
+    />
+    <!--  Site 1 -->
+    <ORGANIZATIONS
+     id="-1002"
+     version="1"
+     name="ROSEWELL"
+     description_text="ROSEWELL"
+     nci_institute_code="ROSE"
+    />
+    <!-- Site 2 -->
+    <ORGANIZATIONS
+     id="-1003"
+     version="1"
+     name="JFK"
+     description_text="JFK"
+     nci_institute_code="JFK"
+    />
+    
+    <!-- CALGB Staffs -->
+    <SITE_RESEARCH_STAFFS
+     id="-4001"
+     site_id="-1001"
+     researchstaff_id="-1000"
+     email_address="big2@cc.com"
+     phone_number="123-456-789"
+    />
+    <site_rs_staff_roles
+     id="-5001"
+     role_code="caaers_site_cd"
+     site_research_staffs_id="-4001"
+     start_date="2007-02-02"
+     end_date="2008-02-02"
+    />
+    <site_rs_staff_roles
+     id="-5002"
+     role_code="caaers_study_cd"
+     site_research_staffs_id="-4001"
+     start_date="2007-02-02"
+    />
+    
+    <SITE_RESEARCH_STAFFS
+     id="-4002"
+     site_id="-1001"
+     researchstaff_id="-1001"
+     phone_number="123-456-789"
+    />
+    <site_rs_staff_roles
+     id="-5003"
+     role_code="caaers_study_cd"
+     site_research_staffs_id="-4002"
+     start_date="2007-02-02"
+    />
+    <site_rs_staff_roles
+     id="-5004"
+     role_code="caaers_site_cd"
+     site_research_staffs_id="-4002"
+     start_date="2007-02-02"
+    />
+    <site_rs_staff_roles
+     id="-5005"
+     role_code="caaers_participant_cd"
+     site_research_staffs_id="-4002"
+     start_date="2007-02-02"
+    />
+    
+    <!-- Site 1 staffs -->
+    <SITE_RESEARCH_STAFFS
+     id="-4003"
+     site_id="-1002"
+     researchstaff_id="-1002"
+     phone_number="123-456-789"
+     email_address="john2@gmail.com"
+    />
+    <site_rs_staff_roles
+     id="-5006"
+     role_code="caaers_participant_cd"
+     site_research_staffs_id="-4003"
+     start_date="2007-02-02"
+    />
+    <site_rs_staff_roles
+     id="-5007"
+     role_code="caaers_site_cd"
+     site_research_staffs_id="-4003"
+     start_date="2007-02-02"
+    />
+    <SITE_RESEARCH_STAFFS
+     id="-4004"
+     site_id="-1002"
+     researchstaff_id="-1003"
+     phone_number="123-456-789"
+    />
+    <site_rs_staff_roles
+     id="-5008"
+     role_code="caaers_ae_cd"
+     site_research_staffs_id="-4004"
+     start_date="2007-02-02"
+    />
+    
+    <!-- Site 2 staffs -->
+    <SITE_RESEARCH_STAFFS
+     id="-4005"
+     site_id="-1003"
+     researchstaff_id="-1004"
+     phone_number="123-456-789"
+    />
+    <site_rs_staff_roles
+     id="-5009"
+     role_code="caaers_participant_cd"
+     site_research_staffs_id="-4005"
+     start_date="2007-02-02"
+    />
+    <SITE_RESEARCH_STAFFS
+     id="-4006"
+     site_id="-1003"
+     researchstaff_id="-1005"
+     phone_number="123-456-789"
+    />
+    <site_rs_staff_roles
+     id="-5010"
+     role_code="caaers_participant_cd"
+     site_research_staffs_id="-4006"
+     start_date="2007-02-02"
+    />
+    
+    <!-- CALGB investigators -->
+    <SITE_INVESTIGATORS
+     id="-4004"
+     site_id="-1001"
+     investigator_id="-3004"/>
+    
+    <!-- Site 1 investigator -->
+    <SITE_INVESTIGATORS
+     id="-4005"
+     site_id="-1002"
+     investigator_id="-3005"/>
+    <!-- Site 2 investigator -->
+    <SITE_INVESTIGATORS
+     id="-4006"
+     site_id="-1003"
+     investigator_id="-3005"/>
+    <SITE_INVESTIGATORS
+     id="-4007"
+     site_id="-1003"
+     investigator_id="-3006"/>
+    
+    <!-- Studies -->
+    <STUDIES
+     id="-2"
+     multi_institution_indicator="0"
+     short_title="Test study 1"
+     long_title="Test study 1"
+     description="Description"
+     grid_id="32222222"
+     load_status="1"
+    />
+    <STUDIES
+     id="-3"
+     multi_institution_indicator="0"
+     short_title="Test study 2"
+     long_title="Lengthy Title" description="Different description"
+     grid_id="f2321"
+     load_status="1"
+    />
+    <STUDIES id="-999" short_title="dummy" load_status="0"/>
+    <!-- Study Organizations : Study 'Test Study 1' -->
+    <STUDY_ORGANIZATIONS
+     id="-1000"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-2"
+     site_id="-1000"
+     type="SFS"/>
+    <STUDY_ORGANIZATIONS
+     id="-1001"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-2"
+     site_id="-1001"
+     type="SCC"/>
+    <STUDY_ORGANIZATIONS
+     id="-1002"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-2"
+     site_id="-1002"
+     type="SST"/>
+    <STUDY_ORGANIZATIONS
+     id="-1003"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-2"
+     site_id="-1003"
+     type="SST"/>
+    
+    
+    <!-- Study Organizations : Study 'Test Study 2' -->
+    <STUDY_ORGANIZATIONS
+     id="-1004"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-3"
+     site_id="-1000"
+     type="SFS"/>
+    <STUDY_ORGANIZATIONS
+     id="-1005"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-3"
+     site_id="-1001"
+     type="SCC"/>
+    <STUDY_ORGANIZATIONS
+     id="-1006"
+     version="1"
+     start_date="2006-10-10"
+     study_id="-3"
+     site_id="-1003"
+     type="SST"/>
+    
+    <!-- Study Investigators : Test Study 1 -->
+    <study_investigators
+     id="-22"
+     role_code="PI"
+     start_date="2006-10-10"
+     site_investigators_id="-4004"
+     study_sites_id="-1001"
+    />
+    <study_investigators
+     id="-23"
+     role_code="SI"
+     start_date="2006-10-10"
+     site_investigators_id="-4005"
+     study_sites_id="-1002"
+    />
+    <study_investigators
+     id="-24"
+     role_code="SI"
+     start_date="2006-10-10"
+     site_investigators_id="-4006"
+     study_sites_id="-1003"
+    />
+    
+    <!-- Study Personnel : Test Study 1 -->
+    <study_personnel
+     id="-1"
+     site_research_staffs_id="-4001"
+     study_sites_id="-1001"
+     role_code="caaers_study_cd"/>
+    <study_personnel
+     id="-2"
+     site_research_staffs_id="-4002"
+     study_sites_id="-1001"
+     role_code="caaers_site_cd"/>
+    <study_personnel
+     id="-3"
+     site_research_staffs_id="-4003"
+     study_sites_id="-1002"
+     role_code="caaers_participant_cd"/>
+    <study_personnel
+     id="-4"
+     site_research_staffs_id="-4004"
+     study_sites_id="-1002"
+     role_code="caaers_participant_cd"/>
+    <study_personnel
+     id="-5"
+     site_research_staffs_id="-4005"
+     study_sites_id="-1003"
+     role_code="caaers_participant_cd"/>
+    <study_personnel
+     id="-6"
+     site_research_staffs_id="-4006"
+     study_sites_id="-1003"
+     role_code="caaers_participant_cd"/>
+    
+    <!-- Study Investigators : Test Study 2 -->
+    <study_investigators
+     id="-25"
+     role_code="PI"
+     start_date="2006-10-10"
+     site_investigators_id="-4007"
+     study_sites_id="-1006"
+    />
+    <!-- Study Personnel : Test Study 2 -->
+    <study_personnel
+     id="-7"
+     site_research_staffs_id="-4002"
+     study_sites_id="-1005"
+     role_code="caaers_study_cd"/>
+    <study_personnel
+     id="-8"
+     site_research_staffs_id="-4006"
+     study_sites_id="-1006"
+     role_code="caaers_participant_cd"/>
+    
+	<!-- Configuration Property -->
+	<config_properties id="-1"
+	 code="cp1"
+	 name="cp1"
+	 config_type="1"
+	 />
+    
+    <!-- Report Definition -->
+    <report_calendar_templates
+     id="-222"
+     name="CTEP-222"
+     description="TestDescription"
+     duration="4"
+     time_scale_unit_code="2"
+     version="0"
+     org_id="-1000"
+     amendable="0"
+     group_id="-1"
+     report_type="2"
+    />
+    <!-- Planned notifications for CTEP-222 -->
+    <planned_notifications
+     id="-222"
+     index_on_time_scale="2"
+     subject="Test Subject Line"
+	 body="Test body line"
+     dtype="email"
+     rct_id="-222"
+     version="0"
+    />
+    <!-- Recipients for CTEP 222 -->
+    <recipients
+     id="-222"
+     plnf_id="-222"
+     dtype="role"
+     role_name="PI"
+     version="0"
+	 contact_name="dummy"
+    />
+    <recipients
+     id="-223"
+     plnf_id="-222"
+     dtype="role"
+     role_name="SI"
+     version="0"
+    />
+    <recipients
+     id="-224"
+     plnf_id="-222"
+     dtype="role"
+     role_name="SPI"
+     version="0"
+    />
+    <recipients
+     id="-225"
+     plnf_id="-222"
+     dtype="role"
+     role_name="REP"
+     version="0"
+    />
+    <recipients
+     id="-226"
+     plnf_id="-222"
+     dtype="role"
+     role_name="SUB"
+     version="0"
+    />
+    <recipients
+     id="-227"
+     plnf_id="-222"
+     dtype="contact"
+     contact_name="jerry@rediffmail.com"
+     version="0"
+    />
+    <recipients
+     id="-228"
+     plnf_id="-222"
+     dtype="role"
+     role_name="caaers_study_cd"
+     version="0"
+    />
+    <recipients
+     id="-229"
+     plnf_id="-222"
+     dtype="role"
+     role_name="caaers_ae_cd"
+     version="0"
+    />
+    <recipients
+     id="-230"
+     plnf_id="-222"
+     dtype="role"
+     role_name="caaers_participant_cd"
+     version="0"
+    />
+    <recipients
+     id="-231"
+     plnf_id="-222"
+     dtype="role"
+     role_name="caaers_data_cd"
+     version="0"
+    />
+    
+    <!-- Participant -->
+    <PARTICIPANTS
+     id="-101"
+     instituitional_patient_number="P002"
+     institution="Hospital"
+     first_name="Michael"
+     last_name="Jordan"
+     birth_day="02"
+     birth_month="01"
+     birth_year="2006"
+     gender="Male"
+     ethnicity="ethnicity"
+     race="race"
+     middle_name="m"
+     maiden_name="m"
+     load_status="1"/>
+    
+    <!-- Assignments -->
+    <PARTICIPANT_ASSIGNMENTS
+     id="-14"
+     study_site_id="-1003"
+     participant_id="-101"
+     date_of_enrollment="2006-09-30"
+     load_status="1"/>
+    
+    <!-- Participant : Identifiers -->
+    <IDENTIFIERS
+     id="-200"
+     participant_id="-101"
+     value="13js77"
+     stu_id='-999'
+     type="MRN"
+     organization_id="-1000"
+     discriminator_column="1"
+     primary_indicator="1"/>
+    <!-- Study identifiers -->
+    <IDENTIFIERS
+     id="-201"
+     stu_id="-2"
+     value="1138-43"
+     type="local"
+     organization_id="-1000"
+     discriminator_column="1"/>
+    <IDENTIFIERS
+     id="-202"
+     stu_id="-3"
+     value="1138-44"
+     type="local"
+     organization_id="-1000"
+     discriminator_column="1"/>
+    
+    <!-- Reporting period -->
+    <epochs id="-1" name="abcd" order_no="1"/>
+    <ae_reporting_periods
+     id="-14"
+     assignment_id="-14"
+     start_date="2006-09-30"
+     end_date="2007-09-30"
+     epoch_id="-1"/>
+    <!-- Expedited report -->
+    <AE_REPORTS
+     id="-14"
+     reporting_period_id="-14"
+     created_at="2004-09-04 13:15:30"
+    />
+    <!-- Adverse Events -->
+    <ADVERSE_EVENTS
+     id="-14"
+     report_id="-14"
+     list_index="1"
+     reporting_period_id="-14"
+    />
+    <!-- Report -->
+    <report_schedules
+     id="-14"
+     rct_ID="-222"
+     required="1"
+     version="0"
+     report_id="-14"
+    />
+	<!-- Scheduled Notification -->
+	<scheduled_notifications 
+		id="-222"
+		scheduled_on="2007-05-15"
+		created_on="2007-05-15"
+		delivery_status_code="2"
+		plnf_id="-222"
+		rpsh_id="-14"
+		dtype="email"
+	/>
+    <!-- Report Versions -->
+    <report_versions id="-14"
+     report_id="-14"
+     list_index="0"
+     report_version_id="0"
+     status_code="4"
+     due_on="2007-05-16"
+     created_on="2007-05-15"
+     submitted_on="2007-05-18"
+    />
+    <!-- Submitter -->
+    <AE_REPORT_PEOPLE id="-100"
+     report_id="-14"
+     role="S"
+     first_name="Joe"
+     last_name="DiMaggio"
+     title="Mr"
+     street="160 Laurelway"
+     city="Herndon"
+     state="VA"
+     report_version_id="-14"
+     zip="20170"/>
+    
+    <!-- Reporter -->
+    <AE_REPORT_PEOPLE id="-101"
+     report_id="-14"
+     role="R"
+     first_name="Joel"
+     last_name="Henry"
+    />
+    <!-- Contact mechanism -->
+    <CONTACT_MECHANISMS person_id="-100" type="e-mail" value="submitter@kk.com"/>
+    <CONTACT_MECHANISMS person_id="-101" type="e-mail" value="reporter@kk.com"/>
+	
+	<!-- clear off data from unwanted tables -->
+	<disease_histories />
+	<participant_histories />	
+	<additional_information />
+	<ae_report_descriptions />
+	<treatments />
+	<disease_terminologies />
+    
+</dataset>

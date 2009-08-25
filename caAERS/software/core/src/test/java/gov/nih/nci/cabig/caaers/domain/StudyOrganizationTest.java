@@ -37,6 +37,7 @@ public class StudyOrganizationTest extends TestCase {
     public void testActiveStudyPersonnel(){
     	
     	StudyPersonnel sp1 = new StudyPersonnel();
+    	sp1.setStartDate(new Date());
     	StudyPersonnel sp2 = new StudyPersonnel();
     	sp2.retire();
     	
@@ -44,6 +45,7 @@ public class StudyOrganizationTest extends TestCase {
     	studyOrganization.addStudyPersonnel(sp2);
     	
     	assertEquals(3, studyOrganization.getActiveStudyPersonnel().size());
+    	System.out.println(studyOrganization.getActiveStudyPersonnel());
     	assertSame(sp1, studyOrganization.getActiveStudyPersonnel().get(2));
     	
     	sp1.retire();
@@ -57,6 +59,7 @@ public class StudyOrganizationTest extends TestCase {
     public void testActiveStudyInvestigators(){
 
     	StudyInvestigator si1 = new StudyInvestigator();
+    	si1.setStartDate(new Date());
     	StudyInvestigator si2 = new StudyInvestigator();
     	si2.retire();
     	

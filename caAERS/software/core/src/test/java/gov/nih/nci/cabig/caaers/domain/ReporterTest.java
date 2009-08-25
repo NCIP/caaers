@@ -39,7 +39,6 @@ public class ReporterTest extends AbstractTestCase {
         title = "title";
         reporter.setTitle(title);
         reporter.setVersion(2);
-        reporter.setReport(reportVersion);
         reporter.setMiddleName(middleName);
         reporter.setLastName(lastName);
         reporter.setId(1);
@@ -62,7 +61,6 @@ public class ReporterTest extends AbstractTestCase {
         assertEquals(firstName, copiedReporter.getFirstName());
         assertEquals(lastName, copiedReporter.getLastName());
         assertEquals(middleName, copiedReporter.getMiddleName());
-        assertEquals(reportVersion, copiedReporter.getReport());
         assertEquals(title, copiedReporter.getTitle());
 
 

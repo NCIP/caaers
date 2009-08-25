@@ -72,8 +72,7 @@ public class SchedulerServiceImpl implements SchedulerService {
             		String jobName = "J-" + nf.getId().toString();
             		Class jobClass = findJobClass(nf);
             		if (logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
-            		JobDetail jobDetail = new JobDetail(jobName,
-            				"JG-" + String.valueOf(report.getId()), jobClass);
+            		JobDetail jobDetail = new JobDetail(jobName,"JG-" + String.valueOf(report.getId()), jobClass);
             		JobDataMap jobDataMap = jobDetail.getJobDataMap();
             		jobDataMap.put("report.id", report.getId());
             		jobDataMap.put("scheduledNotifiction.id", nf.getId());

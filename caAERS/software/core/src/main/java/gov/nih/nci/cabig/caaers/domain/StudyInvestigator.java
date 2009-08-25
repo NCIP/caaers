@@ -128,6 +128,22 @@ public class StudyInvestigator extends AbstractMutableRetireableDomainObject imp
     	return (startDate == null || !DateUtils.between(new Date(), startDate, endDate));
     }
     
+    /**
+     * Returns the email address associtated to {@link SiteResearchStaff}.
+     * If email addres not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned. 
+     * @return
+     */
+    @Transient
+    public String getEmailAddress(){
+    	String email = null;
+    	if(getSiteInvestigator() != null){
+    		email = siteInvestigator.getEmailAddress();
+    		if(email == null) {
+    			email = siteInvestigator.getInvestigator().getEmailAddress();
+    		}
+    	}
+    	return email;
+    }
 
     // /OBJECT METHODS
 

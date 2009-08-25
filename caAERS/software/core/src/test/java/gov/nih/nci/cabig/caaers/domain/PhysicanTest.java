@@ -39,7 +39,6 @@ public class PhysicanTest extends AbstractTestCase {
         title = "title";
         physician.setTitle(title);
         physician.setVersion(2);
-        physician.setReport(reportVersion);
         physician.setMiddleName(middleName);
         physician.setLastName(lastName);
         physician.setId(1);
@@ -62,7 +61,6 @@ public class PhysicanTest extends AbstractTestCase {
         assertEquals(firstName, copiedPhysician.getFirstName());
         assertEquals(lastName, copiedPhysician.getLastName());
         assertEquals(middleName, copiedPhysician.getMiddleName());
-        assertEquals(reportVersion, copiedPhysician.getReport());
         assertEquals(title, copiedPhysician.getTitle());
 
 
