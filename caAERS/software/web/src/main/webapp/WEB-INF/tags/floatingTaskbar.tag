@@ -20,7 +20,7 @@
             ];
 
     var FloatingTaskbar = Class.create({
-        ms      : 1500,
+        ms      : 500,
         hidden  : true,
         initialize: function() {
         },
@@ -62,13 +62,14 @@
 	
     $$('#sections.tabs li a').each(function(element) {
         Event.observe(element, "mouseover", function() {
+			timer = setTimeout(function(){
 			$$('#sections.tabs li a').each(function(element){
 				element.removeClassName('fthover')
 				});
 			selectedFirstLevel = element;
             ft.show(Element.readAttribute(element, 'index'));
             ft.hidden = false;
-			element.addClassName("fthover");
+			element.addClassName("fthover"); }, 200);
         });
         Event.observe(element, "mouseout", function() {
             ft.hidden = true;
@@ -78,6 +79,7 @@
 
     Event.observe($('floatingTaskbar'), "mouseover", function() {
         ft.hidden = false;
+		clearTimeout(timer);
     });
     Event.observe($('floatingTaskbar'), "mouseout", function() {
         ft.hidden = true;
