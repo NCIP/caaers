@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -23,7 +24,7 @@ import junit.framework.TestCase;
  * @author Biju Joseph
  *
  */
-public class ReportTest extends TestCase {
+public class ReportTest extends AbstractNoSecurityTestCase {
 	Report r;
 	ExpeditedAdverseEventReport aeReport;
 	@Override
