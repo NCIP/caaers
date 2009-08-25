@@ -331,7 +331,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         if (priorTherapy.getPriorTherapy() == null && priorTherapy.getOther() == null) return null;
 
         for (StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()) {
-            if (spaPriorTherapy.getName().equals(priorTherapy.getName())) {
+            boolean n1 = spaPriorTherapy.getName() == null;
+            boolean n2 = priorTherapy.getName() == null;
+
+            if (!(n1 & n2) && (n1 | n2)) continue;
+
+            if ((n1 && n2) || (spaPriorTherapy.getName().equals(priorTherapy.getName()))) {
                 boolean a = spaPriorTherapy.getStartDate() == null;
                 boolean b = priorTherapy.getStartDate() == null;
 
