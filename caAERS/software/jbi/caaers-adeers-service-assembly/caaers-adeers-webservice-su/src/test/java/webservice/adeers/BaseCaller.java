@@ -1,5 +1,10 @@
 package webservice.adeers;
 
+import gov.nih.nci.ctep.adeers.client.AEReportJobInfo;
+import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
+import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
+import gov.nih.nci.ctep.adeers.client.ReportingMode;
+
 import java.io.FileInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -11,11 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.TestCase;
-import caaers.client.AEReportJobInfo;
-import caaers.client.AEReportXMLServiceSoapBindingStub;
-import caaers.client.AEReportXMLService_ServiceLocator;
-import caaers.client.Error;
-import caaers.client.ReportingMode;
 
 public abstract class BaseCaller extends TestCase{
 	private String adeersWebServiceAddress = "https://capps-ctep.nci.nih.gov/adeersws10gbeta/services/AEReportXMLService";

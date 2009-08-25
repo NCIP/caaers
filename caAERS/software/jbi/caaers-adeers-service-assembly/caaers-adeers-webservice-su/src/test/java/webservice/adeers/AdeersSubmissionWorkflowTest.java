@@ -1,9 +1,13 @@
 package webservice.adeers;
 
+import gov.nih.nci.ctep.adeers.client.AEReportJobInfo;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import caaers.client.AEReportJobInfo;
+import webservice.adeers.BaseCaller;
+
+
 
 /*
  * R - Regular Report

@@ -1,6 +1,6 @@
 package webservice.adeers;
 
-import caaers.client.AEReportJobInfo;
+import gov.nih.nci.ctep.adeers.client.AEReportJobInfo;
 
 public class SubmitToAdeersTest extends BaseCaller {
 	
