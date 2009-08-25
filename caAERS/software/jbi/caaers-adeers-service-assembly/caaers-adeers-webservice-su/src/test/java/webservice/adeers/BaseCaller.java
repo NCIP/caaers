@@ -4,7 +4,7 @@ import gov.nih.nci.ctep.adeers.client.AEReportJobInfo;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
-
+import gov.nih.nci.ctep.adeers.client.Error;
 import java.io.FileInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
