@@ -32,20 +32,14 @@ import org.hibernate.annotations.Parameter;
 public class StudyAgent extends AbstractMutableRetireableDomainObject implements StudyChild {
 
     private LazyListHelper lazyListHelper;
-
     private Study study;
-
     private Agent agent;
-
     private String agentAsString;
-
     private String otherAgent;
 
     @Embedded
     private Participation participation;
-
     private INDType indType;
-
     private Boolean partOfLeadIND;
 
     /*
@@ -54,9 +48,7 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
     public StudyAgent() {
         participation = new Participation();
         lazyListHelper = new LazyListHelper();
-        lazyListHelper.add(StudyAgentINDAssociation.class,
-                        new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,
-                                        StudyAgentINDAssociation.class));
+        lazyListHelper.add(StudyAgentINDAssociation.class, new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,StudyAgentINDAssociation.class));
     }
     
     public StudyAgent(Agent agent){
@@ -189,7 +181,6 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
         final StudyAgent other = (StudyAgent) obj;
         if(this.isRetired() || other.isRetired()) return false;
         if (agent == null) {

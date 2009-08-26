@@ -23,21 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Transactional(readOnly = true)
-public class InvestigationalNewDrugDao extends GridIdentifiableDao<InvestigationalNewDrug>
-                implements MutableDomainObjectDao<InvestigationalNewDrug> {
+public class InvestigationalNewDrugDao extends GridIdentifiableDao<InvestigationalNewDrug>implements MutableDomainObjectDao<InvestigationalNewDrug> {
 
     // queries
     // TODO: Migrate this to query framework.
-    private static final String CTEP_IND_QUERY = "select o from "
-                    + InvestigationalNewDrug.class.getName() + " o where indNumber = -111";
-
-    private static final String DCP_IND_QUERY = "select o from "
-                    + InvestigationalNewDrug.class.getName() + " o where indNumber = -222";
-
-    private static final String FIND_BY_IND_ID_QUERY = "select distinct o from "
-                    + InvestigationalNewDrug.class.getName()
-                    + " o where str(indNumber) like :indNo";
-
+    private static final String CTEP_IND_QUERY = "select o from " + InvestigationalNewDrug.class.getName() + " o where indNumber = -111";
+    private static final String DCP_IND_QUERY = "select o from " + InvestigationalNewDrug.class.getName() + " o where indNumber = -222";
+    private static final String FIND_BY_IND_ID_QUERY = "select distinct o from " + InvestigationalNewDrug.class.getName() + " o where str(indNumber) like :indNo";
     private static final String SEARCH_IND_QUERY = "select h.investigationalNewDrug from "
                     + INDHolder.class.getName()
                     + " h "
@@ -88,14 +80,12 @@ public class InvestigationalNewDrugDao extends GridIdentifiableDao<Investigation
     /**
      * Get the list of investigational new drugs which match the IND number.
      * 
-     * @param ids
-     *                The IND number.
+     * @param ids The IND number.
      * @return The list of investigational new drugs.
      */
     @SuppressWarnings("unchecked")
     public List<InvestigationalNewDrug> findByIds(String[] ids) {
-        return getHibernateTemplate().findByNamedParam(FIND_BY_IND_ID_QUERY,
-                        new String[] { "indNo" }, new String[] { "%" + ids[0] + "%" });
+        return getHibernateTemplate().findByNamedParam(FIND_BY_IND_ID_QUERY, new String[] { "indNo" }, new String[] { "%" + ids[0] + "%" });
 
     }
 

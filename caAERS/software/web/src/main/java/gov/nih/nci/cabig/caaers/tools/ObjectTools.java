@@ -44,8 +44,7 @@ public class ObjectTools {
         return dst;
     }
 
-    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer,
-                    String... properties) {
+    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer, String... properties) {
         List<T> dst = new ArrayList<T>(src.size());
         for (T t : src) {
             dst.add(reduce(t, initializer, properties));

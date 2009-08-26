@@ -16,10 +16,9 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "study_agent_inds")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agent_inds_id") })
-public class StudyAgentINDAssociation extends AbstractIdentifiableDomainObject implements
-                Serializable, StudyAgentChild {
-    private StudyAgent studyAgent;
+public class StudyAgentINDAssociation extends AbstractIdentifiableDomainObject implements Serializable, StudyAgentChild {
 
+    private StudyAgent studyAgent;
     private InvestigationalNewDrug investigationalNewDrug;
 
     @ManyToOne(fetch=FetchType.LAZY)

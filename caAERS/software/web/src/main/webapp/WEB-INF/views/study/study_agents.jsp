@@ -32,7 +32,7 @@ td#linkPosition a img {
 			document.getElementById('command')._target.name='_noname';
 			document.studyAgentsForm._action.value=action;
 			document.studyAgentsForm._selected.value=selected;		
-			document.studyAgentsForm.submit();
+			// document.studyAgentsForm.submit();
 		}
 	}
 	function fireRowDelete(index, indIndex, id, cssClass){

@@ -15,6 +15,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class represents the InvestigationalNewDrug domain object associated with the Adverse event
@@ -27,12 +29,15 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "investigational_new_drugs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_investigational_new_dru_id") })
 public class InvestigationalNewDrug extends AbstractMutableDomainObject {
-	
+
+    static private Log log = LogFactory.getLog(InvestigationalNewDrug.class);
+
 	private int CTEP_IND = -111;
 	private int DCP_IND = -222;
-	
-    private Integer indNumber;
+    public static final String STRING_CTEP_IND = "CTEP IND";
+    public static final String STRING_DCP_IND = "DCP IND";
 
+    private Integer indNumber;
     private INDHolder iNDHolder;
 
     private List<StudyAgentINDAssociation> studyAgentINDAssociations;
@@ -64,8 +69,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
         return studyAgentINDAssociations;
     }
 
-    public void setStudyAgentINDAssociations(
-                    List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+    public void setStudyAgentINDAssociations(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
         this.studyAgentINDAssociations = studyAgentINDAssociations;
     }
 
@@ -83,14 +87,24 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     @Transient
     public String getStrINDNo() {
     	if(indNumber == null) return "";
-    	if(indNumber == CTEP_IND) return "CTEP IND";
-    	if(indNumber == DCP_IND) return "DCP IND";
+    	if(indNumber == CTEP_IND) return STRING_CTEP_IND;
+    	if(indNumber == DCP_IND) return STRING_DCP_IND;
     	
         return String.valueOf(indNumber);
     }
 
     public void setStrINDNo(String strINDNo) {
-        indNumber = new Integer(strINDNo);
+        if (strINDNo.equals(STRING_CTEP_IND)) indNumber = CTEP_IND;
+        else if (strINDNo.equals(STRING_DCP_IND)) indNumber = DCP_IND;
+        else {
+            int n = 0;
+            try {
+                n = Integer.parseInt(strINDNo);
+            } catch (NumberFormatException e) {
+                log.error("Unrecognized String came as an Agent #: " + strINDNo);
+            }
+            indNumber = new Integer(n);
+        };
     }
     
     @Transient

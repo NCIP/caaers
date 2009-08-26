@@ -179,8 +179,7 @@ public class CreateStudyAjaxFacade {
     }
 
     public List<InvestigationalNewDrug> matchINDs(final String text) {
-        List<InvestigationalNewDrug> inds = investigationalNewDrugDao
-                        .findByIds(new String[] { text });
+        List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByIds(new String[] { text });
         return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
     }
     

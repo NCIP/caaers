@@ -605,8 +605,7 @@ public class SearchStudyAjaxFacade {
     }
 
     @SuppressWarnings("unchecked")
-    public Object getINDTable(final Map parameterMap, final String type, final String text,
-                              final HttpServletRequest request) throws Exception {
+    public Object getINDTable(final Map parameterMap, final String type, final String text,final HttpServletRequest request) throws Exception {
 
         List<InvestigationalNewDrug> items = new ArrayList<InvestigationalNewDrug>();
         HashMap<String, String> map = new HashMap<String, String>();
