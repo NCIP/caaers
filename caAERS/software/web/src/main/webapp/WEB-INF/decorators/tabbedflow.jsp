@@ -63,6 +63,12 @@
 			    <div class="summarylabel">Course</div>
 			    <div class="summaryvalue">${aesummary['Course']}</div>
 			  </div>
+			  <c:if test="${aesummary['Report Name'] != null}">
+			  	<div class="row">
+				  	<div class="summarylabel">Report</div>
+				  	<div class="summaryvalue">${aesummary['Report Name'] }</div>
+				</div>
+			  </c:if>
 			  <c:if test="${showReportContextMenu}">
                   <div class="row">
                       <div class="summarylabel">

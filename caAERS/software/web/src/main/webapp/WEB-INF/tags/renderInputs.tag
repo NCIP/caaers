@@ -1,5 +1,6 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="ctmsfn" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
@@ -97,7 +98,8 @@
                     <form:radiobutton path="${field.propertyName}" value="${option.key}"
                                       id="${field.propertyName}-radio-${stat.index}" 
                                       cssClass="longselect-radio ${cssValue}"/>
-                    <span id="${field.propertyName}-text-${stat.index}">${ctmsfn:nl2br(option.value)}</span>
+                    <c:set var="escapedValue" value="${fn:escapeXml(option.value)}"/>
+                    <span id="${field.propertyName}-text-${stat.index}">${ctmsfn:nl2br(escapedValue)}</span>
                 </label>
             </c:forEach>
         </div>

@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +41,26 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         return new SubmitReportFlowFactory("Submit the Report");
     }
 
+    @SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request, Object o,	Errors errors, int page) throws Exception {
+        SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) o;
+		Map referenceData =  super.referenceData(request, command, errors, page);
+		
+        Integer reportIndex = Integer.valueOf(command.getReportIndex());
+
+        log.debug("Report Index :" + reportIndex.intValue());
+        ExpeditedAdverseEventReport aeReport = command.getAeReport();
+        Report report = aeReport.getReports().get(((int) reportIndex));
+	
+        Map<String, String> aeSummaryMap = (HashMap<String, String>) referenceData.get("aesummary");
+        if(aeSummaryMap != null && report != null){
+        	aeSummaryMap.put("Report Name", report.getName());
+        }
+        
+		return referenceData;
+    }
+    
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	log.debug("In form backing object");

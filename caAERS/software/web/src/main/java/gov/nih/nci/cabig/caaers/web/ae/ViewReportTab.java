@@ -46,7 +46,7 @@ public class ViewReportTab extends AeTab {
         Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
 
         // evaluate business rules.
-        ReportSubmittability reportSubmittability = new ReportSubmittability();
+        ReportSubmittability commonReportSubmittability = new ReportSubmittability();
         for (ExpeditedReportSection section : ExpeditedReportSection.values()) {
 
             if (!section.isAssociatedToBusinessRules()) continue;
@@ -54,19 +54,31 @@ public class ViewReportTab extends AeTab {
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules( command.getAeReport(), section);
             for (ValidationError vError : validationErrors.getErrors()) {
             	if(command.isErrorApplicable(vError.getFieldNames())){
-            		reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
+            		commonReportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
 
             	}
             }
         }
 
-        reportMessages.put(ExpeditedAdverseEventInputCommand.ZERO, reportSubmittability);
+        //reportMessages.put(ExpeditedAdverseEventInputCommand.ZERO, commonReportSubmittability);
 
         // -- check the report submittability
         for (Report report : command.getAeReport().getActiveReports()) {
-            reportMessages.put(report.getId(), evaluationService.isSubmittable(report));
+        	ReportSubmittability reportSubmittability = evaluationService.isSubmittable(report);
+            reportMessages.put(report.getId(), reportSubmittability);
+            // Merge the commonValidationErros with the errors for individual reports.
+            if(!commonReportSubmittability.getMessages().isEmpty()){
+            	for(ExpeditedReportSection section: commonReportSubmittability.getMessages().keySet()){
+            		if(reportSubmittability.getMessages().containsKey(section))
+            			reportSubmittability.getMessages().get(section).addAll(commonReportSubmittability.getMessages().get(section));
+            		else
+            			reportSubmittability.getMessages().put(section, commonReportSubmittability.getMessages().get(section));
+            	}
+            }
         }
         refdata.put("reportMessages", reportMessages);
+        
+        
         
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
     	refdata.put("isSuperUser", isSuperUser);

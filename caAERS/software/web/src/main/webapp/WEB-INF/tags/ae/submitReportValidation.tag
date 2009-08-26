@@ -14,24 +14,6 @@
 
 <div id="report-validation-section">
     	<table class="tablecontent">
- 			   	<c:if test="${not reportMessages[command.ZERO].submittable}">
-    			<tr>
-    				<th colspan="5" align="left">Common validation errors</th>
-    			</tr>
-    			<tr>
-    				<td colspan="5" class="completion-messages">
-    				<c:forEach items="${reportMessages[command.ZERO].messages}" var="sectionEntry">
-                       <h4>${sectionEntry.key.displayName} section</h4>
-                       <c:forEach items="${sectionEntry.value}" var="msg">
-                          <ul>
-                           <li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-                         </ul>
-                       </c:forEach>
-                     </c:forEach>
-    				</td>
-    			</tr>
-    			<tr><td colspan="5"></td></tr>
-    			</c:if>
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
     				<th scope="col" align="left"><b>Amendment #</b> </th>
@@ -40,7 +22,7 @@
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
     			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-    			<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED'}">
+    			<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.label}</div></td>
             		<c:if test="${report.reportDefinition.amendable == true}">
@@ -51,7 +33,7 @@
 	            	</c:if>
             		<td class="completion-messages">
                         <c:choose>
-                            <c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
+                            <c:when test="${reportMessages[report.id].submittable}" >
                                 Yes
                             </c:when>
                             <c:otherwise>
@@ -126,7 +108,7 @@
 		     				<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 		     					<OPTION value="withdraw">Withdraw</OPTION>
 		     				</c:if>
-		     				<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
+		     				<c:if test="${reportMessages[report.id].submittable}" >
 								<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 									<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 										<c:if test="${!command.workflowEnabled || isSuperUser}">
