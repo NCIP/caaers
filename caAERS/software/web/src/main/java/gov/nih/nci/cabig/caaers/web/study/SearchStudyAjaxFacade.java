@@ -68,7 +68,7 @@ public class SearchStudyAjaxFacade {
     private void addPrimaryIdColumn(TableModel model) {
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
-        columnPrimaryIdentifier.setTitle("Primary ID");
+        columnPrimaryIdentifier.setTitle("Study ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnPrimaryIdentifier);
     }
@@ -143,7 +143,7 @@ public class SearchStudyAjaxFacade {
             Column columnPrimaryIdentifier = model.getColumnInstance();
             columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
             columnPrimaryIdentifier.setSortable(true);
-            columnPrimaryIdentifier.setTitle("Primary ID");
+            columnPrimaryIdentifier.setTitle("Study ID");
             model.addColumn(columnPrimaryIdentifier);
 
             Column columnShortTitle = model.getColumnInstance();
