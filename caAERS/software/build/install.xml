@@ -117,11 +117,36 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<!-- Targets begin -->
 
+	<target name="common:init:pre">
+		<!-- Set application.base.path based on platform -->
+		<condition property="application.base.path" value="${application.base.path.linux}">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+		</condition>
 
-
-	<target name="init:common">
-		<!-- Conditionals -->
-		<!-- caAERS-webapp can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
+		<condition property="application.base.path" value="${application.base.path.windows}">
+			<os family="windows" />
+		</condition>
+		<echo message="application.base.path=${application.base.path}"/>
+		<property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+	</target>
+	<target name="common:tomcat:init" depends="common:init:pre" unless="exclude.tomcat">
+		<property name="tomcat.ssl.enable" value="false"/>
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+		<property name="tomcat.application.url" value="http://${tomcat.hostname}:${tomcat.port.http}/${caAERS-webapp.name}"/>
+		<basename file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.file"/>
+		<dirname file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.dir"/>
+		<basename file="${tomcat.grid.secure.cert.location}" property="tomcat.grid.secure.cert.file"/>
+		<dirname file="${tomcat.grid.secure.cert.location}" property="tomcat.grid.secure.dir"/>
+		<basename file="${tomcat.grid.secure.key.location}" property="tomcat.grid.secure.key.file"/>
+		<property name="tomcat.sock.ports" value="${tomcat.port.http},${tomcat.port.ajp},${tomcat.port.shutdown}"/>
+	</target>
+	<target name="common:init" depends="common:init:pre">
+		<property name="install.running" value="true"/>
+		<!-- bda-blueprints-webapp can use either Oracle or MySQL or PostgreSQL as its database platform, this is controled by the database.type property.  Based on the value of this property sent several variables for use during install -->
 		<echoproperties prefix="database"/>
 		<switch value="${database.type}">
 			<case value="oracle">
@@ -129,7 +154,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 				<property name="database.driver.file" value="${bda-utils.dir}/ojdbc14-10.2.0.4.0.jar"/>
 				<property name="database.driver" value="oracle.jdbc.driver.OracleDriver"/>
 				<property name="database.schema" value="${database.name}"/>
-				<property name="bering.dialect" value="edu.northwestern.bioinformatics.bering.dialect.Oracle"/>
 			</case>
 			<case value="mysql">
 				<property name="database.dialect" value="org.hibernate.dialect.MySQLDialect"/>
@@ -142,37 +166,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 				<property name="database.driver.file" value="${bda-utils.dir}/postgresql-jdbc3-8.3-604.jar"/>
 				<property name="database.driver" value="org.postgresql.Driver"/>
 				<property name="database.schema" value="public"/>
-				<property name="bering.dialect" value="edu.northwestern.bioinformatics.bering.dialect.PostgreSQL"/>
 			</case>
 			<default>
 				<fail message="Invalid database type ${database.type}"/>
 			</default>
 		</switch>
-	
+
 		<path id="jdbc.driver.classpath">
 			<pathelement location="${database.driver.file}"/>
 		</path>
-	
+
 		<property name="properties.template.file" value="${basedir}/properties.template" />
-		<!-- figure out whether to use install-properties.template or upgrade-proprties.template based on the name of the properties file
-		<propertyregex property="properties.file.type"
-			input="${properties.file}"
-			regexp=".*(install|upgrade).*"
-			select="\1"     
-			/>              
-		<echo message="Properties file type = ${properties.file.type}"/>
-		<switch value="${properties.file.type}">
-			<case value="install">
-				<property name="properties.template.file" value="install-properties.template" />
-			</case>         
-			<case value="upgrade">
-				<property name="properties.template.file" value="upgrade-properties.template" />
-			</case>         
-			<default>       
-				<fail message="Property file name must include 'install' or 'upgrade' so it can be determined which properties template should be used. If you are not certain include 'upgrade' in the name of your proeprties file."/>
-			</default>      
-		</switch>
-		-->
 		<filterset id="embedded.filterset">
 			<filter token="application.base.path" value="${application.base.path}"/>
 			<filter token="application.url" value="${application.url}"/>
@@ -184,6 +188,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			<filter token="database.driver" value="${database.driver}"/>
 			<!-- added for liquibase -->
 			<filter token="db-upgrade.run.dir" value="${db-upgrade.dir.dest}/${database.type}"/>
+			<filter token="jboss.home" value="${jboss.home}"/>
 			<filter token="tomcat.home" value="${tomcat.home}"/>
 			<filter token="database.dialect" value="${database.dialect}"/>
 			<filter token="hibernate.cfg.file.path" value="${hibernate.cfg.file.path}"/>
@@ -193,9 +198,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			<filter token="" value=""/>
 		</filterset>
 
-		<!-- Added to convert location to file and path -->
-		<basename file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.file"/>
-		<dirname file="${tomcat.ssl.keystore.location}" property="tomcat.ssl.keystore.dir"/>
 		<!--OS Temp dir -->
 		<condition property="os.temp.dir" value="/tmp">
 			<or>
@@ -203,25 +205,32 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 				<os family="mac" />
 			</or>
 		</condition>
-	
+
 		<condition property="os.temp.dir" value="c:/temp">
 			<os family="windows" />
 		</condition>
-
+		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in embedded.filterset and then copy with filter files -->
+		<copy todir="${common.dir.dest}" filtering="true">
+			<fileset dir="${common.dir.src}">
+				<include name="**/*"/>
+			</fileset>
+			<filterset refid="embedded.filterset"/>
+			<filterset>
+				<filtersfile file="${properties.file}"/>
+				<filtersfile file="project.properties"/>
+			</filterset>
+		</copy> 
 	</target>
+
 
 	<target name="diag">
 		<echoproperties/>
 	</target>
 
-	<target name="install:clean" description="Removes all files from the local filesystem" depends="
-		init:install,
- 		init:common,
- 		install:clean:tomcat
-		">
+	<target name="install:common:clean" description="Removes all files from the local filesystem" depends="common:init,install:tomcat:clean">
 	</target>
 
-	<target name="install:clean:tomcat" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:clean" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 		<sleep seconds="5" />
 		<property name="backup.count" value="5"/>
 		<if>
@@ -241,23 +250,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<delete dir="${tomcat.home}"/>
 	</target>
 
-	<target name="install:init" description="Does directory management to initialize install" depends="init:install,init:common">
-		<!-- Default to false, properties can override -->
-		<property name="tomcat.ssl.enable" value="false"/>
-		<!-- Copy files to ensure values containing variables are expanded, such properties are stored in embedded.filterset and then copy with filter files -->
-		<copy todir="${common.dir.dest}" filtering="true">
-			<fileset dir="${common.dir.src}">
-				<include name="**/*"/>
-			</fileset>
-			<filterset refid="embedded.filterset"/>
-			<filterset>
-				<filtersfile file="${properties.file}"/>
-				<filtersfile file="project.properties"/>
-			</filterset>
-		</copy> 
-	</target>
-
-	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="init:install,init:common">
+	<target name="install:database:prep" description="Copies db files with filtering" unless="exclude.database" depends="common:init">
 		<property name="db.prop.list" value="database.url,database.user,database.password,database.name"/>
 		<echo  message="Checking if database properties exist: ${db.prop.list}"/>
 		<properties-exist properties.list="${db.prop.list}"/>
@@ -282,9 +275,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<target name="install:database" description="Runs datbase creation scripts then calls uprade database." unless="exclude.database"
 		depends="
-		init:install,
-		init:common,
-		install:database:prep
+		common:init,
+		install:database:prep,
+		install:database:validation:pre-install
 		">
 		<!-- Drop all schema objects or re-create the db -->
 		<database-clean/>
@@ -316,215 +309,257 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<database-tag/>
 	</target>
 
-	<target name="install:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="init:install,init:common">
-		<validate-pre-install
+	<target name="install:common:validation:pre-install" description="Runs pre-install validation checks bda-utils" depends="common:init">
+		<validate-pre-install-common
 			ant.check.version="${ant.minimum.version}"
 			java.check.version.major="${java.major.version}"
 			java.check.version.minor="${java.minor.version}"
+			/>
+	</target>
+	<target name="install:tomcat:validation:pre-install" description="Runs pre-install validation checks bda-utils" 
+		depends="
+		common:tomcat:init,
+		common:init,
+		install:common:validation:pre-install
+		">
+		<validate-pre-install-tomcat
+			/>
+	</target>
+	<target name="install:database:validation:pre-install" description="Runs pre-install validation checks bda-utils" 
+		depends="
+		common:init,
+		install:common:validation:pre-install
+		">
+		<validate-pre-install-database
 			database.version="${mysql.minimum.version}"
 			/>
 	</target>
-
-	<target name="install:validation:pre-install:ports" description="Checks to see if configured ports are listenting and fails buld, meant to be run after jboss:stop" depends="init:install,init:common">
-		<validate-ports-preinstall />
+	<target name="install:tomcat:validation:pre-install:ports" description="Checks to see if configured ports are listenting and fails buld, meant to be run after jboss:stop"
+		depends="
+		common:init,
+		install:tomcat:stop
+		">
+		<validate-pre-tomcat-ports
+			/>
 	</target>
 
-	<target name="install:validation:post-install" description="Run post-install checks from bda-utils" depends="init:install,init:common">
+	<target name="install:common:validation:post-install" description="Run post-install checks from bda-utils"
+		depends="
+		common:init
+		">
+		<validate-post-common />
+	</target>
+	<target name="install:tomcat:validation:post-install" description="Run post-install checks from bda-utils"
+		depends="
+		common:tomcat:init,
+		common:init,
+		install:tomcat:start
+		">
 		<if>
 			<not>
 				<isset property="exclude.start.servers"/>
 			</not>
 			<then>
-				<validate-post-install />
+				<validate-post-tomcat />
 			</then>
 		</if>
 	</target>
 
 	<target name="install:tomcat" description="Wrapper scripts that calls all required targets to install the tomcat container" unless="exclude.tomcat"
 		depends="
-		init:install,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:validation:pre-install:ports,
- 		install:clean:tomcat,
- 		install:init,
- 		install:tomcat:binaries,
- 		install:tomcat:configure,
+		common:tomcat:init,
+		common:init,
+		install:tomcat:validation:pre-install,
+		install:common:validation:pre-install,
+		install:tomcat:stop,
+		install:tomcat:validation:pre-install:ports,
+		install:tomcat:clean,
+		install:tomcat:binaries,
+		install:tomcat:configure,
  		install:tomcat:caAERS-webapp:re-configure,
  		install:tomcat:caAERS-webapp,
  		install:tomcat:caAERS-webapp:configure,
- 		install:post:tomcat,
- 		install:tomcat:start
+		install:post:tomcat,
+		install:tomcat:start,
+		install:tomcat:validation:post-install
 		">
 	</target>
 
 	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application" 
 		depends="
-		init:install,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:validation:pre-install:ports,
- 		install:clean,
- 		install:init,
- 		install:database,
- 		install:tomcat,
- 		install:post,
- 		install:validation:post-install
+		common:tomcat:init,
+		common:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		install:tomcat:validation:pre-install:ports,
+		install:common:clean,
+		install:database,
+		install:tomcat,
+		install:common:post,
+		install:common:validation:post-install
 		">
 	</target>
 
-	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="init:upgrade:tomcat,init:common,upgrade-ncm:tomcat">
+	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat">
 	</target>
 
-	<target name="upgrade" description="Upgrades JBoss and Database" 
-		depends="
-		init:upgrade,
-		init:common,
-		upgrade-ncm">
+	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm">
 	</target>
 
-	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="init:upgrade,init:common,upgrade-ncm:with-dbinstall">
+	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:with-dbinstall">
 	</target>
 
 	<target name="upgrade-dac:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
 		depends="
-		init:upgrade:tomcat,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:validation:pre-install:ports,
- 		install:clean:tomcat,
- 		install:init,
- 		install:tomcat:binaries,
- 		install:tomcat:configure,
+		common:tomcat:init,
+		common:init,
+		install:tomcat:validation:pre-install,
+		install:common:validation:pre-install,
+		install:tomcat:stop,
+		install:tomcat:validation:pre-install:ports,
+		install:tomcat:clean,
+		install:tomcat:binaries,
+		install:tomcat:configure,
  		install:tomcat:caAERS-webapp:re-configure,
  		install:tomcat:caAERS-webapp,
  		install:tomcat:caAERS-webapp:configure,
- 		upgrade:post:tomcat,
- 		install:post:tomcat,
- 		install:tomcat:start
+		install:post:tomcat,
+		install:tomcat:start,
+		install:tomcat:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-dac" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		upgrade:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		upgrade:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-dac:with-dbinstall" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		install:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		install:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
-
 	<target name="upgrade-cm:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
 		depends="
-		init:upgrade:tomcat,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:validation:pre-install:ports,
- 		install:init,
- 		install:tomcat:configure,
+		common:tomcat:init,
+		common:init,
+		install:tomcat:validation:pre-install,
+		install:common:validation:pre-install,
+		install:tomcat:stop,
+		install:tomcat:validation:pre-install:ports,
+		install:tomcat:configure,
  		install:tomcat:caAERS-webapp:re-configure,
  		install:tomcat:caAERS-webapp,
  		install:tomcat:caAERS-webapp:configure,
- 		upgrade:post:tomcat,
- 		install:post:tomcat,
- 		install:tomcat:start
+		install:post:tomcat,
+		install:tomcat:start,
+		install:tomcat:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-cm" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		upgrade:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		upgrade:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-cm:with-dbinstall" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		install:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		install:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
-
 	<target name="upgrade-ncm:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat"
 		depends="
-		init:upgrade:tomcat,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:validation:pre-install:ports,
- 		install:init,
+		common:tomcat:init,
+		common:init,
+		install:tomcat:validation:pre-install,
+		install:common:validation:pre-install,
+		install:tomcat:stop,
+		install:tomcat:validation:pre-install:ports,
  		install:tomcat:caAERS-webapp:re-configure,
  		install:tomcat:caAERS-webapp,
  		install:tomcat:caAERS-webapp:configure,
- 		install:post:tomcat,
- 		install:tomcat:start
+		install:post:tomcat,
+		install:tomcat:start,
+		install:tomcat:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-ncm" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		upgrade:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		upgrade:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade-ncm:with-dbinstall" description="Upgrades JBoss and Database"
 		depends="
-		init:upgrade,
- 		init:common,
- 		install:validation:pre-install,
- 		install:tomcat:stop,
- 		install:init,
- 		install:database,
- 		upgrade:tomcat,
- 		install:validation:post-install
+		upgrade:common:init,
+		common:init,
+		common:tomcat:init,
+		install:common:validation:pre-install,
+		install:tomcat:validation:pre-install,
+		install:database:validation:pre-install,
+		install:tomcat:stop,
+		install:database,
+		upgrade:tomcat,
+		install:common:validation:post-install
 		">
 	</target>
 
 	<target name="upgrade:database" description="Upgrades database using BDA Datbase Upgrade process." unless="exclude.database"
 		depends="
-		init:upgrade,
-		init:common,
-		install:database:prep
+		upgrade:database:init,
+		common:init,
+		install:database:prep,
+		install:database:validation:pre-install
 		">
 		<database-upgrade
 			database.changelog.file="${os.temp.dir}/${project.name}/db-upgrade.xml"
@@ -532,27 +567,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<database-tag/>
 	</target>
 
-	<target name="upgrade:database:tag" description="Tags current state of database with a tag to allow for rollback of database to previous versions." unless="exclude.database"
-		depends="
-		init:upgrade,
-		init:common,
-		install:init,
-		install:database:prep
-		">
-		<database-tag/>
-	</target>
-
-	<target name="upgrade:database:rollback" description="Rolls back database to previous tagged version using rollback scripts." unless="exclude.database"
-		depends="
-		init:upgrade,
-		init:common,
-		install:init,
-		install:database:prep
-		">
-		<database-rollback/>
-	</target>
-
-	<target name="install:tomcat:binaries" description="Install tomcat binaries" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:binaries" description="Install tomcat binaries" unless="exclude.tomcat" depends="common:init, common:tomcat:init">
 		<delete dir="${tomcat.home}"/>
 		<dirname file="${tomcat.home}" property="tomcat.base.dir"/>
 		<unzip dest="${tomcat.base.dir}" src="${tools.dir}/${tomcat.binaries.file}" />
@@ -565,13 +580,13 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>
 	</target>
 
-	<target name="install:tomcat:configure" description="Configure tomcat (change ports)" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:configure" description="Configure tomcat (change ports)" unless="exclude.tomcat" depends="common:init, common:tomcat:init">
 		<tomcat-configure
 			tomcat.grid.configure="true"
 			/>
 	</target>
 
-	<target name="install:tomcat:stop" description="Stop Tomcat" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:stop" description="Stop Tomcat" unless="exclude.tomcat" depends="common:init, common:tomcat:init">
 		<if>
 			<available file="${tomcat.home}/bin/shutdown.sh"/>
 			<then>
@@ -584,7 +599,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>
 	</target>
 
-	<target name="install:tomcat:start" description="Start Tomcat" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:start" description="Start Tomcat" unless="exclude.tomcat" depends="common:init, common:tomcat:init">
 		<if>    
 			<not>   
 				<isset property="exclude.start.servers"/>
@@ -595,14 +610,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>   
 	</target>
 
-	<target name="install:post" depends="
-		init:install,
- 		init:common,
+	<target name="install:common:post" depends="
+		common:init,
+		common:tomcat:init,
  		install:post:tomcat
 		">
 	</target>
 
-	<target name="install:post:tomcat" unless="exclude.tomcat" depends="init:install,init:common,install:post:tomcat:caaers:config">
+	<target name="install:post:tomcat" unless="exclude.tomcat" depends="common:init,common:tomcat:init,install:post:tomcat:caaers:config">
 		<if>
 			<not>
 				<equals arg1="${exclude.tomcat.backup}" arg2="true"/>
@@ -711,7 +726,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</echo>		
 	</target>	
 	
-	<target name="install:tomcat:caAERS-webapp" description="Deploy caAERS-webapp and common libraries to tomcat installation" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:caAERS-webapp" description="Deploy caAERS-webapp and common libraries to tomcat installation" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 		<delete dir="${tomcat.home}/temp"/>
 		<delete dir="${tomcat.home}/work"/>
 		<copy file="${caAERS-webapp.dir.dist}/${caAERS-webapp.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
@@ -721,49 +736,40 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
 	</target>
 
-	<target name="install:tomcat:caAERS-webapp:configure" description="Configure caAERS-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:caAERS-webapp:configure" description="Configure caAERS-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 		<!-- configure datasource -->
 	</target>
 
-	<target name="install:tomcat:caAERS-webapp:re-configure" description="Configure caAERS-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="init:install,init:common">
+	<target name="install:tomcat:caAERS-webapp:re-configure" description="Configure caAERS-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 	</target>
 
-	<target name="init:install" unless="upgrade.running">
-		<property name="install.running" value="true"/>
-		<!-- Set application.base.path based on platform -->
-		<condition property="application.base.path" value="${application.base.path.linux}">
-			<or>
-				<os family="unix" />
-				<os family="mac" />
-			</or>
-		</condition>
-	
-		<condition property="application.base.path" value="${application.base.path.windows}">
-			<os family="windows" />
-		</condition>
-		<echo message="application.base.path=${application.base.path}"/>
-		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
-		
+	<target name="upgrade:common:init" depends="upgrade:tomcat:init, upgrade:tomcat:init" unless="install.running">
 	</target>
-
-	<target name="init:upgrade" depends="
-		init:upgrade:tomcat
-		" unless="install.running">
-	</target>
-
-	<target name="init:upgrade:tomcat" unless="install.running"
+	<target name="upgrade:tomcat:init" unless="install.running"
 		depends="
-		init:upgrade:prep,
-		init:readers:bda:tomcat,
-		init:readers:custom:tomcat
+		upgrade:tomcat:init:prep,
+		upgrade:tomcat:readers:bda,
+		upgrade:tomcat:readers:custom
 		">
-	</target>
-
-	<target name="init:upgrade:prep">
-	
 		<properties-print
-			properties.list="application.base.path,jboss.home,tomcat.home,jboss.server.name"
+			properties.list="${read.properties.list}"
 			/>
+		<properties-exist
+			properties.list="${read.properties.list}"
+			/>
+		<properties-write
+			properties.list="${read.properties.list}"
+			/>
+	</target>
+	<target name="upgrade:database:init" unless="install.running"
+		depends="
+		upgrade:tomcat:init:prep,
+		upgrade:database:readers:bda,
+		upgrade:database:readers:custom
+		">
+		<!-- You need to either depend on jboss or tomcat so that you can read the db properties from it's configs.  BDA only has macros to read database properties from jboss. -->
+	</target>
+	<target name="upgrade:common:init:prep" unless="install.running">
 		<if>
 			<not>
 				<isset property="application.base.path"/>
@@ -776,42 +782,45 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 						<os family="mac" />
 					</or>
 				</condition>
-			
+
 				<condition property="application.base.path" value="${application.base.path.windows}">
 					<os family="windows" />
 				</condition>
 				<echo message="application.base.path=${application.base.path}"/>
-				<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
-				<echo message="tomcat.home=${tomcat.home}"/>
 			</then>
 		</if>
-		<!--			
-		<if>
-			<then>
-			</then>
-			<else>
-			</else>
-		</if>
-			-->			
+		<properties-print
+			properties.list="application.base.path,jboss.home,tomcat.home,jboss.server.name"
+			/>
+		<var name="read.properties.list" value=""/>
 		<property name="upgrade.running" value="true"/>
+	</target>
+	<target name="upgrade:tomcat:init:prep" depends="upgrade:common:init:prep" unless="install.running">
+		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
 		<!-- Upgrades always use port configs -->
 		<available file="${tomcat.home}" property="tomcat.exists"/>
+		<property name="read.tomcat.home" value="${tomcat.home}"/>
 	</target>
 
-	<target name="init:readers:custom:tomcat" unless="install.running">
+	<target name="upgrade:tomcat:readers:custom" unless="install.running">
 		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
-
 	</target>
-
-	<target name="init:readers:bda:tomcat" if="tomcat.exists">
+	<target name="upgrade:database:readers:custom" unless="install.running">
+		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
+	</target>
+	<target name="upgrade:database:readers:bda" depends="upgrade:tomcat:init:prep" if="tomcat.exists">
+		<!-- write one later -->
+	</target>
+	<target name="upgrade:tomcat:readers:bda" depends="upgrade:tomcat:init:prep" if="tomcat.exists">
+		<!-- call your custom readers here, two properties included in these scripts that don't have readers are "fs-data.base.dir, mail.smtp.server" -->
 
 		<!-- Make sure the ${properties.file} has at least the following props -->
 		<properties-exist
 			properties.list="application.base.path,tomcat.home"
 			/>
+
 		<!-- Begin Tomcat readers, delete if you don't need -->
 		
-		<!--
 		<osfamily property="os.family"/>
 		<if>
 			<or>
@@ -836,20 +845,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			/>              
 		<tomcat-read-external-hostname
 			/>
+		<!--
 		<grid-read-index-url
 			grid.wsrf.dir="${tomcat.home}/webapps/wsrf"
 			/>
 		<tomcat-read-grid-secure
 			copied.keystore.dir="${tomcat.grid.secure.dir}"
 			/>
-		-->	
-		<!--
 		<grid-copy-service-metadata
 			grid.wsrf.dir="${tomcat.home}/webapps/wsrf"
 			copied.service-metadata.dir="${copied.service-metadata.dir1}"
 			/>
-		-->
-		<!--
 		<grid-read-poc
 			grid.wsrf.dir="${tomcat.home}/webapps/wsrf"
 			grid.service.name="Sample"
