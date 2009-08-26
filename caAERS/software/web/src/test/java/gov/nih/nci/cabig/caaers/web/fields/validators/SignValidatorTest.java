@@ -2,23 +2,18 @@ package gov.nih.nci.cabig.caaers.web.fields.validators;
 
 import junit.framework.TestCase;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 /**
  *
- * @author Biju Joseph
+ * @author Ion C. Olaru
  *
  */
-public class PositiveValidatorTest extends TestCase {
-	PositiveValidator dv;
-	PositiveValidator dv2;
+public class SignValidatorTest extends TestCase {
+	SignValidator dv;
+	SignValidator dv2;
 	protected void setUp() throws Exception {
 		super.setUp();
-		dv = new PositiveValidator(true);
-		dv2 = new PositiveValidator(false);
+		dv = new SignValidator(true);
+		dv2 = new SignValidator(false);
 	}
 
 	public void testIsValid() {
