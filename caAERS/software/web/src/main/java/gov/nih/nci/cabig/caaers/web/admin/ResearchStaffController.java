@@ -34,6 +34,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.orm.hibernate3.HibernateOptimisticLockingFailureException;
 
 /**
  * Base Controller class to handle the basic work flow in the Creation / Updation of a ResearchStaff
@@ -96,6 +97,9 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         ResearchStaffCommand command = (ResearchStaffCommand)researchStaffCommand;
         ResearchStaff researchStaff = command.getResearchStaff();
 
+        ModelAndView modelAndView = new ModelAndView("admin/researchStaff");
+//        getFlow().getTab(0).getViewName()
+        
         // START sync the Sites Roles
         short i = 0;
         for (SiteResearchStaffCommandHelper srsch : command.getSiteResearchStaffCommandHelper()) {
@@ -125,7 +129,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         	researchStaff.addUserGroupType(UserGroupType.valueOf(roleCode));
         }
 
-        ModelAndView modelAndView = new ModelAndView("admin/researchStaffReview");
         String emailSendingErrorMessage = "";
         try {
             if ("saveRemoteRs".equals(request.getParameter("_action"))) {
@@ -137,13 +140,23 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
                 researchStaff.setPhoneNumber(remoteRStoSave.getPhoneNumber());
                 researchStaff.setFaxNumber(remoteRStoSave.getFaxNumber());
                 researchStaffRepository.save(remoteRStoSave, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+                modelAndView = new ModelAndView("admin/researchStaffReview");
             } else {
-                researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+                try {
+                    researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
+                    modelAndView = new ModelAndView("admin/researchStaffReview");
+                } catch (HibernateOptimisticLockingFailureException e) {
+                    log.warn("Optimistic locking error, while reassociating the report", e);
+                    request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
+                    errors.reject("GEN_002", "Cannot continue this operation, as another user is working on the same data.");
+                    // e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
             }
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);
         }
+
         if (!errors.hasErrors()) {
             String statusMessage = "ResearchStaff successfully created ";
             
