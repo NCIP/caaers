@@ -352,8 +352,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     @SuppressWarnings("unchecked")
     protected List<T> findAll(String sortCriteria) {
 
-        StringBuilder query = new StringBuilder(" select o from ").append(domainClass().getName())
-                        .append(" o ");
+        StringBuilder query = new StringBuilder(" select o from ").append(domainClass().getName()).append(" o ");
         if (sortCriteria != null && !org.apache.commons.lang.StringUtils.isEmpty(sortCriteria)) {
             query.append("order by " + sortCriteria);
         }

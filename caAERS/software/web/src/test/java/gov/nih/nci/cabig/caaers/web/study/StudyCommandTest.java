@@ -23,6 +23,8 @@ import java.util.List;
 import org.easymock.classextension.EasyMock;
 
 import junit.framework.TestCase;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 /**
  * 
  * @author Biju Joseph
@@ -142,11 +144,12 @@ public class StudyCommandTest extends AbstractTestCase {
 	
 	public void testStudyInvestigatorAtIndex(){
 
-		Organization o = Fixtures.createOrganization("test");
+		Organization o = Fixtures.createOrganization("Organization Name");
 		
-		StudyInvestigator si1 = Fixtures.createStudyInvestigator("test", o);
-		StudyInvestigator si2 = Fixtures.createStudyInvestigator("test2", o);
-		
+		StudyInvestigator si1 = Fixtures.createStudyInvestigator("StudyInvestigator A", o);
+		StudyInvestigator si2 = Fixtures.createStudyInvestigator("Study Investigator B", o);
+		si1.setStartDate(DateUtils.yesterday());
+		si2.setStartDate(DateUtils.yesterday());
 		command.getStudy().getStudySites().get(0).addStudyInvestigators(si1);
 		command.getStudy().getStudySites().get(0).addStudyInvestigators(si2);
 		
@@ -155,7 +158,7 @@ public class StudyCommandTest extends AbstractTestCase {
 		
 		command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(0).setId(1);
 		command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().get(1).setId(2);
-		
+
 		command.deleteSiteInvestigatorAtIndex(0, 1);
 		
 		assertEquals(2, command.getStudy().getStudyOrganizations().get(0).getStudyInvestigators().size());

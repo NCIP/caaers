@@ -158,7 +158,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         }
 
         if (!errors.hasErrors()) {
-            String statusMessage = "ResearchStaff successfully created ";
+            String statusMessage = "ResearchStaff successfully created";
             
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
