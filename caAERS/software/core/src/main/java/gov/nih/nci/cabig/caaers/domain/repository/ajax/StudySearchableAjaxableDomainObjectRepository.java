@@ -34,9 +34,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
                 studySearchableAjaxableDomainObject = (T) BeanUtils.instantiateClass(getObjectClass());
                 studySearchableAjaxableDomainObject.setId((Integer) o[0]);
                 studySearchableAjaxableDomainObject.setShortTitle((String) o[1]);
-                if (o[3] != null && (Boolean) o[3]) {
-                    studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
-                }
+                studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
 
                 addAdditionalProperties(studySearchableAjaxableDomainObject, o);
 
