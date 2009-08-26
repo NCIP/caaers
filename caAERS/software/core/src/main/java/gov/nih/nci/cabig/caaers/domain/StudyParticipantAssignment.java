@@ -380,6 +380,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
             } else {
                 spaPT.setEndDate(saeReportPriorTherapy.getEndDate());
                 spaPT.getStartDate().setDay(saeReportPriorTherapy.getStartDate().getDay());
+                spaPT.setOther(saeReportPriorTherapy.getOther());
                 for (PriorTherapyAgent priorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgents()) {
                     spaPT.addUniquePriorTherapyAgent(StudyParticipantPriorTherapyAgent.createAssignmentPriorTherapyAgent(priorTherapyAgent));
                 }
