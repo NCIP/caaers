@@ -306,13 +306,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 </property>
                 <property name="decisionVoters">
                     <list>
-                        <bean
-                                class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+                    	<bean class="gov.nih.nci.cabig.caaers.security.SystemUserVoter">
+                    		<property name="username" value="SYSTEM"/>
+							<property name="password" value="ignoreme" />
+                    	</bean>
+                        <bean class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
                             <property name="authorizationSwitch" ref="authorizationSwitch"/>
                             <property name="requiresAuthentication" value="false"/>
                         </bean>
-                        <bean
-                                class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+                        <bean class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
                             <property name="processConfigAttribute"
                                       value="CSM_AUTHN_CHECK"/>
                             <property name="authorizationCheck"
@@ -435,7 +437,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="runAsAuthenticationPopulator"
 		class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulator">
 		<property name="username" value="SYSTEM" />
-		<property name="password" value="ignored" />
+		<property name="password" value="ignoreme" />
 		<property name="authorities">
 			<list>
 				<value>ROLE_caaers_super_user</value>
