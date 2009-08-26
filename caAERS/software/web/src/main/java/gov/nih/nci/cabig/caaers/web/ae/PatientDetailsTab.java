@@ -2,9 +2,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -16,7 +13,6 @@ import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -25,7 +21,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +31,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.Position;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -145,7 +139,7 @@ public class PatientDetailsTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(InputFieldFactory.createTextField("quantity", "", new PositiveValidator(true), new DecimalValidator(5, 2)))
+                .addField(InputFieldFactory.createTextField("quantity", "", new SignValidator(true), new DecimalValidator(5, 2)))
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }

@@ -19,7 +19,7 @@ public abstract class FieldValidator {
     public static final FieldValidator ZIP_CODE_VALIDATOR;
     public static final FieldValidator DECIMAL_VALIDATOR;
     public static final FieldValidator ALPHANUMERIC_VALIDATOR;
-    public static final FieldValidator POSITIVE_VALIDATOR;
+    public static final FieldValidator SIGN_VALIDATOR;
     public static final FieldValidator IDENTIFIER_VALIDATOR;
 
     private boolean positive;
@@ -38,7 +38,7 @@ public abstract class FieldValidator {
         DATE_VALIDATOR = new DateValidator();
         DECIMAL_VALIDATOR = new DecimalValidator();
         ALPHANUMERIC_VALIDATOR = new AlphanumericValidator();
-        POSITIVE_VALIDATOR = new PositiveValidator(true);
+        SIGN_VALIDATOR = new SignValidator(true);
         IDENTIFIER_VALIDATOR = new IdentifierValidator();
     }
 

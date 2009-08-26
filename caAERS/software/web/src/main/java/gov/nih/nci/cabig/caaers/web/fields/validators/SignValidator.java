@@ -11,14 +11,14 @@ import java.util.Locale;
  * @author Ion C. Olaru
  *
  */
-public class PositiveValidator extends FieldValidator {
+public class SignValidator extends FieldValidator {
 
     boolean positive;
 
     /*
     * #param positive   if this is true then the fieldValue will be checked if it is positive, otherwise negative
     * */
-    public PositiveValidator(boolean positive) {
+    public SignValidator(boolean positive) {
         this.positive = positive;
     }
 
