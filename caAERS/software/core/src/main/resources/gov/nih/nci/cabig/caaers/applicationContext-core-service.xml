@@ -90,6 +90,8 @@ This applicationContext contains the definition of the concrete services
 		<property name="target"><ref local="scheduledNotificationProcessServiceTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>auditInfoPopulatorInterceptor</value>
 				<value>hibernateInterceptor</value> 
 			</list> 
 		</property> 

@@ -442,7 +442,8 @@ This applicationContext contains the definition of the DAOs
             <value>FLUSH_NEVER</value>
         </property>
     </bean>
-
+	<bean id="auditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor" />
+		
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
 
