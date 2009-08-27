@@ -181,6 +181,8 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
+        if (!(obj instanceof StudyAgent)) return false;
+        if (getClass() != obj.getClass()) return false;
         final StudyAgent other = (StudyAgent) obj;
         if(this.isRetired() || other.isRetired()) return false;
         if (agent == null) {
