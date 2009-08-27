@@ -33,6 +33,7 @@
         	<!--  JSP-API-* should be excluded -->
         	<exclude conf="runtime,dist,distGrid" name="jsp-api" />
         	<exclude conf="runtime,dist,distGrid" name="servlet-api"  />
+        	<exclude conf="*" name="asm-1*" />
         	
 			<!--  caAERS other modules -->
 	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
