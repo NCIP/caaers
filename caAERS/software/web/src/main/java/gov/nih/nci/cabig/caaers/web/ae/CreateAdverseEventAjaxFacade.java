@@ -568,7 +568,10 @@ public class CreateAdverseEventAjaxFacade {
 
                 //withdraw report.
                 reportRepository.withdrawReport(report);
-
+                
+                //withdraw the associated report.
+                reportRepository.withdrawExternalReport(aeReport, report);
+                
                 //unamend last amended report.
                 Report lastAmendedReport = aeReport.findLastAmendedReport(report.getReportDefinition());
                 if(lastAmendedReport != null){

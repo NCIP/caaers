@@ -156,6 +156,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	expect(aeReportDao.getById(1)).andReturn(aeReport);
     	aeReportDao.save(aeReport);
     	reportRepository.withdrawReport(report);
+    	reportRepository.withdrawExternalReport(aeReport, report);
     	
     	replayMocks();
     	facade.withdrawReportVersion(1, 1);
@@ -221,6 +222,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	aeReportDao.save(aeReport);
     	reportRepository.withdrawReport(report);
     	reportRepository.unAmendReport(report2);
+    	reportRepository.withdrawExternalReport(aeReport, report);
     	
     	replayMocks();
     	facade.withdrawReportVersion(1, 1);
