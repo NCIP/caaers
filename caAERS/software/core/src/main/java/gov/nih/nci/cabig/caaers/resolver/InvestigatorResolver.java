@@ -278,6 +278,11 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		return remoteInvestigator;
 	}
 
+	public Object saveOrUpdate(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/*
 	private List<gov.nih.nci.coppa.po.Organization> getOrganizationsForPerson(Person coppaPerson) {
 		List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = new ArrayList<gov.nih.nci.coppa.po.Organization>();

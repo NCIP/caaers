@@ -312,4 +312,10 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 
 	}
 */
+
+
+	public Object saveOrUpdate(Object arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
