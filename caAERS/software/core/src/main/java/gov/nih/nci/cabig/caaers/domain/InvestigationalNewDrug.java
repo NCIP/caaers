@@ -32,8 +32,8 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
 
     static private Log log = LogFactory.getLog(InvestigationalNewDrug.class);
 
-	private int CTEP_IND = -111;
-	private int DCP_IND = -222;
+	public static int CTEP_IND = -111;
+	public static int DCP_IND = -222;
     public static final String STRING_CTEP_IND = "CTEP IND";
     public static final String STRING_DCP_IND = "DCP IND";
 
