@@ -196,7 +196,7 @@
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-common" rev="latest.integration" />
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-stubs" rev="latest.integration" />
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-client" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="latest.integration" />>	
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="latest.integration" />	
 			
 			<!-- caXchange related jars -->
 			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="latest.integration" /> 
