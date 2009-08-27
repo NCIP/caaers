@@ -3,7 +3,7 @@
 
 <table width="95%" cellpadding="0" cellspacing="0">
 <tr>
-<td bgcolor="${bgColor}" id="termsDiv" id="${contentID}">
+<td bgcolor="${bgColor}" id="${contentID}">
      <jsp:doBody/>
 </td>
 </tr>

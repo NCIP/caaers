@@ -183,11 +183,9 @@
 				<td>${studyAgent.indType.displayName }</td>
 				<td>
 					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-						  <tr><td>${sai.investigationalNewDrug.strINDNo}</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
-				 	 </c:forEach>
-					</table>					
+                         <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
+                              ${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}
+                         </c:forEach>
 					</c:if>
 				</td>
 				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>

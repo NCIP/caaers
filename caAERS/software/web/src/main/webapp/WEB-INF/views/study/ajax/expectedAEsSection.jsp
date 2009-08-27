@@ -24,23 +24,24 @@
                 </c:if>
 
                 <%-- DELETE --%>
+    
                 <c:if test="${not param.isSingle eq 'true'}">
-                    <c:if test="${param.index >= 0}">
                         <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                             <tr bgcolor="#E4E4E4">
                                 <th scope="col" align="left" colspan="2"><b>Term</b></th>
                             </tr>
 
-                        <c:forEach begin="0" end="${param.index}" varStatus="status">
-                            <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
-                                <study:oneExpectedAE isOtherSpecify="${terms[status.index].otherRequired}" index="${status.index}" studyTerm="${terms[status.index]}"/>
-                                <td style="text-align:center;"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;"></td>
-                            </tr>
-                        </c:forEach>
+                            <c:if test="${param.index >= 0}">
+                                <c:forEach begin="0" end="${param.index}" varStatus="status">
+                                    <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
+                                        <study:oneExpectedAE isOtherSpecify="${terms[status.index].otherRequired}" index="${status.index}" studyTerm="${terms[status.index]}"/>
+                                        <td style="text-align:center;" width="50px"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;"></td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
 
                             <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                         </table>
-                    </c:if>
                     <%--<tr id="observedBlankRow" style="display:none;"><td></td></tr>--%>
                 </c:if>
 </tags:noform>
