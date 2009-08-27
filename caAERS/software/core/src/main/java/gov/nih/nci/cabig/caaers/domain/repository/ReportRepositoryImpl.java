@@ -107,10 +107,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     	//withdraw reports from external agency if needed. 
     	if(CollectionUtils.isNotEmpty(beingWithdrawnList)){
     		for(Report report : beingWithdrawnList){
-    			Report reportToWithdraw = aeReport.findLastSubmittedReport(report.getReportDefinition());
-    			if(reportToWithdraw != null && reportToWithdraw.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)){
-    				reportWithdrawalService.withdrawExternalReport(aeReport,reportToWithdraw);
-    			}
+    			withdrawExternalReport(aeReport, report);
     		}
     	}
     	
@@ -129,6 +126,18 @@ public class ReportRepositoryImpl implements ReportRepository {
     	return false;
     }
     
+    /**
+     * Will find the external report to be withdrawn, and will withdraw that report from the system.
+     * @param aeReport
+     * @param report
+     */
+    @Transactional(readOnly = false)
+    public void withdrawExternalReport(ExpeditedAdverseEventReport aeReport, Report report) {
+    	Report reportToWithdraw = aeReport.findLastSubmittedReport(report.getReportDefinition());
+		if(reportToWithdraw != null && reportToWithdraw.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)){
+			reportWithdrawalService.withdrawExternalReport(aeReport,reportToWithdraw);
+		}
+    }
     
     @Transactional(readOnly = false)
     public void withdrawReport(Report report) {

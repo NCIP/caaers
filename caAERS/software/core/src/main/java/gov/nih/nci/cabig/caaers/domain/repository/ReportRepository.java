@@ -39,6 +39,13 @@ public interface ReportRepository {
     void withdrawReport(Report report);
     
     /**
+     * Will find the external report to be withdrawn, and will withdraw that report from the system.
+     * @param aeReport
+     * @param report
+     */
+    void withdrawExternalReport(ExpeditedAdverseEventReport aeReport,Report report);
+    
+    /**
      * Creates a report from the given definition and associates it with the given aeReport and
      * saves it in the database.
      * <p/>
