@@ -2,20 +2,13 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantMetastaticDiseaseSite;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -368,16 +362,19 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     public PriorTherapyDao getPriorTherapyDao() {
 		return priorTherapyDao;
 	}
+
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
 		this.priorTherapyDao = priorTherapyDao;
 	}
+
     public PreExistingConditionDao getPreExistingConditionDao() {
 		return preExistingConditionDao;
 	}
-    public void setPreExistingConditionDao(
-			PreExistingConditionDao preExistingConditionDao) {
+    
+    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
 		this.preExistingConditionDao = preExistingConditionDao;
 	}
+
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
@@ -386,7 +383,54 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
         emptyFieldNameMap = new HashMap<String, Boolean>();
+
+        validatePreExistingConditions(command, commandBean, fieldGroups, errors);
+        validateConcomitantMedications(command, commandBean, fieldGroups, errors);
+        validatePriorTherapies(command, commandBean, fieldGroups, errors);
+        validateMetastaticDiseases(command, commandBean, fieldGroups, errors);
+
+        WebUtils.populateErrorFieldNames(emptyFieldNameMap, errors);
+    }
+
+    protected void validatePreExistingConditions(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+        // check PreExistingConditions duplicates
+        List list = command.getAssignment().getPreExistingConditions();
+        Set<String> set = new HashSet<String>();
         
+        set = new HashSet();
+        int i = 0;
+        for (Object object : list) {
+            StudyParticipantPreExistingCondition pt = (StudyParticipantPreExistingCondition)object;
+            if (pt != null)
+                if (!set.add(pt.getName())) errors.reject("PT_005", new Object[] {pt.getName()}, "Duplicate Preexisting Condition");
+
+            if(pt.getPreExistingCondition() == null && pt.getOther() == null){
+                errors.rejectValue(String.format("assignment.preExistingConditions[%d].preExistingCondition", i), "SAE_015", "Either a known pre Existing Condition or other is required");
+            }
+            i++;
+        }
+    }
+
+    protected void validateMetastaticDiseases(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+        List list = command.getAssignment().getPriorTherapies();
+        Set<String> set = new HashSet<String>();
+        // check MetaStaticDisease duplicates
+        list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
+        set = new HashSet();
+        int i = 0;
+        for (Object object : list) {
+            StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
+            if (pt != null && pt.getCodedSite() != null)
+                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
+
+            if (pt == null || pt.getId() == null) {
+                errors.rejectValue(String.format("assignment.diseaseHistory.metastaticDiseaseSites[%d].codedSite", i), "SAE_026","Missing Metastatic disease site");
+            }
+            i++;
+        }
+    }
+
+    protected void validatePriorTherapies(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         // check PriorTherapies duplicates
         List list = command.getAssignment().getPriorTherapies();
         Set<String> set = new HashSet<String>();
@@ -397,6 +441,11 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         for (Object object : list) {
             StudyParticipantPriorTherapy pt = (StudyParticipantPriorTherapy)object;
 
+            if (pt == null || pt.getName() == null) {
+                String propertyName = String.format("assignment.priorTherapies[%d].priorTherapy", i);
+                errors.rejectValue(propertyName, "SAE_028", "Missing Prior Therapy");
+            }
+
             // check Prior Therapy uniqueness
             if (pt != null) {
                 StringBuffer ptUnique = new StringBuffer();
@@ -406,7 +455,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
                     String propertyName = String.format("assignment.priorTherapies[%d].startDate", i);
                     errors.rejectValue(propertyName, "PTY_UK_ERR", "Two identical prior therapies cannot share the same starting month and year");
                 }
-                
+
             }
 
 /*
@@ -418,7 +467,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 */
             if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
 
-            
+
             // check PT dates
             String propertyName = String.format("assignment.priorTherapies[%d].endDate", i);
             if (!pt.getEndDate().isNull())
@@ -444,28 +493,28 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
         // if (hasDuplicatePT) errors.reject("PTY_UK_ERR", null, "Two identical prior therapies cannot share the same starting month and year");
         if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
+    }
 
+    protected void validateConcomitantMedications(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    	int i = 0;
+    	Set<String> set = new HashSet<String>();
+    	String propertyName = null;
 
-        // check PreExistingConditions duplicates
-        list = command.getAssignment().getPreExistingConditions();
-        set = new HashSet();
-        for (Object object : list) {
-            StudyParticipantPreExistingCondition pt = (StudyParticipantPreExistingCondition)object;
-            if (pt != null)
-                if (!set.add(pt.getName())) errors.reject("PT_005", new Object[] {pt.getName()}, "Duplicate Preexisting Condition");
-        }
-
-        
         // check ConMeds duplicates
-        list = command.getAssignment().getConcomitantMedications();
+        List<StudyParticipantConcomitantMedication> list = command.getAssignment().getConcomitantMedications();
         set = new HashSet();
         i = 0;
         for (Object object : list) {
             StudyParticipantConcomitantMedication pt = (StudyParticipantConcomitantMedication)object;
+            propertyName = String.format("assignment.concomitantMedications[%d].agentName", i);
+
+            if (pt.getName() == null) {
+                errors.rejectValue(propertyName, "SAE_027",new Object[]{pt.getName()}, "Missing Concomitant Medication");
+            }
+
             if (pt != null)
                 if (!set.add(pt.getName())) errors.reject("PT_006", new Object[] {pt.getName()}, "Duplicate Concomitant Medication");
 
-            String propertyName = String.format("assignment.concomitantMedications[%d].endDate", i);
 
             if (!pt.getEndDate().isNull())
                 if (!pt.getStillTakingMedications() && pt.getStartDate().compareTo(pt.getEndDate()) > 0) {
@@ -474,19 +523,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
             i++;
         }
-
-
-
-        // check MetaStaticDisease duplicates
-        list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
-        set = new HashSet();
-        for (Object object : list) {
-            StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
-            if (pt != null && pt.getCodedSite() != null)
-                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
-        }
-
-        WebUtils.populateErrorFieldNames(emptyFieldNameMap, errors);
     }
+    
 }
 
