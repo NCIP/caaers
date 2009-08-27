@@ -33,6 +33,7 @@
 			<exclude conf="*" name="cglib" />
 			<exclude conf="*" name="asm-attrs" />
 			<exclude conf="*" name="asm-1*" />
+			<exclude conf="*" org="objectweb" module="asm"/>
 			
 			<dependency org="ehcache" name="ehcache" rev="1.2.3"/>
 			
