@@ -61,7 +61,7 @@
 
                     createStudy.fetchSiteReseachStaffActiveRoles(selectedChoice.id, function(ajaxResult) {
                         rolesField.options.length = 0;
-                        rolesField.options.add(new Option("Please select...", "-1"))
+                        rolesField.options.add(new Option("Please select...", ""))
                         for (i in ajaxResult.objectContent) {
                             rolesField.options.add(new Option(ajaxResult.objectContent[i], i));
                         }
