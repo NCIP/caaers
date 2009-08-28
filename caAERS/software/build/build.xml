@@ -236,8 +236,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="validate:pre:build">
-		<validate-pre-build
-			/>
+		<mkdir dir="${download.dir}"/>
+		<validate-pre-build/>
 	</target>
 
 	<target name="build:all" description="Builds all the sub projects, putting artifacts in the project level target directory, used by distribution targets to make distributions" depends="
