@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
@@ -167,7 +166,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	public void testDoPreSubmitReport() throws Exception{
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
 		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getLastVersion().getId())).andReturn(new String[]{"testing"});
-		
+		EasyMock.expect(reportRepository.findReportDeliveries(report)).andReturn(new ArrayList<ReportDelivery>());
 		assertTrue(report.getLastVersion().getReportedAdversEvents() == null);
 		assertTrue(report.getLastVersion().getContents() == null);
 		

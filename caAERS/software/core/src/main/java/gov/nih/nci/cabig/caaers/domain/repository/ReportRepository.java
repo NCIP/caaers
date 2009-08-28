@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
 import java.util.Collection;
@@ -94,5 +95,13 @@ public interface ReportRepository {
      * @return ErrorMessages, if any.
      */
     ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
+    
+    /**
+     * Will find the report deliveries for this report. 
+     * Note:- This will directly calculate the current deliveries, instead of what is available in report. 
+     * @param report
+     * @return
+     */
+    List<ReportDelivery> findReportDeliveries(Report report);
     
 }

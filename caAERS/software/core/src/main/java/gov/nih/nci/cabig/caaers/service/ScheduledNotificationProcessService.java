@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.utils.RoleUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,17 +40,6 @@ public class ScheduledNotificationProcessService  {
 	
 protected static final Log logger = LogFactory.getLog(ScheduledNotificationProcessService.class);
 	
-	//known site specific roles.
-	private transient static final  String[] studySiteSpecificRoles = {"caaers_participant_cd",
-			  							 "caaers_ae_cd",
-			  							 "caaers_site_cd",
-			  							 "SI",/*Site Investigator*/
-			  							 "SPI" /*Site Principal Investigator*/};
-	  
-	  //known report specific roles. 
-	 private transient static final String[] reportSpecificRoles = {"REP",/*Reporter*/
-			  						  "SUB" /*Submitter*/};
-	 
 	 private ReportDao reportDao;
 	 private ScheduledNotificationDao scheduledNotificationDao;
 	 private FreeMarkerService freeMarkerService;
@@ -100,9 +90,9 @@ protected static final Log logger = LogFactory.getLog(ScheduledNotificationProce
             if(CollectionUtils.isNotEmpty(roleRecipients)){
     	      	List<String> emails = null;
     	      	for(RoleBasedRecipient recipient : roleRecipients){
-    	      		if(ArrayUtils.contains(reportSpecificRoles, recipient.getRoleName())){
+    	      		if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, recipient.getRoleName())){
     	      			emails = report.findEmailAddressByRole(recipient.getRoleName());
-    	      		}else if(ArrayUtils.contains(studySiteSpecificRoles, recipient.getRoleName())){
+    	      		}else if(ArrayUtils.contains(RoleUtils.studySiteSpecificRoles, recipient.getRoleName())){
     	      			emails = studySite.findEmailAddressByRole(recipient.getRoleName());
     	      		}else{
     	      			emails =  study.findEmailAddressByRole(recipient.getRoleName());

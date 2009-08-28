@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.service.FreeMarkerService;
+import gov.nih.nci.cabig.caaers.utils.RoleUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.Calendar;
@@ -30,17 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Biju Joseph
  */
 public class ReportFactory {
-	//known site specific roles.
-	private transient static final  String[] studySiteSpecificRoles = {"caaers_participant_cd",
-			  							 "caaers_ae_cd",
-			  							 "caaers_site_cd",
-			  							 "SI",/*Site Investigator*/
-			  							 "SPI" /*Site Principal Investigator*/};
-	  
-	  //known report specific roles. 
-	 private transient static final String[] reportSpecificRoles = {"REP",/*Reporter*/
-			  						  "SUB" /*Submitter*/};
-    private NowFactory nowFactory;
+	private NowFactory nowFactory;
     
     public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Date baseDate) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
@@ -56,38 +47,7 @@ public class ReportFactory {
 
         //attach the aeReport to report
         aeReport.addReport(report);
-        
-        //populate the delivery definitions
-        if (reportDefinition.getDeliveryDefinitions() != null) {
-            for (ReportDeliveryDefinition reportDeliveryDefinition : reportDefinition.getDeliveryDefinitions()) {
-                //fetch the contact mechanism for role based entities.
-                if (reportDeliveryDefinition.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_ROLE) {
-                	String roleName = reportDeliveryDefinition.getEndPoint();
-                	List<String> addresses = null;
-                	if(ArrayUtils.contains(reportSpecificRoles, roleName)){
-                		addresses = report.findEmailAddressByRole(roleName);
-                	}else if(ArrayUtils.contains(studySiteSpecificRoles, roleName)){
-                		addresses = aeReport.getStudySite().findEmailAddressByRole(roleName);
-                	}else{
-                		addresses = aeReport.getStudy().findEmailAddressByRole(roleName);
-                	}
-                    for (String address : addresses) {
-                        if (StringUtils.isNotEmpty(address)) {
-                            ReportDelivery reportDelivery = reportDeliveryDefinition.createReportDelivery();
-                            reportDelivery.setEndPoint(address);
-                            report.addReportDelivery(reportDelivery);
-                        }
-                    }
-                } else {
-                    if (StringUtils.isNotEmpty(reportDeliveryDefinition.getEndPoint())) {
-                        ReportDelivery rd = reportDeliveryDefinition.createReportDelivery();
-                        rd.setEndPoint(reportDeliveryDefinition.getEndPoint());
-                        report.addReportDelivery(rd);
-                    }
-                }
 
-            }//~for rdd
-        }//~if
         addScheduledNotifications(reportDefinition, report);
         return report;
     }
@@ -128,55 +88,7 @@ public class ReportFactory {
     
     	
     }
-    
-//    public void addScheduledNotifications_Old(ReportDefinition reportDefinition, Report report){
-//    	//populate the scheduled notifications.
-//        //Note:- ScheduledNotification is per Recipient. A PlannedNotificaiton has many recipients.
-//    	
-//    	Date now = nowFactory.getNow();
-//        Calendar cal = GregorianCalendar.getInstance();
-//        Map<Object, Object> variableMap = report.getContextVariables();
-//        if (reportDefinition.getPlannedNotifications() != null) {
-//
-//            for (PlannedNotification plannedNotification : reportDefinition.getPlannedNotifications()) {
-//                String subjectLine = null;
-//                String bodyContent = null;
-//
-//                //obtain all valid recipient address
-//                List<String> toAddressList = plannedNotification.findToAddressesForReport(report);
-//                // for each recipient(address) create a ScheduledNotification.
-//                for (String to : toAddressList) {
-//
-//                    ScheduledNotification scheduledNotification = null;
-//                    // TODO: instanceof indicates an abstraction failure.  Could this be domain logic?
-//                    if (plannedNotification instanceof PlannedEmailNotification) {
-//                        PlannedEmailNotification penf = (PlannedEmailNotification) plannedNotification;
-//                        ScheduledEmailNotification senf = penf.createScheduledNotification(to);
-//                        scheduledNotification = senf;
-//                        if (subjectLine == null) {
-//                            subjectLine = freeMarkerService.applyRuntimeReplacementsForReport(penf.getSubjectLine(), variableMap);
-//                        }
-//                        senf.setSubjectLine(subjectLine);
-//                    }
-//
-//                    if (bodyContent == null) {
-//                        bodyContent = freeMarkerService.applyRuntimeReplacementsForReport(plannedNotification.getNotificationBodyContent().getBody(), variableMap);
-//                    }
-//                    scheduledNotification.setBody(bodyContent);
-//
-//                    // TODO: consider some or all of this domain logic, too
-//                    scheduledNotification.setCreatedOn(now);
-//                    scheduledNotification.setDeliveryStatus(DeliveryStatus.CREATED);
-//                    cal.setTime(now);
-//                    cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), (plannedNotification.getIndexOnTimeScale()));
-//                    scheduledNotification.setScheduledOn(cal.getTime());
-//
-//                    report.addScheduledNotification(scheduledNotification);
-//
-//                }//for each to
-//            }//for each pnf
-//        }//~if
-//    }
+  
 
 
     public void setNowFactory(final NowFactory nowFactory) {

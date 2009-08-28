@@ -86,6 +86,7 @@ public class ReportSubmissionService {
     }
     /**
      * This method will do the pre submission initializations. 
+     *  - Will generate the report deliveries
      *  - Will start the report tracking. 
      *  - Will generate the PDF and XMLs of the report. 
      *  - Will attach report content to report version.
@@ -96,6 +97,13 @@ public class ReportSubmissionService {
     	
     	Report report = context.report;
     	ReportVersion reportVersion = report.getLastVersion();
+    	
+    	if(CollectionUtils.isEmpty(report.getReportDeliveries())){
+    		List<ReportDelivery> deliveries = reportRepository.findReportDeliveries(report);
+    		for(ReportDelivery delivery : deliveries){
+    			report.addReportDelivery(delivery);
+    		}
+    	}
     	
     	// start tracking.
     	ReportTracking reportTracking = new ReportTracking();

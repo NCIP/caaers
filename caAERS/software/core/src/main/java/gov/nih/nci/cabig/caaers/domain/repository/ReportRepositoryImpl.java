@@ -18,10 +18,13 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
+import gov.nih.nci.cabig.caaers.utils.RoleUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -32,7 +35,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -323,6 +328,54 @@ public class ReportRepositoryImpl implements ReportRepository {
 //         //schedule the report, if there are scheduled notifications.
 //         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
     	
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public List<ReportDelivery> findReportDeliveries(Report aReport) {
+    	List<ReportDelivery> deliveries = new ArrayList<ReportDelivery>();
+    	
+    	//reload the report
+    	Report report = reportDao.getById(aReport.getId());
+    	ReportDefinition reportDefinition = report.getReportDefinition();
+    	ExpeditedAdverseEventReport aeReport = report.getAeReport();
+    	List<ReportDeliveryDefinition> deliveryDefinitions = reportDefinition.getDeliveryDefinitions();
+    	
+    	if(deliveryDefinitions != null){
+
+            for (ReportDeliveryDefinition reportDeliveryDefinition : deliveryDefinitions) {
+                //fetch the contact mechanism for role based entities.
+                if (reportDeliveryDefinition.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_ROLE) {
+                	String roleName = reportDeliveryDefinition.getEndPoint();
+                	List<String> addresses = null;
+                	if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, roleName)){
+                		addresses = report.findEmailAddressByRole(roleName);
+                	}else if(ArrayUtils.contains(RoleUtils.studySiteSpecificRoles, roleName)){
+                		addresses = aeReport.getStudySite().findEmailAddressByRole(roleName);
+                	}else{
+                		addresses = aeReport.getStudy().findEmailAddressByRole(roleName);
+                	}
+                    for (String address : addresses) {
+                        if (StringUtils.isNotEmpty(address)) {
+                            ReportDelivery reportDelivery = reportDeliveryDefinition.createReportDelivery();
+                            reportDelivery.setEndPoint(address);
+                            deliveries.add(reportDelivery);
+                        }
+                    }
+                } else {
+                    if (StringUtils.isNotEmpty(reportDeliveryDefinition.getEndPoint())) {
+                        ReportDelivery reportDelivery = reportDeliveryDefinition.createReportDelivery();
+                        reportDelivery.setEndPoint(reportDeliveryDefinition.getEndPoint());
+                        deliveries.add(reportDelivery);
+                    }
+                }
+
+            }
+        
+    	}
+    	
+    	return deliveries;
     }
     
     /**
