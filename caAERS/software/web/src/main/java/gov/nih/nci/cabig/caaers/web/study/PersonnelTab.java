@@ -111,11 +111,12 @@ class PersonnelTab extends StudyTab {
         super.validate(command, commandBean, fieldGroups, errors);
         if (command.getStudySiteIndex() >= 0) {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
-            HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
+            HashSet<String> hSet = new HashSet<String>();
             for (StudyPersonnel sp : so.getStudyPersonnels()) {
-                if (!hSet.add(sp)) {
-                    errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
-                }
+                if (sp.isActive())
+                    if (!hSet.add(sp.getRoleCode() + sp.getSiteResearchStaff().getResearchStaff().getId().toString())) {
+                        errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
+                    }
             }
         }
     }

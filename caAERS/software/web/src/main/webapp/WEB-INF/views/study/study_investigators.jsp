@@ -139,7 +139,7 @@
       	<td valign="top" width="35%">
 			<chrome:box title="Assigned Investigators" id="participant-entry2" autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
- 					<div class =""><a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.activeStudyInvestigators)})</b></div>
+ 					<div class =""><a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a> <b>(${fn:length(studySite.studyInvestigators)})</b></div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />

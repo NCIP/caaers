@@ -60,15 +60,15 @@ class InvestigatorsTab extends StudyTab {
                 command.getStudy().getActiveStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
             }
         } else if ("activate".equals(action)) {
-            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getActiveStudyInvestigators().get(selectedInvestigatorIndex).activate();
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).activate();
         } else if ("deactivate".equals(action)) {
-            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getActiveStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
+            command.getStudy().getActiveStudyOrganizations().get(selectedIndex).getStudyInvestigators().get(selectedInvestigatorIndex).deactivate();
         }
         
         //will sync the start and end date. 
         if (command.getStudySiteIndex() >= 0) {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
-            for (StudyInvestigator si : so.getActiveStudyInvestigators()) {
+            for (StudyInvestigator si : so.getStudyInvestigators()) {
                 if (si.getId() == null) {
                   si.syncDates();
                 }
@@ -112,25 +112,27 @@ class InvestigatorsTab extends StudyTab {
             boolean hasSIDuplicates = false;
 
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
+            StudyInvestigator dupSI = null;
 
             for (StudyInvestigator si : so.getStudyInvestigators()) {
 
                 if (si.isActive())
                     if (!hSet.add(si.getRoleCode() + si.getSiteInvestigator().getInvestigator().getId().toString())) {
-                        errors.reject("STU_012", new Object[]{si.getSiteInvestigator().getInvestigator().getFullName()}, "Duplicate entry");
+                        errors.reject("STU_020", new Object[]{si.getSiteInvestigator().getInvestigator().getFullName(), command.getStudyInvestigatorRoles().get(si.getRoleCode())}, "Duplicate entry");
                     }
 
                 if (si.getRoleCode().equals("PI") && si.isActive()) {
                     if (!hSetPrincipal.add(si.getRoleCode())) {
-                        si.deactivate();
+                        // si.deactivate();
                         hasSIDuplicates = true;
+                        dupSI = si;
                     }
                 }
             }
 
             if (hasSIDuplicates)
-                errors.reject("STU_019");
-                
+                errors.reject("STU_019", new Object[] {dupSI.getSiteInvestigator().getInvestigator().getFullName(), dupSI.getStudyOrganization().getOrganization().getName()}, "default message");
+
         }
 
     }

@@ -313,7 +313,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteSiteInvestigatorAtIndex(int studyOrgIndex, int index){
-    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators(), study.getActiveStudyOrganizations().get(studyOrgIndex).getActiveStudyInvestigators().get(index));
+    	delete(study.getActiveStudyOrganizations().get(studyOrgIndex).getStudyInvestigators(), index);
     }
     
     /**

@@ -59,8 +59,7 @@ public class StudySite extends StudyOrganization {
 
     // / BEAN PROPERTIES
 
-    public void setStudyParticipantAssignments(
-                    List<StudyParticipantAssignment> studyParticipantAssignments) {
+    public void setStudyParticipantAssignments(List<StudyParticipantAssignment> studyParticipantAssignments) {
         this.studyParticipantAssignments = studyParticipantAssignments;
     }
 
@@ -78,8 +77,7 @@ public class StudySite extends StudyOrganization {
     }
     
     @CollectionOfElements
-    @JoinTable(name = "site_workflow_configs", 
-    		joinColumns = @JoinColumn(name = "site_id"), inverseJoinColumns = @JoinColumn(name="wf_config_id"))
+    @JoinTable(name = "site_workflow_configs", joinColumns = @JoinColumn(name = "site_id"), inverseJoinColumns = @JoinColumn(name="wf_config_id"))
     @MapKey(columns = @Column(name = "wf_entity"))
     @Column(name = "wf_config_id")
     @Cascade(value={CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.DELETE_ORPHAN})

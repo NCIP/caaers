@@ -44,11 +44,11 @@
     </td>
 
     <td style="border-left:none;">
-        <c:if test="${!isNew && si.siteInvestigator.investigator != null}">
+        <c:if test="${!isNew && si.siteInvestigator.investigator != null && si.id != null}">
             <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
             <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
         </c:if>
-        <c:if test="${isNew || si.siteInvestigator.investigator.id == null}">
+        <c:if test="${isNew || si.siteInvestigator.investigator.id == null || si.id == null}">
             <a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
                 <img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle">
             </a>
