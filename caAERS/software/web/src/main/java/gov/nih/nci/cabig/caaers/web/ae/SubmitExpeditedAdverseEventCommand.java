@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -9,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
@@ -29,6 +33,8 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     
     private ReportVersion lastVersion;
     
+    private List<ReportDelivery> reportDeliveries;
+    
     // //// LOGIC
 
     public SubmitExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
@@ -38,6 +44,12 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
                     ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
                     AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
         super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
+        reportDeliveries = new ArrayList<ReportDelivery>();
+    }
+    
+    public void refreshReportDeliveries(Report report){
+    	reportDeliveries.clear();
+    	reportDeliveries.addAll(reportRepository.findReportDeliveries(report));
     }
 
     @Override
@@ -122,4 +134,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     public ReportVersion getLastVersion(){
     	return lastVersion;
     }
+    public List<ReportDelivery> getReportDeliveries() {
+		return reportDeliveries;
+	}
 }

@@ -53,6 +53,16 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         map.addInputFieldGroup(ccReport);
         return map;
     }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
+    	SubmitExpeditedAdverseEventCommand submitCommand = (SubmitExpeditedAdverseEventCommand) command;
+    	String reportIndex = submitCommand.getReportIndex();
+        Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
+    	submitCommand.refreshReportDeliveries(report);
+    	return  super.referenceData(request, submitCommand);
+    	
+    }
 
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
