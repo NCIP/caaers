@@ -892,4 +892,25 @@ Event.observe(window, "load", function() {
     })
 });
 
+//----------------------------------------------------------------------------------------------------------------------
+
+function closeDivisionById(_id) {
+        panelDiv = $("contentOf-" + _id);
+        imageId= 'image-' + _id;
+        imageSource = $(imageId).src;
+        CloseDown(panelDiv, arguments[1] || {});
+        document.getElementById(imageId).src = imageSource.replace('down','right');
+}
+
+// ----------------------------------------------------------------------------------------------------------------
+
+function openDivisionById(_id) {
+        panelDiv = $("contentOf-" + _id);
+        imageId= 'image-' + _id;
+        imageSource = $(imageId).src;
+        OpenUp(panelDiv, arguments[1] || {});
+        document.getElementById(imageId).src = imageSource.replace('right','down');
+}
+
+// ----------------------------------------------------------------------------------------------------------------
 
