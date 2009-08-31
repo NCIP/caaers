@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -10,8 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,11 +36,13 @@ class SitesTab extends StudyTab {
     @Override
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         String action = request.getParameter("_action");
+        Object isAjax = request.getAttribute("_isAjax");
+
+        if (isAjax != null) return;
 
         if ("removeSite".equals(action)) {
 
             int index = Integer.parseInt(request.getParameter("_selected"));
-            
             StudySite site = command.getStudy().getStudySites().get(index);
 
             if (CollectionUtils.isNotEmpty(site.getActiveStudyInvestigators())) {
@@ -57,8 +60,6 @@ class SitesTab extends StudyTab {
             
             
         }else{
-        	Object isAjax = request.getAttribute("_isAjax");
-        	
         	if(isAjax == null && command.isWorkflowEnabled()){
         		for(StudySite site : command.getStudy().getStudySites()){
             		Map<String, WorkflowConfig> configMap = site.getWorkflowConfigs();
@@ -70,6 +71,29 @@ class SitesTab extends StudyTab {
             	}
         	}
         }
+
+        // checking new Study Sites
+        HashMap<Integer, StudyOrganization> hm = new HashMap<Integer, StudyOrganization>();
+        List<StudyOrganization> copySS = new ArrayList(command.getStudy().getStudyOrganizations());
+
+        int i = 0;
+        for (StudyOrganization ss : copySS) {
+            if (ss instanceof StudySite)
+                if (ss.getId() == null) {
+                    StudyOrganization existingStudySite = hm.get(ss.getOrganization().getId());
+                    if (existingStudySite != null) {
+                        if (existingStudySite.getRetiredIndicator()) {
+                            command.getStudy().getStudyOrganizations().remove(i);
+                            i--;
+                            existingStudySite.setRetiredIndicator(false);
+                        }
+                    }
+                } else {
+                    hm.put(ss.getOrganization().getId(), ss);
+                }
+            i++;
+        }
+
     }
 
     @Override

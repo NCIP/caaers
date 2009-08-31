@@ -241,20 +241,16 @@
 		<br>
 		<![endif]-->
        		<table class="tablecontent" width="100%" >
-				<tr>
-					<th scope="col">Study Site</th>
-				</tr>
+				<tr><th scope="col"><caaers:message code="LBL_StudySite" /></th><th scope="col"><caaers:message code="LBL_status" /></th></tr>
 				<c:forEach items="${command.study.studySites}" var="studySite">
-				<c:set var="activeSiteCnt" value="${activeSiteCnt + 1}" /> 
-				<tr class="results">
-					<td>
-					<c:if test="${studySite.organization.externalId != null}">
-                		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
-                	</c:if>
-					${studySite.organization.name}
-					
-					</td>
-				</tr>
+                        <c:set var="activeSiteCnt" value="${activeSiteCnt + 1}" />
+                        <tr class="results">
+                            <td>
+                                <c:if test="${studySite.organization.externalId != null}"><img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/></c:if>
+                                ${studySite.organization.name}
+                            </td>
+                            <td>${studySite.retired ? "<font color='black'>Retired</font>" : "<font color='black'>Active</font>"}</td>
+                        </tr>
 				</c:forEach>
 				<c:if test="${activeSiteCnt lt 1}">
 				<tr><td class="results">No sites are associated to this study</td></tr>

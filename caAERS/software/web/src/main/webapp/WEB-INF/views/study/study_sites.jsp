@@ -19,6 +19,7 @@
             ssfrm.submit();
         }
 
+/*
         function refreshDeleteButtons() {
             var deleteBtns = $$('.del-ss-section');
             if (deleteBtns.length > 1) {
@@ -31,6 +32,7 @@
             }
 
         }
+*/
 
         var jsStudySite = Class.create();
         Object.extend(jsStudySite.prototype, {
@@ -86,13 +88,13 @@
                     //initilze auto completer and calendar
                     new jsStudySite(nextIndex);
                     $('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
-                    refreshDeleteButtons();
+                    // refreshDeleteButtons();
                 }
             });
 
 
-            //enable-disable delete buttons
-            refreshDeleteButtons();
+            // enable-disable delete buttons
+            // refreshDeleteButtons();
 
         });
 
@@ -101,7 +103,7 @@
 
 <body>
 <study:summary/>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="false">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="false" willSave="${not empty command.study.id}">
     <jsp:attribute name="singleFields">
 		<p><tags:instructions code="study.study_sites.top"/></p>
 		<input type="hidden" name="_action" value="">
