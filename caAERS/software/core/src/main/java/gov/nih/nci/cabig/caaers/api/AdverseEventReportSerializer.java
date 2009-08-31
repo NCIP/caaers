@@ -37,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -510,6 +511,8 @@ public class AdverseEventReportSerializer {
 		    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
 		    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
 		    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
+		    	Double bsa = ph.getBodySurfaceArea();
+		    	participantHistory.setBsa(bsa+"");
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getParticipantHistory() "+e.getMessage() , e);
 	    	}
@@ -903,8 +906,25 @@ public class AdverseEventReportSerializer {
 				e.setReportingPeriod(reportingPeriod);
 				e.setAssignment(studyParticipantAssignment);
 				e.setId(1);
-				XmlMarshaller marshaller = new XmlMarshaller();
-				String xml = marshaller.toXML(e,"xml-mapping/ae-report-withdraw-xml-mapping.xml");
+				
+				ParticipantHistory ph = new ParticipantHistory();
+				Measure h = new Measure();
+				h.setQuantity(new BigDecimal(100));
+				h.setUnit("Inch");
+				
+				Measure w = new Measure();
+				w.setQuantity(new BigDecimal(150));
+				w.setUnit("Pound");	
+				
+				ph.setHeight(h);
+				ph.setWeight(w);
+				e.setParticipantHistory(ph);
+				
+				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
+				String xml = ser.serialize(e);
+				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
+				System.out.println(xml);
+				
 				
 
 			} catch (Exception e) {
