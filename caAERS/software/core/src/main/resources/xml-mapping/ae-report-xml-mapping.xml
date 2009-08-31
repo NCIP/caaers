@@ -1177,6 +1177,9 @@
     <field name="baselinePerformanceStatus" type="string">
       <bind-xml name="baselinePerformanceStatus" node="element"/>
     </field>
+    <field name="bsa" type="string">
+      <bind-xml name="bsa" node="element"/>
+    </field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.ParticipantHistory$Measure">
