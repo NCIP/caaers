@@ -24,7 +24,7 @@
     			</tr>
     	
     	
-		    	<c:forEach items="${command.aeReport.reports[command.reportIndex].reportDeliveries}" varStatus="status" var="report">
+		    	<c:forEach items="${command.reportDeliveries}" varStatus="status" var="report">
     		
     				<tr>
     				
