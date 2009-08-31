@@ -489,68 +489,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  		
-						  			
-						  			
-						  			<xsl:variable name="wtunit" select="AdverseEventReport/ParticipantHistory/weight/unit"/>
-						  			<xsl:variable name="htunit" select="AdverseEventReport/ParticipantHistory/height/unit"/>
-						  			
-						  			<xsl:choose>
-						  				<xsl:when test="$wtunit='Kilogram' and $htunit='Centimeter'">
-						  					
-						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
-						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
-						  					<xsl:variable name="val">
-								  				<xsl:call-template name="sqrt">
-						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
-						                    	</xsl:call-template>
-						                    </xsl:variable>
-				                      
-				                      		<xsl:value-of select="substring-before($val, '.')" />.
-				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
-				                      		
-						  				</xsl:when>
-						  				<xsl:when test="$wtunit='Kilogram' and $htunit='Inch'">
-						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity * 2.54"/>
-						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
-						  					<xsl:variable name="val">
-								  				<xsl:call-template name="sqrt">
-						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
-						                    	</xsl:call-template>
-						                    </xsl:variable>
-				                      
-				                      		<xsl:value-of select="substring-before($val, '.')" />.
-				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
-						  				</xsl:when>
-						  				<xsl:when test="$wtunit='Pound' and $htunit='Centimeter'">
-						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity div 2.20462262185"/>
-						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
-						  					<xsl:variable name="val">
-								  				<xsl:call-template name="sqrt">
-						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
-						                    	</xsl:call-template>
-						                    </xsl:variable>
-				                      
-				                      		<xsl:value-of select="substring-before($val, '.')" />.
-				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
-						  				</xsl:when>
-						  				<xsl:when test="$wtunit='Pound' and $htunit='Inch'">
-						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity div 2.20462262185"/>
-						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity * 2.54"/>
-						  					<xsl:variable name="val">
-								  				<xsl:call-template name="sqrt">
-						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
-						                    	</xsl:call-template>
-						                    </xsl:variable>
-				                      
-				                      		<xsl:value-of select="substring-before($val, '.')" />.
-				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
-						  				</xsl:when>
-
-						  			</xsl:choose>
-
-						  			   
-
+						  			<xsl:value-of select="AdverseEventReport/ParticipantHistory/bsa" />
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		
