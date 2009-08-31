@@ -27,6 +27,8 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     private Measure height;
 
     private Measure weight;
+    
+    private String bsa;
 
     @AttributeOverrides({
             @AttributeOverride(name = "quantity", column = @Column(name = "height")),
@@ -73,6 +75,18 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
         return ((double)Math.round(0.20247 * Math.pow(ht/100, 0.725) * Math.pow(wt, 0.425) * 10000)) / 10000;
     }
 
+    /*
+     * This body surface area is a fabricated method of xml/pdf report.
+     */
+    @Transient
+    public String getBsa(){
+    	return this.bsa;
+    }
+    
+    public void setBsa(String bsa){
+    	this.bsa=bsa;
+    }
+    
     public ParticipantHistory copy() {
         ParticipantHistory participantHistory = new ParticipantHistory();
         BeanUtils.copyProperties(this, participantHistory, new String[]{"id", "gridId", "version", "report"});
