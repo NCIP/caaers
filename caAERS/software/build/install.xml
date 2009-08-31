@@ -643,7 +643,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>
 	</target>
 	
-	<target name="install:post:tomcat:caaers:config">
+	<target name="install:post:tomcat:caaers:config" unless="caaers.upgrade">
 		<!-- caAERS specific configuration -->
 		<mkdir dir="${tomcat.home}/conf/caaers"/>
 		<mkdir dir="${tomcat.home}/conf/cabig"/>
