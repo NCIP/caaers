@@ -78,9 +78,31 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
     // should be called by the populator (specified in the constructor)
     setChoices: function(array) {
         this.options.array = array;
-        this.updateChoices(this.options.selector(this));
+        if(this.options.array.length < 1){
+        	this.stopIndicator();
+        	this.update.innerHTML = "<ul><li><b>No matches found</b></li></ul>";
+        	if(this.hasFocus){
+        		this.show();
+        		this.active = true;
+        	}else {
+        		 this.active = false;
+        	     this.hide();
+        	}
+		}else{
+			 var _choices =this.options.selector(this); 
+		     this.updateChoices(_choices);
+		}
     },
-
+    selectEntry: function() {
+        this.active = false;
+        var _curEntry = this.getCurrentEntry();
+        if(_curEntry){
+        	var _curContent = _curEntry.innerHTML;
+        	if(_curContent && (_curContent.indexOf('No matches found') > 0) ) return;
+        }
+        this.updateElement(_curEntry);
+    },
+    
     setOptions: function(options) {
         this.options = Object.extend({
             choices: 25,
