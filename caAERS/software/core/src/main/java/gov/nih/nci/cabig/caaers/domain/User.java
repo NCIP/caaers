@@ -20,7 +20,7 @@ import org.hibernate.annotations.IndexColumn;
  * @author Saurabh Agrawal
  */
 @MappedSuperclass
-public abstract class User extends Person {
+public abstract class User extends Person implements Comparable<User>{
 	
 	protected String loginId;
 
@@ -232,6 +232,10 @@ public abstract class User extends Person {
             name.append(getLastName());
         }
         return name.toString();
+    }
+    
+    public int compareTo(User user){
+    	return getFullName().compareTo(user.getFullName());
     }
 	
 }

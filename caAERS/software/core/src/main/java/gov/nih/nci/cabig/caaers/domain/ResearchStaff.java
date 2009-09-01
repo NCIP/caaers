@@ -42,7 +42,6 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
 public abstract class ResearchStaff extends User {
 
-	protected Integer id;
 	protected String nciIdentifier;
 	protected List<ResearchStaff> externalResearchStaff = new ArrayList<ResearchStaff>();
 	protected String externalId;
@@ -54,16 +53,6 @@ public abstract class ResearchStaff extends User {
 		lazyListHelper = new LazyListHelper();
 		// register with lazy list helper study site.
 		lazyListHelper.add(SiteResearchStaff.class,new SiteResearchStaffFactory(this));
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id-generator")
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	// LOGIC

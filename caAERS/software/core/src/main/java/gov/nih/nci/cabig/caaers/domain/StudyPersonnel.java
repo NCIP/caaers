@@ -130,6 +130,39 @@ public class StudyPersonnel extends AbstractMutableRetireableDomainObject implem
     	return email;
     }
     
+    /**
+     * Returns the phone number associated to {@link SiteResearchStaff}.
+     * If the phone number not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned.
+     * @return
+     */
+    @Transient
+    public String getPhoneNumber(){
+    	String phoneNumber = null;
+    	if(getSiteResearchStaff() != null){
+    		phoneNumber = siteResearchStaff.getPhoneNumber();
+    		if(phoneNumber == null){
+    			phoneNumber = siteResearchStaff.getResearchStaff().getPhoneNumber();
+    		}
+    	}
+    	return phoneNumber;
+    }
+    
+    /**
+     * Returns the fax number associated to {@link SiteResearchStaff}
+     * If the fax number not found in {@link SiteResearchStaff}, {@link ResearchStaff}'s one is returned.
+     * @return
+     */
+    @Transient
+    public String getFaxNumber(){
+    	String faxNumber = null;
+    	if(getSiteResearchStaff() != null){
+    		faxNumber = siteResearchStaff.getFaxNumber();
+    		if(faxNumber == null){
+    			faxNumber = siteResearchStaff.getResearchStaff().getFaxNumber();
+    		}
+    	}
+    	return faxNumber;
+    }
 
     // /OBJECT METHODS
     @Override
