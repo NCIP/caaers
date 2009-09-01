@@ -23,7 +23,6 @@ function validateFields(formFields, displayError) {
                 if (displayError) ValidationManager.showError(element, element.requiredError);
                 validForm = false;
                 continue;
-
             }
 
             // maximum length
@@ -151,6 +150,7 @@ function validateFields(formFields, displayError) {
                 radiogroup = null;
             }
     }
+    if (!validForm) Errors.showSummary();
     return validForm;
 }
 

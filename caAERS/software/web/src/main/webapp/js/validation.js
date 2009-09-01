@@ -157,11 +157,14 @@ var ValidationManager = {
             }
         }
     },
+
     showError: function(element, msg) {
         strategies = ValidationManager.ERROR_STRATEGY.split("&&")
         for (i = 0; i < strategies.length; i++) {
             errorStrategy1 = strategies[i]
             if (errorStrategy1 == "text") {
+                var errorText = msg + element.title;
+                Errors.push(element.id, errorText);
                 new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + msg + element.title + "</li></ul>")
             }
             if (errorStrategy1 == "highlight") {
@@ -170,6 +173,7 @@ var ValidationManager = {
             }
         }
     },
+    
     removeError: function(element) {
         strategies = ValidationManager.ERROR_STRATEGY.split("&&")
         for (i = 0; i < strategies.length; i++) {

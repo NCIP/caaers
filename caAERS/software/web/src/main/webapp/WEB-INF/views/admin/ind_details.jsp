@@ -60,6 +60,7 @@
              <tags:instructions code="inddetails" />
             </p>
 			<tags:hasErrorsMessage hideErrorDetails="true"/>
+            <tags:jsErrorsMessage/>
 			<!--  JSP body here -->
 			<div id="indfields">
 			 <c:forEach items="${fieldGroups.main.fields}" var="field">

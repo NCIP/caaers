@@ -299,6 +299,7 @@
   </div>
   <tags:tabFields tab="${tab}" />
   <tags:hasErrorsMessage />
+  <tags:jsErrorsMessage/>
   <chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
     <p><tags:instructions code="instruction_ae_patientdetails_general"/></p>
 		<a name="anchorGeneral" />

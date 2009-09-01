@@ -284,7 +284,10 @@ Event.observe(window, "load", function() {
       <input type="hidden" name="_action" value="">
       <input type="hidden" name="_selected" value="">
       <tags:tabFields tab="${tab}"/>
-      <tags:hasErrorsMessage hideErrorDetails="false"/>
+
+        <tags:hasErrorsMessage hideErrorDetails="false"/>
+        <tags:jsErrorsMessage/>
+        
       <div class="leftpanel">
       <chrome:box title="${tab.shortTitle}" id="all-disease">
 		

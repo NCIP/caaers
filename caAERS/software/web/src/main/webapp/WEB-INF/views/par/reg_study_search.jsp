@@ -108,6 +108,8 @@
 
     <form:form id="searchForm" method="post" cssClass="standard">
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+        <tags:jsErrorsMessage/>
+        
         <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
         <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
             <tr>

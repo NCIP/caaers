@@ -229,6 +229,7 @@
  </div>
 
    <tags:hasErrorsMessage path="*" />
+   <tags:jsErrorsMessage/>
 
     <tags:tabFields tab="${tab}" />
 

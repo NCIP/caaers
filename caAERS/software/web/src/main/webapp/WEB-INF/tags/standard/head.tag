@@ -31,6 +31,7 @@
 <tags:js name="extremecomponents"/>
 <tags:js name="hover-display"/>
 <tags:js name="routing_and_review"/>
+<tags:js name="errors"/>
 
 <!--
 /js/livepipe/livepipe.js, /js/livepipe/tabs.js, /js/livepipe/scrollbar.js, \

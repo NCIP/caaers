@@ -55,6 +55,8 @@
 
   <form:form id="searchForm" method="post" cssClass="standard">
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+        <tags:jsErrorsMessage/>
+      
 		<table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
         <p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
         <tr>

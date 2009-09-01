@@ -390,12 +390,12 @@
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
   		<p><tags:instructions code="study.study_evalpdtypes.2" /></p>
-	
-	    <tags:hasErrorsMessage />
-  	
-		<p>
-		  <ul id="err-section" class="errors">
-         </ul>
+
+          <tags:hasErrorsMessage/>
+          <tags:jsErrorsMessage/>
+
+          <p>
+		  <ul id="err-section" class="errors"></ul>
 		  
 		</p>
 		<input type="hidden" name="_action" value="">

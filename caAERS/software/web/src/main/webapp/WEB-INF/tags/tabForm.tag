@@ -38,7 +38,9 @@
                     <p class="instructions">
                         <jsp:invoke fragment="instructions"/>
                     </p>
-                </c:if><tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
+                </c:if>
+                <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
+                <tags:jsErrorsMessage/>
             </chrome:division><jsp:invoke fragment="repeatingFields"/>
         </chrome:box>
         <c:if test="${not empty tabControls}">
@@ -60,7 +62,9 @@
                 <p class="instructions">
                     <jsp:invoke fragment="instructions"/>
                 </p>
-            </c:if><tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
+            </c:if>
+            <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/><jsp:invoke fragment="singleFields"/>
+            <tags:jsErrorsMessage/>
         </chrome:division><jsp:invoke fragment="repeatingFields"/>
         <c:if test="${not empty tabControls}">
             <jsp:invoke fragment="tabControls" />

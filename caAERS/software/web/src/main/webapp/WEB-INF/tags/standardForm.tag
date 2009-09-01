@@ -20,6 +20,7 @@
     <form:form name="${formName}" enctype="${enctype}">
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
+            <tags:jsErrorsMessage/>
             <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
             <jsp:invoke fragment="singleFields"/>
         </chrome:division>
