@@ -28,12 +28,14 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 
@@ -57,6 +59,7 @@ public class ReportSubmissionService {
     
     private ReportDao reportDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    private MessageSource messageSource;
     
     /**
      * This method will generate the PDF and xml content. 
@@ -262,15 +265,10 @@ public class ReportSubmissionService {
             	}
             }
             
-            String content = "";
-            ReportFormatType formatType = report.getReportDefinition().getReportFormatType();
-            if(formatType.equals(ReportFormatType.ADEERSPDF)){
-            	content = "An "+formatType.getDisplayName()+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";	
-            }else{
-            	content = "An "+formatType.getDisplayName()+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
-            }
-
-            caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), formatType.getDisplayName(), content, pdfFilePaths);
+            
+            String content = messageSource.getMessage("email.submission.content", new Object[]{report.getLabel(), firstName, lastName, pid, shortTitle, sid}, Locale.getDefault());
+            String subjectLine = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());
+            caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content, pdfFilePaths);
             String msg = "Notified to : " ;
         	for (String e:emailRecipients) {
         		msg = msg + "," + e;
@@ -368,7 +366,11 @@ public class ReportSubmissionService {
 		this.reportRepository = reportRepository;
 	}
     
-	
+    @Required
+    public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+    
 	/**
 	 * This class maintains the submission context, across various template methods.
 	 * @author Biju Joseph

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
@@ -25,10 +26,12 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.jms.JMSException;
 
 import org.easymock.classextension.EasyMock;
+import org.springframework.context.MessageSource;
 
 /**
  * 
@@ -46,6 +49,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
     
     private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private MessageSource messageSource;
 	
 	Report report;
 	ExpeditedAdverseEventReport aeReport;
@@ -68,7 +72,9 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		reportRepository = registerMockFor(ReportRepository.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		messageSource = registerMockFor(MessageSource.class);
 		
+		service.setMessageSource(messageSource);
 		service.setReportRepository(reportRepository);
 		service.setAdeersReportGenerator(adeersReportGenerator);
 		service.setSchedulerService(schedulerService);
@@ -229,6 +235,11 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	}
 
 	public void testNotifyEmailRecipients()  throws Exception {
+		EasyMock.expect(messageSource.getMessage(   EasyMock.eq("submission.success.subject"), (Object[])EasyMock.anyObject(), EasyMock.eq(Locale.getDefault()))).andReturn("hello");
+		EasyMock.expect(messageSource.getMessage(EasyMock.eq("email.submission.content"), 
+					(Object[])EasyMock.anyObject(),
+					EasyMock.eq(Locale.getDefault())
+					)).andReturn("An AdEERS Expedited Adverse Event Report for C, D C() on Test() has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.");
 		emails.add("joel@jj.com");
 		replayMocks();
 		ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);

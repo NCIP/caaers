@@ -143,6 +143,7 @@ public class Fixtures {
     public static ReportDefinition createReportDefinition(String name) {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
+        def.setLabel(name);
         Organization org = new LocalOrganization();
         org.setName("Test");
         def.setOrganization(org);

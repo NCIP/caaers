@@ -1,23 +1,39 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.Namespace;
+/**
+ * Processes withdraw message responses. 
+ * 
+ * 
+ * @author Srini
+ * @author Biju Joseph
+ *
+ */
 
+/*
+ * Note : BJ : TODO modify the testcases checked in at r10219 to suite this class. 
+ * 
+ * BJ : Made to read text messages from properties file. 
+ * BJ : changed all exception printing to log statements
+ * BJ : changed to call at the end to "sendWithdrawNotificationToReporter"
+ * BJ : Removed unwanted TO-DO comments. 
+ */
 public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProcessor{
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public void processMessage(String message) throws CaaersSystemException {
-		// TODO Auto-generated method stub
 		
 		log.debug("AdeersWithdrawResponseMessageProcessor - message recieved");
         
@@ -49,73 +65,49 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
         try {
 
             List<Element> exceptions = cancelInfo.getChildren("jobExceptions",ctepNS);
-            // sb.append("REPORT STATUS : " + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
-            
 
             if (cancelInfo.getChild("reportStatus",ctepNS).getValue().equals("SUCCESS")) {
-                sb.append("Report # " + reportId
-                                + " has been successfully withdrawn from AdEERS. \n\n");
-
-                sb.append("TICKET NUMBER :. \n");
-                sb.append("---------------.\n");
-                sb.append("Your AdEERS ticket number is "
-                                + cancelInfo.getChild("ticketNumber",ctepNS).getValue() + ".\n\n");
-
- 
-                // sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
-
-                ticketNumber = cancelInfo.getChild("ticketNumber",ctepNS).getValue();
-
-
-            }
-
-            if (exceptions.size() > 0) {
-                sb.append("Report # " + reportId
-                                + " was NOT successfully withdrawn from AdEERS. \n\n");
-                sb.append("The following problem was encountered:. \n");
-                for (Element ex : exceptions) {
-                    sb.append(ex.getChild("description").getValue() + ".\n");
+                String withdrawSuccessMessage = messageSource.getMessage("successful.reportWithdraw.message", new Object[]{reportId, ticketNumber}, Locale.getDefault());
+                sb.append(withdrawSuccessMessage);
+            }else{
+            	StringBuffer exceptionMsgBuffer = new StringBuffer();
+            	if (CollectionUtils.isNotEmpty(exceptions)) {
+                    success = false;
+                    for (Element ex : exceptions) {
+                    	exceptionMsgBuffer.append(ex.getChild("code").getValue()).append( "  -  ").append(ex.getChild("description").getValue()).append("\n");
+                       
+                    	if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+                    		communicationError=true;
+                        }
+                    }
                 }
-                sb.append("\n");
-                sb.append("Please correct the problem and withdraw the report again.\n\n");
-                sb.append("See below for a technical description of the error.:\n\n");
-
-                sb.append("EXCEPTIONS.\n");
-                sb.append("----------.\n");
-
-                success = false;
+            	
+            	String withdrawFailureMessage = messageSource.getMessage("failed.reportWithdraw.message", new Object[]{reportId, exceptionMsgBuffer.toString()}, Locale.getDefault());
+                sb.append(withdrawFailureMessage);
+            	
             }
 
-            for (Element ex : exceptions) {
-                sb.append(ex.getChild("code").getValue() + "  -  "
-                                + ex.getChild("description").getValue());
-                sb.append(".\n");
-            	if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
-            		communicationError=true;
-                }
-            }
-
+            
             if (cancelInfo.getChild("comments",ctepNS) != null) {
-                sb.append("COMMENTS : ." + cancelInfo.getChild("comments",ctepNS).getValue() + "\n");
+            	 String commentsMessage = messageSource.getMessage("comments.reportWithdraw.message", new Object[]{cancelInfo.getChild("comments").getValue()}, Locale.getDefault());
+                 sb.append(commentsMessage);
             }
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           log.error(e);
         }
 
         String messages = sb.toString();
 
         // Notify submitter
-        // System.out.println("calling msessageNotifyService 10..");
 
         try {
+        	
             log.debug("Calling notfication service ..");
-            this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
-                            caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
+            getMessageNotificationService().sendWithdrawNotificationToReporter(submitterEmail, messages, caaersAeReportId, reportId, success, ticketNumber, url, communicationError);
+            
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+           log.error(e);
         }       
 	}
 

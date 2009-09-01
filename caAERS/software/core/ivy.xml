@@ -25,6 +25,7 @@
         <!--  Items to be published  -->
          <publications>
     		<artifact name="${ivy.module}" conf="publish" type="jar" ext="jar"/>
+			<artifact name="service-messages" cof="publish" type="properties" ext="properties" /> 
     		<artifact name="${ivy.module}-tests" conf="test" type="jar" ext="jar"/>
   		</publications>
        

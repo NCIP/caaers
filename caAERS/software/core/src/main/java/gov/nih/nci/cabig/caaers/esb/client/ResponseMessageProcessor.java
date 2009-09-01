@@ -10,10 +10,20 @@ import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
-
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
+/**
+ * This class is responsible for the processing of response messages from external system (currently AdEERS).
+ * @author Srini
+ * @author Biju Joseph
+ *
+ */
 public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
 	private MessageNotificationService messageNotificationService;
+	
+	 //will be used to obtain resource bundle messages
+    protected MessageSource messageSource;
 	
 	public Namespace getNameSpace(Element ele){
 		return ele.getNamespace();
@@ -52,6 +62,10 @@ public abstract class ResponseMessageProcessor {
 		return messageNotificationService;
 	}
 	
+	@Required
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 	public abstract void processMessage(String message) throws CaaersSystemException;
 	
 }

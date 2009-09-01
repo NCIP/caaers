@@ -1,16 +1,28 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
-import java.util.List;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.Namespace;
-
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService;
-import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
-
+/**
+ * Will handle the responses related to report submission.
+ * 
+ * 
+ * @author Srini
+ * @author Biju Joseph
+ *
+ */
+/*
+ * BJ : Messages read from resource files. 
+ * BJ : TODO copy the testcases checked in at r10219
+ */
 public class AdeersSubmissionResponseMessageProcessor extends ResponseMessageProcessor{
 	
 	protected final Log log = LogFactory.getLog(getClass());
@@ -48,73 +60,53 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 
         try {
 
-            List<Element> exceptions = jobInfo.getChildren("jobExceptions");
-            // sb.append("REPORT STATUS : " + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
-            
-
             if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
-                sb.append("Report # " + reportId
-                                + " has been successfully submitted to AdEERS. \n\n");
+            	
+            	 ticketNumber = jobInfo.getChild("ticketNumber").getValue();
+                 url = jobInfo.getChild("reportURL").getValue();
+                 
+        		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
+        				 new Object[]{reportId, ticketNumber,  url}, Locale.getDefault());
+        		 
+        		sb.append(submissionMessage);
+            }else{
+            	 success = false;
+            	 List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+            	 //find the exception elements
+            	 if(CollectionUtils.isNotEmpty(exceptions)){
+            		 StringBuffer exceptionMsgBuffer = new StringBuffer();
+            		 for (Element ex : exceptions) {
+            			 exceptionMsgBuffer.append(ex.getChild("code").getValue()).append( "  -  ").append(ex.getChild("description").getValue()).append("\n");
 
-                sb.append("TICKET NUMBER :. \n");
-                sb.append("---------------.\n");
-                sb.append("Your AdEERS ticket number is "
-                                + jobInfo.getChild("ticketNumber").getValue() + ".\n\n");
-
-                sb.append("VIEWING THE REPORT IN ADEERS:.\n");
-                sb.append("-------------------------------.\n");
-
-                sb.append("To access the report in AdEERS, simply point your browser to the following URL:.\n\n");
-
-                // sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
-
-                ticketNumber = jobInfo.getChild("ticketNumber").getValue();
-                url = jobInfo.getChild("reportURL").getValue();
-                sb.append(url);
-
+            			 if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+                     		communicationError=true;
+                         }
+                     }
+            		 
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{reportId, exceptionMsgBuffer.toString()}, Locale.getDefault());
+            		 sb.append(submissionMessage);
+            		 
+            	 }//if exceptions
+            	 
             }
-
-            if (exceptions.size() > 0) {
-                sb.append("Report # " + reportId
-                                + " was NOT successfully submitted to AdEERS. \n\n");
-                sb.append("The following problem was encountered:. \n");
-                for (Element ex : exceptions) {
-                    sb.append(ex.getChild("description").getValue() + ".\n");
-                }
-                sb.append("\n");
-                sb.append("Please correct the problem and submit the report again.\n\n");
-                sb.append("See below for a technical description of the error.:\n\n");
-
-                sb.append("EXCEPTIONS.\n");
-                sb.append("----------.\n");
-
-                success = false;
-            }
-
-            for (Element ex : exceptions) {
-                sb.append(ex.getChild("code").getValue() + "  -  "
-                                + ex.getChild("description").getValue());
-                sb.append(".\n");
-            	if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
-            		communicationError=true;
-                }
-            }
-
+            
             if (jobInfo.getChild("comments") != null) {
-                sb.append("COMMENTS : ." + jobInfo.getChild("comments").getValue() + "\n");
+           	 String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+                sb.append(commentsMessage);
             }
+
+            
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        String messages = sb.toString();
+       
 
         // Notify submitter
-        // System.out.println("calling msessageNotifyService 10..");
-
         try {
+        	 String messages = sb.toString();
             log.debug("Calling notfication service ..");
             this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
                             caaersAeReportId, reportId, success, ticketNumber, url,communicationError);

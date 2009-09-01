@@ -254,8 +254,11 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public String getName() {
         return reportDefinition.getName();
     }
-
-   
+    
+    @Transient
+    public String getLabel(){
+    	return reportDefinition.getLabel();
+    }
 
     public boolean isRequired() {
         return required;

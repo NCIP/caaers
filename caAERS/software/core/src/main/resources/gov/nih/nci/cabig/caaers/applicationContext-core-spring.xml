@@ -51,6 +51,7 @@
 	    		<value>help</value>
 	    		<value>label</value>
 				<value>service-messages</value>
+				<value>error_messages</value>
 	    	</list>
 	    </property>
   </bean>
