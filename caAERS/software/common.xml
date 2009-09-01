@@ -398,6 +398,12 @@
     	description="--> make a jar file for this project">
     	<echo message="Executing in ${ant.project.name}" />
     	<makeJar dir="${dist.dir}" dir.classes="${classes.dir}" file.name="${jar.file}"/>
+    	<!-- copy resources property files -->
+    	<copy todir="${dist.dir}">
+    		<fileset dir="${main.src.resources}" includes="*.properties">
+    			<exclude name=".svn"/>
+    		</fileset>
+    	</copy>
     </target>
 
     <!-- ================================= 
