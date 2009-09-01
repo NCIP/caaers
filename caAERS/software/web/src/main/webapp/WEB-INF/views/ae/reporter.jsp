@@ -104,6 +104,16 @@
             $('staff').observe("change", chooseStaff)
             $('physician').observe("change", choosePhysician)
             
+            var id = $("staff").value;
+            var selectElement = $("staff");
+            if (id == '' && ${validPersonnel}){
+            	for (var i = 0; i < selectElement.options.length; i++) {
+   					if (ddl.options[i].value == ${validPersonnel}) {
+   						selectElement.selectedIndex = i;
+   					}
+   				}
+	        }
+            
             //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
@@ -147,15 +157,13 @@
                     <select id="staff" name="aeReport.reporter.user">
                         <option value="">Please select</option>
                         <optgroup label="Reporter">
-                        <c:forEach var="sitePerson" items="${command.assignment.studySite.organization.siteResearchStaffs}">
-                        	<c:if test="sitePerson.active">
-                            	<option value="${sitePerson.researchStaff.id}" ${sitePerson.researchStaff.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${sitePerson.researchStaff.firstName} ${sitePerson.researchStaff.lastName}</option>
-                            </c:if>	
+                        <c:forEach var="researchStaff" items="${researchStaffList }">
+                        	<option value="${researchStaff.id }" ${researchStaff.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${researchStaff.firstName } ${researchStaff.lastName }</option>
                         </c:forEach>
                         </optgroup>
                         <optgroup label="Investigators">
-                        <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
-                            <option value="${siteInv.investigator.id}" ${siteInv.investigator.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
+                        <c:forEach var="investigator" items="${investigatorList }">
+                        	<option value="${investigator.id }" ${investigator.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         </optgroup>
                     </select>
@@ -178,8 +186,8 @@
                 <div class="value">
                     <select id="physician" name="aeReport.physician.user">
                         <option value="">Please select</option>
-                        <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
-                            <option value="${siteInv.investigator.id}" ${siteInv.investigator.id eq command.aeReport.physician.user.id ? 'SELECTED' : '' }>${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
+                        <c:forEach var="investigator" items="${investigatorList }">
+                        	<option value="${investigator.id }" ${investigator.id eq command.aeReport.physician.user.id ? 'SELECTED' : '' }>${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                     </select>
                 </div>

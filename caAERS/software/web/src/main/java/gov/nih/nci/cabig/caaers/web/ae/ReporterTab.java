@@ -1,12 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -14,6 +21,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +42,7 @@ import org.springframework.validation.Errors;
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
+    private UserDao userDao;
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter", "ae/reporter");
@@ -47,6 +57,51 @@ public class ReporterTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         createPersonGroup(creator, "reporter");
         createPersonGroup(creator, "physician");
+    }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
+    	Map<String, Object> refData =  super.referenceData(request, command);
+    
+    	List<ResearchStaff> researchStaffList = new ArrayList<ResearchStaff>();
+    	List<Investigator> investigatorList = new ArrayList<Investigator>();
+    	
+    	for(StudyPersonnel sPersonnel: command.getAssignment().getStudySite().getActiveStudyPersonnel()){
+    		if(sPersonnel.getSiteResearchStaff().getResearchStaff().isActive())
+    			researchStaffList.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
+    	}
+    	
+    	for(StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
+    		investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
+    	}
+    	
+    	//Sort the researchStaff and investigators list
+    	Collections.sort(researchStaffList);
+    	Collections.sort(investigatorList);
+    	refData.put("researchStaffList", researchStaffList);
+    	refData.put("investigatorList", investigatorList);
+    	
+    	//set the reporter, as the login person
+        String loginId = SecurityUtils.getUserLoginName();
+        if(loginId != null){
+     	   User loggedInUser = userDao.getByLoginId(loginId);
+     	   boolean validPersonnel = false;
+     	   if(loggedInUser != null){
+     		   for(ResearchStaff rstaff: researchStaffList)
+     			   if(rstaff.getId().equals(loggedInUser.getId()))
+     				   validPersonnel = true;
+     		   for(Investigator inv: investigatorList)
+     			   if(inv.getId().equals(loggedInUser.getId()))
+     				   validPersonnel = true;
+     	   }
+     	   refData.put("validPersonnel", validPersonnel);
+     	   if(validPersonnel)
+     		  refData.put("loggedInUserId", loggedInUser.getId());
+     	   else
+     	   	  refData.put("loggedInUserId", "0");
+        }
+    	
+    	return refData;
     }
 
     private void createPersonGroup(AeInputFieldCreator creator, String person) {
@@ -171,5 +226,9 @@ public class ReporterTab extends AeTab {
     			errors.rejectValue("aeReport.physician.user", "SAE_020", "Physician should be selected in the drop down");
     		}
     	}
+    }
+    
+    public void setUserDao(UserDao userDao){
+    	this.userDao = userDao;
     }
 }
