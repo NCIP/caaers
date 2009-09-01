@@ -212,7 +212,7 @@ public class MessageNotificationService {
         String subject = "";
         String attachment = null;
         if (success) {
-            messages = messages + url;
+            //messages = messages + url;
             subject = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());  
             //this pdf has already been generated in AdeersReportGenerator , we are just attching here incase of successfull submission.
             String tempDir = System.getProperty("java.io.tmpdir");
