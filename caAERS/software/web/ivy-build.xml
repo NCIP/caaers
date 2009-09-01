@@ -33,6 +33,7 @@
 	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
 	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+			<ivy:retrieve pattern="${war.dir}/WEB-INF/classes/[artifact].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance" type="properties" />
 	 		<copy-resources src="${webservice.xsd.src}" dest="${webservice.xsd.dest}" filter="false"/>
 	  </target>
 	
