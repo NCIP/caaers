@@ -21,7 +21,11 @@ var Errors = {
     },
 
     findParentDivision: function(elementID) {
-        var pDivision = $(elementID).up(".division");
+        var pDivision = $(elementID).up(".COLLAPSABLE-DIVISION");
         return pDivision;
+    },
+
+    clear: function() {
+        Errors.list = new Hash();
     }
 }

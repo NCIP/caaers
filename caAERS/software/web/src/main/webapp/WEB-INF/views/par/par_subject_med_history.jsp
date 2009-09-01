@@ -3,7 +3,7 @@
 <html>
   <head>
 	<style type="text/css">
-		.hidden{
+		.hidden {
 			display: none;
 		}
 		.divOther{

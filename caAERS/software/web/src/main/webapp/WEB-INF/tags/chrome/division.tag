@@ -14,7 +14,7 @@
 <%@attribute name="collapsable" required="false" %>
 <%@attribute name="collapsed" required="false" %>
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
-<div class="division ${cssClass}" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
+<div class="division ${cssClass} <c:if test='${collapsable}'>COLLAPSABLE-DIVISION</c:if>" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
     <div class="header">
     <c:if test="${not empty title or not empty titleFragment}">
 

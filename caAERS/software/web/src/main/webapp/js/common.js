@@ -902,9 +902,11 @@ Event.observe(window, "load", function() {
 function closeDivisionById(_id) {
         panelDiv = $("contentOf-" + _id);
         imageId= 'image-' + _id;
-        imageSource = $(imageId).src;
-        CloseDown(panelDiv, arguments[1] || {});
-        document.getElementById(imageId).src = imageSource.replace('down','right');
+        if ($(panelDiv)) CloseDown(panelDiv, arguments[1] || {});
+        if ($(imageId)) {
+            imageSource = $(imageId).src;
+            document.getElementById(imageId).src = imageSource.replace('down','right');
+        }
 }
 
 // ----------------------------------------------------------------------------------------------------------------
@@ -912,9 +914,11 @@ function closeDivisionById(_id) {
 function openDivisionById(_id) {
         panelDiv = $("contentOf-" + _id);
         imageId= 'image-' + _id;
-        imageSource = $(imageId).src;
-        OpenUp(panelDiv, arguments[1] || {});
-        document.getElementById(imageId).src = imageSource.replace('right','down');
+        if ($(panelDiv)) OpenUp(panelDiv, arguments[1] || {});
+        if ($(imageId)) {
+            imageSource = $(imageId).src;
+            document.getElementById(imageId).src = imageSource.replace('right','down');
+        }
 }
 
 // ----------------------------------------------------------------------------------------------------------------

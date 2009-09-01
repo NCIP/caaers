@@ -5,9 +5,7 @@
 <form:errors path="${empty path ? '*' : path}">
 <div class="errors">
     <c:if test="${not empty messages}">
-        <p>
-            There are problems with your submission.Please correct them before proceeding.
-        </p>
+        <p>There are problems with your submission.Please correct them before proceeding.</p>
          <c:if test="${not hideErrorDetails}">
         	<ul class="errors">
            	 <c:forEach items="${messages}" var="msg">

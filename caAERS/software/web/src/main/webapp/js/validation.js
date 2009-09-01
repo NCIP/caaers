@@ -81,6 +81,7 @@ var ValidationManager = {
     ERROR_MSG_PHONE:"Invalid ",
 
     validateForm: function(submit) {
+        Errors.clear();
         formVar = submit ? Event.element(submit) : this
         submit ? Event.stop(submit) : null
         if (!ValidationManager.submitPreProcess(formVar)) {
@@ -164,6 +165,7 @@ var ValidationManager = {
             errorStrategy1 = strategies[i]
             if (errorStrategy1 == "text") {
                 var errorText = msg + element.title;
+                // alert(errorText);
                 Errors.push(element.id, errorText);
                 new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + msg + element.title + "</li></ul>")
             }

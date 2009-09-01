@@ -17,6 +17,7 @@
                       <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here...'}"/>
                       <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" 
                       	initialDisplayValue="${initValue}"
+                        title="PriorTherapy agent"
                       	readonly="${not empty agent.chemoAgent}"
                       	displayNamePath="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent.fullName" required="true">
                           <jsp:attribute name="populatorJS">
