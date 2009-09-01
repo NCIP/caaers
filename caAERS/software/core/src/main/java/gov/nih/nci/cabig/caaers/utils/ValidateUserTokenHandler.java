@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.utils;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider;
 import gov.nih.nci.security.exceptions.CSLoginException;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +15,8 @@ import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.TestingAuthenticationToken;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.xfire.MessageContext;
 import org.codehaus.xfire.exchange.InMessage;
 import org.codehaus.xfire.fault.XFireFault;
@@ -28,7 +32,7 @@ public class ValidateUserTokenHandler
    private static final String  TOKEN_NS = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";	
    private CSMAuthenticationProvider localAuthenticationProvider;
    private CSMUserRepository csmUserRepository;
-   
+   private static final Log logger = LogFactory.getLog(ValidateUserTokenHandler.class);
    public void invoke(MessageContext context)
         throws XFireFault
     {
@@ -98,6 +102,27 @@ public class ValidateUserTokenHandler
 			Authentication authRequest = new TestingAuthenticationToken(username.getValue(), "ignored", authorities);//new UsernamePasswordAuthenticationToken(authorities);
 			authRequest.setAuthenticated(true);
 			SecurityContextHolder.getContext().setAuthentication(authRequest);
+
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			DataAuditInfo oldAuditInfo = null;
+			 try {
+
+				 	if(authentication != null){
+				 		String userName = authentication.getName();
+				 		if(userName != null){
+				 			oldAuditInfo = (DataAuditInfo) DataAuditInfo.getLocal();
+				 			DataAuditInfo.setLocal(new DataAuditInfo(userName, "127.0.0.1", new Date(), Thread.currentThread().getName()));
+				 		}
+				 	}
+				 	
+			} catch (Throwable e) {
+				logger.error("ValidateUserTokenHandler", e);
+			}finally{
+				DataAuditInfo.setLocal(oldAuditInfo);
+			}
+			
+			
 			
 /*			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			GrantedAuthority[] grantedAuthorities = SecurityUtils.getGrantedAuthorities(authentication);
