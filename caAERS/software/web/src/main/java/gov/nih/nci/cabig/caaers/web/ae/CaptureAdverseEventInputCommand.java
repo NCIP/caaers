@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
@@ -1038,7 +1039,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setStatus(wrapper.getStatus());
         			row.setDue("");
         		}else if(wrapper.getAction() == ActionType.WITHDRAW || wrapper.getAction() == ActionType.EDIT) {
-        			row.setDue("Due on " + DateUtils.formatDate(wrapper.getDueOn()));
+        			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
         			row.setStatus(wrapper.getStatus());
         		}else {
         			row.setStatus(wrapper.getStatus());
@@ -1088,21 +1089,37 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
     		Date baseDate =  gradedDate;
     		
+    		List<Report> reportsToAmendList = new ArrayList<Report>();
+    		
     		//create a map, consisting of report definitions
     		for(ReportDefinition rd : allReportDefs){
     			if(aeReport != null && aeReport.hasExistingReportsOfSameOrganizationAndType(rd)) {
     				baseDate = updatedDate;
+    				reportsToAmendList.addAll(aeReport.findReportsToAmmend(rd));
+    				
     			}
     			ReportTableRow row  = ReportTableRow.createReportTableRow(rd, baseDate, ActionType.CREATE);
     			row.setAeReportId(aeReportId);
     			
     			row.setStatus("Not started");
-    			row.setGrpStatus("");
     			row.setOtherStatus("");
-    			
-    			row.setGrpDue("");
     			row.setOtherDue("");
+    			row.setGrpStatus("");
+    			row.setGrpDue("");
+    			
     			rowMap.put(rd.getId(), row);
+    		}
+    		
+    		//for each reports to amend, make sure, we have their group actions set to amend. 
+    		for(Report report : reportsToAmendList){
+    			ReportTableRow row = rowMap.get(report.getReportDefinition().getId());
+    			if(row != null && row.getGrpAction() != ActionType.AMEND){
+    				row.setAction(ActionType.AMEND);
+    				row.setGrpAction(ActionType.AMEND);
+    				row.setStatus("Being amended");
+        			row.setGrpStatus("Being amended");
+        			row.setGrpDue("Submitted on " + DateUtils.formatDate(report.getSubmittedOn()));
+    			}
     		}
     		
     		Set<ReportDefinitionWrapper> createWrappers = evaluationResult.getCreateMap().get(aeReportId);
@@ -1129,7 +1146,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setGrpStatus("Being withdrawn");
         			row.setOtherStatus("Being withdrawn");
         			
-        			row.setDue("Due on " + DateUtils.formatDate(wrapper.getDueOn()));
+        			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
         			row.setGrpDue("");
         			row.setOtherDue("");
     			}
@@ -1148,7 +1165,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setGrpStatus("Being withdrawn");
         			row.setOtherStatus("Being withdrawn");
         			
-        			row.setDue("Due on " + DateUtils.formatDate(wrapper.getDueOn()));
+        			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
         			row.setGrpDue("");
         			row.setOtherDue("");
     			}
