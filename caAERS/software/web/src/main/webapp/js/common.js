@@ -102,6 +102,8 @@ AE.registerCalendarPopups = function(containerId) {
                 onSelect    : function(cal) {
                     input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y');
                     ValidationManager.setNormalState(input);
+                    if(cal.dateClicked)
+	                    cal.callCloseHandler();
                 }
             }
         );
@@ -133,6 +135,9 @@ AE.registerCalendarPopups = function(containerId) {
                     ValidationManager.setNormalState($(cal.params['dayInputId']));
                     ValidationManager.setNormalState($(cal.params['monthInputId']));
                     ValidationManager.setNormalState($(cal.params['yearInputId']));
+                    
+                    if(cal.dateClicked)
+	                    cal.callCloseHandler();
                 }
             }
         );
