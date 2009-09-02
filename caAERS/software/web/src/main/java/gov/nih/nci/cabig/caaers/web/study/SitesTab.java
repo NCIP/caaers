@@ -78,7 +78,7 @@ class SitesTab extends StudyTab {
 
         int i = 0;
         for (StudyOrganization ss : copySS) {
-            if (ss instanceof StudySite)
+            if (ss instanceof StudySite && ss.getOrganization() != null && ss.getOrganization().getId() != null) {
                 if (ss.getId() == null) {
                     StudyOrganization existingStudySite = hm.get(ss.getOrganization().getId());
                     if (existingStudySite != null) {
@@ -91,6 +91,7 @@ class SitesTab extends StudyTab {
                 } else {
                     hm.put(ss.getOrganization().getId(), ss);
                 }
+            }
             i++;
         }
 
