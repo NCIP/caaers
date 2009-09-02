@@ -108,24 +108,19 @@ public class BlankFormGenerator {
         wsStudy.setIdentifiers(studyIdentifiers);
 
         EvaluationPeriodType ept = new EvaluationPeriodType();
-        ept.setName(epoch.getName());
-        ept.setDescriptionText(epoch.getDescriptionText());
-        ept.setSolicitedAdverseEvents(new EvaluationPeriodType.SolicitedAdverseEvents());
-
         EvaluationPeriodType.SolicitedAdverseEvents wsSAE = new EvaluationPeriodType.SolicitedAdverseEvents();
         List<SolicitedAdverseEventType> wsSAET = new ArrayList<SolicitedAdverseEventType>();
-        for (SolicitedAdverseEvent domainSAE : epoch.getArms().get(0).getSolicitedAdverseEvents()) {
-
-/*
-            System.out.println("ctc=" + domainSAE.getCtcterm());
-            System.out.println("meddra=" + domainSAE.getLowLevelTerm());
-            System.out.println("other=" + domainSAE.getOtherTerm());
-*/
-
-            SolicitedAdverseEventType saet = new SolicitedAdverseEventType();
-            if (domainSAE.getCtcterm() != null) saet.setName(domainSAE.getCtcterm().getTerm());
-            if (domainSAE.getLowLevelTerm() != null) saet.setName(domainSAE.getLowLevelTerm().getMeddraTerm());
-            wsSAET.add(saet);
+        if(epoch != null){
+        	ept.setName(epoch.getName());
+        	ept.setDescriptionText(epoch.getDescriptionText());
+        	ept.setSolicitedAdverseEvents(new EvaluationPeriodType.SolicitedAdverseEvents());
+        
+        	for (SolicitedAdverseEvent domainSAE : epoch.getArms().get(0).getSolicitedAdverseEvents()) {
+        		SolicitedAdverseEventType saet = new SolicitedAdverseEventType();
+        		if (domainSAE.getCtcterm() != null) saet.setName(domainSAE.getCtcterm().getTerm());
+        		if (domainSAE.getLowLevelTerm() != null) saet.setName(domainSAE.getLowLevelTerm().getMeddraTerm());
+        		wsSAET.add(saet);
+        	}
         }
         wsSAE.setSolicitedAdverseEvent(wsSAET);
         ept.setSolicitedAdverseEvents(wsSAE);
