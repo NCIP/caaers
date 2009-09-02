@@ -235,7 +235,7 @@
 
 	<chrome:box id="assignment.general" title="General" collapsable="true">
 	   <p><tags:instructions code="instruction_subject_enter.medhist.gen"/></p>
-		<tags:hasErrorsMessage path="assignment.baselinePerformance" />
+		<%--<tags:hasErrorsMessage path="assignment.baselinePerformance" />--%>
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
 			<ui:row path="assignment.baselinePerformance">
@@ -252,7 +252,7 @@
 	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
 		
      <p><tags:instructions code="instruction_subject_enter.medhist.disease"/></p>
-		<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />
+		<%--<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />--%>
 		<div id="anchorDiseaseInfo">
 
 			<ui:row path="assignment.diseaseHistory.abstractStudyDisease">
@@ -355,7 +355,7 @@
 
     <chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
             <p><tags:instructions code="instruction_subject_enter.medhist.meta"/></p>
-            <tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
+            <%--<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />--%>
             <%--<p><tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/></p>--%>
 
             <div style="padding-left:20px;">
@@ -379,7 +379,7 @@
 
     <chrome:box id="assignment.preExistingConditions" title="Pre-Existing Conditions" collapsable="true">
             <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
-            <tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
+            <%--<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />--%>
 
             <div style="padding-left:20px;">
             <div>
@@ -400,8 +400,10 @@
    
     <chrome:box id="assignment.concomitantMedications" title="Concomitant Medications" collapsable="true">
                 <p><tags:instructions code="instruction_subject_enter.medhist.conmeds"/></p>
+<%--
                 <tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
                 <tags:hasErrorsMessage path="concomitantMedication" />
+--%>
 
                 <div style="padding-left:20px;">
                 <div>

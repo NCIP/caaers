@@ -18,10 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections15.FactoryUtils;
 import org.apache.commons.collections15.list.LazyList;
@@ -34,6 +31,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
+
+    protected HashMap<String, Boolean> emptyFieldNameMap;
 
     protected Participant participant;
     private Study study;
@@ -278,4 +277,12 @@ public class ParticipantInputCommand {
     public void setConcomitantMedication(String concomitantMedication) {
 		this.concomitantMedication = concomitantMedication;
 	}
+
+    public HashMap<String, Boolean> getEmptyFieldNameMap() {
+        return emptyFieldNameMap;
+    }
+
+    public void setEmptyFieldNameMap(HashMap<String, Boolean> emptyFieldNameMap) {
+        this.emptyFieldNameMap = emptyFieldNameMap;
+    }
 }

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,8 +46,6 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 	
     private static final Log log = LogFactory.getLog(SubjectMedHistoryTab.class);
     Map<String, String> methodNameMap = new HashMap<String, String>();
-
-	protected HashMap<String, Boolean> emptyFieldNameMap;
 
     private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
@@ -91,7 +90,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	refData.put("studyDiseasesOptions", command.getStudyDiseasesMap());
     	refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
     	refData.put("priorTherapyOptions", initializePriorTherapyOptions());
-        request.setAttribute("empties", emptyFieldNameMap);
+        request.setAttribute("empties", command.getEmptyFieldNameMap());
         
         refData.put("_priorTherapy_surgery_id", PriorTherapy.SURGERY);
     	refData.put("_priorTherapy_radiation_id", PriorTherapy.RADIATION);
@@ -382,14 +381,14 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
-        emptyFieldNameMap = new HashMap<String, Boolean>();
+        command.setEmptyFieldNameMap(new HashMap<String, Boolean>());
 
         validatePreExistingConditions(command, commandBean, fieldGroups, errors);
         validateConcomitantMedications(command, commandBean, fieldGroups, errors);
         validatePriorTherapies(command, commandBean, fieldGroups, errors);
         validateMetastaticDiseases(command, commandBean, fieldGroups, errors);
 
-        WebUtils.populateErrorFieldNames(emptyFieldNameMap, errors);
+        WebUtils.populateErrorFieldNames(command.getEmptyFieldNameMap(), errors);
     }
 
     protected void validatePreExistingConditions(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
@@ -412,18 +411,18 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     }
 
     protected void validateMetastaticDiseases(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-        List list = command.getAssignment().getPriorTherapies();
+        List list;
         Set<String> set = new HashSet<String>();
         // check MetaStaticDisease duplicates
         list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
         set = new HashSet();
         int i = 0;
         for (Object object : list) {
-            StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
-            if (pt != null && pt.getCodedSite() != null)
-                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
+            StudyParticipantMetastaticDiseaseSite metastaticDiseaseSite = (StudyParticipantMetastaticDiseaseSite)object;
+            if (metastaticDiseaseSite != null && metastaticDiseaseSite.getCodedSite() != null)
+                if (!set.add(metastaticDiseaseSite.getCodedSite().getName())) errors.reject("PT_007", new Object[] {metastaticDiseaseSite.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
 
-            if (pt == null || pt.getId() == null) {
+            if (metastaticDiseaseSite == null || StringUtils.isEmpty(metastaticDiseaseSite.getName())) {
                 errors.rejectValue(String.format("assignment.diseaseHistory.metastaticDiseaseSites[%d].codedSite", i), "SAE_026","Missing Metastatic disease site");
             }
             i++;

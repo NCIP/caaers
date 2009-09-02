@@ -11,17 +11,17 @@
 
 <chrome:division id="assignment.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
 
-    <jsp:attribute name="titleFragment">
-		${metastaticSite.name}
-	</jsp:attribute>
+    <jsp:attribute name="title">${metastaticSite.name}</jsp:attribute>
+    <jsp:attribute name="titleFragment"></jsp:attribute>
 
     <jsp:body>
+
+        <c:if test="${empty metastaticSite.name}">
 
 <ui:row path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite">
     <jsp:attribute name="label"><caaers:message code="LBL_subject.medical.history.site.name" /></jsp:attribute>
     <jsp:attribute name="value">
 
-                      <c:if test="${empty metastaticSite.name}">
 
                     <c:set var="initValue" value="${not empty anatomicSite ? anatomicSite.name : 'Begin typing here...'}"/>
                       <ui:autocompleter path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite" initialDisplayValue="${initValue}" size="50" required="true" title="Metastatic disease site">
@@ -58,9 +58,9 @@
 					  </div>
 					 
                           
-                      </c:if>
 </jsp:attribute>
 </ui:row>        
+        </c:if>
 
         </jsp:body>
 </chrome:division>    
