@@ -1,6 +1,7 @@
 var Errors = Class.create();
 var Errors = {
     list: new Hash(),
+    counter : 0,
     showSummary: function() {
         var msgs = "<ul class='errors'>";
         Errors.list.each(function(e) {
@@ -10,7 +11,7 @@ var Errors = {
             if (pDivision) openDivisionById(pDivision.id);
         });
         msgs += "</ul>";
-        if ($('TOP_JAVA_SCRIPT_ERRORS') && Errors.list.keys.length > 0) {
+        if ($('TOP_JAVA_SCRIPT_ERRORS') && Errors.counter == 1) {
             $('TOP_JAVA_SCRIPT_ERRORS').innerHTML = msgs;
             $('TOP_JAVA_SCRIPT_ERRORS').show();
         }
@@ -18,6 +19,7 @@ var Errors = {
 
     push: function(elementID, errorMsg) {
         Errors.list.set(elementID, errorMsg);
+        Errors.counter = 1;
     },
 
     findParentDivision: function(elementID) {
@@ -27,5 +29,6 @@ var Errors = {
 
     clear: function() {
         Errors.list = new Hash();
+        Errors.counter = 0;
     }
 }

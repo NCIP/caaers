@@ -12,11 +12,14 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,8 +36,8 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  * Base Controller class to handle the basic work flow in the Creation / Updation of a Study Design
  * This uses AbstractTabbedFlowFormController to implement tabbed workflow
  *
- * @author Priyatam
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 public abstract class StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
 
@@ -105,12 +108,11 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     }
 
     /**
-     * Override this in sub controller if summary is needed
-     *
-     * @return
+     * Shows the Study Summary on top of the page while navigating the flow
+     * 
      */
     protected boolean isSummaryEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -165,7 +167,48 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
         }
     }
-    
+
+    @Override
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
+        Map refData = super.referenceData(request, oCommand, errors, page);
+        StudyCommand cmd = (StudyCommand) oCommand;
+        Study study = cmd.getStudy();
+
+        boolean showSummary = false;
+
+        if (isSummaryEnabled()) {
+            List<ListValues> summary = new ArrayList<ListValues>();
+            if (study.getShortTitle() != null) {
+                summary.add(new ListValues(getMessage("study.shortTitle", "Short title."), study.getShortTitle()));
+                showSummary = true;
+            }
+
+            if (study.getPrimaryIdentifier() != null && study.getPrimaryIdentifier().getValue() != null) {
+                summary.add(new ListValues(getMessage("study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
+                showSummary = true;
+            }
+
+            if (study.getPhaseCode() != null) {
+                summary.add(new ListValues(getMessage("study.phase", "Phase."), study.getPhaseCode().toString()));
+                showSummary = true;
+            }
+
+            if (study.getPrimarySponsorCode() != null) {
+                summary.add(new ListValues(getMessage("LBL_study.primaryFundingSponsorOrganization", "Funding sponsor."), study.getPrimaryFundingSponsorOrganization().getName()));
+                showSummary = true;
+            }
+
+            if (study.getStudyCoordinatingCenter().getOrganization() != null) {
+                summary.add(new ListValues(getMessage("LBL_study.studyCoordinatingCenter.organization", "Coordinating center."), study.getStudyCoordinatingCenter().getOrganization().getName()));
+                showSummary = true;
+            }
+
+            if (showSummary) refData.put("studySummary", summary);
+        }
+        
+        return refData;
+    }
+
     /**
      * Do not show flash message when we change site.
      */

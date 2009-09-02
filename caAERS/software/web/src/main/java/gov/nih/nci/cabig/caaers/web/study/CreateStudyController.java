@@ -103,6 +103,4 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         return super.suppressValidation(request, command);
     }
 
-
-
 }

@@ -104,11 +104,6 @@ public class EditStudyController extends StudyController<StudyCommand> {
     }
 
     @Override
-    protected boolean isSummaryEnabled() {
-        return true;
-    }
-
-    @Override
     protected void layoutTabs(final Flow<StudyCommand> flow) {
     	/**
     	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
@@ -137,31 +132,6 @@ public class EditStudyController extends StudyController<StudyCommand> {
         refdata.put("currentTask", task);
         StudyCommand cmd = (StudyCommand) command;
         Study study = cmd.getStudy();
-        
-        if (isSummaryEnabled()) {
-            List<ListValues> summary = new ArrayList<ListValues>();
-            if (study.getShortTitle() != null) {
-                summary.add(new ListValues(getMessage("study.shortTitle", "Short title."), study.getShortTitle()));
-            }
-
-            if (study.getPrimaryIdentifier() != null) {
-                summary.add(new ListValues(getMessage("study.primaryIdentifier", "Primary identifier."), study.getPrimaryIdentifier().toString()));
-            }
-
-            if (study.getPhaseCode() != null) {
-                summary.add(new ListValues(getMessage("study.phase", "Phase."), study.getPhaseCode().toString()));
-            }
-
-            if (study.getPrimarySponsorCode() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.primaryFundingSponsorOrganization", "Funding sponsor."), study.getPrimaryFundingSponsorOrganization().getName()));
-            }
-
-            if (study.getStudyCoordinatingCenter().getOrganization() != null) {
-                summary.add(new ListValues(getMessage("LBL_study.studyCoordinatingCenter.organization", "Coordinating center."), study.getStudyCoordinatingCenter().getOrganization().getName()));
-            }
-
-            refdata.put("studySummary", summary);
-        }
         
         refdata.put("editFlow", true);
         return refdata;
