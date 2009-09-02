@@ -12,6 +12,7 @@
             var confirmation = confirm("Do you really want to delete?");
             if (!confirmation) return; //return if not agreed.
 
+            ValidationManager.validate = false;
             var ssfrm = $('command');
             ssfrm._target.name = '_noname';
             ssfrm._action.value = 'removeSite';
