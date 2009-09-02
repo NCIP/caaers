@@ -77,6 +77,9 @@ public class EditStudyController extends StudyController<StudyCommand> {
         if (errors.hasErrors()) {
             return cmd;
         }
+
+        getStudyRepository().synchronizeStudyPersonnel(study);
+
         Study mergedStudy = getDao().merge(study);
         getDao().initialize(mergedStudy);
 

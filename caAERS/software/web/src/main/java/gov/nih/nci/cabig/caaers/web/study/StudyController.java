@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
@@ -35,8 +36,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class
-        StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
+public abstract class StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
 
     private static final Log log = LogFactory.getLog(StudyController.class);
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
@@ -52,7 +52,7 @@ public abstract class
     private MeddraVersionDao meddraVersionDao;
     private ConditionDao conditionDao;
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
-
+    private StudyRepository studyRepository;
     private LowLevelTermDao lowLevelTermDao;
     
     private Configuration configuration;
@@ -283,5 +283,13 @@ public abstract class
 
     public void setConfigPropertyRepository(ConfigPropertyRepositoryImpl configPropertyRepository) {
         this.configPropertyRepository = configPropertyRepository;
+    }
+
+    public StudyRepository getStudyRepository() {
+        return studyRepository;
+    }
+
+    public void setStudyRepository(StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
     }
 }

@@ -10,7 +10,7 @@ var Errors = {
             if (pDivision) openDivisionById(pDivision.id);
         });
         msgs += "</ul>";
-        if ($('TOP_JAVA_SCRIPT_ERRORS')) {
+        if ($('TOP_JAVA_SCRIPT_ERRORS') && Errors.list.keys.length > 0) {
             $('TOP_JAVA_SCRIPT_ERRORS').innerHTML = msgs;
             $('TOP_JAVA_SCRIPT_ERRORS').show();
         }
