@@ -261,6 +261,41 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 	}
 	
 	/**
+	 * Tests {@link CreateReportingPeriodController#onBindAndValidate(javax.servlet.http.HttpSetvletRequest, Object, BindException)},
+	 * should pass even with no treatment type
+	 * @throws Exception
+	 */
+	public void testOnBindAndValidateHttpServletRequestObjectBindException_NoTreatmentType() throws Exception{
+		List<AdverseEventReportingPeriod> rpList = createReportingPeriodList();
+		
+		List<Epoch> epochList = new ArrayList<Epoch>();
+		Epoch e1 = Fixtures.createEpoch(5, "Baseline");
+		Epoch e2 = Fixtures.createEpoch(4, "Treatment");
+		Epoch e3 = Fixtures.createEpoch(3, "Test");
+		epochList.add(e1);
+		epochList.add(e2);
+		epochList.add(e3);
+		
+		expect(study.getEpochs()).andReturn(epochList);
+		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
+		expect(studySite.getStudy()).andReturn(study).anyTimes();
+		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
+		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
+		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
+		replayMocks();
+		
+		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
+		command.getReportingPeriod().setEpoch(null);
+		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2009").toDate());
+		command.getReportingPeriod().setEndDate(null);
+		command.getReportingPeriod().getTreatmentAssignment().setId(5);
+		
+		controller.onBindAndValidate(request, command, errors);
+		assertEquals(0, errors.getErrorCount());
+	}
+	
+	
+	/**
 	 * Tests {@link CreateReportingPeriodController#onBindAndValidate(javax.servlet.http.HttpServletRequest, Object, BindException)},
 	 * should throw error related to duplicate {@link Epoch} (Baseline)
 	 * @throws Exception

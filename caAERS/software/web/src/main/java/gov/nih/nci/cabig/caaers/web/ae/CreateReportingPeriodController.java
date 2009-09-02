@@ -11,7 +11,9 @@ import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +141,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of this course/cycle", false);
 //        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", false, createEpochOptions(command)));
         InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
@@ -174,10 +176,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
         List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getReportingPeriods();
         
        
-        if (rPeriod.getEpoch() == null) {
-            return;
-        }
-        
         //check the treatment assignment.
         if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
             if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
@@ -195,9 +193,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
         
         
         // Check for duplicate baseline Reporting Periods.
-        if (rPeriod.getEpoch().getName().equals("Baseline")) {
+        if (rPeriod.getEpoch() != null && rPeriod.getEpoch().getName().equals("Baseline")) {
             for (AdverseEventReportingPeriod aerp : rPeriodList) {
-                if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
+            	
+                if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
                     InputField epochField = fieldGroups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
                     errors.rejectValue(epochField.getPropertyName(), "CRP_002", "A Baseline treatment type already exists");
                     return;
@@ -221,33 +220,54 @@ public class CreateReportingPeriodController extends SimpleFormController {
         AdverseEventReportingPeriod reportingPeriod = command.getReportingPeriod();
         reportingPeriod.setAssignment(command.getAssignment());
 
-        //initialize the solicited AEs
-        if (reportingPeriod.getAdverseEvents().isEmpty()) {
-            for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
-                AdverseEvent adverseEvent = new AdverseEvent();
-                adverseEvent.setSolicited(true);
-                adverseEvent.setRequiresReporting(false);
-               
-
-                if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-                    AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
-            		aellt.setLowLevelTerm(sae.getLowLevelTerm());
-            		adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
-            		aellt.setAdverseEvent(adverseEvent);
-                } else {
-                    AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-                    aeCtcTerm.setCtcTerm(sae.getCtcterm());
-                    adverseEvent.setAdverseEventTerm(aeCtcTerm);
-                    if(sae.getOtherTerm() != null)
-                    	adverseEvent.setLowLevelTerm(sae.getOtherTerm());
-                    aeCtcTerm.setAdverseEvent(adverseEvent);
-                    if(command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
-                    	adverseEvent.setExpected(true);
-                }
-                reportingPeriod.addAdverseEvent(adverseEvent);
-            }
-        }
+        // Here is the logic to allow treatment type to be optional:
+        // Step 1. All the solicited adverse events which are not graded are removed from the reporting period.
+        // Step 2. All the solicited aes belonging to the epoch chosen in the form are added to the reporting period as 
+        // adverse events only if they are not already present in the reporting period.
         
+    	Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
+    	for(AdverseEvent ae: reportingPeriod.getAdverseEvents())
+    		if(!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)){
+    			if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+    				existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), true);
+    			}else{
+    				existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), true);
+    			}
+    		}else
+    			ae.retire();
+    	
+    	adverseEventReportingPeriodDao.save(reportingPeriod);
+        
+        //initialize the solicited AEs
+        if(reportingPeriod.getEpoch() != null){
+        	for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
+        		AdverseEvent adverseEvent = new AdverseEvent();
+        		adverseEvent.setSolicited(true);
+        		adverseEvent.setRequiresReporting(false);
+              
+        		if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA){
+        			if(!existingAeTermsIdMap.containsKey(sae.getLowLevelTerm().getId())) {
+        				AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+        				aellt.setLowLevelTerm(sae.getLowLevelTerm());
+        				adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
+        				aellt.setAdverseEvent(adverseEvent);
+        			}
+        		}else{
+        			if(!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())){
+        				AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+        				aeCtcTerm.setCtcTerm(sae.getCtcterm());
+        				adverseEvent.setAdverseEventTerm(aeCtcTerm);
+        				if(sae.getOtherTerm() != null)
+        					adverseEvent.setLowLevelTerm(sae.getOtherTerm());
+        				aeCtcTerm.setAdverseEvent(adverseEvent);
+        				if(command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
+        					adverseEvent.setExpected(true);
+        			}
+        		}
+        		reportingPeriod.addAdverseEvent(adverseEvent);
+        	}
+        }
+        	
         adverseEventReportingPeriodDao.save(reportingPeriod);
         
         //call workflow, to enact
@@ -291,7 +311,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         // Check if the start date is equal to end date.
         // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
-        if (!rPeriod.getEpoch().getName().equals("Baseline")) {
+        if (rPeriod.getEpoch() != null && !rPeriod.getEpoch().getName().equals("Baseline")) {
             if (endDate != null && startDate.equals(endDate)) {
                 errors.rejectValue("reportingPeriod.startDate", "CRP_004", "For Non-Baseline treatment type Start date cannot be equal to End date");
             }
@@ -330,15 +350,15 @@ public class CreateReportingPeriodController extends SimpleFormController {
             }
             
             // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
-            if (rPeriod.getEpoch().getName().equals("Baseline")) {
-                if (!aerp.getEpoch().getName().equals("Baseline")) {
+            if (rPeriod.getEpoch() != null && rPeriod.getEpoch().getName().equals("Baseline")) {
+                if (aerp.getEpoch()!= null && !aerp.getEpoch().getName().equals("Baseline")) {
                     if (DateUtils.compareDate(sDate, startDate) < 0) {
                         errors.rejectValue("reportingPeriod.startDate", "CRP_006", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
                         return;
                     }
                 }
             } else {
-                if (aerp.getEpoch().getName().equals("Baseline")) {
+                if (aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
                     if (DateUtils.compareDate(startDate, sDate) < 0) {
                         errors.rejectValue("reportingPeriod.startDate", "CRP_007", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
                         return;

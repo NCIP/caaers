@@ -68,9 +68,14 @@ public class GenerateBlankFormPdfController extends AbstractCommandController {
             int studyIDint = Integer.parseInt(studyID);
             Study study = studyDao.getById(studyIDint);
 
-            int epochIDint = Integer.parseInt(epochID);
-            Epoch epoch = epochDao.getById(epochIDint);
-            String xmlData = g.serialize(study, epoch);
+            String xmlData = "";
+            if(epochID != null && !epochID.equals("")){
+            	int epochIDint = Integer.parseInt(epochID);
+            	Epoch epoch = epochDao.getById(epochIDint);
+            	xmlData = g.serialize(study, epoch);
+            }else{
+            	xmlData = g.serialize(study, null);
+            }
 
             // Save the XML in temp
             FileOutputStream out = new FileOutputStream(tempDir + File.separator + "AE-Blank.xml");

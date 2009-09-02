@@ -283,7 +283,8 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     			rpAjaxable.setName(rp.getName());
     			rpAjaxable.setStartDate(rp.getStartDate());
     			rpAjaxable.setEndDate(rp.getEndDate());
-    			rpAjaxable.setEpochName(rp.getEpoch().getName());
+    			if(rp.getEpoch() != null)
+    				rpAjaxable.setEpochName(rp.getEpoch().getName());
 
                 // TA can be null because of the "Other TA" field in the "Create RP" Popup
                 if (rp.getTreatmentAssignment() != null) {
@@ -307,7 +308,8 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	rpAjaxable.setId(rp.getId());
     	rpAjaxable.setStartDate(rp.getStartDate());
     	rpAjaxable.setEndDate(rp.getEndDate());
-    	rpAjaxable.setEpochName(rp.getEpoch().getName());
+    	if(rp.getEpoch() != null)
+    		rpAjaxable.setEpochName(rp.getEpoch().getName());
     	
     	Integer cycleNumber = rp.getCycleNumber();
     	rpAjaxable.setCycleNumber((cycleNumber != null)? cycleNumber.toString() : "");
