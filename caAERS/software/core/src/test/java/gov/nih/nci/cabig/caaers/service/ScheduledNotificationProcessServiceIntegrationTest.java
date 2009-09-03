@@ -84,7 +84,7 @@ public class ScheduledNotificationProcessServiceIntegrationTest extends CaaersDb
 		}
 		
 		service.process(-14, -222);
-		assertEquals( emails.size(),emailedTo.size() );
+		assertEquals( 5,emailedTo.size() );
 		scheduledNotification = scheduledNotificationDao.getById(-222);
 		assertEquals(DeliveryStatus.DELIVERED, scheduledNotification.getDeliveryStatus());
 	}
