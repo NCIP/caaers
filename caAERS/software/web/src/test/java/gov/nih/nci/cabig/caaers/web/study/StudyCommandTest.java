@@ -2,28 +2,27 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.easymock.classextension.EasyMock;
-
-import junit.framework.TestCase;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 /**
  * 
@@ -209,5 +208,26 @@ public class StudyCommandTest extends AbstractTestCase {
 		verifyMocks();
 		assertEquals("Complete", command.getDataEntryStatus());
 	}
-
+	
+	public void testCheckForDuplicateStudyByIdentifier(){
+		SystemAssignedIdentifier id = Fixtures.createSystemAssignedIdentifier("test");
+		EasyMock.expect(studyDao.find((StudyQuery) EasyMock.anyObject())).andReturn(null);
+		replayMocks();
+		assertNull(command.checkForDuplicateStudyByIdentifier(id));
+		verifyMocks();
+		
+	}
+	
+	public void testCheckForDuplicateStudyByIdentifier_AnotherStudyReturned(){
+		SystemAssignedIdentifier id = Fixtures.createSystemAssignedIdentifier("test");
+		
+		Study s2 = Fixtures.createStudy("test");
+		s2.setId(56);
+		
+		EasyMock.expect(studyDao.find((StudyQuery) EasyMock.anyObject())).andReturn(Arrays.asList(s2));
+		replayMocks();
+		assertSame(s2, command.checkForDuplicateStudyByIdentifier(id));
+		verifyMocks();
+		
+	}
 }

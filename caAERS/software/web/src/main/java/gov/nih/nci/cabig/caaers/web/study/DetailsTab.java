@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -125,7 +126,7 @@ public class DetailsTab extends StudyTab {
             // sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor
             // name you are looking for");
             fields.add(sponsorField);
-            InputField sponsorIdentiferField = InputFieldFactory.createTextField("study.identifiers[0].value", "Funding sponsor study identifier", true);
+            InputField sponsorIdentiferField = InputFieldFactory.createTextField("study.identifiersLazy[0].value", "Funding sponsor study identifier", true);
             fields.add(sponsorIdentiferField);
 
         }
@@ -134,7 +135,7 @@ public class DetailsTab extends StudyTab {
             coordinatingCenterFieldGroup = new DefaultInputFieldGroup("ccFieldGroup");
             List<InputField> fields = coordinatingCenterFieldGroup.getFields();
             fields.add(InputFieldFactory.createAutocompleterField("study.studyCoordinatingCenter.organization", "Coordinating center", true));
-            fields.add(InputFieldFactory.createTextField("study.identifiers[1].value", "Coordinating center study identifier", true));
+            fields.add(InputFieldFactory.createTextField("study.identifiersLazy[1].value", "Coordinating center study identifier", true));
 
         }
         
@@ -209,6 +210,40 @@ public class DetailsTab extends StudyTab {
         if (command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA && command.getStudy().getDiseaseTerminology().getMeddraVersion() == null) {
         	InputField field = fieldGroups.get("sdcFieldGroup").getFields().get(1);
         	errors.rejectValue(field.getPropertyName(), "STU_006",new Object[]{field.getDisplayName()}, "Missing " + field.getDisplayName());
+        }
+        
+        Study aStudy;
+        
+        //validate Sponsor - identifiers
+      
+        if(command.getStudy().getPrimaryFundingSponsorOrganization() != null){
+        	OrganizationAssignedIdentifier sponsorIdentifier = (OrganizationAssignedIdentifier)command.getStudy().getIdentifiers().get(0);
+            InputField sponsorIdentifierField = fieldGroups.get("fsFieldGroup").getFields().get(1);
+        	OrganizationAssignedIdentifier identifier = new OrganizationAssignedIdentifier();
+        	identifier.setType(sponsorIdentifier.getType());
+        	identifier.setOrganization(command.getStudy().getPrimaryFundingSponsorOrganization());
+        	identifier.setValue(sponsorIdentifier.getValue());
+        	aStudy = command.checkForDuplicateStudyByIdentifier(identifier);
+        	if(aStudy != null){
+        		errors.rejectValue(sponsorIdentifierField.getPropertyName(), "STU_021", new Object[]{aStudy.getShortTitle(), aStudy.getPrimaryIdentifierValue()}, 
+				"The primary identifier you choose for this study is present in another study");
+        	}
+        }
+        
+        //validate Coordinating center - identifiers
+      
+        if(command.getStudy().getStudyCoordinatingCenter() != null && command.getStudy().getStudyCoordinatingCenter().getOrganization() != null){
+        	OrganizationAssignedIdentifier ccIdentifier = (OrganizationAssignedIdentifier)command.getStudy().getIdentifiers().get(1);
+            InputField ccIdentifierField = fieldGroups.get("ccFieldGroup").getFields().get(1);
+        	OrganizationAssignedIdentifier identifier = new OrganizationAssignedIdentifier();
+        	identifier.setType(ccIdentifier.getType());
+        	identifier.setOrganization(command.getStudy().getStudyCoordinatingCenter().getOrganization());
+        	identifier.setValue(ccIdentifier.getValue());
+        	aStudy = command.checkForDuplicateStudyByIdentifier(identifier);
+        	if(aStudy != null){
+        		errors.rejectValue(ccIdentifierField.getPropertyName(), "STU_021", new Object[]{aStudy.getShortTitle(), aStudy.getPrimaryIdentifierValue()}, 
+				"The primary identifier you choose for this study is present in another study");
+        	}
         }
     }
 

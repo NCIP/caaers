@@ -18,11 +18,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.axis.utils.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class IdentifiersTab extends StudyTab {
 
@@ -77,36 +79,59 @@ public class IdentifiersTab extends StudyTab {
 
         return map;
     }
-
+    
+    /**
+     * Validates organization assigned identifier.
+     *  - No duplicates are allowed
+     *  - Organization for Organization assigned identifier is mentioned
+     *  - System Name for System assigned identifier is mentioned
+     *  - More than one Coordinating center identifier is not allowed
+     *  - More than one Funding sponsor identifier is not allowed
+     *  - Identifier with same value,type,assigner should not be present in other studies. 
+     */
     @Override
     protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        HashSet<String> set = new HashSet<String>();
+        HashSet<Identifier> set = new HashSet<Identifier>();
         List<Identifier> identifiers = command.getStudy().getIdentifiersLazy();
         
         for (int i = 0; i < identifiers.size(); i++) {
             Identifier identifier = identifiers.get(i);
-            String uniString = "";
-
-            if (identifier instanceof OrganizationAssignedIdentifier) {
-                if (((OrganizationAssignedIdentifier) identifier).getOrganization() == null)
-                    errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
-                else
-                    uniString = identifier.getValue() + identifier.getType() + ((OrganizationAssignedIdentifier)identifier).getOrganization().getId();
-            }
-
-            if (identifier instanceof SystemAssignedIdentifier) {
-                if ((((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier).getSystemName().equals("")))
-                    errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
-                else
-                    uniString = identifier.getValue() + identifier.getType() + ((SystemAssignedIdentifier)identifier).getSystemName();
+            
+            if (!set.add(identifier)) {
+                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate, already an identifier of this type is present");
             }
             
-            if (!uniString.equals("") && !set.add(uniString)) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate identifier.");
+            if(identifier instanceof SystemAssignedIdentifier){
+            	if(StringUtils.isEmpty( ((SystemAssignedIdentifier)identifier).getSystemName())){
+            		errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
+            	}
+            }else{
+            	if(((OrganizationAssignedIdentifier)identifier).getOrganization() == null){
+            		errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
+            	}
             }
-
+            
+//            BJ : To be determined by Paul, whether this is necessary.
+//            //0- is sponsor identifier
+//            if(i > 0 && identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
+//            	errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_023","More than one Funding Sponsor identifier is not allowed");
+//            }
+//            
+//            //1- is coordinating center identifier
+//            if(i > 1 && identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
+//            	errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_022","More than one Coordinating Center identifier is not allowed");
+//            }
+            
+            Study aStudy = command.checkForDuplicateStudyByIdentifier(identifier);
+        	if(aStudy != null){
+        		errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_021", new Object[]{aStudy.getShortTitle(), aStudy.getPrimaryIdentifierValue()}, 
+        				"The primary identifier you choose for this study is present in another study");
+        	}
         }
+        
+       
+        
 
     }
 

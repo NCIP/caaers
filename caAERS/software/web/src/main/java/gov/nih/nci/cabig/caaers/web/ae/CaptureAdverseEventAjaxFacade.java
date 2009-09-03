@@ -57,39 +57,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 			this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	 }
 	 
-    /**
-     * This function is called to fetch the content associated to a reporting period
-     *   -  after we create a new reporting period
-     *   -  after we select a reporting period from the combo box.
-     *   
-     *   A little bit on the working, 
-     *     - Will refresh the assignment object, (to support newly added Reporting period ordering)
-     *     - Will fetch the content associated to the reporting period by calling captureAdverseEventDetailSection.jsp
-     *   - fetchDetailsOnly - true, 
-     *     - Will refresh the reporting period
-     *     - Will fetch only the details section.
-     * @param reportingPeriodId
-     * @return
-     */
-    
-    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId, boolean fetchOnlyDetails){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
-    	AjaxOutput output = new AjaxOutput();
-    	if(!fetchOnlyDetails){
-    		command.refreshAssignment(reportingPeriodId);
-        	List<AdverseEventReportingPeriod> rpList = ObjectTools.reduceAll(command.getAssignment().getReportingPeriods(), "id", "startDate" , "endDate", "name");
-        	output.setObjectContent(rpList);
-    	}else{
-    		command.refreshReportingPeriod(reportingPeriodId);
-    	}
-    	
-    	//get the content for the below html section. 
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	params.put("adverseEventReportingPeriod", "" + reportingPeriodId);
-    	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
-    	output.setHtmlContent(html);
-    	return output;
-    }
+   
     /**
      * Create AdverseEvent objects corresponding to the terms(listOfTermIDs).
      *  Add the following parameters to request :- 

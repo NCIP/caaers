@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 
 
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 
 /**
@@ -409,5 +412,21 @@ public class StudyCommand {
 
     public void setStudyInvestigatorRoles(Map<String, String> studyInvestigatorRoles) {
         this.studyInvestigatorRoles = studyInvestigatorRoles;
+    }
+    
+    public Study checkForDuplicateStudyByIdentifier(Identifier identifier){
+    	StudyQuery query = new StudyQuery();
+        query.joinIdentifier();
+        query.filterByIdentifier(identifier);
+        
+        if(study.getId() != null){
+    	   query.ignoreStudyById(study.getId());
+        }
+        List<Study> studies = studyDao.find(query);
+        
+        if(CollectionUtils.isNotEmpty(studies)){
+        	return studies.get(0);
+        }
+        return null;
     }
 }

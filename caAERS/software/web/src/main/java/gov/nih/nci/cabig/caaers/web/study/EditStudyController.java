@@ -49,7 +49,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
         request.getSession().removeAttribute(CreateStudyAjaxFacade.CREATE_STUDY_FORM_NAME);
 
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
-        //to support backward compatability, epochs has to be preinitalized
+        //to support backward compatibility, epochs has to be preinitialized
         if (study.getEpochs() == null || study.getEpochs().isEmpty()) {
             study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
             study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));

@@ -175,29 +175,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 
 
-    /**
-     * This method will refresh the StudyParticipantAssignment and updates the {@link AdverseEventReportingPeriod}.
-     */
-    public void refreshAssignment(Integer reportingPeriodId){
-    	//reload assignmet
-    	assignmentDao.refresh(getAssignment());
-    	refreshReportingPeriod(reportingPeriodId);
-    }
-    
-    
-    public void refreshReportingPeriod(Integer reportingPeriodId){
-    	studyDao.lock(study);
-    	assignmentDao.reassociate(getAssignment());
-    	//reset the adverse event report in the command
-    	setAdverseEventReportingPeriod(null);
-    	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
-    		if(reportingPeriod.getId().equals(reportingPeriodId)){
-    			setAdverseEventReportingPeriod(reportingPeriod);
-    			break;
-    		}
-    	}
-    }
-
     
     public void clearSession(){
     	assignmentDao.clearSession();
@@ -575,15 +552,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(obj == null) return false;
 		return outcomes.remove(obj);
 	}
-	
-//    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
-//		this.selectedAesMap = selectedAesMap;
-//	}
-//    
-//    
-//    public Map<Integer, Boolean> getSelectedAesMap(){
-//   		return selectedAesMap;
-//    }
     
     public IndexFixedList<AdverseEvent> getAdverseEvents() {
 		return adverseEvents;
@@ -591,16 +559,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
 		this.adverseEvents = adverseEvents;
 	}
-//    /**
-//     * Returns all the {@link ReportDefinition} available to this AE
-//     */
-//    public List<ReportDefinition> getAllReportDefinitions() {
-//        return allReportDefinitions;
-//    }
-//
-//    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
-//        this.allReportDefinitions = allReportDefinitions;
-//    }
     
     public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {

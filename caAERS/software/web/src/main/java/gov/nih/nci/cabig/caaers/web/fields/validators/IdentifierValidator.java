@@ -1,11 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-import org.apache.commons.lang.math.NumberUtils;
-
-import java.text.DecimalFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 /**
  * @author Ion C. Olaru
