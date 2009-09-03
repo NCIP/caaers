@@ -20,11 +20,11 @@
     <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="fstatus">
         <c:if test="${not fn:contains(exclusions, field.displayName)}">
 		    <td style="border-right:none;">
-                <c:if test="${fstatus.index != 2}">
+                <c:if test="${fstatus.index != 2 || identifiers}">
                     <c:set var="fValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
                     <tags:renderInputs field="${field}" disabled="${identifiers and (index lt 2) and (fstatus.index ne 4)}"/>
                 </c:if>
-                <c:if test="${fstatus.index == 2}">Inactive</c:if>
+                <c:if test="${fstatus.index == 2 && !identifiers}">Inactive</c:if>
             </td>
 		</c:if>
 	</c:forEach>
