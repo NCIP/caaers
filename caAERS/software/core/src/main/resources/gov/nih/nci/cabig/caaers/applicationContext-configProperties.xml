@@ -198,7 +198,10 @@
                             <property name="code" value="Site IRB Identifier" />
                             <property name="desc" value="Site IRB Identifier" />
                         </bean>
-                       
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Other" />
+                            <property name="desc" value="Other" />
+                        </bean>
                     </list>
                 </entry>
                 <!--  Participant Identifiers -->

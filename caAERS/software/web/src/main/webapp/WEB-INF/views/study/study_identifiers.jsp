@@ -14,7 +14,7 @@
 	var si = [];
 	var addIdentifierEditor;
 	var jsIdentifier = Class.create();
-	Object.extend(jsIdentifier.prototype, {	
+	Object.extend(jsIdentifier.prototype, {
             initialize: function(index,orgName) {
             	this.index = index;
             	si[index] = this;            	
@@ -142,7 +142,7 @@ margin:5px;
 <body>
 <study:summary />
 <p><tags:instructions code="study.study_identifers.top" /></p>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">   
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="false">   
    <jsp:attribute name="repeatingFields">
         	<div>
 			<input type="hidden" name="_action" value="">

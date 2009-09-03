@@ -86,16 +86,26 @@ public class IdentifiersTab extends StudyTab {
         
         for (int i = 0; i < identifiers.size(); i++) {
             Identifier identifier = identifiers.get(i);
-            if (!set.add(identifier.getType())) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate, already an identifier of this type is present");
+            String uniString = "";
+
+            if (identifier instanceof OrganizationAssignedIdentifier) {
+                if (((OrganizationAssignedIdentifier) identifier).getOrganization() == null)
+                    errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
+                else
+                    uniString = identifier.getValue() + identifier.getType() + ((OrganizationAssignedIdentifier)identifier).getOrganization().getId();
             }
 
-            if (identifier instanceof OrganizationAssignedIdentifier && ((OrganizationAssignedIdentifier) identifier).getOrganization() == null) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].organization", "STU_010", "Organization is required..!");
-
-            } else if (identifier instanceof SystemAssignedIdentifier && (((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier).getSystemName().equals(""))) {
-                errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
+            if (identifier instanceof SystemAssignedIdentifier) {
+                if ((((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier).getSystemName().equals("")))
+                    errors.rejectValue("study.identifiersLazy[" + i + "].systemName", "STU_011","System Name is required..!");
+                else
+                    uniString = identifier.getValue() + identifier.getType() + ((SystemAssignedIdentifier)identifier).getSystemName();
             }
+            
+            if (!uniString.equals("") && !set.add(uniString)) {
+                errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate identifier.");
+            }
+
         }
 
     }

@@ -34,7 +34,10 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
                     if (id instanceof OrganizationAssignedIdentifier && otherId instanceof OrganizationAssignedIdentifier) {
                         OrganizationAssignedIdentifier orgId = (OrganizationAssignedIdentifier) id;
                         OrganizationAssignedIdentifier orgOtherId = (OrganizationAssignedIdentifier) otherId;
-                        if (orgId.getId().equals(orgOtherId.getId())) return false;
+
+                        boolean a1 = orgId.getId() == null;
+                        boolean a2 = otherId.getId() == null;
+                        if (!a1 && !a2 && orgId.getId().equals(orgOtherId.getId())) return false;
                     } else if (id instanceof SystemAssignedIdentifier && otherId instanceof SystemAssignedIdentifier) {
                         SystemAssignedIdentifier sId = (SystemAssignedIdentifier) id;
                         SystemAssignedIdentifier sOtherId = (SystemAssignedIdentifier) otherId;
