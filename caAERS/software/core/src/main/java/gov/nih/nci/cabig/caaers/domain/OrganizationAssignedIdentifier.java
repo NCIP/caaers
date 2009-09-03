@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -38,4 +40,23 @@ public class OrganizationAssignedIdentifier extends Identifier {
         this.organization = organization;
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((organization == null) ? 0 : organization.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) return false;
+		if(!(obj instanceof OrganizationAssignedIdentifier)) return false;
+		
+		OrganizationAssignedIdentifier other = (OrganizationAssignedIdentifier) obj;
+		return ComparisonTools.nullSafeEquals(getOrganization(), other.getOrganization());
+
+	}
+    
 }

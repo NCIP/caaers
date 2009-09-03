@@ -182,7 +182,7 @@
             id="-16"
             stu_id="-2"
             value="1138-43"
-            type="local"
+            type="Coordinating Center Identifier"
             organization_id="-1003"
             discriminator_column="1"/>
     <IDENTIFIERS

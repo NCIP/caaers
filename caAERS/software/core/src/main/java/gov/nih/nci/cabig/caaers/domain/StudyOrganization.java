@@ -273,14 +273,14 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
     	List<String> emails = new ArrayList<String>();
     	
     	//check in personnel
-    	for(StudyPersonnel personnel : getStudyPersonnels()){
+    	for(StudyPersonnel personnel : getActiveStudyPersonnel()){
     		if(StringUtils.equals(personnel.getRoleCode(), roleName)){
     			emails.add(personnel.getEmailAddress());
     		}
     	}
     	
     	//check among investigators
-    	for(StudyInvestigator investigator : getStudyInvestigators()){
+    	for(StudyInvestigator investigator : getActiveStudyInvestigators()){
     		if(StringUtils.equals(investigator.getRoleCode(), roleName)){
     			emails.add(investigator.getEmailAddress());
     		}

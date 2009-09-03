@@ -66,7 +66,31 @@
              data_entry_status="1"
             />
 	
-	
+	 <IDENTIFIERS
+            id="-11"
+            stu_id="-4"
+            value="13js77"
+            type="MRN"
+            system_name="dummy"
+            organization_id="-1003"
+            discriminator_column="2"/>
+			
+	<IDENTIFIERS
+            id="-12"
+            stu_id="-3"
+            value="A1234"
+            type="MRN"
+            system_name="caaers"
+            discriminator_column="2"/>
+			
+    <IDENTIFIERS
+            id="-13"
+            stu_id="-2"
+            value="1138-42"
+            type="Coordinating Center Identifier"
+            organization_id="-1003"
+            discriminator_column="1"/>
+			
 	<STUDY_ORGANIZATIONS
             id="-1000"
             version="1"

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Will have same identifiers as that in CaaersStudyTest.xml
+-->
 <p:studies xmlns:p="http://webservice.caaers.cabig.nci.nih.gov" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <p:study>
-        <shortTitle>Study PCS</shortTitle>
-        <longTitle>Pancreatic Cancer Study ph 5</longTitle>
+        <shortTitle>A Strange Study</shortTitle>
+        <longTitle>Strange Cancer Study</longTitle>
         <precis>Precis</precis>
         <description>Test Study</description>
         <phaseCode>Phase I Trial</phaseCode>
@@ -25,7 +28,7 @@
         <behavioralTherapyType>true</behavioralTherapyType>
         <fundingSponsor>
             <organizationAssignedIdentifier>
-                <value>CTEP001</value>
+                <value>CTEP002</value>
             </organizationAssignedIdentifier>
             <p:studyFundingSponsor>
                 <p:organization>
@@ -36,11 +39,11 @@
         </fundingSponsor>
         <coordinatingCenter>
             <organizationAssignedIdentifier>
-                <value>WFCCC001</value>
+                <value>WFCCC003</value>
             </organizationAssignedIdentifier>
             <p:studyCoordinatingCenter>
                 <p:organization>
-                    <name>Cancer and Leukemia Group B</name>
+                    <name>Johns Hopkins University</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
             </p:studyCoordinatingCenter>
@@ -53,39 +56,8 @@
                 </p:organization>
                 <startDate>2002-02-02</startDate>
                 <studyInvestigators>
-                    <p:studyInvestigator>
-                        <roleCode>SPI</roleCode>
-                          <startDate>2002-02-02</startDate>
-                        <p:siteInvestigator>
-                            <p:investigator>
-                                <firstName>Gerry</firstName>
-                                <lastName>Elbridge</lastName>
-                                <nciIdentifier></nciIdentifier>
-                            </p:investigator>
-                        </p:siteInvestigator>
-                    </p:studyInvestigator>
-                    <p:studyInvestigator>
-                        <roleCode>SI</roleCode>
-                          <startDate>2002-02-02</startDate>
-                        <p:siteInvestigator>
-                            <p:investigator>
-                                <firstName>George</firstName>
-                                <lastName>Clinton</lastName>
-                                <nciIdentifier></nciIdentifier>
-                            </p:investigator>
-                        </p:siteInvestigator>
-                    </p:studyInvestigator>
                 </studyInvestigators>
                 <studyPersonnels>
-                    <p:studyPersonnel>
-                        <roleCode>caaers_participant_cd</roleCode>
-                         <startDate>2002-02-02</startDate>
-                        <p:researchStaff>
-                            <firstName>Mike</firstName>
-                            <lastName>Conway</lastName>
-                            <nciIdentifier></nciIdentifier>
-                        </p:researchStaff>
-                    </p:studyPersonnel>
                 </studyPersonnels>
             </p:studySite>
             <p:studySite>
@@ -108,14 +80,15 @@
             </p:studySite>
         </studyOrganizations>
 
+
        <identifiers>
        	<p:organizationAssignedIdentifier>
              <type>Site Identifier</type>
-             <value>123</value>
+             <value>444</value>
              <primaryIndicator>true</primaryIndicator>
              <p:organization>
-                 <name>Division of Cancer Prevention</name>
-                 <nciInstituteCode>DCP</nciInstituteCode>
+                 <name>Cancer and Leukemia Group B</name>
+                 <nciInstituteCode>CALGB</nciInstituteCode>
              </p:organization>
           </p:organizationAssignedIdentifier>
       </identifiers>

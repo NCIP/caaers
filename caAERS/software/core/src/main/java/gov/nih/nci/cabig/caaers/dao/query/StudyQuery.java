@@ -1,15 +1,24 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StudyQuery extends AbstractQuery {
+	
+	private static String STUDY_ID = "studyId";
 
     private static String STUDY_IDENTIFIER_VALUE = "identifier";
 
     private static String STUDY_IDENTIFIER_TYPE = "idType";
+    
+    private static String STUDY_IDENTIFIER_ORGANIZATION = "idOrgId";
+    
+    private static String STUDY_IDENTIFIER_SYSTEM = "idSysName";
 
     private static String STUDY_SHORT_TITLE = "shortTitle";
 
@@ -43,6 +52,15 @@ public class StudyQuery extends AbstractQuery {
         joinParticipant();
         join("p.identifiers as pIdentifier");
     }
+    
+    /**
+     * Add a NOT condition on Study.id
+     * @param id
+     */
+    public void ignoreStudyById(Integer id){
+    	andWhere("s.id <> :" + STUDY_ID);
+    	setParameter(STUDY_ID, id);
+    }
 
     // s.status <> 'adminstratively complete'
     public void filterByNonAdministrativelyComplete() {
@@ -66,6 +84,33 @@ public class StudyQuery extends AbstractQuery {
     public void filterByIdentifierType(final String type) {
         andWhere("s.identifiers.type LIKE :" + STUDY_IDENTIFIER_TYPE);
         setParameter(STUDY_IDENTIFIER_TYPE, type);
+    }
+    
+    public void filterByIdentifier(Identifier identifier){
+    	
+    	//type
+    	String type = identifier.getType();
+    	if(type != null){
+    		andWhere("lower(identifier.type) = :"+ STUDY_IDENTIFIER_TYPE);
+    		setParameter(STUDY_IDENTIFIER_TYPE, type.toLowerCase());
+    	}
+    	
+    	//value
+    	String value = identifier.getValue();
+    	if(value != null){
+    		andWhere("lower(identifier.value) = :" + STUDY_IDENTIFIER_VALUE);
+            setParameter(STUDY_IDENTIFIER_VALUE, value.toLowerCase());
+    	}
+    	
+    	if(identifier instanceof OrganizationAssignedIdentifier){
+    		//organization
+    		andWhere("identifier.organization.id = :" + STUDY_IDENTIFIER_ORGANIZATION );
+    		setParameter(STUDY_IDENTIFIER_ORGANIZATION, ( (OrganizationAssignedIdentifier) identifier).getOrganization().getId());
+    	}else {
+    		//system
+    		andWhere("lower(identifier.systemName) = :" + STUDY_IDENTIFIER_SYSTEM);
+    		setParameter(STUDY_IDENTIFIER_SYSTEM, ((SystemAssignedIdentifier)identifier).getSystemName());
+    	}
     }
 
     // shortTitle

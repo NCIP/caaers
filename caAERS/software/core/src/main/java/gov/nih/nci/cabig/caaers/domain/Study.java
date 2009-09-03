@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -23,7 +22,6 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -36,6 +34,10 @@ import org.hibernate.annotations.Where;
  *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
+ * @author Biju Joseph
+ * @author Ion Olaru
+ * @author Sameer Sawant
+ * @author Monish Dombla
  */
 @Entity
 @Table(name = "studies")
@@ -472,7 +474,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    @UniqueIdentifierForStudy(message = "Identifier already exist for a different study")
     @UniqueObjectInCollection(message = "Duplicates found in Identifiers list")
     public List<Identifier> getIdentifiersLazy() {
         return lazyListHelper.getLazyList(Identifier.class);
@@ -921,7 +922,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
      */
     public List<String> findEmailAddressByRole(String roleName){
         List<String> emails = new ArrayList<String>();
-        if(CollectionUtils.isNotEmpty(getStudyOrganizations())){
+        if(CollectionUtils.isNotEmpty(getActiveStudyOrganizations())){
         	for(StudyOrganization studyOrg : studyOrganizations){
             	emails.addAll(studyOrg.findEmailAddressByRole(roleName));
             }

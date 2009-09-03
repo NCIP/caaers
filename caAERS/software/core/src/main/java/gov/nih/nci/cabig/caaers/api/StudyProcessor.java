@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.domain.Study;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
- * Webservice Interface for Study Creation and Updation.
+ * Webservices Interface to Manage {@link Study}.
  * @author Monish Dombla
  *
  */

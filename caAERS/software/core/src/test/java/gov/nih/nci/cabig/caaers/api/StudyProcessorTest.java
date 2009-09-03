@@ -12,6 +12,8 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
+import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -20,9 +22,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 /**
- * Test case to test convrsion of jaxb study object to domain study object and call to studymigrator with study domain object.
+ * Test case to test conversion of JAXB study object to domain study object and call to {@link StudyMigrator} with study domain object.
  *
  * @author Monish Dombla
+ * @author Biju Joseph - added testcases for identifiers uniqueness.
  */
 public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
@@ -498,14 +501,71 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         assertEquals(2, updatedStudy.getStudyAgents().size());
 
     }
+    
+    /**
+     * Tests : Created a Study, then trying to create another study with same identifier. 
+     * @throws Exception
+     */
+    public void testStudyCreate_DuplicateIdentifiers() throws Exception{
+    	 createStudy("studydata/CreateStudyTest.xml");
+    	 
+    	 //make sure it got created
+    	 Study study = studyDao.getByShortTitle("Study PCS");
+    	 assertNotNull(study);
+    	 
+    	 CaaersServiceResponse response = createStudy("studydata/CreateStudyTest_3.xml");
+    	 assertEquals("1", response.getResponse().getResponsecode());
+    	 assertEquals("Another study with short title \"Study PCS\" is using same identifier, so cannot process \"A Study JBC 3\"",response.getResponse().getDescription());
+    }
 
+    /**
+     * Tests : Created a Study, then trying to update the same study, no changes made to identifiers, but added agents. 
+     * @throws Exception
+     */
+    public void testStudyUpdate_NoDuplicateIdentifiers() throws Exception{
+    	 createStudy("studydata/CreateStudyTest.xml");
+    	 
+    	 //make sure it got created
+    	 Study study = studyDao.getByShortTitle("Study PCS");
+    	 assertNotNull(study);
 
-    private void createStudy(String studyXmlLocation) throws Exception {
+         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
+
+         CaaersServiceResponse response = studyProcessor.updateStudy(studies);
+         assertEquals("0", response.getResponse().getResponsecode());
+    }
+    
+    /**
+     * Created two studies (CreateStudyTest and CreateStudyTest_4), now trying to update first study by adding an identifier present in second study. 
+     *  - Not update should fail. 
+     * @throws Exception
+     */
+    public void testStudyUpdate_AddingDuplicateIdentifiers() throws Exception{
+    	 createStudy("studydata/CreateStudyTest.xml");
+    	 
+    	 //make sure it got created
+    	 Study study = studyDao.getByShortTitle("Study PCS");
+    	 assertNotNull(study);
+
+    	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");
+    	 assertEquals("0", response.getResponse().getResponsecode());
+    	 
+    	//make sure it got created
+    	 study = studyDao.getByShortTitle("A Strange Study");
+    	 assertNotNull(study);
+    	 
+         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
+
+         response = studyProcessor.updateStudy(studies);
+         assertEquals("1", response.getResponse().getResponsecode());
+    }
+
+    private CaaersServiceResponse createStudy(String studyXmlLocation) throws Exception {
 
 
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
 
-        studyProcessor.createStudy(studies);
+        return studyProcessor.createStudy(studies);
 
 
     }
