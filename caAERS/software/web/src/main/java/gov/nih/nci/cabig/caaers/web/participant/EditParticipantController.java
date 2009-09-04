@@ -144,6 +144,8 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
+
+        if (targetPage < curPage) return true;
         
         // supress for ajax and delete requests
         if (isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
