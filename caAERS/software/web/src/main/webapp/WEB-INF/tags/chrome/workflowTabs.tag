@@ -10,6 +10,7 @@
 <ul id="" class="tabs autoclear">
 <c:set var="unfilledTabs">${UNFILLED_TABS}</c:set>
 <c:set var="mandatoryTabs">${MANDATORY_TABS}</c:set>
+<c:set var="mandatoryFieldedTabs">${MANDATORY_FIELD_TABS}</c:set>
 
 <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
  <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
@@ -19,7 +20,7 @@
         <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">
-					<c:if test="${!fn:contains(unfilledTabs, atab.shortTitle)}">
+					<c:if test="${(!fn:contains(unfilledTabs, atab.shortTitle) ) and fn:contains(mandatoryFieldedTabs, atab.shortTitle)}">
 		        		<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt="Complete" style="vertical-align:top;" />
 		        	</c:if>
 				</c:if>

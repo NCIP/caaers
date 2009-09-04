@@ -80,6 +80,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
 
     private static final String MANDATORY_TAB_KEY = "MANDATORY_TABS";
+    
+    private static final String MANDATORY_FIELD_TAB_KEY = "MANDATORY_FIELD_TABS";
 
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -236,15 +238,20 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         Map<String, Object> refdata = super.referenceData(request, cmd, errors, page);
         StringBuffer sb = new StringBuffer("notab");
         StringBuffer sbSections = new StringBuffer();
+        StringBuffer sbMandatoryFieldTab = new StringBuffer();
         for (Tab<ExpeditedAdverseEventInputCommand> tab : getFlow(cmd).getTabs()) {
             if (tab instanceof AeTab) {
                 AeTab aeTab = (AeTab) tab;
                 sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
                 sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd, request) ? tab.getShortTitle() : "");
+                sbMandatoryFieldTab.append(",").append(aeTab.hasMandatoryFields(cmd, request) ? tab.getShortTitle() : "");
             }
         }
+        
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());
         refdata.put(UNFILLED_TAB_KEY, sb.toString());
+        refdata.put(MANDATORY_FIELD_TAB_KEY, sbMandatoryFieldTab.toString());
+        
         if (displaySummary(page)) {
             refdata.put("aesummary", cmd.getAeReport().getSummary());
         }

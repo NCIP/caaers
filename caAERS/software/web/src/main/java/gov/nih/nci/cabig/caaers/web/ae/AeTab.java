@@ -198,6 +198,17 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         }
         return false;
     }
+    
+    public boolean hasMandatoryFields(ExpeditedAdverseEventInputCommand command , HttpServletRequest request){
+    	 MandatoryProperties props = command.getMandatoryProperties();
+         if (props == null) return false;
+         for(ExpeditedReportSection section : section()){
+         	TreeNode node = expeditedReportTree.getNodeForSection(section);
+            if (node == null) continue;
+            if(props.isMandatory(node)) return true;
+         }
+         return false;
+    }
 
     public abstract ExpeditedReportSection[] section();
 
