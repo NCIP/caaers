@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -45,6 +44,7 @@ import java.util.Locale;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
@@ -366,17 +366,31 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		    	
 		    	List<Epoch> epochs = study.getEpochs();
 		    	Epoch epochToSave = null;
-		    	for (Epoch epoch:epochs) {
-		    		if (epoch.getName().equals(criteria.getCourse().getTreatmentType())) {
-		    			epochToSave = epoch;
-		    			break;
-		    		}
+		    	
+		    	if (StringUtils.isNotEmpty(criteria.getCourse().getTreatmentType())) {
+			    	for (Epoch epoch:epochs) {
+			    		if (epoch.getName().equals(criteria.getCourse().getTreatmentType())) {
+			    			epochToSave = epoch;
+			    			break;
+			    		}
+			    	}
 		    	}
+		    	// CAAERS-2813
+		    	if (StringUtils.isNotEmpty(criteria.getCourse().getTreatmentType()) && epochToSave == null) {
+		    		throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_010", new String[]{criteria.getCourse().getTreatmentType()},"",Locale.getDefault()));
+		    	}
+		    	
+		    	if (epochToSave != null) {
+		    		adverseEventReportingPeriod.setEpoch(epochToSave);
+		    	}
+		    	//
+		    	/*
 		    	if (epochToSave == null) {
 		    		throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_010", new String[]{criteria.getCourse().getTreatmentType()},"",Locale.getDefault()));
 		    	} else {
 		    		adverseEventReportingPeriod.setEpoch(epochToSave);
 		    	}
+		    	*/
 		    	
 		    	adverseEventReportingPeriod.setAssignment(assignment);
 		    	List<String> errors = validateRepPeriodDates(adverseEventReportingPeriod,rPeriodList,assignment.getStartDateOfFirstCourse());
@@ -538,7 +552,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 	        // Check if the start date is equal to end date.
 	        // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
-	        if (!rPeriod.getEpoch().getName().equals("Baseline")) {
+	        
+	        if (rPeriod.getEpoch() !=null && !rPeriod.getEpoch().getName().equals("Baseline")) {
 	            if (endDate != null && startDate.equals(endDate)) {
 	                errors.add(messageSource.getMessage("WS_AEMS_016", new String[]{},"",Locale.getDefault()));
 	            }
@@ -577,7 +592,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	            }
 	            
 	            // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
-	            if (rPeriod.getEpoch().getName().equals("Baseline")) {
+	            if (rPeriod.getEpoch() !=null && rPeriod.getEpoch().getName().equals("Baseline")) {
 	                if (!aerp.getEpoch().getName().equals("Baseline")) {
 	                    if (DateUtils.compareDate(sDate, startDate) < 0) {
 	                        errors.add(messageSource.getMessage("WS_AEMS_018", new String[]{},"",Locale.getDefault()));
@@ -585,7 +600,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	                    }
 	                }
 	            } else {
-	                if (aerp.getEpoch().getName().equals("Baseline")) {
+	                if (aerp.getEpoch() !=null && aerp.getEpoch().getName().equals("Baseline")) {
 	                    if (DateUtils.compareDate(startDate, sDate) < 0) {
 	                        errors.add(messageSource.getMessage("WS_AEMS_019", new String[]{},"",Locale.getDefault()));
 	                        return errors;
