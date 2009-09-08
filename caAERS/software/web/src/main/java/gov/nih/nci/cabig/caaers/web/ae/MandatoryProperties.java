@@ -62,6 +62,20 @@ public class MandatoryProperties {
         }
         return mandatory;
     }
+    
+    /**
+     * Recursively checks whether the node or any of the nodes children is mandatory. 
+     * @param node
+     * @return
+     */
+    public boolean isAnyMandatory(TreeNode node){
+    	boolean mandatory =  isMandatory(node);
+    	if(mandatory || node.isLeaf()) return mandatory;
+    	for(TreeNode childNode : node.getChildren()) {
+    		mandatory |= isAnyMandatory(childNode);
+    	}
+    	return mandatory;
+    }
 
     public List<UnsatisfiedProperty> getUnsatisfied(TreeNode section, ExpeditedAdverseEventReport aeReport) {
         List<TreeNode> filtered = new LinkedList<TreeNode>();
