@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +28,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
 /**
  * This class encapsulates all types of organizations associated with a Study
@@ -257,8 +255,10 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      */
     public StudyPersonnel findStudyPersonnel(SiteResearchStaffRole siteResearchStaffRole){
     	for(StudyPersonnel studyPersonnel : this.getStudyPersonnelsInternal()){
-    		if(studyPersonnel.getRoleCode().equals(siteResearchStaffRole.getRoleCode())){
-    			return studyPersonnel;
+    		if(studyPersonnel.getSiteResearchStaff().getResearchStaff().equals(siteResearchStaffRole.getSiteResearchStaff().getResearchStaff())){
+    			if(studyPersonnel.getRoleCode().equals(siteResearchStaffRole.getRoleCode())){
+    				return studyPersonnel;
+    			}
     		}
     	}
     	return null;

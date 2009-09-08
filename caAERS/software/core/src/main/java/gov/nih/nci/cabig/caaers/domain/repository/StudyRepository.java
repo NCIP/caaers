@@ -44,29 +44,14 @@ public class StudyRepository {
         //whose associateAllStudies flag is set to true.
         ResearchStaffQuery query = null;
         List<ResearchStaff> researchStaffs = null;
-        StudyPersonnel studyPersonnel = null;
         for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
-            if(studyOrganization.getId() == null){
-                researchStaffs = new ArrayList<ResearchStaff>();
-                query= new ResearchStaffQuery();
-                query.filterByAssociateAllStudies(true);
-                query.filterByOrganization(Integer.toString(studyOrganization.getOrganization().getId()));
-                researchStaffs = researchStaffDao.getLocalResearchStaff(query);
-                for(ResearchStaff researchStaff : researchStaffs){
-                    for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-                        if(studyOrganization.getOrganization().equals(siteResearchStaff.getOrganization())){
-                            for(SiteResearchStaffRole siteResearchStaffRole : siteResearchStaff.getSiteResearchStaffRoles()){
-                                studyPersonnel = new StudyPersonnel();
-                                studyPersonnel.setSiteResearchStaff(siteResearchStaff);
-                                studyPersonnel.setStudyOrganization(studyOrganization);
-                                studyPersonnel.setRoleCode(siteResearchStaffRole.getRoleCode());
-                                studyPersonnel.setStartDate(siteResearchStaffRole.getStartDate());
-                                studyPersonnel.setEndDate(siteResearchStaffRole.getEndDate());
-                                studyOrganization.addStudyPersonnel(studyPersonnel);
-                            }
-                        }
-                    }
-                }
+            researchStaffs = new ArrayList<ResearchStaff>();
+            query= new ResearchStaffQuery();
+            query.filterByAssociateAllStudies(true);
+            query.filterByOrganization(Integer.toString(studyOrganization.getOrganization().getId()));
+            researchStaffs = researchStaffDao.getLocalResearchStaff(query);
+            for(ResearchStaff researchStaff : researchStaffs){
+            	study.syncStudyPersonnel(researchStaff);
             }
         }
     }
