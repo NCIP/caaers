@@ -205,7 +205,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
          for(ExpeditedReportSection section : section()){
          	TreeNode node = expeditedReportTree.getNodeForSection(section);
             if (node == null) continue;
-            if(props.isMandatory(node)) return true;
+            if(props.isAnyMandatory(node)) return true;
          }
          return false;
     }
