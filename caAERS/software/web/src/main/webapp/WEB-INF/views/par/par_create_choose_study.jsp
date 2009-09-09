@@ -5,6 +5,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>choose a Study</title>
 <script>
+    Event.observe(window, "load", function() {
+        Event.observe($('flow-prev'), "click", function() {
+            ValidationManager.validate = false;
+        })
+    });
 function submitPage(s){
 	document.getElementById("command").submit();
 }
@@ -53,6 +58,10 @@ function ajaxStudySearch(searchText, searchType) {
 }
 
 </script>
+    <style>
+        div.row div.label {width:12em;}
+        div.row div.value {margin-left:13em;}
+    </style>
 </head>
 <body>
 <!-- TOP LOGOS END HERE -->
@@ -153,7 +162,7 @@ function ajaxStudySearch(searchText, searchType) {
                 </c:forEach>
 --%>
                 <ui:row path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}">
-                    <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" text="${fieldGroups.studySubjectIdentifier.fields[0].displayName}"/></jsp:attribute>
+                    <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" labelProperty="studySubjectIdentifier" text=""/></jsp:attribute>
                     <jsp:attribute name="value"><ui:text path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" cssClass="validate-NOTEMPTY&&MAXLENGTH64 ${not empty command.studySubjectIdentifier ? 'valueOK' : 'required'}" title="study subject identifier"/></jsp:attribute>
                 </ui:row>
             </chrome:division>
