@@ -81,8 +81,8 @@
             <c:forEach items="${fieldGroups.researchStaff.fields}" var="field" begin="0" end="3"><tags:renderRow field="${field}"/></c:forEach>
 
             <div class="row">
-                <div class="label">Login ID.</div>
-                <div class="value"><ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required"/>
+                <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
+                <div class="value"><ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required" required="true" title="Login ID"/>
                 </div>
             </div>
             
