@@ -113,6 +113,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<Epoch> epochs=new ArrayList<Epoch>();
     
     private Boolean dataEntryStatus;
+    
+    //transient
+    private String primaryIdentifierValue;
+    
 
     public Study() {
 
@@ -216,6 +220,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		} catch (Exception igonre) {
 		}
         return null;
+    }
+    
+    @Transient
+    public String getPrimaryIdentifierValue(){
+    	if(this.primaryIdentifierValue == null){
+    		Identifier identifier = getPrimaryIdentifier();
+        	if(identifier != null) this.primaryIdentifierValue =  identifier.getValue();
+    	}
+    	return this.primaryIdentifierValue;
     }
 
     public void addStudyAgent(final StudyAgent studyAgent) {
@@ -349,7 +362,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @Transient
     public List<? extends AbstractStudyDisease<? extends DomainObject>> getActiveStudyDiseases(){
     	
-    	if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.CTEP)){
+    	if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm() != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.CTEP)){
     		List<CtepStudyDisease> diseases = new ArrayList<CtepStudyDisease>();
     		if(CollectionUtils.isNotEmpty(ctepStudyDiseases)){
         		for(CtepStudyDisease disease: ctepStudyDiseases){
@@ -357,7 +370,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         		}
         	}
     		return diseases;
-    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)){
+    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm() != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)){
     		List<MeddraStudyDisease> diseases = new ArrayList<MeddraStudyDisease>();
     		if(CollectionUtils.isNotEmpty(meddraStudyDiseases)){
         		for(MeddraStudyDisease disease : meddraStudyDiseases){
@@ -365,7 +378,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         		}
         	}
     		return diseases;
-    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.OTHER)){
+    	}else if(diseaseTerminology != null && diseaseTerminology.getDiseaseCodeTerm() != null && diseaseTerminology.getDiseaseCodeTerm().equals(DiseaseCodeTerm.OTHER)){
     		List<StudyCondition> diseases = new ArrayList<StudyCondition>();
     		if(CollectionUtils.isNotEmpty(studyConditions)){
         		for(StudyCondition disease : studyConditions){

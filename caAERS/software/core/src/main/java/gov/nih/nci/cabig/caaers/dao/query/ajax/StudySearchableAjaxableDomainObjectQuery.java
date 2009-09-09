@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * this query Will NOT work if you are retriving study sites by searching on participants also
+ * This query Will NOT work if you are retrieving study sites by searching on participants also
  *
  * @author Biju Joseph
  */
