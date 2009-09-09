@@ -39,7 +39,7 @@
     <jsp:body>
                 <c:if test="${!readOnly && empty orgName}">
                         <div class="row">
-                            <div class="label">Site:</div>
+                            <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].organization" labelProperty="organization" text=""/></div>
                             <div class="value">
                                 <c:set var="initValue" value="${not empty orgName ? orgName : 'Begin typing here...'}"/>
                                         <ui:autocompleter path="researchStaff.siteResearchStaffs[${index}].organization" initialDisplayValue="${initValue}">
@@ -69,37 +69,37 @@
                 <div class="row">
                         <div class="leftpanel">
                             <div class="row">
-                                <div class="label">Email address:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].emailAddress" labelProperty="emailAddress" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].emailAddress" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">Phone:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].phoneNumber" labelProperty="phoneNumber" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].phoneNumber" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">Fax:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].faxNumber" labelProperty="faxNumber" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].faxNumber" readonly="${readOnly}"/></div>
                             </div>
                         </div>
                         <div class="rightpanel">
                             <div class="row">
-                                <div class="label">Street:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.street" labelProperty="street" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.street" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">City:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.city" labelProperty="city" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.city" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">State:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.state" labelProperty="state" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.state" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">ZIP:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.zip" labelProperty="zip" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.zip" cssClass="validate-ZIPCODE" readonly="${readOnly}"/></div>
                             </div>
                             <div class="row">
-                                <div class="label">Country:</div>
+                                <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].address.country" labelProperty="country" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].address.country" readonly="${readOnly}"/></div>
                             </div>
                         </div>
@@ -179,11 +179,11 @@
                                 <tr>
                                 <th>Role name
                                 <th>Start date
-                                <th>Start date
+                                <th>End date
                                 <c:forEach items="${command.siteResearchStaffCommandHelper[index].rsRoles}" var="role" varStatus="j">
                                         <c:if test="${role.checked}">
                                             <tr>
-                                                <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<ui:checkbox path="siteResearchStaffCommandHelper[${index}].rsRoles[${j.index}].checked" disabled="true"/>&nbsp;${command.allRoles[j.index].name}</c:if>
+                                                <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;${command.allRoles[j.index].name}</c:if>
                                                 <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.startDate}" /><br></c:if>
                                                 <td style="border-bottom:1px #eeeeee solid;"><c:if test="${role.checked}">&nbsp;&nbsp;<tags:formatDate value="${role.endDate}" /><br></c:if>
                                         </c:if>
