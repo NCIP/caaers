@@ -14,10 +14,9 @@
             width: 100%;
         }
 
-        div.row div.label {
-            width: 15em;
-            margin-left: 0px;
-        }
+        div.row div.label {width:13em;}
+        div.row div.value {margin-left:14em;}
+        
     </style>
     <script>
         function submitPage(s) {
