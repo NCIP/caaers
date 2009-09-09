@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 
 
 import java.util.ArrayList;
@@ -35,6 +36,8 @@ public class StudyCommand {
     protected List<ConfigProperty> allInvestigatorRoles;
     protected Map<String, String> studyPersonnelRoles;
     protected Map<String, String> studyInvestigatorRoles;
+
+    private StudyRepository studyRepository;
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -428,5 +431,13 @@ public class StudyCommand {
         	return studies.get(0);
         }
         return null;
+    }
+
+    public StudyRepository getStudyRepository() {
+        return studyRepository;
+    }
+
+    public void setStudyRepository(StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
     }
 }
