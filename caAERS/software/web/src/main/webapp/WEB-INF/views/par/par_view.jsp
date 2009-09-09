@@ -31,6 +31,7 @@
 
 <chrome:box title="${command.participant.lastName}, ${command.participant.firstName}">
 
+<chrome:flashMessage/>
 <chrome:division title="Demographic Information">
     <br>
     <table id="test2" class="single-fields" width="100%">
