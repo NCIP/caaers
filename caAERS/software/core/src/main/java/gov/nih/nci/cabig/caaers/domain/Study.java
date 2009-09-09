@@ -230,6 +230,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     	}
     	return this.primaryIdentifierValue;
     }
+    
+    public void setPrimaryIdentifierValue(String value){
+    	this.primaryIdentifierValue = value;
+    }
 
     public void addStudyAgent(final StudyAgent studyAgent) {
         getStudyAgents().add(studyAgent);
