@@ -114,9 +114,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     
     private Boolean dataEntryStatus;
     
-    //transient
-    private String primaryIdentifierValue;
-    
 
     public Study() {
 
@@ -222,18 +219,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         return null;
     }
     
-    @Transient
-    public String getPrimaryIdentifierValue(){
-    	if(this.primaryIdentifierValue == null){
-    		Identifier identifier = getPrimaryIdentifier();
-        	if(identifier != null) this.primaryIdentifierValue =  identifier.getValue();
-    	}
-    	return this.primaryIdentifierValue;
-    }
-    
-    public void setPrimaryIdentifierValue(String value){
-    	this.primaryIdentifierValue = value;
-    }
 
     public void addStudyAgent(final StudyAgent studyAgent) {
         getStudyAgents().add(studyAgent);
