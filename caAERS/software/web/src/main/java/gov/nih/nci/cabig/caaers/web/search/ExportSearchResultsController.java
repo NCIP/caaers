@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.web.search.ui.SaveSearch;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SelectedColumn;
 import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
-import gov.nih.nci.cagrid.data.style.CreationHelper;
 
 import java.io.File;
 import java.io.FileInputStream;

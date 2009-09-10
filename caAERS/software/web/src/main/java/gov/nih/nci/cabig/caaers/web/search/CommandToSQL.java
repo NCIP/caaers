@@ -13,8 +13,6 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.UiAssociation;
-import gov.nih.nci.cagrid.data.cql.cacore.AttributeTypeDetector;
-import gov.nih.nci.cagrid.data.cql.cacore.ClassAccessUtilities;
 
 /**
  *
