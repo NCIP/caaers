@@ -64,16 +64,6 @@
 			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3.sb"/>
 			<dependency org="javax.jcr" name="jcr" rev="1.0" /> <!--  dependency at hibernate layer, by jbpm -->
 
-			<!-- For advanced search -->
-            <dependency org="com.semanticbits.sdkQuery" name="sdkQuery" rev="0.2.0">
-            	<exclude conf="*" name="cglib*" />
-        		<exclude conf="*" name="asm*" />
-        		<exclude conf="*" name="ehcache*" />
-        		<exclude conf="*" name="spring*" />
-        		<exclude conf="*" name="hibernate*" />
-        		
-            </dependency>
-		
 			<!--  Commons Jar (Apache/NW) -->
         	<dependency org="commons-collections" name="commons-collections" rev="3.2" />
         	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
