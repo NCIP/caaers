@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -23,6 +24,7 @@ import gov.nih.nci.cabig.caaers.web.fields.validators.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -258,6 +260,12 @@ public class PatientDetailsTab extends AeTab {
     // ---------------- validation on individual items -------------------------
     
     protected void validateDiseaseInformation(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    	// Validation to check "Date of Initial Diagnosis"
+    	// The "date of Initial Diagnosis" cannot be a future date.
+    	Date todaysDate = new Date();
+    	if(command.getAeReport().getDiseaseHistory() != null && command.getAeReport().getDiseaseHistory().getDiagnosisDate() != null)
+    		if(DateUtils.compareDate(todaysDate, command.getAeReport().getDiseaseHistory().getDiagnosisDate().toDate()) < 0)
+    			errors.rejectValue("aeReport.diseaseHistory.diagnosisDate", "SAE_035");
     }
 
     protected void validateMetastaticDiseases(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {

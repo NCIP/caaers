@@ -18,6 +18,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -111,6 +113,17 @@ public class PatientDetailsTabTest extends AeTabTestCase {
         command.getAeReport().getSaeReportPreExistingConditions().get(0).setOther("Headache");
         doValidate();
         assertEquals(0, getErrors().getErrorCount());
+    }
+    
+    public void testDiseaseHistory() throws Exception {
+    	Date now = new Date();  
+    	Calendar cal = Calendar.getInstance();  
+    	cal.setTime(now);  
+    	cal.add(Calendar.DAY_OF_YEAR, 1);
+    	Date tomorrow = cal.getTime();
+    	command.getAeReport().getDiseaseHistory().setDiagnosisDate(tomorrow);
+    	doValidate();
+    	assertEquals(1, getErrors().getErrorCount());
     }
 
     public void testEitherConditionOrOtherRequired() throws Exception {
