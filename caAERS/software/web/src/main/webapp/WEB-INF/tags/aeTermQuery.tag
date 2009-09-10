@@ -216,8 +216,7 @@
             createAE.getTermsByCategory(catId, function(ctcTerms) {
                 ctcTerms.each(function(ctcTerm) {
                     if (!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify') > 0)) {
-                        var ctcFullName = (ctcTerm.fullName.length > 70 ? ctcTerm.fullName.substring(0, 70) + "..." : ctcTerm.fullName );
-                        catSel.addLIToUL("ae-terms", ctcTerm.id, ctcFullName);
+                        catSel.addLIToUL("ae-terms", ctcTerm.id, ctcTerm.fullName);
                     }
                 })
             });
