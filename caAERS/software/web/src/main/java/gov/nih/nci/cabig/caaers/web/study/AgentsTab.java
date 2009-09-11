@@ -125,7 +125,7 @@ public class AgentsTab extends StudyTab {
                     }
                     j++;
                     
-                    InputField indField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].studyAgentINDAssociations[" + j + "].investigationalNewDrug", "IND #", true);
+                    InputField indField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].studyAgentINDAssociations[" + j + "].investigationalNewDrug", "IND #", false);
                     indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
                     InputFieldAttributes.setSize(indField, 41);
                     indFieldGroup.getFields().add(indField);
