@@ -6,20 +6,13 @@ Object.extend(AdvancedSearchHelper.prototype, {
 	},
 	
 	updateSearchTargetObject: function(){
-		alert('Bappa 1');
 		$('criteria-section-id').style.display = 'none';
-		alert('Bappa 2');
 		$('targetObjectProgessIndicator').style.display = '';
-		alert('Bappa 3');
 		this.ajaxFacade.updateSearchTargetObject($('target-object-id').value , function(ajaxOutput) {
-			alert('Bappa 4');
 			$('criteria-section-id').innerHTML = ajaxOutput.htmlContent;
-			alert('Bappa 5');
 			//new Insertion.Top($('criteria-section-id'), ajaxOutput.htmlContent);
 			$('criteria-section-id').style.display='';
-			alert('Bappa 6');
 			$('targetObjectProgessIndicator').style.display = 'none';
-			alert('Bappa 7');
 		}.bind(this));
 	},
 	
