@@ -10,12 +10,14 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.webservice.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.webservice.participant.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Identifiers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,7 +25,7 @@ import java.util.List;
  * This class has one public method which Converts a JAXB generated Participant Type object
  * to a Domain Object Participant Type as required by ParticipantMigrator.
  * @author Monish Dombla
- *
+ * @author Biju Joseph 
  */
 public class ParticipantConverter {
 
@@ -80,15 +82,14 @@ public class ParticipantConverter {
 	private void populateIdentifiers(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto, Participant participant) throws Exception{
 		
 		Identifiers identifiers = participantDto.getIdentifiers();
-		
+		//BJ: fixed  	 CAAERS-2900
 		if(identifiers != null){
 			List<Identifier> identifierList = participant.getIdentifiers();
 			List<OrganizationAssignedIdentifierType> orgAssignedIdList = identifiers.getOrganizationAssignedIdentifier();
 			if(orgAssignedIdList != null && !orgAssignedIdList.isEmpty()){
-				OrganizationAssignedIdentifier orgIdentifier;
-				Organization organization = new LocalOrganization();
 				for(OrganizationAssignedIdentifierType organizationAssignedIdentifierType : orgAssignedIdList){
-					orgIdentifier = new OrganizationAssignedIdentifier();
+					Organization organization = new LocalOrganization();
+					OrganizationAssignedIdentifier orgIdentifier = new OrganizationAssignedIdentifier();
 					orgIdentifier.setType(organizationAssignedIdentifierType.getType().value());
 					orgIdentifier.setValue(organizationAssignedIdentifierType.getValue());
 					orgIdentifier.setPrimaryIndicator(organizationAssignedIdentifierType.isPrimaryIndicator());
@@ -119,6 +120,7 @@ public class ParticipantConverter {
 				studyParticipantAssignment.setStudySubjectIdentifier(assignmentType.getStudySubjectIdentifier());
 				
 				studySite = new StudySite();
+				studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
 				study = new Study();
 				identifier = new Identifier();
 				organization = new LocalOrganization();
