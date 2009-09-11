@@ -141,7 +141,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy("id desc")
+    @OrderBy
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;
