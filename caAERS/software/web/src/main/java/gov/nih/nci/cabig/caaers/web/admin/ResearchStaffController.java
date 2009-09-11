@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import java.util.Date;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,7 +97,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
         ResearchStaffCommand command = (ResearchStaffCommand)researchStaffCommand;
         ResearchStaff researchStaff = command.getResearchStaff();
-
+        boolean isCreateMode = researchStaff == null || researchStaff.getId() == null;
         ModelAndView modelAndView = new ModelAndView("admin/researchStaff");
 //        getFlow().getTab(0).getViewName()
         
@@ -132,7 +133,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         String emailSendingErrorMessage = "";
         try {
             if ("saveRemoteRs".equals(request.getParameter("_action"))) {
-
                 ResearchStaff remoteRStoSave = researchStaff.getExternalResearchStaff().get(Integer.parseInt(request.getParameter("_selected")));
                 researchStaff.setEmailAddress(remoteRStoSave.getEmailAddress());
                 researchStaff.setFirstName(remoteRStoSave.getFirstName());
@@ -158,7 +158,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         }
 
         if (!errors.hasErrors()) {
-            String statusMessage = "ResearchStaff successfully created";
+            String statusMessage = getMessageSource().getMessage(isCreateMode ? "MSG_RS.created" : "MSG_RS.updated", null, Locale.getDefault());
             
             if (!StringUtils.isBlank(emailSendingErrorMessage)) {
                 statusMessage = statusMessage + " But we could not send email to user";
