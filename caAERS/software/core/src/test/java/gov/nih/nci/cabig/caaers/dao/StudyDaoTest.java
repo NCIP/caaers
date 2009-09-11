@@ -34,6 +34,7 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -42,6 +43,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -355,6 +357,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
 
             // Study Site
             StudySite studySite = new StudySite();
+            studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
             studySite.setOrganization(organization);
             studySite.setStartDate(DateUtils.yesterday());
 
@@ -404,6 +407,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
 
             // Study Site
             StudySite studySite = new StudySite();
+            studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
             studySite.setOrganization(organization);
             studySite.setStartDate(DateUtils.tomorrow());
 
@@ -569,11 +573,13 @@ assertTrue(true);
 
     public void testSearchWithStudyQueryHavingIdentifierTypeAndValue() {
         StudyQuery query = new StudyQuery();
+        query.joinIdentifier();
         query.filterByIdentifierValue("1138-42");
         query.filterByIdentifierType("local");
         List<Study> studies = getDao().find(query);
         assertNotNull("There should be study corresponding to identifier 1138-421", studies.get(0));
-        assertEquals("There should be two identifiers for the study with identifier 1138-421", 2, studies.size());
+        assertEquals("There should be two identifiers for the study with identifier 1138-421", 1, studies.size());
+        assertEquals(new Integer(-3), studies.get(0).getId());
     }
 
     public void testUnableToLoadInprogressStudy() throws Exception {
