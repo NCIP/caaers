@@ -126,7 +126,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		reportingPeriod.addAdverseEvent(setId(3, ae3));
 		
 		
-		command.setAdverseEvents(new IndexFixedList<AdverseEvent>(reportingPeriod.getAdverseEvents()));
 		command.setAdverseEventReportingPeriod(reportingPeriod);
 		
 		

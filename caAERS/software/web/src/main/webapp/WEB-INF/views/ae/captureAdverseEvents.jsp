@@ -357,11 +357,14 @@
             			</tags:aeTermQuery>
 
             			<span id="observedBlankRow"></span>
-            			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${not ae.solicited and not ae.retired}">
-            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="true" isSolicited="false"/>
-            				</c:if> 
-            			</c:forEach>   
+            			<c:if test="${fn:length(command.adverseEventReportingPeriod.adverseEvents) > 0}">
+	            			<c:forEach var="i" step="1" begin="0" end="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1}">
+   		         				<c:set var="j" value="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1 - i}"/>
+		            			<c:if test="${not command.adverseEventReportingPeriod.adverseEvents[j].solicited and not command.adverseEventReportingPeriod.adverseEvents[j].retired}">
+        	    					<ae:oneRoutineAdverseEvent index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" collapsed="true" enableDelete="true" isSolicited="false"/>
+           		 				</c:if>
+            				</c:forEach>
+            			</c:if>
 					</chrome:box>
 					<%-- End of Observed AE section --%>
 					

@@ -63,8 +63,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private List<CtcCategory> ctcCategories;
 	private Integer primaryAdverseEventId;
 	
-	private IndexFixedList<AdverseEvent> adverseEvents;
-	
 	private List<Map<Integer, Boolean>> outcomes;
     private List<String> outcomeOtherDetails;
     
@@ -213,9 +211,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		this.assignment = this.adverseEventReportingPeriod.getAssignment();
     		cleanEmptyAdverseEvents();
     	}
-    	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
-    		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
     		Study study = adverseEventReportingPeriod.getStudy();
 			if(study.getStudyOrganizations() != null) study.getStudyOrganizations().size();
 			if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
@@ -476,10 +472,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 *   Remove all the other outcomes present in the list (means user deselected a previously selected one)
 	 */
 	public void synchronizeOutcome() {
-		int size = (adverseEvents == null) ? 0 : adverseEvents.size();
+		int size = (getAdverseEvents() == null) ? 0 : getAdverseEvents().size();
 		
 		for(int i = 0; i < size; i++){
-			AdverseEvent ae = adverseEvents.get(i);
+			AdverseEvent ae = getAdverseEvents().get(i);
 			if(ae == null) continue;
 			
 			//update the other outcomes based on the user selection
@@ -553,12 +549,20 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		return outcomes.remove(obj);
 	}
     
-    public IndexFixedList<AdverseEvent> getAdverseEvents() {
-		return adverseEvents;
+    public List<AdverseEvent> getAdverseEvents() {
+		return adverseEventReportingPeriod.getAdverseEvents();
 	}
-    public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
-		this.adverseEvents = adverseEvents;
-	}
+
+    //    /**
+//     * Returns all the {@link ReportDefinition} available to this AE
+//     */
+//    public List<ReportDefinition> getAllReportDefinitions() {
+//        return allReportDefinitions;
+//    }
+//
+//    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
+//        this.allReportDefinitions = allReportDefinitions;
+//    }
     
     public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
