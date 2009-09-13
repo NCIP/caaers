@@ -184,8 +184,10 @@
 
             a.setAttribute("id", "liTerm" + ilID);
             a.id = "liTerm" + ilID;
-            
+	        var img = document.createElement("img");
+			img.setAttribute("src", '<chrome:imageUrl name="../blue/thirdlevelarrow.png" />');
             li = document.createElement("li");
+            li.appendChild(img);
             li.appendChild(a);
             ul.appendChild(li);
 
@@ -317,7 +319,7 @@
         cursor:pointer;
         margin: 5px;
         padding-left: 0px;
-		list-style-type:none;
+		list-style-type:square;
     }
 	
 	ul#categories li a {
