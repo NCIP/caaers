@@ -349,18 +349,19 @@ public class CommandToSQL{
 		cal.setTime(dateValue);
 		dateQuery.append("(");
 		
+		int month = cal.get(Calendar.MONTH) + 1;
 		if(!predicate.equals("=")){
 			String yearQuery = "year(" + fullAttributeName + ") " + yearPredicate + " '" + cal.get(Calendar.YEAR) + "'";
 			String monthQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
-					"month(" + fullAttributeName + ") " + monthPredicate + " '" + cal.get(Calendar.MONTH) + "'";
+					"month(" + fullAttributeName + ") " + monthPredicate + " '" + month + "'";
 			String dayQuery = "year(" + fullAttributeName + ") = '" + cal.get(Calendar.YEAR) + "' AND " +
-				"month(" + fullAttributeName + ") = '" + cal.get(Calendar.MONTH) + "' AND " +
+				"month(" + fullAttributeName + ") = '" + month + "' AND " +
 				"day(" + fullAttributeName + ") " + predicate + " '" + cal.get(Calendar.DAY_OF_MONTH) + "'";
 			dateQuery.append(yearQuery).append(" OR (").append(monthQuery).append(") OR (").append(dayQuery).append(")");
 		}else{
 			dateQuery.append("year(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.YEAR)).append("' AND ")
-					.append("month(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.MONTH)).append("' AND")
-					.append("day(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.DAY_OF_MONTH)).append("' AND");
+					.append("month(").append(fullAttributeName).append(") = '").append(month).append("' AND ")
+					.append("day(").append(fullAttributeName).append(") = '").append(cal.get(Calendar.DAY_OF_MONTH)).append("'");
 		}
 		dateQuery.append(")");
 		return dateQuery.toString();
