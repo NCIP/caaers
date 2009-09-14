@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
-	
+
 	<global type="com.semanticbits.rules.impl.RuleContext" identifier="ruleContext"/>
 	<global type="com.semanticbits.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
@@ -12,7 +12,7 @@
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
 	<import name="java.util.HashSet" />
 	<import name="com.semanticbits.rules.utils.NumberUtil" />
-	
+
 	<!-- ==========================================================================
 	RuleName : DSC_BR1A_CHK
 	Rule : "'Date of Recovery or Death' must be provided if 'Present Status' has one of following values:
@@ -38,10 +38,10 @@
 			errors.addValidationError("DSC_BR1A_ERR","'Date of Recovery or Death' must be provided if 'Present Status' has one of following values:'Fatal/Died','Recovered/Resolved without Sequelae','Recovered/Resolved with Sequelae'").addFieldNames("aeReport.responseDescription.recoveryDate", "aeReport.responseDescription.presentStatus");
        	</rhs>
 	</rule>
-	
+
 	<!-- ==========================================================================
 	RuleName : DSC_BR1B_CHK
-	Rule : 'Date of Recovery or Death' must not be provided if 'Present Status' is not one of following values: 
+	Rule : 'Date of Recovery or Death' must not be provided if 'Present Status' is not one of following values:
 			 Fatal/Died
 			Recovered/Resolved without Sequelae
 			Recovered/Resolved with Sequelae"
@@ -53,14 +53,14 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			
+
 			<eval>aeReport.getResponseDescription().getRecoveryDate() != null</eval>
  			<and-conditional-element>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved without Sequelae")</eval>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved with Sequelae")</eval>
 			</and-conditional-element>
-		
+
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
@@ -85,17 +85,17 @@
 			errors.addValidationError("DSC_BR2_ERR","'Retreated' must be 'No' if 'Present Status' is 'Fatal/Died' ").addFieldNames("aeReport.responseDescription.retreated", "aeReport.responseDescription.presentStatus");
 		</rhs>
 	</rule>
-	
+
 	<!-- ==========================================================================
 	RuleName : DSC_BR3_CHK
-	Rule : 'Date Removed from Protocol Treatment' must be ‘Yes’ if 'Present Status' is ‘Fatal/Died’ 
+	Rule : 'Date Removed from Protocol Treatment' must be ‘Yes’ if 'Present Status' is ‘Fatal/Died’
 	Error Code : DSC_BR3_ERR
 	Error Message : REMOVED_FROM_PROTOCOL_TRT must be "Yes" if PRESENT_STATUS is ''Fatal/Died'
 	============================================================================= -->
 	<rule name="DSC_BR3_CHK">
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>ObjectUtils.equals(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"), null)</eval>
 		</lhs>
@@ -113,7 +113,7 @@
 	<rule name="DSC_BR5_CHK">
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>DateUtil.compare(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"),
 					NullSafeFieldExtractor.extractField(aeReport,"responseDescription.recoveryDate")) &lt; 0</eval>
@@ -123,35 +123,35 @@
 			errors.addValidationError("DSC_BR5_ERR","'Date Removed from Protocol Treatment' must not be greater than 'Date of Recovery or Death' when  'Present Status' is 'Fatal/Died'").addFieldNames("aeReport.responseDescription.dateRemovedFromProtocol", "aeReport.responseDescription.presentStatus", "aeReport.responseDescription.recoveryDate");
 		</rhs>
 	</rule>
-	
+
 	<!-- ==========================================================================
 	RuleName : DSC_BR6_CHK
-	Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report. 
+	Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report.
 	Error Code : DSC_BR6_ERR
 	Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
 	============================================================================= -->
 	<rule name="DSC_BR6_CHK">
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-					
-						if(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.code").equals(6)){
-							for(AdverseEvent ae : aeReport.getAdverseEvents()){
-								if(ae.getGrade() == null) continue;
-								if(ae.getGrade().equals(Grade.DEATH)) return false;
-							}
-							return true;
-						}	
-						return false;				
+				        boolean hasStatusDied = NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.code").equals(6);
+				        boolean hasGrade5 = false;
+
+                        for(AdverseEvent ae : aeReport.getAdverseEvents()){
+                            if(ae.getGrade() == null) continue;
+                            if(ae.getGrade().equals(Grade.DEATH)) hasGrade5 = true;
+                        }
+
+                        if (hasStatusDied &amp;&amp; !hasGrade5) errors.addValidationError("DSC_BR6_ERR","Present status can have 'Fatal/Died' only when there is a 'Grade 5' Adverse Event").addFieldNames("aeReport.responseDescription.presentStatus");
+                        if (!hasStatusDied &amp;&amp; hasGrade5) errors.addValidationError("DSC_BR7_ERR","The 'Present status' of 'Fatal/Died' should be selected when there is a 'Grade 5' adverse event.");
+
+                        return false;
 					}
-					
 				  }.validate(aeReport, errors)</eval>
 		</lhs>
 		<rhs>
-			<!-- Populate Error Message-->
-			errors.addValidationError("DSC_BR6_ERR","Present status can have 'Fatal/Died' only when there is a Grade 5 Adverse Event").addFieldNames("aeReport.responseDescription.presentStatus");
 		</rhs>
-	</rule>	
+	</rule>
 </package>
