@@ -2222,7 +2222,7 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="name"/>
+						  			<xsl:value-of select="labTerm/term"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -2235,7 +2235,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="baseline/value"/>
+						  			<xsl:value-of select="baseline/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -2247,7 +2247,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="nadir/value"/>
+						  			<xsl:value-of select="nadir/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>
@@ -2259,7 +2259,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="recovery/value"/>
+						  			<xsl:value-of select="recovery/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
 						  		</fo:block>      							
       						</fo:table-cell>  
       						<fo:table-cell>
