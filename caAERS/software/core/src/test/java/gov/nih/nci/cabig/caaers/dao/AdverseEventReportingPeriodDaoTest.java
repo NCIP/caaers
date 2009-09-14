@@ -365,7 +365,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     //to test the descending ordering of adverse events.
     public void testGetAdverseEvents(){
     	AdverseEventReportingPeriod rp = getDao().getById(1005);
-    	assertEquals(-74, rp.getAdverseEvents().get(1).getId().intValue());
-        assertEquals(-50, rp.getAdverseEvents().get(0).getId().intValue());
+        assertEquals(-74, rp.getAdverseEvents().get(0).getId().intValue());
+        assertEquals(-50, rp.getAdverseEvents().get(1).getId().intValue());
     }
 }
