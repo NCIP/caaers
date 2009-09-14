@@ -100,7 +100,9 @@ public class CreateStudyAjaxFacade {
         return ObjectTools.reduceAll(siteResearchStaffs,
                 new ObjectTools.Initializer<SiteResearchStaff>() {
                     public void initialize(final SiteResearchStaff instance) {
-                        instance.setResearchStaff(new LocalResearchStaff());
+                    	LocalResearchStaff localStaff = new LocalResearchStaff();
+                    	localStaff.setAddress(new Address());
+                        instance.setResearchStaff(localStaff);
                     }
                 }, "id", "researchStaff.firstName", "researchStaff.lastName", "researchStaff.externalId");
     }

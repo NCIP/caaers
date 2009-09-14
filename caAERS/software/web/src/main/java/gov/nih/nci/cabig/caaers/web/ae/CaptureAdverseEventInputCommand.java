@@ -245,9 +245,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				if(assignment.getParticipant() != null)	this.assignment.getParticipant().getIdentifiers();
 			}
 			
-			if(this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs() != null){
-				this.adverseEventReportingPeriod.getAssignment().getStudySite().getWorkflowConfigs().size();
-			}
+			this.adverseEventReportingPeriod.getAssignment().getStudySite().getStudySiteWorkflowConfigs().size();
 			
 			this.adverseEventReportingPeriod.isBaselineReportingType();
 			

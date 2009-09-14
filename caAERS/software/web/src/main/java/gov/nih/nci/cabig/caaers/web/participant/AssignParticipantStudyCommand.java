@@ -8,9 +8,11 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,7 +41,10 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     void init() {
 
         if (this.participant == null) this.participant = new Participant();
-        if (this.studySite == null) this.studySite = new StudySite();
+        if (this.studySite == null) {
+        	this.studySite = new StudySite();
+        }
+        
         if (this.studySite.getStudy() == null) this.studySite.setStudy(new Study());
 
         this.assignment = new StudyParticipantAssignment();

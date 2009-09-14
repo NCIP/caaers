@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -62,12 +63,12 @@ class SitesTab extends StudyTab {
         }else{
         	if(isAjax == null && command.isWorkflowEnabled()){
         		for(StudySite site : command.getStudy().getStudySites()){
-            		Map<String, WorkflowConfig> configMap = site.getWorkflowConfigs();
-            		if(!configMap.isEmpty()) continue;
-            		
-            		configMap.put("reportingPeriod", workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center"));
-            		configMap.put("report", workflowConfigDao.getByWorkflowDefinitionName("expedited_domestic"));
-            		
+        			if(site.getStudySiteWorkflowConfigs().isEmpty()){
+        				WorkflowConfig rpWorkflowConfig = workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center");
+        				site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("reportingPeriod", site, rpWorkflowConfig));
+        				WorkflowConfig rWorkflowConfig =  workflowConfigDao.getByWorkflowDefinitionName("expedited_domestic");
+        				site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("report", site, rWorkflowConfig));
+        			}
             	}
         	}
         }

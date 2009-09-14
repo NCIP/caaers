@@ -78,6 +78,10 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
     @Override
     protected void postProcessPage(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
         try {
+        	
+        	//explicitly added to remove the session object added by AutomaticSaveFormController
+        	request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+        	
         	//if there is an optimistic locking error, make sure, proper error message is populated.
         	Throwable optimisticLockException = (Throwable)request.getAttribute("OPTIMISTIC_LOCKING_ERROR");
         	if(optimisticLockException != null){
@@ -91,9 +95,6 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
 			    setAjaxModelAndView(request, modelAndView);
 			    if (!errors.hasErrors() && shouldSave(request, (C) command, getTab((C) command, page))) {
 			        C newCommand = save((C) command, errors);
-			        if (newCommand != null) {
-			            request.getSession().setAttribute(getReplacedCommandSessionAttributeName(request), newCommand);
-			        }
 			    }
 			}
 			else {

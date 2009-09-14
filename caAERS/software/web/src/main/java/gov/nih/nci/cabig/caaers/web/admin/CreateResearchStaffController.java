@@ -1,18 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.Address;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
-import java.util.Date;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.validation.Errors;
 
 /**
  * @author Saurabh Agrawal
@@ -27,6 +23,7 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
         ResearchStaff rs = new LocalResearchStaff();
+        rs.setAddress(new Address());
         ResearchStaffCommand command = new ResearchStaffCommand();
 
         command.setResearchStaff(rs);

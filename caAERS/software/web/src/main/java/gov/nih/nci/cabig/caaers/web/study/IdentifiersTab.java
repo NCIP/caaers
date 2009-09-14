@@ -97,7 +97,6 @@ public class IdentifiersTab extends StudyTab {
         
         for (int i = 0; i < identifiers.size(); i++) {
             Identifier identifier = identifiers.get(i);
-            
             if (!set.add(identifier)) {
                 errors.rejectValue("study.identifiersLazy[" + i + "].type", "STU_009", "Duplicate, already an identifier of this type is present");
             }
