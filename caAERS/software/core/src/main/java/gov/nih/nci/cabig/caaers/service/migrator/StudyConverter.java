@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Arm;
@@ -42,6 +43,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
 import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
@@ -71,6 +73,7 @@ import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.cabig.caaers.webservice.Study.TreatmentAssignments;
 import gov.nih.nci.cabig.caaers.webservice.StudyAgentType.StudyAgentINDAssociations;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -188,6 +191,7 @@ public class StudyConverter {
 					studyPersonnel.setEndDate(studyPersonnelType.getEndDate().toGregorianCalendar().getTime());
 				}
 				ResearchStaff researchStaff = new LocalResearchStaff();
+				researchStaff.setAddress(new Address());
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				researchStaff.setFirstName(studyPersonnelType.getResearchStaff().getFirstName());
 				researchStaff.setLastName(studyPersonnelType.getResearchStaff().getLastName());

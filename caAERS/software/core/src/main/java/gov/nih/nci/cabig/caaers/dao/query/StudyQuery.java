@@ -69,25 +69,28 @@ public class StudyQuery extends AbstractQuery {
 
     // identifier
     public void filterByIdentifierValue(final String Identifiervalue) {
+    	joinIdentifier();
         String searchString = "%" + Identifiervalue.toLowerCase() + "%";
-        andWhere("lower(s.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+        andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
         setParameter(STUDY_IDENTIFIER_VALUE, searchString);
     }
 
     public void filterByIdentifierValueExactMatch(final String identifiervalue) {
+    		joinIdentifier();
             String searchString = identifiervalue.toLowerCase();
-            andWhere("lower(s.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+            andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
             setParameter(STUDY_IDENTIFIER_VALUE, searchString);
         
     }
 
     public void filterByIdentifierType(final String type) {
-        andWhere("s.identifiers.type LIKE :" + STUDY_IDENTIFIER_TYPE);
+    	joinIdentifier();
+        andWhere("identifier.type LIKE :" + STUDY_IDENTIFIER_TYPE);
         setParameter(STUDY_IDENTIFIER_TYPE, type);
     }
     
     public void filterByIdentifier(Identifier identifier){
-    	
+    	joinIdentifier();
     	//type
     	String type = identifier.getType();
     	if(type != null){

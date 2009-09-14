@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 /**
  * 
@@ -42,29 +43,30 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 	public void testGetById(){
 		StudySite site = getDao().getById(-1000);
 		assertNotNull(site);
-		assertNotNull(site.getWorkflowConfigs());
-		assertNotNull(site.getWorkflowConfigs().get("reportingPeriod"));
+		assertNotNull(site.getStudySiteWorkflowConfigs());
+		assertNotNull(site.getReportingPeriodWorkflowConfig());
 	}
 	public void testSaveSiteWorkflowConfigAssociation(){
 		{
 			StudySite site = getDao().getById(-1000);
 			assertNotNull(site);
-			assertNotNull(site.getWorkflowConfigs());
-			assertNotNull(site.getWorkflowConfigs().get("reportingPeriod"));
-			assertNull(site.getWorkflowConfigs().get("mytest"));
+			assertNotNull(site.getStudySiteWorkflowConfigs());
+			assertNotNull(site.getReportingPeriodWorkflowConfig());
+			assertNull(site.findWorkflowConfig("mytest"));
 		}
 		interruptSession();
 		{
 			StudySite site = getDao().getById(-1000);
 			assertNotNull(site);
-			assertNotNull(site.getWorkflowConfigs());
-			assertNotNull(site.getWorkflowConfigs().get("reportingPeriod"));
+			assertNotNull(site.getReportingPeriodWorkflowConfig());
 			WorkflowConfig wfconfig = new WorkflowConfig();
 			wfconfig.setId(-3000);
 			wfconfig.setVersion(0);
 			
-			site.getWorkflowConfigs().put("mytest", wfconfig);
-			assertNotNull(site.getWorkflowConfigs().get("mytest"));
+			StudySiteWorkflowConfig ssWfCfg = new StudySiteWorkflowConfig("mytest", site, wfconfig);
+			site.addStudySiteWorkflowConfig(ssWfCfg);
+			
+			assertNotNull(site.findWorkflowConfig("mytest"));
 			getDao().save(site);
 			
 		}
@@ -72,10 +74,9 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 		{
 			StudySite site = getDao().getById(-1000);
 			assertNotNull(site);
-			assertNotNull(site.getWorkflowConfigs());
-			assertNotNull(site.getWorkflowConfigs().get("reportingPeriod"));
-			assertNotNull(site.getWorkflowConfigs().get("mytest"));
-			assertEquals("MyTest", site.getWorkflowConfigs().get("mytest").getName());
+			assertNotNull(site.getReportingPeriodWorkflowConfig());
+			assertNotNull(site.findWorkflowConfig("mytest"));
+			assertEquals("MyTest", site.findWorkflowConfig("mytest").getName());
 		}
 	}
 }

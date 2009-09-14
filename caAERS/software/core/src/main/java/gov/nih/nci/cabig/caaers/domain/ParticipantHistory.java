@@ -31,6 +31,7 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     private String bsa;
 
     @AttributeOverrides({
+    		@AttributeOverride(name = "code", column = @Column(name = "height_code")),
             @AttributeOverride(name = "quantity", column = @Column(name = "height")),
             @AttributeOverride(name = "unit", column = @Column(name = "height_unit"))})
     public Measure getHeight() {
@@ -43,6 +44,7 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @AttributeOverrides({
+    	    @AttributeOverride(name = "code", column = @Column(name = "weight_code")),
             @AttributeOverride(name = "quantity", column = @Column(name = "weight")),
             @AttributeOverride(name = "unit", column = @Column(name = "weight_unit"))})
     public Measure getWeight() {
@@ -96,10 +98,20 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
 
     @Embeddable
     public static class Measure {
+    	
+    	private int code;
+    	
         private BigDecimal quantity;
 
         private String unit;
 
+        public int getCode() {
+			return code;
+		}
+        public void setCode(int code) {
+			this.code = code;
+		}
+        
         public BigDecimal getQuantity() {
             return quantity;
         }

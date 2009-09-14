@@ -357,7 +357,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
 
             // Study Site
             StudySite studySite = new StudySite();
-            studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
             studySite.setOrganization(organization);
             studySite.setStartDate(DateUtils.yesterday());
 
@@ -407,7 +406,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
 
             // Study Site
             StudySite studySite = new StudySite();
-            studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
             studySite.setOrganization(organization);
             studySite.setStartDate(DateUtils.tomorrow());
 

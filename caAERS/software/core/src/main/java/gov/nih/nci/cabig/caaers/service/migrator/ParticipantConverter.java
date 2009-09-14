@@ -120,7 +120,6 @@ public class ParticipantConverter {
 				studyParticipantAssignment.setStudySubjectIdentifier(assignmentType.getStudySubjectIdentifier());
 				
 				studySite = new StudySite();
-				studySite.setWorkflowConfigs(new HashMap<String, WorkflowConfig>());
 				study = new Study();
 				identifier = new Identifier();
 				organization = new LocalOrganization();

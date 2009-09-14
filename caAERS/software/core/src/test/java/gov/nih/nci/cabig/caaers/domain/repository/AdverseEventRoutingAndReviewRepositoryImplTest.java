@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
@@ -315,9 +316,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		reportingPeriod.setId(44);
 		WorkflowConfig workflowConfig = Fixtures.createWorkflowConfig("test");
 		StudySite site = assignment.getStudySite();
-		Map<String, WorkflowConfig> wfConfigMap = new HashMap<String, WorkflowConfig>();
-		wfConfigMap.put("reportingPeriod", workflowConfig);
-		site.setWorkflowConfigs(wfConfigMap);
+		StudySiteWorkflowConfig ssWfCfg = new StudySiteWorkflowConfig("reportingPeriod", site, workflowConfig);
+		site.addStudySiteWorkflowConfig(ssWfCfg);
 		reportingPeriod.setAssignment(assignment);
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
@@ -341,9 +341,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
 		WorkflowConfig workflowConfig = Fixtures.createWorkflowConfig("test");
 		StudySite site = assignment.getStudySite();
-		Map<String, WorkflowConfig> workflowConfigs = new HashMap<String, WorkflowConfig>();
-		workflowConfigs.put("report", workflowConfig);
-		site.setWorkflowConfigs(workflowConfigs);
+		StudySiteWorkflowConfig ssWfCfg = new StudySiteWorkflowConfig("report", site, workflowConfig);
+		site.addStudySiteWorkflowConfig(ssWfCfg);
 		reportingPeriod.addAeReport(aeReport);
 		aeReport.setAssignment(assignment);
 		

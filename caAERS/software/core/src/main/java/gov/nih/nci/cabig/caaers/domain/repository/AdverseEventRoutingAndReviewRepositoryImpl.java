@@ -68,7 +68,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		assert reportingPeriod.getId() != null;
 		StudyParticipantAssignment assignment = reportingPeriod.getAssignment();
 		StudySite studySite = assignment.getStudySite();
-		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("reportingPeriod");
+		WorkflowConfig wfConfig = studySite.getReportingPeriodWorkflowConfig();
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
@@ -100,7 +100,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		StudyParticipantAssignment assignment = aeReport.getAssignment();
 		StudySite studySite = assignment.getStudySite();
-		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("report");
+		WorkflowConfig wfConfig = studySite.getReportWorkflowConfig();
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());

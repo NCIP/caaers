@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**

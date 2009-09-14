@@ -16,7 +16,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	}
 
 	public void testGetScheduler() throws Exception{
-		if(false){
+		if(true){
 			//no point of running this from Hudson, 
 			//as loading of scheduler is tested otherwise itself. 
 		assertNotNull(scheduler);

@@ -10,10 +10,12 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ParticipantSynchronizerIntegrationTest extends AbstractNoSecurityTestCase {

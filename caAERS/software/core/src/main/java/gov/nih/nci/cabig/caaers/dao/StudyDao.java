@@ -164,7 +164,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
                 ht.initialize(sp.getSiteResearchStaff().getSiteResearchStaffRoles());
             }
             if(studyOrg instanceof StudySite)
-                ht.initialize(((StudySite)studyOrg).getWorkflowConfigs());
+                ht.initialize(((StudySite)studyOrg).getStudySiteWorkflowConfigs());
         }
         ht.initialize(study.getStudyConditions());
         ht.initialize(study.getMeddraStudyDiseases());

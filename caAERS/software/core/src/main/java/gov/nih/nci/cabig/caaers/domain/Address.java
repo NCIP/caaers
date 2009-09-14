@@ -15,7 +15,13 @@ public class Address {
     private String street;
     private String country;
 
-
+    public int getCode(){
+    	return code;
+    }
+    public void setCode(int code) {
+		this.code = code;
+	}
+    
     public Integer getZip() {
         return zip;
     }

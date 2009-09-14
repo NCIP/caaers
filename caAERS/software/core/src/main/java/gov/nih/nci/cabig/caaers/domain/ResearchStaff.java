@@ -31,8 +31,9 @@ import org.hibernate.annotations.Parameter;
  * 
  * 
  * @author Priyatam
- * 
  * @author Kulasekaran
+ * @author Biju Joseph
+ * @author Monish Dombla
  */
 
 @Entity
@@ -129,7 +130,6 @@ public abstract class ResearchStaff extends User {
 	
 	@Embedded
 	public Address getAddress() {
-    	if(address == null) address = new Address();
 		return address;
 	}
 	public void setAddress(Address address) {

@@ -53,17 +53,20 @@
 		default_assignee="system_admin"
 		enabled="1"
 		/>          
-<site_workflow_configs 
-		site_id="-1000"
-		wf_config_id="-1000"
-		wf_entity="reportingPeriod"
+<study_site_wf_cfgs 
+		id="-1"
+		study_organization_id="-1000"
+		workflow_cfg_id="-1000"
+		name="reportingPeriod"
  		/>
-<site_workflow_configs 
-		site_id="-1000"
-		wf_config_id="-2000"
-		wf_entity="report"
+<study_site_wf_cfgs 
+ 		id="-2"
+		study_organization_id="-1000"
+		workflow_cfg_id="-2000"
+		name="report"
  		/>
- 
+		
+<disease_terminologies /> 
 <ind_holders />
 <task_configuration />
 <wf_transition_configs />

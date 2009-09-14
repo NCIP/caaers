@@ -16,12 +16,14 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.easymock.classextension.EasyMock;

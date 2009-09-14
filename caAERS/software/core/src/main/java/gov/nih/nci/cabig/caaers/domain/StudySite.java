@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CollectionOfElements;
@@ -33,13 +35,19 @@ import org.hibernate.annotations.MapKey;
 public class StudySite extends StudyOrganization {
 
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
-
+    
+    private List<StudySiteWorkflowConfig> studySiteWorkflowConfigs;
+    
     // TODO : to be removed.
     private Date irbApprovalDate;
 
-    private Map<String, WorkflowConfig> workflowConfigs;
     
     // ////LOGIC
+    
+    public void addStudySiteWorkflowConfig(StudySiteWorkflowConfig studySiteWorkflowConfig){
+    	getStudySiteWorkflowConfigs().add(studySiteWorkflowConfig);
+    	studySiteWorkflowConfig.setStudySite(this);
+    }
 
     public void addAssignment(StudyParticipantAssignment assignment) {
         getStudyParticipantAssignments().add(assignment);
@@ -76,16 +84,35 @@ public class StudySite extends StudyOrganization {
         return "Site";
     }
     
-    @CollectionOfElements
-    @JoinTable(name = "site_workflow_configs", joinColumns = @JoinColumn(name = "site_id"), inverseJoinColumns = @JoinColumn(name="wf_config_id"))
-    @MapKey(columns = @Column(name = "wf_entity"))
-    @Column(name = "wf_config_id")
-    @Cascade(value={CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.DELETE_ORPHAN})
-    public Map<String, WorkflowConfig> getWorkflowConfigs() {
-    	if(workflowConfigs == null) workflowConfigs = new HashMap<String, WorkflowConfig>();
-		return workflowConfigs;
+   
+
+    @OneToMany(mappedBy = "studySite")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<StudySiteWorkflowConfig> getStudySiteWorkflowConfigs() {
+    	if(studySiteWorkflowConfigs == null) studySiteWorkflowConfigs = new ArrayList<StudySiteWorkflowConfig>();
+		return studySiteWorkflowConfigs;
 	}
-    public void setWorkflowConfigs(Map<String, WorkflowConfig> workflowConfigs) {
-		this.workflowConfigs = workflowConfigs;
+
+	public void setStudySiteWorkflowConfigs(List<StudySiteWorkflowConfig> studySiteWorkflowConfigs) {
+		this.studySiteWorkflowConfigs = studySiteWorkflowConfigs;
 	}
+    
+	@Transient
+    public WorkflowConfig getReportingPeriodWorkflowConfig(){
+		return findWorkflowConfig("reportingPeriod");
+    }
+	
+	
+	@Transient
+	public WorkflowConfig getReportWorkflowConfig(){
+		return findWorkflowConfig("report");
+	}
+	
+	public WorkflowConfig findWorkflowConfig(String name){
+		for(StudySiteWorkflowConfig ssWfCfg : getStudySiteWorkflowConfigs()){
+    		if(StringUtils.equals(name, ssWfCfg.getName())) return ssWfCfg.getWorkflowConfig();
+    	}
+		return null;
+	}
+	
 }

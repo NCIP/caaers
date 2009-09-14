@@ -95,6 +95,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			}
 		} catch (CaaersSystemException e) {
 			xmlResearchStaff = new LocalResearchStaff();
+			xmlResearchStaff.setAddress(new Address());
 			xmlResearchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
 			xmlResearchStaff.setFirstName(researchStaffType.getFirstName());
 			xmlResearchStaff.setLastName(researchStaffType.getLastName());
@@ -158,6 +159,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			}
     		} catch (CaaersSystemException e) {
     			xmlResearchStaff = new LocalResearchStaff();
+    			xmlResearchStaff.setAddress(new Address());
     			xmlResearchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
     			xmlResearchStaff.setFirstName(researchStaffType.getFirstName());
     			xmlResearchStaff.setLastName(researchStaffType.getLastName());
@@ -190,6 +192,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               }
               
               	ResearchStaff researchStaff = new LocalResearchStaff();
+              	researchStaff.setAddress(new Address());
               	researchStaff.setNciIdentifier(nciIdentifier); 
               	if (StringUtils.isEmpty(loginId)) {
               		researchStaff.setLoginId(researchStaffDto.getEmailAddress());

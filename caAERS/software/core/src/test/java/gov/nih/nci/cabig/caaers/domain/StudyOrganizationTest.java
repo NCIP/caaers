@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+
 import java.util.Date;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 

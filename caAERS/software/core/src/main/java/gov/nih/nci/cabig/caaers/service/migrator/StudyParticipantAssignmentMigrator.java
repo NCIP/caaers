@@ -12,10 +12,12 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;

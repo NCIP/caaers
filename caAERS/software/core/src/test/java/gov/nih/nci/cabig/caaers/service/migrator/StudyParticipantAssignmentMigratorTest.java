@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import java.util.HashMap;
+
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -14,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 

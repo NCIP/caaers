@@ -69,6 +69,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
@@ -201,6 +202,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
+				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -259,6 +261,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
@@ -347,7 +350,6 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
-
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
@@ -380,6 +382,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ConfigProperty</value>
 				<value>gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent</value>
+				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
             </list>
         </property>
         <!--
@@ -419,7 +422,7 @@ This applicationContext contains the definition of the DAOs
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
-                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>

@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Date;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;

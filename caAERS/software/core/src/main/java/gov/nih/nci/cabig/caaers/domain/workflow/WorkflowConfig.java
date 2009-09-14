@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import org.hibernate.annotations.Parameter;
 /**
  * The purpose of this class is to capture the customizations applied on a workflow template, in the current
  * instance. 
- * @author biju
+ * @author Biju Joseph
  * @author Sameer Sawant
  */
 @Entity
@@ -34,8 +33,6 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	private String defaultAssignee; //loginId of the user, who will be the default assignee,
 							 		//when the Role (assignee) cannot be derived.
 	private Boolean enabled;
-	
-	private StudySite studySite;
 	
 	public String getName() {
 		return name;
@@ -106,4 +103,54 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((defaultAssignee == null) ? 0 : defaultAssignee.hashCode());
+		result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime
+				* result
+				+ ((workflowDefinitionName == null) ? 0
+						: workflowDefinitionName.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof WorkflowConfig))
+			return false;
+		WorkflowConfig other = (WorkflowConfig) obj;
+		if (defaultAssignee == null) {
+			if (other.defaultAssignee != null)
+				return false;
+		} else if (!defaultAssignee.equals(other.defaultAssignee))
+			return false;
+		if (enabled == null) {
+			if (other.enabled != null)
+				return false;
+		} else if (!enabled.equals(other.enabled))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (workflowDefinitionName == null) {
+			if (other.workflowDefinitionName != null)
+				return false;
+		} else if (!workflowDefinitionName.equals(other.workflowDefinitionName))
+			return false;
+		return true;
+	}
+	
+	
 }
