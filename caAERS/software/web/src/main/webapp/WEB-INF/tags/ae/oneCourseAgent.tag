@@ -11,7 +11,9 @@
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
 <c:set var="v" value="aeReport.treatmentInformation.courseAgents[${index}]" />
-<ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}" enableDelete="true" deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v]}">
+<ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}"
+		enableDelete="true" title="${agent.displayName}"
+		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
     
  <tags:renderRow field="${fieldGroup.fields[0]}"/>
