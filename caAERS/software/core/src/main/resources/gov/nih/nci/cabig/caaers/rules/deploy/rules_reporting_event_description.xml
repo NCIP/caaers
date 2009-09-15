@@ -127,8 +127,10 @@
 	<!-- ==========================================================================
 	RuleName : DSC_BR6_CHK
 	Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report.
-	Error Code : DSC_BR6_ERR
+	Rule : "The 'Present status' of 'Fatal/Died' should be selected when there is a 'Grade 5' adverse event."
+	Error Code : DSC_BR6_ERR, DSC_BR7_ERR
 	Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
+	Error Message : The 'Present status' of 'Fatal/Died' should be selected when there is a 'Grade 5' adverse event.
 	============================================================================= -->
 	<rule name="DSC_BR6_CHK">
 		<lhs>

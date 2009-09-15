@@ -378,9 +378,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     
     /**
      RuleName : DSC_BR6_CHK
-	 Rule : "The present status can have "Fatal/Died" only if there is a Grade 5 AE on the report. 
-	 Error Code : DSC_BR6_ERR
-	 Error Message : Present status can have "Fatal/Died" only when there is a Grade 5 Adverse Event.
+	 Error Message : No Error
      */
     public void testFatalDied_WhenGrade5() throws Exception{
     	Date recoveryDate = DateUtils.createDate(2007, 11, 25);
@@ -394,7 +392,10 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         assertNoErrors(errors, "No error should be there, when DEATH , and Grade 5");
     }
     
-    
+/**
+	RuleName : DSC_BR6_CHK
+	Error Message : No Error Message
+*/
     public void testOtherThanFatalDied_WhenNotGrade5() throws Exception{
     	Date recoveryDate = DateUtils.createDate(2007, 11, 25);
     	Date removedDate = DateUtils.createDate(2007, 11, 24);
@@ -407,6 +408,12 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         assertNoErrors(errors, "No error should be there, when DEATH , and Grade 5");
     }
 
+    /**
+        RuleName : DSC_BR6_CHK
+        Rule : "The 'Present status' of 'Fatal/Died' should be selected when there is a 'Grade 5' adverse event."
+        Error Code : DSC_BR7_ERR
+        Error Message : The 'Present status' of 'Fatal/Died' should be selected when there is a 'Grade 5' adverse event.
+    */
     public void testOtherThanFatalDied_WhenGrade5() throws Exception{
     	Date recoveryDate = DateUtils.createDate(2007, 11, 25);
     	Date removedDate = DateUtils.createDate(2007, 11, 24);
