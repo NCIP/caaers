@@ -20,6 +20,63 @@
     }
 </style>
 
+<script language="JavaScript">
+
+    ajaxCRUD = new AJAX_CRUD_HELPER();
+    function addSiteResearchStaff() {
+        ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0);
+    }
+
+    function postSiteSelected(siteResearchStaffIndex, organizationID) {
+        return 0;
+    }
+
+    function refreshStudies(values, i) {
+    }
+
+    function activate(rsID, srsID, srsrID, i, j) {
+        if (confirm('Are you sure you want to activate ?')) {
+
+            if (j >= 0) {
+                var startDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].startDate';
+                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
+                var dt = "<tags:formatDate value="${date}" />";
+                $(startDateFieldString).value = dt;
+                $(endDateFieldString).value = '';
+            } else {
+                $$('input.SiteResearchStaffRoleStartDateCSS' + i).each(function(field) {
+                    field.value = dt;
+                })
+                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
+                    field.value = '';
+                })
+            }
+        }
+    }
+
+    function deactivate(rsID, srsID, srsrID, i, j) {
+        if (confirm('Are you sure you want to deactivate ?')) {
+            var dt = "<tags:formatDate value="${date}" />";
+
+            if (i == -1 && j == -1) {
+                $$('input.CSSEndDate').each(function(field) {
+                    field.value = dt;
+                })
+                return;
+            }
+
+            if (j >= 0 ) {
+                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
+                $(endDateFieldString).value = dt;
+            } else {
+                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
+                    field.value = dt;
+                })
+            }
+        }
+    }
+</script>
+
 <script>
     function applyRole(srsIndex, roleIndex) {
         var dt = "";
@@ -140,63 +197,6 @@
 	 </jsp:attribute>
 
 </tags:tabForm>
-
-<script language="JavaScript">
-
-    ajaxCRUD = new AJAX_CRUD_HELPER();
-    function addSiteResearchStaff() {
-        ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, ${tab.number});
-    }
-
-    function postSiteSelected(siteResearchStaffIndex, organizationID) {
-        return 0;
-    }
-
-    function refreshStudies(values, i) {
-    }
-
-    function activate(rsID, srsID, srsrID, i, j) {
-        if (confirm('Are you sure you want to activate ?')) {
-            
-            if (j >= 0) {
-                var startDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].startDate';
-                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
-                var dt = "<tags:formatDate value="${date}" />";
-                $(startDateFieldString).value = dt;
-                $(endDateFieldString).value = '';
-            } else {
-                $$('input.SiteResearchStaffRoleStartDateCSS' + i).each(function(field) {
-                    field.value = dt;
-                })
-                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
-                    field.value = '';
-                })
-            }
-        }
-    }
-
-    function deactivate(rsID, srsID, srsrID, i, j) {
-        if (confirm('Are you sure you want to deactivate ?')) {
-            var dt = "<tags:formatDate value="${date}" />";
-
-            if (i == -1 && j == -1) {
-                $$('input.CSSEndDate').each(function(field) {
-                    field.value = dt;
-                })
-                return;
-            }
-
-            if (j >= 0 ) {
-                var endDateFieldString = 'siteResearchStaffCommandHelper[' + i + '].rsRoles[' + j + '].endDate';
-                $(endDateFieldString).value = dt;
-            } else {
-                $$('input.SiteResearchStaffRoleEndDateCSS' + i).each(function(field) {
-                    field.value = dt;
-                })
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
