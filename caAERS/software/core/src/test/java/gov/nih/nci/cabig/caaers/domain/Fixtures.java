@@ -394,6 +394,13 @@ public class Fixtures {
     	return si;
     }
     
+    public static SiteResearchStaff createSiteResearchStaff(Organization org, ResearchStaff rStaff){
+    	SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+    	siteResearchStaff.setResearchStaff(rStaff);
+    	siteResearchStaff.setOrganization(org);
+    	return siteResearchStaff;
+    }
+    
     public static StudyInvestigator createStudyInvestigator(String name, Organization org){
     	Investigator inv = createInvestigator(name);
     	SiteInvestigator si = createSiteInvestigator(org, inv);
