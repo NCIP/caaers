@@ -14,12 +14,15 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabLoadDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
@@ -42,13 +45,17 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.InterventionSite;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -139,6 +146,9 @@ public class CreateAdverseEventAjaxFacade {
     private ConditionDao conditionDao;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	private UserDao userDao;
+	private SiteResearchStaffDao siteResearchStaffDao;
+	private ResearchStaffDao researchStaffDao;
+	private InvestigatorDao investigatorDao;
 
 
     public Class<?>[] controllers() {
@@ -271,6 +281,40 @@ public class CreateAdverseEventAjaxFacade {
     public User getResearchStaff(String text) {
         User user = userDao.getById(Integer.parseInt(text));
         return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
+    }
+    
+    public User getResearchStaffDetails(String userId){
+    	Object cmd = extractCommand();
+		ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+		//User user = userDao.getById(Integer.parseInt(userId));
+		ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(userId));
+		User user = null;
+		SiteResearchStaff siteResearchStaff = null;
+		if(researchStaff != null){
+			siteResearchStaff = siteResearchStaffDao.getOrganizationResearchStaff(command.getAeReport().getAssignment().getStudySite().getOrganization(), researchStaff);
+			user = researchStaff;
+		}else{
+			user = investigatorDao.getById(Integer.parseInt(userId));
+		}
+			
+    	LocalResearchStaff rstaff = new LocalResearchStaff();
+    	rstaff.setId(user.getId());
+    	rstaff.setFirstName(user.getFirstName());
+    	rstaff.setLastName(user.getLastName());
+    	rstaff.setMiddleName(user.getMiddleName());
+    	if(siteResearchStaff != null && siteResearchStaff.getEmailAddress() != null)
+    		rstaff.setEmailAddress(siteResearchStaff.getEmailAddress());
+    	else
+    		rstaff.setEmailAddress(user.getEmailAddress());
+    	if(siteResearchStaff != null && siteResearchStaff.getPhoneNumber() != null)
+    		rstaff.setPhoneNumber(siteResearchStaff.getPhoneNumber());
+    	else
+    		rstaff.setPhoneNumber(user.getPhoneNumber());
+    	if(siteResearchStaff != null && siteResearchStaff.getFaxNumber() != null)
+    		rstaff.setFaxNumber(siteResearchStaff.getFaxNumber());
+    	else
+    		rstaff.setFaxNumber(user.getFaxNumber());
+    	return rstaff;
     }
     
     public User getInvestigator(String text){
@@ -1311,4 +1355,19 @@ public class CreateAdverseEventAjaxFacade {
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
+    
+    @Required
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao){
+    	this.siteResearchStaffDao = siteResearchStaffDao;
+    }
+    
+    @Required
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
+    	this.researchStaffDao = researchStaffDao;
+    }
+    
+    @Required
+    public void setInvestigatorDao(InvestigatorDao investigatorDao){
+    	this.investigatorDao = investigatorDao;
+    }
 }

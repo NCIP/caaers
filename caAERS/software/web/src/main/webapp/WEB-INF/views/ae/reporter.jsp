@@ -35,7 +35,7 @@
                 clear('reporter');
                
             } else {
-                createAE.getResearchStaff(id, updateReporterFromStaff)
+                createAE.getResearchStaffDetails(id, updateReporterFromStaff)
             }
         }
 
@@ -108,10 +108,21 @@
             var selectElement = $("staff");
             if (id == '' && ${validPersonnel}){
             	for (var i = 0; i < selectElement.options.length; i++) {
-   					if (ddl.options[i].value == ${validPersonnel}) {
+   					if (selectElement.options[i].value == ${loggedInUserId}) {
    						selectElement.selectedIndex = i;
    					}
    				}
+	        }
+	        
+	        id = $("physician").value;
+	        selectElement = $("physician");
+	        if (id == '' && ${validPersonnel}){
+	        	for(var i = 0; i < selectElement.options.length; i++){
+	        		if(selectElement.options[i].value == ${loggedInUserId}) {
+	        			selectElement.selectedIndex = i;
+	        			choosePhysician();
+	        		}
+	        	}
 	        }
             
             //only show the workflow tab, if it is associated to workflow

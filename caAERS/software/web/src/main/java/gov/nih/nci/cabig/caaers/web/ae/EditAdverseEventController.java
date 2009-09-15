@@ -1,11 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -53,6 +58,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     private static final String PRIMARY_ADVERSE_EVENT_ID_PARAMETER = "primaryAEId";
     
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+    private ResearchStaffDao researchStaffDao;
+    private InvestigatorDao investigatorDao;
 	
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
@@ -158,8 +165,28 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		//set the default reporter as the logged-in person
         		String loginId = SecurityUtils.getUserLoginName();
                 if(loginId != null){
-             	   User loggedInUser = userDao.getByLoginId(loginId);
+             	   User loggedInUser = null;
+             	   ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
+             	   SiteResearchStaff siteResearchStaff = null;
+             	   
+             	   
+             	   // Now if there is a siteResearchStaff then we need to copy details like emailAddress, phoneNumber and faxNumber from the
+             	   // siteResearchStaff.
+             	   if(researchStaff != null){
+             		   siteResearchStaff = siteResearchStaffDao.getOrganizationResearchStaff(command.getAssignment().getStudySite().getOrganization(), researchStaff);
+             		   loggedInUser = researchStaff;
+             	   }else{
+          			   loggedInUser = investigatorDao.getByLoginId(loginId); 
+             	   }
              	  command.getAeReport().getReporter().copy(loggedInUser);
+             	   if(siteResearchStaff != null){
+             		   if(siteResearchStaff.getEmailAddress() != null)
+             			   command.getAeReport().getReporter().setEmailAddress(siteResearchStaff.getEmailAddress());
+             		   if(siteResearchStaff.getPhoneNumber() != null)
+             			   command.getAeReport().getReporter().setPhoneNumber(siteResearchStaff.getPhoneNumber());
+             		   if(siteResearchStaff.getFaxNumber() != null)
+             			   command.getAeReport().getReporter().setFax(siteResearchStaff.getFaxNumber());
+             	   }
                 }
         		
                	
@@ -467,4 +494,19 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	return adverseEventReportingPeriodDao;
     }
   
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
+    	this.researchStaffDao = researchStaffDao;
+    }
+    
+    public ResearchStaffDao getResearchStaffDao(){
+    	return researchStaffDao;
+    }
+    
+    public void setInvestigatorDao(InvestigatorDao investigatorDao){
+    	this.investigatorDao = investigatorDao;
+    }
+    
+    public InvestigatorDao getInvestigatorDao(){
+    	return investigatorDao;
+    }
 }

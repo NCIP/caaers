@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyConditionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -142,6 +143,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected UserDao userDao;
     
     private Configuration configuration;
+    
+    protected SiteResearchStaffDao siteResearchStaffDao;
     
     protected AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
@@ -526,6 +529,11 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
+    
+    @Required
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao){
+    	this.siteResearchStaffDao = siteResearchStaffDao;
+    }
     
 	@Required
 	public Configuration getConfiguration() {

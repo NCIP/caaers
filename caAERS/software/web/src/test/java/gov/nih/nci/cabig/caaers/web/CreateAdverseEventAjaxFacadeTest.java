@@ -12,6 +12,8 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
@@ -28,10 +30,14 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -84,6 +90,10 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private StudyParticipantAssignmentDao assignmentDao;
 
     private StudyParticipantAssignment assignment;
+    
+    private ResearchStaffDao researchStaffDao;
+    
+    private SiteResearchStaffDao siteResearchStaffDao;
 
     private StudySite studySite;
     
@@ -110,6 +120,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
         adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
         reportRepository = registerMockFor(ReportRepository.class);
+        researchStaffDao = registerMockFor(ResearchStaffDao.class);
+        siteResearchStaffDao = registerMockFor(SiteResearchStaffDao.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -122,6 +134,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setInteroperationService(interoperationService);
         facade.setExpeditedReportTree(new ExpeditedReportTree());
         facade.setReportRepository(reportRepository);
+        facade.setResearchStaffDao(researchStaffDao);
+        facade.setSiteResearchStaffDao(siteResearchStaffDao);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -227,6 +241,32 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	replayMocks();
     	facade.withdrawReportVersion(1, 1);
     	verifyMocks();
+    	
+    }
+    
+    public void testGetResearchStaffDetails() throws Exception{
+    	Organization testOrg = Fixtures.createOrganization("testOrg");
+    	List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+    	userGroupTypes.add(UserGroupType.caaers_ae_cd);
+    	ResearchStaff rStaff = Fixtures.createResearchStaff(testOrg, userGroupTypes, "rStaff");
+    	SiteResearchStaff siteResearchStaff = Fixtures.createSiteResearchStaff(testOrg, rStaff);
+    	siteResearchStaff.setEmailAddress("siteResearchStaffEmail");
+    	siteResearchStaff.setPhoneNumber("444-444-4444");
+    	siteResearchStaff.setFaxNumber("555-555-5555");
+    	
+    	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+    	expect(researchStaffDao.getById(10)).andReturn(rStaff);
+    	expect(siteResearchStaffDao.getOrganizationResearchStaff(testOrg, rStaff)).andReturn(siteResearchStaff);
+    	expect(assignment.getStudySite()).andReturn(studySite);
+    	expect(studySite.getOrganization()).andReturn(testOrg);
+    	
+    	replayMocks();
+    	User user = facade.getResearchStaffDetails("10");
+    	verifyMocks();
+    	
+    	assertEquals("Incorrect email address", "siteResearchStaffEmail", user.getEmailAddress());
+    	assertEquals("Incorrect phone number", "444-444-4444", user.getPhoneNumber());
+    	assertEquals("Incorrect fax number", "555-555-5555", user.getFaxNumber());
     	
     }
     

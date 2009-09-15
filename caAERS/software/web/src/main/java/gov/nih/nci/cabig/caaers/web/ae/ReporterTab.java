@@ -23,8 +23,11 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -66,18 +69,35 @@ public class ReporterTab extends AeTab {
     	List<ResearchStaff> researchStaffList = new ArrayList<ResearchStaff>();
     	List<Investigator> investigatorList = new ArrayList<Investigator>();
     	
+    	Set<ResearchStaff> researchStaffSet = new HashSet<ResearchStaff>();
+    	Set<Investigator> investigatorSet = new HashSet<Investigator>();
+    	
     	for(StudyPersonnel sPersonnel: command.getAssignment().getStudySite().getActiveStudyPersonnel()){
-    		if(sPersonnel.getSiteResearchStaff().getResearchStaff().isActive())
-    			researchStaffList.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
+    		if(sPersonnel.getSiteResearchStaff().getResearchStaff().isActive()){
+    			//researchStaffList.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
+    			researchStaffSet.add(sPersonnel.getSiteResearchStaff().getResearchStaff());
+    		}
     	}
     	
     	for(StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
-    		investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
+    		//investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
+    		investigatorSet.add(sInvestigator.getSiteInvestigator().getInvestigator());
+    	}
+
+    	Iterator<ResearchStaff> rIterator = researchStaffSet.iterator();
+    	while(rIterator.hasNext()){
+    		researchStaffList.add(rIterator.next());
+    	}
+    	
+    	Iterator<Investigator> invIterator = investigatorSet.iterator();
+    	while(invIterator.hasNext()){
+    		investigatorList.add(invIterator.next());
     	}
     	
     	//Sort the researchStaff and investigators list
     	Collections.sort(researchStaffList);
     	Collections.sort(investigatorList);
+    	
     	refData.put("researchStaffList", researchStaffList);
     	refData.put("investigatorList", investigatorList);
     	
