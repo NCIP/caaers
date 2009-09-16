@@ -59,7 +59,7 @@
  </head>
 <body>
   <study:summary />
-  <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAmendmentFrm" hideErrorDetails="true">
+  <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAmendmentFrm" >
     <jsp:attribute name="instructions">
     <p> Amendment can be added to this study by clicking the Add Amendment button.<br>
     </p>

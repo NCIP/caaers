@@ -23,7 +23,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyTherapiesForm" hideErrorDetails="true">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyTherapiesForm" >
     
     <jsp:attribute name="repeatingFields">
     <p><tags:instructions code="study.study_therapies.top" /></p>
