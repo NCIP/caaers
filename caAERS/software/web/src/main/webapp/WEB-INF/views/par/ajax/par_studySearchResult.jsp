@@ -19,7 +19,7 @@
                 autoIncludeParameters="false" >
         <ec:row highlightRow="true">
             <ec:column property="transient0" style="width:20px" filterable="false" sortable="false" title="&nbsp;">
-                <form:radiobutton path="study" value="${study.id}" onclick="if ($('ids')) $('ids').show();"/>
+                <form:radiobutton path="study" value="${study.id}" onclick="$('selectedStudyID').value = 123; if ($('ids')) $('ids').show();"/>
             </ec:column>
             <ec:column property="primaryIdentifier" title="Primary ID" />
             <ec:column property="shortTitle" title="Short Title" />

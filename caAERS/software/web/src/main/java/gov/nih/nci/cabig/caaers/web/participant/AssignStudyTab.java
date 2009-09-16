@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -19,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import com.semanticbits.rules.utils.NumberUtil;
 
 /**
  * @author Ion C. Olaru
@@ -27,8 +32,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
     private OrganizationDao organizationDao;
-
     private ParticipantDao participantDao;
+    private StudyDao studyDao;
+    private StudySiteDao studySiteDao;
 
     public AssignStudyTab() {
         super("Search for Studies", "Search Study", "par/reg_study_search");
@@ -38,8 +44,6 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public Map<String, Object> referenceData(AssignParticipantStudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("assignType", "study");
-
-
         return refdata;
     }
 
@@ -49,19 +53,33 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     }
 
     @Override
+    public void beforeBind(HttpServletRequest request, AssignParticipantStudyCommand command) {
+        super.beforeBind(request, command);
+        command.setStudySite(null);
+    }
+
+    @Override
+    public void onBind(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
+        super.onBind(request, command, errors);
+        if (command.getStudySite() != null) {
+            studySiteDao.lock(command.getStudySite());
+            command.setStudy(command.getStudySite().getStudy());
+        }
+    }
+
+    @Override
     protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
-        if (command.getStudySite() == null || command.getStudySite().getId() == null) {
+        if (command.getStudySite() == null) {
             errors.rejectValue("assignment.studySite", "PT_008", "Select the Study Site");
         } else {
-            participantDao.reassociate(command.getParticipant());
-            List<StudyParticipantAssignment> l;
-            l = command.getParticipant().getAssignments();
+            List<StudyParticipantAssignment> assignments;
+            assignments = command.getParticipant().getAssignments();
 
-            for (StudyParticipantAssignment assignment : l) {
+            for (StudyParticipantAssignment assignment : assignments) {
                 if (assignment.getStudySite().getId().intValue() == command.getStudySite().getId().intValue()) {
-                    errors.reject("PT_009", new Object[]{command.getParticipant().getFullName(), assignment.getStudySite().getStudy().getShortTitle(), assignment.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
+                    errors.reject("PT_009", new Object[]{command.getParticipant().getFullName(), command.getStudySite().getStudy().getShortTitle(), command.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
                     break;
                 }
             }
@@ -70,10 +88,9 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
             errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
         }
-
-
     }
 
+/*
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
         if (command.getStudySite() != null) {
@@ -81,8 +98,9 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
             command.getStudySite().getStudy().getPrimaryIdentifier();
         }
     }
+*/
 
-    
+
 //    @Override
 //    public void beforeBind(HttpServletRequest request,AssignParticipantStudyCommand command) {
 //    	super.beforeBind(request, command);
@@ -90,8 +108,8 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 //    	if(site != null)
 //    		organizationDao.lock(command.getStudySite().getOrganization());
 //    }
-//    
-    
+//
+
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
@@ -110,4 +128,20 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
+
+    public StudySiteDao getStudySiteDao() {
+        return studySiteDao;
+    }
+
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+        this.studySiteDao = studySiteDao;
+    }
 }

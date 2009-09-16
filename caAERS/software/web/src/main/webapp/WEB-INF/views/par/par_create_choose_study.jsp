@@ -5,10 +5,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>choose a Study</title>
 <script>
+    //studySelected = false;
     Event.observe(window, "load", function() {
         Event.observe($('flow-prev'), "click", function() {
             ValidationManager.validate = false;
         })
+/*
+        Event.observe($('flow-next'), "click", function() {
+            // if (!studySelected) $('assignment.studySubjectIdentifier').title = "study. Please select a study first...";
+        })
+*/
     });
 function submitPage(s){
 	document.getElementById("command").submit();
@@ -133,7 +139,7 @@ function ajaxStudySearch(searchText, searchType) {
                                 sortable="true">
                         <ec:row highlightRow="true">
                             <ec:column property="transient0" style="width:20px" filterable="false" sortable="true" title="&nbsp;">
-                                <form:radiobutton path="study" value="${study.id}" onclick="if ($('ids')) $('ids').show();"/>
+                                <form:radiobutton path="study" value="${study.id}" onclick="$('selectedStudyID').value = 123; if ($('ids')) $('ids').show(); "/>
                             </ec:column>
                             <ec:column property="primaryIdentifier" title="Primary ID" />
                             <ec:column property="shortTitle" title="Short Title" />
@@ -148,11 +154,15 @@ function ajaxStudySearch(searchText, searchType) {
                         </ec:row>
                     </ec:table>
                     <input type="hidden" name="_action" value="" />
-
             </c:if>
         </div>
 
-        <div id="ids" style="display: <c:if test="${fn:length(command.studies) == 0}">none</c:if>;">
+        <div class='row' style="display:none;">
+            <div class='label'></div>
+            <div class='value'><input type="text" class="validate-NOTEMPTY" value="" id="selectedStudyID" name="selectedStudy" title="study" /></div>
+        </div>
+
+        <div id="ids" style="display: none;">
             <br />
             <chrome:division title="Study Subject Identifier">
             <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
@@ -167,7 +177,7 @@ function ajaxStudySearch(searchText, searchType) {
                 </ui:row>
             </chrome:division>
         </div>
-        
+
     </jsp:attribute>
 </tags:tabForm>
 </div>    
