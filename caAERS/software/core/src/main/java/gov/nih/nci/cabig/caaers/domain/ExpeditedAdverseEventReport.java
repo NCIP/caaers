@@ -150,96 +150,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return ss;
     }
 
-// BJ : NOT REFFERED     
-//    /*
-//    * Checks whether all reports in the SAE are complete or not
-//    *
-//    */
-//    @Transient
-//    public String getAreAllReportsSubmitted() {
-//        Boolean areAllReportsSubmitted = true;
-//        for (Report report : reports) {
-//            if (report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED) {
-//                areAllReportsSubmitted = false;
-//                break;
-//            }
-//        }
-//        return areAllReportsSubmitted.toString();
-//    }
     
-    /**
-     * Checks whether all the sponsor reports in the SAE are complete/withdrawn or not.
-     *
-     * @return Boolean
-     */
-    @Transient
-    public Boolean getAllSponsorReportsCompleted(){
-    	Boolean completed = true;
-    	for(Report report: getSponsorDefinedReports()){
-    		if(report.getReportDefinition().getExpedited() && report.getLastVersion().isActive()) completed = false;
-    	}
-    	
-    	// Handle the case where there are no expedited / amendable reports.
-    	if(!getHasAmendableReport()){
-    		for(Report report: getSponsorDefinedReports()){
-    			if(report.getLastVersion().isActive()) completed = false;
-    		}
-    	}
-    	return completed;
-    }
-    
-    /**
-     * Fetches the sponsor report in the SAE which is Pending and has the earliest due-date.
-     */
-    @Transient
-    public Report getEarliestPendingSponsorReport(){
-    	Report earliestPendingReport = null;
-    	List<Report> sponsorPendingReports = new ArrayList<Report>();
-    	for(Report report: getSponsorDefinedReports()){
-    		if(report.getLastVersion().getReportStatus() == ReportStatus.PENDING)
-    			sponsorPendingReports.add(report);
-    	}
-    	
-    	if(sponsorPendingReports.size() > 0){
-    		Date earliestPendingDate = null;
-    		// this is to check if any amendable reports are present.
-    		// if not, the earliestPendingReport will be null after this loop and we will return that.
-    		for(Report report: sponsorPendingReports){
-    			if(report.getReportDefinition().getAmendable()){
-    				earliestPendingDate = report.getDueOn();
-    				earliestPendingReport = report;
-    			}
-    		}
-    		if(earliestPendingReport != null){
-    			for(Report report: sponsorPendingReports){
-    				if(report.getReportDefinition().getAmendable() && earliestPendingDate.compareTo(report.getDueOn()) > 0){
-    					earliestPendingDate = report.getDueOn();
-    					earliestPendingReport = report;
-    				}
-    			}
-    		}
-    	}
-    	return earliestPendingReport;
-    }
-    
-    
-    
-    /**
-     * Returns the list of sponsor defined reports
-     * @return ArrayList
-     */
-    @Transient
-    public List<Report> getSponsorDefinedReports(){
-    	ArrayList<Report> sponsorReports = new ArrayList<Report>();
-    	String nciInstituteCode = this.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-    	for(Report report: reports){
-    		if(report.getReportDefinition().getOrganization().getNciInstituteCode().equals(nciInstituteCode))
-    			sponsorReports.add(report);
-    	}
-    	
-    	return sponsorReports;
-    }
-
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
@@ -973,16 +884,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     }
     
-    @Transient
-    public String getCurrentVersionForSponsorReport(String nciInstituteCode){
-    	Integer versionNumber = -1;
-    	for(Report report: reports){
-    		if(report.getReportDefinition().getOrganization().getNciInstituteCode().equals(nciInstituteCode))
-    			if(Integer.parseInt(report.getCurrentVersion()) > versionNumber)
-    				versionNumber = Integer.parseInt(report.getCurrentVersion());
-    	}
-    	return versionNumber.toString();
-    }
     
     /**
      * This method returns true if any of the reports associated to this data-collection was submitted

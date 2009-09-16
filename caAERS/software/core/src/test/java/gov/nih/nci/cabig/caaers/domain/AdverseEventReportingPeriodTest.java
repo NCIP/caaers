@@ -383,34 +383,6 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		assertNull(d);
 		
 	}
-	
-	public void testGetAllSponsorReportsCompleted_WhenNoReports(){
-		boolean result = reportingPeriod1.getAllSponsorReportsCompleted();
-		assertFalse(result);
-	}
-	
-	public void testGetAllSponsorReportsCompleted_WhenCompletedReports(){
-		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		Report report = Fixtures.createReport("test");
-		report.setStatus(ReportStatus.COMPLETED);
-		report.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-		aeReport.addReport(report);
-		reportingPeriod1.addAeReport(aeReport);
-		report.getReportDefinition().setAmendable(true);
-		report.getReportDefinition().getOrganization().setNciInstituteCode(reportingPeriod1.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode());
-		
-		StudyParticipantAssignment assignment = Fixtures.createAssignment();
-		Study study = assignment.getStudySite().getStudy();
-		StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(report.getReportDefinition().getOrganization());
-		sponsor.setPrimary(true);
-		study.addStudyOrganization(sponsor);
-		
-		aeReport.setAssignment(assignment);
-		
-		boolean result = reportingPeriod1.getAllSponsorReportsCompleted();
-		assertTrue(result);
-	}
-	
 	public void testFindEarliestPostSubmissionUpdatedDate(){
 		AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.DEATH);
 		AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.DEATH);

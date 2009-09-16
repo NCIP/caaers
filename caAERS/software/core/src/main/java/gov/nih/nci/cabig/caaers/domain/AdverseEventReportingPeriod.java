@@ -594,16 +594,5 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	return null;
     }
     
-    /**
-     * Returns true, if all sponsor reports associated to all the data collections is complete. 
-     * @return
-     */
-    @Transient
-    public boolean getAllSponsorReportsCompleted(){
-    	boolean complete = false;
-    	for(ExpeditedAdverseEventReport aeReport : getAeReports()){
-    		complete |= aeReport.getAllSponsorReportsCompleted();
-    	}
-    	return complete;
-    }
+
 }
