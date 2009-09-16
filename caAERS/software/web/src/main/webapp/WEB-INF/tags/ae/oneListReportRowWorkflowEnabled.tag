@@ -60,31 +60,23 @@
 		     		<OPTION value="notifyPSC">Notify PSC</OPTION>
 		     	</c:if>
 		     	
-		     	<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-					<c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
-						<OPTION value="withdraw">Withdraw</OPTION>
-					</c:if>
+				<c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}">
+					<OPTION value="withdraw">Withdraw</OPTION>
 				</c:if>
 
-                <c:if test="${command.reportsSubmittable[report.id]}">
-                    <c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
-                        <c:choose>
-                            <c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'INPROGRESS'}">
-                            	<c:if test="${command.submitLinkRenderable}">
-                            		<OPTION value="submit">Submit</OPTION>
-                            	</c:if>
-                            </c:when>
-                            <c:when test="${reportStatus eq 'PENDING' and (not empty lastVersion.submissionUrl)}">
-                                <OPTION value="adeers">View in AdEERS</OPTION>
-                                <OPTION value="amend">Amend</OPTION>
-                            </c:when>
-                            <c:when test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED')}">
-                                <OPTION value="amend">Amend</OPTION>
-                            </c:when>
-                        </c:choose>
-                      </c:if>
+                <c:if test="${command.reportsSubmittable[report.id] and (reportStatus eq 'PENDING' or reportStatus eq 'FAILED') }">
+                    <c:if test="${command.submitLinkRenderable}">
+                         <OPTION value="submit">Submit</OPTION>
+                    </c:if>
                 </c:if>
-
+				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED')}">
+                    <OPTION value="amend">Amend</OPTION>
+                </c:if>
+								
+				<c:if test="${( reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED' )and (not empty lastVersion.submissionUrl)}">
+                	<OPTION value="adeers">View in AdEERS</OPTION>
+                </c:if>
+				
              </SELECT>
            
              <br>

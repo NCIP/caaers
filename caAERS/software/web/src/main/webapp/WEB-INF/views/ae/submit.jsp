@@ -256,7 +256,7 @@
     		<div class="local-buttons"></div>
 	    	<div class="flow-buttons">
 	        <span class="prev">
-	        		<tags:button color="blue" value="Back" icon="Back" cssClass="tab9"></tags:button>
+	        		<tags:button id="flow-prev" color="blue" value="Back" icon="Back" cssClass="tab9"></tags:button>
 	        </span>
 	        <span class="next">
 	            <input type="image" alt="save »" value="Go to Manage Reports " id="flow-next" src="<c:url value="/images/blue/go_to_manage_reports_btn.png" />"/>

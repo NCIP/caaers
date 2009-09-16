@@ -34,7 +34,7 @@
 	<c:if test="${lastVersion.reportStatus == 'COMPLETED'}" >
 		<ae:oneListReportSubmissionStatus theReport="${theReport}" reportStatus="${lastVersion.reportStatus}" lastVersion="${lastVersion}"/>
 	</c:if>	
-	<c:if test="${lastVersion.reportStatus == 'FAILED'}" >
+	<c:if test="${(lastVersion.reportStatus eq= 'FAILED') or (lastVersion.reportStatus eq 'WITHDRAW_FAILED')}" >
 		<ae:oneListReportSubmissionStatus theReport="${theReport}" reportStatus="${lastVersion.reportStatus}" lastVersion="${lastVersion}"/>           			
 	</c:if>
 	<c:if test="${lastVersion.reportStatus == 'INPROCESS'}" >
@@ -45,14 +45,13 @@
 	</c:if>
 </td>
 <td>
-	<c:if test="${(theReport.reportDefinition.amendable == false) or (theReport.isLatestVersion == true)}">
-		<c:if test="${(lastVersion.reportStatus == 'PENDING') or (lastVersion.reportStatus == 'FAILED')}" >
-			<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${theReport.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
-		</c:if>
-		<c:if test="${theReport.reportDefinition.amendable and ( (lastVersion.reportStatus == 'WITHDRAWN') or (lastVersion.reportStatus == 'COMPLETED') )}" >
-			<center>
+	<c:if test="${(lastVersion.reportStatus == 'PENDING') or (lastVersion.reportStatus == 'FAILED')}" >
+			<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${theReport.id}"/>">
+			<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
+	</c:if>
+	<c:if test="${theReport.reportDefinition.amendable and ( (lastVersion.reportStatus == 'WITHDRAWN') or (lastVersion.reportStatus == 'COMPLETED') )}" >
+		<center>
 				<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${theReport.id}&action=amendReport"/>">Amend</a>
-			</center>
-		</c:if>
-	</c:if>					
+		</center>
+	</c:if>
 </td>

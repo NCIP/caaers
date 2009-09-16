@@ -10,14 +10,14 @@
     		
         	function checkReportSubmissionStatus(){
         		submitReport.fetchReportSubmissionStatus(${command.aeReport.id}, ${command.reportIndex}, function(result){
-        			if(result.objectContent == "COMPLETED" || result.objectContent == "FAILED"){
+        			if(result.objectContent == "COMPLETED" || result.objectContent == "FAILED" || result.objectContent == "WITHDRAW_FAILED"){
         				$('reportStatusRowId').innerHTML = result.htmlContent;
         				clearTimeout(timer);
         			}else{
         				timer = setTimeout("checkReportSubmissionStatus()" ,30000);
         			}
         			// make the report name as link if the report submission failed.
-        			if(result.objectContent == "FAILED"){
+        			if(result.objectContent == "FAILED" || result.objectContent == "WITHDRAW_FAILED"){
         				//$('reportNameId').innerHTML = "<div><a href=\"/pages/ae/edit?aeReport=" + '${command.lastVersion.report.aeReport.id}'
         				// + "\">" + '${command.lastVersion.report.reportDefinition.label}' + "</a></div>";
         				$('report-label').style.display = 'none';
@@ -73,7 +73,7 @@
 											</a>
 	       			     				</div>
 	       			     			</c:if>
-	       			     			<c:if test="${command.lastVersion.reportStatus == 'FAILED'}">
+	       			     			<c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
 	       			     				<div id="report-label" class="label" style="display:none">${report.reportDefinition.label}</div>
 	       			     				<div id="report-link">
 	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
@@ -94,7 +94,7 @@
             						<c:if test="${command.lastVersion.reportStatus == 'COMPLETED'}" >
            				 				<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
             						</c:if>	
-            						<c:if test="${command.lastVersion.reportStatus == 'FAILED'}" >
+            						<c:if test="${(command.lastVersion.reportStatus == 'FAILED') or (command.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}" >
            				 				<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>           			
           				  			</c:if>
           				   			<c:if test="${command.lastVersion.reportStatus == 'INPROCESS'}" >
@@ -104,11 +104,9 @@
            				 			</c:if>
 			            		</td>
 			            		<td>
-									<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 										<c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}" >
 											<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
 										</c:if>
-									</c:if>					
             					</td>
 	            			</tr>
 	            		</c:if>

@@ -14,9 +14,9 @@
   Class : dueOn -  for link
   Class : submittedOn for non links
 --%>
-<c:set var="_statusCSS" value="${theReport.overdue ? 'reportsOverdue' : (reportStatus eq 'INPROCESS' or reportStatus eq 'PENDING') ? 'reportsDue' : reportStatus eq 'FAILED' ? 'reportsFailed' : 'reportsCompleted'}" />
+<c:set var="_statusCSS" value="${theReport.overdue ? 'reportsOverdue' : (reportStatus eq 'INPROCESS' or reportStatus eq 'PENDING') ? 'reportsDue' : (reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED') ? 'reportsFailed' : 'reportsCompleted'}" />
 
-<c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED') or (reportStatus eq 'AMENDED') }" />
+<c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED') or (reportStatus eq 'WITHDRAW_FAILED') or (reportStatus eq 'AMENDED') }" />
 
 <c:if test="${detailsEnabled}">
 	<span class="${_statusCSS }"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u class="${_statusCSS }" >${lastVersion.statusAsString}</u></i></a></span>
@@ -28,7 +28,7 @@
                 <br />
                 Refresh to update the Submission status. Incase if the submission status is hung for more than few minutes, please try the resubmit option.
             </c:when>
-            <c:when test="${reportStatus eq 'FAILED'}">
+            <c:when test="${(reportStatus eq 'FAILED') or (reportStatus eq 'WITHDRAW_FAILED')}">
                 <i>Submission to AdEERS  failed!</i>
                 ${fn:replace(lastVersion.submissionMessage,".","<br>")}
             </c:when>

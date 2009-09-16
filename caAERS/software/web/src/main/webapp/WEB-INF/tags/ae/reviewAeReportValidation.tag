@@ -44,11 +44,9 @@
 	</td>
 	<td id="report-action">
 		<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable && isUserSAECoordinato}" >
-			<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 				<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 					<a href="javascript:submitReport(${report.id });"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
 				</c:if>
-			</c:if>					
 		</c:if>
 	</td>
 </tr>

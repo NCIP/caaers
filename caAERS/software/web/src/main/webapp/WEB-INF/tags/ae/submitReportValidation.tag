@@ -109,16 +109,14 @@
 		     					<OPTION value="withdraw">Withdraw</OPTION>
 		     				</c:if>
 		     				<c:if test="${reportMessages[report.id].submittable}" >
-								<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 									<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 										<c:if test="${!command.workflowEnabled || isSuperUser}">
 											<OPTION value="submit">Submit</OPTION>
 										</c:if>
 									</c:if>
-									<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
+									<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }" >
 										<OPTION value="amend">Amend</OPTION>
 									</c:if>
-								</c:if>					
 							</c:if>
 		     			</SELECT>
 						
