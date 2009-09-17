@@ -204,8 +204,14 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
-        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
-        InputFieldAttributes.setSize(loginIdField, 30);
+        InputField loginIdField = null;
+        if(command.getId() == null){
+        	loginIdField =InputFieldFactory.createTextField("loginId", "Username", false);
+            InputFieldAttributes.setSize(loginIdField, 30);
+        }else{
+        	loginIdField = InputFieldFactory.createLabelField("loginId", "Username", false);
+        }
+        
         investigatorFieldGroup.getFields().add(loginIdField);
         
         InputFieldGroupMap map = new InputFieldGroupMap();
