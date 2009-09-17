@@ -638,6 +638,12 @@ function selectedReportDefinitionsFromGroup(aeReportId, groupName){
 //=================================================================================
 //function will submit the report to server. 
 function forwardToReport(aeReportId, frm){
+	
+	if(AE.SUBMISSION_INPROGRESS){
+		 return;
+	}
+	
+	AE.SUBMISSION_INPROGRESS = true;
 
 	if(!validate(aeReportId)){
 		return;
