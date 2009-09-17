@@ -54,6 +54,30 @@ public class TreatmentTab extends AeTab {
         creator.createFieldGroup("treatmentInfo", null, "treatmentInformation", assignmentField, descField, newDescField, firstCourseDateField, adverseEventCourse_dateField,  eventCourseField, totalCourseField);
 
     }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
+    	Map<String, Object> refData =  super.referenceData(request, command);
+    
+    	// If for the course the treatmentInformation selected was "Other", then put the corresponding treatmentAssignmentDescription
+    	// in the referenceData or put "" instead. This will be populated in the treatment description textArea if the user select
+    	// "Other" as the TAC from the drop down on the treatment page in aeReport flow.
+    	if(command.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription() != null)
+    		refData.put("courseTreatmentAssignmentDesc", command.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription());
+    	else
+    		refData.put("courseTreatmentAssignmentDesc", "");
+    	
+    	// If the treatmentAssignment.treatmentDescription is a valid value then put a flag in the referenceData that says so.
+    	// This will be used to render the editable textarea for the treatmentAssignment.treatmentDescription and "Other" will be selected
+    	// in the dropdown for TAC.
+    	if(command.getAeReport().getTreatmentInformation().getTreatmentAssignment() == null &&
+    			command.getAeReport().getTreatmentInformation().getTreatmentDescription() != null)
+    		refData.put("validOtherTreatmentDescription", true);
+    	else
+    		refData.put("validOtherTreatmentDescription", false);
+    		
+    	return refData;
+    }
 	
     private Map<Object, Object> collectTreatmentAssignmentCodes(ExpeditedAdverseEventInputCommand command) {
         LinkedHashMap<Object, Object> map = new LinkedHashMap<Object, Object>();
@@ -65,17 +89,6 @@ public class TreatmentTab extends AeTab {
             }
         }
         return map;
-    }
-
-    @Override
-    public void onBind(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
-        super.onBind(request, command, errors);
-        if (StringUtils.equals("other", request.getParameter("treatmentDescriptionType"))) {
-            command.getAeReport().getTreatmentInformation().setTreatmentAssignment(null);
-        } else {
-            command.getAeReport().getTreatmentInformation().setTreatmentDescription(null);
-        }
-
     }
 
     public ConfigProperty getConfigurationProperty() {
