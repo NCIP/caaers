@@ -639,14 +639,12 @@ function selectedReportDefinitionsFromGroup(aeReportId, groupName){
 //function will submit the report to server. 
 function forwardToReport(aeReportId, frm){
 	
-	if(AE.SUBMISSION_INPROGRESS){
-		 return;
-	}
-	
-	AE.SUBMISSION_INPROGRESS = true;
-
 	if(!validate(aeReportId)){
 		return;
+	}
+
+	if(AE.SUBMISSION_INPROGRESS){
+		 return;
 	}
 	
 	$('activeAeReportId').value = aeReportId;
@@ -665,15 +663,15 @@ function forwardToReport(aeReportId, frm){
 	 });
 
 	 if(withdrawnReports.length > 0){
-		if(confirm(reportsWithdawnMessage + "\n\n" + withdrawnReports)){
-			//submit the form
-			frm.submit();
+		if(!confirm(reportsWithdawnMessage + "\n\n" + withdrawnReports)){
+			return;
 		} 
 	
-	 }else{
-		//submit the form
-		frm.submit();
 	 }
+	 
+	 AE.SUBMISSION_INPROGRESS = true;
+	 //submit the form
+	 frm.submit();
 	
 	
 	
