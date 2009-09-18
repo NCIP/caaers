@@ -82,20 +82,17 @@
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
 			<%-- Attribution --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
-			<%-- Time Of Event --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
 		</div>
 		<div class="rightpanel">
 			<%-- End Date --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
 			<%-- Expectedness --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
-			<%-- Event Location --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
+			
 		</div>
 	</div>
 	<%-- Hospitalization --%>
-	<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
+	<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
 	<%-- Outcome--%>
 	<ae:oneOutcome index="${index}" isRoutineFlow="true" />
 		<!--  field to store the sig -->

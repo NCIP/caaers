@@ -117,22 +117,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false & unRetired, createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
-                //Event time
-                InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
-            	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
-            	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
-            	amPmOption.put("0", "AM");
-            	amPmOption.put("1", "PM");
-            	InputField amPmField = InputFieldFactory.createSelectField("type", "",false & unRetired, amPmOption);
-            	InputFieldAttributes.setSize(hrField, 2);
-            	InputFieldAttributes.setSize(mmField, 2);
-            	InputField timeOfEventField =  new CompositeField("eventApproximateTime", new DefaultInputFieldGroup(null,"Event time").addField(hrField).addField(mmField).addField(amPmField));
-            	mainFieldFactory.addField(timeOfEventField);
-            	
-            	//EventLocation
-                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?");
-                mainFieldFactory.addField(eventLocationField);
-                
                 //Hospitalization
                 InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false & unRetired, createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
