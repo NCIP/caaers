@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.caaers.CollectionUtil;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -508,6 +509,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         return ctepStudyDiseases;
     }
 
+    @Transient
+    public List<CtepStudyDisease> getActiveCtepStudyDiseases() {
+        CollectionUtil<CtepStudyDisease> cu = new CollectionUtil<CtepStudyDisease>();
+        return cu.getActiveObjects(getCtepStudyDiseases());
+    }
+
     public void setCtepStudyDiseases(final List<CtepStudyDisease> ctepStudyDiseases) {
         this.ctepStudyDiseases = ctepStudyDiseases;
     }
@@ -521,6 +528,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // it is pretty lame that this is necessary
     public List<MeddraStudyDisease> getMeddraStudyDiseases() {
         return meddraStudyDiseases;
+    }
+
+    @Transient
+    public List<MeddraStudyDisease> getActiveMeddraStudyDiseases() {
+        CollectionUtil<MeddraStudyDisease> cu = new CollectionUtil<MeddraStudyDisease>();
+        return cu.getActiveObjects(getMeddraStudyDiseases());
     }
 
     public void setMeddraStudyDiseases(final List<MeddraStudyDisease> meddraStudyDiseases) {
@@ -1041,10 +1054,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         return studyConditions;
     }
 
+    @Transient
+    public List<StudyCondition> getActiveStudyConditions() {
+        CollectionUtil<StudyCondition> cu = new CollectionUtil<StudyCondition>();
+        return cu.getActiveObjects(getStudyConditions());
+    }
+
     public void setStudyConditions(List<StudyCondition> studyConditions) {
         this.studyConditions = studyConditions;
     }
-
 
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)

@@ -348,7 +348,7 @@
     </chrome:division>
 
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
-            <c:if test="${not empty command.study.meddraStudyDiseases}">
+            <c:if test="${not empty command.study.activeMeddraStudyDiseases}">
             <chrome:division title="Diseases">
             	<!--[if lte IE 6]>
 		<br>
@@ -361,7 +361,7 @@
                         <th scope="col">MedDRA Code</th>
                     </tr>
 
-                    <c:forEach items="${command.study.meddraStudyDiseases}" var="studyDisease">
+                    <c:forEach items="${command.study.activeMeddraStudyDiseases}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.term.meddraTerm}</td>
                             <td>${studyDisease.term.meddraCode}</td>
@@ -374,7 +374,7 @@
     </c:if>
 
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
-            <c:if test="${not empty command.study.ctepStudyDiseases}">
+            <c:if test="${not empty command.study.activeCtepStudyDiseases}">
             <chrome:division title="Diseases">
             	<!--[if lte IE 6]>
 		<br>
@@ -387,7 +387,7 @@
                         <th scope="col">Disease Term</th>
                     </tr>
 
-                    <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease">
+                    <c:forEach items="${command.study.activeCtepStudyDiseases}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
                             <td>${studyDisease.term.ctepTerm}</td>
@@ -400,7 +400,7 @@
     </c:if>
 
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
-            <c:if test="${not empty command.study.studyConditions}">
+            <c:if test="${not empty command.study.activeStudyConditions}">
             <chrome:division title="Diseases">
             	<!--[if lte IE 6]>
 		<br>
@@ -412,7 +412,7 @@
                         <th scope="col">Disease Term</th>
                     </tr>
 
-                    <c:forEach items="${command.study.studyConditions}" var="studyDisease">
+                    <c:forEach items="${command.study.activeStudyConditions}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.term.conditionName}</td>
                         </tr>
