@@ -478,7 +478,7 @@
 
             </SUSPECT_MEDICAL_DEVICE>
         </xsl:if>
-	<xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
+	<xsl:if test="AdverseEventResponseDescription != ''">
         <DESCRIPTION_OF_EVENT>
             <xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
                 <EVENT_DESCRIPTION>
