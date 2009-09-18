@@ -35,8 +35,7 @@ public class SystemAssignedIdentifier extends Identifier {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((systemName == null) ? 0 : systemName.hashCode());
+		result = prime * result + ((systemName == null) ? 0 : systemName.hashCode());
 		return result;
 	}
 

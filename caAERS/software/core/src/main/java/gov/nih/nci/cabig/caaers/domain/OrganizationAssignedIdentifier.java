@@ -44,8 +44,7 @@ public class OrganizationAssignedIdentifier extends Identifier {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((organization == null) ? 0 : organization.hashCode());
+		result = prime * result + ((organization == null) ? 0 : organization.hashCode());
 		return result;
 	}
 
