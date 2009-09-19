@@ -511,8 +511,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     public List<CtepStudyDisease> getActiveCtepStudyDiseases() {
-        CollectionUtil<CtepStudyDisease> cu = new CollectionUtil<CtepStudyDisease>();
-        return cu.getActiveObjects(getCtepStudyDiseases());
+        return CollectionUtil.getActiveObjects(getCtepStudyDiseases());
     }
 
     public void setCtepStudyDiseases(final List<CtepStudyDisease> ctepStudyDiseases) {
@@ -532,8 +531,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     public List<MeddraStudyDisease> getActiveMeddraStudyDiseases() {
-        CollectionUtil<MeddraStudyDisease> cu = new CollectionUtil<MeddraStudyDisease>();
-        return cu.getActiveObjects(getMeddraStudyDiseases());
+        return CollectionUtil.getActiveObjects(getMeddraStudyDiseases());
     }
 
     public void setMeddraStudyDiseases(final List<MeddraStudyDisease> meddraStudyDiseases) {
@@ -1056,8 +1054,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     public List<StudyCondition> getActiveStudyConditions() {
-        CollectionUtil<StudyCondition> cu = new CollectionUtil<StudyCondition>();
-        return cu.getActiveObjects(getStudyConditions());
+        return CollectionUtil.getActiveObjects(getStudyConditions());
     }
 
     public void setStudyConditions(List<StudyCondition> studyConditions) {

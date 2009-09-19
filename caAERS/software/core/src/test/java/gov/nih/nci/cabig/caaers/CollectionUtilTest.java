@@ -31,14 +31,13 @@ public class CollectionUtilTest extends TestCase {
         sc3.setTerm(condition);
         l.add(sc3);
 
-        CollectionUtil<StudyCondition> cu = new CollectionUtil<StudyCondition>();
-        assertEquals(3, cu.getActiveObjects(l).size());
+        assertEquals(3, CollectionUtil.getActiveObjects(l).size());
 
         sc3.setRetiredIndicator(true);
-        assertEquals(2, cu.getActiveObjects(l).size());
+        assertEquals(2, CollectionUtil.getActiveObjects(l).size());
 
         sc2.setRetiredIndicator(true);
-        assertEquals(1, cu.getActiveObjects(l).size());
+        assertEquals(1, CollectionUtil.getActiveObjects(l).size());
 
     }
 }

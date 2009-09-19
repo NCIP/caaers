@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Ion C. Olaru
  */
 public class CollectionUtil<T extends Retireable> {
-    public List<T> getActiveObjects(List<T> objects) {
+    public static <T extends Retireable> List<T> getActiveObjects(List<T> objects) {
         List<T> l = new ArrayList<T>();
         for (Retireable object : objects) {
             if (!object.isRetired()) l.add((T)object);
