@@ -87,7 +87,7 @@ class PersonnelTab extends StudyTab {
 
         if (fields == null) {
             fields = new ArrayList<InputField>();
-            InputField investigatorField = InputFieldFactory.createAutocompleterField("siteResearchStaff", "Research Staff", false);
+            InputField investigatorField = InputFieldFactory.createAutocompleterField("siteResearchStaff", "Research Staff", true);
             fields.add(investigatorField);
             fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, WebUtils.collectOptions(command.getAllPersonnelRoles(), "code", "name", "")));
             //TODO: BJ need to show startDate and endDate and deactivate/activate
@@ -113,7 +113,7 @@ class PersonnelTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             HashSet<String> hSet = new HashSet<String>();
             for (StudyPersonnel sp : so.getStudyPersonnels()) {
-                if (sp.isActive())
+                if (sp.isActive() && sp.getSiteResearchStaff() != null)
                     if (!hSet.add(sp.getRoleCode() + sp.getSiteResearchStaff().getResearchStaff().getId().toString())) {
                         errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
                     }

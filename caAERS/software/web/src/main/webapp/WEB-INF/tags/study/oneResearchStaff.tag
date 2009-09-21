@@ -22,7 +22,7 @@
 			validationJSClass="${_staffField.validatorClassName}" 
 			readonly="${readOnly}" 
 			size="${_staffField.attributes.size}"
-			title="${field.displayName}"
+			title="${_staffField.displayName}"
 			enableClearButton="${_staffField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here..." />
 	 </td>
@@ -32,6 +32,7 @@
 	 	<ui:select options="${_staffRoleField.attributes.options}"
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
+	 		title="${_staffRoleField.displayName}"
 	 		validationJSClass="${_staffRoleField.validatorClassName}" disabled="${readOnly}"/>
 	 </td>
 

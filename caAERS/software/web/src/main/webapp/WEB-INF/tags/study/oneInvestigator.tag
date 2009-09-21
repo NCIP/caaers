@@ -25,7 +25,7 @@
                           validationJSClass="${_invField.validatorClassName}"
                           readonly="${readOnly}"
                           size="${_invField.attributes.size}"
-                          title="${field.displayName}"
+                          title="${_invField.displayName}"
                           enableClearButton="${_invField.attributes.enableClear}"
                           initialDisplayValue="Begin typing here..."/>
     </td>
@@ -33,7 +33,7 @@
     <td style="border-right:none;">
         <c:set var="_invRoleField" value="${fieldGroups[mainGroup].fields[1]}"/>
         <c:set var="_invRoleValue"><caaers:value path="${_invRoleField.propertyName}"/></c:set>
-        <ui:select options="${_invRoleField.attributes.options}" path="${_invRoleField.propertyName}" required="true" validationJSClass="${_invRoleField.validatorClassName}" disabled="${readOnly}"/>
+        <ui:select options="${_invRoleField.attributes.options}" path="${_invRoleField.propertyName}" required="true" title="${_invRoleField.displayName}" validationJSClass="${_invRoleField.validatorClassName}" disabled="${readOnly}"/>
     </td>
 
     <td style="border-right:none;">
