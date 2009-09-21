@@ -118,7 +118,7 @@ class InvestigatorsTab extends StudyTab {
             int j = i;
             for (StudyInvestigator si : so.getStudyInvestigators()) {
 
-                if (si.isActive())
+                if (si.isActive() && si.getSiteInvestigator() != null)
                     if (!hSet.add(si.getRoleCode() + si.getSiteInvestigator().getInvestigator().getId().toString())) {
                         errors.reject("STU_020", new Object[]{si.getSiteInvestigator().getInvestigator().getFullName(), command.getStudyInvestigatorRoles().get(si.getRoleCode())}, "Duplicate entry");
                     }
