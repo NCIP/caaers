@@ -114,6 +114,8 @@ class InvestigatorsTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             StudyInvestigator dupSI = null;
 
+            int i = 0;
+            int j = i;
             for (StudyInvestigator si : so.getStudyInvestigators()) {
 
                 if (si.isActive())
@@ -126,13 +128,16 @@ class InvestigatorsTab extends StudyTab {
                         // si.deactivate();
                         hasSIDuplicates = true;
                         dupSI = si;
+                        j = i;
                     }
                 }
+
+                i++;
             }
 
             if (hasSIDuplicates)
-                errors.reject("STU_019", new Object[] {dupSI.getSiteInvestigator().getInvestigator().getFullName(), dupSI.getStudyOrganization().getOrganization().getName()}, "default message");
-
+                // errors.reject("STU_019", new Object[] {dupSI.getSiteInvestigator().getInvestigator().getFullName(), dupSI.getStudyOrganization().getOrganization().getName()}, "default message");
+                errors.rejectValue(String.format("study.activeStudyOrganizations[%d].studyInvestigators[%d].siteInvestigator", command.getStudySiteIndex(), j), "STU_019", new Object[] {dupSI.getSiteInvestigator().getInvestigator().getFullName(), dupSI.getStudyOrganization().getOrganization().getName()}, "Duplicate entry.");
         }
 
     }
