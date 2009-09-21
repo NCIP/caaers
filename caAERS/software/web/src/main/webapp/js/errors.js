@@ -11,9 +11,12 @@ var Errors = {
             if (pDivision) openDivisionById(pDivision.id);
         });
         msgs += "</ul>";
-        if ($('TOP_JAVA_SCRIPT_ERRORS') && Errors.counter == 1) {
-            $('TOP_JAVA_SCRIPT_ERRORS').innerHTML = msgs;
-            $('TOP_JAVA_SCRIPT_ERRORS').show();
+        if (Errors.counter == 1) {
+            var container = $('SERVER_SIDE_ERRORS') || $('TOP_JAVA_SCRIPT_ERRORS');
+            if (container) {
+                container.innerHTML = msgs;
+                container.show();
+            }
         }
     },
 
