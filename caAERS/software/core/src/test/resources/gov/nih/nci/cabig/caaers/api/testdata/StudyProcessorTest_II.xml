@@ -30,37 +30,56 @@
     	id="-2001"
     	first_name="Mike"
     	last_name="Conway"
-    	site_id="-1001"
     	email_address="mike@ctep.com"
     	phone_number="3013011111"/>
+ 		
     
     <!-- University of Jonathan Dean -->	
    <RESEARCH_STAFFS
     	id="-2002"
     	first_name="Allan"
     	last_name="Border"
-    	site_id="-1003"
     	email_address="allan.b@gmail.com"
     	phone_number="3013011112"/>
-    	
+   
+	    	
     <!-- University of Jonathan Dean -->	
    <RESEARCH_STAFFS
     	id="-2004"
     	first_name="Roger"
     	last_name="Keith"
-    	site_id="-1003"
     	email_address="allan.b@gmail.com"
     	phone_number="3013011113"/>
+ 
+	 
     
     <!-- Sydney Hospital -->	
     <RESEARCH_STAFFS
     	id="-2003"
     	first_name="Monish"
     	last_name="Dombla"
-    	site_id="-1004"
     	email_address="monish.dombla@semanticbits.com"
     	phone_number="3013011113"/>
-    
+
+   <SITE_RESEARCH_STAFFS
+   	id="-9001"
+   	site_id="-1001"
+   	researchstaff_id="-2001"/> 		
+		
+   <SITE_RESEARCH_STAFFS
+   	id="-9002"
+   	site_id="-1003"
+   	researchstaff_id="-2002"/> 	
+   	
+   <SITE_RESEARCH_STAFFS
+   	id="-9003"
+   	site_id="-1003"
+   	researchstaff_id="-2004"/>  
+	
+   <SITE_RESEARCH_STAFFS
+   	id="-9004"
+   	site_id="-1004"
+   	researchstaff_id="-2003"/>    
     	
     <INVESTIGATORS
     	id="-3001"
