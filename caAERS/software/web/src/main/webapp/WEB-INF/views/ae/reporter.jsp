@@ -68,20 +68,26 @@
             if(user['emailAddress'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
                 ValidationManager.setNormalState($(prefix + '.contactMechanisms[e-mail]'));
+            }else{
+            	updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]', '');
+            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[e-mail]'));
             }
-
 
             if(user['phoneNumber'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
                 ValidationManager.setNormalState($(prefix + '.contactMechanisms[phone]'));
+            }else{
+            	updateFieldValue(prefix + '.' + 'contactMechanisms[phone]', '');
+            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[phone]'));
             }
-
 
             if(user['faxNumber'] != null) {
                 updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
                 ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
+            }else{
+            	updateFieldValue(prefix + '.' + 'contactMechanisms[fax]', '');
+            	ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
             }
-
         }
 
         function clear(person) {
