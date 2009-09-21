@@ -217,11 +217,12 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
 		command.getReportingPeriod().setEpoch(e3);
-		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2009").toDate());
+		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2011").toDate());
 		command.getReportingPeriod().setEndDate(null);
 		command.getReportingPeriod().getTreatmentAssignment().setId(6);
 		
 		controller.onBindAndValidate(request, command, errors);
+		System.out.println(errors);
 		assertFalse(errors.hasErrors());
 	}
 
@@ -286,7 +287,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
 		command.getReportingPeriod().setEpoch(null);
-		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2009").toDate());
+		command.getReportingPeriod().setStartDate(DateUtils.parseDateString("09/09/2011").toDate());
 		command.getReportingPeriod().setEndDate(null);
 		command.getReportingPeriod().getTreatmentAssignment().setId(5);
 		
