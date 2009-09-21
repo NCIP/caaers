@@ -257,10 +257,12 @@
    /*This method will set the manual selection flag*/
    setManualSelectionFlag:function(){
 	   $('rd_' + this.aeReportId + '_' + this.id +'_manual').value=1;
+	   //caaersLog("setManualSelectionFlag [aeReportId :" + this.aeReportId + ", rdId : " + this.id  );
    },
    /*This method will unset the manual selection flag*/
    unsetManualSelectionFlag:function(){
 	   $('rd_' + this.aeReportId + '_' + this.id +'_manual').value=0;
+	   //caaersLog("unsetManualSelectionFlag [aeReportId :" + this.aeReportId + ", rdId : " + this.id  );
    },
    deepCopy:function(){
 	   return new jsReportDefinition(this.id, this.aeReportId,  this.name, this.group, this.typeCode, 
@@ -352,6 +354,7 @@
 		 curRdObject.deSelect();
 		 return;
 	 }
+	 //caaersLog("handleReportSelection [aeReportId :" + aeReportId + ", rdId : " + rdId  + ", curRdObject : " + curRdObject.id);
 	//deselect reports of the same group.
 	curRdObject.setManualSelectionFlag();
 	deselectOtherReportsOfSameGroup(aeReportId,rdId, curRdObject.group);

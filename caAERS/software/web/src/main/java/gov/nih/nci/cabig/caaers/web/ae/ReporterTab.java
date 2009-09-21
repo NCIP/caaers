@@ -180,7 +180,7 @@ public class ReporterTab extends AeTab {
 	    	command.save();
 	    	
 	    	//process the reports
-	    	reviewResult.updateBaseDateOnCreateList();
+	    	reviewResult.updateBaseDateOnCreateList(command.getNewlySelectedReportDefinitions());
 	    	reportRepository.processReports(command.getAeReport(), reviewResult.getReportsToAmmendList(), reviewResult.getReportsToUnAmendList(), 
 	    			reviewResult.getReportsToWithdraw(), command.getNewlySelectedReportDefinitions());
 	    	

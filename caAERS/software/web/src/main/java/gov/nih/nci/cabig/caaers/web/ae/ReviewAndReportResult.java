@@ -146,9 +146,9 @@ public class ReviewAndReportResult {
 		return amendList.isEmpty() && editList.isEmpty() && createList.isEmpty() && (!withdrawList.isEmpty());
 	}
 	
-	public void updateBaseDateOnCreateList(){
+	public void updateBaseDateOnCreateList(List<ReportDefinition> newlySelectedReportDefinitions){
 		if(baseDateMap == null) return;
-		for(ReportDefinition rd : createList){
+		for(ReportDefinition rd : newlySelectedReportDefinitions){
 			rd.setBaseDate(baseDateMap.get(rd.getId()));
 			rd.setManuallySelected(BooleanUtils.isTrue(manualSelectionIndicatorMap.get(rd.getId())));
 		}
