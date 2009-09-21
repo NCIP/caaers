@@ -31,7 +31,11 @@
     last_name="Bush" 
     email_address="gb@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id"/>
+    nci_identifier="nci id"
+	city="Fairfax"
+   	state="Virginia"
+   	zip="22033"
+   	code="0"/>
     
     <RESEARCH_STAFFS 
     id="-1002" 
@@ -40,7 +44,11 @@
     last_name="Franklin" 
     email_address="bf@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id" />
+    nci_identifier="nci id" 
+	city="Fairfax"
+   	state="Virginia"
+   	zip="22033"
+   	code="0"/>
     
     <RESEARCH_STAFFS 
     id="-1003" 
@@ -49,7 +57,11 @@
     last_name="Kennedy" 
     email_address="jfk@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id"/>
+    nci_identifier="nci id"
+	city="Fairfax"
+   	state="Virginia"
+   	zip="22033"
+   	code="0"/>
 	
 	<SITE_RESEARCH_STAFFS 
     	id="-4004" 
