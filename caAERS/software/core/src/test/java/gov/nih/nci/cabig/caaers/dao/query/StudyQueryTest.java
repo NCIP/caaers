@@ -65,7 +65,7 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierValue("idvalue");
 		assertEquals("wrong parsing for constructor",
-                "select s from Study s WHERE lower(s.identifiers.value) LIKE :identifier", studyQuery
+                "select s from Study s join s.identifiers as identifier WHERE lower(identifier.value) LIKE :identifier", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -80,7 +80,7 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierValueExactMatch("idvalue");
 		assertEquals("wrong parsing for constructor",
-                "select s from Study s WHERE lower(s.identifiers.value) LIKE :identifier", studyQuery
+                "select s from Study s join s.identifiers as identifier WHERE lower(identifier.value) LIKE :identifier", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -96,7 +96,7 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierType("type");
 		assertEquals("wrong parsing for constructor",
-                "select s from Study s WHERE s.identifiers.type LIKE :idType", studyQuery
+                "select s from Study s join s.identifiers as identifier WHERE identifier.type LIKE :idType", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
