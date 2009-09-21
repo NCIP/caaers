@@ -121,8 +121,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"startDate",
 				"endDate",
 				"attributionSummary",
-				"eventApproximateTime",
-				"eventLocation",
 				"hospitalization",
 				"expected");
 		
@@ -131,8 +129,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"startDate",
 				"endDate",
 				"attributionSummary",
-				"eventApproximateTime",
-				"eventLocation",
 				"hospitalization",
 				"expected");
 		
@@ -141,8 +137,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"startDate",
 				"endDate",
 				"attributionSummary",
-				"eventApproximateTime",
-				"eventLocation",
 				"hospitalization",
 				"expected");
 	}
