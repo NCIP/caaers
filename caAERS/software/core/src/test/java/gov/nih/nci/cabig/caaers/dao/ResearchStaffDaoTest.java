@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -61,6 +62,7 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             researchStaff.setEmailAddress("abc@def.com");
             researchStaff.setPhoneNumber("123-456-789");
             researchStaff.setNciIdentifier("nci id");
+            researchStaff.setAddress(new Address());
 
             getDao().save(researchStaff);
 
@@ -86,6 +88,7 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
             ResearchStaff researchStaff = new RemoteResearchStaff();
             researchStaff.setEmailAddress("abc@def.com");
             researchStaff.setExternalId("externalId");
+            researchStaff.setAddress(new Address());
             
             getDao().save(researchStaff);
 
