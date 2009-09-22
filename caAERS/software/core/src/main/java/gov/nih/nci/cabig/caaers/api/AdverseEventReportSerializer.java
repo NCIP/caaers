@@ -311,7 +311,7 @@ public class AdverseEventReportSerializer {
 		 //  rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
 		 //  rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
-		   r.setEmailRecipients(report.getEmailRecipients());
+		   r.setEmailAddresses(report.getEmailRecipients());
 	   		   
 		   return r;
 	   }

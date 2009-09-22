@@ -304,14 +304,40 @@ This applicationContext contains the definition of the concrete services
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />
 
-   <bean id="submitAEDataXMLAsAttachmentResponse" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor">
+   <bean id="submitAEDataXMLAsAttachmentResponseTarget" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor">
    		<property name="messageNotificationService" ref="messageNotificationService" />
 		<property name="messageSource" ref="messageSource" />
+		<property name="reportDao" ref="reportDao" />
    </bean>
+   
+   	<bean id="submitAEDataXMLAsAttachmentResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="submitAEDataXMLAsAttachmentResponseTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>auditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
 
-   <bean id="withdrawAEReportResponse" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersWithdrawResponseMessageProcessor" >
-   	<property name="messageNotificationService" ref="messageNotificationService" />
-	<property name="messageSource" ref="messageSource" />
+   <bean id="withdrawAEReportResponseTarget" autowire="byType" class="gov.nih.nci.cabig.caaers.esb.client.impl.AdeersWithdrawResponseMessageProcessor" >
+	   	<property name="messageNotificationService" ref="messageNotificationService" />
+		<property name="messageSource" ref="messageSource" />
+		<property name="reportDao" ref="reportDao" />
    </bean>
+   
+  <bean id="withdrawAEReportResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="withdrawAEReportResponseTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>auditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
  
 </beans>

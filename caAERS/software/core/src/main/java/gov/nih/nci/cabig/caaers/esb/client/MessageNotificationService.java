@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
+import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -62,6 +63,8 @@ public class MessageNotificationService {
     protected CaaersJavaMailSender caaersJavaMailSender;
     
     private MessageSource messageSource;
+    
+    private AdeersReportGenerator adeersReportGenerator;
     
     
     private void doPostSubmitReport(ReportSubmissionContext context){
@@ -212,13 +215,19 @@ public class MessageNotificationService {
         String subject = "";
         String attachment = null;
         if (success) {
-            //messages = messages + url;
-            subject = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());  
-            //this pdf has already been generated in AdeersReportGenerator , we are just attching here incase of successfull submission.
-            String tempDir = System.getProperty("java.io.tmpdir");
-            attachment = tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
+           // messages = messages + url;
+            subject = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel(),String.valueOf(report.getLastVersion().getId())}, Locale.getDefault());  
+            
+            //          generating pdf again to get PDF with ticket number ....
+            String caaersXML = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
+            String[] pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXML,report.getLastVersion().getId()); 
+            
+            attachment = pdfReportPaths[0] ; //tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
+            
+           // String tempDir = System.getProperty("java.io.tmpdir");
+           // attachment = tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
         } else {
-        	subject = messageSource.getMessage("submission.failure.subject", new Object[]{report.getLabel()}, Locale.getDefault());
+        	subject = messageSource.getMessage("submission.failure.subject", new Object[]{report.getLabel(),String.valueOf(report.getLastVersion().getId())}, Locale.getDefault());
         	// send only to submitter incase of failure
         	emails = new HashSet<String>();
         	emails.add(submitterEmail);
@@ -298,6 +307,10 @@ public class MessageNotificationService {
 	
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
+	}
+
+	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
+		this.adeersReportGenerator = adeersReportGenerator;
 	}
 	
 

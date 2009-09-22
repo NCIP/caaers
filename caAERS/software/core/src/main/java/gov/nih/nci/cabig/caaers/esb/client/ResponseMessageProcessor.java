@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -21,6 +22,7 @@ import org.springframework.context.MessageSource;
 public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
 	private MessageNotificationService messageNotificationService;
+	protected ReportDao reportDao;
 	
 	 //will be used to obtain resource bundle messages
     protected MessageSource messageSource;
@@ -65,6 +67,10 @@ public abstract class ResponseMessageProcessor {
 	@Required
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
+	}
+	@Required
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
 	}
 	public abstract void processMessage(String message) throws CaaersSystemException;
 	

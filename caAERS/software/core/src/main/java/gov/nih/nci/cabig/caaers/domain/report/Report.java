@@ -333,9 +333,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	return emailAddressesTemp;
     }
     @Transient
-    public void setEmailRecipients(List<String> emailAddresses) {
-    	this.emailAddresses=emailAddresses;
-    }
+    public List<String> getEmailAddresses() {
+		return emailAddresses;
+	}
+
+
+	public void setEmailAddresses(List<String> emailAddresses) {
+		this.emailAddresses = emailAddresses;
+	}
     
     @Transient
     public List<ReportDelivery> getExternalSystemDeliveries(){

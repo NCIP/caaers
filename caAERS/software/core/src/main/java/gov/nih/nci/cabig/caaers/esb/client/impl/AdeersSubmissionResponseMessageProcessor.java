@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * Will handle the responses related to report submission.
  * 
@@ -29,6 +31,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	
 	
 	@Override
+	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
         
@@ -49,7 +52,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         log.debug("ID 2 : " + reportId);
         String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         log.debug("email : " + submitterEmail);
-
+        
+        Report r = reportDao.getById(Integer.parseInt(reportId));
         // buld error messages
         StringBuffer sb = new StringBuffer();
 
@@ -66,7 +70,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                  url = jobInfo.getChild("reportURL").getValue();
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
-        				 new Object[]{reportId, ticketNumber,  url}, Locale.getDefault());
+        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url}, Locale.getDefault());
         		 
         		sb.append(submissionMessage);
             }else{
@@ -83,7 +87,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                          }
                      }
             		 
-            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{reportId, exceptionMsgBuffer.toString()}, Locale.getDefault());
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()), exceptionMsgBuffer.toString()}, Locale.getDefault());
             		 sb.append(submissionMessage);
             		 
             	 }//if exceptions

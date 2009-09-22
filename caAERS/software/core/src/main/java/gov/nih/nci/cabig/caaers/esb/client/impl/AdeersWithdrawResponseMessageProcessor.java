@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * Processes withdraw message responses. 
  * 
@@ -32,7 +35,9 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	
 	@Override
+	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
 		
 		log.debug("AdeersWithdrawResponseMessageProcessor - message recieved");
@@ -53,6 +58,7 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
         String caaersAeReportId = cancelInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
         String reportId = cancelInfo.getChild("REPORT_ID",emptyNS).getValue();
         String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
+        Report r = reportDao.getById(Integer.parseInt(reportId));
         
 //      buld error messages
         StringBuffer sb = new StringBuffer();
@@ -65,9 +71,11 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
         try {
 
             List<Element> exceptions = cancelInfo.getChildren("jobExceptions",ctepNS);
-
-            if (cancelInfo.getChild("reportStatus",ctepNS).getValue().equals("SUCCESS")) {
-                String withdrawSuccessMessage = messageSource.getMessage("successful.reportWithdraw.message", new Object[]{reportId, ticketNumber}, Locale.getDefault());
+            Element reportStatus = cancelInfo.getChild("reportStatus",ctepNS);
+            
+            if (reportStatus.getValue().equals("SUCCESS")) {
+            	ticketNumber = cancelInfo.getChild("ticketNumber",ctepNS).getValue();
+                String withdrawSuccessMessage = messageSource.getMessage("successful.reportWithdraw.message", new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber}, Locale.getDefault());
                 sb.append(withdrawSuccessMessage);
             }else{
             	StringBuffer exceptionMsgBuffer = new StringBuffer();
@@ -82,7 +90,7 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
                     }
                 }
             	
-            	String withdrawFailureMessage = messageSource.getMessage("failed.reportWithdraw.message", new Object[]{reportId, exceptionMsgBuffer.toString()}, Locale.getDefault());
+            	String withdrawFailureMessage = messageSource.getMessage("failed.reportWithdraw.message", new Object[]{String.valueOf(r.getLastVersion().getId()), exceptionMsgBuffer.toString()}, Locale.getDefault());
                 sb.append(withdrawFailureMessage);
             	
             }
@@ -110,6 +118,8 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
            log.error(e);
         }       
 	}
+
+
 
 
 }

@@ -1148,9 +1148,9 @@
                 </ADDITIONAL_INFO_OTHER>
             </ADDITIONAL_INFORMATION>
         </xsl:if>
-        <xsl:if test="Report/emailRecipient != ''">
+        <xsl:if test="AdditionalInformation/otherInformation != ''">
         	<EMAIL_RECIPIENTS><xsl:for-each select="Report/emailRecipient"><xsl:value-of select="."/>,</xsl:for-each></EMAIL_RECIPIENTS>    
-        </xsl:if>     
+          </xsl:if>
 	 </xsl:otherwise>
 	 </xsl:choose>
     </xsl:template>
