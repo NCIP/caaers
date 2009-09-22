@@ -1,18 +1,15 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
-import java.io.Serializable;
-
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
+
+import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 /**
  * Will delegate the call to {@link ReportVersionRepository#updateInProcessReports()}
  * @author Srini Akkala
@@ -39,7 +36,7 @@ public class ReportStatusResetJob  implements Job, Serializable {
 			//fetch the report version repo bean
 			ReportVersionRepository reportVersionRepository = (ReportVersionRepository) applicationContext.getBean("reportVersionRepository");
 			
-//			reportVersionRepository.updateInProcessReports();
+			reportVersionRepository.updateInProcessReports();
 			
 		} catch (Exception e) {
 			//no need to send exception back, the job is run periodically.
