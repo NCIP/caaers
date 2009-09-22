@@ -20,6 +20,7 @@
 <project name="caaers-adeers-sa" default="all" basedir=".">
 	
 	<property environment="env"/>
+	<property file="build.properties" />
     <!--build directories-->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="comp.build.dir" value="${build.dir}/components"/>
@@ -88,12 +89,38 @@
         <mkdir dir="${xslt.comp.build.dir}/lib"/>
         <mkdir dir="${jms.comp.build.dir}/META-INF"/>
         <mkdir dir="${webservice.comp.build.dir}/META-INF"/>
-
         <mkdir dir="${su.build.dir}/META-INF"/>
 
     </target>
+	
+	<target name="compile-configure" depends="init">
+        <javac srcdir="configure/${src.java.dir}"
+            destdir="configure/${src.java.dir}" debug="on" source="1.5" target="1.5">
+            <classpath refid="build.classpath"/>
+        </javac>
+	</target>
+    <target name="jar-configure" depends="compile-configure">
+        <mkdir dir="${build.dir}/configure"/>
+        <jar destfile="${build.dir}/configure/configure.jar" basedir="configure/${src.java.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="gov.nih.nci.cabig.caaers.jbi.ServiceAssemblyConfigurator"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="configure" depends ="jar-configure">
+  	
+        <java jar="${build.dir}/configure/configure.jar" fork="true">
+        	<arg line="${activemq.host}"/>
+        	<arg line="${activemq.port}"/>
+        </java>
+        <copy todir="caaers-adeers-jms-su/src/main/resources">
+            <fileset dir="." includes="xbean.xml"/>
+        </copy>  
+    </target>
 
-    <target name="build-su" depends="init" description="Build the service unit">
+	
+	
+    <target name="build-su" depends="configure" description="Build the service unit">
         <copy todir="${eip.comp.build.dir}">
             <fileset dir="caaers-adeers-eip-su/${src.resources.dir}" includes="*.*"/>
         </copy>
@@ -187,6 +214,54 @@
 		</junit>
 	</target>
 	<target name="publish-all" depends="clean,test"/>
+	
+	<target name="copy-sm-libs">
+		 <copy todir="${servicemix.toolkit.dir}/lib/caaers-ext">
+			<fileset dir="${basedir}/caaers-adeers-webservice-su/lib" />
+			<fileset dir="${basedir}/caaers-adeers-webservice-su/test-lib" />
+		</copy>	
+	</target>
+	
+	<target name="copy-keystore">
+		<copy todir="${user.home}">
+			<fileset dir="${basedir}/caaers-adeers-webservice-su/src/main/resources" >
+				<include name="caAERs-AdEERS" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="configure-servicemix">
+		<mkdir dir="${servicemix.toolkit.dir}/bin/install" />
+		<copy todir="${servicemix.toolkit.dir}/install">
+			<fileset dir="${servicemix.toolkit.dir}/components" >
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+
+		<copy todir="${servicemix.toolkit.dir}/bin/install">
+			<fileset dir="${servicemix.toolkit.dir}/components" >
+				<include name="*.zip" />
+			</fileset>
+		</copy>
+	</target>
+			
+	<target name="deployToServiceMix3.3.x" description="deploy caaers service assembly on servicemix version 3.3.x" depends="all,copy-sm-libs,copy-keystore">
+		<copy todir="${servicemix.toolkit.dir}/hotdeploy">
+			<fileset dir="${build.dir}/assembly" />
+		</copy>
+	</target>
+
+	<target name="deployToServiceMix3.1.x" description="deploy caaers service assembly on servicemix version 3.1.x" depends="all,copy-sm-libs,configure-servicemix,copy-keystore">
+		<mkdir dir="${servicemix.toolkit.dir}/bin/deploy" />
+		
+		<copy todir="${servicemix.toolkit.dir}/bin/deploy">
+			<fileset dir="${build.dir}/assembly" />
+		</copy>
+
+		<copy todir="${servicemix.toolkit.dir}/deploy">
+			<fileset dir="${build.dir}/assembly" />
+		</copy> 
+	</target>	
 
 
 </project>
