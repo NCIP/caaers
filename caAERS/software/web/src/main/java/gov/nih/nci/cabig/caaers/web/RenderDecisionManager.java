@@ -68,6 +68,7 @@ public class RenderDecisionManager {
 		if(StringUtils.equals(correctedName, "aeReport.adverseEvents[].outcomes")) correctedName = "outcomes";
 		return correctedName;
 	}
+	
 	/**
 	 * This method will be called for expedited AE flow field renderability decision
 	 * @param rdList

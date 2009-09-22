@@ -389,6 +389,10 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      */
     }
 
+    /**
+     * Handles switching of reporting context. 
+     * 
+     */
     @Override
     protected void onBind(HttpServletRequest request, Object command, BindException errors) throws Exception {
         super.onBind(request, command, errors);
@@ -398,13 +402,18 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 			rdIds = ServletRequestUtils.getIntParameters(request, "reportingContextRdId");
 		} catch (Exception e) {
 		}
+		
 		EditExpeditedAdverseEventCommand editCommand = (EditExpeditedAdverseEventCommand) command;
-		editCommand.getSelectedReportDefinitions().clear();
-		for(ReportDefinition rd : editCommand.getApplicableReportDefinitions()){
-			if(ArrayUtils.contains(rdIds, rd.getId().intValue())){
-				editCommand.getSelectedReportDefinitions().add(rd);
+		//AJAX requests will not have reporting context information
+		if(!(isAjaxRequest(request) || request.getParameter(AJAX_SUBVIEW_PARAMETER) != null) ){
+			editCommand.getSelectedReportDefinitions().clear();
+			for(ReportDefinition rd : editCommand.getApplicableReportDefinitions()){
+				if(ArrayUtils.contains(rdIds, rd.getId().intValue())){
+					editCommand.getSelectedReportDefinitions().add(rd);
+				}
 			}
 		}
+		
 		
 		//now refresh the not applicable/mandatory fields.
 		editCommand.refreshMandatorySections();
