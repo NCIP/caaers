@@ -32,6 +32,7 @@
 <tags:js name="hover-display"/>
 <tags:js name="routing_and_review"/>
 <tags:js name="errors"/>
+<tags:js name="logmeout"/>
 
 <!--
 /js/livepipe/livepipe.js, /js/livepipe/tabs.js, /js/livepipe/scrollbar.js, \
@@ -63,6 +64,7 @@ var _collapsedELs = new Array();
 //for autocompleters to work.
 AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
 AE.autocompleterChars = ${configuration.map.autoCompleterChars};
+AE.APP_BASE_URL = '<c:url value="/" />';
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>

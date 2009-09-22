@@ -1,6 +1,7 @@
 // Namespace for caAERS-specific shared functions and classes
 var AE = { }
 
+
 AE.DWR_ERROR_HANDLER_REGISTERED=false;
 AE.SUBMISSION_INPROGRESS=false;
 
@@ -921,6 +922,4 @@ function openDivisionById(_id) {
             document.getElementById(imageId).src = imageSource.replace('right','down');
         }
 }
-
-// ----------------------------------------------------------------------------------------------------------------
 

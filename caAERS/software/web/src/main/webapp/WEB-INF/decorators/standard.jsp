@@ -24,6 +24,7 @@
 
 <standard:footer/>
 </div>
+<standard:logoutWarning />
 <standard:ajaxLoadingIndicator />
 </body>
 </html>

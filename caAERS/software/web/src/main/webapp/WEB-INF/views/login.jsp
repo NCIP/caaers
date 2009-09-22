@@ -106,6 +106,7 @@
     </head>
     <body>
         <SCRIPT language="JavaScript">
+        	AE.SESSION_TIME_OUT_ENABLED = false;
             upImage = new Image();
             upImage.src = "/caaers/images/blue/power-btn-up.jpg";
             downImage = new Image();

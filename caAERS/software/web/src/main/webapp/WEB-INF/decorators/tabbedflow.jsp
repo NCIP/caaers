@@ -113,6 +113,7 @@
 </div>
 
 <!-- ALL DIV end -->
+<standard:logoutWarning />
 <standard:ajaxLoadingIndicator />
 </body>
 </html>

@@ -6,7 +6,9 @@
 <head>
     <standard:head/>
     <decorator:head/>
-
+	<SCRIPT language="JavaScript">
+        AE.SESSION_TIME_OUT_ENABLED = false;
+	</SCRIPT>
     <style>
         #main {
             padding:0;
@@ -16,7 +18,6 @@
     </style>
 </head>
 <body>
-
 <chrome:body title="${__decorator_title}">
     <decorator:body/>
 </chrome:body>
