@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -99,6 +100,16 @@ public abstract class BasicsTab extends AeTab {
         
         if (command.getAeReport().getAdverseEvents().size() > 0 && command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
             errors.rejectValue(firstStartDateField.getPropertyName(), "SAE_025", firstStartDateField.getDisplayName() + " required for primary AE");
+        }
+        
+        short i = 0;
+        for(AdverseEvent ae: command.getAeReport().getAdverseEvents()){
+        	// Check if start date of course is greater than the start date of the ae.
+            if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
+            		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
+            	errors.rejectValue("aeReport.adverseEvents[" + i + "].startDate", "SAE_044");
+        	
+        	i++;
         }
 
         WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);

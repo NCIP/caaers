@@ -292,6 +292,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         	
         } else if (!StringUtils.isEmpty(rp.getTreatmentAssignmentDescription())) {
             rpAjaxable.setTacDescription(rp.getTreatmentAssignmentDescription());
+            rpAjaxable.setTacCode("Other");
         }
         
         AjaxOutput output = new AjaxOutput();
