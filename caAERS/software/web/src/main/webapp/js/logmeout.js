@@ -43,6 +43,7 @@ function timeoutSession() {
 
 // ----------------------------------------------------------------------------------------------------------------
 function logOutOKClicked(url){
+	$('logout_warning').hide();
 	if(AE.SESSION_TIMED_OUT) window.location=url;
 }
 
