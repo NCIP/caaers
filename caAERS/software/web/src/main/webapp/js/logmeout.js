@@ -1,4 +1,5 @@
-AE.SESSION_TIME_OUT_WARNING=15; //timeout duration in minutes
+AE.SESSION_TIME_OUT_WARNING=10 * 60; //timeout duration in seconds
+AE.SESSION_TIME_OUT_WAIT= 1 * 60;
 AE.SESSION_TIMED_OUT = false;
 AE.SESSION_TIMER_ID;
 AE.SESSION_TIME_OUT_ENABLED = true;
@@ -34,7 +35,7 @@ function logoutWarning() {
   warnDiv.top = 100;//document.viewport.getHeight()/2;
   warnDiv.left = 100;//document.viewport.getWidth()/2;
   warnDiv.show();
-  AE.SESSION_TIMER_ID = timeoutSession.delay(AE.SESSION_TIME_OUT_WARNING);
+  AE.SESSION_TIMER_ID = timeoutSession.delay(AE.SESSION_TIME_OUT_WAIT);
 }
 function timeoutSession() {
 	AE.SESSION_TIMED_OUT = true;
