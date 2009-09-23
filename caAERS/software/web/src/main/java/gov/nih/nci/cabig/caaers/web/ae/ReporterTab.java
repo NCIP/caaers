@@ -171,7 +171,9 @@ public class ReporterTab extends AeTab {
     public void processReports(HttpServletRequest request,EditExpeditedAdverseEventCommand command){
     	ReviewAndReportResult reviewResult = (ReviewAndReportResult)request.getSession().getAttribute("reviewResult"); 
     	if(reviewResult != null){
-    		
+    		//- remove review result from session.
+			request.getSession().removeAttribute("reviewResult"); 
+			
     		//modify the signatures of the adverse events in this report.
 	    	command.getAeReport().updateSignatureOfAdverseEvents();
 	    
@@ -189,8 +191,7 @@ public class ReporterTab extends AeTab {
 				command.enactWorkflow(command.getAeReport());
 			}
 	    	
-			//- remove review result from session.
-			request.getSession().removeAttribute("reviewResult"); 
+			
     	}
     	
     }

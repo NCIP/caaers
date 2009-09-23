@@ -210,7 +210,7 @@ color:#0033FF;
                 var url = '<c:url value="/pages/ae/submitReport?from=list" />' + '&aeReport=' + aeReportId + '&reportId=' + reportId;
                 window.location = url;
             } else if (action == 'amend') {
-                var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
+                var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&report=' + reportId + '&action=amendReport';
                 window.location = url;
             }
         } catch(e) {
