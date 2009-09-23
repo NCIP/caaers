@@ -30,8 +30,10 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -108,11 +110,20 @@ public class RuleAjaxFacade {
     	if(StringUtils.isEmpty(sponsorName)) return null;
     	
     	StudyQuery studyQuery = new StudyQuery();
+    	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterByFundingSponsorNameExactMatch(sponsorName);
+    	
     	List<Study> studies = studyDao.find(studyQuery);
+    	Map<Study, Boolean> studyMap = new HashMap<Study, Boolean>();
+    	for(Study study: studies){
+    		if(!studyMap.containsKey(study))
+    			studyMap.put(study, true);
+    	}
+    	studies.clear();
+    	studies.addAll(studyMap.keySet());
     	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
     }
 
@@ -124,11 +135,19 @@ public class RuleAjaxFacade {
     	if(StringUtils.isEmpty(institutionName)) return null;
     	
     	StudyQuery studyQuery = new StudyQuery();
+    	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
     	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterByStudyOrganizationNameExactMatch(institutionName);
     	List<Study> studies = studyDao.find(studyQuery);
+    	Map<Study, Boolean> studyMap = new HashMap<Study, Boolean>();
+    	for(Study study: studies){
+    		if(!studyMap.containsKey(study))
+    			studyMap.put(study, true);
+    	}
+    	studies.clear();
+    	studies.addAll(studyMap.keySet());
     	return ObjectTools.reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
     	
     }
