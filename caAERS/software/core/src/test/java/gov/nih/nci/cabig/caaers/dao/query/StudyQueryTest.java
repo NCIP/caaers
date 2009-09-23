@@ -48,6 +48,11 @@ public class StudyQueryTest extends TestCase{
 		
 	}
 	
+	public void testFilterStudiesWithMatchingText(){
+		StudyQuery studyQuery = new StudyQuery();
+		studyQuery.filterStudiesWithMatchingText("testStudy");
+		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 4);
+	}
 	
 	public void testFilterByNonAdministrativelyComplete(){
 		StudyQuery studyQuery = new StudyQuery();

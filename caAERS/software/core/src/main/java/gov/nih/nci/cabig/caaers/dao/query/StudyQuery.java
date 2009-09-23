@@ -21,6 +21,12 @@ public class StudyQuery extends AbstractQuery {
     private static String STUDY_IDENTIFIER_SYSTEM = "idSysName";
 
     private static String STUDY_SHORT_TITLE = "shortTitle";
+    
+    private static String STUDY_LONG_TITLE = "longTitle";
+    
+    private static final String IDENTIFIER_VALUE = "identifierValue";
+
+    private static final String IDENTIFIER_TYPE = "type";
 
     private SimpleDateFormat dateFormat;
 
@@ -121,7 +127,7 @@ public class StudyQuery extends AbstractQuery {
         andWhere("lower(s.shortTitle) LIKE :" + STUDY_SHORT_TITLE);
         setParameter(STUDY_SHORT_TITLE, "%" + shortTitleText.toLowerCase() + "%");
     }
-
+    
     // participant-FirstName
     public void filterByParticipantFirstName(final String fName) {
         andWhere("lower(p.firstName) LIKE :pfName");
@@ -155,6 +161,20 @@ public class StudyQuery extends AbstractQuery {
         } catch (Exception e) {
         }
         setParameter("pDOB", dob);
+    }
+    
+    public void filterStudiesWithMatchingText(String text) {
+    	joinIdentifier();
+        String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " +
+                "or  lower(identifier.type) LIKE :%s " +
+                "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_TYPE, IDENTIFIER_VALUE));
+        setParameter(IDENTIFIER_VALUE, searchString);
+        setParameter(IDENTIFIER_TYPE, searchString);
+        setParameter(STUDY_SHORT_TITLE, searchString);
+        setParameter(STUDY_LONG_TITLE, searchString);
+
     }
 
     // participantIdentifier
