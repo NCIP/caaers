@@ -88,6 +88,26 @@
             	updateFieldValue(prefix + '.' + 'contactMechanisms[fax]', '');
             	ValidationManager.setNormalState($(prefix + '.contactMechanisms[fax]'));
             }
+            
+            if(user['address'] != null){
+            	updateFieldValue(prefix + '.' + 'address.street', user['address'].street);
+            	updateFieldValue(prefix + '.' + 'address.city', user['address'].city);
+            	updateFieldValue(prefix + '.' + 'address.state', user['address'].state);
+            	updateFieldValue(prefix + '.' + 'address.zip', user['address'].zip);
+            	ValidationManager.setNormalState($(prefix + '.address.street'));
+            	ValidationManager.setNormalState($(prefix + '.address.city'));
+            	ValidationManager.setNormalState($(prefix + '.address.state'));
+            	ValidationManager.setNormalState($(prefix + '.address.zip'));
+            }else{
+            	updateFieldValue(prefix + '.' + 'address.street', '');
+            	updateFieldValue(prefix + '.' + 'address.city', '');
+            	updateFieldValue(prefix + '.' + 'address.state', '');
+            	updateFieldValue(prefix + '.' + 'address.zip', '');
+            	ValidationManager.setNormalState($(prefix + '.address.street'));
+            	ValidationManager.setNormalState($(prefix + '.address.city'));
+            	ValidationManager.setNormalState($(prefix + '.address.state'));
+            	ValidationManager.setNormalState($(prefix + '.address.zip'));
+            }
         }
 
         function clear(person) {

@@ -45,7 +45,7 @@ public class CtcBasicsTab extends BasicsTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         super.createFieldGroups(creator, command);
-        InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", true);
+        InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", false);
         /*
          * InputFieldAttributes.setDetails(ctcTermField, "Type a portion of the CTC term you are
          * looking for. If you select a category, only terms in that category will be shown.");

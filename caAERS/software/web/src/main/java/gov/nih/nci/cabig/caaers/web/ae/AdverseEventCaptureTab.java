@@ -256,9 +256,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             	errors.rejectValue("adverseEvents[" + i + "].endDate" , "CAE_014", "The \"End date\" can not be before the \"Start date\". It should be either be the same day or later.");
             
             // Check if start date of course is greater than the start date of the ae.
-            if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
-            		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
-            	errors.rejectValue("adverseEvents[" + i + "].startDate", "CAE_015");
+            //if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
+            //		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
+            //	errors.rejectValue("adverseEvents[" + i + "].startDate", "CAE_015");
             
             i++;
         }

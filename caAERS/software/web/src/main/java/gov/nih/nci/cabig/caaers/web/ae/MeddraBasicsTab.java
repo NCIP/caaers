@@ -27,7 +27,7 @@ public class MeddraBasicsTab extends BasicsTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         super.createFieldGroups(creator, command);
-        creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents", InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true));
+        creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents", InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", false));
         
         for(InputFieldGroup outcomeFieldGrp : getOutcomeInputFieldGroups(command)){
         	creator.addUnprocessedFieldGroup(outcomeFieldGrp);

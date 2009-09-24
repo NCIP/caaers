@@ -102,15 +102,15 @@ public abstract class BasicsTab extends AeTab {
             errors.rejectValue(firstStartDateField.getPropertyName(), "SAE_025", firstStartDateField.getDisplayName() + " required for primary AE");
         }
         
-        short i = 0;
-        for(AdverseEvent ae: command.getAeReport().getAdverseEvents()){
+        //short i = 0;
+        //for(AdverseEvent ae: command.getAeReport().getAdverseEvents()){
         	// Check if start date of course is greater than the start date of the ae.
-            if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
-            		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
-            	errors.rejectValue("aeReport.adverseEvents[" + i + "].startDate", "SAE_044");
+        //    if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
+        //    		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
+        //    	errors.rejectValue("aeReport.adverseEvents[" + i + "].startDate", "SAE_044");
         	
-        	i++;
-        }
+        //	i++;
+        //}
 
         WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }

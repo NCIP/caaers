@@ -314,6 +314,8 @@ public class CreateAdverseEventAjaxFacade {
     		rstaff.setFaxNumber(siteResearchStaff.getFaxNumber());
     	else
     		rstaff.setFaxNumber(user.getFaxNumber());
+    	if(siteResearchStaff != null && siteResearchStaff.getAddress() != null)
+    		rstaff.setAddress(siteResearchStaff.getAddress());
     	return rstaff;
     }
     
