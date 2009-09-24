@@ -536,7 +536,7 @@
             </xsl:if>
 
 
-            <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
+            <xsl:if test="AdverseEventResponseDescription/recoveryDate != '' and AdverseEventResponseDescription/presentStatus = 'DEAD'">
                 <DEATH_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date"
@@ -544,9 +544,18 @@
                     </xsl:call-template>
                 </DEATH_DATE>
             </xsl:if>
-            <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'">
-                <AUTOPSY_PERFORMED>No</AUTOPSY_PERFORMED>
-            </xsl:if>
+            
+
+            
+            
+            <xsl:if test="AdverseEventResponseDescription/autopsyPerformed = 'false'">
+            	<AUTOPSY_PERFORMED>No</AUTOPSY_PERFORMED>
+			</xsl:if>
+			<xsl:if test="AdverseEventResponseDescription/autopsyPerformed = 'true'">
+				<AUTOPSY_PERFORMED>Yes</AUTOPSY_PERFORMED>
+			</xsl:if>
+						  			
+						  			
 
         </DESCRIPTION_OF_EVENT>
 	</xsl:if>
