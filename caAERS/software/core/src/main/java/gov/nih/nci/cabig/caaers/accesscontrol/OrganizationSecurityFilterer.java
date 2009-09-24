@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.Filterer;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -15,7 +13,14 @@ import org.acegisecurity.GrantedAuthority;
 public class OrganizationSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
 	
 	private UserDao userDao;
+	private StudySiteDao studySiteDao;
 
+    public List<String> getUserOrganizations(gov.nih.nci.cabig.caaers.domain.User caaersUser) {
+        List<String> userOrganizationCodes = new ArrayList<String>();
+        userOrganizationCodes.addAll(super.getUserOrganizations(caaersUser));
+        userOrganizationCodes.addAll(studySiteDao.getSitesOfCoordinatedStudiesByOrganizationCodes(userOrganizationCodes));
+        return userOrganizationCodes;
+    }
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		
@@ -43,12 +48,6 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
 
         
 		Filterer filterer = (Filterer)returnObject;
-		String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_study_cd.getSecurityRoleName(),UserGroupType.caaers_participant_cd.getSecurityRoleName()};
-		List<String> rolesToExclude = Arrays.asList(roles);
-		if (!organizationFilteringRequired(grantedAuthorities,rolesToExclude)) {
-			return filterer.getFilteredObject();
-		}
-		
 		Iterator collectionIter = filterer.iterator();
 		
 		while (collectionIter.hasNext()) {
@@ -64,22 +63,15 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
 		
 	}
 
-	public boolean organizationFilteringRequired(GrantedAuthority[] grantedAuthorities, List<String> rolesToExclude) {
-		boolean organizationFilteringRequired = true ; 
-		//GrantedAuthority[] grantedAuthorities = user.getAuthorities();
-		for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if (rolesToExclude.contains(grantedAuthority.toString())) {
-        		return false;
-        	}
-        }	
-		
-		return organizationFilteringRequired;
-	}
-	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 
+    public StudySiteDao getStudySiteDao() {
+        return studySiteDao;
+    }
 
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+        this.studySiteDao = studySiteDao;
+    }
 }

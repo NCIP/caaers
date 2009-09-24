@@ -4,6 +4,10 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 
  * @author Biju Joseph
@@ -79,4 +83,12 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 			assertEquals("MyTest", site.findWorkflowConfig("mytest").getName());
 		}
 	}
+
+/*
+    public void test2() {
+        List codes = getDao().getSitesOfCoordinatedStudiesByOrganizationCodes(Arrays.asList("CALGB"));
+        System.out.println(codes);
+        System.out.println(codes.size());
+    }
+*/
 }

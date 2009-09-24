@@ -16,12 +16,8 @@ public class ReportVersionRepository {
 
 		@Transactional(readOnly = false)
 	    public void updateInProcessReports() {
-			
-			System.out.println("resetting reports");
-			
 	    	List<ReportVersion> rvs = reportVersionDao.getAllInProcessReports();
 	    	NowFactory nowFactory = new NowFactory();
-	    	System.out.println(rvs.size());
 	    	for (ReportVersion rv:rvs) {
 	    		Date submittedOrAmendedDate = null;
 	    		if (rv.getAmendedOn() != null) {
@@ -36,9 +32,6 @@ public class ReportVersionRepository {
 	    				rv.setReportStatus(ReportStatus.FAILED);
 	    				rv.setSubmissionMessage("Submission failed for unknown reason , Please resubmit");
 	    				reportVersionDao.save(rv);
-	    				
-	    				System.out.println(rv.getId() +" : " +rv.getReportStatus());
-	    				System.out.println(rv.getSubmissionMessage());
 	    			}
 
 	    		}

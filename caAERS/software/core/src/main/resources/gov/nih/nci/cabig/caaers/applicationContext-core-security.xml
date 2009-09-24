@@ -138,7 +138,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.restrict*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
@@ -162,10 +161,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               </aop:aspect>
           -->
 
-        <aop:aspect id="daoSecurityInterceptorAspect"
-                    ref="daoSecurityInterceptorAspectBean">
-            <aop:around pointcut-ref="daoSaveOrUpdatePointcut"
-                        method="advise"/>
+        <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
+            <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
         </aop:aspect>
 
 
@@ -177,10 +174,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
          </bean>
      -->
 
-    <bean id="daoSecurityInterceptorAspectBean"
-          class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
-        <property name="securityInterceptor"
-                  ref="daoSecurity"/>
+    <bean id="daoSecurityInterceptorAspectBean" class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
+        <property name="securityInterceptor" ref="daoSecurity"/>
     </bean>
 
 
@@ -222,9 +217,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
  
-         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.restrict*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-               
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
                
@@ -279,8 +271,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   ref="joinPointPrivilegeAndObjectIdGenerator"/>
     </bean>
 
-    <bean id="daoSecurity" parent="daoSecurityTemplate"
-          class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
+    <bean id="daoSecurity" parent="daoSecurityTemplate" class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
         <property name="objectDefinitionSource">
             <value>
                 gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.*=CSM_AUTHN_CHECK
@@ -289,7 +280,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getOrganizationsHavingStudySites=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.restrict*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
@@ -354,12 +344,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="pathSeperator" value="."/>
     </bean>
 
-    <bean id="siteSecurityCollectionFilter"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
-        <property name="processConfigAttribute"
-                  value="CSM_AUTHN_CHECK"/>
-        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-                  ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+    <bean id="siteSecurityCollectionFilter" class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
+        <property name="processConfigAttribute" value="CSM_AUTHN_CHECK"/>
+        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap" ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
     </bean>
 
@@ -391,10 +378,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
         <property name="userDao" ref="userDao"/>
     </bean>
-    <bean id="organizationSecurityFilterer"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.OrganizationSecurityFilterer">
+
+    <bean id="organizationSecurityFilterer" class="gov.nih.nci.cabig.caaers.accesscontrol.OrganizationSecurityFilterer">
         <property name="userDao" ref="userDao"/>
+        <property name="studySiteDao" ref="studySiteDao"/>
     </bean>
+
     <bean id="researchStaffSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ResearchStaffSecurityFilterer">
         <property name="userDao" ref="userDao"/>

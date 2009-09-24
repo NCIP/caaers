@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +65,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
 		String joins = " join o.study as study join study.identifiers as identifier ";
 		
 		List<Object> params = new ArrayList<Object>();
-		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
-		                domainClass().getName()).append(" o ").append(joins);
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(" o ").append(joins);
 		
 		queryBuf.append(" where ");
 		queryBuf.append("LOWER(").append("identifier.value").append(") = ? ");
@@ -80,8 +81,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
 		
 		log.debug("matchByStudyAndOrgNciId : " + queryBuf.toString());
 		getHibernateTemplate().setMaxResults(5);
-		List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
-		                params.toArray());
+		List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 		getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
 		return studySites.size() == 1 ? studySites.get(0) : null;
 }
@@ -89,19 +89,25 @@ public class StudySiteDao extends CaaersDao<StudySite> {
     /*
      * @See ParticipantService
      */
-    public StudySite findByStudyAndOrganization(final Integer studyId,
-                    final Integer orgId) {
-
-           StringBuilder queryBuf = new StringBuilder(" select distinct ss from StudySite ss " +
-        		"where ss.organization.id=? and ss.study.id=? ");
-
-
+    public StudySite findByStudyAndOrganization(final Integer studyId, final Integer orgId) {
+        StringBuilder queryBuf = new StringBuilder(" select distinct ss from StudySite ss " + "where ss.organization.id=? and ss.study.id=? ");
         log.debug("findByStudyAndOrganization : " + queryBuf.toString());
         getHibernateTemplate().setMaxResults(5);
-        List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
-        		new Object[]{orgId,studyId});
-        
+        List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(), new Object[]{orgId,studyId});
         getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
     }
+
+    public List<String> getSitesOfCoordinatedStudiesByOrganizationCodes(List orgCodes) {
+        StudySitesQuery query = new StudySitesQuery("SELECT o.nciInstituteCode FROM StudyCoordinatingCenter so");
+        query.joinStudies();
+        query.joinStudyOrganizations();
+        query.joinOrganizations();
+        query.filterBySuperOrganizationCode(orgCodes);
+//        System.out.println("Q: " + query.getQueryString());
+//        this.getHibernateTemplate().get
+        List<String> coordinatedOrganizationsCodes = this.getHibernateTemplate().find(query.getQueryString());
+        return coordinatedOrganizationsCodes;
+    }
+
 }

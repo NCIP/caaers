@@ -20,17 +20,12 @@ import org.springframework.beans.factory.annotation.Required;
  * 
  * Date: Sep 20, 2007 Time: 10:49:51 AM
  */
-public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
-                AfterInvocationProvider {
+public class SiteSecurityAfterInvocationCollectionFilteringProvider implements AfterInvocationProvider {
 
     private String processConfigAttribute;
-
     private gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch;
-
     private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
-
-	private Logger log = Logger
-                    .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
+	private Logger log = Logger.getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
     
 
     public Object decide(Authentication authentication, Object object,

@@ -8,6 +8,25 @@
 
     //---------------------------------------------------------------------------------------------------------------------
 
+    Event.observe(window, "load", function() {
+        Event.observe($('organization'), "change", function() {
+/*
+            alert($('organization').options[$('organization').options.selectedIndex].value);
+            alert($('organization').options[$('organization').options.selectedIndex].text);
+*/
+            populateAutocompleter('participant.organizationIdentifiers[0].organization', $('organization').options[$('organization').options.selectedIndex].text, $('organization').options[$('organization').options.selectedIndex].value);
+        });
+    })
+
+    //---------------------------------------------------------------------------------------------------------------------
+
+    function populateAutocompleter(autocompleterID, textValue, hiddenValue) {
+        $(autocompleterID + '-input').value = textValue;
+        $(autocompleterID).value = hiddenValue; 
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------
+
     function populateParameters(methodName, viewName) {
 
         var paramHash = new Hash();
