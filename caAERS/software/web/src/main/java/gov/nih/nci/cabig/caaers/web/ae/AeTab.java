@@ -151,6 +151,20 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
                         }
                     }
                 }
+                
+                //special case for split date
+                if(field.getCategory() == InputField.Category.SPLIT_DATE){
+                	if(isMandatory(command.getMandatoryProperties(), field.getPropertyName() + ".year")){
+                		field.getAttributes().put(InputField.YEAR_MANDATORY, true);
+                	}
+                	if(isMandatory(command.getMandatoryProperties(), field.getPropertyName() + ".month")){
+                		field.getAttributes().put(InputField.MONTH_MANDATORY, true);
+                	}
+                	if(isMandatory(command.getMandatoryProperties(), field.getPropertyName() + ".day")){
+                		field.getAttributes().put(InputField.DAY_MANDATORY, true);
+                	}
+                }
+                
             }
 
         }
@@ -166,12 +180,18 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      */
     private boolean isMandatory(MandatoryProperties mandatoryProps, InputField field) {
         if (mandatoryProps == null) return false;
-        boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.", ""));
+        boolean mandatory = isMandatory(mandatoryProps, field.getPropertyName());
+        
         if (field.getCategory() == InputField.Category.COMPOSITE) {
             for (InputField subfield : CompositeField.getSubfields(field))
                 mandatory |= isMandatory(mandatoryProps, subfield);
         }
         return mandatory;
+    }
+    
+    private boolean isMandatory(MandatoryProperties mandatoryProps, String property){
+    	 String propertyName = property.replace("aeReport.", "");
+         return mandatoryProps.isMandatory(propertyName);
     }
 
     /**

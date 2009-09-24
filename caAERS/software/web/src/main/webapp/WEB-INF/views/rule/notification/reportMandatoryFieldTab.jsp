@@ -75,6 +75,7 @@
 			  <tr>
 			  	  <td width="50%">
 			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION" />
+			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Date of initial diagnosis" heading="Date of initial diagnosis" tabular="true"/>
 			 	  </td>
 			 	  <td width="50%">
 		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" tabular="true" />
@@ -97,11 +98,15 @@
 				<td>
 					<chrome:division title="Prior therapies">
 						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
+						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~Therapy start date" heading="Therapy start date" tabular="true"/>
+						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~Therapy end date" heading="Therapy end date" tabular="true" />
 					</chrome:division>
 				</td>
 				<td>
 					<chrome:division title="Concomitant Medications">
 						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications" />
+						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~Start date" heading="Start date" tabular="true" />
+						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~End date" heading="End date" tabular="true"/>
 					</chrome:division>
 				</td>
 			</tr>

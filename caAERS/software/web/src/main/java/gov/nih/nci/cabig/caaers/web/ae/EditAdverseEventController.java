@@ -235,8 +235,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	Report selectedReport = aeReport.findReportById(reportId);
         	
         	if(selectedReport  != null){
+        		command.getSelectedReportDefinitions().add(selectedReport.getReportDefinition());
         		if(!selectedReport.isActive()){
-        			command.getSelectedReportDefinitions().add(selectedReport.getReportDefinition());
         			//if selected report is not active, add it into applicable reports
         			command.getApplicableReportDefinitions().add(selectedReport.getReportDefinition());
         		}

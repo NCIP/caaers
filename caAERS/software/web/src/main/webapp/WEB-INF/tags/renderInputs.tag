@@ -29,11 +29,15 @@
 
     <c:when test="${field.categoryName == 'split_date'}">
         <tags:splitDateInput
-                cssClass="${field.validatorClassName} ${cssClass} "
+                cssClass="${field.validatorClassName} ${cssClass}"
                 dayRequired="${field.attributes.ddRequired}"
                 monthRequired="${field.attributes.mmRequired}"
                 yearRequired="${field.attributes.yyRequired}"
-                required="${field.required}" path="${field.propertyName}"/>
+                required="${field.required}" path="${field.propertyName}"
+                yearMandatory="${field.attributes.yyMandatory}"
+                monthMandatory="${field.attributes.mmMandatory}"
+                dayMandatory="${field.attributes.ddMandatory}"
+                />
     </c:when>
 
     <c:when test="${field.categoryName == 'textarea'}">

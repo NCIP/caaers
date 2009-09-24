@@ -46,6 +46,10 @@ public interface InputField {
     String MONTH_REQUIRED = "mmRequired";
     String DAY_REQUIRED = "ddRequired";
     String YEAR_REQUIRED = "yyRequired";
+    
+    String MONTH_MANDATORY = "mmMandatory";
+    String DAY_MANDATORY = "ddMandatory";
+    String YEAR_MANDATORY = "yyMandatory";
 
 
     String EXTRA_VALUE_PARAMS = "extraParams";
