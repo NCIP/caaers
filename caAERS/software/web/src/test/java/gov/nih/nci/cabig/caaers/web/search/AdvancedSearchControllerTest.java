@@ -19,5 +19,8 @@ public class AdvancedSearchControllerTest extends WebTestCase {
 	
 		controller = new AdvancedSearchController();
 	}
+	public void testSample(){
+		
+	}
 	
 }
