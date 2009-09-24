@@ -39,6 +39,7 @@ public class ReportStatusResetJobTest extends AbstractTestCase {
 		EasyMock.expect(scheduler.getContext()).andReturn(schedulerContext);
 		EasyMock.expect(schedulerContext.get("applicationContext")).andReturn(appContext);
 		EasyMock.expect(appContext.getBean("reportVersionRepository")).andReturn(repository);
+		repository.updateInProcessReports();
 		replayMocks();
 		job.execute(jobContext);
 		verifyMocks();
