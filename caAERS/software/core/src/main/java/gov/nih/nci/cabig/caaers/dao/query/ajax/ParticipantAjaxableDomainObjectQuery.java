@@ -33,6 +33,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
 
     private static final String IDENTIFIER_VALUE = "identifierValue";
     private static final String STUDY_IDENTIFIER_VALUE = "studyIdentifierValue";
+    private static final String STUDY_SUBJECT_IDENTIFIER = "studySubjectIdentifier";
     private static final String IDENTIFIER_TYPE = "type";
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
@@ -63,11 +64,13 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
 
         andWhere(String.format("(lower(participant.firstName) LIKE :%s or lower(participant.lastName) LIKE :%s " +
                 "or  lower(identifier.type) LIKE :%s " +
-                "or lower(identifier.value) LIKE :%s)", FIRST_NAME, LAST_NAME, IDENTIFIER_TYPE, IDENTIFIER_VALUE));
+                "or lower(identifier.value) LIKE :%s or lower(spa.studySubjectIdentifier) LIKE :%s)", FIRST_NAME, 
+                LAST_NAME, IDENTIFIER_TYPE, IDENTIFIER_VALUE, STUDY_SUBJECT_IDENTIFIER));
         setParameter(IDENTIFIER_VALUE, searchString);
         setParameter(IDENTIFIER_TYPE, searchString);
         setParameter(FIRST_NAME, searchString);
         setParameter(LAST_NAME, searchString);
+        setParameter(STUDY_SUBJECT_IDENTIFIER, searchString);
 
     }
     

@@ -92,12 +92,13 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         "join study.studyOrganizations as studyOrgs "+
         "left join studyOrgs.studyPersonnelsInternal as stper " +
         "left join stper.siteResearchStaff as siteResearchStaff WHERE " +
-        "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue) "+
+        "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue" +
+        " or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) "+
         "order by participant.firstName ";
         
         assertEquals(qry.trim(),
                 query.getQueryString());
-        assertEquals("wrong number of parameters", query.getParameterMap().size(), 4);
+        assertEquals("wrong number of parameters", query.getParameterMap().size(), 5);
 
         assertTrue("missing paramenter name", query.getParameterMap().containsKey(
                 "lastName"));
@@ -141,13 +142,14 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         "join study.studyOrganizations as studyOrgs "+
         "left join studyOrgs.studyPersonnelsInternal as stper " +
         "left join stper.siteResearchStaff as siteResearchStaff WHERE " +
-        "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue) AND study.id =:studyId "+
+        "(lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue " +
+        "or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) AND study.id =:studyId "+
         "order by participant.firstName ";
         
         
         assertEquals(qry.trim(),
                 query.getQueryString());
-        assertEquals("wrong number of parameters", query.getParameterMap().size(), 5);
+        assertEquals("wrong number of parameters", query.getParameterMap().size(), 6);
 
         assertTrue("missing paramenter name", query.getParameterMap().containsKey(
                 "lastName"));
