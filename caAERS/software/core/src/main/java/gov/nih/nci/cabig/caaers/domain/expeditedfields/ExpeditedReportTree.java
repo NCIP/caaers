@@ -200,8 +200,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                             	list("saeReportPriorTherapies","Prior Therapy", 
                         				property("priorTherapy", "Prior therapy"),
                                         property("other", "Comments (prior therapy)"), 
-                                        property("startDate", "Therapy start date"), 
-                                        property("endDate", "Therapy end date"), 
+                                        property("startDate", "Therapy start date",
+                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")), 
+                                        property("endDate", "Therapy end date",
+                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")), 
                                         list("priorTherapyAgents", "PriorTherapyAgent", property("chemoAgent", "Agent")
                                         )
                                 )
@@ -214,8 +216,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		list("concomitantMedications","Medication",
                                         property("agentName", "Medication"),
                                         property("stillTakingMedications","Continued?"),
-                                        property("startDate","Start date"),
-                                        property("endDate","End date")
+                                        property("startDate","Start date",
+                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")),
+                                        property("endDate","End date",
+                                        		property("year", "Year"), property("month", "Month"), property("day", "Day"))
                                        
                                 )
                         ),
@@ -230,7 +234,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		 property("diseaseHistory",
                                          	codedOrOther("abstractStudyDisease", "Disease name","otherPrimaryDisease","Other (disease)"),
                                          	codedOrOther("codedPrimaryDiseaseSite", "Primary site of disease", "otherPrimaryDiseaseSite", "Other (site of primary disease)"),
-                                         	property("diagnosisDate","Date of initial diagnosis"),
+                                         	property("diagnosisDate","Date of initial diagnosis",
+                                         			property("year", "Year"), property("month", "Month"), property("day", "Day")),
 			                        		//fields related to metastatic diseases
 			                        		list("metastaticDiseaseSites","Metastatic disease site",
 			                        				codedOrOther("codedSite","Site name","otherSite","Other(site of metastatic disease)")
