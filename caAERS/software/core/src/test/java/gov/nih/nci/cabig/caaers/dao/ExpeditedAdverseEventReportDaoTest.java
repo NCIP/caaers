@@ -718,7 +718,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertEquals("Wrong number of results", 1, results.size());
     }
     
- /*   
+   
     public void testSerializeExpeditedAdverseEventReport() throws Exception {
 
     	ExpeditedAdverseEventReport aer = getDao().getById(-1);
@@ -728,10 +728,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 
     	String xml = aeser.serialize(aer, null);
     	
-    	//System.out.println(xml);
+    	System.out.println(xml);
 
-    	assertEquals(xml,getStringFromFile());
-    }*/
+    	//assertEquals(xml,getStringFromFile());
+    }
     
 
     public void testHasSubmittedReport(){
