@@ -1,13 +1,10 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor;
 
-import java.util.Locale;
-
-import org.easymock.classextension.EasyMock;
 import org.jdom.Element;
-import org.springframework.context.MessageSource;
 /**
  * 
  * @author Biju Joseph
@@ -17,6 +14,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 
 	ResponseMessageProcessor consumer;
 	MessageNotificationService messageNotificationService;
+	ReportDao reportDao;
 	
 	
 	protected void setUp() throws Exception {
@@ -24,9 +22,10 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		
 		consumer = new AdeersSubmissionResponseMessageProcessor();
 		messageNotificationService = registerMockFor(MessageNotificationService.class);
-		
+		reportDao = registerMockFor(ReportDao.class);
 		
 		consumer.setMessageNotificationService(messageNotificationService);
+		consumer.setReportDao(reportDao);
 		
 		
 	}
