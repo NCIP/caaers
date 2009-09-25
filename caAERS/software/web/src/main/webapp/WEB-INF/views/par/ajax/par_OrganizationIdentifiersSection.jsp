@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <tags:noform>
-<c:forEach items="${indexes}" var="index" varStatus="status">
+<c:forEach items="${indexes}" var="index" varStatus="status" begin="${remove eq 'remove' ? 1 : 0}">
 
 <par:parIdentifier
     title="Subject Identifier ${status.index + 1}"

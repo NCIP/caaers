@@ -96,8 +96,10 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createAutocompleterField("organization", "Organization Identifier", true));
         repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
 
+/*
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
         repeatingFieldGroupFactorySys.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
+*/
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         if (command.getParticipant() != null) {
@@ -121,6 +123,19 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Map<String, Object> refdata = super.referenceData(request, command);
         refdata.put("action", "New");
         return refdata;
+    }
+
+    @Override
+    public void onBind(HttpServletRequest request, T command, Errors errors) {
+        Object isAjax = request.getAttribute("_isAjax");
+        if (isAjax != null) return;
+        command.getParticipant().getOrganizationIdentifiers().get(0).setOrganization(command.getOrganization());
+        super.onBind(request, command, errors); 
+    }
+
+    @Override
+    protected ModelAndView postProcessInPlaceEditing(HttpServletRequest request, T command, String property, String value) throws Exception {
+        return super.postProcessInPlaceEditing(request, command, property, value);    
     }
 
     @Override
@@ -204,6 +219,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         }
 
         modelAndView.getModel().put("indexes", indexes);
+        modelAndView.getModel().put("remove", "remove");
         return modelAndView;
     }
 

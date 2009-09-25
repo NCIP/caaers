@@ -102,7 +102,6 @@ public class ParticipantInputCommand {
         OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
         organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
         organizationAssignedIdentifier.setType(identifierType);
-        
         this.participant.addIdentifier(organizationAssignedIdentifier);
     }
     

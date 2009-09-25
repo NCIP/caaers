@@ -97,7 +97,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws Exception {
         ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
-        participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode()); //initialise the command
+        participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
         return participantInputCommand;
     }
 

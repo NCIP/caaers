@@ -118,7 +118,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true,options));
                 idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "systemName", "System Name", true));
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));
                 map.addInputFieldGroup(idtFieldGroupSys);
                 
                 i++;
@@ -130,7 +129,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
                 idtFieldGroupOrg.getFields().add(InputFieldFactory.createAutocompleterField(s + "organization", "Organization Identifier", true));
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createCheckboxField(s + "primaryIndicator", "Primary Indicator"));
                 map.addInputFieldGroup(idtFieldGroupOrg);
 
                 j++;
@@ -238,6 +236,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
 
         modelAndView.getModel().put("indexes", indexes);
+        modelAndView.getModel().put("remove", "remove");
         return modelAndView;
     }
 

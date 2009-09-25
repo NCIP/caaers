@@ -28,8 +28,8 @@
 
 <tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}">
 
-    <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-        <c:set var="_align" value="center" />
+    <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="x">
+        <c:set var="_align" value="left" />
         <c:choose>
             <c:when test="${field.categoryName == 'autocompleter'}"><c:set var="_align" value="left" /></c:when>
         </c:choose>
@@ -60,7 +60,7 @@
     </c:forEach>
     
     <c:if test="${not disableDelete}">
-        <td align="right">
+        <td align="left">
             <a href="javascript:${removeAction}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
         </td>
     </c:if>
