@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -54,6 +55,8 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
     protected StudyDao studyDao;
+    private Configuration configuration;
+    private boolean unidentifiedMode;
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
@@ -145,6 +148,11 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     }
 
 
+    public boolean getUnidentifiedMode(){
+        unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
+        return unidentifiedMode;
+    }
+
     // /LOGIC
     @Override
     protected Participant getPrimaryDomainObject(final C command) {
@@ -160,6 +168,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     @SuppressWarnings("unchecked")
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+        refdata.put("unidentifiedMode", getUnidentifiedMode());
         return refdata;
     }
 
@@ -230,5 +239,11 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         this.assignmentDao = assignmentDao;
     }
 
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 }

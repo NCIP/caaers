@@ -25,8 +25,10 @@ public class Configuration extends DatabaseBackedConfiguration {
     public static final ConfigurationProperty<String> CAAERS_BASE_URL = PROPERTIES.add(new ConfigurationProperty.Text("caaersBaseUrl"));
     public static final ConfigurationProperty<String> CAAERS_HELP_URL = PROPERTIES.add(new ConfigurationProperty.Text("caaersBaseHelpUrl"));
     public static final ConfigurationProperty<Boolean> ENABLE_WORKFLOW = PROPERTIES.add(new ConfigurationProperty.Bool("enableWorkflow"));
+    public static final ConfigurationProperty<Boolean> UNIDENTIFIED_MODE = PROPERTIES.add(new ConfigurationProperty.Bool("unidentifiedMode"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_DELAY = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterDelay"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_CHARS = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterChars"));
+
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
     }

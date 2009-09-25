@@ -126,7 +126,8 @@
 
     <jsp:attribute name="repeatingFields">
     
-    			
+
+        :=${unidentifiedMode}
 <chrome:division  title="Site"  >
     
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">

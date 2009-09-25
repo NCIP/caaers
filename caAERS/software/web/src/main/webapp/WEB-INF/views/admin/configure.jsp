@@ -19,32 +19,31 @@
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
             <c:url value="/pages/admin/configure" var="action"/>
-        <c:forEach items="${command.conf}" var="entry" varStatus="status">
-            <div class="row">
-                <div class="label">
-                    <form:label path="conf[${entry.key}].value">${entry.value.property.name}</form:label>
-                </div>
-                <div class="value">
-                    <c:set var="beanPath">conf[${entry.key}].value</c:set>
-                    <c:choose>
-                        <c:when test="${entry.value.property.controlType == 'boolean'}">
-                            <div>
-                                <label><form:radiobutton path="${beanPath}" value="true"/> Yes</label>
-                                <label><form:radiobutton path="${beanPath}" value="false"/> No</label>
-                            </div>
-                        </c:when>
-                        <c:when test="${entry.value.property.controlType == 'text'}">
-                            <div><form:input path="${beanPath}"/></div>
-                        </c:when>
-                        <c:otherwise>
-                            <div>Unimplemented control type ${entry.value.controlType} for ${beanPath}</div>
-                        </c:otherwise>
-                    </c:choose>
-                    <p class="description">${entry.value.property.description}</p>
-                    <c:if test="${not empty entry.value.default}"><p class="description">(Default: ${entry.value.default})</p></c:if>
-                </div>
-            </div>
-        </c:forEach>
+
+            <c:forEach items="${command.conf}" var="entry" varStatus="status">
+                    <div class="row">
+                        <div class="label"><form:label path="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>
+                        <div class="value">
+                            <c:set var="beanPath">conf[${entry.key}].value</c:set>
+                            <c:choose>
+                                <c:when test="${entry.value.property.controlType == 'boolean'}">
+                                    <div>
+                                        <label><form:radiobutton path="${beanPath}" value="true"/> Yes</label>
+                                        <label><form:radiobutton path="${beanPath}" value="false"/> No</label>
+                                    </div>
+                                </c:when>
+                                <c:when test="${entry.value.property.controlType == 'text'}">
+                                    <div><form:input path="${beanPath}"/></div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div>Unimplemented control type ${entry.value.controlType} for ${beanPath}</div>
+                                </c:otherwise>
+                            </c:choose>
+                            <p class="description">${entry.value.property.description}</p>
+                            <c:if test="${not empty entry.value.default}"><p class="description">(Default: ${entry.value.default})</p></c:if>
+                        </div>
+                    </div>
+            </c:forEach>
 
         <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
         </chrome:box>
