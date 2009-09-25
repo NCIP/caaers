@@ -178,6 +178,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
              			   command.getAeReport().getReporter().setPhoneNumber(siteResearchStaff.getPhoneNumber());
              		   if(siteResearchStaff.getFaxNumber() != null)
              			   command.getAeReport().getReporter().setFax(siteResearchStaff.getFaxNumber());
+             		   if(siteResearchStaff.getAddress() != null)
+             			   command.getAeReport().getReporter().setAddress(siteResearchStaff.getAddress());
              	   }
                 }
         		
