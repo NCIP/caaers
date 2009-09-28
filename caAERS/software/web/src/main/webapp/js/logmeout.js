@@ -1,5 +1,5 @@
-AE.SESSION_TIME_OUT_WARNING=10 * 60; //timeout duration in seconds
-AE.SESSION_TIME_OUT_WAIT= 1 * 60;
+AE.SESSION_TIME_OUT_WARNING=10; //timeout duration in seconds
+AE.SESSION_TIME_OUT_WAIT= 10;
 AE.SESSION_TIMED_OUT = false;
 AE.SESSION_TIMER_ID;
 AE.SESSION_TIME_OUT_ENABLED = true;
@@ -31,9 +31,9 @@ function resetLogoutTimer() {
 //----------------------------------------------------------------------------------------------------------------
 //shows the warning box
 function logoutWarning() {
-  var warnDiv = $('logout_warning');
-  warnDiv.top = 100;//document.viewport.getHeight()/2;
-  warnDiv.left = 100;//document.viewport.getWidth()/2;
+  var warnDiv = new Window({className: "alphacube", width:550, height:150, zIndex: 100, resizable: true, recenterAuto:true, draggable:true}); 
+  warnDiv.setContent('logout_warning');
+  warnDiv.showCenter(true);
   warnDiv.show();
   AE.SESSION_TIMER_ID = timeoutSession.delay(AE.SESSION_TIME_OUT_WAIT);
 }
@@ -43,7 +43,7 @@ function timeoutSession() {
 
 // ----------------------------------------------------------------------------------------------------------------
 function logOutOKClicked(url){
-	$('logout_warning').hide();
+	warnDiv.hide();
 	if(AE.SESSION_TIMED_OUT) window.location=url;
 }
 
