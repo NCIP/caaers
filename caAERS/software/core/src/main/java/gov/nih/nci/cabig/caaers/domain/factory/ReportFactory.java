@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.Calendar;
@@ -44,14 +45,12 @@ public class ReportFactory {
     public void addScheduledNotifications(ReportDefinition reportDefinition, Report report){
     	//Note : there is a change in busineess requirement, that at firing time only we generate the message/recipients
     	//So only one Scheduled Notification per Planned Notification. 
-    	
     	if(CollectionUtils.isEmpty(reportDefinition.getPlannedNotifications())) return;
     	
     	Date now = nowFactory.getNow();
     	Calendar cal = GregorianCalendar.getInstance();
     	
     	for (PlannedNotification plannedNotification : reportDefinition.getPlannedNotifications()) {
-    		
     		ScheduledNotification scheduledNotification = plannedNotification.createScheduledNotification("dummy");
     		
     		if(plannedNotification instanceof PlannedEmailNotification){
@@ -60,12 +59,15 @@ public class ReportFactory {
     			scheduledEmailNotification.setSubjectLine("dummy");
     		}
     		
-    		//set the scheduled dates
-            cal.setTime(now);
-            cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), (plannedNotification.getIndexOnTimeScale()));
+            //set the scheduled dates
+            if(reportDefinition.getBaseDate() != null)
+            	cal.setTime(reportDefinition.getBaseDate());
+            else
+            	cal.setTime(now);
+            cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), plannedNotification.getIndexOnTimeScale());
             scheduledNotification.setScheduledOn(cal.getTime());
-
-            report.addScheduledNotification(scheduledNotification);
+            if(plannedNotification.getIndexOnTimeScale() == 0 || DateUtils.compateDateAndTime(now, cal.getTime()) < 0)
+            	report.addScheduledNotification(scheduledNotification);
     	}
     
     	
