@@ -157,11 +157,7 @@
 	-->
 	
 	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider">
-		<property name="csmAuthenticationManager">
-			<bean class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager">
-				<constructor-arg ref="csmApplicationContextName"/>
-			</bean>
-		</property>
+		<property name="csmAuthenticationManager" ref="csmAuthenticationManager" />
 		<property name="userDetailsService" ref="csmUserDetailsService">
 		</property>
 		<property name="userCache" ref="userCache"/>
