@@ -386,20 +386,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	</target>
 
 	<target name="install" description="Installs and configures JBOSS, creates database, and deploys application" 
-		depends="
-		common:tomcat:init,
-		common:init,
-		install:common:validation:pre-install,
-		install:tomcat:validation:pre-install,
-		install:database:validation:pre-install,
-		install:tomcat:stop,
-		install:tomcat:validation:pre-install:ports,
-		install:common:clean,
-		install:database,
-		install:tomcat,
-		install:common:post,
-		install:common:validation:post-install
-		">
+		depends="install:tomcat">
 	</target>
 
 	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat">
