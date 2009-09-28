@@ -106,12 +106,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
         <property name="authorizationDAO" ref="csmAuthorizationDao"/>
     </bean>
-
+    
+    <bean id="csmLockoutManager" class="gov.nih.nci.cabig.caaers.security.CaaersCSMLockoutManagerFactoryBean"  /> 
+    
     <bean id="csmAuthenticationManager"
           class="gov.nih.nci.security.SecurityServiceProvider"
-          factory-method="getAuthenticationManager">
+          factory-method="getAuthenticationManager" depends-on="csmLockoutManager">
         <constructor-arg ref="csmApplicationContextName"/>
-    </bean>
+    </bean>   
 
     <bean id="csmObjectIdGenerator"
           class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
