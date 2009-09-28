@@ -109,7 +109,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<property name="tomcat.dest.file" value="${download.dir}/${tomcat.binaries.file}" />
 
 	<!-- Default install time targets passed by deploy targets to the installer, can be overridden by being set on the command line if different target is desitred.  -->
-	<property name="install.target" value="install" />
+	<property name="install.target" value="install:tomcat" />
 	<property name="upgrade.target" value="upgrade" />
 
 	<!-- Where grand stores it's outputed pdf reports of build files -->
