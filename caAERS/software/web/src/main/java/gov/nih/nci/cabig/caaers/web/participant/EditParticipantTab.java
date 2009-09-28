@@ -85,8 +85,12 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         InputField dobDay = InputFieldFactory.createTextField("dayString", "Day");
         InputFieldAttributes.setSize(dobDay, 2);
 
-        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
-
+        CompositeField dobField;
+        if (command.isUnidentifiedMode())
+            dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth));
+        else
+            dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
+        
         dobField.setRequired(true);
         dobField.getAttributes().put(InputField.HELP, "par.par_create_participant.participant.dateOfBirth");
 

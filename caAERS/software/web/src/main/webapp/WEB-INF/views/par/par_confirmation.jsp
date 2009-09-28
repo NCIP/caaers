@@ -63,7 +63,10 @@
                 <div class="${unidentifiedMode ? 'leftpanel' : 'rightpanel'}">
                     <div class="row">
                         <div class="label">Date of birth&nbsp; </div>
-                        <div class="value"><tags:validDate date="${command.participant.dateOfBirth}" /></div>
+                        <div class="value">
+                            <c:if test="${!unidentifiedMode}"><tags:validDate date="${command.participant.dateOfBirth}" /></c:if>
+                            <c:if test="${unidentifiedMode}">${command.participant.dateOfBirth.monthString}/${command.participant.dateOfBirth.yearString}</c:if>
+                        </div>
                     </div>
 
                     <div class="row">
