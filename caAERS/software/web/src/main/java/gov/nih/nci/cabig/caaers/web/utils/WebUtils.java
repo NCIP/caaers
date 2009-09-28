@@ -223,6 +223,12 @@ public class WebUtils {
         }
     }
     
+    public static boolean hasParameter(HttpServletRequest request, String paramName){
+    	for(Enumeration en = request.getParameterNames(); en.hasMoreElements(); ){
+    		if(en.nextElement().equals(paramName)) return true;
+    	}
+    	return false;
+    }
     
     public static String getStringParameter(HttpServletRequest request, String param){
     	String value = request.getParameter(param);

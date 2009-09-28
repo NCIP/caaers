@@ -3,9 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +83,23 @@ public class ReviewAndReportTab extends AdverseEventTab {
 			//find the aeReport
 			Integer aeReportId = ServletRequestUtils.getIntParameter(request, "activeAeReportId");
 			reviewResult.setAeReportId(aeReportId);
+			
+			//bind the start dates
+			List<AdverseEvent> adverseEvents  = command.getEvaluationResult().getAllAeMap().get(aeReportId);
+			int size = adverseEvents.size();
+			for(int i = 0; i < size; i++){
+				AdverseEvent ae = adverseEvents.get(i);
+				String startDateParamName = "evaluationResult.allAeMap[" + aeReportId.intValue() +"][" + i + "].startDate";
+				if(WebUtils.hasParameter(request,startDateParamName)){
+					String strStartDate = request.getParameter(startDateParamName);
+					if(StringUtils.isNotEmpty(strStartDate)){
+						ae.setStartDate(DateUtils.parseDateString(strStartDate).toDate());
+					}else{
+						ae.setStartDate(null);
+					}
+					
+				}
+			}
 			
 			String paramName =  "rd_" + aeReportId.toString();
 			
