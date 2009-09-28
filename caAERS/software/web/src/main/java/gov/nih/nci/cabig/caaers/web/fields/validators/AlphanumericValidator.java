@@ -9,8 +9,27 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class AlphanumericValidator extends FieldValidator {
 
-	@Override
+    private int minLength;
+    private int maxLength;
+    private boolean minLengthOK = true;
+    private boolean maxLengthOK = true;
+
+    public AlphanumericValidator() {
+    }
+
+    public AlphanumericValidator(int minLength, int maxLength) {
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+    }
+
+    public AlphanumericValidator(int maxLength) {
+        this.maxLength = maxLength;
+    }
+
+    @Override
     public String getMessagePrefix() {
+        if (!minLengthOK) return "The value's length is below the minimum of " + minLength + ".";
+        if (!maxLengthOK) return "The value's length is above the maximum of " + maxLength + ".";
         return "Incorrect alphanumeric value";
     }
 
@@ -26,7 +45,11 @@ public class AlphanumericValidator extends FieldValidator {
     * */
     @Override
     public boolean isValid(Object fieldValue) {
-        if (fieldValue != null) return fieldValue.toString().matches("^[a-zA-Z0-9_ ]*$");
-        return true; 
+        if (fieldValue != null) {
+            if (minLength > 0 && fieldValue.toString().length() < minLength) minLengthOK = false; else minLengthOK = true;
+            if (maxLength > 0 && fieldValue.toString().length() > maxLength) maxLengthOK = false; else maxLengthOK = true;
+            return (minLengthOK && maxLengthOK && fieldValue.toString().matches("^[a-zA-Z0-9_ ]*$"));
+        }
+        return true;
     }
 }

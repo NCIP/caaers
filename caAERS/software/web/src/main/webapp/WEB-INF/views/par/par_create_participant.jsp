@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    
+
 <tags:dwrJavascriptLink objects="createParticipant"/>
     <script language="JavaScript">
 
@@ -20,7 +20,7 @@
 
     function populateAutocompleter(autocompleterID, textValue, hiddenValue) {
         $(autocompleterID + '-input').value = textValue;
-        $(autocompleterID).value = hiddenValue; 
+        $(autocompleterID).value = hiddenValue;
     }
 
     //---------------------------------------------------------------------------------------------------------------------
@@ -125,11 +125,9 @@
     </jsp:attribute>
 
     <jsp:attribute name="repeatingFields">
-    
 
-        :=${unidentifiedMode}
 <chrome:division  title="Site"  >
-    
+
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
 	<ui:row path="${fieldGroups.site.fields[0].propertyName}">
 		<jsp:attribute name="label">
@@ -148,55 +146,49 @@ ${command.organization}
 
 </chrome:division>
 
+
 <chrome:division  title="Demographic Information">
 <table id="test2" class="single-fields" width="100%">
     <tr >
         <td>
-		    <ui:row path="participant.firstName">
-				<jsp:attribute name="label">
-					<ui:label path="participant.firstName" text="First Name" required="true" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<ui:text path="${fieldGroups.participant.fields[0].propertyName}" title="${fieldGroups.participant.fields[0].displayName}" validationJSClass="${fieldGroups.participant.fields[0].validatorClassName}" required="true"/>
-				</jsp:attribute>
-			</ui:row>
-			<ui:row path="participant.lastName">
-				<jsp:attribute name="label">
-					<ui:label path="participant.lastName" text="Last Name" required="true" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<ui:text path="${fieldGroups.participant.fields[1].propertyName}" title="${fieldGroups.participant.fields[1].displayName}" validationJSClass="${fieldGroups.participant.fields[1].validatorClassName}" required="true"/>
-				</jsp:attribute>
-			</ui:row>
-			<ui:row path="participant.maidenName">
-				<jsp:attribute name="label">
-					<ui:label path="participant.maidenName" text="Maiden Name" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<ui:text path="${fieldGroups.participant.fields[2].propertyName}" title="${fieldGroups.participant.fields[2].displayName}" validationJSClass="${fieldGroups.participant.fields[2].validatorClassName}"/>
-				</jsp:attribute>
-			</ui:row>
-			<ui:row path="participant.middleName">
-				<jsp:attribute name="label">
-					<ui:label path="participant.middleName" text="Middle Name" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<ui:text path="${fieldGroups.participant.fields[3].propertyName}" title="${fieldGroups.participant.fields[3].displayName}" validationJSClass="${fieldGroups.participant.fields[3].validatorClassName}"/>
-				</jsp:attribute>
-			</ui:row>
-            
-            <ui:row path="participant.organizationIdentifiers[0]">
-				<jsp:attribute name="label"><ui:label path="participant.organizationIdentifiers[0]" text="Subject Identifier" required="true"/></jsp:attribute>
-				<jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true"/></jsp:attribute>
-			</ui:row>
-            
+            <c:if test="${!unidentifiedMode}">
+
+                    <ui:row path="participant.firstName">
+                        <jsp:attribute name="label"><ui:label path="participant.firstName" text="First Name" required="true" /></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="${fieldGroups.participant.fields[0].propertyName}" title="${fieldGroups.participant.fields[0].displayName}" validationJSClass="${fieldGroups.participant.fields[0].validatorClassName}" required="true"/></jsp:attribute>
+                    </ui:row>
+
+                    <ui:row path="participant.lastName">
+                        <jsp:attribute name="label"><ui:label path="participant.lastName" text="Last Name" required="true" /></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="${fieldGroups.participant.fields[1].propertyName}" title="${fieldGroups.participant.fields[1].displayName}" validationJSClass="${fieldGroups.participant.fields[1].validatorClassName}" required="true"/></jsp:attribute>
+                    </ui:row>
+
+                    <ui:row path="participant.maidenName">
+                        <jsp:attribute name="label"><ui:label path="participant.maidenName" text="Maiden Name" /></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="${fieldGroups.participant.fields[2].propertyName}" title="${fieldGroups.participant.fields[2].displayName}" validationJSClass="${fieldGroups.participant.fields[2].validatorClassName}"/></jsp:attribute>
+                    </ui:row>
+
+                    <ui:row path="participant.middleName">
+                        <jsp:attribute name="label"><ui:label path="participant.middleName" text="Middle Name" /></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="${fieldGroups.participant.fields[3].propertyName}" title="${fieldGroups.participant.fields[3].displayName}" validationJSClass="${fieldGroups.participant.fields[3].validatorClassName}"/></jsp:attribute>
+                    </ui:row>
+
+                    <ui:row path="participant.organizationIdentifiers[0]">
+                        <jsp:attribute name="label"><ui:label path="participant.organizationIdentifiers[0]" text="Subject Identifier" required="true"/></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true"/></jsp:attribute>
+                    </ui:row>
+
+            </c:if>
+
         </td>
         <td valign="top">
             <div class="row" id="participant.dateOfBirth-row">
-                <div class="label"><tags:renderLabel field="${fieldGroups.participant.fields[4]}"/></div>
-                <div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[4]}"/></div>
+                <div class="label"><tags:renderLabel field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
+                <div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
             </div>
-            <c:forEach begin="5" end="7" items="${fieldGroups.participant.fields}" var="field">
+            <c:set var="_start" value="${!unidentifiedMode ? 5 : 1}" />
+            <c:set var="_end" value="${!unidentifiedMode ? 7 : 3}" />
+            <c:forEach begin="${_start}" end="${_end}" items="${fieldGroups.participant.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
         </td>
@@ -204,7 +196,10 @@ ${command.organization}
 </table>
 </chrome:division>
 
-<div id="DIV_addOrganizationIdentifierDiv" style="display: ${fn:length(command.participant.organizationIdentifiers) > 1 ? 'inline' : 'none'}">        
+
+<c:if test="${!unidentifiedMode}">
+
+<div id="DIV_addOrganizationIdentifierDiv" style="display: ${fn:length(command.participant.organizationIdentifiers) > 1 ? 'inline' : 'none'}">
 <chrome:division title="Subject ID Assigned by Organization">
     <table id="organizationIdentifierTable" class="tablecontent">
         <tr id="organization-section">
@@ -232,7 +227,7 @@ ${command.organization}
     </table>
 </chrome:division>
 </div>
-        
+
 <br>
 
 <div id="DIV_addSystemIdentifier" style="display: ${fn:length(command.participant.systemAssignedIdentifiers) > 0? 'inline' : 'none'}">
@@ -259,18 +254,21 @@ ${command.organization}
         </c:forEach>
         </tbody>
     </table>
-<br>    
+<br>
 </chrome:division>
 </div>
 
 <tags:button id="system-button" color="blue" type="button" value="Add System Identifier" size="small" icon="add" onclick="addSystemIdentifier('addSystemIdentifierDiv')"/>
 <tags:button id="organization-button" color="blue" type="button" value="Add Organization Identifier" size="small" icon="add" onclick="addOrganizationIdentifier('addOrganizationIdentifierDiv')"/>
-        
+
+</c:if>
+
+
      </jsp:attribute>
-     
-     <jsp:attribute name="localButtons"> 
+
+     <jsp:attribute name="localButtons">
     </jsp:attribute>
-     
-     </tags:tabForm>    
+
+     </tags:tabForm>
 </body>
 </html>

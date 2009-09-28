@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -24,6 +25,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,8 +60,15 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
+    private Configuration configuration;
+    private boolean unidentifiedMode;
 
     public CreateParticipantController() {
+    }
+
+    public boolean getUnidentifiedMode(){
+        setUnidentifiedMode(getConfiguration().get(Configuration.UNIDENTIFIED_MODE));
+        return unidentifiedMode;
     }
 
     @Override
@@ -97,6 +107,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws Exception {
         ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
+        participantInputCommand.setUnidentifiedMode(getUnidentifiedMode());
         participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
         return participantInputCommand;
     }
@@ -234,9 +245,12 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
         for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
             Identifier sID = sitePrimaryIdentifiers.get(i);
+            if (sID == null || sID.getValue() == null) continue;
+
             for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
                 Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
-                
+
+                if (pID == null || pID.getValue() == null) continue;
                 if (sID.getValue().equals(pID.getValue())) {
                     errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
@@ -251,5 +265,29 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
                     errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study from the \"Details\" tab");
         }
 
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
+        Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+        refdata.put("unidentifiedMode", getUnidentifiedMode());
+        return refdata;
+    }
+
+    public boolean isUnidentifiedMode() {
+        return unidentifiedMode;
+    }
+
+    public void setUnidentifiedMode(boolean unidentifiedMode) {
+        this.unidentifiedMode = unidentifiedMode;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

@@ -69,10 +69,14 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         Map<Object, Object> options = null;
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ALPHANUMERIC_VALIDATOR));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", FieldValidator.ALPHANUMERIC_VALIDATOR));
+
+        FieldValidator fv = FieldValidator.ALPHANUMERIC_VALIDATOR;
+        if (!command.isUnidentifiedMode()) {
+            participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", FieldValidator.NOT_NULL_VALIDATOR, fv));
+            participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", FieldValidator.NOT_NULL_VALIDATOR, fv));
+            participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", fv));
+            participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", fv));
+        }
 
         InputField dobYear = InputFieldFactory.createTextField("yearString", "Year", true);
         InputFieldAttributes.setSize(dobYear, 4);
@@ -103,39 +107,41 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
         InputFieldGroupMap map = new InputFieldGroupMap();
 
-        byte i = 0;
-        byte j = 0;
+        if (!command.isUnidentifiedMode()) {
+            byte i = 0;
+            byte j = 0;
 
-        InputFieldGroup idtFieldGroupOrg;
-        InputFieldGroup idtFieldGroupSys;
+            InputFieldGroup idtFieldGroupOrg;
+            InputFieldGroup idtFieldGroupSys;
 
-        for (Identifier idt : command.participant.getIdentifiers()) {
+            for (Identifier idt : command.participant.getIdentifiers()) {
 
-            if (idt instanceof SystemAssignedIdentifier) {
-                String s = "participant.systemAssignedIdentifiers[" + i + "]." ;
-                idtFieldGroupSys = new DefaultInputFieldGroup("mainSys" + i);
+                if (idt instanceof SystemAssignedIdentifier) {
+                    String s = "participant.systemAssignedIdentifiers[" + i + "].";
+                    idtFieldGroupSys = new DefaultInputFieldGroup("mainSys" + i);
 
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true,options));
-                idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "systemName", "System Name", true));
-                map.addInputFieldGroup(idtFieldGroupSys);
-                
-                i++;
+                    idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
+                    idtFieldGroupSys.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
+                    idtFieldGroupSys.getFields().add(InputFieldFactory.createTextField(s + "systemName", "System Name", true));
+                    map.addInputFieldGroup(idtFieldGroupSys);
 
-            } else {
-                String s = "participant.organizationIdentifiers[" + j + "]." ;
-                idtFieldGroupOrg = new DefaultInputFieldGroup("mainOrg" + j);
-                
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
-                idtFieldGroupOrg.getFields().add(InputFieldFactory.createAutocompleterField(s + "organization", "Organization Identifier", true));
-                map.addInputFieldGroup(idtFieldGroupOrg);
+                    i++;
 
-                j++;
+                } else {
+                    String s = "participant.organizationIdentifiers[" + j + "].";
+                    idtFieldGroupOrg = new DefaultInputFieldGroup("mainOrg" + j);
+
+                    idtFieldGroupOrg.getFields().add(InputFieldFactory.createTextField(s + "value", "Identifier", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.IDENTIFIER_VALIDATOR));
+                    idtFieldGroupOrg.getFields().add(InputFieldFactory.createSelectField(s + "type", "Identifier Type", true, options));
+                    idtFieldGroupOrg.getFields().add(InputFieldFactory.createAutocompleterField(s + "organization", "Organization Identifier", true));
+                    map.addInputFieldGroup(idtFieldGroupOrg);
+
+                    j++;
+                }
+
             }
-
         }
-  
+
         map.addInputFieldGroup(participantFieldGroup);
         
         return map;

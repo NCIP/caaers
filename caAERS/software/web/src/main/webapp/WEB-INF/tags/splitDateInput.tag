@@ -36,11 +36,13 @@
             <label for="${path}.month"><c:if test="${monthRequired}"><tags:requiredIndicator/></c:if>MM</label>
         </td>
         <td valign="top" align="center">/</td>
-        <td valign="top">
+
+        <td valign="top" <c:if test="${unidentifiedMode}">style="display:none;"</c:if>>
             <form:input title="Date" path="${path}.dayString" cssClass="${dayCSSValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
             <label for="${path}.day"><c:if test="${dayRequired}"><tags:requiredIndicator/></c:if>DD</label>
         </td>
-        <td valign="top" align="center">/</td>
+        <td valign="top" align="center" <c:if test="${unidentifiedMode}">style="display:none;"</c:if>>/</td>
+
         <td valign="top">
             <form:input title="Year" path="${path}.yearString" cssClass="${yearCSSValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>
             <label for="${path}.yearString"><c:if test="${yearRequired}"><tags:requiredIndicator/></c:if>YYYY</label>

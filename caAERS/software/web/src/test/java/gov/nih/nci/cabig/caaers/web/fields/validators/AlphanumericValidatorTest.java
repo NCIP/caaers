@@ -22,5 +22,25 @@ public class AlphanumericValidatorTest extends TestCase {
         assertTrue(v.isValid("_"));
         assertFalse(v.isValid("'"));
         assertFalse(v.isValid("\""));
+
+        v = new AlphanumericValidator(1, 1);
+        assertTrue(v.isValid("a"));
+        assertFalse(v.isValid("ab"));
+
+        v = new AlphanumericValidator(4, 7);
+        assertFalse(v.isValid("abc"));
+        assertTrue(v.isValid("abde"));
+        assertTrue(v.isValid("abdefgh"));
+        assertFalse(v.isValid("abdefghi"));
+        
+        v = new AlphanumericValidator(3);
+        assertTrue(v.isValid("abd"));
+        assertFalse(v.isValid("abdefghi"));
+
+        v = new AlphanumericValidator(3, 0);
+        assertFalse(v.isValid("ad"));
+        assertTrue(v.isValid("abde"));
+        assertTrue(v.isValid("abde80934jhkd87j"));
+
     }
 }

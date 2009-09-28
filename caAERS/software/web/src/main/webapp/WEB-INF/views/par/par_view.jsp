@@ -28,7 +28,15 @@
 </head>
 <body>
 
-<chrome:box title="${command.participant.lastName}, ${command.participant.firstName}">
+<c:set var="unidentifiedMode" value="${configuration.map.unidentifiedMode}" />
+
+<c:set var="_title">
+    <jsp:attribute name="value">
+        <c:if test="${unidentifiedMode}">Unidentified</c:if>
+        <c:if test="${!unidentifiedMode}">${command.participant.lastName}, ${command.participant.firstName}</c:if>
+    </jsp:attribute>
+</c:set>
+<chrome:box title="${_title}">
 
 <chrome:flashMessage/>
 <chrome:division title="Demographic Information">
@@ -36,6 +44,7 @@
     <table id="test2" class="single-fields" width="100%">
         <tr>
             <td>
+                <c:if test="${!unidentifiedMode}">
                 <div class="leftpane">
                     <div class="row">
                         <div class="label">First name&nbsp; </div>
@@ -57,6 +66,7 @@
                         <div class="value">${command.participant.middleName}</div>
                     </div>
                 </div>
+                </c:if>
             </td>
             <td>
                 <div class="row">
@@ -85,7 +95,7 @@
     </table>
 </chrome:division>
 
-<c:if test="${not empty command.participant.identifiers}">
+<c:if test="${not empty command.participant.identifiers && !unidentifiedMode}">
     <chrome:division title="Identifiers">
         <table class="tablecontent" width="100%">
             <tr>

@@ -293,8 +293,7 @@
   	<bean name="participantEditTask" id="participantEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
   	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
-    <bean name="/participant/create" id="createParticipantController" autowire="byType"
-	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
+    <bean name="/participant/create" id="createParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
       <property name="webControllerValidator" ref="webControllerValidator"/> 
     </bean>
 
@@ -303,8 +302,7 @@
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
 
-  <bean name="/participant/view" id="viewParticipantController" autowire="byName"
-	class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
+  <bean name="/participant/view" id="viewParticipantController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
   </bean>
   
   <!--<bean name="/participant/assignStudy" id="assignStudyController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" ></bean>-->
@@ -451,13 +449,9 @@
 	class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
   
   
-  <bean name="/search/study" id="studyController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
-  
+  <bean name="/search/study" id="studyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
   <bean name="/search/participant" id="participantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
-  
-  <bean name="/participant/search" id="searchParticipantController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
+  <bean name="/participant/search" id="searchParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
   
   
   <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"

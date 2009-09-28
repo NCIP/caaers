@@ -19,8 +19,17 @@
 </head>
 <body>
 <p><tags:instructions code="instruction_subject_enter.review"/></p>
+
+<c:set var="_title">
+    <jsp:attribute name="value">
+        <c:if test="${unidentifiedMode}">Unidentified</c:if>
+        <c:if test="${!unidentifiedMode}">${command.participant.lastName}, ${command.participant.firstName}</c:if>
+    </jsp:attribute>
+</c:set>
+
+
 <tags:tabForm tab="${tab}" flow="${flow}"
-              title="${command.participant.lastName}, ${command.participant.firstName}"
+              title="${_title}"
               willSave="false">
 
 <jsp:attribute name="repeatingFields">
@@ -30,7 +39,7 @@
 
     <chrome:division title="Demographic Information">
     			<div class="row">
-                    <div class="leftpanel">
+                    <div class="leftpanel" <c:if test="${unidentifiedMode}">style="display:none;"</c:if>>
                         <div class="row">
                             <div class="label">First name&nbsp; </div>
                             <div class="value">${command.participant.firstName}</div>
@@ -51,7 +60,7 @@
                             <div class="value">${command.participant.middleName}</div>
                         </div>
                     </div>
-                <div class="rightpanel">
+                <div class="${unidentifiedMode ? 'leftpanel' : 'rightpanel'}">
                     <div class="row">
                         <div class="label">Date of birth&nbsp; </div>
                         <div class="value"><tags:validDate date="${command.participant.dateOfBirth}" /></div>
@@ -76,7 +85,7 @@
 			</div>
     </chrome:division>
 	
-    <c:if test="${not empty command.participant.identifiers}">
+    <c:if test="${not empty command.participant.identifiers && !unidentifiedMode}">
         <chrome:division title="Identifiers">
             <table class="tablecontent" width="100%">
                 <tr>
