@@ -416,6 +416,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
     	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
     	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
+    	
+    	if(treatmentInformation.getTreatmentAssignment() != null)
+    		treatmentInformation.setTreatmentDescription(null);
     }
     
     public List<String> getPriorTherapyAgents() {
