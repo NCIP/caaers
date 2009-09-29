@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 
 /**
  * @author Saurabh Agrawal
@@ -396,5 +397,12 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         1);
     	
     }
-    
+
+    public void testAssignmentIdentifiers() {
+        ParticipantAjaxableDomainObject o = new ParticipantAjaxableDomainObject();
+        o.collectStudySubjectIdentifier("ID-One");
+        o.collectStudySubjectIdentifier("ID-Two");
+        o.collectStudySubjectIdentifier("ID-Three");
+        assertEquals(24, o.getStudySubjectIdentifiersCSV().length());
+    }
 }

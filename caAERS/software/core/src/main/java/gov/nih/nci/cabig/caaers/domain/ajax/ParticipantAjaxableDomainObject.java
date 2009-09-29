@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
 
 /**
  *
@@ -15,17 +13,16 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
     private String gender;
     private String race;
     private String ethnicity;
-    
     private String primaryIdentifierValue;
-    
+    private Set<String> studySubjectIdentifiers;
+
   //  List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
     List<StudySearchableAjaxableDomainObject> studies = new ArrayList<StudySearchableAjaxableDomainObject>();
 
     //FIXME : this logic belongs to participant
     public String getDisplayName() {
 
-        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" :
-                " ( " + this.getPrimaryIdentifierValue() + " ) ";
+        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" : " ( " + this.getPrimaryIdentifierValue() + " ) ";
         StringBuilder name = new StringBuilder(primaryIdentifier);
         boolean hasLastName = getLastName() != null;
         if (getFirstName() != null) {
@@ -123,5 +120,26 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
 	public void setRace(String race) {
 		this.race = race;
 	}
-    
+
+    public Set getStudySubjectIdentifiers() {
+        return studySubjectIdentifiers;
+    }
+
+    public void setStudySubjectIdentifiers(Set studySubjectIdentifiers) {
+        this.studySubjectIdentifiers = studySubjectIdentifiers;
+    }
+
+    public void collectStudySubjectIdentifier(String studySubjectIdentifier) {
+        if (getStudySubjectIdentifiers() == null) setStudySubjectIdentifiers(new HashSet<String>());
+        getStudySubjectIdentifiers().add(studySubjectIdentifier);
+    }
+
+    public String getStudySubjectIdentifiersCSV() {
+        Iterator it = getStudySubjectIdentifiers().iterator();
+        StringBuffer sb = new StringBuffer("");
+        while (it.hasNext()) {
+            sb.append(it.next().toString() + ", ");
+        }
+        return sb.substring(0, sb.length() - 2);
+    }
 }

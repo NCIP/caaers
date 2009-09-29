@@ -39,16 +39,17 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                 if (o[7] != null && (Boolean) o[7]) {
                     participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
                 }
+
+                participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[20]);
                 addAdditionalProperties(participantAjaxableDomainObject, o);
                 existingParticipantsMap.put(participantAjaxableDomainObject.getId(),participantAjaxableDomainObject);
                 
 
             } else  {
             	updateAdditionalProperties(participantAjaxableDomainObject, o);
-            	
             }
-
         }
+
         return new ArrayList<T>(existingParticipantsMap.values());
 
     }
@@ -57,6 +58,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     	if (o[7] != null && (Boolean) o[7]) {
             participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
         }
+        participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[20]);
     	//updateParticipantStudySite(participantAjaxableDomainObject, o);
     	updateStudy(participantAjaxableDomainObject, o);
 

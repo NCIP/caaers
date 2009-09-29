@@ -14,21 +14,37 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
 
     private static String queryString = 
     	
-    		"Select participant.id,participant.firstName,participant.lastName"+
-    		",participant.gender,participant.race,participant.ethnicity " +
-    		",identifier.value,identifier.primaryIndicator " +
-    		",study.shortTitle as st , study.id as studyId"+
-    		",sIdentifier.value, sIdentifier.primaryIndicator "+
-    		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id " +
-    		",ss.organization.id as assignedSiteId, ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
+    		"Select " +
+                    "participant.id," +
+                    "participant.firstName," +
+                    "participant.lastName, "+
+    		        "participant.gender," +
+                    "participant.race," +
+                    "participant.ethnicity, " +
+    		        "identifier.value, " +
+                    "identifier.primaryIndicator, " +
+    		        "study.shortTitle as st, " +
+                    "study.id as studyId, "+
+    		        "sIdentifier.value, " +
+                    "sIdentifier.primaryIndicator, "+
+    		        "studyOrgs.organization.name, " +
+                    "studyOrgs.id, " +
+                    "studyOrgs.class, " +
+                    "studyOrgs.organization.nciInstituteCode, " +
+                    "siteResearchStaff.researchStaff.id, " +
+    		        "ss.organization.id as assignedSiteId, " +
+                    "ss.organization.name as assignedSite, " +
+                    "ss.organization.nciInstituteCode as assignedSiteCode, " +
+                    "spa.studySubjectIdentifier " +
             "from Participant participant "+
-            "left join participant.identifiers as identifier "+
-            "left join participant.assignments as spa join spa.studySite as ss "+
-            "join ss.study as study "+
-            "join study.identifiers as sIdentifier "+
-            "join study.studyOrganizations as studyOrgs "+
-            "left join studyOrgs.studyPersonnelsInternal as stper " +
-            "left join stper.siteResearchStaff as siteResearchStaff " +
+                    "left join participant.identifiers as identifier "+
+                    "left join participant.assignments as spa " +
+                    "join spa.studySite as ss "+
+                    "join ss.study as study "+
+                    "join study.identifiers as sIdentifier "+
+                    "join study.studyOrganizations as studyOrgs "+
+                    "left join studyOrgs.studyPersonnelsInternal as stper " +
+                    "left join stper.siteResearchStaff as siteResearchStaff " +
             "order by participant.firstName ";
 
     private static final String IDENTIFIER_VALUE = "identifierValue";
@@ -152,6 +168,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     public void filterByFirstName(final String firstName) {
         if (!StringUtils.isBlank(firstName)) {
             String searchString = "%" + firstName.toLowerCase() + "%";
+//            andWhere("lower(participant.firstName) LIKE :" + FIRST_NAME + " OR participant.firstName IS NULL");
             andWhere("lower(participant.firstName) LIKE :" + FIRST_NAME);
             setParameter(FIRST_NAME, searchString);
         }
@@ -162,6 +179,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (!StringUtils.isBlank(lastName)) {
             String searchString = "%" + lastName.toLowerCase() + "%";
             andWhere("lower(participant.lastName) LIKE :" + LAST_NAME);
+//            andWhere("lower(participant.lastName) LIKE :" + LAST_NAME + " OR participant.lastName IS NULL");
             setParameter(LAST_NAME, searchString);
         }
     }
@@ -170,7 +188,8 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (!StringUtils.isBlank(value)) {
             String searchString = "%" + value.toLowerCase() + "%";
             //leftJoin("participant.identifiers as pIdentifier");
-            andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE);
+//            andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " OR identifier.value IS NULL");
+            andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " or lower(spa.studySubjectIdentifier) LIKE :" + IDENTIFIER_VALUE);
             setParameter(IDENTIFIER_VALUE, searchString);
         }
     }

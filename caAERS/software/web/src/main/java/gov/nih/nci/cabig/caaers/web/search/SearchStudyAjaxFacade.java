@@ -1342,6 +1342,12 @@ public class SearchStudyAjaxFacade {
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
         model.addColumn(columnPrimaryIdentifier);
 
+        Column assignmentIdentifiers = model.getColumnInstance();
+        assignmentIdentifiers.setProperty("studySubjectIdentifiersCSV");
+        assignmentIdentifiers.setTitle("Study Subject Identifiers");
+        assignmentIdentifiers.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantAssignmentsDisplayCell");
+        model.addColumn(assignmentIdentifiers);
+
         return model.assemble();
 
     }
