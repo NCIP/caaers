@@ -21,7 +21,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersTestCase {
         assertNotNull(lockoutManager);
 
         //fail the test user 10 times
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 10; i++) {
             lockoutManager.setFailedAttempt("test");
         }
         
