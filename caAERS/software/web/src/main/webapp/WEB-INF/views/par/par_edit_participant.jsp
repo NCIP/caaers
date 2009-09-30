@@ -208,7 +208,7 @@ function removeSystemIdentifier(container, index) {
 <c:if test="${!unidentifiedMode}">
 
 <div id="DIV_addOrganizationIdentifierDiv" style="display: ${fn:length(command.participant.organizationIdentifiers) > 1 ? 'inline' : 'none'}">
-<chrome:division title="Subject ID Assigned by Organization">
+<chrome:division title="Subject ID Assigned by an Organization">
 <table id="test" class="tablecontent">
     <tr id="organization-section">
         <th class="tableHeader" width="20%"><tags:requiredIndicator />Identifier</th>
