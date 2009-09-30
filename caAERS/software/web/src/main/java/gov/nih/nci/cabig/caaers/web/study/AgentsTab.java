@@ -120,7 +120,7 @@ public class AgentsTab extends StudyTab {
                 for (StudyAgentINDAssociation saInd : sa.getStudyAgentINDAssociations()) {
                     // dont show IND field for CTEP unspecified IND
                     InvestigationalNewDrug ind = saInd.getInvestigationalNewDrug();
-                    if( (ind != null && ind.getIndNumber() != null )&& (ind.getIndNumber() == InvestigationalNewDrug.CTEP_IND)  || ind.getIndNumber() == InvestigationalNewDrug.DCP_IND){
+                    if ((ind != null && ind.getIndNumber() != null && ind.getIndNumber() == InvestigationalNewDrug.CTEP_IND) || (ind != null && ind.getIndNumber() != null && ind.getIndNumber() == InvestigationalNewDrug.DCP_IND)){
                         continue;
                     }
                     j++;
