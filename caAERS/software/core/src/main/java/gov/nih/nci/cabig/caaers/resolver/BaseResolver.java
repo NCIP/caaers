@@ -165,11 +165,12 @@ public abstract class BaseResolver {
 	}*/
 	
 	public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
-        String result = null;
+        System.out.println("Broadcasting to coppa ");
+		String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:28445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
 
         	result = broadCaster.broadcastCoppaMessage(message, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
@@ -179,6 +180,21 @@ public abstract class BaseResolver {
     	return result;
     }
 	
+	
+	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
+        String result = null;
+        try {
+        	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
+        //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
+            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+
+        	result = broadCaster.broadcastCoppaMessage(messages, metaData);
+		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
+
+            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
+		}
+    	return result;
+    }
 	
 	
 }
