@@ -81,7 +81,7 @@
 		var actions = $("actions-" + reportId);
 		for ( i=0; i < actions.length; i++) {
 			if (actions.options[i].selected && actions.options[i].value != "none") {
-				if(confirm('Are you sure you want to take the action - ' + actions.options[i].text)){
+				if(confirm('Are you sure you want to ' + actions.options[i].title + '?')){
 					switch (actions.options[i].value) {
 						case "notifyPSC": notifyPsc(aeReportId); break;
 						case "submit": doAction(actions.options[i].value, aeReportId, reportId); break;

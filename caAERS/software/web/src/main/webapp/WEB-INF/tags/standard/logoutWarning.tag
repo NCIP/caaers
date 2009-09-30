@@ -1,5 +1,5 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<div id="logout_warning" style="display:none;text-align:left;padding-left:10px;">
+<div id="logout_warning" style="display:none;text-align:left;padding-left:10px; width:500px;">
     <p>
         <tags:message key="instruction_logout_warning">
         </tags:message>

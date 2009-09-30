@@ -90,10 +90,6 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
     <jsp:attribute name="instructions">
-           		<p>
-                    Complete the submitter information below.
-                </p>
-
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
     	

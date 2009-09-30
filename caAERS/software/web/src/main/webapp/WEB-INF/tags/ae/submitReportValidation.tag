@@ -88,34 +88,34 @@
 						<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
 		     				<OPTION selected value="none">Please select</OPTION>
 		     				<c:if test="${command.study.caaersXMLType}">
-		     					<OPTION value="xml">Export caAERS XML</OPTION>
+		     					<OPTION value="xml" title="export caAERS XML">Export caAERS XML</OPTION>
 		     				</c:if>
 		     				<c:if test="${command.study.adeersPDFType}">
-		     					<OPTION value="pdf">Export AdEERS PDF</OPTION>
+		     					<OPTION value="pdf" title="export AdEERS PDF">Export AdEERS PDF</OPTION>
 		     				</c:if>
 		     				<c:if test="${command.study.medwatchPDFType}">
-		     					<OPTION value="medwatchpdf">Export MedWatch 3500A PDF</OPTION>
+		     					<OPTION value="medwatchpdf" title="export MedWatch 3500A PDF">Export MedWatch 3500A PDF</OPTION>
 		     				</c:if>
 		     				<c:if test="${command.study.dcpSAEPDFType}">
-		     					<OPTION value="dcp">Export DCP SAE PDF</OPTION>
+		     					<OPTION value="dcp" title="export DCP SAE PDF">Export DCP SAE PDF</OPTION>
 		     				</c:if>
                 			<c:if test="${command.study.ciomsPDFType}">
-                    			<OPTION value="cioms">Export CIOMS PDF</OPTION>
+                    			<OPTION value="cioms" title="export CIOMS PDF">Export CIOMS PDF</OPTION>
                 			</c:if>
 		     				<c:if test="${command.study.ciomsSaePDFType}">
-		     					<OPTION value="ciomssae">Export DCP Safety Report PDF</OPTION>
+		     					<OPTION value="ciomssae" title="export DCP Safety Report PDF">Export DCP Safety Report PDF</OPTION>
 		     				</c:if>
 		     				<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-		     					<OPTION value="withdraw">Withdraw</OPTION>
+		     					<OPTION value="withdraw" title="withdraw">Withdraw</OPTION>
 		     				</c:if>
 		     				<c:if test="${reportMessages[report.id].submittable}" >
 									<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 										<c:if test="${!command.workflowEnabled || isSuperUser}">
-											<OPTION value="submit">Submit</OPTION>
+											<OPTION value="submit" title="submit">Submit</OPTION>
 										</c:if>
 									</c:if>
 									<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }" >
-										<OPTION value="amend">Amend</OPTION>
+										<OPTION value="amend" title="amend">Amend</OPTION>
 									</c:if>
 							</c:if>
 		     			</SELECT>

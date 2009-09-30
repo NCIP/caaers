@@ -68,11 +68,11 @@
 			<div class="local-buttons">
 			</div>
 	    	<div class="flow-buttons">
-				<span class="prev">       
-	            	<input type="image" alt="« Save &amp; Back" value="« saveback" class="tab0" id="flow-prev" src="/caaers/images/blue/saveback_btn.png"/>
+				<span class="prev">   
+					<tags:button type="button" color="blue" id="flow-prev" icon="back" value="Back"/>
 	        	</span>	        
 				<span class="next">
-					<input type="image" alt="submit report »" value="Submit Report " id="flow-next" src="<c:url value="/images/blue/submit_btn.png" />"/>
+					<tags:button type="button" color="orange" id="flow-next" icon="Save & Continue" value="Submit"/>
 	       		</span>
 			</div>
 		</div>

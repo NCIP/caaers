@@ -74,7 +74,7 @@ div.row, build-name, main {
 }
 
 .overlay_alphacube {
-	background-color: #85BBEF;
+	background-color: #000000;
 	filter:alpha(opacity=60);
 	-moz-opacity: 0.6;
 	opacity: 0.6;
