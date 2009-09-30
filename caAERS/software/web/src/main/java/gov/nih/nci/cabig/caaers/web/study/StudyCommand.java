@@ -351,7 +351,13 @@ public class StudyCommand {
     		source.remove(obj);
     	}
     }
-
+    
+    public void reloadStudy(){
+    	Integer oldStudyId = study.getId();
+    	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());
+    	setStudy(loaded);
+    }
+    
     /**
      * This method will save a study into the DB
      */

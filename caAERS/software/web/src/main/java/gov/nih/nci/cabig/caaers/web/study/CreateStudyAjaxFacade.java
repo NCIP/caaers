@@ -133,37 +133,6 @@ public class CreateStudyAjaxFacade {
         return command;
     }
 
-    // TODO: Need to refactor this to a different class (may be a common super class)
-    private void updateStudyCommand(HttpServletRequest request, StudyCommand studyCommand) {
-        if (studyCommand.getStudy().getId() == null) return;
-
-        Study study = studyDao.getStudyDesignById(studyCommand.getStudy().getId());
-        studyCommand.setStudy(study);
-
-        StudyCommand command = (StudyCommand)request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
-        if (command != null) {
-            request.getSession().setAttribute(CREATE_STUDY_REPLACED_FORM_NAME, studyCommand);
-            return;
-        }
-
-        command = (StudyCommand)request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
-        if (command != null) {
-            request.getSession().setAttribute(CREATE_STUDY_FORM_NAME, studyCommand);
-            return;
-        }
-
-        command = (StudyCommand)request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
-        if (command != null) {
-            request.getSession().setAttribute(EDIT_STUDY_REPLACED_FORM_NAME, studyCommand);
-            return;
-        }
-        
-        command = (StudyCommand)request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
-        if (command != null) {
-            request.getSession().setAttribute(EDIT_STUDY_FORM_NAME, studyCommand);
-            return;
-        }
-    }
 
     public List<StudySiteAjaxableDomainObject> matchSites(final String text, final Integer studyId){
     	if(studyId == null) 
@@ -405,7 +374,7 @@ public class CreateStudyAjaxFacade {
         } catch (DataIntegrityViolationException die) {
             log.error("Error occured while deleting [listProperty :" + listProperty + ", indexToDelete :" + indexToDelete + ", displayName :" + displayName + "]", die);
             list.add(indexToDelete, o);
-            updateStudyCommand(request, command);
+            command.reloadStudy();
             return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
         }
 

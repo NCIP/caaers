@@ -22,7 +22,7 @@
 			</c:if>
 		</td>
 		<c:if test="${report.reportDefinition.amendable == true}">
-			<td align="center" width="10%"><div class="label">${report.lastVersion.reportVersionId}</div></td>
+			<td align="center" width="10%"><div class="label">${report.lastVersion.amendmentNumber}</div></td>
 		</c:if>
 		<c:if test="${report.reportDefinition.amendable == false}">
 			<td width="10%"/>

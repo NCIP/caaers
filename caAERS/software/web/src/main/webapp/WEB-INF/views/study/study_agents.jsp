@@ -29,7 +29,7 @@ td#linkPosition a img {
 		if(action =='addStudyAgent'){
 		   agentListEditor.add.bind(agentListEditor)();
 		}else{
-			document.getElementById('command')._target.name='_noname';
+			//document.getElementById('command')._target.name='_noname';
 			document.studyAgentsForm._action.value=action;
 			document.studyAgentsForm._selected.value=selected;		
 			// document.studyAgentsForm.submit();
@@ -76,7 +76,6 @@ td#linkPosition a img {
             			this.agentSelector.bind(this)
             		);
             	}
-
 				if(this.indType){
 
 	            	//disable part of lead IND if necessary
@@ -86,7 +85,6 @@ td#linkPosition a img {
 						  $('study.studyAgents[' + this.index + '].partOfLeadIND').disable();
 						  $('study.studyAgents[' + this.index + '].partOfLeadIND-row').hide();
 					}
-
 
 	             	
 	            	//observe on the change event on IND Type (usage) dropdown.
