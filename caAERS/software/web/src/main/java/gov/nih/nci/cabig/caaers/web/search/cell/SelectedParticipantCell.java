@@ -24,12 +24,7 @@ public class SelectedParticipantCell implements Cell {
         try {
         	ParticipantAjaxableDomainObject bean = (ParticipantAjaxableDomainObject) model.getCurrentRowBean();
             Integer id = bean.getId();
-            inputBuilder.getHtmlBuilder().input("radio")
-                    .name("participant" + id.intValue())
-                    .id("participant" + id.intValue())
-                    .value(id.toString())
-                    .onclick("selectParticipant(this.value)")
-                    ;
+            inputBuilder.getHtmlBuilder().input("radio").name("participant").id("participant" + id.intValue()).value(id.toString()).onclick("selectParticipant(this.value)");
             inputBuilder.getHtmlBuilder().xclose();
             inputBuilder.tdBody(bean.getPrimaryIdentifierValue());
 

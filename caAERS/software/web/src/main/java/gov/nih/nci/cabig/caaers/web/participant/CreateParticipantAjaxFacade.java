@@ -115,7 +115,6 @@ public class CreateParticipantAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
 
-
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setSortable(true);
         columnPrimaryIdentifier.setFilterable(true);
@@ -125,18 +124,11 @@ public class CreateParticipantAjaxFacade {
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.cell.SelectedParticipantCell");
 
         model.addColumn(columnPrimaryIdentifier);
-
-
         addFirstName(model);
-
         addLastName(model);
-
         addGender(model);
-
         addRace(model);
-
         addEthnicity(model);
-
 
         return model.assemble();
     }

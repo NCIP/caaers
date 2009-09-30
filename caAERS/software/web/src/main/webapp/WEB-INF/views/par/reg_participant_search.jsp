@@ -10,7 +10,6 @@
         function navRollOver(obj, state) {
             document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
         }
-
         
         function onKey(e) {
             var keynum = getKeyNum(e);
@@ -33,7 +32,6 @@
                 $('indicator').className = ''
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
 
-
                 var parameterMap = getParameterMap(form);
                 createParticipant.getParticipantTable(parameterMap, type, text, showTable)
 
@@ -43,9 +41,8 @@
         }
 
         function selectParticipant(selectedParticipant){
-             $('participant').value=selectedParticipant;
+             $('participant').value = selectedParticipant;
         }
-
 
     </script>
 
