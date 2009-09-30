@@ -545,17 +545,12 @@
                 </DEATH_DATE>
             </xsl:if>
             
-
-            
-            
             <xsl:if test="AdverseEventResponseDescription/autopsyPerformed = 'false'">
             	<AUTOPSY_PERFORMED>No</AUTOPSY_PERFORMED>
 			</xsl:if>
 			<xsl:if test="AdverseEventResponseDescription/autopsyPerformed = 'true'">
 				<AUTOPSY_PERFORMED>Yes</AUTOPSY_PERFORMED>
 			</xsl:if>
-						  			
-						  			
 
         </DESCRIPTION_OF_EVENT>
 	</xsl:if>
