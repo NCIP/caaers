@@ -15,6 +15,7 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
     private String ethnicity;
     private String primaryIdentifierValue;
     private Set<String> studySubjectIdentifiers;
+    private String studySubjectIdentifiersString;
 
   //  List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
     List<StudySearchableAjaxableDomainObject> studies = new ArrayList<StudySearchableAjaxableDomainObject>();
@@ -34,6 +35,8 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
         if (hasLastName) {
             name.append(getLastName());
         }
+        if (getStudySubjectIdentifiersString() != null)
+            name.append(" - (" + getStudySubjectIdentifiersString() + ")");
         return name.toString() ;
 
     }
@@ -141,6 +144,16 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
         while (it.hasNext()) {
             sb.append(it.next().toString() + ", ");
         }
-        return sb.substring(0, sb.length() - 2);
+        if (sb.length() > 0)
+            return sb.substring(0, sb.length() - 2);
+        else return "";
+    }
+
+    public String getStudySubjectIdentifiersString() {
+        return studySubjectIdentifiersString;
+    }
+
+    public void setStudySubjectIdentifiersString(String studySubjectIdentifiersString) {
+        this.studySubjectIdentifiersString = studySubjectIdentifiersString;
     }
 }

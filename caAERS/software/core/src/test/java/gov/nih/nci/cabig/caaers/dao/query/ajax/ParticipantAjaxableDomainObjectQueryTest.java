@@ -386,15 +386,11 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
     	assertEquals("wrong parameter value", query.getParameterMap().get("year"),
         1980);
     	
-    	assertTrue("missing paramenter name", query.getParameterMap().containsKey(
-        "month"));
-    	assertEquals("wrong parameter value", query.getParameterMap().get("month"),
-        1);
+    	assertTrue("missing paramenter name", query.getParameterMap().containsKey("month"));
+    	assertEquals("wrong parameter value", query.getParameterMap().get("month"),1);
     	
-    	assertTrue("missing paramenter name", query.getParameterMap().containsKey(
-        "day"));
-    	assertEquals("wrong parameter value", query.getParameterMap().get("day"),
-        1);
+    	assertTrue("missing paramenter name", query.getParameterMap().containsKey("day"));
+    	assertEquals("wrong parameter value", query.getParameterMap().get("day"),1);
     	
     }
 
@@ -404,5 +400,9 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         o.collectStudySubjectIdentifier("ID-Two");
         o.collectStudySubjectIdentifier("ID-Three");
         assertEquals(24, o.getStudySubjectIdentifiersCSV().length());
+    }
+    public void testAssignmentIdentifiersNoIdentifiers() {
+        ParticipantAjaxableDomainObject o = new ParticipantAjaxableDomainObject();
+        assertEquals(0, o.getStudySubjectIdentifiersCSV().length());
     }
 }

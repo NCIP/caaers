@@ -332,7 +332,10 @@ public class CreateAdverseEventAjaxFacade {
 
         List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
         // cut down objects for serialization
-        return reduceAll(participantAjaxableDomainObjects, "firstName", "lastName", "id", "primaryIdentifierValue");
+        for (ParticipantAjaxableDomainObject o : participantAjaxableDomainObjects) {
+            o.setStudySubjectIdentifiersString(o.getStudySubjectIdentifiersCSV());
+        }
+        return reduceAll(participantAjaxableDomainObjects, "firstName", "lastName", "id", "primaryIdentifierValue", "studySubjectIdentifiersString");
     }
 
 
