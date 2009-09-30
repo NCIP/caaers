@@ -108,7 +108,9 @@
         </jar>
     </target>
     <target name="configure" depends ="jar-configure">
-  	
+  		<delete file="caaers-adeers-jms-su/src/main/resources/xbean.xml"/>
+  		<delete file="servicemix.xml"/>
+  		<delete file="xbean.xml"/>  	
         <java jar="${build.dir}/configure/configure.jar" fork="true">
         	<arg line="${activemq.host}"/>
         	<arg line="${activemq.port}"/>
