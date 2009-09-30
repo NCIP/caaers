@@ -122,7 +122,7 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
 	}
 
     public Set getStudySubjectIdentifiers() {
-        if (getStudySubjectIdentifiers() == null) setStudySubjectIdentifiers(new HashSet<String>());
+        if (studySubjectIdentifiers == null) studySubjectIdentifiers = new HashSet<String>();
         return studySubjectIdentifiers;
     }
 
