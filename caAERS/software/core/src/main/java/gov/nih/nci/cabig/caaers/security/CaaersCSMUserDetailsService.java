@@ -29,11 +29,12 @@ public class CaaersCSMUserDetailsService extends CSMUserDetailsService{
 	logger.debug((new StringBuilder()).append("Getting user details for ").append(userName).toString());
     GrantedAuthority authorities[] = null;
     UserProvisioningManager mgr = getCsmUserProvisioningManager();
+    gov.nih.nci.security.authorization.domainobjects.User loadedUser = null;
     Set groups;
     boolean accountNonExpired = true;
     Date today = new Date();
     try {
-        gov.nih.nci.security.authorization.domainobjects.User loadedUser = mgr.getUser(userName);
+        loadedUser = mgr.getUser(userName);
         if(loadedUser == null){
             throw new UsernameNotFoundException("User does not exist in CSM.");
         }else{
@@ -66,7 +67,14 @@ public class CaaersCSMUserDetailsService extends CSMUserDetailsService{
         }
 
     }
-    return new User(userName, "ignored", true, accountNonExpired, true, true, authorities);
+    
+    // Create a new CaaersUser Object with the attributes initialized.
+    // This will be returned so that extra attributes like "firstName", "lastName" and more can be used in the application.
+    // An example of its usage is the "Welcome firstName lastName" message on user login.
+    CaaersUser caaersUser = new CaaersUser(userName, "ignored", true, accountNonExpired, true, true, authorities);
+    caaersUser.setFirstName(loadedUser.getFirstName());
+    caaersUser.setLastName(loadedUser.getLastName());
+    return caaersUser;
 }
 
 	
