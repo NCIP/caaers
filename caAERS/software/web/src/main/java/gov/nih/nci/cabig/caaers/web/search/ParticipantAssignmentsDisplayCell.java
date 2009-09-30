@@ -13,8 +13,6 @@ public class ParticipantAssignmentsDisplayCell extends AbstractCell {
     	ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject) model.getCurrentRowBean();
 
         String cellValue = column.getValueAsString();
-        System.out.println("cellValue=" + cellValue);
-
         String link = model.getContext().getContextPath() + "/pages/participant/edit?participantId=";
 
         if (participant != null) {
