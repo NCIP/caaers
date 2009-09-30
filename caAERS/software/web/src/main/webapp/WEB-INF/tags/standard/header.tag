@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <div id="header">
   <div id="skipnav">
   <a href="#skipnav">Skip Navigation</a>
@@ -14,7 +15,7 @@
 		  <c:set var="_tabNum" value="${(not empty tab and tab.number gt 0) ? tab.number : ''}" />
 		  <c:set var="roboHelpKey">ROBOHELP_${currentTask.linkName}${_tabNum gt 0 ? '_' : ''}${_tabNum gt 0 ? _tabNum : ''}</c:set>
 		  <spring:message var="roboHelpLink" code="${roboHelpKey}" text="NO_${roboHelpKey}"/>
-          <span id="welcome-user">Welcome <b>Arnold Schwarzenegger</b></span>
+          <standard:welcome/>
 		  <a href="${_caaersHelpURL}#${roboHelpLink}" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
         <ul id="sections" class="tabs">
