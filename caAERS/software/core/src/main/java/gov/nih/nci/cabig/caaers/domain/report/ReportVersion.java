@@ -25,6 +25,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.axis.utils.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -59,8 +60,10 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     private Boolean physicianSignoff;
 
     private String ccEmails;
-
-    private String reportVersionId;
+    
+    private Integer amendmentNumber; //the amendment #, which is shown on UI
+    
+    private String reportVersionId; //amendment # (that is getting incremented), used by AdEERS.
 
     private ReportStatus reportStatus;
 
@@ -82,6 +85,26 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     
 
     // ////Logic
+    /**
+     * This method will increment the report version by 1. 
+     */
+    public void incrementReportVersion(){
+    	if(StringUtils.isEmpty(reportVersionId)){
+    		reportVersionId = "0";
+    	}else{
+    		reportVersionId = (Integer.parseInt(reportVersionId) + 1) + "";
+    	}
+    }
+    
+    public void incrementAmendmentNumber(){
+    	if(amendmentNumber == null){
+    		amendmentNumber = 0;
+    	}else{
+    		amendmentNumber = (amendmentNumber + 1);
+    	}
+    	
+    }
+    
     public void addReportedAdverseEvent(AdverseEvent ae){
     	if(reportedAdversEvents == null) reportedAdversEvents = new ArrayList<ReportedAdverseEvent>();
     	ReportedAdverseEvent reportedAE = new ReportedAdverseEvent(this, ae);
@@ -321,6 +344,13 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 		this.reportTrackings = reportTrackings;
 	}
     
+    public Integer getAmendmentNumber() {
+		return amendmentNumber;
+	}
+
+    public void setAmendmentNumber(Integer amendmentNumber) {
+		this.amendmentNumber = amendmentNumber;
+	}
     
     @Transient
     public ReportTracking getLastReportTracking() {

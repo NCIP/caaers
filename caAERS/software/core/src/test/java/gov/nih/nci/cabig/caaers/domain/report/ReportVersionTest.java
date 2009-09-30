@@ -29,4 +29,26 @@ public class ReportVersionTest extends TestCase {
 		assertNotNull(rv.getXmlContent());
 		assertEquals("xyz", new String(rv.getXmlContent().getContent()));
 	}
+	
+	public void testIncrementReportVersionId(){
+		rv.setReportVersionId("2");
+		rv.incrementReportVersion();
+		assertEquals("3", rv.getReportVersionId());
+	}
+	
+	public void testIncrementReportVersionId_FirstTime(){
+		rv.incrementReportVersion();
+		assertEquals("0", rv.getReportVersionId());
+	}
+	
+	public void testIncrementAmendmentNumber(){
+		assertNull(rv.getAmendmentNumber());
+		rv.incrementAmendmentNumber();
+		assertEquals(new Integer(0), rv.getAmendmentNumber());
+	}
+	public void testIncrementAmendmentNumber_NotNull(){
+		rv.setAmendmentNumber(5);
+		rv.incrementAmendmentNumber();
+		assertEquals(new Integer(6), rv.getAmendmentNumber());
+	}
 }

@@ -207,6 +207,7 @@ public class Fixtures {
     public static ReportVersion createReportVersion() {
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setReportVersionId("5");
+        reportVersion.setAmendmentNumber(5);
         reportVersion.setCreatedOn(new Timestamp(106));
         reportVersion.setReportStatus(ReportStatus.PENDING);
         return reportVersion;

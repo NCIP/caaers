@@ -175,13 +175,13 @@ public class ReportRepositoryImpl implements ReportRepository {
         	report.getLastVersion().copySubmissionDetails(lastSubmittedReport.getLastVersion());
         	
         	String strLastVersionNumber = lastSubmittedReport.getLastVersion().getReportVersionId();
+        	report.getLastVersion().setAmendmentNumber(Integer.parseInt(strLastVersionNumber));
+        	report.getLastVersion().setReportVersionId(strLastVersionNumber);
+        	
             if(lastSubmittedReport.getReportDefinition().getReportType().equals(ReportType.REPORT) ){
             	//increase the amendment number.
-            	int n = Integer.parseInt(strLastVersionNumber) + 1;
-            	report.getLastVersion().setReportVersionId("" + n);
-            }else{
-            	//use the same number
-            	report.getLastVersion().setReportVersionId(strLastVersionNumber);
+            	report.getLastVersion().incrementAmendmentNumber();
+            	report.getLastVersion().incrementReportVersion();
             }
            
         }
@@ -388,6 +388,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     	
     	report.setStatus(ReportStatus.COMPLETED);
     	report.setAmendedOn(null);
+
+    	//increment the reportVersionId - CAAERS-3016
+    	report.getLastVersion().incrementReportVersion();
+    	
     	reportDao.save(report);
     }
     
@@ -399,6 +403,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     	report.setDueOn(null);
     	report.setStatus(ReportStatus.AMENDED);
     	report.setAmendedOn(nowFactory.getNow());
+    	
+    	//increment the amendment number
+    	report.getLastVersion().incrementReportVersion();
+    	
     	reportDao.save(report);
     }
     
