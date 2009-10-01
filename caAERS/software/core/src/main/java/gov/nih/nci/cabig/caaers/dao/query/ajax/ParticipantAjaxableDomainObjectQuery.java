@@ -82,7 +82,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
                                 "or lower(participant.lastName) LIKE :%s " +
                                 "or lower(identifier.value) LIKE :%s " +
                                 "or lower(spa.studySubjectIdentifier) LIKE :%s)",
-                                FIRST_NAME, LAST_NAME, IDENTIFIER_TYPE, IDENTIFIER_VALUE, STUDY_SUBJECT_IDENTIFIER));
+                                FIRST_NAME, LAST_NAME, IDENTIFIER_VALUE, STUDY_SUBJECT_IDENTIFIER));
         setParameter(IDENTIFIER_VALUE, searchString);
         setParameter(IDENTIFIER_TYPE, searchString);
         setParameter(FIRST_NAME, searchString);
