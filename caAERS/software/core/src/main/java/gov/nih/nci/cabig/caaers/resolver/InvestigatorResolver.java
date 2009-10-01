@@ -261,11 +261,9 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			List<String> identifiedOrgsResult = XMLUtil.getObjectsFromCoppaResponse(identifiedOrgsResultXml);
 			gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization = null;
 			Map<String,gov.nih.nci.coppa.po.IdentifiedOrganization> orgToIdentifiedOrgMap = new HashMap<String,gov.nih.nci.coppa.po.IdentifiedOrganization>();
-			if (identifiedOrgsResult.size()>0) {
-				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrgsResult.get(0));
-				if (identifiedOrganization != null) {
-					orgToIdentifiedOrgMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
-				}
+			for (String identifiedOrgsResult1:identifiedOrgsResult) {
+				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrgsResult1);
+				orgToIdentifiedOrgMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
 			}
 			
 			// we have three maps  ...
@@ -292,7 +290,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 					//get Identified person .
 					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
 					if (ip != null  & orgsForPerson.size()>0) {
-						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(coppaPerson, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
+						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
 						remoteInvestigatorList.add(tempRemoteInvestigator);
 					}
 					
