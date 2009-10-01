@@ -83,7 +83,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
             repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
             repeatingFieldGroupFactorySys.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
 
-            repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createAutocompleterField("organization", "Organization Identifier", true));
+            repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createAutocompleterField("organization", "Organization", true));
             repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
         }
         InputField dobField = InputFieldFactory.createSplitDateField("participant.dateOfBirth", "Date of birth", false, true, true, true);
