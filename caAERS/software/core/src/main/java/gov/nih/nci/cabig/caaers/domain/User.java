@@ -85,7 +85,7 @@ public abstract class User extends Person implements Comparable<User>{
 
     @Column(name = "salt")
     public String getSalt() {
-        return salt == null ? "" : salt;
+        return salt;
     }
 
     public void setSalt(String salt) {

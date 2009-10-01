@@ -30,7 +30,6 @@ public class StudySitesQuery extends AbstractQuery {
             stringIDs.append("'" + codes.get(i) + "', ");
         }
         if (stringIDs.length() > 0) stringIDs = new StringBuffer(stringIDs.substring(0, stringIDs.length() - 2));
-        System.out.println("s=" + stringIDs);
         andWhere("so.organization.nciInstituteCode IN (" + stringIDs.toString() + ")");
 
     }

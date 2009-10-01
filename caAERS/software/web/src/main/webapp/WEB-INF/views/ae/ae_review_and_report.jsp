@@ -164,7 +164,7 @@
 			if(_action == 'Amend'){
 				if(_checked){
 					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: '', name : this.name, status : this.grpStatus, due : this.grpDue, action : this.grpAction});
-					content = content + this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: 'checked="checked"', name : this.name, status : 'No Started', due : _due, action : 'Create'})
+					content = content + this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: 'checked="checked"', name : this.name, status : 'Not Started', due : _due, action : 'Create'})
 				}else{
 					content = this.trTemplate.interpolate({cssClass: 'recommended-tr', checked: '', name : this.name, status : _status, due : _due, action : _action})
 				}

@@ -156,7 +156,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     	//we can create a new user
     	csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
         copyUserToCSMUser(user, csmUser);
-        csmUser.setPassword(encryptString(user.getSalt() + "obscurity"));
+        csmUser.setPassword(encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + "obscurity"));
         userCreateToken(user);
         //create a csm user
         try {
@@ -269,7 +269,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     public String userCreateToken(User user) {
     	user.setTokenTime(new Timestamp(new Date().getTime()));
-        user.setToken(encryptString(user.getSalt() + user.getTokenTime().toString()
+        user.setToken(encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + user.getTokenTime().toString()
                 + "random_string").replaceAll("\\W", "Q"));
         return user.getToken();
     }
@@ -281,13 +281,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         user.resetToken();
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
         user.addPasswordToHistory(csmUser.getPassword(), maxHistorySize);
-        csmUser.setPassword(user.getSalt() + password);
+        csmUser.setPassword((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password);
         saveCSMUser(csmUser);
     }
 
     public boolean userHasPassword(String userName, String password) {
-        return encryptString(getUserByName(userName).getSalt()
-                + password).equals(getCSMUserByName(userName).getPassword());
+    	User user = getUserByName(userName);
+        return encryptString((StringUtils.isEmpty(user.getSalt()) ? "" : user.getSalt() ) + password).equals(getCSMUserByName(userName).getPassword());
     }
 
     public boolean userHadPassword(String userName, String password) {
