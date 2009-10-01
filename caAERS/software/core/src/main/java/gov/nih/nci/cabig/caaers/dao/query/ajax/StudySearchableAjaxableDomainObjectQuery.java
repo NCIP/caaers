@@ -63,9 +63,8 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     public void filterStudiesWithMatchingIdentifierOnly(String text) {
         if (!StringUtils.isBlank(text)) {
             String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-            andWhere(String.format("(lower(identifier.type) LIKE :%s " + "or lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_TYPE, IDENTIFIER_EXACT_VALUE));
+            andWhere(String.format("(lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_VALUE));
             setParameter(IDENTIFIER_EXACT_VALUE, searchString);
-            setParameter(IDENTIFIER_EXACT_TYPE, searchString);
         }
     }
 
