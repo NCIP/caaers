@@ -149,7 +149,8 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
 
     public boolean getUnidentifiedMode(){
-        unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
+        if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
+        else unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
         return unidentifiedMode;
     }
 
