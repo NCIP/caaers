@@ -190,7 +190,7 @@ function closeAll() {
         <tags:jsErrorsMessage/>
     
     <c:if test="${hasAgent}">
-        <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">
+        <chrome:box title="Agents" collapsable="true">
             <jsp:attribute name="additionalTitle" />
             <jsp:body>
             	<tags:renderRow field="${fieldGroups.agentAdministered.fields[0]}"/>
@@ -214,7 +214,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasDevice}">
-        <chrome:box title="${ (deviceMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Device" collapsable="true">
+        <chrome:box title="Devices" collapsable="true">
             <jsp:attribute name="additionalTitle" />
             <jsp:body>
                 <div style="padding-left:20px;">
@@ -233,7 +233,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasRadiation}">
-        <chrome:box title="${ (radiationMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Radiation" collapsable="true">
+        <chrome:box title="Radiation" collapsable="true">
             <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
@@ -252,7 +252,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasSurgery}">
-        <chrome:box title="${ (surgeryMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Surgery" collapsable="true">
+        <chrome:box title="Surgeries" collapsable="true">
             <jsp:attribute name="additionalTitle"/>
             <jsp:body>
                 <div style="padding-left:20px;">
