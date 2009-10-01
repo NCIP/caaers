@@ -146,7 +146,7 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
 
-        if (targetPage < curPage) return true;
+        if (targetPage < curPage || curPage == 0) return true;
         
         // supress for ajax and delete requests
         if (isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
@@ -158,19 +158,21 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         super.onBindAndValidate(request, command, errors, page);
         ParticipantInputCommand cmd = (ParticipantInputCommand) command;
 
-        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
+        if(! suppressValidation(request, command)){
+        	List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
 
-        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
-            Identifier sID = sitePrimaryIdentifiers.get(i);
-            if (sID == null || sID.getValue() == null) continue;
+        	for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
+        		Identifier sID = sitePrimaryIdentifiers.get(i);
+        		if (sID == null || sID.getValue() == null) continue;
 
-            for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
-                Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
-                if (pID == null || pID.getValue() == null) return;
-                if (sID.getValue().equals(pID.getValue()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
-                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
-                }
-            }
+        		for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
+        			Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
+        			if (pID == null || pID.getValue() == null) return;
+        			if (sID.getValue().equals(pID.getValue()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
+        				errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+        			}
+        		}
+        	}
         }
 
         // if the target tab is not the next to the cirrent one
