@@ -404,9 +404,6 @@ public class ReportRepositoryImpl implements ReportRepository {
     	report.setStatus(ReportStatus.AMENDED);
     	report.setAmendedOn(nowFactory.getNow());
     	
-    	//increment the amendment number
-    	report.getLastVersion().incrementReportVersion();
-    	
     	reportDao.save(report);
     }
     
