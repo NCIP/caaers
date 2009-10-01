@@ -9,6 +9,13 @@
 		body {background: none; text-align:left; font-size:10pt;}
 		div.row div.label {width: 16em;}
 	 	div.row div.value, div.row div.extra { margin-left: 17em; }
+		td {
+        	text-align:left;
+			padding:5px;
+        }
+		button td {
+			padding:0;
+		}
 	</style>
      <script>
          Event.observe(window, "load", function() {

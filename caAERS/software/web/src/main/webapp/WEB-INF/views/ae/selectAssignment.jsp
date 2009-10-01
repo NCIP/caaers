@@ -21,7 +21,6 @@
           width: 70%;
           margin-left: 10em;
         }
-        
     </style>
     
     <tags:dwrJavascriptLink objects="createAE,captureAE"/>
