@@ -102,6 +102,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
+				remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 			}
 
 		}
@@ -133,6 +134,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
+				remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 			}
 
 		}
@@ -327,12 +329,17 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			List<String> identifiedOrgsResult = XMLUtil.getObjectsFromCoppaResponse(identifiedOrgsResultXml);
 			gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization = null;
 			Map<String,gov.nih.nci.coppa.po.IdentifiedOrganization> orgToIdentifiedOrgMap = new HashMap<String,gov.nih.nci.coppa.po.IdentifiedOrganization>();
+			for (String identifiedOrgsResult1:identifiedOrgsResult) {
+				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrgsResult1);
+				orgToIdentifiedOrgMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
+			}
+			/*
 			if (identifiedOrgsResult.size()>0) {
 				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrgsResult.get(0));
 				if (identifiedOrganization != null) {
 					orgToIdentifiedOrgMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
 				}
-			}
+			}*/
 			
 			// we have three maps  ...
 			// IdentifiedPersonMap : identified-person-player-Id = person-id , obtain IP for each person from this map based on person Id
@@ -358,7 +365,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					//get Identified person .
 					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
 					if (ip != null  & orgsForPerson.size()>0) {
-						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(coppaPerson, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
+						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
 						remoteResearchStaffList.add(tempRemoteResearchStaff);
 					}
 					
