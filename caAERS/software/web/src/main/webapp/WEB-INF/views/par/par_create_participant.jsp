@@ -60,10 +60,19 @@
 
     //---------------------------------------------------------------------------------------------------------------------
 
+    function formElements(aContainer) {
+        return aContainer.select('input', 'select', 'textarea');	
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------
+
     function removeOrganizationIdentifier(container, index) {
         var paramHash = populateParameters("removeOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
         paramHash.set("index", index);
         var url = $('command').action + "?subview"
+
+        var identifiersParams = Form.serializeElements(formElements($('organizationIdentifierTable')), true);
+        paramHash = paramHash.merge(identifiersParams);
 
         new Ajax.Updater(container, url, {
             parameters: paramHash.toQueryString(), onSuccess: onRemoveOrganizationIdentifier, evalScripts : true
@@ -103,6 +112,9 @@
         paramHash.set("index", index);
         var url = $('command').action + "?subview"
 
+        var identifiersParams = Form.serializeElements(formElements($('systemIdentifierTable')), true);
+        paramHash = paramHash.merge(identifiersParams);
+        
         new Ajax.Updater(container, url, {
             parameters: paramHash.toQueryString(), onSuccess: onRemoveSystemIdentifier, evalScripts : true
         });

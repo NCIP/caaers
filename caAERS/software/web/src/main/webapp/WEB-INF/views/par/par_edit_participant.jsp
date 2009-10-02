@@ -23,6 +23,12 @@ function populateParameters(methodName, viewName) {
 
 //---------------------------------------------------------------------------------------------------------------------
 
+function formElements(aContainer) {
+    return aContainer.select('input', 'select', 'textarea');
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+
 function onAddOrganizationIdentifier() {
 //    alert("onAjaxStudySearch");
 }
@@ -40,6 +46,8 @@ function addOrganizationIdentifier(container) {
     $('DIV_addOrganizationIdentifierDiv').show();
 }
 
+//---------------------------------------------------------------------------------------------------------------------
+
 function onRemoveOrganizationIdentifier() {
 //    alert("onAjaxStudySearch");
 }
@@ -50,6 +58,9 @@ function removeOrganizationIdentifier(container, index) {
     var paramHash = populateParameters("removeOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
     paramHash.set("index", index);
     var url = $('command').action + "&subview"
+
+    var identifiersParams = Form.serializeElements(formElements($('DIV_addOrganizationIdentifierDiv')), true);
+    paramHash = paramHash.merge(identifiersParams);
 
     new Ajax.Updater(container, url, {
         parameters: paramHash.toQueryString(), onComplete: onRemoveOrganizationIdentifier, evalScripts : true
@@ -86,6 +97,9 @@ function removeSystemIdentifier(container, index) {
     var paramHash = populateParameters("removeSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
     paramHash.set("index", index);
     var url = $('command').action + "&subview"
+
+    var identifiersParams = Form.serializeElements(formElements($('DIV_addSystemIdentifier')), true);
+    paramHash = paramHash.merge(identifiersParams);
 
     new Ajax.Updater(container, url, {
         parameters: paramHash.toQueryString(), onComplete: onRemoveSystemIdentifier, evalScripts : true
