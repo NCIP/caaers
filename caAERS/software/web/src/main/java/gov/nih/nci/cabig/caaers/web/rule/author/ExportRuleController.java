@@ -40,7 +40,7 @@ public class ExportRuleController extends AbstractCommandController {
             	String fileName = "rules_" + System.currentTimeMillis() + ".xml";
             	
                 RulesEngineService rulesEngineService = (RulesEngineService) getApplicationContext().getBean("ruleEngineService");
-                rulesEngineService.exportRule(ruleSetName, tempDir);
+                rulesEngineService.exportRule(ruleSetName,fileName,  tempDir);
                 File file = new File(tempDir + File.separator + fileName);
                 FileInputStream fileIn = new FileInputStream(file);
 
