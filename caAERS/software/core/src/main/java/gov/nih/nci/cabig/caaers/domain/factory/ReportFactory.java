@@ -33,7 +33,7 @@ public class ReportFactory {
         Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
         report.setDueOn(dueDate);
         report.getLastVersion().setReportVersionId("0"); //default
-
+        report.getLastVersion().setAmendmentNumber(new Integer(0));
         //attach the aeReport to report
         aeReport.addReport(report);
 

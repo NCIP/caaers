@@ -28,6 +28,8 @@ public class Configuration extends DatabaseBackedConfiguration {
     public static final ConfigurationProperty<Boolean> UNIDENTIFIED_MODE = PROPERTIES.add(new ConfigurationProperty.Bool("unidentifiedMode"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_DELAY = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterDelay"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_CHARS = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterChars"));
+    public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WARNING = PROPERTIES.add(new ConfigurationProperty.Text("httpSessionWarning"));
+    public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WAIT = PROPERTIES.add(new ConfigurationProperty.Text("httpSessionWarningWait"));
 
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
