@@ -26,7 +26,7 @@
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.label}</div></td>
             		<c:if test="${report.reportDefinition.amendable == true}">
-	            		<td align="center"><div class="label">${report.lastVersion.reportVersionId}</div></td>
+	            		<td align="center"><div class="label">${report.lastVersion.amendmentNumber}</div></td>
 	            	</c:if>
 	            	<c:if test="${report.reportDefinition.amendable == false}">
 	            		<td/>

@@ -1,4 +1,4 @@
-AE.SESSION_TIME_OUT_WARNING=10 * 60; //timeout duration in seconds
+AE.SESSION_TIME_OUT_WARNING=10 * 60 ; //timeout duration in seconds
 AE.SESSION_TIME_OUT_WAIT= 1 * 60;
 AE.SESSION_TIMED_OUT = false;
 AE.SESSION_TIMER_ID;

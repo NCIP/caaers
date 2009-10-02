@@ -65,6 +65,10 @@ var _collapsedELs = new Array();
 AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
 AE.autocompleterChars = ${configuration.map.autoCompleterChars};
 AE.APP_BASE_URL = '<c:url value="/" />';
+
+//overwrite the HttpSession timeout warning & wait
+AE.SESSION_TIME_OUT_WARNING = ${empty configuration.map.httpSessionWarning ? '10' : configuration.map.httpSessionWarning} * 60;
+AE.SESSION_TIME_OUT_WAIT= ${empty configuration.map.httpSessionWarningWait ? '2' : configuration.map.httpSessionWarningWait} * 60;
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
