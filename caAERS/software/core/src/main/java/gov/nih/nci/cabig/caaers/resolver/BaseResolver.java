@@ -170,7 +170,7 @@ public abstract class BaseResolver {
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+            broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
 
         	result = broadCaster.broadcastCoppaMessage(message, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
@@ -186,7 +186,7 @@ public abstract class BaseResolver {
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL("https://cbvapp-d1017.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+            broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
 
         	result = broadCaster.broadcastCoppaMessage(messages, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {

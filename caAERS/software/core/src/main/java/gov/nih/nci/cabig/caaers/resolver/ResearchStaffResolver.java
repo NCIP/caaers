@@ -4,6 +4,7 @@ import edu.duke.cabig.c3pr.esb.Metadata;
 import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
@@ -69,6 +70,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		remoteResearchStaff.setFirstName(firstName);
 		remoteResearchStaff.setLastName(lastName);
 		remoteResearchStaff.setEmailAddress(emailStr);
+		remoteResearchStaff.setAddress(new Address());
 		remoteResearchStaff.setExternalId(coppaPerson.getIdentifier().getExtension());
 		if (nciIdentifier != null) {
 			remoteResearchStaff.setNciIdentifier(nciIdentifier);
