@@ -149,7 +149,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setResearchStaff(remoteResearchStaff);
 		siteResearchStaff.setOrganization(site);
-
+		remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 		return remoteResearchStaff;
 	}
 
