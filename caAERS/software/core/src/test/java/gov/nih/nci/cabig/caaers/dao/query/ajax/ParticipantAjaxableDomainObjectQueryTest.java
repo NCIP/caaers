@@ -36,17 +36,13 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText("a");
 
-        String qry = "Select participant.id,participant.firstName,participant.lastName, participant.gender,participant.race,participant.ethnicity, identifier.value, identifier.primaryIndicator, study.shortTitle as st, study.id as studyId, sIdentifier.value, sIdentifier.primaryIndicator, studyOrgs.organization.name, studyOrgs.id, studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id, ss.organization.id as assignedSiteId, ss.organization.name as assignedSite, ss.organization.nciInstituteCode as assignedSiteCode, spa.studySubjectIdentifier from Participant participant left join participant.identifiers as identifier left join participant.assignments as spa join spa.studySite as ss join ss.study as study join study.identifiers as sIdentifier join study.studyOrganizations as studyOrgs left join studyOrgs.studyPersonnelsInternal as stper left join stper.siteResearchStaff as siteResearchStaff WHERE (lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) order by participant.firstName";
+        String qry = "Select participant.id,participant.firstName,participant.lastName, participant.gender,participant.race,participant.ethnicity, identifier.value, identifier.primaryIndicator, study.shortTitle as st, study.id as studyId, sIdentifier.value, sIdentifier.primaryIndicator, studyOrgs.organization.name, studyOrgs.id, studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id, ss.organization.id as assignedSiteId, ss.organization.name as assignedSite, ss.organization.nciInstituteCode as assignedSiteCode, spa.studySubjectIdentifier from Participant participant left join participant.identifiers as identifier left join participant.assignments as spa join spa.studySite as ss join ss.study as study join study.identifiers as sIdentifier join study.studyOrganizations as studyOrgs left join studyOrgs.studyPersonnelsInternal as stper left join stper.siteResearchStaff as siteResearchStaff WHERE (lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) order by participant.firstName";
         
         assertEquals(qry.trim(), query.getQueryString());
-        assertEquals("wrong number of parameters", query.getParameterMap().size(), 5);
+        assertEquals("wrong number of parameters", 4, query.getParameterMap().size());
 
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("lastName"));
         assertEquals("wrong parameter value", query.getParameterMap().get("lastName"),"%a%");
-
-        assertTrue("missing paramenter name", query.getParameterMap().containsKey("type"));
-        assertEquals("wrong parameter value", query.getParameterMap().get("type"),"%a%");
-
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("identifierValue"));
         assertEquals("wrong parameter value", query.getParameterMap().get("identifierValue"),"%a%");
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("firstName"));
@@ -57,23 +53,15 @@ public class ParticipantAjaxableDomainObjectQueryTest extends TestCase {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText("a");
         query.filterByStudy(1);
-        
-        String qry = "Select participant.id,participant.firstName,participant.lastName, participant.gender,participant.race,participant.ethnicity, identifier.value, identifier.primaryIndicator, study.shortTitle as st, study.id as studyId, sIdentifier.value, sIdentifier.primaryIndicator, studyOrgs.organization.name, studyOrgs.id, studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id, ss.organization.id as assignedSiteId, ss.organization.name as assignedSite, ss.organization.nciInstituteCode as assignedSiteCode, spa.studySubjectIdentifier from Participant participant left join participant.identifiers as identifier left join participant.assignments as spa join spa.studySite as ss join ss.study as study join study.identifiers as sIdentifier join study.studyOrganizations as studyOrgs left join studyOrgs.studyPersonnelsInternal as stper left join stper.siteResearchStaff as siteResearchStaff WHERE (lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) AND study.id =:studyId order by participant.firstName";
-        
+        String qry = "Select participant.id,participant.firstName,participant.lastName, participant.gender,participant.race,participant.ethnicity, identifier.value, identifier.primaryIndicator, study.shortTitle as st, study.id as studyId, sIdentifier.value, sIdentifier.primaryIndicator, studyOrgs.organization.name, studyOrgs.id, studyOrgs.class, studyOrgs.organization.nciInstituteCode, siteResearchStaff.researchStaff.id, ss.organization.id as assignedSiteId, ss.organization.name as assignedSite, ss.organization.nciInstituteCode as assignedSiteCode, spa.studySubjectIdentifier from Participant participant left join participant.identifiers as identifier left join participant.assignments as spa join spa.studySite as ss join ss.study as study join study.identifiers as sIdentifier join study.studyOrganizations as studyOrgs left join studyOrgs.studyPersonnelsInternal as stper left join stper.siteResearchStaff as siteResearchStaff WHERE (lower(participant.firstName) LIKE :firstName or lower(participant.lastName) LIKE :lastName or lower(identifier.value) LIKE :identifierValue or lower(spa.studySubjectIdentifier) LIKE :studySubjectIdentifier) AND study.id =:studyId order by participant.firstName";
         assertEquals(qry.trim(),query.getQueryString());
-        assertEquals("wrong number of parameters", query.getParameterMap().size(), 6);
-
+        assertEquals("wrong number of parameters", 5, query.getParameterMap().size());
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("lastName"));
         assertEquals("wrong parameter value", query.getParameterMap().get("lastName"),"%a%");
-
-        assertTrue("missing paramenter name", query.getParameterMap().containsKey("type"));
-        assertEquals("wrong parameter value", query.getParameterMap().get("type"),"%a%");
-
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("identifierValue"));
         assertEquals("wrong parameter value", query.getParameterMap().get("identifierValue"),"%a%");
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("firstName"));
         assertEquals("wrong parameter value", query.getParameterMap().get("firstName"),"%a%");
-
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("studyId"));
         assertEquals("wrong parameter value", query.getParameterMap().get("studyId"),Integer.valueOf(1));
     }
