@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ccts.domain.IdentifierType;
@@ -31,9 +32,9 @@ import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
 import gov.nih.nci.cabig.ccts.domain.StudySiteType;
 import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.ccts.grid.common.StudyConsumerI;
-import gov.nih.nci.ccts.grid.stubs.types.InvalidStudyException;
-import gov.nih.nci.ccts.grid.stubs.types.StudyCreationException;
+import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
+import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
+import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     private static final Log logger = LogFactory.getLog(CaaersStudyConsumer.class);
 
-    private OrganizationDao organizationDao;
+    private OrganizationRepository organizationRepository;
 
     private SiteInvestigatorDao siteInvestigatorDao;
 
@@ -507,7 +508,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             orgQuery.filterByNciCodeExactMatch(nciCode);
         }
 
-        List<Organization> orgList = organizationDao.searchOrganization(orgQuery);
+        List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 
         if (orgList == null || orgList.isEmpty()) {
             logger.error("No organization exists  nciCode :" + nciCode);
@@ -540,15 +541,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     }
 
     // /CONFIGURATION
-    @Required
-    public void setOrganizationDao(OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
-    }
 
-    @Required
-    public OrganizationDao getOrganizationDao() {
-        return organizationDao;
-    }
 
     @Required
     public SiteInvestigatorDao getSiteInvestigatorDao() {
@@ -607,5 +600,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 }
