@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ccts.domain.AddressType;
@@ -15,6 +16,7 @@ import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyDataEntryStatusType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
 import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 
 import java.math.BigInteger;
 
@@ -69,8 +71,8 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
         CaaersStudyConsumer consumer = new CaaersStudyConsumer();
         consumer.setConfigurationProperty((ConfigProperty) getDeployedApplicationContext().getBean(
                         "configurationProperty"));
-        consumer.setOrganizationDao((OrganizationDao) getDeployedApplicationContext().getBean(
-                        "organizationDao"));
+        consumer.setOrganizationRepository((OrganizationRepository) getDeployedApplicationContext().getBean(
+        "organizationRepository"));
         consumer.setStudyDao((StudyDao) getDeployedApplicationContext().getBean("studyDao"));
         consumer.setAuditHistoryRepository((AuditHistoryRepository) getDeployedApplicationContext()
                         .getBean("auditHistoryRepository"));
