@@ -177,7 +177,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
                     + "Your username is follows:\n"
                     + "Username: " + user.getLoginId()
                     + "\n"
-                    + "You must change your password before you can login. In order to do so please visit this URL:\n"
+                    + "You must create your password before you can login. In order to do so please visit this URL:\n"
                     + "\n"
                     + changeURL + "&token=" + user.getToken() + "\n"
                     + "\n"
