@@ -84,7 +84,7 @@
 <body>
 <a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <h2>Please enter your username </h2>
-  A new password will be e-mailed to you.
+  You will be sent an email to reset your password.
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
       <p class="errors">${reset_pwd_error}</p>
@@ -94,7 +94,7 @@
 	  <form:input path="userName"/>
 	</div>
 	<div class="submit">
-		<tags:button type="submit" color="green" icon="next" value="Reset Password"/>
+		<tags:button type="submit" color="green" icon="reset" value="Reset Password"/>
 	</div>
       </div>
     </form:form>

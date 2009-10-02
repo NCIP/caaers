@@ -85,7 +85,7 @@
 	<h2>Please enter your information</h2>
   <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
-    <p class="label">Changed password successfully, you should now be able to <a href="${login}">login</a>.</p>
+    <p class="label">Password changed successfully. You can now <a href="${login}">login</a>.</p>
   </c:if>
   <c:if test="${not updated}">
       <c:url value="/public/user/changePassword" var="action"/>
@@ -111,7 +111,7 @@
 	</div>
 	<div class="row">
 	  <div class="submit">
-	    <tags:button type="submit" color="green" icon="next" value="Reset Password"/>
+	    <tags:button type="submit" color="green" icon="save" value="Save"/>
 	  </div>
 	</div>
 	<form:hidden path="token"/>
