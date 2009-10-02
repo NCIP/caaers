@@ -242,23 +242,19 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         assertEquals("query works if you are not filtering by participanst also", 2, studySearchableAjaxableDomainObjects.get(0).getStudySites().size());
 
-
-        // Partial  Identifier type
+        // Partial  Identifier value
         studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
-        studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("lo");
+        studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("38");
         studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery);
 
-        assertEquals("Wrong number of results", 3, studySearchableAjaxableDomainObjects.size());
+        assertEquals("Wrong number of results", 2, studySearchableAjaxableDomainObjects.size());
 
-
-        // Full  Identifier type
+        // Full  Identifier value
         studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
-        studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("local");
+        studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("1138-43");
         studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery);
 
-        assertEquals("Wrong number of results", 3, studySearchableAjaxableDomainObjects.size());
-
-
+        assertEquals("Wrong number of results", 1, studySearchableAjaxableDomainObjects.size());
     }
 
     public void testFindStudies() {
