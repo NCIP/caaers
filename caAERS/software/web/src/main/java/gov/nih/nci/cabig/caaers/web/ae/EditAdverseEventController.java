@@ -274,10 +274,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         //find the mandatory sections.
         command.refreshMandatorySections();
         
-    	// pre-init the mandatory section fields & set present status
+    	
         if(aeReport.getId() == null){
-        	command.initializeMandatorySectionFields();
-        	
         	//present status. 
         	for(AdverseEvent ae : aeReport.getAdverseEvents()){
         		if(ae.getGrade().equals(Grade.DEATH)){
@@ -287,11 +285,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	}
         }
         
+        // pre-init the mandatory section fields & set present status
+        if(!command.getNewlySelectedReportDefinitions().isEmpty() || command.getAeReport().isActive()){
+        	 command.initializeMandatorySectionFields();
+        }
         
         //will pre determine the display/render-ability of fields 
         command.initializeNotApplicableFields();
         command.refreshMandatoryProperties();
-        
       
     }
 
