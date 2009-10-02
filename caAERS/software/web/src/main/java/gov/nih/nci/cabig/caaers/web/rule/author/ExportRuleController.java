@@ -36,16 +36,16 @@ public class ExportRuleController extends AbstractCommandController {
         try {
             // File ruleSetFile1 = File.createTempFile(ruleSetName,"export.xml");
             try {
-                RulesEngineService rulesEngineService = (RulesEngineService) getApplicationContext()
-                                .getBean("ruleEngineService");
+            	
+            	String fileName = "rules_" + System.currentTimeMillis() + ".xml";
+            	
+                RulesEngineService rulesEngineService = (RulesEngineService) getApplicationContext().getBean("ruleEngineService");
                 rulesEngineService.exportRule(ruleSetName, tempDir);
-                File file = new File(tempDir + File.separator
-                                + RuleUtil.getStringWithoutSpaces(ruleSetName) + ".xml");
+                File file = new File(tempDir + File.separator + fileName);
                 FileInputStream fileIn = new FileInputStream(file);
 
                 response.setContentType("application/xml");
-                response.setHeader("Content-Disposition", "attachment; filename="
-                                + RuleUtil.getStringWithoutSpaces(ruleSetName) + ".xml");
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
                 response.setHeader("Content-length", String.valueOf(file.length()));
                 response.setHeader("Pragma", "private");
                 response.setHeader("Cache-control", "private, must-revalidate");
