@@ -252,6 +252,7 @@
        		<table class="tablecontent" width="100%" >
 				<tr><th scope="col"><caaers:message code="LBL_StudySite" /></th><th scope="col"><caaers:message code="LBL_status" /></th></tr>
 				<c:forEach items="${command.study.studySites}" var="studySite">
+                    <c:if test="${!studySite.retired}">
                         <c:set var="activeSiteCnt" value="${activeSiteCnt + 1}" />
                         <tr class="results">
                             <td>
@@ -260,6 +261,7 @@
                             </td>
                             <td>${studySite.retired ? "<font color='black'>Retired</font>" : "<font color='black'>Active</font>"}</td>
                         </tr>
+                    </c:if>
 				</c:forEach>
 				<c:if test="${activeSiteCnt lt 1}">
 				<tr><td class="results">No sites are associated to this study</td></tr>
