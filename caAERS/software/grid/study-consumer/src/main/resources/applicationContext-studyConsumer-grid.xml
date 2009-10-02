@@ -13,10 +13,11 @@
 	<!-- import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml" /-->
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-studyConsumer.xml"/>
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
 
     <bean id="studyConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
         <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>
-     <property name="rollbackInterval" ref ="studyRollbackInterval" />
+     	<property name="rollbackInterval" ref ="studyRollbackInterval" />
     </bean>
 	<bean id="studyRollbackInterval" class="java.lang.Integer">
 		<constructor-arg value="s[grid.studyconsumer.rollbackInterval]" />
