@@ -16,7 +16,7 @@
 	function executeReportingPeriodActions(id){
 		var sbox = $("actions-" + id);
 		if(sbox.value == 'editReportingPeriod'){
-			if(confirm('Are you sure you want to take the action - Edit Adverse Events')){
+			if(confirm('Are you sure you want to take the action - Edit Adverse Events ?')){
 				var url = '<c:url value="/pages/ae/reviewResolver?participant=${command.participant.id}&study=${command.study.id}&adverseEventReportingPeriod=' + id + '"/>';
 				window.location = url;
 			}else{

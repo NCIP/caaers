@@ -125,7 +125,7 @@ color:#0033FF;
 		var sb = $(selectBox);
 		var newStatus = sb.value;
 		if(sb.value == '' || sb.value == 'Please select') return;
-		if(confirm('Are you sure you want to take the action - ' + sb.value)){
+		if(confirm('Are you sure you want to take the action - ' + sb.value + ' ?')){
 			sb.disable();
 			
 			if(entityType == 'aeReport'){

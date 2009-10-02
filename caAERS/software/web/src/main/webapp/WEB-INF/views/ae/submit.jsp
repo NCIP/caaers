@@ -144,7 +144,7 @@
             var sbox = $('sliderWFAction');
             var sbox = $('sliderWFAction');
 		if(sbox.value == '' || sbox.value == 'Please select') return;
-            if (confirm('Are you sure you want to take the action - ' + sbox.value)) {
+            if (confirm('Are you sure you want to take the action - ' + sbox.value + ' ?')) {
                 var sboxIndicator = $('sliderWFAction-indicator');
                 var selected_sbox_value = sbox.value;
                 sbox.disable();
