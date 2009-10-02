@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.grid.aspects.AspectJSecurityInterceptorStub;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -66,7 +67,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private static final Log logger = LogFactory.getLog(CaaersRegistrationConsumer.class);
 
-    private OrganizationDao organizationDao;
+    private OrganizationRepository organizationRepository;
 
     private StudyDao studyDao;
 
@@ -432,7 +433,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             orgQuery.filterByNciCodeExactMatch(nciCode);
         }
 
-        List<Organization> orgList = organizationDao.searchOrganization(orgQuery);
+        List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 
         if (orgList == null || orgList.isEmpty()) {
             logger.error("No organization exists  nciCode :" + nciCode);
@@ -478,13 +479,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     // /BEAN PROPERTIES
 
-    public OrganizationDao getOrganizationDao() {
-        return organizationDao;
-    }
 
-    public void setOrganizationDao(OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
-    }
 
     public StudyDao getStudyDao() {
         return studyDao;
@@ -617,5 +612,10 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setOrganizationRepository(
+			OrganizationRepository organizationRepository) {
+		this.organizationRepository = organizationRepository;
 	}
 }
