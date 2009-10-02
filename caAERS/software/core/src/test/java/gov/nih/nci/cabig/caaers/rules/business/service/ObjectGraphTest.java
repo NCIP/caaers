@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
@@ -42,7 +43,7 @@ public class ObjectGraphTest extends TestCase {
         TreatmentAssignment ta = new TreatmentAssignment();
         ta.setCode("456");
 
-        Study study = new Study();
+        Study study = new LocalStudy();
         study.addTreatmentAssignment(ta);
 
         FactResolver factResolver = new FactResolver();
@@ -67,7 +68,7 @@ public class ObjectGraphTest extends TestCase {
     }
 
     public void atestFactResolver_1MM1() throws Exception {
-        Study study = new Study();
+        Study study = new LocalStudy();
         study.setShortTitle("cgems");
 
         StudyAgent sa1 = new StudyAgent();

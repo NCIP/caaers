@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
@@ -103,7 +104,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		sitesType.setStudyInvestigators(studyInvestigators);
 		
 		// now test--------
-		 Study study = new Study();
+		 Study study = new LocalStudy();
 		 converter.convertStudyDtoToStudyDomain(studyDto, study);
 		 assertEquals("hello", study.getShortTitle());
 		 assertNotNull(study.getStudyOrganizations());
@@ -141,7 +142,7 @@ public class StudyConverterTest extends AbstractTestCase {
 		sitesType.setOrganization(orgType);
 		studyDto.getStudyOrganizations().getStudySite().add(sitesType);
 		
-		Study study = new Study();
+		Study study = new LocalStudy();
 		 converter.convertStudyDtoToStudyDomain(studyDto, study);
 		 assertEquals("hello", study.getShortTitle());
 		 assertNotNull(study.getStudyOrganizations());

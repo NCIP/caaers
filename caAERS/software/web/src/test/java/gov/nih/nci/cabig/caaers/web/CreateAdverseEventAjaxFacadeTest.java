@@ -28,11 +28,11 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
@@ -42,7 +42,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
@@ -574,7 +573,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         // mock - expectations
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new Study());
+        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(3);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -590,7 +589,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         // mock - expectations
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new Study());
+        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(0);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -610,7 +609,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         // mock - expectations
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new Study());
+        expect(studySite.getStudy()).andReturn(new LocalStudy());
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(2);
         expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
@@ -628,7 +627,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         // mock - expectations
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
-        expect(studySite.getStudy()).andReturn(new Study());
+        expect(studySite.getStudy()).andReturn(new LocalStudy());
 
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 4).getChanges();

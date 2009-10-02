@@ -34,6 +34,11 @@
         maiden_name="m"
         load_status="1"/>
     <ORGANIZATIONS
+        id="-1009"
+        name="National Cancer Institute"
+        nci_institute_code="NCI"
+        grid_id="NciGridSite"/>    
+    <ORGANIZATIONS
         id="-1001"
         name="New Site"
         grid_id="gridSite"/>

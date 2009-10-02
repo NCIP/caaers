@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -17,7 +18,7 @@ public class StudyDiseaseTerminologyMigratorTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dest = new Study();
+		dest = new LocalStudy();
 		xstreamStudy = Fixtures.createStudy("short title");
 		outcome = new DomainObjectImportOutcome<Study>();
 		migrator = new StudyDiseaseTerminologyMigrator();

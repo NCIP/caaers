@@ -2,25 +2,18 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static org.easymock.EasyMock.expect;
-
-import java.util.Map;
-
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.web.security.RoleCheck;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.acegisecurity.Authentication;
-import org.easymock.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -77,7 +70,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     public void testBindAssignment() throws Exception {
         StudyParticipantAssignment expectedAssignment = Fixtures.setId(3, new StudyParticipantAssignment());
         Participant p = new Participant();
-        Study s = new Study();
+        Study s = new LocalStudy();
         String expectedGridId = "a-grid-id";
         request.setParameter("assignment", expectedGridId);
         expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);

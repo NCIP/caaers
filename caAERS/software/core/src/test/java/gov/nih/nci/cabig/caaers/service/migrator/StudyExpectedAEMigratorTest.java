@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -32,7 +33,7 @@ public class StudyExpectedAEMigratorTest extends AbstractTestCase{
     protected void setUp() throws Exception {
 		migrator = new StudyExpectedAEMigrator();
 		xmlStudy = Fixtures.createStudy("StudyEvaluationPeriodsMigrator");
-		dest = new Study();
+		dest = new LocalStudy();
 		outcome = new DomainObjectImportOutcome<Study>();
 		
 		ctcTermDao = registerDaoMockFor(CtcTermDao.class);

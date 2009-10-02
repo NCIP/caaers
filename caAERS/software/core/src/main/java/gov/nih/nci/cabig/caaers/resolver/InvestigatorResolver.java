@@ -327,7 +327,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		return loadInvestigatorForPersonResult(resultXml);
 	}
 	
-	private RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml) {
+	public RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml) {
 		List<String> results = XMLUtil.getObjectsFromCoppaResponse(personResultXml);
 		List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList = null;
 		RemoteInvestigator remoteInvestigator = null;

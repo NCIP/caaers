@@ -1,38 +1,41 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
-import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Arm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.webservice.*;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
+import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
+import gov.nih.nci.cabig.caaers.webservice.Studies;
+import gov.nih.nci.cabig.caaers.webservice.SystemAssignedIdentifierType;
 
-import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.OutputStream;
+import java.io.StringWriter;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.fop.apps.FOUserAgent;
+import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FOUserAgent;
-
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.Source;
-import javax.xml.transform.Result;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.JAXBElement;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.namespace.QName;
 
 
 public class BlankFormGenerator {
@@ -145,7 +148,7 @@ public class BlankFormGenerator {
 
         BlankFormGenerator g;
         g = new BlankFormGenerator();
-        s = new Study();
+        s = new LocalStudy();
         s.setShortTitle("ST");
         s.setLongTitle("LT");
         s.setId(55588);

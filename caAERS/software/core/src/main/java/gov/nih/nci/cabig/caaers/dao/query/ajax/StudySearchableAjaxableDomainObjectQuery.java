@@ -38,10 +38,9 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static final String DAY = "day";
     private static final String STUDY_SITE_CLASS = "studySiteClass";
     private static final String SITE_ID = "siteId";
-    private static final String IDENTIFIER_VALUE = "identifierValue";
-
-    private static final String IDENTIFIER_TYPE = "type";
-    private static final String SHORT_TITLE = "shortTitle";
+    public static final String IDENTIFIER_VALUE = "identifierValue";
+    public static final String IDENTIFIER_TYPE = "type";
+    public static final String SHORT_TITLE = "shortTitle";
     private static final String LONG_TITLE = "longTitle";
     private static final String PARTICIPANT_ID = "participantId";
     private static final String STATUS = "status";

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
@@ -382,5 +383,29 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
             }
 
         });
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
+        String queryString = query.getQueryString();
+        log.debug("::: " + queryString);
+        List<Object[]> objectArray = (List<Object[]>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException,SQLException {
+            	
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+               
+                // hiberanteQuery.setMaxResults(null);
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+        return objectArray;
+
     }
 }

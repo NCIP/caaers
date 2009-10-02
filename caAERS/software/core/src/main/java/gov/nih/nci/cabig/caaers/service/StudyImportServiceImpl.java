@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
 
@@ -27,7 +28,7 @@ public class StudyImportServiceImpl{
      * @return An outcome object containing the {@link Study
      */
     public DomainObjectImportOutcome<Study> importStudy(Study xstreamStudy) {
-        Study study = new Study();
+    	Study study = new LocalStudy();
         
         DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();
         studyMigrator.migrate(xstreamStudy, study, studyImportOutcome);

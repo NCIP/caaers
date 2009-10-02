@@ -19,8 +19,10 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -34,7 +36,6 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -43,7 +44,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSaveWithCtc() throws Exception {
         Integer savedId;
         {
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
@@ -110,7 +110,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSaveWithMedDRA() throws Exception {
         Integer savedId;
         {
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.setAeTerminology(Fixtures.createMedDRATerminology(newStudy));
@@ -136,7 +136,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSaveWithNewCondition() throws Exception {
         Integer savedId;
         {
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
 
             StudyCondition sc = new StudyCondition();
             Condition condition = new Condition();
@@ -169,7 +169,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSaveWithExistingCondition() throws Exception {
         Integer savedId;
         {
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
 
             StudyCondition sc = new StudyCondition();
             Condition condition = new Condition();
@@ -232,7 +232,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     }
 
     public void testSearchByExactExample() throws Exception {
-        Study example = new Study();
+        Study example = new LocalStudy();
         example.setDescription("Description");
 
         List<Study> actual = getDao().searchByExample(example, false);
@@ -242,7 +242,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     }
 
     public void testSearchByExactExampleWithIdentifiers() throws Exception {
-        Study example = new Study();
+        Study example = new LocalStudy();
         example.setDescription("Description");
 
         OrganizationAssignedIdentifier idOne = new OrganizationAssignedIdentifier();
@@ -259,7 +259,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     }
 
     public void testSearchByWildcardExample() throws Exception {
-        Study example = new Study();
+        Study example = new LocalStudy();
         example.setShortTitle("orte");
 
         List<Study> actual = getDao().searchByExample(example, true);
@@ -343,7 +343,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             Organization sponsor = sitedao.getById(-1001);
             Organization organization = sitedao.getById(-1003);
 
-            Study study = new Study();
+            Study study = new LocalStudy();
             study.setShortTitle("ShortTitleText");
             study.setLongTitle("LongTitleText");
             study.setPhaseCode("PhaseCode");
@@ -383,6 +383,55 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
                     .get(0).getOrganization().getName());
         }
     }
+     
+    public void testSaveNewRemoteStudyWithFundingSponsor() throws Exception {
+        Integer savedId;
+        {
+            Organization sponsor = sitedao.getById(-1001);
+            Organization organization = sitedao.getById(-1003);
+
+            Study study = new RemoteStudy();
+            study.setExternalId("27572");
+            study.setShortTitle("ShortTitleText");
+            study.setLongTitle("LongTitleText");
+            study.setPhaseCode("PhaseCode");
+            study.setStatus("Status");
+            study.setTargetAccrualNumber(150);
+            // study.setType("Type");
+            study.setMultiInstitutionIndicator(true);
+            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+            study.setAdeersReporting(Boolean.TRUE);
+
+            // Study Site
+            StudySite studySite = new StudySite();
+            studySite.setOrganization(organization);
+            studySite.setStartDate(DateUtils.yesterday());
+
+            study.addStudySite(studySite);
+
+            // Study funding sponsor
+            StudyFundingSponsor fundingSponsor = new StudyFundingSponsor();
+            fundingSponsor.setOrganization(sponsor);
+            study.addStudyOrganization(fundingSponsor);
+
+            getDao().save(study);
+
+            savedId = study.getId();
+            assertNotNull("The saved study didn't get an id", savedId);
+        }
+
+        interruptSession();
+        {
+            Study loaded = getDao().getById(savedId);
+            assertNotNull("Could not reload study with id " + savedId, loaded);
+            // assertNotNull("GridId not updated", loaded.getGridId());
+            assertEquals("Wrong name", "ShortTitleText", loaded.getShortTitle());
+            assertEquals("Wrong study funding sponsor", "National Cancer Institute", loaded.getStudyFundingSponsors()
+                    .get(0).getOrganization().getName());
+            assertEquals("27572", loaded.getExternalId());
+        }
+    }
 
     public void testSaveNewStudyWithCoordinatingCenter() throws Exception {
         Integer savedId;
@@ -391,7 +440,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             Organization organization = sitedao.getById(-1003);
             Organization center = sitedao.getById(-1002);
 
-            Study study = new Study();
+            Study study = new LocalStudy();
             study.setShortTitle("ShortTitleText");
             study.setLongTitle("LongTitleText");
             study.setPhaseCode("PhaseCode");
@@ -437,9 +486,69 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
                     .get(0).getOrganization().getName());
             assertEquals("Wrong study coordinating center", "CALGB", loaded.getStudyCoordinatingCenters().get(0)
                     .getOrganization().getName());
+            
+        }
+    }
+    
+    public void testSaveNewRemoteStudyWithCoordinatingCenter() throws Exception {
+        Integer savedId;
+        {
+            Organization sponsor = sitedao.getById(-1001);
+            Organization organization = sitedao.getById(-1003);
+            Organization center = sitedao.getById(-1002);
+
+            Study study = new RemoteStudy();
+            study.setExternalId("87341");
+            study.setShortTitle("ShortTitleText");
+            study.setLongTitle("LongTitleText");
+            study.setPhaseCode("PhaseCode");
+            study.setStatus("Status");
+            study.setTargetAccrualNumber(150);
+            study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+            // study.setType("Type");
+            study.setMultiInstitutionIndicator(true);
+            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            study.setAdeersReporting(Boolean.TRUE);
+            // study.setCtcVersion(ctc);
+
+            // Study Site
+            StudySite studySite = new StudySite();
+            studySite.setOrganization(organization);
+            studySite.setStartDate(DateUtils.tomorrow());
+
+            study.addStudySite(studySite);
+
+            // Study funding sponsor
+            StudyFundingSponsor fundingSponsor = new StudyFundingSponsor();
+            fundingSponsor.setOrganization(sponsor);
+            study.addStudyOrganization(fundingSponsor);
+
+            // Study coordinating center
+            StudyCoordinatingCenter coCenter = new StudyCoordinatingCenter();
+            coCenter.setOrganization(center);
+            study.addStudyOrganization(coCenter);
+
+            getDao().save(study);
+
+            savedId = study.getId();
+            assertNotNull("The saved study didn't get an id", savedId);
+        }
+
+        interruptSession();
+        {
+            Study loaded = getDao().getById(savedId);
+            assertNotNull("Could not reload study with id " + savedId, loaded);
+            // assertNotNull("GridId not updated", loaded.getGridId());
+            assertEquals("Wrong name", "ShortTitleText", loaded.getShortTitle());
+            assertEquals("Wrong study funding sponsor", "National Cancer Institute", loaded.getStudyFundingSponsors()
+                    .get(0).getOrganization().getName());
+            assertEquals("Wrong study coordinating center", "CALGB", loaded.getStudyCoordinatingCenters().get(0)
+                    .getOrganization().getName());
+            assertEquals("87341", loaded.getExternalId());
         }
     }
 
+    
     private List<Integer> collectIds(List<? extends DomainObject> actual) {
         List<Integer> ids = new ArrayList<Integer>(actual.size());
         for (DomainObject object : actual) {
@@ -459,7 +568,7 @@ assertTrue(true);
         int studyId = 0;
         {
 
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
@@ -514,7 +623,7 @@ assertTrue(true);
         int studyId = 0;
         Date d = new Date();
         {
-            Study newStudy = new Study();
+            Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
@@ -589,7 +698,7 @@ assertTrue(true);
     public void testSaveStudyInInprogressStatus() throws Exception {
         Integer savedId;
 
-        Study newStudy = new Study();
+        Study newStudy = new LocalStudy();
         newStudy.setShortTitle("Short Title Inserted");
         newStudy.setLongTitle("Long Title Inserted");
         newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
@@ -613,7 +722,7 @@ assertTrue(true);
                     DataAccessException {
                 ResultSet rs = st.executeQuery("select * from studies where load_status = 0 and id = " + studyId);
                 if (rs.next()) {
-                    Study s = new Study();
+                    Study s = new LocalStudy();
                     s.setId(rs.getInt(1));
                     s.setShortTitle("Shortest");
                     return s;

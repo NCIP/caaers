@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -18,7 +16,7 @@ public class StudyTest extends TestCase {
 	Study study;
 	protected void setUp() throws Exception {
 		super.setUp();
-		study = new Study();
+		study = new LocalStudy();
 		
 	}
 	

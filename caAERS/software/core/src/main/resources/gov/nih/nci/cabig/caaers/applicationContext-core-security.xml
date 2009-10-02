@@ -400,6 +400,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
                value-ref="studySiteSecurityFilterer"/>
+		<entry key="gov.nih.nci.cabig.caaers.domain.LocalStudy"
+               value-ref="studySiteSecurityFilterer"/>               
         <!--        
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  

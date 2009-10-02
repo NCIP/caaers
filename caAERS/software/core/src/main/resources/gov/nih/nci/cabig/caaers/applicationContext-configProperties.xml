@@ -70,6 +70,18 @@
                             <property name="code" value="Temporarily Closed to Accrual" />
                             <property name="desc" value="Temporarily Closed to Accrual" />
                         </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="In Review" />
+                            <property name="desc" value="In Review" />
+                        </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Disapproved" />
+                            <property name="desc" value="Disapproved" />
+                        </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Complete" />
+                            <property name="desc" value="Complete" />
+                        </bean>
                     </list>
                 </entry>
                 <entry key="phaseCodeRefData">
@@ -106,6 +118,14 @@
                             <property name="code" value="Pilot" />
                             <property name="desc" value="Pilot" />
                         </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="N/A" />
+                            <property name="desc" value="N/A" />
+                        </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Other" />
+                            <property name="desc" value="Other" />
+                        </bean>	                        
                     </list>
                 </entry>
                 <entry key="typeRefData">
@@ -190,6 +210,10 @@
                             <property name="code" value="Protocol Authority Identifier" />
                             <property name="desc" value="Protocol Authority Identifier" />
                         </bean>
+						<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NCI Assigned Identifier" />
+                            <property name="desc" value="NCI Assigned Identifier" />
+                        </bean>                        
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Site Identifier" />
                             <property name="desc" value="Site Identifier" />

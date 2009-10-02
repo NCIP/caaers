@@ -1,18 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,7 +43,7 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
         	this.studySite = new StudySite();
         }
         
-        if (this.studySite.getStudy() == null) this.studySite.setStudy(new Study());
+        if (this.studySite.getStudy() == null) this.studySite.setStudy(new LocalStudy());
 
         this.assignment = new StudyParticipantAssignment();
         this.assignment.setStudySubjectIdentifier(this.getStudySubjectIdentifier());

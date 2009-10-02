@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -29,7 +30,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		dest = new Study();
+		dest = new LocalStudy();
 		xstreamStudy = Fixtures.createStudy("short title");
 		outcome = new DomainObjectImportOutcome<Study>();
 		ctcDao = registerDaoMockFor(CtcDao.class);

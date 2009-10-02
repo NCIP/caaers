@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -105,7 +106,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		logger.info("Entering processStudy() in StudyProcessorImpl");
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
-		Study study = new Study();
+		Study study = new LocalStudy();
 		
 		//Convert JAXB StudyType to Domain Study
 		try{
@@ -178,7 +179,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			return caaersServiceResponse;
 		}
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
-		Study study = new Study();
+		Study study = new LocalStudy();
 		
 		//Convert JAXB StudyType to Domain Study
 		try{
@@ -260,7 +261,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		}
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
-		Study study = new Study();
+		Study study = new LocalStudy();
 		
 		//Convert JAXB StudyType to Domain Study
 		try{

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
@@ -15,7 +16,7 @@ public class StudyTherapyMigratorTest extends AbstractTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		System.out.println(getClass().getClassLoader());
-		dest = new Study();
+		dest = new LocalStudy();
 		xstreamStudy = Fixtures.createStudy("short title");
 		outcome = new DomainObjectImportOutcome<Study>();
 		migrator = new StudyTherapyMigrator();

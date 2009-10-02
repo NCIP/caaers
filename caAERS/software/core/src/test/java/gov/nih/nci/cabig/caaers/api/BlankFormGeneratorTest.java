@@ -25,7 +25,7 @@ public class BlankFormGeneratorTest extends CaaersTestCase {
 
         PDFFile = System.getProperty("java.io.tmpdir") + File.separator + "AE-Blank-Test.pdf";
         g = new BlankFormGenerator();
-        s = new Study();
+        s = new LocalStudy();
         s.setShortTitle("ST");
         s.setLongTitle("LT");
         s.setId(55588);

@@ -2,10 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Saurabh Agrawal
@@ -62,7 +60,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         report.addSaeReportPriorTherapies(saeReportPriorTherapy);
 
         StudySite ss = new StudySite();
-        ss.setStudy(new Study());
+        ss.setStudy(new LocalStudy());
         assignment.setStudySite(ss);
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
@@ -85,7 +83,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         report.setDiseaseHistory(diseaseHistory);
 
         StudySite ss = new StudySite();
-        ss.setStudy(new Study());
+        ss.setStudy(new LocalStudy());
         assignment.setStudySite(ss);
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
@@ -111,7 +109,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
     public void testSyncrhonizePreExistingCondition() {
         StudySite ss = new StudySite();
-        ss.setStudy(new Study());
+        ss.setStudy(new LocalStudy());
         assignment.setStudySite(ss);
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
@@ -139,7 +137,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         report.addConcomitantMedication(conMed);
 
         StudySite ss = new StudySite();
-        ss.setStudy(new Study());
+        ss.setStudy(new LocalStudy());
         assignment.setStudySite(ss);
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());

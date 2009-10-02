@@ -27,7 +27,6 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,7 +55,7 @@ public class Fixtures {
     }
 
     public static Study createStudy(final String shortTitle) {
-        Study s = new Study();
+        Study s = new LocalStudy();
         s.setShortTitle(shortTitle);
         s.setLongTitle(shortTitle);
         return s;

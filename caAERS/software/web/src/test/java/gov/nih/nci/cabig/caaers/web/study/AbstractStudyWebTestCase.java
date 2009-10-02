@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -57,7 +58,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
         tab = createTab();
 
         command = createCommand();
-        study = new Study();
+        study = new LocalStudy();
         command.setStudy(study);
         errors = new BindException(command, "command");
 
@@ -65,7 +66,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
 
     protected StudyCommand createCommand(){
     	 StudyCommand command = new StudyCommand(studyDao);
-         Study study = new Study();
+         Study study = new LocalStudy();
          command.setStudy(study);
 
          return command;

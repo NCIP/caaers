@@ -26,6 +26,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteInvestigator</value>
+				<value>gov.nih.nci.cabig.caaers.domain.RemoteStudy</value>                
             </list>
          </property>    
          <property name="remoteResolvers">
@@ -33,10 +34,11 @@ This applicationContext contains the definition of the DAOs
                 <ref bean="organizationResolver"/>
                 <ref bean="researchStaffResolver"/>
                 <ref bean="investigatorResolver"/>
+                <ref bean="remoteStudyResolver"/>
             </list>
          </property> 
          <property name="enableCaching" value="false"/>
-		 <property name="enabled" value="false"/>
+		 <property name="enabled" value="true"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
@@ -65,6 +67,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalStudy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteStudy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
@@ -258,6 +262,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LocalStudy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RemoteStudy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LocalOrganization</value>
@@ -634,10 +640,15 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
         <property name="researchStaffDao" ref="researchStaffDao"></property>
+        <property name="organizationDao" ref="organizationDao"></property>
+        <property name="organizationRepository" ref="organizationRepository" />
+        <property name="remoteSession" ref="remoteSession"></property>        
     </bean>
 
 
-    <bean id="studySearchableAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository" parent="daoTemplate" />
+    <bean id="studySearchableAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository" parent="daoTemplate">
+    	<property name="studyRepository" ref="studyRepository"></property>
+    </bean>	
 
     <bean id="participantAjaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository" parent="daoTemplate" />
     

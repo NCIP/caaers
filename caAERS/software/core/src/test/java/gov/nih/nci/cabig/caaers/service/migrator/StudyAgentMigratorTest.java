@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -34,7 +35,7 @@ public class StudyAgentMigratorTest extends AbstractTestCase {
 		migrator.setAgentDao(agentDao);
 		migrator.setInvestigationalNewDrugDao(investigationalNewDrugDao);
 		outcome = new  DomainObjectImportOutcome<Study>();
-		dest = new Study();
+		dest = new LocalStudy();
 		xstreamStudy = Fixtures.createStudy("abcd");
 		
 	}

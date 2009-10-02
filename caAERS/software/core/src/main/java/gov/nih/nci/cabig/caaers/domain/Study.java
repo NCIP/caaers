@@ -12,8 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -42,78 +45,83 @@ import org.hibernate.annotations.Where;
  */
 @Entity
 @Table(name = "studies")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_studies_id")})
 @Where(clause = "load_status > 0")
-public class Study extends AbstractIdentifiableDomainObject implements Serializable {
+public abstract class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
-	private static final long serialVersionUID = 2524271609924679883L;
+	protected static final long serialVersionUID = 2524271609924679883L;
 	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
-    private String shortTitle;
-    private String longTitle;
-    private String description;
-    private String precis;
-    private String phaseCode;
-    private AeTerminology aeTerminology;
-    private DiseaseTerminology diseaseTerminology;
-    private String status;
+    protected String shortTitle;
+    protected String longTitle;
+    protected String description;
+    protected String precis;
+    protected String phaseCode;
+    protected AeTerminology aeTerminology;
+    protected DiseaseTerminology diseaseTerminology;
+    protected String status;
 
     // TODO: Remove
-    private Boolean blindedIndicator;
-    private Boolean multiInstitutionIndicator;
-    private Boolean adeersReporting;
+    protected Boolean blindedIndicator;
+    protected Boolean multiInstitutionIndicator;
+    protected Boolean adeersReporting;
 
     // TODO: Remove
-    private Boolean randomizedIndicator;
+    protected Boolean randomizedIndicator;
 
     // TODO: Remove
-    private String diseaseCode;
+    protected String diseaseCode;
 
     // TODO: Remove
-    private String monitorCode;
+    protected String monitorCode;
 
     // TODO: Remove
-    private Integer targetAccrualNumber;
+    protected Integer targetAccrualNumber;
     
-    private MeddraVersion otherMeddra;
-    private List<StudyOrganization> studyOrganizations;
+    protected MeddraVersion otherMeddra;
+    protected List<StudyOrganization> studyOrganizations;
 
-    private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
-    private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
-    private List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
+    protected List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
+    protected List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
+    protected List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
 
-    private List<AbstractExpectedAE> expectedAEs = new ArrayList<AbstractExpectedAE>();
-    private List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms = new ArrayList<ExpectedAEMeddraLowLevelTerm>();
-    private List<ExpectedAECtcTerm> expectedAECTCTerms = new ArrayList<ExpectedAECtcTerm>();
+    protected List<AbstractExpectedAE> expectedAEs = new ArrayList<AbstractExpectedAE>();
+    protected List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms = new ArrayList<ExpectedAEMeddraLowLevelTerm>();
+    protected List<ExpectedAECtcTerm> expectedAECTCTerms = new ArrayList<ExpectedAECtcTerm>();
 
-    private final LazyListHelper lazyListHelper;
+    protected final LazyListHelper lazyListHelper;
 
-    private OrganizationAssignedIdentifier organizationAssignedIdentifier;
-    private List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
-    private List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
-    private List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
+    protected OrganizationAssignedIdentifier organizationAssignedIdentifier;
+    protected List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
+    protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
+    protected List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
 
     // TODO move into Command Object
     // Investigators page)
 
-    private Boolean drugAdministrationTherapyType = Boolean.FALSE;
-    private Boolean radiationTherapyType = Boolean.FALSE;
-    private Boolean deviceTherapyType = Boolean.FALSE;
-    private Boolean surgeryTherapyType = Boolean.FALSE;
-    private Boolean behavioralTherapyType = Boolean.FALSE;
-    private Integer loadStatus = LoadStatus.COMPLETE.getCode();
+    protected Boolean drugAdministrationTherapyType = Boolean.FALSE;
+    protected Boolean radiationTherapyType = Boolean.FALSE;
+    protected Boolean deviceTherapyType = Boolean.FALSE;
+    protected Boolean surgeryTherapyType = Boolean.FALSE;
+    protected Boolean behavioralTherapyType = Boolean.FALSE;
+    protected Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     // Used to facilitate import of a coordinating center / funding sponsor
-    private FundingSponsor fundingSponsor;
-    private CoordinatingCenter coordinatingCenter;
+    protected FundingSponsor fundingSponsor;
+    protected CoordinatingCenter coordinatingCenter;
 
     // DCP specific properties
-    private Design design;
+    protected Design design;
 
-    private List<Epoch> epochs=new ArrayList<Epoch>();
+    protected List<Epoch> epochs=new ArrayList<Epoch>();
     
-    private Boolean dataEntryStatus;
+    protected Boolean dataEntryStatus;
+    
+  //Added for COPPA integration
+    protected String externalId;
     
 
     public Study() {
@@ -276,6 +284,21 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
         return organizationAssignedIdentifier;
     }
+    
+    @Transient
+    public OrganizationAssignedIdentifier getNciAssignedIdentifier() {
+        for (Identifier identifier : getIdentifiers()) {
+
+            if (identifier instanceof OrganizationAssignedIdentifier
+                    && identifier.getType().equalsIgnoreCase(
+                    "NCI Assigned Identifier")) {
+                organizationAssignedIdentifier = (OrganizationAssignedIdentifier) identifier;
+                return organizationAssignedIdentifier;
+            }
+        }
+        return organizationAssignedIdentifier;
+    }
+    
 
     @Transient
     public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
@@ -562,6 +585,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.randomizedIndicator = randomizedIndicator;
     }
 
+    @Transient
     public String getDescription() {
         return description;
     }
@@ -578,6 +602,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.diseaseCode = diseaseCode;
     }
 
+    @Transient
     public String getLongTitle() {
         return longTitle;
     }
@@ -594,6 +619,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.monitorCode = monitorCode;
     }
 
+    @Transient
     public String getPhaseCode() {
         return phaseCode;
     }
@@ -610,6 +636,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         precis = precisText;
     }
 
+    @Transient
     public String getShortTitle() {
         return shortTitle;
     }
@@ -618,6 +645,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         shortTitle = shortTitleText;
     }
 
+    @Transient
     public String getStatus() {
         return status;
     }
@@ -633,6 +661,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void setTargetAccrualNumber(final Integer targetAccrualNumber) {
         this.targetAccrualNumber = targetAccrualNumber;
     }
+    
+    @Transient
+    public String getExternalId() {
+		return externalId;
+	}
+    
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})

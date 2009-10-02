@@ -1,5 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
+import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +17,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.web.search.ui.AdvancedSearchUi;
-import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
-import gov.nih.nci.cabig.caaers.web.search.ui.ViewColumn;
 
 /**
  * This class tests the AdvancedSearchViewTab
@@ -98,7 +97,7 @@ public class AdvancedSearchViewTabTest extends WebTestCase{
 			Participant p = new Participant();
 			p.setFirstName("firstName" + i);
 			p.setLastName("lastName" + i);
-			Study s = new Study();
+			Study s = new LocalStudy();
 			s.setShortTitle("shortTitle" + i);
 			s.setLongTitle("longTitle" + i);
 			//AdverseEvent ae = new AdverseEvent();

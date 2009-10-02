@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -60,7 +61,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate() {
 		
-		Study dest = new Study();
+		Study dest = new LocalStudy();
 		
 		src.addIdentifier(orgIdentifier);
 		src.addIdentifier(sysIdentifier1);
@@ -85,7 +86,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 
 	public void testMigrate_OnlySystemAssignedIdentifier() {
 		
-		Study dest = new Study();
+		Study dest = new LocalStudy();
 		src.addIdentifier(sysIdentifier1);
 		src.addIdentifier(sysIdentifier2);
 		
@@ -105,7 +106,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_NoIdentifier() {
 		
-		Study dest = new Study();
+		Study dest = new LocalStudy();
 		
 		replayMocks();
 		migrator.migrate(src, dest, outcome);
@@ -118,7 +119,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_Identifier_Having_InvalidOrganization() {
 		
-		Study dest = new Study();
+		Study dest = new LocalStudy();
 		src.addIdentifier(orgIdentifier);
 		src.addIdentifier(sysIdentifier1);
 		src.addIdentifier(sysIdentifier2);

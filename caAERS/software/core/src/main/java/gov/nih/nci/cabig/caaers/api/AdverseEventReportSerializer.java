@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -113,7 +114,7 @@ public class AdverseEventReportSerializer {
 	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 	    	
 	    	StudySite studySite = new StudySite();
-	    	Study s = new Study();
+	    	Study s = new LocalStudy();
 		    	
 	    	List<Identifier> ids = adverseEventReportDataObject.getAssignment().getStudySite().getStudy().getIdentifiers();
 	    	//s.setIdentifiers(new ArrayList<Identifier>());
@@ -655,7 +656,7 @@ public class AdverseEventReportSerializer {
 		    	//buld identifiers , to resolve sesion error 
 		    	Study hibernateStudy = ss.getStudy();
 		    	
-		    	Study s = new Study();
+		    	Study s = new LocalStudy();
 		    	s.setId(hibernateStudy.getId());
 		    	s.setBlindedIndicator(hibernateStudy.getBlindedIndicator());
 		    	s.setMultiInstitutionIndicator(hibernateStudy.getMultiInstitutionIndicator());

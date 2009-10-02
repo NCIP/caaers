@@ -1,13 +1,22 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -262,7 +271,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     // TODO - Need to refactor the below into CaaersDao along with identifiers
     public List<Study> searchByExample(final Study study, final boolean isWildCard) {
         Example example = Example.create(study).excludeZeroes().ignoreCase();
-        Criteria studyCriteria = getSession().createCriteria(Study.class);
+        Criteria studyCriteria = getSession().createCriteria(LocalStudy.class);
         studyCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
         if (isWildCard) {
@@ -305,6 +314,46 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         });
 
     }
+    
+    /**
+     * This method saves all the RemoteStudies provided in the list.
+     * @param remoteStudies
+     */
+    @Transactional(readOnly = false)
+	public void saveRemoteStudies(List<Study> remoteStudies) {
+    	try{
+    		for (Study remoteStudy : remoteStudies) {
+    			if(remoteStudy != null){
+    				Study studyFromDatabase = getByExternalIdentifier(((RemoteStudy)remoteStudy).getExternalId());
+    				
+    				//If studyFromDatabase is not null then it already exists as a remoteStudy
+    				if (studyFromDatabase == null) {
+    					//If studyFromDatabase is null then it doesnt exists as a remoteStudy, hence save it.
+    					save((RemoteStudy)remoteStudy);
+    				}
+    				getHibernateTemplate().flush();
+    			} else {
+    				log.error("Null Remote Study in the list in updateDatabaseWithRemoteContent");
+    			}
+    		}
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    	}
+	}
+    
+	/**Gets by the unique Identifier
+	 * @param externalId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Study getByExternalIdentifier(String externalId) {
+		if("".equals(externalId)){
+			return null;
+		}
+		return CollectionUtils.firstElement((List<Study>) getHibernateTemplate()
+					.find("from RemoteStudy s where s.externalId = ?", externalId));
+	}
+    
 
     /**
      * Delete the study.

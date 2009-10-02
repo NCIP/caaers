@@ -14,7 +14,7 @@ public class StudyTherapyTest extends CoreTestCase {
     protected void setUp() throws Exception {
         studyTherapy1 = new StudyTherapy();
         studyTherapy2 = new StudyTherapy();
-        study = new Study();
+        study = new LocalStudy();
     }
 
     public void testStudyTherapy() {
@@ -33,7 +33,7 @@ public class StudyTherapyTest extends CoreTestCase {
 
         study.setId(1);
         studyTherapy1.setStudy(study);
-        studyTherapy2.setStudy(new Study());
+        studyTherapy2.setStudy(new LocalStudy());
         assertNotEquals(studyTherapy1, studyTherapy2);
         studyTherapy2.setStudy(study);
         assertEquals(studyTherapy1, studyTherapy2);

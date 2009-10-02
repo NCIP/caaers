@@ -24,5 +24,9 @@ This applicationContext contains the definition of the concrete services
 	</bean>
 	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
 
-	</bean>		
+	</bean>	
+	
+	<bean id="remoteStudyResolver" class="gov.nih.nci.cabig.caaers.resolver.RemoteStudyResolver">
+		<property name="investigatorResolver" ref="investigatorResolver"/>
+	</bean>	
 </beans>

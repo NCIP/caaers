@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -26,7 +27,7 @@ public class StudyDomainObjectValidatorTest extends CaaersTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		sampleStudy = new Study();
+		sampleStudy = new LocalStudy();
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");
 	}

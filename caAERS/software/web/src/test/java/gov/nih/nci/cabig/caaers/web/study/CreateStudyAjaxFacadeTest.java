@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
@@ -67,7 +68,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         
         studyDao = registerDaoMockFor(StudyDao.class);
         command = new StudyCommand(studyDao);
-        study = new Study();
+        study = new LocalStudy();
         command.setStudy(study);
         request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command", command);
     }

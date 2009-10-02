@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -37,7 +38,7 @@ public class ListAdverseEventsCommandTest extends AbstractTestCase {
     }
 
     public void testExplicitStudyTrumps() throws Exception {
-        Study expected = new Study();
+        Study expected = new LocalStudy();
         command.setStudy(expected);
 
         replayMocks();
