@@ -31,7 +31,7 @@ function resetLogoutTimer() {
 //----------------------------------------------------------------------------------------------------------------
 //shows the warning box
 function logoutWarning() {
-  var warnDiv = new Window({className: "alphacube", width:580, height:190, zIndex: 100, resizable: true, recenterAuto:true, draggable:true}); 
+  var warnDiv = new Window({className: "alphacube", width:580, height:190, zIndex: 100, resizable: true, recenterAuto:true, draggable:true, closable:false}); 
   warnWindow.setContent('logout_warning');
   warnWindow.showCenter(true);
   warnWindow.show();
