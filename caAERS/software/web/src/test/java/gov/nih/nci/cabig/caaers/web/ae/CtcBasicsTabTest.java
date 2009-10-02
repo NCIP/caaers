@@ -85,8 +85,8 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);
         EasyMock.expect(reportingPeriodDao.isAdverseEventPresent(ae0)).andReturn(false);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm",
-                        "CTC term");
+        assertEquals(0, getErrors().getFieldErrorCount("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm"));
+        // assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm", "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
