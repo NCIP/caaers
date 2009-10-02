@@ -41,7 +41,7 @@
         }
 
         function selectParticipant(selectedParticipant){
-             $('participant').value = selectedParticipant;
+             $('command').participant.value = selectedParticipant;
         }
 
     </script>
@@ -104,7 +104,7 @@
 
 
 <form:form  id="command">
-	<form:hidden  path="participant"/>
+	<form:hidden path="participant"/>
      <tags:tabFields tab="${tab}"/>
      <tags:tabControls tab="${tab}" flow="${flow}"/>
 </form:form>
