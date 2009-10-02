@@ -6,6 +6,7 @@ package gov.nih.nci.cabig.caaers.grid;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -59,8 +60,8 @@ public class CaaersRegistrationConsumerTest extends CaaersDbTestCase {
                         .getBean("authorizationSwitch"));
         consumer.setConfigurationProperty((ConfigProperty) getDeployedApplicationContext().getBean(
                         "configurationProperty"));
-        consumer.setOrganizationDao((OrganizationDao) getDeployedApplicationContext().getBean(
-                        "organizationDao"));
+        consumer.setOrganizationRepository((OrganizationRepository) getDeployedApplicationContext().getBean(
+                        "organizationRepository"));
         consumer.setParticipantDao((ParticipantDao) getDeployedApplicationContext().getBean(
                         "participantDao"));
         consumer.setStudyDao((StudyDao) getDeployedApplicationContext().getBean("studyDao"));
