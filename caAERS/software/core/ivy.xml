@@ -171,24 +171,26 @@
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.1" />
 			
 			<!--Home grown infrastructure jar for COPPA  -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.integration" />	
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.3.17.4" />	
 			
 			<!-- PO related jars -->
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="latest.integration" />	
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="1.2" />	
 			
 			<!-- PA related jars -->
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-common" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-stubs" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-client" rev="latest.integration" />
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="latest.integration" />	
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-common" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-stubs" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-client" rev="1.2" />
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="1.2" />	
+			
+			<dependency org="gov.nih.nci.caxchange" name="coppa-commons" rev="1.2.3" />
 			
 			<!-- caXchange related jars -->
-			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="latest.integration" /> 
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="latest.integration" />
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="latest.integration" />
+			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.2.2" /> 
+        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.2.2" />
+        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="1.2.2" />
         	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.2.0" />		
 
         	<!-- TODO: Check if Grid -->
