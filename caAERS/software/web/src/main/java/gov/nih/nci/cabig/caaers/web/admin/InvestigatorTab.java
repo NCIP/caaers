@@ -90,7 +90,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     public Map<String, Object> referenceData(HttpServletRequest request, Investigator command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
-        refdata.put("sitesRefData", getOrganizations());
+       // refdata.put("sitesRefData", getOrganizations());
 
         refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
         refdata.put("studySiteRoleCodeRefData", configMap.get("studySiteRoleCodeRefData"));
@@ -108,13 +108,13 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         RepeatingFieldGroupFactory rfgFactory = null;
 
         rfgFactory = new RepeatingFieldGroupFactory("main", "siteInvestigators");
-
-        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.put("", "Please select");
-        List<Organization> organizations = getOrganizations();
-        if (organizations != null) {
-            options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
-        }
+        //SRINI COMMENTED - Not sure why this options are initialized , this options is not used anywhere . Loading orgs here in unnecessary .
+        //Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        //options.put("", "Please select");
+        //List<Organization> organizations = getOrganizations();
+        //if (organizations != null) {
+          //  options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
+        //}
         InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
     	//InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
         rfgFactory.addField(orgInputField);
