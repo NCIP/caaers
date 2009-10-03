@@ -38,7 +38,7 @@ This applicationContext contains the definition of the DAOs
             </list>
          </property> 
          <property name="enableCaching" value="false"/>
-		 <property name="enabled" value="true"/>
+		 <property name="enabled" value="false"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
