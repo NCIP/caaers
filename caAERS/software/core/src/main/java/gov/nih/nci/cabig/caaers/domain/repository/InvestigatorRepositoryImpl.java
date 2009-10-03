@@ -99,7 +99,12 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			}
 			if (key.equals("nciIdentifier")) {
 				searchCriteria.setNciIdentifier(value.toString());
-			}	
+			}
+			if (key.equals("organization")) {
+				SiteInvestigator si = new SiteInvestigator();
+				si.setOrganization(this.organizationDao.getById(Integer.parseInt(value.toString())));
+				searchCriteria.addSiteInvestigator(si);
+			}
 			if (key.equals("loginId")) {
 				return localInvestigators;
 			}
