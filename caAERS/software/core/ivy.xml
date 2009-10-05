@@ -35,6 +35,9 @@
 			<exclude conf="*" name="asm-attrs" />
 			<exclude conf="*" name="asm-1*" />
 			<exclude conf="*" org="objectweb" module="asm"/>
+			<exclude conf="*" name="jaxb-api-2.0-SNAPSHOT"/>
+			<exclude conf="*" name="jaxb-impl-2.0-SNAPSHOT"/>
+			<exclude conf="*" name="jaxb-xjc-2.0-SNAPSHOT"/>
 			
 			<dependency org="ehcache" name="ehcache" rev="1.2.3"/>
 			
@@ -168,7 +171,7 @@
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" />
 			
 			<!-- Rules Jar -->
-			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.1" />
+			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.2" />
 			
 			<!--Home grown infrastructure jar for COPPA  -->
 			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.3.17.4" />	
