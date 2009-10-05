@@ -50,7 +50,7 @@ public class IdentifiersTab extends StudyTab {
             Study study = command.getStudy();
             Identifier identifier = study.getIdentifiersLazy().get(Integer.parseInt(selected));
             study.getIdentifiersLazy().remove(Integer.parseInt(selected));
-            study.getIdentifiers().remove(identifier);
+            // study.getIdentifiers().remove(Integer.parseInt(selected));
         }
     }
 
