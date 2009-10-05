@@ -61,13 +61,14 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
     private Configuration configuration;
-    private boolean unidentifiedMode;
 
     public CreateParticipantController() {
     }
 
     public boolean getUnidentifiedMode(){
-        setUnidentifiedMode(getConfiguration().get(Configuration.UNIDENTIFIED_MODE));
+        boolean unidentifiedMode;
+        if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
+        else unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
         return unidentifiedMode;
     }
 
@@ -273,14 +274,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("unidentifiedMode", getUnidentifiedMode());
         return refdata;
-    }
-
-    public boolean isUnidentifiedMode() {
-        return unidentifiedMode;
-    }
-
-    public void setUnidentifiedMode(boolean unidentifiedMode) {
-        this.unidentifiedMode = unidentifiedMode;
     }
 
     public Configuration getConfiguration() {

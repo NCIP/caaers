@@ -56,7 +56,6 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected ChemoAgentDao chemoAgentDao;
     protected StudyDao studyDao;
     private Configuration configuration;
-    private boolean unidentifiedMode;
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
@@ -149,6 +148,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
 
     public boolean getUnidentifiedMode(){
+        boolean unidentifiedMode;
         if (configuration.get(Configuration.UNIDENTIFIED_MODE) == null) unidentifiedMode = false;
         else unidentifiedMode =  configuration.get(Configuration.UNIDENTIFIED_MODE);
         return unidentifiedMode;
