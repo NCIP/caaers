@@ -1886,29 +1886,26 @@
 						  			
 						  		</fo:block>      							
       						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
+
+                              <fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" >
+
 						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
 						  			<xsl:if test="LowLevelTerm/fullName != ''">
 						  				: <xsl:value-of select="LowLevelTerm/fullName"/>
 						  			</xsl:if>
 									<xsl:choose>     
-						         		<xsl:when test="LowLevelTerm/fullName">  
-						                </xsl:when>
-						                
+						         		<xsl:when test="LowLevelTerm/fullName"></xsl:when>
 						                <xsl:otherwise>
-						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">
-						                        : <xsl:value-of select="detailsForOther"/>
-						                    </xsl:if>
+						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if>
 						                </xsl:otherwise>
 								 	</xsl:choose>								  			
-						  			
-						  			<!--
-						  			<xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
-						  			<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/> 
-						  			-->
-						  		</fo:block>      							
+
+                                    <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+
+						  		</fo:block>
       						</fo:table-cell>
+
       						<fo:table-cell>
       							<xsl:variable name="gradeVar0" select="grade"/>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -1987,7 +1984,7 @@
 							  		
 							  			Gr.<xsl:value-of select="substring($gradeVar,1,1)"/>
 							  			
-							  			<xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text><xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
+							  			<xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text><xsl:value-of select="AdverseEventCtcTerm/universal-term"/><xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 			  			    </fo:table-row>
