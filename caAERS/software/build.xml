@@ -148,6 +148,7 @@
 	============================================================ -->
 	<target name="sync-classpath" depends="buildlist">
 		<mkdir dir="${user.home}/ivylibs" />
+		<delete dir="${user.home}/ivylibs" includes="*.*" />
 		<subant target="resolve" buildpathref="build-path">
 			<property name="resolve.confs" value="runtime,test" />
 			<property name="resolve.to.dir" value="${user.home}/ivylibs" />
