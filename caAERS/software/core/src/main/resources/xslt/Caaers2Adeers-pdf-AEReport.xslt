@@ -528,7 +528,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			  <xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
