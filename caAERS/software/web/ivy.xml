@@ -74,9 +74,6 @@
 			<!--  CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"/>
 			
-			<!-- Rules Jar -->
-			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="latest.integration" />
-			
 			<!--  Standalone (dist) dependencies,which are not to be included in Grid distribution -->
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 			
@@ -87,9 +84,6 @@
 			<!-- Jaxen XPATH -->
 			<dependency org="jaxen" name="jaxen" rev="1.1" />
 			
-			<!-- COPPA Common dependencies -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.3.15" />
-							
 			<!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
 			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" conf="test->default(*)" />        	
