@@ -35,9 +35,6 @@
 			<exclude conf="*" name="asm-attrs" />
 			<exclude conf="*" name="asm-1*" />
 			<exclude conf="*" org="objectweb" module="asm"/>
-			<exclude conf="*" name="jaxb-api-2.0-SNAPSHOT"/>
-			<exclude conf="*" name="jaxb-impl-2.0-SNAPSHOT"/>
-			<exclude conf="*" name="jaxb-xjc-2.0-SNAPSHOT"/>
 			
 			<dependency org="ehcache" name="ehcache" rev="1.2.3"/>
 			
