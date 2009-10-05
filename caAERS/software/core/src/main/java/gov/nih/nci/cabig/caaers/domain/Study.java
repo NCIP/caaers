@@ -1248,6 +1248,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public List<StudyOrganization> findActiveStudyOrganizations(Organization organization){
     	List<StudyOrganization> studyOrgsList = new ArrayList<StudyOrganization>();
     	for(StudyOrganization studyOrganization : getActiveStudyOrganizations()){
+            if (studyOrganization.getOrganization() == null) continue;
     		if(studyOrganization.getOrganization().equals(organization)){
     			studyOrgsList.add(studyOrganization);
     		}

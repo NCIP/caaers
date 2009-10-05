@@ -161,6 +161,7 @@ public class StudyRepository {
         ResearchStaffQuery query = null;
         List<ResearchStaff> researchStaffs = null;
         for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
+            if (studyOrganization.getOrganization() == null) continue;
             researchStaffs = new ArrayList<ResearchStaff>();
             query= new ResearchStaffQuery();
             query.filterByAssociateAllStudies(true);
