@@ -412,15 +412,16 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
     protected void validateMetastaticDiseases(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         List list;
-        Set<String> set = new HashSet<String>();
+        Set<StudyParticipantMetastaticDiseaseSite> set;
         // check MetaStaticDisease duplicates
         list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
-        set = new HashSet();
+        set = new HashSet<StudyParticipantMetastaticDiseaseSite>();
+        
         int i = 0;
         for (Object object : list) {
             StudyParticipantMetastaticDiseaseSite metastaticDiseaseSite = (StudyParticipantMetastaticDiseaseSite)object;
             if (metastaticDiseaseSite != null && metastaticDiseaseSite.getCodedSite() != null)
-                if (!set.add(metastaticDiseaseSite.getCodedSite().getName())) errors.reject("PT_007", new Object[] {metastaticDiseaseSite.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
+                if (!set.add(metastaticDiseaseSite)) errors.reject("PT_007", new Object[] {metastaticDiseaseSite.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
 
             if (metastaticDiseaseSite == null || StringUtils.isEmpty(metastaticDiseaseSite.getName())) {
                 errors.rejectValue(String.format("assignment.diseaseHistory.metastaticDiseaseSites[%d].codedSite", i), "SAE_026","Missing Metastatic disease site");
