@@ -4,19 +4,14 @@ import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -383,6 +378,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
         command.setEmptyFieldNameMap(new HashMap<String, Boolean>());
 
+        validateDiseaseInformation(command, commandBean, fieldGroups, errors);
         validatePreExistingConditions(command, commandBean, fieldGroups, errors);
         validateConcomitantMedications(command, commandBean, fieldGroups, errors);
         validatePriorTherapies(command, commandBean, fieldGroups, errors);
@@ -391,6 +387,14 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         WebUtils.populateErrorFieldNames(command.getEmptyFieldNameMap(), errors);
     }
 
+    protected void validateDiseaseInformation(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    	Date todaysDate = new Date();
+    	if(command.getAssignment().getDiseaseHistory() != null && command.getAssignment().getDiseaseHistory().getDiagnosisDate() != null)
+    		if(DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0)
+    			errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_035");
+    }
+
+    
     protected void validatePreExistingConditions(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
         // check PreExistingConditions duplicates
         List list = command.getAssignment().getPreExistingConditions();
