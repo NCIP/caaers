@@ -2,8 +2,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <c:if test="${not empty studySummary }">
-    <div id="study-summary-pane" style="width:100%; clear:both;">
-        <chrome:box title="Summary">
+    <div id="study-summary-pane" class="summary">
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td colspan="2">
@@ -56,6 +55,5 @@
 
                 </tr>
             </table>
-        </chrome:box>
     </div>
 </c:if>

@@ -454,11 +454,16 @@ ul.tabs li {
 	border-color: #930;
 	background-color: #ea9;
 }
+.summary {
+	background:#b2bbff url(../images/blue/report_set_bg.png) repeat-x top;
+	border:2px solid #888888;
+	margin:0 4px 15px;
+}
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
    if there's more than one in a page;
    the total should be something less than 100%. */
-.pane { margin: 0 14px 12px 0; }
+.pane {}
 /* Each pane will contain one or more "boxes" */
 .box {
 	background-color: #fff;

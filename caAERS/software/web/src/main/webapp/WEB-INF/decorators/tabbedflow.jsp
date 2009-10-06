@@ -37,7 +37,7 @@
         <c:set var="hasSummary" value="${not empty summary}"/>
         <!-- TODO: Summary should be disabled for Overview Pages, need a better logic than this -->
         <c:if test="${hasSummary and tab.viewName != 'study/study_reviewsummary'}">
-            <div id="summary-pane" class="pane">
+            <div id="summary-pane" class="pane summary">
                 <chrome:box title="Summary">
                     <c:forEach items="${summary}" var="summaryEntry">
                     <div class="row">
@@ -51,7 +51,7 @@
 
         <!-- AE summary  -->
 		<c:if test="${not empty aesummary}">
-			<div class="pane" id="reporter-summary">
+			<div class="pane summary" id="reporter-summary">
 			  <div class="row">
 			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${aesummary['Participant']}</div>
@@ -89,7 +89,7 @@
         
         <!-- AE summary  -->
 		<c:if test="${not empty routineAeSummary}">
-			<div class="pane" id="ae-summary">
+			<div class="pane summary" id="ae-summary">
 			  <div class="row">
 			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${routineAeSummary['Participant']}</div>
