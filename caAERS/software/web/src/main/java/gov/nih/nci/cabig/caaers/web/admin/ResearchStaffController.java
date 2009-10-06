@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -50,6 +52,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     protected ResearchStaffRepository researchStaffRepository;
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
     private OrganizationDao organizationDao;
+    private ResearchStaffDao researchStaffDao;
     protected WebControllerValidator webControllerValidator;
     private String authenticationMode;
 
@@ -173,8 +176,22 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
 
 
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
-        super.onBindAndValidate(request, command, errors, page);
+    protected void onBindAndValidate(HttpServletRequest request, Object cmd, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, cmd, errors, page);
+        
+        ResearchStaffCommand command = (ResearchStaffCommand) cmd;
+        
+        // Check if there is another research staff with same primary email-address.
+        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+        researchStaffQuery.filterByEmailAddress(command.getResearchStaff().getEmailAddress());
+        List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
+        
+        if(researchStaffList.size() > 1)
+        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
+        
+        if(researchStaffList.size() == 1 && command.getResearchStaff().getId() == null){
+        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
+        }
     }
 
     @Required
@@ -228,4 +245,9 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         if (isAjaxRequest(request)) return false;
         return super.shouldSave(request, command, cTab);
     }
+    
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
+    	this.researchStaffDao = researchStaffDao;
+    }
+    
 }

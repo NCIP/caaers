@@ -2,8 +2,11 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -13,6 +16,7 @@ import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,6 +79,25 @@ public abstract class InvestigatorController<C extends Investigator> extends
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("authenticationMode", getAuthenticationMode());
         return refdata;
+    }
+    
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object cmd, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, cmd, errors, page);
+     
+        Investigator command = (Investigator) cmd;
+        // Check if there is another investigator with same primary email-address.
+        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+        investigatorQuery.filterByEmailAddress(command.getEmailAddress());
+        List<Investigator> investigatorList = investigatorDao.searchInvestigator(investigatorQuery);
+        
+        if(investigatorList.size() > 1)
+        	errors.rejectValue("emailAddress", "USR_010");
+        
+        if(investigatorList.size() == 1 && command.getId() == null){
+        	errors.rejectValue("emailAddress", "USR_010");
+        }
+        
     }
 
     /**

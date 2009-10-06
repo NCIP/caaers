@@ -127,6 +127,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
     
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,BindException errors, int page) throws Exception {
+    	super.onBindAndValidate(request, command, errors, page);
         Investigator investigator = (Investigator) command;
         if("syncInvestigator".equals(request.getParameter("_action"))){
         	Investigator remoteInvestigator = new RemoteInvestigator();   
