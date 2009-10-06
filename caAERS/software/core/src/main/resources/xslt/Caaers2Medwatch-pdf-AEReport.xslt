@@ -405,7 +405,8 @@
 																	<xsl:when test="substring(gridId,1,3) = 'PRY'">
 																	 <fo:block xsl:use-attribute-sets="normal">
 																		Primary AE:<fo:block/>
-																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/><fo:block/>
+																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+																		<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/><fo:block/>
 																		<xsl:value-of select="grade"/><fo:block/>
 																		<xsl:value-of select="comments"/><fo:block/>
 																	 </fo:block>
@@ -413,7 +414,8 @@
 																	<xsl:otherwise>
 																	 <fo:block xsl:use-attribute-sets="normal">
 																		AE <xsl:number format="1 "/>:<fo:block/>
-																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/><fo:block/>
+																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                                                        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/><fo:block/>
 																		<xsl:value-of select="grade"/><fo:block/>
 																		<xsl:value-of select="comments"/><fo:block/>																		
 																	 </fo:block>
