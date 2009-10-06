@@ -20,6 +20,7 @@
     <tags:js name="tabbedflow"/>
 </head>
 <body>
+<standard:ajaxLoadingIndicator />
 <tags:js name="wz_tooltip/wz_tooltip"/>
 <div class="wide-header"></div>
 <!-- ALL DIV start -->
@@ -114,7 +115,6 @@
 
 <!-- ALL DIV end -->
 <standard:logoutWarning />
-<standard:ajaxLoadingIndicator />
 </body>
 </html>
 <!-- END decorators\tabbedflow.jsp -->

@@ -4,9 +4,11 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
+<tags:js name="prototype"/>
+<tags:js name="ajax-loading-indicator" />
+
 <jwr:style src="/csslib/caaers.zcss" />
 
-<tags:js name="prototype"/>
 <tags:js name="calendar" />
 <tags:js name="common" />
 
