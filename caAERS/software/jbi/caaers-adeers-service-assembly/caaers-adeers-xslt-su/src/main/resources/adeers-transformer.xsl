@@ -701,7 +701,7 @@
         </xsl:for-each>
         <xsl:for-each select="DiseaseHistory/MetastaticDiseaseSite">
             <SITE_OF_METASTATIC_DISEASE>
-                <xsl:if test="AnatomicSite/name != ''">
+                <xsl:if test="AnatomicSite/name != '' and AnatomicSite/category != 'Other'">
                     <SITE_NAME>
                         <xsl:value-of select="AnatomicSite/name"/>
                     </SITE_NAME>
