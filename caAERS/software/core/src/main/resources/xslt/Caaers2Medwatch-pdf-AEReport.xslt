@@ -494,26 +494,48 @@
 													</fo:block>
 													<fo:block xsl:use-attribute-sets="normal"><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
 													<fo:block xsl:use-attribute-sets="normal">Race: <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/race"/></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Disease: 
-														<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
-														<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
-														<xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
-														<xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
-													</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Disease Site: <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/></fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Date of initial diagnosis: 
-														<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>					  		
-													</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Metastatic site: 
-														<xsl:for-each select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
-																  			<xsl:value-of select="AnatomicSite/name"/><xsl:value-of select="otherSite"/> , 				
-														</xsl:for-each>	
-													</fo:block>
-													<fo:block xsl:use-attribute-sets="normal">Preexisting Conditions: 
-																<xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
-																		  			<xsl:value-of select="PreExistingCondition/text"/><xsl:value-of select="other"/>	, 			
-																</xsl:for-each>													
-													</fo:block>
+
+
+                                                    <xsl:if test="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm != '' or
+                                                                  AdverseEventReport/DiseaseHistory/otherPrimaryDisease != '' or
+                                                                  AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName != '' or
+                                                                  AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm != ''">
+                                                        <fo:block xsl:use-attribute-sets="normal">Disease:
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
+                                                        </fo:block>
+
+                                                    </xsl:if>
+
+                                                    <xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name">
+                                                        <fo:block xsl:use-attribute-sets="normal">Disease Site: <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/></fo:block>
+                                                    </xsl:if>
+
+                                                    <xsl:if test="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString != '' or AdverseEventReport/DiseaseHistory/diagnosisDate/yearString != ''">
+                                                        <fo:block xsl:use-attribute-sets="normal">Date of initial diagnosis:
+                                                            <xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>
+                                                        </fo:block>
+                                                    </xsl:if>
+
+                                                    <xsl:if test="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
+                                                        <fo:block xsl:use-attribute-sets="normal">Metastatic site:
+                                                            <xsl:for-each select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
+                                                                    <xsl:value-of select="AnatomicSite/name"/><xsl:value-of select="otherSite"/>,
+                                                            </xsl:for-each>
+                                                        </fo:block>
+                                                    </xsl:if>
+
+                                                    <xsl:if test="AdverseEventReport/SAEReportPreExistingCondition">
+                                                        <fo:block xsl:use-attribute-sets="normal">Preexisting Conditions:
+                                                                <xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
+                                                                    <xsl:value-of select="PreExistingCondition/text"/>
+                                                                    <xsl:value-of select="other"/>,
+                                                                </xsl:for-each>
+                                                        </fo:block>
+                                                    </xsl:if>
+                                                    
 												</fo:table-cell>
 											</fo:table-row>	
 										</fo:table-body>
