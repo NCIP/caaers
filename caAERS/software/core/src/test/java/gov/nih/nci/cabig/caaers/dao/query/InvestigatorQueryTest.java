@@ -43,6 +43,18 @@ public class InvestigatorQueryTest extends TestCase {
                         "%b%");
 
     }
+    
+    public void testFilterByEmailAddress() throws Exception{
+    	InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+    	investigatorQuery.filterByEmailAddress("a");
+    	assertEquals("wrong number of parameters", investigatorQuery.getParameterMap().size(), 1);
+    	assertTrue("missing paramenter name", investigatorQuery.getParameterMap().containsKey(
+        "emailAddress"));
+    	assertEquals("wrong parameter value", "%a%", investigatorQuery.getParameterMap().get("emailAddress"));
+    	assertEquals("Incorrect query created",
+                "SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE lower(i.emailAddress) LIKE :emailAddress order by i.id",
+                investigatorQuery.getQueryString());
+    }
 
     public void testFilterByIdentifier() throws Exception {
         InvestigatorQuery investigatorQuery = new InvestigatorQuery();

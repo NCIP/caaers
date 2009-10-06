@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -108,6 +110,34 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 
         return investigator;
     }
+    
+    /**
+     * Search for investigators using query.
+     * 
+     * @param query
+     *                The query used to search for investigators
+     * @return The list of investigators.
+     */
+    @SuppressWarnings( { "unchecked" })
+    public List<Investigator> searchInvestigator(final InvestigatorQuery query) {
+        String queryString = query.getQueryString();
+        log.debug("::: " + queryString.toString());
+        return (List<Investigator>) getHibernateTemplate().execute(new HibernateCallback() {
+
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+                org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    hiberanteQuery.setParameter(key, value);
+                }
+                return hiberanteQuery.list();
+            }
+
+        });
+
+    }
+    
 
     /**
      * TODO

@@ -10,6 +10,8 @@ public class InvestigatorQuery extends AbstractQuery {
 
     private static String NCI_CODE = "nciIdentifier";
     
+    private static String EMAIL_ADDRESS = "emailAddress";
+    
     private static String LOGIN_ID = "loginId";
     
     private static String ORGANIZATION = "organization";
@@ -29,6 +31,12 @@ public class InvestigatorQuery extends AbstractQuery {
         String searchString = "%" + lastName.toLowerCase() + "%";
         andWhere("lower(i.lastName) LIKE :" + LAST_NAME);
         setParameter(LAST_NAME, searchString);
+    }
+    
+    public void filterByEmailAddress(final String emailAddress) {
+        String searchString = "%" + emailAddress.trim().toLowerCase() + "%";
+        andWhere("lower(i.emailAddress) LIKE :" + EMAIL_ADDRESS);
+        setParameter(EMAIL_ADDRESS, searchString);
     }
 
     public void filterByNciIdentifier(final String value) {
