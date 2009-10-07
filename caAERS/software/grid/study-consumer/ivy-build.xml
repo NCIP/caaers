@@ -5,13 +5,12 @@
 	
 	
 	<target name="module-specific-flow" depends="resolve,common.aspectj-compile" />
-	
-	
-	<!-- ========================================================================
-		target : jar-test
-			Will call aspectj-compile of test classes then delegates to common jar-test
-	============================================================================-->	
-	<target name="jar-test" depends="aspectj-compile-test, common.jar-test" />
+		
+		<!-- ========================================================================
+			target : jar-test
+				Will call aspectj-compile of test classes then delegates to common jar-test
+		============================================================================-->	
+		<target name="jar-test" depends="common.aspectj-compile-test, common.jar-test" />
 	
 	
 </project>
