@@ -47,6 +47,7 @@ import javax.servlet.ServletRequest;
 
 import org.apache.commons.collections15.FactoryUtils;
 import org.apache.commons.collections15.list.LazyList;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -411,14 +412,12 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	ExpeditedAdverseEventReport aeReport = getAeReport();
     	TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
     	treatmentInformation.setTreatmentAssignment(aeReport.getReportingPeriod().getTreatmentAssignment());
-    	treatmentInformation.setTreatmentDescription(aeReport.getReportingPeriod().getTreatmentAssignmentDescription());
+    	treatmentInformation.setTreatmentDescription(StringUtils.trimToNull(aeReport.getReportingPeriod().getTreatmentAssignmentDescription()));
     	treatmentInformation.setFirstCourseDate(aeReport.getAssignment().getStartDateOfFirstCourse());
     	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
     	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
     	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
     	
-    	if(treatmentInformation.getTreatmentAssignment() != null)
-    		treatmentInformation.setTreatmentDescription(null);
     }
     
     public List<String> getPriorTherapyAgents() {

@@ -59,23 +59,9 @@ public class TreatmentTab extends AeTab {
     public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
     	Map<String, Object> refData =  super.referenceData(request, command);
     
-    	// If for the course the treatmentInformation selected was "Other", then put the corresponding treatmentAssignmentDescription
-    	// in the referenceData or put "" instead. This will be populated in the treatment description textArea if the user select
-    	// "Other" as the TAC from the drop down on the treatment page in aeReport flow.
-    	if(command.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription() != null)
-    		refData.put("courseTreatmentAssignmentDesc", command.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription());
-    	else
-    		refData.put("courseTreatmentAssignmentDesc", "");
+    	//Determines whether Other should be rendered and selected when the page is loaded. 
+    	refData.put("validOtherTreatmentDescription", command.getAeReport().getTreatmentInformation().isOther());
     	
-    	// If the treatmentAssignment.treatmentDescription is a valid value then put a flag in the referenceData that says so.
-    	// This will be used to render the editable textarea for the treatmentAssignment.treatmentDescription and "Other" will be selected
-    	// in the dropdown for TAC.
-    	if(command.getAeReport().getTreatmentInformation().getTreatmentAssignment() == null &&
-    			command.getAeReport().getTreatmentInformation().getTreatmentDescription() != null)
-    		refData.put("validOtherTreatmentDescription", true);
-    	else
-    		refData.put("validOtherTreatmentDescription", false);
-    		
     	return refData;
     }
 	

@@ -24,6 +24,7 @@
     Element.observe(window, "load", function() {
             
             //push the description into the array
+            descArray.push(''); //please-select
 			<c:forEach items="${command.aeReport.study.treatmentAssignments}" var="ta">
         	descArray.push("${ta.escapedDescription}");
         	</c:forEach>
@@ -33,40 +34,29 @@
         	var opt = new Option("Other", "");
             selBox.options.add(opt);
             
+            //if there is valid other description, select Other. 
             if(${validOtherTreatmentDescription}){
-            	// Here there is a valid treatmentInformation.treatmentDescription
-            	// So "Other" is selected by default in the TAC dropdown.
-            	// Also the editable textarea for the treatmentInformation.treatmentDescription is rendered visible and the
-            	// uneditable textarea for treatmentdescription is hidden.
-            	var selectElement = $('aeReport.treatmentInformation.treatmentAssignment');
-            	for(var i= 1; i < selectElement.options.length; i++){
-            		if(selectElement.options[i].value == '')
-            			selectElement.selectedIndex = i;
-            	}
-            	$('static-treatment-desc').style.display = 'none';
-            }else{
-            	// Here this is no valid treatmentInformation.treatmentDescription
-            	// So the correct tac will be selected in the TAC dropdown.
-            	// Also the editable textarea for the treatmentInformation.treatmentDescription is hidden while the uneditable
-            	// textarea for the treatmentdescription is rendered visible with correct description value
-            	$('variable-treatment-desc').style.display = 'none';
+            	selBox.selectedIndex = selBox.options.length - 1;
+				selBox.removeClassName('mandatory')
             }
+          
             
             
             // treatment dropdown.
-			$('aeReport.treatmentInformation.treatmentAssignment').observe("change", function(event){
-				selIndex = $('aeReport.treatmentInformation.treatmentAssignment').selectedIndex;
-				if(selIndex > 0){
-					var selectElement = $('aeReport.treatmentInformation.treatmentAssignment');
-					if(selectElement.options[selIndex].value == '')
-						refreshWithOtherTACDescription();
-					else
-						refreshWithValidTAC(selIndex - 1);
-				}else{
-					$('aeReport.treatmentInformation.treatmentAssignmentDescription').clear();
-					$('static-treatment-desc').style.display = '';
-					$('variable-treatment-desc').style.display = 'none';
+			selBox.observe("change", function(event){
+
+				var selIndex = selBox.selectedIndex;
+
+				if(selIndex > 0 && selIndex == (selBox.options.length -1)){
+					refreshWithOtherTACDescription(); //Other
+					selBox.removeClassName('required')
+					selBox.removeClassName('mandatory')
+					Event.stop(event);
+				} else {
+					refreshWithValidTAC(selIndex); //TAC or Please select
 				}
+				
+				
 			});   
             
             //only show the workflow tab, if it is associated to workflow
@@ -80,20 +70,17 @@
     
     
     function refreshWithOtherTACDescription(){
-    	if(${validOtherTreatmentDescription})
-            $('aeReport.treatmentInformation.treatmentDescription').value = '${command.aeReport.treatmentInformation.treatmentDescription}';
-        else
-            $('aeReport.treatmentInformation.treatmentDescription').value = '${courseTreatmentAssignmentDesc}';
-        $('variable-treatment-desc').style.display = '';
-        $('aeReport.treatmentInformation.treatmentAssignmentDescription').clear();
-        $('static-treatment-desc').style.display = 'none';
+        var otherTACDescription = "<c:out value="${command.aeReport.treatmentInformation.treatmentDescription}" escapeXml="true"/>";
+        $('aeReport.treatmentInformation.treatmentDescription').value = otherTACDescription;
+        $('static-treatment-desc').hide();
+        $('variable-treatment-desc').show();
     }
             
     function refreshWithValidTAC(descArrayIndex){
     	$('aeReport.treatmentInformation.treatmentAssignmentDescription').value = descArray[descArrayIndex];
     	$('aeReport.treatmentInformation.treatmentDescription').clear();
-    	$('static-treatment-desc').style.display = '';
-    	$('variable-treatment-desc').style.display = 'none';
+    	$('static-treatment-desc').show();
+        $('variable-treatment-desc').hide();
     }
     </script>
     <style type="text/css">
@@ -117,7 +104,7 @@
             	        <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[0]}" />
              	   </div>
       	    	</div>
-        	    <div class="row" id="static-treatment-desc">
+        	    <div class="row" id="static-treatment-desc" style="${validOtherTreatmentDescription ? 'display:none' : '' }">
  	               <div class="label">
     	                <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[1]}"/>
         	        </div>
@@ -125,12 +112,12 @@
                 	    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[1]}" disabled="true"/>
      	           </div>
        		    </div>
-       		    <div class="row" id="variable-treatment-desc">
+       		    <div class="row" id="variable-treatment-desc" style="${validOtherTreatmentDescription ? '' :'display:none'}" >
      	           <div class="label">
        	                <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[2]}"/>
        		       </div>
                	   <div class="value">
-                   	    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[2]}"/>
+                   	    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[2]}" cssClass="${validOtherTreatmentDescription ? 'valueOK' : ''}"/>
                    </div>
                 </div>
         	</chrome:division>

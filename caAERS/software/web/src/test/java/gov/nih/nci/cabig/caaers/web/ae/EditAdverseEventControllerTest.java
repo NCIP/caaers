@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -17,6 +18,7 @@ import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.easymock.classextension.EasyMock;
@@ -34,9 +36,11 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 	private EditAdverseEventController controller;
 	private EvaluationService evaluationService;
 	final RenderDecisionManager renderDecisionManager = new RenderDecisionManager();
+	Date now;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		now = new Date();
 		assignment = registerMockFor(StudyParticipantAssignment.class);
 		studySite = registerMockFor(StudySite.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
@@ -77,6 +81,42 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		verifyMocks();
 	}
 	
+	public void testInitializeTreatmentInformation(){
+		EasyMock.expect(assignment.getStartDateOfFirstCourse()).andReturn(now).anyTimes();
+		EasyMock.expect(assignment.getMaxCycleNumber()).andReturn(1).anyTimes();
+		
+		replayMocks();
+		TreatmentInformation ti = command.getAeReport().getTreatmentInformation();
+		assertNull(ti.getTreatmentDescription());
+		assertNull(ti.getTreatmentAssignment());
+		
+		command.getAeReport().getReportingPeriod().setTreatmentAssignmentDescription("");
+		
+		command.initializeTreatmentInformation();
+		
+		ti = command.getAeReport().getTreatmentInformation();
+		
+		assertNull(ti.getTreatmentDescription());
+		assertNull(ti.getTreatmentAssignment());
+		
+		
+		command.getAeReport().getReportingPeriod().setTreatmentAssignmentDescription(" test ");
+		command.getAeReport().getReportingPeriod().setStartDate(now);
+		command.getAeReport().getReportingPeriod().setCycleNumber(1);
+		
+    	
+
+		command.initializeTreatmentInformation();
+		
+		ti = command.getAeReport().getTreatmentInformation();
+		
+		assertEquals("test",ti.getTreatmentDescription());
+		assertNull(ti.getTreatmentAssignment());
+		assertSame(now, ti.getAdverseEventCourse().getDate());
+		assertEquals(new Integer(1), ti.getAdverseEventCourse().getNumber());
+		verifyMocks();
+	}
+	
 	public void testOnBind_From_CaptureAE(){
 		//BJ : need to fill the testcase once the logic is final
 		assertTrue(true); 
@@ -86,5 +126,6 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		//BJ : need to fill the testcase once the logic is final
 		assertTrue(true); 
 	}
-
+	
+	
 }

@@ -187,7 +187,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
         		errors.reject("CRP_009", "Treatment assignment should be active");
         		return;
         	}
-            rPeriod.setTreatmentAssignmentDescription("");
         }
         
         
