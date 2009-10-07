@@ -161,5 +161,10 @@ public class TreatmentInformationTest extends AbstractTestCase {
         assertNull("version number must be null", copiedTreatmentInformation.getVersion());
     }
 
-   
+   public void testIsOther(){
+	   treatmentInformation.setTreatmentDescription("tester");
+	   assertTrue(treatmentInformation.isOther());
+	   treatmentInformation.setTreatmentDescription(null);
+	   assertFalse(treatmentInformation.isOther());
+   }
 }

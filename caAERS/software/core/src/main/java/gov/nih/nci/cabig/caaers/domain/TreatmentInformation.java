@@ -19,6 +19,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.functors.InstantiateFactory;
 import org.apache.commons.collections.list.LazyList;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -31,6 +33,7 @@ import org.springframework.beans.BeanUtils;
  * report.
  *
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "treatments")
@@ -157,7 +160,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
     public void setTreatmentAssignmentDescription(String desc) {
         // do nothing.
     }
-
+   
 
     public TreatmentInformation copy() {
         TreatmentInformation treatmentInformation = new TreatmentInformation();
@@ -180,5 +183,10 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
 	public void setInvestigationalAgentAdministered(
 			Boolean investigationalAgentAdministered) {
 		this.investigationalAgentAdministered = investigationalAgentAdministered;
+	}
+	
+	@Transient
+	public boolean isOther(){
+		return StringUtils.isNotEmpty(getTreatmentDescription());
 	}
 }
