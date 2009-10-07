@@ -3,17 +3,15 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<!-- applicationContext-configProperties.xml -->
-	<!-- import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-api.xml" /-->
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
-	<!-- applicationContext-core-domain.xml -->
-	<!-- applicationContext-core-security.xml -->
-	<!-- import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml" /-->
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-studyConsumer.xml"/>
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
+	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-studyConsumer.xml"/>
 
     <bean id="studyConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
         <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>

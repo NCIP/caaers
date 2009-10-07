@@ -6,7 +6,9 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
+ default-lazy-init="true">
+	 
 	<!--  overriding the authorization -->
 	<!-- 
 	<bean id="authorizationSwitch"
@@ -14,7 +16,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		factory-method="getInstance">
 		<property name="on" value="false" />
 	</bean>
-
+	-->
 	<bean id="authenticationManager"
 		class="org.acegisecurity.providers.ProviderManager">
 		<property name="providers">
@@ -125,5 +127,5 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<property name="userCache" ref="userCache" />
 	</bean>
-	 -->
+	 
 </beans>
