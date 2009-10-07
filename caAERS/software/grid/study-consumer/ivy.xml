@@ -6,7 +6,7 @@
           	status="integration" revision="${caaers.version}"/>
         
   
-        <configurations>
+           <configurations>
         	<conf name="default" visibility="public" extends="publish,runtime" 
         		description="Dependencies needed for default setting"  />
         	<conf name="build" visibility="public"
@@ -39,12 +39,18 @@
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
         	<!--  C3PR registration stubs/skeltons -->
+        	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer" rev="1.5.SNAPSHOT"  >
+        		<artifact name="RegistrationConsumer-client" />
+        		<artifact name="RegistrationConsumer-common" />
+        		<artifact name="RegistrationConsumer-stubs" />
+        	</dependency>
 
-        	<dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="1.5.SNAPSHOT"  >
+            <dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="1.5.SNAPSHOT"  >
         		<artifact name="StudyConsumer-client" />
         		<artifact name="StudyConsumer-common" />
         		<artifact name="StudyConsumer-stubs" />
-        	</dependency>
+        	</dependency>   	
+        	
         	
         	<!-- CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
