@@ -165,12 +165,12 @@ public abstract class BaseResolver {
 	}*/
 	
 	public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
-        System.out.println("Broadcasting to coppa ");
+        System.out.println("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
 		String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+            broadCaster.setCaXchangeURL(CoppaConstants.CAXCHANGE_URL);
 
         	result = broadCaster.broadcastCoppaMessage(message, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
@@ -181,12 +181,13 @@ public abstract class BaseResolver {
     }
 	
 	
-	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
+	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
+		System.out.println("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
         String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+            broadCaster.setCaXchangeURL(CoppaConstants.CAXCHANGE_URL);
 
         	result = broadCaster.broadcastCoppaMessage(messages, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {

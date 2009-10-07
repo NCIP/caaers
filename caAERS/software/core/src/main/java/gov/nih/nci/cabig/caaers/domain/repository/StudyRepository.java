@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -7,14 +8,17 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 
@@ -40,6 +44,8 @@ public class StudyRepository {
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
     private RemoteSession remoteSession;
+    private InvestigatorRepository investigatorRepository;
+    private InvestigatorDao investigatorDao;
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI"; 
     
@@ -71,6 +77,7 @@ public class StudyRepository {
     		for(Study remoteStudy : remoteStudies){
     			remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
     			verifyAndSaveOrganizations(remoteStudy);
+    			verifyAndSaveInvestigators(remoteStudy);
     		}
     		//Save the studies returned from COPPA
     		studyDao.saveRemoteStudies(remoteStudies);
@@ -80,6 +87,33 @@ public class StudyRepository {
         return objectArray;
     }
     
+    
+    /**
+     * This method checks if the Investigator already in caAERS. If exists it uses it else creates new investigator in caAERS
+     * @param remoteStudy
+     */
+    @Transactional(readOnly = false)
+    private void verifyAndSaveInvestigators(Study remoteStudy){
+    	
+		for(StudyOrganization studyOrg : remoteStudy.getStudyOrganizations()){
+			for(StudyInvestigator studyInv : studyOrg.getStudyInvestigatorsInternal()){
+				if(studyInv.getSiteInvestigator() != null && studyInv.getSiteInvestigator().getInvestigator() != null){
+					Investigator dbInv = investigatorDao.getByEmailAddress(studyInv.getSiteInvestigator().getInvestigator().getEmailAddress());
+					if(dbInv != null){
+						SiteInvestigator dbSiteInvestigator = dbInv.findSiteInvestigator(studyInv.getSiteInvestigator());
+						if(dbSiteInvestigator == null){
+							dbInv.addSiteInvestigator(studyInv.getSiteInvestigator());
+							investigatorDao.save(dbInv);
+						}
+						studyInv.setSiteInvestigator(dbSiteInvestigator);
+					}else{
+						investigatorDao.save(studyInv.getSiteInvestigator().getInvestigator());
+					}
+				}
+			}
+		}
+    }
+
     /**
      * This method checks if the Organization in StudyOrganization is already in caAERS. If exists it uses it else creates new organization in caAERS
      * @param remoteStudy
@@ -96,7 +130,7 @@ public class StudyRepository {
     	for(StudyOrganization studyOrg : studyOrgList){
     		if(studyOrg.getOrganization().getNciInstituteCode() == null || "".equals(studyOrg.getOrganization().getNciInstituteCode())){
     			todayInMills = todayInMills + 1;
-    			studyOrg.getOrganization().setNciInstituteCode("caAERS-" + todayInMills);
+    			studyOrg.getOrganization().setNciInstituteCode("**NULL**-" + todayInMills);
     			dbOrg = organizationDao.getByName(studyOrg.getOrganization().getName());
     		}else{
     			dbOrg = organizationDao.getByNCIcode(studyOrg.getOrganization().getNciInstituteCode());
@@ -112,6 +146,11 @@ public class StudyRepository {
     		if(studyOrg instanceof StudyCoordinatingCenter){
 				orgMap.put(CoppaConstants.COORDINATING_CENTER_IDENTIFER, studyOrg.getOrganization());
 			}
+    		for(StudyInvestigator studyInvestigator : studyOrg.getStudyInvestigatorsInternal()){
+    			if(studyInvestigator.getSiteInvestigator() != null){
+    				studyInvestigator.getSiteInvestigator().setOrganization(studyOrg.getOrganization());
+    			}
+    		}
     	}
     	//Associate db org's to Identifiers.
     	for(OrganizationAssignedIdentifier identifier : remoteStudy.getOrganizationAssignedIdentifiers()){
@@ -141,8 +180,6 @@ public class StudyRepository {
 		return studyList;
 	}
 	
-    
-
     /**
      * Search using a sample populate Study object
      *
@@ -227,5 +264,14 @@ public class StudyRepository {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
+	}
+
+	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
 	}
 }

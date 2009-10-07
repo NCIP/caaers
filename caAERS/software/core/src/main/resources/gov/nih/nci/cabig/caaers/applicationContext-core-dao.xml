@@ -37,8 +37,8 @@ This applicationContext contains the definition of the DAOs
                 <ref bean="remoteStudyResolver"/>
             </list>
          </property> 
-         <property name="enableCaching" value="false"/>
-		 <property name="enabled" value="false"/>
+         <property name="enableCaching" value="true"/>
+		 <property name="enabled" value="true"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
@@ -642,6 +642,8 @@ This applicationContext contains the definition of the DAOs
         <property name="researchStaffDao" ref="researchStaffDao"></property>
         <property name="organizationDao" ref="organizationDao"></property>
         <property name="organizationRepository" ref="organizationRepository" />
+        <property name="investigatorRepository" ref="investigatorRepository" />
+        <property name="investigatorDao" ref="investigatorDao" />
         <property name="remoteSession" ref="remoteSession"></property>        
     </bean>
 

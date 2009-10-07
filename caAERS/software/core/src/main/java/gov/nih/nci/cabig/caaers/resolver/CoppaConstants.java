@@ -16,6 +16,9 @@ public class CoppaConstants {
 	public static final String PRINCIPAL_INVESTIGATOR = "Principal Investigator";
 	public static final String STUDY_PRINCIPAL_INVESTIGATOR = "Study Principal Investigator";
 	
+	/* List of values for studySiteContact. The studySiteContact has to have one of these to be eligible for fetching as an Investigator. */
+	public static final List<String> SITE_INVESTIGATOR_LIST = Arrays.asList("Principal Investigator", "Coordinating Investigator", "Sub Investigator");
+	
 	/*List of values Document Workflow Status*/
 	public static final List<String> DOCUMENT_WORKFLOW_STATUS_LIST = Arrays.asList("Abstracted", "Abstraction Verified Response", "Abstraction Verified No Response");
 	

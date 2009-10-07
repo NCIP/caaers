@@ -79,7 +79,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	 * Find By Organization
 	 */
 	public List<Object> find(Object example) {
-		System.out.println("Initiated coppa call from FIND ");
+		log.info("Entering InvestigatorResolver.find()");
+		System.out.println("Entering InvestigatorResolver.find()");
 		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
 		List<Object> remoteInvestigatorList = new ArrayList<Object>();
 		RemoteInvestigator tempRemoteInvestigator = null;
@@ -103,6 +104,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			log.info("Exiting InvestigatorResolver.find()");
+			System.out.println("Exiting InvestigatorResolver.find()");			
 			return remoteInvestigatorList;
 		}
 		
@@ -209,7 +212,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			//			get identified persons based on playerIds...
 			Metadata mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.IDENTIFIED_PERSON.getName());
 			String IdentifiedPersonsResultXml = broadcastCOPPA(resultPersonIds, mData);
-			System.out.println(IdentifiedPersonsResultXml);
+			//System.out.println(IdentifiedPersonsResultXml);
 			List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(IdentifiedPersonsResultXml);
 			IdentifiedPerson identifiedPerson = null;
 			for(String identifiedPersonXml: identifiedPersons){
@@ -315,6 +318,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	}
 
 	public Object getRemoteEntityByUniqueId(String externalId) {
+		log.info("Entering InvestigatorResolver.getRemoteEntityByUniqueId()");
+		System.out.println("Entering InvestigatorResolver.getRemoteEntityByUniqueId()");
 		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
 
 		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
@@ -324,6 +329,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+		log.info("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
+		System.out.println("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
 		return loadInvestigatorForPersonResult(resultXml);
 	}
 	
