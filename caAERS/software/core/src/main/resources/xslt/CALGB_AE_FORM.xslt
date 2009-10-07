@@ -124,8 +124,6 @@
 
             <!--<fo:block space-after="10px"></fo:block>-->
 
-            <fo:block xsl:use-attribute-sets="cellText"><xsl:value-of select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/descriptionText"/></fo:block>
-
             <fo:block space-after="10px"/>
 
             <!---->
@@ -337,6 +335,10 @@
             <fo:table-row height="16px">
                 <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Course/Cycle type</fo:block></fo:table-cell>
                 <fo:table-cell number-columns-spanned="11"><fo:block xsl:use-attribute-sets="cellTextValue"><xsl:value-of select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/name"/></fo:block></fo:table-cell>
+            </fo:table-row>
+            <fo:table-row height="16px">
+                <fo:table-cell border-bottom="0px black dotted"><fo:block xsl:use-attribute-sets="cellText">Instructions</fo:block></fo:table-cell>
+                <fo:table-cell number-columns-spanned="11"><fo:block xsl:use-attribute-sets="cellText"><xsl:value-of select="ns2:studies/ns2:study/evaluationPeriods/ns2:evaluationPeriod/descriptionText"/></fo:block></fo:table-cell>
             </fo:table-row>
         </fo:table-body>
 
