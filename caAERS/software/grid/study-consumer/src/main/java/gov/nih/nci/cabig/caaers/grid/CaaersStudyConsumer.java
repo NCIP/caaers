@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.grid;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
@@ -35,14 +34,23 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
+import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -54,6 +62,8 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
 import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
+import org.springframework.web.context.request.WebRequest;
 
 public class CaaersStudyConsumer implements StudyConsumerI {
 
@@ -72,6 +82,46 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     private String studyConsumerGridServiceUrl;
 
     private Integer rollbackInterval;
+    
+    private AuthorizationSwitch authorizationSwitch;
+
+    //private StudyParticipantAssignmentAspect assignmentAspect;
+    
+    private OpenSessionInViewInterceptor openSessionInViewInterceptor;
+    
+    public void setOpenSessionInViewInterceptor(
+			OpenSessionInViewInterceptor openSessionInViewInterceptor) {
+		this.openSessionInViewInterceptor = openSessionInViewInterceptor;
+	}
+/*
+	public void setAssignmentAspect(
+			StudyParticipantAssignmentAspect assignmentAspect) {
+		this.assignmentAspect = assignmentAspect;
+	}
+*/
+	public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
+		this.authorizationSwitch = authorizationSwitch;
+	}
+
+	private WebRequest preProcess() {
+        //assignmentAspect.setSecurityInterceptor(new AspectJSecurityInterceptorStub());
+        authorizationSwitch.setOn(false);
+        GrantedAuthority[] authorities = new GrantedAuthority[1];
+        authorities[0] = new GrantedAuthorityImpl("ROLE_caaers_super_user");
+
+        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user", "ignored",
+                        authorities);
+        auth.setAuthenticated(true);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        WebRequest stubWebRequest = new StubWebRequest();
+        openSessionInViewInterceptor.preHandle(stubWebRequest);
+        return stubWebRequest;
+    }
+
+    private void postProcess(WebRequest stubWebRequest) {
+        openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
+    }
 
     public void commit(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
@@ -99,7 +149,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      */
     public void rollback(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
-
+    	
+    	WebRequest stubWebRequest = null;
+    	stubWebRequest = preProcess();
         logger.info("Begining of studyConsumer : rollback");
         if (studyDto == null) {
             InvalidStudyException invalidStudyException = getInvalidStudyException("Null input");
@@ -147,6 +199,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         } catch (Exception expception) {
             String message = "Exception while comitting study," + expception.getMessage();
             throw getInvalidStudyException(message);
+        } finally {
+            postProcess(stubWebRequest);
         }
         logger.info("End of studyConsumer : rollback");
     }
@@ -168,8 +222,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      */
     public void createStudy(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException, StudyCreationException {
-        try {
-            logger.info("Begining of studyConsumer : createStudy");
+    	WebRequest stubWebRequest = null;
+    	try {
+    		stubWebRequest = preProcess();
+        	logger.info("Begining of studyConsumer : createStudy");
             if (studyDto == null) throw getInvalidStudyException("null input");
 
             gov.nih.nci.cabig.caaers.domain.Study study = null;
@@ -196,6 +252,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         } catch (Exception e) {
             logger.error("Error while creating study", e);
             throw new RemoteException("Unable to create study", e);
+        } finally {
+            postProcess(stubWebRequest);
         }
 
     }
@@ -601,9 +659,49 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Required
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
+	
+    private static class StubWebRequest implements WebRequest {
+        public String getParameter(final String paramName) {
+            return null;
+        }
+
+        public String[] getParameterValues(final String paramName) {
+            return null;
+        }
+
+        public Map getParameterMap() {
+            return Collections.emptyMap();
+        }
+
+        public Locale getLocale() {
+            return null;
+        }
+
+        public Object getAttribute(final String name, final int scope) {
+            return null;
+        }
+
+        public void setAttribute(final String name, final Object value, final int scope) {
+        }
+
+        public void removeAttribute(final String name, final int scope) {
+        }
+
+        public void registerDestructionCallback(final String name, final Runnable callback,
+                        final int scope) {
+        }
+
+        public String getSessionId() {
+            return null;
+        }
+
+        public Object getSessionMutex() {
+            return null;
+        }
+    }
 }
