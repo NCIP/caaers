@@ -68,7 +68,7 @@
 	       			     			<c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
 	       			     				<div id="report-label" class="label">${report.reportDefinition.label}</div>
 	       			     				<div id="report-link" style="display:none">
-	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">
 												${report.reportDefinition.label}
 											</a>
 	       			     				</div>
@@ -76,7 +76,7 @@
 	       			     			<c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
 	       			     				<div id="report-label" class="label" style="display:none">${report.reportDefinition.label}</div>
 	       			     				<div id="report-link">
-	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">
 												${report.reportDefinition.label}
 											</a>
 	       			     				</div>
