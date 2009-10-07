@@ -12,6 +12,7 @@
 <%@attribute name="identifiers" type="java.lang.Boolean"  %>
 <%@attribute name="exclusions" %>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
+<%@attribute name="isNew" type="java.lang.Boolean" %>
 
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
@@ -24,14 +25,17 @@
                     <c:set var="fValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
                     <tags:renderInputs field="${field}" disabled="${identifiers and (index lt 2) and (fstatus.index ne 4)}"/>
                 </c:if>
-                <c:if test="${fstatus.index == 2 && !identifiers}">Inactive</c:if>
+                <c:if test="${fstatus.index == 2 && !identifiers}">
+                    <c:if test="${isNew}">Pending</c:if>
+                    <c:if test="${!isNew}">Inactive</c:if>
+                </c:if>
             </td>
 		</c:if>
 	</c:forEach>
 
     <c:if test="${not disableDelete}">
         <td style="border-left:none;">
-            <a id="del-${empty idSuffix ? index : idSuffix}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle"></a>
+            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
         </td>
 	</c:if>
 	<c:if test="${disableDelete}">

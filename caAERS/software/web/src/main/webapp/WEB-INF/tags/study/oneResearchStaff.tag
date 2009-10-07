@@ -39,7 +39,8 @@
     <td style="border-left:none;">
     <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
         <c:set var="isActive"><jsp:attribute name="value"><caaers:value path="${_staffStatusField.propertyName}"/></jsp:attribute></c:set>
-        <c:if test="${isActive}">Active</c:if>
+        <c:if test="${isActive && isNew}">Pending</c:if>
+        <c:if test="${isActive && !isNew}">Active</c:if>
         <c:if test="${!isActive}">Inactive</c:if>
     </td>
 
@@ -50,9 +51,7 @@
         </c:if>
 
         <c:if test="${isNew || sp.siteResearchStaff.researchStaff == null || sp.id == null}">
-            <a id="del-${index}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">
-                <img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete" style="vertical-align:middle">
-            </a>
+            <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="fireDelete(${index},'${cssClass}-${index}')"/>
         </c:if>
 
 <%--
