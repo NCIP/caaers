@@ -41,7 +41,9 @@
                    <c:forEach items="${terms}" var="studyTerm" varStatus="status">
                        <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
                            <study:oneExpectedAE isOtherSpecify="${studyTerm.otherRequired}" index="${status.index}" studyTerm="${studyTerm}"/>
-                           <td style="text-align:center;" width="50px"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;""></td>
+                           <td style="text-align:center;" width="50px">
+                                <tags:button id="${status.index}" color="blue" type="button" value="" size="small" icon="x" onclick="removeTerm(${status.index})"/>
+                           </td>
                        </tr>
                    </c:forEach>
                 <tr id="observedBlankRow" style="display:none;"><td></td></tr>
