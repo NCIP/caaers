@@ -222,6 +222,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      */
     public void createStudy(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException, StudyCreationException {
+    	System.out.println("Begining of studyConsumer : createStudy");
     	WebRequest stubWebRequest = null;
     	try {
     		stubWebRequest = preProcess();
@@ -239,7 +240,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 return;
             }
 
-            study = new gov.nih.nci.cabig.caaers.domain.Study();
+            study = new gov.nih.nci.cabig.caaers.domain.LocalStudy();
             study.setGridId(studyDto.getGridId());
             populateStudyDetails(studyDto, study);
             studyDao.save(study);
