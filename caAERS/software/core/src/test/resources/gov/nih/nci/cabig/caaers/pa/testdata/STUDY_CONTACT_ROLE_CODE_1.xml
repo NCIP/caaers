@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pa:StudyContact xmlns:pa="http://pa.services.coppa.nci.nih.gov">
+    <pa:roleCode code="Study Principal Investigator" xmlns:pa="http://pa.services.coppa.nci.nih.gov"/>
+</pa:StudyContact>
