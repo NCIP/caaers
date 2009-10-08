@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
 import gov.nih.nci.cabig.caaers.webservice.PersonnelRoleCodeType;
@@ -22,8 +18,14 @@ import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyPersonnels;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.io.*;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+import com.semanticbits.rules.utils.RuleUtil;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 /**
  * 
@@ -151,5 +153,258 @@ public class StudyConverterTest extends AbstractTestCase {
 		 
 		 assertEquals(0, DateUtils.compareDate(now.toGregorianCalendar().getTime(), study.getStudySites().get(0).getStartDate()));
 	}
+
+    public void testConvertStudyDomainToStudyDto() throws Exception {
+        Study study = new LocalStudy();
+        study.setShortTitle("Short Title test for export");
+        study.setLongTitle("Long Title test for export");
+
+        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+
+        assertEquals("Short Title test for export", studies.getStudy().get(0).getShortTitle());
+        assertEquals("Long Title test for export", studies.getStudy().get(0).getLongTitle());
+
+    }
+
+    public void testExportStudy() throws Exception {
+        Study study = new LocalStudy();
+        study.setShortTitle("Short Title test for export");
+        study.setLongTitle("Long Title test for export");
+        study.setPrimaryIdentifierValue("ST-x8");
+        study.setPhaseCode("Phase I Trial");
+        study.setStatus("Administratively Complete");
+        study.setMultiInstitutionIndicator(true);
+        study.setAdeersReporting(true);
+        study.setDrugAdministrationTherapyType(true);
+        study.setDeviceTherapyType(true);
+        study.setRadiationTherapyType(true);
+        study.setSurgeryTherapyType(true);
+        study.setBehavioralTherapyType(true);
+        study.setDesign(Design.PARTIAL);
+
+        study.setAeTerminology(new AeTerminology());
+        study.getAeTerminology().setCtcVersion(new Ctc());
+        study.getAeTerminology().getCtcVersion().setName("3");
+/*
+        study.getAeTerminology().setMeddraVersion(new MeddraVersion());
+        study.getAeTerminology().getMeddraVersion().setName("Meddra-9");
+*/
+
+        study.setDiseaseTerminology(new DiseaseTerminology());
+        study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+
+
+//////// FUNDING SPONSOR
+        study.setFundingSponsor(new FundingSponsor());
+        study.getFundingSponsor().setOrganizationAssignedIdentifier(new OrganizationAssignedIdentifier());
+        study.getFundingSponsor().getOrganizationAssignedIdentifier().setValue("FS-x001");
+
+        study.getFundingSponsor().setStudyFundingSponsor(new StudyFundingSponsor());
+        study.getFundingSponsor().getStudyFundingSponsor().setOrganization(new LocalOrganization());
+        study.getFundingSponsor().getStudyFundingSponsor().getOrganization().setNciInstituteCode("NCI-code-Russia-x789");
+        study.getFundingSponsor().getStudyFundingSponsor().getOrganization().setName("Mayo Rochester - Russia");
+
+        // Investigators
+
+        Investigator i1 = new LocalInvestigator();
+        i1.setFirstName("John");
+        i1.setLastName("Karma");
+        i1.setNciIdentifier("JKarma-01");
+
+        StudyInvestigator si1 = new StudyInvestigator();
+        si1.setStartDate(new Date());
+        si1.setEndDate(new Date());
+        si1.setRoleCode("PI");
+        si1.setSiteInvestigator(new SiteInvestigator());
+        si1.getSiteInvestigator().setInvestigator(i1);
+
+        Investigator i2 = new LocalInvestigator();
+        i2.setFirstName("Alex");
+        i2.setLastName("Grails");
+        i2.setNciIdentifier("AGrails-02");
+
+        StudyInvestigator si2 = new StudyInvestigator();
+        si2.setStartDate(new Date());
+        si2.setEndDate(new Date());
+        si2.setRoleCode("SI");
+        si2.setSiteInvestigator(new SiteInvestigator());
+        si2.getSiteInvestigator().setInvestigator(i2);
+
+        List<StudyInvestigator> l = new ArrayList<StudyInvestigator>();
+        study.getFundingSponsor().getStudyFundingSponsor().setStudyInvestigators(l);
+        l.add(si1);
+        l.add(si2);
+
+        // Personnel
+
+        ResearchStaff r1 = new LocalResearchStaff();
+        r1.setFirstName("Kevin");
+        r1.setLastName("Groovy");
+        r1.setNciIdentifier("hhk-90");
+
+        StudyPersonnel sp1 = new StudyPersonnel();
+        sp1.setStartDate(new Date());
+        sp1.setEndDate(new Date());
+        sp1.setRoleCode("caaers_ae_cd");
+        sp1.setSiteResearchStaff(new SiteResearchStaff());
+        sp1.getSiteResearchStaff().setResearchStaff(r1);
+
+        ResearchStaff r2 = new LocalResearchStaff();
+        r2.setFirstName("Laura");
+        r2.setLastName("Boyd");
+        r2.setNciIdentifier("LB-6771");
+
+        StudyPersonnel sp2 = new StudyPersonnel();
+        sp2.setStartDate(new Date());
+        sp2.setEndDate(new Date());
+        sp2.setRoleCode("caaers_site_cd");
+        sp2.setSiteResearchStaff(new SiteResearchStaff());
+        sp2.getSiteResearchStaff().setResearchStaff(r2);
+
+        List<StudyPersonnel> l2 = new ArrayList<StudyPersonnel>();
+        study.getFundingSponsor().getStudyFundingSponsor().setStudyPersonnels(l2);
+        l2.add(sp2);
+        l2.add(sp1);
+
+
+//////// COORDINATING CENTER        
+        study.setCoordinatingCenter(new CoordinatingCenter());
+        study.getCoordinatingCenter().setOrganizationAssignedIdentifier(new OrganizationAssignedIdentifier());
+        study.getCoordinatingCenter().getOrganizationAssignedIdentifier().setValue("FS-x002");
+
+        study.getCoordinatingCenter().setStudyCoordinatingCenter(new StudyCoordinatingCenter());
+        study.getCoordinatingCenter().getStudyCoordinatingCenter().setOrganization(new LocalOrganization());
+        study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().setNciInstituteCode("NCI-code-France-x789");
+        study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().setName("Mayo Rochester - France");
+
+        // Investigators
+
+        Investigator i11 = new LocalInvestigator();
+        i11.setFirstName("Angelo");
+        i11.setLastName("Perotti");
+        i11.setNciIdentifier("AP-101");
+
+        StudyInvestigator si11 = new StudyInvestigator();
+        si11.setStartDate(new Date());
+        si11.setEndDate(new Date());
+        si11.setRoleCode("PI");
+        si11.setSiteInvestigator(new SiteInvestigator());
+        si11.getSiteInvestigator().setInvestigator(i11);
+
+        Investigator i12 = new LocalInvestigator();
+        i12.setFirstName("Romano");
+        i12.setLastName("Caruso");
+        i12.setNciIdentifier("rc-402");
+
+        StudyInvestigator si12 = new StudyInvestigator();
+        si12.setStartDate(new Date());
+        si12.setEndDate(new Date());
+        si12.setRoleCode("SI");
+        si12.setSiteInvestigator(new SiteInvestigator());
+        si12.getSiteInvestigator().setInvestigator(i12);
+
+        List<StudyInvestigator> l11 = new ArrayList<StudyInvestigator>();
+        study.getCoordinatingCenter().getStudyCoordinatingCenter().setStudyInvestigators(l11);
+        l11.add(si11);
+        l11.add(si12);
+
+        // Personnel
+
+        ResearchStaff r11 = new LocalResearchStaff();
+        r11.setFirstName("Paolo");
+        r11.setLastName("Maldini");
+        r11.setNciIdentifier("pm-90");
+
+        StudyPersonnel sp11 = new StudyPersonnel();
+        sp11.setStartDate(new Date());
+        sp11.setEndDate(new Date());
+        sp11.setRoleCode("caaers_ae_cd");
+        sp11.setSiteResearchStaff(new SiteResearchStaff());
+        sp11.getSiteResearchStaff().setResearchStaff(r11);
+
+        ResearchStaff r12 = new LocalResearchStaff();
+        r12.setFirstName("Claudio");
+        r12.setLastName("Taffarel");
+        r12.setNciIdentifier("CT-6771");
+
+        StudyPersonnel sp12 = new StudyPersonnel();
+        sp12.setStartDate(new Date());
+        sp12.setEndDate(new Date());
+        sp12.setRoleCode("caaers_site_cd");
+        sp12.setSiteResearchStaff(new SiteResearchStaff());
+        sp12.getSiteResearchStaff().setResearchStaff(r12);
+
+        List<StudyPersonnel> l12 = new ArrayList<StudyPersonnel>();
+        study.getCoordinatingCenter().getStudyCoordinatingCenter().setStudyPersonnels(l12);
+        l12.add(sp12);
+        l12.add(sp11);
+
+
+//////// STUDY SITE
+        StudySite studySite1 = new StudySite();
+
+        studySite1.setOrganization(new LocalOrganization());
+        studySite1.getOrganization().setName("Study Site Name - 01");
+        studySite1.getOrganization().setNciInstituteCode("code-01");
+
+        // Investigators
+
+        Investigator i31 = new LocalInvestigator();
+        i31.setFirstName("Vladimir");
+        i31.setLastName("Putin");
+        i31.setNciIdentifier("VP-601");
+
+        StudyInvestigator si31 = new StudyInvestigator();
+        si31.setStartDate(new Date());
+        si31.setEndDate(new Date());
+        si31.setRoleCode("PI");
+        si31.setSiteInvestigator(new SiteInvestigator());
+        si31.getSiteInvestigator().setInvestigator(i31);
+
+        studySite1.addStudyInvestigators(si31);
+
+        // Personnel
+
+        ResearchStaff r32 = new LocalResearchStaff();
+        r32.setFirstName("Igor");
+        r32.setLastName("Smirnof");
+        r32.setNciIdentifier("is-190");
+
+        StudyPersonnel sp32 = new StudyPersonnel();
+        sp32.setStartDate(new Date());
+        sp32.setEndDate(new Date());
+        sp32.setRoleCode("caaers_ae_cd");
+        sp32.setSiteResearchStaff(new SiteResearchStaff());
+        sp32.getSiteResearchStaff().setResearchStaff(r32);
+
+        studySite1.addStudyPersonnel(sp32);
+
+        study.addStudyOrganization(studySite1);
+
+        // exporting...
+
+        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
+
+        try {
+            String tempDir = "/home/dell/Desktop/";
+            String fileName = "study_" + study.getPrimaryIdentifierValue();
+            fileName = RuleUtil.getStringWithoutSpaces(fileName);
+
+            StringWriter sw = new StringWriter();
+            JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true) ;
+            marshaller.marshal(studies, sw);
+            BufferedWriter out = new BufferedWriter(new FileWriter(tempDir + fileName + ".xml"));
+            out.write(sw.toString());
+            out.flush();
+            out.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 
 }

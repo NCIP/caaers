@@ -562,4 +562,6 @@
   <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController" />
   <bean name="/rule/notification/createConfigProperty" id="createConfigPropertyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateConfigPropertyController" />
 
+  <bean name="/study/export" id="exportStudyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.ExportStudyController" />
+
 </beans>

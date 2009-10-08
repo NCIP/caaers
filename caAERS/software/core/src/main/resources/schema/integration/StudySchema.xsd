@@ -685,6 +685,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="CTEP"/>
             <xs:enumeration value="MEDDRA"/>
+            <xs:enumeration value="OTHER"/>
         </xs:restriction>
     </xs:simpleType>
     

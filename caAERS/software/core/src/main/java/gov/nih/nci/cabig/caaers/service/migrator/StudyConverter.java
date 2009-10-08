@@ -44,24 +44,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
-import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
-import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
-import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
-import gov.nih.nci.cabig.caaers.webservice.ExpectedAECtcTermType;
-import gov.nih.nci.cabig.caaers.webservice.ExpectedAEMeddraTermType;
-import gov.nih.nci.cabig.caaers.webservice.IndType;
-import gov.nih.nci.cabig.caaers.webservice.InvestigationalNewDrugType;
-import gov.nih.nci.cabig.caaers.webservice.MeddraStudyDiseaseType;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.caaers.webservice.SiteInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.StudyAgentINDAssociationType;
-import gov.nih.nci.cabig.caaers.webservice.StudyAgentType;
-import gov.nih.nci.cabig.caaers.webservice.StudyInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.StudyPersonnelType;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
-import gov.nih.nci.cabig.caaers.webservice.TreatmentAssignmentType;
+import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.CtepStudyDiseases;
 import gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods;
 import gov.nih.nci.cabig.caaers.webservice.Study.ExpectedAECtcTerms;
@@ -73,8 +56,9 @@ import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.cabig.caaers.webservice.Study.TreatmentAssignments;
 import gov.nih.nci.cabig.caaers.webservice.StudyAgentType.StudyAgentINDAssociations;
 
-import java.util.HashMap;
-import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.datatype.DatatypeFactory;
+import java.util.*;
 
 /**
  * This class has one public method which Converts a JAXB generated Study Type object
@@ -84,7 +68,63 @@ import java.util.List;
  *
  */
 public class StudyConverter {
-	
+
+
+    public gov.nih.nci.cabig.caaers.webservice.Studies convertStudyDomainToStudyDto(Study study) throws Exception {
+        ObjectFactory objectFactory = new ObjectFactory();
+        gov.nih.nci.cabig.caaers.webservice.Study studyDto = objectFactory.createStudy();
+
+//        try {
+            studyDto.setShortTitle(study.getShortTitle());
+            studyDto.setLongTitle(study.getLongTitle());
+            studyDto.setPrecis(study.getPrecis());
+            studyDto.setDescription(study.getDescription());
+            studyDto.setPhaseCode(StudyPhaseType.fromValue(study.getPhaseCode()));
+            studyDto.setStatus(StatusType.fromValue(study.getStatus()));
+            studyDto.setMultiInstitutionIndicator(study.getMultiInstitutionIndicator());
+            studyDto.setAdeersReporting(study.getAdeersReporting());
+            studyDto.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
+            studyDto.setDeviceTherapyType(study.getDeviceTherapyType());
+            studyDto.setRadiationTherapyType(study.getRadiationTherapyType());
+            studyDto.setSurgeryTherapyType(study.getSurgeryTherapyType());
+            studyDto.setBehavioralTherapyType(study.getBehavioralTherapyType());
+
+            if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
+                MeddraVersion otherMeddra = new MeddraVersion();
+                otherMeddra.setName(study.getOtherMeddra().getName());
+                studyDto.setOtherMeddra(otherMeddra.getName());
+            }
+            
+            populateDesignCodeDomain2Dto(studyDto, study);
+            populateAeTerminologyDomain2Dto(studyDto, study);
+            populateDiseaseTerminologyDomain2Dto(studyDto,study);
+            populateFundingSponsorDomain2Dto(studyDto, study);
+            populateCoordinatingCenterDomain2Dto(studyDto, study);
+            populateStudySitesDomain2Dto(studyDto, study);
+
+/*
+            populateIdentifiers(studyDto, study);
+            populateTreatmentAssignments(studyDto, study);
+            populateStudyAgents(studyDto, study);
+            populateStudyDiseases(studyDto, study);
+            populateStudyEvaluationPeriods(studyDto, study);
+            populateStudyExpectedAEs(studyDto, study);
+*/
+
+/*
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CaaersSystemException("Exception while StudyDto Conversion", e);
+        }
+*/
+
+
+        gov.nih.nci.cabig.caaers.webservice.Studies studies = objectFactory.createStudies();
+        studies.getStudy().add(studyDto);
+
+        return studies;
+    }
+
 	/**
 	 * This method accepts a studyDto which is a JAXB generated Study Object
 	 * and a Study domain object. 
@@ -178,7 +218,124 @@ public class StudyConverter {
 			
 		}
 	}
-	
+
+    private XMLGregorianCalendar convertCalendar2XmlGregorianCalendar(Calendar c) throws Exception {
+        XMLGregorianCalendar xml =  DatatypeFactory.newInstance().newXMLGregorianCalendar();
+        xml.setYear(c.get(Calendar.YEAR));
+        xml.setMonth(c.get(Calendar.MONTH));
+        xml.setDay(c.get(Calendar.DAY_OF_MONTH));
+        return xml;
+    }
+
+	// Populate StudyInvestigators for a StudyOrganization
+	private void populateStudyInvestigatorsDomain2Dto(List<StudyInvestigator> studyInvestigators, StudyFundingSponsorType sf) throws Exception{
+
+		if(studyInvestigators != null && !studyInvestigators.isEmpty()) {
+
+            sf.setStudyInvestigators(new StudyFundingSponsorType.StudyInvestigators());
+            sf.getStudyInvestigators().setStudyInvestigator(new ArrayList<StudyInvestigatorType>());
+
+			StudyInvestigatorType siType = null;
+
+            for (StudyInvestigator si : studyInvestigators) {
+                siType = new StudyInvestigatorType();
+                siType.setRoleCode(RoleCodeType.fromValue(si.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (si.getStartDate() != null) {
+                    c.setTime(si.getStartDate());
+                    siType.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (si.getEndDate() != null) {
+                    c.setTime(si.getEndDate());
+                    siType.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                siType.setSiteInvestigator(new SiteInvestigatorType());
+                siType.getSiteInvestigator().setInvestigator(new InvestigatorType());
+                siType.getSiteInvestigator().getInvestigator().setFirstName(si.getSiteInvestigator().getInvestigator().getFirstName());
+                siType.getSiteInvestigator().getInvestigator().setLastName(si.getSiteInvestigator().getInvestigator().getLastName());
+                siType.getSiteInvestigator().getInvestigator().setNciIdentifier(si.getSiteInvestigator().getInvestigator().getNciIdentifier());
+
+                sf.getStudyInvestigators().getStudyInvestigator().add(siType);
+            }
+
+        }
+	}
+
+	private void populateStudyInvestigatorsDomain2DtoForCoordinatingSite(List<StudyInvestigator> studyInvestigators, StudyCoordinatingCenterType sc) throws Exception{
+
+		if(studyInvestigators != null && !studyInvestigators.isEmpty()) {
+
+            sc.setStudyInvestigators(new StudyCoordinatingCenterType.StudyInvestigators());
+            sc.getStudyInvestigators().setStudyInvestigator(new ArrayList<StudyInvestigatorType>());
+
+			StudyInvestigatorType siType = null;
+
+            for (StudyInvestigator si : studyInvestigators) {
+                siType = new StudyInvestigatorType();
+                siType.setRoleCode(RoleCodeType.fromValue(si.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (si.getStartDate() != null) {
+                    c.setTime(si.getStartDate());
+                    siType.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (si.getEndDate() != null) {
+                    c.setTime(si.getEndDate());
+                    siType.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                siType.setSiteInvestigator(new SiteInvestigatorType());
+                siType.getSiteInvestigator().setInvestigator(new InvestigatorType());
+                siType.getSiteInvestigator().getInvestigator().setFirstName(si.getSiteInvestigator().getInvestigator().getFirstName());
+                siType.getSiteInvestigator().getInvestigator().setLastName(si.getSiteInvestigator().getInvestigator().getLastName());
+                siType.getSiteInvestigator().getInvestigator().setNciIdentifier(si.getSiteInvestigator().getInvestigator().getNciIdentifier());
+
+                sc.getStudyInvestigators().getStudyInvestigator().add(siType);
+            }
+
+        }
+	}
+
+	private void populateStudyInvestigatorsDomain2DtoForStudySite(List<StudyInvestigator> studyInvestigators, StudySiteType sst) throws Exception{
+
+		if(studyInvestigators != null && !studyInvestigators.isEmpty()) {
+
+            sst.setStudyInvestigators(new StudySiteType.StudyInvestigators());
+            sst.getStudyInvestigators().setStudyInvestigator(new ArrayList<StudyInvestigatorType>());
+
+			StudyInvestigatorType siType = null;
+
+            for (StudyInvestigator si : studyInvestigators) {
+                siType = new StudyInvestigatorType();
+                siType.setRoleCode(RoleCodeType.fromValue(si.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (si.getStartDate() != null) {
+                    c.setTime(si.getStartDate());
+                    siType.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (si.getEndDate() != null) {
+                    c.setTime(si.getEndDate());
+                    siType.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                siType.setSiteInvestigator(new SiteInvestigatorType());
+                siType.getSiteInvestigator().setInvestigator(new InvestigatorType());
+                siType.getSiteInvestigator().getInvestigator().setFirstName(si.getSiteInvestigator().getInvestigator().getFirstName());
+                siType.getSiteInvestigator().getInvestigator().setLastName(si.getSiteInvestigator().getInvestigator().getLastName());
+                siType.getSiteInvestigator().getInvestigator().setNciIdentifier(si.getSiteInvestigator().getInvestigator().getNciIdentifier());
+
+                sst.getStudyInvestigators().getStudyInvestigator().add(siType);
+            }
+
+        }
+	}
+
 	//Populate StudyPersonnel for a StudyOrganization
 	private void populateStudyPersonnel(List<StudyPersonnelType> studyPersonnelList,StudyOrganization studyOrganization) throws Exception{
 		if(studyPersonnelList != null && !studyPersonnelList.isEmpty()){
@@ -204,6 +361,105 @@ public class StudyConverter {
 		}
 	}
 	
+	private void populateStudyPersonnelDomain2Dto(List<StudyPersonnel> studyPersonnelList, StudyFundingSponsorType sf) throws Exception{
+        if (studyPersonnelList != null && !studyPersonnelList.isEmpty()) {
+
+            sf.setStudyPersonnels(new StudyFundingSponsorType.StudyPersonnels());
+            sf.getStudyPersonnels().setStudyPersonnel((new ArrayList<StudyPersonnelType>()));
+
+            StudyPersonnelType p;
+            
+            for (StudyPersonnel personnel : studyPersonnelList) {
+                p = new StudyPersonnelType();
+                p.setRoleCode(PersonnelRoleCodeType.fromValue(personnel.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (personnel.getStartDate() != null) {
+                    c.setTime(personnel.getStartDate());
+                    p.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (personnel.getEndDate() != null) {
+                    c.setTime(personnel.getEndDate());
+                    p.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                p.setResearchStaff(new ResearchStaffType());
+                p.getResearchStaff().setFirstName(personnel.getSiteResearchStaff().getResearchStaff().getFirstName());
+                p.getResearchStaff().setLastName(personnel.getSiteResearchStaff().getResearchStaff().getLastName());
+                p.getResearchStaff().setNciIdentifier(personnel.getSiteResearchStaff().getResearchStaff().getNciIdentifier());
+
+                sf.getStudyPersonnels().getStudyPersonnel().add(p);
+            }
+        }
+    }
+
+	private void populateStudyPersonnelDomain2DtoForCoordinatingSite(List<StudyPersonnel> studyPersonnelList, StudyCoordinatingCenterType sc) throws Exception{
+        if (studyPersonnelList != null && !studyPersonnelList.isEmpty()) {
+
+            sc.setStudyPersonnels(new StudyCoordinatingCenterType.StudyPersonnels());
+            sc.getStudyPersonnels().setStudyPersonnel((new ArrayList<StudyPersonnelType>()));
+
+            StudyPersonnelType p;
+
+            for (StudyPersonnel personnel : studyPersonnelList) {
+                p = new StudyPersonnelType();
+                p.setRoleCode(PersonnelRoleCodeType.fromValue(personnel.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (personnel.getStartDate() != null) {
+                    c.setTime(personnel.getStartDate());
+                    p.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (personnel.getEndDate() != null) {
+                    c.setTime(personnel.getEndDate());
+                    p.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                p.setResearchStaff(new ResearchStaffType());
+                p.getResearchStaff().setFirstName(personnel.getSiteResearchStaff().getResearchStaff().getFirstName());
+                p.getResearchStaff().setLastName(personnel.getSiteResearchStaff().getResearchStaff().getLastName());
+                p.getResearchStaff().setNciIdentifier(personnel.getSiteResearchStaff().getResearchStaff().getNciIdentifier());
+
+                sc.getStudyPersonnels().getStudyPersonnel().add(p);
+            }
+        }
+    }
+
+	private void populateStudyPersonnelDomain2DtoForStudySite(List<StudyPersonnel> studyPersonnelList, StudySiteType sst) throws Exception{
+        if (studyPersonnelList != null && !studyPersonnelList.isEmpty()) {
+
+            sst.setStudyPersonnels(new StudySiteType.StudyPersonnels());
+            sst.getStudyPersonnels().setStudyPersonnel((new ArrayList<StudyPersonnelType>()));
+
+            StudyPersonnelType p;
+
+            for (StudyPersonnel personnel : studyPersonnelList) {
+                p = new StudyPersonnelType();
+                p.setRoleCode(PersonnelRoleCodeType.fromValue(personnel.getRoleCode()));
+
+                Calendar c = Calendar.getInstance();
+                if (personnel.getStartDate() != null) {
+                    c.setTime(personnel.getStartDate());
+                    p.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                if (personnel.getEndDate() != null) {
+                    c.setTime(personnel.getEndDate());
+                    p.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                }
+
+                p.setResearchStaff(new ResearchStaffType());
+                p.getResearchStaff().setFirstName(personnel.getSiteResearchStaff().getResearchStaff().getFirstName());
+                p.getResearchStaff().setLastName(personnel.getSiteResearchStaff().getResearchStaff().getLastName());
+                p.getResearchStaff().setNciIdentifier(personnel.getSiteResearchStaff().getResearchStaff().getNciIdentifier());
+
+                sst.getStudyPersonnels().getStudyPersonnel().add(p);
+            }
+        }
+    }
+
 	//Populate DesignCode
 	private void populateDesignCode(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
@@ -219,6 +475,13 @@ public class StudyConverter {
 		}
 	}
 	
+	// Populate DesignCode
+	private void populateDesignCodeDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+        if (study.getDesign() == null) return;
+        Design d = study.getDesign();
+        studyDto.setDesign(DesignCodeType.fromValue(d.name()));
+	}
+
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getAeTerminology() != null){
@@ -242,6 +505,29 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateAeTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+        if (study.getAeTerminology() != null) {
+            AeTerminologyType aeTerminology = new AeTerminologyType();
+
+            if (study.getAeTerminology().getCtcVersion() != null) {
+                CtcVersionType ctc = new CtcVersionType();
+                ctc.setName(study.getAeTerminology().getCtcVersion().getName());
+                aeTerminology.setCtcVersion(ctc);
+
+            }
+            
+            if (study.getAeTerminology().getMeddraVersion() != null) {
+                MeddraVersionType meddra = new MeddraVersionType();
+                meddra.setName(study.getAeTerminology().getMeddraVersion().getName());
+                aeTerminology.setMeddraVersion(meddra);
+            }
+
+            studyDto.setAeTerminology(aeTerminology);
+        }
+
+    }
+
 	private void populateDiseaseTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getDiseaseTerminology() != null){
@@ -257,6 +543,28 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateDiseaseTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+		if(study.getDiseaseTerminology() != null){
+			DiseaseTerminologyType  dt = new DiseaseTerminologyType();
+
+			if(study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.CTEP)) {
+                dt.setDiseaseCodeTerm(DiseaseCodeType.CTEP);
+			}
+
+			if(study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)) {
+                dt.setDiseaseCodeTerm(DiseaseCodeType.MEDDRA);
+			}
+
+			if(study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.OTHER)) {
+                dt.setDiseaseCodeTerm(DiseaseCodeType.OTHER);
+			}
+
+            studyDto.setDiseaseTerminology(dt);
+		}
+
+	}
+
 	private void populateFundingSponsor(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getFundingSponsor() != null){
@@ -290,6 +598,43 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateFundingSponsorDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
+
+        if (study.getFundingSponsor() != null) {
+            FundingSponsorType fs = null;
+            StudyFundingSponsorType sfs = null;
+
+            if (study.getFundingSponsor().getOrganizationAssignedIdentifier() != null) {
+                fs = new FundingSponsorType();
+                ReducedIdentifierType identifier = new ReducedIdentifierType();
+                identifier.setValue(study.getFundingSponsor().getOrganizationAssignedIdentifier().getValue());
+                fs.setOrganizationAssignedIdentifier(identifier);
+            }
+
+            if (study.getFundingSponsor().getStudyFundingSponsor() != null) {
+                sfs = new StudyFundingSponsorType();
+                if (study.getFundingSponsor().getStudyFundingSponsor().getOrganization() != null) {
+                    OrganizationType organization = new OrganizationType();
+                    organization.setName(study.getFundingSponsor().getStudyFundingSponsor().getOrganization().getName());
+                    organization.setNciInstituteCode(study.getFundingSponsor().getStudyFundingSponsor().getOrganization().getNciInstituteCode());
+                    sfs.setOrganization(organization);
+                    fs.setStudyFundingSponsor(sfs);
+                }
+            }
+
+            if (study.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators() != null) {
+                populateStudyInvestigatorsDomain2Dto(study.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators(), fs.getStudyFundingSponsor());
+            }
+            
+            if (study.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels() != null) {
+                populateStudyPersonnelDomain2Dto(study.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels(), fs.getStudyFundingSponsor());
+            }
+
+            studyDto.setFundingSponsor(fs);
+        }
+
+    }
+
 	private void populateCoordinatingCenter(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getCoordinatingCenter() != null){
@@ -322,6 +667,43 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateCoordinatingCenterDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+        if (study.getCoordinatingCenter() != null) {
+            CoordinatingCenterType coordinatingCenterType = null;
+            StudyCoordinatingCenterType studyCoordinatingCenterType = null;
+
+            if (study.getCoordinatingCenter().getOrganizationAssignedIdentifier() != null) {
+                coordinatingCenterType = new CoordinatingCenterType();
+                ReducedIdentifierType identifier = new ReducedIdentifierType();
+                identifier.setValue(study.getCoordinatingCenter().getOrganizationAssignedIdentifier().getValue());
+                coordinatingCenterType.setOrganizationAssignedIdentifier(identifier);
+            }
+
+            if (study.getCoordinatingCenter().getStudyCoordinatingCenter() != null) {
+                studyCoordinatingCenterType = new StudyCoordinatingCenterType();
+                if (study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization() != null) {
+                    OrganizationType organization = new OrganizationType();
+                    organization.setName(study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().getName());
+                    organization.setNciInstituteCode(study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode());
+                    studyCoordinatingCenterType.setOrganization(organization);
+                    coordinatingCenterType.setStudyCoordinatingCenter(studyCoordinatingCenterType);
+                }
+
+				if(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyInvestigators() != null){
+					populateStudyInvestigatorsDomain2DtoForCoordinatingSite(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyInvestigators(), coordinatingCenterType.getStudyCoordinatingCenter());
+				}
+                
+				if(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyPersonnels() != null){
+					populateStudyPersonnelDomain2DtoForCoordinatingSite(study.getCoordinatingCenter().getStudyCoordinatingCenter().getStudyPersonnels(), coordinatingCenterType.getStudyCoordinatingCenter());
+				}
+            }
+
+            studyDto.setCoordinatingCenter(coordinatingCenterType);
+        }
+
+    }
+
 	private void populateStudySites(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		StudyOrganizations studySites = studyDto.getStudyOrganizations();
@@ -356,6 +738,54 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateStudySitesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
+
+        List<StudySite> studySites = study.getStudySites();
+            
+        if (studySites != null && !studySites.isEmpty()) {
+            StudyOrganizations studyOrganizations = new StudyOrganizations();
+            studyOrganizations.setStudySite(new ArrayList<StudySiteType>());
+
+            StudySiteType sst = null;
+
+            for (StudySite ss : studySites) {
+
+                sst = new StudySiteType();
+
+
+                            Calendar c = Calendar.getInstance();
+                            if (ss.getStartDate() != null) {
+                                c.setTime(ss.getStartDate());
+                                sst.setStartDate(convertCalendar2XmlGregorianCalendar(c));
+                            }
+                            if (ss.getEndDate() != null) {
+                                c.setTime(ss.getEndDate());
+                                sst.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                            }
+
+                            if (ss.getOrganization() != null) {
+                                OrganizationType organizationType = new OrganizationType();
+                                organizationType.setName(ss.getOrganization().getName());
+                                organizationType.setNciInstituteCode(ss.getOrganization().getNciInstituteCode());
+                                sst.setOrganization(organizationType);
+                            }
+
+                            if (ss.getStudyInvestigators() != null) {
+                                populateStudyInvestigatorsDomain2DtoForStudySite(ss.getStudyInvestigators(), sst);
+                            }
+
+                            if (ss.getStudyPersonnels() != null) {
+                                populateStudyPersonnelDomain2DtoForStudySite(ss.getStudyPersonnels(), sst);
+                            }
+
+                studyOrganizations.getStudySite().add(sst);
+            }
+
+            studyDto.setStudyOrganizations(studyOrganizations);
+        }
+
+    }
+
 	private void populateIdentifiers(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		Identifiers identifiers = studyDto.getIdentifiers();
