@@ -38,11 +38,12 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
-        	<!--  LabViewer registration stubs/skeltons 
-        	<dependency org="gov.nih.nci.ccts.grid" name="LabViewerConsumer-client" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="LabViewerConsumer-common" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="LabViewerConsumer-stubs" rev="0.1"  />
-        	-->
+			<dependency org="gov.nih.nci.ccts.grid"
+					name="LabConsumerService-client" rev="2.8" transitive="false" />
+			<dependency org="gov.nih.nci.ccts.grid"
+						name="LabConsumerService-common" rev="2.8" transitive="false" />
+			<dependency org="gov.nih.nci.ccts.grid"
+						name="LabConsumerService-stubs" rev="2.8" transitive="false" />
         	
         	<!-- CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
