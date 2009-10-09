@@ -1,56 +1,50 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
-import org.springframework.beans.factory.annotation.Required;
-
 /**
  * @author Jared Flatow
+ * @author Ram Seethiraju
  */
 public class LoginPolicyValidator implements PasswordPolicyValidator {
-
-    private CSMUserRepository csmUserRepository;
 
     public boolean validate(PasswordPolicy policy, Credential credential)
             throws ValidationException {
         LoginPolicy loginPolicy = policy.getLoginPolicy();
 
-        return validateAllowedFailedLoginAttempts(loginPolicy, credential)
-                && validateLockOutDuration(loginPolicy, credential)
+        return validateLockOutDuration(loginPolicy, credential)
+                && validateAllowedFailedLoginAttempts(loginPolicy, credential)
                 && validateMaxPasswordAge(loginPolicy, credential);
     }
-
-    private boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential)
-            throws ValidationException {
-        if (csmUserRepository.getUserByName(credential.getUserName()).getFailedLoginAttempts() > policy
+    public boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential)
+            throws TooManyAllowedFailedLoginAttemptsException {
+        if (credential.getUser().getFailedLoginAttempts() >= policy
                 .getAllowedFailedLoginAttempts()) {
-            throw new ValidationException("Too many failed logins.");
+            throw new TooManyAllowedFailedLoginAttemptsException("Too many failed logins.");
         }
         return true;
     }
-
-    private boolean validateLockOutDuration(LoginPolicy policy, Credential credential)
-            throws ValidationException {
-        // TODO
-        return true;
+    public boolean validateLockOutDuration(LoginPolicy policy, Credential credential)
+            throws UserLockedOutException {
+    	if(credential.getUser().getSecondsPastLastLoginAttempt() == -1) 
+    		return true;
+    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastLoginAttempt())
+    		throw new UserLockedOutException("User is locked out");
+    	return true;
     }
-
-    private boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential)
-            throws ValidationException {
-        if (csmUserRepository.getUserByName(credential.getUserName()).getPasswordAge() > policy
+    public boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential)
+            throws PasswordTooOldException {
+    	
+        if (credential.getUser().getPasswordAge() > policy
                 .getMaxPasswordAge()) {
-            throw new ValidationException("Password is too old.");
+            throw new PasswordTooOldException("Password is too old.");
         }
         return true;
     }
-
-    @Required
+   /* @Required
     public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
-    }
-
-
+    }*/
 }

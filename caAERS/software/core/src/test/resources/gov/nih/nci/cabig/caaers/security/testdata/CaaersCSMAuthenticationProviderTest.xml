@@ -1,0 +1,113 @@
+<dataset>
+    <ORGANIZATIONS 
+    id="-1000" 
+    name="New Site 1" 
+    grid_id="gridSite1"/>
+    
+    <ORGANIZATIONS 
+    id="-1001" 
+    name="New Site 2" 
+    grid_id="gridSite2"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1000" 
+    version="1" 
+    first_name="Bill" 
+    last_name="Gates" 
+    email_address="big@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id" 
+    login_id="abcd"
+    street="Park Centre Road"
+   	city="Fairfax"
+   	state="Virginia"
+   	zip="22033"
+   	code="0"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1001" 
+    version="1" 
+    first_name="George" 
+    last_name="Bush" 
+    email_address="gb@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id"/>
+    
+    <RESEARCH_STAFFS 
+    id="-1002" 
+    version="1" 
+    first_name="Benjamin" 
+    last_name="Franklin" 
+    email_address="bf@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id" />
+    
+    <RESEARCH_STAFFS 
+    id="-1003" 
+    version="1" 
+    first_name="JF" 
+    last_name="Kennedy" 
+    email_address="jfk@def.com" 
+    phone_number="123-456-789" 
+    nci_identifier="nci id"/>
+	
+	<SITE_RESEARCH_STAFFS 
+    	id="-4004" 
+    	site_id="-1000" 
+    	researchstaff_id="-1000"/>
+   
+   	<SITE_RESEARCH_STAFFS 
+    	id="-4005" 
+    	site_id="-1000" 
+    	researchstaff_id="-1001"/> 	
+    	
+    <SITE_RESEARCH_STAFFS 
+    	id="-4006" 
+    	site_id="-1001" 
+    	researchstaff_id="-1002"/>
+	
+    <SITE_RESEARCH_STAFFS 
+    	id="-4007" 
+    	site_id="-1001" 
+    	researchstaff_id="-1003"/>
+	
+    <investigational_new_drugs />
+    <ind_holders />	
+	
+	<study_agent_inds />
+	
+	<study_personnel />
+	
+	<site_rs_staff_roles />
+    
+    <ae_report_people />
+    
+    <contact_mechanisms />
+    
+    <identifiers />
+    
+    <site_investigators />
+  
+    <study_investigators />
+    
+    <study_organizations />
+    
+    <study_site_wf_cfgs />
+      
+    <password_policy
+        id="-6"
+        ln_allowed_attempts="3"
+        ln_lockout_duration="180"
+        ln_max_age="172800"
+        cn_min_age="3600"
+        cn_history_size="3"
+        cn_min_length="7"
+        cn_cb_min_required="3"
+        cn_cb_is_upper_case_alphabet="0"
+        cn_cb_is_lower_case_alphabet="1"
+        cn_cb_is_non_alpha_numeric="1"
+        cn_cb_is_base_ten_digit="1"
+        cn_cb_max_substring_length="3"
+        />	
+        
+</dataset>

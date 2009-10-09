@@ -6,12 +6,12 @@ import org.springframework.beans.factory.FactoryBean;
 
 public class CaaersCSMLockoutManagerFactoryBean implements FactoryBean{
     
-    private String lockoutTime = "0";
-    private String allowedLoginTime = "0";
-    private String allowedAttempts = "0";
+    private String lockoutTime = "60000";
+    private String allowedLoginTime = "60000";
+    private String allowedAttempts = "3";
     
     public Object getObject() throws Exception {
-        LockoutManager.initialize("0", "0", "0");
+        LockoutManager.initialize("60000", "60000", "3");
         return LockoutManager.getInstance();
     }
 

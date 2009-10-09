@@ -301,9 +301,9 @@ public class Fixtures {
 
     public static PasswordPolicy createPasswordPolicy() {
         LoginPolicy loginPolicy = new LoginPolicy();
-        loginPolicy.setAllowedFailedLoginAttempts(1);
+        loginPolicy.setAllowedFailedLoginAttempts(3);
         loginPolicy.setLockOutDuration(0);
-        loginPolicy.setMaxPasswordAge(60 * 60 * 24);
+        loginPolicy.setMaxPasswordAge(60 * 60 * 24 * 7);
 
         CombinationPolicy combinationPolicy = new CombinationPolicy();
         combinationPolicy.setMinimumRequired(5);
@@ -315,7 +315,7 @@ public class Fixtures {
 
         PasswordCreationPolicy passwordCreationPolicy = new PasswordCreationPolicy();
         passwordCreationPolicy.setCombinationPolicy(combinationPolicy);
-        passwordCreationPolicy.setMinPasswordAge(1);
+        passwordCreationPolicy.setMinPasswordAge(60 * 60 * 24);
         passwordCreationPolicy.setPasswordHistorySize(1);
         passwordCreationPolicy.setMinPasswordLength(6);
 

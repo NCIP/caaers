@@ -7,8 +7,7 @@ import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 public class CombinationValidator implements PasswordPolicyValidator {
     public boolean validate(PasswordPolicy policy, Credential credential)
                     throws ValidationException {
-        CombinationPolicy combinationPolicy = policy.getPasswordCreationPolicy()
-                        .getCombinationPolicy();
+        CombinationPolicy combinationPolicy = policy.getPasswordCreationPolicy().getCombinationPolicy();
 
         return validateLowerCaseAlphabet(combinationPolicy, credential)
                         && validateUpperCaseAlphabet(combinationPolicy, credential)
@@ -54,7 +53,7 @@ public class CombinationValidator implements PasswordPolicyValidator {
     }
 
     private boolean validateMaxSubstringLength(CombinationPolicy policy, Credential credential)
-                    throws ValidationException {
+                    throws ValidationException {    	
         int substringLength = policy.getMaxSubstringLength() + 1;
         String userName = credential.getUserName(), password = credential.getPassword();
         for (int i = 0; i < userName.length() - substringLength; i++) {

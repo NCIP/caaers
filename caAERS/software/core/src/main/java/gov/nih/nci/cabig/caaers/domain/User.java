@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
@@ -43,6 +45,9 @@ public abstract class User extends Person implements Comparable<User>{
 	protected int numFailedLogins;
 
 	protected List<String> passwordHistory;
+	
+	protected Date lastLoginAttemptTime;
+	
 	
     public User() {
         userGroupTypes = new ArrayList<UserGroupType>();
@@ -125,7 +130,9 @@ public abstract class User extends Person implements Comparable<User>{
 
     @Transient
     public long getPasswordAge() {
-        return new Date().getTime() - getPasswordLastSet().getTime();
+    
+    	long age = (new Date().getTime() - getPasswordLastSet().getTime())/1000;    
+        return age;
     }
 
     @CollectionOfElements
@@ -155,7 +162,21 @@ public abstract class User extends Person implements Comparable<User>{
         this.numFailedLogins = numFailedLogins;
     }
     
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "last_login")
+	public Date getLastLoginAttemptTime() {
+		return lastLoginAttemptTime;
+	}
+
+	public void setLastLoginAttemptTime(Date lastLoginAttemptTime) {
+		this.lastLoginAttemptTime = lastLoginAttemptTime;
+	}
     
+	@Transient
+    public long getSecondsPastLastLoginAttempt(){
+    	if(getLastLoginAttemptTime()==null) return -1;
+    	return (new Date().getTime()-getLastLoginAttemptTime().getTime())/1000;
+    }
     /* end password stuff */
 
     public boolean equals(Object o) {

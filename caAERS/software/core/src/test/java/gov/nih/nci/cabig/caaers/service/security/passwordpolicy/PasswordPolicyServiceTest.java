@@ -11,6 +11,10 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
+import java.sql.Timestamp; 
+import java.util.Date;
 
 /**
  * @author Jared Flatow
@@ -26,6 +30,8 @@ public class PasswordPolicyServiceTest extends CaaersTestCase {
     private User user;
 
     private String userName;
+    
+    private DateUtils date;
 
     @Override
     protected void setUp() throws Exception {
@@ -41,18 +47,50 @@ public class PasswordPolicyServiceTest extends CaaersTestCase {
                 .andReturn(false).anyTimes();
         expect(csmUserRepository.userHadPassword(userName, "0ld_Password")).andReturn(true).anyTimes();
         expect(csmUserRepository.userHadPassword(eq(userName), not(eq("0ld_Password")))).andReturn(false)
-                .anyTimes();
-
+                .anyTimes();        
         passwordPolicyDao = registerDaoMockFor(PasswordPolicyDao.class);
         expect(passwordPolicyDao.getById(1)).andReturn(Fixtures.createPasswordPolicy()).anyTimes();
 
         passwordPolicyService = new PasswordPolicyServiceImpl();
         passwordPolicyService.setCsmUserRepository(csmUserRepository);
         passwordPolicyService.setPasswordPolicyDao(passwordPolicyDao);
+                
+        //expect(csmUserRepository.getUserByName(userName).getFailedLoginAttempts()).andReturn(3).anyTimes();
+        //user.setPasswordLastSet(new Timestamp(date.parseDateString("09/05/2009").toDate().getTime()));
+        
     }
+    
+    public void testValidatePasswordAgainstLoginPolicy() throws Exception {
+    	replayMocks();
+    	try {
+            tryLastSetDateForMaxPasswordAge(DateUtils.parseDateString("09/07/2009").toDate());
+            fail("Password is too old.");
+        } catch (ValidationException e) { /* good */  }
+        
+    	try {
+           // tryLastSetDateForMaxPasswordAge(DateUtils.parseDateString("09/17/2009").toDate());
+        } catch (ValidationException e) { fail("Password is not too old.");  }
 
+        try {
+        //	tryNumberOfFailedLoginAttempts(2);
+            fail("Too many failed logins.");
+        } catch (ValidationException e) { /* good */  }
+
+        verifyMocks();    	
+    }
+    
     public void testValidatePasswordAgainstCreationPolicy() throws Exception {
         replayMocks();
+        
+       	try {
+            tryLastSetDateForMinPasswordAge(DateUtils.parseDateString("09/16/2009").toDate());
+            fail("Passworddddd.");
+        } catch (ValidationException e) {/* good */  }
+
+        try {
+            tryLastSetDateForMinPasswordAge(DateUtils.parseDateString("09/18/2009").toDate());            
+        } catch (ValidationException e) {  fail("Passworddddd.");  }
+
         try {
             tryPassword("TEST_PASSWORD1");
             fail("Password policy should require a lower case letter.");
@@ -82,6 +120,7 @@ public class PasswordPolicyServiceTest extends CaaersTestCase {
             tryPassword("Sh0r|");
             fail("Password policy should require longer password.");
         } catch (ValidationException e) { /* good */
+        	//fail("dont worry did not fail");
         }
         try {
             tryPassword("0ld_Password");
@@ -93,7 +132,25 @@ public class PasswordPolicyServiceTest extends CaaersTestCase {
     }
 
     private boolean tryPassword(String password) {
-        return passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName,
-                password));
+        return passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName, password));
     }
+        
+    //To test the maxPasswordAge() method of LoginPolicyValidator
+    private boolean tryLastSetDateForMaxPasswordAge(Date lastDate) {
+    	String password = "Abcdef1!";
+    	user.setPasswordLastSet(new Timestamp(lastDate.getTime()));
+        return passwordPolicyService.validatePasswordAgainstLoginPolicy(new Credential(userName, password));
+    }
+    private boolean tryNumberOfFailedLoginAttempts(int number) {
+    	String password = "Abcdef1!";
+    	user.setFailedLoginAttempts(number);
+    	return passwordPolicyService.validatePasswordAgainstLoginPolicy(new Credential(userName, password));
+    }
+    
+    //To test minPasswordAge() method of PasswordCreationPolicyValidator
+    private boolean tryLastSetDateForMinPasswordAge(Date lastDate) {
+    	String password = "Abcdef1!";
+    	user.setPasswordLastSet(new Timestamp(lastDate.getTime()));
+    	return passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName, password));
+    }       
 }
