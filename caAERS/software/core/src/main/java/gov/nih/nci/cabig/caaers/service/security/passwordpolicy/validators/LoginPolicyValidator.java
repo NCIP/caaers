@@ -28,9 +28,9 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
     }
     public boolean validateLockOutDuration(LoginPolicy policy, Credential credential)
             throws UserLockedOutException {
-    	if(credential.getUser().getSecondsPastLastLoginAttempt() == -1) 
+    	if(credential.getUser().getSecondsPastLastFailedLoginAttempt() == -1) 
     		return true;
-    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastLoginAttempt())
+    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastFailedLoginAttempt())
     		throw new UserLockedOutException("User is locked out");
     	return true;
     }

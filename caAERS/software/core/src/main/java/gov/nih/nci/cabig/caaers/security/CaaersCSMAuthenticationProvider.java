@@ -63,7 +63,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 			
 			if(caaersUser != null){
 				caaersUser.setFailedLoginAttempts(0);
-				caaersUser.setLastLoginAttemptTime(null);
+				caaersUser.setLastFailedLoginAttemptTime(null);
 			}
 			
 		} catch (AuthenticationException authEx) {
@@ -72,14 +72,14 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 			}
 			throw authEx;
 		} catch (TooManyAllowedFailedLoginAttemptsException attemptsEx) {
-			caaersUser.setLastLoginAttemptTime(new Date());
+			caaersUser.setLastFailedLoginAttemptTime(new Date());
 			caaersUser.setFailedLoginAttempts(0);
 			throw attemptsEx;
 		} catch (UserLockedOutException lockEx) {
 			throw lockEx;
 		}catch (PasswordTooOldException oldEx) {
 			caaersUser.setFailedLoginAttempts(0);
-			caaersUser.setLastLoginAttemptTime(null);
+			caaersUser.setLastFailedLoginAttemptTime(null);
 			throw oldEx;
 		} finally {
 			if(caaersUser!=null) {

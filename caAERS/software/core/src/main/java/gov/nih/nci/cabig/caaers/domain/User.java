@@ -164,18 +164,18 @@ public abstract class User extends Person implements Comparable<User>{
     
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "last_login")
-	public Date getLastLoginAttemptTime() {
+	public Date getLastFailedLoginAttemptTime() {
 		return lastLoginAttemptTime;
 	}
 
-	public void setLastLoginAttemptTime(Date lastLoginAttemptTime) {
+	public void setLastFailedLoginAttemptTime(Date lastLoginAttemptTime) {
 		this.lastLoginAttemptTime = lastLoginAttemptTime;
 	}
     
 	@Transient
-    public long getSecondsPastLastLoginAttempt(){
-    	if(getLastLoginAttemptTime()==null) return -1;
-    	return (new Date().getTime()-getLastLoginAttemptTime().getTime())/1000;
+    public long getSecondsPastLastFailedLoginAttempt(){
+    	if(getLastFailedLoginAttemptTime()==null) return -1;
+    	return (new Date().getTime()-getLastFailedLoginAttemptTime().getTime())/1000;
     }
     /* end password stuff */
 

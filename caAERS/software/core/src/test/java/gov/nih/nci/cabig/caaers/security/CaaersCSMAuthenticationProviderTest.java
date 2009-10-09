@@ -92,7 +92,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		{
 			User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
-			assertEquals(0, DateUtils.compareDate(DateUtils.today(), user.getLastLoginAttemptTime()));
+			assertNull(user.getLastFailedLoginAttemptTime());
 		}
 		
 	}

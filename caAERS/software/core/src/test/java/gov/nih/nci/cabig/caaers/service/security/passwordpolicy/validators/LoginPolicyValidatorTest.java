@@ -91,13 +91,13 @@ public class LoginPolicyValidatorTest extends TestCase {
 	public void testForLockOutDuration_CheckingSuccess() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -4); // last attempt made 4 minute ago
-		user.setLastLoginAttemptTime(cal.getTime());
+		user.setLastFailedLoginAttemptTime(cal.getTime());
 		assertTrue(loginPolicyValidator.validateLockOutDuration(loginPolicy, credential));
 	}
 	public void testForLockOutDuration_CheckingFailure1() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -1); // last attempt made 1 minute ago
-		user.setLastLoginAttemptTime(cal.getTime());
+		user.setLastFailedLoginAttemptTime(cal.getTime());
 		try {
 			loginPolicyValidator.validateLockOutDuration(loginPolicy, credential);
 			fail("Testcase Failed: LockOutDuration limit has not been reached but exception was not thrown.");
@@ -108,7 +108,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 	public void testValidateMethod_CheckingSuccess() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
-		user.setLastLoginAttemptTime(cal.getTime());
+		user.setLastFailedLoginAttemptTime(cal.getTime());
 		user.setFailedLoginAttempts(2); // 2 failed attempts
 		Calendar cal1 = Calendar.getInstance();
 		cal1.add(Calendar.DATE, -1);// last set 1 day ago
@@ -119,7 +119,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
-			user.setLastLoginAttemptTime(cal.getTime());
+			user.setLastFailedLoginAttemptTime(cal.getTime());
 			user.setFailedLoginAttempts(2); // 2 failed attempts
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -3);// last set 3 days ago
@@ -132,7 +132,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
-			user.setLastLoginAttemptTime(cal.getTime());
+			user.setLastFailedLoginAttemptTime(cal.getTime());
 			user.setFailedLoginAttempts(4); // 2 failed attempts
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
@@ -145,7 +145,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -2);  // last attempt made 4 minute ago
-			user.setLastLoginAttemptTime(cal.getTime());
+			user.setLastFailedLoginAttemptTime(cal.getTime());
 			user.setFailedLoginAttempts(2); // 2 failed attempts
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
