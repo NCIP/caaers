@@ -145,8 +145,8 @@
 		target: download tomcat to working directory
 	================================================================== -->	
 	<target name="download-tomcat" unless="tomcat.tools.exists"  description="Downloads TOMCAT from binary repository and verifies checksum">
-	 	<get src="${ccts.working.tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
-	 	<get src="${ccts.working.tomcat.src.url}.MD5" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip.MD5" />
+	 	<get src="${tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
+	 	<get src="${tomcat.src.url}.MD5" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip.MD5" />
 	 <!--
 	 <checksum file="${ccts.grid-services.working.tomcat.file}" verifyProperty="tomcat.cksum.ok" />
 	 <if>
@@ -172,7 +172,7 @@
 		target: download globus to working directory
 	================================================================== -->	
 	<target name="download-globus" unless="globus.tools.exists"  description="Downloads GLOBUS">
-		 	<get src="${ccts.working.globus.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" />
+		 	<get src="${globus.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" />
 		
 			<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" dest="${ccts.grid-services.working.location}" />
 	</target>
