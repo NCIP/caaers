@@ -37,8 +37,8 @@ This applicationContext contains the definition of the DAOs
                 <ref bean="remoteStudyResolver"/>
             </list>
          </property> 
-         <property name="enableCaching" value="false"/>
-		 <property name="enabled" value="false"/>
+         <property name="enableCaching" value="s[enable.coppa.cache]"/>
+		 <property name="enabled" value="s[enable.coppa.mode]"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
