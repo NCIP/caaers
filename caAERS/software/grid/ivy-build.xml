@@ -1,0 +1,107 @@
+<project name="caaers-grid" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property name="parent.dir" value="${basedir}/.." />
+	<property file="${parent.dir}/build.properties" />
+	
+	<import file="${parent.dir}/common.xml"/>
+
+	<!-- ==============================================================
+		target: resolve-dist
+	================================================================== -->
+	 <target name="resolve-dist" depends="load-ivy"
+	    	description="--> resolve and retrieve dist conf dependencies with ivy">
+	    	<echo message="Executing ${ant.project.name} : resolve-dist " />
+	 		<ivy:resolve file="ivy.xml" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	 		<ivy:retrieve pattern="${ccts.grid-services-deploy.location}/webapps/wsrf-caaers/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	  </target>
+	  	
+	<target name="build-grid-services">		
+		<subant target="all">
+			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
+		</subant>
+		<subant target="all">
+			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumer-1.3/build.xml"/>
+		</subant>
+		<subant target="all">
+			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService/build.xml"/>
+		</subant>
+	</target>
+
+	<target name="deploy-grid-services" depends="build-grid-services">		
+		<subant target="deployTomcat">
+			<property name="globus.webapp" value="wsrf-caaers"/>
+			<property name="tomcat.dir" value="${ccts.grid-services-deploy.location}"/>
+			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
+		</subant>
+		<subant target="deployTomcat">
+			<property name="globus.webapp" value="wsrf-caaers"/>
+			<property name="tomcat.dir" value="${ccts.grid-services-deploy.location}"/>
+			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumer-1.3/build.xml"/>
+		</subant>	
+		<subant target="deployTomcat">
+			<property name="globus.webapp" value="wsrf-caaers"/>
+			<property name="tomcat.dir" value="${ccts.grid-services-deploy.location}"/>
+			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService/build.xml"/>
+		</subant>
+		<copy todir="${ccts.grid-services-deploy.location}/webapps/wsrf-caaers/WEB-INF/lib">
+	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
+		    <fileset dir="${parent.dir}/grid/study-consumer/build/dist" includes="caaers-study-consumer.jar"/>
+			<fileset dir="${parent.dir}/grid/lab-consumer/build/dist" includes="caaers-lab-consumer.jar"/>
+	    </copy> 
+		
+		<antcall target="resolve-dist" />
+		<antcall target="update-wsdd" />
+		<delete file="${ccts.grid-services-deploy.location}/webapps/wsrf-caaers/WEB-INF/lib/cog-jglobus-1.2.jar"/>
+	</target>
+
+	
+	<target name="update-wsdd">
+			<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+	        <xmltask source="${ccts.grid-services-deploy.location}/webapps/wsrf-caaers/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
+	                 dest="${ccts.grid-services-deploy.location}//webapps/wsrf-caaers/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
+	                 failWithoutMatch="true">
+	            
+				<insert path="/:deployment/:service" position="before">
+	                <![CDATA[
+    			<handler name="auditInfoRequestHandler" type="java:gov.nih.nci.cabig.caaers.grid.AuditInfoRequestHandler" xmlns="http://xml.apache.org/axis/wsdd/"/>
+  
+				<handler name="auditInfoResponseHandler" type="java:gov.nih.nci.cabig.caaers.grid.AuditInfoResponseHandler" xmlns="http://xml.apache.org/axis/wsdd/"/> 
+	      				]]>
+	            </insert>
+	
+			    <insert path="/:deployment/:service" position="under">
+			        <![CDATA[
+			 	<requestFlow xmlns="http://xml.apache.org/axis/wsdd/">
+			        <handler type="auditInfoRequestHandler" />
+			    </requestFlow>
+			    <responseFlow xmlns="http://xml.apache.org/axis/wsdd/">
+			        <handler type="auditInfoResponseHandler"/>
+			    </responseFlow>
+							]]>
+			    </insert>
+		  </xmltask>
+	
+		    <xmltask source="${ccts.grid-services-deploy.location}/webapps/wsrf-caaers/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
+		             dest="${ccts.grid-services-deploy.location}//webapps/wsrf-caaers/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
+		             failWithoutMatch="true">
+		        
+				<insert path="/:deployment/:service" position="before">
+		            <![CDATA[
+				<handler name="auditInfoRequestHandler" type="java:gov.nih.nci.cabig.caaers.grid.AuditInfoRequestHandler" xmlns="http://xml.apache.org/axis/wsdd/"/>
+		
+				<handler name="auditInfoResponseHandler" type="java:gov.nih.nci.cabig.caaers.grid.AuditInfoResponseHandler" xmlns="http://xml.apache.org/axis/wsdd/"/> 
+		  				]]>
+		        </insert>
+		
+			    <insert path="/:deployment/:service" position="under">
+			        <![CDATA[
+			 	<requestFlow xmlns="http://xml.apache.org/axis/wsdd/">
+			        <handler type="auditInfoRequestHandler" />
+			    </requestFlow>
+			    <responseFlow xmlns="http://xml.apache.org/axis/wsdd/">
+			        <handler type="auditInfoResponseHandler"/>
+			    </responseFlow>
+							]]>
+			    </insert>
+		  </xmltask>
+	</target>
+</project>
