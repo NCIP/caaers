@@ -1,6 +1,7 @@
 <project name="caaers-grid" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
+	<property file="build.properties" />
 	<property name="wsrf" value="wsrf"/>
 	<property name="wsrf-caaers" value="wsrf-caaers"/>
 	
