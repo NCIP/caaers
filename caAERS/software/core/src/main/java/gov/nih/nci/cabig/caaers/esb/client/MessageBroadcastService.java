@@ -13,7 +13,7 @@ public interface MessageBroadcastService {
 
     void broadcast(String message) throws BroadcastException;
     
-    String broadcastCOPPA(String message,Metadata metaData) throws BroadcastException;
+    //String broadcastCOPPA(String message,Metadata metaData) throws BroadcastException;
 
     List<String> getBroadcastStatus();
 
