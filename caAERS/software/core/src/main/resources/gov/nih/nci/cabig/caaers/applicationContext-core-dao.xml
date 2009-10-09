@@ -37,8 +37,8 @@ This applicationContext contains the definition of the DAOs
                 <ref bean="remoteStudyResolver"/>
             </list>
          </property> 
-         <property name="enableCaching" value="true"/>
-		 <property name="enabled" value="true"/>
+         <property name="enableCaching" value="s[coppaCache]"/>
+		 <property name="enabled" value="s[coppaMode]"/>
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
@@ -327,7 +327,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
-                <value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
                 <value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
