@@ -73,7 +73,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<property name="caAERS-webapp.build.file" value="../build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="caAERS-webapp.build.target" value="publish-all" />
+	<property name="caAERS-webapp.build.target" value="publish-local" />
+	
+	<property name="caAERS-grid-services.build.target" value="build-deploy-publish-grid-services" />
 
 	<!-- Maven comamnd line arguments, bda profile is inside profiles.xml that gets copied to ear folder before build to override exiting properties -->
 
@@ -261,12 +263,33 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="build:caAERS-webapp" depends="init, build:caAERS-api" description="Call webapp sub-projects build target to produce artifiacts">
 		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
 		<ant inheritAll="false" inheritRefs="false" antfile="${caAERS-webapp.build.file}" target="${caAERS-webapp.build.target}">
-			<property name="dist.dir" value="${caAERS-webapp.dist.dir}" />
 			<property name="env.GLOBUS_LOCATION" value="${env.GLOBUS_LOCATION}"/>
 			<property name="skip.test" value="true"/>
+			<property name="cctsWAR" value="${ccts.war}"/>
 		</ant>
+		
+		<copy file="${software.dir}/web/build/dist/caaers.war" todir="${caAERS-webapp.dist.dir}" overwrite="true" />
+		
+		<mkdir dir="${dist.exploded.dir}/caAERS-templates"/>
+		<copy todir="${dist.exploded.dir}/caAERS-templates">
+			<fileset dir="${software.dir}/templates">
+			</fileset>
+		</copy>
+		
+		<mkdir dir="${dist.exploded.dir}/caAERS-grid-services"/>
+		<copy file="${software.dir}/grid/build/dist/wsrf-caaers.war" todir="${dist.exploded.dir}/caAERS-grid-services" overwrite="true" />
+		
 	</target>
-
+	
+	<target name="build:caAERS-grid-services" description="Call publish-local target of grid in caAERS to produce caAERS-grid-service artifiacts">
+		<!-- setting the property in the ant call overrides the property in the sub-project allowing the artifact to be produced where needed -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${caAERS-webapp.build.file}" target="${caAERS-grid-services.build.target}">
+			<property name="ccts.grid-services.location" value="${ccts.grid-services.location}"/>
+		</ant>
+		<mkdir dir="${dist.exploded.dir}/caAERS-grid-services"/>
+		<copy file="${software.dir}/grid/build/dist/wsrf-caaers.war" todir="${dist.exploded.dir}/caAERS-grid-services" overwrite="true" />
+	</target>
+	
 	<target name="dist" description="Makes all distributions: installer, upgrader and source" depends="
 		build:all,
  		dist:installer,
