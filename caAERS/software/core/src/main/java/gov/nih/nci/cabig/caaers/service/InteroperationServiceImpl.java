@@ -55,6 +55,7 @@ public class InteroperationServiceImpl implements InteroperationService {
         // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
         
     }
+    /*
     public String broadcastCOPPA(String message,Metadata metaData) throws CaaersSystemException {
     	String result = null;
     	try {
@@ -64,7 +65,7 @@ public class InteroperationServiceImpl implements InteroperationService {
 			throw new CaaersSystemException(e);
 		}
     	return result;
-    }
+    }*/
 
     private String secure(String message) {
         StringBuffer secureMessage = new StringBuffer();
