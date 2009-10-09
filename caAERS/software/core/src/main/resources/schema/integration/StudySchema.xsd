@@ -173,8 +173,8 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element ref="organization"/>
-                    <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="endDate" type="xs:date" />
+                    <xs:element name="startDate"  type="xs:date" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="studyInvestigators" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
