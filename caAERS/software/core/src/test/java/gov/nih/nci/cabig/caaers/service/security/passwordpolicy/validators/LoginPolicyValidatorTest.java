@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -10,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import junit.framework.TestCase;
