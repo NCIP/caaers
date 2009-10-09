@@ -44,25 +44,25 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
             throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
         }
     }
-    
+    /*
     public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
         String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
         	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
-            /*
+            
              	broadCaster.setMessageTypesMapping(messageTypesMapping);
                 broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
                 broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
-             */
+             
         	result = broadCaster.broadcastCoppaMessage(message, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
 			log.error("Error while broadcasting the message to COPPA", e);
             throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
 		}
     	return result;
-    }
+    }*/
 
     public List<String> getBroadcastStatus() {
         // TODO Auto-generated method stub
