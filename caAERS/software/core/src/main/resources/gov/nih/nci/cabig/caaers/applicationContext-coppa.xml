@@ -17,14 +17,22 @@ This applicationContext contains the definition of the concrete services
 	
 	
 	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
+		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
+		<property name="authenticationMode" ref="authenticationMode"/>
 	</bean>
 	
 	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
+		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
+		<property name="authenticationMode" ref="authenticationMode"/>
 	</bean>
 
 	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
+		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
+		<property name="authenticationMode" ref="authenticationMode"/>
 	</bean>	
 	
 	<bean id="remoteStudyResolver" class="gov.nih.nci.cabig.caaers.resolver.RemoteStudyResolver">
+		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
+		<property name="authenticationMode" ref="authenticationMode"/>
 	</bean>	
 </beans>
