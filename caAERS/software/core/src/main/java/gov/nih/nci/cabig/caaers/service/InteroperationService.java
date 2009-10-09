@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import edu.duke.cabig.c3pr.esb.Metadata;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
@@ -15,5 +14,5 @@ public interface InteroperationService {
 
     void pushToStudyCalendar(RoutineAdverseEventReport roReport) throws CaaersSystemException;
     
-    String broadcastCOPPA(String message,Metadata metaData) throws CaaersSystemException;
+    //String broadcastCOPPA(String message,Metadata metaData) throws CaaersSystemException;
 }
