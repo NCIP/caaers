@@ -38,18 +38,13 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
-        	<!--  C3PR registration stubs/skeltons -->
-        	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer" rev="1.5.SNAPSHOT"  >
-        		<artifact name="RegistrationConsumer-client" />
-        		<artifact name="RegistrationConsumer-common" />
-        		<artifact name="RegistrationConsumer-stubs" />
-        	</dependency>
 
-            <dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="1.5.SNAPSHOT"  >
-        		<artifact name="StudyConsumer-client" />
-        		<artifact name="StudyConsumer-common" />
-        		<artifact name="StudyConsumer-stubs" />
-        	</dependency>   	
+			<dependency org="gov.nih.nci.ccts.grid"
+					name="StudyConsumer-client" rev="2.8" transitive="false" />
+			<dependency org="gov.nih.nci.ccts.grid"
+					name="StudyConsumer-common" rev="2.8" transitive="false" />
+			<dependency org="gov.nih.nci.ccts.grid"
+					name="StudyConsumer-stubs" rev="2.8" transitive="false" />	 	
         	
         	
         	<!-- CTMS commons dependencies -->
