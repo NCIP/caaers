@@ -235,9 +235,7 @@
         </property>
     </bean>
     <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
-        <property name="cacheManager">
-            <ref local="cacheManager"/>
-        </property>
+        <property name="cacheManager" ref="cacheManager" />
         <property name="cacheName">
             <value>ticketCache</value>
         </property>
