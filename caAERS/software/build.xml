@@ -317,4 +317,18 @@
 		</copy>
 	</target>	
 	
+	<!-- ==========================================================
+		target : build-deploy-publish-grid-services
+		build , deploy and publish grid services to grid/build/dist/wsrf-caaers.war
+		LabConsumerService
+		RegistrationConsumer
+		StudyConsumer
+		
+		***** CONFIGURE Properties in grid/build.properties *****
+	=============================================================-->
+	<target name="build-deploy-publish-grid-services" description="build , deploy and publish grid services">
+		<subant target="publish-local" buildpath="grid/ivy-build.xml" />
+	</target>
+	
+	
 </project>
