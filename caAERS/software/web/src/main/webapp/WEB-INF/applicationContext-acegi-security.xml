@@ -138,44 +138,6 @@
 		<property name="validator" ref="gridProxyValidator"/>
 		<property name="userCache" ref="userCache"/>
 	</bean>
-	
-	<!--  
-	<bean id="localAuthenticationProvider" class="gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider">
-		<property name="csmAuthenticationManager">
-			<bean class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager">
-				<constructor-arg ref="csmApplicationContextName"/>
-			</bean>
-		</property>
-		<property name="userDetailsService" ref="csmUserDetailsService">
-		</property>
-		<property name="userCache" ref="userCache"/>
-	</bean>
-	
-	<bean id="csmUserDetailsService" class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
-		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
-	</bean>
-	-->
-	
-	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider">
-		<property name="csmAuthenticationManager" ref="csmAuthenticationManager" />
-		<property name="userDetailsService" ref="csmUserDetailsService">
-		</property>
-		<property name="userCache" ref="userCache"/>
-	</bean>
-	
-	<bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService">
-		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
-	</bean>
-	
-	
-	<bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-		<property name="cache">
-			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-				<property name="cacheManager" ref="cacheManager" />
-				<property name="cacheName" value="userCache"/>
-			</bean>
-		</property>
-	</bean>
 
 	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
 	<bean id="loggerListener" class="gov.nih.nci.cabig.caaers.web.security.LoggerListener"/>
@@ -282,6 +244,6 @@
             <value>ticketCache</value>
         </property>
     </bean>
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
+   
 </beans>
 
