@@ -102,18 +102,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   ref="csmApplicationContextName"/>
     </bean>
 
-    <bean id="csmUserProvisioningManager"
-          class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
+    <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
         <property name="authorizationDAO" ref="csmAuthorizationDao"/>
     </bean>
     
-    <bean id="csmLockoutManager" class="gov.nih.nci.cabig.caaers.security.CaaersCSMLockoutManagerFactoryBean"  /> 
-    
-    <bean id="csmAuthenticationManager"
-          class="gov.nih.nci.security.SecurityServiceProvider"
-          factory-method="getAuthenticationManager" depends-on="csmLockoutManager">
-        <constructor-arg ref="csmApplicationContextName"/>
-    </bean>   
 
     <bean id="csmObjectIdGenerator"
           class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
@@ -443,4 +435,34 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="runAsAuthenticationPopulator" ref="runAsAuthenticationPopulator" />
 	</bean>	
 	
+	<!-- ==== Authentication Related Stuff ================ -->
+	
+    <bean id="csmLockoutManager" class="gov.nih.nci.cabig.caaers.security.CaaersCSMLockoutManagerFactoryBean"  /> 
+    
+    <bean id="csmAuthenticationManager" class="gov.nih.nci.security.SecurityServiceProvider" factory-method="getAuthenticationManager" depends-on="csmLockoutManager">
+        <constructor-arg ref="csmApplicationContextName"/>
+    </bean>   
+		
+	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider" lazy-init="true">
+		<property name="csmAuthenticationManager" ref="csmAuthenticationManager" />
+		<property name="userDetailsService" ref="csmUserDetailsService">
+		</property>
+		<property name="userCache" ref="userCache"/>
+	</bean>
+	
+	<bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService" lazy-init="true">
+		<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>
+	</bean>
+	
+	
+	<bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager" ref="cacheManager" />
+				<property name="cacheName" value="userCache"/>
+			</bean>
+		</property>
+	</bean>
+	<!-- Cached Manager -->
+	 <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
 </beans>

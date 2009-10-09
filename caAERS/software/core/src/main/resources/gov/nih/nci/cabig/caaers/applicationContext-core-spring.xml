@@ -10,13 +10,8 @@
                 <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
     </bean>
     <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer" lazy-init="false">
-        <property name="properties">
-            <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
-                <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
-            </bean>
-        </property>
-        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
-             at build time -->
+        <property name="properties" ref="caaersDatasourceFactoryBean" />
+        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything at build time -->
         <property name="placeholderPrefix"><value>s[</value></property>
         <property name="placeholderSuffix"><value>]</value></property>
         <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
