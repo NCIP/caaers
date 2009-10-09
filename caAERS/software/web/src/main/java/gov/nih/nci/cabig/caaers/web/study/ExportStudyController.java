@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
@@ -54,6 +54,29 @@ public class ExportStudyController extends AbstractCommandController{
         Study study = studyDao.getById(studyID);
         studyDao.initialize(study);
 
+        // START study export pre-population
+        study.setCoordinatingCenter(new CoordinatingCenter());
+        study.getCoordinatingCenter().setStudyCoordinatingCenter(study.getStudyCoordinatingCenter());
+
+        study.setFundingSponsor(new FundingSponsor());
+        study.getFundingSponsor().setStudyFundingSponsor(study.getStudyFundingSponsors().get(0));
+
+        for (OrganizationAssignedIdentifier id : study.getOrganizationAssignedIdentifiers()) {
+            if (id.getOrganization().equals(study.getFundingSponsor().getStudyFundingSponsor().getOrganization())) {
+                study.getFundingSponsor().setOrganizationAssignedIdentifier(id);
+                study.getFundingSponsor().getOrganizationAssignedIdentifier().setPrimaryIndicator(true);
+                break;
+            }
+        }
+        for (OrganizationAssignedIdentifier id : study.getOrganizationAssignedIdentifiers()) {
+            if (id.getOrganization().equals(study.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization())) {
+                study.getCoordinatingCenter().setOrganizationAssignedIdentifier(id);
+                study.getCoordinatingCenter().getOrganizationAssignedIdentifier().setPrimaryIndicator(false);
+                break;
+            }
+        }
+        // END study export pre-population
+        
         gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
         //Marshall the Data Transfer Object according to Study.xsd schema,

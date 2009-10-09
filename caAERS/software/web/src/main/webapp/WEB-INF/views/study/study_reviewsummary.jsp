@@ -36,6 +36,10 @@
 <body>
 
 <p><tags:instructions code="study.study_overview.top" /></p>
+<c:if test="${command.study.id > 0}">
+    <a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="http://www.leasetrader.com/img/icon_xml.gif" border=""></a>
+
+</c:if>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.study.id) or ( command.study.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>

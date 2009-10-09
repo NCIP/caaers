@@ -601,11 +601,10 @@ public class StudyConverter {
 	private void populateFundingSponsorDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception {
 
         if (study.getFundingSponsor() != null) {
-            FundingSponsorType fs = null;
+            FundingSponsorType fs = new FundingSponsorType();
             StudyFundingSponsorType sfs = null;
 
             if (study.getFundingSponsor().getOrganizationAssignedIdentifier() != null) {
-                fs = new FundingSponsorType();
                 ReducedIdentifierType identifier = new ReducedIdentifierType();
                 identifier.setValue(study.getFundingSponsor().getOrganizationAssignedIdentifier().getValue());
                 fs.setOrganizationAssignedIdentifier(identifier);

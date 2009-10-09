@@ -257,8 +257,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     @Transient
     public StudyCoordinatingCenter getStudyCoordinatingCenter() {
-        return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters()
-                .get(0);
+        return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters().get(0);
     }
 
     @Transient
