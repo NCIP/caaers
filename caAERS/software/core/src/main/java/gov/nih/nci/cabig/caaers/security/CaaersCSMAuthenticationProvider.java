@@ -91,5 +91,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
-	
+	public UserDao getUserDao() {
+		return userDao;
+	}
 }

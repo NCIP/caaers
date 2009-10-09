@@ -445,8 +445,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
 	<bean id="localAuthenticationProvider" class="gov.nih.nci.cabig.caaers.security.CaaersCSMAuthenticationProvider" lazy-init="true">
 		<property name="csmAuthenticationManager" ref="csmAuthenticationManager" />
-		<property name="userDetailsService" ref="csmUserDetailsService">
-		</property>
+		<property name="userDetailsService" ref="csmUserDetailsService" />
+		<property name="passwordPolicyService" ref="passwordPolicyService" />
+		<property name="userDao" ref="userDao" />
 		<property name="userCache" ref="userCache"/>
 	</bean>
 	

@@ -1,10 +1,15 @@
 package gov.nih.nci.cabig.caaers.security;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.authentication.CommonAuthenticationManager;
 import gov.nih.nci.security.authentication.LockoutManager;
 
@@ -26,10 +31,12 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	private String userName;    
 	private String password;
 	private GrantedAuthority[] authorities;
+	private Timestamp now;
 
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+		now = new Timestamp(new Date().getTime());
 		provider = (CaaersCSMAuthenticationProvider)getDeployedApplicationContext().getBean("localAuthenticationProvider");
 	}
 	
@@ -42,6 +49,16 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		token = new UsernamePasswordAuthenticationToken(user, password, authorities);
 	}
 	
+	private User loadUser(){
+		//load the user and update the last password set time
+		User user = provider.getUserDao().getByLoginId(token.getName());
+		assertNotNull(user);
+		return user;
+	}
+	private void saveUser(User user){
+		provider.getUserDao().save(user);
+	}
+	
 	public void testLoading() {
 		assertNotNull(provider);
 	}
@@ -51,6 +68,17 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	 */
 	public void testAdditionalAuthChecks_CheckingSuccess() {
 		createToken("abcd", "xxx");
+		
+		{
+			
+			User user = loadUser();
+			user.setPasswordLastSet(now);
+			saveUser(user);
+			
+		}
+		
+		interruptSession();
+		
 		{
 			provider.setCsmAuthenticationManager(new CommonAuthenticationManager(){
 				@Override
@@ -62,8 +90,9 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		}
 		interruptSession();
 		{
-			// load the user
-			// check for updates
+			User user = loadUser();
+			assertEquals(0, user.getFailedLoginAttempts());
+			assertEquals(0, DateUtils.compareDate(DateUtils.today(), user.getLastLoginAttemptTime()));
 		}
 		
 	}

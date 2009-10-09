@@ -22,7 +22,10 @@
    	city="Fairfax"
    	state="Virginia"
    	zip="22033"
-   	code="0"/>
+   	code="0"
+	password_last_set="2008-12-31"
+	num_failed_logins="2"
+	/>
     
     <RESEARCH_STAFFS 
     id="-1001" 
@@ -31,7 +34,8 @@
     last_name="Bush" 
     email_address="gb@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id"/>
+    nci_identifier="nci id"
+	num_failed_logins="0"/>
     
     <RESEARCH_STAFFS 
     id="-1002" 
@@ -40,7 +44,8 @@
     last_name="Franklin" 
     email_address="bf@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id" />
+    nci_identifier="nci id" 
+	num_failed_logins="0"/>
     
     <RESEARCH_STAFFS 
     id="-1003" 
@@ -49,7 +54,8 @@
     last_name="Kennedy" 
     email_address="jfk@def.com" 
     phone_number="123-456-789" 
-    nci_identifier="nci id"/>
+    nci_identifier="nci id"
+	num_failed_logins="0"/>
 	
 	<SITE_RESEARCH_STAFFS 
     	id="-4004" 
@@ -95,7 +101,7 @@
     <study_site_wf_cfgs />
       
     <password_policy
-        id="-6"
+        id="1"
         ln_allowed_attempts="3"
         ln_lockout_duration="180"
         ln_max_age="172800"
