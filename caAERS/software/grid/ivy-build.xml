@@ -4,10 +4,21 @@
 	<property file="build.properties" />
 	<property name="wsrf" value="wsrf"/>
 	<property name="wsrf-caaers" value="wsrf-caaers"/>
+	<property name="ccts.grid-services.working.location" value="${build.dir}/working"/>
+	<!--Working tomcat folder or file name 	-->
+	<property name="ccts.grid-services.working.tomcat.file" value="apache-tomcat-5.5.20"/>
+	<!--Working globus folder or file name-->
+	<property name="ccts.grid-services.working.globus.file" value="ws-core-4.0.3"/>
+	
 	
 	<import file="${parent.dir}/common.xml"/>
 	
-	<target name="publish-local" depends="download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
+	<target name="init">
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${ccts.grid-services.working.location}"/>
+	</target>
+	
+	<target name="publish-local" depends="init,download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
 
 	<!-- ==============================================================
 		target: resolve-dist , resolves all core and dependent jars ..
@@ -122,7 +133,6 @@
 		target: war , make the deployed wsrf web application which has all grid services 
 	================================================================== -->	
 	 <target name="war">
-		<mkdir dir="${dist.dir}"/>
 	    <delete file="${dist.dir}/${wsrf-caaers}.war" />
 	 	<war destfile="${dist.dir}/${wsrf-caaers}.war" basedir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}" needxmlfile='false'/>
 	</target>
