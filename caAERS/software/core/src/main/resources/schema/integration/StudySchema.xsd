@@ -245,7 +245,7 @@
                 <xs:sequence>
                     <xs:element name="roleCode" type="PersonnelRoleCodeType" />
                     <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="endDate" type="xs:date" />
+                    <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
                     <xs:element ref="researchStaff"/>
                 </xs:sequence>
             </xs:extension>
@@ -270,7 +270,7 @@
                 <xs:sequence>
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="nciIdentifier" type="xs:string"/>
+                    <xs:element name="nciIdentifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -283,7 +283,7 @@
                 <xs:sequence>
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="nciIdentifier" type="xs:string"/>
+                    <xs:element name="nciIdentifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

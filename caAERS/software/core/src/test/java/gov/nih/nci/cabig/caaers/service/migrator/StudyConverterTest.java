@@ -346,6 +346,8 @@ public class StudyConverterTest extends AbstractTestCase {
         studySite1.setOrganization(new LocalOrganization());
         studySite1.getOrganization().setName("Study Site Name - 01");
         studySite1.getOrganization().setNciInstituteCode("code-01");
+        studySite1.setStartDate(DateUtils.yesterday());
+        studySite1.setEndDate(DateUtils.tomorrow());
 
         // Investigators
 
@@ -434,6 +436,32 @@ public class StudyConverterTest extends AbstractTestCase {
         MeddraStudyDisease meddra = new MeddraStudyDisease();
         meddra.setMeddraCode("Meddra-code-877");
         study.getMeddraStudyDiseases().add(meddra);
+
+        // SAES
+        study.setEpochs(new ArrayList<Epoch>());
+        
+        Epoch e = new Epoch(); study.getEpochs().add(e);
+        e.setEpochOrder(1);
+        e.setDescriptionText("Description");
+        e.setName("Epoch name - 01");
+        e.setArms(new ArrayList<Arm>());
+        e.getArms().add(new Arm());
+        List<SolicitedAdverseEvent> saes = new ArrayList<SolicitedAdverseEvent>();
+        e.getArms().get(0).setSolicitedAdverseEvents(saes);
+        SolicitedAdverseEvent sae = new SolicitedAdverseEvent(); saes.add(sae);
+        sae.setCtcterm(new CtcTerm()); sae.getCtcterm().setCtepCode("AE-1 Ctep-code"); sae.getCtcterm().setCtepTerm("Ctep-Term-1"); sae.getCtcterm().setTerm("Term-1");
+        sae = new SolicitedAdverseEvent(); saes.add(sae);
+        sae.setCtcterm(new CtcTerm()); sae.getCtcterm().setCtepCode("AE-2 Ctep-code"); sae.getCtcterm().setCtepTerm("Ctep-Term-2"); sae.getCtcterm().setTerm("Term-2");
+        sae = new SolicitedAdverseEvent(); saes.add(sae);
+        sae.setCtcterm(new CtcTerm()); sae.getCtcterm().setCtepCode("AE-3 Ctep-code"); sae.getCtcterm().setCtepTerm("Ctep-Term-3"); sae.getCtcterm().setTerm("Term-3");
+        sae = new SolicitedAdverseEvent(); saes.add(sae);
+        sae.setCtcterm(new CtcTerm()); sae.getCtcterm().setCtepCode("AE-4 Ctep-code"); sae.getCtcterm().setCtepTerm("Ctep-Term-4"); sae.getCtcterm().setTerm("Term-4");
+
+        // Expected AEs
+        study.setExpectedAECtcTerms(new ArrayList<ExpectedAECtcTerm>());
+        ExpectedAECtcTerm term = new ExpectedAECtcTerm();
+        term.setCtcTerm(new CtcTerm()); term.getCtcTerm().setCtepCode("ctcTerm - 5001");
+        study.getExpectedAECtcTerms().add(term);
 
         gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
