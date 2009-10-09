@@ -79,16 +79,12 @@ public class ImportTab extends Tab<ImportCommand>{
         System.out.println("Validating");
         boolean participantFile = command.getParticipantFile().isEmpty();
         boolean studyFile = command.getStudyFile().isEmpty();
-        boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile()
-                        .isEmpty();
+        boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile().isEmpty();
         boolean investigatorFile = command.getInvestigatorFile().isEmpty();
         boolean researchStaffFile = command.getResearchStaffFile().isEmpty();
         
-        logger.debug("Are files empty : " + participantFile + ":" + studyFile + " : "
-                        + routineAdverseEventReportFile + " : " + investigatorFile + " : " + researchStaffFile);
-        if (participantFile && studyFile && routineAdverseEventReportFile && investigatorFile && researchStaffFile) errors
-                        .rejectValue("participantFile", "REQUIRED",
-                                        "Please choose either a study or a participant file.");
+        logger.debug("Are files empty : " + participantFile + ":" + studyFile + " : " + routineAdverseEventReportFile + " : " + investigatorFile + " : " + researchStaffFile);
+        if (participantFile && studyFile && routineAdverseEventReportFile && investigatorFile && researchStaffFile) errors.rejectValue("participantFile", "REQUIRED", "Please choose either a study or a participant file.");
 
     }
 
