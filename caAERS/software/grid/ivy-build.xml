@@ -1,20 +1,26 @@
 <project name="caaers-grid" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
-	<property name="wsrf" value="wsrf-caaers"/>
+	<property name="wsrf" value="wsrf"/>
+	<property name="wsrf-caaers" value="wsrf-caaers"/>
 	
 	<import file="${parent.dir}/common.xml"/>
+	
+	<target name="publish-local" depends="download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
 
 	<!-- ==============================================================
-		target: resolve-dist
+		target: resolve-dist , resolves all core and dependent jars ..
 	================================================================== -->
 	 <target name="resolve-dist" depends="load-ivy"
 	    	description="--> resolve and retrieve dist conf dependencies with ivy">
 	    	<echo message="Executing ${ant.project.name} : resolve-dist " />
 	 		<ivy:resolve file="ivy.xml" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	 		<ivy:retrieve pattern="${ccts.grid-services.working.location}/webapps/${wsrf}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	 		<ivy:retrieve pattern="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 	  </target>
-	  	
+	
+	<!-- ==============================================================
+		target: build-grid-services , compiles and builds all grid services ..
+	================================================================== -->	
 	<target name="build-grid-services">		
 		<subant target="all">
 			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
@@ -27,23 +33,26 @@
 		</subant>
 	</target>
 
+	<!-- ==============================================================
+		target: deploy-grid-services , deploys all grid services to working tomcat location ..
+	================================================================== -->	
 	<target name="deploy-grid-services" depends="build-grid-services">		
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
-			<property name="tomcat.dir" value="${ccts.grid-services.working.location}"/>
+			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
 		</subant>
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
-			<property name="tomcat.dir" value="${ccts.grid-services.working.location}"/>
+			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumer-1.3/build.xml"/>
 		</subant>	
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
-			<property name="tomcat.dir" value="${ccts.grid-services.working.location}"/>
+			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
 			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService/build.xml"/>
 		</subant>
-		<copy todir="${ccts.grid-services.working.location}/webapps/${wsrf}/WEB-INF/lib">
+		<copy todir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib">
 	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
 		    <fileset dir="${parent.dir}/grid/study-consumer/build/dist" includes="caaers-study-consumer.jar"/>
 			<fileset dir="${parent.dir}/grid/lab-consumer/build/dist" includes="caaers-lab-consumer.jar"/>
@@ -51,15 +60,16 @@
 		
 		<antcall target="resolve-dist" />
 		<antcall target="update-wsdd" />
-		<delete file="${ccts.grid-services.working.location}/webapps/${wsrf}/WEB-INF/lib/cog-jglobus-1.2.jar"/>
+		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-jglobus-1.2.jar"/>
 	</target>
 	
-	<target name="publish-local" depends="deploy-grid-services,war"/>
-	
+	<!-- ==============================================================
+		target: update-wsdd , updates server-config.wsdd with audit info
+	================================================================== -->	
 	<target name="update-wsdd">
 			<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
-	        <xmltask source="${ccts.grid-services.working.location}/webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
-	                 dest="${ccts.grid-services.working.location}//webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
+	        <xmltask source="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
+	                 dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
 	                 failWithoutMatch="true">
 	            
 				<insert path="/:deployment/:service" position="before">
@@ -82,8 +92,8 @@
 			    </insert>
 		  </xmltask>
 	
-		    <xmltask source="${ccts.grid-services.working.location}/webapps/${wsrf}/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
-		             dest="${ccts.grid-services.working.location}//webapps/${wsrf}/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
+		    <xmltask source="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
+		             dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_StudyConsumer/server-config.wsdd"
 		             failWithoutMatch="true">
 		        
 				<insert path="/:deployment/:service" position="before">
@@ -106,11 +116,66 @@
 			    </insert>
 		  </xmltask>
 	</target>
-	
+
+	<!-- ==============================================================
+		target: war , make the deployed wsrf web application which has all grid services 
+	================================================================== -->	
 	 <target name="war">
 		<mkdir dir="${dist.dir}"/>
-	    <delete file="${dist.dir}/${wsrf}.war" />
-	 	<war destfile="${dist.dir}/${wsrf}.war" basedir="${ccts.grid-services.working.location}/webapps/${wsrf}" needxmlfile='false'/>
+	    <delete file="${dist.dir}/${wsrf-caaers}.war" />
+	 	<war destfile="${dist.dir}/${wsrf-caaers}.war" basedir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}" needxmlfile='false'/>
 	</target>
+	
+	
+	<available file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" property="tomcat.tools.exists" />
+	<available file="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" property="globus.tools.exists" />
+
+	<!-- ==============================================================
+		target: download tomcat to working directory
+	================================================================== -->	
+	<target name="download-tomcat" unless="tomcat.tools.exists"  description="Downloads TOMCAT from binary repository and verifies checksum">
+	 	<get src="${ccts.working.tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
+	 	<get src="${ccts.working.tomcat.src.url}.MD5" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip.MD5" />
+	 <!--
+	 <checksum file="${ccts.grid-services.working.tomcat.file}" verifyProperty="tomcat.cksum.ok" />
+	 <if>
+	  <equals arg1="${tomcat.cksum.ok}" arg2="true" />
+	  <then>
+	   <echo message="Downloaded tomcat sucessfully" />
+	  </then>
+	  <else>
+	   <fail message="Failed to download tomcat file sucessfully." />
+	  </else>
+	 </if>-->
+		<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" dest="${ccts.grid-services.working.location}" />
+		 <!--<if>    
+		  <os family="unix"/>
+		  <then>  
+		   <chmod dir="${tomcat.home}/bin" perm="ugo+rx"
+		    includes="*/.sh"/>
+		  </then>
+		 </if>-->
+	</target>
+	
+	<!-- ==============================================================
+		target: download globus to working directory
+	================================================================== -->	
+	<target name="download-globus" unless="globus.tools.exists"  description="Downloads GLOBUS">
+		 	<get src="${ccts.working.globus.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" />
+		
+			<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}.zip" dest="${ccts.grid-services.working.location}" />
+	</target>
+	
+	<!-- ==============================================================
+		target: deploy the downloaded globus to working tomcat 
+	================================================================== -->	
+	<target name="deploy-globus">
+			<subant target="deploySecureTomcat">
+				<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
+				<fileset dir="${ccts.grid-services.working.location}/${ccts.grid-services.working.globus.file}" includes="share/globus_wsrf_common/tomcat/tomcat.xml"/>
+			</subant>		
+	</target>
+ 
+
 
 </project>
