@@ -403,7 +403,37 @@ public class StudyConverterTest extends AbstractTestCase {
         oid1.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.getIdentifiers().add(oid1);
 
+        // TREATMENT ASSIGNMENT
+        TreatmentAssignment ta = new TreatmentAssignment();
+        ta.setDescription("TA description");
+        ta.setComments("TA Comments");
+        ta.setCode("TA CODE");
+        ta.setDoseLevelOrder(5);
+        study.setTreatmentAssignments(new ArrayList<TreatmentAssignment>());
+        study.getTreatmentAssignments().add(ta);
         // exporting...
+
+        // AGENTS
+        study.setStudyAgents(new ArrayList<StudyAgent>());
+        StudyAgent sa = new StudyAgent();
+        sa.setAgent(new Agent()); sa.getAgent().setName("Agent name"); sa.getAgent().setNscNumber("Agent Nsc Number");
+        sa.setIndType(INDType.IND_EXEMPT);
+        sa.setPartOfLeadIND(true);
+        study.getStudyAgents().add(sa);
+
+        // STUDY DISEASE
+        study.setCtepStudyDiseases(new ArrayList<CtepStudyDisease>());
+        CtepStudyDisease ctep = new CtepStudyDisease();
+        ctep.setDiseaseTerm(new DiseaseTerm());
+        ctep.getDiseaseTerm().setMeddraCode("CTEP-Meddra-code-01");
+        ctep.getDiseaseTerm().setTerm("CTEP_Term-01");
+        ctep.setLeadDisease(false);
+        study.getCtepStudyDiseases().add(ctep);
+
+        study.setMeddraStudyDiseases(new ArrayList<MeddraStudyDisease>());
+        MeddraStudyDisease meddra = new MeddraStudyDisease();
+        meddra.setMeddraCode("Meddra-code-877");
+        study.getMeddraStudyDiseases().add(meddra);
 
         gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
 

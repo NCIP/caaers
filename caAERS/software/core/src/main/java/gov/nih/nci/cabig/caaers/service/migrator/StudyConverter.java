@@ -60,6 +60,7 @@ import gov.nih.nci.cabig.caaers.webservice.StudyAgentType.StudyAgentINDAssociati
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.datatype.DatatypeFactory;
 import java.util.*;
+import java.math.BigInteger;
 
 /**
  * This class has one public method which Converts a JAXB generated Study Type object
@@ -104,11 +105,11 @@ public class StudyConverter {
             populateStudySitesDomain2Dto(studyDto, study);
 
             populateIdentifiersDomain2Dto(studyDto, study);
+            populateTreatmentAssignmentsDomain2Dto(studyDto, study);
+            populateStudyAgentsDomain2Dto(studyDto, study);
+            populateStudyDiseasesDomain2Dto(studyDto, study);
 
 /*
-            populateTreatmentAssignments(studyDto, study);
-            populateStudyAgents(studyDto, study);
-            populateStudyDiseases(studyDto, study);
             populateStudyEvaluationPeriods(studyDto, study);
             populateStudyExpectedAEs(studyDto, study);
 */
@@ -874,6 +875,31 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateTreatmentAssignmentsDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+		List<TreatmentAssignment> list = study.getTreatmentAssignments();
+
+        if (list != null && list.size() > 0) {
+                TreatmentAssignments ts = new TreatmentAssignments();
+                List<TreatmentAssignmentType> treatmentAssignmentsTypeList = new ArrayList<TreatmentAssignmentType>();
+                ts.setTreatmentAssignment(treatmentAssignmentsTypeList);
+
+                TreatmentAssignment treatmentAssignment = null;
+
+                for (TreatmentAssignment ta : list) {
+                    TreatmentAssignmentType tat = new TreatmentAssignmentType();
+                    tat.setCode(ta.getCode());
+                    if (ta.getDoseLevelOrder() != null) tat.setDoseLevelOrder(ta.getDoseLevelOrder().toString());
+                    tat.setDescription(ta.getDescription());
+                    tat.setComments(ta.getComments());
+                    treatmentAssignmentsTypeList.add(tat);
+                }
+
+                studyDto.setTreatmentAssignments(ts);
+        }
+
+    }
+
 	private void populateStudyAgents(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		StudyAgents studyAgents = studyDto.getStudyAgents();
@@ -943,7 +969,54 @@ public class StudyConverter {
 		}
 		
 	}
-	
+
+	private void populateStudyAgentsDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+        List<StudyAgent> agents = study.getStudyAgents();
+
+        if (agents != null && !agents.isEmpty()) {
+
+            StudyAgents agentsDto = new StudyAgents();
+            agentsDto.setStudyAgent(new ArrayList<StudyAgentType>());
+
+            for (StudyAgent sa : agents) {
+
+                StudyAgentType sat = new StudyAgentType();
+
+                if (sa.getOtherAgent() != null) {
+                    sat.setOtherAgent(sa.getOtherAgent());
+                } else {
+                    sat.setAgent(new AgentType());
+                    sat.getAgent().setName(sa.getAgent().getName());
+                    sat.getAgent().setNscNumber(sa.getAgent().getNscNumber());
+                }
+
+                sat.setIndType(IndType.fromValue(sa.getIndType().name()));
+                sat.setPartOfLeadIND(sa.getPartOfLeadIND());
+
+                
+/*
+                List<StudyAgentINDAssociation> as = sa.getStudyAgentINDAssociations();
+
+                if (as != null && as.size() > 0) {
+                    sat.setStudyAgentINDAssociations(new StudyAgentINDAssociations());
+                    sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
+
+                    if (as.get(0).getInvestigationalNewDrug() != null) {
+                        sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(new InvestigationalNewDrugType());
+                        sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().getInvestigationalNewDrug().setIndNumber(new BigInteger(as.get(0).getInvestigationalNewDrug().getIndNumber().intValue()));
+                    }
+                }
+
+*/
+                agentsDto.getStudyAgent().add(sat);
+            }
+
+            studyDto.setStudyAgents(agentsDto);
+        }
+
+    }
+
 	private void populateStudyDiseases(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		CtepStudyDiseases ctepStudyDiseases = studyDto.getCtepStudyDiseases();
@@ -987,6 +1060,45 @@ public class StudyConverter {
 		}
 	}
 	
+	private void populateStudyDiseasesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+        List<CtepStudyDisease> ctep = study.getCtepStudyDiseases();
+        List<MeddraStudyDisease> meddra = study.getMeddraStudyDiseases();
+
+        if (ctep != null && ctep.size() > 0) {
+
+            CtepStudyDiseases cteps = new CtepStudyDiseases();
+            cteps.setCtepStudyDisease(new ArrayList<CtepStudyDiseaseType>());
+
+            for (CtepStudyDisease ctepD : ctep) {
+                CtepStudyDiseaseType ct = new CtepStudyDiseaseType();
+
+                ct.setDiseaseTerm(new DiseaseTermType());
+                ct.getDiseaseTerm().setTerm(ctepD.getDiseaseTerm().getTerm());
+                ct.getDiseaseTerm().setMeddraCode(ctepD.getDiseaseTerm().getMeddraCode());
+                ct.setLeadDisease(ctepD.getLeadDisease());
+
+                cteps.getCtepStudyDisease().add(ct);
+            }
+
+            if (cteps.getCtepStudyDisease().size() > 0) studyDto.setCtepStudyDiseases(cteps);
+
+        } else if (meddra != null && meddra.size() > 0) {
+            
+            MeddraStudyDiseases meddras = new MeddraStudyDiseases();
+            meddras.setMeddraStudyDisease(new ArrayList<MeddraStudyDiseaseType>());
+
+            for (MeddraStudyDisease meddraD : meddra) {
+                MeddraStudyDiseaseType md = new MeddraStudyDiseaseType();
+                md.setMeddraCode(meddraD.getMeddraCode());
+                meddras.getMeddraStudyDisease().add(md);
+            }
+
+            if (meddras.getMeddraStudyDisease().size() > 0) studyDto.setMeddraStudyDiseases(meddras);
+
+        }
+    }
+
 	private void populateStudyEvaluationPeriods(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		EvaluationPeriods evaluationPeriods = studyDto.getEvaluationPeriods();
 		if(evaluationPeriods != null){
