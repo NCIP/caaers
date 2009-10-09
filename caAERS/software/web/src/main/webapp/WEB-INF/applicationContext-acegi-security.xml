@@ -225,9 +225,7 @@
     <bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.caaers.security.WebSSOAuthoritiesPopulator" lazy-init="true">
         <property name="hostCertificate" value="s[hostCertificate]"/>
         <property name="hostKey" value="s[hostKey]"/>
-        <property name="userDetailsService">
-            <ref local="csmUserDetailsService"/>
-        </property>
+        <property name="userDetailsService" ref="csmUserDetailsService" />
     </bean>
     <bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" lazy-init="true">
     </bean>
