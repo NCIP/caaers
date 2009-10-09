@@ -43,6 +43,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.CtepStudyDiseases;
@@ -102,8 +103,9 @@ public class StudyConverter {
             populateCoordinatingCenterDomain2Dto(studyDto, study);
             populateStudySitesDomain2Dto(studyDto, study);
 
+            populateIdentifiersDomain2Dto(studyDto, study);
+
 /*
-            populateIdentifiers(studyDto, study);
             populateTreatmentAssignments(studyDto, study);
             populateStudyAgents(studyDto, study);
             populateStudyDiseases(studyDto, study);
@@ -809,6 +811,45 @@ public class StudyConverter {
 		
 	}
 	
+	private void populateIdentifiersDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+
+		List<Identifier> ids = study.getIdentifiers();
+        
+		if(ids != null && ids.size() > 0){
+
+            Identifiers identifiers = new Identifiers();
+            identifiers.setOrganizationAssignedIdentifier(new ArrayList<OrganizationAssignedIdentifierType>());
+            identifiers.setSystemAssignedIdentifier(new ArrayList<SystemAssignedIdentifierType>());
+
+			List<OrganizationAssignedIdentifier> orgIds = study.getOrganizationAssignedIdentifiers();
+			List<SystemAssignedIdentifier> sysIds = study.getSystemAssignedIdentifiers();
+
+            if (orgIds != null) {
+                for (OrganizationAssignedIdentifier oid : orgIds) {
+                    OrganizationAssignedIdentifierType o = new OrganizationAssignedIdentifierType();
+                    o.setOrganization(new OrganizationType());
+                    o.getOrganization().setName(oid.getOrganization().getName());
+                    o.setType(StudyIdentifierType.fromValue(oid.getType()));
+                    o.setValue(oid.getValue());
+                    o.setPrimaryIndicator(oid.getPrimaryIndicator());
+                    identifiers.getOrganizationAssignedIdentifier().add(o);
+                }
+            }
+
+            if (sysIds != null) {
+                for (SystemAssignedIdentifier sid : sysIds) {
+                    SystemAssignedIdentifierType o = new SystemAssignedIdentifierType();
+                    o.setSystemName(sid.getSystemName());
+                    o.setValue(sid.getValue());
+                    identifiers.getSystemAssignedIdentifier().add(o);
+                }
+            }
+
+            studyDto.setIdentifiers(identifiers);
+		}
+
+	}
+
 	private void populateTreatmentAssignments(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		TreatmentAssignments treatmentAssignments = studyDto.getTreatmentAssignments();

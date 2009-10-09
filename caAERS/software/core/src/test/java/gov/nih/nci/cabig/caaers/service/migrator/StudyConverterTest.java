@@ -184,10 +184,10 @@ public class StudyConverterTest extends AbstractTestCase {
 
         study.setAeTerminology(new AeTerminology());
         study.getAeTerminology().setCtcVersion(new Ctc());
-        study.getAeTerminology().getCtcVersion().setName("3");
+        study.getAeTerminology().getCtcVersion().setId(3);
 /*
         study.getAeTerminology().setMeddraVersion(new MeddraVersion());
-        study.getAeTerminology().getMeddraVersion().setName("Meddra-9");
+        study.getAeTerminology().getMeddraVersion().setId(9);
 */
 
         study.setDiseaseTerminology(new DiseaseTerminology());
@@ -380,6 +380,28 @@ public class StudyConverterTest extends AbstractTestCase {
         studySite1.addStudyPersonnel(sp32);
 
         study.addStudyOrganization(studySite1);
+
+
+// IDENTIFIERS
+
+        SystemAssignedIdentifier sid1 = new SystemAssignedIdentifier();
+        sid1.setSystemName("BAA_SYSTEM");
+        sid1.setValue("BAA-jii7");
+        sid1.setType(SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        study.getIdentifiers().add(sid1);
+
+        SystemAssignedIdentifier sid2 = new SystemAssignedIdentifier();
+        sid2.setSystemName("GRADE_SYSTEM");
+        sid2.setValue("GR-jjk11");
+        sid2.setType(SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        study.getIdentifiers().add(sid2);
+
+        OrganizationAssignedIdentifier oid1 = new OrganizationAssignedIdentifier();
+        oid1.setOrganization(new LocalOrganization());
+        oid1.getOrganization().setName("Full House Organization");
+        oid1.setValue("FHO-aaakk");
+        oid1.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+        study.getIdentifiers().add(oid1);
 
         // exporting...
 
