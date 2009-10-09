@@ -66,6 +66,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<!-- *-ds.xml and WAR -->
 	<property name="caAERS-webapp.dir.dist" location="${basedir}/${caAERS-webapp.dist.relative.dir}" />
+	<property name="caAERS-templates.dir.dist" location="${basedir}/${caAERS-templates.dist.relative.dir}" />
+	<property name="caAERS-grid-services.dir.dist" location="${basedir}/${caAERS-grid-services.dist.relative.dir}" />
 	<property name="caAERS-webapp.ds.file" value="caAERS-ds.xml" />
 	<property name="caAERS-webapp.name" value="caaers" />
 	<property name="caAERS-webapp.war.file" value="${caAERS-webapp.name}.war" />
@@ -392,7 +394,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="upgrade:tomcat" description="Wrapper target to call all targets required to upgrade tomcat container." unless="exclude.tomcat" depends="upgrade:tomcat:init,common:init,upgrade-ncm:tomcat">
 	</target>
 
-	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm">
+	<target name="upgrade" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:tomcat">
 	</target>
 
 	<target name="upgrade-with-dbinstall" description="Upgrades JBoss and Database" depends="upgrade:common:init,common:init,upgrade-ncm:with-dbinstall">
@@ -630,19 +632,20 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>
 	</target>
 	
-	<target name="install:post:tomcat:caaers:config" unless="caaers.upgrade">
+	<target name="install:post:tomcat:caaers:config">
 		<!-- caAERS specific configuration -->
+		
 		<mkdir dir="${tomcat.home}/conf/caaers"/>
 		<mkdir dir="${tomcat.home}/conf/cabig"/>
 		
 		<switch value="${database.type}">
 			<case value="oracle">
-				<copy file="${software.dir}/../../../templates/oracle/oracle.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
-				<copy file="${software.dir}/../../../templates/oracle/oracle.csm_jaas.config" tofile="${tomcat.home}/conf/cabig/csm_jaas.config" overwrite="true" />
+				<copy file="${caAERS-templates.dir.dist}/oracle.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
+				<copy file="${caAERS-templates.dir.dist}/oracle/oracle.csm_jaas.config" tofile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" overwrite="true" />
 			</case>
 			<case value="postgresql">
-				<copy file="${software.dir}/../../../templates/postgres/postgres.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
-				<copy file="${software.dir}/../../../templates/postgres/postgres.csm_jaas.config" tofile="${tomcat.home}/conf/cabig/csm_jaas.config" overwrite="true" />
+				<copy file="${caAERS-templates.dir.dist}/postgres/postgres.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
+				<copy file="${caAERS-templates.dir.dist}/postgres/postgres.csm_jaas.config" tofile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" overwrite="true" />
 			</case>
 		</switch>
 
@@ -684,11 +687,14 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="hostKey=@HOST_KEY@" value="" />
 	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.cas.acegi.security.url=@ACEGI_URL@" value="" />
 	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.studyconsumer.url=@STUDY_CONSUMER_URL@" value="" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />		
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="enable.coppa.cache=@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="enable.coppa.mode=@ENABLE_COPPA_MODE@" value="${enable.coppa.mode}" />	
 	</target>
 	
 	<!-- webSSO properties will be replaced in datasource.properties file for webSSO mode-->
 	<target name="caaers:websso:properties:required" if="websso.properties.required">
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@AUTH_MODE@" value="${authentication.mode}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_BASEURL@" value="${webSSO.server.baseUrl}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_SERVER_ADDRESS@" value="${webSSO.server.address}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_SERVER_PORT@" value="${webSSO.server.port}" />		
@@ -698,26 +704,41 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@TRUST_STORE@" value="${webSSO.trustStore}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${hostCertificate}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${hostKey}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
+		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_MODE@" value="${enable.coppa.mode}" />
 	</target>
 	
 	<!-- caaers csm_jass.config file copy and configure -->
 	<target name="caaers:csm_jass:config">
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="@DB_USER@" value="${database.user}" />
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="@DB_PASSWORD@" value="${database.password}" />
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="@DB_HOST@" value="${database.server}" />
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="@DB_PORT@" value="${database.port}" />
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="@DB_NAME@" value="${database.name}" />	
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_USER@" value="${database.user}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_PASSWORD@" value="${database.password}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_HOST@" value="${database.server}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_PORT@" value="${database.port}" />
+		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_NAME@" value="${database.name}" />	
 		
-		<echo file="${tomcat.home}/conf/catalina.properties" append="true">&#x0A;
-			java.security.auth.login.config=${catalina.home}/conf/cabig/csm_jaas.config
-		</echo>		
+		<loadfile property="caaers.csm.jass.content"
+		      srcFile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config"/>
+		
+		<touch file="${tomcat.home}/conf/cabig/csm_jaas.config"/>
+		
+		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="${caaers.csm.jass.content}" value=""/>
+		
+		<echo file="${tomcat.home}/conf/cabig/csm_jaas.config" append="true">&#x0A;${caaers.csm.jass.content}
+		</echo>	
+		
+		<replace file="${tomcat.home}/conf/catalina.properties" token="java.security.auth.login.config=${catalina.home}/conf/cabig/csm_jaas.config" value=""/>
+		<echo file="${tomcat.home}/conf/catalina.properties" append="true">&#x0A;java.security.auth.login.config=${catalina.home}/conf/cabig/csm_jaas.config
+		</echo>
+		
 	</target>	
 	
 	<target name="install:tomcat:caAERS-webapp" description="Deploy caAERS-webapp and common libraries to tomcat installation" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 		<delete dir="${tomcat.home}/temp"/>
 		<delete dir="${tomcat.home}/work"/>
 		<delete dir="${tomcat.home}/webapps/caaers"/>
+		<delete dir="${tomcat.home}/webapps/wsrf-caaers"/>
 		<copy file="${caAERS-webapp.dir.dist}/${caAERS-webapp.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
+		<copy file="${caAERS-grid-services.dir.dist}/wsrf-caaers.war" todir="${tomcat.home}/webapps" overwrite="true" />
 		<!--  Many NCI applications require clm for csm, so you can point this to where you have the version you want to use
 		<copy file="${bda-utils.dir}/clm-3.2.jar" todir="${tomcat.home}/server/${tomcat.server.name}/lib" overwrite="true" />
 		-->
