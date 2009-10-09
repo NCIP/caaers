@@ -46,11 +46,12 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
         return passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential);
     }
 
-    /*
-     * public boolean validatePasswordAgainstLoginPolicy(Credential credential) throws
-     * CaaersSystemException { return loginPolicyValidator.validate(getPasswordPolicy(),
-     * credential); }
-     */
+    
+     public boolean validatePasswordAgainstLoginPolicy(Credential credential) throws
+      CaaersSystemException { 
+    	 return loginPolicyValidator.validate(getPasswordPolicy(),credential);
+    	 }
+     
 
     @Required
     public void setPasswordPolicyDao(PasswordPolicyDao passwordPolicyDao) {
@@ -61,7 +62,7 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
         passwordCreationPolicyValidator.setCsmUserRepository(csmUserRepository);
-        loginPolicyValidator.setCsmUserRepository(csmUserRepository);
+        //loginPolicyValidator.setCsmUserRepository(csmUserRepository);
 
     }
 
