@@ -828,6 +828,9 @@ public class StudyConverter {
 
             if (orgIds != null) {
                 for (OrganizationAssignedIdentifier oid : orgIds) {
+                    if (StudyIdentifierType.fromValue(oid.getType()).equals(StudyIdentifierType.PROTOCOL_AUTHORITY_IDENTIFIER)) continue;
+                    if (StudyIdentifierType.fromValue(oid.getType()).equals(StudyIdentifierType.COORDINATING_CENTER_IDENTIFIER)) continue;
+
                     OrganizationAssignedIdentifierType o = new OrganizationAssignedIdentifierType();
                     o.setOrganization(new OrganizationType());
                     o.getOrganization().setName(oid.getOrganization().getName());
@@ -983,7 +986,7 @@ public class StudyConverter {
 
             for (StudyAgent sa : agents) {
 
-                if (sa == null && sa.getOtherAgent() == null && sa.getAgent() == null) continue;
+                if (sa == null && sa.getOtherAgent() == null && sa.getAgent() == null || sa.isRetired()) continue;
 
                 StudyAgentType sat = new StudyAgentType();
 
@@ -1079,7 +1082,7 @@ public class StudyConverter {
 
                 ct.setDiseaseTerm(new DiseaseTermType());
                 ct.getDiseaseTerm().setTerm(ctepD.getDiseaseTerm().getTerm());
-                ct.getDiseaseTerm().setMeddraCode(ctepD.getDiseaseTerm().getMeddraCode());
+                // ct.getDiseaseTerm().setMeddraCode(ctepD.getDiseaseTerm().getMeddraCode());
                 ct.setLeadDisease(ctepD.getLeadDisease());
 
                 cteps.getCtepStudyDisease().add(ct);
@@ -1188,7 +1191,7 @@ public class StudyConverter {
                     saes.getSolicitedAdverseEvent().add(saet);
                 }
 
-                ept.setSolicitedAdverseEvents(saes);
+                if (saes.getSolicitedAdverseEvent().size() > 0) ept.setSolicitedAdverseEvents(saes);
                 eps.getEvaluationPeriod().add(ept);
             }
 
