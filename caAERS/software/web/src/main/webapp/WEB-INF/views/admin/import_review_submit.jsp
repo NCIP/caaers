@@ -236,26 +236,10 @@
 		<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0 }'>
 		
 		<br/><br/>
-		<div class="row">
-			<div class="label">
-				<input id='button3' class='ibutton' type='button' value='Import'  title='Import Studies'
-				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study','button3')" />	
-           </div>
-           
-           <div id=bar3 style="display: none;">
-           		<img src="<c:url value="/images/indicator.white.gif"/>">
-           </div>
-           
-<!--		   <div class="value">-->
-<!--		   		<div class="graph">-->
-<!--    				<strong id="bar3" class="bar" style="width: 0%;">0%</strong>-->
-<!--    			</div>-->
-<!--		   </div>-->
-       </div>
-       <div class="row">
-       		<div class="label"></div>
-       		<div class="value" id="importStatus3" >Start import by pressing the above button</div>
-       <br/><br/>
+        <tags:button size="small" color="green" type="submit" id="button3" cssClass="tab${tabNumber}" value="Import..." icon="add" onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study','button3')"/>
+        <div id=bar3 style="display: none;"><img src="<c:url value="/images/indicator.white.gif"/>"></div>
+        <div id="importStatus3" >Start import by pressing the above button</div>
+        <br/><br/>
 
 		<chrome:division title="Study records will NOT be loaded" id="study_will_not_load">
 		

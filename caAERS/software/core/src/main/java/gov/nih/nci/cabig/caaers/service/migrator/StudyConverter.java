@@ -1002,20 +1002,19 @@ public class StudyConverter {
                 if (sa.getPartOfLeadIND() != null) sat.setPartOfLeadIND(sa.getPartOfLeadIND());
 
                 
-/*
                 List<StudyAgentINDAssociation> as = sa.getStudyAgentINDAssociations();
 
                 if (as != null && as.size() > 0) {
-                    sat.setStudyAgentINDAssociations(new StudyAgentINDAssociations());
-                    sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
-
                     if (as.get(0).getInvestigationalNewDrug() != null) {
-                        sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(new InvestigationalNewDrugType());
-                        sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().getInvestigationalNewDrug().setIndNumber(new BigInteger(as.get(0).getInvestigationalNewDrug().getIndNumber().intValue()));
+                        sat.setStudyAgentINDAssociations(new StudyAgentINDAssociations());
+                        sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
+
+                        InvestigationalNewDrugType idt = new InvestigationalNewDrugType();
+                        sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(idt);
+                        idt.setIndNumber(new BigInteger((as.get(0).getInvestigationalNewDrug().getIndNumber().toString())));
                     }
                 }
 
-*/
                 agentsDto.getStudyAgent().add(sat);
             }
 
