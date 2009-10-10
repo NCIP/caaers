@@ -35,13 +35,13 @@
 	================================================================== -->	
 	<target name="build-grid-services">		
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumerGridService-caGrid13/build.xml"/>
 		</subant>
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumer-1.3/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumerGridService-caGrid13/build.xml"/>
 		</subant>
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService-caGrid13/build.xml"/>
 		</subant>
 	</target>
 
