@@ -10,6 +10,10 @@
 	<!--Working globus folder or file name-->
 	<property name="ccts.grid-services.working.globus.file" value="ws-core-4.0.3"/>
 	
+	<property name="registration.consumer.grid.service.dir" value="RegistrationConsumerGridService-caGrid13"/>
+	<property name="study.consumer.grid.service.dir" value="StudyConsumerGridService-caGrid13"/>
+	<property name="lab.consumer.grid.service.dir" value="LabConsumerService-caGrid13"/>
+	
 	
 	<import file="${parent.dir}/common.xml"/>
 	
@@ -35,13 +39,13 @@
 	================================================================== -->	
 	<target name="build-grid-services">		
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumerGridService-caGrid13/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
 		</subant>
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumerGridService-caGrid13/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${study.consumer.grid.service.dir}/build.xml"/>
 		</subant>
 		<subant target="all">
-			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService-caGrid13/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
 	</target>
 
@@ -52,17 +56,17 @@
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="RegistrationConsumer-1.3/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${registration.consumer.grid.service.dir}/build.xml"/>
 		</subant>
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="StudyConsumer-1.3/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${study.consumer.grid.service.dir}/build.xml"/>
 		</subant>	
 		<subant target="deployTomcat">
 			<property name="globus.webapp" value="${wsrf}"/>
 			<property name="tomcat.dir" value="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}"/>
-			<fileset dir="${ccts.grid-services.location}" includes="LabConsumerService/build.xml"/>
+			<fileset dir="${ccts.grid-services.location}" includes="${lab.consumer.grid.service.dir}/build.xml"/>
 		</subant>
 		<copy todir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib">
 	        <fileset dir="${parent.dir}/grid/registration-consumer/build/dist" includes="caaers-registration-consumer.jar"/>
