@@ -226,7 +226,7 @@ public class StudyConverter {
     private XMLGregorianCalendar convertCalendar2XmlGregorianCalendar(Calendar c) throws Exception {
         XMLGregorianCalendar xml =  DatatypeFactory.newInstance().newXMLGregorianCalendar();
         xml.setYear(c.get(Calendar.YEAR));
-        xml.setMonth(c.get(Calendar.MONTH));
+        xml.setMonth(c.get(Calendar.MONTH) + 1);
         xml.setDay(c.get(Calendar.DAY_OF_MONTH));
         return xml;
     }
