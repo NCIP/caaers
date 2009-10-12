@@ -46,7 +46,6 @@
 
     		<fileset file="${basedir}/web/ivy-build.xml" />
     		
-    		<!-- Please comment the below four lines for builds on local machines -->
 			<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/lab-consumer/ivy-build.xml" />
