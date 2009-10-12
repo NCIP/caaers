@@ -16,6 +16,7 @@ html div.row, * html .autoclear {
 }
 .workflow-tabs {
 width:951px;
+z-index:-1;
 }
 .pane {
 	/* Fix the issue of summary not aligned properly */

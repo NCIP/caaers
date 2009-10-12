@@ -25,7 +25,7 @@
 		        	</c:if>
 				</c:if>
 			</c:if>
-			${atab.number + 1}. ${atab.shortTitle}
+			${atab.number + 1}. ${atab.shortTitle}&nbsp;
 			</a>
     </div></li>
 	<c:if test="${selected}">

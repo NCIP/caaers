@@ -1775,7 +1775,7 @@ var WindowUtilities = {
       objOverlay.style.position = 'absolute';
       objOverlay.style.top = '0';
       objOverlay.style.left = '0';
-      objOverlay.style.zIndex = Windows.maxZIndex + 1;
+      objOverlay.style.zIndex = Windows.maxZIndex + 2;
       Windows.maxZIndex++;
       objOverlay.style.width = '100%';
       parent.insertBefore(objOverlay, parent.firstChild);
