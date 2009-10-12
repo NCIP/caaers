@@ -38,6 +38,7 @@ This applicationContext contains the definition of the concrete services
 				<entry key="aeNotification" value="SCHEDULE_MODIFICATION"/>
 			</map>
 		</property>
+		<property name="authenticationMode" value="s[authenticationMode]"/>
 		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
 	</bean>
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">

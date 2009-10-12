@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 
+import java.io.File;
 import java.util.Date;
 
 import org.apache.commons.logging.Log;
@@ -78,5 +79,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
             "classpath*:applicationContext-test.xml"
         };
     }
+    
+   
 
 }

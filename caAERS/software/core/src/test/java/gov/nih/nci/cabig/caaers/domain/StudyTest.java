@@ -200,4 +200,17 @@ public class StudyTest extends TestCase {
 		assertEquals(1, emails.size());
 		assertEquals("test@def.com", emails.get(0));
 	}
+	
+	public void testRemoveStudyTherapy(){
+		study.getStudyTherapies().clear();
+		
+		study.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
+		study.addStudyTherapy(StudyTherapyType.DEVICE);
+		assertEquals(2, study.getStudyTherapies().size());
+		study.removeTherapiesOfType(StudyTherapyType.BEHAVIORAL);
+		assertEquals(1, study.getStudyTherapies().size());
+		study.removeTherapiesOfType(StudyTherapyType.BEHAVIORAL);
+		assertEquals(1, study.getStudyTherapies().size());
+	}
+	
 }

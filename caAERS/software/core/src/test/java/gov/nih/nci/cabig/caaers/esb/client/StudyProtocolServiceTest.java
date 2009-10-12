@@ -20,6 +20,7 @@ import edu.duke.cabig.c3pr.esb.Metadata;
 import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
 public class StudyProtocolServiceTest extends TestCase {
@@ -124,18 +125,9 @@ public class StudyProtocolServiceTest extends TestCase {
         return payloadXml;
 	}
 	
-	public String sendMessage(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
-        String result = null;
-        try {
-        	CaXchangeMessageBroadcasterImpl broadCaster =  new CaXchangeMessageBroadcasterImpl();
-            broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
-        	result = broadCaster.broadcastCoppaMessage(message, metaData);
-            
-		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
-
-            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
-		}
-    	return result;
+	public String sendMessage(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {  
+		return sendMessage(Arrays.asList(new String[]{message}), metaData);
+		
     }
 	
 	public String sendMessage(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	

@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
-import edu.duke.cabig.c3pr.esb.CaXchangeMessageResponseHandlerSet;
 import edu.duke.cabig.c3pr.esb.Metadata;
 import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
-import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider;
+import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.ClinicalResearchStaff;
 import gov.nih.nci.coppa.po.HealthCareProvider;
@@ -15,6 +13,7 @@ import gov.nih.nci.coppa.po.IdentifiedPerson;
 import gov.nih.nci.coppa.po.Person;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -25,13 +24,10 @@ import org.springframework.beans.factory.annotation.Required;
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
 public abstract class BaseResolver {
-	//private MessageBroadcastService coppaMessageBroadcastService;
+	
+	private MessageBroadcastService coppaMessageBroadcastService;
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 
-    private SecurityContextCredentialProvider delegatedCredentialProvider;
-    
-    private String authenticationMode;
-	
 	public String broadcastPersonSearch(String iiXml) throws Exception{
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
         Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.PERSON.getName());
@@ -161,67 +157,23 @@ public abstract class BaseResolver {
         return broadcastCOPPA(healthcareSiteXml, mData);
 	}
 
-/*
+
+	public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
+		return broadcastCOPPA(Arrays.asList(message), metaData);
+    }
+	
+	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
+		log.info("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
+        return coppaMessageBroadcastService.broadcastCOPPA(messages, metaData);
+    }
+	
+	@Required
 	public MessageBroadcastService getCoppaMessageBroadcastService() {
 		return coppaMessageBroadcastService;
 	}
-
-	public void setCoppaMessageBroadcastService(
-			MessageBroadcastService coppaMessageBroadcastService) {
+	
+	public void setCoppaMessageBroadcastService(MessageBroadcastService coppaMessageBroadcastService) {
 		this.coppaMessageBroadcastService = coppaMessageBroadcastService;
-	}*/
-	
-	public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
-        System.out.println("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
-		String result = null;
-        try {
-        	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-        //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(CoppaConstants.CAXCHANGE_URL);
-            if ("webSSO".equals(authenticationMode)) {
-            	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
-            	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
-            }
-
-        	result = broadCaster.broadcastCoppaMessage(message, metaData);
-		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
-
-            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
-		}
-    	return result;
-    }
-	
-	
-	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
-		System.out.println("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
-        String result = null;
-        try {
-        	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-        //	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(CoppaConstants.CAXCHANGE_URL);
-            if ("webSSO".equals(authenticationMode)) {
-            	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
-            	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
-            }
-
-        	result = broadCaster.broadcastCoppaMessage(messages, metaData);
-		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
-
-            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
-		}
-    	return result;
-    }
-	
-
-    @Required
-    public void setDelegatedCredentialProvider(
-                    SecurityContextCredentialProvider delegatedCredentialProvider) {
-        this.delegatedCredentialProvider = delegatedCredentialProvider;
-    }
-    @Required
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
 	}
-	
 	
 }

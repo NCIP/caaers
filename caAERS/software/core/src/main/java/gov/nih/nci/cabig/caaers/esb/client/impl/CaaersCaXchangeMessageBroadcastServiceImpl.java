@@ -10,29 +10,39 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+/**
+ * This implementation will broadcast messages to caXchange via C3PR implemented message broadcasters.
+ * @author Sujith V
+ * @author Srini Akkala
+ * @author Monish Dombla
+ * @author Biju Joseph
+ */
+
 public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadcastService {
-    private static final Log log = LogFactory
-                    .getLog(CaaersCaXchangeMessageBroadcastServiceImpl.class);
 
+	/*
+	 * Refactoring Question:
+	 *  BJ : Why we are initalizing in every call CaXchangeMessageBroadcasterImpl, is it statefull?
+	 */
+	private static final Log log = LogFactory.getLog(CaaersCaXchangeMessageBroadcastServiceImpl.class);
     private Configuration configuration;
-
     private Map<String, String> messageTypesMapping;
-
     private SecurityContextCredentialProvider delegatedCredentialProvider;
+    private String authenticationMode;
 
     /**
      * Will route the request to the C3PR CaXchangeMessageBroadCaster
      */
-    public void broadcast(String message)
-                    throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
+    public void broadcast(String message) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
 
         try {
             CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-            System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
+            log.info("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setMessageTypesMapping(messageTypesMapping);
             broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
@@ -44,25 +54,28 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
             throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
         }
     }
-    /*
-    public String broadcastCOPPA(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
+    
+    /**
+     * Will send a COPPA message
+     */
+    public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
         String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-        	System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
+        	log.info("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
-            
-             	broadCaster.setMessageTypesMapping(messageTypesMapping);
-                broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
-                broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
+            if (StringUtils.equals(authenticationMode, "webSSO")) {
+            	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
+            	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
+            }
              
-        	result = broadCaster.broadcastCoppaMessage(message, metaData);
+        	result = broadCaster.broadcastCoppaMessage(messages, metaData);
 		} catch (edu.duke.cabig.c3pr.esb.BroadcastException e) {
 			log.error("Error while broadcasting the message to COPPA", e);
             throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
 		}
     	return result;
-    }*/
+    }
 
     public List<String> getBroadcastStatus() {
         // TODO Auto-generated method stub
@@ -88,9 +101,12 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
     }
 
     @Required
-    public void setDelegatedCredentialProvider(
-                    SecurityContextCredentialProvider delegatedCredentialProvider) {
+    public void setDelegatedCredentialProvider(SecurityContextCredentialProvider delegatedCredentialProvider) {
         this.delegatedCredentialProvider = delegatedCredentialProvider;
     }
+    
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
 
 }

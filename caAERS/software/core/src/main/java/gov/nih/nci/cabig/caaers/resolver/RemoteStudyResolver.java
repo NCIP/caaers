@@ -18,21 +18,26 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
+import gov.nih.nci.coppa.services.pa.PlannedActivity;
 import gov.nih.nci.coppa.services.pa.StudyOverallStatus;
 import gov.nih.nci.coppa.services.pa.StudyProtocol;
 import gov.nih.nci.coppa.services.pa.StudySiteContact;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.iso._21090.DSETII;
 import org.iso._21090.ENXP;
@@ -50,7 +55,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	private Logger log = Logger.getLogger(RemoteStudyResolver.class);
 
 	/**
-	 * Searches Coppa database for Study Protocols similar to the example Study object that is passed into it.
+	 * Searches COPPA database for Study Protocols similar to the example Study object that is passed into it.
 	 * 
 	 * @param Object the remote Study
 	 * @return the object list; list of remoteHealthcareSites
@@ -77,7 +82,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		Metadata mData = new Metadata(OperationNameEnum.search.getName(), "extId", ServiceTypeEnum.STUDY_PROTOCOL.getName());
 		String resultXml = "";
 		try{
-			resultXml = sendMessage(payLoads, mData);
+			resultXml = broadcastCOPPA(payLoads, mData);
 			List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
 			List< gov.nih.nci.coppa.services.pa.StudyProtocol> studyProtocols = 
 							new ArrayList< gov.nih.nci.coppa.services.pa.StudyProtocol>();
@@ -114,7 +119,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		String resultXml = "";
 		List<Object> remoteStudies = new ArrayList<Object>();
 		try{
-			resultXml = sendMessage(payLoad, mData);
+			resultXml = broadcastCOPPA(payLoad, mData);
 			List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
 			List< gov.nih.nci.coppa.services.pa.StudyProtocol> studyProtocols = 
 							new ArrayList< gov.nih.nci.coppa.services.pa.StudyProtocol>();
@@ -186,8 +191,48 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 		
 		populateStudyOrganizationsForStudyProtocol(studyProtocol,remoteStudy);
-
+		populateStudyTherapies(studyProtocol, remoteStudy);
+		
 		return remoteStudy;
+	}
+	
+	/**
+	 * This method will copy the {@link StudyTherapy}s.  
+	 * @param studyProtocol - Study from PA
+	 * @param remoteStudy - A caAERS Study, marked as Remote. 
+	 */
+	public void populateStudyTherapies(StudyProtocol studyProtocol,RemoteStudy remoteStudy){
+		String payLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
+		Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.PLANNED_ACTIVITY.getName());
+		String resultXml  = "";
+		try {
+			resultXml  = broadcastCOPPA(payLoad,mData);
+			List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
+			
+			//1. remove all the therapies that are not present in PlannedActivities
+			//2. add all therapies present in PlannedActivities
+			
+			List<StudyTherapyType> unwantedTherapyTypes = new ArrayList<StudyTherapyType>(Arrays.asList(StudyTherapyType.values()));
+			
+			for (String result:results) {
+				PlannedActivity plannedActivity = CoppaPAObjectFactory.getPlannedActivity(result);
+				if(StringUtils.equals(plannedActivity.getCategoryCode().getCode(), "Intervention")){
+					StudyTherapyType therapyType = StudyTherapyType.getByCoppaName(plannedActivity.getSubcategoryCode().getCode());
+					unwantedTherapyTypes.remove(therapyType);
+					if(!remoteStudy.hasTherapyOfType(therapyType)){
+						remoteStudy.addStudyTherapy(therapyType);
+					}
+				}
+			}
+			
+			//remove all therapies not present in COPPA.
+			for(StudyTherapyType therapyType : unwantedTherapyTypes){
+				remoteStudy.removeTherapiesOfType(therapyType);
+			}
+			
+		} catch (CaaersSystemException e) {
+			log.error(e);
+		}
 	}
 	
 	/**
@@ -203,7 +248,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_SITE.getName());
 		String resultXml  = "";
 		try {
-			resultXml  = sendMessage(payLoad,mData);
+			resultXml  = broadcastCOPPA(payLoad,mData);
 		} catch (CaaersSystemException e) {
 			log.error(e);
 		}
@@ -320,7 +365,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		String x = studyParticipationTemp.getHealthcareFacility().getExtension();
 		String hcfPayLoad = CoppaObjectFactory.getHealthcareFacilityIdXML(CoppaObjectFactory.getHealthcareFacilityId(x));
 		Metadata mData = new Metadata(OperationNameEnum.getById.getName(), "extId", ServiceTypeEnum.HEALTH_CARE_FACILITY.getName());
-		hcfResultXml = sendMessage(hcfPayLoad,mData);
+		hcfResultXml = broadcastCOPPA(hcfPayLoad,mData);
 		List<String> hcfResults = XMLUtil.getObjectsFromCoppaResponse(hcfResultXml);
 		gov.nih.nci.coppa.po.HealthCareFacility healthcareFacility = CoppaObjectFactory.getHealthcareFacility(hcfResults.get(0));
 		
@@ -328,7 +373,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		DSETII dsetii = CoppaObjectFactory.getDSETIISearchCriteria(healthcareFacility.getPlayerIdentifier().getExtension());
 		String organizationPayload = CoppaObjectFactory.getCoppaIIXml(dsetii);
 		Metadata organizationMData = new Metadata(OperationNameEnum.getById.getName(),  "extId", ServiceTypeEnum.ORGANIZATION.getName());
-		String organizationResultXml = sendMessage(organizationPayload, organizationMData);
+		String organizationResultXml = broadcastCOPPA(organizationPayload, organizationMData);
 		List<String> results = XMLUtil.getObjectsFromCoppaResponse(organizationResultXml);
 		gov.nih.nci.coppa.po.Organization coppaOrganization = CoppaObjectFactory.getCoppaOrganization(results.get(0));
 		
@@ -351,14 +396,14 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		String researchOrgPayLoad = CoppaObjectFactory.getResearchOrganizationIdXML
 		(CoppaObjectFactory.getResearchOrganizationId(studyParticipationTemp.getResearchOrganization().getExtension()));
 		Metadata researchOrgMData = new Metadata(OperationNameEnum.getById.getName(), "extId", ServiceTypeEnum.RESEARCH_ORGANIZATION.getName());
-		String researchOrgResultXml = sendMessage(researchOrgPayLoad, researchOrgMData);
+		String researchOrgResultXml = broadcastCOPPA(researchOrgPayLoad, researchOrgMData);
 		List<String> roResults = XMLUtil.getObjectsFromCoppaResponse(researchOrgResultXml);
 		gov.nih.nci.coppa.po.ResearchOrganization researchOrganization = CoppaObjectFactory.getResearchOrganization(roResults.get(0));
 		
 		II playerII = CoppaObjectFactory.getIISearchCriteria(researchOrganization.getPlayerIdentifier().getExtension());
 		String organizationPayload = CoppaObjectFactory.getCoppaIIXml(playerII);
 		Metadata organizationMData = new Metadata(OperationNameEnum.getById.getName(),  "extId", ServiceTypeEnum.ORGANIZATION.getName());
-		String organizationResultXml = sendMessage(organizationPayload, organizationMData);
+		String organizationResultXml = broadcastCOPPA(organizationPayload, organizationMData);
 		List<String> results = XMLUtil.getObjectsFromCoppaResponse(organizationResultXml);
 		gov.nih.nci.coppa.po.Organization coppaOrganization = CoppaObjectFactory.getCoppaOrganization(results.get(0));
 		
@@ -397,7 +442,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         String studySiteContactResultXml = null;
         String studySitePayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getStudySiteId(coppaStudySite.getIdentifier().getExtension()));
         Metadata mData = new Metadata("getByStudySite", "extId", ServiceTypeEnum.STUDY_SITE_CONTACT.getName());
-        studySiteContactResultXml = sendMessage(studySitePayLoad,mData);
+        studySiteContactResultXml = broadcastCOPPA(studySitePayLoad,mData);
         StudySiteContact studySiteContact = null;
         List<String> results = XMLUtil.getObjectsFromCoppaResponse(studySiteContactResultXml);
         for(String studySiteContactXml : results){  
@@ -421,7 +466,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
     private HealthCareProvider getHealthCareProviderFromExtension(String extension){
         String coppaHealthCareProviderXml = CoppaObjectFactory.getHealthCareProviderIdXML(extension);
         Metadata healthCareProviderMData = new Metadata(OperationNameEnum.getById.getName(), "extId", ServiceTypeEnum.HEALTH_CARE_PROVIDER.getName());
-        String healthCareProviderResult  = sendMessage(coppaHealthCareProviderXml,healthCareProviderMData);
+        String healthCareProviderResult  = broadcastCOPPA(coppaHealthCareProviderXml,healthCareProviderMData);
         List<String> healthCareProviderResults = XMLUtil.getObjectsFromCoppaResponse(healthCareProviderResult);
         if(healthCareProviderResults != null && !"".equals(healthCareProviderResults)){
         	return CoppaObjectFactory.getCoppaHealthCareProvider(healthCareProviderResults.get(0));
@@ -438,7 +483,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         String idXml = CoppaObjectFactory.getCoppaPersonIdXML(extension);                
         //above player id is the Id of a Person. Now get the Person by Id.
         Metadata personMData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
-        String personResultXml = sendMessage(idXml,personMData);
+        String personResultXml = broadcastCOPPA(idXml,personMData);
         List<String> persons = XMLUtil.getObjectsFromCoppaResponse(personResultXml);
         if(persons.size() > 0){
             return CoppaObjectFactory.getCoppaPerson(persons.get(0));
@@ -513,7 +558,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		
 		String paIdPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
 		Metadata mData = new Metadata(OperationNameEnum.getCurrentByStudyProtocol.getName(), "extId", ServiceTypeEnum.DOCUMENT_WORKFLOW_STATUS.getName());
-		String documentWorkflowResultXml = sendMessage(paIdPayLoad, mData);
+		String documentWorkflowResultXml = broadcastCOPPA(paIdPayLoad, mData);
 		List<String> documentWorkflowResults = XMLUtil.getObjectsFromCoppaResponse(documentWorkflowResultXml);
 		DocumentWorkflowStatus documentWorkflowStatus = CoppaPAObjectFactory.getDocumentWorkflowStatus(documentWorkflowResults.get(0));
 		
@@ -523,7 +568,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		if(CoppaConstants.DOCUMENT_WORKFLOW_STATUS_LIST.contains(documentWorkflowStatus.getStatusCode().getCode())){
 			//Call search on StudyOverallStatus using the StudyProtocol II.	
 			mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_OVERALL_STATUS.getName());
-			String studyStatusResultXml = sendMessage(paIdPayLoad,mData);
+			String studyStatusResultXml = broadcastCOPPA(paIdPayLoad,mData);
 			List<String> results = XMLUtil.getObjectsFromCoppaResponse(studyStatusResultXml);
 			if(results != null && results.size() > 0){
 				status = CoppaPAObjectFactory.getStudyOverallStatus(results.get(0));
@@ -548,29 +593,5 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         return t;
     }
 	
-	/**
-	 * Delegates call to message broadcaster with a single pay-load element.
-	 * @param message
-	 * @param metaData
-	 * @return
-	 * @throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException
-	 */
-	public String sendMessage(String message,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {    	
-        String result = null;
-        result = broadcastCOPPA(message, metaData);
-    	return result;
-    }
 	
-	/**
-	 * Delegates call to message broadcaster with multiple pay-load elements.
-	 * @param messages
-	 * @param metaData
-	 * @return
-	 * @throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException
-	 */
-	public String sendMessage(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException{    	
-        String result = null;
-        result = broadcastCOPPA(messages, metaData);
-    	return result;
-    }
 }

@@ -412,6 +412,17 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         }
         return false;
     }
+    
+    /**
+     * Will remove all the {@link StudyTherapy} of the specific {@link StudyTherapyType}
+     * @param therapyType
+     */
+    public void removeTherapiesOfType(StudyTherapyType therapyType){
+    	ArrayList<StudyTherapy> therapies = new ArrayList<StudyTherapy>(getStudyTherapies());
+    	for(StudyTherapy therapy : therapies){
+    		if(therapy.getStudyTherapyType() == therapyType) getStudyTherapies().remove(therapy);
+    	}
+    }
 
     @Transient
     public boolean isSurgeryPresent() {

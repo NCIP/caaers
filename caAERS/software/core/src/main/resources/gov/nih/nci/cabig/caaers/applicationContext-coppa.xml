@@ -2,7 +2,10 @@
 <!--
 This applicationContext contains the definition of the concrete services
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" 
+default-lazy-init="true">
 	
 	<bean id="organizationService" class="com.semanticbits.coppasimulator.service.OrganizationService"/>
 	<bean id="researchStaffRemoteService" class="com.semanticbits.coppasimulator.service.ResearchStaffService"/>
@@ -16,23 +19,16 @@ This applicationContext contains the definition of the concrete services
 	<bean id="identifiedPersonCorrelationServiceRemote" class="com.semanticbits.coppasimulator.service.IdentifiedPersonCorrelationServiceImpl"/>
 	
 	
-	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver">
-		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
-		<property name="authenticationMode" ref="authenticationMode"/>
-	</bean>
+	<bean id="baseResolver" abstract="true">
+        <property name="coppaMessageBroadcastService" ref="messageBroadcastService" />
+    </bean>
 	
-	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver">
-		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
-		<property name="authenticationMode" ref="authenticationMode"/>
-	</bean>
+	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver" parent="baseResolver" />
+	
+	<bean id="researchStaffResolver" class="gov.nih.nci.cabig.caaers.resolver.ResearchStaffResolver" parent="baseResolver" />
 
-	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver">
-		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
-		<property name="authenticationMode" ref="authenticationMode"/>
-	</bean>	
+	<bean id="investigatorResolver" class="gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver" parent="baseResolver" />
 	
-	<bean id="remoteStudyResolver" class="gov.nih.nci.cabig.caaers.resolver.RemoteStudyResolver">
-		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
-		<property name="authenticationMode" ref="authenticationMode"/>
-	</bean>	
+	<bean id="remoteStudyResolver" class="gov.nih.nci.cabig.caaers.resolver.RemoteStudyResolver" parent="baseResolver" />
+
 </beans>
