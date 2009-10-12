@@ -73,7 +73,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<property name="caAERS-webapp.build.file" value="../build.xml" />
 
 	<!-- The target name that should be called from the sub-project build file -->
-	<property name="caAERS-webapp.build.target" value="publish-local" />
+	<property name="caAERS-webapp.build.target" value="publish-all" />
 	
 	<property name="caAERS-grid-services.build.target" value="build-deploy-publish-grid-services" />
 
