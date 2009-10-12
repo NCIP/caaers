@@ -3,11 +3,39 @@
     <property file="build.properties" />
     <import file="${basedir}/common.xml"/>
 	
+	<condition property="CCTS-BUILD" value="true">
+			<istrue value="${cctsWAR}"/>
+		</condition>
+	
 	<!-- ==================================================================
-		target : buildlist
+		target : buildlist non CCTS
 	====================================================================== -->
   	<target name="buildlist" depends="load-ivy" unless="buildlist.done" description="Will find the correct order of build dependency"> 
-    	<ivy:buildlist reference="build-path">
+  		<echo message="Using Non ccts-buildList"/>
+  		<ivy:buildlist reference="build-path">
+    		
+    		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
+    		<fileset file="${basedir}/core/ivy-build.xml" />
+    		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
+    	    	<include name="include"/>
+    	    	<exclude name="exclude"/>
+    		</fileset>
+
+    		<fileset file="${basedir}/web/ivy-build.xml" />
+    		
+    	</ivy:buildlist>
+  		
+  		
+  		<property name="buildlist.done" value="true" />
+  		<echo message="buildList : ${build-path}" />
+  	</target>
+	
+	<!-- ==================================================================
+		target : buildlist CCTS
+	====================================================================== -->
+  	<target name="ccts-buildlist" depends="load-ivy" if="CCTS-BUILD" unless="buildlist.done" description="Will find the correct order of build dependency"> 
+  		<echo message="Using ccts-buildList"/>	
+  		<ivy:buildlist reference="build-path">
     		
     		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
@@ -34,7 +62,7 @@
 	<!-- ==================================================================
 		target : publish-all
 	====================================================================== -->
-  	<target name="publish-all" depends="buildlist, clean-all, clean-repo , clean-caaers-cache" 
+  	<target name="publish-all" depends="ccts-buildlist,buildlist, clean-all, clean-repo , clean-caaers-cache" 
   			description="compile, jar and publish all projects in the right order, publishes them into local repository">
    		 <subant target="publish-local" buildpathref="build-path" />
   	</target>
