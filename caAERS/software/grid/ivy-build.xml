@@ -17,12 +17,11 @@
 	
 	<import file="${parent.dir}/common.xml"/>
 	
-	<target name="init">
-		<mkdir dir="${dist.dir}"/>
+	<target name="init" depends="common.init">
 		<mkdir dir="${ccts.grid-services.working.location}"/>
 	</target>
 	
-	<target name="publish-local" depends="init,download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
+	<target name="publish-local" depends="common.clean-dist,init,common.resolve,download-tomcat,download-globus,deploy-globus,deploy-grid-services,war"/>
 
 	<!-- ==============================================================
 		target: resolve-dist , resolves all core and dependent jars ..
@@ -30,8 +29,8 @@
 	 <target name="resolve-dist" depends="load-ivy"
 	    	description="--> resolve and retrieve dist conf dependencies with ivy">
 	    	<echo message="Executing ${ant.project.name} : resolve-dist " />
-	 		<ivy:resolve file="ivy.xml" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	 		<ivy:retrieve pattern="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	 		<ivy:resolve file="ivy.xml" haltonfailure="false" settingsRef="caaers.ivy.instance" conf="distGrid"/>
+	 		<ivy:retrieve pattern="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance" conf="distGrid"/>
 	  </target>
 	
 	<!-- ==============================================================
@@ -83,7 +82,7 @@
 		target: update-wsdd , updates server-config.wsdd with audit info
 	================================================================== -->	
 	<target name="update-wsdd">
-			<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask"/>
+			<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpathref="main.classpath"/>
 	        <xmltask source="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
 	                 dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/etc/cagrid_RegistrationConsumer/server-config.wsdd"
 	                 failWithoutMatch="true">

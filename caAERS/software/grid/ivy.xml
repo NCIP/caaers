@@ -28,7 +28,8 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
 			
-			<dependency org="com.oopsconsultancy" name="xmltask" rev="v1.14.2"/>
+			<dependency org="com.oopsconsultancy" name="xmltask" rev="v1.14.2" 
+				conf="build->default;runtime->default"/>
 			
         </dependencies>
 </ivy-module>
