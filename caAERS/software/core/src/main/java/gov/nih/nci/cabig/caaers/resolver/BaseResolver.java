@@ -167,7 +167,7 @@ public abstract class BaseResolver {
         return coppaMessageBroadcastService.broadcastCOPPA(messages, metaData);
     }
 	
-	@Required
+	//@Required
 	public MessageBroadcastService getCoppaMessageBroadcastService() {
 		return coppaMessageBroadcastService;
 	}
