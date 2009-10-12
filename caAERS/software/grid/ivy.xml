@@ -21,9 +21,6 @@
         	<conf name="test" visibility="public" 
         		description="Dependencies needed for testing purposes"/>
         </configurations>
-        
-
-       
        
         <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->master(*),runtime(default);distGrid->master(*),runtime(default)"  >
 			
@@ -31,7 +28,7 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
 			
-	
+			<dependency org="com.oopsconsultancy" name="xmltask" rev="v1.14.2"/>
 			
         </dependencies>
 </ivy-module>
