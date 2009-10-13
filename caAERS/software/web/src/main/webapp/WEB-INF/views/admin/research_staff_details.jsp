@@ -101,7 +101,7 @@
     </script>
 </head>
 <body>
-
+ 
 <div id="display_remote_rs" style="display:none;text-align:left" >
 	<chrome:box title="Please select a ResearchStaff to be saved in caAERS" id="popupId">
 		<div class="eXtremeTable">

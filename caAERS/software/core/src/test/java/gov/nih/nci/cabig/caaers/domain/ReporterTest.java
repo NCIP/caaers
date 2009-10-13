@@ -23,7 +23,7 @@ public class ReporterTest extends AbstractTestCase {
 
         reporter = new Reporter();
         address = new Address();
-        address.setZip(20171);
+        address.setZip("20171");
         address.setCity("Herndon");
         address.setState("VA");
         address.setStreet("park center road");

@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 public class Address {
 
     private int code; //to force hibernate to load the object
-    private Integer zip;
+    private String zip;
     private String city;
     private String state;
     private String street;
@@ -22,11 +22,11 @@ public class Address {
 		this.code = code;
 	}
     
-    public Integer getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(Integer zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 

@@ -95,7 +95,7 @@
 	<chrome:box title="Please select a ResearchStaff to be saved in caAERS" id="popupId">
 	</chrome:box>
 </div>
-
+         
 <div class="tabpane">
 
 <div class="workflow-tabs2">
@@ -133,7 +133,7 @@
     </chrome:division>
 
 	<caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
-    <chrome:division title="${detailsSectionTitle}">
+    <chrome:division title="${detailsSectionTitle}">   
         <div class="leftpanel">
             <c:forEach items="${fieldGroups.researchStaff.fields}" var="field" begin="0" end="3"><tags:renderRow field="${field}"/></c:forEach>
 

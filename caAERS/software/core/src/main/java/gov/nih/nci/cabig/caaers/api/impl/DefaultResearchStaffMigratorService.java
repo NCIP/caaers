@@ -210,7 +210,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                 researchStaffAddress.setCity(researchStaffDto.getCity());
                 researchStaffAddress.setState(researchStaffDto.getState());
                 if(researchStaffDto.getZip() != null & !StringUtils.isEmpty(researchStaffDto.getZip())){
-              	 researchStaffAddress.setZip(Integer.parseInt(researchStaffDto.getZip()));
+              	 researchStaffAddress.setZip(researchStaffDto.getZip());
                 }
                 researchStaff.setAddress(researchStaffAddress);
                 
@@ -229,7 +229,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	              	siteResearchStaffAddress.setCity(siteResearchStaffType.getCity());
 	              	siteResearchStaffAddress.setState(siteResearchStaffType.getState());
 	              	if(siteResearchStaffType.getZip() != null & !StringUtils.isEmpty(siteResearchStaffType.getZip())){
-	              		siteResearchStaffAddress.setZip(Integer.parseInt(siteResearchStaffType.getZip()));
+	              		siteResearchStaffAddress.setZip(siteResearchStaffType.getZip());
 	              	}
 	              	siteResearchStaff.setAddress(siteResearchStaffAddress);
 	                	

@@ -20,7 +20,7 @@ public class SiteResearchStaffDaoTest extends DaoNoSecurityTestCase<SiteResearch
 		assertEquals("Park Centre Road", siteResearchStaff.getAddress().getStreet());
 		assertEquals("Fairfax", siteResearchStaff.getAddress().getCity());
 		assertEquals("Virginia", siteResearchStaff.getAddress().getState());
-		assertEquals("22033", Integer.toString(siteResearchStaff.getAddress().getZip()));
+		assertEquals("22033", siteResearchStaff.getAddress().getZip());
 		assertEquals("321-123-3214", siteResearchStaff.getPhoneNumber());
 		assertEquals("666-777-1234", siteResearchStaff.getFaxNumber());
 		assertEquals("fairfax@rest.com", siteResearchStaff.getEmailAddress());

@@ -23,7 +23,7 @@ public class PhysicanTest extends AbstractTestCase {
 
         physician = new Physician();
         address = new Address();
-        address.setZip(20171);
+        address.setZip("20171");
         address.setCity("Herndon");
         address.setState("VA");
         address.setStreet("park center road");

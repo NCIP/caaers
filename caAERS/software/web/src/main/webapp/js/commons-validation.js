@@ -216,9 +216,10 @@ function isValidEmailStrict(address) {
 function isValidZipcode(zipcode) {
     zipcode = removeSpaces(zipcode);
     if (zipcode.length == 0)return true;
-    if (!(zipcode.length == 5 || zipcode.length == 9 || zipcode.length == 10)) return false;
-    if ((zipcode.length == 5 || zipcode.length == 9) && !isNumeric(zipcode)) return false;
-    if (zipcode.length == 10 && zipcode.search && zipcode.search(/^\d{5}-\d{4}$/) == -1) return false;
+//    if (!(zipcode.length == 5 || zipcode.length == 9 || zipcode.length == 10)) return false;
+//    if ((zipcode.length == 5 || zipcode.length == 9) && !isNumeric(zipcode)) return false;
+//    if (zipcode.length == 10 && zipcode.search && zipcode.search(/^\d{5}-\d{4}$/) == -1) return false;
+    if(zipcode.length < 5) return false;
     return true;
 }
 

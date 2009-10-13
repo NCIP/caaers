@@ -35,7 +35,7 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
         assertEquals("Park Centre Road", researchStaff.getAddress().getStreet());
         assertEquals("Fairfax", researchStaff.getAddress().getCity());
         assertEquals("Virginia", researchStaff.getAddress().getState());
-        assertEquals("22033", Integer.toString(researchStaff.getAddress().getZip()));
+        assertEquals("22033", researchStaff.getAddress().getZip());
     }
     
     public void testGetByLoginId(){
