@@ -5,7 +5,9 @@ import org.apache.commons.lang.math.NumberUtils;
 import java.text.DecimalFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.regex.*;
+
+import sun.misc.Regexp;
 
 /**
  * Will check if the number is decimal
@@ -17,18 +19,16 @@ public class DecimalValidator extends FieldValidator {
 
     int integerLength = 0;
     int fractionalLength = 0;
-    NumberFormat nf;
+    String pattern;
 
     public DecimalValidator() {
-        nf = new DecimalFormat("##############.######");
+        this(0, 0);
     }
 
     public DecimalValidator(int integerLength, int fractionalLength) {
-        this();
         this.integerLength = integerLength;
         this.fractionalLength = fractionalLength;
-        nf.setMaximumFractionDigits(fractionalLength);
-        nf.setMaximumIntegerDigits(integerLength);
+        pattern = String.format("^(-){0,1}(\\d){1,%d}(\\.){0,1}(\\d){0,%d}$", integerLength, fractionalLength);
     }
 
     @Override
@@ -44,16 +44,14 @@ public class DecimalValidator extends FieldValidator {
     @Override
     public boolean isValid(Object fieldValue) {
         if (fieldValue == null) return true;
-        
-        String s = fieldValue.toString();
-        try {
-            if (fieldValue != null)
-                if (integerLength == 0 && fractionalLength == 0) return NumberUtils.isNumber(s);
-            else return nf.format(Double.parseDouble(s)).equals(s);
-        } catch (NumberFormatException e) {
-            return false;
-        }
 
-        return true;
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(fieldValue.toString());
+
+        if (m.find()) {
+            return true;
+        }
+        
+        return false;
     }
 }
