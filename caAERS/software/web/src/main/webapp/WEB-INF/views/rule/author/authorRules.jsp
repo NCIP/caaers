@@ -10,6 +10,9 @@
 				createLineItemSortables();
 				createRuleSortable();
 				//Event.observe("add-condition-image", "click", function() { fetchCondition() } );
+				
+				//remove the query string from form url
+	    		removeQueryStringFromForm('command');
 			});
 			
 			function createLineItemSortables() {

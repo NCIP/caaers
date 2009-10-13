@@ -2,8 +2,11 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -11,12 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.ReadableRule;
 import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.brxml.RuleSet;
+import com.semanticbits.rules.utils.RuleUtil;
 
 /**
  * This tab will display all the Rules. User will be crreating / editing / deleting rules from this
@@ -51,6 +61,23 @@ public class RuleTab extends DefaultTab {
         }
 
         return reducedReportDefinitions;
+    }
+    
+    @Override
+    public void validate(RuleInputCommand cmd, Errors errors) {
+    	CreateRuleCommand command = (CreateRuleCommand) cmd;
+    	if(command.getRuleSet().getRule() == null || command.getRuleSet().getRule().size() < 1)
+    		errors.reject("RUL_015");
+    }
+    
+    @Override
+    public void postProcess(HttpServletRequest request, RuleInputCommand cmd, Errors errors) {
+    	logger.debug("In RuleTab post process");
+        super.postProcess(request, cmd, errors);
+        
+        //CreateRuleCommand command = (CreateRuleCommand) cmd;
+        //if(!errors.hasErrors())
+        //	command.save();
     }
 
     @Override
@@ -338,5 +365,18 @@ public class RuleTab extends DefaultTab {
 
         return super.referenceData(command);
     }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
 
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
+    
 }

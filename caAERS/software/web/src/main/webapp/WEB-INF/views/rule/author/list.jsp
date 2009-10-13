@@ -62,10 +62,15 @@ YAHOO.example.Data = {
             rsOrganization: "${rs.organization}",
             rsStudyID: "${rs.study}",
             rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>",
-            rsAction: "<a id='deploy' href=\"javascript:deployRule('${rs.name}', 'status-${rs.id}')\">Enable</a>&nbsp;&nbsp;" +
-                      "<a id='deploy' href=\"javascript:unDeployRule('${rs.name}', 'status-${rs.id}')\">Disable</a>&nbsp;&nbsp;" +
-                      "<a id='deploy' href=\"<c:url value="/pages/rule/export?ruleSetName=${rs.name}"/>\">Export/Download</a><br>" +
-                      "<a id='deploy' href=\"<c:url value="/pages/rule/util?ruleSetName=${rs.name}"/>\"><font color=\"red\">Delete</font></a>"
+            rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.name}', 'status-${rs.id}')\">" +
+            			"<option value=\"\">Please select</option>" +
+            			"<option value=\"\">Edit</option>" +
+            			"<option value=\"\">Enable</option>" +
+            			"<option value=\"\">Disable</option>" +
+            			"<option value=\"\">Export</option>" +
+            			"<option value=\"\">Delete</option>" +
+            			"</select>"
+            			
 
         }
         <c:if test="${!status.last}">,</c:if>
@@ -138,6 +143,26 @@ YAHOO.util.Event.addListener(window, "load", function() {
 });
 
     /////////////////////////////////
+    
+    function handleAction(selectElement, id, name, divId){
+    	var action = selectElement.options[selectElement.selectedIndex].text;
+    	if(confirm('Are you sure you want to take the action - ' + action + ' ?')){
+    		switch (action) {
+    	    	case "Please select": break;
+        	    case "Edit"         : var url = '<c:url value="/pages/rule/create?from=list&_page=0&_target1=1" />' + '&ruleSetId=' + id;
+                			          window.location = url; 
+						              break;
+            	case "Enable"       : deployRule(name, divId); break;
+               	case "Disable"      : unDeployRule(name, divId);  break;
+                case "Export"       : var url = '<c:url value="/pages/rule/export?ruleSetName="/>' + name;
+            				          document.location = url;  
+            				          break;
+            	case "Delete"       : var url = '<c:url value="/pages/rule/util?ruleSetName="/>' + name;
+           					          document.location = url;
+           					          break; 
+            }
+    	}
+    }
 
     </script>
 </head>

@@ -19,6 +19,11 @@
 			finish.name='xyz';
 			frm.submit();
     	}
+    	
+    	Event.observe(window, "load", function() {
+    		//remove the query string from form url
+	    	removeQueryStringFromForm('command');	
+    	});
     	 
     </script>
 </head>

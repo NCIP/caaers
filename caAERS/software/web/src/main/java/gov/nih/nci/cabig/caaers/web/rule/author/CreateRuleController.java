@@ -6,18 +6,26 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.brxml.RuleSet;
 
 /**
  * 
@@ -26,6 +34,14 @@ import com.semanticbits.rules.api.RuleAuthoringService;
  */
 public class CreateRuleController extends AbstractRuleInputController<CreateRuleCommand> {
 
+	public static final String SPONSOR_LEVEL = "Sponsor";
+
+    public static final String INSTITUTIONAL_LEVEL = "Institution";
+
+    public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
+
+    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
+    
     private RuleAuthoringService ruleAuthoringService;
 
     private StudyDao studyDao;
@@ -64,10 +80,73 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return new ModelAndView("redirectToTriggerList", model);
 
     }
+    
+    /**
+	 * Will return true if we are entering into create rule flow from Manage Rules 
+	 */
+	@Override
+    protected boolean isFormSubmission(HttpServletRequest request) {
+		String fromListPage = WebUtils.getStringParameter(request, "from");
+		if(StringUtils.isNotEmpty(fromListPage) && StringUtils.equals(fromListPage, "list")) return true;
+		return super.isFormSubmission(request);
+    }
+	
+	/**
+	 * If the entry to capture adverse event is from Manage reports, we need to handle the invalid submit case, as it the isFormSubmission is flaged 'true'. 
+	 */
+	
+	@Override
+	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String fromListPage = WebUtils.getStringParameter(request, "from");
+		if(StringUtils.isEmpty(fromListPage)) return  super.handleInvalidSubmit(request, response);
+		
+		//generate the form, validate , processFormSubmission.
+		Object command = formBackingObject(request);
+		ServletRequestDataBinder binder = bindAndValidate(request, command);
+		BindException errors = new BindException(binder.getBindingResult());
+		
+		return processFormSubmission(request, response, command, errors);
+		
+    }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
-        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+    	CreateRuleCommand command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+    	
+    	String sourcePage = (String) findInRequest(request, "from");
+    	if(sourcePage != null && sourcePage.equals("list")){
+    		String ruleSetId = (String) findInRequest(request, "ruleSetId");
+    		List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
+    		RuleSet rs = null;
+    		for(RuleSet ruleSet: ruleSets){
+    			if(ruleSet.getId().equals(ruleSetId))
+    				rs = ruleSet;
+    		}
+    		if(rs != null){
+    			command.setRuleSetName(rs.getDescription());
+    			command.setCategoryIdentifier("");
+    			if(rs.getSubject().startsWith("Sponsor defined rules for a study")){
+    				command.setLevel(SPONSOR_DEFINED_STUDY_LEVEL);
+    				command.setCategoryIdentifier(rs.getStudy());
+    				command.setSponsorName(rs.getOrganization());
+    			}
+    			else if(rs.getSubject().startsWith("Sponsor rules")){
+    				command.setLevel(SPONSOR_LEVEL);
+    				command.setSponsorName(rs.getOrganization());
+    			}
+    			else if(rs.getSubject().startsWith("Institution rules")){
+    				command.setLevel(INSTITUTIONAL_LEVEL);
+    				command.setInstitutionName(rs.getOrganization());
+    			}
+    			else if(rs.getSubject().startsWith("Institution defined rules for a study")){
+    				command.setLevel(INSTITUTION_DEFINED_STUDY_LEVEL);
+    				command.setCategoryIdentifier(rs.getStudy());
+    				command.setInstitutionName(rs.getOrganization());
+    			}
+    		}
+    	}
+    	
+    	return command;
     }
 
     @Override
@@ -83,11 +162,23 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     protected void addTabs() {
         getFlow().addTab(new SelectRuleTypeTab());
-        getFlow().addTab(new DisplayRuleSetsTab());
+        //getFlow().addTab(new DisplayRuleSetsTab());
         getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
     }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
 
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
 
     /*
     *

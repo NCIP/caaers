@@ -1,15 +1,28 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.ae.ReportingPeriodCommand;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -17,29 +30,51 @@ import org.springframework.validation.Errors;
  * 
  * @author Sujith Vellat Thayyilthodi
  */
-public class SelectRuleTypeTab extends DefaultTab {
+public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
     private static final Log logger = LogFactory.getLog(SelectRuleTypeTab.class);
+    private static final String RULE_LEVEL_FIELD_GROUP = "RuleLevel";
 
     public SelectRuleTypeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
 
     public SelectRuleTypeTab() {
-        super("Rule Level", "Rule Level", "rule/author/selectRuleLevel");
+        super("Rule Type", "Rule Type", "rule/author/selectRuleType");
     }
 
     @Override
-    protected void initFields() {
-
-    }
-
-    @Override
-    public Map<String, Object> referenceData() {
+    public Map<String, Object> referenceData(RuleInputCommand cmd) {
         Map<String, Object> refdata = super.referenceData();
+        
+        CreateRuleCommand command = (CreateRuleCommand) cmd;
+        boolean initializeLevelSelect = false;
+        boolean initializeRuleSetNameSelect = false;
+        String initialLevel = "Please select a Rule level";
+        String initialRuleSet = "Please select a RuleSet Name";
+        if(command.getLevel() != null && !command.getLevel().equals("")){
+        	initializeLevelSelect = true;
+        	initialLevel = command.getLevel();
+        }
+        if(command.getRuleSetName() != null && !command.getRuleSetName().equals("")){
+        	initializeRuleSetNameSelect = true;
+        	initialRuleSet = command.getRuleSetName();
+        }
+        refdata.put("initializeLevelSelect", initializeLevelSelect);
+        refdata.put("initializeRuleSetNameSelect", initializeRuleSetNameSelect);
+        refdata.put("initialLevel", initialLevel);
+        refdata.put("initialRuleSet", initialRuleSet);
+        
 
         return refdata;
     }
-
+    
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(RuleInputCommand cmd) {
+    	InputFieldGroupMap fieldMap = new InputFieldGroupMap();
+    	
+    	return fieldMap;
+    }
+    
     @Override
     public void postProcess(HttpServletRequest arg0, RuleInputCommand arg1, Errors arg2) {
         logger.debug("In SelectRuleTab post process");
@@ -48,37 +83,40 @@ public class SelectRuleTypeTab extends DefaultTab {
     }
 
     @Override
-    public void validate(RuleInputCommand cmd, Errors errors) {
+    public void validate(RuleInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
         CreateRuleCommand command = (CreateRuleCommand) cmd;
         if (command != null) {
             String level = command.getLevel();
-            if (level != null) {
+            if(level == null || level.equals(""))
+            	errors.rejectValue("level", "RUL_014");
+            else{
                 if (level.equals(RuleLevel.Sponsor.getName())) {
                     if (command.getSponsorName().trim().equals("")) {
-                        errors.reject("RUL_011", "Missing Sponsor");
+                        errors.rejectValue("sponsorName", "RUL_011");
                     }
                 } else if (level.equals(RuleLevel.SponsorDefinedStudy.getName())) {
                     if (command.getSponsorName().trim().equals("")) {
-                        errors.reject("RUL_011", "Missing Sponsor");
+                        errors.rejectValue("sponsorName", "RUL_011");
                     }
                     if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.reject("RUL_012", "Missing Study");
+                        errors.rejectValue("categoryIdentifier", "RUL_012");
                     }
                 } else if (level.equals(RuleLevel.Institution.getName())) {
-                    System.out.println("inst:" + command.getInstitutionName() + ":");
                     if (command.getInstitutionName().trim().equals("")) {
-                        errors.reject("RUL_013", "Missing Instiution");
+                        errors.rejectValue("institutionName", "RUL_013");
                     }
                 } else if (level.equals(RuleLevel.InstitutionDefinedStudy.getName())) {
                     if (command.getInstitutionName().trim().equals("")) {
-                        errors.reject("RUL_013", "Missing Instiution");
+                        errors.rejectValue("institutionName", "RUL_013");
                     }
                     if (command.getCategoryIdentifier().trim().equals("")) {
-                        errors.reject("RUL_012", "Missing Study");
+                        errors.rejectValue("categoryIdentifier", "RUL_012");
                     }
                 }
             }
+            if(command.getRuleSetName() == null || command.getRuleSetName().equals(""))
+            	errors.rejectValue("ruleSetName", "RUL_010");
         }
 
     }
