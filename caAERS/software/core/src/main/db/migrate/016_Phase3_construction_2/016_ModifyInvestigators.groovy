@@ -1,6 +1,6 @@
 class ModifyInvestigators extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        addColumn("investigators","last_login", "date")
+        addColumn("investigators","last_login", "timestamp")
 		
     }
 
