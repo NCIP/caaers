@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.text.NumberFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -56,9 +58,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private EpochDao epochDao;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private WorkflowConfigDao workflowConfigDao;
-	private UserDao userDao;
-	
-	private Configuration configuration;
+    private UserDao userDao;
+
+    private Configuration configuration;
     private static final String viewName = "ae/createReportingPeriod";
 
     public CreateReportingPeriodController() {
@@ -80,29 +82,28 @@ public class CreateReportingPeriodController extends SimpleFormController {
         Study study = (studyId > 0) ? studyDao.getById(studyId) : null;
         Participant participant = (participantId > 0) ? participantDao.getById(participantId) : null;
         StudyParticipantAssignment assignment = null;
-        if(study != null && participant != null)
-        	assignment = assignmentDao.getAssignment(participant, study);
-        
+        if (study != null && participant != null)
+            assignment = assignmentDao.getAssignment(participant, study);
+
         AdverseEventReportingPeriod reportingPeriod = (reportingPeriodId > 0) ? adverseEventReportingPeriodDao.getById(reportingPeriodId) : null;
         String mode = "";
-        if(reportingPeriod != null)
-        	mode = "edit";
+        if (reportingPeriod != null)
+            mode = "edit";
         else
-        	mode = "create";
+            mode = "create";
 
         ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, mode);
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
         //set the last selected treatment assignment in create mode.
-        if(command.getReportingPeriod().getId() == null){
-        	List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getReportingPeriods();
-        	if(CollectionUtils.isNotEmpty(existingReportingPeriods)){
-        		TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
-        		command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
-        	}
+        if (command.getReportingPeriod().getId() == null) {
+            List<AdverseEventReportingPeriod> existingReportingPeriods = assignment.getReportingPeriods();
+            if (CollectionUtils.isNotEmpty(existingReportingPeriods)) {
+                TreatmentAssignment treatmentAssignment = existingReportingPeriods.get(0).getTreatmentAssignment();
+                command.getReportingPeriod().setTreatmentAssignment(treatmentAssignment);
+            }
         }
-        
-        
-        
+
+
         return command;
     }
 
@@ -111,6 +112,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
+        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, NumberFormat.getInstance(), true));
         ControllerTools.registerDomainObjectEditor(binder, epochDao);
         ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
     }
@@ -145,13 +147,13 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
-        
+
         fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
         return fieldMap;
     }
 
     /**
-     * Validates the reporting period create/edit business rules. 
+     * Validates the reporting period create/edit business rules.
      * 1. Should have all the field level validations met
      * 2. Should be associated to Treatment assignment
      * 3. Only one basline reporting period is allowed
@@ -162,20 +164,20 @@ public class CreateReportingPeriodController extends SimpleFormController {
         super.onBindAndValidate(request, command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
         Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
-        
+
         //do all field level validation
         for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 field.validate(commandBean, errors);
             }
         }
-        
-        
+
+
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
         AdverseEventReportingPeriod rPeriod = rpCommand.getReportingPeriod();
         List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getReportingPeriods();
-        
-       
+
+
         //check the treatment assignment.
         if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
             if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
@@ -183,18 +185,17 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 return;
             }
         } else {
-        	if(rPeriod.getTreatmentAssignment().isRetired()){
-        		errors.reject("CRP_009", "Treatment assignment should be active");
-        		return;
-        	}
+            if (rPeriod.getTreatmentAssignment().isRetired()) {
+                errors.reject("CRP_009", "Treatment assignment should be active");
+                return;
+            }
         }
-        
-        
-        
+
+
         // Check for duplicate baseline Reporting Periods.
         if (rPeriod.getEpoch() != null && rPeriod.getEpoch().getName().equals("Baseline")) {
             for (AdverseEventReportingPeriod aerp : rPeriodList) {
-            	
+
                 if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
                     InputField epochField = fieldGroups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
                     errors.rejectValue(epochField.getPropertyName(), "CRP_002", "A Baseline treatment type already exists");
@@ -202,9 +203,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 }
             }
         }
-        
+
         //validate the date related logic.
-        if(!errors.hasErrors())  validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), rpCommand.getAssignment().getStartDateOfFirstCourse(), errors);
+        if (!errors.hasErrors())
+            validateRepPeriodDates(rpCommand.getReportingPeriod(), rpCommand.getAssignment().getReportingPeriods(), rpCommand.getAssignment().getStartDateOfFirstCourse(), errors);
     }
 
     /**
@@ -223,55 +225,56 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // Step 1. All the solicited adverse events which are not graded are removed from the reporting period.
         // Step 2. All the solicited aes belonging to the epoch chosen in the form are added to the reporting period as 
         // adverse events only if they are not already present in the reporting period.
-        
-    	Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
-    	for(AdverseEvent ae: reportingPeriod.getAdverseEvents())
-    		if(!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)){
-    			if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-    				existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), true);
-    			}else{
-    				existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), true);
-    			}
-    		}else
-    			ae.retire();
-    	
-    	adverseEventReportingPeriodDao.save(reportingPeriod);
-        
-        //initialize the solicited AEs
-        if(reportingPeriod.getEpoch() != null){
-        	for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
-        		AdverseEvent adverseEvent = new AdverseEvent();
-        		adverseEvent.setSolicited(true);
-        		adverseEvent.setRequiresReporting(false);
-              
-        		if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA){
-        			if(!existingAeTermsIdMap.containsKey(sae.getLowLevelTerm().getId())) {
-        				AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
-        				aellt.setLowLevelTerm(sae.getLowLevelTerm());
-        				adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
-        				aellt.setAdverseEvent(adverseEvent);
-        			}
-        		}else{
-        			if(!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())){
-        				AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-        				aeCtcTerm.setCtcTerm(sae.getCtcterm());
-        				adverseEvent.setAdverseEventTerm(aeCtcTerm);
-        				if(sae.getOtherTerm() != null)
-        					adverseEvent.setLowLevelTerm(sae.getOtherTerm());
-        				aeCtcTerm.setAdverseEvent(adverseEvent);
-        				if(command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
-        					adverseEvent.setExpected(true);
-        			}
-        		}
-        		reportingPeriod.addAdverseEvent(adverseEvent);
-        	}
-        }
-        	
+
+        Map<Integer, Boolean> existingAeTermsIdMap = new HashMap<Integer, Boolean>();
+        for (AdverseEvent ae : reportingPeriod.getAdverseEvents())
+            if (!ae.getSolicited() || (ae.getSolicited() && ae.getGrade() != null)) {
+                if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+                    existingAeTermsIdMap.put(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm().getId(), true);
+                } else {
+                    existingAeTermsIdMap.put(ae.getAdverseEventCtcTerm().getTerm().getId(), true);
+                }
+            } else
+                ae.retire();
+
         adverseEventReportingPeriodDao.save(reportingPeriod);
-        
+
+        //initialize the solicited AEs
+        if (reportingPeriod.getEpoch() != null) {
+            for (SolicitedAdverseEvent sae : reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()) {
+                AdverseEvent adverseEvent = new AdverseEvent();
+                adverseEvent.setSolicited(true);
+                adverseEvent.setRequiresReporting(false);
+
+                if (command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+                    if (!existingAeTermsIdMap.containsKey(sae.getLowLevelTerm().getId())) {
+                        AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+                        aellt.setLowLevelTerm(sae.getLowLevelTerm());
+                        adverseEvent.setAdverseEventMeddraLowLevelTerm(aellt);
+                        aellt.setAdverseEvent(adverseEvent);
+                    }
+                } else {
+                    if (!existingAeTermsIdMap.containsKey(sae.getCtcterm().getId())) {
+                        AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+                        aeCtcTerm.setCtcTerm(sae.getCtcterm());
+                        adverseEvent.setAdverseEventTerm(aeCtcTerm);
+                        if (sae.getOtherTerm() != null)
+                            adverseEvent.setLowLevelTerm(sae.getOtherTerm());
+                        aeCtcTerm.setAdverseEvent(adverseEvent);
+                        if (command.getStudy().isExpectedAdverseEventTerm(sae.getCtcterm()))
+                            adverseEvent.setExpected(true);
+                    }
+                }
+                reportingPeriod.addAdverseEvent(adverseEvent);
+            }
+        }
+
+        adverseEventReportingPeriodDao.save(reportingPeriod);
+
         //call workflow, to enact
-        if(command.isWorkflowEnabled())  adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
-        
+        if (command.isWorkflowEnabled())
+            adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
+
         Map map = new LinkedHashMap();
         map.putAll(createFieldGroups(command));
 
@@ -283,10 +286,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
     /**
      * This method validates the dates of the reporting period created/edited.
-     *	1. EndDate cannot be earlier than start date.
-     *  2. For Non-Baseline reporting period, startdate and enddate must not be same.
-     *  3. No other existing reporting period start date should fall within the start date and end date of the new reporting period.
-     *  4. Newly created start date should not fall within any of the existing reporting period start and end dates.
+     * 1. EndDate cannot be earlier than start date.
+     * 2. For Non-Baseline reporting period, startdate and enddate must not be same.
+     * 3. No other existing reporting period start date should fall within the start date and end date of the new reporting period.
+     * 4. Newly created start date should not fall within any of the existing reporting period start and end dates.
+     *
      * @param cmd
      * @return
      */
@@ -320,37 +324,37 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // Check if the start date - end date for the reporting Period overlaps with the
         // date range of an existing Reporting Period.
         for (AdverseEventReportingPeriod aerp : rPeriodList) {
-        	Date sDate = aerp.getStartDate();
+            Date sDate = aerp.getStartDate();
             Date eDate = aerp.getEndDate();
-            
+
             if (!aerp.getId().equals(rPeriod.getId())) {
-                
+
                 //we should make sure that no existing Reporting Period, start date falls, in-between these dates.
-                if(startDate != null && endDate != null){
-                	if(DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0){
-                		errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
-                	}
-                }else if(startDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                		errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
+                if (startDate != null && endDate != null) {
+                    if (DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0) {
+                        errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
+                        break;
+                    }
+                } else if (startDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                    errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
+                    break;
                 }
-                
+
                 //newly created reporting period start date, should not fall within any other existing reporting periods
-                if(sDate != null && eDate != null){
-                	if(DateUtils.compareDate(sDate, startDate) <=0 && DateUtils.compareDate(startDate, eDate) < 0){
-                		errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
-                		break;
-                	}
-                }else if(sDate != null && DateUtils.compareDate(sDate, startDate) == 0){
-                	errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
-            		break;
+                if (sDate != null && eDate != null) {
+                    if (DateUtils.compareDate(sDate, startDate) <= 0 && DateUtils.compareDate(startDate, eDate) < 0) {
+                        errors.rejectValue("reportingPeriod.endDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
+                        break;
+                    }
+                } else if (sDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                    errors.rejectValue("reportingPeriod.startDate", "CRP_005", "Course/cycle cannot overlap with an existing course/cycle.");
+                    break;
                 }
             }
-            
+
             // If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
             if (rPeriod.getEpoch() != null && rPeriod.getEpoch().getName().equals("Baseline")) {
-                if (aerp.getEpoch()!= null && !aerp.getEpoch().getName().equals("Baseline")) {
+                if (aerp.getEpoch() != null && !aerp.getEpoch().getName().equals("Baseline")) {
                     if (DateUtils.compareDate(sDate, startDate) < 0) {
                         errors.rejectValue("reportingPeriod.startDate", "CRP_006", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
                         return;
@@ -364,12 +368,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
                     }
                 }
             }
-            
+
         }
 
-      
-    }
 
+    }
 
 
     protected Map<Object, Object> createEpochOptions(final Object command) {
@@ -436,35 +439,36 @@ public class CreateReportingPeriodController extends SimpleFormController {
     public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
-    
+
     public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
-    	return adverseEventRoutingAndReviewRepository;
+        return adverseEventRoutingAndReviewRepository;
     }
+
     public void setAdverseEventRoutingAndReviewRepository(
-		AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
-    	this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+            AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+        this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
     }
-    
-    public void setWorkflowConfigDao (WorkflowConfigDao workflowConfigDao){
-    	this.workflowConfigDao = workflowConfigDao;
+
+    public void setWorkflowConfigDao(WorkflowConfigDao workflowConfigDao) {
+        this.workflowConfigDao = workflowConfigDao;
     }
-    
-    public WorkflowConfigDao getWorkflowConfigDao(){
-    	return workflowConfigDao;
+
+    public WorkflowConfigDao getWorkflowConfigDao() {
+        return workflowConfigDao;
     }
 
     public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
-    
-	@Required
-	public Configuration getConfiguration() {
-		return configuration;
-	}
+        this.userDao = userDao;
+    }
 
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+    @Required
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     // 
     protected void populateHelpAttributeOnFields(Map<String, InputFieldGroup> groupMap) {
