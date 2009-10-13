@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -18,7 +19,7 @@ import org.hibernate.validator.Length;
 /**
  * This class represents the TreatmentAssignment domain object associated with the Adverse event
  * report. Domain object representing Study Therapy
- * 
+ *
  * @author Saurabh Agrawal
  */
 @Entity
@@ -83,6 +84,12 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
      */
     public String getEscapedDescription() {
         return StringEscapeUtils.escapeJavaScript(description);
+    }
+
+    @Transient
+    public String getHtmlEscapedDescription() {
+        String descriptionHtml = StringUtils.replace(description, "\r\n", "<br>" );
+        return StringEscapeUtils.escapeJavaScript(descriptionHtml);
     }
 
     public String getComments() {

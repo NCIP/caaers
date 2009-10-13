@@ -72,7 +72,7 @@
                 <c:forEach items="${command.study.activeTreatmentAssignments}" var="ta">
                     <tr bgcolor="white">
                         <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" />&nbsp;${ta.code}
-                        <td>${ta.escapedDescription}
+                        <td>${ta.htmlEscapedDescription}
                     </tr>
                 </c:forEach>
                 <tr bgcolor="white">
