@@ -364,15 +364,9 @@ public class ExcelProcessor {
                 String therapyString = getCellData(THERAPY_SHEET_NAME,
                         therapyRow, therapyInfoSheet.getRow(therapyRow)
                                 .getCell((short) 1));
-
-                if (getStudyTherapyType(therapyString).equals(
-                        StudyTherapyType.DRUG_ADMINISTRATION)) {
-                    study.setDrugAdministrationTherapyType(Boolean.TRUE);
-                }
-                if (getStudyTherapyType(therapyString).equals(
-                        StudyTherapyType.RADIATION)) {
-                    study.setRadiationTherapyType(Boolean.TRUE);
-                }
+                
+                StudyTherapyType therapyType = getStudyTherapyType(therapyString);
+                study.addStudyTherapy(therapyType);
             }
         }
     }
