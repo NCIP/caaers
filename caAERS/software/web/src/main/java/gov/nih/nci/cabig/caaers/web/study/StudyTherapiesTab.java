@@ -37,39 +37,39 @@ public class StudyTherapiesTab extends StudyTab {
             fieldGroup = new DefaultInputFieldGroup("studyTherapies");
             List<InputField> fields = fieldGroup.getFields();
 
-            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField("study.drugAdministrationTherapyType", "Agent");
+            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField("drugAdministrationTherapyType", "Agent");
             InputFieldAttributes.setSize(drugAdministrationTherapyTypeField, 50);
             fields.add(drugAdministrationTherapyTypeField);
 
-            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("study.deviceTherapyType", "Device");
+            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("deviceTherapyType", "Device");
             InputFieldAttributes.setSize(deviceTherapyTypeField, 50);
             fields.add(deviceTherapyTypeField);
 
-            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField("study.radiationTherapyType", "Radiation");
+            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField("radiationTherapyType", "Radiation");
             InputFieldAttributes.setSize(radiationTherapyTypeField, 50);
             fields.add(radiationTherapyTypeField);
 
-            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("study.surgeryTherapyType", "Surgery");
+            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("surgeryTherapyType", "Surgery");
             InputFieldAttributes.setSize(surgeryTherapyTypeField, 50);
             fields.add(surgeryTherapyTypeField);
 
-            InputField behavioralTherapyTypeField = InputFieldFactory.createCheckboxField("study.behavioralTherapyType", "Behavioral");
+            InputField behavioralTherapyTypeField = InputFieldFactory.createCheckboxField("behavioralTherapyType", "Behavioral");
             InputFieldAttributes.setSize(behavioralTherapyTypeField, 50);
             fields.add(behavioralTherapyTypeField);
             
-            InputField biologicalTherapyTypeField = InputFieldFactory.createCheckboxField("study.biologicalTherapyType", "Biological-Vaccine");
+            InputField biologicalTherapyTypeField = InputFieldFactory.createCheckboxField("biologicalTherapyType", "Biological-Vaccine");
             InputFieldAttributes.setSize(biologicalTherapyTypeField, 50);
             fields.add(biologicalTherapyTypeField);
             
-            InputField geneticTherapyTypeField = InputFieldFactory.createCheckboxField("study.geneticTherapyType", "Genetic");
+            InputField geneticTherapyTypeField = InputFieldFactory.createCheckboxField("geneticTherapyType", "Genetic");
             InputFieldAttributes.setSize(geneticTherapyTypeField, 50);
             fields.add(geneticTherapyTypeField);
             
-            InputField diaterySupplementTherapyTypeField = InputFieldFactory.createCheckboxField("study.diaterySupplementTherapyType", "Dietary Supplement");
+            InputField diaterySupplementTherapyTypeField = InputFieldFactory.createCheckboxField("diaterySupplementTherapyType", "Dietary Supplement");
             InputFieldAttributes.setSize(diaterySupplementTherapyTypeField, 50);
             fields.add(diaterySupplementTherapyTypeField);
             
-            InputField otherTherapyTypeField = InputFieldFactory.createCheckboxField("study.otherTherapyType", "Other");
+            InputField otherTherapyTypeField = InputFieldFactory.createCheckboxField("otherTherapyType", "Other");
             InputFieldAttributes.setSize(otherTherapyTypeField, 50);
             fields.add(otherTherapyTypeField);
         }
