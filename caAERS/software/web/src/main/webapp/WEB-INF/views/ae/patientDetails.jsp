@@ -182,6 +182,18 @@
 			
 		 	//-- find the bsa
 		 	findBSA();
+
+            //
+            var el = $('aeReport.diseaseHistory.abstractStudyDisease');
+            var optionText = el.options[el.selectedIndex].text;
+            if (optionText == 'Solid tumor, NOS' || optionText == 'Hematopoietic malignancy, NOS') {
+                AE.slideAndShow("${fieldGroups['disease'].fields[1].propertyName}-row")
+            } else {
+                $('${fieldGroups['disease'].fields[1].propertyName}').value = ''
+                AE.slideAndHide("${fieldGroups['disease'].fields[1].propertyName}-row")
+            }
+            
+
 		}
 		function fireAction(type, index, loc, options, id){
             mHistory.removeDetails(type, index, loc, options);
