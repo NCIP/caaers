@@ -226,7 +226,7 @@ public class StudyCommand {
 			return BooleanUtils.isTrue(biologicalTherapyType);
 		case DEVICE:
 			return BooleanUtils.isTrue(deviceTherapyType);
-		case DIATERY_SUPPLIMENT:
+		case DIETARY_SUPPLEMENT:
 			return BooleanUtils.isTrue(diaterySupplementTherapyType);
 		case GENETIC:
 			return BooleanUtils.isTrue(geneticTherapyType);
