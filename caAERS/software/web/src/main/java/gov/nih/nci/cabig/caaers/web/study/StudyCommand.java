@@ -60,6 +60,11 @@ public class StudyCommand {
     private Boolean deviceTherapyType = Boolean.FALSE;
     private Boolean surgeryTherapyType = Boolean.FALSE;
     private Boolean behavioralTherapyType = Boolean.FALSE;
+    private Boolean biologicalTherapyType = Boolean.FALSE;
+    private Boolean geneticTherapyType = Boolean.FALSE;
+    private Boolean diaterySupplementTherapyType = Boolean.FALSE;
+    private Boolean otherTherapyType = Boolean.FALSE;
+    
     private Boolean caaersXMLType = Boolean.FALSE;
     private Boolean adeersPDFType = Boolean.FALSE;
     private Boolean medwatchPDFType = Boolean.FALSE;
@@ -145,11 +150,38 @@ public class StudyCommand {
         this.loadStatus = loadStatus;
     }
 
+    public Boolean getDrugAdministrationTherapyType() {
+        return drugAdministrationTherapyType;
+    }
+
+    public void setDrugAdministrationTherapyType(final Boolean drugAdministrationTherapyType) {
+        this.drugAdministrationTherapyType = drugAdministrationTherapyType;
+    }
+
+    public Boolean getRadiationTherapyType() {
+        return radiationTherapyType;
+    }
+
+    public void setRadiationTherapyType(final Boolean radiationTherapyType) {
+        this.radiationTherapyType = radiationTherapyType;
+    }
+
+    public Boolean getDeviceTherapyType() {
+        return deviceTherapyType;
+    }
+
+    public void setDeviceTherapyType(final Boolean deviceTherapyType) {
+        this.deviceTherapyType = deviceTherapyType;
+    }
+
+    public Boolean getSurgeryTherapyType() {
+        return surgeryTherapyType;
+    }
+
     public void setSurgeryTherapyType(final Boolean surgeryTherapyType) {
         this.surgeryTherapyType = surgeryTherapyType;
     }
 
-    @Transient
     public Boolean getBehavioralTherapyType() {
         return behavioralTherapyType;
     }
@@ -157,7 +189,58 @@ public class StudyCommand {
     public void setBehavioralTherapyType(final Boolean behavioralTherapyType) {
         this.behavioralTherapyType = behavioralTherapyType;
     }
-
+    
+    public Boolean getBiologicalTherapyType() {
+		return biologicalTherapyType;
+	}
+    public void setBiologicalTherapyType(Boolean biologicalTherapyType) {
+		this.biologicalTherapyType = biologicalTherapyType;
+	}
+    public Boolean getGeneticTherapyType() {
+		return geneticTherapyType;
+	}
+    public void setGeneticTherapyType(Boolean geneticTherapyType) {
+		this.geneticTherapyType = geneticTherapyType;
+	}
+    public Boolean getDiaterySupplementTherapyType() {
+		return diaterySupplementTherapyType;
+	}
+    public void setDiaterySupplementTherapyType(Boolean diaterySupplementTherapyType) {
+		this.diaterySupplementTherapyType = diaterySupplementTherapyType;
+	}
+    
+    public Boolean getOtherTherapyType() {
+		return otherTherapyType;
+	}
+    public void setOtherTherapyType(Boolean otherTherapyType) {
+		this.otherTherapyType = otherTherapyType;
+	}
+    
+    public boolean isTherapyTypeSelected(StudyTherapyType therapyType){
+    	switch (therapyType) {
+		case DRUG_ADMINISTRATION:
+			return BooleanUtils.isTrue(drugAdministrationTherapyType);
+		case BEHAVIORAL:
+			return BooleanUtils.isTrue(behavioralTherapyType);
+		case BIOLOGICAL_VACCINE:
+			return BooleanUtils.isTrue(biologicalTherapyType);
+		case DEVICE:
+			return BooleanUtils.isTrue(deviceTherapyType);
+		case DIATERY_SUPPLIMENT:
+			return BooleanUtils.isTrue(diaterySupplementTherapyType);
+		case GENETIC:
+			return BooleanUtils.isTrue(geneticTherapyType);
+		case OTHER:
+			return BooleanUtils.isTrue(otherTherapyType);
+		case RADIATION:
+			return BooleanUtils.isTrue(radiationTherapyType);
+		case SURGERY:
+			return BooleanUtils.isTrue(surgeryTherapyType);
+		default : 
+			return false;
+		}
+    }
+    
     @Transient
     public CoordinatingCenter getCoordinatingCenter() {
         return coordinatingCenter;
@@ -365,12 +448,6 @@ public class StudyCommand {
     	
          Study mergedStudy = studyDao.merge(study);
          studyDao.initialize(mergedStudy);
-
-         // now check for study therapies.
-         mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
-         mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
-         mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
-         mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
 
          mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
          mergedStudy.setCaaersXMLType(study.getCaaersXMLType());

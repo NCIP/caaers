@@ -1,16 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -24,8 +20,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import com.semanticbits.coppa.infrastructure.RemoteSession;
 
 /**
  * @author Priyatam
@@ -86,12 +80,6 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
         // update the studySiteIndex
         // mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
-
-        // now check for study therapies.
-        mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
-        mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
-        mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
-        mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
 
         mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
         mergedStudy.setCaaersXMLType(study.getCaaersXMLType());

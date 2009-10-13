@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.validation.Errors;
 
 /**
@@ -52,8 +53,25 @@ public class StudyTherapiesTab extends StudyTab {
             InputFieldAttributes.setSize(surgeryTherapyTypeField, 50);
             fields.add(surgeryTherapyTypeField);
 
-            InputField behavioralTypeField = InputFieldFactory.createCheckboxField("study.behavioralTherapyType", "Behavioral");
-            fields.add(behavioralTypeField);
+            InputField behavioralTherapyTypeField = InputFieldFactory.createCheckboxField("study.behavioralTherapyType", "Behavioral");
+            InputFieldAttributes.setSize(behavioralTherapyTypeField, 50);
+            fields.add(behavioralTherapyTypeField);
+            
+            InputField biologicalTherapyTypeField = InputFieldFactory.createCheckboxField("study.biologicalTherapyType", "Biological-Vaccine");
+            InputFieldAttributes.setSize(biologicalTherapyTypeField, 50);
+            fields.add(biologicalTherapyTypeField);
+            
+            InputField geneticTherapyTypeField = InputFieldFactory.createCheckboxField("study.geneticTherapyType", "Genetic");
+            InputFieldAttributes.setSize(geneticTherapyTypeField, 50);
+            fields.add(geneticTherapyTypeField);
+            
+            InputField diaterySupplementTherapyTypeField = InputFieldFactory.createCheckboxField("study.diaterySupplementTherapyType", "Dietary Supplement");
+            InputFieldAttributes.setSize(diaterySupplementTherapyTypeField, 50);
+            fields.add(diaterySupplementTherapyTypeField);
+            
+            InputField otherTherapyTypeField = InputFieldFactory.createCheckboxField("study.otherTherapyType", "Other");
+            InputFieldAttributes.setSize(otherTherapyTypeField, 50);
+            fields.add(otherTherapyTypeField);
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(fieldGroup);
@@ -63,57 +81,18 @@ public class StudyTherapiesTab extends StudyTab {
     @Override
     public void onBind(HttpServletRequest request, StudyCommand cmd, Errors errors) {
         super.onBind(request, cmd, errors);
-        updateStudyTherapies(cmd.getStudy());
+        updateStudyTherapies(cmd);
     }
 
-    protected void updateStudyTherapies(final Study study) {
-        List<StudyTherapy> studyTherapies = study.getStudyTherapies();
-
-        if (study.getDrugAdministrationTherapyType()&& study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) == null) {
-            StudyTherapy drugAdministrationTherapy = new StudyTherapy();
-            drugAdministrationTherapy.setStudy(study);
-            drugAdministrationTherapy.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
-            study.getStudyTherapies().add(drugAdministrationTherapy);
-        } else if (!study.getDrugAdministrationTherapyType() && study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
-            studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
-        }
-
-        if (study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) == null) {
-            StudyTherapy deviceTherapy = new StudyTherapy();
-            deviceTherapy.setStudy(study);
-            deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-            study.getStudyTherapies().add(deviceTherapy);
-        } else if (!study.getDeviceTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
-            studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DEVICE));
-        }
-
-        if (study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) == null) {
-            StudyTherapy radiationTherapy = new StudyTherapy();
-            radiationTherapy.setStudy(study);
-            radiationTherapy.setStudyTherapyType(StudyTherapyType.RADIATION);
-            study.getStudyTherapies().add(radiationTherapy);
-        } else if (!study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
-            studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.RADIATION));
-        }
-
-        if (study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) == null) {
-            StudyTherapy surgeryTherapy = new StudyTherapy();
-            surgeryTherapy.setStudy(study);
-            surgeryTherapy.setStudyTherapyType(StudyTherapyType.SURGERY);
-            study.getStudyTherapies().add(surgeryTherapy);
-        } else if (!study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
-            studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.SURGERY));
-        }
-
-        if (study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) == null) {
-            StudyTherapy behavioralTherapy = new StudyTherapy();
-            behavioralTherapy.setStudy(study);
-            behavioralTherapy.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
-            study.getStudyTherapies().add(behavioralTherapy);
-        } else if (!study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
-            studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
-        }
+    protected void updateStudyTherapies(final StudyCommand cmd) {
+    	for(StudyTherapyType therapyType : StudyTherapyType.values()){
+    		if(cmd.isTherapyTypeSelected(therapyType)){
+    			StudyTherapy therapy = cmd.getStudy().getStudyTherapy(therapyType);
+    			if(therapy == null) cmd.getStudy().addStudyTherapy(therapyType);
+    		}else{
+    			cmd.getStudy().removeTherapiesOfType(therapyType);
+    		}
+    	}
     }
     
 }

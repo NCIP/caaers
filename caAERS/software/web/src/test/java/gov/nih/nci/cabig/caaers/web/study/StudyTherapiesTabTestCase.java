@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -36,8 +35,8 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
     }
 
     public void testOnBind() {
-        study.setDeviceTherapyType(true);
-        study.setSurgeryTherapyType(true);
+    	command.setDeviceTherapyType(true);
+    	command.setSurgeryTherapyType(true);
 
         replayMocks();
         tab.onBind(request, command, errors);
@@ -52,10 +51,10 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
     }
 
     public void testUpdateStudyTherapies() {
-        study.setDeviceTherapyType(true);
-        study.setSurgeryTherapyType(true);
+    	command.setDeviceTherapyType(true);
+    	command.setSurgeryTherapyType(true);
 
-        ((StudyTherapiesTab)tab).updateStudyTherapies(study);
+        ((StudyTherapiesTab)tab).updateStudyTherapies(command);
 
         assertEquals(2, study.getStudyTherapies().size());
         assertNotNull(study.getStudyTherapy(StudyTherapyType.DEVICE));
