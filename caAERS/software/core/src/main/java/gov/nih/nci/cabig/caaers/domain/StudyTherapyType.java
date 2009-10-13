@@ -18,7 +18,7 @@ public enum StudyTherapyType implements CodedEnum<Integer> {
     BEHAVIORAL(5, "Behavioral","Behavioral"),
     BIOLOGICAL_VACCINE(6, "Biological/Vaccine", "Biological/Vaccine"),
     GENETIC(7,"Genetic","Genetic"),
-    DIATERY_SUPPLIMENT(8,"Dietary Supplement","Dietary Supplement"),
+    DIETARY_SUPPLEMENT(8,"Dietary Supplement","Dietary Supplement"),
     OTHER(9,"Other", "Other");
 
     private String studyTherapyType;
