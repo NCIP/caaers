@@ -25,7 +25,7 @@ import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
 public abstract class BaseResolver {
 	
-	private MessageBroadcastService coppaMessageBroadcastService;
+	private MessageBroadcastService messageBroadcastService;
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 
 	public String broadcastPersonSearch(String iiXml) throws Exception{
@@ -164,16 +164,15 @@ public abstract class BaseResolver {
 	
 	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
 		log.info("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
-        return coppaMessageBroadcastService.broadcastCOPPA(messages, metaData);
+        return messageBroadcastService.broadcastCOPPA(messages, metaData);
     }
 	
-	//@Required
-	public MessageBroadcastService getCoppaMessageBroadcastService() {
-		return coppaMessageBroadcastService;
+	public MessageBroadcastService getMessageBroadcastService() {
+		return messageBroadcastService;
 	}
 	
-	public void setCoppaMessageBroadcastService(MessageBroadcastService coppaMessageBroadcastService) {
-		this.coppaMessageBroadcastService = coppaMessageBroadcastService;
+	public void setMessageBroadcastService(MessageBroadcastService messageBroadcastService) {
+		this.messageBroadcastService = messageBroadcastService;
 	}
 	
 }

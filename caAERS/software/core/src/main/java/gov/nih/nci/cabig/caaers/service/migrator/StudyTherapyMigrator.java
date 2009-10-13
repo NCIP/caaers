@@ -15,24 +15,12 @@ public class StudyTherapyMigrator implements Migrator<Study> {
 	 */
 	public void migrate(Study src, Study dest,	DomainObjectImportOutcome<Study> outcome) {
 		
-	    if (src.getDrugAdministrationTherapyType()) {
-			dest.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
+		for(StudyTherapy therapy : src.getStudyTherapies()){
+			if(!dest.hasTherapyOfType(therapy.getStudyTherapyType())){
+				dest.addStudyTherapy(therapy.getStudyTherapyType());
+			}
 		}
-
-		if (src.getDeviceTherapyType()) {
-			dest.addStudyTherapy(StudyTherapyType.DEVICE);
-		}
-
-		if (src.getRadiationTherapyType()) {
-			dest.addStudyTherapy(StudyTherapyType.RADIATION);
-		}
-		if (src.getSurgeryTherapyType()) {
-			dest.addStudyTherapy(StudyTherapyType.SURGERY);
-		}
-
-		if (src.getBehavioralTherapyType()) {
-			dest.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
-		}
+	    
 	}
 	
 	

@@ -40,10 +40,7 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
 		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(Design.BLIND);
-		xmlStudy.setDrugAdministrationTherapyType(new Boolean("false"));
-		xmlStudy.setRadiationTherapyType(new Boolean("false"));
-		xmlStudy.setSurgeryTherapyType(new Boolean("false"));
-		xmlStudy.setBehavioralTherapyType(new Boolean("false"));
+		
 		
 		studySynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		assertTrue(outcome.getMessages().isEmpty());
@@ -65,10 +62,7 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
 		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(Design.BLIND);
-		xmlStudy.setDrugAdministrationTherapyType(new Boolean("false"));
-		xmlStudy.setRadiationTherapyType(new Boolean("false"));
-		xmlStudy.setSurgeryTherapyType(new Boolean("false"));
-		xmlStudy.setBehavioralTherapyType(new Boolean("false"));
+		
 		
 		studySynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		
@@ -87,10 +81,7 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
 		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(null);
-		xmlStudy.setDrugAdministrationTherapyType(new Boolean("false"));
-		xmlStudy.setRadiationTherapyType(new Boolean("false"));
-		xmlStudy.setSurgeryTherapyType(new Boolean("false"));
-		xmlStudy.setBehavioralTherapyType(new Boolean("false"));
+		
 		
 		studySynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		

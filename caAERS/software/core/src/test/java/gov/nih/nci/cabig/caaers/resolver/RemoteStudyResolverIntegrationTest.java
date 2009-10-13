@@ -16,6 +16,7 @@ public class RemoteStudyResolverIntegrationTest extends CaaersTestCase {
 	public void testLoading(){
 		studyResolver = (RemoteStudyResolver)getDeployedApplicationContext().getBean("remoteStudyResolver");
 		assertNotNull(studyResolver);
+		assertNotNull(studyResolver.getMessageBroadcastService());
 	}
 
 }

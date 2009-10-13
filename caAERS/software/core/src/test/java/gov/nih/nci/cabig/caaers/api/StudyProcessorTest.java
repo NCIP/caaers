@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
@@ -94,11 +95,11 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         assertEquals("BLIND", updatedStudy.getDesign().name());
         assertFalse(updatedStudy.getMultiInstitutionIndicator());
         assertFalse(updatedStudy.getAdeersReporting());
-        assertFalse(updatedStudy.getDrugAdministrationTherapyType());
-        assertFalse(updatedStudy.getRadiationTherapyType());
-        assertFalse(updatedStudy.getDeviceTherapyType());
-        assertFalse(updatedStudy.getSurgeryTherapyType());
-        assertFalse(updatedStudy.getBehavioralTherapyType());
+        assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+        assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.RADIATION));
+        assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.DEVICE));
+        assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.SURGERY));
+        assertFalse(updatedStudy.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
     }
 
 

@@ -90,24 +90,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     public Study getStudyDesignById(final int id) {
         Study study = (Study) getHibernateTemplate().get(domainClass(), id);
         initialize(study);
-
-        // now select the therapies types
-        if (study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
-            study.setDrugAdministrationTherapyType(Boolean.TRUE);
-        }
-        if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
-            study.setDeviceTherapyType(Boolean.TRUE);
-        }
-        if (study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
-            study.setRadiationTherapyType(Boolean.TRUE);
-        }
-        if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
-            study.setSurgeryTherapyType(Boolean.TRUE);
-        }
-        if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
-            study.setBehavioralTherapyType(Boolean.TRUE);
-        }
-
         return study;
     }
 
@@ -126,25 +108,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         if (study != null) {
 
             initialize(study);
-
-            // now select the therapies types
-            if (study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
-                study.setDrugAdministrationTherapyType(Boolean.TRUE);
-            }
-            if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
-                study.setDeviceTherapyType(Boolean.TRUE);
-            }
-            if (study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
-                study.setRadiationTherapyType(Boolean.TRUE);
-            }
-            if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
-                study.setSurgeryTherapyType(Boolean.TRUE);
-            }
-            if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
-                study.setBehavioralTherapyType(Boolean.TRUE);
-            }
-
-
         }
         return study;
     }

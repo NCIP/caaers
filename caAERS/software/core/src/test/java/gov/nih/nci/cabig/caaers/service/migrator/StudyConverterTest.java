@@ -175,11 +175,7 @@ public class StudyConverterTest extends AbstractTestCase {
         study.setStatus("Administratively Complete");
         study.setMultiInstitutionIndicator(true);
         study.setAdeersReporting(true);
-        study.setDrugAdministrationTherapyType(true);
-        study.setDeviceTherapyType(true);
-        study.setRadiationTherapyType(true);
-        study.setSurgeryTherapyType(true);
-        study.setBehavioralTherapyType(true);
+      
         study.setDesign(Design.PARTIAL);
 
         study.setAeTerminology(new AeTerminology());

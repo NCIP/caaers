@@ -329,22 +329,15 @@ public class XLstudyImporter {
     private void setStudyTherapies(Study study) {
         int therapyRows = therapyInfoSheet.getLastRowNum();
         for (int therapyRow = 1; therapyRow <= therapyRows; therapyRow++) {
-            if (primaryIdentifierString.equalsIgnoreCase(getCellData(
-                    THERAPY_SHEET_NAME, therapyRow, therapyInfoSheet.getRow(
-                            therapyRow).getCell((short) 0)))) {
+            if (primaryIdentifierString.equalsIgnoreCase(getCellData(THERAPY_SHEET_NAME, therapyRow, therapyInfoSheet.getRow(therapyRow).getCell((short) 0)))) {
 
-                String therapyString = getCellData(THERAPY_SHEET_NAME,
-                        therapyRow, therapyInfoSheet.getRow(therapyRow)
-                                .getCell((short) 1));
-
-                if (getStudyTherapyType(therapyString).equals(
-                        StudyTherapyType.DRUG_ADMINISTRATION)) {
-                    study.setDrugAdministrationTherapyType(Boolean.TRUE);
+                String therapyString = getCellData(THERAPY_SHEET_NAME,therapyRow, therapyInfoSheet.getRow(therapyRow).getCell((short) 1));
+                
+                StudyTherapyType interventionType = getStudyTherapyType(therapyString);
+                if(interventionType != null){
+                	study.addStudyTherapy(interventionType);
                 }
-                if (getStudyTherapyType(therapyString).equals(
-                        StudyTherapyType.RADIATION)) {
-                    study.setRadiationTherapyType(Boolean.TRUE);
-                }
+                
             }
         }
     }

@@ -2,7 +2,10 @@
 <!--
 This applicationContext contains the definition of the concrete services
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-lazy-init="true">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+default-lazy-init="true">
 	<tx:annotation-driven proxy-target-class="true"/>
 	<!-- ACTUAL SERVICE LAYER -->
 	<bean id="participantImportService" class="gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl">
@@ -31,8 +34,7 @@ This applicationContext contains the definition of the concrete services
 		</property>
 	</bean>
 	<bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
-	<bean id="messageBroadcastService" lazy-init="true" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
-		<property name="configuration" ref="configuration"/>
+	<bean id="messageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
 		<property name="messageTypesMapping">
 			<map>
 				<entry key="aeNotification" value="SCHEDULE_MODIFICATION"/>

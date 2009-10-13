@@ -20,7 +20,7 @@ default-lazy-init="true">
 	
 	
 	<bean id="baseResolver" abstract="true">
-       <!-- <property name="coppaMessageBroadcastService" ref="messageBroadcastService" /> -->
+        <property name="messageBroadcastService" ref="messageBroadcastService" />
     </bean>
 	
 	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver" parent="baseResolver" />

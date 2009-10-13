@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 public class StudyTherapyMigratorTest extends AbstractTestCase {
@@ -24,8 +25,8 @@ public class StudyTherapyMigratorTest extends AbstractTestCase {
 	
 	
 	public void testMigrate() {
-		xstreamStudy.setDrugAdministrationTherapyType(Boolean.TRUE);
-		xstreamStudy.setRadiationTherapyType(Boolean.TRUE);
+		xstreamStudy.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
+		xstreamStudy.addStudyTherapy(StudyTherapyType.RADIATION);
 		
 		migrator.migrate(xstreamStudy, dest, outcome);
 		assertEquals(2, dest.getStudyTherapies().size());

@@ -85,11 +85,6 @@ public class StudyConverter {
             studyDto.setStatus(StatusType.fromValue(study.getStatus()));
             studyDto.setMultiInstitutionIndicator(study.getMultiInstitutionIndicator());
             studyDto.setAdeersReporting(study.getAdeersReporting());
-            studyDto.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
-            studyDto.setDeviceTherapyType(study.getDeviceTherapyType());
-            studyDto.setRadiationTherapyType(study.getRadiationTherapyType());
-            studyDto.setSurgeryTherapyType(study.getSurgeryTherapyType());
-            studyDto.setBehavioralTherapyType(study.getBehavioralTherapyType());
 
             if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
                 MeddraVersion otherMeddra = new MeddraVersion();
@@ -150,11 +145,7 @@ public class StudyConverter {
 			study.setStatus(studyDto.getStatus().value());
 			study.setMultiInstitutionIndicator(studyDto.isMultiInstitutionIndicator());
 			study.setAdeersReporting(studyDto.isAdeersReporting());
-			study.setDrugAdministrationTherapyType(studyDto.isDrugAdministrationTherapyType());
-			study.setDeviceTherapyType(studyDto.isDeviceTherapyType());
-			study.setRadiationTherapyType(studyDto.isRadiationTherapyType());
-			study.setSurgeryTherapyType(studyDto.isSurgeryTherapyType());
-			study.setBehavioralTherapyType(studyDto.isBehavioralTherapyType());
+			
 			
 			if(! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null){
 				MeddraVersion otherMeddra = null;
@@ -485,7 +476,11 @@ public class StudyConverter {
         Design d = study.getDesign();
         studyDto.setDesign(DesignCodeType.fromValue(d.name()));
 	}
-
+	
+	private void populateStudyTherapy(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+		
+	}
+	
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getAeTerminology() != null){
@@ -507,6 +502,10 @@ public class StudyConverter {
             }
 		}
 		
+	}
+	
+	private void populateStudyTherapyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
+		//TODO
 	}
 	
 	private void populateAeTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{

@@ -285,11 +285,15 @@
 
     <xs:simpleType name="TherapyType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Drug Administration"/>
+            <xs:enumeration value="Drug"/>
             <xs:enumeration value="Radiation"/>
-            <xs:enumeration value="Surgery"/>
+            <xs:enumeration value="Procedure/Surgery"/>
             <xs:enumeration value="Device"/>
             <xs:enumeration value="Behavioral"/>
+            <xs:enumeration value="Biological/Vaccine" />
+            <xs:enumeration value="Genetic" />
+            <xs:enumeration value="Dietary Supplement" />
+            <xs:enumeration value="Other" />
         </xs:restriction>
     </xs:simpleType>
     

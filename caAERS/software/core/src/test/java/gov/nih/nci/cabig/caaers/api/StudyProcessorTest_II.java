@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.io.FileNotFoundException;
@@ -85,11 +86,11 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         assertTrue(createdStudy.getMultiInstitutionIndicator());
         assertTrue(createdStudy.getAdeersReporting());
 
-        assertTrue(createdStudy.getDrugAdministrationTherapyType());
-        assertTrue(createdStudy.getRadiationTherapyType());
-        assertTrue(createdStudy.getDeviceTherapyType());
-        assertTrue(createdStudy.getSurgeryTherapyType());
-        assertTrue(createdStudy.getBehavioralTherapyType());
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.RADIATION));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DEVICE));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.SURGERY));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
         
         assertNotNull(createdStudy.getEpochs());
         assertEquals(1, createdStudy.getEpochs().size());
@@ -131,11 +132,11 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         assertTrue(createdStudy.getMultiInstitutionIndicator());
         assertTrue(createdStudy.getAdeersReporting());
 
-        assertTrue(createdStudy.getDrugAdministrationTherapyType());
-        assertTrue(createdStudy.getRadiationTherapyType());
-        assertTrue(createdStudy.getDeviceTherapyType());
-        assertTrue(createdStudy.getSurgeryTherapyType());
-        assertTrue(createdStudy.getBehavioralTherapyType());
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.RADIATION));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DEVICE));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.SURGERY));
+        assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
         
         assertNotNull(createdStudy.getEpochs());
         assertEquals(1, createdStudy.getEpochs().size());

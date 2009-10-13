@@ -32,6 +32,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
@@ -892,11 +893,11 @@ assertTrue(true);
     public void testGetStudyDesignById() throws Exception {
         Study study = getDao().getStudyDesignById(-3);
         assertNotNull(study);
-        assertEquals(Boolean.TRUE, study.getRadiationTherapyType());
-        assertEquals(Boolean.TRUE, study.getSurgeryTherapyType());
-        assertEquals(Boolean.TRUE, study.getBehavioralTherapyType());
-        assertEquals(Boolean.TRUE, study.getDrugAdministrationTherapyType());
-        assertEquals(Boolean.TRUE, study.getDeviceTherapyType());
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.RADIATION));
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.DEVICE));
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.SURGERY));
+        assertTrue(study.hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
     }
 
     public void testGetStudyDesignByIdentifier() throws Exception {

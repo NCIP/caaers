@@ -769,51 +769,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @Transient
-    public Boolean getDrugAdministrationTherapyType() {
-        return drugAdministrationTherapyType;
-    }
-
-    public void setDrugAdministrationTherapyType(final Boolean drugAdministrationTherapyType) {
-        this.drugAdministrationTherapyType = drugAdministrationTherapyType;
-    }
-
-    @Transient
-    public Boolean getRadiationTherapyType() {
-        return radiationTherapyType;
-    }
-
-    public void setRadiationTherapyType(final Boolean radiationTherapyType) {
-        this.radiationTherapyType = radiationTherapyType;
-    }
-
-    @Transient
-    public Boolean getDeviceTherapyType() {
-        return deviceTherapyType;
-    }
-
-    public void setDeviceTherapyType(final Boolean deviceTherapyType) {
-        this.deviceTherapyType = deviceTherapyType;
-    }
-
-    @Transient
-    public Boolean getSurgeryTherapyType() {
-        return surgeryTherapyType;
-    }
-
-    public void setSurgeryTherapyType(final Boolean surgeryTherapyType) {
-        this.surgeryTherapyType = surgeryTherapyType;
-    }
-
-    @Transient
-    public Boolean getBehavioralTherapyType() {
-        return behavioralTherapyType;
-    }
-
-    public void setBehavioralTherapyType(final Boolean behavioralTherapyType) {
-        this.behavioralTherapyType = behavioralTherapyType;
-    }
-
-    @Transient
     public StudyTherapy getStudyTherapy(final StudyTherapyType studyTherapyType) {
 
         for (StudyTherapy studyTherapy : studyTherapies) {

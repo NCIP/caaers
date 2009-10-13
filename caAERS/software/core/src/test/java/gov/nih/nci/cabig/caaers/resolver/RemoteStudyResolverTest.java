@@ -37,7 +37,7 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		 
 		studyResolver = new RemoteStudyResolver();
 		messageBroadcastService = registerMockFor(MessageBroadcastService.class);
-		studyResolver.setCoppaMessageBroadcastService(messageBroadcastService);
+		studyResolver.setMessageBroadcastService(messageBroadcastService);
 	}
 
 	//Will populate "Drug"

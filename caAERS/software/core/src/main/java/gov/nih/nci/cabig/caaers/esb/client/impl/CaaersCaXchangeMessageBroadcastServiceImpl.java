@@ -30,7 +30,6 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 	 *  BJ : Why we are initalizing in every call CaXchangeMessageBroadcasterImpl, is it statefull?
 	 */
 	private static final Log log = LogFactory.getLog(CaaersCaXchangeMessageBroadcastServiceImpl.class);
-    private Configuration configuration;
     private Map<String, String> messageTypesMapping;
     private SecurityContextCredentialProvider delegatedCredentialProvider;
     private String authenticationMode;
@@ -42,8 +41,8 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 
         try {
             CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-            log.info("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
+            log.info("ca exchage URL + " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
+            broadCaster.setCaXchangeURL(Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setMessageTypesMapping(messageTypesMapping);
             broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
             broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
@@ -62,8 +61,8 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
         String result = null;
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
-        	log.info("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
-            broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
+        	log.info("ca exchage URL + " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
+            broadCaster.setCaXchangeURL(Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL));
             if (StringUtils.equals(authenticationMode, "webSSO")) {
             	broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
             	broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
@@ -80,15 +79,6 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
     public List<String> getBroadcastStatus() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-    @Required
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     public Map<String, String> getMessageTypesMapping() {

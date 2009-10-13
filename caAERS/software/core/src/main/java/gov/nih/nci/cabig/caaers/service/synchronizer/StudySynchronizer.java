@@ -40,10 +40,5 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		if(xmlStudy.getDesign() != null){
 			dbStudy.setDesign(xmlStudy.getDesign());
 		}
-		dbStudy.setDrugAdministrationTherapyType(xmlStudy.getDrugAdministrationTherapyType());
-		dbStudy.setRadiationTherapyType(xmlStudy.getRadiationTherapyType());
-		dbStudy.setDeviceTherapyType(xmlStudy.getDeviceTherapyType());
-		dbStudy.setSurgeryTherapyType(xmlStudy.getSurgeryTherapyType());
-		dbStudy.setBehavioralTherapyType(xmlStudy.getBehavioralTherapyType());
 	}
 }

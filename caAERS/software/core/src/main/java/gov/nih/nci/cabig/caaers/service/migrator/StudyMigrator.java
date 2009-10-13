@@ -24,10 +24,5 @@ public class StudyMigrator extends CompositeMigrator<Study> {
         dest.setAdeersReporting(src.getAdeersReporting());
         dest.setDesign(src.getDesign());
 
-        dest.setDrugAdministrationTherapyType(src.getDrugAdministrationTherapyType());
-        dest.setRadiationTherapyType(src.getRadiationTherapyType());
-        dest.setDeviceTherapyType(src.getDeviceTherapyType());
-        dest.setSurgeryTherapyType(src.getSurgeryTherapyType());
-        dest.setBehavioralTherapyType(src.getBehavioralTherapyType());
 	}
 }

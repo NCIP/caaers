@@ -4,12 +4,14 @@ import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperties;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.cabig.ctms.tools.configuration.DatabaseBackedConfiguration;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Rhett Sutphin
  */
-public class Configuration extends DatabaseBackedConfiguration {
+public class Configuration extends DatabaseBackedConfiguration implements InitializingBean{
+	public static Configuration LAST_LOADED_CONFIGURATION; 
     private static final ConfigurationProperties PROPERTIES = new ConfigurationProperties(new ClassPathResource("details.properties", Configuration.class));
     public static final ConfigurationProperty<Boolean> SHOW_DEBUG_INFORMATION = PROPERTIES.add(new ConfigurationProperty.Bool("showDebugInformation"));
     public static final ConfigurationProperty<String> PSC_BASE_URL = PROPERTIES.add(new ConfigurationProperty.Text("pscBaseUrl"));
@@ -33,5 +35,9 @@ public class Configuration extends DatabaseBackedConfiguration {
 
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
+    }
+    
+    public void afterPropertiesSet() throws Exception {
+    	Configuration.LAST_LOADED_CONFIGURATION = this;
     }
 }
