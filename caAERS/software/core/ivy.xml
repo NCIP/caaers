@@ -171,7 +171,7 @@
 			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.2" />
 			
 			<!--Home grown infrastructure jar for COPPA  -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.version" />	
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="latest.integration" />	
 			
 			<!-- PO related jars -->
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="1.2" />
@@ -191,7 +191,7 @@
 			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.2.2" /> 
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.2.2" />
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="1.2.2" />
-        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="latest.version" />		
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="latest.integration" />		
 
         	<!-- TODO: Check if Grid -->
 
