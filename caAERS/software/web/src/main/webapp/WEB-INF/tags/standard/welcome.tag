@@ -5,8 +5,9 @@
 
 <% 
 Object caaersUser = null;
-SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+
 try{
+	SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
 	if(context != null){
 	   if(context.getAuthentication().getPrincipal() instanceof WebSSOUser){
 		   caaersUser = (WebSSOUser)context.getAuthentication().getPrincipal();
@@ -22,9 +23,6 @@ try{
 <c:set var="user" value="<%= caaersUser %>" />
 <span id="welcome-user">
 	<c:if test="${user != null }">
-		Welcome <b>
-		<c:if test="${user.fullName != ''}">${user.fullName } </c:if>
-		<c:if test="${user.fullName == ''}">${user.userName } </c:if>
-		</b>
+		Welcome <b> ${user.firstName} ${user.lastName}</b>
 	</c:if>
 </span>
