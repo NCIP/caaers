@@ -2,15 +2,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
 
-import gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -39,6 +31,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.acegisecurity.userdetails.User;
+import org.acegisecurity.context.SecurityContext;
 
 public class CreateParticipantController extends AutomaticSaveAjaxableFormController<ParticipantInputCommand, Participant, ParticipantDao> {
 
@@ -48,6 +42,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     private OrganizationDao organizationDao;
     private StudySiteDao studySiteDao;
     private ParticipantDao participantDao;
+    private ResearchStaffDao rsDao;
+    private InvestigatorDao investigatorDao;
 
     private ConfigProperty configurationProperty;
     protected WebControllerValidator webControllerValidator;
@@ -110,6 +106,16 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
         participantInputCommand.setUnidentifiedMode(getUnidentifiedMode());
         participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(2).getCode()); //initialise the command
+
+        User user = null;
+        SecurityContext context = (SecurityContext) request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+        if (context != null) {
+            user = (User)context.getAuthentication().getPrincipal();
+        }
+
+        participantInputCommand.setLoggedinResearchStaff(rsDao.getByLoginId(user.getUsername()));
+        participantInputCommand.setLoggedinInvestigator(investigatorDao.getByLoginId(user.getUsername()));
+
         return participantInputCommand;
     }
 
@@ -282,5 +288,21 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public ResearchStaffDao getRsDao() {
+        return rsDao;
+    }
+
+    public void setRsDao(ResearchStaffDao rsDao) {
+        this.rsDao = rsDao;
+    }
+
+    public InvestigatorDao getInvestigatorDao() {
+        return investigatorDao;
+    }
+
+    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+        this.investigatorDao = investigatorDao;
     }
 }

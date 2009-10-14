@@ -1,17 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.*;
@@ -29,6 +18,9 @@ public class ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
 
     protected HashMap<String, Boolean> emptyFieldNameMap;
+
+    protected ResearchStaff loggedinResearchStaff;
+    protected Investigator loggedinInvestigator;
 
     protected Participant participant;
     private Study study;
@@ -287,5 +279,21 @@ public class ParticipantInputCommand {
 
     public void setUnidentifiedMode(boolean unidentifiedMode) {
         this.unidentifiedMode = unidentifiedMode;
+    }
+
+    public ResearchStaff getLoggedinResearchStaff() {
+        return loggedinResearchStaff;
+    }
+
+    public void setLoggedinResearchStaff(ResearchStaff loggedinResearchStaff) {
+        this.loggedinResearchStaff = loggedinResearchStaff;
+    }
+
+    public Investigator getLoggedinInvestigator() {
+        return loggedinInvestigator;
+    }
+
+    public void setLoggedinInvestigator(Investigator loggedinInvestigator) {
+        this.loggedinInvestigator = loggedinInvestigator;
     }
 }

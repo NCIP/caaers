@@ -1,16 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.utils;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 public class WebUtils {
@@ -249,5 +241,54 @@ public class WebUtils {
     		ivals[i] = values.get(i);
     	}
     	return ivals;
+    }
+
+    /*
+    *
+    * Will keep only the studies Coordinated or Sponsored by one of the organizations in the Set
+    *
+    * */
+    public static List<Study> filterStudiesByCoordinatorOrSponsor(List<Study> studies, Set<Organization> organizations, Organization subjectOrganization) {
+
+        List<Study> _s = new ArrayList<Study>();
+
+        for (Study s : studies) {
+            boolean isGood = false;
+
+            Organization scc = s.getStudyCoordinatingCenter().getOrganization();
+            Organization sfs = s.getPrimaryFundingSponsorOrganization();
+
+            // select studies coordinated by RS
+            if (organizations.contains(scc) || organizations.contains(sfs)) {
+                isGood = true;
+            }
+
+            // add studies where RS's organizaton is just a StudySite if it's the same as Subject's Site
+            if (organizations.contains(subjectOrganization)) {
+                for (StudySite ss : s.getStudySites()) {
+                    if (ss.getOrganization().equals(subjectOrganization)) isGood = true;
+                }
+            }
+
+            if (isGood) _s.add(s);
+
+        }
+
+
+        return _s;
+    }
+
+    /*
+    *
+    * Will keep only the studies Coordinated or Sponsored by Research Staff's organizations
+    * 
+    * */
+    public static List<Study> filterStudiesForResearchStaff(List<Study> studies, ResearchStaff rs, Organization subjectOrganization) {
+        Set<Organization> orgs = new HashSet<Organization>();
+        for (SiteResearchStaff srs : rs.getSiteResearchStaffs()) {
+            orgs.add(srs.getOrganization());
+        }
+
+        return filterStudiesByCoordinatorOrSponsor(studies, orgs, subjectOrganization);
     }
 }

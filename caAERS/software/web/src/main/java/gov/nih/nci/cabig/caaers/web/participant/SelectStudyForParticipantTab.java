@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -16,6 +17,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,10 +50,13 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         refdata.put("searchType", listValues.getStudySearchType());
 
 
+        // get the StudySites to filterby 
+
         // Search START
         ParticipantInputCommand participantCommand = (ParticipantInputCommand)command;
         String searchtext = participantCommand.getSearchText();
         String type = participantCommand.getSearchType();
+
 
         if (searchtext != null && type != null && !searchtext.equals("")) {
             participantCommand.setStudies(new ArrayList<Study>());
@@ -65,7 +70,13 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
                 query.filterByIdentifierValue(searchtext);
             }
 
-            participantCommand.setStudies(studyRepository.find(query));
+            List<Study> studies = studyRepository.find(query);
+            
+            if (command.getLoggedinResearchStaff() != null) {
+                studies = WebUtils.filterStudiesForResearchStaff(studies, command.getLoggedinResearchStaff(), command.getOrganization());
+            }
+
+            participantCommand.setStudies(studies);
             participantCommand.setSearchText("");
             participantCommand.setSearchType("");
         }

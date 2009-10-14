@@ -260,17 +260,8 @@ public abstract class Organization extends AbstractMutableDomainObject {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((city == null) ? 0 : city.hashCode());
-		result = prime * result + ((country == null) ? 0 : country.hashCode());
-		result = prime * result
-				+ ((descriptionText == null) ? 0 : descriptionText.hashCode());
-		result = prime * result
-				+ ((externalId == null) ? 0 : externalId.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime
-				* result
-				+ ((nciInstituteCode == null) ? 0 : nciInstituteCode.hashCode());
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		result = prime * result + ((nciInstituteCode == null) ? 0 : nciInstituteCode.hashCode());
 		return result;
 	}
 
