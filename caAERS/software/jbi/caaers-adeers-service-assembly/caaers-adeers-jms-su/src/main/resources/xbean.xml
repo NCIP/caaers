@@ -37,14 +37,20 @@
               jmsProviderDestinationName="adeers-ae-message.outputQueue"
               connectionFactory ="#jmsFactory"
               defaultMep="http://www.w3.org/2004/08/wsdl/in-only" />
-
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties
+            </value>
+        </property>
+    </bean>
 	<bean id="jmsFactory"
 		class="org.apache.activemq.pool.PooledConnectionFactory">
 		<property name="connectionFactory">
 			<bean
 				class="org.apache.activemq.ActiveMQConnectionFactory">
 				<property name="brokerURL"
-					value="tcp://localhost:61616?wireFormat.maxInactivityDuration=0" />
+					value="${inbound.jms.brokerURL}?wireFormat.maxInactivityDuration=0" />
 			</bean>
 		</property>
 	</bean>
