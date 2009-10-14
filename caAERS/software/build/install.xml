@@ -134,6 +134,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<echo message="application.base.path=${application.base.path}"/>
 		<property name="jboss.home" value="${application.base.path}/${jboss.relative.path}"/>
 		<property name="tomcat.home" value="${application.base.path}/${tomcat.relative.path}"/>
+		
+		<echo message="application.base.path.linux  ${application.base.path.linux}." />
+		
+		<echo message="application.base.path  ${application.base.path}." />
+		
+		<echo message="tomcat.relative.path  ${tomcat.relative.path}." />
+		
+		<echo message="TOMCAT_HOME  ${tomcat.home}." />
+
+		
+		
 	</target>
 	<target name="common:tomcat:init" depends="common:init:pre" unless="exclude.tomcat">
 		<property name="tomcat.ssl.enable" value="false"/>
@@ -632,8 +643,17 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</if>
 	</target>
 	
+	<!-- caAERS target for suite installer -->
+	<target name="install:caAERS" description="Install/Deploy caAERS related artifacts onto the tomcat container and configure tomcat with caAERS"
+		depends=
+		"common:init,
+		install:tomcat:caAERS-webapp,
+		install:post:tomcat:caaers:config
+		">
+	</target>	
+	
+	<!-- caAERS specific configuration -->
 	<target name="install:post:tomcat:caaers:config">
-		<!-- caAERS specific configuration -->
 		
 		<mkdir dir="${tomcat.home}/conf/caaers"/>
 		<mkdir dir="${tomcat.home}/conf/cabig"/>
