@@ -1,22 +1,23 @@
 package gov.nih.nci.cabig.caaers.security;
 
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.authentication.CommonAuthenticationManager;
 import gov.nih.nci.security.authentication.LockoutManager;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.security.auth.Subject;
 
 import org.acegisecurity.BadCredentialsException;
+import org.acegisecurity.CredentialsExpiredException;
+import org.acegisecurity.DisabledException;
 import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.LockedException;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 
 /**
@@ -64,17 +65,14 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 	}
 	
 	/*
-	 * 1.  
+	 * 1.  Testcase to check the ideal case in which no exceptions are thrown.
 	 */
 	public void testAdditionalAuthChecks_CheckingSuccess() {
 		createToken("abcd", "xxx");
-		
 		{
-			
 			User user = loadUser();
 			user.setPasswordLastSet(now);
 			saveUser(user);
-			
 		}
 		
 		interruptSession();
@@ -88,21 +86,31 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 			});
 			provider.additionalAuthenticationChecks(user, token);
 		}
+		
 		interruptSession();
+		
 		{
 			User user = loadUser();
 			assertEquals(0, user.getFailedLoginAttempts());
 			assertNull(user.getLastFailedLoginAttemptTime());
 		}
-		
 	}
 	
 	/*
-	 * 2. 
+	 * 2. Testcase to check if BadCredentials exception is thrown if wrong user credentials are given.
 	 */
-	public void testAdditionalChecks_ThrowingAuthenticationException() throws Exception{
+	public void testAdditionalChecks_ThrowingBadCredentialsException() throws Exception{
+		createToken("abcd", "xxx");
 		{
-			//get provider
+			User user = loadUser();
+			user.setPasswordLastSet(now);
+			user.setFailedLoginAttempts(0);
+			saveUser(user);
+		}
+		
+		interruptSession();
+
+		{
 			provider.setCsmAuthenticationManager(new CommonAuthenticationManager(){
 				@Override
 				public Subject authenticate(String userName, String password) {
@@ -112,14 +120,129 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 			});
 		}
 		
-		provider.additionalAuthenticationChecks(user, token);
+		try {
+			provider.additionalAuthenticationChecks(user, token);
+			fail("Should not reach here as the user credentials given are wrong");
+		} catch (BadCredentialsException e) {
+		}
+		
 		interruptSession();
+		
 		{
-			//load the user
-			//check for correct values. 
+			User user = loadUser();
+			assertEquals(1, user.getFailedLoginAttempts());
 		}
 	}
 	
+	/*
+	 * 3. Testcase to check if CredentialsExpired exception is thrown if the password age has exceeded the threshold.
+	 */
+	public void testAdditionalChecks_ThrowingCredentialsExpiredException() throws Exception{
+		createToken("abcd", "xxx");
+		{
+			User user = loadUser();
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, -3);
+			user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));// last set 3days ago
+			// LoginPolicy max password age is 2 days
+			saveUser(user);
+		}
+		
+		interruptSession();
+
+		{
+			provider.setCsmAuthenticationManager(new CommonAuthenticationManager(){
+				@Override
+				public Subject authenticate(String userName, String password) {
+					return null;
+				}
+			});
+		}
+		
+		try {
+			provider.additionalAuthenticationChecks(user, token);
+			fail("Should not reach here as the password age is too old");
+		} catch (CredentialsExpiredException e) {
+		}
+		
+		interruptSession();
+		
+		{
+			User user = loadUser();
+			assertEquals(0, user.getFailedLoginAttempts());
+		}
+	}
+
+/*
+ * 4. Testcase to check if Disabled exception is thrown if the number of failed login attempts has exceeded the threshold.
+ */
+public void testAdditionalChecks_ThrowingDisabledException() throws Exception{
+	createToken("abcd", "xxx");
+	{
+		User user = loadUser();
+		user.setPasswordLastSet(now);
+		user.setFailedLoginAttempts(4);
+		// Login Policy Allowed failed login attempts = 3
+		saveUser(user);
+	}
+	
+	interruptSession();
+
+	{
+		provider.setCsmAuthenticationManager(new CommonAuthenticationManager(){
+			@Override
+			public Subject authenticate(String userName, String password) {
+				return null;
+			}
+		});
+	}
+	
+	try {
+		provider.additionalAuthenticationChecks(user, token);
+		fail("Should not reach here as there are too many failed login attempts ");
+	} catch (DisabledException e) {
+	}
+	
+	interruptSession();
+	
+	{
+		User user = loadUser();
+		assertEquals(0, user.getFailedLoginAttempts());
+	}
+}
+
+/*
+ * 5. Testcase to check if Locked exception is thrown if the number of failed login attempts has exceeded the threshold.
+ */
+public void testAdditionalChecks_ThrowingLockedException() throws Exception{
+	createToken("abcd", "xxx");
+	{
+		User user = loadUser();
+		user.setPasswordLastSet(now);
+		user.setLastFailedLoginAttemptTime(now);
+		// Login Policy Lockout duration = 3 minutes
+		saveUser(user);
+	}
+	
+	interruptSession();
+
+	{
+		provider.setCsmAuthenticationManager(new CommonAuthenticationManager(){
+			@Override
+			public Subject authenticate(String userName, String password) {
+				return null;
+			}
+		});
+	}
+	
+	try {
+		provider.additionalAuthenticationChecks(user, token);
+		fail("Should not reach here as the account is still locked ");
+	} catch (LockedException e) {
+	}
+}
+
+	// Test to check the disabling of LockoutManager
 	public void testLockoutManagerLoading(){
         LockoutManager lockoutManager = (LockoutManager) getDeployedApplicationContext().getBean("csmLockoutManager");
         assertNotNull(lockoutManager);

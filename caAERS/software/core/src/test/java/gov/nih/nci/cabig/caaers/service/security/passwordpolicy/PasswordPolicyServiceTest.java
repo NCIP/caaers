@@ -18,6 +18,7 @@ import java.util.Date;
 
 /**
  * @author Jared Flatow
+ * @author Ram Seethiraju
  */
 public class PasswordPolicyServiceTest extends CaaersTestCase {
 

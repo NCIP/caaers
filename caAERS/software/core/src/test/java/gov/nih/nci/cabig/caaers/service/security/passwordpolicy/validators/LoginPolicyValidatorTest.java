@@ -113,7 +113,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.add(Calendar.DATE, -1);// last set 1 day ago
 		user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
-		assertTrue(loginPolicyValidator.validate(passwordPolicy, credential));
+		assertTrue(loginPolicyValidator.validate(passwordPolicy, credential, null));
 	}
 	public void testValidateMethod_CheckingFailure1() {
 		try {
@@ -124,7 +124,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -3);// last set 3 days ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
-			loginPolicyValidator.validate(passwordPolicy, credential);
+			loginPolicyValidator.validate(passwordPolicy, credential, null);
 		} catch (PasswordTooOldException e) {
 		}
 	}
@@ -137,7 +137,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
-			loginPolicyValidator.validate(passwordPolicy, credential);
+			loginPolicyValidator.validate(passwordPolicy, credential, null);
 		} catch (TooManyAllowedFailedLoginAttemptsException e) {
 		}
 	}
@@ -150,7 +150,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
-			loginPolicyValidator.validate(passwordPolicy, credential);
+			loginPolicyValidator.validate(passwordPolicy, credential, null);
 		} catch (UserLockedOutException e) {
 		}
 	}
