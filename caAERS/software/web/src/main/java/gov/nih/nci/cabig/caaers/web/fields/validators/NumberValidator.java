@@ -7,7 +7,7 @@ public class NumberValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect";
+        return "Invalid";
     }
 
     @Override

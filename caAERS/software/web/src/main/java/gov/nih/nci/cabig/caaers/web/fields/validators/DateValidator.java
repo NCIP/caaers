@@ -13,7 +13,7 @@ public class DateValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect date value";
+        return "Invalid date value";
     }
 
     public String getValidatorCSSClassName() {

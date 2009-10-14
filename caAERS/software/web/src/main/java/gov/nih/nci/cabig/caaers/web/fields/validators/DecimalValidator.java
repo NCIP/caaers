@@ -33,7 +33,7 @@ public class DecimalValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect";
+        return "Invalid";
     }
 
     @Override

@@ -21,7 +21,7 @@ public class PastDateValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect/future date value";
+        return "Invalid/future date value";
     }
 
     public String getValidatorCSSClassName() {

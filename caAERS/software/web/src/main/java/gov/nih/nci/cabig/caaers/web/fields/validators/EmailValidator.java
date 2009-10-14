@@ -12,7 +12,7 @@ public class EmailValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect";
+        return "Invalid";
     }
 
     public String getValidatorCSSClassName() {

@@ -30,7 +30,7 @@ public class AlphanumericValidator extends FieldValidator {
     public String getMessagePrefix() {
         if (!minLengthOK) return "The value's length is below the minimum of " + minLength + ".";
         if (!maxLengthOK) return "The value's length is above the maximum of " + maxLength + ".";
-        return "Incorrect alphanumeric value";
+        return "Invalid alphanumeric value";
     }
 
     @Override
