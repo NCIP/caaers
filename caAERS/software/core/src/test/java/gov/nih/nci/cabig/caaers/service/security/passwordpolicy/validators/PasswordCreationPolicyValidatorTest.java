@@ -79,7 +79,7 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 		verifyMocks();   
 	}
 	
-	public void testAllPasswordFormatValidations() {
+	/*public void testAllPasswordFormatValidations() {
 		replayMocks();
 		assertFalse(tryThisPassword("password"));
 		verifyMocks(); 
@@ -88,6 +88,6 @@ public class PasswordCreationPolicyValidatorTest extends AbstractTestCase {
 	public boolean tryThisPassword(String thisPassword) {
 	//	Credential c
 		return passwordCreationPolicyValidator.validate(passwordPolicy, credential, new ValidationErrors());
-	}
+	}*/
 	
 } 
