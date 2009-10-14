@@ -81,18 +81,8 @@ public class StudyTherapiesTab extends StudyTab {
     @Override
     public void onBind(HttpServletRequest request, StudyCommand cmd, Errors errors) {
         super.onBind(request, cmd, errors);
-        updateStudyTherapies(cmd);
+        cmd.updateStudyTherapies();
     }
 
-    protected void updateStudyTherapies(final StudyCommand cmd) {
-    	for(StudyTherapyType therapyType : StudyTherapyType.values()){
-    		if(cmd.isTherapyTypeSelected(therapyType)){
-    			StudyTherapy therapy = cmd.getStudy().getStudyTherapy(therapyType);
-    			if(therapy == null) cmd.getStudy().addStudyTherapy(therapyType);
-    		}else{
-    			cmd.getStudy().removeTherapiesOfType(therapyType);
-    		}
-    	}
-    }
     
 }

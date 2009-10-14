@@ -54,7 +54,7 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
     	command.setDeviceTherapyType(true);
     	command.setSurgeryTherapyType(true);
 
-        ((StudyTherapiesTab)tab).updateStudyTherapies(command);
+    	command.updateStudyTherapies();
 
         assertEquals(2, study.getStudyTherapies().size());
         assertNotNull(study.getStudyTherapy(StudyTherapyType.DEVICE));

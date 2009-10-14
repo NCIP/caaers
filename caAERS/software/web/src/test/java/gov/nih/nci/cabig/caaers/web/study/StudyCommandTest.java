@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -229,5 +230,21 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertSame(s2, command.checkForDuplicateStudyByIdentifier(id));
 		verifyMocks();
 		
+	}
+	
+	public void testUpdateStudyTherapies(){
+		//empty case
+		assertTrue(command.getStudy().getStudyTherapies().isEmpty());
+		command.updateStudyTherapies();
+		assertTrue(command.getStudy().getStudyTherapies().isEmpty());
+		
+		//having study therapy case
+		command.getStudy().addStudyTherapy(StudyTherapyType.DEVICE);
+		command.setBehavioralTherapyType(true);
+		command.updateStudyTherapies();
+		assertTrue(command.getBehavioralTherapyType());
+		command.updateStudyTherapies();
+		assertFalse(command.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE));
+		assertTrue(command.getStudy().hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
 	}
 }
