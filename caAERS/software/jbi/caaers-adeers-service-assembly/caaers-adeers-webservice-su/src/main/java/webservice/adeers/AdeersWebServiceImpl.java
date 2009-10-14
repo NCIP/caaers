@@ -19,6 +19,11 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 
 	Logger log = Logger.getLogger(getClass());
 	
+	private String adeersKeyStore ;
+
+	public void setAdeersKeyStore(String adeersKeyStore){
+		this.adeersKeyStore=adeersKeyStore;
+	}
 	public String callWebService(String aeReport) throws Exception {
 		
 		return submitOrWithdraw(aeReport);
@@ -32,13 +37,13 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String url=adeersEPR.split("::")[0];
 		String uid=adeersEPR.split("::")[1];
 		String pwd=adeersEPR.split("::")[2];
-		String clientTrustStore = "caAERs-AdEERS";
-		String userDir = System.getProperty("user.home");
-		String fileSeparator = System.getProperty("file.separator");
-		String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
+		//String clientTrustStore = "caAERs-AdEERS";
+		//String userDir = System.getProperty("user.home");
+		//String fileSeparator = System.getProperty("file.separator");
+		//String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
 
-		log.info("PATH " + clientAbsoluteTrustStore);
-		System.setProperty("javax.net.ssl.trustStore", clientAbsoluteTrustStore);
+		log.info("Key Store PATH " + adeersKeyStore);
+		System.setProperty("javax.net.ssl.trustStore", adeersKeyStore);
 		AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
