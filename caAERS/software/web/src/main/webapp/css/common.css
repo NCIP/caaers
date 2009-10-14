@@ -783,3 +783,26 @@ td.create img, td.edit img, td.ammend img, td.withdraw img {
 .accordion-content .division h3 {
 	margin-bottom:10px;
 }
+#ajax-loading-indictor {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 5;
+	background-image:url(../images/chrome/spacer.gif);
+}
+#ajax-loading-indictor #spinning-logo {
+    margin: auto 40%;
+    position: absolute;
+    top: 32%;
+    z-index: 10;
+    width: 250px;
+    height: 250px;
+    opacity: 0.6;
+    background-color: #000000;
+    filter: alpha( opacity = 60);
+	-moz-border-radius:30px;
+	-webkit-border-radius:30px;
+	border-radius:30px;
+}

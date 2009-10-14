@@ -108,3 +108,6 @@ select.required {
 #floatingTaskbar {
 	width: 971px;
 }
+#ajax-loading-indictor #spinning-logo {
+    margin: auto -9%;
+}
