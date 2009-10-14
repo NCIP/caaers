@@ -148,7 +148,7 @@ public class ReviewAndReportTab extends AdverseEventTab {
 			}
 			
 			//find primaryAE
-			int primaryAEId = ServletRequestUtils.getIntParameter(request,"ae_" + aeReportId + "_primary");
+			Integer primaryAEId = ServletRequestUtils.getIntParameter(request,"ae_" + aeReportId + "_primary");
 			reviewResult.setPrimaryAdverseEventId(primaryAEId);
 			
 			//find the aes, deselected. 

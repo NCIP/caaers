@@ -352,6 +352,8 @@
 	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
 	 if(selectedAEs.length == 0){
 		 curRdObject.deSelect();
+		//update the display text.
+		updateDisplayTexts(aeReportId);
 		 return;
 	 }
 	 //caaersLog("handleReportSelection [aeReportId :" + aeReportId + ", rdId : " + rdId  + ", curRdObject : " + curRdObject.id);
@@ -407,7 +409,7 @@ function findSelectedAdverseEvents(aeReportId){
 	 $('report-btn-' + aeReportId).disabled = (selectedAEs.length < 1);
 	 if(selectedAEs.length < 1){
 
-	/*	 === not required --
+	
 		 //none of the AEs are selected,so deselect all the report definitions.
 		 AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
 			rdObj.deSelect();
@@ -418,9 +420,10 @@ function findSelectedAdverseEvents(aeReportId){
 
 		 //update the display.
 		 updateDisplayTexts(aeReportId);
-
-	*/	 
-			 
+		 
+		//enable/disable report button based on the action
+		if(aeReportId != 0) $('report-btn-' + aeReportId).disabled = !isOnlyActionWithdraw(aeReportId)  ; 	
+				 
 	 }else if(reportedFlag){
 
 		 //reset every thing, so that we are on the orignal state. 
@@ -624,6 +627,18 @@ function generateMessages(aeReportId){
 
 	return messages;
 }
+//=================================================================================
+//function will return true if the only action is withdraw.
+function isOnlyActionWithdraw(aeReportId){
+	var _onlyWithdrawAction = true;
+	//check for actual action.
+	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
+		if(rdObj.getActualAction() && rdObj.getActualAction() != 'Withdraw'){
+			_onlyWithdrawAction = false;
+		}
+	});
+	return _onlyWithdrawAction;
+}
 
 //=================================================================================
 //function will return the ids, of the report definitions checked from the same group.
@@ -687,11 +702,6 @@ function validate(aeReportId){
 	var onlyWithdrawAction = true;
 	var noPrimaryAE = true;
 
-	var selectedAEs = findSelectedAdverseEvents(aeReportId);
-	if(selectedAEs.length < 1){
-		alert("At least one adverse event should be selected");
-		return false;
-	}
 
 	//check for actual action.
 	AE.applicableReportDefinitionHash.get(aeReportId).values().each(function(rdObj){
@@ -699,7 +709,15 @@ function validate(aeReportId){
 			noActualAction = false;
 		}
 	});
+
+    //onlyWithdraw?
+	onlyWithdrawAction = isOnlyActionWithdraw(aeReportId);
 	
+	var selectedAEs = findSelectedAdverseEvents(aeReportId);
+	if(selectedAEs.length < 1 && !onlyWithdrawAction){
+		alert("At least one adverse event should be selected");
+		return false;
+	}
 	
 	//make sure, atleast one actual action is there. 
 	if(noActualAction){
@@ -713,14 +731,11 @@ function validate(aeReportId){
 		}
 	});
 	
-	if(noPrimaryAE){
+	if(noPrimaryAE && !onlyWithdrawAction){
 		alert('At least one primary adverse event should be selected');
 		return false;
 	}
 
-	if(onlyWithdrawAction){
-		//make sure no ae is selected
-	}
 
 	return true;
 }
