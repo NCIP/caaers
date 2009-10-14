@@ -504,7 +504,7 @@
 		<echo message="Executing in ${ant.project.name}" />
 		<delete includeemptydirs="true" dir="${test.results.dir}" />
 	</target>
-	
+		
     <!-- ================================= 
           target: clean-test-reports              
          ================================= -->	
@@ -528,10 +528,17 @@
 				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
 	</target>
     <!-- ================================= 
+          target: clean-working           
+         ================================= -->	
+	<target name="clean-working" description="--> clean the working dir">
+		<echo message="Executing in ${ant.project.name}" />
+		<delete includeemptydirs="true" dir="${build.dir}/working" />
+	</target>
+    <!-- ================================= 
           target: clean              
          ================================= -->
     <target name="clean" depends="clean-classes, clean-classes-test, clean-generated-src, clean-dist, clean-lib, 
-    			clean-lib-test, clean-test-results, clean-test-reports,clean-cobertura-instruments,clean-cobertura-dir" 
+    			clean-lib-test, clean-test-results, clean-test-reports,clean-cobertura-instruments,clean-cobertura-dir,clean-working" 
     	description="--> clean the project">
     	<delete dir="${main.src}" includes="**/*.class" />
 		<delete dir="${test.src}" includes="**/*.class" />
