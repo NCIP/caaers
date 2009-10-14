@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyException;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import org.springframework.beans.factory.annotation.Required;
 
@@ -42,14 +44,16 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     }
 
     public boolean validatePasswordAgainstCreationPolicy(Credential credential)
-            throws CaaersSystemException {
-        return passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential);
+            throws PasswordCreationPolicyException {
+    	ValidationErrors validationErrors = new ValidationErrors();
+		boolean result = passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential, validationErrors);
+		if(validationErrors.hasErrors()) throw new PasswordCreationPolicyException("Error while saving password", validationErrors);
+		return result;
     }
-
     
      public boolean validatePasswordAgainstLoginPolicy(Credential credential) throws
       CaaersSystemException { 
-    	 return loginPolicyValidator.validate(getPasswordPolicy(),credential);
+    	 return loginPolicyValidator.validate(getPasswordPolicy(),credential, null);
     	 }
      
 

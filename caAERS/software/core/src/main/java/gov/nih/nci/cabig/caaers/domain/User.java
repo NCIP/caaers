@@ -20,6 +20,7 @@ import org.hibernate.annotations.IndexColumn;
  * This class represents the User domain object associated with the Adverse event report.
  *
  * @author Saurabh Agrawal
+ * * @author Ram Seethiraju
  */
 @MappedSuperclass
 public abstract class User extends Person implements Comparable<User>{
@@ -172,6 +173,11 @@ public abstract class User extends Person implements Comparable<User>{
 		this.lastLoginAttemptTime = lastLoginAttemptTime;
 	}
     
+	/**
+	 * Calculates the time past last failed login attempt
+	 * This property is used in determining the account lock out
+	 * @return seconds past last failed login attempts
+	 */
 	@Transient
     public long getSecondsPastLastFailedLoginAttempt(){
     	if(getLastFailedLoginAttemptTime()==null) return -1;

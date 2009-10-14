@@ -29,4 +29,6 @@ public interface PasswordPolicyService {
 
     public boolean validatePasswordAgainstCreationPolicy(Credential credential)
                     throws CaaersSystemException;
+    public boolean validatePasswordAgainstLoginPolicy(Credential credential)
+    throws CaaersSystemException;
 }

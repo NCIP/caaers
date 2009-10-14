@@ -4,11 +4,14 @@ import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 
 import javax.persistence.Embeddable;
 
+/**
+ * @author Ram Seethiraju
+ */
 @Embeddable
 public class LoginPolicy {
 
     private int allowedFailedLoginAttempts;
-
+    
     private int lockOutDuration;
 
     private int maxPasswordAge;
@@ -18,7 +21,7 @@ public class LoginPolicy {
         return allowedFailedLoginAttempts;
     }
 
-    public void setAllowedFailedLoginAttempts(int allowedFailedLoginAttempts) {
+	public void setAllowedFailedLoginAttempts(int allowedFailedLoginAttempts) {
         this.allowedFailedLoginAttempts = allowedFailedLoginAttempts;
     }
 
