@@ -174,8 +174,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                 logger.info("The participant identified by MRN :" + mrn
                                 + ", already available, so using existing participant");
                 if (participant.isAssignedToStudySite(site)) {
-                    logger
-                                    .info("Already this participant is associated to the study, so throwing exception");
+                	logger.error  ("Already this participant is associated to the study, so throwing exception");
                     String message = "Participant with MRN : "
                                     + mrn
                                     + ", is already associated to the Study (Coordinating Center Identifier :"
@@ -219,7 +218,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
             if (participant == null) {
-                logger.info("Unable to find the participant with MRN :" + mrn);
+            	logger.error("Unable to find the participant with MRN :" + mrn);
                 return;
             }
 
@@ -227,7 +226,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                             .checkIfEntityWasCreatedByUrl(participant.getClass(), participant
                                             .getId(), registrationConsumerGridServiceUrl);
             if (!checkIfEntityWasCreatedByGridService) {
-                logger.debug("Participant was not created by the grid service url:"
+            	logger.error("Participant was not created by the grid service url:"
                                 + registrationConsumerGridServiceUrl
                                 + " so can not rollback this registration:" + participant.getId());
                 return;
@@ -244,7 +243,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                                             .getClass(), participant.getId(), calendar,
                                             rollbackInterval);
             if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
-                logger.debug("Participant was not created one minute before the current time:"
+            	logger.error("Participant was not created one minute before the current time:"
                                 + calendar.getTime().toString()
                                 + " so can not rollback this registration:" + participant.getId());
                 return;
