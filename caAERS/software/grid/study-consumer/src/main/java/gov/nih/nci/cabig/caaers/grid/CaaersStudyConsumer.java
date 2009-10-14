@@ -54,8 +54,7 @@ import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
 import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
 import org.oasis.wsrf.properties.GetResourcePropertyResponse;
@@ -67,7 +66,7 @@ import org.springframework.web.context.request.WebRequest;
 
 public class CaaersStudyConsumer implements StudyConsumerI {
 
-    private static final Log logger = LogFactory.getLog(CaaersStudyConsumer.class);
+    private static Logger logger = Logger.getLogger(CaaersStudyConsumer.class);//logger = LogFactory.getLog(CaaersStudyConsumer.class);
 
     private OrganizationRepository organizationRepository;
 
@@ -149,7 +148,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      */
     public void rollback(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
-    	
+    	System.out.println("Begining of studyConsumer : rollback");
     	WebRequest stubWebRequest = null;
     	stubWebRequest = preProcess();
         logger.info("Begining of studyConsumer : rollback");
@@ -171,12 +170,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                                         studyConsumerGridServiceUrl);
 
         if (!checkIfEntityWasCreatedByGridService) {
-            logger.debug("Study was not created by the grid service url:"
+        	logger.error("Study was not created by the grid service url:"
                             + studyConsumerGridServiceUrl + " so can not rollback this study:"
                             + study.getId());
             return;
         }
-        logger.info("Study (id:" + study.getId() + ") was created by the grid service url:"
+        System.out.println("Study (id:" + study.getId() + ") was created by the grid service url:"
                         + studyConsumerGridServiceUrl);
 
         // check if this study was created one minute before or not
@@ -187,12 +186,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                                         .getId(), calendar, rollbackInterval);
         try {
             if (checkIfStudyWasCreatedOneMinuteBeforeCurrentTime) {
-                logger.info("Study was created one minute before the current time:"
+            	System.out.println("Study was created one minute before the current time:"
                                 + calendar.getTime().toString() + " so deleting this study:"
                                 + study.getId());
                 studyDao.delete(study);
             } else {
-                logger.debug("Study was not created one minute before the current time:"
+            	logger.error("Study was not created one minute before the current time:"
                                 + calendar.getTime().toString()
                                 + " so can not rollback this study:" + study.getId());
             }
@@ -202,7 +201,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         } finally {
             postProcess(stubWebRequest);
         }
-        logger.info("End of studyConsumer : rollback");
+        System.out.println("End of studyConsumer : rollback");
     }
     private AeTerminology createCtcV3Terminology(Study study) {
         AeTerminology t = new AeTerminology();
@@ -234,7 +233,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             study = fetchStudy(ccIdentifier,
                             OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             if (study != null) {
-                logger.info("Already a study with the same Coordinating Center Identifier ("
+            	logger.error("Already a study with the same Coordinating Center Identifier ("
                                 + ccIdentifier
                                 + ") exists.Returning without processing the request.");
                 return;
@@ -347,7 +346,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         for (IdentifierType identifierType : identifierTypes) {
             if (identifierType instanceof SystemAssignedIdentifierType) {
                 if (!knownIdentifierTypes.contains(identifierType.getType())) {
-                    logger.warn("The identifier type '" + identifierType.getType()
+                	logger.error("The identifier type '" + identifierType.getType()
                                     + "' is unknown to caAERS. So ignoring the identifier("
                                     + identifierType.getValue() + ")");
                     continue;
@@ -484,7 +483,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     void populateInvestigators(StudyOrganization studyOrganization, StudyInvestigatorType[] invTypes)
                     throws StudyCreationException {
         if (ArrayUtils.isEmpty(invTypes)) {
-            logger.info("No investigators are available in the input message");
+        	logger.error("No investigators are available in the input message");
             return;
         }
 
