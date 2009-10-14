@@ -21,7 +21,21 @@
 	     xmlns:caAdeers="http://semanticbits.com/esb/caAERS_AdEERS">
 	                     
   <classpath>
+  	<hidden>org.apache.axis</hidden>
     <location>.</location>
+    <location>./lib/axis.jar</location>
+	<location>./lib/_jaxrpc.jar</location>
+    <location>./lib/activation.jar</location>
+	<location>./lib/axis-ant.jar</location>
+	<location>./lib/_junit.jar</location>
+	<location>./lib/caaers-adeers-client-1.9.5.jar</location>
+	<location>./lib/commons-discovery-0.2.jar</location>
+	<location>./lib/commons-logging-1.0.4.jar</location>
+	<location>./lib/jdom-1.0.jar</location>
+	<location>./lib/log4j-1.2.8.jar</location>
+	<location>./lib/mail.jar</location>
+	<location>./lib/saaj.jar</location>
+	<location>./lib/wsdl4j-1.5.1.jar</location>
   </classpath>
                          
 	<sm:serviceunit id="jbi">
@@ -39,7 +53,18 @@
 		  
 		</sm:activationSpecs>
 	</sm:serviceunit>                
-	                       
-	<bean id="adeersWebService" class="webservice.adeers.AdeersWebServiceImpl" />
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties
+            </value>
+        </property>
+    </bean>	                       
+	<bean id="adeersWebService" class="webservice.adeers.AdeersWebServiceImpl" >
+		<property name="adeersKeyStore" ref="adeersKeyStore"/>
+	</bean>
+	<bean id="adeersKeyStore" class="java.lang.String">
+		<constructor-arg value="${caaers-adeers.keyStorePath}" />
+	</bean>
 
 </beans>
