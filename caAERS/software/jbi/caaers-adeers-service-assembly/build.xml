@@ -20,7 +20,7 @@
 <project name="caaers-adeers-sa" default="all" basedir=".">
 	
 	<property environment="env"/>
-	<property file="build.properties" />
+
     <!--build directories-->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="comp.build.dir" value="${build.dir}/components"/>
@@ -48,15 +48,16 @@
 
     <path id="build.classpath">
         <pathelement path="${servicemix.toolkit.dir}/conf"/>
+        <fileset dir="caaers-adeers-webservice-su/lib">
+            <include name="*.jar"/>
+        </fileset>        
         <fileset dir="${servicemix.toolkit.dir}/lib">
             <include name="**/*.jar"/>
         </fileset>
         <fileset dir="${servicemix.toolkit.dir}">
             <include name="*.jar"/>
         </fileset>
-        <fileset dir="caaers-adeers-webservice-su/lib">
-            <include name="*.jar"/>
-        </fileset>
+
     </path>
 
     <path id="test.build.classpath">
@@ -92,7 +93,7 @@
         <mkdir dir="${su.build.dir}/META-INF"/>
 
     </target>
-	
+	<!--
 	<target name="compile-configure" depends="init">
         <javac srcdir="configure/${src.java.dir}"
             destdir="configure/${src.java.dir}" debug="on" source="1.5" target="1.5">
@@ -119,10 +120,10 @@
             <fileset dir="." includes="xbean.xml"/>
         </copy>  
     </target>
-
+	-->
 	
 	
-    <target name="build-su" depends="configure" description="Build the service unit">
+    <target name="build-su" depends="init" description="Build the service unit">
         <copy todir="${eip.comp.build.dir}">
             <fileset dir="caaers-adeers-eip-su/${src.resources.dir}" includes="*.*"/>
         </copy>
@@ -216,14 +217,15 @@
 		</junit>
 	</target>
 	<target name="publish-all" depends="clean,test"/>
-	
+<!--	
 	<target name="copy-sm-libs">
 		 <copy todir="${servicemix.toolkit.dir}/lib/caaers-ext">
 			<fileset dir="${basedir}/caaers-adeers-webservice-su/lib" />
 			<fileset dir="${basedir}/caaers-adeers-webservice-su/test-lib" />
 		</copy>	
 	</target>
-	
+-->
+<!--
 	<target name="copy-keystore">
 		<copy todir="${user.home}">
 			<fileset dir="${basedir}/caaers-adeers-webservice-su/src/main/resources" >
@@ -247,13 +249,13 @@
 		</copy>
 	</target>
 			
-	<target name="deployToServiceMix3.3.x" description="deploy caaers service assembly on servicemix version 3.3.x" depends="all,copy-sm-libs,copy-keystore">
+	<target name="deployToServiceMix3.3.x" description="deploy caaers service assembly on servicemix version 3.3.x" depends="all,copy-keystore">
 		<copy todir="${servicemix.toolkit.dir}/hotdeploy">
 			<fileset dir="${build.dir}/assembly" />
 		</copy>
 	</target>
 
-	<target name="deployToServiceMix3.1.x" description="deploy caaers service assembly on servicemix version 3.1.x" depends="all,copy-sm-libs,configure-servicemix,copy-keystore">
+	<target name="deployToServiceMix3.1.x" description="deploy caaers service assembly on servicemix version 3.1.x" depends="all,configure-servicemix,copy-keystore">
 		<mkdir dir="${servicemix.toolkit.dir}/bin/deploy" />
 		
 		<copy todir="${servicemix.toolkit.dir}/bin/deploy">
@@ -264,6 +266,6 @@
 			<fileset dir="${build.dir}/assembly" />
 		</copy> 
 	</target>	
-
+-->
 
 </project>
