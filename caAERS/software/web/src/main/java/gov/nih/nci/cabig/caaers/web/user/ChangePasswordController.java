@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.user;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyException;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,8 +38,11 @@ public class ChangePasswordController extends SimpleFormController {
         try {
             passwordManagerService.setPassword(cmd.getUserName(), cmd.confirmedPassword(), cmd.getToken());
             return modelAndView.addObject("updated", true);
-        } catch (CaaersSystemException e) {
-            return modelAndView.addObject("change_pwd_error", e);
+        } catch (PasswordCreationPolicyException e) {
+        	for(ValidationError vError : e.getErrors().getErrors()){
+        		errors.reject(vError.getCode(), vError.getReplacementVariables(), vError.getMessage());
+        	}
+            return modelAndView.addObject("change_pwd_error", e.getErrors());
         }
     }
 

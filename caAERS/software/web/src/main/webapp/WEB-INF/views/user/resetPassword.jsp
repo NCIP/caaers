@@ -87,6 +87,11 @@
   You will be sent an email to reset your password.
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
+             <c:if test="${not empty param.login_error}">
+             <p class="errors">
+                  <img src="/caaers/images/error-yellow.png" style="margin-right:10px">Password is too old. Please reset your password.
+             </p>
+         </c:if>
       <p class="errors">${reset_pwd_error}</p>
       <div class="row">
 	<div class="label">Username</div>

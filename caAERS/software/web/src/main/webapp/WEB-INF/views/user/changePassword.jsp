@@ -90,7 +90,7 @@
   <c:if test="${not updated}">
       <c:url value="/public/user/changePassword" var="action"/>
       <form:form action="${action}">
-	<p class="errors">${change_pwd_error.message}</p>
+	 <tags:hasErrorsMessage />
 	<div class="row">
 	<div class="label">Username</div>
 	<div class="value">

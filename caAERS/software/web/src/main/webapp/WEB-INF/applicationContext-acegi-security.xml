@@ -31,6 +31,11 @@
     <bean id="localAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="authenticationFailureUrl" value="/public/login?login_error=1"/>
+        <property name="exceptionMappings">
+      		<props>
+        		<prop key="org.acegisecurity.CredentialsExpiredException">/public/user/resetPassword?login_error=1</prop>
+      		</props>
+    	</property>    
         <property name="defaultTargetUrl" value="/"/>
         <property name="filterProcessesUrl" value="/j_acegi_security_check"/>
     </bean>
