@@ -303,6 +303,7 @@ default-lazy-init="true">
 		<property name="reportDefinitionDao" ref="reportDefinitionDao"/>
 		<property name="organizationDao" ref="organizationDao"/>
 		<property name="configPropertyDao" ref="configPropertyDao" />
+		<property name="ruleDeploymentService" ref="ruleDeploymentService" />
 	</bean>
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />

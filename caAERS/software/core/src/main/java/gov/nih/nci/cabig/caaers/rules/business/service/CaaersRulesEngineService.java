@@ -16,30 +16,43 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.drools.repository.PackageItem;
+
 import com.semanticbits.rules.api.RepositoryService;
 import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.api.RuleDeploymentService;
 import com.semanticbits.rules.api.RulesEngineService;
 import com.semanticbits.rules.brxml.Category;
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.FieldConstraint;
+import com.semanticbits.rules.brxml.LiteralRestriction;
 import com.semanticbits.rules.brxml.MetaData;
 import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.impl.RuleAuthoringServiceImpl;
+import com.semanticbits.rules.utils.BRXMLHelper;
 import com.semanticbits.rules.utils.RuleUtil;
 import com.semanticbits.rules.utils.XMLUtil;
 
 
 public class CaaersRulesEngineService {
 	
+	public static final String SPONSOR_LEVEL = "Sponsor";
+    public static final String INSTITUTIONAL_LEVEL = "Institution";
+    public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
+    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
 	private RulesEngineService ruleEngineService;
 	private RuleAuthoringService ruleAuthoringService;
     private RepositoryService repositoryService;
     private ReportDefinitionDao reportDefinitionDao;
     private OrganizationDao organizationDao;
     private ConfigPropertyDao configPropertyDao;
+    private RuleDeploymentService ruleDeploymentService;
 
     public CaaersRulesEngineService() {
         ruleAuthoringService = new RuleAuthoringServiceImpl();
@@ -827,6 +840,354 @@ public class CaaersRulesEngineService {
 
     }
 
+    /**
+     * This method is used to unDeploy a ruleSet
+     * 
+     * @param String ruleSetName
+     * @exception RemoteException
+     */
+    public void unDeployRuleSet(String ruleSetName) throws RemoteException {
+        String bindUri = ruleSetName;
+
+        try {
+            ruleDeploymentService.registerRuleSet(bindUri, ruleSetName);
+        } catch (Exception e) {
+            // A hack... for the first time this exception will be there...ignore...
+
+        }
+        ruleDeploymentService.deregisterRuleSet(bindUri);
+        PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
+        item.updateCoverage("Not Enabled");
+        repositoryService.getRulesRepository().save();
+    }
+    
+    /**
+     * This method is used to deploy a ruleSet
+     * 
+     * @param String ruleSetName
+     * @exception RemoteException
+     */
+    public void deployRuleSet(String ruleSetName) throws RemoteException {
+        String bindUri = ruleSetName;
+
+        try {
+            ruleDeploymentService.deregisterRuleSet(bindUri);
+        } catch (Exception e) {
+            // A hack... for the first time this exception will be there...ignore...
+        }
+
+        try {
+            ruleDeploymentService.registerRuleSet(bindUri, ruleSetName);
+            PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
+            item.updateCoverage("Enabled");
+            repositoryService.getRulesRepository().save();
+
+            // getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RemoteException("Error deploying ruleset", e);
+        }
+    }
+    
+    /**
+     * This method is used to save a ruleSet.
+     * @param reportDefinitionDao
+     */
+    public void saveRuleSet(RuleSet ruleSet, String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName ) throws Exception{
+    	try {
+    			
+                List<Rule> rules = ruleSet.getRule();
+                // delete columns which are marked as delete .
+                for (Rule rule : rules) {
+                    boolean termSelected = false;
+
+                    List<Column> cols = new ArrayList<Column>();
+                    for (Column col : rule.getCondition().getColumn()) {
+                        if (col.isMarkedDelete()) {
+                            cols.add(col);
+                        }
+                        /*
+                         * if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
+                         * termSelected = true; }
+                         */
+                    }
+
+                    for (Column col : cols) {
+                        rule.getCondition().getColumn().remove(col);
+                    }
+
+                    for (Column col : rule.getCondition().getColumn()) {
+                        if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
+                            termSelected = true;
+                        }
+                    }
+
+                    // modify category if term selecetd
+                    for (Column col : rule.getCondition().getColumn()) {
+                        if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
+                            if (termSelected) {
+                                if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+                                    String expr = col.getExpression();
+                                    String eval = col.getFieldConstraint().get(0)
+                                                    .getLiteralRestriction().get(0).getEvaluator();
+                                    String value = col.getFieldConstraint().get(0)
+                                                    .getLiteralRestriction().get(0).getValue().get(0);
+                                    expr = expr.replaceAll("'0'", "'" + value + "'");
+                                    expr = expr.replaceAll("'>'", "'" + eval + "'");
+                                    col.setExpression(expr);
+                                } else {
+                                    col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
+                                }
+                            } else {
+                                if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+                                    String expr = col.getExpression();
+                                    String eval = col.getFieldConstraint().get(0)
+                                                    .getLiteralRestriction().get(0).getEvaluator();
+                                    String value = col.getFieldConstraint().get(0)
+                                                    .getLiteralRestriction().get(0).getValue().get(0);
+                                    expr = expr.replaceAll("'0'", "'" + value + "'");
+                                    expr = expr.replaceAll("'>'", "'" + eval + "'");
+                                    col.setExpression(expr);
+                                }
+                            }
+                        }
+                    }
+
+                    // get comma seperated values ....
+                    for (Column col : rule.getCondition().getColumn()) {
+                        String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0)
+                                        .getValue().get(0);
+                        if (value.contains(",")) {
+                            List<String> values = RuleUtil.charSeparatedStringToStringList(value, ",");
+                            col.getFieldConstraint().get(0).getLiteralRestriction().get(0).setValue(
+                                            values);
+                        }
+
+                    }
+                    rule.getCondition().getColumn().add(createCriteriaForFactResolver());
+                }
+                ruleSet.setCoverage("Not Enabled");
+                String subject = "";
+                System.out.println("------- LEVEL ----- " + level);
+                if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level)) {
+                    subject = "Sponsor defined rules for a study||" + sponsorName + "||"
+                                    + studyShortTitle;
+                } else if (SPONSOR_LEVEL.equals(level)) {
+                    subject = "Sponsor rules||" + sponsorName;
+                } else if (INSTITUTIONAL_LEVEL.equals(level)) {
+                    subject = "Institution rules||" + institutionName;
+                } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(level)) {
+
+                    subject = "Institution defined rules for a study||" + institutionName + "||"
+                                    + studyShortTitle;
+                }
+
+                ruleSet.setDescription(ruleSetName);
+                ruleSet.setSubject(subject);
+
+                // Set the Package name and categoryIdentifier for all rules before saving them.
+                for (Rule rule : rules) {
+                    rule.getMetaData().setPackageName(constructPackageName(level, sponsorName, institutionName, studyShortTitle, ruleSetName));
+                    rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
+
+                    populateCategoryBasedColumns(rule, level, sponsorName, institutionName, studyShortTitle);
+                }
+
+                if (SPONSOR_LEVEL.equalsIgnoreCase(level)) {
+                	saveRulesForSponsor(ruleSet, sponsorName);
+                } else if (INSTITUTIONAL_LEVEL.equalsIgnoreCase(level)) {
+                	saveRulesForInstitution(ruleSet, institutionName);
+                } else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
+                	saveRulesForSponsorDefinedStudy(ruleSet, studyShortTitle,
+                                    sponsorName);
+                } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
+                	saveRulesForInstitutionDefinedStudy(ruleSet, studyShortTitle, institutionName);
+                }
+
+                // deploy and undeploy
+
+    	}catch (Exception e){
+    		e.printStackTrace();
+            throw new Exception("Error saving a  ruleset", e);
+    	}
+    }
+    
+    private Column createCriteriaForFactResolver() {
+        Column column = BRXMLHelper.newColumn();
+        column.setObjectType("com.semanticbits.rules.objectgraph.FactResolver");
+        column.setIdentifier("factResolver");
+
+        return column;
+
+    }
+    
+    private void populateCategoryBasedColumns(Rule rule, String level, String sponsorName, String institutionName, String studyShortTitle) {
+        if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level)) {
+            rule.getCondition().getColumn().add(createCriteriaForSponsor(sponsorName));
+            rule.getCondition().getColumn().add(
+                            createCriteriaForStudy(studyShortTitle,
+                                            SPONSOR_DEFINED_STUDY_LEVEL));
+        } else if (SPONSOR_LEVEL.equals(level)) {
+            rule.getCondition().getColumn().add(createCriteriaForSponsor(sponsorName));
+        } else if (INSTITUTIONAL_LEVEL.equals(level)) {
+            rule.getCondition().getColumn().add(createCriteriaForInstitute(institutionName));
+        } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(level)) {
+            rule.getCondition().getColumn().add(createCriteriaForInstitute(institutionName));
+            rule.getCondition().getColumn().add(
+                            createCriteriaForStudy(studyShortTitle,
+                                            INSTITUTION_DEFINED_STUDY_LEVEL));
+        }
+    }
+    
+    /*
+     * THis method is used to create criteria for sponsor based on the sponsor name
+     */
+    private Column createCriteriaForSponsor(String criteriaValue) {
+        Column column = BRXMLHelper.newColumn();
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
+        column.setIdentifier("studySDO");
+        String expression = "factResolver.assertFact(studySDO,"
+                        + "\"gov.nih.nci.cabig.caaers.domain.Organization" + "\"," + "\"name"
+                        + "\"," + "\"" + criteriaValue + "\",\"==\"" + ")";
+
+        column.setExpression(expression);
+
+        List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
+
+        FieldConstraint fieldConstraint = new FieldConstraint();
+        fieldConstraint.setFieldName(getFieldNameBasedOnLevel(SPONSOR_LEVEL));
+        fieldConstraints.add(fieldConstraint);
+        ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
+        LiteralRestriction literalRestriction = new LiteralRestriction();
+        literalRestriction.setEvaluator("==");
+
+        literalRestriction.getValue().add(criteriaValue);
+        literalRestrictions.add(literalRestriction);
+        fieldConstraint.setLiteralRestriction(literalRestrictions);
+
+        column.setFieldConstraint(fieldConstraints);
+
+        return column;
+
+    }
+    
+    /*
+     * This method creates criteria column with study short title as the criteria
+     */
+    private Column createCriteriaForStudy(String criteriaValue, String level) {
+        Column column = BRXMLHelper.newColumn();
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
+        column.setIdentifier("studySDO");
+
+        String expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\","
+                        + "\"" + criteriaValue + "\",\"==\"" + ")";
+
+        column.setExpression(expression);
+
+        List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
+
+        FieldConstraint fieldConstraint = new FieldConstraint();
+        fieldConstraint.setFieldName(getFieldNameBasedOnLevel(level));
+        fieldConstraints.add(fieldConstraint);
+        ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
+        LiteralRestriction literalRestriction = new LiteralRestriction();
+        literalRestriction.setEvaluator("==");
+
+        literalRestriction.getValue().add(criteriaValue);
+        literalRestrictions.add(literalRestriction);
+        fieldConstraint.setLiteralRestriction(literalRestrictions);
+
+        column.setFieldConstraint(fieldConstraints);
+
+        return column;
+
+    }
+    
+    /*
+     * This method creates criteria column with institute name as the criteria
+     */
+    private Column createCriteriaForInstitute(String criteriaValue) {
+        Column column = BRXMLHelper.newColumn();
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Organization.class.getName());
+        column.setIdentifier("organizationSDO");
+        String expression = "factResolver.assertFact(organizationSDO,null," + "\"name" + "\","
+                        + "\"" + criteriaValue + "\",\"==\"" + ")";
+
+        column.setExpression(expression);
+
+        List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
+
+        FieldConstraint fieldConstraint = new FieldConstraint();
+        fieldConstraint
+                        .setFieldName(getFieldNameBasedOnLevel(INSTITUTIONAL_LEVEL));
+        fieldConstraints.add(fieldConstraint);
+        ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
+        LiteralRestriction literalRestriction = new LiteralRestriction();
+        literalRestriction.setEvaluator("==");
+
+        literalRestriction.getValue().add(criteriaValue);
+        literalRestrictions.add(literalRestriction);
+        fieldConstraint.setLiteralRestriction(literalRestrictions);
+
+        column.setFieldConstraint(fieldConstraints);
+
+        return column;
+
+    }
+    
+    /*
+     * This method cpnstructs the package name based on the Command object
+     */
+    public String constructPackageName(String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName) {
+        final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.sponsor";
+        final String INSTITUTION_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.institution";
+
+        String packageName = null;
+
+        if (SPONSOR_LEVEL.equalsIgnoreCase(level)) {
+            packageName = SPONSOR_BASE_PACKAGE + "."
+                            + RuleUtil.getStringWithoutSpaces(sponsorName) + "."
+                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
+        } else if (INSTITUTIONAL_LEVEL.equalsIgnoreCase(level)) {
+            packageName = INSTITUTION_BASE_PACKAGE + "."
+                            + RuleUtil.getStringWithoutSpaces(institutionName) + "."
+                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
+        } else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
+            packageName = SPONSOR_BASE_PACKAGE + ".study."
+                            + RuleUtil.getStringWithoutSpaces(sponsorName) + "."
+                            + RuleUtil.getStringWithoutSpaces(studyShortTitle) + "."
+                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
+        } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level)) {
+            packageName = INSTITUTION_BASE_PACKAGE + ".study."
+                            + RuleUtil.getStringWithoutSpaces(institutionName) + "."
+                            + RuleUtil.getStringWithoutSpaces(studyShortTitle) + "."
+                            + RuleUtil.getStringWithoutSpaces(ruleSetName);
+        }
+
+        // System.out.println("Package name is : " + packageName);
+        return packageName;
+
+    }
+    
+    /*
+     * This method returns the attribute to be used for creating the criteria
+     */
+    private String getFieldNameBasedOnLevel(String level) {
+        String fieldName = "shortTitle";
+
+        if (SPONSOR_LEVEL.equals(level)) {
+            fieldName = "primarySponsorCode";
+        } else if (INSTITUTIONAL_LEVEL.equals(level)) {
+            fieldName = "name";
+        } else if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level)) {
+            fieldName = "shortTitle";
+        } else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(level)) {
+            fieldName = "shortTitle";
+        }
+
+        return fieldName;
+    }
     
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
@@ -896,4 +1257,11 @@ public class CaaersRulesEngineService {
 		this.configPropertyDao = configPropertyDao;
 	}
     
+	public RuleDeploymentService getRuleDeploymentService() {
+        return ruleDeploymentService;
+    }
+
+    public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
+        this.ruleDeploymentService = ruleDeploymentService;
+    }
 }
