@@ -540,7 +540,9 @@ This applicationContext contains the definition of the DAOs
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
-    <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
+    <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao">
+    	<property name="remoteSession" ref="remoteSession"/>
+    </bean>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
@@ -642,9 +644,7 @@ This applicationContext contains the definition of the DAOs
         <property name="researchStaffDao" ref="researchStaffDao"></property>
         <property name="organizationDao" ref="organizationDao"></property>
         <property name="organizationRepository" ref="organizationRepository" />
-        <property name="investigatorRepository" ref="investigatorRepository" />
         <property name="investigatorDao" ref="investigatorDao" />
-        <property name="remoteSession" ref="remoteSession"></property>        
     </bean>
 
 

@@ -31,8 +31,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.semanticbits.coppa.infrastructure.RemoteSession;
-
 /**
  * @author Biju Joseph
  */
@@ -43,8 +41,6 @@ public class StudyRepository {
     private ResearchStaffDao researchStaffDao;
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
-    private RemoteSession remoteSession;
-    private InvestigatorRepository investigatorRepository;
     private InvestigatorDao investigatorDao;
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI"; 
@@ -71,7 +67,7 @@ public class StudyRepository {
     	}
         
         //Fetch studies from COPPA matching shortTitle or Identifier
-    	List<Study> remoteStudies = getExternalStudiesByExampleFromResolver(study);
+    	List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
     	
     	if(remoteStudies != null & remoteStudies.size() > 0 ){
     		for(Study remoteStudy : remoteStudies){
@@ -163,23 +159,6 @@ public class StudyRepository {
 		}
     }
     
-    
-    /**
-     * 
-     * @param exampleStudy
-     * @return
-     */
-    @Transactional(readOnly = false)
-	private List<Study> getExternalStudiesByExampleFromResolver(Study exampleStudy) {
-		List<Object> objectList = remoteSession.find(exampleStudy);
-		List<Study> studyList = new ArrayList<Study>();
-
-		for (Object object : objectList) {
-			studyList.add((Study) object);
-		}
-		return studyList;
-	}
-	
     /**
      * Search using a sample populate Study object
      *
@@ -252,10 +231,6 @@ public class StudyRepository {
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}
-    
-	public void setRemoteSession(RemoteSession remoteSession) {
-		this.remoteSession = remoteSession;
-	}
 
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
@@ -264,11 +239,6 @@ public class StudyRepository {
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
-	}
-
-	public void setInvestigatorRepository(
-			InvestigatorRepository investigatorRepository) {
-		this.investigatorRepository = investigatorRepository;
 	}
 
 	public void setInvestigatorDao(InvestigatorDao investigatorDao) {

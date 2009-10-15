@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.semanticbits.coppa.infrastructure.RemoteSession;
 
 /**
  * This class implements the Data access related operations for the Study domain object.
@@ -54,6 +57,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     private static final String JOINS = "join o.identifiers as identifier " + "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
     private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() + " s where shortTitle = :st";
 
+    private RemoteSession remoteSession;
+    
     /**
      * Get the Class representation of the domain object that this DAO is
      * representing.
@@ -317,6 +322,23 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 					.find("from RemoteStudy s where s.externalId = ?", externalId));
 	}
     
+	
+    /**
+     * 
+     * @param exampleStudy
+     * @return
+     */
+    @Transactional(readOnly = false)
+	public List<Study> getExternalStudiesByExampleFromResolver(Study exampleStudy) {
+		List<Object> objectList = remoteSession.find(exampleStudy);
+		List<Study> studyList = new ArrayList<Study>();
+
+		for (Object object : objectList) {
+			studyList.add((Study) object);
+		}
+		return studyList;
+	}
+	
 
     /**
      * Delete the study.
@@ -338,5 +360,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     	}
     	
     }
+
+	public void setRemoteSession(RemoteSession remoteSession) {
+		this.remoteSession = remoteSession;
+	}
 
 }
