@@ -36,9 +36,6 @@ import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 public class ResearchStaffResolver extends BaseResolver implements RemoteResolver{
 	
 	private static Logger logger = Logger.getLogger(ResearchStaffResolver.class);
-	private static Log log = LogFactory.getLog(ResearchStaffResolver.class);
-
-
 
 	private RemoteResearchStaff setResearchStaffDetails(Person coppaPerson,String nciIdentifier) {
 		RemoteResearchStaff remoteResearchStaff = new RemoteResearchStaff();
@@ -159,7 +156,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	 * Find By Organization
 	 */
 	public List<Object> find(Object example) {	
-		
+		logger.info("Entering ResearchStaff Resolver : find");
 		ResearchStaff remoteResearchStaffExample = (RemoteResearchStaff)example;
 		List<Object> remoteResearchStaffList = new ArrayList<Object>();
 		RemoteResearchStaff tempRemoteResearchStaff = null;
@@ -181,6 +178,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			logger.info("Exiting ResearchStaff Resolver : find");
 			return remoteResearchStaffList;
 		}
 		
@@ -250,6 +248,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					}
 				//}
 			}
+			logger.info("Exiting ResearchStaff Resolver : find");
 			return remoteResearchStaffList;
 		}
 		
@@ -374,6 +373,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				}
 			}
 		}
+		logger.info("Exiting ResearchStaff Resolver : find");
 		return remoteResearchStaffList;
 	}
 	private RemoteResearchStaff loadResearchStaffForPersonResult(String personResultXml) {
@@ -396,6 +396,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		return remoteResearchStaff;		
 	}
 	public Object getRemoteEntityByUniqueId(String externalId) {
+		logger.info("Entering ResearchStaffResolver.getRemoteEntityByUniqueId()");
 		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
 
 		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
@@ -405,6 +406,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
+		logger.info("Exiting ResearchStaffResolver.getRemoteEntityByUniqueId()");
 		return loadResearchStaffForPersonResult(resultXml);
 	}
 /*

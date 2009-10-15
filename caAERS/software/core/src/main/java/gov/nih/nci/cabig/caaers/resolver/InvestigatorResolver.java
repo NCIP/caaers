@@ -80,7 +80,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	 */
 	public List<Object> find(Object example) {
 		log.info("Entering InvestigatorResolver.find()");
-		System.out.println("Entering InvestigatorResolver.find()");
 		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
 		List<Object> remoteInvestigatorList = new ArrayList<Object>();
 		RemoteInvestigator tempRemoteInvestigator = null;
@@ -105,7 +104,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				e.printStackTrace();
 			}
 			log.info("Exiting InvestigatorResolver.find()");
-			System.out.println("Exiting InvestigatorResolver.find()");			
 			return remoteInvestigatorList;
 		}
 		
@@ -319,7 +317,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 
 	public Object getRemoteEntityByUniqueId(String externalId) {
 		log.info("Entering InvestigatorResolver.getRemoteEntityByUniqueId()");
-		System.out.println("Entering InvestigatorResolver.getRemoteEntityByUniqueId()");
 		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
 
 		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
@@ -330,7 +327,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			logger.error(e.getMessage());
 		}
 		log.info("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
-		System.out.println("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
 		return loadInvestigatorForPersonResult(resultXml);
 	}
 	
