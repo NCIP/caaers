@@ -2,30 +2,53 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="conversionPattern" value="%d %-5p %c %x: %m%n"/>
-        </layout>
-    </appender>
-
-    <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="${catalina.home}/logs/caaers.log"/>
-        <param name="maxFileSize" value="2048KB"/>
-        <param name="maxBackupIndex" value="8"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
-        </layout>
-    </appender>
-	
-    <logger name="gov.nih.nci"><level value="error"/></logger>
-    <logger name="gov.nih.nci.cabig.caaers.web.rule.notification"><level value="error"/></logger>
-	<logger name="org"><level value="error"/></logger>
-	
-<logger name="org.hibernate"><level value="error"/></logger>
-
-    <root>
-        <priority value="error"/>
-        <appender-ref ref="stdout"/>
-        <appender-ref ref="file"/>
-    </root>
+  <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    <param name="threshold" value="INFO"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="conversionPattern" value="%d %-5p [%15t] %c %x: %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.StringMatchFilter">
+      <param name="acceptOnMatch" value="false"/>
+      <param name="stringToMatch" value="Unable to proxy method"/>
+    </filter>
+    <!-- conceal expected authorization switch warnings when
+	 running tests -->
+    <filter class="org.apache.log4j.varia.StringMatchFilter">
+      <param name="acceptOnMatch" value="false"/>
+      <param name="stringToMatch" value="##### AuthorizationSwitch"/>
+    </filter>
+  </appender>
+  
+  <!-- for testing, purge the log on each run -->
+  <appender name="file" class="org.apache.log4j.FileAppender">
+    <param name="file" value="${catalina.home}/logs/caaers.log"/>
+	<param name="threshold" value="INFO"/>
+    <param name="append" value="false"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
+    </layout>
+  </appender>
+  
+  <!-- disable really verbose logging from libraries.  Switch to debug if necessary. -->
+  <logger name="org.hibernate"><level value="error"/></logger>
+  <logger name="org.semanticbits"><level value="error"/></logger>
+  <logger name="org.springframework"><level value="error"/></logger>
+  <logger name="org.springframework.orm.hibernate3"><level value="error"/></logger>
+  <logger name="org.apache"><level value="error"/></logger>
+  <logger name="com"><level value="error"/></logger>
+  <logger name="gov"><level value="error"/></logger>
+  <logger name="gov.nih.nci"><level value="error"/></logger>
+  <logger name="org"><level value="error"/></logger>
+  <logger name="org.quartz"><level value="error"/></logger>
+  <logger name="gov.nih.nci.cabig.caaers"><level value="error"/></logger>
+  <logger name="gov.nih.nci.cabig.ctms"><level value="error" /></logger>
+  <logger name="edu"><level value="error"></level></logger>
+  <logger name="edu.northwestern.bioinformatics"><level value="error"></level></logger>
+  <logger name="edu.northwestern.bioinformatics.bering"><level value="error" /></logger>
+  <logger name="gov.nih.nci.cabig.caaers.resolver"><level value="info" /></logger>
+  <root>
+    <priority value="info"/>
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="file"/>
+  </root>
 </log4j:configuration>
