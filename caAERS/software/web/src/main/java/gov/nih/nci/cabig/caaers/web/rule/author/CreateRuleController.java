@@ -21,10 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.semanticbits.rules.api.RepositoryService;
 import com.semanticbits.rules.api.RuleAuthoringService;
+import com.semanticbits.rules.api.RuleDeploymentService;
 import com.semanticbits.rules.brxml.RuleSet;
 
 /**
@@ -55,6 +58,10 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     private CaaersRulesEngineService caaersRulesEngineService;
 
     private CtcDao ctcDao;
+    
+    private RuleDeploymentService ruleDeploymentService;
+    
+    private RepositoryService repositoryService;
 
     public NotificationDao getNotificationDao() {
         return notificationDao;
@@ -74,7 +81,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
 
         CreateRuleCommand command = (CreateRuleCommand) oCommand;
-        command.save();
+        if(command.getMode().equals(CreateRuleCommand.CREATE_MODE))
+        	command.deployRuleSet();
         Map<String, Object> model = new HashMap<String, Object>();
         model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);
@@ -90,6 +98,38 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 		if(StringUtils.isNotEmpty(fromListPage) && StringUtils.equals(fromListPage, "list")) return true;
 		return super.isFormSubmission(request);
     }
+	
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
+				throws Exception {
+
+		String fromListPage = WebUtils.getStringParameter(request, "from");
+		// Form submission or new form to show?
+		if (isFormSubmission(request)) {
+		// Fetch form object from HTTP session, bind, validate, process submission.
+		try {
+			Object command = null;
+			if(StringUtils.isNotEmpty(fromListPage) && StringUtils.equals(fromListPage, "list"))
+				command = formBackingObject(request);
+			else
+				command = getCommand(request);
+			ServletRequestDataBinder binder = bindAndValidate(request, command);
+			BindException errors = new BindException(binder.getBindingResult());
+			return processFormSubmission(request, response, command, errors);
+		}
+		catch (HttpSessionRequiredException ex) {
+			// Cannot submit a session form if no form object is in the session.
+			if (logger.isDebugEnabled()) {
+				logger.debug("Invalid submit detected: " + ex.getMessage());
+			}
+			return handleInvalidSubmit(request, response);
+		}
+		}
+		else {
+			// New form to show: render form view.
+			return showNewForm(request, response);
+		}
+	}
 	
 	/**
 	 * If the entry to capture adverse event is from Manage reports, we need to handle the invalid submit case, as it the isFormSubmission is flaged 'true'. 
@@ -111,7 +151,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
-    	CreateRuleCommand command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+    	CreateRuleCommand command = new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, caaersRulesEngineService, 
+    			reportDefinitionDao, organizationDao, ctcDao, ruleDeploymentService, repositoryService);
     	
     	String sourcePage = (String) findInRequest(request, "from");
     	if(sourcePage != null && sourcePage.equals("list")){
@@ -237,4 +278,20 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     public void setCtcDao(CtcDao ctcDao) {
         this.ctcDao = ctcDao;
     }
+    
+    public RuleDeploymentService getRuleDeploymentService() {
+        return ruleDeploymentService;
+    }
+
+    public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
+        this.ruleDeploymentService = ruleDeploymentService;
+    }
+    
+    public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
 }

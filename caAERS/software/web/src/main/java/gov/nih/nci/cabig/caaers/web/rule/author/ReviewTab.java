@@ -29,8 +29,11 @@ public class ReviewTab extends DefaultTab {
 
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
 
-        RuleSet rs = createRuleCommand.getRuleSet();
+     // Retrieve RuleSet based on the one chosen by the user.
+        createRuleCommand.retrieveRuleSet();
 
+        RuleSet rs = createRuleCommand.getRuleSet();
+        
         List<Rule> rules = new ArrayList<Rule>();
 
         int count = 1;

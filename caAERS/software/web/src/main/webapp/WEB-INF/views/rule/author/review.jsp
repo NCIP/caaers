@@ -111,6 +111,25 @@
         <input id="markFinish" type="hidden" name="_finish"/>
 
 	</jsp:attribute>
+	<jsp:attribute name="tabControls">
+		<div class="content buttons autoclear">
+          <div class="flow-buttons">
+              <span class="prev">
+              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab1" value="Back"/>
+			  </span>
+			  <c:if test="${command.mode == 'create'}">
+				  <span class="next">
+			  	  	<tags:button type="submit" color="green" value="Deploy, Go to Manage Rules"></tags:button>
+			  	  </span>
+			  </c:if>
+			  <c:if test="${command.mode == 'edit'}">
+			  	  <span class="next">
+			  	  	<tags:button type="submit" color="green" value="Go to Manage Rules"></tags:button>
+			  	  </span>
+			  </c:if>
+          </div>
+      </div>
+	</jsp:attribute>
 </tags:tabForm> 
 </chrome:division>
 </body>

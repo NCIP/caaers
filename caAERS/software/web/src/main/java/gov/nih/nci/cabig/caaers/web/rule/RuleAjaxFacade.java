@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -94,6 +95,8 @@ public class RuleAjaxFacade {
     private ReportDefinitionDao reportDefinitionDao;
 
     private TreatmentAssignmentDao treatmentAssignmentDao;
+    
+    private CaaersRulesEngineService caaersRulesEngineService;
 
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
@@ -358,70 +361,13 @@ public class RuleAjaxFacade {
     }
 
     public void unDeployRuleSet(String ruleSetName) throws RemoteException {
-        String bindUri = ruleSetName;
-
-        try {
-            getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-        } catch (Exception e) {
-            // A hack... for the first time this exception will be there...ignore...
-
-        }
-        getRuleDeploymentService().deregisterRuleSet(bindUri);
-        PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
-        item.updateCoverage("Not Enabled");
-        repositoryService.getRulesRepository().save();
-
+        caaersRulesEngineService.unDeployRuleSet(ruleSetName);
     }
 
     public void deployRuleSet(String ruleSetName) throws RemoteException {
-        String bindUri = ruleSetName;
-
-        try {
-            getRuleDeploymentService().deregisterRuleSet(bindUri);
-        } catch (Exception e) {
-            // A hack... for the first time this exception will be there...ignore...
-        }
-
-        try {
-            getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-            PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
-            item.updateCoverage("Enabled");
-            repositoryService.getRulesRepository().save();
-
-            // getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RemoteException("Error deploying ruleset", e);
-        }
-
-        // rs.setCoverage("Deployed");
-
-        /*
-         * 
-         * try {
-         * 
-         * getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-         * 
-         * repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance(); RuleSet
-         * ruleSet = repositoryService.getRuleSet(ruleSetName); ruleSet.setStatus("Deployed");
-         * String path = ruleSet.getMetaData().getCategory().get(0).getPath();
-         * 
-         * if (path.indexOf("/SPONSOR/") > 0 ) { rulesEngineService.saveRulesForSponsor(ruleSet,
-         * path.split("/")[1]); } else if (path.indexOf("/INSTITUTION/") > 0 ) {
-         * rulesEngineService.saveRulesForInstitution(ruleSet, path.split("/")[1]); } else if
-         * (path.indexOf("/SPONSOR_DEFINED_STUDY/") > 0 ) {
-         * rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, path.split("/")[1],
-         * path.split("/")[2]);
-         *  } else if (path.indexOf("/INSTITUTION_DEFINED_STUDY/") > 0 ) {
-         * rulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, path.split("/")[1],
-         * path.split("/")[2]);
-         *  } } catch (Exception e) { e.printStackTrace(); throw new RemoteException ("Error
-         * updating rule status " , e );
-         *  }
-         */
+    	caaersRulesEngineService.deployRuleSet(ruleSetName);
     }
-
+    
     public void exportRuleSet(String ruleSetName) throws RemoteException {
         /*
          * String tempDir = System.getProperty("java.io.tmpdir"); try { //File ruleSetFile1 =
@@ -787,6 +733,12 @@ public class RuleAjaxFacade {
 		this.businessRulesExecutionService = businessRulesExecutionService;
 	}
 	
-
+	public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService){
+    	this.caaersRulesEngineService = caaersRulesEngineService;
+    }
+    
+    public CaaersRulesEngineService getCaaersRulesEngineService(){
+    	return caaersRulesEngineService;
+    }
     
 }
