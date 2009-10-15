@@ -400,7 +400,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 			/>
 		<replaceregexp file="${dist.exploded.dir}/build.xml" byline="true" match="(&lt;property name=&quot;properties.file&quot;\s+value=&quot;).*(&quot;\s*\/&gt;)" replace="\1upgrade.properties\2" />
 		
-		<copy file="${software.dir}/build/${properties.file}" todir="${dist.exploded.dir}" overwrite="true" />
+		<copy file="${software.dir}/build/${properties.file}" todir="${dist.exploded.dir}" overwrite="true"/>
 		<zip destfile="${dist.dir}/${caAERS-webapp.upgrade.zip.file}" basedir="${dist.exploded.dir}" />
 		
 	</target>
