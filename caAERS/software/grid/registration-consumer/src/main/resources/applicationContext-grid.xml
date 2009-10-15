@@ -13,9 +13,12 @@
 	
 	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-registrationConsumer.xml"/>
-	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
-          <property name="databaseConfigurationName"><value>interoperability</value></property>
-    </bean>
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
 		
 	<bean id="registrationConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
         <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
