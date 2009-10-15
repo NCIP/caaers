@@ -302,7 +302,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto
                         .getMultiInstitutionIndicator()));
         study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
-        
+        study.setBlindedIndicator(BooleanUtils.toBoolean(studyDto.getBlindedIndicator()));
         
          //fixed by srini , bug Id CAAERS-1038
          AeTerminology aet = createCtcV3Terminology(study);
