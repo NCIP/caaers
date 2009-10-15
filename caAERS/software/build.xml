@@ -61,7 +61,7 @@
 	<!-- ==================================================================
 		target : publish-all
 	====================================================================== -->
-  	<target name="publish-all" depends="ccts-buildlist,buildlist, clean-all, clean-repo , clean-caaers-cache" 
+  	<target name="publish-all" depends="ccts-buildlist,buildlist, clean-all, clean-ccts , clean-repo , clean-caaers-cache" 
   			description="compile, jar and publish all projects in the right order, publishes them into local repository">
    		 <subant target="publish-local" buildpathref="build-path" />
   	</target>
@@ -86,6 +86,13 @@
 		target : clean-all
 	====================================================================== -->
   <target name="clean-all" depends="buildlist, clean-pmd" description="clean all projects">
+    <subant target="clean" buildpathref="build-path" />
+  </target>
+
+	<!-- ==================================================================
+		target : clean-ccts
+	====================================================================== -->
+  <target name="clean-ccts" depends="ccts-buildlist, clean-pmd" description="clean all projects">
     <subant target="clean" buildpathref="build-path" />
   </target>
 	
