@@ -23,8 +23,10 @@
     <bean id="studyConsumerGridServiceUrl" class="java.lang.String">
         <constructor-arg value="s[grid.studyconsumer.url]"/>
     </bean>
-	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
-          <property name="databaseConfigurationName"><value>interoperability</value></property>
-    </bean>
-
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
 </beans>
