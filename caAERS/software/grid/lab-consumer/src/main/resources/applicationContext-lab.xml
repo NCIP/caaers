@@ -12,7 +12,12 @@
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
 	
-
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="false"/>
+	</bean>
 	
 	<bean id="labConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" autowire="byType"/>
 	 
