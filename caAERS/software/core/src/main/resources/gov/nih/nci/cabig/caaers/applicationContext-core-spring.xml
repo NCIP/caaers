@@ -20,7 +20,12 @@
     <bean id="authenticationMode" class="java.lang.String">
         <constructor-arg value="s[authenticationMode]"/>
     </bean>
-
+	<bean id="coppaCache" class="java.lang.Boolean">
+		<constructor-arg value="s[enable.coppa.cache]"/>
+	</bean>
+	<bean id="coppaMode" class="java.lang.Boolean">
+		<constructor-arg value="s[enable.coppa.mode]"/>
+	</bean>
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
     <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
