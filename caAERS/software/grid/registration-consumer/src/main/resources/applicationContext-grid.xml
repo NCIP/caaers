@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
     "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans default-lazy-init="true">
 
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
@@ -13,6 +13,9 @@
 	
 	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-registrationConsumer.xml"/>
+	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+          <property name="databaseConfigurationName"><value>interoperability</value></property>
+    </bean>
 		
 	<bean id="registrationConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
         <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
