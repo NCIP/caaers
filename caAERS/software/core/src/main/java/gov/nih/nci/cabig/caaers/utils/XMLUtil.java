@@ -32,6 +32,9 @@ public class XMLUtil {
     }
     
     public static List<String>getObjectsFromCoppaResponse(String response ){
+    	if (response == null) {
+    		return new ArrayList<String>();
+    	}
     	List<String> objList = new ArrayList<String>();
 
             StringReader reader = new StringReader(response);
