@@ -270,6 +270,7 @@ public class PatientDetailsTab extends AeTab {
 
     protected void validateMetastaticDiseases(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	//aeReport.diseaseHistory.metastaticDiseaseSites[1].otherSite
+   
     	int i =0;
     	Set<MetastaticDiseaseSite> set = new HashSet<MetastaticDiseaseSite>();
     	for(MetastaticDiseaseSite mSite : command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites()){

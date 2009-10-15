@@ -24,7 +24,7 @@ public class SignValidator extends FieldValidator {
 
     @Override
     public String getMessagePrefix() {
-        return "Incorrect sign";
+        return "Invalid sign";
     }
 
     @Override
