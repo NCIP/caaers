@@ -191,7 +191,7 @@
 			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.2.2" /> 
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.2.2" />
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="1.2.2" />
-        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="latest.integration" />		
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.4.0" />		
 
         	<!-- TODO: Check if Grid -->
 
