@@ -24,12 +24,13 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ccts.domain.IdentifierType;
 import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
 import gov.nih.nci.cabig.ccts.domain.StudyInvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
 import gov.nih.nci.cabig.ccts.domain.StudySiteType;
-import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
+
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
@@ -230,18 +231,22 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
             gov.nih.nci.cabig.caaers.domain.Study study = null;
             String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-            study = fetchStudy(ccIdentifier,
-                            OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+            study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             if (study != null) {
             	logger.error("Already a study with the same Coordinating Center Identifier ("
                                 + ccIdentifier
                                 + ") exists.Returning without processing the request.");
                 return;
             }
-
-            study = new gov.nih.nci.cabig.caaers.domain.LocalStudy();
+            
+            String coppaIdentifier = findCoppaIdentifier(studyDto);
+            if (coppaIdentifier != null) {
+            	study = new gov.nih.nci.cabig.caaers.domain.RemoteStudy();
+            } else {            
+            	study = new gov.nih.nci.cabig.caaers.domain.LocalStudy();
+            }
             study.setGridId(studyDto.getGridId());
-            populateStudyDetails(studyDto, study);
+            populateStudyDetails(studyDto, study, coppaIdentifier);
             studyDao.save(study);
             logger.info("Created the study :" + study.getId());
             logger.info("End of studyConsumer : createStudy");
@@ -288,8 +293,28 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     }
 
+    /**
+     * This method will return the identifier specified by Coppa.
+     * 
+     * @param studyDto
+     * @return
+     * @throws InvalidStudyException
+     */
+    String findCoppaIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto)
+                    throws InvalidStudyException {
+        String ccIdentifier = null;
+        for (IdentifierType idType : studyDto.getIdentifier()) {
+            if (idType instanceof SystemAssignedIdentifierType && StringUtils.equals(idType.getType(), "COPPA Identifier")) {
+                ccIdentifier = idType.getValue();
+                break;
+            }
+        }
+        return ccIdentifier;
+
+    }
+    
     void populateStudyDetails(gov.nih.nci.cabig.ccts.domain.Study studyDto,
-                    gov.nih.nci.cabig.caaers.domain.Study study) throws StudyCreationException,
+                    gov.nih.nci.cabig.caaers.domain.Study study, String coppaIdentifier) throws StudyCreationException,
                     InvalidStudyException {
     	System.out.println("Creating study..");
         study.setShortTitle(studyDto.getShortTitleText());
@@ -303,6 +328,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                         .getMultiInstitutionIndicator()));
         study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
         study.setBlindedIndicator(BooleanUtils.toBoolean(studyDto.getBlindedIndicator()));
+        if (coppaIdentifier != null ) {
+        	study.setExternalId(coppaIdentifier);
+        }
         
          //fixed by srini , bug Id CAAERS-1038
          AeTerminology aet = createCtcV3Terminology(study);
