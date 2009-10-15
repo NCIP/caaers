@@ -215,6 +215,12 @@ public class RuleAjaxFacade {
         } 
         
         // System.out.println("add rule create successfully ....");
+        
+        // Set the name as the name field has been removed from UI.
+        Integer ruleCount = ruleSet.getRule().size() - 1;
+        Integer ruleNumber = ++ruleCount;
+        newRule.getMetaData().setName("Rule-" + ruleNumber);
+        // Done setting the rule name.
 
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         request.setAttribute("ruleCount", ruleSet.getRule().size() - 1);

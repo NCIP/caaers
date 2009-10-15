@@ -6,11 +6,6 @@
 <h3 style="position:relative; float:left" class="handle""> <span style="position:relative; float:left">Rule - (${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})"> <img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"  align="absmiddle"  style="position:relative; float:right; height:18px"/> </a> <img src="<c:url value="/images/chrome/spacer.gif"/>" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})"> <img id="toggle-image-${ruleCount + 1}" onclick="" src="<c:url value="/images/rule/window-minimize.gif"/>" valign="top" align="absmiddle"  style="position:relative; float:right; height:18px"/> </a> </h3>
 <div id="crap-${ruleCount + 1}">
   <%--<form:form>--%>
-  <div style="margin-left:50px;">
-    <label class="label" for="ruleSet.rule[${ruleCount+1}].metaData.name">Name</label>
-    <input id="ruleSet.rule[${ruleCount}].metaData.name" name="ruleSet.rule[${ruleCount}].metaData.name" style="width: 200px;" value="Rule-${ruleCount+1}" type="text" readonly="readonly" >
-  </div>
-  <br/>
   <div id="rule-condition-action-container-${ruleCount + 1}">
     <div style="margin-left:50px;">
       <label class="label" for="condition">Condition(s)</label>

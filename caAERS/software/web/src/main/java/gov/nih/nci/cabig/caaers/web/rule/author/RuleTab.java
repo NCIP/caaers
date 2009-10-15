@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +93,8 @@ public class RuleTab extends DefaultTab {
     @Override
     public Map<String, Object> referenceData(RuleInputCommand command) {
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
-
+        Map referenceData =  super.referenceData(command);
+        
         String studyShortTitle = createRuleCommand.getCategoryIdentifier();
 
         if (!"".equals(studyShortTitle)) {
@@ -120,7 +122,20 @@ public class RuleTab extends DefaultTab {
         // Retrieve RuleSet based on the one chosen by the user.
         createRuleCommand.retrieveRuleSet();
         
-        return super.referenceData(command);
+        // Create and put the summary in reference data.
+        Map<String, String> summary = new LinkedHashMap<String, String>();
+        summary.put("Rule level", (createRuleCommand.getLevelDescription() == null) ? "" : createRuleCommand.getLevelDescription());
+        summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null) ? "" : createRuleCommand.getRuleSetName());
+        if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
+        	summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
+        if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        	summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
+        if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        	summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
+    	referenceData.put("ruleFlowSummary", summary);
+    	// Done populating the summary in reference data.
+        
+        return referenceData;
     }
     
     /**

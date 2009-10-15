@@ -1196,6 +1196,39 @@ div#createNew h3, div.section h3 {
 		categoryObjects2.push('${cat.id}' + '||' + '${cat.name}');
 	</script>
 </c:forEach>
+
+<c:if test="${not empty ruleFlowSummary}">
+	<div class="pane summary" id="rule-summary">
+		<div class="row">
+			<div class="summarylabel">Rule level</div>
+			<div class="summaryvalue">${ruleFlowSummary['Rule level']}</div>
+		</div>
+		<div class="row">
+			<div class="summarylabel">Rule set name</div>
+			<div class="summaryvalue">${ruleFlowSummary['Rule set name']}</div>
+		</div>
+		<c:if test="${ruleFlowSummary['Sponsor'] != null}">
+			<div class="row">
+				<div class="summarylabel">Sponsor</div>
+				<div class="summaryvalue">${ruleFlowSummary['Sponsor'] }</div>
+			</div>
+		</c:if>
+		<c:if test="${ruleFlowSummary['Institution'] != null}">
+			<div class="row">
+				<div class="summarylabel">Institution</div>
+				<div class="summaryvalue">${ruleFlowSummary['Institution'] }</div>
+			</div>
+		</c:if>
+		<c:if test="${ruleFlowSummary['Study'] != null}">
+			<div class="row">
+				<div class="summarylabel">Study</div>
+				<div class="summaryvalue">${ruleFlowSummary['Study'] }</div>
+			</div>
+		</c:if>
+	</div>
+</c:if>
+
+
 <p>
 <tags:instructions code="3rules" />
   </p>
@@ -1204,20 +1237,7 @@ div#createNew h3, div.section h3 {
   <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="singleFields">
       <tags:errors path="*" />
-      <%--<tags:tabFields tab="${tab}"/>--%>
       <div class="row">
-        <div class="label">
-          <label for="ruleSetName">Rule Set
-          Name</label>
-        </div>
-        <div class="value">
-          <form:input path="ruleSetName" size="40" readonly="readonly"/>
-        </div>
-        <!--
-			<div class="local-buttons"><input type="button"
-				value="Add Rule" align="right" onclick="addRule()" /></div>
-			</div>
-			-->
         <div id="allRules">
           <c:forEach varStatus="ruleStatus"
 				items="${command.ruleSet.rule}">
@@ -1225,10 +1245,6 @@ div#createNew h3, div.section h3 {
             <div id="rule-${ruleCount + 1}" class="section">
               <h3 style="position:relative; font-size:11px; height:14px;"> <span style="position:relative; float:left">Rule - (${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})"> <img id="close-image" src="/caaers/images/rule/window-close.gif" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> <img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})"> <img id="toggle-image-${ruleCount + 1}" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> </h3>
               <br />
-              <div style="margin-left:50px;">
-                <label class="label" for="condition">Name</label>
-                <form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px" />
-              </div>
               <br />
               <div id="rule-condition-action-container-${ruleCount + 1}">
                 <div style="margin-left:50px;">
