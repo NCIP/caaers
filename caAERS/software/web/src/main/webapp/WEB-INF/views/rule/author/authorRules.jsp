@@ -246,17 +246,26 @@ div#createNew h3, div.section h3 {
 					
 		}
 		
+		// ----------------------------------------------------------------------------------------------------------------
+		//javascript:fireAction(index,section-id,sectionCSS) : This function will be called when the delete button on the AE is clicked.;
+		function fireAction(ruleCount, sectionId, sectionCSS) {
+			deleteRule(ruleCount);
+		}
+
+    // ----------------------------------------------------------------------------------------------------------------
+		
 		function deleteRule(ruleCount) {
 				
-				
+				if (!confirm("Are you sure you want to delete this?"))
+                 	return false;
 				try {
 					authorRule.removeRule(ruleCount-1, function(deleteStatus) {
 							if(deleteStatus) {
-									toggle(ruleCount);
+									//toggle(ruleCount);
 									var rules = $('allRules');
 									var rule = $('rule-'+ruleCount);
-									
-									rule.style.visibility="hidden";
+									rule.remove();
+									//rule.style.visibility="hidden";
 									//alert ("ss");
 									//rules.removeChild(rule);
 									
@@ -1242,8 +1251,8 @@ div#createNew h3, div.section h3 {
           <c:forEach varStatus="ruleStatus"
 				items="${command.ruleSet.rule}">
             <c:set var="ruleCount" value="${ruleStatus.index}" />
-            <div id="rule-${ruleCount + 1}" class="section">
-              <h3 style="position:relative; font-size:11px; height:14px;"> <span style="position:relative; float:left">Rule - (${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})"> <img id="close-image" src="/caaers/images/rule/window-close.gif" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> <img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})"> <img id="toggle-image-${ruleCount + 1}" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> </h3>
+            <div id="rule-${ruleCount + 1}">
+              <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" deleteParams="${ruleCount + 1}" enableDelete="true" collapsed="true">
               <br />
               <br />
               <div id="rule-condition-action-container-${ruleCount + 1}">
@@ -1711,6 +1720,7 @@ div#createNew h3, div.section h3 {
                   </c:if>
                 </div>
               </div>
+              </chrome:division>
             </div>
           </c:forEach>
         </div>

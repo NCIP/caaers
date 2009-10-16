@@ -2,8 +2,9 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<div id="rule-${ruleCount + 1}" class="section" style="display:none">
-<h3 style="position:relative; float:left" class="handle""> <span style="position:relative; float:left">Rule - (${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})"> <img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"  align="absmiddle"  style="position:relative; float:right; height:18px"/> </a> <img src="<c:url value="/images/chrome/spacer.gif"/>" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})"> <img id="toggle-image-${ruleCount + 1}" onclick="" src="<c:url value="/images/rule/window-minimize.gif"/>" valign="top" align="absmiddle"  style="position:relative; float:right; height:18px"/> </a> </h3>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<div id="rule-${ruleCount + 1}" style="display:none">
+<chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" deleteParams="${ruleCount + 1}" enableDelete="true">
 <div id="crap-${ruleCount + 1}">
   <%--<form:form>--%>
   <div id="rule-condition-action-container-${ruleCount + 1}">
@@ -28,6 +29,7 @@
               <option value="${ruleUi.condition[0].domainObject[optionStatus.index].className}"> ${ruleUi.condition[0].domainObject[optionStatus.index].displayUri} </option>
             </c:forEach>
           </select>
+          
           <input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].identifier" value="${ruleUi.condition[0].domainObject[0].identifier}"/>
           <input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].displayUri" value="${ruleUi.condition[0].domainObject[0].displayUri}"/>
           <img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
@@ -118,5 +120,6 @@
       </div>
     </div>
   </div>
+  </chrome:division>
   <%--</form:form>--%>
 </div>
