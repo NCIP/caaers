@@ -162,9 +162,16 @@ public abstract class BaseResolver {
 		return broadcastCOPPA(Arrays.asList(message), metaData);
     }
 	
-	public String broadcastCOPPA(List<String> messages,Metadata metaData) throws gov.nih.nci.cabig.caaers.esb.client.BroadcastException {
+	public String broadcastCOPPA(List<String> messages,Metadata metaData)  {
 		log.info("COPPA CALL :: SERVICETYPE-->" + metaData.getServiceType() + " ::  OPERATION-->" + metaData.getOperationName());
-        return messageBroadcastService.broadcastCOPPA(messages, metaData);
+        String result = null;
+        try {
+        	result = messageBroadcastService.broadcastCOPPA(messages, metaData);
+        } catch (Exception e) {
+        	log.error("ERROR with COPPA BroadCast " + e.getMessage());
+        	e.printStackTrace();
+        }
+		return result;
     }
 	
 	public MessageBroadcastService getMessageBroadcastService() {
