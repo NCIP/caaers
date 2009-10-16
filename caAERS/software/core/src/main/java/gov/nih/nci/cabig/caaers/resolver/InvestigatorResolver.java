@@ -91,6 +91,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
 			if (identifiedPerson == null) {
+				log.info("Exiting InvestigatorResolver.find() - Identified person is NULL");
 				return remoteInvestigatorList;
 			}
 			II ii = identifiedPerson.getPlayerIdentifier();
@@ -168,6 +169,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 					}
 				//}
 			}
+			log.info("Exiting InvestigatorResolver.find()");
 			return remoteInvestigatorList;
 		}
 		
@@ -298,6 +300,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				}
 			}
 		}
+		log.info("Exiting InvestigatorResolver.find()");
 		return remoteInvestigatorList;
 	}
 	
@@ -316,7 +319,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	}
 
 	public Object getRemoteEntityByUniqueId(String externalId) {
-		log.info("Entering InvestigatorResolver.getRemoteEntityByUniqueId()");
+		log.info("Entering InvestigatorResolver.getRemoteEntityByUniqueId(externalId : " + externalId + ") ");
 		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
 
 		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);

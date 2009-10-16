@@ -156,7 +156,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	 * Find By Organization
 	 */
 	public List<Object> find(Object example) {	
-		logger.info("Entering ResearchStaff Resolver : find");
+		logger.info("Entering ResearchStaff Resolver : find()");
 		ResearchStaff remoteResearchStaffExample = (RemoteResearchStaff)example;
 		List<Object> remoteResearchStaffList = new ArrayList<Object>();
 		RemoteResearchStaff tempRemoteResearchStaff = null;
@@ -166,6 +166,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteResearchStaffExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
 			if (identifiedPerson == null) {
+				logger.info("Exiting ResearchStaff Resolver : find() IdentifiedPerson is NULL");
 				return remoteResearchStaffList;
 			}
 			II ii = identifiedPerson.getPlayerIdentifier();
@@ -178,7 +179,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			logger.info("Exiting ResearchStaff Resolver : find");
+			logger.info("Exiting ResearchStaff Resolver : find()");
 			return remoteResearchStaffList;
 		}
 		
@@ -373,7 +374,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				}
 			}
 		}
-		logger.info("Exiting ResearchStaff Resolver : find");
+		logger.info("Exiting ResearchStaff Resolver : find()");
 		return remoteResearchStaffList;
 	}
 	private RemoteResearchStaff loadResearchStaffForPersonResult(String personResultXml) {
@@ -396,7 +397,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		return remoteResearchStaff;		
 	}
 	public Object getRemoteEntityByUniqueId(String externalId) {
-		logger.info("Entering ResearchStaffResolver.getRemoteEntityByUniqueId()");
+		logger.info("Entering ResearchStaffResolver.getRemoteEntityByUniqueId( externalId : " + externalId + ")");
 		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
 
 		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);

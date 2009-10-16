@@ -62,8 +62,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	 */
 	public List<Object> find(Object example) {
 		
-		log.info("Entering RemoteResolver.find()");
-		System.out.println("Entering RemoteResolver.find()");
+		log.info("Entering RemoteStudyResolver.find()");
 		
 		RemoteStudy remoteStudyExample = (RemoteStudy)example;
 		
@@ -101,8 +100,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			log.debug(e.getMessage());
 			//e.printStackTrace();
 		}
-		log.info("Exiting RemoteResolver.find()");
-		System.out.println("Exiting RemoteResolver.find()");
+		log.info("Exiting RemoteStudyResolver.find()");
 		return remoteStudies;
 	}
 
@@ -111,8 +109,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	 */
 	public Object getRemoteEntityByUniqueId(String externalId) {
 		
-		log.info("Entering RemoteResolver.getRemoteEntityByUniqueId()");
-		System.out.println("Entering RemoteResolver.getRemoteEntityByUniqueId()");
+		log.info("Entering RemoteStudyResolver.getRemoteEntityByUniqueId(externalId :" + externalId + ")");
 		String payLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(externalId));
 		Metadata mData = new Metadata(OperationNameEnum.getById.getName(), "extId", ServiceTypeEnum.STUDY_PROTOCOL.getName());
 		
@@ -138,8 +135,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			log.debug(e.getMessage());
 			//e.printStackTrace();
 		}
-		log.info("Exiting RemoteResolver.getRemoteEntityByUniqueId()");
-		System.out.println("Exiting RemoteResolver.getRemoteEntityByUniqueId()");
+		log.info("Exiting RemoteStudyResolver.getRemoteEntityByUniqueId()");
 		if(remoteStudies.size() > 0){
 			return remoteStudies.get(0);
 		}
