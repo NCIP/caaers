@@ -23,19 +23,15 @@ import org.hibernate.annotations.CascadeType;
  */
 @Entity
 public class CtcTerm extends AbstractImmutableDomainObject {
+
     private String term;
-
     private String select;
-
     private String ctepTerm;
-
     private String ctepCode;
-
     private CtcCategory category;
-
     private boolean otherRequired;
-
     private List<CtcGrade> contextualGrades;
+    private String definition;
 
     // //// LOGIC
 
@@ -129,5 +125,13 @@ public class CtcTerm extends AbstractImmutableDomainObject {
 
     public void setContextualGrades(List<CtcGrade> contextualGrades) {
         this.contextualGrades = contextualGrades;
+    }
+
+    public String getDefinition() {
+        return definition;
+    }
+
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 }

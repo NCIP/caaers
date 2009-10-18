@@ -20,11 +20,12 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(name = "ctc_versions")
 public class Ctc extends AbstractImmutableDomainObject {
+    
 	public static int CTC_V2 = 2;
 	public static int CTC_V3 = 3;
-	
-    private String name;
+	public static int CTC_V4 = 4;
 
+    private String name;
     private List<CtcCategory> categories;
 
     // //// BEAN PROPERTIES

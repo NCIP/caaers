@@ -17,10 +17,9 @@ import javax.persistence.OrderBy;
  */
 @Entity
 public class CtcCategory extends AbstractImmutableDomainObject {
+
     private String name;
-
     private Ctc ctc;
-
     private List<CtcTerm> terms;
 
     // //// BEAN PROPERTIES

@@ -16,10 +16,9 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrade {
+
     private Grade grade;
-
     private CtcTerm term;
-
     private String text;
 
     // //// LOGIC
