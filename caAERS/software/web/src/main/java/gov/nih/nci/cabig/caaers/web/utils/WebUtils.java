@@ -291,4 +291,20 @@ public class WebUtils {
 
         return filterStudiesByCoordinatorOrSponsor(studies, orgs, subjectOrganization);
     }
+
+    public static Set<Organization> extractOrganizations(ResearchStaff rs) {
+        Set<Organization> orgs = new HashSet<Organization>();
+        for (SiteResearchStaff srs : rs.getSiteResearchStaffs()) {
+            orgs.add(srs.getOrganization());
+        }
+        return orgs;
+    }
+
+    public static Set<Organization> extractOrganizations(Investigator i) {
+        Set<Organization> orgs = new HashSet<Organization>();
+        for (SiteInvestigator si : i.getSiteInvestigators()) {
+            orgs.add(si.getOrganization());
+        }
+        return orgs;
+    }
 }

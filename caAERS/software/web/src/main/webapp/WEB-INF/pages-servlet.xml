@@ -294,7 +294,7 @@
   	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
-      <property name="webControllerValidator" ref="webControllerValidator"/> 
+        <property name="webControllerValidator" ref="webControllerValidator"/>
     </bean>
 
   <bean name="/participant/edit" id="editParticipantController" autowire="byType"
@@ -306,7 +306,7 @@
   </bean>
   
   <!--<bean name="/participant/assignStudy" id="assignStudyController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" ></bean>-->
-  <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" ></bean>
+  <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" />
   
   <!--  For InPlaceEditor  -->
 <!--

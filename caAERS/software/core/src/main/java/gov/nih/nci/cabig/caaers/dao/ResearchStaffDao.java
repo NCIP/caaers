@@ -28,18 +28,12 @@ import com.semanticbits.coppa.infrastructure.RemoteSession;
  * @author Kulasekaran
  */
 @Transactional(readOnly = true)
-public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> implements
-                MutableDomainObjectDao<ResearchStaff> {
+public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> implements MutableDomainObjectDao<ResearchStaff> {
 
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName",
-                    "lastName");
-    
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName", "lastName");
     private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("nciIdentifier");
-
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
     private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
-    
     private RemoteSession remoteSession;
     
     /**
@@ -132,7 +126,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
 	public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
-
     	List<ResearchStaff> remoteResearchStaffs = (List)remoteSession.find(researchStaff); 
     	return remoteResearchStaffs;
     }
@@ -175,9 +168,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @Transactional(readOnly = false)
     public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
-
-    	List<ResearchStaff> researchStaffs =  findBySubname(subnames,
-                        SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	List<ResearchStaff> researchStaffs =  findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     	return researchStaffs;
     }
     
@@ -192,9 +183,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @Transactional(readOnly = false)
     public List<ResearchStaff> getByNciIdentifier(final String[] subnames, final int site) {
-
-    	List<ResearchStaff> researchStaffs = findBySubname(subnames,
-        		NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    	List<ResearchStaff> researchStaffs = findBySubname(subnames, NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     	return researchStaffs;
     }
 
@@ -207,15 +196,13 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
 	public ResearchStaff getByLoginId(String loginId) {
-        List<ResearchStaff> results = getHibernateTemplate().find(
-                        "from ResearchStaff where loginId= ?", loginId);
+        List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where loginId= ?", loginId);
         return results.size() > 0 ? results.get(0) : null;
     }
 
     @SuppressWarnings("unchecked")
 	public ResearchStaff getByEmailAddress(String email) {
-        List<ResearchStaff> results = getHibernateTemplate().find(
-                        "from ResearchStaff where emailAddress= ?", email);
+        List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where emailAddress= ?", email);
         return results.size() > 0 ? results.get(0) : null;
     }
     

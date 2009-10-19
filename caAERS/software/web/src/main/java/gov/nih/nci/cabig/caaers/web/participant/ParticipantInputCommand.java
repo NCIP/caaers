@@ -21,7 +21,8 @@ public class ParticipantInputCommand {
 
     protected ResearchStaff loggedinResearchStaff;
     protected Investigator loggedinInvestigator;
-
+    protected Set<Organization> loggedInOrganizations;
+    
     protected Participant participant;
     private Study study;
     protected StudyParticipantAssignment assignment;
@@ -295,5 +296,13 @@ public class ParticipantInputCommand {
 
     public void setLoggedinInvestigator(Investigator loggedinInvestigator) {
         this.loggedinInvestigator = loggedinInvestigator;
+    }
+
+    public Set<Organization> getLoggedInOrganizations() {
+        return loggedInOrganizations;
+    }
+
+    public void setLoggedInOrganizations(Set<Organization> loggedInOrganizations) {
+        this.loggedInOrganizations = loggedInOrganizations;
     }
 }

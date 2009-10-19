@@ -24,12 +24,8 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
             "order by study.shortTitle ";
 
     private static final String FIRST_NAME = "firstName";
-
     private static final String LAST_NAME = "lastName";
-
-
     private static final String RACE = "race";
-
     private static final String ETHNITICTY = "ethnicity";
     private static final String IDENTIFIER_EXACT_TYPE = "identifierType";
     private static final String IDENTIFIER_EXACT_VALUE = "identifierValue";
@@ -148,11 +144,8 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
     public void filterStudiesWithMatchingShortTitleOnly(String text) {
         if (!StringUtils.isBlank(text)) {
-
             String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-
-            andWhere(String.format("(lower(study.shortTitle) LIKE :%s )"
-                    , SHORT_TITLE));
+            andWhere(String.format("(lower(study.shortTitle) LIKE :%s )" , SHORT_TITLE));
             setParameter(SHORT_TITLE, searchString);
         }
     }

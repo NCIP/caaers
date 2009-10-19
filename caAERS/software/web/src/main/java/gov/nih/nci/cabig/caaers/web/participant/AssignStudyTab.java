@@ -43,6 +43,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     @Override
     public Map<String, Object> referenceData(AssignParticipantStudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
+        command.setOrganization(command.getParticipant().getAssignments().get(0).getStudySite().getOrganization());
         refdata.put("assignType", "study");
         return refdata;
     }

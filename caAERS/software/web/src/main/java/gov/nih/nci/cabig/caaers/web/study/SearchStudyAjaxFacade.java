@@ -1,13 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,10 +26,16 @@ import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
 import org.springframework.beans.factory.annotation.Required;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 public class SearchStudyAjaxFacade {
 
+    private Class<?>[] CONTROLLERS = {AssignParticipantController.class};
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+    private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
     public Object build(TableModel model, Collection studySearchableAjaxableDomainObjects) throws Exception {
         addTable(model, studySearchableAjaxableDomainObjects);
@@ -127,6 +140,42 @@ public class SearchStudyAjaxFacade {
 
         List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID, true);
 
+        // filter objects
+        Object command = extractCommand();
+        if (command instanceof AssignParticipantStudyCommand) {
+            AssignParticipantStudyCommand c = (AssignParticipantStudyCommand)command;
+            List<StudySearchableAjaxableDomainObject> _s = new ArrayList<StudySearchableAjaxableDomainObject>();
+            boolean isTheSameSite = c.getLoggedInOrganizations().contains(c.getOrganization());
+            Set<String> orgCodes = new HashSet<String>();
+
+            for (Organization o : c.getLoggedInOrganizations()) {
+                orgCodes.add(o.getNciInstituteCode());
+            }
+
+            for (StudySearchableAjaxableDomainObject s : studySearchableAjaxableDomainObjects) {
+                boolean isGood = false;
+
+                    if (isTheSameSite) {
+                            // if the Participant's Site is the same as Loggedin user, show all studies where this site is just a StudySite
+                            for (StudySiteAjaxableDomainObject ss : s.getStudySites()) {
+                                if (ss.getNciInstituteCode().equals(c.getOrganization().getNciInstituteCode())) {
+                                    isGood = true;
+                                }
+                            }
+                    } else {
+                            // if the Participant's Site is other than Loggedin user, show all studies where this site is just a StudySite
+                            if (orgCodes.contains(s.getCoordinatingCenterCode()) || orgCodes.contains(s.getPrimarySponsorCode())) {
+                                isGood = true;
+                            }
+                    }
+
+                if (isGood) _s.add(s);
+            }
+
+            studySearchableAjaxableDomainObjects = _s;
+        }
+        //
+
         try {
 
             Context context = null;
@@ -197,6 +246,8 @@ public class SearchStudyAjaxFacade {
                 studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly(sText);
             }
         }
+
+        
         List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery,type, text);
         return studySearchableAjaxableDomainObjects;
     }
@@ -206,4 +257,33 @@ public class SearchStudyAjaxFacade {
     public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository) {
         this.studySearchableAjaxableDomainObjectRepository = studySearchableAjaxableDomainObjectRepository;
     }
+
+    private Object extractCommand() {
+        WebContext webContext = WebContextFactory.get();
+        Object command = null;
+        for (Class<?> controllerClass : CONTROLLERS) {
+            String formSessionAttributeName = controllerClass.getName() + ".FORM.command";
+            command = webContext.getSession().getAttribute(formSessionAttributeName);
+            if (command == null) {
+                log.debug("Command not found using name " + formSessionAttributeName);
+            } else {
+                log.debug("Command found using name " + formSessionAttributeName);
+                break;
+            }
+        }
+        if (command == null) {
+            throw new CaaersSystemException("Could not find command in session");
+        } else {
+            return command;
+        }
+    }
+
+    public Class<?>[] getCONTROLLERS() {
+        return CONTROLLERS;
+    }
+
+    public void setCONTROLLERS(Class<?>[] CONTROLLERS) {
+        this.CONTROLLERS = CONTROLLERS;
+    }
+
 }

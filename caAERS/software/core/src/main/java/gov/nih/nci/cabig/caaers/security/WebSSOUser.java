@@ -21,8 +21,7 @@ public class WebSSOUser extends User {
 
     private GlobusCredential gridCredential;
 
-    public WebSSOUser(String string, String string1, boolean b, boolean b1, boolean b2, boolean b3,
-                    GrantedAuthority[] grantedAuthorities) throws IllegalArgumentException {
+    public WebSSOUser(String string, String string1, boolean b, boolean b1, boolean b2, boolean b3, GrantedAuthority[] grantedAuthorities) throws IllegalArgumentException {
         super(string, string1, b, b1, b2, b3, grantedAuthorities);
     }
 

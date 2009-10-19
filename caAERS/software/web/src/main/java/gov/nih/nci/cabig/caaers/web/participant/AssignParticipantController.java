@@ -1,16 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -26,6 +21,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.acegisecurity.userdetails.User;
+import org.acegisecurity.context.SecurityContext;
 
 /**
  * @author Krikor Krumlian
@@ -43,6 +40,9 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
+
+    private ResearchStaffDao rsDao;
+    private InvestigatorDao investigatorDao;
 
     @Override
     @SuppressWarnings(value = {"unchecked"})
@@ -66,6 +66,24 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         AssignParticipantStudyCommand command = new AssignParticipantStudyCommand();
+
+        User user = null;
+        SecurityContext context = (SecurityContext) request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+        if (context != null) {
+            user = (User)context.getAuthentication().getPrincipal();
+        }
+
+        command.setLoggedinResearchStaff(rsDao.getByLoginId(user.getUsername()));
+        command.setLoggedinInvestigator(investigatorDao.getByLoginId(user.getUsername()));
+
+        if (command.getLoggedinResearchStaff() != null) {
+            command.setLoggedInOrganizations(WebUtils.extractOrganizations(command.getLoggedinResearchStaff()));
+        }
+        
+        if (command.getLoggedinInvestigator() != null) {
+            command.setLoggedInOrganizations(WebUtils.extractOrganizations(command.getLoggedinInvestigator()));
+        }
+
         command.init();
         return command;
     }
@@ -224,6 +242,22 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
         this.chemoAgentDao = chemoAgentDao;
+    }
+
+    public ResearchStaffDao getRsDao() {
+        return rsDao;
+    }
+
+    public void setRsDao(ResearchStaffDao rsDao) {
+        this.rsDao = rsDao;
+    }
+
+    public InvestigatorDao getInvestigatorDao() {
+        return investigatorDao;
+    }
+
+    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+        this.investigatorDao = investigatorDao;
     }
 }
 
