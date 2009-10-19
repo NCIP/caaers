@@ -621,6 +621,18 @@ public class RuleAjaxFacade {
          */
         return sponsors;
     }
+    
+    /**
+     * This method will be called to fetch the sponsors.
+     * It was added as we needed the ID to be displayed in the returned values. Earlier only the name of the organization was
+     * displayed.
+     * @param text
+     * @return List<Organization>
+     */
+    public List<Organization> matchOrganization(final String text) {
+        List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode", "externalId");
+    }
 
     /*
      * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to

@@ -31,12 +31,14 @@
 			var sponsorNameAutocompleterProps = {
             	basename: "sponsorName",
             	populator: function(autocompleter, text) {
-                	authorRule.matchSponsors(text, function(values) {
+                	authorRule.matchOrganization(text, function(values) {
 							autocompleter.setChoices(values)
 					})
             	},
-            	valueSelector: function(obj) {
-                	return obj;
+            	valueSelector: function(organization) {
+            		var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+            		
+                	return organization.name + nciInstituteCode;
             	}
         	}
         	
@@ -47,8 +49,9 @@
 							autocompleter.setChoices(values)
         			})
         		},
-        		valueSelector: function(obj) {
-        			return obj.name;
+        		valueSelector: function(organization) {
+	        		var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+        			return organization.name + nciInstituteCode;
         		}
         	}
         	
@@ -135,7 +138,7 @@
 
 			function setSponsor(selectedChoice) 
 			{
-				$("sponsorName").value = selectedChoice;
+				$("sponsorName").value = selectedChoice.name;
 			}
 			
 			function setInstitution(selectedChoice) 
