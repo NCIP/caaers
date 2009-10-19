@@ -37,8 +37,7 @@
 
 <p><tags:instructions code="study.study_overview.top" /></p>
 <c:if test="${command.study.id > 0}">
-    <a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="http://www.leasetrader.com/img/icon_xml.gif" border=""></a>
-
+    <b>Export Study</b> <a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="<c:url value="/images/icon_xml.gif"/> " border=""></a>
 </c:if>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
