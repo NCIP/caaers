@@ -144,35 +144,39 @@ public class SearchStudyAjaxFacade {
         Object command = extractCommand();
         if (command instanceof AssignParticipantStudyCommand) {
             AssignParticipantStudyCommand c = (AssignParticipantStudyCommand)command;
-            List<StudySearchableAjaxableDomainObject> _s = new ArrayList<StudySearchableAjaxableDomainObject>();
-            boolean isTheSameSite = c.getLoggedInOrganizations().contains(c.getOrganization());
-            Set<String> orgCodes = new HashSet<String>();
 
-            for (Organization o : c.getLoggedInOrganizations()) {
-                orgCodes.add(o.getNciInstituteCode());
-            }
+            if (c.getLoggedinResearchStaff() != null) {
+                    List<StudySearchableAjaxableDomainObject> _s = new ArrayList<StudySearchableAjaxableDomainObject>();
+                    boolean isTheSameSite = c.getLoggedInOrganizations().contains(c.getOrganization());
+                    Set<String> orgCodes = new HashSet<String>();
 
-            for (StudySearchableAjaxableDomainObject s : studySearchableAjaxableDomainObjects) {
-                boolean isGood = false;
-
-                    if (isTheSameSite) {
-                            // if the Participant's Site is the same as Loggedin user, show all studies where this site is just a StudySite
-                            for (StudySiteAjaxableDomainObject ss : s.getStudySites()) {
-                                if (ss.getNciInstituteCode().equals(c.getOrganization().getNciInstituteCode())) {
-                                    isGood = true;
-                                }
-                            }
-                    } else {
-                            // if the Participant's Site is other than Loggedin user, show all studies where this site is just a StudySite
-                            if (orgCodes.contains(s.getCoordinatingCenterCode()) || orgCodes.contains(s.getPrimarySponsorCode())) {
-                                isGood = true;
-                            }
+                    for (Organization o : c.getLoggedInOrganizations()) {
+                        orgCodes.add(o.getNciInstituteCode());
                     }
 
-                if (isGood) _s.add(s);
-            }
+                    for (StudySearchableAjaxableDomainObject s : studySearchableAjaxableDomainObjects) {
+                        boolean isGood = false;
 
-            studySearchableAjaxableDomainObjects = _s;
+                            if (isTheSameSite) {
+                                    // if the Participant's Site is the same as Loggedin user, show all studies where this site is just a StudySite
+                                    for (StudySiteAjaxableDomainObject ss : s.getStudySites()) {
+                                        if (ss.getNciInstituteCode().equals(c.getOrganization().getNciInstituteCode())) {
+                                            isGood = true;
+                                        }
+                                    }
+                            } else {
+                                    // if the Participant's Site is other than Loggedin user, show all studies where this site is just a StudySite
+                                    if (orgCodes.contains(s.getCoordinatingCenterCode()) || orgCodes.contains(s.getPrimarySponsorCode())) {
+                                        isGood = true;
+                                    }
+                            }
+
+                        if (isGood) _s.add(s);
+                    }
+
+                    studySearchableAjaxableDomainObjects = _s;
+            } else {
+            }
         }
         //
 
