@@ -2,8 +2,46 @@
 
 <html>
 <head>
-    <title>List Rules</title>
+    <title>Manage Rules</title>
     <tags:dwrJavascriptLink objects="authorRule"/>
+    <style type="text/css">
+        div.row {
+            padding: 5px 3px;
+             width: 70%;
+        }
+        .row .value {
+            margin-left: 22%;
+        }
+
+        p.description {
+            margin: 0.25em 0 0 1em;
+        }
+        div.submit {
+            text-align: right;
+        }
+        .value input[type=text] {
+            width: 80%;
+        }
+
+        form {
+            margin-top: 1em;
+        }
+
+        .updated {
+            border: #494 solid;
+            border-width: 1px 0;
+            background-color: #8C8;
+            padding: 1em 2em;
+            text-align: center;
+            margin: 1em 30%;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+    </style>
+    
+    
+    
     <script type="text/javascript">
     
     Event.observe(window, "load", function() {});
@@ -167,9 +205,33 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </script>
 </head>
 <body>
-
-    <p><tags:instructions code="listrules" /></p>
-    <div id="basic" class="yui-skin-sam"></div>
+<chrome:box title="Manage / Import Rules" autopad="true">
+	<chrome:division title="Manage Rules" id="rule-set-id" >
+	    <p><tags:instructions code="listrules" /></p>
+    	<div id="basic" class="yui-skin-sam"></div>
+    </chrome:division><br><br><br><br><br>
+    <chrome:division title="Import Rules" id="import-rules-id">
+    	<p>
+			<tags:instructions code="importxmlrules" />
+		</p>
+		<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
+            <div class="row">
+                <div class="label">
+                    Rule set xml file : 
+                </div>
+                <div class="value">
+                	<input type="file" name="ruleSetFile1" size="50"/>
+                </div>
+            </div>    
+        <div class="row submit">
+            <tags:button id="add-rule" color="blue" type="submit" value="Import" size="small" icon="add" />
+        </div>
+    </form:form>
+    <c:if test="${command.updated}">
+		<p class="updated">${command.message}</p>
+	</c:if>
+    </chrome:division>
+</chrome:box>
 
 </body>
 </html>

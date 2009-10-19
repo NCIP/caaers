@@ -95,9 +95,8 @@
   <bean id="ruleTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup" p:displayName="Reporting Rules">
     <property name="taskList">
       <list>
-        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="createRuleController"/>
-        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Rules" p:linkName="listRuleController"/>
-        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import Rules" p:linkName="importRuleController"/>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Rules" p:linkName="createRuleController"/>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Rules" p:linkName="listRuleController"/>
       </list>
     </property>
   </bean>
@@ -212,9 +211,9 @@
 	  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Manage Rules" p:linkName="createRuleController"/>
+		    p:displayName="Create Rules" p:linkName="createRuleController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="List Rules" p:linkName="listRuleController"/>
+		    p:displayName="Manage Rules" p:linkName="listRuleController"/>
 	      <!--  
 		   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		   p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
@@ -222,8 +221,6 @@
 		   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		   p:displayName="Export Rules" p:linkName="exportRuleController"/>
 	      -->
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Import Rules" p:linkName="importRuleController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
