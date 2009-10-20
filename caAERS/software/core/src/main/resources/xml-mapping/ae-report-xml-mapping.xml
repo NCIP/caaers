@@ -465,7 +465,7 @@
     <field name="street" type="string">
       <bind-xml name="street" node="element"/>
     </field>  
-    <field name="zip" type="integer">
+    <field name="zip" type="string">
       <bind-xml name="zip" node="element"/>
     </field>       
   </class>
