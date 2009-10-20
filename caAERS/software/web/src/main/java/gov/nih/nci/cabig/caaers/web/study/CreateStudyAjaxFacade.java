@@ -642,6 +642,9 @@ public class CreateStudyAjaxFacade {
         return ajaxOutput;
     }
 
+    /**
+     *
+     */
     public AjaxOutput addExpectedAE(int[] listOfTermIDs) {
 
         AjaxOutput ajaxOutput = new AjaxOutput();
@@ -650,6 +653,10 @@ public class CreateStudyAjaxFacade {
 
         List studyTerms = (isMeddra) ? command.getStudy().getExpectedAEMeddraLowLevelTerms() : command.getStudy().getExpectedAECtcTerms();
         int firstIndex = studyTerms.size();
+        Set<Integer> terms = new HashSet<Integer>();
+        for (int i=0; i<studyTerms.size(); i++) {
+            terms.add(((AbstractExpectedAE)studyTerms.get(i)).getTerm().getId());
+        }
 
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
         // List<String> removedTerms = new ArrayList<String>();
@@ -657,7 +664,8 @@ public class CreateStudyAjaxFacade {
         // the list of terms to be added
         // filter off the terms that are already present
         for (int id : listOfTermIDs) {
-            filteredTermIDs.add(id);
+            if (!terms.contains(id))
+                filteredTermIDs.add(id);
         }
 
         if (filteredTermIDs.isEmpty()) return ajaxOutput;
