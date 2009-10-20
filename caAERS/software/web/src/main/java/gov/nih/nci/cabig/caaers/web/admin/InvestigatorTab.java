@@ -211,7 +211,6 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         }else{
         	loginIdField = InputFieldFactory.createLabelField("loginId", "Username", false);
         }
-        
         investigatorFieldGroup.getFields().add(loginIdField);
         
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -255,13 +254,14 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
                 		errors.rejectValue("siteInvestigators["+i+"].startDate","INV_001","Start date cannot be before today's date.");
                 	}
                 }
-            }
-            
-            if(siteInvestigator.getEndDate() != null){
-            	if(DateUtils.compareDate(siteInvestigator.getEndDate(),now) < 0){
-                	errors.rejectValue("siteInvestigators["+i+"].endDate","INV_003","End date cannot be before today's date.");
+                
+                if(siteInvestigator.getEndDate() != null){
+                	if(DateUtils.compareDate(siteInvestigator.getEndDate(),now) < 0){
+                    	errors.rejectValue("siteInvestigators["+i+"].endDate","INV_003","End date cannot be before today's date.");
+                    }
                 }
             }
+            
             if(siteInvestigator.getStartDate() != null && siteInvestigator.getEndDate() != null){
             	if(DateUtils.compareDate(siteInvestigator.getEndDate(), siteInvestigator.getStartDate()) < 0){
             		errors.rejectValue("siteInvestigators["+i+"].endDate","INV_004","End date cannot be before Start date.");

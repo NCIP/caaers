@@ -68,7 +68,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
      *                The investigator to be saved.
      */
     @Transactional(readOnly = false)
-    public void save(final Investigator investigator) {
+    public void save(Investigator investigator) {
     	if(investigator.getId() == null && investigator.getNciIdentifier() != null && investigator instanceof LocalInvestigator){
     		Investigator ri = new RemoteInvestigator();
     		ri.setNciIdentifier(investigator.getNciIdentifier());
@@ -78,6 +78,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     			throw new RuntimeException("ResearchStaff exists in external system");
     		}
     	}
+    	investigator = (Investigator)getHibernateTemplate().merge(investigator);
     	getHibernateTemplate().saveOrUpdate(investigator);
     }
     /**
