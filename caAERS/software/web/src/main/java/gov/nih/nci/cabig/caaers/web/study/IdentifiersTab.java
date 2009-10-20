@@ -64,9 +64,10 @@ public class IdentifiersTab extends StudyTab {
 
             rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, collectOptionsFromConfig("identifiersType", "desc", "desc")));
             InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
-            InputFieldAttributes.setSize(sysNameField, 50);
+            InputFieldAttributes.setSize(sysNameField, 40);
             rfgFactory.addField(sysNameField);
             InputField orgNameField = InputFieldFactory.createAutocompleterField("organization", "Organization", false);
+            InputFieldAttributes.setSize(orgNameField, 40);
             orgNameField.getAttributes().put(InputField.ENABLE_CLEAR, true);
             rfgFactory.addField(orgNameField);
 
