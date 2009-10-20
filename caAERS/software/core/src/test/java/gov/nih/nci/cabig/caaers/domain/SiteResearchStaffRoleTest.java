@@ -39,7 +39,15 @@ public class SiteResearchStaffRoleTest extends TestCase {
 		role.setEndDate(new Date());
 		assertTrue(role.isInActive());
 		role.setStartDate(new Date());
-		assertFalse(role.isInActive());
+		assertTrue(role.isInActive());
+	}
+	
+	public void testIsActive_InactiveToday(){
+		Calendar c = Calendar.getInstance();
+		role.setEndDate(c.getTime());
+		c.add(Calendar.MONTH,-1);
+		role.setStartDate(c.getTime());
+		assertFalse(role.isActive());
 	}
 
 }
