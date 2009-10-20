@@ -596,6 +596,7 @@
 			<batchtest fork="yes" todir="${test.results.dir}" >
 				<fileset dir="${test.classes.dir}">
 					<include name="${testPattern}" />
+					<exclude name="**/coppa/**/*.*"/>
 				</fileset>
 			</batchtest>
 		</junit>
