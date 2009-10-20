@@ -19,6 +19,8 @@ public class DateUtils {
 	public static boolean between(Date d, Date startDate, Date endDate){
 		if(endDate == null){
 			return compareDate(d, startDate) >=0;
+		}else if (compareDate(endDate, d) ==  0){
+			return false;
 		}else{
 			return compareDate(d, startDate) >= 0 && compareDate(d , endDate) <=0;
 		}
