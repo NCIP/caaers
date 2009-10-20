@@ -690,9 +690,6 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="caaers:websso:properties:not:required" if="websso.properties.not.required">
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@AUTH_MODE@" value="${authentication.mode}" />
 	   	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.server.baseUrl=@WEBSSO_BASEURL@" value="" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.server.address=@WEBSSO_SERVER_ADDRESS@" value="" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.server.port=@WEBSSO_SERVER_PORT@" value="" />		
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.trustStore=@TRUST_STORE@" value="" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="hostCertificate=@HOST_CERT@" value="" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="hostKey=@HOST_KEY@" value="" />
 	 	<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="webSSO.cas.acegi.security.url=@ACEGI_URL@" value="" />
@@ -706,12 +703,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<target name="caaers:websso:properties:required" if="websso.properties.required">
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@AUTH_MODE@" value="${authentication.mode}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_BASEURL@" value="${webSSO.server.baseUrl}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_SERVER_ADDRESS@" value="${webSSO.server.address}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@WEBSSO_SERVER_PORT@" value="${webSSO.server.port}" />		
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
-		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@TRUST_STORE@" value="${webSSO.trustStore}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_CERT@" value="${hostCertificate}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@HOST_KEY@" value="${hostKey}" />
 		<replace file="${tomcat.home}/conf/caaers/datasource.properties" token="@ENABLE_COPPA_CACHE@" value="${enable.coppa.cache}" />
