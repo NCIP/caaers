@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
@@ -25,7 +24,6 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -38,7 +36,7 @@ import org.globus.wsrf.security.SecurityManager;
 import org.xml.sax.InputSource;
 
 /**
- * This class listener class which listens for messages on the ctmsCaaersRecvQueue "ctms-caaers.inputQueue".
+ * This is a listener class which listens for messages on the ctmsCaaersRecvQueue "ctms-caaers.inputQueue".
  * The JMS infrastructure is provided by ServiceMix. 
  * The ctms-caaers-sa needs to be deployed on ServiceMix.
  * 
@@ -228,16 +226,13 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processStudy(Message message,String messageType){
 		String responseXml = "";
-		//JAXBElement<Study> studyElement;
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse studyServiceResponse = null;
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			
-			//studyElement = (JAXBElement<Study>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
 			Studies studies = (Studies)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
-			//Study xmlStudy = studyElement.getValue();
 			if("CREATE_STUDY".equals(messageType)){
 				studyServiceResponse = studyProcessor.createStudy(studies);
 			}else if("UPDATE_STUDY".equals(messageType)){
@@ -260,16 +255,13 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processParticipant(Message message,String messageType){
 		String responseXml = "";
-		JAXBElement<ParticipantType> participantElement;
 		gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse participantServiceResponse = null;
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			
-			//participantElement = (JAXBElement<ParticipantType>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
 			Participants participants = (Participants)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
-			//ParticipantType xmlParticipant = participantElement.getValue();
 			if("CREATE_PARTICIPANT".equals(messageType)){
 				participantServiceResponse = participantService.createParticipant(participants);
 			}else if("UPDATE_PARTICIPANT".equals(messageType)){
@@ -306,8 +298,6 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 			logger.error("caught processParticipant",e);
 		} catch (JMSException e) {
 			logger.error("caught processParticipant",e);
-		//} catch (RemoteException e) {
-			//logger.error("caught processParticipant",e);
 		}
 		
 		return responseXml;
@@ -335,8 +325,6 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 			logger.error("caught processParticipant",e);
 		} catch (JMSException e) {
 			logger.error("caught processParticipant",e);
-		//} catch (RemoteException e) {
-			//logger.error("caught processParticipant",e);
 		}
 		
 		return responseXml;
