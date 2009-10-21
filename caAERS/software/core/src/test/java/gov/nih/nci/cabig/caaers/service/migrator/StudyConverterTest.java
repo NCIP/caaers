@@ -463,7 +463,7 @@ public class StudyConverterTest extends AbstractTestCase {
 
         try {
             // String tempDir = java.io. "/home/dell/Desktop/";
-            String tempDir = System.getProperty("java.io.tmpdir");
+            String tempDir = System.getProperty("java.io.tmpdir") + "/";
             String fileName = "study_" + study.getPrimaryIdentifierValue();
             fileName = RuleUtil.getStringWithoutSpaces(fileName);
 
