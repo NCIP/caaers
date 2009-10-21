@@ -462,7 +462,8 @@ public class StudyConverterTest extends AbstractTestCase {
         gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
 
         try {
-            String tempDir = "/home/dell/Desktop/";
+            // String tempDir = java.io. "/home/dell/Desktop/";
+            String tempDir = System.getProperty("java.io.tmpdir");
             String fileName = "study_" + study.getPrimaryIdentifierValue();
             fileName = RuleUtil.getStringWithoutSpaces(fileName);
 
