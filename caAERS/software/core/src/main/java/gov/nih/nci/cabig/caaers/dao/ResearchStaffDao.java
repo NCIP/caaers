@@ -64,7 +64,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     			throw new RuntimeException("ResearchStaff exists in external system");
     		}
     	}
-    	researchStaff = (ResearchStaff)getHibernateTemplate().merge(researchStaff);
     	getHibernateTemplate().saveOrUpdate(researchStaff);
     }
     
