@@ -31,7 +31,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
       		<c:set var="_jsHandler" value="handleAdverseEventSelection(${aeReportId},${ae.id}, true)" />
       	</c:if>
       	
-      	  <!-- cssClass : ${_cssClass } -->
+      	  <!-- cssClass : ${_cssClass } , aeId : ${ae.id} , primaryAeId :${primaryAeId}-->
 	      <tr class="${_cssClass}">
 		      <td style="text-align:center;" class="${_cssClass}">
 		      	<c:if test="${not ae.retired}">

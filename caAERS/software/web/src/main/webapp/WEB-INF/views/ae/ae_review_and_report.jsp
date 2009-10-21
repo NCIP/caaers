@@ -842,9 +842,9 @@ function validate(aeReportId){
 	<c:if test="${noOfAEReports gt 0}">
 		<c:forEach var="aeReport" items="${command.adverseEventReportingPeriod.aeReports}" varStatus="aeReportStatus">
 		<c:set var="_aeReportId" value="${aeReport.id}" />
-		<c:set var ="_primaryAE" value="${aeReport.adverseEvents[0]}" />
+		<c:set var ="_primaryAE" value="${fn:length(aeReport.adverseEvents) gt 0 ? aeReport.adverseEvents[0] : null}" />
 		<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
-		<chrome:accordion id="dc-section-${_aeReportId}" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}" >
+		<chrome:accordion id="dc-section-${_aeReportId}" title="${empty _primaryAE ? '' : _primaryAE.adverseEventTerm.universalTerm}, Grade ${empty _primaryAE ? '' : _primaryAE.grade.code}: ${empty _primaryAE ? '' : _primaryAE.grade.displayName}" >
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 			<chrome:division title="Recommended Actions">
 			<!--  Rules Message Top -->
@@ -857,7 +857,7 @@ function validate(aeReportId){
 			</chrome:division>
 			<!--  Listing of adverse events -->
 			<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
-				primaryAeId="${_primaryAE.id}" />
+				primaryAeId="${empty _primaryAE ? 0 : _primaryAE.id}" />
 			<!--  Rules Message Bottom -->
 			<div class="rulesMessageBottom">
 			 	<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />

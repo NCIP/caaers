@@ -176,8 +176,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 					//remove all the deselected aes. 
 					for(Integer aeId : command.getReviewResult().getUnwantedAEList()){
 						AdverseEvent ae = aeReport.findAdverseEventById(aeId);
+						if(ae == null) continue;
 						aeReport.getAdverseEvents().remove(ae);
-						
 						ae.clearAttributions();
 						ae.setReport(null);
 					}
