@@ -184,6 +184,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     
     function handleAction(selectElement, id, name, divId){
     	var action = selectElement.options[selectElement.selectedIndex].text;
+    	if(action != 'Please select')
     	if(confirm('Are you sure you want to take the action - ' + action + ' ?')){
     		switch (action) {
     	    	case "Please select": break;

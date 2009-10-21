@@ -105,8 +105,7 @@
     <property name="taskList">
       <list>
 		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
-		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
-		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import Report Definitions" p:linkName="importReportDefinitionController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
       </list>
     </property>
   </bean>
@@ -224,9 +223,7 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
-		  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		      p:displayName="Import Report Definitions" p:linkName="importReportDefinitionController"/>                                
+		    p:displayName="Manage Report Definitions" p:linkName="listNotificationController"/>
 	    </list>
 	  </property>
 	</bean>
