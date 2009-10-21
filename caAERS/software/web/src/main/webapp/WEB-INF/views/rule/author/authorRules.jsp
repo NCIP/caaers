@@ -92,15 +92,15 @@ div#createNew h3, div.section h3 {
 						createRuleSortable();
 					});
 
-				} catch(e) {alert(e)}
+				} catch(e) {
+					//alert(e)
+				}
 		}
 
 
 		function fetchCondition(ruleCount) {
-				 
 				try {
 					authorRule.addCondition(ruleCount, function(columnContent) {
-							
 							
 							var columns = $('rule-'+(ruleCount + 1)+'-columns');
 							var columnHolder = getElementHolderDiv();
@@ -140,7 +140,7 @@ div#createNew h3, div.section h3 {
 								//alert(newColumnId);
 
 				 				$(newColumnId).options.length = 0;
-				 				$(newColumnId).options.add(new Option("Please select Field", ""));
+				 				$(newColumnId).options.add(new Option("Please select field", ""));
 								
 								// Set all the options
 								domainObject.field.each(function(field)
@@ -161,7 +161,7 @@ div#createNew h3, div.section h3 {
 												var operatorDropDownID = selectId + '.literalRestriction[0].evaluator';
 												
 												$(operatorDropDownID).options.length = 0;
-												$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+												$(operatorDropDownID).options.add(new Option("Please select operator",""));
 
 												field.operator.each(function(operator)
 													{
@@ -605,14 +605,14 @@ div#createNew h3, div.section h3 {
 			
 			// Reset Operator 
 			$(operatorDropDownID).options.length = 0;
-			$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+			$(operatorDropDownID).options.add(new Option("Please select operator",""));
 							
 							
 			// Reset the value selection span
 
 			var selectArea = '<select id="' + validValueField.id + '" name="' + validValueField.id +'">';
 							
-			selectArea += '<option value="">Please select Value</option></select>';
+			selectArea += '<option value="">Please select value</option></select>';
 
 			$(validValueField.id+'.span').innerHTML = selectArea;
 			
@@ -630,7 +630,7 @@ div#createNew h3, div.section h3 {
 				
 								// Reset the operators
 								$(operatorDropDownID).options.length=0;
-								$(operatorDropDownID).options.add(new Option("Please select Operator", ""));
+								$(operatorDropDownID).options.add(new Option("Please select operator", ""));
 			
 								domainObject.field[fieldDropDown.selectedIndex-1].operator.each(function(operator)
 										{
@@ -1051,19 +1051,19 @@ div#createNew h3, div.section h3 {
 							
 							// Set the fields
 							$(fieldDropDownID).options.length = 0;
-							$(fieldDropDownID).options.add(new Option("Please select Field",""));
+							$(fieldDropDownID).options.add(new Option("Please select field",""));
 							
 							
 							// Reset Operator 
 							$(operatorDropDownID).options.length = 0;
-							$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+							$(operatorDropDownID).options.add(new Option("Please select operator",""));
 							
 							
 							// Reset the value selection span
 
 							var selectArea = '<select id="' + valueDropDownID + '" name="' + valueDropDownID +'">';
 							
-									selectArea += '<option value="">Please select Value</option></select>';
+									selectArea += '<option value="">Please select value</option></select>';
 
 							$(valueDropDownSpanID).innerHTML = selectArea;
 
@@ -1084,7 +1084,7 @@ div#createNew h3, div.section h3 {
 							
 							// Set the fields
 							$(fieldDropDownID).options.length = 0;
-							$(fieldDropDownID).options.add(new Option("Please select Field",""));
+							$(fieldDropDownID).options.add(new Option("Please select field",""));
 							
 							domainObject.field.each(function(field){	
 									
@@ -1095,14 +1095,14 @@ div#createNew h3, div.section h3 {
 							
 							// Reset Operator 
 							$(operatorDropDownID).options.length = 0;
-							$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+							$(operatorDropDownID).options.add(new Option("Please select operator",""));
 							
 							
 							// Reset the value selection span
 
 							var selectArea = '<select id="' + valueDropDownID + '" name="' + valueDropDownID +'">';
 							
-									selectArea += '<option value="">Please select Value</option></select>';
+									selectArea += '<option value="">Please select value</option></select>';
 
 							$(valueDropDownSpanID).innerHTML = selectArea;
 							
@@ -1289,7 +1289,7 @@ div#createNew h3, div.section h3 {
                       <form:select cssStyle="width: 100px;"
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
-                        <form:option value="">Please select Domain Object</form:option>
+                        <form:option value="">Please select domain object</form:option>
                         <form:options items="${ruleUi.condition[0].domainObject}"
 							itemLabel="displayUri" itemValue="className" />
                       </form:select>
@@ -1301,7 +1301,7 @@ div#createNew h3, div.section h3 {
                       <form:select cssStyle="width: 100px;"
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
-                        <form:option value="">Please select Field</form:option>
+                        <form:option value="">Please select field</form:option>
                         <c:forEach items="${ruleUi.condition[0].domainObject}"
 							varStatus="selectedField">
                           <c:set var="selectedIndex" value="${selectedField.index}" />
@@ -1672,10 +1672,7 @@ div#createNew h3, div.section h3 {
                           </c:choose>
                         </c:otherwise>
                       </c:choose>
-                      </span> <a href="javascript:fetchCondition(${ruleCount})"> <img
-						id="add-column-${ruleCount}"
-						src="/caaers/images/rule/add_condition.gif" align="absmiddle"
-						style="cursor:hand; border:0px" /> </a>
+                      </span>
                       <c:if
 						test="${columnCount > 0}"> <a href="javascript:removeCondition(${ruleCount}, ${columnCount})"> <img id="remove-column-${ruleCount}"
 							src="/caaers/images/rule/remove_condition.gif" align="absmiddle"
@@ -1716,6 +1713,9 @@ div#createNew h3, div.section h3 {
                       </c:forEach>
                     </form:select>
                   </div>
+                  <div class="local-buttons">
+            	  	<tags:button id="add-condition-${ruleCount }" color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fetchCondition(${ruleCount })"/>
+        		  </div>
                   <c:if test="${ruleCount} == 0"> <br />
                   </c:if>
                 </div>

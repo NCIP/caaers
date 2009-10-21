@@ -24,7 +24,7 @@
           </c:choose>
           <img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
           <select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
-            <option value="">Please select Domain Object</option>
+            <option value="">Please select domain object</option>
             <c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="optionStatus">
               <option value="${ruleUi.condition[0].domainObject[optionStatus.index].className}"> ${ruleUi.condition[0].domainObject[optionStatus.index].displayUri} </option>
             </c:forEach>
@@ -35,7 +35,7 @@
           <img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
           <select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount}, ${conditionStatus.index})">
-            <option value="">Please select Field</option>
+            <option value="">Please select field</option>
             <%--
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
@@ -66,7 +66,7 @@
           <select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value"
 						onchange="onCategoryChange(this, ${ruleCount})">
-            <option value="">Please select Value</option>
+            <option value="">Please select value</option>
             <%--
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].value}">
@@ -75,7 +75,7 @@
 						</c:forEach>
 						--%>
           </select>
-          </span> <a href="javascript:fetchCondition(${ruleCount})"> <img id="add-column-${ruleCount}" src="<c:url value="/images/rule/add_condition.gif"/>" align="absmiddle" style="cursor:hand; border:0px"/> </a>
+          </span>
           <c:if test="${columnCount > 0}"> <a href="javascript:removeCondition(${ruleCount}, ${columnCount})"> <img id="remove-column-${ruleCount}" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" style="cursor:hand;  border:0px"/> </a> </c:if>
         </div>
         <br/>
@@ -109,14 +109,9 @@
             </c:otherwise>
           </c:choose>
         </select>
-        <%--					
-					<a href="javascript:addAction(${ruleCount})">
-						<img id="add-action-image" onclick="addAction(${ruleCount})" src="<c:url value="/images/rule/add_condition.gif"/>" align="absmiddle" style="cursor:hand"/>
-					</a>
-					<a href="javascript:addAction(${ruleCount})">
-						<img id="remove-action-image" onclick="deleteAction(${ruleCount})" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" style="cursor:hand"/>											
-					</a>
-					--%>
+      </div>
+      <div class="local-buttons">
+      	<tags:button id="add-condition-${ruleCount }" color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fetchCondition(${ruleCount })"/>
       </div>
     </div>
   </div>

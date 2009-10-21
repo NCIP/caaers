@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Manage Rules</title>
+    <title>Manage rules</title>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <style type="text/css">
         div.row {
@@ -205,12 +205,12 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </script>
 </head>
 <body>
-<chrome:box title="Manage / Import Rules" autopad="true">
-	<chrome:division title="Manage Rules" id="rule-set-id" >
+<chrome:box title="Manage / Import rules" autopad="true">
+	<chrome:division title="Manage rules" id="rule-set-id" >
 	    <p><tags:instructions code="listrules" /></p>
     	<div id="basic" class="yui-skin-sam"></div>
     </chrome:division><br><br><br><br><br>
-    <chrome:division title="Import Rules" id="import-rules-id">
+    <chrome:division title="Import rules" id="import-rules-id">
     	<p>
 			<tags:instructions code="importxmlrules" />
 		</p>

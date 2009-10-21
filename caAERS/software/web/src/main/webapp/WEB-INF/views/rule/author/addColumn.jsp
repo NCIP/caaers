@@ -77,9 +77,6 @@
 	
 	</span>
 	
-	<a href="javascript:fetchCondition(${ruleCount})">
-		<img id="add-column-${ruleCount}" src="<c:url value="/images/rule/add_condition.gif"/>" align="absmiddle" style="cursor:hand; border:0px"/>
-	</a>
 	<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
 		<img id="remove-column-${ruleCount}" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" style="cursor:hand;  border:0px"/>
 	</a>

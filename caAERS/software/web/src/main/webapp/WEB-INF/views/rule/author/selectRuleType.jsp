@@ -235,15 +235,15 @@
 		<p>
         	<tags:instructions code="ruletype" />  
     	</p>
-    	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
+    	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideBox="true">
     		<jsp:attribute name="singleFields">
-    			<chrome:division title="Rule Level" id="rule-level-id" >
+    			<chrome:division title="Rule type" id="rule-level-id" >
     				<div class="row"  id="ruleLevelDiv">
-            			<div class="label"><label for="ruleLevelName">Rule Level</label></div>
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Rule level</label></div>
             			<div class="value">
             				<form:hidden path="level"/>
                 			<select id="ruleLevel" onChange="displayRuleTypeInput(this)" value="${level }">
-                    			<option value="Please select a Rule level">Please select a Rule level</option>
+                    			<option value="Please select a Rule level">Please select</option>
 				                <option value="Sponsor">Sponsor rules </option>
                 				<option value="Institution">Institution rules</option>
                 				<option value="SponsorDefinedStudy">Sponsor defined rules for a study</option>
@@ -256,8 +256,8 @@
         			
         			<div class="autoclear" id="criteria-div">		
 						
-						<div title="Select Sponsor" id="sponsorName-details" style="display:none" class="pane">
-							<chrome:box title="Select Sponsor" id="sponsorName-entry" autopad="true" cssClass="pairedLong">
+						<div title="Select sponsor" id="sponsorName-details" style="display:none" class="pane">
+							<chrome:box title="Select sponsor" id="sponsorName-entry" autopad="true" cssClass="pairedLong">
 								<form:hidden path="sponsorName"/>
             					<tags:requiredIndicator/>
             					<input type="text" id="sponsorName-input" value="${command.sponsorName}" class="autocomplete"/>
@@ -271,8 +271,8 @@
             				</chrome:box>
 						</div>
 						
-						<div title="Select Institution" id="institutionName-details" style="display:none" class="pane">
-							<chrome:box title="Select Institution" id="institutionName-entry" autopad="true" cssClass="pairedLong">
+						<div title="Select institution" id="institutionName-details" style="display:none" class="pane">
+							<chrome:box title="Select institution" id="institutionName-entry" autopad="true" cssClass="pairedLong">
 								<form:hidden path="institutionName"/>
             					<tags:requiredIndicator/>
             					<input type="text" id="institutionName-input" value="${command.institutionName}" class="autocomplete"/>
@@ -286,8 +286,8 @@
             				</chrome:box>
 						</div>
 
-						<div title="Select Study" id="categoryIdentifier-details" style="display:none" class="pane">
-							<chrome:box title="Select Study" id="categoryIdentifier-entry" autopad="true" cssClass="pairedLong">
+						<div title="Select study" id="categoryIdentifier-details" style="display:none" class="pane">
+							<chrome:box title="Select study" id="categoryIdentifier-entry" autopad="true" cssClass="pairedLong">
 								<form:hidden path="categoryIdentifier"/>
             					<tags:requiredIndicator/>
             					<input type="text" id="categoryIdentifier-input" value="${command.categoryIdentifier}" class="autocomplete"/>
@@ -301,13 +301,12 @@
             				</chrome:box>
 						</div>
 					</div>
-    			</chrome:division>
-    			<chrome:division title="Rule Set" id="rule-set-id" >
-    				<div class="row"  id="ruleSetDiv">
-            			<div class="label"><label for="ruleSetName">Rule Set Name</label></div>
+					
+					<div class="row"  id="ruleSetDiv">
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleSetName">Rule set name</label></div>
             			<div class="value">
                 			<select id="ruleSetName" onChange="setRuleSetName(this)">
-                    			<option value="">Please select a Rule Set Name</option>
+                    			<option value="">Please select</option>
 				                <option value="SAE Reporting Rules">SAE Reporting Rules </option>
                 				<option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
 				            </select>
