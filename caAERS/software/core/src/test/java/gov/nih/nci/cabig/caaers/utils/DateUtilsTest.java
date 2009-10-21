@@ -18,38 +18,17 @@ public class DateUtilsTest extends TestCase {
 	}
 
 	public void testCompareDate() {
-//		Calendar cal = GregorianCalendar.getInstance();
-//		cal.set(2002, Calendar.FEBRUARY, 12);
-//		Date d1 = cal.getTime();
-//		Date d2 = cal.getTime();
-//		
-//		
-//		cal.add(Calendar.HOUR, 24);
-//		Date d3 = cal.getTime();
-//		
-//		assertEquals(-1, DateUtils.compareDate(d1, d3));
-//		assertEquals(1, DateUtils.compareDate(d3, d2));
-		
-		Calendar myCal = GregorianCalendar.getInstance();
-		myCal.set(2009, Calendar.OCTOBER, 20);
-		Date endDate = myCal.getTime();
-		//today is equal to endDate
-		System.out.println(DateUtils.compareDate(DateUtils.today(), endDate));
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(2002, Calendar.FEBRUARY, 12);
+		Date d1 = cal.getTime();
+		Date d2 = cal.getTime();
 		
 		
-		myCal.set(2009, Calendar.DECEMBER, 30);
-		endDate = myCal.getTime();
-		//today is less than endDate
-		System.out.println(DateUtils.compareDate(DateUtils.today(), endDate));
+		cal.add(Calendar.HOUR, 24);
+		Date d3 = cal.getTime();
 		
-		
-		myCal.set(2009, Calendar.SEPTEMBER, 10);
-		endDate = myCal.getTime();
-		//today is greater than endDate
-		System.out.println(DateUtils.compareDate(DateUtils.today(), endDate));
-		
-		System.out.println(DateUtils.today());
-		
+		assertEquals(-1, DateUtils.compareDate(d1, d3));
+		assertEquals(1, DateUtils.compareDate(d3, d2));
 	}
 	
 	public void testCompareDateAndTime(){
@@ -136,7 +115,7 @@ public class DateUtilsTest extends TestCase {
 		
 		assertTrue(DateUtils.between(d2, d1, d3));
 		assertTrue(DateUtils.between(d2, d2, d3));
-		assertTrue(DateUtils.between(d3, d2, d3));
+		assertFalse(DateUtils.between(d3, d2, d3));
 		assertTrue(DateUtils.between(d2, d1, null));
 		assertTrue(DateUtils.between(d2, d2, null));
 		
