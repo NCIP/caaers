@@ -154,18 +154,6 @@ public class StudyConverterTest extends AbstractTestCase {
 		 assertEquals(0, DateUtils.compareDate(now.toGregorianCalendar().getTime(), study.getStudySites().get(0).getStartDate()));
 	}
 
-    public void testConvertStudyDomainToStudyDto() throws Exception {
-        Study study = new LocalStudy();
-        study.setShortTitle("Short Title test for export");
-        study.setLongTitle("Long Title test for export");
-
-        gov.nih.nci.cabig.caaers.webservice.Studies studies = converter.convertStudyDomainToStudyDto(study);
-
-        assertEquals("Short Title test for export", studies.getStudy().get(0).getShortTitle());
-        assertEquals("Long Title test for export", studies.getStudy().get(0).getLongTitle());
-
-    }
-
     public void testExportStudy() throws Exception {
         Study study = new LocalStudy();
         study.setShortTitle("Short Title test for export");
