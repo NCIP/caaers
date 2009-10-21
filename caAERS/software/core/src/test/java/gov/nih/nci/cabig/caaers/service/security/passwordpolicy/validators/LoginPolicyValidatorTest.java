@@ -14,6 +14,10 @@ import java.util.Calendar;
 
 import junit.framework.TestCase;
 
+import org.acegisecurity.CredentialsExpiredException;
+import org.acegisecurity.DisabledException;
+import org.acegisecurity.LockedException;
+
 /**
  * @author Ram Seethiraju
  */
@@ -45,7 +49,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 	}
 	
 	public void testForFailedLoginAttempts_CheckingSuccess() {		
-		user.setFailedLoginAttempts(2);
+		user.setFailedLoginAttempts(1);
 		assertTrue(loginPolicyValidator.validateAllowedFailedLoginAttempts(loginPolicy, credential));
 	}
 	public void testForFailedLoginAttempts_CheckingFailure1() {		
@@ -53,7 +57,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			loginPolicyValidator.validateAllowedFailedLoginAttempts(loginPolicy, credential);
 			fail("Testcase Failed: AllowedFailedLoginAttemps limit reached but exception was not thrown");
-		} catch (TooManyAllowedFailedLoginAttemptsException e) {
+		} catch (DisabledException e) {
 		}
 	}
 	public void testForFailedLoginAttempts_CheckingFailure2() {		
@@ -61,7 +65,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			loginPolicyValidator.validateAllowedFailedLoginAttempts(loginPolicy, credential);
 			fail("Testcase Failed: AllowedFailedLoginAttemps limit reached but exception was not thrown");
-		} catch (TooManyAllowedFailedLoginAttemptsException e) {
+		} catch (DisabledException e) {
 		}
 	}
 	
@@ -84,7 +88,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		try {
 			loginPolicyValidator.validateMaxPasswordAge(loginPolicy, credential);
 			fail("Testcase Failed: MaxPasswordAge limit reached but exception was not thrown.");
-		} catch (PasswordTooOldException e) {
+		} catch (CredentialsExpiredException e) {
 		}
 	}
 	
@@ -97,19 +101,20 @@ public class LoginPolicyValidatorTest extends TestCase {
 	public void testForLockOutDuration_CheckingFailure1() {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, -1); // last attempt made 1 minute ago
+		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
 		try {
 			loginPolicyValidator.validateLockOutDuration(loginPolicy, credential);
 			fail("Testcase Failed: LockOutDuration limit has not been reached but exception was not thrown.");
-		} catch (UserLockedOutException e) {
+		} catch (LockedException e) {
 		}
 	}
 	
 	public void testValidateMethod_CheckingSuccess() {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
+		cal.add(Calendar.MINUTE, -6);  // last attempt made 4 minute ago
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		user.setFailedLoginAttempts(2); // 2 failed attempts
+		user.setFailedLoginAttempts(1); // 1 failed attempt
 		Calendar cal1 = Calendar.getInstance();
 		cal1.add(Calendar.DATE, -1);// last set 1 day ago
 		user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
@@ -120,12 +125,12 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
 			user.setLastFailedLoginAttemptTime(cal.getTime());
-			user.setFailedLoginAttempts(2); // 2 failed attempts
+			user.setFailedLoginAttempts(1); // 1 failed attempt
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -3);// last set 3 days ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
 			loginPolicyValidator.validate(passwordPolicy, credential, null);
-		} catch (PasswordTooOldException e) {
+		} catch (CredentialsExpiredException e) {
 		}
 	}
 	public void testValidateMethod_CheckingFailure2() {
@@ -133,12 +138,12 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -4);  // last attempt made 4 minute ago
 			user.setLastFailedLoginAttemptTime(cal.getTime());
-			user.setFailedLoginAttempts(4); // 2 failed attempts
+			user.setFailedLoginAttempts(4); // 4 failed attempts
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
 			loginPolicyValidator.validate(passwordPolicy, credential, null);
-		} catch (TooManyAllowedFailedLoginAttemptsException e) {
+		} catch (DisabledException e) {
 		}
 	}
 	public void testValidateMethod_CheckingFailure3() {
@@ -146,12 +151,12 @@ public class LoginPolicyValidatorTest extends TestCase {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.MINUTE, -2);  // last attempt made 4 minute ago
 			user.setLastFailedLoginAttemptTime(cal.getTime());
-			user.setFailedLoginAttempts(2); // 2 failed attempts
+			user.setFailedLoginAttempts(1); // 1 failed attempt
 			Calendar cal1 = Calendar.getInstance();
 			cal1.add(Calendar.DATE, -1);// last set 1 day ago
 			user.setPasswordLastSet(new Timestamp(cal1.getTime().getTime()));
 			loginPolicyValidator.validate(passwordPolicy, credential, null);
-		} catch (UserLockedOutException e) {
+		} catch (LockedException e) {
 		}
 	}
 }
