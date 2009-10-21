@@ -36,12 +36,24 @@
      	</property>
 	</bean>
 	
+	
 	<!--  This bean that implements the service  -->
-	<bean name="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean id="reportStatusResetJobTarget" class="org.springframework.scheduling.quartz.JobDetailBean">
   		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
   		<property name="group" value="DEFAULT"/>
   		<property name="name" value="reportStatusResetJob"/>
   	</bean>
+  	
+	<bean name="reportStatusResetJob" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="reportStatusResetJobTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>auditInfoPopulatorInterceptor</value>
+			</list> 
+		</property> 
+	</bean>
+
 	<!-- trigger every 5 minutes -->
 	<bean id="reportStatusResetTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.ReportStatusResetTrigger">
 	    <property name="jobName" value="reportStatusResetJob" />
@@ -49,6 +61,8 @@
 	    <property name="volatility" value="true" />
 	    <property name="misfireInstruction" value="0" />
 	</bean>
+
+
 
 
 
