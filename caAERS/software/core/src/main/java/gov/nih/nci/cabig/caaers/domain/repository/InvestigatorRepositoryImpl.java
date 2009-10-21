@@ -79,7 +79,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 				mailException = e;
 			}
 		}
-        investigatorDao.save(investigator);
+		investigator = investigatorDao.merge(investigator);
         if(mailException != null) throw mailException;
 	}
 	

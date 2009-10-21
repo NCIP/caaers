@@ -62,7 +62,7 @@ public class ResearchStaffRepository {
      * @throws CaaersSystemException if research staff can not be created.
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-    public void save(final ResearchStaff researchStaff, String changeURL) {
+    public void save(ResearchStaff researchStaff, String changeURL) {
     	
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
@@ -81,7 +81,7 @@ public class ResearchStaffRepository {
     		mailException = e;
     	}
     	try{
-    		researchStaffDao.save(researchStaff);
+    		researchStaff = (ResearchStaff)researchStaffDao.merge(researchStaff);
     	}catch(Exception e){
     		e.printStackTrace();
 			throw new CaaersSystemException("Failed to create researchstaff");

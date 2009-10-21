@@ -78,9 +78,10 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     			throw new RuntimeException("ResearchStaff exists in external system");
     		}
     	}
-    	investigator = (Investigator)getHibernateTemplate().merge(investigator);
     	getHibernateTemplate().saveOrUpdate(investigator);
     }
+    
+    
     /**
      * Get the list of investigators matching the name fragments.
      * 
