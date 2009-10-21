@@ -78,8 +78,13 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			//if report is completed xml should be obtained from saved data.
     			String xml = null;
     			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)){
-    				//obtain the saved xml report
-    				ReportContent reportContent = reportDao.getReportContent(report);
+    				
+    				ReportContent reportContent = null;
+    				// if the report is submitted and assigned with a ticket number , we need to populate that ticket number in XML , so generate new XML 
+    				if (report.getAssignedIdentifer() == null ) {
+    					//obtain the saved xml report
+    					reportContent = reportDao.getReportContent(report);
+    				}
     				if(reportContent == null){
     					xml =  adverseEventReportSerializer.serialize(aeReport,report);
     				}else{
