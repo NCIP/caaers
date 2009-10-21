@@ -28,5 +28,7 @@ public class ResearchStaffTest extends TestCase {
 	public void testGetActiveDate(){
 		assertNull(staff.getActiveDate());
 	}
+	
+	
 
 }

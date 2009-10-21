@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
+import gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class StudyRepository {
-
+	
+	private static Log log = LogFactory.getLog(StudyRepository.class);
+	
     private StudyDao studyDao;
     private ResearchStaffDao researchStaffDao;
     private OrganizationDao organizationDao;
@@ -52,6 +57,7 @@ public class StudyRepository {
      */
     @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
+    	
     	Study study = new RemoteStudy();
     	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
     	

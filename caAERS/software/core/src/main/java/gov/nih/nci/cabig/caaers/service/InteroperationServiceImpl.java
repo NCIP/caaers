@@ -30,11 +30,11 @@ public class InteroperationServiceImpl implements InteroperationService {
         AeNotification aeNotification = null;
 		try {
 			aeNotification = aeNotificationFactory.createAENotificationForExpeditedAdverseEventReport(aeReport);
-			String xml = XMLUtil.getXML(aeNotification);
+			String xml = XMLUtil.getAdverseEventXML(aeNotification);
 	        System.out.println("XML " + xml);
 	        
 	        // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
-	        getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+	        getMessageBroadcastService().broadcast(XMLUtil.getAdverseEventXML(aeNotification));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new CaaersSystemException(e);
@@ -47,7 +47,7 @@ public class InteroperationServiceImpl implements InteroperationService {
         AeNotification aeNotification = null;
 		try {
 			aeNotification = aeNotificationFactory.createAENotificationForRoutineAdverseEventReport(roReport);
-			getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+			getMessageBroadcastService().broadcast(XMLUtil.getAdverseEventXML(aeNotification));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new CaaersSystemException(e);

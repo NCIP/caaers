@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 
+import gov.nih.nci.cabig.caaers.webservice.Studies;
 import gov.nih.nci.cagrid.caxchange.client.CaXchangeRequestProcessorClient;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.caxchange.ResponseMessage;
@@ -18,18 +19,42 @@ import org.apache.axis.message.MessageElement;
 import org.apache.log4j.Logger;
 
 public class XMLUtil {
+	
 	private static Logger log = Logger.getLogger(XMLUtil.class);
 	
-    public static String getXML(Object rootElement) throws Exception {
-
-    	
-    	JAXBContext jaxbContext = JAXBContext.newInstance("gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae");
-	       // org.jibx.xsd2jibx.GeneratorAntTask f;
-	        Marshaller  m = jaxbContext.createMarshaller();
-	        StringWriter w = new StringWriter();
-	        m.marshal(rootElement, w);
-	        
-	        return w.toString();
+    public static String getAdverseEventXML(Object rootElement) throws Exception {
+    	return getXML(rootElement, "gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae");
+    }
+    
+    /**
+     * This method will return {@link Studies}
+     * @param rootElement
+     * @return
+     */
+    public static String getStudyXML(Object studies){
+    	return getXML(studies, "gov.nih.nci.cabig.caaers.webservice");
+    }
+    
+    /**
+     * Will serialize using JAXB, a JAXB object.
+     * @param rootElement
+     * @param namespace
+     * @return
+     */
+    public static String getXML(Object rootElement, String namespace){
+    	try {
+			StringWriter sw = new StringWriter();
+			JAXBContext jaxbContext = JAXBContext.newInstance(namespace);
+			
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true) ;
+			marshaller.marshal(rootElement, sw);
+			 return sw.toString();
+		} catch (Exception e) {
+			log.error("Error while marshalling", e);
+		}
+		
+       return null;
     }
     
     public static List<String>getObjectsFromCoppaResponse(String response ){
