@@ -127,6 +127,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         this.contextualGrades = contextualGrades;
     }
 
+    @Column(name = "term_definition")
     public String getDefinition() {
         return definition;
     }
