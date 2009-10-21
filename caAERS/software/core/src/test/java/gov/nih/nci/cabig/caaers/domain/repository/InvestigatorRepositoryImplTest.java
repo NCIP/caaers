@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import static org.easymock.EasyMock.expect;
+
+import org.hibernate.jdbc.Expectation;
+
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -28,7 +32,9 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		Investigator inv = Fixtures.createInvestigator("Joel");
 		Organization org = Fixtures.createOrganization("NCI");
 		String changeUrl = "/pages/url";
-		investigatorDao.save(inv);
+		
+		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
+		
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
 		
 		replayMocks();
@@ -41,7 +47,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		inv.setLoginId("loginId");
 		Organization org = Fixtures.createOrganization("NCI");
 		String changeUrl = "/pages/url";
-		investigatorDao.save(inv);
+		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
 		repositoryImpl.setAuthenticationMode("webSSO");
 		replayMocks();
@@ -52,7 +58,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		Investigator inv = Fixtures.createInvestigator("Joel");
 		Organization org = Fixtures.createOrganization("NCI");
 		String changeUrl = "/pages/url";
-		investigatorDao.save(inv);
+		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
 		repositoryImpl.setAuthenticationMode("webSSO");
 		replayMocks();

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -48,7 +49,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.addSiteResearchStaff(siteResearchStaff);
 		staff.setLoginId("Joel@def.com");
 		String changeUrl = "/pages/url";
-		researchStaffDao.save(staff);
+		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
@@ -74,7 +75,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		staff.addSiteResearchStaff(siteResearchStaff);
 		staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
-		researchStaffDao.save(staff);
+		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
 		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
