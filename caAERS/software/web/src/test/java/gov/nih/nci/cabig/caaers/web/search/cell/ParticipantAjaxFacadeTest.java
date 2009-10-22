@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.*;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade;
 
 import java.util.Arrays;
@@ -15,7 +18,7 @@ import java.util.Arrays;
  * @author Saurabh Agrawal
  * @crated Oct 2, 2008
  */
-public class ParticipantAjaxFacadeTest extends WebTestCase {
+public class ParticipantAjaxFacadeTest extends DwrFacadeTestCase {
 
     private SearchStudyAjaxFacade searchStudyAjaxFacade;
     private StudySearchableAjaxableDomainObject study;
@@ -47,10 +50,13 @@ public class ParticipantAjaxFacadeTest extends WebTestCase {
     }
 
     public void testGetTable() {
-        expect(studySearchableAjaxableDomainObjectRepository.findStudies(isA(StudySearchableAjaxableDomainObjectQuery.class))).andReturn(Arrays.asList(study));
+    	AssignParticipantStudyCommand command = new AssignParticipantStudyCommand();
+    	session.setAttribute( AssignParticipantController.class.getName() + ".FORM.command", command);
+    	expect(webContext.getSession()).andReturn(session).anyTimes();
+        expect(studySearchableAjaxableDomainObjectRepository.findStudies(isA(StudySearchableAjaxableDomainObjectQuery.class), eq(""), eq(""))).andReturn(Arrays.asList(study));
         replayMocks();
         String table = searchStudyAjaxFacade.getTableForAssignParticipant(null, "", "", request);
-
+        System.out.println(table);
         verifyMocks();
        // assertEquals("", table);
         
