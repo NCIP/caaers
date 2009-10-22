@@ -74,14 +74,11 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}
 	    	
-	    	//no need to create csm user for remote investigator .
-	    	if (investigator instanceof LocalInvestigator) {
 		        try {
 					csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
 				} catch (MailException e) {
 					mailException = e;
 				}
-	    	}
 		}
 		investigator = investigatorDao.merge(investigator);
         if(mailException != null) throw mailException;
