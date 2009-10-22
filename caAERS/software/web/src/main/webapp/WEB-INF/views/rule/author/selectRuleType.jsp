@@ -291,8 +291,6 @@
                                     <ui:autocompleter path="categoryIdentifier" enableClearButton="true" required="true" title="Study"/>
                                 </jsp:attribute>
                             </ui:row>
-								
-            				
 						</div>
 					</div>
 					

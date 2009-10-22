@@ -13,6 +13,91 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <div id="report-validation-section">
+	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
+		<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
+			<chrome:division collapsable="true" title="${report.reportDefinition.label}" id="division-${report.id}">
+				<div class="row">
+					<div class="leftpanel">
+                        <div class="row">
+                            <div class="label">
+                                Status
+                            </div>
+                            <div class="value">
+                                <c:if test="${report.lastVersion.reportStatus == 'PENDING'}">
+                                    <span class="dueOn">
+                                        <c:if test="${not empty report.lastVersion.dueOn}">
+                                            <i>Due on</i>
+                                            <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b>
+                                        </c:if>
+                                        <c:if test="${ empty report.lastVersion.dueOn}">
+                                            <i>Amendment Due</i>
+                                        </c:if>
+                                    </span>
+                                </c:if>
+                                <c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}">
+                                    <span class="submittedOn"><i>Withdrawn</i>
+                                        <br>
+                                        <b><tags:formatDate value="${report.lastVersion.withdrawnOn}" /></b>
+                                    </span>
+                                </c:if>
+                                <c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}">
+                                    <span class="submittedOn"><i>Submitted on </i>
+                                        <br>
+                                        <b><tags:formatDate value="${report.lastVersion.submittedOn}" /></b>
+                                    </span>
+                                </c:if>
+                                <c:if test="${report.lastVersion.reportStatus == 'FAILED'}">
+                                    <span class="dueOn"><i>Submission to AdEERS failed </i></span>
+                                </c:if>
+                                <c:if test="${report.lastVersion.reportStatus == 'INPROCESS'}">
+                                    <span class="dueOn"><i>Submission to AdEERS in process</i></span>
+                                </c:if>
+                            </div>
+                        </div>
+					</div>
+					<div class="rightpanel">
+						<c:if test="${report.reportDefinition.amendable == true}">
+							<div class="row">
+								<div class="label">
+									Amendment #
+								</div>
+								<div class="value">
+									${report.lastVersion.amendmentNumber}
+								</div>
+							</div>
+						</c:if>
+					</div>
+				</div>
+                <c:choose>
+                    <c:when test="${reportMessages[report.id].submittable}">
+                        <div class="row" style="margin-left:102px; background-color:#C8FFBF; padding:10px; width:500px; font-weight:bolder;">
+                                <img src="<chrome:imageUrl name="../buttons/button_icons/check_icon.png"/>" alt="" style="vertical-align:middle; margin-right:10px;" /> Ready to submit!
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="row" style="margin-left:102px; background-color:#FFDFDF; padding:10px; width:500px;">
+                            <h3>
+                                Information remaining to complete
+                            </h3>
+                            
+                                <ul>
+                                    <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
+                                        <li>
+                                            ${sectionEntry.key.displayName} section
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+			</chrome:division>
+		</c:if>
+	</c:forEach>
+	
+	
+	
+	
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
