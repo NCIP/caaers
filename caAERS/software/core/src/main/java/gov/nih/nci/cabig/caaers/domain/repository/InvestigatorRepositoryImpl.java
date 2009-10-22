@@ -8,11 +8,11 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -73,11 +73,15 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}
-	        try {
-				csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
-			} catch (MailException e) {
-				mailException = e;
-			}
+	    	
+	    	//no need to create csm user for remote investigator .
+	    	if (investigator instanceof LocalInvestigator) {
+		        try {
+					csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+				} catch (MailException e) {
+					mailException = e;
+				}
+	    	}
 		}
 		investigator = investigatorDao.merge(investigator);
         if(mailException != null) throw mailException;
