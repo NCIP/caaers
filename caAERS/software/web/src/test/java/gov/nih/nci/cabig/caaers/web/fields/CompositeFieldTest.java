@@ -46,38 +46,38 @@ public class CompositeFieldTest extends AbstractTestCase {
         assertEquals("Wrong number of subfields", 1, subfields.size());
         assertEquals("Wrong name for subfield", "field", subfields.get(0).getPropertyName());
     }
-
-    public void testValidateCompositeField() throws Exception {
-    	ParticipantHistory history = new ParticipantHistory();
-    	history.getWeight();
-    	
-    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
-    	group.addField(textField);
-    	
-    	field = new CompositeField("weight", group);
-    	
-    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
-		BindException errors = new BindException(binder.getBindingResult());
-		
-		field.validate(new BeanWrapperImpl(history), errors);
-		
-		assertFalse(errors.hasErrors());
-    }
-    
-    public void testValidateCompositeField_InvalidValue() throws Exception {
-    	ParticipantHistory history = new ParticipantHistory();
-    	history.getWeight().setQuantity(new BigDecimal(-99));
-    	
-    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
-    	group.addField(textField);
-    	
-    	field = new CompositeField("weight", group);
-    	
-    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
-		BindException errors = new BindException(binder.getBindingResult());
-		
-		field.validate(new BeanWrapperImpl(history), errors);
-		assertTrue(errors.hasErrors());
-    }
+//
+//    public void testValidateCompositeField() throws Exception {
+//    	ParticipantHistory history = new ParticipantHistory();
+//    	history.getWeight();
+//    	
+//    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
+//    	group.addField(textField);
+//    	
+//    	field = new CompositeField("weight", group);
+//    	
+//    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
+//		BindException errors = new BindException(binder.getBindingResult());
+//		
+//		field.validate(new BeanWrapperImpl(history), errors);
+//		
+//		assertFalse(errors.hasErrors());
+//    }
+//    
+//    public void testValidateCompositeField_InvalidValue() throws Exception {
+//    	ParticipantHistory history = new ParticipantHistory();
+//    	history.getWeight().setQuantity(new BigDecimal(-99));
+//    	
+//    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
+//    	group.addField(textField);
+//    	
+//    	field = new CompositeField("weight", group);
+//    	
+//    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
+//		BindException errors = new BindException(binder.getBindingResult());
+//		
+//		field.validate(new BeanWrapperImpl(history), errors);
+//		assertTrue(errors.hasErrors());
+//    }
 
 }
