@@ -85,6 +85,8 @@ public class CreateRuleCommand implements RuleInputCommand {
     private String level;
 
     private String sponsorName;
+    
+    private String sponsorNameInitialValue;
 
     private String ruleSetName; // Ruleset selected by the user
 
@@ -92,6 +94,8 @@ public class CreateRuleCommand implements RuleInputCommand {
                                             // Sponsor or Institution or Study
 
     private String institutionName;
+    
+    private String institutionNameInitialValue;
 
     private String organizationName;
 
@@ -216,6 +220,22 @@ public class CreateRuleCommand implements RuleInputCommand {
         }
 
         this.sponsorName = sponsorName;
+    }
+    
+    public String getSponsorNameInitialValue(){
+    	return sponsorNameInitialValue;
+    }
+    
+    public void setSponsorNameInitialValue(String sponsorNameInitialValue){
+    	this.sponsorNameInitialValue = sponsorNameInitialValue;
+    }
+    
+    public String getInstitutionNameInitialValue(){
+    	return institutionNameInitialValue;
+    }
+    
+    public void setInstitutionNameInitialValue(String institutionNameInitialValue){
+    	this.institutionNameInitialValue = institutionNameInitialValue;
     }
 
     public List<RuleSet> getExistingRuleSets() {
