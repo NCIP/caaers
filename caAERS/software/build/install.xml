@@ -720,13 +720,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_PORT@" value="${database.port}" />
 		<replace file="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" token="@DB_NAME@" value="${database.name}" />	
 		
-		<loadfile property="caaers.csm.jass.content"
-		      srcFile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config"/>
-		
+		<loadfile property="caaers.csm.jass.content" srcFile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config"/>
 		<touch file="${tomcat.home}/conf/cabig/csm_jaas.config"/>
-		
-		<replace file="${tomcat.home}/conf/cabig/csm_jaas.config" token="${caaers.csm.jass.content}" value=""/>
-		
+		<replaceregexp file="${tomcat.home}/conf/cabig/csm_jaas.config" byline="false" match="[\s]*caaers[\s]*\{[.*[^.]*]*\};" replace=""/>
 		<echo file="${tomcat.home}/conf/cabig/csm_jaas.config" append="true">&#x0A;${caaers.csm.jass.content}
 		</echo>	
 		
