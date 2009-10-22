@@ -15,6 +15,7 @@
 <%@attribute name="dayMandatory" type="java.lang.Boolean" description="If true, the day is mandatory" %>
 
 <%@attribute name="cssClass" %>
+<%@attribute name="hideDay" type="java.lang.Boolean" %>
 
 <c:set var="yearValue"><jsp:attribute name="value"><caaers:value path="${path}.year" /></jsp:attribute></c:set>
 <c:set var="monthValue"><jsp:attribute name="value"><caaers:value path="${path}.month" /></jsp:attribute></c:set>
@@ -37,11 +38,11 @@
         </td>
         <td valign="top" align="center">/</td>
 
-        <td valign="top" <c:if test="${unidentifiedMode}">style="display:none;"</c:if>>
+        <td valign="top" <c:if test="${hideDay}">style="display:none;"</c:if>>
             <form:input title="Date" path="${path}.dayString" cssClass="${dayCSSValue} ${required and dayRequired ? cssClass :'validate-NUMERIC' }" maxlength="2" size="2"/>
             <label for="${path}.day"><c:if test="${dayRequired}"><tags:requiredIndicator/></c:if>DD</label>
         </td>
-        <td valign="top" align="center" <c:if test="${unidentifiedMode}">style="display:none;"</c:if>>/</td>
+        <td valign="top" align="center" <c:if test="${hideDay}">style="display:none;"</c:if>>/</td>
 
         <td valign="top">
             <form:input title="Year" path="${path}.yearString" cssClass="${yearCSSValue} split-date ${required and yearRequired ? cssClass:'validate-NUMERIC'}" maxlength="4" size="4"/>

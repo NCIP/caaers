@@ -196,7 +196,7 @@ ${command.organization}
         <td valign="top">
             <div class="row" id="participant.dateOfBirth-row">
                 <div class="label"><tags:renderLabel field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
-                <div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
+                <div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}" hideDay="${unidentifiedMode}"/></div>
             </div>
             <c:set var="_start" value="${!unidentifiedMode ? 5 : 1}" />
             <c:set var="_end" value="${!unidentifiedMode ? 7 : 3}" />

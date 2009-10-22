@@ -11,6 +11,7 @@
 <%@attribute name="cssClass" %>
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <%@attribute name="readonly" type="java.lang.Boolean" %>
+<%@attribute name="hideDay" type="java.lang.Boolean" %>
 
 <c:set var="fieldValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
 <c:if test="${empty fieldValue && field.required}"><c:set var="cssValue" value="required" /></c:if>
@@ -41,6 +42,7 @@
                 yearMandatory="${field.attributes.yyMandatory}"
                 monthMandatory="${field.attributes.mmMandatory}"
                 dayMandatory="${field.attributes.ddMandatory}"
+                hideDay="${hideDay}"
                 />
     </c:when>
 
