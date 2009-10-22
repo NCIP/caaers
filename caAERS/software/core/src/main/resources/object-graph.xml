@@ -138,13 +138,14 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</objectType>
 		</node>
 	</navigationPath>
+	
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>studyAgents</name>
@@ -162,13 +163,42 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</objectType>
 		</node>
 	</navigationPath>
+	
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>studyAgents</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
+		</node>
+		<node>
+			<name>studyAgentINDAssociations</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</objectType>
+		</node>
+		<node>
+			<name>investigationalNewDrug</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</objectType>
+		</node>
+	</navigationPath>
+	
+	
+	
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.INDType</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>studyAgents</name>
@@ -181,13 +211,35 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.INDType</objectType>
 		</node>
 	</navigationPath>
+	
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.INDType</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>studyAgents</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
+		</node>
+		<node>
+			<name>indType</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.INDType</objectType>
+		</node>
+	</navigationPath>
+	
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>studyAgents</name>
@@ -195,13 +247,29 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
 		</node>
 	</navigationPath>
+	
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>studyAgents</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
+		</node>
+	</navigationPath>
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>primaryFundingSponsorOrganization</name>
@@ -209,13 +277,32 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
 		</node>
 	</navigationPath>
+	
+
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>primaryFundingSponsorOrganization</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
+		</node>
+	</navigationPath>
+
+
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>studyTherapies</name>
@@ -228,13 +315,37 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</objectType>
 		</node>
 	</navigationPath>
+	
+
 	<navigationPath>
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>studyTherapies</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyTherapy</objectType>
+		</node>
+		<node>
+			<name>studyTherapyType</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</objectType>
+		</node>
+	</navigationPath>
+
+	
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
 		</node>
 		<node>
 			<name>treatmentAssignments</name>
@@ -242,6 +353,24 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</objectType>
 		</node>
 	</navigationPath>
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+		</node>
+		<node>
+			<name>treatmentAssignments</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</objectType>
+		</node>
+	</navigationPath>
+	
+	
+	
 	<!--
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</sourceObjectType>
