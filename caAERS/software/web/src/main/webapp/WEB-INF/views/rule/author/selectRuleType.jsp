@@ -60,13 +60,13 @@
         		populator: function(autocompleter, text){
         			var institutionNameInput =  $('institutionName-input').value;
 					if(institutionNameInput != '') {
-						authorRule.matchStudiesByInstitution(text, $('institutionName-input').value, function(values) {
+						authorRule.matchStudiesByInstitution(text, $('institutionName').value, function(values) {
 							autocompleter.setChoices(values)
 						})
 					}
 					var sponsorNameInput =  $('sponsorName-input').value;
 					if(sponsorNameInput != '') {
-						authorRule.matchStudies(text, $('sponsorName-input').value, function(values) {
+						authorRule.matchStudies(text, $('sponsorName').value, function(values) {
 							autocompleter.setChoices(values)
 						})
 					}
@@ -237,7 +237,6 @@
     	</p>
     	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideBox="true">
     		<jsp:attribute name="singleFields">
-    			<chrome:division title="Rule type" id="rule-level-id" >
     				<div class="row"  id="ruleLevelDiv">
             			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Rule level</label></div>
             			<div class="value">
@@ -313,7 +312,6 @@
 				            <tags:errors path="ruleSetName"/>
         				</div>
         			</div>
-    			</chrome:division>
     			<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
     		</jsp:attribute>
     	</tags:tabForm>
