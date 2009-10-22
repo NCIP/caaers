@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
@@ -75,11 +76,16 @@ public class ResearchStaffRepository {
     		researchStaff.setLoginId(researchStaff.getEmailAddress());
     	}
     	MailException mailException = null;
-    	try{
-    		 csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
-    	}catch(MailException e){
-    		mailException = e;
+    	
+    	// no need to create csm user for remote research staff . 
+    	if (researchStaff instanceof LocalResearchStaff) {
+	    	try{
+	    		 csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+	    	}catch(MailException e){
+	    		mailException = e;
+	    	}
     	}
+    	
     	try{
     		researchStaff = (ResearchStaff)researchStaffDao.merge(researchStaff);
     	}catch(Exception e){
