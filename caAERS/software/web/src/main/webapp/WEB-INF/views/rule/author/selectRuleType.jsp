@@ -15,11 +15,6 @@
             	font-style: italic;
             	background-color: #CCE6FF;
         	}
-        	
-        	#criteria-div{
-          		width: 70%;
-          		margin-left: 10em;
-        	}
 	    </style>
 	
     	<tags:dwrJavascriptLink objects="authorRule"/>
@@ -231,14 +226,24 @@
     	</script>
 	</head>
 	<body onLoad="nextTab();">
-	
-		<p>
+	<chrome:box title="Create Rules">
         	<tags:instructions code="ruletype" />  
-    	</p>
     	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideBox="true">
     		<jsp:attribute name="singleFields">
+    			<div class="row"  id="ruleSetDiv">
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleSetName">Type</label></div>
+            			<div class="value">
+                			<select id="ruleSetName" onChange="setRuleSetName(this)">
+                    			<option value="">Please select</option>
+				                <option value="SAE Reporting Rules">SAE Reporting Rules </option>
+                				<option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
+				            </select>
+				            <tags:errors path="ruleSetName"/>
+        				</div>
+        			</div>
+				
     				<div class="row"  id="ruleLevelDiv">
-            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Rule level</label></div>
+            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Level</label></div>
             			<div class="value">
             				<form:hidden path="level"/>
                 			<select id="ruleLevel" onChange="displayRuleTypeInput(this)" value="${level }">
@@ -255,65 +260,46 @@
         			
         			<div class="autoclear" id="criteria-div">		
 						
-						<div title="Select sponsor" id="sponsorName-details" style="display:none" class="pane">
-							<chrome:box title="Select sponsor" id="sponsorName-entry" autopad="true" cssClass="pairedLong">
-								<form:hidden path="sponsorName"/>
-            					<tags:requiredIndicator/>
-            					<input type="text" id="sponsorName-input" value="${command.sponsorName}" class="autocomplete"/>
-								<a id="sponsorName-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            					<tags:indicator id="sponsorName-indicator"/>
-            					<tags:errors path="sponsorName"/>
-            					<div id="sponsorName-choices" class="autocomplete"></div>
-            					<p id="sponsorName-selected" style="display: none">
-                					You have selected the sponsor <span id="sponsorName-selected-name"></span>.
-            					</p>
-            				</chrome:box>
+						<div title="Select sponsor" id="sponsorName-details" style="display:none">
+                            <ui:row path="sponsorName">
+                                <jsp:attribute name="label">
+                                    <ui:label required="true" text="Sponsor" path="sponsorName"/>
+                                </jsp:attribute>
+                                <jsp:attribute name="value">
+                                    <ui:autocompleter path="sponsorName" enableClearButton="true" required="true" title="Sponsor"/>
+                                </jsp:attribute>
+                            </ui:row>
 						</div>
 						
 						<div title="Select institution" id="institutionName-details" style="display:none" class="pane">
-							<chrome:box title="Select institution" id="institutionName-entry" autopad="true" cssClass="pairedLong">
-								<form:hidden path="institutionName"/>
-            					<tags:requiredIndicator/>
-            					<input type="text" id="institutionName-input" value="${command.institutionName}" class="autocomplete"/>
-								<a id="institutionName-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            					<tags:indicator id="institutionName-indicator"/>
-            					<tags:errors path="institutionName"/>
-            					<div id="institutionName-choices" class="autocomplete"></div>
-            					<p id="institutionName-selected" style="display: none">
-                					You have selected the institution <span id="institutionName-selected-name"></span>.
-            					</p>
-            				</chrome:box>
+							<ui:row path="institutionName">
+                                <jsp:attribute name="label">
+                                    <ui:label required="true" text="Institution" path="institutionName"/>
+                                </jsp:attribute>
+                                <jsp:attribute name="value">
+                                    <ui:autocompleter path="institutionName" enableClearButton="true" required="true" title="Institution"/>
+                                </jsp:attribute>
+                            </ui:row>
 						</div>
 
 						<div title="Select study" id="categoryIdentifier-details" style="display:none" class="pane">
-							<chrome:box title="Select study" id="categoryIdentifier-entry" autopad="true" cssClass="pairedLong">
-								<form:hidden path="categoryIdentifier"/>
-            					<tags:requiredIndicator/>
-            					<input type="text" id="categoryIdentifier-input" value="${command.categoryIdentifier}" class="autocomplete"/>
-								<a id="categoryIdentifier-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            					<tags:indicator id="categoryIdentifier-indicator"/>
-            					<tags:errors path="categoryIdentifier"/>
-            					<div id="categoryIdentifier-choices" class="autocomplete"></div>
-            					<p id="categoryIdentifier-selected" style="display: none">
-                					You have selected the study <span id="categoryIdentifier-selected-name"></span>.
-            					</p>
-            				</chrome:box>
+							<ui:row path="categoryIdentifier">
+                                <jsp:attribute name="label">
+                                    <ui:label required="true" text="Study" path="categoryIdentifier"/>
+                                </jsp:attribute>
+                                <jsp:attribute name="value">
+                                    <ui:autocompleter path="categoryIdentifier" enableClearButton="true" required="true" title="Study"/>
+                                </jsp:attribute>
+                            </ui:row>
+								
+            				
 						</div>
 					</div>
 					
-					<div class="row"  id="ruleSetDiv">
-            			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleSetName">Rule set name</label></div>
-            			<div class="value">
-                			<select id="ruleSetName" onChange="setRuleSetName(this)">
-                    			<option value="">Please select</option>
-				                <option value="SAE Reporting Rules">SAE Reporting Rules </option>
-                				<option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
-				            </select>
-				            <tags:errors path="ruleSetName"/>
-        				</div>
-        			</div>
+					
     			<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
     		</jsp:attribute>
     	</tags:tabForm>
+		</chrome:box>
 	</body>
 </html>
