@@ -65,7 +65,7 @@ public class DecimalValidatorTest extends TestCase {
 	}
 
 	public void testGetMessagePrefix() {
-		assertEquals("Incorrect", dv.getMessagePrefix());
+		assertEquals("Invalid", dv.getMessagePrefix());
 	}
 
 	public void testGetValidatorCSSClassName() {
