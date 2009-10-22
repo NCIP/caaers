@@ -22,7 +22,7 @@ public class DateValidatorTest extends TestCase {
 	}
 
 	public void testGetMessagePrefix() {
-		assertEquals("Incorrect date value",validator.getMessagePrefix());
+		assertEquals("Invalid date value",validator.getMessagePrefix());
 	}
 
 	public void testGetValidatorCSSClassName() {
