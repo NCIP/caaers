@@ -29,7 +29,7 @@ public class SignValidatorTest extends TestCase {
 	}
 
 	public void testGetMessagePrefix() {
-		assertEquals("Incorrect sign", dv.getMessagePrefix());
+		assertEquals("Invalid sign", dv.getMessagePrefix());
 	}
 
 	public void testGetValidatorCSSClassName() {
