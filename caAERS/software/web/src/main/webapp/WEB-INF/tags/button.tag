@@ -33,6 +33,16 @@
 		<tr>
 			<td class="l"></td>
 			<td class="m">
+				<c:if test="${fn:toLowerCase(icon) == 'withdraw'}">
+					<c:choose>
+						<c:when test="${size=='small'}">
+							<img src="<chrome:imageUrl name="../buttons/button_icons/small/withdraw_icon_small.png"/>" alt="" />
+						</c:when>
+						<c:otherwise>
+							<img src="<chrome:imageUrl name="../buttons/button_icons/withdraw_icon.png"/>" alt="" />
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'save'}">
 					<c:choose>
 						<c:when test="${size=='small'}">

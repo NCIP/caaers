@@ -806,3 +806,28 @@ td.create img, td.edit img, td.ammend img, td.withdraw img {
 	-webkit-border-radius:30px;
 	border-radius:30px;
 }
+a.export-button {
+	display:inline-block;
+	height:25px;
+	background-image:url(../images/blue/export-button-bg.png);
+	background-repeat:repeat-x;
+	border:1px solid #adadad;
+	padding:2px;
+	text-decoration:none;
+	color:#5F5F5F;
+	font-size:7.5pt;
+	vertical-align:middle;
+	text-align:left;
+	margin:1px 0 0 3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+}
+a.export-button:hover {
+	color:#4F4F4F;
+	border:1px solid #4F4F4F;
+}
+a.export-button img {
+	margin-right:5px;
+	vertical-align:bottom;
+}

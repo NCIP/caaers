@@ -22,7 +22,7 @@
                             <div class="label">
                                 Status
                             </div>
-                            <div class="value">
+                            <div class="value" id="report-status-${report.id}">
                                 <c:if test="${report.lastVersion.reportStatus == 'PENDING'}">
                                     <span class="dueOn">
                                         <c:if test="${not empty report.lastVersion.dueOn}">
@@ -91,13 +91,47 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
+                <div style="text-align:right; margin:20px 0 0 0;">
+                    <c:if test="${command.study.caaersXMLType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>Export caAERS XML</a>
+                    </c:if>
+                    <c:if test="${command.study.adeersPDFType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export AdEERS PDF</a>
+                    </c:if>
+                    <c:if test="${command.study.medwatchPDFType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export MedWatch 3500A PDF</a>
+                    </c:if>
+                    <c:if test="${command.study.dcpSAEPDFType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export DCP SAE PDF</a>
+                    </c:if>
+                    <c:if test="${command.study.ciomsPDFType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export CIOMS PDF</a>
+                    </c:if>
+                    <c:if test="${command.study.ciomsSaePDFType}">
+                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export DCP Safety Report PDF</a>
+                    </c:if>
+                    <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+                        <tags:button type="button" value="Withdraw" color="red" icon="withdraw" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"/>
+                    </c:if>
+                    <c:if test="${reportMessages[report.id].submittable}">
+                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
+							<tags:button type="button" value="Amend" icon="edit" color="blue" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" />
+                    	</c:if>
+                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+                            <c:if test="${!command.workflowEnabled || isSuperUser}">
+                            	<tags:button type="button" value="Submit" icon="continue" color="green" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" />
+                            </c:if>
+                        </c:if>
+                        
+                    </c:if>
+                </div>
 			</chrome:division>
 		</c:if>
 	</c:forEach>
 	
 	
 	
-	
+	<%--
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
@@ -137,7 +171,7 @@
                         </c:choose>
 						
                     </td>
-            		<td id="report-status-${report.id}">
+            		<td>
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 							<span class="dueOn" >
 								<c:if test="${not empty report.lastVersion.dueOn}" >
@@ -209,5 +243,6 @@
     			</tr>
     			</c:if>
     			</c:forEach>    						
-    	</table>		
+    	</table>
+		--%>		
 </div>

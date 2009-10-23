@@ -49,7 +49,7 @@
         }
 
         Event.observe(window, "load", function() {
-    	 $('flow-next').value="Go to Manage Reports ";	 
+    	 //$('flow-next').value="Go to Manage Reports ";	 
     	 
     	 //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
@@ -107,7 +107,7 @@
                         caaersLog(ajaxResult.errorMessage);
                     } else {
                         //AE.hideIndicator("notify-indicator-" + aeReportId)
-                        var statusColumn = $("report-status-" + reportId)
+                        var statusColumn = $("report-status-" + reportId);
                         var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
 
                         //var optionColumn = $("action"+reportId)
@@ -227,7 +227,6 @@
 	       
         </c:if>
         <chrome:box title="${tab.shortTitle}" >
-        Submit the report once it is complete. You can also withdraw the report completely, or amend it from this page.<br><br>
         <ae:submitReportValidation/>
     	    	<p>&nbsp;</p>
     	<c:if test="${command.workflowEnabled == true}">
@@ -258,9 +257,9 @@
 	        <span class="prev">
 	        		<tags:button id="flow-prev" color="blue" value="Back" icon="Back" cssClass="tab9"></tags:button>
 	        </span>
-	        <span class="next">
+	        <%--<span class="next">
 	            <input type="image" alt="save »" value="Go to Manage Reports " id="flow-next" src="<c:url value="/images/blue/go_to_manage_reports_btn.png" />"/>
-	        </span>
+	        </span>--%>
 	    	</div>
 		</div>    
 	</jsp:attribute>
