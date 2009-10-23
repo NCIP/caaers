@@ -516,7 +516,7 @@
   <p><tags:instructions code="instruction_ae_patientdetails_conmeds"/></p>
 
       <div style="padding-left:20px;">
-      <div id="">
+      <div id="_anchorConcomitantMedication">
           <tags:button cssClass="foo" id="concomitantMedication-btn" color="blue" value="Add" icon="Add" type="button" onclick="addConMeds();" size="small"/>
           <tags:indicator id="concomitantMedication-btn-indicator"/>
 

@@ -13,8 +13,8 @@
 
 <c:set var="otherField" value="${fieldGroups[mainGroup].fields[1]}" />        
 
-<chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false" 
-deleteParams="'preExistingCondition', ${index}, '_preExistingConditions', {}" enableDelete="true" collapsed="false">
+<chrome:division id="aeReport.saeReportPreExistingConditions[${index}]" collapsable="false"
+deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}" enableDelete="true" collapsed="false">
 
     <jsp:attribute name="title">
 		<c:out value="${not empty preExistingCondition.text ? preExistingCondition.text : otherValue }" />
