@@ -40,7 +40,7 @@
                     <jsp:attribute name="value">${command.researchStaff.emailAddress}</jsp:attribute>
                  </ui:row>
                 <ui:row path="researchStaff.loginId">
-                    <jsp:attribute name="label"><ui:label path="loginId" text="Username"></ui:label></jsp:attribute>
+                    <jsp:attribute name="label"><ui:label path="researchStaff.loginId" text="Username" labelProperty="loginId"></ui:label></jsp:attribute>
                     <jsp:attribute name="value">${command.researchStaff.loginId}</jsp:attribute>
                  </ui:row>
             </div>
