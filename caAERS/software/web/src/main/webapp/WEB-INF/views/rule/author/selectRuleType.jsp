@@ -214,13 +214,13 @@
                                     	initialDisplayValue="${empty command.categoryIdentifier ? 'Begin typing here...' : command.categoryIdentifier}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
-						        			var institutionNameInput =  $('institutionName-input').value;
+						        			var institutionNameInput =  $('institutionName').value;
 											if(institutionNameInput != '') {
 												authorRule.matchStudiesByInstitution(text, $('institutionName').value, function(values) {
 													autocompleter.setChoices(values)
 												})
 											}
-											var sponsorNameInput =  $('sponsorName-input').value;
+											var sponsorNameInput =  $('sponsorName').value;
 											if(sponsorNameInput != '') {
 												authorRule.matchStudies(text, $('sponsorName').value, function(values) {
 													autocompleter.setChoices(values)
