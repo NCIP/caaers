@@ -11,8 +11,12 @@ class CTCAE_V4 extends edu.northwestern.bioinformatics.bering.Migration {
       m5()
       m6()
       m7()
+      if (databaseMatches('oracle')) {
+    	  execute("UPDATE ctc_terms SET other_required = 1 WHERE term LIKE '%- Other%' AND category_id > 400 AND category_id < 500");
+      }else{
+    	  execute("UPDATE ctc_terms SET other_required = true WHERE term LIKE '%- Other%' AND category_id > 400 AND category_id < 500");
+      }
       
-      execute("UPDATE ctc_terms SET other_required = 1 WHERE term LIKE '%- Other%' AND category_id > 400 AND category_id < 500");
     }
 
   // categories 401-106
