@@ -855,7 +855,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void findApplicableReportDefinitions(){
     	//only once per page flow
     	if(applicableReportDefinitions == null){
-    		applicableReportDefinitions = evaluationService.applicableReportDefinitions(getAdverseEventReportingPeriod().getStudy());
+    		applicableReportDefinitions = evaluationService.applicableReportDefinitions(getAdverseEventReportingPeriod().getStudy(), getAssignment());
     	}
     }
     
