@@ -831,3 +831,7 @@ a.export-button img {
 	margin-right:5px;
 	vertical-align:bottom;
 }
+.box .division .darkBg .content {
+	background-color:#e4e4e4;
+	padding:10px 2px 10px 10px;
+}

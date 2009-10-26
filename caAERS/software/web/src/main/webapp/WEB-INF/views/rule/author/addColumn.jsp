@@ -3,13 +3,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
-<div id="rule-${ruleCount}-column-${columnCount}" style="margin-left:50px; display:none" class="lineitem">
-	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
-	<label for="AND">AND</label>		
-	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
+<div id="rule-${ruleCount}-column-${columnCount}" style="display:none" class="lineitem one-condition">
+
+	<label for="AND" style="font-weight:bold;">And</label>		
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">>
-	        <option value="">Please select Domain Object</option>
+	        <option value="">Please select domain object</option>
 		<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="optionStatus">
 			<option value="${ruleUi.condition[0].domainObject[optionStatus.index].className}">
 				${ruleUi.condition[0].domainObject[optionStatus.index].displayUri}
@@ -19,12 +18,11 @@
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" value="${ruleUi.condition[0].domainObject[0].identifier}"/>
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" value="${ruleUi.condition[0].domainObject[0].displayUri}"/>
 
-	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" 
 			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
-		<option value="">Please select Field</option>	
+		<option value="">Please select field</option>	
 		<%--
 		<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
 			<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
@@ -40,7 +38,6 @@
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].displayUri}"/>
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri"  name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].operator[0].readableText}"/>
 	
-	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator" 
 				name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
@@ -56,7 +53,6 @@
 	</select>
 	
 	
-	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	<span id="rule-${ruleCount}-column-${columnCount}-field-value">
 	
@@ -64,7 +60,7 @@
 <span id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">	
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" 
 			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" >
-		<option value="">Please select Value</option>		
+		<option value="">Please select value</option>		
 		<%--
 		<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
 			<option value="${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].value}">

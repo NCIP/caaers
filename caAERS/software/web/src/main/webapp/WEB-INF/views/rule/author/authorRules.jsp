@@ -52,6 +52,15 @@ div#createNew h3, div.section h3 {
 	display: block;
 	color: #FFFFFF;
 }
+.new_rule {
+	margin:10px 0 10px 35px;
+}
+.new_condition {
+	margin:10px 0 10px 65px;
+}
+.one-condition {
+	margin-bottom:10px;
+}
 </style>
 <script type="text/javascript">
 		//loadCategoryObjects();
@@ -112,9 +121,7 @@ div#createNew h3, div.section h3 {
 							
 							columnHolder.innerHTML = "";
 							columns.appendChild(newColumn);
-							var brElement = document.createElement("br");
-							brElement.setAttribute("id", newColumn.id + '-br');
-							columns.appendChild(brElement);
+						
 							Effect.Appear(newColumn.id);
 							
 							if (callback == true)
@@ -230,7 +237,7 @@ div#createNew h3, div.section h3 {
 							if(deleteStatus) {
 								var columns = $('rule-'+(ruleCount+1)+'-columns');
 								var column = $('rule-'+(ruleCount)+'-column-'+(columnCount));
-								column.style.visibility = "hidden";
+								column.style.display = "none";
 								
 								//columns.removeChild($(column.id + '-br'));
 								//columns.removeChild(column);
@@ -256,7 +263,7 @@ div#createNew h3, div.section h3 {
 		
 		function deleteRule(ruleCount) {
 				
-				if (!confirm("Are you sure you want to delete this?"))
+				if (!confirm("Are you sure you want to delete this rule?"))
                  	return false;
 				try {
 					authorRule.removeRule(ruleCount-1, function(deleteStatus) {
@@ -823,7 +830,7 @@ div#createNew h3, div.section h3 {
 					var hiddenId = 'ruleSet.rule[' + ruleCount + '].condition.column[' + columnCount + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
 																	
 															
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35"/>';
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" />';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					
 
@@ -831,7 +838,7 @@ div#createNew h3, div.section h3 {
 					
 					
 					
-					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 
 	
 
@@ -856,7 +863,7 @@ div#createNew h3, div.section h3 {
 					
 				var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
-				$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+				$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 				
 				
 			}
@@ -1209,43 +1216,42 @@ div#createNew h3, div.section h3 {
 <c:if test="${not empty ruleFlowSummary}">
 	<div class="pane summary" id="rule-summary">
 		<div class="row">
-			<div class="summarylabel">Rule level</div>
-			<div class="summaryvalue">${ruleFlowSummary['Rule level']}</div>
+			<div class="label">Rule level</div>
+			<div class="value">${ruleFlowSummary['Rule level']}</div>
 		</div>
 		<div class="row">
-			<div class="summarylabel">Rule set name</div>
-			<div class="summaryvalue">${ruleFlowSummary['Rule set name']}</div>
+			<div class="label">Rule set name</div>
+			<div class="value">${ruleFlowSummary['Rule set name']}</div>
 		</div>
 		<c:if test="${ruleFlowSummary['Sponsor'] != null}">
 			<div class="row">
-				<div class="summarylabel">Sponsor</div>
-				<div class="summaryvalue">${ruleFlowSummary['Sponsor'] }</div>
+				<div class="label">Sponsor</div>
+				<div class="value">${ruleFlowSummary['Sponsor'] }</div>
 			</div>
 		</c:if>
 		<c:if test="${ruleFlowSummary['Institution'] != null}">
 			<div class="row">
-				<div class="summarylabel">Institution</div>
-				<div class="summaryvalue">${ruleFlowSummary['Institution'] }</div>
+				<div class="label">Institution</div>
+				<div class="value">${ruleFlowSummary['Institution'] }</div>
 			</div>
 		</c:if>
 		<c:if test="${ruleFlowSummary['Study'] != null}">
 			<div class="row">
-				<div class="summarylabel">Study</div>
-				<div class="summaryvalue">${ruleFlowSummary['Study'] }</div>
+				<div class="label">Study</div>
+				<div class="value">${ruleFlowSummary['Study'] }</div>
 			</div>
 		</c:if>
 	</div>
 </c:if>
 
 
-<p>
-<tags:instructions code="3rules" />
-  </p>
-<chrome:division >
+
+<chrome:division>
   <%--<form:form cssClass="standard">--%>
   <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="singleFields">
       <tags:errors path="*" />
+	  <tags:instructions code="3rules" />
       <div class="row">
         <div id="allRules">
           <c:forEach varStatus="ruleStatus"
@@ -1253,40 +1259,25 @@ div#createNew h3, div.section h3 {
             <c:set var="ruleCount" value="${ruleStatus.index}" />
             <div id="rule-${ruleCount + 1}">
               <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" deleteParams="${ruleCount + 1}" enableDelete="true" collapsed="true">
-              <br />
-              <br />
               <div id="rule-condition-action-container-${ruleCount + 1}">
-                <div style="margin-left:50px;">
-                  <label class="label"
-					for="condition">Condition(s)</label>
-                </div>
+                
                 <div class="row" value="${command.ruleSet.rule[ruleCount]}"
-					id="rule-${ruleCount + 1}-columns"><br />
+					id="rule-${ruleCount + 1}-columns">
                   <c:forEach varStatus="columnStatus" begin="0"
 					items="${command.ruleSet.rule[ruleCount].condition.column}">
                     <c:set var="columnCount" value="${columnStatus.index}" />
-                    <div id="rule-${ruleCount}-column-${columnCount}"
-						style="margin-left:50px; 
-						
-						<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}"> visibility:hidden
-                      </c:if>
-                      "
-                      
-                      class="lineitem"><img
-						src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" />
+                    <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;"
+						class="lineitem one-condition" <c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}"> visibility:hidden</c:if>">
                       <c:choose>
                         <c:when test="${columnCount == 0}">
-                          <label for="IF">IF</label>
-                          <img src="/caaers/images/chrome/spacer.gif"
-								style="width:15px;height:1px" align="absmiddle" /> </c:when>
+                          <label for="IF" style="padding-left:9px; margin-right:8px;">If</label>
+                          </c:when>
                         <c:otherwise>
-                          <label for="AND">AND</label>
+                          <label for="AND">And</label>
                         </c:otherwise>
                       </c:choose>
-                      <img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> <span>
-                      <form:select cssStyle="width: 100px;"
+                     <span>
+                      <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select domain object</form:option>
@@ -1296,9 +1287,8 @@ div#createNew h3, div.section h3 {
                       <!-- set domain-object display-uri to column -->
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
-                      </span> <img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" />
-                      <form:select cssStyle="width: 100px;"
+                      </span> 
+                      <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
                         <form:option value="">Please select field</form:option>
@@ -1321,9 +1311,8 @@ div#createNew h3, div.section h3 {
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
-                      <img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" />
-                      <form:select cssStyle="width: 100px;"
+                      
+                      <form:select 
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
 						onchange="handleOperatorOnchange(this, ${ruleCount})">
                         <form:option value="">Please select operator</form:option>
@@ -1349,8 +1338,7 @@ div#createNew h3, div.section h3 {
                           </c:if>
                         </c:forEach>
                       </form:select>
-                      <img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> <span
+                      <span
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
                       <c:choose>
                         <c:when
@@ -1497,7 +1485,7 @@ div#createNew h3, div.section h3 {
 																	
 																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
 																	
-																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" ></div>' + hiddenArea;
 
 	
 
@@ -1536,7 +1524,7 @@ div#createNew h3, div.section h3 {
 					
 										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
-										$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+										$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 										
 										
 										
@@ -1617,7 +1605,7 @@ div#createNew h3, div.section h3 {
                             <c:when
 									test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
 																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
-                              <form:select cssStyle="width: 100px;"
+                              <form:select 
 										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										multiple="false">
                                 <form:option value="">Please select value</form:option>
@@ -1641,7 +1629,7 @@ div#createNew h3, div.section h3 {
                                       <c:choose>
                                         <c:when
 															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
-                                          <form:select cssStyle="width: 100px;"
+                                          <form:select 
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="multiple" size="3"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
@@ -1652,7 +1640,7 @@ div#createNew h3, div.section h3 {
                                           <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:when>
                                         <c:otherwise>
-                                          <form:select cssStyle="width: 100px;"
+                                          <form:select 
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="false"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
@@ -1678,15 +1666,17 @@ div#createNew h3, div.section h3 {
 							src="/caaers/images/rule/remove_condition.gif" align="absmiddle"
 							style="cursor:hand;  border:0px" /> </a> </c:if>
                     </div>
-                    <br id="rule-${ruleCount}-column-${columnCount}-br" />
+                    
                   </c:forEach>
                 </div>
-                <div class="row">
-                  <div style="margin-left:50px;">
-                    <label for="action" class="label">Action(s)</label>
+				<div class="new_condition">
+				<tags:button id="add-condition-${ruleCount }" color="blue" type="button" value="Add Condition" size="small" icon="add" onclick="fetchCondition(${ruleCount })"/>
+                </div>
+				<div class="row">
+                  <div class="lineitem" style="margin-bottom:5px;">
+                    <label for="action" class="label" style="font-weight:bold;">Actions</label>
                   </div>
-                  <br />
-                  <div id="action-template" style="margin-left:50px;"><img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+                  <div id="action-template" class="lineitem">
                     <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                       <c:choose>
                         <c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
@@ -1713,10 +1703,8 @@ div#createNew h3, div.section h3 {
                       </c:forEach>
                     </form:select>
                   </div>
-                  <div class="local-buttons">
-            	  	<tags:button id="add-condition-${ruleCount }" color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fetchCondition(${ruleCount })"/>
-        		  </div>
-                  <c:if test="${ruleCount} == 0"> <br />
+                 
+                  <c:if test="${ruleCount} == 0">
                   </c:if>
                 </div>
               </div>
@@ -1725,7 +1713,7 @@ div#createNew h3, div.section h3 {
           </c:forEach>
         </div>
         <!-- closing allRules -->
-        <div class="local-buttons">
+        <div class="new_rule">
             <tags:button id="add-rule" color="blue" type="button" value="Add Rule" size="small" icon="add" onclick="addRule()"/>
         </div>
       </div>

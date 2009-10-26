@@ -5,19 +5,12 @@
     <title>Manage rules</title>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <style type="text/css">
-        div.row {
-            padding: 5px 3px;
-             width: 70%;
-        }
-        .row .value {
-            margin-left: 22%;
-        }
-
         p.description {
             margin: 0.25em 0 0 1em;
         }
         div.submit {
-            text-align: right;
+            margin:0 0 0 145px;
+			padding:0;
         }
         .value input[type=text] {
             width: 80%;
@@ -33,17 +26,22 @@
             background-color: #8C8;
             padding: 1em 2em;
             text-align: center;
-            margin: 1em 30%;
-            color: #fff;
+            margin: 1em 10%;
             font-weight: bold;
             font-size: 1.1em;
         }
+		#basic table {
+			width:100%;
+		}
+		.new_rule {
+			margin:10px 0 10px 65px;
+		}
     </style>
     
     
     
     <script type="text/javascript">
-    
+
     Event.observe(window, "load", function() {});
 		
 		function deployRule(name , divId) {
@@ -208,29 +206,35 @@ YAHOO.util.Event.addListener(window, "load", function() {
 <body>
 <chrome:box title="Manage / Import rules" autopad="true">
 	<chrome:division title="Manage rules" id="rule-set-id" >
-	    <p><tags:instructions code="listrules" /></p>
+	    <tags:instructions code="listrules" />
     	<div id="basic" class="yui-skin-sam"></div>
-    </chrome:division><br><br><br><br><br>
+		<div class="new_rule">
+			<c:set var="create_url"><c:url value="/pages/rule/create"/></c:set>
+			<tags:button color="blue" icon="add" size="small" type="button" value="New Rule" markupWithTag="a" href="${create_url}"/>
+		</div>
+		</div>
+    </chrome:division>
     <chrome:division title="Import rules" id="import-rules-id">
     	<p>
 			<tags:instructions code="importxmlrules" />
 		</p>
+		<c:if test="${command.updated}">
+			<p class="updated">${command.message} some text here</p>
+		</c:if>
 		<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             <div class="row">
                 <div class="label">
-                    Rule set xml file : 
+                    Select XML file
                 </div>
                 <div class="value">
-                	<input type="file" name="ruleSetFile1" size="50"/>
+                	<input type="file" onchange="$('add-rule').removeAttribute('disabled')" name="ruleSetFile1" id="browse_field" size="50"/>
                 </div>
             </div>    
         <div class="row submit">
-            <tags:button id="add-rule" color="blue" type="submit" value="Import" size="small" icon="add" />
+            <tags:button id="add-rule" disabled="disabled" color="green" type="submit" value="Import" size="small" icon="check" />
         </div>
     </form:form>
-    <c:if test="${command.updated}">
-		<p class="updated">${command.message}</p>
-	</c:if>
+
     </chrome:division>
 </chrome:box>
 
