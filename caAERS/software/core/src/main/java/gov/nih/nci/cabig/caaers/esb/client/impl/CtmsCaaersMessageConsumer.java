@@ -99,7 +99,8 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
             logger.debug("starting connection....");
             connection.start();
     	}catch(Exception e){
-    		logger.error("Error Initializing CtmsCaaersMessageConsumer" , e);
+    		//logger.error("Error Initializing CtmsCaaersMessageConsumer" , e);
+    		logger.info("CtmsCaaersMessageConsumer not available");
     	}
 	}
 	
