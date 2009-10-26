@@ -349,6 +349,13 @@ public class Fixtures {
         return studyFundingSponsor;
     }
     
+    public static StudySite createStudySite(final Organization organization, int identifier){
+    	StudySite studySite = new StudySite();
+    	studySite.setId(identifier);
+    	studySite.setOrganization(organization);
+    	return studySite;
+    }
+    
     public static FundingSponsor createFundingSponsor(final Organization organization, final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
         FundingSponsor fundingSponsor = new FundingSponsor();
 

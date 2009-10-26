@@ -58,7 +58,7 @@ public interface EvaluationService {
     /**
      * This method will find all the report definitions applicable to the Study
      */
-    ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study);
+    ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study, StudyParticipantAssignment assignment);
 
     /**
      * Runs through the Business rules set at "FundingSponsor" level, for the section.

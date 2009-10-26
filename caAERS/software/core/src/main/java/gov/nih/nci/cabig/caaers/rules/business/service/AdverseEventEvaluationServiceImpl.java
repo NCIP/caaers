@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -87,6 +88,12 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         Map<AdverseEvent, List<String>> map = new HashMap<AdverseEvent, List<String>>();
 
         List<String> reportDefinitionNames;
+        
+        // Determine the studysite where the assignment belongs.
+        StudySite assignmentStudySite = null;
+        if(aes != null && aes.size() > 0)
+        	assignmentStudySite = aes.get(0).getReportingPeriod().getAssignment().getStudySite();
+        	
 
         for (AdverseEvent ae : aes) {
         	
@@ -104,6 +111,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             //evaluate institution rules
             // TO-DO get orgs like FDA, CALGB and add to this list (BJ: this comment was there before refactoring)
             for (StudyOrganization so : study.getStudyOrganizations()) {
+            	//If the organization is a studySite and its not the site to which the assignment belongs, ignore it.
+            	if(so instanceof StudySite && assignmentStudySite != null && so.getId().equals(assignmentStudySite.getId()))
+            		continue;
             	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
                         RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
             	 reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));

@@ -18,6 +18,9 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
@@ -115,6 +118,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 	public void testApplicableReportDefinitions() {
 		Organization ctep = Fixtures.createOrganization("CTEP", 1);
 		Organization mayo = Fixtures.createOrganization("Mayo", 2);
+		Organization otherSite = Fixtures.createOrganization("Other site", 3);
 
 		ConfigProperty expedited = Fixtures.createConfigProperty("expedited");
 		ConfigProperty local = Fixtures.createConfigProperty("local");
@@ -138,9 +142,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		ReportDefinition rd6 = Fixtures.createReportDefinition("ctep-mo-2",mayo, local);
 		rd6.setTimeScaleUnitType(TimeScaleUnit.DAY);
 		rd6.setDuration(2);
+		
+		ReportDefinition rd7 = Fixtures.createReportDefinition("ctep-other-1", otherSite, expedited);
 
 		List<ReportDefinition> ctepRdList = new ArrayList<ReportDefinition>();
 		List<ReportDefinition> mayoRdList = new ArrayList<ReportDefinition>();
+		List<ReportDefinition> otherList = new ArrayList<ReportDefinition>();
 
 		ctepRdList.add(rd1);
 		ctepRdList.add(rd2);
@@ -149,27 +156,37 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		mayoRdList.add(rd5);
 		mayoRdList.add(rd6);
+		
+		otherList.add(rd7);
 
 		OrganizationAssignedIdentifier ctepIdentifier = Fixtures
 				.createOrganizationAssignedIdentifier("C1", ctep);
 		OrganizationAssignedIdentifier mayoIdentifier = Fixtures
 				.createOrganizationAssignedIdentifier("M1", mayo);
+		OrganizationAssignedIdentifier otherIdentifier = Fixtures.createOrganizationAssignedIdentifier("Other", otherSite);
 
 		Study study = Fixtures.createStudy("Test");
 		StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(ctep);
 		StudyCoordinatingCenter cordCenter = Fixtures
 				.createStudyCoordinatingCenter(mayo);
+		StudySite stSite = Fixtures.createStudySite(otherSite, 1);
 
 		study.addStudyOrganization(sponsor);
 		study.addStudyOrganization(cordCenter);
+		study.addStudyOrganization(stSite);
 		study.addIdentifier(ctepIdentifier);
 		study.addIdentifier(mayoIdentifier);
+		study.addIdentifier(otherIdentifier);
 
 		EasyMock.expect(reportDefinitionDao.getAll(1)).andReturn(ctepRdList);
 		EasyMock.expect(reportDefinitionDao.getAll(2)).andReturn(mayoRdList);
+		
+		StudyParticipantAssignment assignment = Fixtures.createAssignment();
+		StudySite studySite = Fixtures.createStudySite(ctep, 2);
+		assignment.setStudySite(studySite);
 
 		replayMocks();
-		ApplicableReportDefinitionsDTO dto = service.applicableReportDefinitions(study);
+		ApplicableReportDefinitionsDTO dto = service.applicableReportDefinitions(study, assignment);
 		
 		assertEquals(2, dto.getOrganizationTypeMap().size());
 		assertEquals(2, dto.getOrganizationTypeMap().get(ctep).get("expedited").size());

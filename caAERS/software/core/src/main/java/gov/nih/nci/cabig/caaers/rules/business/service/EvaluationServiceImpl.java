@@ -11,6 +11,8 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
@@ -414,15 +416,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     /**
      * This method will find all the report definitions belonging to the Study
      */
-    public ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study) {
+    public ApplicableReportDefinitionsDTO applicableReportDefinitions(Study study, StudyParticipantAssignment assignment) {
     	
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
         // Same organization play multiple roles.
         Set<Integer> orgIdSet = new HashSet<Integer>();
         List<StudyOrganization> studyOrgs =  study.getStudyOrganizations();
         for (StudyOrganization studyOrganization : studyOrgs) {
+        	// Ignore the organization if its just a study site and not the one where assignment belongs to.
+        	if(studyOrganization instanceof StudySite && !studyOrganization.getId().equals(assignment.getStudySite().getId()))
+        		continue;
         	if(orgIdSet.add(studyOrganization.getOrganization().getId()))
-        		reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
+        			reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
         
         /**
