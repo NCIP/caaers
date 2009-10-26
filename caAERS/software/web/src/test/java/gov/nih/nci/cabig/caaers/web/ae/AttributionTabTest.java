@@ -18,7 +18,6 @@ import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class AttributionTabTest extends AeTabTestCase {
 
         CourseAgent ca0 = command.getAeReport().getTreatmentInformation().getCourseAgents().get(0);
         ca0.setStudyAgent(createStudyAgent("Witch niece"));
-        ca0.getDose().setAmount(new BigDecimal(56));
+        ca0.getDose().setAmount("56");
         ca0.getDose().setUnits("ug");
         ca0.getDose().setRoute("IV");
 

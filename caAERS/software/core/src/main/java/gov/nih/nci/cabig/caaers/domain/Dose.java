@@ -15,7 +15,7 @@ import org.springframework.beans.BeanUtils;
  */
 @Embeddable
 public class Dose {
-    private BigDecimal amount;
+    private String amount;
 
     private String units; // TODO: source from caDSR
 
@@ -34,11 +34,11 @@ public class Dose {
     // //// BEAN PROPERTIES
 
     @Column(name = "dose_amount")
-    public BigDecimal getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

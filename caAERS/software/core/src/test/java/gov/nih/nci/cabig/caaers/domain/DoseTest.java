@@ -18,7 +18,7 @@ public class DoseTest extends CaaersTestCase {
     }
 
     public void testDisplayNameWithAllFields() throws Exception {
-        dose.setAmount(new BigDecimal("2373.4"));
+        dose.setAmount("2373.4");
         dose.setUnits("kg");
         dose.setRoute("aural");
 
@@ -26,7 +26,7 @@ public class DoseTest extends CaaersTestCase {
     }
 
     public void testDisplayNameWithoutRoute() throws Exception {
-        dose.setAmount(new BigDecimal("2373.4"));
+        dose.setAmount("2373.4");
         dose.setUnits("kg");
         dose.setRoute(null);
 
@@ -34,7 +34,7 @@ public class DoseTest extends CaaersTestCase {
     }
 
     public void testDisplayNameAmountOnly() throws Exception {
-        dose.setAmount(new BigDecimal("2373.4"));
+        dose.setAmount("2373.4");
 
         assertEquals("2373.4", dose.getDisplayName());
     }

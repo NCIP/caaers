@@ -57,7 +57,7 @@ public class CourseAgentTest extends AbstractTestCase {
         modifiedDose.setUnits("units");
 		*/
         dose = new Dose();
-        dose.setAmount(new BigDecimal(4));
+        dose.setAmount("4");
         dose.setRoute("route");
         dose.setUnits("units");
 
@@ -232,7 +232,7 @@ public class CourseAgentTest extends AbstractTestCase {
 
     public void testDisplayName() throws Exception {
         courseAgent.setStudyAgent(Fixtures.createStudyAgent("Witch hazel"));
-        courseAgent.getDose().setAmount(new BigDecimal("532.1"));
+        courseAgent.getDose().setAmount("532.1");
         courseAgent.getDose().setUnits("L");
         courseAgent.getDose().setRoute("oral");
         assertEquals("Witch hazel (532.1L oral)", courseAgent.getDisplayName());

@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.*;
@@ -43,7 +44,7 @@ public class LabsTab extends AeTab {
     }
 
     private InputField createLabValueField(String propName, String displayName) {
-        return InputFieldFactory.createTextField(propName + ".value", displayName + " value", new DecimalValidator(6, 4));
+        return InputFieldFactory.createTextField(propName + ".value", displayName + " value", new DecimalValidator(6, 4), new SignValidator(true));
     }
 
     @Override

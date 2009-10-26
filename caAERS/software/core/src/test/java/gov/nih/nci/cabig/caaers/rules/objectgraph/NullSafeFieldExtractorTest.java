@@ -190,7 +190,7 @@ public class NullSafeFieldExtractorTest extends AbstractNoSecurityTestCase {
         CourseAgent ca1 = new CourseAgent();
 
         Dose d1 = new Dose();
-        d1.setAmount(new BigDecimal(5));
+        d1.setAmount("5");
         d1.setUnits("abc1");
 
         StudyAgent sa1 = new StudyAgent();
@@ -203,7 +203,7 @@ public class NullSafeFieldExtractorTest extends AbstractNoSecurityTestCase {
 
         CourseAgent ca2 = new CourseAgent();
         Dose d2 = new Dose();
-        d2.setAmount(new BigDecimal(51));
+        d2.setAmount("51");
         d2.setUnits("abc2");
         ca2.setDose(d2);
 

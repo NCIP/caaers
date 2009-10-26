@@ -400,7 +400,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
                 ti.getAdverseEventCourse().setNumber(4);
                 ti.setFirstCourseDate(DateTools.createDate(2005, Calendar.JULY, 30));
                 ti.getCourseAgents().get(0).setAdministrationDelay(new BigDecimal(480));
-                ti.getCourseAgents().get(0).getDose().setAmount(new BigDecimal("45.2"));
+                ti.getCourseAgents().get(0).getDose().setAmount("45.2");
                 // TODO: load the treatmentAssignment and add it, before saving.
                 report.setTreatmentInformation(ti);
             }

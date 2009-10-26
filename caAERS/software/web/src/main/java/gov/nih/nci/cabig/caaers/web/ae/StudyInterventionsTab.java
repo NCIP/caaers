@@ -107,7 +107,9 @@ public class StudyInterventionsTab extends AeTab {
 
     private void createAgentFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", true, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
-        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", new DecimalValidator(14, 6), new SignValidator(true));
+
+        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", new DecimalValidator(9, 6), new SignValidator(true));
+
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);

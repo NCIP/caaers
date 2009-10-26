@@ -633,7 +633,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         // add one more study agent.
         CourseAgent ca1 = new CourseAgent();
         Dose d1 = new Dose();
-        d1.setAmount(new BigDecimal(5));
+        d1.setAmount("5");
         d1.setUnits("abc1");
 
         StudyAgent sa1 = new StudyAgent();
@@ -667,7 +667,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         // add one more study agent.
         CourseAgent ca1 = new CourseAgent();
         Dose d1 = new Dose();
-        d1.setAmount(new BigDecimal(5));
+        d1.setAmount("5");
         d1.setUnits("abc1");
         ca1.setDose(d1);
 
@@ -877,7 +877,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
             Dose d = new Dose();
-            d.setAmount(new BigDecimal(9));
+            d.setAmount("9");
             d.setUnits("KK");
             ca.setDose(d);
         }
@@ -897,7 +897,7 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
             Dose d = new Dose();
-            d.setAmount(new BigDecimal(9));
+            d.setAmount("9");
             ca.setDose(d);
         }
 

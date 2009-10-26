@@ -251,7 +251,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
             ca.setAdministrationDelay(new BigDecimal(5));
             Dose d = new Dose();
-            d.setAmount(new BigDecimal(9));
+            d.setAmount("9");
             d.setUnits("KK");
            // ca.setModifiedDose(d);
         }
