@@ -627,17 +627,20 @@
                 </DATE_OF_INITIAL_DIAGNOSIS>
             </xsl:if>
 
-            <xsl:if test="DiseaseHistory/otherPrimaryDiseaseSite != ''">
+            <xsl:if test="DiseaseHistory/otherPrimaryDiseaseSite != '' and DiseaseHistory/AnatomicSite/category = 'Other'">
                 <OTHER_PRIMARY_SITE_OF_DISEASE>
                     <xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseSite"/>
                 </OTHER_PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-
+            
+<!--
             <xsl:if test="DiseaseHistory/AnatomicSite/category = 'Other'">
                 <OTHER_PRIMARY_SITE_OF_DISEASE>
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
                 </OTHER_PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
+-->
+
         </PATIENT_INFORMATION>
         
         <xsl:for-each select="SAEReportPriorTherapy">
