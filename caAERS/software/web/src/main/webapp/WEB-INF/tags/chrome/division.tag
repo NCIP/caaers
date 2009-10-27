@@ -25,7 +25,11 @@
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
                         <td width="100%"><span id="titleOf_${id}">${title}</span><jsp:invoke fragment="titleFragment" /></td>
                         <td align="right">${additionalInfo}</td>
-                         <c:if test="${enableDelete and not empty deleteParams}"><td align="left"><a style='cursor:pointer;' onclick="fireAction(<c:out value="${deleteParams}, '${id}', '${cssClass}'" />);"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="Delete"/></a></td></c:if>
+                         <c:if test="${enableDelete and not empty deleteParams}">
+                             <td align="left"><a style='cursor:pointer;' onclick="fireAction(<c:out value="${deleteParams}, '${id}', '${cssClass}'" />);">
+                                <tags:button color="blue" value="" size="small" icon="x" type="button"/> 
+                            </a></td>
+                         </c:if>
                     </tr>
                 </table>
 				</h3>
