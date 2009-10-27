@@ -1074,7 +1074,7 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.Dose">
     <map-to xml="Dose"/>
-    <field name="amount" type="big-decimal">
+    <field name="amount" type="string">
       <bind-xml name="amount" node="element"/>
     </field>
     <field name="units" type="string">
