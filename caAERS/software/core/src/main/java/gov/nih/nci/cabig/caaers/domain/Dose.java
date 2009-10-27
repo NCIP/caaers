@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;

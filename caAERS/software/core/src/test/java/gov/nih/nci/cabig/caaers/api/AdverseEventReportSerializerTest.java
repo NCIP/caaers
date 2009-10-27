@@ -27,13 +27,26 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 	}
 	
 	/**
+	 * Tests the serialize of a full blown report
+	 * @throws Exception
+	 */
+	public void testFullblownReportSerailization() throws Exception{
+		String xmlFileName = "expedited_report_caaers_complete.xml";
+		ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
+		String serailzedXML = serializer.serialize(aeReport, null);
+		assertNotNull(serailzedXML);
+	}
+	
+	
+	/**
 	 * Runs the serialize in parallel... (30 threads), fails the test when there is an exception. 
 	 * @throws Exception
 	 */
 	public void testSerializeExpeditedAdverseEventReport() throws Exception{
+		String xmlFile = "expedited-report-caaers.xml";
 		Study study = Fixtures.createStudy("test");
 		study.setId(44);
-		ExpeditedAdverseEventReport aeReport = generateExpeditedReport();
+		ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFile);
 		
 		//assignments
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod(1, "02/02/2008", "03/03/2008");
@@ -58,9 +71,9 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 	 * @return
 	 * @throws Exception
 	 */
-	public ExpeditedAdverseEventReport generateExpeditedReport() throws Exception{
+	public ExpeditedAdverseEventReport generateExpeditedReport(String xmlFile) throws Exception{
 		
-		String xmlFile = "expedited-report-caaers.xml";
+		
 		Mapping mapping = new Mapping();
 		mapping.loadMapping(ClassLoader.getSystemResource(serializer.getMappingFile()));
 		
@@ -100,7 +113,6 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 				SecurityTestUtils.switchToSuperuser();
 				Thread.sleep(sleep);
 				String xml = serializer.serialize(aeReport);
-				//System.out.println(worker.getName() + " ::: " + xml);
 			}catch(Exception e) {
 				parentThread.interrupt(); //interrupt the parent thread so that we can stop testing. 
 				e.printStackTrace();

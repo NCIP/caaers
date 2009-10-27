@@ -20,6 +20,10 @@
       <bind-xml name="status"/>
     </field>
 	 -->
+	<field name="reportingPeriod"
+      type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod">
+      <bind-xml name="AdverseEventReportingPeriod"/>
+    </field>
     <field name="responseDescription"
       type="gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription">
       <bind-xml name="AdverseEventResponseDescription"/>
@@ -272,7 +276,24 @@
     </field>
   </class>
 
-
+  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod">
+  	<map-to xml="AdverseEventReportingPeriod"/>
+	<field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+	<field name="description" type="string">
+      <bind-xml name="description" node="element"/>
+    </field>
+	<field name="cycleNumber" type="integer">
+      <bind-xml name="cycleNumber" node="element"/>
+    </field>
+	 <field name="startDate" type="date">
+      <bind-xml name="startDate" node="element"/>
+    </field>
+    <field name="endDate" type="date">
+      <bind-xml name="endDate" node="element"/>
+    </field>
+  </class>	
   <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription">
     <map-to xml="AdverseEventResponseDescription"/>
     <field name="id" type="integer">
@@ -1427,7 +1448,7 @@
       <bind-xml name="endDate" node="element"/>
     </field>
     <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
-      <bind-xml name="Study"/>
+      <bind-xml auto-naming="deriveByClass"/>
     </field>
     <field name="organization" type="gov.nih.nci.cabig.caaers.domain.Organization">
       <bind-xml auto-naming="deriveByClass"/>
@@ -1435,7 +1456,6 @@
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Organization">
-    <map-to xml="Organization"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
@@ -1448,8 +1468,7 @@
     <field name="descriptionText" type="string">
       <bind-xml name="descriptionText" node="element"/>
     </field>
-    <field name="siteInvestigators" type="gov.nih.nci.cabig.caaers.domain.SiteInvestigator"
-      collection="arraylist">
+    <field name="siteInvestigators" type="gov.nih.nci.cabig.caaers.domain.SiteInvestigator" collection="arraylist">
       <bind-xml name="SiteInvestigator" node="element"/>
     </field>
   </class>
@@ -1494,7 +1513,6 @@
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Investigator">
-    <map-to xml="SiteInvestigator"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
@@ -1522,14 +1540,13 @@
   </class>
 
 	<class name="gov.nih.nci.cabig.caaers.domain.LocalInvestigator" extends="gov.nih.nci.cabig.caaers.domain.Investigator">
-	    <map-to xml="SiteInvestigator"/>    
+	    <map-to xml="Investigator"/>    
 	</class>  
 	<class name="gov.nih.nci.cabig.caaers.domain.RemoteInvestigator" extends="gov.nih.nci.cabig.caaers.domain.Investigator">
-	    <map-to xml="SiteInvestigator"/>    
+	    <map-to xml="Investigator"/>    
 	</class>  
 
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
-    <map-to xml="Study"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
@@ -1563,9 +1580,7 @@
     <field name="phaseCode" type="string">
       <bind-xml name="phaseCode" node="element"/>
     </field>
-    <field name="primarySponsorCode" type="string">
-      <bind-xml name="primarySponsorCode" node="element"/>
-    </field>
+    <!-- BJ : removed primarySponsorCode -->
     <field name="status" type="string">
       <bind-xml name="status" node="element"/>
     </field>
@@ -1590,6 +1605,12 @@
 
   </class>
 
+	<class name="gov.nih.nci.cabig.caaers.domain.LocalStudy" extends="gov.nih.nci.cabig.caaers.domain.Study">
+	   <map-to xml="Study"/>  
+	</class>  
+	<class name="gov.nih.nci.cabig.caaers.domain.RemoteStudy" extends="gov.nih.nci.cabig.caaers.domain.Study">
+	    <map-to xml="Study"/>
+	</class>  
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
     <map-to xml="Identifier"/>
     <field name="type" type="string">

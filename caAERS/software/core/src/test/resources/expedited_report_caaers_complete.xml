@@ -1,0 +1,724 @@
+<AdverseEventReport>
+<!--
+	BJ : Got this xml from demo (10-24-09), then 
+   	- added reporting period
+   	- remove contact mechanism in report and physician
+   	- changed all empty elemnts to have explicit end tags
+   	- Changed all Enums (eg: Grade, Hospitalization etc) to have their name instead of display name. 
+-->
+    <id>102</id>
+    <createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2009-10-01
+        12:31:55.407
+    </createdAt>
+	<AdverseEventReportingPeriod>
+		 <id>1</id>
+		 <cycleNumber>1</cycleNumber>
+	</AdverseEventReportingPeriod>
+    <AdverseEventResponseDescription>
+        <eventDescription>desc</eventDescription>
+        <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEAD
+        </presentStatus>
+        <recoveryDate>2009-10-01T00:00:00.000-04:00</recoveryDate>
+        <retreated>false</retreated>
+        <dateRemovedFromProtocol>2009-10-01T00:00:00.000-04:00</dateRemovedFromProtocol>
+        <eventAbate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA</eventAbate>
+        <eventReappear xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">NA</eventReappear>
+        <autopsyPerformed>false</autopsyPerformed>
+        <primaryTreatmentApproximateTime>
+            <type>0</type>
+        </primaryTreatmentApproximateTime>
+    </AdverseEventResponseDescription>
+    <Physician>
+        <firstName>pFirstName</firstName>
+        <lastName>pLastName</lastName>
+	</Physician>
+    <Reporter>
+        <firstName>Sameer</firstName>
+        <lastName>Sawant</lastName>
+        <address>
+            <city>herndon</city>
+            <state>va</state>
+            <street>2100 wordsworth ct</street>
+            <zip>20170</zip>
+        </address>
+    </Reporter>
+    <DiseaseHistory>
+        <diagnosisDate>
+            <dayString>01</dayString>
+            <monthString>10</monthString>
+            <yearString>2009</yearString>
+        </diagnosisDate>
+        <CtepStudyDisease>
+            <id>1</id>
+            <leadDisease>true</leadDisease>
+            <DiseaseTerm>
+                <id>201</id>
+                <term>Ovarian epithelial cancer</term>
+                <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                <DiseaseCategory>
+                    <id>104</id>
+                    <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                </DiseaseCategory>
+            </DiseaseTerm>
+        </CtepStudyDisease>
+        <AnatomicSite>
+            <id>8</id>
+            <name>Skin</name>
+            <category>Dermatology</category>
+        </AnatomicSite>
+        <MetastaticDiseaseSite>
+            <id>41</id>
+            <AnatomicSite>
+                <id>8</id>
+                <name>Skin</name>
+                <category>Dermatology</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+    </DiseaseHistory>
+    <ParticipantHistory>
+        <height>
+            <quantity>414</quantity>
+            <unit>Centimeter</unit>
+        </height>
+        <weight>
+            <quantity>43</quantity>
+            <unit>Kilogram</unit>
+        </weight>
+        <baselinePerformanceStatus>0 = Normal Activity, asymptomatic</baselinePerformanceStatus>
+        <bsa>2.8049</bsa>
+    </ParticipantHistory>
+    <StudyParticipantAssignment>
+        <dateOfEnrollment>2009-10-01T10:50:17.000-04:00</dateOfEnrollment>
+        <StudySite>
+            <statusCode>false</statusCode>
+            <Study>
+                <id>1</id>
+                <multiInstitutionIndicator>true</multiInstitutionIndicator>
+                <shortTitle>A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in
+                    Advanced Epithelial Ovarian and Primary Peritoneal Carcinoma
+                </shortTitle>
+                <longTitle>A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in
+                    Advanced Epithelial Ovarian and Primary Peritoneal Carcinoma
+                </longTitle>
+                <description>A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in
+                    Advanced Epithelial Ovarian and Primary Peritoneal Carcinoma
+                </description>
+                <phaseCode>Phase II Trial</phaseCode>
+                <status>Active - Trial is open to accrual</status>
+                <Ctc>
+                    <id>3</id>
+                    <name>CTCAE v3.0</name>
+                </Ctc>
+                <Identifier>
+                    <type>Protocol Authority Identifier</type>
+                    <value>6307</value>
+                    <primaryIndicator>true</primaryIndicator>
+                </Identifier>
+                <Identifier>
+                    <type>Coordinating Center Identifier</type>
+                    <value>MC0362</value>
+                    <primaryIndicator>false</primaryIndicator>
+                </Identifier>
+                <StudyAgent>
+                    <Agent>
+                        <id>21</id>
+                        <name>17-AAG</name>
+                        <nscNumber>330507</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <id>483</id>
+                        <name>Gemcitabine hydrochloride</name>
+                        <nscNumber>613327</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        NA_COMMERCIAL
+                    </INDType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <id>386</id>
+                        <name>EPL Diluent</name>
+                        <nscNumber>704057</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        OTHER
+                    </INDType>
+                </StudyAgent>
+                <CtepStudyDisease>
+                    <id>1</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>2</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>204</id>
+                        <term>Primary peritoneal carcinoma</term>
+                        <ctepTerm>Primary peritoneal carcinoma</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>3</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>98</id>
+                        <term>Hematopoietic malignancy, NOS</term>
+                        <ctepTerm>Hematopoietic malignancy, NOS</ctepTerm>
+                        <DiseaseCategory>
+                            <id>59</id>
+                            <name>Hematopoietic Neoplasm, Miscellaneous</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <CtepStudyDisease>
+                    <id>4</id>
+                    <leadDisease>false</leadDisease>
+                    <DiseaseTerm>
+                        <id>190</id>
+                        <term>Solid tumor, NOS</term>
+                        <ctepTerm>Solid tumor, NOS</ctepTerm>
+                        <DiseaseCategory>
+                            <id>95</id>
+                            <name>Solid Tumor, Miscellaneous</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+            </Study>
+            <Organization>
+                <id>104522</id>
+                <name>Mayo Clinic Rochester</name>
+                <nciInstituteCode>MN026</nciInstituteCode>
+                <SiteInvestigator>
+                    <id>1</id>
+                    <Investigator>
+                        <id>100000</id>
+                        <firstName>Robert</firstName>
+                        <lastName>McWilliams</lastName>
+                        <nciIdentifier>36894</nciIdentifier>
+                        <emailAddress>site.physician@gmail.com</emailAddress>
+                        <phoneNumber>5072842511</phoneNumber>
+                        <faxNumber>5072845280</faxNumber>
+                    </Investigator>
+                </SiteInvestigator>
+            </Organization>
+        </StudySite>
+        <Participant>
+            <firstName>Madhuri</firstName>
+            <lastName>Dixit</lastName>
+            <dateOfBirth>
+                <dayString>09</dayString>
+                <monthString>09</monthString>
+                <yearString>1970</yearString>
+            </dateOfBirth>
+            <gender>Female</gender>
+            <race>Asian</race>
+            <ethnicity>Hispanic or Latino</ethnicity>
+            <Identifier>
+                <type>Other</type>
+                <value>dixitm</value>
+                <primaryIndicator>true</primaryIndicator>
+            </Identifier>
+            <Identifier>
+                <type>CC</type>
+                <value>dixitMayo</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+        </Participant>
+        <studySubjectIdentifier>dixit6307</studySubjectIdentifier>
+    </StudyParticipantAssignment>
+    <ConcomitantMedication>
+        <name>conco meditcation</name>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>10</monthString>
+            <yearString>2009</yearString>
+        </startDate>
+        <endDate></endDate>
+        <stillTakingMedications>true</stillTakingMedications>
+    </ConcomitantMedication>
+    <AdverseEvent>
+        <gridId>PRY2ca2230a-7085-4094-83d7-2ce6b1738464</gridId>
+        <startDate>2009-10-01T00:00:00.000-04:00</startDate>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>182</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <ConcomitantMedication>
+                <name>conco meditcation</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </startDate>
+                <endDate></endDate>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <CourseAgentAttribution>
+            <id>181</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <CourseAgent>
+                <id>122</id>
+                <lastAdministeredDate>2009-10-01T00:00:00.000-04:00</lastAdministeredDate>
+                <Dose>
+                    <amount>323</amount>
+                    <units>mEq</units>
+                </Dose>
+                <StudyAgent>
+                    <Agent>
+                        <id>21</id>
+                        <name>17-AAG</name>
+                        <nscNumber>330507</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                </StudyAgent>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>183</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <DiseaseHistory>
+                <id>102</id>
+                <diagnosisDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </diagnosisDate>
+                <CtepStudyDisease>
+                    <id>1</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>8</id>
+                    <name>Skin</name>
+                    <category>Dermatology</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>41</id>
+                    <AnatomicSite>
+                        <id>8</id>
+                        <name>Skin</name>
+                        <category>Dermatology</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>3123</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>310</id>
+                    <name>ENDOCRINE</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Adrenal insufficiency</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>3123</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>310</id>
+                    <name>ENDOCRINE</name>
+                </CtcCategory>
+            </term>
+            <full-name>Adrenal insufficiency</full-name>
+        </AdverseEventCtcTerm>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEATH</grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">YES</hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <Outcome>
+            <id>142</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEATH
+            </OutcomeType>
+        </Outcome>
+        <Outcome>
+            <id>143</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRN40dcddd8-6b47-475e-871c-4906dd94b379</gridId>
+        <startDate>2009-10-01T00:00:00.000-04:00</startDate>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>185</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <ConcomitantMedication>
+                <name>conco meditcation</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </startDate>
+ 				<endDate></endDate>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <CourseAgentAttribution>
+            <id>184</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <CourseAgent>
+                <id>122</id>
+                <lastAdministeredDate>2009-10-01T00:00:00.000-04:00</lastAdministeredDate>
+                <Dose>
+                    <amount>323</amount>
+                    <units>mEq</units>
+                </Dose>
+                <StudyAgent>
+                    <Agent>
+                        <id>21</id>
+                        <name>17-AAG</name>
+                        <nscNumber>330507</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                </StudyAgent>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>186</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <DiseaseHistory>
+                <id>102</id>
+                <diagnosisDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </diagnosisDate>
+                <CtepStudyDisease>
+                    <id>1</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>8</id>
+                    <name>Skin</name>
+                    <category>Dermatology</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>41</id>
+                    <AnatomicSite>
+                        <id>8</id>
+                        <name>Skin</name>
+                        <category>Dermatology</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>3589</id>
+                <term>ALT, SGPT (serum glutamic pyruvic transaminase)</term>
+                <ctepTerm>Alanine aminotransferase increased</ctepTerm>
+                <ctepCode>10001551</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>317</id>
+                    <name>METABOLIC/LABORATORY</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>ALT, SGPT (serum glutamic pyruvic transaminase)</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>3589</id>
+                <term>ALT, SGPT (serum glutamic pyruvic transaminase)</term>
+                <ctepTerm>Alanine aminotransferase increased</ctepTerm>
+                <ctepCode>10001551</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>317</id>
+                    <name>METABOLIC/LABORATORY</name>
+                </CtcCategory>
+            </term>
+            <full-name>ALT, SGPT (serum glutamic pyruvic transaminase)</full-name>
+        </AdverseEventCtcTerm>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEATH</grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">YES</hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <Outcome>
+            <id>141</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRN984a4a4e-bccd-4300-9319-bd719036c87f</gridId>
+        <startDate>2009-10-01T00:00:00.000-04:00</startDate>
+        <expected>true</expected>
+        <ConcomitantMedicationAttribution>
+            <id>188</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <ConcomitantMedication>
+                <name>conco meditcation</name>
+                <startDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </startDate>
+                 <endDate></endDate>
+                <stillTakingMedications>true</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <CourseAgentAttribution>
+            <id>187</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <CourseAgent>
+                <id>122</id>
+                <lastAdministeredDate>2009-10-01T00:00:00.000-04:00</lastAdministeredDate>
+                <Dose>
+                    <amount>323</amount>
+                    <units>mEq</units>
+                </Dose>
+                <StudyAgent>
+                    <Agent>
+                        <id>21</id>
+                        <name>17-AAG</name>
+                        <nscNumber>330507</nscNumber>
+                    </Agent>
+                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                        CTEP_IND
+                    </INDType>
+                </StudyAgent>
+            </CourseAgent>
+        </CourseAgentAttribution>
+        <DiseaseAttribution>
+            <id>189</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attribution>
+            <DiseaseHistory>
+                <id>102</id>
+                <diagnosisDate>
+                    <dayString>01</dayString>
+                    <monthString>10</monthString>
+                    <yearString>2009</yearString>
+                </diagnosisDate>
+                <CtepStudyDisease>
+                    <id>1</id>
+                    <leadDisease>true</leadDisease>
+                    <DiseaseTerm>
+                        <id>201</id>
+                        <term>Ovarian epithelial cancer</term>
+                        <ctepTerm>Ovarian epithelial cancer</ctepTerm>
+                        <DiseaseCategory>
+                            <id>104</id>
+                            <name>Ovarian Cancer (excluding Ovarian Germ Cell Cancer)</name>
+                        </DiseaseCategory>
+                    </DiseaseTerm>
+                </CtepStudyDisease>
+                <AnatomicSite>
+                    <id>8</id>
+                    <name>Skin</name>
+                    <category>Dermatology</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>41</id>
+                    <AnatomicSite>
+                        <id>8</id>
+                        <name>Skin</name>
+                        <category>Dermatology</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>3124</id>
+                <term>Cushingoid appearance (e.g., moon face, buffalo hump, centripetal obesity, cutaneous striae)
+                </term>
+                <ctepTerm>Cushingoid</ctepTerm>
+                <ctepCode>10011655</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>310</id>
+                    <name>ENDOCRINE</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Cushingoid appearance (e.g., moon face, buffalo hump, centripetal obesity, cutaneous striae)
+            </universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>3124</id>
+                <term>Cushingoid appearance (e.g., moon face, buffalo hump, centripetal obesity, cutaneous striae)
+                </term>
+                <ctepTerm>Cushingoid</ctepTerm>
+                <ctepCode>10011655</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>310</id>
+                    <name>ENDOCRINE</name>
+                </CtcCategory>
+            </term>
+            <full-name>Cushingoid appearance (e.g., moon face, buffalo hump, centripetal obesity, cutaneous striae)
+            </full-name>
+        </AdverseEventCtcTerm>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">POSSIBLE</attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">MODERATE</grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">YES</hospitalization>
+        <eventApproximateTime>
+            <type>0</type>
+        </eventApproximateTime>
+        <Outcome>
+            <id>144</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                HOSPITALIZATION
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <SAEReportPriorTherapy>
+        <id>101</id>
+        <PriorTherapy>
+            <id>1</id>
+            <text>Anti-retroviral Therapy</text>
+            <meddraTerm>90003000</meddraTerm>
+        </PriorTherapy>
+        <startDate>
+            <dayString>01</dayString>
+            <monthString>10</monthString>
+            <yearString>2009</yearString>
+        </startDate>
+        <endDate>
+            <dayString>02</dayString>
+            <monthString>10</monthString>
+            <yearString>2009</yearString>
+        </endDate>
+    </SAEReportPriorTherapy>
+    <Summary id="Study">
+        <value>(6307) A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in Advanced
+            Epithelial Ovarian and Primary Peritoneal Carcinoma
+        </value>
+    </Summary>
+    <Summary id="Participant">
+        <value>(dixitm) Madhuri Dixit</value>
+    </Summary>
+    <Summary id="Report created at">
+        <value>2009-10-01 12:31:55.407</value>
+    </Summary>
+    <Summary id="Primary AE">
+        <value>Adrenal insufficiency</value>
+    </Summary>
+    <Summary id="AE count">
+        <value>3</value>
+    </Summary>
+    <Summary id="Public identifier">
+        <value>MN026-MN026</value>
+    </Summary>
+    <Summary id="Ticket number"></Summary>
+    <Summary id="Next report due"></Summary>
+    <Summary id="Course">
+        <value></value>
+    </Summary>
+    <TreatmentInformation>
+        <firstCourseDate>2009-10-01T00:00:00.000-04:00</firstCourseDate>
+        <treatmentDescription>Other Treatment Assignment from course.</treatmentDescription>
+        <totalCourses>1</totalCourses>
+        <investigationalAgentAdministered>true</investigationalAgentAdministered>
+        <AdverseEventCourse>
+            <number>1</number>
+            <date>2009-10-01T00:00:00.000-04:00</date>
+        </AdverseEventCourse>
+        <CourseAgent>
+            <id>122</id>
+            <lastAdministeredDate>2009-10-01T00:00:00.000-04:00</lastAdministeredDate>
+            <Dose>
+                <amount>323</amount>
+                <units>mEq</units>
+            </Dose>
+            <StudyAgent>
+                <Agent>
+                    <id>21</id>
+                    <name>17-AAG</name>
+                    <nscNumber>330507</nscNumber>
+                </Agent>
+                <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">CTEP_IND
+                </INDType>
+            </StudyAgent>
+        </CourseAgent>
+    </TreatmentInformation>
+    <SAEReportPreExistingCondition>
+        <id>61</id>
+        <PreExistingCondition>
+            <id>1</id>
+            <text>Anemia</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <AdditionalInformation>
+        <id>102</id>
+        <autopsyReport>false</autopsyReport>
+        <consults>false</consults>
+        <dischargeSummary>false</dischargeSummary>
+        <flowCharts>false</flowCharts>
+        <labReports>false</labReports>
+        <obaForm>false</obaForm>
+        <other>false</other>
+        <pathologyReport>false</pathologyReport>
+        <progressNotes>false</progressNotes>
+        <radiologyReports>false</radiologyReports>
+        <referralLetters>false</referralLetters>
+        <irbReport>false</irbReport>
+    </AdditionalInformation>
+    <Report>
+        <id>262</id>
+        <adeersReportTypeIndicator>Regular report</adeersReportTypeIndicator>
+        <ReportDefinition>
+            <id>2</id>
+            <duration>10</duration>
+            <timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DAY
+            </timeScaleUnitType>
+        </ReportDefinition>
+        <ReportVersion>
+            <reportVersionId>0</reportVersionId>
+        </ReportVersion>
+        <emailRecipient>sameer.sawant@semanticbits.com</emailRecipient>
+    </Report>
+</AdverseEventReport>
