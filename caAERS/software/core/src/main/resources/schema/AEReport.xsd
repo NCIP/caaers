@@ -182,7 +182,7 @@
    
   <xsd:complexType name="Dose">
 	  <xsd:sequence>
-  		<xsd:element name="amount" type="xsd:decimal"/>
+  		<xsd:element name="amount" type="xsd:string"/>
   		<xsd:element name="units" type="xsd:string"/>
   		<xsd:element name="route" type="xsd:string"/>
 	  </xsd:sequence>
