@@ -28,8 +28,6 @@
     </script>
 </head>
 <body>
-    
-    <chrome:division>
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="instructions">
     	<tags:instructions code="rulereview" />
@@ -131,6 +129,6 @@
       </div>
 	</jsp:attribute>
 </tags:tabForm> 
-</chrome:division>
+
 </body>
 </html>

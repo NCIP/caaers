@@ -98,10 +98,9 @@
     	</script>
 	</head>
 	<body onLoad="nextTab();">
-	<chrome:box title="Create Rules">
-        	<tags:instructions code="ruletype" />  
-    	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideBox="true">
+		<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" title="Select Rule Type">
     		<jsp:attribute name="singleFields">
+    			<tags:instructions code="ruletype" /> 
     			<div class="row"  id="ruleSetDiv">
             			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleSetName">Type</label></div>
             			<div class="value">
@@ -251,6 +250,5 @@
     			<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
     		</jsp:attribute>
     	</tags:tabForm>
-		</chrome:box>
 	</body>
 </html>
