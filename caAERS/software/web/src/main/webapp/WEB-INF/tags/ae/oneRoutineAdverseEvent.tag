@@ -25,11 +25,11 @@
 
 <c:set var="v" value="adverseEvents[${index}]" />
 <c:set var="collapsedCheck" value="${!command.errorsForFields[v] && (isSolicited ? 'true' : adverseEvent.grade != null) && (adverseEvent.adverseEventTerm.otherRequired ? adverseEvent.lowLevelTerm != null : true)}" />
-<c:if test="${command.adverseEvents[index].report.id > 0}"><c:set var="inReport"><jsp:attribute name="value"><img src='<c:url value='/images/blue/in-report.png '/>'></jsp:attribute></c:set></c:if>
+<c:if test="${command.adverseEvents[index].report.id > 0}"><c:set var="inReport"><jsp:attribute name="value"> <span class="inReport"> (Currently Included in a Report)</span></jsp:attribute></c:set></c:if>
 <a name="adverseEventTerm-${adverseEvent.adverseEventTerm.term.id}"></a>
-<chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade: ${title_grade}" id="ae-section-${index}" cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}"
+<chrome:division title="${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade: ${title_grade}${inReport}" id="ae-section-${index}" cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}"
 	collapsable="true" deleteParams="${index}" enableDelete="${enableDelete}" collapsed="${collapsedCheck}">
-    <jsp:attribute name="additionalInfo">${inReport}</jsp:attribute>
+   <jsp:attribute name="additionalInfo"></jsp:attribute>
 
     <jsp:body>
 		<%-- Other MedDRA --%>

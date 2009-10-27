@@ -835,3 +835,9 @@ a.export-button img {
 	background-color:#e4e4e4;
 	padding:10px 2px 10px 10px;
 }
+.inReport {
+	color:black;
+	font-size:8pt;
+	font-weight:normal;
+	font-style:italic;
+}
