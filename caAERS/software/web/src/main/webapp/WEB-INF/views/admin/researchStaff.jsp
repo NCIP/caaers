@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <script src="<c:url value="/js/ui/researchStaffPage.js"/>"></script>
+    <script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
     <tags:dwrJavascriptLink objects="createStudy,searchStudy"/>
 </head>
 <body>

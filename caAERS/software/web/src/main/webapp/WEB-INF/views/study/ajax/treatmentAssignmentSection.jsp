@@ -1,13 +1,8 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
+<%@include file="/WEB-INF/views/taglibs.jsp" %>
+
 <tags:noform>
-<study:treatmentAssignment
-        title="...."
-        sectionClass="si-section"
-        index="${index}"
-		treatmentAssignment="${command.study.treatmentAssignments[index]}"
-		readOnly="false"
-        style="display:none" 
-        collapsed="false"
-         />
+    <c:forEach items="${indexes}" var="index" varStatus="i">
+        <study:treatmentAssignment title="${command.study.treatmentAssignments[index].code}" index="${index}" ta="${command.study.treatmentAssignments[index]}" collapsed="false" />
+    </c:forEach>
 </tags:noform>
+

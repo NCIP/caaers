@@ -34,6 +34,27 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this));
     },
 
+    _deleteItem: function(itemType, index, location, tabNumber) {
+        if (index < 0) return;
+        var confirmation = confirm("Do you really want to delete?");
+        if (!confirmation) return;
+
+        // this.showIndicator(itemType+"-indicator");
+        var container = $(location);
+
+        var paramHash = new Hash();
+        paramHash.set('task', 'remove');
+        paramHash.set('currentItem', itemType);
+        paramHash.set('index', index);
+        this._populateDeafultParameters(itemType, paramHash, tabNumber);
+        var url = $('command').action + "?subview";
+        var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
+        this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
+        }.bind(this));
+
+        if (itemType == 'agent') $('btn-add-agent').show();
+    },
+    
     formElementsInSection : function(container) {
         return container.select('input', 'select', 'textarea');
     },

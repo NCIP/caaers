@@ -107,7 +107,6 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
         result = prime * result + (code == null ? 0 : code.hashCode());
         result = prime * result + (comments == null ? 0 : comments.hashCode());
         result = prime * result + (description == null ? 0 : description.hashCode());
-        result = prime * result + (doseLevelOrder == null ? 0 : doseLevelOrder);
         result = prime * result + (study.getId() == null ? 0 : study.getId().hashCode());
         return result;
     }

@@ -1,78 +1,49 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-    
-  <tags:dwrJavascriptLink objects="createStudy"/>
+
+<script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
 <script language="JavaScript" type="text/JavaScript">
-	var addTreatmentAssignmentEditor;
-	
-	function fireAction(action, selected){
-		if(action == 'addTreatmentAssignment'){
-			addTreatmentAssignmentEditor.add.bind(addTreatmentAssignmentEditor)();
-		}else{
-			document.getElementById('command')._target.name='_noname';
-			document.studyTreatmentAssignmentsForm._action.value=action;
-			document.studyTreatmentAssignmentsForm._selected.value=selected;		
-			document.studyTreatmentAssignmentsForm.submit();
-		}
-	}
-	  
-    Event.observe(window, "load", function() {
-  	  //This is added for Add Sysetem TreatmentAssignments button
-	  new ListEditor("si-section", createStudy, "TreatmentAssignment", {
-		addFirstAfter: "identifierbookmark",
-		addCallback: function(nextIndex) {
-  			$('_ITEM_COUNT').value = parseInt($('_ITEM_COUNT').value) + 1;
-     	},
-		deletable: true,
-        removeParameters:['Treatment Assignment'],
-        nextIndexCallback : function(){
-            return $('_ITEM_COUNT').value;
-        }
-	   },'study.treatmentAssignments');
-		               	
-    });
-	
+
+    ajaxCRUD = new AJAX_CRUD_HELPER();
+    function addTA() {
+        ajaxCRUD._addItem('TA', null, null, '_TA', null, ${tab.number});
+    }
+
+    function fireAction(action, index) {
+        if (action == 'delete') {
+            // alert(index);
+            ajaxCRUD._deleteItem('TA', index, '_TA', ${tab.number});
+        } 
+    }
 </script>
 
 </head>
 <body>
+
 <study:summary />
 <tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="repeatingFields">
     <p><tags:instructions code="study.study_treatments.top" /></p>
-		 <input type="hidden" name="_action" value="">
-		 <input type="hidden" name="_selected" value="">
-		 <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.treatmentAssignments)}">
-		<c:forEach var="ta" varStatus="status" items="${command.study.treatmentAssignments}">
-			<c:if test="${not ta.retired}">
-		  		<study:treatmentAssignment
-		  			title="${empty ta.code ? '...' : ta.code}"
-		  			sectionClass="si-section" 
-		  			index="${status.index}" 
-		  			treatmentAssignment="${command.study.treatmentAssignments[status.index]}" 
-		  			collapsed="true"
-		  			readOnly="${not empty ta.code}"
-		  			/>
-		 	</c:if>
-		</c:forEach>	
-		    <span id="identifierbookmark"></span>
-        <br>
-        <tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />
-        
+
+        <div style="padding-left:20px;">
+            <tags:button cssClass="foo" id="btn-add-agent" color="blue" value="Add Treatment Assignment" icon="Add" type="button" onclick="addTA();" size="small"/>
+            <tags:indicator id="agent_AjaxIndicator" />
+            <div id="_TA">
+                <c:set var="size" value="${fn:length(command.study.treatmentAssignments)}" />
+                <c:forEach items="${command.study.treatmentAssignments}" varStatus="status" var="ta">
+                    <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                    <c:set var="collapsed" value="false" />
+                        <study:treatmentAssignment title="${command.study.treatmentAssignments[newIndex].code}" index="${newIndex}" ta="${command.study.treatmentAssignments[newIndex]}" collapsed="false" />
+                </c:forEach>
+            </div>
+        </div>
+
     </jsp:attribute>
-	
+
 </tags:tabForm>
 </body>
 </html>

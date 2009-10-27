@@ -2,20 +2,26 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.admin.ResearchStaffCommand;
+import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Saurabh Agrawal
@@ -23,10 +29,13 @@ import org.springframework.validation.Errors;
 public class TreatmentAssignmentTab extends StudyTab {
 
     private RepeatingFieldGroupFactory rfgFactory;
+    Map<String, String> methodNameMap = new HashMap<String, String>();
 
     public TreatmentAssignmentTab() {
         super("Treatment Assignments", "Treatment Assignments", "study/treatment_assignments");
         setAutoPopulateHelpKey(true);
+        methodNameMap.put("addTA", "addTreatmentAssignment");
+        methodNameMap.put("removeTA", "removeTreatmentAssignment");
     }
 
     @Override
@@ -81,4 +90,66 @@ public class TreatmentAssignmentTab extends StudyTab {
         }
 
     }
+
+    @Override
+    protected boolean methodInvocationRequest(HttpServletRequest request) {
+    	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
+    }
+
+    @Override
+    public String getMethodName(HttpServletRequest request) {
+    	String currentItem = request.getParameter("currentItem");
+    	String task = request.getParameter("task");
+    	return methodNameMap.get(task + currentItem);
+    }
+
+    //
+    public ModelAndView addTreatmentAssignment(HttpServletRequest request, Object object, Errors errors) {
+        //System.out.println("1. addTreatmentAssignment");
+        StudyCommand command = (StudyCommand)object;
+        TreatmentAssignment ta = new TreatmentAssignment();
+        command.getStudy().addTreatmentAssignment(ta);
+        ModelAndView modelAndView = new ModelAndView("study/ajax/treatmentAssignmentSection");
+        modelAndView.getModel().put("indexes", new Integer[]{command.getStudy().getTreatmentAssignments().size() - 1});
+        return modelAndView;
+    }
+    
+    //
+    public ModelAndView removeTreatmentAssignment(HttpServletRequest request, Object object, Errors errors) {
+        //System.out.println("2. removeTreatmentAssignment");
+
+        StudyCommand command = (StudyCommand)object;
+        List<TreatmentAssignment> tas = command.getStudy().getTreatmentAssignments();
+
+        //System.out.println("Active TAs before deletion:" + command.getStudy().getTreatmentAssignments().size());
+
+        int index;
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+            // System.out.println("index to be deleted=" + index);
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Wrong <index> for <treatment assignment> list: " + e.getMessage());
+        }
+
+        if (tas.size() - 1 < index) {
+            log.debug("Wrong <index> for <treatment assignmen> list.");
+        } else if (index >=0) {
+//            TreatmentAssignment ta = (TreatmentAssignment)tas.get(index);
+            tas.remove(index);
+        }
+
+        //System.out.println("Active TAs after deletion:" + command.getStudy().getTreatmentAssignments().size());
+
+        int size = tas.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/treatmentAssignmentSection");
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
 }

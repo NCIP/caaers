@@ -149,7 +149,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
     protected boolean shouldSave(final HttpServletRequest request, final StudyCommand command, final Tab<StudyCommand> tab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
+        if (isAjax != null || isAjaxRequest(request)) {
             return false;
         }
 

@@ -114,7 +114,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     protected boolean shouldSave(HttpServletRequest request, StudyCommand command, Tab<StudyCommand> studyCommandTab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
+        if (isAjax != null || isAjaxRequest(request)) {
             return false;
         }
 
