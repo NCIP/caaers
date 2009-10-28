@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.NoOp;
+
 import com.semanticbits.rules.objectgraph.FactResolver;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -7,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.INDHolder;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -258,4 +262,67 @@ public class FactResolverTest extends TestCase {
 		fact = resolver.assertFact(remoteStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Wrong Name","==");
 		assertFalse(fact);
 	}
+	
+	/*
+	 * Testing : factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
+	 * On CGLIBEnancedStudy IND Holder check (LocalHolder)
+	 */
+	public void testAssertFact_CGLIBStudy_LocalINDHolder() throws Exception{
+		//factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
+		Study cglibStudy = createCGLIBProxyStudy(Study.class, "cglib test");
+		StudyAgent agent = Fixtures.createStudyAgent("test");
+		INDHolder indHolder = Fixtures.createOrganizationINDHolder(localOrganization);
+		InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(indHolder, "-2");
+	
+		StudyAgentINDAssociation studyAgentIndAssociation = new StudyAgentINDAssociation();
+		studyAgentIndAssociation.setStudyAgent(agent);
+		studyAgentIndAssociation.setInvestigationalNewDrug(ind);
+		
+		agent.addStudyAgentINDAssociation(studyAgentIndAssociation);
+		
+		cglibStudy.addStudyAgent(agent);
+		
+		boolean fact = resolver.assertFact(cglibStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Cancer Therapy Evaluation Program","==");
+		assertTrue(fact);
+		
+		fact = resolver.assertFact(cglibStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Wrong Name","==");
+		assertFalse(fact);
+	}
+	
+
+	/*
+	 * Testing : factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
+	 * On CGLIBEnanced LocalStudy IND Holder check (LocalHolder)
+	 */
+	public void testAssertFact_CGLIBLocalStudy_LocalINDHolder() throws Exception{
+		//factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
+		Study cglibStudy = createCGLIBProxyStudy(LocalStudy.class, "cglib test");
+		StudyAgent agent = Fixtures.createStudyAgent("test");
+		INDHolder indHolder = Fixtures.createOrganizationINDHolder(localOrganization);
+		InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(indHolder, "-2");
+	
+		StudyAgentINDAssociation studyAgentIndAssociation = new StudyAgentINDAssociation();
+		studyAgentIndAssociation.setStudyAgent(agent);
+		studyAgentIndAssociation.setInvestigationalNewDrug(ind);
+		
+		agent.addStudyAgentINDAssociation(studyAgentIndAssociation);
+		
+		cglibStudy.addStudyAgent(agent);
+		
+		boolean fact = resolver.assertFact(cglibStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Cancer Therapy Evaluation Program","==");
+		assertTrue(fact);
+		
+		fact = resolver.assertFact(cglibStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Wrong Name","==");
+		assertFalse(fact);
+	}
+	
+	private Study createCGLIBProxyStudy(Class<? extends Study> klass, String shortTitle) {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(klass);
+        enhancer.setCallback(NoOp.INSTANCE);
+        Study study =  (Study)enhancer.create();
+        study.setShortTitle(shortTitle);
+        return study;
+   }
+
 }
