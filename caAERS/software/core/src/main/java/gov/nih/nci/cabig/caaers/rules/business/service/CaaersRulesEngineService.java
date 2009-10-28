@@ -1045,10 +1045,10 @@ public class CaaersRulesEngineService {
      */
     private Column createCriteriaForSponsor(String criteriaValue) {
         Column column = BRXMLHelper.newColumn();
-        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.LocalStudy.class.getName());
         column.setIdentifier("studySDO");
         String expression = "factResolver.assertFact(studySDO,"
-                        + "\"gov.nih.nci.cabig.caaers.domain.Organization" + "\"," + "\"name"
+                        + "\"gov.nih.nci.cabig.caaers.domain.LocalOrganization" + "\"," + "\"name"
                         + "\"," + "\"" + criteriaValue + "\",\"==\"" + ")";
 
         column.setExpression(expression);
@@ -1077,7 +1077,7 @@ public class CaaersRulesEngineService {
      */
     private Column createCriteriaForStudy(String criteriaValue, String level) {
         Column column = BRXMLHelper.newColumn();
-        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.LocalStudy.class.getName());
         column.setIdentifier("studySDO");
 
         String expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\","
@@ -1109,7 +1109,7 @@ public class CaaersRulesEngineService {
      */
     private Column createCriteriaForInstitute(String criteriaValue) {
         Column column = BRXMLHelper.newColumn();
-        column.setObjectType(gov.nih.nci.cabig.caaers.domain.Organization.class.getName());
+        column.setObjectType(gov.nih.nci.cabig.caaers.domain.LocalOrganization.class.getName());
         column.setIdentifier("organizationSDO");
         String expression = "factResolver.assertFact(organizationSDO,null," + "\"name" + "\","
                         + "\"" + criteriaValue + "\",\"==\"" + ")";
