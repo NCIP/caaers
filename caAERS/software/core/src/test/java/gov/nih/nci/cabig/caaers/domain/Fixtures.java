@@ -41,6 +41,11 @@ public class Fixtures {
         organization.setId(organizationId);
         return organization;
     }
+    public static Organization createRemoteOrganization(final String organizationName, final int organizationId) {
+        final Organization organization = createRemoteOrganization(organizationName);
+        organization.setId(organizationId);
+        return organization;
+    }
 
     public static <T extends DomainObject> T setId(final int id, final T target) {
         target.setId(id);
@@ -60,9 +65,24 @@ public class Fixtures {
         s.setLongTitle(shortTitle);
         return s;
     }
+    
+    public static Study createRemoteStudy(final String shortTitle){
+    	Study s = new RemoteStudy();
+        s.setShortTitle(shortTitle);
+        s.setLongTitle(shortTitle);
+        return s;
+    }
 
     public static Organization createOrganization(final String name) {
         Organization organization = new LocalOrganization();
+        organization.setName(name);
+        organization.setDescriptionText("dec:" + name);
+        organization.setNciInstituteCode("NCI333:" + name);
+        return organization;
+    }
+    
+    public static Organization createRemoteOrganization(final String name) {
+        Organization organization = new RemoteOrganization();
         organization.setName(name);
         organization.setDescriptionText("dec:" + name);
         organization.setNciInstituteCode("NCI333:" + name);
@@ -112,6 +132,20 @@ public class Fixtures {
         agent.setAgent(new Agent());
         agent.getAgent().setName(agentName);
         return agent;
+    }
+    
+    public static INDHolder createOrganizationINDHolder(Organization org ){
+    	OrganizationHeldIND holder = new OrganizationHeldIND();
+    	holder.setOrganization(org);
+    	return holder;
+    }
+    
+    public static InvestigationalNewDrug createInvestigationalNewDrug(INDHolder holder, String no){
+    	InvestigationalNewDrug ind = new InvestigationalNewDrug();
+    	ind.setStrINDNo(no);
+    	ind.setINDHolder(holder);
+    	
+    	return ind;
     }
 
     public static RoutineAdverseEventReport createSavableRoutineReport() {
@@ -507,6 +541,13 @@ public class Fixtures {
         return organization;
     }
     
+    public static Organization createRemoteOrganization(final String name, final String nciInstituteCode) {
+        Organization organization = new RemoteOrganization();
+        organization.setName(name);
+        organization.setDescriptionText("dec:" + name);
+        organization.setNciInstituteCode(nciInstituteCode);
+        return organization;
+    }
     public static ReportDefinition createReportDefinition(String name, String nciInstituteCode) {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
