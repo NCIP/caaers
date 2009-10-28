@@ -49,15 +49,15 @@
                     <xs:element ref="diseaseTerminology"/>
                     <xs:element name="design" type="DesignCodeType" minOccurs="0"/>
                     
-                    <xs:element name="drugAdministrationTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="deviceTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="radiationTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="surgeryTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="behavioralTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="biologicalTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="geneticTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="dietarySupplementTherapyType" type="xs:boolean"  minOccurs="1"/>
-                    <xs:element name="otherTherapyType" type="xs:boolean"  minOccurs="1"/>
+                    <xs:element name="drugAdministrationTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="deviceTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="radiationTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="surgeryTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="behavioralTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="biologicalTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="geneticTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="dietarySupplementTherapyType" type="xs:boolean"  minOccurs="0"/>
+                    <xs:element name="otherTherapyType" type="xs:boolean"  minOccurs="0"/>
                     
                     <xs:element name="fundingSponsor" type="FundingSponsorType" />
                     <xs:element name="coordinatingCenter" type="CoordinatingCenterType"/>
