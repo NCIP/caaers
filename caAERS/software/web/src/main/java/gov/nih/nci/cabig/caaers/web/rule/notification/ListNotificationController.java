@@ -3,7 +3,9 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
+import gov.nih.nci.cabig.caaers.service.synchronizer.ReportDefinitionSynchronizer;
 import gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleCommand;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,8 @@ public class ListNotificationController extends SimpleFormController {
 
     protected ReportDefinitionDao reportDefinitionDao;
 	protected ReportDefinitionConverter reportDefinitionConverter;
-
+	protected ReportDefinitionSynchronizer reportDefinitionSynchronizer;
+	
     public ListNotificationController() {
         setCommandClass(ListNotificationCommand.class);
         setBindOnNewForm(true);
@@ -49,29 +52,30 @@ public class ListNotificationController extends SimpleFormController {
     	Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     	reportDefinitions = (ReportDefinitions)unmarshaller.unmarshal(command.getRuleSetFile1().getInputStream());
     	String reportDefName = reportDefinitions.getReportDefinition().get(0).getName();
-    	
-    	
-    	if (reportDefinitionDao.getByName(reportDefName) != null){
-    		StringBuffer message = new StringBuffer(reportDefName);
-    		message.append("\n");
-    		message.append("Exists in caAERS");
-//    		importRuleCommand.setMessage(message.toString());
-    		command.setErrorMessage(message.toString());
-    		command.setUpdated(true);
-        	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
-            return modelAndView;
+    	ReportDefinition dbReportDefinition = reportDefinitionDao.getByName(reportDefName);
+    	ReportDefinition xmlReportDefinition = reportDefinitionConverter.dtoToDomain(reportDefinitions.getReportDefinition().get(0));
+
+    	if (dbReportDefinition != null){
+    		DomainObjectImportOutcome<ReportDefinition> outcome = new DomainObjectImportOutcome<ReportDefinition>();
+    		reportDefinitionSynchronizer.migrate(xmlReportDefinition, dbReportDefinition, outcome);
+    		reportDefinitionDao.save(dbReportDefinition);
+    		StringBuffer messageSb = new StringBuffer(dbReportDefinition.getName());
+    		messageSb.append("\n");
+    		messageSb.append("Updated Successfully");
+    		command.setMessage(messageSb.toString());
+        }else{
+        	reportDefinitionDao.save(xmlReportDefinition);
+        	StringBuffer messageSb = new StringBuffer(xmlReportDefinition.getName());
+        	messageSb.append("\n");
+        	messageSb.append("Imported Successfully !");
+        	command.setMessage(messageSb.toString());
+        	
+        	// Fetch all the reportDefinitions so that the newly imported report definition is also displayed in the list.
+        	command.setReportCalendarTemplateList(reportDefinitionDao.getAll());
         }
-    	
-    	ReportDefinition reportDefinition = reportDefinitionConverter.dtoToDomain(reportDefinitions.getReportDefinition().get(0));
-    	reportDefinitionDao.save(reportDefinition);
-    	StringBuffer messageSb = new StringBuffer(reportDefinition.getName());
-    	messageSb.append("\n");
-    	messageSb.append("Imported Successfully !");
-    	command.setMessage(messageSb.toString());
     	command.setUpdated(true);
-    	command.setReportCalendarTemplateList(reportDefinitionDao.getAll());
-    	ModelAndView modelAndView = new ModelAndView(getSuccessView(), errors.getModel());
-    	return modelAndView;
+		ModelAndView modelAndView = new ModelAndView(getSuccessView(), errors.getModel());
+	    return modelAndView;
 
     }
 
@@ -91,5 +95,7 @@ public class ListNotificationController extends SimpleFormController {
 		this.reportDefinitionConverter = reportDefinitionConverter;
 	}
     
-
+	public void setReportDefinitionSynchronizer(ReportDefinitionSynchronizer reportDefinitionSynchronizer){
+		this.reportDefinitionSynchronizer = reportDefinitionSynchronizer;
+	}
 }
