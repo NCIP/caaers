@@ -79,7 +79,11 @@ public class ReportDefinitionConverter {
 		}
 		
 		//Populate Organization
-		Organization organization = organizationDao.getByName(reportDefinitionDto.getOrganization().getName().trim());
+		Organization organization = null;
+		if(reportDefinitionDto.getOrganization().getNciInstituteCode() != null)
+			organization = organizationDao.getByNCIcode(reportDefinitionDto.getOrganization().getNciInstituteCode());
+		else if(reportDefinitionDto.getOrganization().getName() != null)
+			organization = organizationDao.getByName(reportDefinitionDto.getOrganization().getName().trim());
 		reportDefinitionDomain.setOrganization(organization);
 		
 		//Populate Parent
