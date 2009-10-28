@@ -147,15 +147,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertEquals("Wrong delay in minutes", new BigDecimal(240), agent1.getAdministrationDelay());
         assertEquals("Wrong delay amount", new BigDecimal(4), agent1.getAdministrationDelayAmount());
         assertEquals("Wrong delay units", DelayUnits.HOURS, agent1.getAdministrationDelayUnits());
-        assertEquals("Wrong dose amount", new BigDecimal("17.4"), agent1.getDose().getAmount());
+        assertEquals("Wrong dose amount", "17.4", agent1.getDose().getAmount());
         assertEquals("Wrong dose units", "mg", agent1.getDose().getUnits());
         assertEquals("Wrong dose route", "aural", agent1.getDose().getRoute());
         assertEquals("Wrong duration", "8 times every third hour", agent1.getDurationAndSchedule());
 
-      //  assertEquals("Wrong modified dose amount", new BigDecimal("10"), agent1.getModifiedDose()
-        //                .getAmount());
-        //assertEquals("Wrong modified dose units", "mg", agent1.getModifiedDose().getUnits());
-        //assertEquals("Wrong modified dose route", "aural", agent1.getModifiedDose().getRoute());
 
         assertEquals("Wrong total dose", new BigDecimal("7"), agent1
                         .getTotalDoseAdministeredThisCourse());
@@ -418,7 +414,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
                 assertEquals("Wrong number of course agents", 1, ti.getCourseAgents().size());
                 CourseAgent ca = ti.getCourseAgents().get(0);
                 assertEquals(new BigDecimal(480), ca.getAdministrationDelay());
-                assertEquals(new BigDecimal("45.2"), ca.getDose().getAmount());
+                assertEquals("45.2", ca.getDose().getAmount());
             }
         });
     }
