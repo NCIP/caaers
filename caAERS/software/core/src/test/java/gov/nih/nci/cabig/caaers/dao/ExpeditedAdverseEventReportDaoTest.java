@@ -723,8 +723,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         .getBean("adverseEventReportSerializer");
 
     	String xml = aeser.serialize(aer, null);
-    	
-    	System.out.println(xml);
+    	assertNotNull(xml);
 
     	//assertEquals(xml,getStringFromFile());
     }
