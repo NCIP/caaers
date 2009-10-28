@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import static org.easymock.EasyMock.expect;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -40,7 +41,7 @@ import java.util.Set;
 
 import org.easymock.classextension.EasyMock;
 
-public class EvaluationServiceTest extends AbstractTestCase {
+public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 	
 	public static Integer ZERO = new Integer(0);
 	public static Integer ONE = new Integer(1);
