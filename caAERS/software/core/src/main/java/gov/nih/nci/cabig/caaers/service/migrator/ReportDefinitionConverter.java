@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
@@ -21,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ObjectFactory;
 import gov.nih.nci.cabig.caaers.reportdefinition.OrganizationType;
+import gov.nih.nci.cabig.caaers.reportdefinition.ParentType;
 import gov.nih.nci.cabig.caaers.reportdefinition.RecipientType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
@@ -32,6 +34,7 @@ public class ReportDefinitionConverter {
 	
 	private OrganizationDao organizationDao;
 	private ConfigPropertyDao configPropertyDao;
+	private ReportDefinitionDao reportDefinitionDao;
 	
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
@@ -39,6 +42,10 @@ public class ReportDefinitionConverter {
 	
 	public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
 		this.configPropertyDao = configPropertyDao;
+	}
+	
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao){
+		this.reportDefinitionDao = reportDefinitionDao;
 	}
 
 	public ReportDefinition dtoToDomain(ReportDefinitionType reportDefinitionDto){
@@ -74,6 +81,12 @@ public class ReportDefinitionConverter {
 		//Populate Organization
 		Organization organization = organizationDao.getByName(reportDefinitionDto.getOrganization().getName().trim());
 		reportDefinitionDomain.setOrganization(organization);
+		
+		//Populate Parent
+		if(reportDefinitionDto.getParent() != null){
+			ReportDefinition parentReportDefinition = reportDefinitionDao.getByName(reportDefinitionDto.getParent().getName());
+			reportDefinitionDomain.setParent(parentReportDefinition);
+		}
 		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
 		//populate the correct config property
@@ -211,6 +224,13 @@ public class ReportDefinitionConverter {
 		groupType.setCode(reportDefinitionDomain.getGroup().getCode());
 		groupType.setConfigType(reportDefinitionDomain.getGroup().getConfigType().name());
 		reportDefinitionDto.setGroup(groupType);
+		
+		//set the parent
+		if(reportDefinitionDomain.getParent() != null){
+			ParentType parent = objectFactory.createParentType();
+			parent.setName(reportDefinitionDomain.getParent().getName());
+			reportDefinitionDto.setParent(parent);
+		}
 		
 		//set the report type
 		reportDefinitionDto.setReportType(gov.nih.nci.cabig.caaers.reportdefinition.ReportType.valueOf(reportDefinitionDomain.getReportType().name()));

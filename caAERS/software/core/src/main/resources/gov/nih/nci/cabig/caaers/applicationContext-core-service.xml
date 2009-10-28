@@ -222,6 +222,15 @@ default-lazy-init="true">
 		</property>
 	</bean>
 	
+	<bean id="reportMandatoryFieldDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportMandatoryFieldDefinitionSynchronizer"/>
+	<bean id="reportDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportDefinitionSynchronizer">
+		<property name="children">
+			<list>
+				<ref bean="reportMandatoryFieldDefinitionSynchronizer"/>
+			</list>
+		</property>
+	</bean>
+	
 	<bean id="participantConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter"/>	
 	
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
@@ -276,6 +285,7 @@ default-lazy-init="true">
 	<bean id="reportDefinitionConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter">
 		<property name="organizationDao" ref="organizationDao"/>
 		<property name="configPropertyDao" ref="configPropertyDao" />
+		<property name="reportDefinitionDao" ref="reportDefinitionDao"></property>
 	</bean> 
 	
 	<bean id="adeersReportGenerator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
