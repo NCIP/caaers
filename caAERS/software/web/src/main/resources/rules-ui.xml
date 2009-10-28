@@ -141,7 +141,7 @@
 			</field>			
 						
 		</domain-object>
-		<domain-object identifier="study" class-name="gov.nih.nci.cabig.caaers.domain.LocalStudy" display-uri="Study">
+		<domain-object identifier="study" class-name="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
 			<field name="phaseCode" display-uri="Phase">
 				<field-value>
 					<input-type>multiselect</input-type>
