@@ -112,7 +112,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             // TO-DO get orgs like FDA, CALGB and add to this list (BJ: this comment was there before refactoring)
             for (StudyOrganization so : study.getStudyOrganizations()) {
             	//If the organization is a studySite and its not the site to which the assignment belongs, ignore it.
-            	if(so instanceof StudySite && assignmentStudySite != null && so.getId().equals(assignmentStudySite.getId()))
+            	if(so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId()))
             		continue;
             	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
                         RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
