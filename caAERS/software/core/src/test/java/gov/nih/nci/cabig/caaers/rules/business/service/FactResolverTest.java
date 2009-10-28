@@ -16,6 +16,7 @@ import junit.framework.TestCase;
 /**
  * Test cover the following requirement. 
  * CAAERS-2861 - "If attribution is NULL in capture AE, run rules as if it were "possible"
+ * CAAERS-3212 - Verifying all the Study related conditions present in CTEP SAE Rule #7
  * 
  * @author Biju Joseph
  *
