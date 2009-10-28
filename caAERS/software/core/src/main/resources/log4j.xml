@@ -46,7 +46,7 @@
   -->
   <root>
     <priority value="error"/>
-    <appender-ref ref="stdout"/>
+    <!-- <appender-ref ref="stdout"/> -->
     <appender-ref ref="file"/>
   </root>
 </log4j:configuration>
