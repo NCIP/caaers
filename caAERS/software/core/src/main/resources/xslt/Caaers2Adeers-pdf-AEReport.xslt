@@ -541,7 +541,13 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
+							  		<xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name != ''">
+							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
+							  		</xsl:if>
+							  		
+							  		<xsl:if test="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite != '' and AdverseEventReport/DiseaseHistory/AnatomicSite/category = 'Other'">
+							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite"/>
+							  		</xsl:if>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
