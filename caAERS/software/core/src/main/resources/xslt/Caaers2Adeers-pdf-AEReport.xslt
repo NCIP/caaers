@@ -541,7 +541,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-							  		<xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name != ''">
+							  		<xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name != '' and AdverseEventReport/DiseaseHistory/AnatomicSite/category != 'Other'">
 							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
 							  		</xsl:if>
 							  		
@@ -1619,7 +1619,12 @@
 		  		</fo:block>
 				<xsl:for-each select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AnatomicSite/name"/><xsl:value-of select="otherSite"/>
+						  			<xsl:if test="AnatomicSite/name != '' and AnatomicSite/category != 'Other'">
+						  				<xsl:value-of select="AnatomicSite/name"/>
+						  			</xsl:if>
+						  			<xsl:if test="otherSite != ''">
+						  				<xsl:value-of select="otherSite"/>
+						  			</xsl:if>
 						  		</fo:block> 				
 				</xsl:for-each>		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
