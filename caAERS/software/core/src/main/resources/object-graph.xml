@@ -265,7 +265,7 @@
 	
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.LocalOrganization</targetObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
@@ -274,14 +274,14 @@
 		<node>
 			<name>primaryFundingSponsorOrganization</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.LocalOrganization</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
 		</node>
 	</navigationPath>
 	
 
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</targetObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
 		<node>
 			<name>study</name>
 			<collection>false</collection>
@@ -290,7 +290,7 @@
 		<node>
 			<name>primaryFundingSponsorOrganization</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.RemoteOrganization</objectType>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
 		</node>
 	</navigationPath>
 
