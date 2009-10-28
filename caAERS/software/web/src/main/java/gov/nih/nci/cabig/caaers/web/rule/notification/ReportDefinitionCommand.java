@@ -133,7 +133,7 @@ public class ReportDefinitionCommand {
         	rdList = (List<ReportDefinition>)rpDefDao.search(query);
     	}
     	
-    	parentOptions = WebUtils.collectOptions(rdList, "id", "label", "Please select");
+    	parentOptions = WebUtils.collectOptions(rdList, "id", "name", "Please select");
     }
 
     // /BEAN PROPERTIES
