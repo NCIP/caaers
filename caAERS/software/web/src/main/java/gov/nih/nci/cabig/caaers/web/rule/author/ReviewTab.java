@@ -43,7 +43,7 @@ public class ReviewTab extends DefaultTab {
                 List<String> line = new ArrayList<String>();
 
                 // add lines..
-                line.add("IF");
+                line.add("If");
                 for (Column column : rule.getCondition().getColumn()) {
                     // skip rule type filters
                     if (!column.getExpression().equals(
@@ -54,7 +54,7 @@ public class ReviewTab extends DefaultTab {
                                                                     "gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult")
                                     && !column.isMarkedDelete()) {
                         line.add("	" + RuleUtil.readableColumn(column));
-                        line.add("AND");
+                        line.add("And");
                     }
 
                 }

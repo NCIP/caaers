@@ -86,8 +86,8 @@
 		<p>
 			<c:forEach var="rule" items="${command.ruleSet.rule}">
 	        		<chrome:division title="${rule.metaData.name}">
-	        			<c:forEach var="line" items="${rule.readableRule.line}">
-	        				${line} <br />
+	        			<c:forEach var="line" items="${rule.readableRule.line}" varStatus="lineStatus">
+	        				${line} <c:if test="${lineStatus.index % 2 != 0}"><br /></c:if>
 	        			</c:forEach>	
 	        		</chrome:division>
 	        		<p>
