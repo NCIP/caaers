@@ -13,8 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class CaaersLoggingAspect {
 	
-	private static final Log logger = LogFactory.getLog(CaaersLoggingAspect.class);
-	
+
 	private static String entryMsgPrefix = "CaaersLoggingAspect: entering method";
 	private static String exitMsgPrefix = "CaaersLoggingAspect: exiting method";
 	
@@ -35,18 +34,20 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.web.participant.*.*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
-		
-		if(logger.isDebugEnabled()) debug(true, call, null);
+
+        Log logger = LogFactory.getLog(call.getTarget().getClass());
+
+		if(logger.isDebugEnabled()) debug(logger, true, call, null);
 		
         Object point =  call.proceed();
         
-        if(logger.isDebugEnabled()) debug(false, call, point);
+        if(logger.isDebugEnabled()) debug(logger, false, call, point);
         
         return point;
     }
 	
 	
-	public void debug(boolean entry, ProceedingJoinPoint call, Object retVal){
+	public void debug(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal){
 		try{
 			if(entry){
 				logger.debug(entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
