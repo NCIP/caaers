@@ -16,6 +16,28 @@
 	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 		<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
 			<chrome:division collapsable="true" title="${report.reportDefinition.label}" id="division-${report.id}">
+				<div style="text-align:right; margin:20px 0 0 0;">
+					<ul id="export-options">
+	                    <c:if test="${command.study.caaersXMLType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>--%>Export caAERS XML</a></li>
+	                    </c:if>
+	                    <c:if test="${command.study.adeersPDFType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export AdEERS PDF</a></li>
+	                    </c:if>
+	                    <c:if test="${command.study.medwatchPDFType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export MedWatch 3500A PDF</a></li>
+	                    </c:if>
+	                    <c:if test="${command.study.dcpSAEPDFType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export DCP SAE PDF</a></li>
+	                    </c:if>
+	                    <c:if test="${command.study.ciomsPDFType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export CIOMS PDF</a></li>
+	                    </c:if>
+	                    <c:if test="${command.study.ciomsSaePDFType}">
+	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export DCP Safety Report PDF</a></li>
+	                    </c:if>
+					</ul>
+				</div>
 				<div class="row">
 					<div class="leftpanel">
                         <div class="row">
@@ -92,38 +114,25 @@
                     </c:otherwise>
                 </c:choose>
                 <div style="text-align:right; margin:20px 0 0 0;">
-                    <c:if test="${command.study.caaersXMLType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>Export caAERS XML</a>
-                    </c:if>
-                    <c:if test="${command.study.adeersPDFType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export AdEERS PDF</a>
-                    </c:if>
-                    <c:if test="${command.study.medwatchPDFType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export MedWatch 3500A PDF</a>
-                    </c:if>
-                    <c:if test="${command.study.dcpSAEPDFType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export DCP SAE PDF</a>
-                    </c:if>
-                    <c:if test="${command.study.ciomsPDFType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export CIOMS PDF</a>
-                    </c:if>
-                    <c:if test="${command.study.ciomsSaePDFType}">
-                        <a class="export-button" href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>Export DCP Safety Report PDF</a>
-                    </c:if>
-                    <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-                        <tags:button type="button" value="Withdraw" color="red" icon="withdraw" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"/>
-                    </c:if>
-                    <c:if test="${reportMessages[report.id].submittable}">
-                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
-							<tags:button type="button" value="Amend" icon="edit" color="blue" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" />
-                    	</c:if>
-                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-                            <c:if test="${!command.workflowEnabled || isSuperUser}">
-                            	<tags:button type="button" value="Submit" icon="continue" color="green" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" />
-                            </c:if>
-                        </c:if>
-                        
-                    </c:if>
+					<ul>
+						<c:if test="${command.workflowEnabled == true}">
+							<span id="sliderWFAction"></span>
+						</c:if>
+	                    <c:if test="${reportMessages[report.id].submittable}">
+	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
+								<li><a href="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
+	                    	</c:if>
+	                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+	                            <c:if test="${!command.workflowEnabled || isSuperUser}">
+	                            	<li><a href="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" >Submit</a></li>
+	                            </c:if>
+	                        </c:if>
+	                    </c:if>
+						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+	                        <li><a href="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};">Withdraw</a></li>
+	                    </c:if>
+					</ul>
+					<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
                 </div>
 			</chrome:division>
 		</c:if>

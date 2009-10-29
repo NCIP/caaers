@@ -139,17 +139,15 @@
 		}
 	}
 	
-	function advanceWorkflow(){
+	function advanceWorkflow(value){
         try {
             var sbox = $('sliderWFAction');
-            var sbox = $('sliderWFAction');
-		if(sbox.value == '' || sbox.value == 'Please select') return;
-            if (confirm('Are you sure you want to take the action - ' + sbox.value + ' ?')) {
+		
+            if (confirm('Are you sure you want to take the action - ' + value + ' ?')) {
                 var sboxIndicator = $('sliderWFAction-indicator');
-                var selected_sbox_value = sbox.value;
-                sbox.disable();
+                var selected_sbox_value = value;
                 sboxIndicator.style.display = '';
-                createAE.advanceWorkflow(sbox.value, function(ajaxOutput) {
+                createAE.advanceWorkflow(value, function(ajaxOutput) {
                     var ajaxResult = ajaxOutput;
                     if (ajaxResult.error) {
                         caaersLog(ajaxResult.errorMessage);
@@ -168,7 +166,8 @@
                                     if (ajaxResult.error) {
                                         caaersLog(ajaxResult.errorMessage);
                                     } else {
-                                        $('report-validation-section').innerHTML = output.htmlContent;
+										caaersLog(output.htmlContent);
+                                        //$('report-validation-section').innerHTML = output.htmlContent;
                                         routingHelper.retrieveReviewComments();
                                     }
                                 });
@@ -228,23 +227,6 @@
         </c:if>
         <chrome:box title="${tab.shortTitle}" >
         <ae:submitReportValidation/>
-    	    	<p>&nbsp;</p>
-    	<c:if test="${command.workflowEnabled == true}">
-    		<table class="tablecontent" width="40%">
-    			<tr>
-    				<th scope="col" align="left"><b>Report Review Options</b></th>
-    			</tr>
-    			<tr>
-    				<td class="completion-messages">
-    					<select id="sliderWFAction" onChange="javascript:advanceWorkflow();">
-							<option value="">Please select</option>
-						</select>
-						<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
-    				</td>
-    			</tr>
-    		</table>
-    	</c:if>
-    
      	<input type="hidden" name="_finish"/>
 	
         </chrome:box>

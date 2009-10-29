@@ -84,26 +84,25 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	updateWorkflowActions : function(){
 		var sbox = $('sliderWFAction');
 		var sboxIndicator = $('sliderWFAction-indicator');
-		sbox.disable();
+
 		sboxIndicator.style.display='';
 		this.ajaxFacade.retrieveNextTransitions(function(ajaxOutput){
 			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
 		}.bind(this));
 	},
 	updateSelectBoxContent : function(sb, sbIndicator, objectContent){
-		sb.options.length = 0;
-		var pleaseSelectOpt = new Option('Please select', '');
-		sb.options.add(pleaseSelectOpt);
 		if(objectContent){
+			sb.innerHTML = '';
 			var i = 0;
 			for(i = 0; i< objectContent.length; i++){
 				var status = objectContent[i];
-				var opt = new Option(status, status);
-				
-				sb.options.add(opt);
+				var li = new Element('li');
+				var opt = new Element('a', {'href': 'javascript:advanceWorkflow("'+status+'")' }).update(status);
+				li.insert(opt);
+				sb.insert(li);
 			}
 		}
-		sb.enable();	
+	
 		sbIndicator.style.display='none';
 	},
 	validateAndAdvanceWorkflow: function(){
