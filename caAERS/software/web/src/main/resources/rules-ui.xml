@@ -42,9 +42,9 @@
 				<valid-value value="2" display-uri="Prolonged Hospitalization" readable-text="prolonged hospitalization "/>
 				-->
 				<valid-value value="1" display-uri="Yes" readable-text="Yes"/>
-				<!--
+				
 				<valid-value value="2" display-uri="No" readable-text="No "/>
-				-->
+				
 				<operator name="==" display-uri="Equal To" readable-text="is "/>				
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				
@@ -62,7 +62,7 @@
 				<valid-value value="true" display-uri="Yes" readable-text="is "/>
 				<valid-value value="false" display-uri="No" readable-text="is not "/>
 				<operator name="==" display-uri="Equal To" readable-text=""/>
-				<!-- <operator name="!=" display-uri="Not Equal To" readable-text="is not "/> -->
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(adverseEvent,null,'expectedness','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Adverse Event " postfix="expected "/>	
 			</field>			
