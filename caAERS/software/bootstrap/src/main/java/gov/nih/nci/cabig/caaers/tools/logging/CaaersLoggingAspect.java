@@ -34,8 +34,8 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.web.participant.*.*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
-
-        Log logger = LogFactory.getLog(call.getTarget().getClass());
+		
+        Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
 		if(logger.isDebugEnabled()) debug(logger, true, call, null);
 		
