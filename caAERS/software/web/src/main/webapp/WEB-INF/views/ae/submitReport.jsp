@@ -69,10 +69,10 @@
 			</div>
 	    	<div class="flow-buttons">
 				<span class="prev">   
-					<tags:button type="button" color="blue" id="flow-prev" icon="back" value="Back"/>
+					<tags:button type="submit" color="blue" id="flow-prev" icon="back" value="Back"/>
 	        	</span>	        
 				<span class="next">
-					<tags:button type="button" color="orange" id="flow-next" icon="Save & Continue" value="Submit"/>
+					<tags:button type="submit" color="orange" id="flow-next" icon="Save & Continue" value="Submit"/>
 	       		</span>
 			</div>
 		</div>
