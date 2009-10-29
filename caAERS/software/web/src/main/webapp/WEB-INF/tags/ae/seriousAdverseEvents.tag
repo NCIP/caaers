@@ -34,6 +34,12 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
       	  <!-- cssClass : ${_cssClass } , aeId : ${ae.id} , primaryAeId :${primaryAeId}-->
 	      <tr class="${_cssClass}">
 		      <td style="text-align:center;" class="${_cssClass}">
+		      
+		       <%-- Reported Icon --%>
+		       <c:if test="${ae.reported}">
+		       (R)
+		       </c:if>
+		       
 		      	<c:if test="${not ae.retired}">
 		      	 <input id="ae-${aeReportId}-${ae.id}" type="checkbox" checked 
 		      		value="${ae.id}" class="ae ae_${aeReportId}" 
