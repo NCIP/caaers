@@ -12,7 +12,8 @@
 <%@attribute name="label" fragment="true" %>
 <%@attribute name="value" fragment="true" %>
 <%@attribute name="deleteParams" %>
-<caaers:renderFilter elementID="${field.categoryName eq 'composite' ? field.attributes.subfields[0].propertyName: field.propertyName}">
+<c:set var="__splitDatePath" value="${field.propertyName}.year" />
+<caaers:renderFilter elementID="${field.categoryName eq 'composite' ? field.attributes.subfields[0].propertyName: field.categoryName eq 'split_date' ? __splitDatePath : field.propertyName}">
 <div class="row ${cssClass} ${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label ${field.required ? 'required' : ''} ${field.attributes.mandatory ? 'mandatory' : '' }" >
         <c:choose>
