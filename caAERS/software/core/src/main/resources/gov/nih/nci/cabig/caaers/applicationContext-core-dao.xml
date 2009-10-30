@@ -396,11 +396,22 @@ This applicationContext contains the definition of the DAOs
         -->
     </bean>
 
-    <bean name="dataAuditRepository" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
+    <bean id="dataAuditRepositoryTarget" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
         <property name="sessionFactory">
             <ref local="auditSessionFactory"/>
         </property>
     </bean>
+
+    <bean id="dataAuditRepository" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="dataAuditRepositoryTarget"/></property>
+		<property name="interceptorNames">
+			<list>
+				<value>auditHibernateInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
     <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
         <property name="sessionFactory" ref="auditSessionFactory"></property>
     </bean>
@@ -452,6 +463,16 @@ This applicationContext contains the definition of the DAOs
             <value>FLUSH_NEVER</value>
         </property>
     </bean>
+
+     <bean id="auditHibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+        <property name="sessionFactory">
+             <ref local="auditSessionFactory"/>
+        </property>
+		<property name="flushModeName">
+            <value>FLUSH_EAGER</value>
+        </property>
+    </bean>
+
 	<bean id="auditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor" />
 		
 
