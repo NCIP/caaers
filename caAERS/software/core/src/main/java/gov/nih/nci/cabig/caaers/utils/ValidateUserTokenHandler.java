@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -33,10 +35,12 @@ public class ValidateUserTokenHandler
    private CSMAuthenticationProvider localAuthenticationProvider;
    private CSMUserRepository csmUserRepository;
    private static final Log logger = LogFactory.getLog(ValidateUserTokenHandler.class);
-   public void invoke(MessageContext context)
+   @SuppressWarnings("deprecation")
+public void invoke(MessageContext context)
         throws XFireFault
     {
 	   InMessage message = context.getInMessage();
+	   
 	   Namespace ns = Namespace.getNamespace(TOKEN_NS);
 	   
 	   if (message.getHeader() == null)
@@ -135,6 +139,12 @@ public class ValidateUserTokenHandler
 
 
     }
+   
+   public QName[] getUnderstoodHeaders() {
+       return new QName[] {
+               new QName(TOKEN_NS, "Security")
+       };
+   } 
    
    private gov.nih.nci.cabig.caaers.domain.User getByUserName(String userName) {
 	   return csmUserRepository.getUserByName(userName);
