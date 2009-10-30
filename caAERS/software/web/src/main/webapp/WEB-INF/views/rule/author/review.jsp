@@ -83,28 +83,42 @@
  	</div>
 
 		</chrome:division>
-		<p>
 			<c:forEach var="rule" items="${command.ruleSet.rule}">
 	        		<chrome:division title="${rule.metaData.name}">
 	        			<c:forEach var="line" items="${rule.readableRule.line}" varStatus="lineStatus">
-	        				${line} <c:if test="${lineStatus.index % 2 != 0}"><br /></c:if>
+	        				<c:choose>
+								<c:when test="${lineStatus.index % 2 == 0}">
+									<div class="row">
+									<div class="label">${line}</div>
+								</c:when>
+								<c:otherwise>
+									<div class="value">${line}</div>
+									</div>
+								</c:otherwise>
+							</c:choose>
 	        			</c:forEach>	
-	        		</chrome:division>
-	        		<p>
-	        		&nbsp;&nbsp;ACTION(S) : <br />
-	        		<c:forEach var="ruleac" items="${rule.readableAction}">
-	        			<c:choose>
-	        				<c:when test="${ruleac == 'IGNORE'}">
-	        					&nbsp;&nbsp; &nbsp;&nbsp; No Report Required (Study Level Exception Rule) <br />
-	        				</c:when>
-	        				<c:otherwise>
-	        					&nbsp;&nbsp; &nbsp;&nbsp;${ruleac} <br />
-	        				</c:otherwise>
-	        			</c:choose>
-	        			
-	        		</c:forEach>
-
-	        </c:forEach>
+	        		
+	        		<div class="row">
+	        			<div class="label">
+	        				Actions
+	        			</div>
+                        <div class="value">
+                            <c:forEach var="ruleac" items="${rule.readableAction}">
+                                <c:choose>
+                                    <c:when test="${ruleac == 'IGNORE'}">
+                                        No Report Required (Study Level Exception Rule) 
+                                        <br/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${ruleac}
+                                        <br>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </div>
+	        		</div>
+					</chrome:division>
+				</c:forEach>
 		
         <input id="markFinish" type="hidden" name="_finish"/>
 
