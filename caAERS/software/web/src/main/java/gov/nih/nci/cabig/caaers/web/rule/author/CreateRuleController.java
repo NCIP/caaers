@@ -100,15 +100,17 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     	
     	// Create and put the summary in reference data.
         Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Rule level", (createRuleCommand.getLevel() == null) ? "" : createRuleCommand.getLevelDescription());
-        summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null) ? "" : createRuleCommand.getRuleSetName());
-        if(createRuleCommand.getLevel() != null){
-        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
-        		summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
-        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        		summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
-        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        		summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
+        if(WebUtils.getTargetPage(request) > 0){
+        	summary.put("Rule level", (createRuleCommand.getLevel() == null || createRuleCommand.getLevel().equals("")) ? "" : createRuleCommand.getLevelDescription());
+        	summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null || createRuleCommand.getRuleSetName().equals("")) ? "" : createRuleCommand.getRuleSetName());
+        	if(createRuleCommand.getLevel() != null){
+        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
+        			summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
+        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        			summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
+        		if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        			summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
+        	}
         }
     	referenceData.put("ruleFlowSummary", summary);
     	
