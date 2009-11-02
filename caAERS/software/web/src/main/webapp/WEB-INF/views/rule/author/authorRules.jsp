@@ -231,13 +231,15 @@ div#createNew h3, div.section h3 {
 		}
 		
 		function removeCondition(ruleCount, columnCount) {
-				
+				if (!confirm("Are you sure you want to delete this condition?"))
+                 	return false;
 				try {
 					authorRule.removeCondition(ruleCount, columnCount, function(deleteStatus) {
 							if(deleteStatus) {
 								var columns = $('rule-'+(ruleCount+1)+'-columns');
 								var column = $('rule-'+(ruleCount)+'-column-'+(columnCount));
-								column.style.display = "none";
+								column.remove();
+								//column.style.display = "none";
 								
 								//columns.removeChild($(column.id + '-br'));
 								//columns.removeChild(column);
@@ -1244,23 +1246,21 @@ div#createNew h3, div.section h3 {
 	</div>
 </c:if>
 
-
-
 <chrome:division>
   <%--<form:form cssClass="standard">--%>
-  <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
+  <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideErrorDetails="true">
     <jsp:attribute name="singleFields">
-      <tags:errors path="*" />
 	  <tags:instructions code="3rules" />
       <div class="row">
         <div id="allRules">
           <c:forEach varStatus="ruleStatus"
 				items="${command.ruleSet.rule}">
             <c:set var="ruleCount" value="${ruleStatus.index}" />
+            <c:set var="collapsedKey" value="ruleSet.rule[${ruleCount}]" />
+            <c:set var="collapsedCheck" value="${!command.errorsForFields[collapsedKey]}"/>
             <div id="rule-${ruleCount + 1}">
-              <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" deleteParams="${ruleCount + 1}" enableDelete="true" collapsed="true">
+              <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" collapsed="${collapsedCheck}" deleteParams="${ruleCount + 1}" enableDelete="true">
               <div id="rule-condition-action-container-${ruleCount + 1}">
-                
                 <div class="row" value="${command.ruleSet.rule[ruleCount]}"
 					id="rule-${ruleCount + 1}-columns">
                   <c:forEach varStatus="columnStatus" begin="0"
@@ -1284,6 +1284,7 @@ div#createNew h3, div.section h3 {
                         <form:options items="${ruleUi.condition[0].domainObject}"
 							itemLabel="displayUri" itemValue="className" />
                       </form:select>
+                      <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"/>
                       <!-- set domain-object display-uri to column -->
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
@@ -1306,6 +1307,7 @@ div#createNew h3, div.section h3 {
                           </c:if>
                         </c:forEach>
                       </form:select>
+                      <tags:errors path="ruleSet.rule[${ruleCount }].condition.column[${columnCount }].fieldConstraint[0].fieldName"/>
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
@@ -1338,6 +1340,7 @@ div#createNew h3, div.section h3 {
                           </c:if>
                         </c:forEach>
                       </form:select>
+                      <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"/>
                       <span
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
                       <c:choose>
@@ -1610,6 +1613,7 @@ div#createNew h3, div.section h3 {
 										multiple="false">
                                 <form:option value="">Please select value</form:option>
                               </form:select>
+                              <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" />
                             </c:when>
                             <c:otherwise>
                               <c:forEach items="${ruleUi.condition[0].domainObject}"
@@ -1637,6 +1641,7 @@ div#createNew h3, div.section h3 {
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
+                                          <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
                                           <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:when>
                                         <c:otherwise>
@@ -1649,6 +1654,7 @@ div#createNew h3, div.section h3 {
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
                                           </form:select>
+                                          <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
                                           <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:otherwise>
                                       </c:choose>
@@ -1702,6 +1708,7 @@ div#createNew h3, div.section h3 {
                         <form:option value="${notification.id}">${notification.name}</form:option>
                       </c:forEach>
                     </form:select>
+                    <tags:errors path="ruleSet.rule[${ruleCount}].action"/>
                   </div>
                  
                   <c:if test="${ruleCount} == 0">
@@ -1713,16 +1720,18 @@ div#createNew h3, div.section h3 {
           </c:forEach>
         </div>
         <!-- closing allRules -->
+        <tags:errors path="ruleSet.rule" />
         <div class="new_rule">
             <tags:button id="add-rule" color="blue" type="button" value="Add Rule" size="small" icon="add" onclick="addRule()"/>
         </div>
+        
       </div>
     </jsp:attribute>
     <jsp:attribute name="tabControls">
       <div class="content buttons autoclear">
           <div class="flow-buttons">
               <span class="prev">
-              	<tags:button type="submit" color="blue" icon="Save &amp; Back" id="flow-prev" cssClass="tab0" value="Save &amp; Back"/>
+              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back"/>
 			  </span>
 				  <span class="next">
 					<tags:button type="submit" icon="Save & Continue" color="green" id="flow-next" value="Save & Continue"/>

@@ -319,8 +319,10 @@ public class RuleAjaxFacade {
         Rule rule = ruleSet.getRule().get(ruleCount);
 
         rule.getCondition().getColumn().get(columnCount).setMarkedDelete(true);
-
-        return rule.getCondition().getColumn().get(columnCount) != null;
+        
+        rule.getCondition().getColumn().remove(columnCount);
+        return true;
+        //return rule.getCondition().getColumn().get(columnCount) != null;
 
         // return rule.getCondition().getColumn().remove(columnCount) != null;
 
@@ -335,8 +337,11 @@ public class RuleAjaxFacade {
         String rName = r.getMetaData().getName();
 
         rulesEngineService.deleteRule(ruleSet.getName(), rName);
+        
+        ruleSet.getRule().remove(ruleCount);
 
-        return ruleSet.getRule().get(ruleCount) != null;
+        return true;
+        //return ruleSet.getRule().get(ruleCount) != null;
     }
 
     private CreateRuleCommand getAuthorRuleCommand() {

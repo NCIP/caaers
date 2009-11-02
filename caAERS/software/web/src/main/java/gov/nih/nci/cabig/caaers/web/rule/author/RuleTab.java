@@ -9,9 +9,12 @@ import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +73,36 @@ public class RuleTab extends DefaultTab {
     public void validate(RuleInputCommand cmd, Errors errors) {
     	CreateRuleCommand command = (CreateRuleCommand) cmd;
     	if(command.getRuleSet().getRule() == null || command.getRuleSet().getRule().size() < 1)
-    		errors.reject("RUL_015");
+    		errors.rejectValue("ruleSet.rule", "RUL_015");
+    	// Need to check for all the selects.
+    	int i = 0;
+    	for(Rule rule: command.getRuleSet().getRule()){
+    		int j = 0;
+    	
+    		for(Column column: rule.getCondition().getColumn()){
+    			if(column.getObjectType() == null || column.getObjectType().equals(""))
+    				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].objectType", "RUL_016");
+    			if(column.getFieldConstraint().get(0).getFieldName() == null || column.getFieldConstraint().get(0).getFieldName().equals(""))
+    				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].fieldName", "RUL_017");
+    			if(column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getEvaluator() == null ||
+    					column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getEvaluator().equals(""))
+    				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].literalRestriction[0].evaluator", "RUL_018");
+    			if(column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue() != null &&
+    					!column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().isEmpty()){
+    				if(column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().get(0).equals(""))
+    					errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].literalRestriction[0].value", "RUL_019");
+    			}
+    			if(column.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue() == null)
+    				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].literalRestriction[0].value", "RUL_019");
+    			j++;
+    		}
+    		if(rule.getAction() == null || rule.getAction().isEmpty())
+    			errors.rejectValue("ruleSet.rule[" + i + "].action", "RUL_020");
+    		i++;
+    	}
+    	command.setErrorsForFields(new HashMap<String, Boolean>());
+        WebUtils.populateErrorFieldNames(command.getErrorsForFields(), errors);
+        
     }
     
     @Override
@@ -78,8 +110,11 @@ public class RuleTab extends DefaultTab {
     	logger.debug("In RuleTab post process");
         super.postProcess(request, cmd, errors);
         
+        int prevPage = WebUtils.getPreviousPage(request);
+    	int targetPage = WebUtils.getTargetPage(request);
+        
         CreateRuleCommand command = (CreateRuleCommand) cmd;
-        if(!errors.hasErrors()){
+        if(!errors.hasErrors() && targetPage > prevPage){
         	
         	// Now incase the ruleSet in context is in edit mode we need to redploy the ruleSet on saving.
         	if(command.getMode().equals(CreateRuleCommand.EDIT_MODE))
@@ -121,20 +156,13 @@ public class RuleTab extends DefaultTab {
 
         // Retrieve RuleSet based on the one chosen by the user.
         createRuleCommand.retrieveRuleSet();
-        
-        // Create and put the summary in reference data.
-        Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Rule level", (createRuleCommand.getLevelDescription() == null) ? "" : createRuleCommand.getLevelDescription());
-        summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null) ? "" : createRuleCommand.getRuleSetName());
-        if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
-        	summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
-        if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        	summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
-        if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
-        	summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
-    	referenceData.put("ruleFlowSummary", summary);
-    	// Done populating the summary in reference data.
-        
+        // Add a default rule if its a new ruleSet
+        if(createRuleCommand.getMode().equals(CreateRuleCommand.CREATE_MODE)){
+        	if(createRuleCommand.getRuleSet().getRule() == null || createRuleCommand.getRuleSet().getRule().size() < 1){
+        		createRuleCommand.addDefaultRule();
+        	}
+        }
+        	
         return referenceData;
     }
     

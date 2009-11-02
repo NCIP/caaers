@@ -6,12 +6,12 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
@@ -87,6 +88,30 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);
 
+    }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request, Object o,	Errors errors, int page) throws Exception {
+    	
+    	CreateRuleCommand createRuleCommand  = (CreateRuleCommand) o;
+		Map referenceData =  super.referenceData(request, createRuleCommand, errors, page);
+    	
+    	// Create and put the summary in reference data.
+        Map<String, String> summary = new LinkedHashMap<String, String>();
+        summary.put("Rule level", (createRuleCommand.getLevel() == null) ? "" : createRuleCommand.getLevelDescription());
+        summary.put("Rule set name", (createRuleCommand.getRuleSetName() == null) ? "" : createRuleCommand.getRuleSetName());
+        if(createRuleCommand.getLevel() != null){
+        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL))
+        		summary.put("Sponsor", (createRuleCommand.getOrganizationName() == null ? "" : createRuleCommand.getOrganizationName()));
+        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTIONAL_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        		summary.put("Institution", (createRuleCommand.getInstitutionName() == null ? "" : createRuleCommand.getInstitutionName()));
+        	if(createRuleCommand.getLevel().equals(CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL) || createRuleCommand.getLevel().equals(CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL))
+        		summary.put("Study", createRuleCommand.getCategoryIdentifier() == null ? "" : createRuleCommand.getCategoryIdentifier());
+        }
+    	referenceData.put("ruleFlowSummary", summary);
+    	
+    	return referenceData;
     }
     
     /**

@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -31,8 +32,10 @@ import com.semanticbits.rules.api.RepositoryService;
 import com.semanticbits.rules.api.RuleAuthoringService;
 import com.semanticbits.rules.api.RuleDeploymentService;
 import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.Condition;
 import com.semanticbits.rules.brxml.FieldConstraint;
 import com.semanticbits.rules.brxml.LiteralRestriction;
+import com.semanticbits.rules.brxml.MetaData;
 import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.brxml.RuleSet;
 import com.semanticbits.rules.ui.DomainObject;
@@ -112,6 +115,8 @@ public class CreateRuleCommand implements RuleInputCommand {
     private RuleDeploymentService ruleDeploymentService;
     
     private RepositoryService repositoryService;
+    
+    private HashMap<String, Boolean> errorsForFields;
 
     public List<ReportDefinition> getReportDefinitions() {
 
@@ -200,6 +205,14 @@ public class CreateRuleCommand implements RuleInputCommand {
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
+    }
+    
+    public HashMap<String, Boolean> getErrorsForFields() {
+        return errorsForFields;
+    }
+
+    public void setErrorsForFields(HashMap<String, Boolean> errorsForFields) {
+        this.errorsForFields = errorsForFields;
     }
 
     public NotificationDao getNotificationDao() {
@@ -681,6 +694,80 @@ public class CreateRuleCommand implements RuleInputCommand {
             category.setTerms(null);
         }
         return categories;
+    }
+    
+    private Condition newCondition() {
+        Condition condition = new Condition();
+        Column column = newColumn();
+        condition.getColumn().add(column);
+        return condition;
+    }
+    
+    private Column newColumn() {
+        Column column = new Column();
+        FieldConstraint fieldConstraint = newFieldConstraint();
+        column.getFieldConstraint().add(fieldConstraint);
+        return column;
+    }
+
+    private FieldConstraint newFieldConstraint() {
+        FieldConstraint fieldConstraint = new FieldConstraint();
+        LiteralRestriction literalRestriction = new LiteralRestriction();
+        fieldConstraint.getLiteralRestriction().add(literalRestriction);
+        return fieldConstraint;
+    }
+    
+    /**
+     * This method adds a default rule if the author is creating a fresh ruleSet.
+     */
+    public void addDefaultRule(){
+    	RuleSet ruleSet = (RuleSet) this.getRuleSet();
+        Rule newRule = new Rule();
+        MetaData metaData = new MetaData();
+        newRule.setMetaData(metaData);
+
+        Condition condition = newCondition();
+        newRule.setCondition(condition);
+
+        // Action action = new Action();
+        List<String> action = new ArrayList<String>();
+        newRule.setAction(action);
+
+        ruleSet.getRule().add(newRule);
+
+        Organization org = organizationDao.getByName(organizationName);
+
+        // get report defnitions
+        List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
+
+        // cut down objects for serialization
+        List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(
+                        reportDefinitions.size());
+        for (ReportDefinition reportDefinition : reportDefinitions) {
+            reducedReportDefinitions.add(reportDefinition);
+        }
+        
+        /**
+         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
+         * report definitions also . TEMP fix
+         */
+        
+        if (organizationName.equals("Division of Cancer Prevention")) {
+        	org = organizationDao.getByName("Cancer Therapy Evaluation Program");
+        	reportDefinitions = org.getReportDefinitions();
+            for (ReportDefinition reportDefinition : reportDefinitions) {
+                reducedReportDefinitions.add(reportDefinition);
+            }        	
+        } 
+        
+        // System.out.println("add rule create successfully ....");
+        
+        // Set the name as the name field has been removed from UI.
+        Integer ruleCount = ruleSet.getRule().size() - 1;
+        Integer ruleNumber = ++ruleCount;
+        newRule.getMetaData().setName("Rule-" + ruleNumber);
+        // Done setting the rule name.
+
     }
     
     public ExpeditedReportSection[] getReportSectionNames() {
