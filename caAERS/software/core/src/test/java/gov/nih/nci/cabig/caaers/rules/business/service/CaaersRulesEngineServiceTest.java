@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -26,6 +27,10 @@ import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
  */
 public class CaaersRulesEngineServiceTest extends CaaersTestCase{
 	
+	public static final String SPONSOR_LEVEL = "Sponsor";
+    public static final String INSTITUTIONAL_LEVEL = "Institution";
+    public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
+    public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
 	private CaaersRulesEngineService caaersRulesEngineService;
 	private RulesEngineService rulesEngineService;
 	private RepositoryService repositoryService;
@@ -324,7 +329,40 @@ public class CaaersRulesEngineServiceTest extends CaaersTestCase{
 		}
 	}
 	
+	/**
+	 * Tests constructPackageName method
+	 */
+	public void testConstructPackageName(){
+		if(ruleSet != null){
+			try{
+				String packageName = caaersRulesEngineService.constructPackageName("Sponsor", "Cancer Therapy Evaluation Program", null, null, "SAE Reporting Rules");
+				assertEquals("Incorrect package name constructed", "gov.nih.nci.cabig.caaers.rule.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules", packageName);
+			}catch(Exception e){
+				fail("No exceptions are expected");
+			}
+		}
+	}
 	
+	
+	/**
+	 * Tests saveRuleSet method
+	 */
+	public void testSaveRuleSet(){
+	}
+	
+	/**
+	 * Tests deployRuleSet(ruleSet)
+	 */
+	public void testDeployRuleSet(){
+		
+	}
+	
+	/**
+	 * Tests undeployRuleSet(ruleSet)
+	 */
+	public void testUnDeployRuleSet(){
+		
+	}
 	
 //	/**
 //	 * Tests method createRuleForInstitutionDefinedStudy(...) in RulesEngineServiceImpl
