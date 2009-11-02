@@ -33,7 +33,7 @@ public class ReportMandatoryFieldDefinitionSynchronizerTest extends AbstractTest
 		xmlReportDefinition.addReportMandatoryFieldDefinition(rmfd1);
 		xmlReportDefinition.addReportMandatoryFieldDefinition(rmfd2);
 		
-		synchronizer.migrate(dbReportDefinition, xmlReportDefinition, outcome);
+		synchronizer.migrate(xmlReportDefinition, dbReportDefinition, outcome);
 		
 		assertEquals("Incorrect number of mandatory fields", 2, dbReportDefinition.getMandatoryFields().size());
 	}

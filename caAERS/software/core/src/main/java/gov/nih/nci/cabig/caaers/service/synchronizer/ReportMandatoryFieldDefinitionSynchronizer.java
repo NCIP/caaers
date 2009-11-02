@@ -11,9 +11,10 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 public class ReportMandatoryFieldDefinitionSynchronizer implements Migrator<gov.nih.nci.cabig.caaers.domain.report.ReportDefinition>{
 	
 	public void migrate(ReportDefinition xmlReportDefinition, ReportDefinition dbReportDefinition, DomainObjectImportOutcome<ReportDefinition> outcome) {
-		dbReportDefinition.getMandatoryFields().clear();
+		if(dbReportDefinition.getMandatoryFields() != null)
+			dbReportDefinition.getMandatoryFields().clear();
 		for(ReportMandatoryFieldDefinition defn: xmlReportDefinition.getMandatoryFields()){
-			dbReportDefinition.getMandatoryFields().add(defn);
+			dbReportDefinition.addReportMandatoryFieldDefinition(defn);
 		}
 	}
 }
