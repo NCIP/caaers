@@ -98,10 +98,5 @@ public class CompositeField extends AbstractInputField {
             return new InputFieldWrapper(subfield);
         }
 
-        @Override
-        public void validate(BeanWrapper commandBean, Errors errors) {
-            getSourceField().validate(commandBean, errors);
-            return;
-        }
     }
 }
