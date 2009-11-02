@@ -176,4 +176,12 @@ public class EditStudyController extends StudyController<StudyCommand> {
         this.task = task;
     }
 
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null || isAjaxRequest(request)) {
+            return true;
+        }
+        return false;
+    }
 }

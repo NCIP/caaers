@@ -36,8 +36,11 @@
                 <c:set var="size" value="${fn:length(command.study.treatmentAssignments)}" />
                 <c:forEach items="${command.study.treatmentAssignments}" varStatus="status" var="ta">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                    <%--<c:set var="newIndex" value="${status.index}" />--%>
                     <c:set var="collapsed" value="false" />
-                        <study:treatmentAssignment title="${command.study.treatmentAssignments[newIndex].code}" index="${newIndex}" ta="${command.study.treatmentAssignments[newIndex]}" collapsed="false" />
+                    <%--<c:if test="${!command.study.treatmentAssignments[newIndex].retiredIndicator}">--%>
+                        <study:treatmentAssignment title="${command.study.treatmentAssignments[newIndex].code}" index="${newIndex}" ta="${command.study.treatmentAssignments[newIndex]}" collapsed="false" collapsable="true" readOnly="true"/>
+                    <%--</c:if>--%>
                 </c:forEach>
             </div>
         </div>

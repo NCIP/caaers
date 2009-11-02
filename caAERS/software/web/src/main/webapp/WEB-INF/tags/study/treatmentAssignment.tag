@@ -9,16 +9,18 @@
 <%@attribute name="ta" required="true" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment"%>
 <%@attribute name="title"%>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
+<%@attribute name="collapsable" type="java.lang.Boolean" %>
+<%@attribute name="readOnly" type="java.lang.Boolean" %>
 
 <c:set var="mainGroup">main${index}</c:set>
 
-<chrome:division title="&nbsp;${title}" id="OneTA-${index}" collapsable="false" enableDelete="true" deleteParams="'delete', ${index}">
+<chrome:division title="&nbsp;${title}" id="OneTA-${index}" collapsable="${collapsable}" enableDelete="true" deleteParams="'delete', ${index}">
     <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
 		<jsp:attribute name="label">
 			<ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/>
 		</jsp:attribute>
 		<jsp:attribute name="value">
-			<ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" size="${fieldGroups[mainGroup].fields[0].attributes.size}" readonly="${readOnly}" required="${fieldGroups[mainGroup].fields[0].required}">
+			<ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" size="${fieldGroups[mainGroup].fields[0].attributes.size}" readonly="${ta.id > 0}" required="${fieldGroups[mainGroup].fields[0].required}">
 				<jsp:attribute name="embededJS">
 					Event.observe('${fieldGroups[mainGroup].fields[0].propertyName}', 'keyup', function(){
 						$('titleOf_OneTA-${index}').innerHTML = $('${fieldGroups[mainGroup].fields[0].propertyName}').value;

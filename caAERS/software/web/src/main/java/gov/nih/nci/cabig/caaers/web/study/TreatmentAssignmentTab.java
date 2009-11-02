@@ -105,7 +105,6 @@ public class TreatmentAssignmentTab extends StudyTab {
 
     //
     public ModelAndView addTreatmentAssignment(HttpServletRequest request, Object object, Errors errors) {
-        //System.out.println("1. addTreatmentAssignment");
         StudyCommand command = (StudyCommand)object;
         TreatmentAssignment ta = new TreatmentAssignment();
         command.getStudy().addTreatmentAssignment(ta);
@@ -116,7 +115,6 @@ public class TreatmentAssignmentTab extends StudyTab {
     
     //
     public ModelAndView removeTreatmentAssignment(HttpServletRequest request, Object object, Errors errors) {
-        //System.out.println("2. removeTreatmentAssignment");
 
         StudyCommand command = (StudyCommand)object;
         List<TreatmentAssignment> tas = command.getStudy().getTreatmentAssignments();
@@ -145,6 +143,7 @@ public class TreatmentAssignmentTab extends StudyTab {
     	Integer[] indexes = new Integer[size];
     	for(int i = 0 ; i < size ; i++){
     		indexes[i] = size - (i + 1);
+//    		indexes[i] = i;
     	}
 
         ModelAndView modelAndView = new ModelAndView("study/ajax/treatmentAssignmentSection");

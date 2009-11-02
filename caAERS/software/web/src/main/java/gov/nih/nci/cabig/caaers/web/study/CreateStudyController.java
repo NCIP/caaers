@@ -107,6 +107,12 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
+
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null || isAjaxRequest(request)) {
+            return true;
+        }
+
         return super.suppressValidation(request, command);
     }
 
