@@ -2,26 +2,14 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="conversionPattern" value="%d %-5p [%15t] %c %x: %m%n"/>
-    </layout>
-    <filter class="org.apache.log4j.varia.StringMatchFilter">
-      <param name="acceptOnMatch" value="false"/>
-      <param name="stringToMatch" value="Unable to proxy method"/>
-    </filter>
-    <!-- conceal expected authorization switch warnings when
-	 running tests -->
-    <filter class="org.apache.log4j.varia.StringMatchFilter">
-      <param name="acceptOnMatch" value="false"/>
-      <param name="stringToMatch" value="##### AuthorizationSwitch"/>
-    </filter>
-  </appender>
+  
   
   <!-- for testing, purge the log on each run -->
-  <appender name="file" class="org.apache.log4j.FileAppender">
+  <appender name="file" class="org.apache.log4j.RollingFileAppender">
     <param name="file" value="${catalina.home}/logs/caaers.log"/>
-	<param name="threshold" value="ERROR"/>
+	<param name="maxBackupIndex " value="5"/>
+	<param name="threshold" value="FATAL"/>
+	<param name="maxFileSize" value="30MB"/> 
     <param name="append" value="false"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
@@ -48,8 +36,7 @@
   -->
   
   <root>
-    <priority value="error"/>
-    <appender-ref ref="stdout"/>
+    <priority value="FATAL"/>
     <appender-ref ref="file"/>
   </root>
 </log4j:configuration>
