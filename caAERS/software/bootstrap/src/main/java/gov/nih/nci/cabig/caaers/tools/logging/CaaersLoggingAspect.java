@@ -33,26 +33,37 @@ public class CaaersLoggingAspect {
 			"|| execution(public * gov.nih.nci.cabig.caaers.web.rule.*.*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.web.participant.*.*(..))" +
 			"|| execution(public * gov.nih.nci.cabig.caaers.tools.Excel*.*(..))")
+	
 	public Object log(ProceedingJoinPoint call) throws Throwable  {
+		
+		long startTime = System.currentTimeMillis();
 		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
-		if(logger.isDebugEnabled()) debug(logger, true, call, null);
+		if(logger.isDebugEnabled()) debug(logger, true, call, null, 0);
 		
         Object point =  call.proceed();
         
-        if(logger.isDebugEnabled()) debug(logger, false, call, point);
+        long endTime = System.currentTimeMillis();
+        long executionTime = (endTime - startTime);
+        if(executionTime > 500){
+        	logger.info("More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
+        }
+        
+        if(logger.isDebugEnabled()){
+        	debug(logger, false, call, point, executionTime);
+        }
         
         return point;
     }
 	
 	
-	public void debug(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal){
+	public void debug(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
 		try{
 			if(entry){
 				logger.debug(entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
 			}else{
-				logger.debug(exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "}");
+				logger.debug(exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
 			}
 			
 		}catch(Exception ignore){ 
