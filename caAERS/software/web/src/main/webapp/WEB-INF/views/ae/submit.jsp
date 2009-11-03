@@ -48,16 +48,14 @@
             }
         }
 
-        Event.observe(window, "load", function() {
-    	 //$('flow-next').value="Go to Manage Reports ";	 
-    	 
+        Event.observe(window, "load", function() { 
     	 //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  	          	routingHelper.updateWorkflowActions.bind(routingHelper)();
             }
-    })
+    });
        
        
     function updatePhysicianSignOff(){
@@ -176,14 +174,33 @@
                     }
                 });
             } else {
-                return false;
+                
             }
         } catch(e) {
             caaersLog(e);
         }
 		
 	}
-        
+
+	function createDropDowns() {
+		jQuery(".fg-button").each(function(){
+			id = jQuery(this).attr("id");
+			options = "options-" + id;
+			jQuery("#"+id).menu({
+				content: jQuery("#"+options).html(),		
+				maxHeight: 180,
+				width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'right',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 300
+			});
+		});
+	}
     </script>
     <style type="text/css">
         td.completion-messages p {

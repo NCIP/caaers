@@ -5,6 +5,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
 <tags:js name="compressed/co_prototype"/>
+<tags:js name="jquery-1.3.2.min"/>
+<tags:js name="jquery-ui-1.7.2.custom.min"/>
+<script type="text/javascript">
+	jQuery.noConflict();
+</script>
+<tags:js name="fg.menu"/>
 <tags:js name="ajax-loading-indicator" />
 
 <jwr:style src="/csslib/caaers.zcss" />
@@ -68,4 +74,5 @@ AE.SESSION_TIME_OUT_WAIT= ${empty configuration.map.httpSessionWarningWait ? '2'
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}  
 </script>  
 <![endif]-->
+
 <!-- END tags\standard\head.tag -->

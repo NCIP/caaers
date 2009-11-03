@@ -97,13 +97,16 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			for(i = 0; i< objectContent.length; i++){
 				var status = objectContent[i];
 				var li = new Element('li');
-				var opt = new Element('a', {'href': 'javascript:advanceWorkflow("'+status+'")' }).update(status);
+				var opt = new Element('a', {'onclick': 'javascript:advanceWorkflow("'+status+'")', 'href' : '#'}).update(status);
 				li.insert(opt);
 				sb.insert(li);
 			}
 		}
 	
 		sbIndicator.style.display='none';
+		if (typeof createDropDowns == 'function') {
+			createDropDowns();
+		}
 	},
 	validateAndAdvanceWorkflow: function(){
 		var sbox = $('sliderWFAction');

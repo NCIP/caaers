@@ -16,25 +16,28 @@
 	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 		<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
 			<chrome:division collapsable="true" title="${report.reportDefinition.label}" id="division-${report.id}">
-				<div style="text-align:right; margin:20px 0 0 0;">
-					<ul id="export-options">
+				<div style="text-align:right;">
+					<a id="export-menu-${report.id}" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Export</a>
+				</div>
+				<div id="options-export-menu-${report.id}" style="display:none;">
+					<ul>
 	                    <c:if test="${command.study.caaersXMLType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>--%>Export caAERS XML</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
 	                    </c:if>
 	                    <c:if test="${command.study.adeersPDFType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export AdEERS PDF</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
 	                    </c:if>
 	                    <c:if test="${command.study.medwatchPDFType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export MedWatch 3500A PDF</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
 	                    </c:if>
 	                    <c:if test="${command.study.dcpSAEPDFType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export DCP SAE PDF</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
 	                    </c:if>
 	                    <c:if test="${command.study.ciomsPDFType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export CIOMS PDF</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
 	                    </c:if>
 	                    <c:if test="${command.study.ciomsSaePDFType}">
-	                        <li><a href="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><%--<img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>--%>Export DCP Safety Report PDF</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
 	                    </c:if>
 					</ul>
 				</div>
@@ -113,26 +116,29 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-                <div style="text-align:right; margin:20px 0 0 0;">
+				<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+				<div style="text-align:right;">
+					<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
+				</div>
+                <div id="options-actions-menu-${report.id}" style="display:none;">
 					<ul>
 						<c:if test="${command.workflowEnabled == true}">
 							<span id="sliderWFAction"></span>
 						</c:if>
 	                    <c:if test="${reportMessages[report.id].submittable}">
 	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
-								<li><a href="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
+								<li><a href="#" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
 	                    	</c:if>
 	                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
 	                            <c:if test="${!command.workflowEnabled || isSuperUser}">
-	                            	<li><a href="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" >Submit</a></li>
+	                            	<li><a class="submitter-green" href="#" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>
 	                            </c:if>
 	                        </c:if>
 	                    </c:if>
 						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-	                        <li><a href="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};">Withdraw</a></li>
+	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};">Withdraw</a></li>
 	                    </c:if>
 					</ul>
-					<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
                 </div>
 			</chrome:division>
 		</c:if>
