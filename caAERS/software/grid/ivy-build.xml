@@ -77,6 +77,7 @@
 		<antcall target="update-wsdd" />
 	
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-jglobus-1.2.jar"/>
+		<!--
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/bouncycastle-jce-jdk13-125-cagrid1.0.jar"/>
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-axis-4.0.3-globus.jar"/>
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cog-axis.jar"/>
@@ -86,7 +87,7 @@
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-3.2-cagrid1.0.jar"/>
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-asn1-3.2-cagrid1.0.jar"/>
 		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/cryptix-impl-3.2-cagrid1.0.jar"/>
-		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/puretls-4.0.3-globus.jar"/>
+		<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/lib/puretls-4.0.3-globus.jar"/>-->
 	
 	</target>
 	
