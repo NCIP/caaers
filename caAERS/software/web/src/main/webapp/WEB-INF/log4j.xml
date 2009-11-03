@@ -3,20 +3,35 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
+  <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="conversionPattern" value="%d %-5p [%15t] %c %x: %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.StringMatchFilter">
+      <param name="acceptOnMatch" value="false"/>
+      <param name="stringToMatch" value="Unable to proxy method"/>
+    </filter>
+    <!-- conceal expected authorization switch warnings when
+	 running tests -->
+    <filter class="org.apache.log4j.varia.StringMatchFilter">
+      <param name="acceptOnMatch" value="false"/>
+      <param name="stringToMatch" value="##### AuthorizationSwitch"/>
+    </filter>
+  </appender>
+  
   
   <!-- for testing, purge the log on each run -->
   <appender name="file" class="org.apache.log4j.RollingFileAppender">
+  
+	<param name="maxBackupIndex" value="20"/>
     <param name="file" value="${catalina.home}/logs/caaers.log"/>
-	<param name="maxBackupIndex " value="5"/>
-	<param name="threshold" value="FATAL"/>
-	<param name="maxFileSize" value="30MB"/> 
-    <param name="append" value="false"/>
+	<param name="threshold" value="DEBUG"/>
+    <param name="append" value="true"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
     </layout>
   </appender>
-  
-  <!-- disable really verbose logging from libraries.  Switch to debug if necessary. 
+<!-- disable really verbose logging from libraries.  Switch to debug if necessary 
   <logger name="org.hibernate"><level value="error"/></logger>
   <logger name="org.semanticbits"><level value="error"/></logger>
   <logger name="org.springframework"><level value="error"/></logger>
@@ -24,19 +39,23 @@
   <logger name="org.apache"><level value="error"/></logger>
   <logger name="com"><level value="error"/></logger>
   <logger name="gov"><level value="error"/></logger>
-  <logger name="gov.nih.nci"><level value="error"/></logger>
   <logger name="org"><level value="error"/></logger>
   <logger name="org.quartz"><level value="error"/></logger>
   <logger name="gov.nih.nci.cabig.caaers"><level value="error"/></logger>
   <logger name="gov.nih.nci.cabig.ctms"><level value="error" /></logger>
   <logger name="edu"><level value="error"></level></logger>
-  <logger name="edu.northwestern.bioinformatics"><level value="error"></level></logger>
+ 
   <logger name="edu.northwestern.bioinformatics.bering"><level value="error" /></logger>
   <logger name="gov.nih.nci.cabig.caaers.resolver"><level value="info" /></logger>
-  -->
-  
+
+	
+  <logger name="gov.nih.nci"><level value="debug"/></logger>
+  <logger name="edu.northwestern.bioinformatics"><level value="debug"></level></logger> 	
+  <logger name="org.acegisecurity"><level value="debug"/></logger> 	
+-->	
   <root>
-    <priority value="FATAL"/>
+    <priority value="error"/>
     <appender-ref ref="file"/>
+    <appender-ref ref="stdout"/>
   </root>
 </log4j:configuration>
