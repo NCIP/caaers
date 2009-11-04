@@ -187,9 +187,13 @@ public class ReporterTab extends AeTab {
 	    			reviewResult.getReportsToWithdraw(), command.getNewlySelectedReportDefinitions());
 	    	
 			//-enact workflow
-			if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
-				command.enactWorkflow(command.getAeReport());
-			}
+	    	// ****************************************************************************
+	    	// TODO: Sameer
+	    	// This has to change to call enactWorkflow with report object
+	    	// *****************************************************************************
+			//if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
+			//	command.enactWorkflow(command.getAeReport());
+			//}
 	    	
 			
     	}

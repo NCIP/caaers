@@ -988,8 +988,11 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     // For RoutingAndReview - Report comments.
+    // ******************************************************************************************************
+    // TODO: These methods have to change to call the repository methods with "Report" object / IDs
+    // ******************************************************************************************************
     
-    public AjaxOutput addReviewComment(String comment){
+    /*public AjaxOutput addReviewComment(String comment){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	command.getStudy();
@@ -1013,7 +1016,12 @@ public class CreateAdverseEventAjaxFacade {
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(command.getAeReport(), commentId);
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
-    }
+    }*/
+    
+    // ******************************************************************************************************
+    // TODO: These methods have to change to call the repository methods with "Report" object / IDs
+    // ******************************************************************************************************
+    
     
     public AjaxOutput updatePhysicianSignOff(Boolean physicianSignOff){
     	AjaxOutput output = new AjaxOutput();
@@ -1073,14 +1081,15 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public AjaxOutput retrieveNextTransitions(){
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	/*ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	List<String> transitions = new ArrayList<String>();
     	if(command.getAeReport().getWorkflowId() != null){
     		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNamesForAeReportWorkflow(command.getAeReport(), getUserId());
     	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
-    	return output;
+    	return output;*/
+    	return null;
     }
     
     public AjaxOutput retrieveReviewCommentsAndActions(){
@@ -1093,7 +1102,7 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput advanceWorkflow(String transitionToTake){
         AjaxOutput out = new AjaxOutput();
-        try {
+        /*try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
             command.reassociate();
             List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), transitionToTake, command.getAeReport(), getUserId());
@@ -1104,7 +1113,7 @@ public class CreateAdverseEventAjaxFacade {
             out.setError(true);
             out.setErrorMessage(e.getMessage());
 
-        }
+        }*/
         return out;
     }
 
