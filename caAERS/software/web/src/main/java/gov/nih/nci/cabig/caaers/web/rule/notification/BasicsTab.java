@@ -95,6 +95,8 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
         InputField parentReportDefinition = InputFieldFactory.createSelectField("reportDefinition.parent", "Parent", false, command.getParentOptions());
         fields.add(parentReportDefinition);
+        
+        fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.workflowEnabled", "Workflow enabled?", true));
 
         map.addInputFieldGroup(fieldGroup);
         return map;
