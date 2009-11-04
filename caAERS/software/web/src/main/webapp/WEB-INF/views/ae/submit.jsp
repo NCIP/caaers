@@ -54,7 +54,9 @@
             if(associatedToWorkflow){
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  	          	routingHelper.updateWorkflowActions.bind(routingHelper)();
-            }
+            } else {
+				createDropDowns();
+			}
     });
        
        
