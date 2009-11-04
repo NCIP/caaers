@@ -53,7 +53,7 @@ import org.springframework.beans.BeanUtils;
                 @Parameter(name = "sequence", value = "seq_ae_reports_id")
         }
 )
-public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  WorkflowAware , Serializable{
+public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  Serializable{
    
 	private static final long serialVersionUID = -3747213703166595074L;
 	private Timestamp createdAt;
@@ -73,12 +73,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
-    private ReviewStatus reviewStatus;
-    private Integer workflowId;
-    private List<ReportReviewComment> reviewComments;
     
-
-
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
@@ -910,41 +905,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return hasAmendableReport;
     }
-    
-    
-    @Column(name = "review_status_code")
-    @Type(type = "reviewStatus")
-    public ReviewStatus getReviewStatus() {
-        return reviewStatus;
-    }
-    
-    public void setReviewStatus(ReviewStatus reviewStatus){
-    	this.reviewStatus = reviewStatus;
-    }
-    
-    public Integer getWorkflowId() {
-    	return workflowId;
-    }
-    
-    public void setWorkflowId(Integer workflowId){
-    	this.workflowId = workflowId;
-    }
-    
-    
-    @OneToMany
-    @JoinColumn(name = "report_id", nullable = true)
-    @IndexColumn(name = "list_index", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @OrderBy(value = "createdDate DESC")
-    public List<ReportReviewComment> getReviewComments() {
-    	if(reviewComments == null) reviewComments = new ArrayList<ReportReviewComment>();
-		return reviewComments;
-	}
-    
-    public void setReviewComments(
-			List<ReportReviewComment> reviewComments) {
-		this.reviewComments = reviewComments;
-	}
     
     /**
      * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.  

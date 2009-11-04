@@ -68,6 +68,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private Boolean attributionRequired;
     private ReportFormatType reportFormatType;
     private Boolean physicianSignOff;
+    private Boolean workflowEnabled;
     private ConfigProperty group;
     private ReportType reportType;
     private ReportDefinition parent;
@@ -462,6 +463,15 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	
 	public void setPhysicianSignOff(Boolean physicianSignOff) {
 		this.physicianSignOff = physicianSignOff;
+	}
+	
+	@Column(name = "workflow_enabled")
+	public Boolean getWorkflowEnabled() {
+		return workflowEnabled;
+	}
+	
+	public void setWorkflowEnabled(Boolean workflowEnabled){
+		this.workflowEnabled = workflowEnabled;
 	}
 	
 	@Transient

@@ -975,9 +975,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	assertTrue(returnVal);
 	assertEquals(1, list.size());
    }
-   
-   
-   public void testSaveReviewComments() throws Exception {
+
+   //*****************************************************************************************************
+   // TODO: This method has to be moved to ReportDaoTest as review comments has been moved to Report object
+   //*****************************************************************************************************
+   /*public void testSaveReviewComments() throws Exception {
 	   final Date today = new Date();
 	   ExpeditedAdverseEventReport loaded = getDao().getById(-1);
 	   ReportReviewComment reviewComment = new ReportReviewComment();
@@ -994,7 +996,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   loaded = getDao().getById(-1);
 	   assertEquals("abcd", loaded.getReviewComments().get(0).getUserComment());
 	  
-   }
+   }*/
    
    private String getStringFromFile() throws Exception {
        File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/dao/testdata/ExpeditedAdverseEventReportString.txt").getFile();

@@ -54,7 +54,7 @@ public class AERoutingAndReviewDTOFactory {
 	}
 	
 	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){
-		if(aeReport == null) return null;
+		/*if(aeReport == null) return null;
 		if(aeReport.getWorkflowId() == null) {
 			log.warn("The workflowID for ExpeditedAdverseEventReport#" + aeReport.getId() + " is null");
 			return null;
@@ -71,7 +71,8 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNamesForAeReportWorkflow(aeReport, userId));
 		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
 		dto.setReports(createReportDTOs(aeReport));
-		return dto;
+		return dto;*/
+		return null;
 	}
 	
 	protected List<ReviewCommentsDTO> createReviewComments(List<? extends ReviewComment> comments){

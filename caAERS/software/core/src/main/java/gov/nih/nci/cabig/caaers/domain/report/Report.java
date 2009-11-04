@@ -4,7 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -16,12 +19,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -32,6 +37,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 /**
  * A report sending schedule for an adverse event. The RuleExecutionService, evaluates pre-defined
@@ -43,7 +49,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "REPORT_SCHEDULES")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_schedules_id") })
-public class Report extends AbstractMutableDomainObject implements Serializable {
+public class Report extends AbstractMutableDomainObject implements WorkflowAware, Serializable {
 
 	private static final long serialVersionUID = 4001323963140432224L;
 
@@ -65,6 +71,10 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private String adeersReportTypeIndicator;
     
     private List<String> emailAddresses;
+    private ReviewStatus reviewStatus;
+    private Integer workflowId;
+    
+    private List<ReportReviewComment> reviewComments;
     
     private  String _REGULAR_REPORT = "Regular report";
     private  String _24HR_NOTIFICATION = "24-hr notification";
@@ -595,6 +605,21 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 		}    	
 		return null;
     }
+    
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = true)
+    @IndexColumn(name = "list_index", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy(value = "createdDate DESC")
+    public List<ReportReviewComment> getReviewComments() {
+    	if(reviewComments == null) reviewComments = new ArrayList<ReportReviewComment>();
+		return reviewComments;
+	}
+    
+    public void setReviewComments(
+			List<ReportReviewComment> reviewComments) {
+		this.reviewComments = reviewComments;
+	}
 
     /**
      * This method will find the recently submitted report
@@ -643,5 +668,21 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	getLastVersion().setSubmitter(submitter);
     }
     
+    public Integer getWorkflowId() {
+    	return workflowId;
+    }
     
+    public void setWorkflowId(Integer workflowId){
+    	this.workflowId = workflowId;
+    }
+ 
+    @Column(name = "review_status_code")
+    @Type(type = "reviewStatus")
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+    
+    public void setReviewStatus(ReviewStatus reviewStatus){
+    	this.reviewStatus = reviewStatus;
+    }
 }

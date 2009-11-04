@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 */
 	//TODO This has to change to accept aeReport instead of a report.
 	public void addReportReviewComment(Integer reportId, String comment, String userId);
-	public void addReportReviewComment(ExpeditedAdverseEventReport report, String comment, String userId);
+	public void addReportReviewComment(Report report, String comment, String userId);
 	
 	/**
 	 * Will add a review comment against the reporting period
@@ -79,7 +80,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param commentId
 	 */
 	//TODO This method needs an implementation once the data model changes have been made.
-	public void editReportReviewComment(ExpeditedAdverseEventReport aeReport, String comment, String userId, Integer commentId);
+	public void editReportReviewComment(Report report, String comment, String userId, Integer commentId);
 	
 	
 	/**
@@ -112,7 +113,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param aeReport
 	 * @param commentId
 	 */
-	public void deleteReportReviewComment(ExpeditedAdverseEventReport aeReport, Integer commentId);
+	public void deleteReportReviewComment(Report report, Integer commentId);
 	
 	/**
 	 * Will delete a review comment with commentId passed to the method.
@@ -135,7 +136,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Integer id, String userId);
-	public List<String> advanceReportWorkflow(Integer workflowId, String transition, ExpeditedAdverseEventReport report, String userId);
+	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Report report, String userId);
 	
 	/**
 	 * Will advance the workflow to its next step, for the reporting period
@@ -152,7 +153,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param aeReport
 	 * @return
 	 */
-	public Long enactReportWorkflow(ExpeditedAdverseEventReport report);
+	public Long enactReportWorkflow(Report report);
 	
 	
 	/**
@@ -176,5 +177,5 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param loginId
 	 * @return
 	 */
-	public List<String> nextTransitionNamesForAeReportWorkflow(ExpeditedAdverseEventReport aeReport, String loginId);
+	public List<String> nextTransitionNamesForReportWorkflow(Report report, String loginId);
 }
