@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -44,6 +45,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	
 	AdverseEventReportingPeriodDao rpDao;
 	ExpeditedAdverseEventReportDao rDao;
+	ReportDao reportDao;
 	AERoutingAndReviewDTOFactory factory;
 	WorkflowService wfService;
 	AdverseEventRoutingAndReviewRepositoryImpl impl;
@@ -59,6 +61,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		super.setUp();
 		rDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		rpDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
+		reportDao = registerDaoMockFor(ReportDao.class);
 		factory = registerMockFor(AERoutingAndReviewDTOFactory.class);
 		wfService = registerMockFor(WorkflowService.class);
 		processInstance = registerMockFor(ProcessInstance.class);
@@ -69,21 +72,22 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		impl.setAdverseEventReportingPeriodDao(rpDao);
 		impl.setRoutingAndReviewFactory(factory);
 		impl.setExpeditedAdverseEventReportDao(rDao);
+		impl.setReportDao(reportDao);
 		impl.setWorkflowService(wfService);
 		impl.setEvaluationService(evaluationService);
 	}
 	
 	public void testFetchReviewCommentsForReport() {
-		/*ExpeditedAdverseEventReport r = Fixtures.createSavableExpeditedReport();
+		Report report = Fixtures.createReport("testReport");
 		List<ReportReviewComment> reviewComments = new ArrayList<ReportReviewComment>();
-		r.setReviewComments(reviewComments);
-		Integer reportId = 5;
+		report.setReviewComments(reviewComments);
+		Integer reportId = 10;
 
-		EasyMock.expect(rDao.getById(reportId)).andReturn(r);
+		EasyMock.expect(reportDao.getById(reportId)).andReturn(report);
 		replayMocks();
 		List<? extends  ReviewComment> comments = impl.fetchReviewCommentsForReport(reportId);
 		verifyMocks();
-		assertSame(reviewComments, comments);*/
+		assertSame(reviewComments, comments);
 	}
 
 	public void testFetchReviewCommentsForReportingPeriod() {
@@ -98,19 +102,19 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		assertSame(reviewComments, comments);
 	}
 
-	/*public void testAddReportReviewComment() {
-		Integer reportId = 5;
+	public void testAddReportReviewComment() {
+		Integer reportId = 10;
 		String comment = "mycomment";
 		String userId = "userId";
 		
-		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
-		r.setReviewComments(new ArrayList<ReportReviewComment>());
-		EasyMock.expect(rDao.getById(reportId)).andReturn(r);
-		rDao.save(r);
+		Report report = Fixtures.createReport("testReport");
+		report.setReviewComments(new ArrayList<ReportReviewComment>());
+		EasyMock.expect(reportDao.getById(reportId)).andReturn(report);
+		reportDao.save(report);
 		replayMocks();
 		impl.addReportReviewComment(reportId, comment, userId);
 		verifyMocks();
-	}*/
+	}
 	
 	public void testAddReportingPeriodReviewCommentWithObject(){
 		String comment = "mycomment";
@@ -167,19 +171,18 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 	
 	public void testDeleteReportReviewComment(){
-		/*ExpeditedAdverseEventReport r = Fixtures.createSavableExpeditedReport();
+		Report report = Fixtures.createReport("testReport");
 		ArrayList<ReportReviewComment> commentsList = new ArrayList<ReportReviewComment>();
 		commentsList.add(Fixtures.createReportReviewComment(1, "comment 1"));
 		commentsList.add(Fixtures.createReportReviewComment(2, "comment 2"));
 		commentsList.add(Fixtures.createReportReviewComment(3, "comment 3"));
-		r.setReviewComments(commentsList);
-		r.setId(1);
-		EasyMock.expect(rDao.getById(1)).andReturn(r);
-		rDao.modifyOrSaveReviewStatusAndComments(r);
+		report.setReviewComments(commentsList);
+		EasyMock.expect(reportDao.getById(10)).andReturn(report);
+		reportDao.save(report);
 		replayMocks();
-		impl.deleteReportReviewComment(1, 2);
+		impl.deleteReportReviewComment(10, 2);
 		verifyMocks();
-		assertEquals("Comment not deleted from comments list", 2, r.getReviewComments().size());*/
+		assertEquals("Comment not deleted from comments list", 2, report.getReviewComments().size());
  	}
 	
 	public void testEditReportingPeriodReviewCommentWithId(){
@@ -251,42 +254,41 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 
 	public void testIsEntityHavingSpecifiedReviewStatus() {
-		/*ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
-		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		Report report = Fixtures.createReport("testReport");
+		report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
-		boolean result = impl.isEntityHavingSpecifiedReviewStatus(null, r);
+		boolean result = impl.isEntityHavingSpecifiedReviewStatus(null, report);
 		assertTrue(result);
 		
-		r.setReviewStatus(null);
-		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, r);
+		report.setReviewStatus(null);
+		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, report);
 		assertFalse(result);
 		
-		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
-		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, r);
+		report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, report);
 		assertTrue(result);
-		*/
 	}
 	
 	public void testAdvanceReportWorkflow(){
-		/*Integer id = 5;
+		Integer id = 10;
 		Integer wfId = 5;
 		String transitionToTake = "abcd";
 		String loginId = "SYSTEM_ADMIN";
 		ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
-		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
-		r.setReviewComments(new ArrayList<ReportReviewComment>());
-		r.setWorkflowId(wfId);
+		Report report = Fixtures.createReport("testReport");
+		report.setStatus(ReportStatus.INPROCESS);
+		report.setReviewComments(new ArrayList<ReportReviewComment>());
+		report.setWorkflowId(wfId);
 		List<String> transitions = new ArrayList<String>();
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
-		EasyMock.expect(rDao.getById(id)).andReturn(r);
-		rDao.modifyOrSaveReviewStatusAndComments(r);
+		EasyMock.expect(reportDao.getById(id)).andReturn(report);
+		reportDao.save(report);
 		replayMocks();
 		List<String> transitionsNames = impl.advanceReportWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
-		assertEquals("A review comment for the action of advancing workflow was not added", 1, r.getReviewComments().size());
-		*/
+		assertEquals("A review comment for the action of advancing workflow was not added", 1, report.getReviewComments().size());
 	}
 	
 	public void testAdvanceReportingPeriodWorkflow(){
@@ -334,9 +336,10 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 	
 	public void testEnactReportWorkflow(){
-		/*long processId = 5;
+		long processId = 5;
 		StudyParticipantAssignment assignment = Fixtures.createAssignment();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		Report report = Fixtures.createReport("testReport");
 		aeReport.setId(55);
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
 		WorkflowConfig workflowConfig = Fixtures.createWorkflowConfig("test");
@@ -345,27 +348,27 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		site.addStudySiteWorkflowConfig(ssWfCfg);
 		reportingPeriod.addAeReport(aeReport);
 		aeReport.setAssignment(assignment);
+		aeReport.addReport(report);
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, site.getStudy().getId());
-		variables.put(WorkflowService.VAR_WF_TYPE, ExpeditedAdverseEventReport.class.getName());
+		variables.put(WorkflowService.VAR_WF_TYPE, Report.class.getName());
+		variables.put(WorkflowService.VAR_REPORT_ID, report.getId());
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
 		
 		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
-	    rDao.modifyOrSaveReviewStatusAndComments(aeReport);
+	    reportDao.save(report);
 		replayMocks();
-		impl.enactReportWorkflow(aeReport);
-		verifyMocks();*/
+		impl.enactReportWorkflow(report);
+		verifyMocks();
 	}
 	
 	public void testNextTransitionsForAeReportWithIncompleteReports() throws Exception{
-		/*ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		aeReport.setWorkflowId(1);
+		Report report = Fixtures.createReport("testReport");
+		report.setWorkflowId(1);
 		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
-		Report report = Fixtures.createReport("test report");
 		report.setStatus(ReportStatus.PENDING);
-		aeReport.addReport(report);
 		List<String> transitions = new ArrayList<String>();
 		transitions.add("test action");
 		transitions.add("Submit to Central Office Report Reviewer");
@@ -374,18 +377,16 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
 		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(false);
 		replayMocks();
-		List<String> filteredTransitions = impl.nextTransitionNamesForAeReportWorkflow(aeReport, "SYSTEM_ADMIN");
+		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
 		verifyMocks();
-		assertEquals(1, filteredTransitions.size());*/
+		assertEquals(1, filteredTransitions.size());
 	}
 
 	public void testNextTransitionsForAeReportWithCompleteReports() throws Exception{
-		/*ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		aeReport.setWorkflowId(1);
+		Report report = Fixtures.createReport("testReport");
+		report.setWorkflowId(1);
 		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
-		Report report = Fixtures.createReport("test report");
 		report.setStatus(ReportStatus.PENDING);
-		aeReport.addReport(report);
 		List<String> transitions = new ArrayList<String>();
 		transitions.add("test action");
 		transitions.add("Submit to Central Office Report Reviewer");
@@ -394,9 +395,9 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
 		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(true);
 		replayMocks();
-		List<String> filteredTransitions = impl.nextTransitionNamesForAeReportWorkflow(aeReport, "SYSTEM_ADMIN");
+		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
 		verifyMocks();
-		assertEquals(2, filteredTransitions.size());*/
+		assertEquals(2, filteredTransitions.size());
 	}
 
 }

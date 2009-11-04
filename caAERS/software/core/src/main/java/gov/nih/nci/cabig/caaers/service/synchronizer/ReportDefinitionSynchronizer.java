@@ -43,6 +43,7 @@ public class ReportDefinitionSynchronizer extends CompositeMigrator<ReportDefini
 		
 		//Populate Parent
 		dbReportDefinition.setParent(xmlReportDefinition.getParent());
+		dbReportDefinition.setWorkflowEnabled(xmlReportDefinition.getWorkflowEnabled());
 		
 		//populate the correct config property
 		if(xmlReportDefinition.getGroup() == null){

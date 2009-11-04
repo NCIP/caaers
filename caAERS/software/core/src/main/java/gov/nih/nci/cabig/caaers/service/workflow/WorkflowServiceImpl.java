@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -18,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
@@ -69,8 +71,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
-	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private ReportDao reportDao;
 	
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	private StudyDao studyDao;
 	
@@ -266,7 +269,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			Map variablesMap = context.getContextInstance().getVariables();
 			
 			if(variablesMap != null){
-				expediteReportUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_EXPEDITED_REPORT + String.valueOf(variablesMap.get(VAR_EXPEDITED_REPORT_ID));
+				expediteReportUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_EXPEDITED_REPORT + String.valueOf(variablesMap.get(VAR_EXPEDITED_REPORT_ID))
+											+ "&report=" + String.valueOf(variablesMap.get(WorkflowService.VAR_REPORT_ID));
 				reportingPeriodUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_REPORTING_PERIOD + String.valueOf(variablesMap.get(VAR_REPORTING_PERIOD_ID));
 					
 			}
@@ -379,15 +383,16 @@ public class WorkflowServiceImpl implements WorkflowService {
 		String wfType = (String)contextVariables.get(VAR_WF_TYPE);
 		Integer reportingPeriodId = (Integer) contextVariables.get(VAR_REPORTING_PERIOD_ID);
 		Integer expeditedReportId = (Integer) contextVariables.get(VAR_EXPEDITED_REPORT_ID);
-		
-		ExpeditedAdverseEventReport aeReport = null;
+		Integer reportId = (Integer) contextVariables.get(VAR_REPORT_ID);
+
+		Report report = null;
 		Study study = null;
 		AdverseEventReportingPeriod reportingPeriod = null;
 		StudyParticipantAssignment assignment = null;
 		StudySite site = null;
-		if(StringUtils.equals(wfType, ExpeditedAdverseEventReport.class.getName())){
-			aeReport = expeditedAdverseEventReportDao.getById(expeditedReportId);
-			reportingPeriod = aeReport.getReportingPeriod();
+		if(StringUtils.equals(wfType, Report.class.getName())){
+			report = reportDao.getById(reportId);
+			reportingPeriod = report.getAeReport().getReportingPeriod();
 			assignment = reportingPeriod.getAssignment();
 			site = assignment.getStudySite();
 			study = site.getStudy();
@@ -436,7 +441,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				users.addAll(participantCoordinators);
 				break;
 			case PHYSICIAN:
-				User physician = aeReport.getPhysician().getUser();
+				User physician = report.getAeReport().getPhysician().getUser();
 				if(physician != null){
 					users.add(physician);
 				}
@@ -446,7 +451,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				users.addAll(principalInvestigators);
 				break;
 			case REPORTER:
-				User reporter = aeReport.getReporter().getUser();
+				User reporter = report.getAeReport().getReporter().getUser();
 				if(reporter != null){
 					users.add(reporter);
 				}
@@ -537,6 +542,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+	
+	public void setReportDao(ReportDao reportDao){
+		this.reportDao = reportDao;
+	}
+	
+	public ReportDao getReportDao(){
+		return reportDao;
 	}
 	
 }

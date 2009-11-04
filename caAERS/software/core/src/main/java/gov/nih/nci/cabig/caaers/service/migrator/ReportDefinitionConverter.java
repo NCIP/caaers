@@ -92,6 +92,9 @@ public class ReportDefinitionConverter {
 			reportDefinitionDomain.setParent(parentReportDefinition);
 		}
 		
+		//Populate workflowEnabled
+		reportDefinitionDomain.setWorkflowEnabled(reportDefinitionDto.isWorkflowEnabled());
+		
 		reportDefinitionDomain.setAttributionRequired(reportDefinitionDto.isAttributionRequired());
 		//populate the correct config property
 		if(reportDefinitionDto.getGroup() == null){
@@ -235,6 +238,10 @@ public class ReportDefinitionConverter {
 			parent.setName(reportDefinitionDomain.getParent().getName());
 			reportDefinitionDto.setParent(parent);
 		}
+		
+		//set workflowEnabled flag
+		if(reportDefinitionDomain.getWorkflowEnabled() != null)
+			reportDefinitionDto.setWorkflowEnabled(reportDefinitionDomain.getWorkflowEnabled());
 		
 		//set the report type
 		reportDefinitionDto.setReportType(gov.nih.nci.cabig.caaers.reportdefinition.ReportType.valueOf(reportDefinitionDomain.getReportType().name()));

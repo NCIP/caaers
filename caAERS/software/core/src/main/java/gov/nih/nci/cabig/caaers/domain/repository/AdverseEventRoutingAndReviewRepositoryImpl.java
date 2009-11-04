@@ -106,7 +106,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
-		variables.put(WorkflowService.VAR_WF_TYPE, ExpeditedAdverseEventReport.class.getName());
+		variables.put(WorkflowService.VAR_WF_TYPE, Report.class.getName());
 		variables.put(WorkflowService.VAR_REPORT_ID, report.getId());
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, report.getAeReport().getId());
 		
