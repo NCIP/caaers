@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -46,6 +47,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     protected ReportRepository reportRepository;
     protected EvaluationService evaluationService;
     protected SchedulerService schedulerService;
+    protected ReportValidationService reportValidationService;
     protected HashMap<String, Boolean> emptyFieldNameMap;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
@@ -300,6 +302,9 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         this.evaluationService = evaluationService;
     }
     
+    public void setReportValidationService(ReportValidationService reportValidationService){
+    	this.reportValidationService = reportValidationService;
+    }
     
     // ////
 

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -37,6 +38,7 @@ public class ReviewAeReportController extends SimpleFormController{
 	private MessageSource messageSource;
 	private CSMUserRepository csmUserRepository;
 	private EvaluationService evaluationService;
+	private ReportValidationService reportValidationService;
 	
 	public ReviewAeReportController(){
 		setCommandClass(ReviewAeReportCommand.class);
@@ -88,7 +90,7 @@ public class ReviewAeReportController extends SimpleFormController{
 
         // -- check the report submittability
         for (Report report : command.getAeReport().getReports()) {
-        		reportMessages.put(report.getId(), evaluationService.isSubmittable(report));
+        		reportMessages.put(report.getId(), reportValidationService.isSubmittable(report));
         }
         refdata.put("reportMessages", reportMessages);
 
@@ -145,6 +147,10 @@ public class ReviewAeReportController extends SimpleFormController{
 	
 	public void setEvaluationService(EvaluationService evaluationService){
 		this.evaluationService = evaluationService;
+	}
+	
+	public void setReportValidationService(ReportValidationService reportValidationService){
+		this.reportValidationService = reportValidationService;
 	}
 	
 	@Required

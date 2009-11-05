@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 /**
@@ -24,7 +25,7 @@ public class ListAdverseEventsCommandTest extends AbstractTestCase {
 
     private ParticipantDao participantDao;
 
-    private EvaluationService evaluationService;
+    private ReportValidationService reportValidationService;
 
     @Override
     protected void setUp() throws Exception {
@@ -32,9 +33,9 @@ public class ListAdverseEventsCommandTest extends AbstractTestCase {
         studyDao = registerDaoMockFor(StudyDao.class);
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
-        evaluationService = registerMockFor(EvaluationService.class);
+        reportValidationService = registerMockFor(ReportValidationService.class);
 
-        command = new ListAdverseEventsCommand(evaluationService);
+        command = new ListAdverseEventsCommand(reportValidationService);
     }
 
     public void testExplicitStudyTrumps() throws Exception {

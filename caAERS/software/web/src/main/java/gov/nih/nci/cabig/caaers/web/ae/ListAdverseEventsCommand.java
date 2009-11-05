@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
@@ -28,10 +29,10 @@ public class ListAdverseEventsCommand {
 
     private boolean workflowEnabled = false;
 
-    private EvaluationService evaluationService;
-
-    public ListAdverseEventsCommand(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
+    private ReportValidationService reportValidationService;
+    
+    public ListAdverseEventsCommand(ReportValidationService reportValidationService) {
+        this.reportValidationService = reportValidationService;
         reportsSubmittable = new HashMap<Integer, Boolean>();
     }
 
@@ -42,7 +43,7 @@ public class ListAdverseEventsCommand {
         reportsSubmittable.clear();
         for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
             for (Report report : aeReport.getReports()) {
-                ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+                ReportSubmittability errorMessages = reportValidationService.isSubmittable(report);
                 reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
             }
         }

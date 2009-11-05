@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
@@ -38,6 +39,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 	protected ReviewAeReportController controller;
 	protected ReviewAeReportCommand command;
 	protected EvaluationService evaluationService;
+	protected ReportValidationService reportValidationService;
 	protected CSMUserRepository csmUserRepository;
 	
 	protected void setUp() throws Exception {
@@ -47,6 +49,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		configuration = registerMockFor(Configuration.class);
 		evaluationService = registerMockFor(EvaluationService.class);
+		reportValidationService = registerMockFor(ReportValidationService.class);
 		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao);
 		errors = new BindException(command,"command");
 		csmUserRepository = registerMockFor(CSMUserRepository.class);
@@ -56,6 +59,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		controller.setAssignmentDao(assignmentDao);
 		controller.setConfiguration(configuration);
 		controller.setEvaluationService(evaluationService);
+		controller.setReportValidationService(reportValidationService);
 		controller.setCsmUserRepository(csmUserRepository);
 	}
 	
@@ -85,7 +89,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		command.setReportId(1);
 		ValidationErrors vErrors = new ValidationErrors();
 		expect(evaluationService.validateReportingBusinessRules(isA(ExpeditedAdverseEventReport.class), isA(ExpeditedReportSection.class))).andReturn(vErrors).anyTimes();
-		expect(evaluationService.isSubmittable(report)).andReturn(new ReportSubmittability());
+		expect(reportValidationService.isSubmittable(report)).andReturn(new ReportSubmittability());
 		expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");

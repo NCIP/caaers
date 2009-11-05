@@ -64,7 +64,7 @@ public class ViewReportTab extends AeTab {
 
         // -- check the report submittability
         for (Report report : command.getAeReport().getActiveReports()) {
-        	ReportSubmittability reportSubmittability = evaluationService.isSubmittable(report);
+        	ReportSubmittability reportSubmittability = reportValidationService.isSubmittable(report);
             reportMessages.put(report.getId(), reportSubmittability);
             // Merge the commonValidationErros with the errors for individual reports.
             if(!commonReportSubmittability.getMessages().isEmpty()){

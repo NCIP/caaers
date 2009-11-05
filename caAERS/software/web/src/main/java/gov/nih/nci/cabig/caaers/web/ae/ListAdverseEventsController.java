@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -49,8 +50,7 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     private StudyDao studyDao;
 
-    protected EvaluationService evaluationService;
-    
+    private ReportValidationService reportValidationService;
     
     private Configuration configuration;
     
@@ -68,7 +68,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	request.getSession().removeAttribute(ACTION_PARAMETER);
-    	ListAdverseEventsCommand command = new ListAdverseEventsCommand(evaluationService);
+    	ListAdverseEventsCommand command = new ListAdverseEventsCommand(reportValidationService);
     	command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
     	
 
@@ -230,14 +230,10 @@ public class ListAdverseEventsController extends SimpleFormController {
         this.studyDao = studyDao;
     }
 
-    public EvaluationService getEvaluationService() {
-        return evaluationService;
+    public void setReportValidationService(ReportValidationService reportValidationService){
+    	this.reportValidationService = reportValidationService;
     }
-
-    public void setEvaluationService(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
-    }
-
+    
     public void setConfiguration(Configuration configuration){
     	this.configuration = configuration;
     }
