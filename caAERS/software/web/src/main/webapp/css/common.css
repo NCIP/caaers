@@ -790,7 +790,9 @@ td.create img, td.edit img, td.ammend img, td.withdraw img {
     top: 0;
     left: 0;
     z-index: 5;
-	background-image:url(../images/chrome/spacer.gif);
+	background:#000000;
+	opacity: 0.6;
+	filter: alpha( opacity = 60);
 }
 #ajax-loading-indictor #spinning-logo {
     margin: auto 40%;
@@ -799,9 +801,6 @@ td.create img, td.edit img, td.ammend img, td.withdraw img {
     z-index: 10;
     width: 250px;
     height: 250px;
-    opacity: 0.6;
-    background-color: #000000;
-    filter: alpha( opacity = 60);
 	-moz-border-radius:30px;
 	-webkit-border-radius:30px;
 	border-radius:30px;
