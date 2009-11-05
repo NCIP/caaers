@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.admin.ResearchStaffCommand;
 import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * @author Saurabh Agrawal
@@ -55,7 +57,7 @@ public class TreatmentAssignmentTab extends StudyTab {
             InputFieldAttributes.setSize(codeField, 20);
             rfgFactory.addField(codeField);
 
-            InputField doseLevelOrderField = InputFieldFactory.createTextField("doseLevelOrder", "Dose level order", false);
+            InputField doseLevelOrderField = InputFieldFactory.createTextField("doseLevelOrder", "Dose level order", FieldValidator.NUMBER_VALIDATOR);
             InputFieldAttributes.setSize(doseLevelOrderField, 20);
             rfgFactory.addField(doseLevelOrderField);
 
@@ -85,7 +87,7 @@ public class TreatmentAssignmentTab extends StudyTab {
         for (int j = 0; j < treatmentAssignments.size(); j++) {
             TreatmentAssignment treatmentAssignment = treatmentAssignments.get(j);
             if (treatmentAssignment.getDoseLevelOrder() != null && treatmentAssignment.getDoseLevelOrder().toString().length() > 2) {
-                errors.rejectValue("treatmentAssignments[" + j + "].doseLevelOrder", "STU_018", "Does level order should be a two digit number only (less than 100)..!");
+                errors.rejectValue("study.treatmentAssignments[" + j + "].doseLevelOrder", "STU_018", "Does level order should be a two digit number only (less than 100)..!");
             }
         }
 
