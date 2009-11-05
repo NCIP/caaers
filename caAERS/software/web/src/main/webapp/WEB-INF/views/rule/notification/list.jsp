@@ -5,12 +5,7 @@
     <title>Manage report definitions</title>
     <style>
         .yui-dt-resizerliner{height:30px;}
-        
-        div.row {
-            padding: 5px 3px;
-             width: 70%;
-			
-        }
+		
         .row .value {
             margin-left: 22%;
         }
@@ -19,7 +14,8 @@
             margin: 0.25em 0 0 1em;
         }
         div.submit {
-            text-align: right;
+            margin:0 0 0 157px;
+			padding:0;
         }
         .value input[type=text] {
             width: 80%;
@@ -40,8 +36,11 @@
             font-weight: bold;
             font-size: 1.1em;
         }
+		.new_definition {
+			margin:10px 0 10px 65px;
+		}
     </style>
-    
+    <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
     <script language="JavaScript">
 YAHOO.example.Data = {
     
@@ -123,26 +122,30 @@ YAHOO.util.Event.addListener(window, "load", function() {
     
 </head>
 <body>
-	<chrome:box title="Manage / Import report definitions" autopad="true">
+	<chrome:box title="Manage / Import Report Definitions" autopad="true">
 		<chrome:division title="Manage report definitions" id="rule-set-id" >
 			<p><tags:instructions code="listreportdefinitions" /></p>
 		    <div id="basic" class="yui-skin-sam"></div> 
-		</chrome:division><br><br><br><br><br>
+			<div class="new_definition">
+				<c:set var="create_url"><c:url value="/pages/rule/notification/create"/></c:set>
+				<tags:button color="blue" icon="add" size="small" type="button" value="New Report Definition" markupWithTag="a" href="${create_url}" />
+			</div>
+		</chrome:division>
 		<chrome:division title="Import report definitions" id="import-rules-id">
-			<p>
+
 				<tags:instructions code="importxmlreportdefinitions" />
-			</p>
+
 			<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             	<div class="row">
                 	<div class="label" style="width:11em;">
                    		Report definition file  
                 	</div>
                 	<div class="value" style="margin-left:12em;">
-                		<input type="file" name="ruleSetFile1" size="50"/>
+                		<input type="file" name="ruleSetFile1" size="50" onchange="$('add-definition').removeAttribute('disabled')"/>
                 	</div>
             	</div>    
         		<div class="row submit">
-            		<tags:button type="submit" value="Import" size="small" color="blue" icon="add" />
+            		<tags:button id="add-definition" disabled="disabled" type="submit" value="Import" size="small" color="green" icon="check" />
         		</div>
     		</form:form>
     		<c:if test="${command.updated}">

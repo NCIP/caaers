@@ -131,12 +131,12 @@
 			  </span>
 			  <c:if test="${command.mode == 'create'}">
 				  <span class="next">
-			  	  	<tags:button type="submit" color="green" value="Deploy, Go to Manage Rules"></tags:button>
+			  	  	<tags:button type="submit" color="green" icon="save" value="Save & Enable"></tags:button>
 			  	  </span>
 			  </c:if>
 			  <c:if test="${command.mode == 'edit'}">
 			  	  <span class="next">
-			  	  	<tags:button type="submit" color="green" value="Go to Manage Rules"></tags:button>
+			  	  	<tags:button type="submit" color="green" icon="save" value="Save"></tags:button>
 			  	  </span>
 			  </c:if>
           </div>
