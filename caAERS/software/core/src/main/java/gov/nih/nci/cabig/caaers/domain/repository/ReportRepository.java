@@ -63,14 +63,6 @@ public interface ReportRepository {
     List<Report> createChildReports(Report report);
     
     /**
-     * Will tell whether all the mandatory field for this report is duly filled. This method will
-     * validate against all the sections defined in {@link gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection}
-     *
-     * @return ErrorMessages, if any.
-     */
-    ReportSubmittability validate(Report report);
-
-    /**
      * This method amends the report passed to it, by changing the status to {@link ReportStatus#AMENDED}
      */
     
@@ -88,13 +80,6 @@ public interface ReportRepository {
      *   - Amend existing reports, by creating a new report instance. 
      */
     void createAndAmendReport(ReportDefinition repDef, Report toAmend, Boolean useDefaultVersion);
-    
-    /**
-     * Will tell whether all the mandatory field for this report is duly filled.
-     *
-     * @return ErrorMessages, if any.
-     */
-    ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
     
     /**
      * Will find the report deliveries for this report. 

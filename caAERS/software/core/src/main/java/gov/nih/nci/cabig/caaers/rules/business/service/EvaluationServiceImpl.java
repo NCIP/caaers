@@ -457,27 +457,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-    /**
-     * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
-     * ErrorMessages will be empty
-     * 
-     * @param report -
-     *                {@link Report}
-     * @return {@link ReportSubmittability}
-     */
-    // return type based on the method name, is misleading,need to find a better name.
-    public ReportSubmittability isSubmittable(Report report) {
-
-        return reportRepository.validate(report);
-
-        /*
-         * -- commented based on the new biz rule try { return reportService.validate(report,
-         * adverseEventEvaluationService.mandatorySectionsForReport(report)); } catch
-         * (RuntimeException re) { throw re; } catch (Exception e) { throw new
-         * CaaersSystemException("Unable to determine mandatory sections", e); }
-         */
-    }
-
     public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection... sections) {
         try {
             return adverseEventEvaluationService.validateReportingBusinessRules(aeReport, sections);

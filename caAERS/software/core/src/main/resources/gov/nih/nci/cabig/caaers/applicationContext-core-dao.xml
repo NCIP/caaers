@@ -718,15 +718,19 @@ This applicationContext contains the definition of the DAOs
 	</bean>
     <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>
-        <property name="expeditedReportTree" ref="expeditedReportTree"/>
         <property name="reportDao" ref="reportDao"/>
 		<property name="reportDefinitionDao" ref="reportDefinitionDao" />
         <property name="reportFactory" ref="reportFactory"/>
         <property name="schedulerService" ref="schedulerService"/>
         <property name="studyDao" ref="studyDao"/>
 		<property name="reportWithdrawalService" ref="reportWithdrawalService" />
+		<property name="configuration" ref="configuration" />
+		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
     </bean>
 
+	<bean id="reportValidationService" class="gov.nih.nci.cabig.caaers.domain.repository.ReportValidationServiceImpl">
+		<property name="expeditedReportTree" ref="expeditedReportTree"/>
+	</bean>
 
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
         <property name="labLoadDao" ref="labLoadDao"></property>
@@ -735,7 +739,7 @@ This applicationContext contains the definition of the DAOs
     	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
     	<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
     	<property name="workflowService" ref="workflowService" />
-    	<property name="evaluationService" ref="evaluationService" />
+    	<property name="reportValidationService" ref="reportValidationService" />
     </bean>
     <!-- Repository beans end here-->
 

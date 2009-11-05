@@ -27,18 +27,6 @@ import org.apache.commons.collections.CollectionUtils;
 public interface EvaluationService {
 
     /**
-     * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
-     * ErrorMessages will be empty
-     * 
-     * @param report -
-     *                {@link Report}
-     * @return {@link ReportSubmittability}
-     */
-    // return type based on the method name, is misleading,need to find a better name.
-    ReportSubmittability isSubmittable(Report report);
-    
-    
-    /**
      * Will return the ReportDefinition that are marked required at rules engine.
      * 
      * @param expeditedData -

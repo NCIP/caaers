@@ -53,11 +53,6 @@ import org.easymock.EasyMock;
  * @author Biju Joseph
  */
 public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
-    private static final Attribution[] SUFFICIENT_ATTRIBUTIONS = new Attribution[]{
-            Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE};
-
-    private static final Attribution[] INSUFFICENT_ATTRIBUTIONS = new Attribution[]{
-            Attribution.UNLIKELY, Attribution.UNRELATED};
 
     private static final String TERM = "Auralmonagem";
 
@@ -68,7 +63,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     private ReportDao reportDao;
     private ReportFactory reportFactory;
     private SchedulerService schedulerService;
-    private ExpeditedReportTree expeditedReportTree;
     private NowFactory nowFactory;
     private ReportDefinitionDao reportDefinitionDao;
     private StudyDao studyDao;
@@ -82,7 +76,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
         reportFactory = registerMockFor(ReportFactory.class);
         schedulerService = registerMockFor(SchedulerService.class);
-        expeditedReportTree = new ExpeditedReportTree();
         studyDao = registerDaoMockFor(StudyDao.class);
         nowFactory = new NowFactory();
         
@@ -90,7 +83,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository.setReportDao(reportDao);
         reportRepository.setReportFactory(reportFactory);
         reportRepository.setSchedulerService(schedulerService);
-        reportRepository.setExpeditedReportTree(expeditedReportTree);
         reportRepository.setNowFactory(nowFactory);
         reportRepository.setReportDefinitionDao(reportDefinitionDao);
         reportRepository.setStudyDao(studyDao);
@@ -315,28 +307,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     	assertFalse(replaced);
     }
 
-    private void assertNoAttributionsAreSufficent(AdverseEventAttribution attr) {
-        for (Attribution attribution : Attribution.values()) {
-            attr.setAttribution(attribution);
-            ReportSubmittability actual = validateForAttribution();
-            assertInsuffientAttributionMessage(attribution + " should not be sufficient", actual);
-        }
-    }
-
-    private void assertSufficientAttributionsAreSufficent(AdverseEventAttribution attr) {
-        for (Attribution attribution : SUFFICIENT_ATTRIBUTIONS) {
-            attr.setAttribution(attribution);
-            ReportSubmittability actual = validateForAttribution();
-            assertTrue(attribution + " should be sufficent", actual.isSubmittable());
-        }
-
-        for (Attribution attribution : INSUFFICENT_ATTRIBUTIONS) {
-            attr.setAttribution(attribution);
-            ReportSubmittability actual = validateForAttribution();
-            assertInsuffientAttributionMessage(attribution + " should not be sufficent", actual);
-        }
-    }
-
     private Report createAttributionMandatoryReport() {
         Report report = new Report();
         report.setReportDefinition(new ReportDefinition());
@@ -347,31 +317,12 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         return report;
     }
 
-    private ReportSubmittability validateForAttribution() {
-        return reportRepository.validate(createAttributionMandatoryReport(), Collections
-                .<ExpeditedReportSection>emptySet());
-    }
-
     private <C extends DomainObject, A extends AdverseEventAttribution<C>> A createAttribution(C cause, Attribution level, Class<A> klass) throws IllegalAccessException,
             InstantiationException {
         A attr = klass.newInstance();
         attr.setAttribution(level);
         attr.setCause(cause);
         return attr;
-    }
-
-    private void assertInsuffientAttributionMessage(String assertionMessage,
-                                                    ReportSubmittability container) {
-        assertTrue(assertionMessage + ": No attribution section messages", container.getMessages()
-                .containsKey(ATTRIBUTION_SECTION));
-        assertTrue(assertionMessage + ": No attribution section messages", container.getMessages()
-                .get(ATTRIBUTION_SECTION).size() > 0);
-        assertEquals(
-                assertionMessage + ": Wrong message",
-                "The adverse event "
-                        + TERM
-                        + " is not attributed to a cause. An attribution of possible or higher must be selected for at least one of the causes.",
-                container.getMessages().get(ATTRIBUTION_SECTION).get(0).getText());
     }
 
 }

@@ -44,7 +44,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	private EvaluationService evaluationService;
+	private ReportValidationService reportValidationService;
 	private ReportDao reportDao;
 	
 	private WorkflowService workflowService;
@@ -311,7 +311,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportsSubmittable.clear();
         
 		if(report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED) || report.getStatus().equals(ReportStatus.COMPLETED)){
-        	ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+			ReportSubmittability errorMessages = reportValidationService.isSubmittable(report);
         	reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
         }
         
@@ -441,8 +441,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		this.workflowService = workflowService;
 	}
 
-	public void setEvaluationService(EvaluationService evaluationService){
-		this.evaluationService = evaluationService;
+	public void setReportValidationService(ReportValidationService reportValidationService){
+		this.reportValidationService = reportValidationService;
 	}
 	
 	public void setReportDao(ReportDao reportDao){

@@ -51,7 +51,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	AdverseEventRoutingAndReviewRepositoryImpl impl;
 	ProcessInstance processInstance;
 	ContextInstance contextInstance;
-	EvaluationService evaluationService;
+	ReportValidationService reportValidationService;
 	
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
@@ -66,7 +66,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		wfService = registerMockFor(WorkflowService.class);
 		processInstance = registerMockFor(ProcessInstance.class);
 		contextInstance = registerMockFor(ContextInstance.class);
-		evaluationService = registerMockFor(EvaluationService.class);
+		reportValidationService = registerMockFor(ReportValidationService.class);
 		
 		impl = new AdverseEventRoutingAndReviewRepositoryImpl();
 		impl.setAdverseEventReportingPeriodDao(rpDao);
@@ -74,7 +74,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		impl.setExpeditedAdverseEventReportDao(rDao);
 		impl.setReportDao(reportDao);
 		impl.setWorkflowService(wfService);
-		impl.setEvaluationService(evaluationService);
+		impl.setReportValidationService(reportValidationService);
 	}
 	
 	public void testFetchReviewCommentsForReport() {
@@ -374,7 +374,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		transitions.add("Submit to Central Office Report Reviewer");
 		
 		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
-		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(reportValidationService.isSubmittable(report)).andReturn(errorMessagesMock);
 		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(false);
 		replayMocks();
 		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
@@ -392,7 +392,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		transitions.add("Submit to Central Office Report Reviewer");
 		
 		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
-		EasyMock.expect(evaluationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(reportValidationService.isSubmittable(report)).andReturn(errorMessagesMock);
 		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(true);
 		replayMocks();
 		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
