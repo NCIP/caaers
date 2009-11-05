@@ -42,6 +42,7 @@ td#linkPosition a img {
 	}
 	  
 	var jsStudyAgent = Class.create();
+    var INDs = 0;
 	Object.extend(jsStudyAgent.prototype, {
             initialize: function(index, agentName) {
             	jsAgents[index] = this;
@@ -102,12 +103,15 @@ td#linkPosition a img {
 						
 						//enable disable lead IND
 						if(event.target.value == 'OTHER'){
-						  	createStudy.addIND(index, 0, 2,function(html){
+						  	if (INDs > 0) return;
+                            createStudy.addIND(index, 0, 2,function(html){
 	     						new Insertion.After($('study.studyAgents[' + index + '].indType-row'), html);
 	     						AE.slideAndShow('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
 	     						//setup auto completer
 	    						jsAgents[index].initINDAutoCompleter(0);
+                                INDs++;
 					     	});
+
 						}else if(event.target.value == 'CTEP_IND'){
 							createStudy.addIND(index, 0, 1,function(html){
 								var el = $('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
@@ -115,6 +119,7 @@ td#linkPosition a img {
 									el.parentNode.removeChild(el);
 								}	
 							});
+                            INDs = 0;
 						}else if(event.target.value == 'DCP_IND'){
 							createStudy.addIND(index, 0, 5,function(html){
 								var el = $('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
@@ -122,6 +127,7 @@ td#linkPosition a img {
 									el.parentNode.removeChild(el);
 								}	
 							});
+                            INDs = 0;
 						}else {
 						  //0 deletion
 						  fireRowDelete(index,0);
@@ -171,7 +177,8 @@ td#linkPosition a img {
             		this.indSelector.bind(this)
             	  );
                    
-            },agentPopulator: function(autocompleter, text) {
+            },
+            agentPopulator: function(autocompleter, text) {
          		createStudy.matchAgents(text, function(values) {
          			autocompleter.setChoices(values)
          		})
