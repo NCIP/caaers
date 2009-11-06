@@ -219,7 +219,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			<tags:instructions code="importxmlrules" />
 		</p>
 		<c:if test="${command.updated}">
-			<p class="updated">${command.message} some text here</p>
+			<p class="updated">${command.message}</p>
 		</c:if>
 		<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             <div class="row">
