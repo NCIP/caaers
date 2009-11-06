@@ -79,18 +79,22 @@
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>*.js</url-pattern>
+		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>*.css</url-pattern>
+		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>/pages/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>/public/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	
     <filter>
