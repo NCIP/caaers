@@ -199,8 +199,8 @@ public class ReportRepositoryImpl implements ReportRepository {
         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
         
         //Check if workflow needs to be instantiated for this report and instantiate one if needed.
-        //if(configuration.get(Configuration.ENABLE_WORKFLOW) && report.getReportDefinition().getWorkflowEnabled())
-        //	adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
+        if(configuration.get(Configuration.ENABLE_WORKFLOW) && report.getReportDefinition().getWorkflowEnabled())
+        	adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
 
         return report;
     }

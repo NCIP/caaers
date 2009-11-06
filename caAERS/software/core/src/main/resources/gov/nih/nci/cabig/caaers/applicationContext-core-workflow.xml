@@ -56,6 +56,7 @@
         <property name="possibleTransitionsResolver" ref="possibleTransitionsResolver"/>
         <property name="workflowConfigDao" ref="workflowConfigDao"/>
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
+        <property name="reportDao" ref="reportDao" />
         <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
         <property name="csmUserRepository" ref="csmUserRepository" />
         <property name="freeMarkerService" ref="freeMarkerService" />

@@ -740,6 +740,7 @@ This applicationContext contains the definition of the DAOs
     	<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
     	<property name="workflowService" ref="workflowService" />
     	<property name="reportValidationService" ref="reportValidationService" />
+    	<property name="reportDao" ref="reportDao" />
     </bean>
     <!-- Repository beans end here-->
 
