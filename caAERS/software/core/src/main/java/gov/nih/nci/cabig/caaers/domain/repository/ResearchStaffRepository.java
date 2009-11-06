@@ -249,11 +249,21 @@ public class ResearchStaffRepository {
     				remoteResearchStaff.getSiteResearchStaffs().clear();
     				remoteResearchStaff.setSiteResearchStaffs(srDBList);
     				save(remoteResearchStaff,"URL");
+    				remoteResearchStaff = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}
     			localList.addAll(remoteResearchStaff.getSiteResearchStaffs());        		
-        	} 
+        	} else {
+        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
+        		// local search may not find some the existing remote records , we make sure they are added to local list .
+        		List<SiteResearchStaff> rsList = rs.getSiteResearchStaffs();
+        		for (SiteResearchStaff srs:rsList) {
+        			if (!localList.contains(srs)) {
+            			localList.add(srs);
+            		}
+        		}
+        	}
     	}
 		return localList;
 	}
