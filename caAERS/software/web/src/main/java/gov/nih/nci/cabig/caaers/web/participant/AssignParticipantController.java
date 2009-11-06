@@ -24,10 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.acegisecurity.userdetails.User;
 import org.acegisecurity.context.SecurityContext;
 
-/**
- * @author Krikor Krumlian
- */
-
 public class AssignParticipantController extends AutomaticSaveAjaxableFormController<AssignParticipantStudyCommand, Participant, ParticipantDao> {
 
     private static Log log = LogFactory.getLog(AssignParticipantController.class);

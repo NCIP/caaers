@@ -69,7 +69,6 @@
                 parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
                 searchStudy.getTableForAssignParticipant(parameterMap, type, text, showTable)
                 $('indicator').hide();
-
                 $('bigSearch').show();
             }
         }
@@ -77,7 +76,9 @@
 
         ValidationManager.submitPostProcess = function(formElement, flag) {
             flag = true;
-            $('searchText').value = $('searchText_').value
+            $('searchText').value = $('searchText_').value;
+            $('_searchType').value = $('searchType').value;
+            // $('_studySite').value = $('studySite').value;
             if (formElement.id != 'command') {
                 return true
             } else {
@@ -181,6 +182,7 @@
                 <tags:tabControls tab="${tab}" flow="${flow}"/>
                 <form:hidden path="studySubjectIdentifier"/>
                 <form:hidden path="searchText"/>
+                <form:hidden path="searchType" id="_searchType"/>
                 <input type=hidden name="studySite">
             </form:form>
 
