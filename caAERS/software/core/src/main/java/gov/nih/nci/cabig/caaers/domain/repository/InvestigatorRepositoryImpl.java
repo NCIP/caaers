@@ -148,6 +148,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     				remoteInvestigator.setSiteInvestigators(siDBList);
     				
     				save(remoteInvestigator,"URL");
+    				remoteInvestigator = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}
