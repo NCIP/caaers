@@ -5,29 +5,22 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
 <tags:js name="fg.menu"/>
-<tags:js name="ajax-loading-indicator" />
 
 <jwr:style src="/csslib/caaers.zcss" />
 
 <tags:js name="compressed/co_calendar" />
 
 <tags:js name="common" />
-<tags:js name="validation" />
-<tags:js name="commons-validation" />
+<jwr:script src="/jslib/caaers.zjs" />
 <tags:js name="advancedSearch"/>
-<tags:js name="common_help"/>
 <tags:js name="side-bar/side-bar"/>
 
 <tags:js name="compressed/co_date"/>
-<tags:js name="compressed/co_dropdown_menu"/>
-<tags:js name="compressed/co_extremecomponents"/>
+<tags:js name="compressed/extremeComponents_dropdownMenu"/>
 
 <tags:js name="routing_and_review"/>
-<tags:js name="errors"/>
-<tags:js name="logmeout"/>
 
-<jwr:script src="/jslib/caaers.zjs" />
-<tags:js name="common-scriptaculous"/>
+
 
 <!--[if IE]>
 <jwr:style src="/csslib/ie.zcss" />
