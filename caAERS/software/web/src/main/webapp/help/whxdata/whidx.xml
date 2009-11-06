@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8' ?>
-<index>
-<chunkinfo url="whidata0.xml" first="25" last="CTEP" num="74" />
-<chunkinfo url="whidata1.xml" first="Defaults" last="IND" num="92" />
-<chunkinfo url="whidata2.xml" first="IND Holder" last="Rules Tab" num="85" />
-<chunkinfo url="whidata3.xml" first="Ruleset" last="Welcome" num="90" />
-<chunkinfo url="whidata4.xml" first="XML" last="XML file" num="4" />
-
-</index>

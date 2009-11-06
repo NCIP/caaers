@@ -1,13 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-import org.apache.commons.lang.math.NumberUtils;
-
-import java.text.DecimalFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.regex.*;
-
-import sun.misc.Regexp;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Will check if the number is decimal

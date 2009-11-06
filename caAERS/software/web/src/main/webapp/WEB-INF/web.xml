@@ -74,28 +74,25 @@
 	
 	<filter>
   		<filter-name>GzipFilter</filter-name>
-  		<filter-class>net.sf.ehcache.constructs.web.filter.GzipFilter</filter-class>
+  		<filter-class>gov.nih.nci.cabig.caaers.web.filters.GzipFilter</filter-class>
  	</filter>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>*.js</url-pattern>
-		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>*.css</url-pattern>
-		<dispatcher>REQUEST</dispatcher> 
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>GzipFilter</filter-name>
-		<url-pattern>/pages/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GzipFilter</filter-name>
 		<url-pattern>/public/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher> 
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>GzipFilter</filter-name>
+		<url-pattern>/pages/*</url-pattern>
+	</filter-mapping>
+	
 	
     <filter>
         <filter-name>Sitemesh</filter-name>

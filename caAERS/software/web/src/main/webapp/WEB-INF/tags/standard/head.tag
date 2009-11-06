@@ -3,13 +3,7 @@
 <%@taglib uri="http://jawr.net/tags" prefix="jwr" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-
-<tags:js name="compressed/co_prototype"/>
-<tags:js name="jquery-1.3.2.min"/>
-<tags:js name="jquery-ui-1.7.2.custom.min"/>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
+<tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
 <tags:js name="fg.menu"/>
 <tags:js name="ajax-loading-indicator" />
 
@@ -20,19 +14,13 @@
 <tags:js name="common" />
 <tags:js name="validation" />
 <tags:js name="commons-validation" />
-
-<tags:js name="compressed/co_scriptaculous_files"/>
-<tags:js name="compressed/co_accordion"/>
-
 <tags:js name="advancedSearch"/>
 <tags:js name="common_help"/>
 <tags:js name="side-bar/side-bar"/>
 
 <tags:js name="compressed/co_date"/>
-<tags:js name="compressed/co_D2H_ctxt"/>
 <tags:js name="compressed/co_dropdown_menu"/>
 <tags:js name="compressed/co_extremecomponents"/>
-<tags:js name="compressed/co_hover-display"/>
 
 <tags:js name="routing_and_review"/>
 <tags:js name="errors"/>

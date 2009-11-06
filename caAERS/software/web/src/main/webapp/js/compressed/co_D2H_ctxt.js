@@ -1,1 +1,0 @@
-var CTXT_DISPLAY_FULLHELP=1;var CTXT_DISPLAY_TOPICONLY=2;function D2H_ShowHelp(a,h,d,g){var f=h.lastIndexOf("\\");var b=h.lastIndexOf("/");if(b>f){f=b}var c="";if(f>0){c=h.substring(0,f+1)}c+="_d2h_ctxt_help.htm?contextID="+a+"&mode="+((g==CTXT_DISPLAY_TOPICONLY)?"0":"1");var e=window.open(c,d);e.focus()};
