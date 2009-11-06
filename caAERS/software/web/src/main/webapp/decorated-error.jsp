@@ -1,5 +1,3 @@
-
-
 <%@page language="java" isErrorPage="true" %>
 <%@page isErrorPage="true" %>
 <%@page language="java" %>
@@ -118,7 +116,7 @@
                     </B>
                     </TD>
                     <TD>
-                        <%= statusCode %>
+                        <%= String.valueOf(statusCode) %>
                     </TD>
                 </TR>
                 <TR>
@@ -130,7 +128,7 @@
                         </B>
                     </TD>
                     <TD>
-                        <%= exceptionType %>
+                        <%=String.valueOf(exceptionType) %>
                     </TD>
                 </TR>
                 <TR>
@@ -142,7 +140,7 @@
                         </B>
                     </TD>
                     <TD>
-                        <%= message %>
+                        <%= String.valueOf(message) %>
                     </TD>
                 </TR>
                 </TABLE>
@@ -167,11 +165,11 @@
                     <tr>
                         <td>
                             <font color="blue">
-                                <%=name %>
+                                <%=String.valueOf(name) %>
                             </font>
                         </td>
                         <td>
-                            <%=value %>
+                            <%=String.valueOf(value)%>
                         </td>
                     </tr>
                     <%                } %>
@@ -194,11 +192,11 @@
                     <tr>
                         <td>
                             <font color="blue">
-                                <%=name %>
+                                <%=String.valueOf(name) %>
                             </font>
                         </td>
                         <td>
-                            <%=value %>
+                            <%=String.valueOf(value)%>
                         </td>
                     </tr>
                     <%                } %>
