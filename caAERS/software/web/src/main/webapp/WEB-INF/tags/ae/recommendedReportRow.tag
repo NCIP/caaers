@@ -12,7 +12,8 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="applicableTableRows" required="true" type="java.util.List" description="The applicable report definitions to show" %>
 
 <div id="no-recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ not empty recommendedTableRows ? 'display:none;' : ''}">
-Click <a  style='cursor:pointer' class="link" href="#report-dc-${aeReportId}" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})">here</a> <tags:message key="instruction_ae_manualselection_note" />
+<tags:button color="blue" value="Override" size="small" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})" />
+<tags:message key="instruction_ae_manualselection_note" />
 </div>
 
 <div id="reports-header-dc-${aeReportId}" class="reportsHeader" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
