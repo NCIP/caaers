@@ -335,7 +335,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, String userId){
-		/*AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		
 		if(participant != null){
 			query.filterByParticipant(participant.getId());
@@ -360,7 +360,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 				//check the Reports
 				if(reportingPeriod.getAeReports() != null){
 					for(ExpeditedAdverseEventReport aeReport : reportingPeriod.getAeReports()){
-						if(aeReport.getWorkflowId() == null) continue; //this report is prior to workflow integration
+						if(!aeReport.hasWorkflowOnActiveReports()) continue; //this report is prior to workflow integration
 						ExpeditedAdverseEventReportDTO reportDTO = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
 						if(reportDTO.hasActionsToDo()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
 					}//aereport
@@ -372,8 +372,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			
 		}
 		
-		return reportingPeriodDTOs;*/
-		return null;
+		return reportingPeriodDTOs;
 	}
 	/**
 	 * Will return true, if the entity has the specified review status. 

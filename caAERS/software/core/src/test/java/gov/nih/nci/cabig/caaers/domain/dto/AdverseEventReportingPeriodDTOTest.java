@@ -29,10 +29,12 @@ public class AdverseEventReportingPeriodDTOTest extends TestCase {
 	
 	public void testHasActionsToDo_IfAeReportHasOne() {
 		ExpeditedAdverseEventReportDTO ae1 = new ExpeditedAdverseEventReportDTO();
+		ReportDTO reportDTO1 = new ReportDTO();
 		List<String> actions = new ArrayList<String>();
 		actions.add("something");
-		ae1.setPossibleActions(actions);
+		reportDTO1.setPossibleActions(actions);
 		dto.addAdverseEventAeReportDTO(ae1);
+		ae1.addReportDTO(reportDTO1);
 		assertTrue(dto.hasActionsToDo());
 	}
 	public void testHasActionsToDo_IfAeReportHasNone() {

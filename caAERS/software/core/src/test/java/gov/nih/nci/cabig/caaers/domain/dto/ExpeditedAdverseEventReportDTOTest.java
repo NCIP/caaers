@@ -24,7 +24,10 @@ public class ExpeditedAdverseEventReportDTOTest extends TestCase {
 	public void testHasActionsToDo_WhenActionIsThere() {
 		List<String> actions = new ArrayList<String>();
 		actions.add("xyz");
-		dto.setPossibleActions(actions);
+		
+		ReportDTO reportDTO = new ReportDTO();
+		reportDTO.setPossibleActions(actions);
+		dto.addReportDTO(reportDTO);
 		assertTrue(dto.hasActionsToDo());
 	}
 	

@@ -1334,4 +1334,21 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	assertFalse(aeReport.hasExistingReportsOfSameOrganizationAndType(rdx));
     	
     }
+    
+    public void testHasWorkflowOnActiveReportsPositive(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setStatus(ReportStatus.INPROCESS);
+    	aeReport.addReport(r1);
+    	assertFalse("There isnt any workflow on active reports", aeReport.hasWorkflowOnActiveReports());
+    }
+    
+    public void testHasWorkflowOnActiveReportsNegative(){
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	Report r1 = Fixtures.createReport("r1");
+    	r1.setStatus(ReportStatus.INPROCESS);
+    	r1.setWorkflowId(12);
+    	aeReport.addReport(r1);
+    	assertTrue("An active report is in workflow." ,aeReport.hasWorkflowOnActiveReports());
+    }
 }

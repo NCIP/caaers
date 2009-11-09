@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 /**
@@ -15,6 +18,12 @@ public class ReportDTO {
 	private Integer noOfAe;
 	private ReportStatus status;
 	private Report report;
+	
+	private Integer workflowId;
+	private ReviewStatus reviewStatus;
+	private List<String> possibleActions;
+	private List<ReviewCommentsDTO> reviewComments;
+	
 	
 	public Integer getId() {
 		return id;
@@ -57,5 +66,41 @@ public class ReportDTO {
 	
 	public void setNoOfAe(Integer noOfAe){
 		this.noOfAe = noOfAe;
+	}
+	
+	public ReviewStatus getReviewStatus() {
+		return reviewStatus;
+	}
+	
+	public void setReviewStatus(ReviewStatus reviewStatus) {
+		this.reviewStatus = reviewStatus;
+	}
+
+	public List<ReviewCommentsDTO> getReviewComments() {
+		return reviewComments;
+	}
+	
+	public void setReviewComments(List<ReviewCommentsDTO> reviewComments) {
+		this.reviewComments = reviewComments;
+	}
+	
+	public Integer getWorkflowId() {
+		return workflowId;
+	}
+	
+	public void setWorkflowId(Integer workflowId) {
+		this.workflowId = workflowId;
+	}
+	
+	public List<String> getPossibleActions() {
+		return possibleActions;
+	}
+	
+	public void setPossibleActions(List<String> possibleActions) {
+		this.possibleActions = possibleActions;
+	}
+	
+	public boolean hasActionsToDo(){
+		return possibleActions != null && possibleActions.size() > 0;
 	}
 }

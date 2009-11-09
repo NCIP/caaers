@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 
 import java.util.ArrayList;
@@ -38,9 +40,12 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	}
 
 	public void testCreateAdverseEventEvalutionPeriodDTO() {
-		/*String userId = "tester";
+		String userId = "tester";
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		Report r = Fixtures.createReport("test report");
+		r.setStatus(ReportStatus.INPROCESS);
+		
 		
 		rp.addAeReport(aeReport);
 		aeReport.setReportingPeriod(rp);
@@ -50,7 +55,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		actions.add("action1");
 		actions.add("action2");
 		
-		aeReport.setWorkflowId(workflowId);
+		r.setWorkflowId(workflowId);
 		rp.setWorkflowId(workflowId);
 		rp.setStartDate(new Date());
 		rp.setEndDate(new Date());
@@ -65,7 +70,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		
 		verifyMocks();
 		
-		assertSame(rp, dto.getAdverseEventReportingPeriod());*/
+		assertSame(rp, dto.getAdverseEventReportingPeriod());
 	}
 	
 	
@@ -75,7 +80,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	}
 	
 	public void testCreateAdverseEventReportDTO(){
-		/*String userId = "tester";
+		String userId = "tester";
 		int workflowId = 55;
 		List<String> actions = new ArrayList<String>();
 		actions.add("action1");
@@ -84,16 +89,17 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		aeReport.setReportingPeriod(rp);
-		
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.INPROCESS);
+		report.setWorkflowId(workflowId);
+		aeReport.addReport(report);
 		aeReport.setId(7);
-		aeReport.setWorkflowId(workflowId);
 		
-		EasyMock.expect(repository.nextTransitionNamesForAeReportWorkflow(aeReport, userId)).andReturn(actions);
+		EasyMock.expect(repository.nextTransitionNamesForReportWorkflow(report, userId)).andReturn(actions);
 		replayMocks();
 		
 		ExpeditedAdverseEventReportDTO dto = factory.createAdverseEventReportDTO( aeReport, userId);
-		assertSame(aeReport,dto.getAeReport());*/
-		
+		assertSame(aeReport,dto.getAeReport());
 	}
 	
 }

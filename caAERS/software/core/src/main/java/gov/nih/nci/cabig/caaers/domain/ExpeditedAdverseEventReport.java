@@ -1169,4 +1169,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return null;
     }
     
+    /**
+     * This method returns is used to determine if there are any active reports which are in a workflow
+     * @return boolean
+     */
+    public boolean hasWorkflowOnActiveReports(){
+    	boolean hasWorkflowOnActiveReports = false;
+    	for(Report r: getActiveReports())
+    		if(r.getWorkflowId() != null)
+    			hasWorkflowOnActiveReports = true;
+    	return hasWorkflowOnActiveReports;
+    }
+    
 }

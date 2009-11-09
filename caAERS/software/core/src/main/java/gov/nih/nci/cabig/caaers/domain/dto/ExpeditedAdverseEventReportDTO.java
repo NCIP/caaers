@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +17,11 @@ import java.util.List;
  */
 public class ExpeditedAdverseEventReportDTO {
 	private Integer id;
-	private Integer workflowId;
+	
 	private Integer noOfAe;
 	private String name;
 	private ReportStatus status;
 	private String reportVersionId;
-	
-	private ReviewStatus reviewStatus;
-	private List<String> possibleActions;
-	private List<ReviewCommentsDTO> reviewComments;
 	
 	private Study study;
 	private Participant participant;
@@ -50,19 +47,6 @@ public class ExpeditedAdverseEventReportDTO {
 	}
 	public void setNoOfAe(Integer noOfAe) {
 		this.noOfAe = noOfAe;
-	}
-	public ReviewStatus getReviewStatus() {
-		return reviewStatus;
-	}
-	public void setReviewStatus(ReviewStatus reviewStatus) {
-		this.reviewStatus = reviewStatus;
-	}
-
-	public List<ReviewCommentsDTO> getReviewComments() {
-		return reviewComments;
-	}
-	public void setReviewComments(List<ReviewCommentsDTO> reviewComments) {
-		this.reviewComments = reviewComments;
 	}
 	public Study getStudy() {
 		return study;
@@ -95,19 +79,6 @@ public class ExpeditedAdverseEventReportDTO {
 		this.reportVersionId = reportVersionId;
 	}
 	
-	public Integer getWorkflowId() {
-		return workflowId;
-	}
-	public void setWorkflowId(Integer workflowId) {
-		this.workflowId = workflowId;
-	}
-	
-	public List<String> getPossibleActions() {
-		return possibleActions;
-	}
-	public void setPossibleActions(List<String> possibleActions) {
-		this.possibleActions = possibleActions;
-	}
 	public void addReportDTO(ReportDTO reportDTO){
 		reports.add(reportDTO);
 	}
@@ -119,6 +90,13 @@ public class ExpeditedAdverseEventReportDTO {
 	}
 	
 	public boolean hasActionsToDo(){
-		return possibleActions != null && possibleActions.size() > 0;
+		boolean hasActionsToDo = false;
+		if(reports != null && !reports.isEmpty())
+			for(ReportDTO reportDTO: reports){
+				if(reportDTO.hasActionsToDo())
+					hasActionsToDo = true;
+			}
+		return hasActionsToDo;
 	}
+	
 }

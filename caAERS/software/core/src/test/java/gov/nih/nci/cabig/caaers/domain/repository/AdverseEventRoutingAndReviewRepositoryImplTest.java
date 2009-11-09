@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
@@ -208,12 +209,15 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 
 	public void testFindAdverseEventReportingPeriods() {
-		/*String userId = "tester";
+		String userId = "tester";
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		aeReport.setWorkflowId(1);
-		aeReport.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE); 
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.INPROCESS);
+		report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		report.setWorkflowId(1);
 		rp.addAeReport(aeReport);
+		aeReport.addReport(report);
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
 		reportingPeriods.add(rp);
@@ -224,9 +228,11 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		AdverseEventReportingPeriodDTO rpDto = new AdverseEventReportingPeriodDTO();
 		ExpeditedAdverseEventReportDTO rDto = new ExpeditedAdverseEventReportDTO();
+		ReportDTO reportDto = new ReportDTO();
+		rDto.addReportDTO(reportDto);
 		List<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("abc");
-		rDto.setPossibleActions(possibleActions);
+		reportDto.setPossibleActions(possibleActions);
 		EasyMock.expect(rpDao.findAdverseEventReportingPeriods((AdverseEventReportingPeriodForReviewQuery) EasyMock.anyObject())).andReturn(reportingPeriods);
 	
 		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId)).andReturn(rpDto);
@@ -243,7 +249,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		verifyMocks();
 		
 		assertEquals(1, dtos.size());
-		assertEquals(1, dtos.get(0).getAeReports().size());*/
+		assertEquals(1, dtos.get(0).getAeReports().size());
 	}
 
 	public void testIsReportingPeriodHavingSpecifiedReviewStatus() {

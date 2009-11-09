@@ -54,25 +54,16 @@ public class AERoutingAndReviewDTOFactory {
 	}
 	
 	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){
-		/*if(aeReport == null) return null;
-		if(aeReport.getWorkflowId() == null) {
-			log.warn("The workflowID for ExpeditedAdverseEventReport#" + aeReport.getId() + " is null");
-			return null;
-		}
+		if(aeReport == null) return null;
 		ExpeditedAdverseEventReportDTO dto = new ExpeditedAdverseEventReportDTO();
-		dto.setWorkflowId(aeReport.getWorkflowId());
 		dto.setAeReport(aeReport);
 		dto.setStudy(aeReport.getStudy());
 		dto.setParticipant(aeReport.getParticipant());
 		dto.setId(aeReport.getId());
 		dto.setName("Expedited Report");
 		dto.setNoOfAe(aeReport.getNumberOfAes());
-		dto.setReviewStatus(aeReport.getReviewStatus());
-		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNamesForAeReportWorkflow(aeReport, userId));
-		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
-		dto.setReports(createReportDTOs(aeReport));
-		return dto;*/
-		return null;
+		dto.setReports(createReportDTOs(aeReport, userId));
+		return dto;
 	}
 	
 	protected List<ReviewCommentsDTO> createReviewComments(List<? extends ReviewComment> comments){
@@ -88,17 +79,21 @@ public class AERoutingAndReviewDTOFactory {
 		return commentDtos;
 	}
 	
-	protected List<ReportDTO> createReportDTOs(ExpeditedAdverseEventReport aeReport){
+	protected List<ReportDTO> createReportDTOs(ExpeditedAdverseEventReport aeReport, String userId){
 		ArrayList<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
 		for(Report report : aeReport.getReports()){
 			ReportDTO dto = new ReportDTO();
 			dto.setId(report.getId());
 			dto.setName(report.getName());
+			dto.setWorkflowId(report.getWorkflowId());
 			ReportVersion lastVersion = report.getLastVersion();
 			dto.setReportVersionId(lastVersion.getId());
 			dto.setStatus(report.getStatus());
 			dto.setNoOfAe(aeReport.getNumberOfAes());
 			dto.setReport(report);
+			dto.setReviewStatus(report.getReviewStatus());
+			dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNamesForReportWorkflow(report, userId));
+			dto.setReviewComments(createReviewComments(report.getReviewComments()));
 			reportDTOs.add(dto);
 		}
 		return reportDTOs;
