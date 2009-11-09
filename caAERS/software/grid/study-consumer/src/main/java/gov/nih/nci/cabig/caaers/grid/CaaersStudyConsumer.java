@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
@@ -24,13 +25,12 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ccts.domain.IdentifierType;
 import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
-import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
 import gov.nih.nci.cabig.ccts.domain.StudyInvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
 import gov.nih.nci.cabig.ccts.domain.StudySiteType;
-
+import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
@@ -575,7 +575,28 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
             StudyInvestigator studyInvestigator = new StudyInvestigator();
             studyInvestigator.setStudyOrganization(studyOrganization);
-            studyInvestigator.setRoleCode(invType.getRoleCode());
+            String roleCode = null;
+            PersonRole[] caaersRoles = PersonRole.values();
+            if (invType.getRoleCode() == null) {
+            	StudyCreationException exp = new StudyCreationException();
+            	exp.setFaultReason("Investigator role is NULL in Study message");
+            	throw exp;
+            }
+            
+    		for (PersonRole caaersRole:caaersRoles) {
+    			if (caaersRole.getDisplayName().equals(invType.getRoleCode())) {
+    				roleCode = caaersRole.getRoleCode();
+    				break;
+    			}
+    		}
+
+            if (roleCode == null) {
+            	StudyCreationException exp = new StudyCreationException();
+            	exp.setFaultReason("Supplied Investigator role "+ invType.getRoleCode() + " does not map with roles in caAERS");
+            	throw exp;            	
+            }
+            
+            studyInvestigator.setRoleCode(roleCode);
             studyInvestigator.setSiteInvestigator(siteInvestigator);
             studyOrganization.addStudyInvestigators(studyInvestigator);
         }
