@@ -395,7 +395,10 @@
 												<fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
 													<fo:block>
 														<fo:inline font-size="6.5">5. </fo:inline>
-														<fo:inline xsl:use-attribute-sets="label">Describe Event or Problem </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Describe Event or Problem
+                                                            <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">(CTCAE)</xsl:if>
+                                                            <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">(MedDRA)</xsl:if>
+                                                        </fo:inline>
 													</fo:block>
 														
 														
