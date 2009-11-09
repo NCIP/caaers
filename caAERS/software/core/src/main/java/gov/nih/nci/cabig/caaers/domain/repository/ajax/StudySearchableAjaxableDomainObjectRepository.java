@@ -37,7 +37,8 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
                 studySearchableAjaxableDomainObject.setId((Integer) o[0]);
                 studySearchableAjaxableDomainObject.setShortTitle((String) o[1]);
                 studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
-
+                studySearchableAjaxableDomainObject.setExternalId((String)o[13]);
+                
                 addAdditionalProperties(studySearchableAjaxableDomainObject, o);
 
                 existingStudyMap.put(studySearchableAjaxableDomainObject.getId(), studySearchableAjaxableDomainObject);
@@ -67,6 +68,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
                 studySearchableAjaxableDomainObject.setId((Integer) o[0]);
                 studySearchableAjaxableDomainObject.setShortTitle((String) o[1]);
                 studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
+                studySearchableAjaxableDomainObject.setExternalId((String)o[13]);
 
                 addAdditionalProperties(studySearchableAjaxableDomainObject, o);
                 existingStudyMap.put(studySearchableAjaxableDomainObject.getId(), studySearchableAjaxableDomainObject);

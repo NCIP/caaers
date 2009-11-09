@@ -44,6 +44,7 @@
             load_status="1"
             phase_code="Phase II Trial"
             status="Active - Trial is open to accrual"
+            external_id="5432"
             />
     <STUDIES
             id="-3"
@@ -53,7 +54,7 @@
             grid_id="f2321"
             load_status="1"
             status="Active - Trial is open to accrual"
-
+			
             />
 
     <STUDIES
