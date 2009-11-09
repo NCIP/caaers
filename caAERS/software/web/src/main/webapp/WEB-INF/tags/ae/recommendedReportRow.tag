@@ -12,7 +12,6 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="applicableTableRows" required="true" type="java.util.List" description="The applicable report definitions to show" %>
 
 <div id="no-recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ not empty recommendedTableRows ? 'display:none;' : ''}">
-<tags:button color="blue" value="Override" size="small" onclick="showManualSelectOptions('applicable-reports-dc-${aeReportId}',${aeReportId})" />
 <tags:message key="instruction_ae_manualselection_note" />
 </div>
 
@@ -37,7 +36,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 </div>   
 
 
-<div id="applicable-reports-dc-${aeReportId}" style="display:none;" class="applicable-reports">
+<div id="applicable-reports-dc-${aeReportId}" style="${ not empty recommendedTableRows ? 'display:none;' : ''}" class="applicable-reports">
 <table width="100%" class="tablecontent">
     <tr>
       <th scope="col" style="text-align:center;" width="3%"><spring:message code="LBL_captureAdverseEvents.tableHeader.select" /></th>
