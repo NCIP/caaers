@@ -47,8 +47,33 @@
 						// this.hideIndicator(src.id + "-indicator");
 						}.bind(this));
  	 		},
-             
-              removeDetails :function(itemType,index, loc, options){
+
+             removeAllAgents : function(itemType, src, val, loc, options) {
+                 var container = $(loc);
+
+                 var paramHash = new Hash(); //parameters to post to server
+                    paramHash.set('task', 'remove');
+                    paramHash.set('currentItem', "AllPriorTherapyAgents");
+
+//                  alert(itemType);
+
+                 //add extra options to the parameter list
+                    if(options){
+                         if(options.parentIndex >= 0) paramHash.set('parentIndex', options.parentIndex);
+                    }
+                    this.populateDeafultParameters(itemType, paramHash);
+
+                    var url = $('command').action + "?subview"; //make the ajax request
+                    var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
+                    var newLoc = replaceHtml($(loc) , '');
+
+                 this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
+                     // this.hideIndicator(itemType + "-indicator");
+                 }.bind(this));
+                 
+             },
+
+             removeDetails :function(itemType, index, loc, options){
  	 	 		if(index < 0) return;
 				
 				var confirmation = confirm("Do you really want to delete?");

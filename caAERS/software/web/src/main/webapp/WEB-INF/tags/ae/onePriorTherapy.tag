@@ -35,9 +35,11 @@
                             var ptVal = evt.element().value;
                             if(ptVal == ${_priorTherapy_surgery_id} || ptVal == ${_priorTherapy_radiation_id} || ptVal == ${_priorTherapy_nopriortherapy_id}){
                                 $('aeReport.saeReportPriorTherapies[${index}]-row').hide();
+                                AE.removeAllAgents_${index}();
                             } else{
                                 $('aeReport.saeReportPriorTherapies[${index}]-row').show();
                             }
+                                
                             if (ptVal == ${_priorTherapy_nopriortherapy_id}) {
                                 $('aeReport.saeReportPriorTherapies[${index}].startDate-row').hide();
                                 $('aeReport.saeReportPriorTherapies[${index}].endDate-row').hide();
@@ -84,9 +86,9 @@
 						<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
 							<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
                             <c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status" var="agent">
-								<c:set var="newIndex" value="${size - (status.index + 1)}" />
-								<ae:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" agent="${agent}" />
-							</c:forEach>
+                                <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                                <ae:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" agent="${agent}" />
+                            </c:forEach>
                         </div>
 					</td>
 				</tr>
@@ -108,6 +110,10 @@ AE.addPTAgents_${index}= function() {
     AE.resetAutocompleter('priorTherapyAgents[${index}]');
 }
     
+AE.removeAllAgents_${index}= function() {
+    mHistory.removeAllAgents('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
+}
+
 function initializePriorTherapy(){
 	AE.registerCalendarPopups();
 }
