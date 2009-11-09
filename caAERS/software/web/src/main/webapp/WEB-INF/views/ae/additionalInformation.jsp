@@ -8,7 +8,7 @@
 		div.row div.value, div.row div.extra { margin-left: 18em; }
     </style>
     <tags:dwrJavascriptLink objects="createAE"/>
-	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+	<%-- <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
@@ -20,7 +20,7 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
     <script type="text/javascript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
     	

@@ -5,13 +5,13 @@
  <head>
  	<tags:dwrJavascriptLink objects="reviewRP,captureAE"/>
  	
- 	<tags:slider renderComments="true" renderAlerts="false" display="none">
+ 	<%-- <tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
     			<tags:routingAndReviewComments/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
  	
  	 <style type="text/css">
         .selectdiv { width: 170px; overflow: hidden; }

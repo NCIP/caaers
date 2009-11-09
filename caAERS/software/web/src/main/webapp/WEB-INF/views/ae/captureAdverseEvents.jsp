@@ -3,13 +3,13 @@
 <html>
  <head>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
-    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="none">
+    <%--  <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
     			<tags:routingAndReviewComments />
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
 
  <script><!--
  	var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];

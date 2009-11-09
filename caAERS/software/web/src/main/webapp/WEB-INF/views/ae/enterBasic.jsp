@@ -37,19 +37,21 @@
 }
 </style>
     <tags:dwrJavascriptLink objects="createAE"/>
-	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+	<%--  <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
-    	<jsp:attribute name="comments">
-    		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments />
-    		</div>
+		<jsp:attribute name="comments">
+			<c:forEach items="${command.selectedReportsAssociatedToWorkflow}" var="report">
+    			<div id="comments-id" style="display:none;">
+    				<tags:routingAndReviewComments report="${report }"/>
+    			</div>
+    		</c:forEach>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
     <script type="text/javascript">
 		var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
