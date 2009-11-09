@@ -42,8 +42,8 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		$('scrollbar_content').innerHTML = content;
 		$('enter-comment-text').value = "";
 	},
-	addComment:function(){
-		this.ajaxFacade.addReviewComment($('enter-comment-text').value, function(ajaxOutput){
+	addComment:function(reportId){
+		this.ajaxFacade.addReviewComment($('enter-comment-text').value, reportId, function(ajaxOutput){
 			this.updateCommentElementContent(ajaxOutput.htmlContent);
 		}.bind(this));
 	},
@@ -108,11 +108,11 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			createDropDowns();
 		}
 	},
-	validateAndAdvanceWorkflow: function(){
+	validateAndAdvanceWorkflow: function(reportId){
 		var sbox = $('sliderWFAction');
 		if(sbox.value == '') return;
 		
-		this.ajaxFacade.validateAndAdvanceWorkflow(sbox.value, function(ajaxOutput){
+		this.ajaxFacade.validateAndAdvanceWorkflow(sbox.value, reportId, function(ajaxOutput){
 			if(ajaxOutput.objectContent){
 				var i = 0;
 				var popupContent = '';

@@ -83,6 +83,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected List<Map<Integer, Boolean>> outcomes;
     protected List<String> outcomeOtherDetails; 
     protected List<ReportDefinition> selectedReportDefinitions;
+    protected List<Report> selectedReportsAssociatedToWorkflow; 
 
     private List<ReportDefinition> newlySelectedReportDefinitions;
     private  List<ReportDefinition> applicableReportDefinitions;
@@ -365,6 +366,16 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     
     public boolean isAssociatedToWorkflow(){
     	//return getWorkflowEnabled() && getAeReport().getWorkflowId() != null;
+    	if(getWorkflowEnabled()){
+    		Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
+    		for(ReportDefinition rd: selectedReportDefinitions)
+    			if(! selectedReportDefinitionsMap.containsKey(rd.getId()))
+    				selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
+    		for(Report r: aeReport.getActiveReports())
+    			if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()) && r.getWorkflowId() != null)
+    				return true;
+    	}else
+    		return false;
     	return false;
     }
     
@@ -565,6 +576,18 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
     public void setApplicableReportDefinitions(List<ReportDefinition> selectedReportDefinitions) {
     	this.selectedReportDefinitions = selectedReportDefinitions;
+    }
+    
+    public List<Report> getSelectedReportsAssociatedToWorkflow(){
+    	selectedReportsAssociatedToWorkflow = new ArrayList<Report>();
+    	Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
+    	for(ReportDefinition rd: selectedReportDefinitions)
+    		if(! selectedReportDefinitionsMap.containsKey(rd.getId()))
+    			selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
+    	for(Report r: aeReport.getActiveReports())
+    		if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()) && r.getWorkflowId() != null)
+    			selectedReportsAssociatedToWorkflow.add(r);
+    	return selectedReportsAssociatedToWorkflow;
     }
     
 }

@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+
+<%@ attribute name="report" type="gov.nih.nci.cabig.caaers.domain.report.Report" required="true" %>
 <div>
 	<div id="collapse-all-comments">
 		<a name="allBtnCtrl"></a>
@@ -21,7 +23,7 @@
 		<div id="edit-a-comment" style="display:none">Edit Comment</div>
 		<textarea id="enter-comment-text"></textarea>
 		<input type="hidden" id="edit_comment_id" name="edit_comment_id" value="" />
-		<a href="javascript:addComment();" id="add-btn">
+		<a href="javascript:addComment('${report.id }');" id="add-btn">
 		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
 		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" /></a>
 		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" /></a>
@@ -32,7 +34,7 @@
 			</div>
 			<div id="wf-action-value">
 			&nbsp;&nbsp;
-			<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow();">
+			<select id="sliderWFAction" onChange="routingHelper.validateAndAdvanceWorkflow('${report.id }');">
 				<option value="">Please select</option>
 			</select>
 			<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
@@ -58,8 +60,8 @@
 
 <script language="JavaScript1.2">
 	 
-	function addComment(){
-		routingHelper.addComment();
+	function addComment(reportId){
+		routingHelper.addComment(reportId);
 	}
 	
 	function editComment(id){

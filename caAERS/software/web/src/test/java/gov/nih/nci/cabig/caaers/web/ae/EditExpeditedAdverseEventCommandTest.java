@@ -379,6 +379,60 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
         return c;
     }
     
+    /**
+     * Test the scenario when associatedToWorkflow
+     */
+    public void testIsAssociatedToWorkflowPositive(){
+    	addReportsToAeReport();
+    	command.setWorkflowEnabled(true);
+    	
+    	//select all report defs
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(0).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(1).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(2).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(3).getReportDefinition());
+    	
+    	//set the workflow id for first report and test for association to workflow
+    	command.getAeReport().getReports().get(0).setWorkflowId(2);
+    	
+    	Boolean isAssociatedToWorkflow = command.isAssociatedToWorkflow();
+    	assertTrue("isAssociatedToWorkflow is returning incorrect value when the selected report is" +
+    			" assoicated to workflow", isAssociatedToWorkflow);
+    }
+    
+    /**
+     * Test the scenario when not associatedToWorkflow
+     */
+    public void testIsAssociatedToWorkflowNegative(){
+    	addReportsToAeReport();
+    	command.setWorkflowEnabled(true);
+    	//select all report defs
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(0).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(1).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(2).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(3).getReportDefinition());
+    	
+    	//not setting the workflow id and testing for association to workflow
+    	Boolean isAssociatedToWorkflow = command.isAssociatedToWorkflow();
+    	assertFalse("isAssociatedToWorkflow is returning incorrect value when the selected reports" +
+    			" are not associated to any workfow", isAssociatedToWorkflow);
+    }
+    
+    /**
+     * Test the scenario when not associatedToWorkflow
+     */
+    public void testIsAssocitedToWorkflowDisabled(){
+    	addReportsToAeReport();
+    	command.setWorkflowEnabled(false);
+    	
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(0).getReportDefinition());
+    	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(1).getReportDefinition());
+    	
+    	Boolean isAssociatedToWorkflow = command.isAssociatedToWorkflow();
+    	assertFalse("isAssociatedToWorkflow is returning incorrect value when Routing and" +
+    			" Review is disabled at System level", isAssociatedToWorkflow);
+    }
+    
     
     /**
      * Test the scenario when all reports, are selected. 

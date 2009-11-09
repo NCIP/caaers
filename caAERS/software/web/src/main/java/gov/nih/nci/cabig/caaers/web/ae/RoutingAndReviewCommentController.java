@@ -69,7 +69,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		String entity = cmd.getEntity();
 		Integer id = cmd.getEntityId();
 		List<? extends ReviewComment> prevComments = null;
-		if("aeReport".equals(entity)){
+		if("report".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
 		} else if("reportingPeriod".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
@@ -105,7 +105,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		Object action = findInRequest(request, AJAX_ACTION);
 		if(action != null){
 			if(action.equals("addPopupComment")){
-				if("aeReport".equals(entity)){
+				if("report".equals(entity)){
 					adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
 				}else if("reportingPeriod".equals(entity)){
 					AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
@@ -117,7 +117,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 				populatePreviousComments(entity, id, cmd);
 			}else if(action.equals("editPopupComment")){
 				Integer commentId = cmd.getCommentId();
-				if("aeReport".equals(entity)){
+				if("report".equals(entity)){
 					adverseEventRoutingAndReviewRepository.editReportReviewComment(id, comment, userId, commentId);
 				}else if("reportingPeriod".equals(entity)){
 					AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
@@ -129,7 +129,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 				populatePreviousComments(entity, id, cmd);
 			}else if(action.equals("deletePopupComment")){
 				Integer commentId = cmd.getCommentId();
-				if("aeReport".equals(entity)){
+				if("report".equals(entity)){
 					adverseEventRoutingAndReviewRepository.deleteReportReviewComment(id, commentId);
 				}else if("reportingPeriod".equals(entity)){
 					adverseEventRoutingAndReviewRepository.deleteReportingPeriodReviewComment(id, commentId);
@@ -150,7 +150,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	
 	public void populatePreviousComments(String entity, Integer id, RoutingAndReviewCommentCommand cmd){
 		List<? extends ReviewComment> prevComments = null;
-		if("aeReport".equals(entity)){
+		if("report".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
 		} else if("reportingPeriod".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
