@@ -67,7 +67,7 @@
               <tr align="center" class="label">
               	<td/>
                 <td class="tableHeader">Organization Name</td>
-                <td class="tableHeader">NCI Institute Code</td>
+                <td class="tableHeader">CTEP Identifier</td>
               </tr>
             </thead>
             <c:forEach items="${command.externalOrganizations}"  var="remOrg" varStatus="rdStatus">

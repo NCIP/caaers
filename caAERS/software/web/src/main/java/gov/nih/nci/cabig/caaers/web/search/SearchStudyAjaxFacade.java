@@ -174,7 +174,7 @@ public class SearchStudyAjaxFacade {
         model.addColumn(orgNameColumn);
 
         Column orgNCICodeColumn = model.getColumnInstance();
-        orgNCICodeColumn.setTitle("NCI Identifier");
+        orgNCICodeColumn.setTitle("CTEP Identifier");
         orgNCICodeColumn.setProperty("nciInstituteCode");
         model.addColumn(orgNCICodeColumn);
 

@@ -58,20 +58,22 @@ function buildTable(form) {
 <p>
 <tags:instructions code="organizationsearch" />
 </p>
-   <chrome:box title="Organization Criteria" cssClass="mpaired" autopad="false">
+   <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> Name :&nbsp; </div>
 		    	<div class="value"><input id="prop0" name="name" type="text"/></div>
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> NCI Identifier :&nbsp; </div>
+		    	<div class="label"> CTEP Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="nciInstituteCode"/></div>
 		    </div>
 
-           <div class="row" style="float:right;">
-                <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
-                <tags:indicator id="indicator" />
+           <div class="row">
+        	<div class="value">
+        		<tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
+	            <tags:indicator id="indicator" />
+        	</div>
            </div>
    </chrome:box>
 
