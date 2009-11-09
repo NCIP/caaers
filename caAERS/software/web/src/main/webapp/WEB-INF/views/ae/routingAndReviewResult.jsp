@@ -128,7 +128,7 @@ color:#0033FF;
 		if(confirm('Are you sure you want to take the action - ' + sb.value + ' ?')){
 			sb.disable();
 			
-			if(entityType == 'aeReport'){
+			if(entityType == 'report'){
 				var indicatorId = entityType + '-' + entityId + '-indicator';
 						$(indicatorId).style.display='';
 						routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){

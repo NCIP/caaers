@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -37,6 +39,7 @@ public class RoutingAndReviewAjaxFacade {
 	 private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	 private ReportDao reportDao;
 	 
 	 protected Object extractCommand() {
 	    	
@@ -61,17 +64,18 @@ public class RoutingAndReviewAjaxFacade {
 	 
 	public AjaxOutput advanceWorkflow(Integer workflowId, String toTransition, Integer id, String entity){
 		AjaxOutput output = new AjaxOutput();
-		/*List<String> transitions = null;
-		if(entity.equals("aeReport")){
+		List<String> transitions = null;
+		if(entity.equals("report")){
 			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(id);
-			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, aeReport, getUserId());
-			output.setHtmlContent(aeReport.getReviewStatus().getDisplayName());
+			Report report = reportDao.getById(id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, report, getUserId());
+			output.setHtmlContent(report.getReviewStatus().getDisplayName());
 		}else if(entity.equals("reportingPeriod")){
 			AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
 			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod, getUserId());
 			output.setHtmlContent(reportingPeriod.getReviewStatus().getDisplayName());
 		}
-		output.setObjectContent(transitions);*/
+		output.setObjectContent(transitions);
 		return output;
 	}
 	
@@ -134,5 +138,9 @@ public class RoutingAndReviewAjaxFacade {
 	
 	public AdverseEventReportingPeriodValidator getAdverseEventReportingPeriodValidator(){
 		return adverseEventReportingPeriodValidator;
+	}
+	
+	public void setReportDao(ReportDao reportDao){
+		this.reportDao = reportDao;
 	}
 }
