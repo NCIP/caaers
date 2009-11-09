@@ -13,7 +13,8 @@
 
 	<tag>
 		<name>accesscontrol</name>
-		<tag-class>gov.nih.nci.security.acegi.csm.web.CSMAccessControlTag</tag-class>
+		<tag-class>gov.nih.nci.cabig.caaers.web.tags.csm.CSMAccessControlTag</tag-class>
+        <!-- <tag-class>gov.nih.nci.security.acegi.csm.web.CSMAccessControlTag</tag-class> -->
 		<description>
 		</description>
 
