@@ -37,16 +37,17 @@ Event.observe(window, "load", function() {
 	hideDWRLoadingIndicator();
 	
 	//AJAX handlers
-	Ajax.Responders.register({
- 		onCreate: function() {
-			if(Ajax.activeRequestCount > 0)
-				showDWRLoadingIndicator();
-		 },
-		onComplete: function() {
-			if(Ajax.activeRequestCount == 0)
-				hideDWRLoadingIndicator();
-		}
-	}); 
+// BJ: commented based on discussion in Scrum	
+//	Ajax.Responders.register({
+// 		onCreate: function() {
+//			if(Ajax.activeRequestCount > 0)
+//				showDWRLoadingIndicator();
+//		 },
+//		onComplete: function() {
+//			if(Ajax.activeRequestCount == 0)
+//				hideDWRLoadingIndicator();
+//		}
+//	}); 
 	
 	//calendars
 	AE.registerCalendarPopups();
