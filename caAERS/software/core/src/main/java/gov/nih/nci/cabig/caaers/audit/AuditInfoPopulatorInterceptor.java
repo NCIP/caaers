@@ -20,6 +20,7 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 	
 	private static final Log logger = LogFactory.getLog(AuditInfoPopulatorInterceptor.class);
 	
+	private String fromUrl;
 	
 	@SuppressWarnings("deprecation")
 	public Object invoke(MethodInvocation method) {
@@ -31,7 +32,8 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 			 		String userName = authentication.getName();
 			 		if(userName != null){
 			 			oldAuditInfo = (DataAuditInfo) DataAuditInfo.getLocal();
-			 			DataAuditInfo.setLocal(new DataAuditInfo(userName, "127.0.0.1", new Date(), Thread.currentThread().getName()));
+			 			String url = fromUrl == null ? "127.0.0.1" : fromUrl;
+			 			DataAuditInfo.setLocal(new DataAuditInfo(userName, url, new Date(), Thread.currentThread().getName()));
 			 		}
 			 	}
 			 	
@@ -44,5 +46,11 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 		}
 		return null;
 	}
-
+	
+	public String getFromUrl() {
+		return fromUrl;
+	}
+	public void setFromUrl(String fromUrl) {
+		this.fromUrl = fromUrl;
+	}
 }
