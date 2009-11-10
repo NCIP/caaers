@@ -380,30 +380,33 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	}else{
             		orgIdentifiers.add(id);
             	}
- 
                 
             } 
             
-            //if the sponsor identifier is not supplied, use coordinating center instead. 
-            if(sponsorIdentifier == null){
-            	  sponsorIdentifier = new OrganizationAssignedIdentifier();
-                  sponsorIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-                  sponsorIdentifier.setValue(ccIdentifier.getValue());
-                  sponsorIdentifier.setOrganization(study.getPrimaryFundingSponsorOrganization());
-            }
-          
-            study.addIdentifier(sponsorIdentifier);
-            study.addIdentifier(ccIdentifier);
-            
-            for (OrganizationAssignedIdentifier id : orgIdentifiers) {
-                study.addIdentifier(id);
-            }
-
-            for (SystemAssignedIdentifier id : sysIdentifiers) {
-                study.addIdentifier(id);
-            }
 
         }
+        
+
+        //if the sponsor identifier is not supplied, use coordinating center instead. 
+        if(sponsorIdentifier == null){
+        	  sponsorIdentifier = new OrganizationAssignedIdentifier();
+              sponsorIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+              sponsorIdentifier.setValue(ccIdentifier.getValue());
+              sponsorIdentifier.setOrganization(study.getPrimaryFundingSponsorOrganization());
+        }
+      
+        study.addIdentifier(sponsorIdentifier);
+        study.addIdentifier(ccIdentifier);
+        
+        for (OrganizationAssignedIdentifier id : orgIdentifiers) {
+            study.addIdentifier(id);
+        }
+
+        for (SystemAssignedIdentifier id : sysIdentifiers) {
+            study.addIdentifier(id);
+        }
+        
+        
     }
 
     private StudyCreationException getStudyCreationException(String message) {
