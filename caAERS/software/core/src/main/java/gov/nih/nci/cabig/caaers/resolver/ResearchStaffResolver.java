@@ -68,6 +68,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		remoteResearchStaff.setLastName(lastName);
 		remoteResearchStaff.setEmailAddress(emailStr);
 		remoteResearchStaff.setAddress(new Address());
+		remoteResearchStaff.setLoginId("loginid");
 		remoteResearchStaff.setExternalId(coppaPerson.getIdentifier().getExtension());
 		if (nciIdentifier != null) {
 			remoteResearchStaff.setNciIdentifier(nciIdentifier);
