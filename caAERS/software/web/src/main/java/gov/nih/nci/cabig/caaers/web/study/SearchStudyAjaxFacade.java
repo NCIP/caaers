@@ -72,9 +72,9 @@ public class SearchStudyAjaxFacade {
 
     private void addShorTitleColumn(TableModel model) {
         Column columnShortTitle = model.getColumnInstance();
+        columnShortTitle.setTitle("Short Title");
         columnShortTitle.setProperty("shortTitle");
         columnShortTitle.setSortable(Boolean.TRUE);
-        columnShortTitle.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnShortTitle);
     }
 

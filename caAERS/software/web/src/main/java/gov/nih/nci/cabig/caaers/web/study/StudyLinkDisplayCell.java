@@ -10,6 +10,8 @@ import org.extremecomponents.table.core.TableModel;
 
 public class StudyLinkDisplayCell extends AbstractCell {
 
+	public static final String EDIT_STUDY_URL= "/pages/study/edit?studyId=";
+	
     @Override
     protected String getCellValue(TableModel model, Column column) {
         String id = null;
@@ -37,6 +39,11 @@ public class StudyLinkDisplayCell extends AbstractCell {
         if (id != null) {
             cellValue = image +  "<a href=\"" + link + id.toString() + "\">" + cellValue + "</a>";
         }
+        
+        String url = "document.location='" + EDIT_STUDY_URL + id + "'";
+        model.getRowHandler().getRow().setOnclick(url);
+        model.getRowHandler().getRow().setStyle("cursor:pointer");
+        
         return cellValue;
     }
 }
