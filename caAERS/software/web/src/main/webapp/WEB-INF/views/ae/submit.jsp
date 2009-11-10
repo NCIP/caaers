@@ -68,8 +68,10 @@
                     caaersLog(ajaxResult.errorMessage);
                 } else {
                     $('report-validation-section').innerHTML = output.htmlContent;
-                    if (${command.workflowEnabled == true})
-                        routingHelper.updateWorkflowActions.bind(routingHelper)();
+                    if (${command.workflowEnabled == true}) {
+						routingHelper.updateWorkflowActions.bind(routingHelper)();
+					}
+					createDropDowns();
                 }
             });
         } catch(e) {

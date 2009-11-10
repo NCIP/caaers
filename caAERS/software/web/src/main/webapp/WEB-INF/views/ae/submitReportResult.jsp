@@ -46,7 +46,19 @@
         	function showToolTip(text, title) {
         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
     }
-        	
+			jQuery("#export-menu").menu({
+				content: jQuery("#actions-${command.aeReport.id}").html(),		
+				maxHeight: 180,
+				width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'right',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 300
+			});
 	    </script>
 	</head>
 	<body>
@@ -148,16 +160,7 @@
     			</table>
     			<input type="hidden" name="_finish"/>		
 			</jsp:attribute>
-			<jsp:attribute name="tabControls">
-				<div class="content buttons autoclear">
-					<div class="local-buttons"></div>
-	    				<div class="flow-buttons">
-	        				<span class="next">
-	            				<input type="image" alt="save »" value="Go to Manage Reports " id="flow-next" src="<c:url value="/images/blue/go_to_manage_reports_btn.png" />"/>
-	        				</span>        
-						</div>
-					</div>
-			</jsp:attribute>
+			
 		</tags:tabForm>
 	</body>
 </html>

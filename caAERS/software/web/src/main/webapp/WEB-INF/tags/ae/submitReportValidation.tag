@@ -116,8 +116,8 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-				<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 				<div style="text-align:right;">
+					<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 					<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
