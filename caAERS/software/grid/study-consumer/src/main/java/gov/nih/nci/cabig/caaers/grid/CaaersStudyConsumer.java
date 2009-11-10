@@ -373,9 +373,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 id.setValue(orgIdType.getValue());
                 id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
  
-                if(StringUtils.equals(identifierType.getType(),OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
+                if(StringUtils.equals(id.getType(),OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
             		ccIdentifier = id;
-            	}else if(StringUtils.equals(identifierType.getType(),OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
+            	}else if(StringUtils.equals(id.getType(),OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
             		sponsorIdentifier = id;
             	}else{
             		orgIdentifiers.add(id);
