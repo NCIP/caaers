@@ -32,8 +32,8 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 			 		String userName = authentication.getName();
 			 		if(userName != null){
 			 			oldAuditInfo = (DataAuditInfo) DataAuditInfo.getLocal();
-			 			String url = fromUrl == null ? "127.0.0.1" : fromUrl;
-			 			DataAuditInfo.setLocal(new DataAuditInfo(userName, url, new Date(), Thread.currentThread().getName()));
+			 			String url = fromUrl == null ? Thread.currentThread().getName() : fromUrl;
+			 			DataAuditInfo.setLocal(new DataAuditInfo(userName, "127.0.0.1", new Date(), url));
 			 		}
 			 	}
 			 	
