@@ -73,6 +73,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		{
 			User user = loadUser();
 			user.setPasswordLastSet(now);
+			user.setFailedLoginAttempts(0);
 			saveUser(user);
 		}
 
@@ -152,12 +153,13 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		{
 			User user = loadUser();
 			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DATE, -3);
+			cal.add(Calendar.DATE, -100);
 			user.setPasswordLastSet(new Timestamp(cal.getTime().getTime()));// last
 																			// set
 																			// 3days
 																			// ago
 			// LoginPolicy max password age is 2 days
+			user.setFailedLoginAttempts(0);
 			saveUser(user);
 		}
 
@@ -226,7 +228,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 
 		{
 			User user = loadUser();
-			assertEquals(0, user.getFailedLoginAttempts());
+			assertEquals(-1, user.getFailedLoginAttempts());
 		}
 	}
 
@@ -239,6 +241,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 		{
 			User user = loadUser();
 			user.setPasswordLastSet(now);
+			user.setFailedLoginAttempts(-1);
 			user.setLastFailedLoginAttemptTime(now);
 			// Login Policy Lockout duration = 3 minutes
 			saveUser(user);

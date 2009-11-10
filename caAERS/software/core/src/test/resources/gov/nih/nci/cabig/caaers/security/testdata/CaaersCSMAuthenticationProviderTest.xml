@@ -82,8 +82,6 @@
 	
 	<study_agent_inds />
 	
-	<study_personnel />
-	
 	<site_rs_staff_roles />
     
     <ae_report_people />
@@ -94,16 +92,18 @@
     
     <site_investigators />
   
+    <study_organizations />
+
     <study_investigators />
     
-    <study_organizations />
+    <study_personnel />
     
     <study_site_wf_cfgs />
       
     <password_policy
         id="1"
         ln_allowed_attempts="3"
-        ln_lockout_duration="180"
+        ln_lockout_duration="300"
         ln_max_age="172800"
         cn_min_age="3600"
         cn_history_size="3"

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
@@ -59,15 +60,22 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 		
 		try {
 			// If the user is a caAERS user, then apply Login Policy Validations
-			if(caaersUser!=null) {				
+			if(caaersUser!=null) {	
+					if(caaersUser.getSecondsPastLastFailedLoginAttempt() > passwordPolicy.getLoginPolicy().getLockOutDuration()) {
+						if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt()) {
+							caaersUser.setFailedLoginAttempts(0);
+							caaersUser.setLastFailedLoginAttemptTime(null);
+						}
+					}
 				credential.setUser(caaersUser);
 				loginPolicyValidator.validate(passwordPolicy, credential, null);
+				if(caaersUser.getFailedLoginAttempts()==-1)	caaersUser.setFailedLoginAttempts(0);
+				if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt())	caaersUser.setFailedLoginAttempts(0);
 			}
 			
-			// Irrespective of the type of user, apply authentication checks
 			super.additionalAuthenticationChecks(user, token);
 			
-			if(caaersUser != null){
+			if(caaersUser!=null){
 				// If the caAERS user passes the checks and validations, then do the following
 				caaersUser.setFailedLoginAttempts(0);
 				caaersUser.setLastFailedLoginAttemptTime(null);
@@ -76,7 +84,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 		} catch (DisabledException attemptsEx) {
 			// This exception is thrown when too many failed login attempts occur.
 			caaersUser.setLastFailedLoginAttemptTime(new Date());
-			caaersUser.setFailedLoginAttempts(0);
+			caaersUser.setFailedLoginAttempts(-1);
 			throw attemptsEx;
 		} catch (LockedException lockEx) {
 			// This exception is thrown when user tries to login while the account is locked.
@@ -90,6 +98,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider{
 			// This exception is thrown when invalid credentials are used to login.
 			if(caaersUser!=null) {
 				caaersUser.setFailedLoginAttempts(caaersUser.getFailedLoginAttempts()+1);
+				if(caaersUser.getFailedLoginAttempts()==1)	caaersUser.setLastFailedLoginAttemptTime(new Date());
 			}
 			throw new BadCredentialsException("Invalid login credentials");
 		} finally {

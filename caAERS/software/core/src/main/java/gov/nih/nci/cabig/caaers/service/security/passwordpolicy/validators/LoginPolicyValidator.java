@@ -39,11 +39,11 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
     public boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential)
             throws DisabledException {
         if (credential.getUser().getFailedLoginAttempts() >= policy
-                .getAllowedFailedLoginAttempts()) {
+                .getAllowedFailedLoginAttempts()-1) {
             //throw new TooManyAllowedFailedLoginAttemptsException("Too many failed logins.");
         	throw new DisabledException("Too many failed login attempts resulted in account lock out for "+policy.getLockOutDuration()+" seconds.");
         }
-        return true;
+       	return true;
     }
     
     /**
@@ -58,7 +58,7 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
             throws LockedException {
     	if(credential.getUser().getSecondsPastLastFailedLoginAttempt() == -1) 
     		return true;
-    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastFailedLoginAttempt()) {
+    	else if(policy.getLockOutDuration()>credential.getUser().getSecondsPastLastFailedLoginAttempt() && credential.getUser().getFailedLoginAttempts()==-1) {
     		//throw new UserLockedOutException("User is locked out");
     		long timeLeft = policy.getLockOutDuration() - credential.getUser().getSecondsPastLastFailedLoginAttempt();
     		throw new LockedException("Account is locked out for "+timeLeft+" more second(s).");

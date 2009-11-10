@@ -16,7 +16,17 @@ public class LoginPolicy {
 
     private int maxPasswordAge;
 
-    @NumInRange(min = 0)
+    private int allowedLoginTime;
+    
+	public int getAllowedLoginTime() {
+		return allowedLoginTime;
+	}
+
+	public void setAllowedLoginTime(int allowedLoginTime) {
+		this.allowedLoginTime = allowedLoginTime;
+	}
+
+	@NumInRange(min = 0)
     public int getAllowedFailedLoginAttempts() {
         return allowedFailedLoginAttempts;
     }
