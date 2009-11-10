@@ -168,7 +168,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
             if (participant == null) {
                 participant = createParticipant(registration);
-                createStudyParticipantAssignment(registration.getGridId(), participant, site);
+                createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
             } else {
 
                 logger.info("The participant identified by MRN :" + mrn
@@ -182,7 +182,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                     RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                     throw exp;
                 }
-                createStudyParticipantAssignment(registration.getGridId(), participant, site);
+                createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
 
             }
             participantDao.save(participant);
@@ -467,14 +467,32 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
     }
 
     StudyParticipantAssignment createStudyParticipantAssignment(String assignmentGridId,
-                    Participant participant, StudySite site) {
+                    Participant participant, StudySite site, IdentifierType[] identifierTypes) {
         StudyParticipantAssignment assignment = new StudyParticipantAssignment(participant, site);
         assignment.setGridId(assignmentGridId);
+        String studySubjectIdentifier = getStudySubjectIdentifier(identifierTypes);
+        if (studySubjectIdentifier != null) {
+        	assignment.setStudySubjectIdentifier(studySubjectIdentifier);
+        }
         participant.addAssignment(assignment);
         site.addAssignment(assignment);
         return assignment;
     }
-
+    
+    
+    private String getStudySubjectIdentifier(IdentifierType[] identifierTypes) {
+    	String studySubjectIdentifier = null;
+    	for (IdentifierType identifierType : identifierTypes) {
+    		if (identifierType instanceof OrganizationAssignedIdentifierType) {
+    			if (identifierType.getType().equals("COORDINATING_CENTER_ASSIGNED_STUDY_SUBJECT_IDENTIFIER")) {
+    				studySubjectIdentifier = identifierType.getValue();
+    				break;
+    			}
+    		}
+    	}
+    	return studySubjectIdentifier;
+    	
+    }
     // /BEAN PROPERTIES
 
 
