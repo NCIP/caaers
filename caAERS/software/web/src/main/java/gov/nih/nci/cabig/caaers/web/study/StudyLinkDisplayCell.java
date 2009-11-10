@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.ajax.AjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 
 import org.extremecomponents.table.bean.Column;
@@ -10,7 +9,7 @@ import org.extremecomponents.table.core.TableModel;
 
 public class StudyLinkDisplayCell extends AbstractCell {
 
-	public static final String EDIT_STUDY_URL= "/pages/study/edit?studyId=";
+	public static final String EDIT_STUDY_URL= "edit?studyId=";
 	
     @Override
     protected String getCellValue(TableModel model, Column column) {
@@ -29,7 +28,7 @@ public class StudyLinkDisplayCell extends AbstractCell {
         }
 
         String cellValue = column.getValueAsString();
-        String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
+        //String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
         
         String image = "";
         String imagePath = model.getContext().getContextPath() + "/images/chrome/nci_icon_22.png";
@@ -37,7 +36,7 @@ public class StudyLinkDisplayCell extends AbstractCell {
         	image = "<img src=\"" +imagePath+"\" alt=\"NCI data\" width=\"17\" height=\"16\" border=\"0\" align=\"middle\">&nbsp;";
         }
         if (id != null) {
-            cellValue = image +  "<a href=\"" + link + id.toString() + "\">" + cellValue + "</a>";
+            cellValue = image + cellValue ;
         }
         
         String url = "document.location='" + EDIT_STUDY_URL + id + "'";
