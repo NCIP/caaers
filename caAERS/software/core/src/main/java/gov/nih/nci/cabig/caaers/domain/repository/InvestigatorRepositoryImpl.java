@@ -8,11 +8,11 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -140,6 +140,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	    			} 
     	    			SiteInvestigator dbSI = new SiteInvestigator();
     	    			dbSI.setOrganization(organization);
+    	    			dbSI.setStartDate(DateUtils.today());
     	    			dbSI.setInvestigator(remoteInvestigator);
     	    			siDBList.add(dbSI);
     	    			

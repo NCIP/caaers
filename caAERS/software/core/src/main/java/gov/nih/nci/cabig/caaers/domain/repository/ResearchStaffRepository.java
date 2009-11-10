@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -244,6 +246,12 @@ public class ResearchStaffRepository {
     	    			SiteResearchStaff dbSR = new SiteResearchStaff();
     	    			dbSR.setOrganization(organization);
     	    			dbSR.setResearchStaff(remoteResearchStaff);
+    	    			SiteResearchStaffRole srs = new SiteResearchStaffRole();
+    	    			srs.setRoleCode("caaers_study_cd");
+    	    			srs.setStartDate(DateUtils.today());
+    	    			srs.setSiteResearchStaff(dbSR);
+    	    			dbSR.addSiteResearchStaffRole(srs);
+    	    			//dbSR.addSiteResearchStaffRole(siteResearchStaffRole)
     	    			srDBList.add(dbSR);
     				}
     				remoteResearchStaff.getSiteResearchStaffs().clear();
