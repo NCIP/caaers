@@ -82,14 +82,14 @@
 </head>
 <body>
 	<a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
-	<h2>Please enter your information</h2>
   <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
-    <p class="label">Password changed successfully. You can now <a href="${login}">login</a>.</p>
+    <h2>Password changed successfully.</h2><h2>You can now <a href="${login}">login</a>.</h2>
   </c:if>
   <c:if test="${not updated}">
       <c:url value="/public/user/changePassword" var="action"/>
       <form:form action="${action}">
+      <h2>Please enter your information</h2>
 	 <tags:hasErrorsMessage />
 	<div class="row">
 	<div class="label">Username</div>
@@ -100,7 +100,7 @@
 	<div class="row">
 	  <div class="label">New Password</div>
 	  <div class="value">
-	    <form:password path="password"/>
+	    <form:password path="passwordNew"/>
 	  </div>
 	</div>
 	<div class="row">

@@ -72,6 +72,15 @@
 
 	<div class="nested_section">
 	  <div class="row">
+	    <div class="required_label">Allowed login time (seconds):</div>
+	    <div class="required_value">
+	      <form:input path="loginPolicy.allowedLoginTime" size="8"/>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="nested_section">
+	  <div class="row">
 	    <div class="required_label">Lockout duration (seconds):</div>
 	    <div class="required_value">
 	      <form:input path="loginPolicy.lockOutDuration" size="8"/>

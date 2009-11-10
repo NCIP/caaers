@@ -43,7 +43,7 @@ public class ChangePasswordController extends SimpleFormController {
         		errors.reject(vError.getCode(), vError.getReplacementVariables(), vError.getMessage());
         	}
             return modelAndView.addObject("change_pwd_error", e.getErrors());
-        }
+        } 
     }
 
     @Required
@@ -57,7 +57,7 @@ public class ChangePasswordController extends SimpleFormController {
     }
 
     public class ChangePasswordCommand {
-        private String userName, password, passwordConfirm, token;
+        private String userName, passwordNew, passwordConfirm, token;
 
         public String getUserName() {
             return userName;
@@ -67,12 +67,12 @@ public class ChangePasswordController extends SimpleFormController {
             this.userName = userName;
         }
 
-        public String getPassword() {
-            return password;
+        public String getPasswordNew() {
+            return passwordNew;
         }
 
-        public void setPassword(String password) {
-            this.password = password;
+        public void setPasswordNew(String passwordNew) {
+            this.passwordNew = passwordNew;
         }
 
         public String getPasswordConfirm() {
@@ -92,7 +92,7 @@ public class ChangePasswordController extends SimpleFormController {
         }
 
         public String confirmedPassword() throws CaaersSystemException {
-            if (password.equals(passwordConfirm)) return password;
+            if (passwordNew.equals(passwordConfirm)) return passwordNew;
             throw new CaaersSystemException("The two passwords entered are not the same,");
         }
     }

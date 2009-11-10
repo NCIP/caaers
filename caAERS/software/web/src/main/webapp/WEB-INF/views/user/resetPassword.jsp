@@ -73,7 +73,7 @@
           color: #FFCC00;
       }
       
-      input {
+      input {   
           outline: none;
       }
 	  .wide-header {
@@ -85,9 +85,12 @@
 <a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <h2>Please enter your username </h2>
   You will be sent an email to reset your password.
+  <c:if test="${noSuchUser}">
+  <br><br><img src="/caaers/images/error-yellow.png" style="margin-right:10px"><font size=3 color="red">Invalid username</font>
+  </c:if>
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
-             <c:if test="${not empty param.login_error}">
+         <c:if test="${not empty param.login_error}">
              <p class="errors">
                   <img src="/caaers/images/error-yellow.png" style="margin-right:10px">Password is too old. Please reset your password.
              </p>
@@ -103,6 +106,6 @@
 	</div>
       </div>
     </form:form>
-
+	
 </body>
 </html>

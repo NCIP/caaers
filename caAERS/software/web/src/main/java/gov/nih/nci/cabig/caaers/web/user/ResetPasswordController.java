@@ -38,12 +38,14 @@ public class ResetPasswordController extends SimpleFormController {
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
-        UserName userName = (UserName) command;
+        ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
+
+    	UserName userName = (UserName) command;
         User dbUser = userDao.getByLoginId(userName.getUserName());
+        if(dbUser==null) return modelAndView.addObject("noSuchUser", true);
         // Srini Akkala , CAAERS-2356
         String userEmail = dbUser.getEmailAddress();
         //find the user object, preference given to researchstaff
-        
         User user = passwordManagerService.requestToken(userName.getUserName());
         //csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
         csmUserRepository.sendUserEmail(userEmail, "Reset caAERS Password", emailPretext
