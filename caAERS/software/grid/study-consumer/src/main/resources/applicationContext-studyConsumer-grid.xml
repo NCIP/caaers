@@ -12,11 +12,7 @@
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-coppa.xml"/>
 	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-studyConsumer.xml"/>
-
-    <bean id="studyConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
-        <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>
-     	<property name="rollbackInterval" ref ="studyRollbackInterval" />
-    </bean>
+	
 	<bean id="studyRollbackInterval" class="java.lang.Integer">
 		<constructor-arg value="s[grid.studyconsumer.rollbackInterval]" />
 	</bean>
@@ -29,4 +25,25 @@
 	<bean id="coppaMode" class="java.lang.Boolean">
 		<constructor-arg value="false"/>
 	</bean>
+	
+	<bean id="studyConsumerAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="studyConsumerGridServiceUrl" />
+	</bean>
+		
+	 <bean id="studyConsumerTarget" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
+        <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>
+     	<property name="rollbackInterval" ref ="studyRollbackInterval" />
+    </bean>
+	<bean id="studyConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="studyConsumerTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>studyConsumerAuditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
+
 </beans>

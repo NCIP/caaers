@@ -67,7 +67,7 @@ import org.springframework.web.context.request.WebRequest;
 
 public class CaaersStudyConsumer implements StudyConsumerI {
 
-    private static Logger logger = Logger.getLogger(CaaersStudyConsumer.class);//logger = LogFactory.getLog(CaaersStudyConsumer.class);
+    private static Logger logger = Logger.getLogger(CaaersStudyConsumer.class);
 
     private OrganizationRepository organizationRepository;
 
@@ -83,45 +83,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     private Integer rollbackInterval;
     
-    private AuthorizationSwitch authorizationSwitch;
-
-    //private StudyParticipantAssignmentAspect assignmentAspect;
-    
-    private OpenSessionInViewInterceptor openSessionInViewInterceptor;
-    
-    public void setOpenSessionInViewInterceptor(
-			OpenSessionInViewInterceptor openSessionInViewInterceptor) {
-		this.openSessionInViewInterceptor = openSessionInViewInterceptor;
-	}
-/*
-	public void setAssignmentAspect(
-			StudyParticipantAssignmentAspect assignmentAspect) {
-		this.assignmentAspect = assignmentAspect;
-	}
-*/
-	public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
-		this.authorizationSwitch = authorizationSwitch;
-	}
-
-	private WebRequest preProcess() {
-        //assignmentAspect.setSecurityInterceptor(new AspectJSecurityInterceptorStub());
-        authorizationSwitch.setOn(false);
-        GrantedAuthority[] authorities = new GrantedAuthority[1];
-        authorities[0] = new GrantedAuthorityImpl("ROLE_caaers_super_user");
-
-        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user", "ignored",
-                        authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        WebRequest stubWebRequest = new StubWebRequest();
-        openSessionInViewInterceptor.preHandle(stubWebRequest);
-        return stubWebRequest;
-    }
-
-    private void postProcess(WebRequest stubWebRequest) {
-        openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
-    }
 
     public void commit(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
@@ -145,65 +106,64 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     }
 
     /**
-     * This method will remove from caAERs the study if its loadStatus is INPROGRESS.
+     * This method will remove a study from caAERS. A rollback can only be successful if 
+     *   <li> the request is received within a minute of study creation </li>
+     *   <li> the study was created via the studyConsumerGrid message</li>
+     *   
+     *   Assumption:-
+     *   The study to be deleted is identified using the Coordinating Center identifier. 
      */
-    public void rollback(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
-                    InvalidStudyException {
-    	System.out.println("Begining of studyConsumer : rollback");
-    	WebRequest stubWebRequest = null;
-    	stubWebRequest = preProcess();
-        logger.info("Begining of studyConsumer : rollback");
+    public void rollback(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException, InvalidStudyException {
+    	
+    	if(logger.isDebugEnabled())logger.debug("Begining of studyConsumer : rollback");
+    	
         if (studyDto == null) {
-            InvalidStudyException invalidStudyException = getInvalidStudyException("Null input");
+        	logger.error("Invalid study input message, the studydto is null");
+        	InvalidStudyException invalidStudyException = getInvalidStudyException("Null input");
             throw invalidStudyException;
         }
 
         String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-        gov.nih.nci.cabig.caaers.domain.Study study = fetchStudy(ccIdentifier,
-                        OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+        gov.nih.nci.cabig.caaers.domain.Study study = fetchStudy(ccIdentifier,OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+        
         // check if study was created by the grid service or not
         if (study == null) {
+        	logger.error("Unable to find study having Identifier [type: " + OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE + ", value :" + ccIdentifier + "]" );
             String message = "Null input";
             throw getInvalidStudyException(message);
         }
-        boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository
-                        .checkIfEntityWasCreatedByUrl(study.getClass(), study.getId(),
+        
+        boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.checkIfEntityWasCreatedByUrl(study.getClass(), study.getId(),
                                         studyConsumerGridServiceUrl);
 
         if (!checkIfEntityWasCreatedByGridService) {
-        	logger.error("Study was not created by the grid service url:"
-                            + studyConsumerGridServiceUrl + " so can not rollback this study:"
-                            + study.getId());
+        	logger.warn("Study was not created by the grid service url:" + studyConsumerGridServiceUrl + " so can not rollback this study: "  + study.getId());
             return;
         }
-        System.out.println("Study (id:" + study.getId() + ") was created by the grid service url:"
-                        + studyConsumerGridServiceUrl);
+        
+        if(logger.isDebugEnabled()) logger.debug("Study (id:" + study.getId() + ") was created by the grid service url:" + studyConsumerGridServiceUrl);
 
         // check if this study was created one minute before or not
         Calendar calendar = Calendar.getInstance();
 
-        boolean checkIfStudyWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository
-                        .checkIfEntityWasCreatedMinutesBeforeSpecificDate(study.getClass(), study
-                                        .getId(), calendar, rollbackInterval);
+        boolean recentlyCreated = auditHistoryRepository.checkIfEntityWasCreatedMinutesBeforeSpecificDate(study.getClass(), 
+        			study.getId(), calendar, rollbackInterval);
         try {
-            if (checkIfStudyWasCreatedOneMinuteBeforeCurrentTime) {
-            	System.out.println("Study was created one minute before the current time:"
-                                + calendar.getTime().toString() + " so deleting this study:"
-                                + study.getId());
+            if (recentlyCreated) {
+            	if(logger.isInfoEnabled()) logger.info("Study was created one minute before the current time:" + calendar.getTime().toString() + " so deleting this study:" + study.getId());
                 studyDao.delete(study);
             } else {
-            	logger.error("Study was not created one minute before the current time:"
-                                + calendar.getTime().toString()
-                                + " so can not rollback this study:" + study.getId());
+            	logger.warn("Study was not created one minute before the current time:" + calendar.getTime().toString() + " so can not rollback this study:" + study.getId());
             }
         } catch (Exception expception) {
             String message = "Exception while comitting study," + expception.getMessage();
             throw getInvalidStudyException(message);
-        } finally {
-            postProcess(stubWebRequest);
-        }
-        System.out.println("End of studyConsumer : rollback");
+        } 
+        
+        if(logger.isDebugEnabled()) logger.debug("End of studyConsumer : rollback");
+    
     }
+    
     private AeTerminology createCtcV3Terminology(Study study) {
         AeTerminology t = new AeTerminology();
         Ctc v3 = new Ctc();
@@ -217,15 +177,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     /**
      * This will create a study in the DB. <p/> Assumptions:- Study is identified by Coordinating
-     * Center identifier There will only be one Organization assigned identifer in the input, and it
+     * Center identifier There will only be one Organization assigned identifier in the input, and it
      * is the CoordinatingCenterIdentifier
      */
     public void createStudy(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException, StudyCreationException {
-    	System.out.println("Begining of studyConsumer : createStudy");
-    	WebRequest stubWebRequest = null;
     	try {
-    		stubWebRequest = preProcess();
         	logger.info("Begining of studyConsumer : createStudy");
             if (studyDto == null) throw getInvalidStudyException("null input");
 
@@ -257,12 +214,41 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         } catch (Exception e) {
             logger.error("Error while creating study", e);
             throw new RemoteException("Unable to create study", e);
-        } finally {
-            postProcess(stubWebRequest);
-        }
+        } 
 
     }
-
+    
+    /**
+     * This method will retrieve from the Study DTO the identifier value of a specific type. 
+     * @param studyDto
+     * @param identifierType
+     * @return
+     */
+    private String findOrganizationIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto , String identifierType){
+    	
+    	for (IdentifierType idType : studyDto.getIdentifier()) {
+    		if(idType instanceof SystemAssignedIdentifierType) continue;
+            if (StringUtils.equals(idType.getType(),identifierType)) return idType.getValue();
+        }
+    	
+    	return null;
+    }
+    /**
+     * This method will retrieve from the Study DTO the System identifier value of a specific type. 
+     * @param studyDto
+     * @param identifierType
+     * @return
+     */
+    private String findSystemIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto , String identifierType){
+    	
+    	for (IdentifierType idType : studyDto.getIdentifier()) {
+    		if(idType instanceof OrganizationAssignedIdentifierType) continue;
+            if (StringUtils.equals(idType.getType(),identifierType)) return idType.getValue();
+        }
+    	
+    	return null;
+    }
+    
     /**
      * This method will return the identifier specified by Coordinating center to this study.
      * 
@@ -270,48 +256,32 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @return
      * @throws InvalidStudyException
      */
-    String findCoordinatingCenterIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto)
-                    throws InvalidStudyException {
-        String ccIdentifier = null;
-        for (IdentifierType idType : studyDto.getIdentifier()) {
-            if (idType instanceof OrganizationAssignedIdentifierType
-                            && StringUtils
-                                            .equals(
-                                                            idType.getType(),
-                                                            OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)) {
-                ccIdentifier = idType.getValue();
-                break;
-            }
-        }
-
+    String findCoordinatingCenterIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws InvalidStudyException {
+        String ccIdentifier = findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         if (ccIdentifier == null) {
-
+        	logger.error("Could not find Coordinating center identifier in the Study message");
             InvalidStudyException exp = getInvalidStudyException("In Study/Identifiers, Coordinating Center Identifier is not available");
             throw exp;
         }
         return ccIdentifier;
-
     }
 
     /**
-     * This method will return the identifier specified by Coppa.
-     * 
+     * This method will return the identifier specified by COPPA.
+     */
+    String findCoppaIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto) {
+    	return findSystemIdentifier(studyDto,  "COPPA Identifier");
+    }
+    
+    /**
+     * This method will find out the Sponsor Identifier
      * @param studyDto
      * @return
-     * @throws InvalidStudyException
      */
-    String findCoppaIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto)
-                    throws InvalidStudyException {
-        String ccIdentifier = null;
-        for (IdentifierType idType : studyDto.getIdentifier()) {
-            if (idType instanceof SystemAssignedIdentifierType && StringUtils.equals(idType.getType(), "COPPA Identifier")) {
-                ccIdentifier = idType.getValue();
-                break;
-            }
-        }
-        return ccIdentifier;
-
+    String findFundingSponsorIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto){
+    	return findOrganizationIdentifier(studyDto, OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
     }
+    
     
     void populateStudyDetails(gov.nih.nci.cabig.ccts.domain.Study studyDto,
                     gov.nih.nci.cabig.caaers.domain.Study study, String coppaIdentifier) throws StudyCreationException,
@@ -335,15 +305,16 @@ public class CaaersStudyConsumer implements StudyConsumerI {
          //fixed by srini , bug Id CAAERS-1038
          AeTerminology aet = createCtcV3Terminology(study);
          study.setAeTerminology(aet);
+         
+         // populate study coordinating center and study funding sponsor
+         StudyOrganizationType[] studyOrgTypes = studyDto.getStudyOrganization();
+         populateStudyOrganizations(study, studyOrgTypes);
 
         // populate study identifiers
         IdentifierType[] identifierTypes = studyDto.getIdentifier();
         populateIdentifiers(study, identifierTypes);
 
-        // populate study coordinating center and study funding sponsor
-        StudyOrganizationType[] studyOrgTypes = studyDto.getStudyOrganization();
-        populateStudyOrganizations(study, studyOrgTypes);
-
+     
     }
 
     /**
@@ -353,32 +324,36 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @param identifierTypes
      * @throws StudyCreationException
      */
-    void populateIdentifiers(gov.nih.nci.cabig.caaers.domain.Study study,
-                    IdentifierType[] identifierTypes) throws StudyCreationException {
+    void populateIdentifiers(gov.nih.nci.cabig.caaers.domain.Study study, IdentifierType[] identifierTypes) throws StudyCreationException {
         if (ArrayUtils.isEmpty(identifierTypes)) {
             logger.error("No identifiers are associated to this study");
-            String message = "No identifiers are assigned to this study (grid Id : "
-                            + study.getGridId() + ")";
+            String message = "No identifiers are assigned to this study (grid Id : "+ study.getGridId() + ")";
             throw getStudyCreationException(message);
         }
-
+        
+        //figureout the list of known identifiers
         List<Lov> identifierLovs = configurationProperty.getMap().get("identifiersType");
         List<String> knownIdentifierTypes = new ArrayList<String>();
         for (Lov lov : identifierLovs) {
             knownIdentifierTypes.add(lov.getCode());
         }
 
+        
         List<SystemAssignedIdentifier> sysIdentifiers = new ArrayList<SystemAssignedIdentifier>();
         List<OrganizationAssignedIdentifier> orgIdentifiers = new ArrayList<OrganizationAssignedIdentifier>();
+        
+        OrganizationAssignedIdentifier ccIdentifier = null;
+        OrganizationAssignedIdentifier sponsorIdentifier = null;
+        
 
         for (IdentifierType identifierType : identifierTypes) {
+        	if (!knownIdentifierTypes.contains(identifierType.getType())) {
+            	logger.warn("The identifier type '" + identifierType.getType()+ "' is unknown to caAERS. So ignoring the identifier(" + identifierType.getValue() + ")");
+                continue;
+            }
+        	
             if (identifierType instanceof SystemAssignedIdentifierType) {
-                if (!knownIdentifierTypes.contains(identifierType.getType())) {
-                	logger.error("The identifier type '" + identifierType.getType()
-                                    + "' is unknown to caAERS. So ignoring the identifier("
-                                    + identifierType.getValue() + ")");
-                    continue;
-                }
+                
                 SystemAssignedIdentifierType sysIdType = (SystemAssignedIdentifierType) identifierType;
                 SystemAssignedIdentifier id = new SystemAssignedIdentifier();
                 id.setGridId(identifierType.getGridId());
@@ -387,46 +362,39 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 id.setValue(sysIdType.getValue());
                 id.setSystemName(sysIdType.getSystemName());
                 sysIdentifiers.add(id);
+                
             } else if (identifierType instanceof OrganizationAssignedIdentifierType) {
+            	
                 OrganizationAssignedIdentifierType orgIdType = (OrganizationAssignedIdentifierType) identifierType;
                 OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
                 id.setGridId(orgIdType.getGridId());
                 id.setPrimaryIndicator(orgIdType.getPrimaryIndicator());
                 id.setType(orgIdType.getType());
                 id.setValue(orgIdType.getValue());
-                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite()
-                                .getNciInstituteCode()));
-                orgIdentifiers.add(id);
-            } else {
-                String message = "Unknown IdentifierType in grid Study " + study.getGridId();
-                throw getStudyCreationException(message);
+                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
+ 
+                if(StringUtils.equals(identifierType.getType(),OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
+            		ccIdentifier = id;
+            	}else if(StringUtils.equals(identifierType.getType(),OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
+            		sponsorIdentifier = id;
+            	}else{
+            		orgIdentifiers.add(id);
+            	}
+ 
+                
+            } 
+            
+            //if the sponsor identifier is not supplied, use coordinating center instead. 
+            if(sponsorIdentifier == null){
+            	  sponsorIdentifier = new OrganizationAssignedIdentifier();
+                  sponsorIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+                  sponsorIdentifier.setValue(ccIdentifier.getValue());
+                  sponsorIdentifier.setOrganization(study.getPrimaryFundingSponsorOrganization());
             }
-            /*
-             * //find coordinating center identifier OrganizationAssignedIdentifier
-             * coordinatingCenterId = null; //find funding sponsor identifier
-             * OrganizationAssignedIdentifier fundingSponsorId = null;
-             * for(OrganizationAssignedIdentifier id : orgIdentifiers) {
-             * if(id.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
-             * coordinatingCenterId = id; } if(StringUtils.equals(id.getType(),
-             * OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE) ){ fundingSponsorId = id; } }
-             * 
-             * //remove them from organization identifiers list. //or create them if they dont exist
-             * if(coordinatingCenterId != null){ orgIdentifiers.remove(coordinatingCenterId); }else {
-             * coordinatingCenterId = new OrganizationAssignedIdentifier();
-             * coordinatingCenterId.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-             * coordinatingCenterId.setValue("UNKNOWN");
-             * coordinatingCenterId.setOrganization(fetchOrganization("NCIC")); }
-             * 
-             * if(fundingSponsorId != null){ orgIdentifiers.remove(fundingSponsorId); }else {
-             * fundingSponsorId = new OrganizationAssignedIdentifier();
-             * fundingSponsorId.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-             * fundingSponsorId.setValue("UNKNOWN");
-             * fundingSponsorId.setOrganization(fetchOrganization("NCIC")); }
-             * 
-             * 
-             * //Add identifiers to the study. study.addIdentifier(fundingSponsorId);
-             * study.addIdentifier(coordinatingCenterId);
-             */
+          
+            study.addIdentifier(sponsorIdentifier);
+            study.addIdentifier(ccIdentifier);
+            
             for (OrganizationAssignedIdentifier id : orgIdentifiers) {
                 study.addIdentifier(id);
             }
@@ -576,7 +544,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             StudyInvestigator studyInvestigator = new StudyInvestigator();
             studyInvestigator.setStudyOrganization(studyOrganization);
             String roleCode = null;
-            PersonRole[] caaersRoles = PersonRole.values();
+            PersonRole[] caaersRoles = new PersonRole[]{PersonRole.SITE_INVESTIGATOR, PersonRole.SITE_PRINCIPAL_INVESTIGATOR, PersonRole.PRINCIPAL_INVESTIGATOR};
             if (invType.getRoleCode() == null) {
             	StudyCreationException exp = new StudyCreationException();
             	exp.setFaultReason("Investigator role is NULL in Study message");
