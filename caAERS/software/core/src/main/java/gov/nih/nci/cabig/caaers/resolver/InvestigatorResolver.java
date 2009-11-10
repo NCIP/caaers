@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
@@ -315,6 +316,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		SiteInvestigator si = new SiteInvestigator();
 		si.setOrganization(site);
 		si.setInvestigator(remoteInvestigator);
+		si.setStartDate(DateUtils.today());
 		remoteInvestigator.addSiteInvestigator(si)	;
 
 		return remoteInvestigator;
@@ -379,6 +381,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
 				si.setInvestigator(remoteInvestigator);
+				si.setStartDate(DateUtils.today());
 				remoteInvestigator.addSiteInvestigator(si)	;
 				
 
@@ -410,6 +413,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());	
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
+				si.setStartDate(DateUtils.today());
 				si.setInvestigator(remoteInvestigator);
 				remoteInvestigator.addSiteInvestigator(si)	;
 				

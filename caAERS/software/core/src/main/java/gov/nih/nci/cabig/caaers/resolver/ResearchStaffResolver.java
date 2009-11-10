@@ -10,6 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.ClinicalResearchStaff;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
@@ -102,6 +104,11 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
+				SiteResearchStaffRole srs = new SiteResearchStaffRole();
+    			srs.setRoleCode("caaers_study_cd");
+    			srs.setStartDate(DateUtils.today());
+    			srs.setSiteResearchStaff(siteResearchStaff);
+    			siteResearchStaff.addSiteResearchStaffRole(srs);
 				remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 			}
 
@@ -134,6 +141,11 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
+				SiteResearchStaffRole srs = new SiteResearchStaffRole();
+    			srs.setRoleCode("caaers_study_cd");
+    			srs.setStartDate(DateUtils.today());
+    			srs.setSiteResearchStaff(siteResearchStaff);
+    			siteResearchStaff.addSiteResearchStaffRole(srs);
 				remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 			}
 
@@ -149,6 +161,11 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setResearchStaff(remoteResearchStaff);
 		siteResearchStaff.setOrganization(site);
+		SiteResearchStaffRole srs = new SiteResearchStaffRole();
+		srs.setRoleCode("caaers_study_cd");
+		srs.setStartDate(DateUtils.today());
+		srs.setSiteResearchStaff(siteResearchStaff);
+		siteResearchStaff.addSiteResearchStaffRole(srs);
 		remoteResearchStaff.addSiteResearchStaff(siteResearchStaff);
 		return remoteResearchStaff;
 	}
