@@ -101,6 +101,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
 				site = new RemoteOrganization();
 				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
@@ -138,6 +139,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
 				site = new RemoteOrganization();
 				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 				SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 				siteResearchStaff.setResearchStaff(remoteResearchStaff);
 				siteResearchStaff.setOrganization(site);
@@ -158,6 +160,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		RemoteResearchStaff remoteResearchStaff = setResearchStaffDetails(coppaPerson,nciIdentifier);		
 		Organization site = new RemoteOrganization();
 		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+		site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 		siteResearchStaff.setResearchStaff(remoteResearchStaff);
 		siteResearchStaff.setOrganization(site);
