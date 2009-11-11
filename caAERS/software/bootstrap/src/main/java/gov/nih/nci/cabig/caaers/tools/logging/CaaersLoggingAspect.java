@@ -40,30 +40,32 @@ public class CaaersLoggingAspect {
 		
         Log logger = (call.getTarget() == null) ? LogFactory.getLog(CaaersLoggingAspect.class) : LogFactory.getLog(call.getTarget().getClass());
 
-		if(logger.isDebugEnabled()) debug(logger, true, call, null, 0);
+		if(logger.isTraceEnabled()) trace(logger, true, call, null, 0);
 		
         Object point =  call.proceed();
         
         long endTime = System.currentTimeMillis();
         long executionTime = (endTime - startTime);
-        if(executionTime > 500){
-        	logger.info("More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
+        if(logger.isInfoEnabled()){
+            if(executionTime > 500){
+            	logger.info("More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
+            }
         }
         
-        if(logger.isDebugEnabled()){
-        	debug(logger, false, call, point, executionTime);
+        if(logger.isTraceEnabled()){
+        	trace(logger, false, call, point, executionTime);
         }
         
         return point;
     }
 	
 	
-	public void debug(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
+	public void trace(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time){
 		try{
 			if(entry){
-				logger.debug(entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
+				logger.trace(entryMsgPrefix + " [" + call.toShortString() + "] with param : {" + call.getArgs()[0] + "}");
 			}else{
-				logger.debug(exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
+				logger.trace(exitMsgPrefix +" [" + call.toShortString()  + "with return as: {" + String.valueOf(retVal) + "} [executionTime : " + time + "]");
 			}
 			
 		}catch(Exception ignore){ 
