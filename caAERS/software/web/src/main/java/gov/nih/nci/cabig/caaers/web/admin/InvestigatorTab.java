@@ -103,7 +103,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     	if (command instanceof RemoteInvestigator) {
     		remoteEntity = true;
     	}
-    	
+
         InputFieldGroup investigatorFieldGroup = null;
         RepeatingFieldGroupFactory rfgFactory = null;
 
@@ -161,7 +161,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputField ncidIdField = null;
         if (!remoteEntity) {
-        	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
+        	if (configuration.getAuthenticationMode().equals("webSSO")) {
+        		ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", true);
+        	} else {
+        		ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
+        	}
         } else {
         	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Investigator number", false);
         }
