@@ -25,7 +25,7 @@ public class DecimalValidatorTest extends TestCase {
 	public void testIsValid() {
 		assertTrue(dv.isValid("-453422.93"));
 		assertTrue(dv.isValid("-99.99"));
-		assertFalse(dv.isValid("99."));
+		assertTrue(dv.isValid("99"));
 		assertTrue(dv.isValid(new BigDecimal(99.)));
 		assertTrue(dv.isValid("-123456.12"));
 		assertTrue(dv.isValid("123456"));
@@ -47,7 +47,7 @@ public class DecimalValidatorTest extends TestCase {
 		assertTrue(dv.isValid("999999123.012345"));
 
         assertTrue(dv.isValid("-3.00"));
-        assertFalse(dv.isValid("8."));
+        assertTrue(dv.isValid("8."));
 		assertFalse(dv.isValid("8..."));
         assertFalse(dv.isValid("bba12"));
 		assertFalse(dv.isValid(".14"));
@@ -57,7 +57,7 @@ public class DecimalValidatorTest extends TestCase {
         dv = new DecimalValidator(5, 2);
 		assertTrue(dv.isValid("99923.01"));
 		assertTrue(dv.isValid("0.0"));
-		assertFalse(dv.isValid("0."));
+		assertTrue(dv.isValid("0."));
 		assertTrue(dv.isValid("0.4"));
 
 		assertFalse(dv.isValid(".14"));
