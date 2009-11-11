@@ -20,9 +20,11 @@ public class DecimalValidator extends FieldValidator {
     }
 
     public DecimalValidator(int integerLength, int fractionalLength) {
-        this.integerLength = integerLength;
+        //BJ : change the regEx for  	 CAAERS-3222
+    	this.integerLength = integerLength;
         this.fractionalLength = fractionalLength;
-        pattern = String.format("^(-){0,1}(\\d){1,%d}(\\.){0,1}(\\d){1,%d}$", integerLength, fractionalLength);
+        pattern = String.format("^(-){0,1}(\\d){1,%d}(\\.){0,1}(\\d){0,%d}$", integerLength, fractionalLength);
+        
     }
 
     @Override
