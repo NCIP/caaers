@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -145,6 +146,12 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     			logger.error("Organization exists in external system");
     			throw new RuntimeException("Organization exists in external system");
     		}
+    	}
+    	if (organization instanceof RemoteOrganization && StringUtils.isBlank(organization.getName()) ) {
+    		RemoteOrganization ro = (RemoteOrganization)remoteSession.load(RemoteOrganization.class, organization.getExternalId());
+    		organization.setName(ro.getName());
+    		organization.setCity(ro.getCity());
+    		organization.setCountry(ro.getCountry());
     	}
     	getHibernateTemplate().saveOrUpdate(organization);
     }
