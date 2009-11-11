@@ -110,7 +110,7 @@
                 
             </chrome:box>
         </form:form>
-
+		<div style="margin-left:20px; margin-bottom:10px;"><tags:button markupWithTag="a" color="blue" icon="add" value="Add Investigator" href="createInvestigator" /></div>
         <div id="bigSearch" style="display:none;">
             <form:form id="assembler">
                 <div>

@@ -20,7 +20,7 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         if (indicatorElement) indicatorElement.addClassName("indicator");
     },
 
-    _addItem: function(itemType, src, val, location, options, tabNumber) {
+    _addItem: function(itemType, src, val, location, options, tabNumber, insertionLocation) {
         var container = $(location);
         var paramHash = new Hash();
         paramHash.set('task', 'add');
@@ -31,7 +31,7 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
 
         var url = $('command').action + "?subview";
         this._showIndicator($(container.id + "_indicator"));
-        this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this));
+        this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this), insertionLocation);
     },
 
     _deleteItem: function(itemType, index, location, tabNumber) {
@@ -70,9 +70,12 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
 
     },
 
-    _insertContent: function(container, url, params, onCompleteCallBack) {
+    _insertContent: function(container, url, params, onCompleteCallBack, insertionLocation) {
+		if (!insertionLocation){
+				insertionLocation = 'Top'
+			}
         new Ajax.Updater(container, url, {
-            parameters: params.toQueryString(), onComplete: onCompleteCallBack, insertion: Insertion.Top, evalScripts: true
+            parameters: params.toQueryString(), onComplete: onCompleteCallBack, insertion: insertionLocation, evalScripts: true
         });
     }
 })

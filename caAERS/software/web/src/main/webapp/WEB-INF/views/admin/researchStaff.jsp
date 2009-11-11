@@ -2,10 +2,8 @@
 <jsp:useBean id="today" class="java.util.Date" scope="request" /><c:set var="editMode" value="${command.researchStaff.id > 0}" /><jsp:useBean id="date" class="java.util.Date" />
 <html>
     <head>
-        <script src="<c:url value="/js/ui/ajaxCRUD.js"/>
-            ">
-                    
-        </script>
+        <script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
+		<title>Research Staff</title>
         <tags:dwrJavascriptLink objects="createStudy,searchStudy"/>
     </head>
     <body>
@@ -32,7 +30,7 @@
                         
                             ajaxCRUD = new AJAX_CRUD_HELPER();
                             function addSiteResearchStaff() {
-                                ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0);
+                                ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0, 'Bottom');
                             }
                         
                             function postSiteSelected(siteResearchStaffIndex, organizationID) {
@@ -118,8 +116,10 @@
                     </li>
                 </ul>
             </div>
-            <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false">
+            <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false" hideBox="true">
+            	
                 <jsp:attribute name="repeatingFields">
+                	<chrome:box title="Basic Details">
                     <input type="hidden" name="_action" value=""><input type="hidden" name="_selected" value=""><input type="hidden" name="_finish" value="true"/><input type="hidden" name="srsID"/><input type="hidden" name="srsrID"/><tags:instructions code="researchstaffdetails" /><caaers:message code="researchstaff.details.siteSection" var="siteSectionTitle"/><caaers:message code="researchstaff.details.detailsSection" var="detailsSectionTitle"/>
                     <chrome:division title="${detailsSectionTitle}" id="details">
                         <c:forEach items="${fieldGroups.researchStaff.fields}" var="field" begin="0" end="3">
@@ -149,20 +149,23 @@
                             </div>
                         </c:if>
                     </chrome:division>
-					<caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
-                    <div id="_organizationsDIV">
-                        <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
-						<div style="margin-left:113px; margin-bottom:10px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
-                        <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="rss">
-                            <c:set var="newIndex" value="${size - (status.index + 1)}" /><researchStaff:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
-                        </c:forEach>
-                    </div>
-
+					</chrome:box>
+					<chrome:box title="Associate Organizations">
+						<caaers:message code="researchstaff.details.organizations" var="rsOrganizations"/>
+	                    <div id="_organizationsDIV">
+	                        <c:set var="size" value="${fn:length(command.researchStaff.siteResearchStaffs)}" />
+	                        <c:forEach items="${command.researchStaff.siteResearchStaffs}" varStatus="status" var="rss">
+	                            <c:set var="newIndex" value="${size - (status.index + 1)}" /><researchStaff:oneSiteResearchStaff index="${newIndex}" collapsed="false" />
+	                        </c:forEach>
+	                    </div>
+						<div style="margin-left:20px;"><tags:button size="small" color="blue" icon="add" id="addOrg" type="button" value="Add Organization" onclick="addSiteResearchStaff();"/>&nbsp;<tags:indicator id="_organizationsDIV_indicator" /></div>
+					</chrome:box>
                 </jsp:attribute>
                 <jsp:attribute name="tabControls">
                     <tags:tabControls tab="${tab}" flow="${flow}" willSave="false" saveButtonLabel="Save">
                     </tags:tabControls>
                 </jsp:attribute>
+				
             </tags:tabForm>
             </body>
         </html>

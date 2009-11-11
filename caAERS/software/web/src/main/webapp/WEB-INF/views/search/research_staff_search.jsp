@@ -111,7 +111,7 @@ function buildTable(form) {
     </chrome:box>
 
    </form:form>
-
+	<div style="margin-left:20px"><tags:button markupWithTag="a" color="blue" icon="add" value="Add Research Staff" href="createResearchStaff" /></div>
      <div id="bigSearch" style="display:none;">
          <br>
          <form:form id="assembler">

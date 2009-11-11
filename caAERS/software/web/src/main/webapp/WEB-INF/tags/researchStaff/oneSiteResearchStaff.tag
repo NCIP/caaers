@@ -127,10 +127,11 @@
         </chrome:division>
 --%>
 
-                <div>
+                <div style="margin-left:30px">
                     <c:if test="${!readOnly}">
                         <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
-                        <chrome:division id="roles-details" title="${roleSectionTitle}">
+						
+                        <chrome:division id="roles-details" title="Assign Roles">
                                
                             <tags:table bgColor="#cccccc" contentID="Role_${command.researchStaff.id}_${command.researchStaff.siteResearchStaffs[index].id}">
                             <table cellpadding="3" cellspacing="1" width="100%">
