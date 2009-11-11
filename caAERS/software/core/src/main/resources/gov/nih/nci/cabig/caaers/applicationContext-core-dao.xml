@@ -498,7 +498,9 @@ This applicationContext contains the definition of the DAOs
         </property>
     </bean>
 
-    <bean id="configuration" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration" />
+    <bean id="configuration" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration">
+    	<property name="authenticationMode" ref="authenticationMode"/>
+    </bean>
 
 
 	<!--  Another Session Factory for Local to Remote Entity Conversion -->
