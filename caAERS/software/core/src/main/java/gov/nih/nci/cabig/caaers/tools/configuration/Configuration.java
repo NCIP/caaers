@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author Rhett Sutphin
  */
 public class Configuration extends DatabaseBackedConfiguration implements InitializingBean{
+	private String authenticationMode;
 	public static Configuration LAST_LOADED_CONFIGURATION; 
     private static final ConfigurationProperties PROPERTIES = new ConfigurationProperties(new ClassPathResource("details.properties", Configuration.class));
     public static final ConfigurationProperty<Boolean> SHOW_DEBUG_INFORMATION = PROPERTIES.add(new ConfigurationProperty.Bool("showDebugInformation"));
@@ -40,4 +41,12 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public void afterPropertiesSet() throws Exception {
     	Configuration.LAST_LOADED_CONFIGURATION = this;
     }
+
+	public String getAuthenticationMode() {
+		return authenticationMode;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
 }
