@@ -3,11 +3,7 @@
 <html>
 <head>
 <title>Create Organization</title>
- 	 <style type="text/css">
-        div.content {
-            padding: 5px 15px;
-        }
-    </style>
+
  	
  	<script type="text/javascript">
  		function displayRemoteOrgs(){
@@ -106,14 +102,13 @@
     </div></li>
   </ul>
     </div>      
-  <br />
+
  
-<p>
-<tags:instructions code="organizationdetails" />
-</p>
+
+
 <tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm">
-		
 		 <jsp:attribute name="singleFields">
+		 	<tags:instructions code="organizationdetails" />
             <div>
 				<input type="hidden" name="_action" value="">
 				<input type="hidden" name="_selected" value="">

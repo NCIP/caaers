@@ -4,12 +4,6 @@
 <head>
 <title>Search IND#</title>
 
-<style type="text/css">
-    div.row div.label { width: 9em; }
-    div.row div.value { margin-left: 10em; }
-    div.content { padding: 5px 15px; }        
-</style>
-
 <title>${tab.longTitle}</title>
 <tags:dwrJavascriptLink objects="search"/>
 
@@ -51,31 +45,33 @@ function buildTable(form) {
 
     <div class="content">
         <form:form name="searchForm" id="searchForm" method="post">
-            <p><tags:instructions code="indsearch"/></p>
+            
             <chrome:box title="Investigational New Drug Criteria" cssClass="mpaired" autopad="false">
+            	<tags:instructions code="indsearch"/>
                 <div class="row">
-                    <div class="label"> IND # :&nbsp; </div>
+                    <div class="label"> IND #</div>
                     <div class="value"><input id="prop0" name="strINDNumber" type="text"/></div>
                 </div>
 
                 <div class="row">
-                    <div class="label"> IND holder :&nbsp; </div>
+                    <div class="label"> IND holder</div>
                     <div class="value"><input id="prop1" type="text" name="sponsorName"/></div>
                 </div>
 
                 <div class="endpanes"></div>
-                <div class="row" style="float:right;">
-                    <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
-                    <tags:indicator id="indicator"/>
+                <div class="row">
+					<div class="value">
+	                    <tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
+	                    <tags:indicator id="indicator"/>
+					</div>
                 </div>
                 <div class="endpanes"></div>
             </chrome:box>
 
 
         </form:form>
-
+		<div style="margin-left:20px; margin-bottom:10px;"><tags:button markupWithTag="a" value="Add IND" color="blue" icon="add" href="createIND" /></div>
         <div id="bigSearch" style="display:none;">
-            <br>
             <form:form id="assembler">
                 <div>
                     <input type="hidden" name="_prop" id="prop">

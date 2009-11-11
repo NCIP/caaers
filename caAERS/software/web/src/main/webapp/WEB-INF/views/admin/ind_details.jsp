@@ -3,11 +3,6 @@
 <html>
  <head>
  	<title>Create IND#</title>
- 	 <style type="text/css">
-        div.content {
-            padding: 5px 15px;
-        }
-    </style>
  	<tags:dwrJavascriptLink objects="createIND"/>
 	<script>
 		 Event.observe(window, "load", function() {
@@ -51,14 +46,12 @@
     </div></li>
   </ul>
          </div>
-  <br />
+
   <div class="content">
 	<form:form>
         <chrome:box title="Investigational New Drug Details">
 		<chrome:division id="single-fields">
-			<p>
              <tags:instructions code="inddetails" />
-            </p>
 			<tags:hasErrorsMessage hideErrorDetails="true"/>
             <tags:jsErrorsMessage/>
 			<!--  JSP body here -->
@@ -73,8 +66,7 @@
           <div class="flow-buttons">
            <span class="next">
               <!--  reset and save buttons -->
-               <tags:button type="submit" value="Save" color="green" icon="save" />&nbsp;&nbsp;&nbsp;
-               <tags:button type="reset" value="Reset" color="blue" icon="x" />
+               <tags:button type="submit" value="Save" color="green" icon="save" />
            </span>
           </div>
         </div>
