@@ -42,10 +42,14 @@ public abstract class FieldValidator {
         IDENTIFIER_VALIDATOR = new IdentifierValidator();
     }
 
-    static NumberRangeValidator createNumberRangeValidator(int begin, int end) {
+    public static NumberRangeValidator createNumberRangeValidator(int begin, int end) {
         return new NumberRangeValidator(begin, end);
     }
-
+    
+    public static PatternBasedValidator createPatternBasedValidator(String pattern, String cssClassName){
+    	return new PatternBasedValidator(pattern, cssClassName);
+    }
+    
     /**
      * Will validate the input, based on the specific validation rules.
      *

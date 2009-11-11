@@ -1,12 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-import junit.framework.TestCase;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 import java.math.BigDecimal;
+
+import junit.framework.TestCase;
 
 /**
  * 

@@ -34,17 +34,13 @@ public class LabsTab extends AeTab {
         super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION.getDisplayName(), "ae/labs");
     }
 
-    private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName, String displayName) {
-        fieldFactory.addField(createLabValueField(propName, displayName));
-        fieldFactory.addField(createLabDateField(propName, displayName));
-    }
-
     private InputField createLabDateField(String propName, String displayName) {
         return InputFieldFactory.createPastDateField(propName + ".date", displayName + " date", false);
     }
 
     private InputField createLabValueField(String propName, String displayName) {
-        return InputFieldFactory.createTextField(propName + ".value", displayName + " value", new DecimalValidator(6, 4), new SignValidator(true));
+        return InputFieldFactory.createTextField(propName + ".value", displayName + " value",  new SignValidator(true), 
+        		FieldValidator.createPatternBasedValidator("[0-9]{1,6}([.][0-9]{1,4})?", "DECIMAL"));
     }
 
     @Override

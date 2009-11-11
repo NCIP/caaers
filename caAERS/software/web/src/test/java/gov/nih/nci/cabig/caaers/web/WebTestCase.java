@@ -7,12 +7,15 @@ import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import javax.servlet.jsp.PageContext;
+
 import org.acegisecurity.intercept.method.aspectj.AspectJCallback;
 import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.aspectj.lang.JoinPoint;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockPageContext;
 import org.springframework.mock.web.MockServletContext;
 
 /**
@@ -27,6 +30,7 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
     protected MockServletContext servletContext;
     protected MockHttpSession session;
     protected StaticNowFactory nowFactory; 
+    protected PageContext pageContext;
 
     @Override
     protected void setUp() throws Exception {
@@ -37,11 +41,14 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
         servletContext = new MockServletContext();
         session = new MockHttpSession(servletContext);
         request = new MockHttpServletRequest(servletContext);
+        
         request.setMethod("POST");
         request.setSession(session);
         response = new MockHttpServletResponse();
         nowFactory = new StaticNowFactory();
         nowFactory.setNowTimestamp(NOW);
+        
+        pageContext = new MockPageContext(servletContext, request, response);
     }
     
     static class MockAspectJSecurityInterceptor extends AspectJSecurityInterceptor {

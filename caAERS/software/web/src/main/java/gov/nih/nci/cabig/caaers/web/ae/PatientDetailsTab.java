@@ -143,7 +143,7 @@ public class PatientDetailsTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(InputFieldFactory.createTextField("quantity", "", new SignValidator(true), new DecimalValidator(5, 2)))
+                .addField(InputFieldFactory.createTextField("quantity", "", new SignValidator(true), FieldValidator.createPatternBasedValidator("[0-9]{1,5}([.][0-9]{1,2})?", "DECIMAL") ))
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }
