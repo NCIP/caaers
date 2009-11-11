@@ -175,25 +175,6 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
     }
 
 
-    @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object cmd, BindException errors, int page) throws Exception {
-        super.onBindAndValidate(request, cmd, errors, page);
-        
-        ResearchStaffCommand command = (ResearchStaffCommand) cmd;
-        
-        // Check if there is another research staff with same primary email-address.
-        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-        researchStaffQuery.filterByEmailAddress(command.getResearchStaff().getEmailAddress());
-        List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
-        
-        if(researchStaffList.size() > 1)
-        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
-        
-        if(researchStaffList.size() == 1 && command.getResearchStaff().getId() == null){
-        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
-        }
-    }
-
     @Required
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
@@ -205,7 +186,14 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
         refData.put("authenticationMode", getAuthenticationMode());
         return refData;
     }
-
+    
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	if(isAjaxRequest(request)) return true;
+    	return super.suppressValidation(request, command);
+    }
+    
+    
     public String getAuthenticationMode() {
         return authenticationMode;
     }

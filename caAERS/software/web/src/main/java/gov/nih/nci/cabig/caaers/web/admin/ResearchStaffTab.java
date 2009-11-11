@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -32,6 +34,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     Map<String, String> methodNameMap = new HashMap<String, String>();
     
     private CSMUserRepository csmUserRepository;
+    
+    private ResearchStaffRepository researchStaffRepository;
 
     public ResearchStaffTab() {
         super("Research Staff Details", "Research Staff Details", "admin/researchStaff");
@@ -104,7 +108,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     @Override
     protected void validate(final ResearchStaffCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        HashSet<String> set = new HashSet<String>();
 
         List<SiteResearchStaff> srs = command.getResearchStaff().getSiteResearchStaffs();
         for (int i=0; i<srs.size(); i++) {
@@ -144,10 +147,21 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         	String loginId = command.getResearchStaff().getLoginId();
             boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
             if(loginIdExists) {
-            	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
+            	 errors.reject("USR_001", new Object[]{loginId},  "Username already in use..!");
             }
         }
 
+        // Check if there is another research staff with same primary email-address.
+        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+        researchStaffQuery.filterByEmailAddress(command.getResearchStaff().getEmailAddress());
+        List<ResearchStaff> researchStaffList = researchStaffRepository.searchResearchStaff(researchStaffQuery);
+        
+        if(researchStaffList.size() > 1)
+        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
+        
+        if(researchStaffList.size() == 1 && command.getResearchStaff().getId() == null){
+        	errors.rejectValue("researchStaff.emailAddress", "USR_010");
+        }
 
         byte i = 0;
         if (command.getSiteResearchStaffCommandHelper() != null) {
@@ -172,6 +186,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
                 i++;
             }
         }
+        
+
+        
     }
 
     @Override
@@ -240,6 +257,15 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     protected boolean methodInvocationRequest(HttpServletRequest request) {
     	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
     }
+    
+    public ResearchStaffRepository getResearchStaffRepository() {
+		return researchStaffRepository;
+	}
+    
+    public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
+	}
 
     @Override
     public String getMethodName(HttpServletRequest request) {
