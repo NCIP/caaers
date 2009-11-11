@@ -3,9 +3,9 @@
 <html>
 <head>
     <style type="text/css">
-        div.row div.label { width: 9em; }
-        div.row div.value { margin-left: 10em; }
-        div.content { padding: 5px 15px; }
+        /*div.row div.label { width: 9em; }
+        div.row div.value { margin-left: 10em; }*/
+
     </style>
 
     <title><caaers:message code="investigator.search.pageTitle"/></title>
@@ -48,36 +48,30 @@
         </ul>
         <tags:pageHelp propertyKey="searchInvestigator"/>
     </div>
-    <br/>
+
 
     <div class="content">
         <form:form name="searchForm" id="searchForm" method="post">
-            <p><tags:instructions code="investigatorreview"/></p>
+            
 			<caaers:message code="investigator.search.criteriaSection" var="criteriaSectionTitle"/>
             <chrome:box title="${criteriaSectionTitle}" cssClass="mpaired" autopad="false">
-            	<table>
-            		<tr>
-            			<td>
+            	<tags:instructions code="investigatorreview"/>
+            
 	            			<div class="row">
 	            				<div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
 	            				<div class="value"><input id="prop0" name="firstName" type="text"/></div>
 	            			</div>
-            			</td>
-            			<td style="vertical-align:top">
+            	
             				<div class="row">
             					<div class="label"><caaers:message code="LBL_lastName"/>&nbsp; </div>
                     			<div class="value"><input id="prop1" name="lastName" type="text"/></div>
                     		</div>
-            			</td>
-            		</tr>
-            		<tr>
-            			<td style="vertical-align:top">
+           
             				<div class="row">
                     			<div class="label"><caaers:message code="LBL_investigator.nciIdentifier"/>&nbsp; </div>
                     			<div class="value"><input id="prop2" type="text" name="nciIdentifier"/></div>
                 			</div>
-            			</td>
-            			<td style="vertical-align:top">
+            		
             					<div class="row">
                     				<div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
                     				<div class="value">
@@ -105,9 +99,7 @@
 										</ui:autocompleter>
                     				</div>
                     			</div>
-            			</td>
-            		</tr>
-            	</table>
+            		
             	
             	<div class="row">
 					<div class="value" style="float:left;">
@@ -120,7 +112,6 @@
         </form:form>
 
         <div id="bigSearch" style="display:none;">
-            <br>
             <form:form id="assembler">
                 <div>
                     <input type="hidden" name="_prop" id="prop">

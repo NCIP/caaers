@@ -20,7 +20,7 @@
     <jsp:attribute name="titleFragment">
         <c:if test="${not empty orgName}">
             <c:if test="${editMode}">
-                <span style="margin-left:100px;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
+                <span style="margin-left:420px; font-weight:normal;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
                     <c:if test="${!readOnly}">
                         <c:if test="${command.researchStaff.siteResearchStaffs[index].active}">
                             <tags:button type="button"
@@ -62,7 +62,7 @@
 <%--
 --%>
 
-                <br>
+
                 <caaers:message code="researchstaff.details.contact" var="contacts"/>
                 <b>${contacts}</b>
 
@@ -79,6 +79,10 @@
                             <div class="row">
                                 <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].faxNumber" labelProperty="faxNumber" text=""/></div>
                                 <div class="value"><ui:text path="researchStaff.siteResearchStaffs[${index}].faxNumber" readonly="${readOnly}"/></div>
+                            </div>
+							<div class="row">
+                                <div class="label">Associate to all studies</div>
+                                <div class="value"><ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/></div>
                             </div>
                         </div>
                         <div class="rightpanel">
@@ -127,8 +131,7 @@
                     <c:if test="${!readOnly}">
                         <caaers:message code="researchstaff.details.rolesSection" var="roleSectionTitle"/>
                         <chrome:division id="roles-details" title="${roleSectionTitle}">
-                            <br>
-                            Associate to all studies: <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/>  
+                               
                             <tags:table bgColor="#cccccc" contentID="Role_${command.researchStaff.id}_${command.researchStaff.siteResearchStaffs[index].id}">
                             <table cellpadding="3" cellspacing="1" width="100%">
                                 <tr bgcolor="#eeeeee">
@@ -174,7 +177,6 @@
                     <c:if test="${readOnly}">
                         <caaers:message code="researchstaff.details.roles" var="roles"/>
                         <chrome:division id="roles-details" title="${roles}">
-                            <br>
                             <table cellpadding="2" cellspacing="0">
                                 <tr>
                                 <th>Role name

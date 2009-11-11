@@ -6,7 +6,6 @@
 <style type="text/css">
     div.row div.label { width: 9em; }
     div.row div.value { margin-left: 10em; }
-    div.content { padding: 5px 15px; }
 </style>
 
 <title><caaers:message code="researchStaff.search.pageTitle"/></title>
@@ -61,9 +60,9 @@ function buildTable(form) {
  
  <div class="content">
     <form:form name="searchForm" id="searchForm" method="post">
-    <p><tags:instructions code="researchstaffsearch" /></p>
 		<caaers:message code="researchstaff.search.criteriaSection" var="criteriaSectionTitle"/>
-        <chrome:box title="${criteriaSectionTitle}" cssClass="mpaired" autopad="false">
+        <chrome:box title="Search Research Staff" cssClass="mpaired" autopad="false">
+        	<tags:instructions code="researchstaffsearch" />
             <div class="row">
                 <div class="label"><caaers:message code="LBL_firstName"/>&nbsp; </div>
                 <div class="value"><input id="prop0" name="firstName" type="text"/></div>

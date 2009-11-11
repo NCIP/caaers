@@ -4,11 +4,7 @@
 <html>
 <head>
 <title><caaers:message code="investigator.details.pageTitle"/></title>
- 	 <style type="text/css">
-        div.content {
-            padding: 5px 15px;
-        }
-    </style>
+
 
 <tags:dwrJavascriptLink objects="createInvestigator,createIND" />
 <script language="JavaScript" type="text/JavaScript">
@@ -265,9 +261,8 @@ Event.observe(window, "load", function() {
             </li>
         </ul>
     </div>
-</div>
-  <br />
- 
+
+
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createInvestigatorForm"
 	 willSave="false" hideErrorDetails="false">
@@ -283,9 +278,9 @@ Event.observe(window, "load", function() {
 
     </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
-            <p>
+
         <tags:instructions code="investigatordetails" />
-        </p>
+
 		<caaers:message code="investigator.details.detailsSection" var="detailsSectionTitle"/>
     	<chrome:division title="${detailsSectionTitle}" id="investigator">
     	
@@ -368,6 +363,6 @@ Event.observe(window, "load", function() {
 	
 		
 </tags:tabForm>
-
+</div>
 </body>
 </html>
