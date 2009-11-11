@@ -103,6 +103,10 @@ public class CreateStudyController extends StudyController<StudyCommand> {
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        String action = (String) super.findInRequest(request, "_action");
+        if (StringUtils.equals(action, "removeSite")) return true;
+        if(StringUtils.equals(action, "removeInv"))  return true;
+        
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
