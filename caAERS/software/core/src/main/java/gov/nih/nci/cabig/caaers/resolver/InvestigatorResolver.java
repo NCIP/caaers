@@ -48,11 +48,11 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		while(enxpItr.hasNext()){
 			enxp = enxpItr.next();
 			if(enxp.getType().equals(EntityNamePartType.GIV)){
-				firstName = enxp.getValue();
+				firstName = firstName+" "+enxp.getValue();
 			}
 
 			if(enxp.getType().equals(EntityNamePartType.FAM)){
-				lastName = enxp.getValue();
+				lastName = lastName+" "+enxp.getValue();
 			}
 		}        
 
