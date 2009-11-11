@@ -312,7 +312,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, IdentifiedOrganization identifiedOrganization){		
 		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);		
 		Organization site = new RemoteOrganization();
-		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());		
+		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+		site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 		SiteInvestigator si = new SiteInvestigator();
 		si.setOrganization(site);
 		si.setInvestigator(remoteInvestigator);
@@ -377,7 +378,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 
 			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
 				site = new RemoteOrganization();
-				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());	
+				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
 				si.setInvestigator(remoteInvestigator);
@@ -410,7 +412,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 
 			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
 				site = new RemoteOrganization();
-				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());	
+				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
 				si.setStartDate(DateUtils.today());
