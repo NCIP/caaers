@@ -149,9 +149,11 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     	}
     	if (organization instanceof RemoteOrganization && StringUtils.isBlank(organization.getName()) ) {
     		RemoteOrganization ro = (RemoteOrganization)remoteSession.load(RemoteOrganization.class, organization.getExternalId());
-    		organization.setName(ro.getName());
-    		organization.setCity(ro.getCity());
-    		organization.setCountry(ro.getCountry());
+    		if(ro != null){
+        		organization.setName(ro.getName());
+        		organization.setCity(ro.getCity());
+        		organization.setCountry(ro.getCountry());
+    		}
     	}
     	getHibernateTemplate().saveOrUpdate(organization);
     }
