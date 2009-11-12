@@ -522,15 +522,15 @@ public class StudyConverter {
 	}
 	
 	private void populateStudyTherapy(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
-		if(studyDto.isBehavioralTherapyType()) study.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
-		if(studyDto.isBiologicalTherapyType()) study.addStudyTherapy(StudyTherapyType.BIOLOGICAL_VACCINE);
-		if(studyDto.isDeviceTherapyType()) study.addStudyTherapy(StudyTherapyType.DEVICE);
-		if(studyDto.isDietarySupplementTherapyType()) study.addStudyTherapy(StudyTherapyType.DIETARY_SUPPLEMENT);
-		if(studyDto.isDrugAdministrationTherapyType()) study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
-		if(studyDto.isGeneticTherapyType()) study.addStudyTherapy(StudyTherapyType.GENETIC);
-		if(studyDto.isOtherTherapyType()) study.addStudyTherapy(StudyTherapyType.OTHER);
-		if(studyDto.isRadiationTherapyType()) study.addStudyTherapy(StudyTherapyType.RADIATION);
-		if(studyDto.isSurgeryTherapyType()) study.addStudyTherapy(StudyTherapyType.SURGERY);
+		if(studyDto.isBehavioralTherapyType() != null && studyDto.isBehavioralTherapyType()) study.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
+		if(studyDto.isBiologicalTherapyType() != null && studyDto.isBiologicalTherapyType()) study.addStudyTherapy(StudyTherapyType.BIOLOGICAL_VACCINE);
+		if(studyDto.isDeviceTherapyType() != null && studyDto.isDeviceTherapyType()) study.addStudyTherapy(StudyTherapyType.DEVICE);
+		if(studyDto.isDietarySupplementTherapyType() != null && studyDto.isDietarySupplementTherapyType()) study.addStudyTherapy(StudyTherapyType.DIETARY_SUPPLEMENT);
+		if(studyDto.isDrugAdministrationTherapyType() != null && studyDto.isDrugAdministrationTherapyType()) study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
+		if(studyDto.isGeneticTherapyType() != null && studyDto.isGeneticTherapyType()) study.addStudyTherapy(StudyTherapyType.GENETIC);
+		if(studyDto.isOtherTherapyType() != null && studyDto.isOtherTherapyType()) study.addStudyTherapy(StudyTherapyType.OTHER);
+		if(studyDto.isRadiationTherapyType() != null && studyDto.isRadiationTherapyType()) study.addStudyTherapy(StudyTherapyType.RADIATION);
+		if(studyDto.isSurgeryTherapyType() != null && studyDto.isSurgeryTherapyType()) study.addStudyTherapy(StudyTherapyType.SURGERY);
 		
 	}
 	
