@@ -84,21 +84,29 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		assertEquals("Joel2@def.com", staff.getLoginId());
 	}
 	
-	public void testSaveWebSso_NoLoginId() {
+	public void testSaveWebSso_NoLoginId() throws Exception{
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
-		groupList.add(UserGroupType.caaers_physician);
+		groupList.add(UserGroupType.caaers_study_cd);
 		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
+		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+		siteResearchStaff.setEmailAddress("Joel@def.com");
+		siteResearchStaff.setOrganization(org);
+		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
+		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setStartDate(new Date());
+		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
+		staff.addSiteResearchStaff(siteResearchStaff);
+		//staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
-		
+		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
+		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
+		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
-		try {
-			repository.save(staff, changeUrl);
-			fail("Should throw exception");
-		} catch (Exception e) {
-		}
-		
+		repository.save(staff, changeUrl);
+		verifyMocks();
+		assertNull(staff.getLoginId());
 	}
 	
 
