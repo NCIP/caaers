@@ -69,10 +69,10 @@ public class ResearchStaffRepository {
     	
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
-    	
+    	/*
     	if( webSSOAuthentication && StringUtils.isBlank(researchStaff.getLoginId())){
     		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
-    	}
+    	}*/
     	//update the loginId to email address if this is not webSSO mode
     	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(researchStaff.getLoginId())) {
     		researchStaff.setLoginId(researchStaff.getEmailAddress());
