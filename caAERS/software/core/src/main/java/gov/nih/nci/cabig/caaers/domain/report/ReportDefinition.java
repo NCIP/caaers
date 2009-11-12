@@ -83,6 +83,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         lazyListHelper.add(ReportDeliveryDefinition.class, new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
         lazyListHelper.add(PlannedNotification.class, new InstantiateFactory<PlannedNotification>(PlannedNotification.class));
         attributionRequired = false;
+        workflowEnabled = false;
         comprator = new ReportDefinitionComparator();
     }
 
