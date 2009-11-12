@@ -328,11 +328,11 @@
     </target>
 	
 	<!-- ==========================================================
-		target : auto-build-ci
+		target : caAERS:ci:build
 		This target is for Continious Integration useage.
 		This target Cleans Relevant Folders , Recreate's the db in hudson
 	=============================================================-->
-    <target name="autobuild-ci" description="--> Tasks Related to Continious Integration"
+    <target name="caAERS:ci:build" description="--> Tasks Related to Continious Integration"
     	depends="set-run-review-reports,debug-info,recreate-db-hudson,migrate,insert-csm-policy,clean,publish-all">
     </target>
 	
