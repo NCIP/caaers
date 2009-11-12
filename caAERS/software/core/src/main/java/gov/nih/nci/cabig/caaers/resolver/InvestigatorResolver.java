@@ -70,7 +70,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		remoteInvestigator.setEmailAddress(emailStr);
 		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
 		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
-		remoteInvestigator.setLoginId("loginid");
+		//remoteInvestigator.setLoginId("loginid");
 		if (nciIdentifier != null) {
 			remoteInvestigator.setNciIdentifier(nciIdentifier);
 		}
