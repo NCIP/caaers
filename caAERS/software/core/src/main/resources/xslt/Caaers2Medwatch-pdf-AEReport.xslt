@@ -274,12 +274,8 @@
 													<fo:block font-size="6.5">
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
-															<xsl:when test="Outcome/OutcomeType = 'DEATH'">
-																[x]
-															</xsl:when>
-															<xsl:otherwise>
-																[ ]
-															</xsl:otherwise>
+															<xsl:when test="Outcome/OutcomeType = 'DEATH'">[x]</xsl:when>
+															<xsl:otherwise>[ ]</xsl:otherwise>
 														</xsl:choose>
 														Death: 
 														
@@ -287,12 +283,8 @@
 														<fo:leader leader-length="30%" leader-pattern="rule" rule-thickness="0.5pt"/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
-															<xsl:when test="Outcome/OutcomeType = 'DISABILITY'">
-																[x]
-															</xsl:when>
-															<xsl:otherwise>
-																[ ]
-															</xsl:otherwise>
+															<xsl:when test="Outcome/OutcomeType = 'DISABILITY'">[x]</xsl:when>
+															<xsl:otherwise>[ ]</xsl:otherwise>
 														</xsl:choose>
 														Disability or Permanent Damage													
 													</fo:block>
@@ -513,7 +505,11 @@
                                                     </xsl:if>
 
                                                     <xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name">
-                                                        <fo:block xsl:use-attribute-sets="normal">Disease Site: <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/></fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">Disease Site: <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
+                                                        <xsl:if test="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite">
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>(<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite"/>)
+                                                        </xsl:if>
+                                                        </fo:block>
                                                     </xsl:if>
 
                                                     <xsl:if test="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString != '' or AdverseEventReport/DiseaseHistory/diagnosisDate/yearString != ''">
