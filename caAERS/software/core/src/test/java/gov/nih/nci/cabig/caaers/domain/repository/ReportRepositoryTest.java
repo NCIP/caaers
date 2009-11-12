@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -27,24 +24,16 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import org.easymock.EasyMock;
 
@@ -66,6 +55,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     private NowFactory nowFactory;
     private ReportDefinitionDao reportDefinitionDao;
     private StudyDao studyDao;
+    private Configuration configuration;
 
     
     @Override
@@ -77,6 +67,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportFactory = registerMockFor(ReportFactory.class);
         schedulerService = registerMockFor(SchedulerService.class);
         studyDao = registerDaoMockFor(StudyDao.class);
+        configuration = registerMockFor(Configuration.class);
         nowFactory = new NowFactory();
         
         
@@ -86,6 +77,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository.setNowFactory(nowFactory);
         reportRepository.setReportDefinitionDao(reportDefinitionDao);
         reportRepository.setStudyDao(studyDao);
+        reportRepository.setConfiguration(configuration);
         
         
         expeditedData = new ExpeditedAdverseEventReport();
@@ -185,7 +177,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
-        
+        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -227,7 +219,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
-        
+        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -261,6 +253,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         studyDao.reassociateStudyOrganizations(expeditedData.getStudy().getStudyOrganizations());
         
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
+        EasyMock.expect(configuration.get(Configuration.ENABLE_WORKFLOW)).andReturn(false);
         
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
