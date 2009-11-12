@@ -162,7 +162,7 @@
 	================================================================== -->	
 	<target name="download-tomcat" unless="tomcat.tools.exists"  description="Downloads TOMCAT from binary repository and verifies checksum">
 	 	<get src="${tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
-	 	<get src="${tomcat.src.url}.MD5" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip.MD5" />
+	 	<get src="${tomcat.src.url}.md5" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip.md5" />
 	 <!--
 	 <checksum file="${ccts.grid-services.working.tomcat.file}" verifyProperty="tomcat.cksum.ok" />
 	 <if>

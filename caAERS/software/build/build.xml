@@ -74,6 +74,9 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 	<!-- The target name that should be called from the sub-project build file -->
 	<property name="caAERS-webapp.build.target" value="publish-all" />
 	
+	<!-- The target name that should be called from the sub-project build file for caAERS Continious Integration-->
+	<property name="caAERS-ci.build.target" value="caAERS:ci:build" />
+	
 	<property name="caAERS-grid-services.build.target" value="build-deploy-publish-grid-services" />
 
 	<!-- Maven comamnd line arguments, bda profile is inside profiles.xml that gets copied to ear folder before build to override exiting properties -->
@@ -286,6 +289,12 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		
 	</target>
 	
+	<target name="build:caAERS:ci" depends="init" description="Call caAERS Continious Integration build target">
+		<!-- ant call to caAERS build process. This will generate caaers.war and wsrf-caaers.war -->
+		<ant inheritAll="false" inheritRefs="false" antfile="${caAERS-webapp.build.file}" target="${caAERS-ci.build.target}">
+		</ant>
+	</target>
+	
 	<target name="dist" description="Makes all distributions: installer, upgrader and source" depends="
 		build:all,
  		dist:installer,
@@ -306,8 +315,8 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 
 	<target name="dist:tools:retrieve:tomcat" unless="tomcat.tools.exists" description="Downloads TOMCAT from binary repository and verifies checksum">
 		<get src="${tomcat.src.url}" dest="${tomcat.dest.file}" />
-		<get src="${tomcat.src.url}.MD5" dest="${tomcat.dest.file}.MD5" />
-		<checksum file="${tomcat.dest.file}" verifyProperty="tomcat.cksum.ok" />
+		<get src="${tomcat.src.url}.md5" dest="${tomcat.dest.file}.md5" />
+		<checksum file="${tomcat.dest.file}" verifyProperty="tomcat.cksum.ok" format="MD5SUM"/>
 		<if>
 			<equals arg1="${tomcat.cksum.ok}" arg2="true" />
 			<then>
