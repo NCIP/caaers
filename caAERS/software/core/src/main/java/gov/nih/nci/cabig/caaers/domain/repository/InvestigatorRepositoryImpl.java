@@ -54,7 +54,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		MailException mailException = null;
 		if(investigator.getAllowedToLogin()){
 			boolean createMode = investigator.getId() == null;
-	    	//boolean webSSOAuthentication = authenticationMode.equals("webSSO");
+	    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
 	    	
 	    	if (investigator.getEmailAddress() == null) {
 	            throw new CaaersSystemException("Email address is required");
@@ -70,8 +70,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	    		//login id should be email id , if it is non websso mode
 	    		//if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
 	    	}
-	    	//if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
-	    	if(createMode && StringUtilities.isBlank(investigator.getLoginId())) {
+	    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
+	    	//if(createMode && StringUtilities.isBlank(investigator.getLoginId())) {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}
 	    	
