@@ -76,7 +76,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         setUpAuthorization();
         setUpAuditing();
         setUpSession();
-        
+        System.gc();
     }
     
     protected void tearDownSession(){
