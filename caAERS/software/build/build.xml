@@ -285,7 +285,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		</copy>
 		
 		<!-- Copy wsrf-caaers.war to dist.exploded.dir-->
-		<copy file="${software.dir}/grid/build/dist/wsrf-caaers.war" todir="${caAERS-grid-services.dist.dir}" overwrite="true" />
+		<copy file="${software.dir}/grid/build/dist/wsrf-caaers.war" todir="${caAERS-grid-services.dist.dir}" overwrite="true" failonerror="false"/>
 		
 	</target>
 	

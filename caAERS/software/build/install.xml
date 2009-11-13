@@ -738,13 +738,10 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		<delete dir="${tomcat.home}/webapps/caaers"/>
 		<delete dir="${tomcat.home}/webapps/wsrf-caaers"/>
 		<copy file="${caAERS-webapp.dir.dist}/${caAERS-webapp.war.file}" todir="${tomcat.home}/webapps" overwrite="true" />
-		<copy file="${caAERS-grid-services.dir.dist}/wsrf-caaers.war" todir="${tomcat.home}/webapps" overwrite="true" />
-		<!--  Many NCI applications require clm for csm, so you can point this to where you have the version you want to use
-		<copy file="${bda-utils.dir}/clm-3.2.jar" todir="${tomcat.home}/server/${tomcat.server.name}/lib" overwrite="true" />
-		-->
 		<copy file="${database.driver.file}" todir="${tomcat.home}/common/lib" overwrite="true" />
+		<copy file="${caAERS-grid-services.dir.dist}/wsrf-caaers.war" todir="${tomcat.home}/webapps" overwrite="true" failonerror="false"/>		
 	</target>
-
+	
 	<target name="install:tomcat:caAERS-webapp:configure" description="Configure caAERS-webapp application, copies over externalized properties or configurations that are not part of the tomcat configuration" unless="exclude.tomcat" depends="common:init,common:tomcat:init">
 		<!-- configure datasource -->
 	</target>
