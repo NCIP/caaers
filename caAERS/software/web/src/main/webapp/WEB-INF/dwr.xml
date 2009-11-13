@@ -82,5 +82,7 @@
         <convert converter="bean" match="com.semanticbits.rules.ui.*"/>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.utils.Lov"/>
 		<convert match="java.lang.Exception" converter="exception"/>
-    </allow>
+    	<convert match="java.lang.StackTraceElement" converter="bean"/>
+
+	</allow>
 </dwr>
