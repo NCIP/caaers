@@ -585,7 +585,7 @@
 		
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
 			showoutput="true" fork="true" forkmode="once" timeout="9000000" >
-			<jvmarg value="-Xmx1024M -XX:MaxPermSize=128m" />
+			<jvmarg value="-Xmx1024m -XX:MaxPermSize=128m" />
 			<classpath location="${instrumented.classes.dir}" />
 			<classpath refid="test.run.classpath" />
 			
