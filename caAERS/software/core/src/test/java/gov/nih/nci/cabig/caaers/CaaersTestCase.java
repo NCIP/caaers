@@ -44,6 +44,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
         applicationContext = getDeployedApplicationContext();
         setUpAuditing();
         setUpTestAuthorization();
+        System.gc();
     }
     
     /*
@@ -69,17 +70,4 @@ public abstract class CaaersTestCase extends AbstractTestCase {
     	return CaaersContextLoader.getApplicationContext();
     }
     
-    /**
-     * The sub classes(testclasses) can override the config locations at runtime. 
-     * @return
-     */
-    public final String[] getConfigLocations() {
-        return new String[] {
-            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
-            "classpath*:applicationContext-test.xml"
-        };
-    }
-    
-   
-
 }
