@@ -48,35 +48,35 @@ public class CompositeFieldTest extends AbstractTestCase {
     }
 
     public void testValidateCompositeField() throws Exception {
-    	ParticipantHistory.Measure measure = new ParticipantHistory.Measure();
-
+    	ParticipantHistory history = new ParticipantHistory();
+    	history.getWeight();
+    	
     	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
     	group.addField(textField);
-
+    	
     	field = new CompositeField("weight", group);
-
-    	ServletRequestDataBinder binder = new ServletRequestDataBinder(measure, "measure");
+    	
+    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
 		BindException errors = new BindException(binder.getBindingResult());
-
-		field.validate(new BeanWrapperImpl(measure), errors);
-
+		
+		field.validate(new BeanWrapperImpl(history), errors);
+		
 		assertFalse(errors.hasErrors());
     }
-
+    
     public void testValidateCompositeField_InvalidValue() throws Exception {
-    	ParticipantHistory.Measure measure = new ParticipantHistory.Measure();
-    	measure.setQuantity(new BigDecimal(-99));
-
+    	ParticipantHistory history = new ParticipantHistory();
+    	history.getWeight().setQuantity(new BigDecimal(-99));
+    	
     	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
     	group.addField(textField);
-
+    	
     	field = new CompositeField("weight", group);
-
-    	ServletRequestDataBinder binder = new ServletRequestDataBinder(measure, "measure");
+    	
+    	ServletRequestDataBinder binder = new ServletRequestDataBinder(history, "history");
 		BindException errors = new BindException(binder.getBindingResult());
-
-		field.validate(new BeanWrapperImpl(measure), errors);
+		
+		field.validate(new BeanWrapperImpl(history), errors);
 		assertTrue(errors.hasErrors());
     }
-
 }
