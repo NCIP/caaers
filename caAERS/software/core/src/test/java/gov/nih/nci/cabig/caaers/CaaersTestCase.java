@@ -64,6 +64,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
         super.tearDown();
         tearDownTestAuthorization();
         tearDownAuditing();
+        System.runFinalization();
     }
     
     public synchronized  ApplicationContext getDeployedApplicationContext() {
