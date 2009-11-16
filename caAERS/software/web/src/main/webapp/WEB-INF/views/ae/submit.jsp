@@ -48,9 +48,12 @@
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
  	          	
+ 	          	<c:forEach items="${command.selectedReportsAssociatedToWorkflow}" var="report" varStatus="status">
+	 	          	routingHelper.retrieveReviewCommentsAndActions('${report.id}');
+ 	          	</c:forEach>
+ 	          	
  	          	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 					<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
-						routingHelper.retrieveReviewCommentsAndActions('${report.id}');
 		 	          	routingHelper.updateWorkflowActions('${report.id}');
 		 	        </c:if>
 		 	    </c:forEach>
