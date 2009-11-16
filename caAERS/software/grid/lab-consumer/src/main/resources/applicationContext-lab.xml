@@ -23,12 +23,18 @@
 	
   <bean id="labConsumerTarget" autowire="byType" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" />
    
+ 	<bean id="labConsumerAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" value="/wsrf-caaers/services/cagrid/LabConsumer" />
+	</bean> 
+   
   <bean id="labConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
 		<property name="proxyTargetClass"><value>true</value></property>
 		<property name="target"><ref local="labConsumerTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>auditInfoPopulatorInterceptor</value>
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>labConsumerAuditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value>
 			</list> 
 		</property> 
 	</bean>

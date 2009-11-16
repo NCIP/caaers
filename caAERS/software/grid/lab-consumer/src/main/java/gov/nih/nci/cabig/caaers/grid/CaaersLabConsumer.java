@@ -41,8 +41,6 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
 import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 
-
-
 public class CaaersLabConsumer implements LabConsumerServiceI {
 	
 	private List<WsError> errorList = null;
@@ -52,8 +50,6 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	private LabLoadRepository labLoadRepository;
 	private AuthorizationSwitch authorizationSwitch;
 	private static final Log log = LogFactory.getLog(CaaersLabConsumer.class);
-	//private StudyParticipantAssignmentAspect assignmentAspect;
-	//private OpenSessionInViewInterceptor openSessionInViewInterceptor;
 
 	public Acknowledgement loadLabs(LoadLabsRequest loadLabsRequest) throws RemoteException {
 		log.info("In loadlabs Implementation.....");
@@ -80,17 +76,13 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	}
     
 	private void loadLab(LabResult result) {
-		//WebRequest stubWebRequest = null;
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		
 		try {
-			//stubWebRequest = preProcess();
-			switchUser("ROLE_caaers_super_user", "ROLE_caaers_super_user");
 			StudySubject studySubject = result.getStudySubject();
 			String participantId = studySubject.getParticipant().getII(0).getExtension();
 			//lookup participant.
 			Identifier i = new Identifier();
-			//i.setType("MRN");
 			i.setValue(participantId);
 
 			Participant p = participantDao.getByIdentifier(i);
@@ -104,11 +96,9 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 			String studyId = studySubject.getPerformedStudy().getDocumentation(0).getII(0).getExtension();
 			//lookup study.
 			Identifier i2 = new Identifier();
-			//i2.setType("Protocol Authority Identifier");
 			i2.setValue(studyId);
 
 			Study s = studyDao.getByIdentifier(i2);
-			
 
 			if (s == null) {
 				addError(ErrorCodes.InvalidStudyOrPatient,"Study "+studyId+" not found in caAERS");
@@ -128,14 +118,14 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 			if (nResult != null) {
 				numericResult = result.getNumericResult()+"";
 			}
-			System.out.println("numeric result "+numericResult);
+			log.debug("numeric result "+numericResult);
 			 
 			String units = result.getNumericUnit();
 			Date labDate = null;
 			if (result.getReportedDateTime() != null) {
 				labDate = result.getReportedDateTime().getTime();
 			}
-			System.out.println("date "+labDate);
+			log.debug("date "+labDate);
 
 			PerformedActivity[] performedActivities = studySubject.getPerformedActivity();
 			String labName = "";
@@ -143,7 +133,7 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 				PerformedActivity performedActivity = performedActivities[0];
 				labName = performedActivity.getName();				
 			}
-			System.out.println("name "+labName);
+			log.debug("name "+labName);
 			
 			LabLoad toCreate = new LabLoad();
 			toCreate.setName(labName);
@@ -152,17 +142,11 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 			toCreate.setAssignment(assignment);
 			toCreate.setLabDate(labDate);
 			labLoadRepository.save(toCreate);
-			System.out.println("saved ");
+			log.debug("saved ");
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
 			addError(ErrorCodes.ApplicationError,e.getMessage());
-		} finally {
-            //postProcess(stubWebRequest);
-			enableAuthorization(authorizationOnByDefault);
-			switchUser(null);
-        }
-
-
+		} 
 	}
 
 	private Acknowledgement buildAcknowledgement() {
@@ -185,25 +169,6 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 		wsError.setErrorDesc(errorDesc);
 		errorList.add(wsError);
 	}
-
-	private void switchUser(String userName, String... roles) {
-        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            authorities[i] = new GrantedAuthorityImpl(roles[i]);
-        }
-        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-	
-	private boolean enableAuthorization(boolean on) {
-        //AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
-        if (authorizationSwitch == null) throw new RuntimeException("Authorization switch not found");
-        boolean current = authorizationSwitch.isOn();
-        authorizationSwitch.setOn(on);
-        return current;
-    }	
-
 
 	public void setLabLoadRepository(
 			LabLoadRepository labLoadRepository) {
@@ -236,90 +201,6 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
-		this.authorizationSwitch = authorizationSwitch;
-	}
-	/*
-	public void setAssignmentAspect(
-			StudyParticipantAssignmentAspect assignmentAspect) {
-		this.assignmentAspect = assignmentAspect;
-	}
-
-	public void setOpenSessionInViewInterceptor(
-			OpenSessionInViewInterceptor openSessionInViewInterceptor) {
-		this.openSessionInViewInterceptor = openSessionInViewInterceptor;
-	}
-	*/
-	/*
-	private static class StubWebRequest implements WebRequest {
-        public String getParameter(final String paramName) {
-            return null;
-        }
-
-        public String[] getParameterValues(final String paramName) {
-            return null;
-        }
-
-        public Map getParameterMap() {
-            return Collections.emptyMap();
-        }
-
-        public Locale getLocale() {
-            return null;
-        }
-
-        public Object getAttribute(final String name, final int scope) {
-            return null;
-        }
-
-        public void setAttribute(final String name, final Object value, final int scope) {
-        }
-
-        public void removeAttribute(final String name, final int scope) {
-        }
-
-        public void registerDestructionCallback(final String name, final Runnable callback,
-                        final int scope) {
-        }
-
-        public String getSessionId() {
-            return null;
-        }
-
-        public Object getSessionMutex() {
-            return null;
-        }
-    }
-    private WebRequest preProcess() {
-        assignmentAspect.setSecurityInterceptor(new AspectJSecurityInterceptorStub());
-        authorizationSwitch.setOn(false);
-        GrantedAuthority[] authorities = new GrantedAuthority[1];
-        authorities[0] = new GrantedAuthorityImpl("ROLE_caaers_super_user");
-
-        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user", "ignored",
-                        authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        WebRequest stubWebRequest = new StubWebRequest();
-        openSessionInViewInterceptor.preHandle(stubWebRequest);
-        return stubWebRequest;
-    }
-
-    private void postProcess(WebRequest stubWebRequest) {
-        openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
-    }
-    */
-	public static void main (String[] args) {
-		LoadLabsRequest loadLabsRequest = new LoadLabsRequest();
-		LabResult labResult = new LabResult();
-		LabResult[] results = new LabResult[2];
-		
-		loadLabsRequest.setLabResult(results);
-		
-		loadLabsRequest.setLabResult(1, labResult);
 	}
 
 }
