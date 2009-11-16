@@ -76,7 +76,6 @@ public class CaaersLabConsumer implements LabConsumerServiceI {
 	}
     
 	private void loadLab(LabResult result) {
-		boolean authorizationOnByDefault = enableAuthorization(false);
 		
 		try {
 			StudySubject studySubject = result.getStudySubject();
