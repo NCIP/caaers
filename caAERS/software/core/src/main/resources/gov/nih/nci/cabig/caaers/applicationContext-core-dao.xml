@@ -278,6 +278,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
