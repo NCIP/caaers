@@ -117,13 +117,13 @@
                     </c:otherwise>
                 </c:choose>
 				<div style="text-align:right;">
-					<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+					<img id="sliderWFAction-indicator-${report.id }" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 					<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
 					<ul>
 						<c:if test="${command.workflowEnabled == true}">
-							<span id="sliderWFAction"></span>
+							<span id="sliderWFAction-${report.id }"></span>
 						</c:if>
 	                    <c:if test="${reportMessages[report.id].submittable}">
 	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">

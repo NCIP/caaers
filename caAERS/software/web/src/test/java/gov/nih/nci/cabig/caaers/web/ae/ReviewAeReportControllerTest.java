@@ -9,6 +9,7 @@ import org.springframework.validation.BindException;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
@@ -32,6 +33,7 @@ import static org.easymock.EasyMock.isA;
 public class ReviewAeReportControllerTest extends WebTestCase{
 	
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	protected ReportDao reportDao;
 	protected StudyParticipantAssignmentDao assignmentDao;
 	protected Configuration configuration;
 	BindException errors;
@@ -50,7 +52,8 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		configuration = registerMockFor(Configuration.class);
 		evaluationService = registerMockFor(EvaluationService.class);
 		reportValidationService = registerMockFor(ReportValidationService.class);
-		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao);
+		reportDao = registerDaoMockFor(ReportDao.class);
+		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
 		errors = new BindException(command,"command");
 		csmUserRepository = registerMockFor(CSMUserRepository.class);
 		

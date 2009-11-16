@@ -5,19 +5,14 @@
     <title>${tab.longTitle}</title>
 
     <tags:dwrJavascriptLink objects="createAE"/>
-	<%--  <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
-		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
-    	<jsp:attribute name="comments">
-    		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments />
-    		</div>
-    	</jsp:attribute>
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" reports="${command.selectedReportsAssociatedToWorkflow}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}" workflowType="report">
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
+    </tags:slider>
     <script type="text/javascript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
@@ -52,8 +47,13 @@
     	 //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
- 	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
- 	          	routingHelper.updateWorkflowActions.bind(routingHelper)();
+ 	          	
+ 	          	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
+					<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
+						routingHelper.retrieveReviewCommentsAndActions('${report.id}');
+		 	          	routingHelper.updateWorkflowActions('${report.id}');
+		 	        </c:if>
+		 	    </c:forEach>
             } else {
 				createDropDowns();
 			}
@@ -141,20 +141,22 @@
 		}
 	}
 	
-	function advanceWorkflow(value){
+	function advanceWorkflow(reportId, value){
         try {
-            var sbox = $('sliderWFAction');
+        	var sboxId = 'sliderWFAction-' + reportId;
+            var sbox = $(sboxId);
 		
             if (confirm('Are you sure you want to take the action - ' + value + ' ?')) {
-                var sboxIndicator = $('sliderWFAction-indicator');
+            	var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
+                var sboxIndicator = $(sboxIndicatorId);
                 var selected_sbox_value = value;
                 sboxIndicator.style.display = '';
-                createAE.advanceWorkflow(value, function(ajaxOutput) {
+                createAE.advanceWorkflow(reportId, value, function(ajaxOutput) {
                     var ajaxResult = ajaxOutput;
                     if (ajaxResult.error) {
                         caaersLog(ajaxResult.errorMessage);
                     } else {
-                        routingHelper.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+                        routingHelper.updateSelectBoxContent(reportId, sbox, sboxIndicator, ajaxOutput.objectContent);
                         if (${command.aeReport.physicianSignOffRequired}) {
                             if (selected_sbox_value == 'Approve Report' || selected_sbox_value == 'Request Additional Information') {
                                 if (selected_sbox_value == 'Approve Report') {
@@ -170,7 +172,7 @@
                                     } else {
 										caaersLog(output.htmlContent);
                                         //$('report-validation-section').innerHTML = output.htmlContent;
-                                        routingHelper.retrieveReviewComments();
+                                        routingHelper.retrieveReviewComments(reportId);
                                     }
                                 });
                             }

@@ -2,8 +2,10 @@
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@attribute name="comments" fragment="true" %>
+<%@attribute name="reports" required="false" type="java.util.List"%>
+<%@attribute name="reportingPeriod" required="false" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" %>
 <%@attribute name="labs" fragment="true" %>
+<%@attribute name="workflowType" type="java.lang.String" required="true" %>
 <%@attribute name="renderComments" type="java.lang.Boolean" required="true" description="True, if comments is to be displayed" %>
 <%@attribute name="renderAlerts" type="java.lang.Boolean" required="true" description="True, if alerts is to be displayed" %>
 <%@attribute name="display" type="java.lang.String" required="true" %>
@@ -11,27 +13,44 @@
 <script language="JavaScript1.2">
 	Event.observe(window, "load", function(){		
 		new Control.Tabs('slider-tabs');
-	
 	});	
 	
 </script>
 
-<div id="entire-slider" style="top:200px; z-index:100; display:${display}">
+<div id="entire-slider" style="top:200px; z-index:1; display:${display}">
 
 	<a id="sideBarTab"><img src="<c:url value="/images/sidebar/main_tab.png" />" alt="" title="sideBar" /></a>
 	<!--BEGIN Slider -->
 		<div id="slider-pane" style="display:none;">
 			<ul id="slider-tabs" class="subsection_tabs">
-				<c:if test="${renderComments and not empty comments}">
-					<li id="slidertab-comments" class="tab-class"><a href="#comments-id">Comments</a></li>
+				<c:if test="${renderComments}">
+					<c:if test="${workflowType eq 'report'}">
+						<c:forEach items="${reports}" var="report">
+							<li id="slidertab-comments" class="tab-class"><a href="#report-id-${report.id }">${report.label }</a></li>
+						</c:forEach>
+					</c:if>
+					<c:if test="${workflowType == 'reportingPeriod'}">
+						<li id="slidertab-comments" class="tab-class"><a href="#reportingPeriod-id-${reportingPeriod.id }">${reportingPeriod.name }</a></li>
+					</c:if>
 				</c:if>
 				<c:if test="${renderAlerts and not empty labs}">  
 					<li id="slidertab-labs" class="tab-class"><a href="#labs-id">Labs</a></li>
 				</c:if>  
 			</ul>
 			<div id="slider-content">
-				<c:if test="${renderComments and not empty comments}">
-						<jsp:invoke fragment="comments"/>
+				<c:if test="${renderComments}">
+					<c:if test="${workflowType eq 'report'}">
+						<c:forEach items="${reports}" var="report">
+							<div id="report-id-${report.id }" style="display:none;">
+    							<tags:routingAndReviewComments report="${report }"/>
+    						</div>
+    					</c:forEach>
+    				</c:if>
+    				<c:if test="${workflowType == 'reportingPeriod'}">
+    					<div id="reportingPeriod-id-${reportingPeriod.id }" style="display:none">
+	    					<tags:routingAndReviewComments reportingPeriod="${reportingPeriod }"/>
+    					</div>
+    				</c:if>
 				</c:if>
 				<c:if test="${renderAlerts and not empty labs}">
 						<jsp:invoke fragment="labs"/>

@@ -145,7 +145,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     }
     
-    public AjaxOutput addReviewComment(String comment){
+    public AjaxOutput addReviewComment(String comment, String reportinPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
@@ -154,7 +154,14 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
     }
     
-    public AjaxOutput editReviewComment(String comment, Integer commentId){
+    public AjaxOutput retrieveReviewCommentsAndActions(String reportingPeriodId){
+    	AjaxOutput output = retrieveReviewComments();
+    	AjaxOutput transitionOutput = retrieveNextTransitions();
+    	output.setObjectContent(transitionOutput.getObjectContent());
+    	return output;
+    }
+    
+    public AjaxOutput editReviewComment(String comment, Integer commentId, String reportingPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
@@ -163,7 +170,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
     }
     
-    public AjaxOutput deleteReviewComment(Integer commentId){
+    public AjaxOutput deleteReviewComment(Integer commentId, String reportingPeriodIdString){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();

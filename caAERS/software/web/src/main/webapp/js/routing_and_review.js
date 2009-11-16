@@ -5,74 +5,93 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		this.ajaxFacade = aFacade;
 		this.workflowType = workflowType;
 	},
-	enableEditMode : function(id){
+	enableEditMode : function(id, entityId){
 		// First of all set the variable edit_comment_id with the correct id of the comment
-		$('edit_comment_id').value = id;
+		var editCommentId = 'edit_comment_id-' + entityId;
+		$(editCommentId).value = id;
 		
 		// Set the text-area with the contents of the comment to be edited.
-		$('enter-comment-text').value = $('userComment-' + id).innerHTML;
+		var commentTextAreaId = 'enter-comment-text-' + entityId;
+		$(commentTextAreaId).value = $('userComment-' + id).innerHTML;
 		
 		// Hide the "Add a Comment" label and display "Edit Comment" label
-		$('add-a-comment').hide();
-		$('edit-a-comment').show();
+		var addCommentId = 'add-a-comment-' + entityId;
+		var editCommentId = 'edit-a-comment-' + entityId;
+		$(addCommentId).hide();
+		$(editCommentId).show();
 		
 		// Hide the 'Add' button and enable 'Cancel' and 'Edit' buttons
-		$('add-btn').hide();
-		$('cancel-btn').show();
-		$('edit-btn').show();
+		var addButtonId = 'add-btn-' + entityId;
+		var editButtonId = 'edit-btn-' + entityId;
+		var cancelButtonId = 'cancel-btn-' + entityId;
+		$(addButtonId).hide();
+		$(cancelButtonId).show();
+		$(editButtonId).show();
 	},
-	disableEditMode : function(){
+	disableEditMode : function(entityId){
 		// First of all set the variable edit_comment_id with the correct id of the comment
-		$('edit_comment_id').value = '';
+		var editCommentId = 'edit_comment_id-' + entityId;
+		$(editCommentId).value = '';
 		
 		// Set the text-area with the contents of the comment to be edited.
-		$('enter-comment-text').value = '';
+		var commentTextAreaId = 'enter-comment-text-' + entityId;
+		$(commentTextAreaId).value = '';
 		
 		// show the "Add a Comment" label and display "Edit Comment" label
-		$('add-a-comment').show();
-		$('edit-a-comment').hide();
+		var addCommentId = 'add-a-comment-' + entityId;
+		var editCommentId = 'edit-a-comment-' + entityId;
+		$(addCommentId).show();
+		$(editCommentId).hide();
 		
 		// show the 'Add' button and enable 'Cancel' and 'Edit' buttons
-		$('add-btn').show();
-		$('cancel-btn').hide();
-		$('edit-btn').hide();
+		var addButtonId = 'add-btn-' + entityId;
+		var editButtonId = 'edit-btn-' + entityId;
+		var cancelButtonId = 'cancel-btn-' + entityId;
+		$(addButtonId).show();
+		$(cancelButtonId).hide();
+		$(editButtonId).hide();
 	},
-	updateCommentElementContent: function(content){
-		$('scrollbar_content').innerHTML = "";
-		$('scrollbar_content').innerHTML = content;
-		$('enter-comment-text').value = "";
+	updateCommentElementContent: function(content, entityId){
+		var commentContentId = 'scrollbar_content-' + entityId;
+		$(commentContentId).innerHTML = "";
+		$(commentContentId).innerHTML = content;
+		var commentTextAreaId = 'enter-comment-text-' + entityId;
+		$(commentTextAreaId).value = "";
 	},
-	addComment:function(reportId){
-		this.ajaxFacade.addReviewComment($('enter-comment-text').value, reportId, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent);
+	addComment:function(entityId){
+		var commentTextAreaId = 'enter-comment-text-' + entityId;
+		this.ajaxFacade.addReviewComment($(commentTextAreaId).value, entityId, function(ajaxOutput){
+			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
 		}.bind(this));
 	},
-	editComment:function(){
-		this.ajaxFacade.editReviewComment($('enter-comment-text').value, $('edit_comment_id').value, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent);
-			this.disableEditMode();
+	editComment:function(entityId){
+		var commentTextAreaId = 'enter-comment-text-' + entityId;
+		var editCommentId = 'edit_comment_id-' + entityId;
+		this.ajaxFacade.editReviewComment($(commentTextAreaId).value, $(editCommentId).value, entityId, function(ajaxOutput){
+			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+			this.disableEditMode(entityId);
 		}.bind(this));
 	},
-	deleteComment:function(id){
-		this.ajaxFacade.deleteReviewComment(id, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent);
-			this.disableEditMode();
+	deleteComment:function(id, entityId){
+		this.ajaxFacade.deleteReviewComment(id, entityId, function(ajaxOutput){
+			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+			this.disableEditMode(entityId);
 		}.bind(this));
 	},
-	retrieveReviewComments : function(){
+	retrieveReviewComments : function(entityId){
 		this.ajaxFacade.retrieveReviewComments(function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent);
+			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
 			}.bind(this)) ;
 		$('entire-slider').show();
 	},
-	retrieveReviewCommentsAndActions : function(){
+	retrieveReviewCommentsAndActions : function(entityId){
 		try{
-			this.ajaxFacade.retrieveReviewCommentsAndActions(function(ajaxOutput){
-				this.updateCommentElementContent(ajaxOutput.htmlContent);
-				if(this.workflowType == 'reportingPeriod' || this.workflowType == 'reviewAeReport'){
+			this.ajaxFacade.retrieveReviewCommentsAndActions(entityId,function(ajaxOutput){
+				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+				if(this.workflowType == 'reviewAeReport'){
 					var sbox = $('sliderWFAction');
 					var sboxIndicator = $('sliderWFAction-indicator');
-					this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+					this.updateSelectBoxContent(entityId, sbox, sboxIndicator, ajaxOutput.objectContent);
 				}
 			}.bind(this)) ;
 			$('entire-slider').show();
@@ -81,28 +100,29 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		}
 		
 	},
-	updateWorkflowActions : function(){
-		var sbox = $('sliderWFAction');
-		var sboxIndicator = $('sliderWFAction-indicator');
+	updateWorkflowActions : function(reportId){
+		var sboxId = 'sliderWFAction-' + reportId;
+		var sbox = $(sboxId);
+		var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
+		var sboxIndicator = $(sboxIndicatorId);
 
 		sboxIndicator.style.display='';
-		this.ajaxFacade.retrieveNextTransitions(function(ajaxOutput){
-			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+		this.ajaxFacade.retrieveNextTransitions(reportId, function(ajaxOutput){
+			this.updateSelectBoxContent(reportId, sbox, sboxIndicator, ajaxOutput.objectContent);
 		}.bind(this));
 	},
-	updateSelectBoxContent : function(sb, sbIndicator, objectContent){
+	updateSelectBoxContent : function(entityId , sb, sbIndicator, objectContent){
 		if(objectContent){
 			sb.innerHTML = '';
 			var i = 0;
 			for(i = 0; i< objectContent.length; i++){
 				var status = objectContent[i];
 				var li = new Element('li');
-				var opt = new Element('a', {'onclick': 'javascript:advanceWorkflow("'+status+'")', 'href' : '#'}).update(status);
+				var opt = new Element('a', {'onclick': 'javascript:advanceWorkflow("'+ entityId + '","'+status+'")', 'href' : '#', 'style' : 'z-index=1'}).update(status);
 				li.insert(opt);
 				sb.insert(li);
 			}
 		}
-	
 		sbIndicator.style.display='none';
 		if (typeof createDropDowns == 'function') {
 			createDropDowns();
@@ -142,7 +162,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			}
 		}.bind(this));
 	},
-	advanceWorkflow: function(){
+	advanceWorkflow: function(entityId){
 		var sbox = $('sliderWFAction');
 		if(sbox.value == '' || sbox.value == 'Please Select') return;
 		if(confirm('Are you sure you want to take the action - ' + sbox.value)){
@@ -150,15 +170,16 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			sbox.disable();
 			sboxIndicator.style.display='';
 			this.ajaxFacade.advanceWorkflow(sbox.value, function(ajaxOutput){
-				this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
-				this.retrieveReviewComments();
+				this.updateSelectBoxContent(entityId, sbox, sboxIndicator, ajaxOutput.objectContent);
+				this.retrieveReviewComments(entityId);
 			}.bind(this));
 		}else{
 			return false;
 		}
 	},
-	collapseAllComments : function(){
-		var list = $('comments-id').select('div.division');
+	collapseAllComments : function(entityId){
+		var commentsSectionId = 'scrollbar_content-' + entityId;
+		var list = $(commentsSectionId).select('div.division');
 		$A(list).each(function(el){
 			 var _id = el.id;
 		     var panelDiv = $("contentOf-" + _id);
@@ -171,8 +192,9 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		});
 		
 	},
-	expandAllComments : function(){
-		var list = $('comments-id').select('div.division');
+	expandAllComments : function(entityId){
+		var commentsSectionId = 'scrollbar_content-' + entityId;
+		var list = $(commentsSectionId).select('div.division');
 		$A(list).each(function(el){
 			var _id = el.id;
 		     var panelDiv = $("contentOf-" + _id);
@@ -184,5 +206,6 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		     img.src = imageSource.replace('right','down');
 		});
 		
-	}
+	},
+	
 });

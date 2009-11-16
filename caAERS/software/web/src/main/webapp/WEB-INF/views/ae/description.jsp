@@ -4,19 +4,14 @@
 <head>
     <title>${tab.longTitle}</title>
     <tags:dwrJavascriptLink objects="createAE"/>
-	<%--  <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
-		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
-    	<jsp:attribute name="comments">
-    		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments />
-    		</div>
-    	</jsp:attribute>
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" reports="${command.selectedReportsAssociatedToWorkflow}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}" workflowType="report">
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
+    </tags:slider>
     
     <style type="text/css">
         
@@ -33,10 +28,12 @@
 				viewSelection();
 			}
 			
-			 //only show the workflow tab, if it is associated to workflow
+			  //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
             if(associatedToWorkflow){
- 	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+            	<c:forEach items="${command.selectedReportsAssociatedToWorkflow}" var="report" varStatus="status">
+	 	          	routingHelper.retrieveReviewCommentsAndActions('${report.id}');
+ 	          	</c:forEach>
             }
 
             checkPresense.defer();

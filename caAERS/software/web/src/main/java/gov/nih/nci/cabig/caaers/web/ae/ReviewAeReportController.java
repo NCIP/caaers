@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -33,6 +34,7 @@ public class ReviewAeReportController extends SimpleFormController{
 
 	private static final String MAIN_FIELD_GROUP = "main";
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private ReportDao reportDao;
 	private StudyParticipantAssignmentDao assignmentDao;
 	private Configuration configuration;
 	private MessageSource messageSource;
@@ -54,7 +56,7 @@ public class ReviewAeReportController extends SimpleFormController{
 	
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao);
+		ReviewAeReportCommand command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
 		String aeReportId = request.getParameter("aeReport");
 		String reportId = request.getParameter("report");
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
@@ -151,6 +153,10 @@ public class ReviewAeReportController extends SimpleFormController{
 	
 	public void setReportValidationService(ReportValidationService reportValidationService){
 		this.reportValidationService = reportValidationService;
+	}
+	
+	public void setReportDao(ReportDao reportDao){
+		this.reportDao = reportDao;
 	}
 	
 	@Required

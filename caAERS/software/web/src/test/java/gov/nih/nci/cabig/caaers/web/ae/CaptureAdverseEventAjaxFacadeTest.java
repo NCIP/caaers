@@ -162,7 +162,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
 
         replayMocks();
-        facade.addReviewComment("test Comment");
+        facade.addReviewComment("test Comment", command.getAdverseEventReportingPeriod().getId().toString());
         verifyMocks();
     }
 	
@@ -234,7 +234,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
        
         replayMocks();
-        facade.editReviewComment("test Comment", 1);
+        facade.editReviewComment("test Comment", 1, command.getAdverseEventReportingPeriod().getId().toString());
         verifyMocks();
 
 	}
@@ -259,7 +259,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
        
         replayMocks();
-        facade.deleteReviewComment(1);
+        facade.deleteReviewComment(1, command.getAdverseEventReportingPeriod().getId().toString());
         verifyMocks();
 	}
 }

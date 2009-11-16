@@ -30,6 +30,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
@@ -134,6 +135,7 @@ public class CreateAdverseEventAjaxFacade {
     protected ReportDefinitionDao reportDefinitionDao;
     protected ExpeditedReportTree expeditedReportTree;
     protected ConfigProperty configProperty;
+    protected ReportDao reportDao;
     protected ReportRepository reportRepository;
     protected LabCategoryDao labCategoryDao;
     protected LabTermDao labTermDao;
@@ -1010,21 +1012,31 @@ public class CreateAdverseEventAjaxFacade {
         return fetchPreviousComments(reportId, userId);
     }
     
-    /*public AjaxOutput editReviewComment(String comment, Integer commentId){
+    public AjaxOutput editReviewComment(String comment, Integer commentId, String reportIdString){
+    	Integer reportId = Integer.parseInt(reportIdString);
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
-    	adverseEventRoutingAndReviewRepository.editReportReviewComment(command.getAeReport(), comment, userId, commentId);
-    	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
+    	Report report = null;
+    	for(Report r: command.getAeReport().getActiveReports())
+    		if(r.getId().equals(reportId))
+    			report = r;
+    	adverseEventRoutingAndReviewRepository.editReportReviewComment(report, comment, userId, commentId);
+    	return fetchPreviousComments(reportId, getUserId());
     }
     
-    public AjaxOutput deleteReviewComment(Integer commentId){
+    public AjaxOutput deleteReviewComment(Integer commentId, String reportIdString){
+    	Integer reportId = Integer.parseInt(reportIdString);
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
-    	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(command.getAeReport(), commentId);
-    	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
-    }*/
+    	Report report = null;
+    	for(Report r: command.getAeReport().getActiveReports())
+    		if(r.getId().equals(reportId))
+    			report = r;
+    	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(report, commentId);
+    	return fetchPreviousComments(reportId, getUserId());
+    }
     
     // ******************************************************************************************************
     // TODO: These methods have to change to call the repository methods with "Report" object / IDs
@@ -1089,7 +1101,12 @@ public class CreateAdverseEventAjaxFacade {
     		return new AjaxOutput();
     }
     
-    public AjaxOutput retrieveNextTransitions(Report selectedReport){
+    public AjaxOutput retrieveNextTransitions(String reportId){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	Report selectedReport = null;
+    	if(reportId != null)
+    		selectedReport = reportDao.getById(Integer.parseInt(reportId));
     	List<String> transitions = new ArrayList<String>();
     	if(selectedReport != null){
     		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNamesForReportWorkflow(selectedReport, getUserId());
@@ -1099,40 +1116,47 @@ public class CreateAdverseEventAjaxFacade {
     	return output;
     }
     
-    public AjaxOutput retrieveReviewCommentsAndActions(){
+    public AjaxOutput retrieveReviewCommentsAndActions(String reportId){
     	
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	// Determine the report in context
-    	Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
+    	/*Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
     	for(ReportDefinition rd: command.getSelectedReportDefinitions())
     		selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
     	Report selectedReport = null;
     	for(Report r: command.getAeReport().getActiveReports())
     		if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()))
     			selectedReport = r;
-    	
-    	AjaxOutput output = retrieveReviewComments(selectedReport);
-    	AjaxOutput transitionOutput = retrieveNextTransitions(selectedReport);
+    	*/
+    	Report report = null;
+    	if(reportId != null || !reportId.equals(""))
+    		report = reportDao.getById(Integer.parseInt(reportId));
+    	AjaxOutput output = retrieveReviewComments(report);
+    	AjaxOutput transitionOutput = retrieveNextTransitions(reportId);
     	output.setObjectContent(transitionOutput.getObjectContent());
     	return output;
     	
     }
     
-    public AjaxOutput advanceWorkflow(String transitionToTake){
+    public AjaxOutput advanceWorkflow(String reportId, String transitionToTake){
         AjaxOutput out = new AjaxOutput();
-        /*try {
-            ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-            command.reassociate();
-            List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), transitionToTake, command.getAeReport(), getUserId());
-            out.setObjectContent(transitions.toArray());
+        try{
+        	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    		command.reassociate();
+			Report report = null;
+			if(reportId != null)
+				report = reportDao.getById(Integer.parseInt(reportId));
+			if(report != null){
+				List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(report.getWorkflowId(), transitionToTake, report, getUserId());
+				out.setObjectContent(transitions.toArray());
+			}
         } catch (Exception e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-            out.setError(true);
-            out.setErrorMessage(e.getMessage());
-
-        }*/
+        	log.error(e.getMessage());
+        	e.printStackTrace();
+        	out.setError(true);
+        	out.setErrorMessage(e.getMessage());
+        }
         return out;
     }
 
@@ -1402,5 +1426,10 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setInvestigatorDao(InvestigatorDao investigatorDao){
     	this.investigatorDao = investigatorDao;
+    }
+    
+    @Required
+    public void setReportDao(ReportDao reportDao){
+    	this.reportDao = reportDao;
     }
 }

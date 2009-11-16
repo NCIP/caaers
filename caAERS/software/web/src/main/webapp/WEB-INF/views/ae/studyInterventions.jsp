@@ -5,21 +5,14 @@
     <title>${tab.longTitle}</title>
     <tags:dwrJavascriptLink objects="createAE"/>
 
-<%--
-    <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}"
-        display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
-        <jsp:attribute name="comments">
-            <div id="comments-id" style="display:none;">
-                <tags:routingAndReviewComments />
-            </div>
-        </jsp:attribute>
-        <jsp:attribute name="labs">
-            <div id="labs-id" style="display:none;">
-                <tags:labs labs="${command.assignment.labLoads}"/>
-            </div>
-        </jsp:attribute>
+<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" reports="${command.selectedReportsAssociatedToWorkflow}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}" workflowType="report">
+    	<jsp:attribute name="labs">
+    		<div id="labs-id" style="display:none;">
+    			<tags:labs labs="${command.assignment.labLoads}"/>
+    		</div>
+    	</jsp:attribute>
     </tags:slider>
---%>
 
     <style type="text/css">
         div.row div.label { width: 16em; }
@@ -66,13 +59,13 @@ function closeAll() {
     divisions = new Hash(); 
 
     function setupPage(){
-        //only show the workflow tab, if it is associated to workflow
-<%--
-        var associatedToWorkflow = ${command.associatedToWorkflow};
-        if(associatedToWorkflow){
-               routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
-        }
---%>
+         //only show the workflow tab, if it is associated to workflow
+            var associatedToWorkflow = ${command.associatedToWorkflow};
+            if(associatedToWorkflow){
+            	<c:forEach items="${command.selectedReportsAssociatedToWorkflow}" var="report" varStatus="status">
+	 	          	routingHelper.retrieveReviewCommentsAndActions('${report.id}');
+ 	          	</c:forEach>
+            }
 
         interventionInstance = new InterventionClass();
         <c:if test="${command.investigationalAgentAdministeredForPreviousReports}">
