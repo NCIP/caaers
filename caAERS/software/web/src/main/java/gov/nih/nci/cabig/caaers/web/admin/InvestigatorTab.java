@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -49,7 +51,8 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     private Configuration configuration;
     private OrganizationDao organizationDao;
     private CSMUserRepository csmUserRepository;
-
+    private InvestigatorRepository investigatorRepository;
+    
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }
@@ -235,15 +238,27 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
             	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
                 boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
                 if(loginIdExists){
-                	 errors.reject("USR_001", new Object[]{loginId},  "Username or Email address already in use..!");
+                	 errors.reject("USR_001", new Object[]{loginId},  "Username already in use..!");
                 }
         	}else{
         		String emailAddress = command.getEmailAddress();
                 boolean loginIdExists = csmUserRepository.loginIDInUse(emailAddress);
                 if(loginIdExists){
-                	 errors.reject("USR_001", new Object[]{emailAddress},  "Email address already in use..!");
+                	 errors.reject("USR_001", new Object[]{emailAddress},  "Username address already in use..!");
                 }
         	}
+        }
+        
+        // Check if there is another investigator with same primary email-address.
+        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+        investigatorQuery.filterByEmailAddress(command.getEmailAddress());
+        List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
+        
+        if(investigatorList.size() > 1)
+        	errors.rejectValue("emailAddress", "USR_010");
+        
+        if(investigatorList.size() == 1 && command.getId() == null){
+        	errors.rejectValue("emailAddress", "USR_010");
         }
         
         List<SiteInvestigator> investigators = command.getSiteInvestigators();
@@ -320,4 +335,13 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+	
+	public InvestigatorRepository getInvestigatorRepository() {
+		return investigatorRepository;
+	}
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
+	}
+	
 }

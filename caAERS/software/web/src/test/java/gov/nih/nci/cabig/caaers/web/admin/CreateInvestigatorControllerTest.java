@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * @author Kulasekaran
+ * @author Biju Joseph
  */
 public class CreateInvestigatorControllerTest extends WebTestCase {
 
@@ -38,9 +39,28 @@ public class CreateInvestigatorControllerTest extends WebTestCase {
         // controller.setListValues(new ListValues());
     }
 
-    public void testViewOnGet() throws Exception {
-        // request.setMethod("GET");
-        // ModelAndView mv = controller.handleRequest(request, response);
-        // assertEquals("admin/investigator_details", mv.getViewName());
+    
+    public void testIsAjaxRequest(){
+    	assertFalse(controller.isAjaxRequest(request));
+    	
+    	request.setAttribute("_isAjax", "yes");
+    	assertTrue(controller.isAjaxRequest(request));
+    	
+    	request.removeAttribute("_isAjax");
+    	assertFalse(controller.isAjaxRequest(request));
+    	
+    	request.addParameter("_asynchronous", "true");
+    	assertTrue(controller.isAjaxRequest(request));
+
+    	request.removeParameter("_asynchronous");
+    	assertFalse(controller.isAjaxRequest(request));
+
+    	
+    	request.setAttribute("_isAjax", "yes");
+    	request.addParameter("_asynchronous", "true");
+    	assertTrue(controller.isAjaxRequest(request));
+
+    	
     }
+    
 }

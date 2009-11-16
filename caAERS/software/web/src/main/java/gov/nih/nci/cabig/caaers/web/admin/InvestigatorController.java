@@ -81,24 +81,6 @@ public abstract class InvestigatorController<C extends Investigator> extends
         return refdata;
     }
     
-    @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object cmd, BindException errors, int page) throws Exception {
-        super.onBindAndValidate(request, cmd, errors, page);
-     
-        Investigator command = (Investigator) cmd;
-        // Check if there is another investigator with same primary email-address.
-        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-        investigatorQuery.filterByEmailAddress(command.getEmailAddress());
-        List<Investigator> investigatorList = investigatorDao.searchInvestigator(investigatorQuery);
-        
-        if(investigatorList.size() > 1)
-        	errors.rejectValue("emailAddress", "USR_010");
-        
-        if(investigatorList.size() == 1 && command.getId() == null){
-        	errors.rejectValue("emailAddress", "USR_010");
-        }
-        
-    }
 
     /**
      * Override this in sub controller if summary is needed
@@ -112,10 +94,8 @@ public abstract class InvestigatorController<C extends Investigator> extends
     @Override
     protected boolean suppressValidation(final HttpServletRequest request) {
 
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
-            return true;
-        }
+    	if(isAjaxRequest(request)) return true;
+    	
         String action = (String) findInRequest(request, "_action");
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return true;
@@ -123,6 +103,12 @@ public abstract class InvestigatorController<C extends Investigator> extends
         return super.suppressValidation(request);
     }
 
+    
+    @Override
+    protected boolean isAjaxRequest(HttpServletRequest request) {
+    	return super.isAjaxRequest(request) || findInRequest(request, "_isAjax") != null;
+    }
+    
     @Override
     protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
         Object subviewName = findInRequest(request, "_subview");
