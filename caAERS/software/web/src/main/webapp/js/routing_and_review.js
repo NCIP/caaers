@@ -162,14 +162,14 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 			}
 		}.bind(this));
 	},
-	advanceWorkflow: function(entityId){
+	advanceWorkflow: function(entityId, value){
 		var sbox = $('sliderWFAction');
-		if(sbox.value == '' || sbox.value == 'Please Select') return;
-		if(confirm('Are you sure you want to take the action - ' + sbox.value)){
+		if(value == '' || value == 'Please Select') return;
+		if(confirm('Are you sure you want to take the action - ' + value)){
 			var sboxIndicator = $('sliderWFAction-indicator');		
-			sbox.disable();
+			//sbox.disable();
 			sboxIndicator.style.display='';
-			this.ajaxFacade.advanceWorkflow(sbox.value, function(ajaxOutput){
+			this.ajaxFacade.advanceWorkflow(entityId, value, function(ajaxOutput){
 				this.updateSelectBoxContent(entityId, sbox, sboxIndicator, ajaxOutput.objectContent);
 				this.retrieveReviewComments(entityId);
 			}.bind(this));

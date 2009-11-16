@@ -35,14 +35,38 @@
 			routingHelper.expandAllComments(reportId);
 		}
 		
+		function advanceWorkflow(entityId, value){
+			routingHelper.advanceWorkflow(entityId, value);
+		}
+		
 		function submitReport(reportId){
 			var url = '<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=' + reportId + '"/>';
 			window.location = url;
 		}
 		
+		function createDropDowns() {
+		jQuery(".fg-button").each(function(){
+			id = jQuery(this).attr("id");
+			options = "options-" + id;
+			jQuery("#"+id).menu({
+				content: jQuery("#"+options).html(),		
+				maxHeight: 180,
+				width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'right',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 300
+			});
+		});
+	}
+		
 		Event.observe(window, "load", function(){
 	    	if(${command.workflowEnabled}){
-            	routingHelper.retrieveReviewCommentsAndActions('${command.reportId}').bind(routingHelper)();
+            	routingHelper.retrieveReviewCommentsAndActions('${command.reportId}');
  			}
 	    });
 	</script>
