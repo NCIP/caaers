@@ -59,7 +59,6 @@ public class ReporterTabTest extends AeTabTestCase {
     @Override
     protected AeTab createTab() {
         ReporterTab tab = new ReporterTab();
-        tab.setEvaluationService(evaluationService);
         return tab;
     }
 

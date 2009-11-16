@@ -33,6 +33,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         tab = createTab();
         tab.setMessageSource(messageSource);
         tab.setExpeditedReportTree(expeditedReportTree);
+        tab.setEvaluationService(evaluationService);
     }
 
     protected abstract AeTab createTab();
@@ -61,12 +62,16 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     protected InputFieldGroup getFieldGroup(String fieldGroupName) {
         return getTab().createFieldGroups(command).get(fieldGroupName);
     }
-
+    
+    protected void assertFieldError(String fieldName, String code, String errorMsg){
+    	assertEquals("Wrong number of errors for " + fieldName, 1, errors.getFieldErrorCount(fieldName));
+    	 ObjectError fieldError = errors.getFieldError(fieldName);
+    	 assertEquals("Wrong code for " + fieldName + " error", code, fieldError.getCode());
+    	 assertEquals("Wrong default message for " + fieldName + " error", errorMsg, fieldError.getDefaultMessage());
+    }
+    
     protected void assertFieldRequiredErrorRaised(String fieldName, String displayName) {
-        assertEquals("Wrong number of errors for " + fieldName, 1, errors.getFieldErrorCount(fieldName));
-        ObjectError fieldError = errors.getFieldError(fieldName);
-        assertEquals("Wrong code for " + fieldName + " error", "REQUIRED", fieldError.getCode());
-        assertEquals("Wrong default message for " + fieldName + " error", "Missing " + displayName, fieldError.getDefaultMessage());
+    	assertFieldError(fieldName, "REQUIRED", "Missing " + displayName);
     }
 
     protected void assertDisplayNameForFieldGroup(String expectedDisplayName, String groupName) {

@@ -60,9 +60,7 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 	protected AeTab createTab() {
 		PatientDetailsTab pdt =  new PatientDetailsTab();
 		pdt.setConfigurationProperty(configurationProperty);
-		EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
-		pdt.setEvaluationService(evaluationServiceMock);
-        EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(), pdt.section())).andReturn(new ValidationErrors()).anyTimes();
+        EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), pdt.section())).andReturn(new ValidationErrors()).anyTimes();
 		pdt.setPreExistingConditionDao(new PreExistingConditionDao() {
             @Override
             public List<PreExistingCondition> getAll() {
@@ -96,19 +94,33 @@ public class PatientDetailsTabTest extends AeTabTestCase {
                 "aeReport.saeReportPreExistingConditions[7].other");
     }
 
-//    public void testConcomitantMedicationValidWithAgentName() throws Exception {
-//        command.getAeReport().getConcomitantMedications().get(0).setAgentName("agentName");
-//        doValidate();
-//        assertEquals(0, getErrors().getErrorCount());
-//    }
+    public void validateHeightAndWeight(){
+    	 command.getAeReport().getParticipantHistory().getHeight().setCode(0);
+    	 command.getAeReport().getParticipantHistory().getHeight().setQuantity(0.1);
+    	 command.getAeReport().getParticipantHistory().getHeight().setUnit("cms");
+    	 
+    	 command.getAeReport().getParticipantHistory().getWeight().setCode(0);
+    	 command.getAeReport().getParticipantHistory().getWeight().setQuantity(0.1);
+    	 command.getAeReport().getParticipantHistory().getWeight().setUnit("lbs");
+    	 
+    	 doValidate();
+    	 assertFalse(getErrors().hasErrors());
+    }
     
-//    public void testPreExistingCondWithCondition() throws Exception {
-//        command.getAeReport().getSaeReportPreExistingConditions().get(0).setPreExistingCondition(
-//                        new PreExistingCondition());
-//        doValidate();
-//        assertEquals(0, getErrors().getErrorCount());
-//    }
-
+    
+    public void validateInvalidHeightAndWeight(){
+   	 command.getAeReport().getParticipantHistory().getHeight().setCode(0);
+   	 command.getAeReport().getParticipantHistory().getHeight().setQuantity(3333333333333333.1);
+   	 command.getAeReport().getParticipantHistory().getHeight().setUnit("cms");
+   	 
+   	 command.getAeReport().getParticipantHistory().getWeight().setCode(0);
+   	 command.getAeReport().getParticipantHistory().getWeight().setQuantity(0.1333333333333);
+   	 command.getAeReport().getParticipantHistory().getWeight().setUnit("lbs");
+   	 
+   	 doValidate();
+   	 assertFieldError("aeReport.participantHistory.height.quantity", "REQUIRED", "Invalid ");
+   	assertFieldError("aeReport.participantHistory.weight.quantity", "REQUIRED", "Invalid ");
+   }
     public void testPreExistingCondWithValidOther() throws Exception {
         command.getAeReport().getSaeReportPreExistingConditions().get(0).setOther("Headache");
         doValidate();

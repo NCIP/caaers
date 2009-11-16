@@ -36,6 +36,8 @@ public class PatternBasedValidatorTest extends TestCase {
 		assertTrue(validator.isValid(""));
 		assertTrue(validator.isValid("999999999.999999"));
 		assertFalse(validator.isValid("9999999991.9"));
+		
+	
 	}
 
 	public void testGetMessagePrefix() {
@@ -47,5 +49,7 @@ public class PatternBasedValidatorTest extends TestCase {
 		validator = new PatternBasedValidator("[0-9]{1,6}([.][0-9]{1,4})?");
 		assertEquals("DECIMAL", validator.getValidatorCSSClassName());
 	}
+	
+	
 
 }

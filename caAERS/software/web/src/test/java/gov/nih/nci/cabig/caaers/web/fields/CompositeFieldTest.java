@@ -66,7 +66,7 @@ public class CompositeFieldTest extends AbstractTestCase {
     
     public void testValidateCompositeField_InvalidValue() throws Exception {
     	ParticipantHistory history = new ParticipantHistory();
-    	history.getWeight().setQuantity(new BigDecimal(-99));
+    	history.getWeight().setQuantity(-99.0);
     	
     	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
     	group.addField(textField);
