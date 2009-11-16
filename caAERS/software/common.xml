@@ -584,7 +584,7 @@
 		<mkdir dir="${test.results.dir}" />
 		
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="9000000">
+			showoutput="false" outputtoformatters="false" fork="true" forkmode="perTest" timeout="9000000">
 			<classpath location="${instrumented.classes.dir}" />
 			<classpath refid="test.run.classpath" />
 			
