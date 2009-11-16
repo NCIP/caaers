@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.math.BigDecimal;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -101,7 +99,7 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     	
     	private int code;
     	
-        private BigDecimal quantity;
+        private Double quantity;
 
         private String unit;
 
@@ -112,11 +110,11 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
 			this.code = code;
 		}
         
-        public BigDecimal getQuantity() {
+        public Double getQuantity() {
             return quantity;
         }
 
-        public void setQuantity(BigDecimal quantity) {
+        public void setQuantity(Double quantity) {
             this.quantity = quantity;
         }
 
@@ -137,13 +135,13 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
 
         ParticipantHistory participantHistory = new ParticipantHistory();
         ParticipantHistory.Measure ht = new ParticipantHistory.Measure();
-        ht.setQuantity(new BigDecimal(height));
+        ht.setQuantity(height);
         ht.setUnit(heightUOM);
 
         participantHistory.setHeight(ht);
 
         ParticipantHistory.Measure wt = new ParticipantHistory.Measure();
-        wt.setQuantity(new BigDecimal(weight));
+        wt.setQuantity(weight);
         wt.setUnit(weightUOM);
 
         participantHistory.setWeight(wt);

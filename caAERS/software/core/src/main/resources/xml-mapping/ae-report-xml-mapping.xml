@@ -1204,7 +1204,7 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.ParticipantHistory$Measure">
     <map-to xml="Measure"/>
-    <field name="quantity" type="big-decimal">
+    <field name="quantity" type="double">
       <bind-xml name="quantity" node="element"/>
     </field>
     <field name="unit" type="string">

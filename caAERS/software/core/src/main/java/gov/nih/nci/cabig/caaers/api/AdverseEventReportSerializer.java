@@ -910,11 +910,11 @@ public class AdverseEventReportSerializer {
 				
 				ParticipantHistory ph = new ParticipantHistory();
 				Measure h = new Measure();
-				h.setQuantity(new BigDecimal(100));
+				h.setQuantity(100.0);
 				h.setUnit("Inch");
 				
 				Measure w = new Measure();
-				w.setQuantity(new BigDecimal(150));
+				w.setQuantity(150.0);
 				w.setUnit("Pound");	
 				
 				ph.setHeight(h);

@@ -14,9 +14,7 @@ public class ParticipantHistoryTest extends AbstractTestCase {
     private double ht;
     private String baselinePerformance;
     private ParticipantHistory.Measure height;
-    private BigDecimal quantity;
     private ParticipantHistory.Measure weight;
-    private BigDecimal weightQuantity;
 
     @Override
     protected void setUp() throws Exception {
@@ -32,12 +30,10 @@ public class ParticipantHistoryTest extends AbstractTestCase {
         participantHistory.setBaselinePerformanceStatus(baselinePerformance);
         height = new ParticipantHistory.Measure();
         height.setUnit("inch");
-        quantity = new BigDecimal(ht);
-        height.setQuantity(quantity);
+        height.setQuantity(ht);
         participantHistory.setHeight(height);
         weight = new ParticipantHistory.Measure();
-        weightQuantity = new BigDecimal(wt);
-        weight.setQuantity(weightQuantity);
+        weight.setQuantity(wt);
         weight.setUnit("Pound");
         participantHistory.setWeight(weight);
         participantHistory.setReport(new ExpeditedAdverseEventReport());
