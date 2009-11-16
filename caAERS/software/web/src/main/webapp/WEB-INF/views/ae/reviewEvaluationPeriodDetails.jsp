@@ -5,13 +5,9 @@
  <head>
  	<tags:dwrJavascriptLink objects="reviewRP,captureAE"/>
  	
- 	<%-- <tags:slider renderComments="true" renderAlerts="false" display="none">
-    	<jsp:attribute name="comments">
-    		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments/>
-    		</div>
-    	</jsp:attribute>
-    </tags:slider> --%>
+    <tags:slider renderComments="true" renderAlerts="false" 
+    		display="none" workflowType="reportingPeriod" reportingPeriod="${command.adverseEventReportingPeriod }">
+    </tags:slider>
  	
  	 <style type="text/css">
         .selectdiv { width: 170px; overflow: hidden; }
@@ -49,7 +45,8 @@
     	var routingHelper = new RoutingAndReviewHelper(reviewRP, 'reportingPeriod');
     	
 		Event.observe(window, "load", function(){
-			routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+			//Check if reportingPeriod is selected and enable the slider.
+           	routingHelper.retrieveReviewCommentsAndActions('${command.adverseEventReportingPeriod.id}');//.bind(routingHelper)();
    		});
     </script>
  </head>
