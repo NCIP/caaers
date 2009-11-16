@@ -105,6 +105,11 @@ public class ResearchStaffRepository {
         
     }
     
+    public void unlockResearchStaff(ResearchStaff researchStaff) {
+    	researchStaff.unlock();
+    	researchStaffDao.save(researchStaff);
+    }
+    
     public void evict(ResearchStaff researchStaff){
     	researchStaffDao.evict(researchStaff);
     }

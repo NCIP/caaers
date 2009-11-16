@@ -10,9 +10,14 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.poi.hssf.record.formula.functions.Month;
+
+import com.ibm.icu.util.Calendar;
 
 public class ResearchStaffRepositoryTest extends AbstractTestCase {
 	
@@ -109,5 +114,31 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		assertNull(staff.getLoginId());
 	}
 	
+	public void testUnlockUser() {
+		Organization org = Fixtures.createOrganization("NCI");
+		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
+		groupList.add(UserGroupType.caaers_study_cd);
+		ResearchStaff staff = Fixtures.createResearchStaff(org, groupList, "Joel");
+		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+		siteResearchStaff.setEmailAddress("Joel@def.com");
+		siteResearchStaff.setOrganization(org);
+		SiteResearchStaffRole siteResearchStaffRole = new SiteResearchStaffRole();
+		siteResearchStaffRole.setRoleCode("caaers_study_cd");
+		siteResearchStaffRole.setStartDate(new Date());
+		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
+		siteResearchStaff.setAssociateAllStudies(Boolean.TRUE);
+		staff.addSiteResearchStaff(siteResearchStaff);
+		staff.setLoginId("Joel@def.com");
+		staff.setFailedLoginAttempts(-1);
+		Timestamp now = new Timestamp(new Date().getTime());
+		staff.setLastFailedLoginAttemptTime(now);
+		
+		researchStaffDao.save(staff);
+		replayMocks();
+		repository.unlockResearchStaff(staff);
+		assertTrue(staff.getFailedLoginAttempts()==0);
+		assertTrue(staff.getLastFailedLoginAttemptTime()==null);
+		verifyMocks();
+	}
 
 }

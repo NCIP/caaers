@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -11,9 +16,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,8 +30,9 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-import com.semanticbits.rules.utils.DateUtil;
-
+/**
+ * @author Ram Seethiraju
+ */
 public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     protected static final Log log = LogFactory.getLog(ResearchStaffTab.class);
@@ -41,6 +48,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         super("Research Staff Details", "Research Staff Details", "admin/researchStaff");
         setAutoPopulateHelpKey(true);
         methodNameMap.put("addsiteResearchStaff", "addSiteResearchStaff");
+        methodNameMap.put("UnlockUser", "unlockUser");
     }
 
     @Override
@@ -287,6 +295,22 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         // modelAndView.getModel().put("objects", command.getResearchStaff().getSiteResearchStaffs());
         modelAndView.getModel().put("indexes", new Integer[]{command.getResearchStaff().getSiteResearchStaffs().size() - 1});
         return modelAndView;
+    }
+    
+    /**
+     * This method unlocks the user and saves the status of the user when UNLOCK button is clicked in the ReseachStaff edit mode
+     * @param request
+     * @param cmd
+     * @param errors
+     * @return
+     */
+    public ModelAndView unlockUser(HttpServletRequest request , Object cmd, Errors errors){
+    	ResearchStaffCommand command = (ResearchStaffCommand)cmd;
+    	researchStaffRepository.unlockResearchStaff(command.getResearchStaff());
+    	
+    	ModelAndView modelAndView = new ModelAndView();
+    	modelAndView.getModel().get(getFreeTextModelName());
+    	return modelAndView;
     }
 
 }

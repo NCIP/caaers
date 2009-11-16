@@ -1,34 +1,82 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+
+import java.util.Arrays;
+import java.util.Calendar;
+
+import junit.framework.TestCase;
 
 /**
- * @author Jared Flatow
+ * @author Ram Seethiraju
  */
-public class UserTest extends CaaersTestCase {
+public class UserTest extends TestCase {
 
-    private User user;
+	private Credential credential;
+	private User user;	
+	private String userName;    
+	private String password;
+	
+	protected void setUp() throws Exception {
+		super.setUp();
+		userName = "xyz";
+		password = "Abcdef1!";  
+		credential = new Credential(userName, password);
+		Organization org = Fixtures.createOrganization("test");        
+		user =  Fixtures.createResearchStaff(org, Arrays.asList(new UserGroupType[] {UserGroupType.caaers_admin, UserGroupType.caaers_ae_cd}) , "Test");
+		credential.setUser(user);
+	}
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        user = new LocalResearchStaff();
-    }
+	public void testIsLocked_CheckingSuccess() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -100);
+		user.setFailedLoginAttempts(-1);
+		user.setLastFailedLoginAttemptTime(cal.getTime());
+		assertTrue(user.isLocked());
+	}
+	
+	public void testIsLocked_CheckingFailure1() {
+		user.setFailedLoginAttempts(-1);
+		user.setLastFailedLoginAttemptTime(null);
+		assertFalse(user.isLocked());
+	}
+	
+	public void testIsLocked_CheckingFailure2() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -100);
+		user.setFailedLoginAttempts(1);
+		user.setLastFailedLoginAttemptTime(cal.getTime());
+		assertFalse(user.isLocked());
+	}
+	
+	public void testUnlock_CheckingSuccess() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -100);
+		user.setFailedLoginAttempts(-1);
+		user.setLastFailedLoginAttemptTime(cal.getTime());
+		user.unlock();
+		assertTrue(user.getFailedLoginAttempts()==0);
+		assertTrue(user.getLastFailedLoginAttemptTime()==null);
+	}
+	
+	public void testUnlock_CheckingFailure1() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -100);
+		user.setFailedLoginAttempts(-1);
+		user.setLastFailedLoginAttemptTime(cal.getTime());
+		user.unlock();
+		assertFalse(user.getFailedLoginAttempts()==-1);
+		assertTrue(user.getLastFailedLoginAttemptTime()==null);
+	}
 
-    public void testAddPasswordToHistory() throws Exception {
-        user.addPasswordToHistory("test", 1);
-        user.addPasswordToHistory("test_b", 1);
-        assertEquals(user.getPasswordHistory().size(), 1);
+	public void testUnlock_CheckingFailure2() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.SECOND, -100);
+		user.setFailedLoginAttempts(-1);
+		user.setLastFailedLoginAttemptTime(cal.getTime());
+		user.unlock();
+		assertTrue(user.getFailedLoginAttempts()==0);
+		assertFalse(user.getLastFailedLoginAttemptTime()==cal.getTime());
+	}
 
-        user.addPasswordToHistory("test_b", 2);
-        assertEquals(user.getPasswordHistory().size(), 2);
-    }
-
-    public void testGetLastFirst() throws Exception {
-        assertEquals(user.getLastFirst(), "");
-    }
-
-    public void testGetFullName() throws Exception {
-        assertEquals(user.getFullName(), "");
-    }
 }

@@ -55,6 +55,18 @@ public abstract class User extends Person implements Comparable<User>{
         passwordHistory = new ArrayList<String>();
     }
     
+    @Transient
+    public void unlock() {
+    	setFailedLoginAttempts(0);
+    	setLastFailedLoginAttemptTime(null);
+    }
+    
+    @Transient
+    public boolean isLocked() {
+    	if(getFailedLoginAttempts()==-1 && getLastFailedLoginAttemptTime()!=null)	return true;
+    	return false;
+    }
+    
     public String getLoginId() {
         return loginId;
     }

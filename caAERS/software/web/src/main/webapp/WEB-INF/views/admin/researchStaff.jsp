@@ -27,9 +27,31 @@
 			}
         </style>
         <script language="JavaScript">
-                        
+
                             ajaxCRUD = new AJAX_CRUD_HELPER();
-                            function addSiteResearchStaff() {
+
+                            function unlockUser() {
+                                var url = $('command').action + "?subview";
+                                var page = ${tab.number};
+                 				var target = '_target' + ${tab.number}; 
+                 				var paramHash = new Hash();
+                 				paramHash.set('_page', page);
+                 				paramHash.set(target, page);
+                 				paramHash.set('currentItem', "User");
+                 				paramHash.set('task', "Unlock");
+                 				paramHash.set('_asynchronous', true);
+                 				paramHash.set('decorator', 'nullDecorator');
+                                new Ajax.Updater($('unlock-confirmation'), url, {
+                 					parameters: paramHash.toQueryString(), 
+                 					onComplete: function() {
+                                	 $('unlockBtn').hide();
+                                 	}, 
+                                 	insertion: Insertion.Top, 
+                                 	evalScripts : true
+                 				});
+                 			}
+                 			
+                 			function addSiteResearchStaff() {
                                 ajaxCRUD._addItem('siteResearchStaff', null, null, '_organizationsDIV', null, 0, 'Bottom');
                             }
                         
@@ -39,7 +61,7 @@
                         
                             function refreshStudies(values, i) {
                             }
-                        
+
                             function activate(rsID, srsID, srsrID, i, j) {
                                 if (confirm('Are you sure you want to activate ?')) {
                         
@@ -147,6 +169,16 @@
                                     </c:if>
                                 </div>
                             </div>
+                            
+                             <c:if test="${command.researchStaff.locked}">
+                				<ui:row path="researchStaff.locked">
+                    				<jsp:attribute name="value">
+                    				<div id="unlock-confirmation">&nbsp;</div>
+                        				<tags:button id="unlockBtn" color="blue" size="small" value="Unlock" onclick="unlockUser();" type="button"/>
+                    				</jsp:attribute>
+                				</ui:row>
+                			</c:if>
+                            
                         </c:if>
                     </chrome:division>
 					</chrome:box>

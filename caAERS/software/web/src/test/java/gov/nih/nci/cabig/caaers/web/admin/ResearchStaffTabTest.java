@@ -16,9 +16,11 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 /**
  * 
  * @author Biju Joseph
+ * @author Ram Seethiraju
  *
  */
 public class ResearchStaffTabTest extends WebTestCase {
@@ -83,5 +85,18 @@ public class ResearchStaffTabTest extends WebTestCase {
 		verifyMocks();
 	}
 	 
+	public void testUnlockUser() {
+		staff.setEmailAddress("hello@ab.com");
+		staff.setLoginId("abcd");
+		SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+		siteResearchStaff.setOrganization(Fixtures.createOrganization("test", "test"));
+		staff.addSiteResearchStaff(siteResearchStaff);
+		staff.setFailedLoginAttempts(-1);
+		staff.setLastFailedLoginAttemptTime(NOW);
+		repository.unlockResearchStaff(staff);
+		replayMocks();
+		tab.unlockUser(request, command, errors);
+		verifyMocks();
+	}
 
 }
