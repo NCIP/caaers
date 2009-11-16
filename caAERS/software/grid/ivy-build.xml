@@ -162,25 +162,7 @@
 	================================================================== -->	
 	<target name="download-tomcat" unless="tomcat.tools.exists"  description="Downloads TOMCAT from binary repository and verifies checksum">
 	 	<get src="${tomcat.src.url}" dest="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" />
-	 <!--
-	 <checksum file="${ccts.grid-services.working.tomcat.file}" verifyProperty="tomcat.cksum.ok" />
-	 <if>
-	  <equals arg1="${tomcat.cksum.ok}" arg2="true" />
-	  <then>
-	   <echo message="Downloaded tomcat sucessfully" />
-	  </then>
-	  <else>
-	   <fail message="Failed to download tomcat file sucessfully." />
-	  </else>
-	 </if>-->
 		<unzip src="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}.zip" dest="${ccts.grid-services.working.location}" />
-		 <!--<if>    
-		  <os family="unix"/>
-		  <then>  
-		   <chmod dir="${tomcat.home}/bin" perm="ugo+rx"
-		    includes="*/.sh"/>
-		  </then>
-		 </if>-->
 	</target>
 	
 	<!-- ==============================================================
