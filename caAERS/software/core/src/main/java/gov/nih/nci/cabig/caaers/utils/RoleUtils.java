@@ -15,6 +15,6 @@ public class RoleUtils {
 			  							 "SPI" /*Site Principal Investigator*/};
 	//known report specific roles. 
 	 public transient static final String[] reportSpecificRoles = {"REP",/*Reporter*/
-			  						  "SUB" /*Submitter*/};
+			  						  "SUB" /*Submitter*/, "PHY" /*Physician*/};
 
 }

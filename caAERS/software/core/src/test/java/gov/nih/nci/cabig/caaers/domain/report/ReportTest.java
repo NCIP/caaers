@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -8,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -173,14 +176,19 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 	public void testFindEmailAddressByRole(){
 		aeReport.setReporter(new Reporter());
 		aeReport.getReporter().setEmailAddress("abc@abc.com");
+		aeReport.setPhysician(new Physician());
+		aeReport.getPhysician().setEmailAddress("jj@kk.com");
 		Submitter submitter = new Submitter();
 		submitter.setEmailAddress("kk@kk.com");
 		r.getLastVersion().setSubmitter(submitter);
 		assertEquals(1, r.findEmailAddressByRole("REP").size());
 		assertEquals(1, r.findEmailAddressByRole("SUB").size());
+		assertEquals(1, r.findEmailAddressByRole("PHY").size());
 		assertEquals(0, r.findEmailAddressByRole("MMM").size());
 		assertEquals("abc@abc.com", r.findEmailAddressByRole("REP").get(0));
+		assertEquals("jj@kk.com", r.findEmailAddressByRole("PHY").get(0));
 		assertEquals("kk@kk.com", r.findEmailAddressByRole("SUB").get(0));
+		
 	}
 	
 	public void testGetContextVariables(){

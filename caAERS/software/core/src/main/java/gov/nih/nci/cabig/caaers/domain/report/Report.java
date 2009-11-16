@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
@@ -310,7 +311,13 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     			String email = getSubmitter().getEmailAddress();
         		if(StringUtils.isNotEmpty(email)) emails.add(email);
     		}
+    	}else if(StringUtils.equals(roleName, "PHY")){
+    		if(getPhysician() != null){
+    			String email = getPhysician().getEmailAddress();
+    			if(StringUtils.isNotEmpty(email)) emails.add(email);
+    		}
     	}
+    	
     	return emails;
     }
     
@@ -664,6 +671,12 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public Submitter getSubmitter(){
     	return getLastVersion().getSubmitter();
     }
+    
+    @Transient
+    public Physician getPhysician(){
+    	return aeReport.getPhysician();
+    }
+    
     public void setSubmitter(Submitter submitter){
     	getLastVersion().setSubmitter(submitter);
     }
