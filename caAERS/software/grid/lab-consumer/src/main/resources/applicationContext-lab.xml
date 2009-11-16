@@ -19,6 +19,20 @@
 		<constructor-arg value="false"/>
 	</bean>
 	
-	<bean id="labConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" autowire="byType"/>
+<!--	<bean id="labConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" autowire="byType"/> -->
+	
+  <bean id="labConsumerTarget" autowire="byType" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" />
+   
+  <bean id="labConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="labConsumerTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>auditInfoPopulatorInterceptor</value>
+			</list> 
+		</property> 
+	</bean>
+	
+	
 	 
 </beans>
