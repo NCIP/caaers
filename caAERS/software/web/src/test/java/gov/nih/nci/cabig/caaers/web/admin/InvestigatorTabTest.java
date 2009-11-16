@@ -65,6 +65,7 @@ public class InvestigatorTabTest extends WebTestCase {
 		
 		EasyMock.expect(csmUserRepository.loginIDInUse("abcd")).andReturn(false).anyTimes();
 		EasyMock.expect(investigatorRepository.searchInvestigator((InvestigatorQuery) EasyMock.anyObject())).andReturn(new ArrayList<Investigator>());
+		EasyMock.expect(configuration.getAuthenticationMode()).andReturn("abcd");
 		
 		replayMocks();
 		tab.validate(command, commandWrapper, tab.createFieldGroups(command), errors);
