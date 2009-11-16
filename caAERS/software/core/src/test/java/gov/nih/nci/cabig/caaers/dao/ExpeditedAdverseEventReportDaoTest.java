@@ -231,9 +231,9 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         ParticipantHistory actual = getDao().getById(-1).getParticipantHistory();
         assertNotNull("No participant history", actual);
         assertEquals("Wrong history", -57, (int) actual.getId());
-        assertEquals("Wrong height", new BigDecimal("134.3"), actual.getHeight().getQuantity());
+        assertEquals("Wrong height", new Double("134.3"), actual.getHeight().getQuantity());
         assertEquals("Wrong height unit", "cm", actual.getHeight().getUnit());
-        assertEquals("Wrong weight", new BigDecimal("54.2"), actual.getWeight().getQuantity());
+        assertEquals("Wrong weight", new Double("54.2"), actual.getWeight().getQuantity());
         assertEquals("Wrong weight unit", "kg", actual.getWeight().getUnit());
         assertEquals("Wrong baseline", "About here", actual.getBaselinePerformanceStatus());
     }
