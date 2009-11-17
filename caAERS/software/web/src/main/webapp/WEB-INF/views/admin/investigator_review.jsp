@@ -142,6 +142,7 @@ function submitPage(s){
 	</chrome:division>
  </c:if>
  </form:form>
+ <br style="clear:both;"/>
 </chrome:box>
 
 </body>
