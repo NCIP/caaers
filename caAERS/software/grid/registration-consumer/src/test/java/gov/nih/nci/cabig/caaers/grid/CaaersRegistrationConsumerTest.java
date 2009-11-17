@@ -53,9 +53,9 @@ public class CaaersRegistrationConsumerTest extends CaaersDbTestCase {
 
     public CaaersRegistrationConsumer getRegistrationConsumer() {
         CaaersRegistrationConsumer consumer = new CaaersRegistrationConsumer();
-        OpenSessionInViewInterceptor os = (OpenSessionInViewInterceptor) getDeployedApplicationContext()
-                        .getBean("openSessionInViewInterceptor");
-        consumer.setOpenSessionInViewInterceptor(os);
+       // OpenSessionInViewInterceptor os = (OpenSessionInViewInterceptor) getDeployedApplicationContext()
+         //               .getBean("openSessionInViewInterceptor");
+        //consumer.setOpenSessionInViewInterceptor(os);
         consumer.setAuthorizationSwitch((AuthorizationSwitch) getDeployedApplicationContext()
                         .getBean("authorizationSwitch"));
         consumer.setConfigurationProperty((ConfigProperty) getDeployedApplicationContext().getBean(
