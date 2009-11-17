@@ -91,7 +91,7 @@ public class StudyInterventionsTab extends AeTab {
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions", new SimpleNumericDisplayNameCreator("Radiation"),
                 createSelectField("administration", "Type of radiation administration", true, statusOpts),
                 createTextField("dosage", "Total dose (to date)", FieldValidator.SIGN_VALIDATOR, 
-                		FieldValidator.createPatternBasedValidator("[0-9]{1,9}([.][0-9]{1,6})?", "DECIMAL")),
+                		FieldValidator.createPatternBasedValidator("[0-9]{1,14}([.][0-9]{1,6})?", "DECIMAL")),
                 doseUOMField,
                 createPastDateField("lastTreatmentDate", "Date of last treatment", false),
                 fractionNumberField,
@@ -114,7 +114,7 @@ public class StudyInterventionsTab extends AeTab {
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", true, WebUtils.collectOptions(command.getStudy().getActiveStudyAgents(), "id", "agentName", "Please select"));
 
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", 
-        		FieldValidator.SIGN_VALIDATOR, FieldValidator.createPatternBasedValidator("[0-9]{1,9}([.][0-9]{1,6})?", "DECIMAL"));
+        		FieldValidator.SIGN_VALIDATOR, FieldValidator.createPatternBasedValidator("[0-9]{1,14}([.][0-9]{1,6})?", "DECIMAL"));
 
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
