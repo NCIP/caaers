@@ -21,7 +21,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
-import gov.nih.nci.cabig.caaers.resolver.InvestigatorResolver;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -166,6 +165,12 @@ public class StudyRepository {
     			identifier.setOrganization(orgMap.get(CoppaConstants.COORDINATING_CENTER_IDENTIFER));
     		}
 		}
+    	
+    	if(remoteStudy.getFundingSponsorIdentifier() != null && remoteStudy.getFundingSponsorIdentifier().getValue() != null){
+    		if(remoteStudy.getFundingSponsorIdentifier().getValue().indexOf("**NULL**-") != -1){
+    			remoteStudy.getFundingSponsorIdentifier().setValue(remoteStudy.getCoordinatingCenterIdentifier().getValue());
+    		}
+    	}
     }
     
     /**

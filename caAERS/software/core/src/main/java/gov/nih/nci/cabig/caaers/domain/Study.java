@@ -298,6 +298,34 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return organizationAssignedIdentifier;
     }
     
+    @Transient
+    public OrganizationAssignedIdentifier getFundingSponsorIdentifier() {
+        for (Identifier identifier : getIdentifiers()) {
+
+            if (identifier instanceof OrganizationAssignedIdentifier
+                    && identifier.getType().equalsIgnoreCase(
+                    		OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)) {
+                organizationAssignedIdentifier = (OrganizationAssignedIdentifier) identifier;
+                return organizationAssignedIdentifier;
+            }
+        }
+        return organizationAssignedIdentifier;
+    }
+    
+    @Transient
+    public OrganizationAssignedIdentifier getCoordinatingCenterIdentifier() {
+        for (Identifier identifier : getIdentifiers()) {
+
+            if (identifier instanceof OrganizationAssignedIdentifier
+                    && identifier.getType().equalsIgnoreCase(
+                    		OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)) {
+                organizationAssignedIdentifier = (OrganizationAssignedIdentifier) identifier;
+                return organizationAssignedIdentifier;
+            }
+        }
+        return organizationAssignedIdentifier;
+    }
+    
 
     @Transient
     public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {

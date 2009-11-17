@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -34,9 +35,12 @@ import gov.nih.nci.coppa.services.pa.StudySiteContact;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.batik.css.engine.value.IdentifierManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.iso._21090.DSETII;
@@ -92,6 +96,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			
 			for (gov.nih.nci.coppa.services.pa.StudyProtocol studyProtocol : studyProtocols) {
 				RemoteStudy remoteStudy = getRemoteStudyFromStudyProtocol(studyProtocol);
+				
 				if (remoteStudy != null) {
 					remoteStudies.add(remoteStudy);
 				}
@@ -188,6 +193,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		
 		populateStudyOrganizationsForStudyProtocol(studyProtocol,remoteStudy);
 		populateStudyTherapies(studyProtocol, remoteStudy);
+		reArrangeStudyIdentifers(remoteStudy);
 		
 		return remoteStudy;
 	}
@@ -312,6 +318,34 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		}
 		
 		remoteStudy.addIdentifier(orgAssignedIdentifier);
+	}
+	
+	/**
+	 * Kludge 
+	 * Method to rearrange identifiers to have the PROTOCOL_AUTHORITY_IDENTIFIER first in the list.
+	 * @param remoteStudy
+	 */
+	public void reArrangeStudyIdentifers(RemoteStudy remoteStudy){
+		
+		Map<String,Identifier> identiferMap = new HashMap<String,Identifier>(); 
+		for(Identifier identifier : remoteStudy.getIdentifiers()){
+			if(identifier instanceof OrganizationAssignedIdentifier){
+				identiferMap.put(identifier.getType(), identifier);
+			}
+		}
+		remoteStudy.getIdentifiers().clear();
+		Identifier fsIdentifier = identiferMap.get(CoppaConstants.PROTOCOL_AUTHORITY_IDENTIFIER);
+		if(fsIdentifier != null){
+			remoteStudy.addIdentifier(fsIdentifier);
+		}
+		Identifier ccIdentifer =  identiferMap.get(CoppaConstants.COORDINATING_CENTER_IDENTIFER);
+		if(ccIdentifer != null){
+			remoteStudy.addIdentifier(ccIdentifer);
+		}
+		Identifier nciIdentifier = identiferMap.get(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
+		if(nciIdentifier != null){
+			remoteStudy.addIdentifier(nciIdentifier);
+		}
 	}
 	
 	/**
