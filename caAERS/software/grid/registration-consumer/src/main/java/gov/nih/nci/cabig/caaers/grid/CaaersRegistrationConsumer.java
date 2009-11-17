@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
-import gov.nih.nci.cabig.caaers.grid.aspects.AspectJSecurityInterceptorStub;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -35,18 +34,10 @@ import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,8 +47,7 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
 import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
-import org.springframework.web.context.request.WebRequest;
+
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
@@ -76,7 +66,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private ConfigProperty configurationProperty;
 
-    private OpenSessionInViewInterceptor openSessionInViewInterceptor;
 
     private AuthorizationSwitch authorizationSwitch;
 
@@ -88,25 +77,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private Integer rollbackInterval;
 
-    private WebRequest preProcess() {
-        assignmentAspect.setSecurityInterceptor(new AspectJSecurityInterceptorStub());
-        authorizationSwitch.setOn(false);
-        GrantedAuthority[] authorities = new GrantedAuthority[1];
-        authorities[0] = new GrantedAuthorityImpl("ROLE_caaers_super_user");
-
-        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user", "ignored",
-                        authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        WebRequest stubWebRequest = new StubWebRequest();
-        openSessionInViewInterceptor.preHandle(stubWebRequest);
-        return stubWebRequest;
-    }
-
-    private void postProcess(WebRequest stubWebRequest) {
-        openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
-    }
 
     // @Transactional(readOnly=false)
     public void commit(Registration registration) throws RemoteException,
@@ -135,14 +105,12 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                     InvalidRegistrationException, RegistrationConsumptionException {
         logger.info("Begining of registration-register");
         System.out.println("-- RegistrationConsumer : register");
-        WebRequest stubWebRequest = null;
         try {
-            stubWebRequest = preProcess();
 
             String ccIdentifier = findCoordinatingCenterIdentifier(registration);
             Study study = fetchStudy(ccIdentifier,
                             OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-
+            
             if (study == null) {
                 String message = "Study identified by Coordinating Center Identifier '"
                                 + ccIdentifier + "' doesn't exist";
@@ -163,6 +131,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                 throw getRegistrationConsumptionException(message);
 
             }
+            
+            if (!study.getDataEntryStatus()) {
+            	String message = "Study identified by Coordinating Center Identifier '"
+                    + ccIdentifier + "' is not open , Please login to caAERS , complete the Study details and open the Study";
+            	RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
+            	throw exp;
+            }
+            
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
 
@@ -195,8 +171,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         } catch (Exception e) {
             logger.error("Error while registering", e);
             throw new RemoteException("Error while registering", e);
-        } finally {
-            postProcess(stubWebRequest);
         }
 
     }
@@ -211,10 +185,10 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
     // @Transactional(readOnly=false)
     public void rollback(Registration registration) throws RemoteException,
                     InvalidRegistrationException {
-        WebRequest stubWebRequest = null;
+
         logger.info("Begining of registration-rollback");
         try {
-            stubWebRequest = preProcess();
+
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
             if (participant == null) {
@@ -287,9 +261,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             InvalidRegistrationException e = getInvalidRegistrationException(message);
             throw e;
 
-        } finally {
-            postProcess(stubWebRequest);
-        }
+        } 
         logger.info("End of registration-rollback");
 
     }
@@ -531,15 +503,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         this.configurationProperty = configurationProperty;
     }
 
-    @Required
-    public void setOpenSessionInViewInterceptor(
-                    OpenSessionInViewInterceptor openSessionInViewInterceptor) {
-        this.openSessionInViewInterceptor = openSessionInViewInterceptor;
-    }
 
-    public OpenSessionInViewInterceptor getOpenSessionInViewInterceptor() {
-        return openSessionInViewInterceptor;
-    }
 
     @Required
     public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
@@ -575,45 +539,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         this.auditHistoryRepository = auditHistoryRepository;
     }
 
-    private static class StubWebRequest implements WebRequest {
-        public String getParameter(final String paramName) {
-            return null;
-        }
 
-        public String[] getParameterValues(final String paramName) {
-            return null;
-        }
-
-        public Map getParameterMap() {
-            return Collections.emptyMap();
-        }
-
-        public Locale getLocale() {
-            return null;
-        }
-
-        public Object getAttribute(final String name, final int scope) {
-            return null;
-        }
-
-        public void setAttribute(final String name, final Object value, final int scope) {
-        }
-
-        public void removeAttribute(final String name, final int scope) {
-        }
-
-        public void registerDestructionCallback(final String name, final Runnable callback,
-                        final int scope) {
-        }
-
-        public String getSessionId() {
-            return null;
-        }
-
-        public Object getSessionMutex() {
-            return null;
-        }
-    }
 
 	public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(GetMultipleResourceProperties_Element params) throws RemoteException {
 		// TODO Auto-generated method stub
