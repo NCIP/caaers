@@ -154,13 +154,14 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
             $(propertyName).value = selectedChoice.id;
             ValidationManager.setValidState($(propertyName + '-input'));
-        }
+        },
+        minChars : AE.autocompleterChars , 
+        frequency : AE.autocompleterDelay
     }, options || { })
 
     if (opts.initialInputValue) {
         $(propertyName + "-input").value = opts.initialInputValue;
     }
-
     return new Autocompleter.DWR(
         propertyName + "-input",
         propertyName + "-choices",

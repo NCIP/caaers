@@ -95,7 +95,9 @@ function acCreate(mode) {
         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
             acPostSelect(mode, selectedChoice)
         },
-        indicator: mode.basename + "-indicator"
+        indicator: mode.basename + "-indicator",
+        minChars : AE.autocompleterChars , 
+        frequency : AE.autocompleterDelay
     })
 }
 

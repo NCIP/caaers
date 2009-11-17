@@ -850,7 +850,11 @@ div#createNew h3, div.section h3 {
                 	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {                		
                 		document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
                 	},
-                	indicator: "ind-indicator"});
+                	indicator: "ind-indicator",
+                	minChars : AE.autocompleterChars , 
+                	frequency : AE.autocompleterDelay
+                	
+                	});
 
 	
 					
@@ -1498,7 +1502,10 @@ div#createNew h3, div.section h3 {
                 															afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
 																					document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
                 																},
-                																indicator: "ind-indicator"});
+                																indicator: "ind-indicator",
+                																minChars : AE.autocompleterChars , 
+                																frequency : AE.autocompleterDelay
+                																});
 	
 																				}											
 

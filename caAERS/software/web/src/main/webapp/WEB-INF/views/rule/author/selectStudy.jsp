@@ -17,7 +17,9 @@
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
 									postSelect(selectedChoice)
                 },
-                indicator: "study-indicator"});
+                indicator: "study-indicator",
+                minChars : AE.autocompleterChars , 
+                frequency : AE.autocompleterDelay});
 				
 				
 			});
