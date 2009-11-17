@@ -68,6 +68,7 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
 
     // called by the autocompleter on an event.
     getUpdatedChoices: function() {
+        this.startIndicator();
         this.populator(this, this.getToken());
     },
 
