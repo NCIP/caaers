@@ -190,17 +190,17 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		assertEquals("testing", context.pdfReportPaths[0]);
 		assertNotNull(report.getLastVersion().getLastReportTracking().getCaaersXMLGenerated());
 		assertNotNull(report.getLastVersion().getLastReportTracking().getAttachmentGenerated());
-		
-		assertNotNull(report.getLastVersion().getContents());
-		
+
 		verifyMocks();
 		
 	}
 
-	public void testDoPostSubmitReport() {
+	public void testDoPostSubmitReport() throws Exception {
 		
+        EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
+        EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getLastVersion().getId())).andReturn(new String[]{"testing"});
 		EasyMock.expect(reportRepository.createChildReports(report)).andReturn(new ArrayList<Report>());
-		
+
 		ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
 		
 		assertNull(context.caaersXML);
@@ -211,6 +211,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		
 		replayMocks();
 		service.doPostSubmitReport(context);
+
+        assertNotNull(report.getLastVersion().getContents());
 		assertNull(ae1.getPostSubmissionUpdatedDate());
 		assertNull(ae2.getPostSubmissionUpdatedDate());
 		verifyMocks();
@@ -227,7 +229,6 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		expeditedAdverseEventReportDao.save(aeReport);
 		replayMocks();
 		service.submitReport(report);
-		assertNotNull(report.getLastVersion().getContents());
 		assertNotNull(ae1.getPostSubmissionUpdatedDate());
 		assertNotNull(ae2.getPostSubmissionUpdatedDate());
 		verifyMocks();
