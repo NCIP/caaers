@@ -63,7 +63,7 @@ class SitesTab extends StudyTab {
             
             
         }else{
-        	if(isAjax == null && command.isWorkflowEnabled()){
+        	if(isAjax == null){
         		for(StudySite site : command.getStudy().getStudySites()){
         			if(site.getStudySiteWorkflowConfigs().isEmpty()){
         				WorkflowConfig rpWorkflowConfig = workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center");
