@@ -308,8 +308,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     	ResearchStaffCommand command = (ResearchStaffCommand)cmd;
     	researchStaffRepository.unlockResearchStaff(command.getResearchStaff());
     	
-    	ModelAndView modelAndView = new ModelAndView();
-    	modelAndView.getModel().get(getFreeTextModelName());
+    	ModelAndView modelAndView = new ModelAndView("");
+    	//modelAndView.getModel().get(getFreeTextModelName());
+    	modelAndView.getModel().put(getFreeTextModelName(),"Unlocked");
     	return modelAndView;
     }
 
