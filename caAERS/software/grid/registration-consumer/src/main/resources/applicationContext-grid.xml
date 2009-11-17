@@ -34,7 +34,7 @@
 		
 	 <bean id="registrationConsumerTarget" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
         <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
-     	<property name="rollbackInterval" ref ="studyRollbackInterval" />
+     	<property name="rollbackInterval" ref ="registrationRollbackInterval" />
     </bean>
     
 	<bean id="registrationConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
