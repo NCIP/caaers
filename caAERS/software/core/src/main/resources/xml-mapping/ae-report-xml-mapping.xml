@@ -124,16 +124,13 @@
     <field name="adeersReportTypeIndicator" type="string">
       <bind-xml name="adeersReportTypeIndicator" node="element"/>
     </field>    
-    <field name="reportDefinition"
-      type="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
+    <field name="reportDefinition" type="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
       <bind-xml name="ReportDefinition"/>
     </field> 
-    <field name="reportVersions"
-      type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
-      <bind-xml name="ReportVersion"/>
+    <field name="reportVersions" type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
+        <bind-xml name="ReportVersion"/>
     </field>   
-    <field name="emailAddresses"
-      type="string" collection="arraylist">
+    <field name="emailAddresses" type="string" collection="arraylist">
       <bind-xml name="emailRecipient"/>
     </field>      
        
@@ -156,53 +153,31 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.report.ReportVersion">
     <map-to xml="ReportVersion"/>
-
-    <field name="reportVersionId" type="string">
-      <bind-xml name="reportVersionId" node="element"/>
-    </field>    
+    <field name="reportVersionId" type="string"><bind-xml name="reportVersionId" node="element"/></field>
+    <field name="submittedOn" type="date"><bind-xml name="submittedOn" node="element"/></field>
+    <field name="reportStatus" type="gov.nih.nci.cabig.caaers.domain.ReportStatus"><bind-xml name="ReportStatus" /></field>
   </class>
-    
+
   <class name="gov.nih.nci.cabig.caaers.domain.Outcome">
     <map-to xml="Outcome"/>
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element"/>
-    </field>
-    <field name="date" type="date">
-      <bind-xml name="date" node="element"/>
-    </field>
-    <field name="other" type="string">
-      <bind-xml name="other" node="element"/>
-    </field>
-    <field name="outcomeType" type="gov.nih.nci.cabig.caaers.domain.OutcomeType">
-      <bind-xml name="OutcomeType"/>
-    </field>    
+    <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
+    <field name="date" type="date"><bind-xml name="date" node="element"/></field>
+    <field name="other" type="string"><bind-xml name="other" node="element"/></field>
+    <field name="outcomeType" type="gov.nih.nci.cabig.caaers.domain.OutcomeType"><bind-xml name="OutcomeType"/></field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit" verify-constructable="false">
     <map-to xml="TimeScaleUnit" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
-    <field name="code" type="integer">
-      <bind-xml name="code" node="element"/>
-    </field>
-    <field name="calendarTypeCode" type="integer">
-      <bind-xml name="calendarTypeCode" node="element"/>
-    </field>
-    <field name="milliSecondConversionFactor" type="integer">
-      <bind-xml name="milliSecondConversionFactor" node="element"/>
-    </field>
-        
-    <field name="format" type="string">
-      <bind-xml name="format" node="attribute"/>
-    </field>
+    <field name="code" type="integer"><bind-xml name="code" node="element"/></field>
+    <field name="calendarTypeCode" type="integer"><bind-xml name="calendarTypeCode" node="element"/></field>
+    <field name="milliSecondConversionFactor" type="integer"><bind-xml name="milliSecondConversionFactor" node="element"/></field>
+    <field name="format" type="string"><bind-xml name="format" node="attribute"/></field>
   </class>
   
   <class name="gov.nih.nci.cabig.caaers.domain.OutcomeType" verify-constructable="false">
     <map-to xml="OutcomeType" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
-    <field name="code" type="integer">
-      <bind-xml name="code" node="element"/>
-    </field>
-    <field name="displayName" type="string">
-      <bind-xml name="displayName" node="attribute"/>
-    </field>
+    <field name="code" type="integer"><bind-xml name="code" node="element"/></field>
+    <field name="displayName" type="string"><bind-xml name="displayName" node="attribute"/></field>
   </class>
     
   
@@ -367,15 +342,9 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.ReportStatus" verify-constructable="false">
     <map-to xml="ReportStatus" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
-    <field name="code" type="integer">
-      <bind-xml name="code" node="element"/>
-    </field>
-    <field name="name" type="string">
-      <bind-xml name="name" node="element"/>
-    </field>
-    <field name="displayName" type="string">
-      <bind-xml name="displayName" node="element"/>
-    </field>
+    <field name="code" type="integer"><bind-xml name="code" node="element"/></field>
+    <field name="name" type="string"><bind-xml name="name" node="element"/></field>
+    <field name="displayName" type="string"><bind-xml name="displayName" node="element"/></field>
   </class>
   
   <class name="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy">

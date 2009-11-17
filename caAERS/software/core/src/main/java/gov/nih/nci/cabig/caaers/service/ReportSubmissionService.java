@@ -107,33 +107,8 @@ public class ReportSubmissionService {
     	ReportTracking reportTracking = new ReportTracking();
     	Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());
     	context.report.getLastVersion().addReportTracking(reportTracking);
-    	
+
     	generateReportContent(context);
-    	
-    	try {
-    		
-    		//clear off debris from previous submission.
-    		reportVersion.clear();
-    		
-    		// part1 - add the report content to report version
-    		for(String pdfFilePath : context.pdfReportPaths){
-            	File f = new File(pdfFilePath);
-            	if(f.exists() && f.canRead()){
-            		ReportContent reportContent = new ReportContent("application/pdf", FileCopyUtils.copyToByteArray(f));
-            		reportVersion.addReportContent(reportContent);
-            	}
-            }
-            reportVersion.addReportContent(new ReportContent("text/xml", context.caaersXML.getBytes()));
-            
-          
-            // part2 - update the adverse events being reported
-            for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
-            	reportVersion.addReportedAdverseEvent(ae);
-            }
-            
-    	} catch (Exception e ) {  
-    		throw new RuntimeException(e);
-    	}
     	
     }
     
@@ -143,7 +118,36 @@ public class ReportSubmissionService {
      * @param context
      */
     public void doPostSubmitReport(ReportSubmissionContext context){
-    	Report report = context.report;
+
+        Report report = context.report;
+        ReportVersion reportVersion = report.getLastVersion();
+
+    	try {
+
+            generateReportContent(context);
+
+    		//clear off debris from previous submission.
+    		reportVersion.clear();
+
+    		// part1 - add the report content to report version
+    		for(String pdfFilePath : context.pdfReportPaths){
+            	File f = new File(pdfFilePath);
+            	if(f.exists() && f.canRead()){
+            		ReportContent reportContent = new ReportContent("application/pdf", FileCopyUtils.copyToByteArray(f));
+            		reportVersion.addReportContent(reportContent);
+            	}
+            }
+            reportVersion.addReportContent(new ReportContent("text/xml", context.caaersXML.getBytes()));
+
+            // part2 - update the adverse events being reported
+            for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
+            	reportVersion.addReportedAdverseEvent(ae);
+            }
+
+    	} catch (Exception e ) {
+    		throw new RuntimeException(e);
+    	}
+
     	
     	//un-schedule all the notifications
     	schedulerService.unScheduleNotification(report);

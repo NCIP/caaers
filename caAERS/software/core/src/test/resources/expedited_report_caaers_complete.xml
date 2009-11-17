@@ -366,8 +366,7 @@
         </eventApproximateTime>
         <Outcome>
             <id>142</id>
-            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEATH
-            </OutcomeType>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">DEATH</OutcomeType>
         </Outcome>
         <Outcome>
             <id>143</id>
@@ -717,7 +716,9 @@
             </timeScaleUnitType>
         </ReportDefinition>
         <ReportVersion>
-            <reportVersionId>0</reportVersionId>
+            <reportVersionId>10</reportVersionId>
+            <submittedOn>2090-07-06T00:00:00.000-04:00</submittedOn>
+            <ReportStatus>AMENDED</ReportStatus>
         </ReportVersion>
         <emailRecipient>sameer.sawant@semanticbits.com</emailRecipient>
     </Report>

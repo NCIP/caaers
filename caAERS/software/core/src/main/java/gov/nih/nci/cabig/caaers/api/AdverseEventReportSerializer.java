@@ -76,7 +76,7 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
+	   public String serialize(ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
 		   return this.serialize(adverseEventReportDataObject, null);
 	   }
 	   
@@ -131,7 +131,7 @@ public class AdverseEventReportSerializer {
 		
 			return xml;		   
 	   }
-	   public synchronized String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,Report report) throws Exception{
+	   public synchronized String serialize(ExpeditedAdverseEventReport adverseEventReportDataObject, Report report) throws Exception{
 		   int reportId = report == null ? 0 : report.getId();
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
 		   
@@ -163,7 +163,7 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport , int reportId,List<String> notApplicableFieldPaths) throws Exception{
+	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport, int reportId, List<String> notApplicableFieldPaths) throws Exception {
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 		    AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
@@ -302,6 +302,8 @@ public class AdverseEventReportSerializer {
 		   r.setId(report.getId());
 		   
 		   r.setSubmissionMessage(report.getSubmissionMessage());
+           r.setSubmittedOn(report.getSubmittedOn());
+           r.setStatus(report.getStatus());
 
 		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
