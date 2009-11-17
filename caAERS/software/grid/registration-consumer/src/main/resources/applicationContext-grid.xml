@@ -20,16 +20,34 @@
 		<constructor-arg value="false"/>
 	</bean>
 		
-	<bean id="registrationConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
-        <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
-        <property name="rollbackInterval" ref ="registrationRollbackInterval" />
-    </bean>
+
 	<bean id="registrationRollbackInterval" class="java.lang.Integer">
 		<constructor-arg value="s[grid.registrationconsumer.rollbackInterval]" />
 	</bean>
     <bean id="registrationConsumerGridServiceUrl" class="java.lang.String">
         <constructor-arg value="s[grid.registrationconsumer.url]"/>
     </bean>
+    
+    <bean id="registrationConsumerAuditInfoPopulatorInterceptor" class="gov.nih.nci.cabig.caaers.audit.AuditInfoPopulatorInterceptor">
+		<property name="fromUrl" ref="registrationConsumerGridServiceUrl" />
+	</bean>
+		
+	 <bean id="registrationConsumerTarget" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
+        <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
+     	<property name="rollbackInterval" ref ="studyRollbackInterval" />
+    </bean>
+    
+	<bean id="registrationConsumer" class="org.springframework.aop.framework.ProxyFactoryBean"> 
+		<property name="proxyTargetClass"><value>true</value></property>
+		<property name="target"><ref local="registrationConsumerTarget"/></property> 
+		<property name="interceptorNames"> 
+			<list> 
+				<value>runAsAutenticationProviderInterceptor</value>
+				<value>registrationConsumerAuditInfoPopulatorInterceptor</value>
+				<value>hibernateInterceptor</value> 
+			</list> 
+		</property> 
+	</bean>
 
 
 </beans>
