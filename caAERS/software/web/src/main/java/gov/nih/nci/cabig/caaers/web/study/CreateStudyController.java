@@ -105,8 +105,9 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         String action = (String) super.findInRequest(request, "_action");
         if (StringUtils.equals(action, "removeSite")) return true;
-        if(StringUtils.equals(action, "removeInv"))  return true;
-        if(StringUtils.equals(action, "removeStudyPersonnell"))  return true;
+        if (StringUtils.equals(action, "removeInv"))  return true;
+        if (StringUtils.equals(action, "removeStudyPersonnell"))  return true;
+        if (StringUtils.equals(action, "removeIdentifier"))  return true;
 
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
@@ -125,17 +126,13 @@ public class CreateStudyController extends StudyController<StudyCommand> {
     protected boolean shouldSave(HttpServletRequest request, StudyCommand command, Tab<StudyCommand> studyCommandTab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) {
-            return false;
-        }
+        if (isAjax != null || isAjaxRequest(request)) return false;
 
         String action = (String) super.findInRequest(request, "_action");
-        if (StringUtils.equals(action, "removeSite")) {
-            return false;
-        }
-
-        if(StringUtils.equals(action, "removeInv") )  return false;
-        if(StringUtils.equals(action, "removeStudyPersonnel") )  return false;
+        if (StringUtils.equals(action, "removeSite")) return false;
+        if (StringUtils.equals(action, "removeInv") )  return false;
+        if (StringUtils.equals(action, "removeStudyPersonnel") )  return false;
+        if (StringUtils.equals(action, "removeIdentifier"))  return false;
 
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
