@@ -598,13 +598,12 @@
             </xsl:if>
             
             
-         <xsl:if test="DiseaseHistory/AnatomicSite/category != 'Other'">   
-            <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
+         <xsl:if test="DiseaseHistory/AnatomicSite/name != '' and DiseaseHistory/AnatomicSite/name != 'Other, specify'">
                 <PRIMARY_SITE_OF_DISEASE>
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
                 </PRIMARY_SITE_OF_DISEASE>
-            </xsl:if>
          </xsl:if>
+          
              
             <xsl:if test="DiseaseHistory/AnatomicSite/category != ''">
                 <PRIMARY_ANATOMIC_SITE>
@@ -704,7 +703,7 @@
         </xsl:for-each>
         <xsl:for-each select="DiseaseHistory/MetastaticDiseaseSite">
             <SITE_OF_METASTATIC_DISEASE>
-                <xsl:if test="AnatomicSite/name != '' and AnatomicSite/category != 'Other'">
+                <xsl:if test="AnatomicSite/name != '' and AnatomicSite/name != 'Other, specify'">
                     <SITE_NAME>
                         <xsl:value-of select="AnatomicSite/name"/>
                     </SITE_NAME>
