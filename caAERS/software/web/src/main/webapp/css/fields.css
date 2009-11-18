@@ -41,7 +41,7 @@ input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
 /*
     Styles for scriptaculous-generated autocompleters
  */
-div.autocomplete {
+div.autocomplete_OLD {
 	z-index: 3; /* To handle the overlapping issue*/
     position: absolute;
     background-color: white;
@@ -50,7 +50,23 @@ div.autocomplete {
     margin: 0;
     padding: 0;
     white-space: normal;
+    overflow:auto;
 }
+
+div.autocomplete {
+    z-index: 30;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #888;
+    border-top-width: 0;
+    margin: 0;
+    padding: 0;
+    height: 150px;
+    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 div.autocomplete ul {
     list-style-type: none;
     margin: 0;

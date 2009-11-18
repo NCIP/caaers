@@ -54,6 +54,26 @@ AE.highlight = function(element, options) {
 // This is based on the code from https://dwr.dev.java.net/servlets/ReadMsg?list=users&msgNo=2629
 // Differences:  this version includes records whose display value does not include the typed string
 //    (this allows the server to match on multiple fields at once)
+
+Autocompleter.Base.prototype.__onBlur = Autocompleter.Base.prototype.onBlur;
+Autocompleter.Base.prototype = Object.extend(Autocompleter.Base.prototype, {
+	onBlur: function(event){
+
+        if(Prototype.Browser.IE){
+            if (event.offsetX > 450) {
+              //good may close
+            } else if (event.offsetY < 0) {
+              //good - may close
+            } else {
+              //prevent autocomplete close
+              event.cancelBubble = true;
+              return false;
+            }
+         }
+        this.__onBlur(event);
+
+    }});
+
 Autocompleter.DWR = Class.create();
 Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
     initialize: function(element, update, populator, options) {
@@ -106,7 +126,7 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
     
     setOptions: function(options) {
         this.options = Object.extend({
-            choices: 25,
+            choices: 50,
             selector: function(instance) {
                 var items = [];
                 var entry = instance.getToken();

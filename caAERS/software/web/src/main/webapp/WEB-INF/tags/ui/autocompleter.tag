@@ -34,9 +34,7 @@
 <c:if test="${empty fieldValue and _mandatory and _required}"><c:set var="cssValue" value="mandatory required" /></c:if>
 <c:if test="${not empty fieldValue and (_mandatory or _required)}"><c:set var="cssValue" value="valueOK" /></c:if>
 
-<ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
-  validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
-  displayNamePath="${displayNamePath}" title="${title}">
+<ui:fieldWrapper path="${path}" cssClass="${cssClass}" validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" displayNamePath="${displayNamePath}" title="${title}">
 <jsp:attribute name="field">
   <input size="${empty size ? '50' : size}" type="text" id="${path}-input" name="${path}-input" title="${title}" ${disabled ? 'disabled' : ''} value="${initialDisplayValue}" 
 	class="autocomplete ${cssValue} ${cssClass} ${validationCss}" onkeydown="suppressEnter(event)"/>
@@ -45,6 +43,7 @@
   <div id="${path}-choices" class="autocomplete" style="display: none"></div>
   <form:hidden path="${path}"/>
 </jsp:attribute>
+    
 <jsp:attribute name="embededJS">
 	<c:if test="${(not readonly) and (not empty populatorJS) and (not empty selectorJS)}">
 	AE.createStandardAutocompleter('${path}', ${populatorJS}, ${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
