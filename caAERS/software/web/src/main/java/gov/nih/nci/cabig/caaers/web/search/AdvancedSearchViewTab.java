@@ -134,8 +134,8 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 									else
 										column.setValue(lengthyValue.substring(0, 19) + " ...");
 								}else{
-									column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-									column.setLengthyValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+									column.setValue(" ");
+									column.setLengthyValue(" ");
 								}
 							}
 							row.getColumnList().add(column);
@@ -185,7 +185,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 						if(wrapper.getPropertyValue(v.getColumnAttribute())  != null)
 							col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()).toString());
 						else
-							col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()));
+							col.setValue("");
 						row.getColumnList().add(col);
 					}
 				}
@@ -217,7 +217,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 							if(wrapper.getPropertyValue(v.getColumnAttribute()) != null)
 								col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()).toString());
 							else
-								col.setValue(wrapper.getPropertyValue(v.getColumnAttribute()));
+								col.setValue("");
 							row.getColumnList().add(col);
 						}
 					}
@@ -245,7 +245,7 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 						if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null)
 							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()).toString());
 						else
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+							column.setValue("");
 							
 					}else{
 						if(wrapper.getPropertyValue(viewColumn.getColumnAttribute()) != null){
@@ -256,8 +256,8 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 							else
 								column.setValue(lengthyValue.substring(0, 19) + " ...");
 						}else{
-							column.setValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
-							column.setLengthyValue(wrapper.getPropertyValue(viewColumn.getColumnAttribute()));
+							column.setValue("");
+							column.setLengthyValue("");
 						}
 					}
 					row.getColumnList().add(column);

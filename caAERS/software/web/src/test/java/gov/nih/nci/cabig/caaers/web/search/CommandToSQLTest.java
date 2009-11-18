@@ -156,7 +156,7 @@ public class CommandToSQLTest extends AbstractTestCase {
 		createDataForQuery1();
 		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
 		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
-		String expectedCriteriaConditionString = "Study_xx.multiInstitutionIndicator = true and lower(AdverseEvent_xx.grade) >= lower('2')";
+		String expectedCriteriaConditionString = "Study_xx.multiInstitutionIndicator = true and AdverseEvent_xx.grade >= '2'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
 	}
@@ -174,7 +174,7 @@ public class CommandToSQLTest extends AbstractTestCase {
 		createDataForQuery3();
 		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
 		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
-		String expectedCriteriaConditionString = "lower(Study_xx.id) = lower('5')";
+		String expectedCriteriaConditionString = "Study_xx.id = '5'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
 	}
@@ -183,7 +183,7 @@ public class CommandToSQLTest extends AbstractTestCase {
 		createDataForQuery4();
 		CommandToSQL.initializeTableToAliasMap(targetObject, criteriaParameters);
 		String criteriaConditionString = CommandToSQL.getCriteriaConditionString(targetObject, criteriaParameters, true);
-		String expectedCriteriaConditionString = "lower(Organization_xx.id) = lower('2')";
+		String expectedCriteriaConditionString = "Organization_xx.id = '2'";
 		assertEquals("CriteriaConditionString is created incorrectly", expectedCriteriaConditionString, criteriaConditionString);
 		assert(true);
 	}

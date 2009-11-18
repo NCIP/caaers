@@ -262,7 +262,7 @@ public class CommandToSQL{
 					throw new Exception("Unable to determine type of attribute " + parameter.getAttributeName() + " of class " + parameter.getObjectName());
 				}
 			}
-			boolean useLowercase = typeFlag != AttributeTypeDetector.BOOLEAN_TYPE && typeFlag != AttributeTypeDetector.DATE_TYPE;
+			boolean useLowercase = typeFlag == AttributeTypeDetector.STRING_TYPE || typeFlag == AttributeTypeDetector.CHARACTER_TYPE;
 			
 			// Create the fullAttributeName taking into consideration the ObjectAlias.
 			DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByName(targetObject, parameter.getObjectName());
@@ -294,7 +294,7 @@ public class CommandToSQL{
 				criteriaConditionStringBuffer.append(" ");
 				
 				// binary predicates
-				if (caseInsensitive && typeFlag != AttributeTypeDetector.BOOLEAN_TYPE) {
+				if (caseInsensitive && (typeFlag == AttributeTypeDetector.STRING_TYPE || typeFlag == AttributeTypeDetector.CHARACTER_TYPE)) {
 					criteriaConditionStringBuffer.append("lower(");
 				}
 				if (typeFlag != AttributeTypeDetector.BOOLEAN_TYPE && !inClauseCheck) {
@@ -310,7 +310,7 @@ public class CommandToSQL{
 				if (typeFlag != AttributeTypeDetector.BOOLEAN_TYPE && !inClauseCheck) {
 					criteriaConditionStringBuffer.append("'");
 				}
-				if (caseInsensitive && typeFlag != AttributeTypeDetector.BOOLEAN_TYPE) {
+				if (caseInsensitive && (typeFlag == AttributeTypeDetector.STRING_TYPE || typeFlag == AttributeTypeDetector.CHARACTER_TYPE)) {
 					criteriaConditionStringBuffer.append(")");
 				}
 			}
