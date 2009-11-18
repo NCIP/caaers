@@ -14,23 +14,21 @@
 <c:set var="reportStatus" value="${command.lastVersion.reportStatus}"/>
 <c:set var="lastVersion" value="${command.lastVersion}"/>
 
-<td id="reportNameId">
-	<div class="label" id="report-label">${theReport.reportDefinition.label}</div>
-	<div id="report-link" style="display:none">
-		<a href="<c:url value="/pages/ae/edit?aeReport=${theReport.aeReport.id}"/>">
-			${theReport.reportDefinition.label}
-		</a>
+<div id="reportNameId" class="row">
+	<div class="label">Report Name</div>
+	<div id="report-link" style="display:none" class="value">
+		${theReport.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${theReport.aeReport.id}"/>">edit</a>)
 	</div>
-</td>
+</div>
 <c:if test="${theReport.reportDefinition.amendable == true}">
-	<td align="center">
-		<div class="label">${lastVersion.reportVersionId}</div>
-	</td>
+	<div class="row">
+		<div class="label">Amendment</div>
+		<div class="value">${lastVersion.reportVersionId}</div>
+	</div>
 </c:if>
-<c:if test="${theReport.reportDefinition.amendable == false}">
-	<td/>
-</c:if>
-<td id="reportSubmissionStatus">
+<div class="row">
+<div class="label">Submission Status</div>
+<div id="reportSubmissionStatus" class="value">
 	<c:if test="${lastVersion.reportStatus == 'COMPLETED'}" >
 		<ae:oneListReportSubmissionStatus theReport="${theReport}" reportStatus="${lastVersion.reportStatus}" lastVersion="${lastVersion}"/>
 	</c:if>	
@@ -43,15 +41,25 @@
 		</span>
 		<img id="reportStatus-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style=""/>           			
 	</c:if>
-</td>
+</div>
+</div>
 <td>
 	<c:if test="${(lastVersion.reportStatus == 'PENDING') or (lastVersion.reportStatus == 'FAILED')}" >
-			<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${theReport.id}"/>">
-			<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
+		<c:set var="ajaxhref">
+            <c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${theReport.id}"/>
+        </c:set>
+		<div style="float:right;">
+			<tags:button color="orange" value="Submit Again" icon="next" markupWithTag="a" href="${ajaxhref}" />
+		</div>
+        <br style="clear:both;"/>	
 	</c:if>
 	<c:if test="${theReport.reportDefinition.amendable and ( (lastVersion.reportStatus == 'WITHDRAWN') or (lastVersion.reportStatus == 'COMPLETED') )}" >
-		<center>
-				<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${theReport.id}&action=amendReport"/>">Amend</a>
-		</center>
+		<c:set var="ajaxhref">
+            <c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${theReport.id}&action=amendReport"/>
+        </c:set>
+		<div style="float:right;">
+			<tags:button color="blue" value="Amend" icon="next" markupWithTag="a" href="${ajaxhref}" />
+		</div>
+        <br style="clear:both;"/>	
 	</c:if>
 </td>

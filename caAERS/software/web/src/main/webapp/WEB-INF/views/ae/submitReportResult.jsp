@@ -20,7 +20,7 @@
         			if(result.objectContent == "FAILED" || result.objectContent == "WITHDRAW_FAILED"){
         				//$('reportNameId').innerHTML = "<div><a href=\"/pages/ae/edit?aeReport=" + '${command.lastVersion.report.aeReport.id}'
         				// + "\">" + '${command.lastVersion.report.reportDefinition.label}' + "</a></div>";
-        				$('report-label').style.display = 'none';
+        				//$('report-label').style.display = 'none';
         				$('report-link').style.display = '';
         			}
         		});
@@ -63,66 +63,63 @@
 					Export</a>
 				</div>
 				
-				<table class="tablecontent" width="75%">
-	    			<tr>
-    					<th scope="col" align="left"><b>Report</b> </th>
-    					<th scope="col" align="left"><b>Amendment #</b> </th>
-    					<th scope="col" align="left"><b>Status</b> </th>
-    					<th scope="col" align="left"><b>Actions</b> </th>
-    				</tr>
-    				<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-	    				<c:if test="${status.index == command.reportIndex}">
-	    				<c:set var="reportId" value="${report.id}"/>
-   			 				<tr id="reportStatusRowId">
-	       			     		<td id="reportNameId">
-	       			     			<c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
-	       			     				<div id="report-label" class="label">${report.reportDefinition.label}</div>
-	       			     				<div id="report-link" style="display:none">
-	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">
-												${report.reportDefinition.label}
-											</a>
-	       			     				</div>
-	       			     			</c:if>
-	       			     			<c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
-	       			     				<div id="report-label" class="label" style="display:none">${report.reportDefinition.label}</div>
-	       			     				<div id="report-link">
-	       			     					<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">
-												${report.reportDefinition.label}
-											</a>
-	       			     				</div>
-	       			     			</c:if>
-	            				</td>
-    		       			 	<c:if test="${report.reportDefinition.amendable == true}">
-	            					<td align="center">
-	            						<div class="label">${report.lastVersion.reportVersionId}</div>
-	            					</td>
-	            				</c:if>
-	            				<c:if test="${report.reportDefinition.amendable == false}">
-	            					<td/>
-	            				</c:if>
-	            				<td id="reportSubmissionStatus">
-            						<c:if test="${command.lastVersion.reportStatus == 'COMPLETED'}" >
-           				 				<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
-            						</c:if>	
-            						<c:if test="${(command.lastVersion.reportStatus == 'FAILED') or (command.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}" >
-           				 				<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>           			
-          				  			</c:if>
-          				   			<c:if test="${command.lastVersion.reportStatus == 'INPROCESS'}" >
-            			 				<span class="dueOn" >
-           				 					<i>Submission to AdEERS in process</i>
-           				 				</span>
-           				 			</c:if>
-			            		</td>
-			            		<td>
-										<c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}" >
-											<c:set var="href"><c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/></c:set>
-											<tags:button color="orange" size="small" value="Submit Again" icon="check" markupWithTag="a" href="${href}" />
-										</c:if>
-            					</td>
-	            			</tr>
-	            		</c:if>
-	            	</c:forEach>
-    			</table>
+                <c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
+                    <c:if test="${status.index == command.reportIndex}">
+                        <c:set var="reportId" value="${report.id}"/>
+                        <div id="reportStatusRowId">
+                            <div id="reportNameId" class="row">
+                                <div class="label">
+                                    Report Name
+                                </div>
+                                <c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
+                                    <div id="report-link" style="display:none" class="value">
+                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">edit</a>)
+                                    </div>
+                                </c:if>
+                                <c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
+                                    <div id="report-link" class="value">
+                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">edit</a>)
+                                    </div>
+                                </c:if>
+                            </div>
+                            <c:if test="${report.reportDefinition.amendable == true}">
+                                <div class="row">
+                                    <div class="label">
+                                        Amendment
+                                    </div>
+                                    <div class="value">
+                                        ${report.lastVersion.reportVersionId}
+                                    </div>
+                                </div>
+                            </c:if>
+                            <div class="row">
+                                <div class="label">
+                                    Submission Status
+                                </div>
+                                <div id="reportSubmissionStatus" class="value">
+                                    <c:if test="${command.lastVersion.reportStatus == 'COMPLETED'}">
+                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
+                                    </c:if>
+                                    <c:if test="${(command.lastVersion.reportStatus == 'FAILED') or (command.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}">
+                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.lastVersion.reportStatus}" lastVersion="${command.lastVersion}"/>
+                                    </c:if>
+                                    <c:if test="${command.lastVersion.reportStatus == 'INPROCESS'}">
+                                        <span class="dueOn"><i>Submission to AdEERS in process</i></span>
+                                    </c:if>
+                                </div>
+                            </div>
+                            <c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}">
+                                <div style="float:right;">
+                                    <c:set var="href">
+                                        <c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>
+                                    </c:set>
+									<tags:button color="orange" value="Submit Again" icon="next" markupWithTag="a" href="${href}" />
+                                </div>
+                                <br style="clear:both;"/>
+                            </c:if>
+                        </div>
+                    </c:if>
+                </c:forEach>
 		
     					<div id="actions-${command.aeReport.id}" style="display:none;">
     						<ul>
