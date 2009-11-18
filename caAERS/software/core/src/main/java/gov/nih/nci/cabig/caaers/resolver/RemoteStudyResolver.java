@@ -40,7 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.batik.css.engine.value.IdentifierManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.iso._21090.DSETII;
