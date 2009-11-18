@@ -31,30 +31,10 @@
       <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
     </layout>
   </appender>
-<!-- disable really verbose logging from libraries.  Switch to debug if necessary 
-  <logger name="org.hibernate"><level value="error"/></logger>
-  <logger name="org.semanticbits"><level value="error"/></logger>
-  <logger name="org.springframework"><level value="error"/></logger>
-  <logger name="org.springframework.orm.hibernate3"><level value="error"/></logger>
-  <logger name="org.apache"><level value="error"/></logger>
-  <logger name="com"><level value="error"/></logger>
-  <logger name="gov"><level value="error"/></logger>
-  <logger name="org"><level value="error"/></logger>
-  <logger name="org.quartz"><level value="error"/></logger>
-  <logger name="gov.nih.nci.cabig.caaers"><level value="error"/></logger>
-  <logger name="gov.nih.nci.cabig.ctms"><level value="error" /></logger>
-  <logger name="edu"><level value="error"></level></logger>
- 
-  <logger name="edu.northwestern.bioinformatics.bering"><level value="error" /></logger>
-  <logger name="gov.nih.nci.cabig.caaers.resolver"><level value="info" /></logger>
-
+  
 	
-  <logger name="gov.nih.nci"><level value="debug"/></logger>
-  <logger name="edu.northwestern.bioinformatics"><level value="debug"></level></logger> 	
-  <logger name="org.acegisecurity"><level value="debug"/></logger> 	
--->	
   <root>
-    <priority value="error"/>
+    <priority value="debug"/>
     <appender-ref ref="file"/>
     <appender-ref ref="stdout"/>
   </root>
