@@ -5,7 +5,7 @@
   
   <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
     <layout class="org.apache.log4j.PatternLayout">
-      <param name="conversionPattern" value="%d %-5p [%15t] %c %x: %m%n"/>
+      <param name="conversionPattern" value="caAERS-wsrf-%d %-5p [%15t] %c %x: %m%n"/>
     </layout>
     <filter class="org.apache.log4j.varia.StringMatchFilter">
       <param name="acceptOnMatch" value="false"/>
