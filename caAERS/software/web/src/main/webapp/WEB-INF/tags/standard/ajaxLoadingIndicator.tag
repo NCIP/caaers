@@ -2,7 +2,7 @@
 <!--  Ajax loading indicator -->
 <div id="ajax-loading-indictor">
     <div id="spinning-logo">
-        <img src="<c:url value="/images/ajax.indicator.orange.gif"/>" alt="ajax activity indicator" style="margin:25px auto 0;"/>
+        <span style="font-size:3em; color:#CFE0FF"><img src="<c:url value="/images/ajax.indicator.orange.gif"/>" alt="Loading..." style="margin:25px auto 0;"/></span>
     </div>
 </div>
 <!--  Ajax loading indicator -->
