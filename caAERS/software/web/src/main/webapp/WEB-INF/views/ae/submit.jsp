@@ -65,6 +65,7 @@
        
     function updatePhysicianSignOff(){
         try {
+        	showDWRLoadingIndicator();
             createAE.updatePhysicianSignOff($('aeReport.physicianSignOff').checked, function(output) {
                 ajaxResult = output;
                 if (ajaxResult.error) {
@@ -72,9 +73,14 @@
                 } else {
                     $('report-validation-section').innerHTML = output.htmlContent;
                     if (${command.workflowEnabled == true}) {
-						routingHelper.updateWorkflowActions.bind(routingHelper)();
+						<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
+							<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
+				 	          	routingHelper.updateWorkflowActions('${report.id}');
+		 	    		    </c:if>
+		 	    		</c:forEach>
 					}
 					createDropDowns();
+					hideDWRLoadingIndicator();
                 }
             });
         } catch(e) {
