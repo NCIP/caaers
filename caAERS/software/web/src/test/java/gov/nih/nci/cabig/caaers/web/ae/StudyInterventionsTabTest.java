@@ -93,7 +93,7 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 		
 		radiationCorrect.setDosage("558");
 		radiationWrong1.setDosage("-234.33");
-		radiationWrong2.setDosage("4444444444434.33");
+		radiationWrong2.setDosage("444444444443444444444.33");
 		
 		doValidate();
 		
