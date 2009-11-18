@@ -93,43 +93,72 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
     	
-        <chrome:division title="Reporter & Physician details">
-            <c:forEach begin="0" end="1" varStatus="status">
-            	<c:if test="${status.first}">
-            		<c:set var="reporter" value="${command.aeReport.reporter}"/>
-					<c:set var="reporterType" value="Reporter"/>
-   				</c:if>
-   				<c:if test="${status.last}">
-            		<c:set var="reporter" value="${command.aeReport.physician}"/>
-					<c:set var="reporterType" value="Physician"/>
-   				</c:if>
-            	<div class="row">
-					<div class="label">${reporterType}</div>
-			
-					<div class="value">
-            			<span id="aeReport.${reporterType}.firstName"><c:out value="${reporter.firstName}"/></span>
-            			<span id="aeReport.${reporterType}.middleName"><c:out value="${reporter.middleName}"/></span>
-            			<span id="aeReport.${reporterType}.lastName"><c:out value="${reporter.lastName}"/> </span>,
-            			<span id="aeReport.${reporterType}.contactMechanisms[e-mail]"><c:out value="${reporter.contactMechanisms['e-mail']}"/></span>
-            			<span id="aeReport.${reporterType}.contactMechanisms[phone]"><c:out value="${reporter.contactMechanisms['phone']}"/></span>
-            			<span id="aeReport.${reporterType}.contactMechanisms[fax]"><c:out value="${reporter.contactMechanisms['fax']}"/></span>
-            		</div>
-            	</div>
-            </c:forEach>	
+    <div class="row"> 
+    <c:forEach begin="0" end="1" varStatus="status">
+        <c:if test="${status.first}">
+            <c:set var="reporter" value="${command.aeReport.reporter}"/>
+			<c:set var="reporterType" value="Reporter"/>
+			<c:set var="side" value="leftpanel"/>
+        </c:if>
+        <c:if test="${status.last}">
+            <c:set var="reporter" value="${command.aeReport.physician}"/>
+			<c:set var="reporterType" value="Physician"/>
+			<c:set var="side" value="rightpanel"/>
+        </c:if>
+		<div class="${side}">
+        <chrome:division title="${reporterType}">
+            <div class="row">
+                <div class="label">
+                    Name
+                </div>
+                <div class="value">
+                    <span id="aeReport.${reporterType}.firstName"><c:out value="${reporter.firstName}"/></span>
+					<span id="aeReport.${reporterType}.middleName"><c:out value="${reporter.middleName}"/></span>
+					<span id="aeReport.${reporterType}.lastName"><c:out value="${reporter.lastName}"/></span>
+                </div>
+            </div>
+
+			<div class="row">
+                <div class="label">
+                    E-mail
+                </div>
+                <div class="value">
+					<span id="aeReport.${reporterType}.contactMechanisms[e-mail]"><c:out value="${reporter.contactMechanisms['e-mail']}"/></span>
+                </div>
+            </div>
+			<div class="row">
+                <div class="label">
+                    Phone
+                </div>
+                <div class="value">
+					<span id="aeReport.${reporterType}.contactMechanisms[phone]"><c:out value="${reporter.contactMechanisms['phone']}"/></span>
+                </div>
+            </div>
+			<div class="row">
+                <div class="label">
+                    Fax
+                </div>
+                <div class="value">
+					<span id="aeReport.${reporterType}.contactMechanisms[fax]"><c:out value="${reporter.contactMechanisms['fax']}"/></span>
+                </div>
+            </div>
         </chrome:division>
+		</div>
+    </c:forEach>
+</div>
 
         <chrome:division title="Submitter details">
             <div class="row">
                 <div class="value">
                     <label>
                         <input type="checkbox" id="reporter_same_as_submitter" name="reporter_same_as_submitter" />&nbsp;
-                        	If the Submitter same as Reporter
+                        	If the submitter is the same as the reporter
                     </label>
                 </div>
                 <div class="value">
                     <label>
                         <input type="checkbox" id="physician_same_as_submitter" name="physician_same_as_submitter" />&nbsp;
-                        	If the Submitter same as Physician
+                        	If the submitter is the same as the physician
                     </label>
                 </div>
             </div>

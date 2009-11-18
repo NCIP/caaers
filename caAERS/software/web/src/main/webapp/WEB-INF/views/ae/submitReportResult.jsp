@@ -28,43 +28,41 @@
         	}
         	
         	
-        	function executeAction(aeReportId,url){
-				var actions = $("actions-"+aeReportId)
-				for ( i=0; i < actions.length; i++){
-                  if(actions.options[i].selected && actions.options[i].value != "none"){
-                  	window.open(url + "&format="+ actions.options[i].value,"_self")
-                  }
-               	}
-        	}
+
         	
         	Event.observe(window, "load", function() {
-        		//if(${command.lastVersion.reportStatus == 'INPROCESS'})
-	        	//	checkReportSubmissionStatus();
+	        		jQuery("#export-menu").menu({
+					content: jQuery("#actions-${command.aeReport.id}").html(),		
+					maxHeight: 180,
+					width: 230,
+	                positionOpts: {
+	                    directionV: 'down',
+	                    posX: 'right',
+	                    posY: 'bottom',
+	                    offsetX: 0,
+	                    offsetY: 0
+	                },
+	                showSpeed: 300
+				});
         	});
         	
         	
         	function showToolTip(text, title) {
         Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
     }
-			jQuery("#export-menu").menu({
-				content: jQuery("#actions-${command.aeReport.id}").html(),		
-				maxHeight: 180,
-				width: 230,
-                positionOpts: {
-                    directionV: 'down',
-                    posX: 'right',
-                    posY: 'bottom',
-                    offsetX: 0,
-                    offsetY: 0
-                },
-                showSpeed: 300
-			});
+			
 	    </script>
 	</head>
 	<body>
 		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
 		<tags:tabForm tab="${tab}" flow="${flow}">
 			<jsp:attribute name="singleFields">
+				<div style="text-align:right;">
+					<a id="export-menu" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all">
+					<span class="ui-icon ui-icon-triangle-1-s"></span>
+					Export</a>
+				</div>
+				
 				<table class="tablecontent" width="75%">
 	    			<tr>
     					<th scope="col" align="left"><b>Report</b> </th>
@@ -117,48 +115,42 @@
 			            		</td>
 			            		<td>
 										<c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}" >
-											<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>"><img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt=""/> Submit</a>	
+											<c:set var="href"><c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/></c:set>
+											<tags:button color="orange" size="small" value="Submit Again" icon="check" markupWithTag="a" href="${href}" />
 										</c:if>
             					</td>
 	            			</tr>
 	            		</c:if>
 	            	</c:forEach>
     			</table>
-    			<p>&nbsp;</p>
-		    	<table class="tablecontent" width = "40%">
-    				<tr>
-    					<th scope="col" align="left"><b>View report</b></th>
-    				</tr>
-    				<tr>
-    					<td class="completion-messages">
-    					
-    						<SELECT id="actions-${command.aeReport.id}" name="actions" onChange="executeAction(${command.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}'/>')">
-     							<OPTION selected label="none" value="none">None</OPTION>
+		
+    					<div id="actions-${command.aeReport.id}" style="display:none;">
+    						<ul>
      					
      							<c:if test="${command.study.caaersXMLType}">
-     								<OPTION label="xml" value="xml">caAERS XML</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=xml'/>"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
      							</c:if>
      							<c:if test="${command.study.adeersPDFType}">
-     								<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=pdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
     		 					</c:if>
      							<c:if test="${command.study.medwatchPDFType}">
-     								<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=medwatchpdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
      							</c:if>
    			  					<c:if test="${command.study.dcpSAEPDFType}">
-     								<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=dcp'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
      							</c:if>
      							<c:if test="${command.study.ciomsPDFType}">
-     								<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=cioms'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
      							</c:if>
      							<c:if test="${command.study.ciomsSaePDFType}">
-     								<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=ciomssae'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
      							</c:if>
- 							</SELECT>
-     					
-    					</td>
-    				</tr>
-    			</table>
+ 							</ul>
+						</div>
     			<input type="hidden" name="_finish"/>		
+			</jsp:attribute>
+			<jsp:attribute name="tabControls">
+				
 			</jsp:attribute>
 			
 		</tags:tabForm>

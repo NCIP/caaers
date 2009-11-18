@@ -1,5 +1,5 @@
 /* Hack for buttons inside tables getting unwanted borders */
-.tablecontent td button td {
+.tablecontent td .omnipotent-button td {
 	border:none;
 }
 
