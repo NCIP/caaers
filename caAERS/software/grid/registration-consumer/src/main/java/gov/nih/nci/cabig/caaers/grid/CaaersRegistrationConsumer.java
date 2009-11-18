@@ -117,7 +117,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                 throw exp;
             }
-
             String siteNCICode = registration.getStudySite().getHealthcareSite(0)
                             .getNciInstituteCode();
             StudySite site = findStudySite(study, siteNCICode);
@@ -131,14 +130,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                 throw getRegistrationConsumptionException(message);
 
             }
-            
-            if (!study.getDataEntryStatus()) {
+            Boolean dataEntryStatus = study.getDataEntryStatus();
+            if (dataEntryStatus==null || !dataEntryStatus) {
             	String message = "Study identified by Coordinating Center Identifier '"
                     + ccIdentifier + "' is not open , Please login to caAERS , complete the Study details and open the Study";
             	RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
             	throw exp;
             }
-            
+
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
 
