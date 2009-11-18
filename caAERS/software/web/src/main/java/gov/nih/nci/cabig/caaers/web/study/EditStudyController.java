@@ -157,6 +157,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
         if (StringUtils.equals(action, "removeSite")) return false;
         if(StringUtils.equals(action, "removeInv"))  return false;
+        if(StringUtils.equals(action, "removeStudyPersonnel"))  return false;
 
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
@@ -179,6 +180,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
         String action = (String) super.findInRequest(request, "_action");
         if (StringUtils.equals(action, "removeSite")) return true;
         if(StringUtils.equals(action, "removeInv"))  return true;
+        if(StringUtils.equals(action, "removeStudyPersonnel"))  return true;
 
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null || isAjaxRequest(request)) {

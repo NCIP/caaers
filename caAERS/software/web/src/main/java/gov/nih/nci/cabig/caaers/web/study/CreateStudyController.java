@@ -106,7 +106,8 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         String action = (String) super.findInRequest(request, "_action");
         if (StringUtils.equals(action, "removeSite")) return true;
         if(StringUtils.equals(action, "removeInv"))  return true;
-        
+        if(StringUtils.equals(action, "removeStudyPersonnell"))  return true;
+
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
@@ -134,6 +135,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         }
 
         if(StringUtils.equals(action, "removeInv") )  return false;
+        if(StringUtils.equals(action, "removeStudyPersonnel") )  return false;
 
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
