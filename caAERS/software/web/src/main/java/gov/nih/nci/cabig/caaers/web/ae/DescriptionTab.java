@@ -16,6 +16,10 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.validation.Errors;
+
 /**
  * @author Rhett Sutphin
  */
@@ -81,4 +85,12 @@ public class DescriptionTab extends AeTab {
         return new ExpeditedReportSection[] { ExpeditedReportSection.DESCRIPTION_SECTION};
     }
 
+    @Override
+	public void onBind(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+		super.onBind(request, command, errors);
+		
+		// Check if responseDescription.presentStatus != DEAD and set autopsyPerformed to null if thats the case
+		if(command.getAeReport().getResponseDescription().getPresentStatus() != PostAdverseEventStatus.DEAD)
+			command.getAeReport().getResponseDescription().setAutopsyPerformed(null);
+    }
 }
