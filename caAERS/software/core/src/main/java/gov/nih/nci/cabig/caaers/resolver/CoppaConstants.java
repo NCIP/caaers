@@ -34,6 +34,8 @@ public class CoppaConstants {
 	public static final String CTEP_IDENTIFIER_NAME="CTEP ID";
 	public static final String CTEP_ROOT = "Cancer Therapy Evaluation Program Organization Identifier";
 	
+	public static final String NULLIFIED_RECORD = "Nullified";
+	
 	public static final Map<String,String> coppaMap = new HashMap<String,String>();
 	static{
 		//PhaseCode Mappings

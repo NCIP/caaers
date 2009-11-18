@@ -299,17 +299,33 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     				//If studyFromDatabase is not null then it already exists as a remoteStudy
     				if (studyFromDatabase == null) {
     					//If studyFromDatabase is null then it doesnt exists as a remoteStudy, hence save it.
-    					save((RemoteStudy)remoteStudy);
+    					if(validateRemoteStudy((RemoteStudy)remoteStudy)){
+    						save((RemoteStudy)remoteStudy);
+    					}else{
+    						log.info("Study with ID "+ remoteStudy.getNciAssignedIdentifier() + " was not created in caAERS. Missing Coordinating Center or Funding Sponsor");
+    					}
     				}
     				getHibernateTemplate().flush();
     			} else {
-    				log.error("Null Remote Study in the list in updateDatabaseWithRemoteContent");
+    				log.error("Null Remote Study in the list");
     			}
     		}
     	}catch(Exception ex){
-    		ex.printStackTrace();
+    		log.error(ex.getMessage());
     	}
 	}
+    
+    /**
+     * This methods validates if study has Co-ordinating center & funding sponsor.
+     * @param remoteStudy
+     * @return
+     */
+    private boolean validateRemoteStudy(RemoteStudy remoteStudy){
+    	if(remoteStudy.getCoordinatingCenter() == null || remoteStudy.getFundingSponsor() == null){
+    		return false;
+    	}
+    	return true;
+    }
     
 	/**Gets by the unique Identifier
 	 * @param externalId

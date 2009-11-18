@@ -102,7 +102,6 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			}
 		}catch(Exception e){
 			log.debug(e.getMessage());
-			//e.printStackTrace();
 		}
 		log.info("Exiting RemoteStudyResolver.find()");
 		return remoteStudies;
@@ -137,7 +136,6 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			}
 		}catch(Exception e){
 			log.debug(e.getMessage());
-			//e.printStackTrace();
 		}
 		log.info("Exiting RemoteStudyResolver.getRemoteEntityByUniqueId()");
 		if(remoteStudies.size() > 0){
@@ -171,6 +169,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		remoteStudy.setStatus(CoppaConstants.coppaMap.get(getStudyStatus(studyProtocol)));
 		
 		//NOT NULL Fields
+		remoteStudy.setMultiInstitutionIndicator(Boolean.TRUE);
 		remoteStudy.setAdeersReporting(Boolean.FALSE);
 		remoteStudy.setAeTerminology(createCtcV3Terminology(remoteStudy));
 		remoteStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
@@ -180,7 +179,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		if(identifierValue != null && !"".equals(identifierValue)){
 			populateIdentifer(remoteStudy,null,identifierValue,CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
 		}
-		//If ShortTitle  is null ShortTitle = AssignedIdentifer + 30 Chars of LongTitle.
+		//If ShortTitle is null ShortTitle = AssignedIdentifer + 30 Chars of LongTitle.
 		if(remoteStudy.getShortTitle() == null){
 			StringBuilder fabricatedShortTile = new StringBuilder(identifierValue);
 			fabricatedShortTile.append("-");
@@ -263,32 +262,34 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 
 		//go thru the returned list. we need the ones who have functional Code as LeadOrg(ResearchOrganization)/TreatingSite(HealthcareFacility)/Funding source(Sponsor)
 		for(gov.nih.nci.coppa.services.pa.StudySite studyParticipationTemp: studySiteList){
-			if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.LEAD_ORGANIZATION)){
-				//Fetch the coordinating center(ResearchOrganziation) and add to the list to be returned
-				StudyCoordinatingCenter studyCoordinatingCenter = getCoordinatingCenterFromCoppaStudySite(studyParticipationTemp);
-				if(studyCoordinatingCenter != null){
-					String identifierValue = studyParticipationTemp.getLocalStudyProtocolIdentifier().getValue();
-					populateIdentifer(remoteStudy,studyCoordinatingCenter,identifierValue,CoppaConstants.COORDINATING_CENTER_IDENTIFER);
-					populateStudyInvestigators(studyParticipationTemp,studyCoordinatingCenter);
-					remoteStudy.addStudyOrganization(studyCoordinatingCenter);
+			if(studyParticipationTemp.getStatusCode().getCode() != CoppaConstants.NULLIFIED_RECORD){
+				if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.LEAD_ORGANIZATION)){
+					//Fetch the coordinating center(ResearchOrganziation) and add to the list to be returned
+					StudyCoordinatingCenter studyCoordinatingCenter = getCoordinatingCenterFromCoppaStudySite(studyParticipationTemp);
+					if(studyCoordinatingCenter != null){
+						String identifierValue = studyParticipationTemp.getLocalStudyProtocolIdentifier().getValue();
+						populateIdentifer(remoteStudy,studyCoordinatingCenter,identifierValue,CoppaConstants.COORDINATING_CENTER_IDENTIFER);
+						populateStudyInvestigators(studyParticipationTemp,studyCoordinatingCenter);
+						remoteStudy.addStudyOrganization(studyCoordinatingCenter);
+					}
 				}
-			}
-			if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.SPONSOR)){
-				//Fetch the Funding sponsor(ResearchOrganziation) and add to the list to be returned
-				StudyFundingSponsor studyFundingSponsor = getFundingSponsorFromCoppaStudySite(studyParticipationTemp);
-				if(studyFundingSponsor != null){
-					String identifierValue = studyParticipationTemp.getLocalStudyProtocolIdentifier().getValue();
-					populateIdentifer(remoteStudy,studyFundingSponsor,identifierValue,CoppaConstants.PROTOCOL_AUTHORITY_IDENTIFIER);
-					populateStudyInvestigators(studyParticipationTemp,studyFundingSponsor);
-					remoteStudy.addStudyOrganization(studyFundingSponsor);
+				if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.SPONSOR)){
+					//Fetch the Funding sponsor(ResearchOrganziation) and add to the list to be returned
+					StudyFundingSponsor studyFundingSponsor = getFundingSponsorFromCoppaStudySite(studyParticipationTemp);
+					if(studyFundingSponsor != null){
+						String identifierValue = studyParticipationTemp.getLocalStudyProtocolIdentifier().getValue();
+						populateIdentifer(remoteStudy,studyFundingSponsor,identifierValue,CoppaConstants.PROTOCOL_AUTHORITY_IDENTIFIER);
+						populateStudyInvestigators(studyParticipationTemp,studyFundingSponsor);
+						remoteStudy.addStudyOrganization(studyFundingSponsor);
+					}
 				}
-			}
-			if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.TREATING_SITE)){
-				//Fetch the Study Site(HealthcareFacility) and add to the list to be returned
-				StudySite studySite = getStudySiteFromCoppaStudySite(studyParticipationTemp);
-				if(studySite != null){
-					populateStudyInvestigators(studyParticipationTemp,studySite);
-					remoteStudy.addStudyOrganization(studySite);
+				if(studyParticipationTemp.getFunctionalCode().getCode().equals(CoppaConstants.TREATING_SITE)){
+					//Fetch the Study Site(HealthcareFacility) and add to the list to be returned
+					StudySite studySite = getStudySiteFromCoppaStudySite(studyParticipationTemp);
+					if(studySite != null){
+						populateStudyInvestigators(studyParticipationTemp,studySite);
+						remoteStudy.addStudyOrganization(studySite);
+					}
 				}
 			}
 		}
@@ -476,13 +477,15 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         List<String> results = XMLUtil.getObjectsFromCoppaResponse(studySiteContactResultXml);
         for(String studySiteContactXml : results){  
         	studySiteContact = CoppaPAObjectFactory.getStudySiteContact(studySiteContactXml);
-        	if(studySiteContact != null && CoppaConstants.SITE_INVESTIGATOR_LIST.contains(studySiteContact.getRoleCode().getCode())){
-        		HealthCareProvider healthCareProvider = getHealthCareProviderFromExtension(studySiteContact.getHealthCareProvider().getExtension());
-        		if(healthCareProvider != null){
-        			 gov.nih.nci.coppa.po.Person coppaPerson = getCoppaPersonFromPersonExtension(healthCareProvider.getPlayerIdentifier().getExtension());
-        			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "SI");
-        			 studyOrganization.addStudyInvestigators(studyInvestigator);
-        		}
+        	if(studySiteContact != null && studySiteContact.getStatusCode().getCode() != CoppaConstants.NULLIFIED_RECORD){
+            	if(CoppaConstants.SITE_INVESTIGATOR_LIST.contains(studySiteContact.getRoleCode().getCode())){
+            		HealthCareProvider healthCareProvider = getHealthCareProviderFromExtension(studySiteContact.getHealthCareProvider().getExtension());
+            		if(healthCareProvider != null){
+            			 gov.nih.nci.coppa.po.Person coppaPerson = getCoppaPersonFromPersonExtension(healthCareProvider.getPlayerIdentifier().getExtension());
+            			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "SI");
+            			 studyOrganization.addStudyInvestigators(studyInvestigator);
+            		}
+            	}
         	}
         }
     }
