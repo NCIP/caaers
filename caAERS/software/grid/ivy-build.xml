@@ -152,6 +152,8 @@
 	    <delete file="${dist.dir}/${wsrf-caaers}.war" />
 		<!-- copy the log4j.xml, to the folder to WAR -->
 		<copy file="${basedir}/log4j.xml" todir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF" />
+	 	<copy file="${basedir}/log4j.xml" todir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/classes" />
+	 	<delete file="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF/classes/log4j.properties" failonerror="false"/>
 	 	<war destfile="${dist.dir}/${wsrf-caaers}.war" 
 			basedir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}" 
 			webxml="${basedir}/web.xml"/>
