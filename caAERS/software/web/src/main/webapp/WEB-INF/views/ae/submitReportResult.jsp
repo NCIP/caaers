@@ -73,12 +73,12 @@
                                 </div>
                                 <c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
                                     <div id="report-link" style="display:none" class="value">
-                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">edit</a>)
+                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>"><img src="<chrome:imageUrl name="../edit.png"/>" alt=""/> edit</a>)
                                     </div>
                                 </c:if>
                                 <c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
                                     <div id="report-link" class="value">
-                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>">edit</a>)
+                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>"><img src="<chrome:imageUrl name="../edit.png"/>" alt=""/> edit</a>)
                                     </div>
                                 </c:if>
                             </div>

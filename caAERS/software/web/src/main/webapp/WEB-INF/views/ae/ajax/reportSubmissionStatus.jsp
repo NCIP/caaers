@@ -17,7 +17,7 @@
 <div id="reportNameId" class="row">
 	<div class="label">Report Name</div>
 	<div id="report-link" style="display:none" class="value">
-		${theReport.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${theReport.aeReport.id}"/>">edit</a>)
+		${theReport.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${theReport.aeReport.id}"/>"><img src="<chrome:imageUrl name="../edit.png"/>" alt=""/>  edit</a>)
 	</div>
 </div>
 <c:if test="${theReport.reportDefinition.amendable == true}">
