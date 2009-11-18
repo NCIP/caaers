@@ -47,11 +47,13 @@
   <logger name="edu.northwestern.bioinformatics"><level value="debug"></level></logger> 
   <logger name="org"><level value="error"/></logger>
   <logger name="edu.northwestern.bioinformatics"><level value="error"></level></logger>
-  <logger name="gov.nih.nci"><level value="debug"/></logger>
+  
  -->	
+ 
+ <logger name="gov.nih.nci"><level value="debug"/></logger>	
  	
   <root>
-    <priority value="debug"/>
+    <priority value="error"/>
     <appender-ref ref="file"/>
     <appender-ref ref="stdout"/>
   </root>
