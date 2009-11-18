@@ -150,7 +150,11 @@
 	================================================================== -->	
 	 <target name="war">
 	    <delete file="${dist.dir}/${wsrf-caaers}.war" />
-	 	<war destfile="${dist.dir}/${wsrf-caaers}.war" basedir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}" needxmlfile='false'/>
+		<!-- copy the log4j.xml, to the folder to WAR -->
+		<copy file="${basedir}/log4j.xml" todir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}/WEB-INF" />
+	 	<war destfile="${dist.dir}/${wsrf-caaers}.war" 
+			basedir="${ccts.grid-services.working.location}/${ccts.grid-services.working.tomcat.file}/webapps/${wsrf}" 
+			webxml="${basedir}/web.xml"/>
 	</target>
 	
 	
