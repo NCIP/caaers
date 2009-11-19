@@ -7,10 +7,14 @@ AE.SUBMISSION_INPROGRESS=false;
 
 AE.INDICATOR_REF_COUNTS = { };
 AE.hash = new Hash();
-// This is checked when the user tries to go away from the captureAdverseEvents page.
-// If the user clicks "Save and Continue" or "Save" or "Save and Back" then the check need not be performed
-// and hence the flag 'checkForModification is set to "false" in that case.
+// This flag determins whether to check for modification, pages can override this to false.
 AE.checkForModification = true; 
+
+//True if the form fields are modified
+AE.formFieldModified=false;
+
+//no of fields available in the form, when page loaded.
+AE.formFieldCount=0;
 
 //will store the selected reports
 AE.checkedReports = new Array();

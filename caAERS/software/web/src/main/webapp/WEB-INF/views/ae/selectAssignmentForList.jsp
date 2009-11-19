@@ -25,6 +25,8 @@
     </style>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
+
+    	AE.checkForModification = false; 
         var participantAutocompleterProps = {
             basename: "participant",
             populator: function(autocompleter, text) {

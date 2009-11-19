@@ -5,11 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 <tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
 <tags:js name="fg.menu"/>
-
 <jwr:style src="/csslib/caaers.zcss" />
-
 <tags:js name="compressed/co_calendar" />
-
 <tags:js name="common" />
 <jwr:script src="/jslib/caaers.zjs" />
 <tags:js name="advancedSearch"/>
@@ -39,8 +36,8 @@ CCTS.appShortName = 'caaers';
 var _collapsedELs = new Array();
 
 //for autocompleters to work.
-AE.autocompleterDelay = ${configuration.map.autoCompleterDelay};
-AE.autocompleterChars = ${configuration.map.autoCompleterChars};
+AE.autocompleterDelay = ${empty configuration.map.autoCompleterDelay ? 1 : configuration.map.autoCompleterDelay};
+AE.autocompleterChars = ${empty configuration.map.autoCompleterChars ? 1 : configuration.map.autoCompleterChars};
 AE.APP_BASE_URL = '<c:url value="/" />';
 
 //overwrite the HttpSession timeout warning & wait

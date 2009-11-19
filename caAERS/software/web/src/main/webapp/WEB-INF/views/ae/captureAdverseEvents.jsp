@@ -29,8 +29,12 @@
             var first = 0;
             
             $H(selectedTerms).keys().each(function(termID) {
-                var tID = lookupByTermId(termID);
-                if (tID == -1) listOfTermIDs.push(termID); else {
+
+                var otherSepcifyTerm = selectedTerms.get(termID).indexOf('Other (Specify') > 0;
+                var tID = (otherSepcifyTerm ? -1 : lookupByTermId(termID));
+                if (tID == -1){
+                     listOfTermIDs.push(termID); 
+                }else {
                     openDivisionById(tID);
                     if (first == 0) {
                         // jump to the box
@@ -42,22 +46,15 @@
 
 
             //get the HTML to add from server
-            var notAddedTerms = new Array();
-            captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput) {
-                $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
-               
-            }.bind(this));
+            if(listOfTermIDs.size() > 0){
+            	captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput) {
+                    $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
+                   
+                }.bind(this));
+            }
+            
         },
 
-        isTermAgainAdded:function(termID) {
-            //will tell wheter the term is already present
-            $$('.eachRowTermID').each(function(aTerm) {
-                if (termID == aTerm.value()) return true;
-            });
-            return false;
-        },
-
-       
         deleteAdverseEvent:function(indx) {
 
         	 if (!confirm("Are you sure you want to delete this?"))
@@ -87,102 +84,8 @@
  		}
 
 
- 		// Reset the value of flag AE.checkForModification to false.
-        oldSignatures = getSignatures('.ae-section');
-        
-        Event.observe(window, "beforeunload", function(e) {
-            if (checkForModificationsOnPage(e)) {
-                e.returnValue = "You have unsaved information.";
-            }
-        });
-        
  	});
 
-    // ----------------------------------------------------------------------------------------------------------------
-
-    function getSignatures(cssIdentifier) {
-        var arr = new Array();
-        var listOfAEIndexes = $$(cssIdentifier);
-        for (var i = 0; i < listOfAEIndexes.length; i++) {
-            var signature = createSignature(i);
-            arr[i] = signature;
-        }
-        return arr;
-    }
-    
-    function checkForModificationsOnPage(event){
-    	if(AE.checkForModification){
-	    	var newSignatures = new Array();
-   	    	newSignatures = getSignatures('.ae-section');
-   	    	
-        	if (oldSignatures.length != newSignatures.length) return true;
-        
-       		for (var i = 0; i < oldSignatures.length; i++) {
-            	if (oldSignatures[i] != newSignatures[i]) return true;
-        	}
-    	}
-    	return false;
-    }
-
-
-    // ----------------------------------------------------------------------------------------------------------------
-    
-    function createSignature(index){
-		var signature = '';
-
-		var inputOtherMeddra = $('adverseEvents[' + index + '].lowLevelTerm-input');
-		var inputStartDate = $('adverseEvents[' + index + '].startDate');
-		var inputEndDate = $('adverseEvents[' + index + '].endDate');
-		var inputEventHour = $('adverseEvents[' + index + '].eventApproximateTime.hour');
-		var inputEventMinute = $('adverseEvents[' + index + '].eventApproximateTime.minute');
-		var inputEventLocation = $('adverseEvents[' + index + '].eventLocation');
-		
-		var verbatimId = 'adverseEvents[' + index + '].detailsForOther';
-		
-		var attributionId = 'adverseEvents[' + index + '].attributionSummary';
-		var hospitalizationId = 'adverseEvents[' + index + '].hospitalization';
-		var expectedId = 'adverseEvents[' + index + '].expected';
-
-		signature = $(verbatimId).value + '$$' + // verbatim input
-					findGradeForAE(index) + '$$' + // grade input
-					document.getElementById(attributionId).value + '$$' + // attribution input
-					document.getElementById(hospitalizationId).value + '$$' + // hospitalization input
-					document.getElementById(expectedId).value + '$$'; // expected input
-
-        // If otherMeddraId element exists append otherMeddra Value to the signature.
-        if(inputOtherMeddra){
-        	signature = signature + inputOtherMeddra.value;
-        }
-        signature = signature + '$$';
-
-        //startDate
-		if(inputStartDate){
-			signature = signature + inputStartDate.value;
-		}
-		signature = signature + '$$';
-		//endDate
-		if(inputEndDate){
-			signature = signature + inputEndDate.value;
-		}
-		signature = signature + '$$';
-		//event hour
-		if(inputEventHour){
-			signature = signature + inputEventHour.value;
-		}
-		signature = signature + '$$';
-		//event minute
-		if(inputEventMinute){
-			signature = signature + inputEventMinute.value;
-		}
-		signature = signature + '$$';
-		//event location
-		if(inputEventLocation){
-			signature = signature + inputEventLocation.value;
-		}
-		signature = signature + '$$';
-		
-        return signature;
-	}
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -353,7 +256,8 @@
 	            			<c:forEach var="i" step="1" begin="0" end="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1}">
    		         				<c:set var="j" value="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1 - i}"/>
 		            			<c:if test="${not command.adverseEventReportingPeriod.adverseEvents[j].solicited and not command.adverseEventReportingPeriod.adverseEvents[j].retired}">
-        	    					<ae:oneRoutineAdverseEvent index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" collapsed="true" enableDelete="true" isSolicited="false"/>
+        	    					<ae:oneRoutineAdverseEvent index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
+        	    						collapsed="true" enableDelete="true" isSolicited="false" hasOtherMeddra="${study.otherMeddra != null}"/>
            		 				</c:if>
             				</c:forEach>
             			</c:if>
@@ -366,72 +270,13 @@
 							<p><tags:instructions code="instruction_ae_sae"/></p>
 							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             				<c:if test="${ae.solicited and not ae.retired}">
-            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" enableDelete="false" isSolicited="true"/>
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" 
+            					enableDelete="false" isSolicited="true" hasOtherMeddra="${study.otherMeddra != null}"/>
             				</c:if> 
             			</c:forEach>   
  						</chrome:box>
 					</c:if>
 					<%--  End of Solicited AE section --%>
-<%-- ================================================================================================ 				
-					< % -- Begin : Sections that will be displayed in Amend PopUp -- % >
-					<div id="display_amend_popup" style="display:none;text-align:left" >
-				    	<chrome:box title="Amendments Required" id="popupId">
-				    		<c:if test="${not empty command.participant}">
-				      			<div align="left">
-				        			<div class="row">
-				          				<div class="summarylabel">Subject</div>
-				          				<div class="summaryvalue">${command.participant.fullName}</div>
-				        			</div>
-				        			<div class="row">
-				          				<div class="summarylabel">Study</div>
-				          				<div class="summaryvalue">${command.study.longTitle}</div>
-				        			</div>
-				        			<div class="row">
-				          				<div class="summarylabel">Course</div>
-				          				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
-				        			</div>
-				      			</div>
-				    		</c:if>
-				    		<div id="div-reports-to-be-amended" style="text-align:left;">
-				      			<hr/>
-				      			<p>
-				        			<tags:instructions code="instruction_ae_amendments_required"/>
-				      			</p>
-				      			<chrome:division title="Reports that will be Amended" id="div-selected-reports" collapsable="false">
-				      				<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
-				      					<div class="eXtremeTable" id="amend-aeReport-${aeReport.id}" style="display:none;text-align:left">
-				                    		<table width="100%" border="0" cellspacing="0" class="tableRegion">
-				                      			<thead>
-				                        			<tr align="center" class="label">
-				                          				<td class="tableHeader" width="15%">Report Type</td>
-				                          				<td class="centerTableHeader" width="10%">Report Version</td>
-				                          				<td class="centerTableHeader" width="10%"># of AEs</td>
-				                          				<td class="tableHeader" width="20%">Data Entry Status</td>
-				                          				<td class="tableHeader" width="20%">Submission Status</td>
-				                       				</tr>
-				                      			</thead>
-				                      			<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
-				                      		</table>
-				        		        </div>
-				              		</c:forEach>
-				              		<br><br>
-				                      		<table width="100%">	
-				                      			<tr>
-				                      				<td align="left">
-				                      					<input type="submit" value="Amend" id="amendment-required-yes" onClick="javascript:window.parent.deleteOrAmendAndSubmit();"/>
-				                      				</td>
-				                      				<td align="right">
-					                      				<input type="submit" value="Don't Amend" id="amendment-required-no" onClick="javascript:window.parent.Windows.close('amend-popup-id');"/>
-				                      				</td>
-				                      			</tr>	
-						                    </table>
-				      			</chrome:division>
-      						</div>
-    					</chrome:box>	
-    				</div>
-					< % -- End : Sections displayed in amend popup --  % >
-========================================================================================================================== --%>					
-					
 				</c:if>
 			</div>
       		
