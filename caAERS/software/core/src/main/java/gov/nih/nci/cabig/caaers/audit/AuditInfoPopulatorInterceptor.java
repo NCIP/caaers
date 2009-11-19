@@ -23,7 +23,7 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 	private String fromUrl;
 	
 	@SuppressWarnings("deprecation")
-	public Object invoke(MethodInvocation method) {
+	public Object invoke(MethodInvocation method) throws Throwable{
 		DataAuditInfo oldAuditInfo = null;
 		 try {
 			 
@@ -41,10 +41,11 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 			 	
 		} catch (Throwable e) {
 			logger.error("AuditInfoPopulatorInterceptor", e);
+			throw e;
 		}finally{
 			DataAuditInfo.setLocal(oldAuditInfo);
 		}
-		return null;
+		//return null;
 	}
 	
 	public String getFromUrl() {
