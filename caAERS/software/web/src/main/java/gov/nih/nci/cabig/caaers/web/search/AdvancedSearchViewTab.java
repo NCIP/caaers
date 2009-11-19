@@ -100,6 +100,10 @@ public class AdvancedSearchViewTab<T extends AdvancedSearchCommand> extends Work
 		}
 		command.setResultsViewColumnList(resultsViewColumnList);
 		command.setNumberOfResults(command.getAdvancedSearchRowList().size());
+		
+		// Set the results and the viewColumn in the session.
+		request.getSession().setAttribute("resultsViewColumnList", command.getResultsViewColumnList());
+		request.getSession().setAttribute("searchResultsRowList", command.getAdvancedSearchRowList());
 	}
 	
 	/**
