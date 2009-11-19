@@ -65,8 +65,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		if (emailStr.startsWith("mailto:")) {
 			emailStr = emailStr.substring("mailto:".length(), emailStr.length());
 		}
-		remoteInvestigator.setFirstName(firstName);
-		remoteInvestigator.setLastName(lastName);
+		remoteInvestigator.setFirstName(firstName.trim());
+		remoteInvestigator.setLastName(lastName.trim());
 		remoteInvestigator.setEmailAddress(emailStr);
 		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
 		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
