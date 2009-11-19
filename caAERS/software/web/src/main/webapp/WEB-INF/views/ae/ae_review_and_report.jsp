@@ -40,7 +40,7 @@
  </style>
  
  <script type="text/javascript"><!--
- 
+ AE.checkForModification = false; 
  //to store the recommended options (aeReportId - {reportDefinitionId} 
  AE.recommendedOptions = new Hash();
  //to store the actual recomendations (so that we could reconcile recommended options) (aeReportId  -{reportDefinitionId})
