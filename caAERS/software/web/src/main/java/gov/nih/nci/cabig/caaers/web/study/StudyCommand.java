@@ -365,7 +365,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteStudyAgentAtIndex(int index){
-    	delete(study.getStudyAgents(), index);
+    	delete(study.getStudyAgents(), study.getActiveStudyAgents().get(index));
     }
     
     /**
