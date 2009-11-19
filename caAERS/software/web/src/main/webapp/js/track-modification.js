@@ -30,7 +30,7 @@ var ModificationTracker = Class.create({
         if(AE.checkForModification){
            var curFormElementCount = this.form.select('textarea','input','select').size();
            if(AE.formFieldModified || (curFormElementCount != AE.formFieldCount) )
-        	   return "There are unsaved changes.";
+        	   return AE.UNSAVED_DATA_MESSAGE;
         }
     }
        
