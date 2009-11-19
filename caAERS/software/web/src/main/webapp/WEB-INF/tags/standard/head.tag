@@ -27,6 +27,8 @@
 <jwr:style src="/csslib/ie6.zcss" />
 <![endif]-->
 
+<caaers:message var="_unsavedInfoMsg" code="${code}" text="There is unsaved changes." />
+
 <script type="text/javascript">
 // hotlinking
 // https://wiki.nci.nih.gov/x/ygqG
@@ -43,6 +45,8 @@ AE.APP_BASE_URL = '<c:url value="/" />';
 //overwrite the HttpSession timeout warning & wait
 AE.SESSION_TIME_OUT_WARNING = ${empty configuration.map.httpSessionWarning ? '10' : configuration.map.httpSessionWarning} * 60;
 AE.SESSION_TIME_OUT_WAIT= ${empty configuration.map.httpSessionWarningWait ? '2' : configuration.map.httpSessionWarningWait} * 60;
+
+AE.UNSAVED_DATA_MESSAGE='${_unsavedInfoMsg}';
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
