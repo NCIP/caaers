@@ -321,7 +321,19 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
      * @return
      */
     private boolean validateRemoteStudy(RemoteStudy remoteStudy){
-    	if(remoteStudy.getCoordinatingCenter() == null || remoteStudy.getFundingSponsor() == null){
+    	if(remoteStudy.getStudyCoordinatingCenters() != null){
+    		if(remoteStudy.getStudyCoordinatingCenters().size() == 0){
+    			return false;
+    		}
+    	}else{
+    		return false;
+    	}
+    	
+    	if(remoteStudy.getStudyFundingSponsors() != null){
+    		if(remoteStudy.getStudyFundingSponsors().size() == 0){
+    			return false;
+    		}
+    	}else{
     		return false;
     	}
     	return true;
