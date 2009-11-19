@@ -81,6 +81,7 @@ public class AuditInfoPopulatorInterceptorTest extends CaaersTestCase {
 			}
 
 			public Object proceed() throws Throwable {
+				if(true) throw e;
 				return gov.nih.nci.cabig.ctms.audit.DataAuditInfo.getLocal() != null;
 			}
 			
