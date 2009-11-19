@@ -69,6 +69,8 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         
         methodNameMap.put("add" + CONCOMITANT_MEDICATION, "addConcomitantMedication");
         methodNameMap.put("remove" + CONCOMITANT_MEDICATION, "removeConcomitantMedication");
+
+        methodNameMap.put("removeAllPriorTherapyAgents", "removeAllPriorTherapyAgents");
     }
 	
 	@Override
@@ -528,6 +530,28 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
             i++;
         }
     }
-    
+
+    public ModelAndView removeAllPriorTherapyAgents(HttpServletRequest request , Object cmd, Errors errors){
+
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        StudyParticipantPriorTherapy priorTherapy = command.getAssignment().getPriorTherapies().get(command.getParentIndex());
+    	List<StudyParticipantPriorTherapyAgent> priorTherapyAgents = priorTherapy.getPriorTherapyAgents();
+
+    	priorTherapyAgents.clear();
+
+    	//create the indexes in reverse order
+    	int size = priorTherapyAgents.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/priorTherapyAgentFormSection");
+    	modelAndView.getModel().put("priorTherapyAgents", priorTherapyAgents);
+    	modelAndView.getModel().put("indexes", indexes);
+    	modelAndView.getModel().put("parentIndex", command.getParentIndex());
+
+    	return modelAndView;
+    }
 }
 

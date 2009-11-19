@@ -30,6 +30,7 @@
     			var ptVal = evt.element().value;
     			if(ptVal == ${_priorTherapy_surgery_id} || ptVal == ${_priorTherapy_radiation_id} || ptVal == ${_priorTherapy_nopriortherapy_id}){
         			$('assignment.priorTherapies[${index}]-row').hide();
+                    AE.removeAllAgents_${index}();
     			} else{
         			$('assignment.priorTherapies[${index}]-row').show();
     			}
@@ -108,6 +109,10 @@
 AE.addPTAgents_${index}=function() {
     mHistory.addDetails('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
     AE.resetAutocompleter('priorTherapyAgents[${index}]');
+}
+
+AE.removeAllAgents_${index}= function() {
+    mHistory.removeAllAgents('priorTherapyAgent', null, null, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
 }
 
 function initializePriorTherapy(){
