@@ -193,7 +193,16 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	logger.error("Already a study with the same Coordinating Center Identifier ("
                                 + ccIdentifier
                                 + ") exists.Returning without processing the request.");
-                return;
+            	
+            	 StudyCreationException exp = new StudyCreationException();
+                 exp
+                                 .setFaultReason("Already a study with the same Coordinating Center Identifier ("
+                                         + ccIdentifier
+                                         + ") exists.Returning without processing the request.");
+                 throw exp;
+                 
+                 
+                
             }
             
             String coppaIdentifier = findCoppaIdentifier(studyDto);
