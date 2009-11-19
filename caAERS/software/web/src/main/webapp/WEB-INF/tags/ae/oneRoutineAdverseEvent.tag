@@ -16,9 +16,9 @@
 <%@attribute name="enableDelete" description="If true, the delete button will be enabled" %>
 <%@attribute name="style" %>
 <%@attribute name="isSolicited" type="java.lang.Boolean" %>
-
+<%@attribute name="hasOtherMeddra" type="java.lang.Boolean" %>
 <c:set var="mainGroup">main${index}</c:set>
-<c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired ? 1  : 0}" />
+<c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired and hasOtherMeddra ? 1  : 0}" />
 <c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
