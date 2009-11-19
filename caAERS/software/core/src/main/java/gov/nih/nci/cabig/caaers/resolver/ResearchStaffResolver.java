@@ -66,8 +66,8 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		if (emailStr.startsWith("mailto:")) {
 			emailStr = emailStr.substring("mailto:".length(), emailStr.length());
 		}
-		remoteResearchStaff.setFirstName(firstName);
-		remoteResearchStaff.setLastName(lastName);
+		remoteResearchStaff.setFirstName(firstName.trim());
+		remoteResearchStaff.setLastName(lastName.trim());
 		remoteResearchStaff.setEmailAddress(emailStr);
 		remoteResearchStaff.setAddress(new Address());
 		//remoteResearchStaff.setLoginId("loginid");
