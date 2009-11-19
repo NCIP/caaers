@@ -55,5 +55,43 @@ public class AuditInfoPopulatorInterceptorTest extends CaaersTestCase {
 		assertNotNull(retVal);
 		assertEquals(Boolean.TRUE, retVal);
 	}
+	
+	public void testInvoke_ThrowingException() throws Throwable {
+		final Exception e = new RuntimeException("test");
+		MethodInvocation method = new MethodInvocation(){
+
+			public Method getMethod() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public Object[] getArguments() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public AccessibleObject getStaticPart() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public Object getThis() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public Object proceed() throws Throwable {
+				return gov.nih.nci.cabig.ctms.audit.DataAuditInfo.getLocal() != null;
+			}
+			
+		};
+		try {
+			auditInterceptor.invoke(method);
+			fail("must throw exception");
+		} catch (Exception e1) {
+			assertSame(e, e1);
+		}
+		
+	}
 
 }
