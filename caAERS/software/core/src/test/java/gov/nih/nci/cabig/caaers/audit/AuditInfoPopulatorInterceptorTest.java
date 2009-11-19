@@ -20,7 +20,7 @@ public class AuditInfoPopulatorInterceptorTest extends CaaersTestCase {
 		auditInterceptor = (AuditInfoPopulatorInterceptor) getDeployedApplicationContext().getBean("auditInfoPopulatorInterceptor");
 	}
 
-	public void testInvoke() {
+	public void testInvoke() throws Throwable {
 
 		MethodInvocation method = new MethodInvocation(){
 
