@@ -22,7 +22,7 @@ public class RunAsAuthenticationPopulatorIncerceptorTest extends CaaersTestCase 
 		interceptor = (RunAsAuthenticationPopulatorIncerceptor) getDeployedApplicationContext().getBean("runAsAutenticationProviderInterceptor");
 	}
 
-	public void testInvoke() throws Exception{
+	public void testInvoke() throws Exception,Throwable{
 
 		MethodInvocation method = new MethodInvocation(){
 
