@@ -20,7 +20,7 @@ public class RunAsAuthenticationPopulatorIncerceptor implements MethodIntercepto
 
 	private RunAsAuthenticationPopulator runAsAuthenticationPopulator;
 	
-	public Object invoke(MethodInvocation method) {
+	public Object invoke(MethodInvocation method) throws Throwable{
 		
 		Authentication existingAuthentication = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -31,11 +31,12 @@ public class RunAsAuthenticationPopulatorIncerceptor implements MethodIntercepto
 			
 		}catch(Throwable e){
 			logger.error("RunAsAuthenticationPopulatorIncerceptor", e);
+			throw e;
 		}finally{
 			SecurityContextHolder.getContext().setAuthentication(existingAuthentication);
 		}
 		
-		return null;
+		//return null;
 	}
 	
 	@Required
