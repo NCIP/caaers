@@ -136,8 +136,9 @@ public class JmsServiceImpl implements MessageListener {
     public void initialize() throws BroadcastException, JMSException {
 
         if (this.session != null) {
-            // System.out.println("SESSION IS NOT NULL .." );
-            return;
+            // session is getting stale once in a a while , so closing and opening session for every submission CAAERS-3118
+            //return;
+        	session.close();
         }
         System.out.println("initializing esb jms client....");
 
