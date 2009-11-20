@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
@@ -17,7 +16,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.AlphanumericValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.HashMap;
@@ -133,28 +131,10 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        boolean hasPrimaryID = false;
         DateValue dob = command.getParticipant().getDateOfBirth();
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "PT_010", "Incorrect Date Of Birth");
         }
-
-        for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
-
-            if (identifier.isPrimary()) {
-                if (hasPrimaryID) {
-                    // there are at least 2 Primary ID selected
-                    hasPrimaryID = false;
-                    break;
-                }
-
-                hasPrimaryID = true;
-            }
-        }
-
-        if (!hasPrimaryID)
-            errors.rejectValue("participant.identifiers", "PT_011", "Please Include exactly One Primary Identifier");
-
     }
 
     public OrganizationRepository getOrganizationRepository() {
