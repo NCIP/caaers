@@ -21,17 +21,12 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     private CreateParticipantTab createParticipantTab;
 
     private ParticipantInputCommand newParticipantCommand;
-    private OrganizationRepository organizationRepository;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
-/*
-        organizationDao = registerDaoMockFor(OrganizationDao.class);
-        organizationRepository = registerDaoMockFor(OrganizationDao.class);
-*/
     }
 
 
@@ -114,11 +109,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 
     @Override
     protected Map<String, Object> createReferenceData() {
-        List<Organization> organizations = new ArrayList<Organization>();
-//        EasyMock.expect(organizationRepository.getOrganizationsHavingStudySites()).andReturn(organizations);
-//        replayMocks();
         Map<String, Object> referenceData = getTab().referenceData(getCommand());
-//        verifyMocks();
         return referenceData;
     }
 
@@ -129,9 +120,10 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
 
     public void testValidateIdentifiers() throws Exception {
+    	// BJ:	 CAAERS-3293 - relaxed the primary identifier restriction.
         newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         doValidate();
-        assertEquals("Wrong number of errors for " + "participant.identifiers", 1, errors.getFieldErrorCount("participant.identifiers"));
+        assertEquals("Wrong number of errors for " + "participant.identifiers", 0, errors.getFieldErrorCount("participant.identifiers"));
         
     }
   
