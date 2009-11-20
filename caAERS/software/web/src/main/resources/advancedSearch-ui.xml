@@ -299,6 +299,39 @@
 			</ui-association>
 		</dependent-object>
 		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
+			<display-name>StudyParticipantAssignment</display-name>
+			<table-alias>StudyParticipantAssignment_xx</table-alias>
+			<hidden>true</hidden>
+			<ui-attribute>
+				<name>studySubjectIdentifier</name>
+				<label>Study subject identifier</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
+			</ui-attribute>
+			<view-column>
+				<column-attribute>studySubjectIdentifier</column-attribute>
+				<column-title>Study subject identifier</column-title>
+			</view-column>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyOrganization</name>
+				<role-name>studyOrganizations</role-name>
+				<table-name>study_organizations</table-name>
+				<table-alias>StudyOrganization_xx</table-alias>
+				<joining-condition>Study_xx = StudyOrganization_xx.study</joining-condition>
+			</ui-association>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>studyParticipantAssignments</role-name>
+				<table-name>participant_assignments</table-name>
+				<table-alias>StudyParticipantAssignment_xx</table-alias>
+				<joining-condition>StudyOrganization_xx = StudyParticipantAssignment_xx.studySite</joining-condition>
+			</ui-association>
+		</dependent-object>
+		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Agent</class-name>
 			<display-name>Agent</display-name>
 			<table-alias>Agent_xx</table-alias>
@@ -506,6 +539,32 @@
 				<table-name>studies</table-name>
 				<table-alias>Study_xx</table-alias>
 				<joining-condition>StudyOrganization_xx.study = Study_xx</joining-condition>
+			</ui-association>
+		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
+			<display-name>StudyParticipantAssignment</display-name>
+			<table-alias>StudyParticipantAssignment_xx</table-alias>
+			<hidden>true</hidden>
+			<ui-attribute>
+				<name>studySubjectIdentifier</name>
+				<label>Study subject identifier</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
+			</ui-attribute>
+			<view-column>
+				<column-attribute>studySubjectIdentifier</column-attribute>
+				<column-title>Study subject identifier</column-title>
+			</view-column>
+			<ui-association>
+				<name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</name>
+				<role-name>assignments</role-name>
+				<table-name>participant_assignments</table-name>
+				<table-alias>StudyParticipantAssignment_xx</table-alias>
+				<joining-condition>Participant_xx = StudyParticipantAssignment_xx.participant</joining-condition>
 			</ui-association>
 		</dependent-object>
 	</search-target-object>
