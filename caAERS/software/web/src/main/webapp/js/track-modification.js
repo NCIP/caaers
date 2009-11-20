@@ -18,6 +18,11 @@ var ModificationTracker = Class.create({
                 	});
                 });
                 
+                //observe submit on the form
+                this.form.observe('submit', function(){
+                	AE.formFieldModified=false;
+                });
+                
                 window.onbeforeunload = this.checkForModificationsOnPage.bind(this);
             }
             
