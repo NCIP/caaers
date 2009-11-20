@@ -89,7 +89,6 @@ public class ParticipantInputCommand {
         this.assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
         
         OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
-        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
         organizationAssignedIdentifier.setType(identifierType);
         this.participant.addIdentifier(organizationAssignedIdentifier);
     }
