@@ -164,32 +164,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        boolean hasPrimaryID = false;
         DateValue dob = command.getParticipant().getDateOfBirth();
 
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "PT_010", "Incorrect Date Of Birth");
         }
-
-        for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
-
-            if (identifier.isPrimary()) {
-                if (hasPrimaryID) {
-                    // there are at least 2 Primary ID selected
-                    hasPrimaryID = false;
-                    break;
-                }
-
-                hasPrimaryID = true;
-            }
-
-/*
-            hasPrimaryID |= identifier.isPrimary();
-            if (hasPrimaryID) break;
-*/
-        }
-
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "PT_011", "Please Include exactly One Primary Identifier");
 
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
     }
