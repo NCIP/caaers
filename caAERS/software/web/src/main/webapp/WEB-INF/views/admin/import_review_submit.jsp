@@ -515,10 +515,8 @@
 		</c:if>
 		
 		<c:if test='${command.schemaValidationResult != null  }'>
-			The provided xml is invaid, Fix the errors and try again.
-			<p>
-				<c:out value="${command.schemaValidationResult}" />
-			</p>
+			The provided xml is invalid, Fix the errors and try again.
+			<p><c:out value="${command.schemaValidationResult}" /></p>
    		</c:if>
 		
 </jsp:attribute>

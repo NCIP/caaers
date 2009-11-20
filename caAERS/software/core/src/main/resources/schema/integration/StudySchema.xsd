@@ -235,7 +235,7 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="roleCode" type="RoleCodeType"/>
-                    <xs:element name="startDate"  type="xs:date" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="startDate"  type="xs:date" minOccurs="0" maxOccurs="1" />
                     <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
                     <xs:element ref="siteInvestigator"/>
                 </xs:sequence>
