@@ -35,15 +35,20 @@
 </head>
 <body>
 
-<p><tags:instructions code="study.study_overview.top" /></p>
+<tags:instructions code="study.study_overview.top" />
 <c:if test="${command.study.id > 0}">
-    <b>Export Study</b> <a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="<c:url value="/images/icon_xml.gif"/> " border=""></a>
+    <div class="instructions row">
+    	<div class="value">
+    		<a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="<c:url value="/images/blue/xml-icon.png"/> " border=""> Export XML</a>
+    	</div>
+    </div>
 </c:if>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="review">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review" hideBox="true">
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.study.id) or ( command.study.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
+	   <div class="summary">
         <chrome:division>
-        	<div class="leftpanel">
+
         		<div class="row">
                 	<div class="label">Primary identifier</div>
                 	<div class="value">${command.study.primaryIdentifier.value} </div>
@@ -80,8 +85,7 @@
                 	${command.study.studyCoordinatingCenter.organization.name} 
                 	</div>
             	</div>
-            </div>
-        	<div class="rightpanel">
+
         		<div class="row">
                 	<div class="label">Phase code</div>
                 	<div class="value">${command.study.phaseCode} </div>
@@ -127,51 +131,49 @@
                 	</div>
             	</div>
 
-        	</div>
+
        </chrome:division>
     <chrome:division title="Report Formats">
     	<!--[if lte IE 6]>
 		<br>
 		<br>
 		<![endif]-->
-    	<table class="tablecontent" width="100%" >
-		<tr >						
-			<th scope="col">Report Format</th>
-		</tr>	
-		<c:forEach items="${command.study.reportFormats}" var="report">
-		<tr class="results">
-			<td>${report.reportFormatType.displayName}</td>
-		</tr>
-		</c:forEach>
+        <ul>
+            <c:forEach items="${command.study.reportFormats}" var="report">
+                <li class="results">
+                        ${report.reportFormatType.displayName}
+                </li>
+            </c:forEach>
+        </ul>
+		
 		<c:if test="${empty command.study.reportFormats}">
-		<tr>
-		 <td>No report format is selected for this study</td>
-		</tr>
+		
+		No report format is selected for this study
+
 		</c:if>																		
-		</table>
+
     </chrome:division>       
     <chrome:division title="Therapies">
     	<!--[if lte IE 6]>
 		<br>
 		<br>
 		<![endif]-->
-    	<table class="tablecontent" width="100%" >
-		<tr >						
-			<th scope="col">Therapy name</th>
-		</tr>	
+		<ul>
 		<c:forEach items="${command.study.studyTherapies}" var="therapy">
-		<tr class="results">
-			<td>${therapy.studyTherapyType.displayName}</td>
-		</tr>
+		<li class="results">
+			${therapy.studyTherapyType.displayName}
+		</li>
 		</c:forEach>
+		</ul>
 		<c:if test="${empty command.study.studyTherapies}">
-		<tr>
-		 <td>No therapy is selected for this study</td>
-		</tr>
+
+			No therapy is selected for this study
+
 		</c:if>																		
-		</table>
+
     </chrome:division>
     <chrome:division title="Agents">
+    	<br/>
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -216,6 +218,7 @@
     
     <c:set var="activeTACnt" value="0" />     
     <chrome:division title="Treatment Assignments">
+    	<br/>
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -248,6 +251,7 @@
 		
 	<c:set var="activeSiteCnt" value="0" />    	       
     <chrome:division title="Sites">
+    	<br/>
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -272,6 +276,7 @@
 			</table>	
 	</chrome:division>
    	<chrome:division title="Investigators">
+   		<br/>
    		<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -312,6 +317,7 @@
     	</chrome:division>
 
     <chrome:division title="Personnel">
+    	<br/>
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -355,12 +361,13 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
             <c:if test="${not empty command.study.activeMeddraStudyDiseases}">
             <chrome:division title="Diseases">
+            	<br/>
             	<!--[if lte IE 6]>
 		<br>
 		<br>
 		<![endif]-->
                 <table class="tablecontent" width="100%" >
-                    <br>
+                    
                     <tr>
                         <th scope="col">Disease Term</th>
                         <th scope="col">MedDRA Code</th>
@@ -381,6 +388,7 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
             <c:if test="${not empty command.study.activeCtepStudyDiseases}">
             <chrome:division title="Diseases">
+            	
             	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -407,6 +415,7 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
             <c:if test="${not empty command.study.activeStudyConditions}">
             <chrome:division title="Diseases">
+            	<br/>
             	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -430,6 +439,7 @@
 
     <%-- START EXPECTED AEs --%>
     <chrome:division title="Expected AEs">
+    	
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -457,6 +467,7 @@
     <%-- STOP EXPECTED AEs --%>
 
     <chrome:division title="Identifiers">
+    	<br/>
     	<!--[if lte IE 6]>
 		<br>
 		<br>
@@ -494,7 +505,7 @@
 	<chrome:division title="Evaluation Period Types & Solicited Adverse Events">
   		<study:solicitedAETable displayOnly="true" />
     </chrome:division>
-	
+	</div>
     </jsp:attribute>
     <jsp:attribute name="localButtons"></jsp:attribute>
 </tags:tabForm>

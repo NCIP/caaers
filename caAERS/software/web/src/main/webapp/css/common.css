@@ -459,6 +459,22 @@ ul.tabs li {
 	background:#b2bbff url(../images/blue/report_set_bg.png) repeat-x top;
 	border:2px solid #888888;
 	margin:0 4px 15px;
+	padding:20px;
+}
+.summary .tablecontent th, .summary .sae th.epoch, .summary .sae th.term, .summary .sae th.reportingperiod {
+	background-color:#333333;
+	border:1px solid #333333;
+	color:#ffffff;
+}
+.summary .tablecontent td {
+border:1px solid #333;
+}
+.summary .division h3 {
+	font-size:1.5em;
+	border-bottom:1px solid #333;
+}
+.summary .division {
+	margin-bottom:20px;
 }
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
