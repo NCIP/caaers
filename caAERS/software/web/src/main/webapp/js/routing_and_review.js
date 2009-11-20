@@ -206,6 +206,6 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		     img.src = imageSource.replace('right','down');
 		});
 		
-	},
+	}
 	
 });

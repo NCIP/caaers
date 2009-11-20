@@ -122,6 +122,6 @@ Object.extend(AdvancedSearchHelper.prototype, {
       		}
         Windows.addObserver(popupObserver);
 	
-	},
+	}
 
 });
