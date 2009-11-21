@@ -179,16 +179,10 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		if(identifierValue != null && !"".equals(identifierValue)){
 			populateIdentifer(remoteStudy,null,identifierValue,CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
 		}
-		//If ShortTitle is null ShortTitle = AssignedIdentifer + 30 Chars of LongTitle.
+		//If ShortTitle is null ShortTitle = LongTitle.
 		if(remoteStudy.getShortTitle() == null){
-			StringBuilder fabricatedShortTile = new StringBuilder(identifierValue);
-			fabricatedShortTile.append("-");
-			fabricatedShortTile.append(remoteStudy.getLongTitle());
-			if(fabricatedShortTile.length() > 30){
-				remoteStudy.setShortTitle(fabricatedShortTile.substring(0, 30));
-			}
+			remoteStudy.setShortTitle(remoteStudy.getLongTitle());
 		}
-		
 		populateStudyOrganizationsForStudyProtocol(studyProtocol,remoteStudy);
 		populateStudyTherapies(studyProtocol, remoteStudy);
 		reArrangeStudyIdentifers(remoteStudy);
