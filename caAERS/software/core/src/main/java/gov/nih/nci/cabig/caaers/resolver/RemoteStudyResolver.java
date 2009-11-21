@@ -179,7 +179,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		if(identifierValue != null && !"".equals(identifierValue)){
 			populateIdentifer(remoteStudy,null,identifierValue,CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
 		}
-		//If ShortTitle is null ShortTitle = LongTitle.
+		//If ShortTitle/PublicTitle is empty ShortTitle = LongTitle.
 		if(remoteStudy.getShortTitle() == null){
 			remoteStudy.setShortTitle(remoteStudy.getLongTitle());
 		}
