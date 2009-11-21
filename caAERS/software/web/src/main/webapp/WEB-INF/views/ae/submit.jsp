@@ -16,6 +16,7 @@
     <script type="text/javascript">
     	var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+        AE.checkForModification = false;
 
         function fireAction(action, selected) {
 
