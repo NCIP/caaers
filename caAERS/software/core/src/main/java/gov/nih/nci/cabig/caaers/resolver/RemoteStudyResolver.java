@@ -476,7 +476,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
             		HealthCareProvider healthCareProvider = getHealthCareProviderFromExtension(studySiteContact.getHealthCareProvider().getExtension());
             		if(healthCareProvider != null){
             			 gov.nih.nci.coppa.po.Person coppaPerson = getCoppaPersonFromPersonExtension(healthCareProvider.getPlayerIdentifier().getExtension());
-            			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "SI");
+            			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "PI");
             			 studyOrganization.addStudyInvestigators(studyInvestigator);
             		}
             	}
