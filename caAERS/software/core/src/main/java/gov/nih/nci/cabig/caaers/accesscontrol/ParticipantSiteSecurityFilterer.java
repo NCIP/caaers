@@ -105,9 +105,12 @@ public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implem
 			//allSites.addAll(study.getStudySites());
 			allSites.addAll(study.getAssignedStudySites());
 			// add coordinating center if user is from coordinating center ... 
+//			 add funding sponsor if user is from funding sponsor ... 
 			//if (isSiteCoodinator) {
 				for (StudySiteAjaxableDomainObject scc : study.getStudySites()) {
-					if (scc.getType().equals("SCC") && userOrganizations.contains(scc.getNciInstituteCode())) {
+					//CAAERS-2441
+					//if (scc.getType().equals("SCC") && userOrganizations.contains(scc.getNciInstituteCode())) {
+					if ((scc.getType().equals("SCC") || scc.getType().equals("SFS")) && userOrganizations.contains(scc.getNciInstituteCode())) {
 						allSites.add(scc);
 					}
 				}
