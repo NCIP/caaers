@@ -82,9 +82,11 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     }
     
     private void updateStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
-        //if (!StringUtils.isBlank((String) o[12]) && StringUtils.equals((String) o[14], "SST")) {
-        if (!StringUtils.isBlank((String) o[12]) && (StringUtils.equals((String) o[14], "SST") || StringUtils.equals((String) o[14], "SCC"))) {
-            StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
+        
+    	//CAAERS-2441
+        //if (!StringUtils.isBlank((String) o[12]) && (StringUtils.equals((String) o[14], "SST") || StringUtils.equals((String) o[14], "SCC"))) {
+    	if (!StringUtils.isBlank((String) o[12]) && (StringUtils.equals((String) o[14], "SST") || StringUtils.equals((String) o[14], "SCC") || StringUtils.equals((String) o[14], "SFS"))) {
+    		StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
             studySiteAjaxableDomainObject.setId((Integer) o[13]);
             studySiteAjaxableDomainObject.setName((String) o[12]);
             studySiteAjaxableDomainObject.setNciInstituteCode((String) o[15]);
