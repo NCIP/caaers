@@ -38,6 +38,7 @@ function logoutWarning() {
   AE.SESSION_TIMER_ID = timeoutSession.delay(AE.SESSION_TIME_OUT_WAIT);
 }
 function timeoutSession() {
+	AE.checkForModification=false;
 	window.location=AE.APP_BASE_URL + 'j_acegi_logout';
 }
 
