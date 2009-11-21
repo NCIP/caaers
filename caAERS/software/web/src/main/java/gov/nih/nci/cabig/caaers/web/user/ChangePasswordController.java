@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,7 +31,7 @@ public class ChangePasswordController extends SimpleFormController {
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         return new ChangePasswordCommand();
     }
-
+    
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
         ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
@@ -45,7 +46,16 @@ public class ChangePasswordController extends SimpleFormController {
             return modelAndView.addObject("change_pwd_error", e.getErrors());
         } 
     }
-
+    
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
+    	 ChangePasswordCommand cmd = (ChangePasswordCommand) command;
+    	if(!StringUtils.equals(cmd.getPasswordNew(), cmd.getPasswordConfirm())){
+    		errors.rejectValue("passwordConfirm","USR_011", "The passwords provided do not match");
+    	}
+    	super.onBindAndValidate(request, command, errors);
+    }
+    
     @Required
     public void setPasswordManagerService(PasswordManagerService passwordManagerService) {
         this.passwordManagerService = passwordManagerService;
