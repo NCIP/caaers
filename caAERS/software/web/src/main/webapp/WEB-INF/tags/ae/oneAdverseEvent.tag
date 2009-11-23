@@ -49,7 +49,7 @@
 		</div>
 		
 		<!--  Other MedDRA -->
-        <div style="display:${adverseEvent.adverseEventTerm.otherRequired ? 'block' : 'none'}">
+        <div style="display:${(adverseEvent.adverseEventTerm.otherRequired) and (not empty command.adverseEventReportingPeriod.study.otherMeddra)? 'block' : 'none'}">
         <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
             <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
             <jsp:attribute name="value">
