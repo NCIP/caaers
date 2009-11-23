@@ -400,5 +400,15 @@ public class AdverseEventTest extends AbstractTestCase {
     	assertTrue(CollectionUtils.isEmpty(l2));
     	assertFalse(CollectionUtils.isEmpty(l3));
     }
+    
+    public void testGetDisplayName(){
+    	
+    	AdverseEvent ae = Fixtures.createAdverseEvent(1, Grade.DEATH);
+    	ae.getAdverseEventCtcTerm().getTerm().setOtherRequired(true);
+    	assertEquals("abcd", ae.getDisplayName());
+    	ae.setDetailsForOther("hello");
+    	assertEquals("abcd, hello", ae.getDisplayName());
+    	
+    }
 
 }

@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -14,19 +13,16 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -92,12 +88,13 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
         															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true & unRetired);
         		//only add otherMedDRA on non MedDRA and otherRequired=true
-                if(ae.getAdverseEventTerm().isOtherRequired()){
+                if(ae.getAdverseEventTerm().isOtherRequired() && study.getOtherMeddra() != null){
                 	mainFieldFactory.addField(otherMeddraField);
                 }
                 
-            	//verbatim
-            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
+            	//verbatim - Is required when there is no other MedDRA
+                boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim",verbatimMandatory);
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
@@ -185,23 +182,32 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
 
     public AdverseEvent checkAEsUniqueness(CaptureAdverseEventInputCommand command) {
-        List AEs = null;
-        AEs = command.getAdverseEventReportingPeriod().getAdverseEvents();
+    	if(CollectionUtils.isEmpty(command.getAdverseEventReportingPeriod().getAdverseEvents())){
+    		return null;
+    	}
+    	
+    	Study study = command.getAdverseEventReportingPeriod().getStudy();
+    	boolean hasOtherMeddra = study.getOtherMeddra() != null;
+    	
+    	
+        List<String> aeStringList = new ArrayList<String>();
         
-        if (AEs == null || AEs.size() == 0) return null;
-
-        Iterator it = AEs.iterator();
-        List aes = new ArrayList();
-        while (it.hasNext()) {
-            AdverseEvent ae = (AdverseEvent)it.next();
+        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
             if(ae.isRetired()) continue;
-            StringBuffer key = new StringBuffer(ae.getAdverseEventTerm().getTerm().getId().toString());
+            
+            StringBuffer key = new StringBuffer(String.valueOf(ae.getAdverseEventTerm().getTerm().getId()));
+            
             if (ae.getAdverseEventTerm().isOtherRequired()) {
-                if (ae.getLowLevelTerm() == null) continue;
-                key.append(ae.getLowLevelTerm().getId().toString());
+            	if(hasOtherMeddra){
+            		if (ae.getLowLevelTerm() == null) continue;
+                    key.append(String.valueOf(ae.getLowLevelTerm().getId()));
+            	}else{
+            		key.append(String.valueOf(ae.getDetailsForOther()));
+            	}
             }
-            if (aes.contains(key.toString())) return ae;
-            aes.add(key.toString());
+            
+            if (aeStringList.contains(key.toString())) return ae;
+            aeStringList.add(key.toString());
         }
 
         return null;
@@ -213,9 +219,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // START -> AE VALIDATION //
         AdverseEvent adverseEvent = checkAEsUniqueness(command);
         if (adverseEvent != null) {
-            String name = null;
-            name = adverseEvent.getAdverseEventTerm().getFullName();
-            if (adverseEvent.getAdverseEventTerm().isOtherRequired()) name = name + ", " + adverseEvent.getLowLevelTerm().getMeddraTerm();
+            String name = adverseEvent.getDisplayName();
             errors.reject("DUPLICATE_EXPECTED_AE", new Object[]{name}, "ERR.");
         }
         // STOP -> AE VALIDATION //

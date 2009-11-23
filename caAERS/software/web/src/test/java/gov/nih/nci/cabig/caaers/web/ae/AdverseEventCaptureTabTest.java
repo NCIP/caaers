@@ -7,17 +7,14 @@ import static gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.LIFE_THREATENING;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.REQUIRED_INTERVENTION;
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -28,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 /**

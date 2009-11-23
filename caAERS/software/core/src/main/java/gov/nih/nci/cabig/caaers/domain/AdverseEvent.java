@@ -611,6 +611,23 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     public void setSolicited(Boolean solicited) {
         this.solicited = solicited;
     }
+    
+    /**
+     * This method will return the display name of this adverse event.
+     * @return
+     */
+    @Transient
+    public String getDisplayName(){
+    	StringBuilder name = new StringBuilder(this.getAdverseEventCtcTerm().getFullName());
+    	if(this.getAdverseEventCtcTerm().isOtherRequired()){
+    		if(this.getLowLevelTerm() != null) {
+    			name.append(", " + this.getLowLevelTerm().getMeddraTerm());
+    		}else if(this.getDetailsForOther() != null){
+    			name.append(", " + this.getDetailsForOther());
+    		}
+    	}
+    	return name.toString();
+    }
 
     public Boolean getSolicited() {
         return solicited;
