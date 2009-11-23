@@ -28,7 +28,7 @@
 <jwr:style src="/csslib/ie6.zcss" />
 <![endif]-->
 
-<caaers:message var="_unsavedInfoMsg" code="${code}" text="There is unsaved changes." />
+<caaers:message var="_unsavedInfoMsg" code="${code}" text="There are unsaved changes." />
 
 <script type="text/javascript">
 // hotlinking
