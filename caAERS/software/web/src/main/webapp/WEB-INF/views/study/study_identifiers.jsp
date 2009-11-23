@@ -77,7 +77,8 @@
 		var ssfrm = $('command');
 		ssfrm._target.name='_noname';
 		ssfrm._action.value='removeIdentifier';
-		ssfrm._selected.value=selected;		
+		ssfrm._selected.value=selected;
+        if (AE.checkForModification) AE.checkForModification = false; 
 		ssfrm.submit();
 	}
    
