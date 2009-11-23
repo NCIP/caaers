@@ -117,6 +117,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
     protected void validate(final ResearchStaffCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
+        String em = command.getResearchStaff().getEmailAddress();
+        if (em != null && !em.trim().equals("") && !GenericValidator.isEmail(em)) {
+            errors.rejectValue("researchStaff.emailAddress", "USR_006", "Invalid email");
+        }
+
         List<SiteResearchStaff> srs = command.getResearchStaff().getSiteResearchStaffs();
         for (int i=0; i<srs.size(); i++) {
             if (srs.get(i).getOrganization() == null || srs.get(i).getOrganization().getId() == null)
