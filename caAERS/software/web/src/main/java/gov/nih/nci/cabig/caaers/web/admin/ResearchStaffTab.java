@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +38,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
 
     protected static final Log log = LogFactory.getLog(ResearchStaffTab.class);
     private static final String RESEARCH_STAFF_FIELD_GROUP = "researchStaff";
-
     Map<String, String> methodNameMap = new HashMap<String, String>();
-    
     private CSMUserRepository csmUserRepository;
-    
     private ResearchStaffRepository researchStaffRepository;
 
     public ResearchStaffTab() {
@@ -240,7 +238,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
         InputFieldAttributes.setSize(lastNameField, 30);
         researchStaffFieldGroup.getFields().add(lastNameField);
 
-        InputField emailField = InputFieldFactory.createTextField("researchStaff.emailAddress", "Primary email", true);
+        InputField emailField = InputFieldFactory.createTextField("researchStaff.emailAddress", "Primary email", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.EMAIL_VALIDATOR);
         InputFieldAttributes.setSize(emailField, 30);
         researchStaffFieldGroup.getFields().add(emailField);
 

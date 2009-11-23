@@ -152,7 +152,7 @@ public abstract class ResearchStaffController<C extends ResearchStaffCommand> ex
                     log.warn("Optimistic locking error, while reassociating the report", e);
                     request.setAttribute("OPTIMISTIC_LOCKING_ERROR", e);
                     errors.reject("GEN_002", "Cannot continue this operation, as another user is working on the same data.");
-                    // e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    // e.printStackTrace();  
                 }
             }
         } catch (MailException e) {

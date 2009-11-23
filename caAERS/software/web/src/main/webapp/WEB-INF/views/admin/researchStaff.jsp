@@ -148,18 +148,12 @@
                             <tags:renderRow field="${field}"/>
                         </c:forEach>
                         <div class="row">
-                            <div class="label">
-                                <ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/>
-                            </div>
-                            <div class="value">
-                                <ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required" required="true" title="Login ID"/>
-                            </div>
+                            <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required" required="true" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
-                                <div class="label">
-                                    Active Date
-                                </div>
+                                <div class="label">Active Date</div>
                                 <div class="value">
                                     <tags:formatDate value="${command.researchStaff.activeDate}" />&nbsp;
                                     <c:if test="${!readOnly}">
