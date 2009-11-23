@@ -20,7 +20,12 @@ public class CoppaConstants {
 	public static final List<String> SITE_INVESTIGATOR_LIST = Arrays.asList("Principal Investigator", "Coordinating Investigator", "Sub Investigator");
 	
 	/*List of values Document Workflow Status*/
-	public static final List<String> DOCUMENT_WORKFLOW_STATUS_LIST = Arrays.asList("Abstracted", "Abstraction Verified Response", "Abstraction Verified No Response");
+	public static final List<String> DOCUMENT_WORKFLOW_STATUS_LIST = Arrays.asList("Abstracted", "Verification Pending", "Abstraction Verified Response", "Abstraction Verified No Response");
+	
+	public static final String ABSTRACTED = "Abstracted";
+	public static final String VERIFICATION_PENDING = "Verification Pending";
+	public static final String ABSTRACTION_VERIFIED_RESPONSE = "Abstraction Verified Response";
+	public static final String ABSTRACTION_VERIFIED_NO_RESPONSE = "Abstraction Verified No Response";
 	
 	public static final String CAXCHANGE_URL = "https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor";
 	

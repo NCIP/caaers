@@ -93,11 +93,15 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 				studyProtocols.add(CoppaPAObjectFactory.getStudyProtocolObject(result));
 			}
 			
+			//Process study protocol's which have a processing status of "Abstracted" or "Abstraction Verified Response" or "Abstraction Verified No Response"
 			for (gov.nih.nci.coppa.services.pa.StudyProtocol studyProtocol : studyProtocols) {
-				RemoteStudy remoteStudy = getRemoteStudyFromStudyProtocol(studyProtocol);
-				
-				if (remoteStudy != null) {
-					remoteStudies.add(remoteStudy);
+				if(preProcessValidation(studyProtocol)){
+					RemoteStudy remoteStudy = getRemoteStudyFromStudyProtocol(studyProtocol);
+					if (remoteStudy != null) {
+						remoteStudies.add(remoteStudy);
+					}
+				}else{
+					log.debug("Study Protocol " +studyProtocol.getAssignedIdentifier().getExtension()+ " not yet Abstracted");
 				}
 			}
 		}catch(Exception e){
@@ -170,11 +174,11 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		
 		//NOT NULL Fields
 		remoteStudy.setMultiInstitutionIndicator(Boolean.TRUE);
-		remoteStudy.setAdeersReporting(Boolean.FALSE);
+		remoteStudy.setAdeersReporting(Boolean.TRUE);
 		remoteStudy.setAeTerminology(createCtcV3Terminology(remoteStudy));
 		remoteStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		//Mapping StudyProtocol's Assigned Identifer as OrganizationAssignedIdentifer in caAERS.
-		//Assign organization will be NCI.
+		//Assigned organization will be NCI.
 		String identifierValue = studyProtocol.getAssignedIdentifier().getExtension();
 		if(identifierValue != null && !"".equals(identifierValue)){
 			populateIdentifer(remoteStudy,null,identifierValue,CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
@@ -573,6 +577,37 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 
 	}
 	
+	/**
+	 * This method will invoke DOCUMENT_WORKFLOW_STATUS service to get the processing status of the StudyProtocol
+	 * Return true to proceed with processing if study protocol has a processing status of 
+	 * "Abstracted" or "Verification Pending" or "Abstraction Verified Response" or "Abstraction Verified No Response"
+	 * @param studyProtocol
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean preProcessValidation(StudyProtocol studyProtocol) throws Exception{
+		List<String> dwfStatusList = new ArrayList<String>();
+		String paIdPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
+		Metadata mData = new Metadata(OperationNameEnum.getCurrentByStudyProtocol.getName(), "extId", ServiceTypeEnum.DOCUMENT_WORKFLOW_STATUS.getName());
+		String documentWorkflowResultXml = broadcastCOPPA(paIdPayLoad, mData);
+		List<String> documentWorkflowResults = XMLUtil.getObjectsFromCoppaResponse(documentWorkflowResultXml);
+		List<DocumentWorkflowStatus> dwfsList = new ArrayList<DocumentWorkflowStatus>();
+		for(String result :documentWorkflowResults ){
+			dwfsList.add(CoppaPAObjectFactory.getDocumentWorkflowStatus(result));
+		}
+		for(DocumentWorkflowStatus each : dwfsList){
+			dwfStatusList.add(each.getStatusCode().getCode());
+		}
+		if(dwfStatusList.contains(CoppaConstants.ABSTRACTED) 
+				|| dwfStatusList.contains(CoppaConstants.VERIFICATION_PENDING) 
+				|| dwfStatusList.contains(CoppaConstants.ABSTRACTION_VERIFIED_RESPONSE) 
+				|| dwfStatusList.contains(CoppaConstants.ABSTRACTION_VERIFIED_NO_RESPONSE)){
+		
+			return true;
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * This method will invoke STUDY_OVERALL_STATUS service to get the status of the StudyProtocol
@@ -581,25 +616,15 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	 * @throws Exception
 	 */
 	public String getStudyStatus(StudyProtocol studyProtocol) throws Exception{
-		
 		String paIdPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
-		Metadata mData = new Metadata(OperationNameEnum.getCurrentByStudyProtocol.getName(), "extId", ServiceTypeEnum.DOCUMENT_WORKFLOW_STATUS.getName());
-		String documentWorkflowResultXml = broadcastCOPPA(paIdPayLoad, mData);
-		List<String> documentWorkflowResults = XMLUtil.getObjectsFromCoppaResponse(documentWorkflowResultXml);
-		DocumentWorkflowStatus documentWorkflowStatus = CoppaPAObjectFactory.getDocumentWorkflowStatus(documentWorkflowResults.get(0));
-		
 		String statusCode = "";
 		StudyOverallStatus status = null;
-		//If the DocumentWorkflowStatus does not have ABSTRACTED keyword in it then dont bother getting the overallStatus
-		if(CoppaConstants.DOCUMENT_WORKFLOW_STATUS_LIST.contains(documentWorkflowStatus.getStatusCode().getCode())){
-			//Call search on StudyOverallStatus using the StudyProtocol II.	
-			mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_OVERALL_STATUS.getName());
-			String studyStatusResultXml = broadcastCOPPA(paIdPayLoad,mData);
-			List<String> results = XMLUtil.getObjectsFromCoppaResponse(studyStatusResultXml);
-			if(results != null && results.size() > 0){
-				status = CoppaPAObjectFactory.getStudyOverallStatus(results.get(0));
-				statusCode = status.getStatusCode().getCode();
-			}
+		Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_OVERALL_STATUS.getName());
+		String studyStatusResultXml = broadcastCOPPA(paIdPayLoad,mData);
+		List<String> results = XMLUtil.getObjectsFromCoppaResponse(studyStatusResultXml);
+		if(results != null && results.size() > 0){
+			status = CoppaPAObjectFactory.getStudyOverallStatus(results.get(0));
+			statusCode = status.getStatusCode().getCode();
 		}
 		return statusCode;
 	}
@@ -618,6 +643,4 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         t.setCtcVersion(v3);
         return t;
     }
-	
-	
 }
