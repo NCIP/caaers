@@ -57,18 +57,31 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 			}
 		}        
 
-        List<TEL> email = coppaPerson.getTelecomAddress().getItem();
-        Iterator<TEL> emailItr = email.iterator();
-        TEL nextTel = emailItr.next();
-        String emailStr = "";
-		emailStr = nextTel.getValue();
-		//remove mailto: string from email 
-		if (emailStr.startsWith("mailto:")) {
-			emailStr = emailStr.substring("mailto:".length(), emailStr.length());
-		}
+		
+		List<TEL> telecomAddress = coppaPerson.getTelecomAddress().getItem();
+        Iterator<TEL> telecomAddressItr = telecomAddress.iterator();
+        while (telecomAddressItr.hasNext()) {
+        	TEL nextTel = telecomAddressItr.next();
+        	String nextTelStr = nextTel.getValue();
+        	if (nextTelStr.startsWith("mailto:")) {
+        		nextTelStr = nextTelStr.substring("mailto:".length(), nextTelStr.length());
+        		remoteResearchStaff.setEmailAddress(nextTelStr);
+    		}
+        	if (nextTelStr.startsWith("x-text-fax:")) {
+        		nextTelStr = nextTelStr.substring("x-text-fax:".length(), nextTelStr.length());
+        		remoteResearchStaff.setFaxNumber(nextTelStr);
+    		}
+        	if (nextTelStr.startsWith("tel:")) {
+        		nextTelStr = nextTelStr.substring("tel:".length(), nextTelStr.length());
+        		remoteResearchStaff.setPhoneNumber(nextTelStr);
+    		}
+        }
+		
+		
+		
+		
 		remoteResearchStaff.setFirstName(firstName.trim());
 		remoteResearchStaff.setLastName(lastName.trim());
-		remoteResearchStaff.setEmailAddress(emailStr);
 		remoteResearchStaff.setAddress(new Address());
 		//remoteResearchStaff.setLoginId("loginid");
 		remoteResearchStaff.setExternalId(coppaPerson.getIdentifier().getExtension());
