@@ -205,6 +205,14 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
         if(investigator != null) initialize(investigator);
         return investigator;
     }
-    
+
+    @SuppressWarnings("unchecked")
+	public Investigator getByNciIdentfier(String nciId) {
+        List<Investigator> results = getHibernateTemplate().find(
+                        "from Investigator where lower(nciIdentifier)= ?", nciId.toLowerCase());
+        Investigator investigator =  results.size() > 0 ? results.get(0) : null;
+        if(investigator != null) initialize(investigator);
+        return investigator;
+    }
 
 }
