@@ -32,6 +32,7 @@ default-lazy-init="true">
 		<property name="siteAccessRoleId">
 			<value>-14</value>
 		</property>
+		<property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
 	</bean>
 	<bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
 	<bean id="messageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
