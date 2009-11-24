@@ -52,8 +52,9 @@ public class ResearchStaffRepository {
     private String authenticationMode;
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
     private StudyRepository studyRepository;
+    private boolean coppaModeForAutoCompleters;
     
-    public List<ResearchStaff> getAll() {
+	public List<ResearchStaff> getAll() {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
         return getResearchStaff(researchStaffQuery);
     }
@@ -160,8 +161,22 @@ public class ResearchStaffRepository {
     
     @Transactional(readOnly = false)
     public List<SiteResearchStaff> getSiteResearchStaffBySubnames(final String[] subnames, final int site) {
-    	List<SiteResearchStaff> researchStaffs = siteResearchStaffDao.getBySubnames(subnames, site);
-    	return researchStaffs;
+    	List<SiteResearchStaff> siteResearchStaffs = siteResearchStaffDao.getBySubnames(subnames, site);
+    	
+    	List<ResearchStaff> remoteResearchStaffs = new ArrayList<ResearchStaff>();
+    	if (coppaModeForAutoCompleters) {
+	    	RemoteResearchStaff searchCriteria = new RemoteResearchStaff(); 
+	    	Organization org = organizationDao.getById(site);
+	    	SiteResearchStaff sr = new SiteResearchStaff();
+	    	sr.setOrganization(org);
+	    	searchCriteria.addSiteResearchStaff(sr);
+	    	remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
+	    	
+    	} else {
+    		return siteResearchStaffs;
+    	}
+    	
+    	return mergeLocalSiteResearchStaffAndRemoteResearchStaff(siteResearchStaffs,remoteResearchStaffs);
     }
     
     @Transactional(readOnly = false)
@@ -396,4 +411,8 @@ public class ResearchStaffRepository {
     public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
         this.siteResearchStaffDao = siteResearchStaffDao;
     }
+    
+    public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
+		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
+	}
 }
