@@ -388,7 +388,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					//get Identified person .
 					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
 					if (ip != null  & orgsForPerson.size()>0) {
-						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
+						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, ip.getAssignedId().getExtension(), orgsForPerson);
 						remoteResearchStaffList.add(tempRemoteResearchStaff);
 					}
 					
