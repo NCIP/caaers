@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -203,6 +204,12 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     @SuppressWarnings("unchecked")
 	public ResearchStaff getByEmailAddress(String email) {
         List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where emailAddress= ?", email);
+        return results.size() > 0 ? results.get(0) : null;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public ResearchStaff getByNciIdentfier(String nciId) {
+    	List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where lower(nciIdentifier)= ?", nciId.toLowerCase());
         return results.size() > 0 ? results.get(0) : null;
     }
     
