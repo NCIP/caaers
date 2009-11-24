@@ -7,6 +7,7 @@
 <%@attribute name="style"%>
 <%@attribute name="lab" type="gov.nih.nci.cabig.caaers.domain.Lab" %>
 <%@attribute name="expanded" type="java.lang.Boolean" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:set var="v" value="aeReport.labs[${index}]" />
 
@@ -54,22 +55,24 @@
     <tags:renderRow field="${fieldGroup.fields[2]}" />
  
     <c:forEach begin="3" end="8" step="2" var="i">
-        <table border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td valign="top">
-                    <div class="row">
-                        <div class="label"><tags:renderLabel field="${fieldGroup.fields[i]}"/></div>
-                        <div class="value"><tags:renderInputs field="${fieldGroup.fields[i]}"/></div>
-                    </div>
-                </td>
-                <td valign="top">
-                    <div class="row">
-                        <div class="label" style="width:3em;">date</div>
-                        <div class="value" style="margin-left:4em;"><tags:renderInputs field="${fieldGroup.fields[i+1]}"/></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <caaers:renderFilter elementID="${fieldGroup.fields[i].propertyName}">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td valign="top">
+                        <div class="row">
+                            <div class="label"><tags:renderLabel field="${fieldGroup.fields[i]}"/></div>
+                            <div class="value"><tags:renderInputs field="${fieldGroup.fields[i]}"/></div>
+                        </div>
+                    </td>
+                    <td valign="top">
+                        <div class="row">
+                            <div class="label" style="width:3em;">date</div>
+                            <div class="value" style="margin-left:4em;"><tags:renderInputs field="${fieldGroup.fields[i+1]}"/></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </caaers:renderFilter>
     </c:forEach>
     </div>
     
