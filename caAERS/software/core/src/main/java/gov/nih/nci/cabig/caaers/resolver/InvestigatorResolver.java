@@ -296,7 +296,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 					//get Identified person .
 					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
 					if (ip != null  & orgsForPerson.size()>0) {
-						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, identifiedPerson.getAssignedId().getExtension(), orgsForPerson);
+						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, ip.getAssignedId().getExtension(), orgsForPerson);
 						remoteInvestigatorList.add(tempRemoteInvestigator);
 					}
 					
