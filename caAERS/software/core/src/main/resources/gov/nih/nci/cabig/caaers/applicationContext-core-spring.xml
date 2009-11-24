@@ -26,6 +26,9 @@
 	<bean id="coppaMode" class="java.lang.Boolean">
 		<constructor-arg value="s[enable.coppa.mode]"/>
 	</bean>
+	<bean id="coppaModeForAutoCompleters" class="java.lang.Boolean">
+		<constructor-arg value="s[enable.coppa.mode.autocompleters]"/>
+	</bean>	
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
     <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
