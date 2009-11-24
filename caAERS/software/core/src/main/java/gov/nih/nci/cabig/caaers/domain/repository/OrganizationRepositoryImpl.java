@@ -16,6 +16,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     private String siteAccessRoleId;
 
     private CSMObjectIdGenerator siteObjectIdGenerator;
+    
+    private boolean coppaModeForAutoCompleters;
 
     public void createOrUpdate(Organization organization) {
         if (organization.getId() == null) {
@@ -206,10 +209,15 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	public List<Organization> restrictBySubnames(final String[] subnames) {
  		List<Organization> localOrganizations = organizationDao.getBySubnames(subnames);
  		//get organizations from remote service
-    	Organization searchCriteria = new RemoteOrganization();
-    	searchCriteria.setNciInstituteCode(subnames[0]);
-    	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
-    	return mergeOrgs (localOrganizations,remoteOrganizations);
+ 		List<Organization> remoteOrganizations = new ArrayList<Organization>();;
+ 		if (coppaModeForAutoCompleters) {
+	    	Organization searchCriteria = new RemoteOrganization();
+	    	searchCriteria.setNciInstituteCode(subnames[0]);
+	    	remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
+ 		} else { 			
+	    	return localOrganizations;
+ 		}
+ 		return mergeOrgs (localOrganizations,remoteOrganizations);
  	}
  	
  	private List<Organization> mergeOrgs(List<Organization> localList , List<Organization> remoteList) {
@@ -257,6 +265,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	public void setOrganizationConverterDao(
 			OrganizationConverterDao organizationConverterDao) {
 		this.organizationConverterDao = organizationConverterDao;
+	}
+
+	public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
+		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
 
 
