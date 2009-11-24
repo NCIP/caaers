@@ -25,8 +25,11 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
     
     private RemoteInvestigatorDaoHelper remoteInvestigatorDaoHelper;
+    
+    private boolean coppaModeForAutoCompleters;
 
-    /**
+
+	/**
      * Get the Class representation of the domain object that this DAO is representing.
      * 
      * @return Class representation of the domain object that this DAO is representing.
@@ -75,15 +78,16 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     public List<SiteInvestigator> getBySubnames(String[] subnames, int site) {
     	List<SiteInvestigator> siteInvestigators= findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-        
-    	List<SiteInvestigator> remoteSiteInvestigators= remoteInvestigatorDaoHelper.getSiteInvestigators(site);
-    	for (SiteInvestigator siteInvestigator:remoteSiteInvestigators) {
-    		
-    		if (!siteInvestigators.contains(siteInvestigator)) {
-    			save(siteInvestigator);
-    			siteInvestigators.add(siteInvestigator);
-    		}
-    	}
+        if (coppaModeForAutoCompleters) {
+        	List<SiteInvestigator> remoteSiteInvestigators= remoteInvestigatorDaoHelper.getSiteInvestigators(site);
+	    	for (SiteInvestigator siteInvestigator:remoteSiteInvestigators) {
+	    		
+	    		if (!siteInvestigators.contains(siteInvestigator)) {
+	    			save(siteInvestigator);
+	    			siteInvestigators.add(siteInvestigator);
+	    		}
+	    	}
+        }
     	return siteInvestigators;
     	
     }
@@ -104,6 +108,11 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
 	public void setRemoteInvestigatorDaoHelper(
 			RemoteInvestigatorDaoHelper remoteInvestigatorDaoHelper) {
 		this.remoteInvestigatorDaoHelper = remoteInvestigatorDaoHelper;
+	}
+	
+
+    public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
+		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
     
 }
