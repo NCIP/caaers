@@ -21,6 +21,7 @@ Event.observe(window, "load", function() {
 })
 
 function fireAction(action, selected) {
+    if (AE.checkForModification) AE.checkForModification = false;
     if (action == 'addMeddraStudyDisease') {
         if (!$F('diseaseLlt')) return;
     }
