@@ -105,6 +105,28 @@
         participant_id="-100"
         study_site_id="-3000"
         load_status="1" />
+		
+	<workflow_configuration
+		id="1000"
+		workflow_definition_name="reportingperiod_coordinating_center"
+		name="Evaluation Period Coordinating Center Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>
+
+	<workflow_configuration
+		id="2000"
+		workflow_definition_name="expedited_domestic"
+		name="Expedited Reporting Domestic Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>
+		
+	<task_configuration />
+	<wf_transition_configs />
+	<wf_transition_owners />
+	<wf_assignees />
+	<study_site_wf_cfgs />		
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />
     <ind_holders />

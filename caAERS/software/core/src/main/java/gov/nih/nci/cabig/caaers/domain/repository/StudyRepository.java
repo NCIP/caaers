@@ -8,6 +8,9 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -20,6 +23,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 
 import java.util.ArrayList;
@@ -33,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Biju Joseph
@@ -47,6 +54,8 @@ public class StudyRepository {
     private OrganizationDao organizationDao;
     private OrganizationRepository organizationRepository;
     private InvestigatorDao investigatorDao;
+    private WorkflowConfigDao workflowConfigDao;
+    
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI"; 
     
@@ -203,7 +212,18 @@ public class StudyRepository {
             }
         }
     }
-
+    
+    /**
+     * Will merge the study and return the merged study back. 
+     * @param study
+     * @return
+     */
+    @Transactional(readOnly=false)
+    public Study merge(Study study){
+    	associateSiteToWorkflowConfig(study.getStudySites());
+    	return studyDao.merge(study);
+    }
+    
     /**
      * Saves a study object
      *
@@ -213,7 +233,7 @@ public class StudyRepository {
 
     @Transactional(readOnly = false)
     public void save(Study study){
-    	
+    	associateSiteToWorkflowConfig(study.getStudySites());
     	//Save the study
         studyDao.save(study);
     }
@@ -242,6 +262,29 @@ public class StudyRepository {
     		}
     	}
     }
+    
+    /**
+     * This method will associate StudySites to the {@link AdverseEventReportingPeriod} and {@link ExpeditedAdverseEventReport} workflow.
+     * The default assigned to {@link AdverseEventReportingPeriod} is <b>reportingperiod_coordinating_center</b>
+     * The default assigned to {@link ExpeditedAdverseEventReport} is <b>expedited_domestic</b> 
+     * @param site
+     */
+    public void associateSiteToWorkflowConfig(List<StudySite> sites){
+    	
+    	if(CollectionUtils.isEmpty(sites)) return;
+    	WorkflowConfig rpWorkflowConfig = null;
+    	WorkflowConfig rWorkflowConfig = null;
+    	
+    	for(StudySite site : sites){
+    		if(site.getStudySiteWorkflowConfigs().isEmpty()){
+    			if(rpWorkflowConfig == null) rpWorkflowConfig = workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center");
+    			site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("reportingPeriod", site, rpWorkflowConfig));
+    			if(rWorkflowConfig == null) rWorkflowConfig =  workflowConfigDao.getByWorkflowDefinitionName("expedited_domestic");
+    			site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("report", site, rWorkflowConfig));
+        	}
+    	}
+    	
+    }
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
@@ -259,4 +302,10 @@ public class StudyRepository {
 	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
 		this.investigatorDao = investigatorDao;
 	}
+	
+	public void setWorkflowConfigDao(WorkflowConfigDao workflowConfigDao) {
+		this.workflowConfigDao = workflowConfigDao;
+	}
+
+	
 }

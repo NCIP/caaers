@@ -458,7 +458,7 @@ public class StudyCommand {
      */
     public void save(){
     	
-         Study mergedStudy = studyDao.merge(study);
+         Study mergedStudy = studyRepository.merge(study);
          studyDao.initialize(mergedStudy);
 
          mergedStudy.setAdeersPDFType(study.getAdeersPDFType());

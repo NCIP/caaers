@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -33,12 +34,16 @@ import org.easymock.classextension.EasyMock;
 public class StudyCommandTest extends AbstractTestCase {
 	StudyCommand command;
 	StudyDao studyDao;
+	StudyRepository studyRepository;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		studyDao = registerDaoMockFor(StudyDao.class);
+		studyRepository = registerMockFor(StudyRepository.class);
 		
 		command = new StudyCommand(studyDao);
+		command.setStudyRepository(studyRepository);
+		
 		Study s = Fixtures.createStudy("test");
 		s.setDataEntryStatus(true);
 		command.setStudy(s);
@@ -202,7 +207,7 @@ public class StudyCommandTest extends AbstractTestCase {
 	public void testOpenStudy(){
 		command.getStudy().setDataEntryStatus(false);
 		assertEquals("Inprogress", command.getDataEntryStatus());
-		EasyMock.expect(studyDao.merge(command.getStudy())).andReturn(command.getStudy());
+		EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(command.getStudy());
 		EasyMock.expect(studyDao.initialize(command.getStudy())).andReturn(command.getStudy());
 		replayMocks();
 		command.openStudy();
