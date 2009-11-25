@@ -251,7 +251,11 @@ public class ResearchStaffRepository {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<SiteResearchStaff> mergeLocalSiteResearchStaffAndRemoteResearchStaff(List<SiteResearchStaff> localList , List<ResearchStaff> remoteList) {
 		for (ResearchStaff remoteResearchStaff:remoteList) {
-			ResearchStaff rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
+			//ResearchStaff rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
+			if (StringUtils.isBlank(remoteResearchStaff.getNciIdentifier())) {
+				continue;
+			}
+			ResearchStaff rs = researchStaffDao.getByNciIdentfier(remoteResearchStaff.getNciIdentifier());
     		if (rs == null ) {
     			try {
     				List<SiteResearchStaff> srList = remoteResearchStaff.getSiteResearchStaffs();
@@ -266,6 +270,9 @@ public class ResearchStaffRepository {
     	    			SiteResearchStaff dbSR = new SiteResearchStaff();
     	    			dbSR.setOrganization(organization);
     	    			dbSR.setResearchStaff(remoteResearchStaff);
+    	    			dbSR.setEmailAddress(remoteResearchStaff.getEmailAddress());
+    	    			dbSR.setPhoneNumber(remoteResearchStaff.getPhoneNumber());
+    	    			dbSR.setFaxNumber(remoteResearchStaff.getFaxNumber());
     	    			SiteResearchStaffRole srs = new SiteResearchStaffRole();
     	    			srs.setRoleCode("caaers_study_cd");
     	    			srs.setStartDate(DateUtils.today());
@@ -277,7 +284,7 @@ public class ResearchStaffRepository {
     				remoteResearchStaff.getSiteResearchStaffs().clear();
     				remoteResearchStaff.setSiteResearchStaffs(srDBList);
     				save(remoteResearchStaff,"URL");
-    				remoteResearchStaff = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
+    				remoteResearchStaff = researchStaffDao.getByNciIdentfier(remoteResearchStaff.getNciIdentifier());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}
