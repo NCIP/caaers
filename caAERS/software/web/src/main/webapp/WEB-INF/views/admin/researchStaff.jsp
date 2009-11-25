@@ -149,7 +149,7 @@
                         </c:forEach>
                         <div class="row">
                             <div class="label"><ui:label path="researchStaff.loginId" text="" labelProperty="loginId" required="true"/></div>
-                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${readonly || editMode}" cssClass="required" required="true" title="Login ID"/></div>
+                            <div class="value"><ui:text path="researchStaff.loginId" readonly="${(readonly || editMode) and not empty command.researchStaff.loginId}" cssClass="required" required="true" title="Login ID"/></div>
                         </div>
                         <c:if test="${editMode}">
                             <div class="row">
