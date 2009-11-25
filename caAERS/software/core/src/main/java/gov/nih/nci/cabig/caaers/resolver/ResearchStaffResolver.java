@@ -348,7 +348,11 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				}
 				List<String> orgForEachRoleResults = XMLUtil.getObjectsFromCoppaResponse(orgResultXml);
 
-				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationForEachRoleList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
+				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationForEachRoleList = roleToOrgMap.get(role.getPlayerIdentifier().getExtension()) ;
+				if (coppaOrganizationForEachRoleList == null){
+					coppaOrganizationForEachRoleList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
+				}
+				
 				if (orgForEachRoleResults.size() > 0) {
 					for(String orgXml:orgForEachRoleResults) {
 						gov.nih.nci.coppa.po.Organization org =CoppaObjectFactory.getCoppaOrganization(orgXml) ;
