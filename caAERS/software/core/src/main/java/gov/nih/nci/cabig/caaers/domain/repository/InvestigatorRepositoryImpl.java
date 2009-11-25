@@ -126,7 +126,11 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
 		for (Investigator remoteInvestigator:remoteList) {
-			Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
+			//Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
+			if (StringUtils.isBlank(remoteInvestigator.getNciIdentifier())) {
+				continue;
+			}
+			Investigator inv = investigatorDao.getByNciIdentfier(remoteInvestigator.getNciIdentifier());
     		if (inv == null ) {
     			try {
     				
@@ -150,7 +154,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     				remoteInvestigator.setSiteInvestigators(siDBList);
     				
     				save(remoteInvestigator,"URL");
-    				remoteInvestigator = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
+    				remoteInvestigator = investigatorDao.getByNciIdentfier(remoteInvestigator.getNciIdentifier());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}
