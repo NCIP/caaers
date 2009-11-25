@@ -379,7 +379,7 @@
   <study:summary />
  
   <form:form name="solicitedAEForm">
-    <p><tags:instructions code="study.study_evalpdtypes.top" /></p>
+    <%--<tags:instructions code="study.study_evalpdtypes.top" />--%>
   	  	
   	<!--  Idea is copied from tabForm.tag -->
   	<chrome:box title="${tab.longTitle}" >
@@ -408,8 +408,9 @@
   		<study:solicitedAETable displayOnly="false" />
       </span>
 	  		<!--  end of body  -->
-  		<tags:tabControls tab="${tab}" flow="${flow}" />
+  		
   	</chrome:box>
+	<tags:tabControls tab="${tab}" flow="${flow}" />
   </form:form>
  
 </body>

@@ -701,7 +701,7 @@ table.tablecontent { border-collapse: collapse; }
 .tablecontent td, .tablecontent th { padding: 0.2em; }
 .tablecontent .tableHeader th, .tablecontent .even td, .tablecontent .odd td { text-align: left; }
 .tablecontent th {
-	text-align: left;
+	/*text-align: left;*/
 	background-color:#e4e4e4;
 	border: 1px solid #e4e4e4
 }

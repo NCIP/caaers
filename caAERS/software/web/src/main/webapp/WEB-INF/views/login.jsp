@@ -74,7 +74,7 @@
         <!--[if lte IE 6]>
             <style>
             #all {
-            margin-top:145px;
+            top:145px;
             }
             #ie6 {
             height:165px;
@@ -172,6 +172,9 @@
             </style>
             <!--[if lte IE 6]>
                 <style>
+				 #all {
+	            top:105px;
+	            }
                 #nojs {
                 height:165px;
                 background-color:#ffa8a8;

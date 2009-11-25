@@ -1,100 +1,129 @@
+
+
 .close-button {
-	position:relative;
-	border:0;
+    position: relative;
+    border: 0;
 }
+
 .delete-epoch {
-	
 }
+
 .sae col.term {
-	text-align: center;
+    text-align: center;
 }
+
 .sae col.epoch {
-	text-align: center;
+    text-align: center;
 }
+
 .sae .deletecol {
 }
+
 .sae .data {
-	border-width:0px 1px 0px 1px;
-	border-color:#ccc;
-	border-style:solid;
+    border-width: 0px 1px 0px 1px;
+    border-color: #ccc;
+    border-style: solid;
 }
+
 .sae th.term {
-background-color:#E4E4E4;
-border:1px solid #ccc;
-	width: 22em;
-	height : 3em;
-	vertical-align: middle;
+    background-color: #E4E4E4;
+    border: 1px solid #ccc;
+    width: 22em;
+    height: 3em;
+    vertical-align: middle;
 }
+
 .sae th.epoch {
-background-color:#E4E4E4;
-border:1px solid #ccc;
-	width: 10em;
-	vertical-align: middle;
+    background-color: #E4E4E4;
+    border: 1px solid #ccc;
+    width: 10em;
+    vertical-align: middle;
 }
+
+.sae th {
+    border: 0px;
+    /*text-align: center;*/
+    border-collapse: collapse;
+}
+
 .sae th.reportingperiod {
-background-color:#E4E4E4;
-border:1px solid #ccc;
-	width: 10em;
-	vertical-align: top;
-}
-.sae th.action {
-background-color:#E4E4E4;
-border:1px solid #CCCCCC;
-	color: black;
-	width: 90px;
+    background-color: #E4E4E4;
+    border: 1px solid #ccc;
+    width: 10em;
+    vertical-align: top;
 	text-align:center;
 }
+
+.sae th.action {
+    background-color: #E4E4E4;
+    border: 1px solid #CCCCCC;
+    color: black;
+    width: 90px;
+    text-align: center;
+}
+
 .sae .lastLineOfTable {
-	border-width:0px 0px 1px 0px;
-	border-color:#ccc;
-	border-style:solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #ccc;
+    border-style: solid;
 }
+
 th.reportingperiod, th.epoch {
-	border-color:#ccc;
-	border-style:solid;
-	border-width:1px 1px 1px 1px;
-	height : 2em;
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    height: 2em;
 }
+
 .sae td {
-border:1px solid #CCCCCC;
+    border: 1px solid #CCCCCC;
 }
+
 .sae td td {
-	border:none;
+    border: none;
 }
+
 tr.gap {
-	border-color:#ccc;
-	border-style:solid;
-	border-width:1px 0px 1px 0px;
-	height : 2em;
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    height: 2em;
 }
+
 .sae tr.head {
-	border-width:1px 1px 1px 1px;
-	border-color:#ccc;
-	border-style:solid;
+    border-width: 1px 1px 1px 1px;
+    border-color: #ccc;
+    border-style: solid;
 }
+
 .sae tr.bottom {
-	border-width:0px 1px 1px 1px;
-	border-color:#6E81A6;
-	border-style:solid;
+    border-width: 0px 1px 1px 1px;
+    border-color: #6E81A6;
+    border-style: solid;
 }
+
 .sae tr.bottom td {
-	border-width: 0px 1px 1px 1px;
-	border-color:#ccc;
-	border-style:solid;
+    border-width: 0px 1px 1px 1px;
+    border-color: #ccc;
+    border-style: solid;
 }
+
 .sae .inst {
-	font-style: normal;
-	font-weight: normal;
+    font-style: normal;
+    font-weight: normal;
 }
+
 .instructionLinks {
-	font-family: arial;
-	font-size: 7pt;
+    font-family: arial;
+    font-size: 7pt;
 }
+
 .lastRowValue {
-	font-style: normal;
-	text-align: center;
-	color:red;
+    font-style: normal;
+    text-align: center;
+    color: red;
 }
+
 .sae {
-border-collapse:collapse;
+    border-collapse: collapse;
 }

@@ -12,13 +12,13 @@
     </div>
 </c:if>
 <table id="sae-0" class="sae tablecontent">
-    <tbody class="tablebody">
+    
         <tr>
             <td style="border:0px">
                 &nbsp;
             </td>
             <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.study.activeEpochs}">
-                <th style="border:0px; text-align:center; border-collapse:collapse;">
+                <th align="center">
                     <c:if test="${!displayOnly}">
                         <span ${(statusVar.index  == 0)?"style='display:none;'":""}><tags:button id="delete-epoch-${statusVar.index}" cssClass="delete-epoch" href="#jumhere" markupWithTag="a" color="red" icon="x" value="" size="small"/></span>
                     </c:if>
@@ -104,5 +104,5 @@
             <tr class="lastLineOfTable">
             </tr>
         </c:if>
-    </tbody>
+  
 </table>

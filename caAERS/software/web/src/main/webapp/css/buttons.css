@@ -1,6 +1,7 @@
 /* Hack for buttons inside tables getting unwanted borders */
-.tablecontent td .omnipotent-button td {
+.tablecontent td .omnipotent-button td, .sae th .omnipotent-button td {
 	border:none;
+	padding:0;
 }
 
 /* Begin omnipotent-button type="button" core CSS*/
