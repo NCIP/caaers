@@ -35,7 +35,7 @@ public class RenderDecisionManager {
 	
 	public boolean canRenderField(String fieldId){
         Boolean decision = decisionCache.get(findActualName(fieldId));
-		if(decision == null) return true; //if decision is not set, assumed always renderable.
+		if (decision == null) return true; 
         return decision;
     }
 
@@ -66,6 +66,7 @@ public class RenderDecisionManager {
 		String correctedName =  name.replaceAll("(\\[\\d+\\])", "[]");
 		//apply field name corrections
 		if(StringUtils.equals(correctedName, "aeReport.adverseEvents[].outcomes")) correctedName = "outcomes";
+        if(correctedName.startsWith("aeReport.")) correctedName = correctedName.substring(9);
 		return correctedName;
 	}
 	
@@ -87,8 +88,9 @@ public class RenderDecisionManager {
 			}
 		}
 		for(Map.Entry<String, Boolean> entry : tempDecisionMap.entrySet()){
-			if(entry.getValue()) conceal("aeReport." + entry.getKey());
+			if(entry.getValue()) conceal(entry.getKey());
 			else reveal(entry.getKey());
 		}
 	}
+    
 }

@@ -64,7 +64,7 @@
 							if( !(isLabValueEmpty(l.getBaseline()) &amp;&amp; 
 							  isLabValueEmpty(l.getNadir()) &amp;&amp; 
 							  isLabValueEmpty(l.getRecovery()) ) ){
-								errors.addValidationError("LAB_BR2A_ERR", "'Baseline' , 'Worst' and 'Recovery' values must not be provided when Lab category is 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+								errors.addValidationError("LAB_BR2A_ERR", "'Baseline' , 'Worst' and 'Recovery' values must not be provided when Lab category is 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline","aeReport.labs[" + i + "].baseline.date","aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir",  "aeReport.labs[" + i + "].nadir.value",  "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery",  "aeReport.labs[" + i + "].recovery.date",  "aeReport.labs[" + i + "].recovery.value", "aeReport.labs[" + i + "].lab-category");
 							}
 						}
                         i++;
@@ -102,7 +102,7 @@
 						if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("null")){
 							if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
 								if(isLabValueEmpty(l.getBaseline()) || isLabValueEmpty(l.getNadir()) || isLabValueEmpty(l.getRecovery()) ){
-									errors.addValidationError("LAB_BR2B_ERR", "'Baseline' , 'Worst' and 'Recovery' values must be provided when Lab category is not 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+									errors.addValidationError("LAB_BR2B_ERR", "'Baseline' , 'Worst' and 'Recovery' values must be provided when Lab category is not 'Microbiology'" , i).addFieldNames("aeReport.labs[" + i + "].baseline","aeReport.labs[" + i + "].baseline.date","aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir",  "aeReport.labs[" + i + "].nadir.value",  "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery",  "aeReport.labs[" + i + "].recovery.date",  "aeReport.labs[" + i + "].recovery.value", "aeReport.labs[" + i + "].lab-category");
 								}
 							}
 						}
@@ -134,7 +134,7 @@
 					for(Lab l : aeReport.getLabs()){
 						if(l.getBaseline().getDate() == null  || l.getNadir().getDate() == null) continue;
 						if(DateUtil.compare(l.getBaseline().getDate() ,l.getNadir().getDate()) &lt; 0){
-							errors.addValidationError("LAB_BR3_ERR", " 'Baseline value(Date)' must not be greater than 'Worst value(Date)'.", i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir");
+							errors.addValidationError("LAB_BR3_ERR", " 'Baseline value(Date)' must not be greater than 'Worst value(Date)'.", i).addFieldNames("aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].baseline.date", "aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].nadir.value");
 						}
 					}
                     i++;
@@ -163,7 +163,7 @@
 					for(Lab l : aeReport.getLabs()){
 						if(l.getRecovery().getDate() == null  || l.getNadir().getDate() == null) continue;
 						if(DateUtil.compare(l.getNadir().getDate(),l.getRecovery().getDate()) &lt; 0){
-							errors.addValidationError("LAB_BR4_ERR", "'Worst value(Date)' must not be greater than 'Recovery value(Date)'.", i).addFieldNames("aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery");
+							errors.addValidationError("LAB_BR4_ERR", "'Worst value(Date)' must not be greater than 'Recovery value(Date)'.", i).addFieldNames("aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.value", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].recovery.date", "aeReport.labs[" + i + "].recovery.value");
 						}
 					}
                     i++;

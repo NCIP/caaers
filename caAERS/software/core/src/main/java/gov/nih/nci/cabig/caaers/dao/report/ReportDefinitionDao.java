@@ -29,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 1.0
  */
 @Transactional(readOnly = true)
-public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> implements
-                MutableDomainObjectDao<ReportDefinition> {
+public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> implements MutableDomainObjectDao<ReportDefinition> {
 
     /*
      * (non-Javadoc)

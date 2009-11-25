@@ -31,11 +31,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. ï¿½Possibleï¿½, ï¿½Probableï¿½ & ï¿½Definiteï¿½.
+     * AEs reported on the ï¿½DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testCorrectAttribution() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -46,11 +46,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. "Possible", "Probable" & "Definite".
+     * AEs reported on the "DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testInCorrectAttribution() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -68,11 +68,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. "Possible", "Probable" & "Definite".
+     * AEs reported on the "DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testNoAttributionAtAll() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -89,11 +89,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. "Possible", "Probable" & "Definite".
+     * AEs reported on the "DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testNoAttributionAtAll_AllAEHasGradeDEATH() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -109,11 +109,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. "Possible", "Probable" & "Definite".
+     * AEs reported on the "DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testNoAttributionAtAll_OneOutOfTwoAEHasGradeDEATH() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -134,11 +134,11 @@ public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecution
 
     /**
      * RuleName : AER_BR7_CHK Logic : "At least one attribution with one of the following values
-     * should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’.
-     * AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to
+     * should present for every AE entered on the report i.e. "Possible", "Probable" & "Definite".
+     * AEs reported on the "DEATH" Category are considered as an exception and are not required to
      * meet this specification. Error Code : AER_BR7_ERR Error Message : At least one ATTRIBUTION
      * with one of the following values should present for every AE (except AEs reported on "DEATH"
-     * category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
+     * category) provided i.e. "Possible", "Probable" & "Definite"
      */
     public void testAttribution_AllAEHasGradeDEATH() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();

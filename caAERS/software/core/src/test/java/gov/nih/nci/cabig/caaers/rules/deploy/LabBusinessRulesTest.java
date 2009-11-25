@@ -28,7 +28,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
      * provided and vice versa Error Code : LAB_BR1_ERR Error Message : Either and only LAB_CATEGORY
      * and LAB_NAME or OTHER_LAB must be provided.
      * 
-     * RuleName : LAB_BR3_CHK Logic :"“Baseline Date” must not be greater “Nadir/Worst Date”" Error
+     * RuleName : LAB_BR3_CHK Logic :""Baseline Date" must not be greater "Nadir/Worst Date"" Error
      * Code : LAB_BR3_ERR Error Message : BASELINE_DATE must not be greater WORST_DATE
      * 
      * RuleName : LAB_UK_CHK Logic :Lab Results must be unique Error Code : LAB_UK_ERR Error Message
@@ -149,11 +149,11 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR3_CHK Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”." Error
+     * RuleName : LAB_BR3_CHK Logic :""Nadir/Worst Date" must not be greater "Baseline Date"." Error
      * Code : LAB_BR3_ERR Error Message : WORST_DATE must not be greater BASELINE_DATE
      * 
-     * RuleName : LAB_BR2B_CHK Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must
-     * be provided if “Lab Category” is not ‘Microbiology’. Error Code : LAB_BR2B_ERR Error Message :
+     * RuleName : LAB_BR2B_CHK Logic : "Baseline", "Nadir/Worst", "Recovery" or "Latest" fields must
+     * be provided if "Lab Category" is not "Microbiology". Error Code : LAB_BR2B_ERR Error Message :
      * "BASELINE_DATE, BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM,
      * RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must be provided if
      * LAB_CATEGORY is not ""Microbiology"".
@@ -191,15 +191,15 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR3_CHK Logic :"“Baseline Date” must not be greater .“Nadir/Worst Date” "
+     * RuleName : LAB_BR3_CHK Logic :""Baseline Date" must not be greater ."Nadir/Worst Date" "
      * Error Code : LAB_BR3_ERR Error Message :BASELINE_DATE must not be greater WORST_DATE
      * 
-     * RuleName : LAB_BR4_CHK Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
+     * RuleName : LAB_BR4_CHK Logic :""Nadir/Worst Date" must not be greater than "Recovery Date" .
      * Error Code : LAB_BR4_ERR Error Message : WORST_DATE must not be greater than
      * RECOVERY_LAST_DATE
      * 
-     * RuleName : LAB_BR2B_CHK Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must
-     * be provided if “Lab Category” is not ‘Microbiology’. Error Code : LAB_BR2B_ERR Error Message :
+     * RuleName : LAB_BR2B_CHK Logic : "Baseline", "Nadir/Worst", "Recovery" or "Latest" fields must
+     * be provided if "Lab Category" is not "Microbiology". Error Code : LAB_BR2B_ERR Error Message :
      * "BASELINE_DATE, BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM,
      * RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must be provided if
      * LAB_CATEGORY is not ""Microbiology"".
@@ -237,7 +237,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR3_CHK Logic :"“Baseline Date” must not be greater “Nadir/Worst Date”." Error
+     * RuleName : LAB_BR3_CHK Logic :""Baseline Date" must not be greater "Nadir/Worst Date"." Error
      * Code : LAB_BR3_ERR Error Message :BASELINE_DATE must not be greater WORST_DATE
      */
     /**
@@ -271,7 +271,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR3_CHK Logic :"“Baseline Date” must not be greater “Nadir/Worst Date” ."
+     * RuleName : LAB_BR3_CHK Logic :""Baseline Date" must not be greater "Nadir/Worst Date" ."
      * Error Code : LAB_BR3_ERR Error Message : BASELINE_DATE must not be greater WORST_DATE
      */
     public void testLabsHavingBaselineDateGTWorstDate() throws Exception {
@@ -309,7 +309,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR3_CHK Logic :" “Baseline Date” must not be greater.“Nadir/Worst Date”" Error
+     * RuleName : LAB_BR3_CHK Logic :" "Baseline Date" must not be greater."Nadir/Worst Date"" Error
      * Code : LAB_BR3_ERR Error Message : BASELINE_DATE must not be greater WORST_DATE
      */
     public void testLabsOneOutOfTwoHavingBaselineDateGTWorstDate() throws Exception {
@@ -344,7 +344,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR4_CHK Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
+     * RuleName : LAB_BR4_CHK Logic :""Nadir/Worst Date" must not be greater than "Recovery Date" .
      * Error Code : LAB_BR4_ERR Error Message : WORST_DATE must not be greater than
      * RECOVERY_LAST_DATE
      */
@@ -380,7 +380,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR4_CHK Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
+     * RuleName : LAB_BR4_CHK Logic :""Nadir/Worst Date" must not be greater than "Recovery Date" .
      * Error Code : LAB_BR4_ERR Error Message : WORST_DATE must not be greater than
      * RECOVERY_LAST_DATE
      */
@@ -411,7 +411,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR4_CHK Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
+     * RuleName : LAB_BR4_CHK Logic :""Nadir/Worst Date" must not be greater than "Recovery Date" .
      * Error Code : LAB_BR4_ERR Error Message : WORST_DATE must not be greater than
      * RECOVERY_LAST_DATE
      */
@@ -444,7 +444,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
     }
 
     /**
-     * RuleName : LAB_BR4_CHK Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
+     * RuleName : LAB_BR4_CHK Logic :""Nadir/Worst Date" must not be greater than "Recovery Date" .
      * Error Code : LAB_BR4_ERR Error Message : WORST_DATE must not be greater than
      * RECOVERY_LAST_DATE
      */

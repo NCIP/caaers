@@ -167,10 +167,10 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     /**
      BJ : MODIFIED : CAAERS-2267
      RuleName : PTY_BR4B_CHK
-     Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is
-             ‘No Prior Therapy’
-             ‘Surgery’
-             ‘Radiation’
+     Logic : "Prior Therapy Agents" must not be provided if "Prior_Therapy" is
+             "No Prior Therapy"
+             "Surgery"
+             "Radiation"
      Error Code : PTY_BR4B_ERR
      Error Message : CHEMO_AGENTS must be provided for the provided PRIOR_THERAPY value.
      */

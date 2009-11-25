@@ -39,8 +39,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
      * of the field will be display name of the node. In case if the node does not have a display
      * name, the display name of the parent will be used instead.
      */
-    public void populateFieldMap(ReportDefinitionCommand command, Map<String, InputFieldGroup> map,
-                    TreeNode node) {
+    public void populateFieldMap(ReportDefinitionCommand command, Map<String, InputFieldGroup> map, TreeNode node) {
         // only add leaf nodes in the filed map. (others are just sections)
         if (node.isLeaf()) {
             String key = node.getParent().getQualifiedDisplayName();
@@ -59,9 +58,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
             //fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["
               //              + index + "].mandatory", displayName));
 
-            fields.add(InputFieldFactory.createSelectField("reportDefinition.mandatoryFields["
-                            + index + "].mandatory", displayName, false, 
-                            WebUtils.collectOptions(Arrays.asList(Mandatory.values()), "name", "displayName")));
+            fields.add(InputFieldFactory.createSelectField("reportDefinition.mandatoryFields["+ index + "].mandatory", displayName, false, WebUtils.collectOptions(Arrays.asList(Mandatory.values()), "name", "displayName")));
             
 
             		

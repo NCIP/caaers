@@ -16,14 +16,11 @@ import org.hibernate.annotations.Type;
 @Table(name = "MANDATORY_FIELD_DEFS")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_mandatory_field_defs_id") })
 // TODO: why store field definitions for mandatory=false?
-public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements
-                Serializable {
+public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements Serializable {
 
 
 	private static final long serialVersionUID = -3133021814678700402L;
-
 	private String fieldPath;
-
     private Mandatory mandatory;
 
     public ReportMandatoryFieldDefinition() {

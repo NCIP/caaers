@@ -524,8 +524,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     public boolean isErrorApplicable(String... fields) {
         if (fields == null) return true;
-        for (byte i=0; i<fields.length; i++)
+        for (byte i=0; i<fields.length; i++) {
             if (!renderDecisionManager.canRenderField(fields[i])) return false;
+        }
         return true;
     }
     

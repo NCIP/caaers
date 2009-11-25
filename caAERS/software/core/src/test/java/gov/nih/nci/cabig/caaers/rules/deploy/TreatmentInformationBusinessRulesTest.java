@@ -22,8 +22,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
 
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
-     * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only "Treatment Assignment Code" or "Describe
+     * Treatment Assignment" must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      */
     public void testOnlyTACPresent() throws Exception {
@@ -53,8 +53,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
-     * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only "Treatment Assignment Code" or "Describe
+     * Treatment Assignment" must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      */
     public void testOnlyDescriptionPresent() throws Exception {
@@ -70,8 +70,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
-     * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only "Treatment Assignment Code" or "Describe
+     * Treatment Assignment" must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      */
     public void testBothTAC_AndOtherDescriptionPresent() throws Exception {
@@ -86,8 +86,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
-     * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only "Treatment Assignment Code" or "Describe
+     * Treatment Assignment" must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      */
     public void testNoTAC_AndNoOtherDescriptionPresent() throws Exception {
@@ -102,8 +102,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
-     * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only "Treatment Assignment Code" or "Describe
+     * Treatment Assignment" must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      */
     public void testNullTreatmentInformation() throws Exception {
