@@ -81,8 +81,8 @@ public class ResearchStaffRepository {
     	}
     	MailException mailException = null;
     	
-    	// no need to create csm user for remote research staff . 
-    	if (researchStaff instanceof LocalResearchStaff) {
+    	//RemoteResearchStaff fetched from PO will not have a loginId/Username.  
+    	if (researchStaff.getLoginId() != null && StringUtils.isNotEmpty(researchStaff.getLoginId())) {
 	    	try{
 	    		 csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
 	    	}catch(MailException e){
