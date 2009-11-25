@@ -62,17 +62,6 @@ class SitesTab extends StudyTab {
             }
             
             
-        }else{
-        	if(isAjax == null){
-        		for(StudySite site : command.getStudy().getStudySites()){
-        			if(site.getStudySiteWorkflowConfigs().isEmpty()){
-        				WorkflowConfig rpWorkflowConfig = workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center");
-        				site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("reportingPeriod", site, rpWorkflowConfig));
-        				WorkflowConfig rWorkflowConfig =  workflowConfigDao.getByWorkflowDefinitionName("expedited_domestic");
-        				site.addStudySiteWorkflowConfig(new StudySiteWorkflowConfig("report", site, rWorkflowConfig));
-        			}
-            	}
-        	}
         }
 
         // checking new Study Sites
