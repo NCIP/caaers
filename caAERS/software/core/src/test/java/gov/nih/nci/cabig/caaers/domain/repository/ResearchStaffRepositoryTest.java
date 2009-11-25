@@ -89,7 +89,7 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		assertEquals("Joel2@def.com", staff.getLoginId());
 	}
 	
-	public void testSaveWebSso_NoLoginId() throws Exception{
+	public void testSave_NoLoginId() throws Exception{
 		repository.setAuthenticationMode("webSSO");
 		Organization org = Fixtures.createOrganization("NCI");
 		List<UserGroupType> groupList = new ArrayList<UserGroupType>();
@@ -103,10 +103,8 @@ public class ResearchStaffRepositoryTest extends AbstractTestCase {
 		siteResearchStaffRole.setStartDate(new Date());
 		siteResearchStaff.addSiteResearchStaffRole(siteResearchStaffRole);
 		staff.addSiteResearchStaff(siteResearchStaff);
-		//staff.setLoginId("Joel2@def.com");
 		String changeUrl = "/pages/url";
 		expect(researchStaffDao.merge(staff)).andReturn(staff).anyTimes();
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(staff, changeUrl);
 		studyRepository.associateStudyPersonnel(staff);
 		replayMocks();
 		repository.save(staff, changeUrl);
