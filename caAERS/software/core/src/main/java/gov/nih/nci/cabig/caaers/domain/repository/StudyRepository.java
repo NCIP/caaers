@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -57,7 +58,7 @@ public class StudyRepository {
     @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
     	
-    	if(! "%".equals(text)){
+    	if(text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)){
         	Study study = new RemoteStudy();
         	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
         	

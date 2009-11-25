@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -176,11 +177,47 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
         return investigators;
     }
 
-    public List<Investigator> getRemoteInvestigators(final Investigator investigator) {
+    /**
+     * 
+     * @param investigator
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public List<Investigator> getRemoteInvestigators(final Investigator investigator) {
+    	List<Investigator> remoteInvestigators = null;
     	
-    	List<Investigator> remoteInvestigators = (List)remoteSession.find(investigator); 
+    	boolean firstNameEmpty = true;
+    	boolean firstNameWild = true;
+    	boolean lastNameEmpty = true;
+    	boolean lastNameWild = true;
+    	
+    	if(investigator.getFirstName() != null && StringUtils.isNotEmpty(investigator.getFirstName())){
+    		firstNameEmpty = false;
+    		if(investigator.getFirstName().indexOf("%") == -1){
+    			firstNameWild = false;
+    		}
+    	}
+    	
+    	if(investigator.getLastName() != null && StringUtils.isNotEmpty(investigator.getLastName())){
+    		lastNameEmpty = false;
+    		if(investigator.getLastName().indexOf("%") == -1){
+    			lastNameWild = false;
+    		}
+    	}
+
+    	if( (firstNameEmpty && lastNameEmpty) 	||
+    		(firstNameWild && lastNameWild) 	||
+    		(firstNameWild && lastNameEmpty) 	|| 
+    		(firstNameEmpty && lastNameWild) ){
+    		
+    		return null;
+    	}
+    	
+    	remoteInvestigators = (List)remoteSession.find(investigator);
     	return remoteInvestigators;
     }
+    
+    
     /**
      * Get the user who has specified email address.
      * 
