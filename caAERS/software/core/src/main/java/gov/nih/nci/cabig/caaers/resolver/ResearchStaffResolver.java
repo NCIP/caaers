@@ -44,16 +44,22 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 
 		Iterator<ENXP> enxpItr = coppaPerson.getName().getPart().iterator();
 		ENXP enxp;
-		String firstName = "";
+		String firstName = null;
 		String lastName = "";
+		String middleName = "";
+
 		while(enxpItr.hasNext()){
 			enxp = enxpItr.next();
 			if(enxp.getType().equals(EntityNamePartType.GIV)){
-				firstName = firstName+" "+enxp.getValue();
+				if(firstName == null){
+					firstName = enxp.getValue();
+				} else {
+					middleName += enxp.getValue() + " ";
+				}
 			}
 
 			if(enxp.getType().equals(EntityNamePartType.FAM)){
-				lastName = lastName +" "+enxp.getValue();
+				lastName = enxp.getValue();
 			}
 		}        
 
@@ -81,6 +87,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		
 		
 		remoteResearchStaff.setFirstName(firstName.trim());
+		remoteResearchStaff.setMiddleName(middleName.trim());
 		remoteResearchStaff.setLastName(lastName.trim());
 		remoteResearchStaff.setAddress(new Address());
 		//remoteResearchStaff.setLoginId("loginid");
