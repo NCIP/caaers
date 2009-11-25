@@ -185,34 +185,6 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     @SuppressWarnings("unchecked")
 	public List<Investigator> getRemoteInvestigators(final Investigator investigator) {
     	List<Investigator> remoteInvestigators = null;
-    	
-    	boolean firstNameEmpty = true;
-    	boolean firstNameWild = true;
-    	boolean lastNameEmpty = true;
-    	boolean lastNameWild = true;
-    	
-    	if(investigator.getFirstName() != null && StringUtils.isNotEmpty(investigator.getFirstName())){
-    		firstNameEmpty = false;
-    		if(investigator.getFirstName().indexOf("%") == -1){
-    			firstNameWild = false;
-    		}
-    	}
-    	
-    	if(investigator.getLastName() != null && StringUtils.isNotEmpty(investigator.getLastName())){
-    		lastNameEmpty = false;
-    		if(investigator.getLastName().indexOf("%") == -1){
-    			lastNameWild = false;
-    		}
-    	}
-
-    	if( (firstNameEmpty && lastNameEmpty) 	||
-    		(firstNameWild && lastNameWild) 	||
-    		(firstNameWild && lastNameEmpty) 	|| 
-    		(firstNameEmpty && lastNameWild) ){
-    		
-    		return null;
-    	}
-    	
     	remoteInvestigators = (List)remoteSession.find(investigator);
     	return remoteInvestigators;
     }

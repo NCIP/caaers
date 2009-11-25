@@ -18,6 +18,7 @@ import gov.nih.nci.security.util.StringUtilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -85,34 +86,74 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         if(mailException != null) throw mailException;
 	}
 	
-	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
+	public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text){
 		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
-		//TODO populate searchCriteria 
-		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		
+        StringTokenizer typeToken = new StringTokenizer(type, ",");
+        StringTokenizer textToken = new StringTokenizer(text, ",");
+        String sType, sText;
+        String firstName = "";
+        String lastName = "";
+        String nciInstituteCode = "";
+        String organization = "";
+
+        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+            sType = typeToken.nextToken();
+            sText = textToken.nextToken();
+            if (sType.equals("firstName")) {
+                firstName = sText;
+            } else if (sType.equals("nciInstituteCode")) {
+            	nciInstituteCode = sText;
+            } else if (sType.equals("lastName")) {
+                lastName = sText;
+            } else if (sType.equals("organization")) {
+            	organization = sText;
+            }
+        }
+    	
+        if(StringUtils.isEmpty(firstName) &&
+        		StringUtils.isEmpty(lastName) &&
+        			StringUtils.isEmpty(nciInstituteCode) &&
+        				StringUtils.isEmpty(organization)){
+        	
+        	return localInvestigators;
+        }
+        
+    	if(StringUtils.isNotEmpty(firstName) && firstName.indexOf("%") != -1){
+    		return localInvestigators;
+    	}
+    	if(StringUtils.isNotEmpty(lastName) && lastName.indexOf("%") != -1){
+    		return localInvestigators;
+    	}
+    	if(StringUtils.isNotEmpty(nciInstituteCode) && nciInstituteCode.indexOf("%") != -1){
+    		return localInvestigators;
+    	}
 		
         Map<String, Object> queryParameterMap = query.getParameterMap();
         for (String key : queryParameterMap.keySet()) {
-            Object value = queryParameterMap.get(key);
-            if (key.equals("firstName")) {
-				searchCriteria.setFirstName(value.toString());
-			}
-            if (key.equals("lastName")) {
-				searchCriteria.setLastName(value.toString());
-			}
-			if (key.equals("nciIdentifier")) {
-				searchCriteria.setNciIdentifier(value.toString());
-			}
-			if (key.equals("organization")) {
-				SiteInvestigator si = new SiteInvestigator();
-				si.setOrganization(this.organizationDao.getById(Integer.parseInt(value.toString())));
-				searchCriteria.addSiteInvestigator(si);
-			}
 			if (key.equals("loginId")) {
 				return localInvestigators;
 			}
         }
+        
+		//Populate searchCriteria 
+		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
+		searchCriteria.setFirstName(firstName);
+		searchCriteria.setLastName(lastName);
+		searchCriteria.setNciIdentifier(nciInstituteCode);
+		if(StringUtils.isNotEmpty(organization)){
+			SiteInvestigator si = new SiteInvestigator();
+			si.setOrganization(this.organizationDao.getById(Integer.parseInt(organization)));
+			searchCriteria.addSiteInvestigator(si);
+		}
 		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
 		return merge(localInvestigators,remoteInvestigators);
+	}
+	
+	
+	public List<Investigator> searchInvestigator(final InvestigatorQuery query){
+		List<Investigator> localInvestigators = investigatorDao.getLocalInvestigator(query);
+		return localInvestigators;
 	}
 	
 	public List<SiteInvestigator> getBySubnames(String[] subnames, int siteId) {

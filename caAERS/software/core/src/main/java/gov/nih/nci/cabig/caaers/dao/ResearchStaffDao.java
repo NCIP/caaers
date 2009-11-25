@@ -128,32 +128,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     @SuppressWarnings("unchecked")
 	public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
     	List<ResearchStaff> remoteResearchStaffs = null;
-    	boolean firstNameEmpty = true;
-    	boolean firstNameWild = true;
-    	boolean lastNameEmpty = true;
-    	boolean lastNameWild = true;
-    	
-    	if(researchStaff.getFirstName() != null && StringUtils.isNotEmpty(researchStaff.getFirstName())){
-    		firstNameEmpty = false;
-    		if(researchStaff.getFirstName().indexOf("%") == -1){
-    			firstNameWild = false;
-    		}
-    	}
-    	
-    	if(researchStaff.getLastName() != null && StringUtils.isNotEmpty(researchStaff.getLastName())){
-    		lastNameEmpty = false;
-    		if(researchStaff.getLastName().indexOf("%") == -1){
-    			lastNameWild = false;
-    		}
-    	}
-
-    	if( (firstNameEmpty && lastNameEmpty) 	||
-    		(firstNameWild && lastNameWild) 	||
-    		(firstNameWild && lastNameEmpty) 	|| 
-    		(firstNameEmpty && lastNameWild) ){
-    		
-    		return null;
-    	}
     	remoteResearchStaffs = (List)remoteSession.find(researchStaff);
     	return remoteResearchStaffs;
     }

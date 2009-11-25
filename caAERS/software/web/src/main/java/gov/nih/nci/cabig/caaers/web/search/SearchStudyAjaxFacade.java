@@ -802,7 +802,7 @@ public class SearchStudyAjaxFacade {
         }
 
         try {
-            investigators = investigatorRepository.searchInvestigator(investigatorQuery);
+            investigators = investigatorRepository.searchInvestigator(investigatorQuery,type,text);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
@@ -837,7 +837,7 @@ public class SearchStudyAjaxFacade {
         }
 
         try {
-            siteResearchStaffs = researchStaffRepository.getSiteResearchStaff(query);
+            siteResearchStaffs = researchStaffRepository.getSiteResearchStaff(query,type,text);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);

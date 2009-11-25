@@ -23,6 +23,7 @@ import gov.nih.nci.security.util.StringUtilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -222,31 +223,61 @@ public class ResearchStaffRepository {
     public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query){
     	//Get all the RS from caAERS DB
         List<SiteResearchStaff> siteResearchStaffs = researchStaffDao.getSiteResearchStaff(query);
+        return siteResearchStaffs;
+    }
+    
+    
+    @Transactional(readOnly = false)
+    public List<SiteResearchStaff> getSiteResearchStaff(final SiteResearchStaffQuery query,String type,String text){
+    	//Get all the RS from caAERS DB
+        List<SiteResearchStaff> siteResearchStaffs = researchStaffDao.getSiteResearchStaff(query);
         
-        RemoteResearchStaff searchCriteria = new RemoteResearchStaff(); 
-		
-        Map<String, Object> queryParameterMap = query.getParameterMap();
-        for (String key : queryParameterMap.keySet()) {
-            Object value = queryParameterMap.get(key);
-            if (key.equals("firstName")) {
-				searchCriteria.setFirstName(value.toString());
-			}
-            if (key.equals("lastName")) {
-				searchCriteria.setLastName(value.toString());
-			} 
-            if (key.equals("organization")) {
-            	String orgId = value.toString();
-            	Organization org = organizationDao.getById(Integer.parseInt(orgId));
-            	SiteResearchStaff sr = new SiteResearchStaff();
-            	sr.setOrganization(org);
-            	searchCriteria.addSiteResearchStaff(sr);
+        StringTokenizer typeToken = new StringTokenizer(type, ",");
+        StringTokenizer textToken = new StringTokenizer(text, ",");
+        String sType, sText;
+        String firstName = "";
+        String lastName = "";
+        String organization = "";
+
+        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+            sType = typeToken.nextToken();
+            sText = textToken.nextToken();
+            if (sType.equals("firstName")) {
+                firstName = sText;
+            } else if (sType.equals("lastName")) {
+                lastName = sText;
+            } else if (sType.equals("organization")) {
+            	organization = sText;
             }
         }
-        List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
+    	
+        if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName)){
+        	return siteResearchStaffs;
+        }
+    	if(StringUtils.isNotEmpty(firstName) && firstName.indexOf("%") != -1){
+    		return siteResearchStaffs;
+    	}
+
+    	if(StringUtils.isNotEmpty(lastName) && lastName.indexOf("%") != -1){
+    		return siteResearchStaffs;
+    	}
+        
+        RemoteResearchStaff searchCriteria = new RemoteResearchStaff(); 
+        searchCriteria.setFirstName(firstName);
+        searchCriteria.setLastName(lastName);
+        if(StringUtils.isNotEmpty(organization)){
+        	Organization org = organizationDao.getById(Integer.parseInt(organization));
+        	SiteResearchStaff sr = new SiteResearchStaff();
+        	sr.setOrganization(org);
+        	searchCriteria.addSiteResearchStaff(sr);
+        }
+
+    	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
         
     	//return (siteResearchStaffs);
         return mergeLocalSiteResearchStaffAndRemoteResearchStaff(siteResearchStaffs,remoteResearchStaffs);
     }
+    
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     private List<SiteResearchStaff> mergeLocalSiteResearchStaffAndRemoteResearchStaff(List<SiteResearchStaff> localList , List<ResearchStaff> remoteList) {

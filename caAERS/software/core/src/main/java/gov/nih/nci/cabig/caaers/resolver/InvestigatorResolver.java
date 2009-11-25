@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -101,11 +102,15 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		log.info("Entering InvestigatorResolver.find()");
 		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
 		List<Object> remoteInvestigatorList = new ArrayList<Object>();
+		Organization org = null;
 		RemoteInvestigator tempRemoteInvestigator = null;
-		Organization org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
+		if(remoteInvestigatorExample.getSiteInvestigators() != null && remoteInvestigatorExample.getSiteInvestigators().size() > 0){
+			org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
+		}
 		
 		
-		if (remoteInvestigatorExample.getNciIdentifier() != null) {
+		
+		if (remoteInvestigatorExample.getNciIdentifier() != null && StringUtils.isNotEmpty(remoteInvestigatorExample.getNciIdentifier())) {
 			//get Identified Organization ... 
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);

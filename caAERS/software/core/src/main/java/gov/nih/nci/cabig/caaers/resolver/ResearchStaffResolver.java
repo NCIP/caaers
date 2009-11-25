@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -202,7 +203,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		List<Object> remoteResearchStaffList = new ArrayList<Object>();
 		RemoteResearchStaff tempRemoteResearchStaff = null;
 		
-		if (remoteResearchStaffExample.getNciIdentifier() != null) {
+		if (remoteResearchStaffExample.getNciIdentifier() != null && StringUtils.isNotEmpty(remoteResearchStaffExample.getNciIdentifier())) {
 			//get Identified Organization ... 
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteResearchStaffExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
