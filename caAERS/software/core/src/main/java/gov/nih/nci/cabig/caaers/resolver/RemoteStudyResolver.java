@@ -25,9 +25,12 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.HealthCareProvider;
+import gov.nih.nci.coppa.po.IdentifiedOrganization;
+import gov.nih.nci.coppa.po.Organization;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
 import gov.nih.nci.coppa.services.pa.PlannedActivity;
+import gov.nih.nci.coppa.services.pa.StudyContact;
 import gov.nih.nci.coppa.services.pa.StudyOverallStatus;
 import gov.nih.nci.coppa.services.pa.StudyProtocol;
 import gov.nih.nci.coppa.services.pa.StudySiteContact;
@@ -188,6 +191,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			remoteStudy.setShortTitle(remoteStudy.getLongTitle());
 		}
 		populateStudyOrganizationsForStudyProtocol(studyProtocol,remoteStudy);
+		populatePrincipalInvestigator(remoteStudy);
 		populateStudyTherapies(studyProtocol, remoteStudy);
 		reArrangeStudyIdentifers(remoteStudy);
 		
@@ -457,8 +461,46 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 				remoteOrganization.setNciInstituteCode(ii.getExtension());
 			}
 		}
+		if(remoteOrganization.getNciInstituteCode() == null || StringUtils.isEmpty(remoteOrganization.getNciInstituteCode())){
+			remoteOrganization.setNciInstituteCode("*"+coppaOrganization.getIdentifier().getExtension());
+		}
 		return remoteOrganization;
 	}
+	
+	/**
+	 * Gets the remote organization from coppa organization
+	 * @param coppaOrganization
+	 * @param getCtepFromIdentifiedOrganization
+	 * @return
+	 */
+    private RemoteOrganization getRemoteOrganizationFromCoppaOrganization(gov.nih.nci.coppa.po.Organization coppaOrganization, boolean getCtepFromIdentifiedOrganization){
+    	RemoteOrganization remoteOrganization = null;
+    	
+    	if(coppaOrganization != null){
+    		remoteOrganization = new RemoteOrganization();
+    		//using coppa organization identier and previously obtained id of CTEP (hard coded in CoppaObjectFactory.getIIOfCTEP) get Identified organization
+    		if(getCtepFromIdentifiedOrganization){
+    			IdentifiedOrganization identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaForCorrelation(coppaOrganization.getIdentifier());
+				String identifiedOrganizationXml = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganization);		
+				String resultXml = "";
+				resultXml = broadcastIdentifiedOrganizationSearch(identifiedOrganizationXml);
+				List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
+				if (results != null && results.size() > 0) {
+					identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(results.get(0));
+					if (identifiedOrganization.getAssignedId() != null ) {
+						remoteOrganization.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+					}else{
+						remoteOrganization.setNciInstituteCode("*"+coppaOrganization.getIdentifier().getExtension());
+					}
+				}
+    		}
+    		remoteOrganization.setName(CoppaObjectFactory.getName(coppaOrganization.getName()));
+    		remoteOrganization.setCity(CoppaObjectFactory.getCity(coppaOrganization.getPostalAddress()));
+    		remoteOrganization.setCountry(CoppaObjectFactory.getCountry(coppaOrganization.getPostalAddress()));
+    		remoteOrganization.setExternalId(coppaOrganization.getIdentifier().getExtension());
+    	}
+    	return remoteOrganization;
+    }
 	
 	
 	/**     
@@ -477,16 +519,91 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         	studySiteContact = CoppaPAObjectFactory.getStudySiteContact(studySiteContactXml);
         	if(studySiteContact != null && studySiteContact.getStatusCode().getCode() != CoppaConstants.NULLIFIED_RECORD){
             	if(CoppaConstants.SITE_INVESTIGATOR_LIST.contains(studySiteContact.getRoleCode().getCode())){
+            		String roleCode = "SI"; //SI >> "Coordinating Investigator" or "Sub Investigator"
             		HealthCareProvider healthCareProvider = getHealthCareProviderFromExtension(studySiteContact.getHealthCareProvider().getExtension());
             		if(healthCareProvider != null){
             			 gov.nih.nci.coppa.po.Person coppaPerson = getCoppaPersonFromPersonExtension(healthCareProvider.getPlayerIdentifier().getExtension());
-            			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "PI");
+            			 if(CoppaConstants.PRINCIPAL_INVESTIGATOR.equals(studySiteContact.getRoleCode().getCode())){
+            				 roleCode = "SPI"; //SPI >> Principal Investigator for that Site.
+            			 }
+            			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, roleCode);
             			 studyOrganization.addStudyInvestigators(studyInvestigator);
             		}
             	}
         	}
         }
     }
+    
+    
+	/**     
+     * This method invokes STUDY_CONTACT Service Principal Investigator for a Study.
+     * roleCode's supported "Study Principal Investigator";       
+     * @param studyProtocol     
+     */     
+    public void populatePrincipalInvestigator(RemoteStudy remoteStudy){
+    	StudyInvestigator studyInvestigator = null;
+    	String scResultXml  = null;
+    	boolean isStudyOrganizationNew = true;
+    	String studyContactPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(remoteStudy.getExternalId()));
+    	Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_CONTACT.getName());
+    	scResultXml = broadcastCOPPA(studyContactPayLoad,mData);
+		List<String> scResults = XMLUtil.getObjectsFromCoppaResponse(scResultXml);
+		StudyContact studyContact = null;
+		if(scResults != null){
+			for(String studyContactXml : scResults){
+				studyContact = (StudyContact)CoppaPAObjectFactory.getStudyContact(studyContactXml);
+				if(studyContact != null && studyContact.getRoleCode().getCode().equalsIgnoreCase(CoppaConstants.STUDY_PRINCIPAL_INVESTIGATOR)){
+					HealthCareProvider healthCareProvider = getHealthCareProviderFromExtension(studyContact.getHealthCareProvider().getExtension());
+					if(healthCareProvider != null){
+						//The scoper id is the Id of the organization . use it to get the Organization Id
+				    	String coppaOrganizationExtension = healthCareProvider.getScoperIdentifier().getExtension();
+					    //Add the studySite to the remoteStudy
+					    StudyOrganization studyOrganization = null;
+					    //If the coppaOrganization's externalId matches that of the existing studyOrgs in the study then ignore it.
+					    for(StudyOrganization existingStudyOrganization : remoteStudy.getStudyOrganizations()){
+					    	if(existingStudyOrganization.getOrganization() instanceof RemoteOrganization){
+					    		RemoteOrganization existingOrganization = (RemoteOrganization)existingStudyOrganization.getOrganization();
+					    		if(coppaOrganizationExtension.equals(existingOrganization.getExternalId())){
+					    			isStudyOrganizationNew = false;
+					    			studyOrganization = existingStudyOrganization;
+					    			break;
+					    		}
+					    	}
+					    }
+					  //If the coppaOrganization's externalId DOES NOT match an existing studyOrg then set get the corresponding hcs and set it.
+					    if(studyOrganization == null){
+					    	gov.nih.nci.coppa.po.Organization coppaOrganization = getOrganizationFromExtension(healthCareProvider.getScoperIdentifier().getExtension());
+					    	RemoteOrganization remoteOrganizaion = getRemoteOrganizationFromCoppaOrganization(coppaOrganization, true);
+					    	studyOrganization = new StudySite();
+					    	studyOrganization.setOrganization(remoteOrganizaion);
+					    }
+					    //The player id is the Id of a Person . use it to get the Person by Id.
+					    gov.nih.nci.coppa.po.Person coppaPerson = getCoppaPersonFromPersonExtension(healthCareProvider.getPlayerIdentifier().getExtension());
+					    studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, "PI");
+					    if(studyInvestigator != null){
+					    	studyOrganization.addStudyInvestigators(studyInvestigator);
+					    }
+					    if(isStudyOrganizationNew){
+					    	remoteStudy.getStudyOrganizations().add(studyOrganization);
+					    }
+					}
+				}
+			}
+		}
+    }
+    
+    
+	private Organization getOrganizationFromExtension(String extension) {
+		DSETII dsetii = CoppaObjectFactory.getDSETIISearchCriteria(extension);
+		String organizationPayload = CoppaObjectFactory.getCoppaIIXml(dsetii);
+		Metadata mData = new Metadata(OperationNameEnum.getById.getName(),  "extId", ServiceTypeEnum.ORGANIZATION.getName());
+		String oResultXml = broadcastCOPPA(organizationPayload,mData);
+		List<String> results = XMLUtil.getObjectsFromCoppaResponse(oResultXml);
+		return CoppaObjectFactory.getCoppaOrganization(results.get(0));
+	}
+
+    
+    
 	
 	/**
 	 * Fetch HealthCareProvider from COPPA, given the extension value.
@@ -543,12 +660,18 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 
 		Iterator<ENXP> enxpItr = coppaPerson.getName().getPart().iterator();
 		ENXP enxp;
-		String firstName = "";
+		String firstName = null;
 		String lastName = "";
+		String middleName = "";
+
 		while(enxpItr.hasNext()){
 			enxp = enxpItr.next();
 			if(enxp.getType().equals(EntityNamePartType.GIV)){
-				firstName = enxp.getValue();
+				if(firstName == null){
+					firstName = enxp.getValue();
+				} else {
+					middleName += enxp.getValue() + " ";
+				}
 			}
 
 			if(enxp.getType().equals(EntityNamePartType.FAM)){
@@ -556,23 +679,35 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			}
 		}        
 
-        List<TEL> email = coppaPerson.getTelecomAddress().getItem();
-        Iterator<TEL> emailItr = email.iterator();
-        TEL nextTel = emailItr.next();
-        String emailStr = "";
-		emailStr = nextTel.getValue();
-		//remove mailto: string from email 
-		if (emailStr.startsWith("mailto:")) {
-			emailStr = emailStr.substring("mailto:".length(), emailStr.length());
-		}
-		remoteInvestigator.setFirstName(firstName);
-		remoteInvestigator.setLastName(lastName);
-		remoteInvestigator.setEmailAddress(emailStr);
+        List<TEL> telecomAddress = coppaPerson.getTelecomAddress().getItem();
+        Iterator<TEL> telecomAddressItr = telecomAddress.iterator();
+        while (telecomAddressItr.hasNext()) {
+        	TEL nextTel = telecomAddressItr.next();
+        	String nextTelStr = nextTel.getValue();
+        	if (nextTelStr.startsWith("mailto:")) {
+        		nextTelStr = nextTelStr.substring("mailto:".length(), nextTelStr.length());
+        		remoteInvestigator.setEmailAddress(nextTelStr);
+    		}
+        	if (nextTelStr.startsWith("x-text-fax:")) {
+        		nextTelStr = nextTelStr.substring("x-text-fax:".length(), nextTelStr.length());
+        		remoteInvestigator.setFaxNumber(nextTelStr);
+    		}
+        	if (nextTelStr.startsWith("tel:")) {
+        		nextTelStr = nextTelStr.substring("tel:".length(), nextTelStr.length());
+        		remoteInvestigator.setPhoneNumber(nextTelStr);
+    		}
+        }
+
+		remoteInvestigator.setFirstName(firstName.trim());
+		remoteInvestigator.setMiddleName(middleName.trim());
+		remoteInvestigator.setLastName(lastName.trim());
 		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
+		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
+		//remoteInvestigator.setLoginId("loginid");
 		if (nciIdentifier != null) {
 			remoteInvestigator.setNciIdentifier(nciIdentifier);
 		}
-		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
+		
 		return remoteInvestigator;
 
 	}
