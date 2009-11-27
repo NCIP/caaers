@@ -70,7 +70,7 @@
                 	<div class="value">${command.study.description} </div>
             	</div>
             	<div class="row">
-                	<div class="label">Primary sponsor</div>
+                	<div class="label">Funding sponsor</div>
                 	<c:if test="${command.study.primaryFundingSponsorOrganization.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>                	
