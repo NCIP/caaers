@@ -80,7 +80,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
     		}
         	if (nextTelStr.startsWith("tel:")) {
         		nextTelStr = nextTelStr.substring("tel:".length(), nextTelStr.length());
-        		remoteResearchStaff.setPhoneNumber(nextTelStr);
+        		remoteResearchStaff.setPhoneNumber(nextTelStr.replaceAll("-ext-", "x"));
     		}
         }
 		
