@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
+import gov.nih.nci.coppa.po.IdentifiedPerson;
 import gov.nih.nci.coppa.po.Organization;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
@@ -527,7 +528,9 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
             				 roleCode = "SPI"; //SPI >> Principal Investigator for that Site.
             			 }
             			 StudyInvestigator studyInvestigator = getPopulatedStudyInvestigator(coppaPerson, studyOrganization, roleCode);
-            			 studyOrganization.addStudyInvestigators(studyInvestigator);
+            			 if(studyInvestigator != null){
+            				 studyOrganization.addStudyInvestigators(studyInvestigator);
+            			 }
             		}
             	}
         	}
@@ -639,10 +642,24 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
     }
 	
     private StudyInvestigator getPopulatedStudyInvestigator(Person coppaPerson, StudyOrganization studyOrganization, String roleCode) {
-    	
-    	StudyInvestigator studyInvestigator = new StudyInvestigator();
+    	String ctepIdentifier = "";
+		//Get identified persons based on playerIds...
+    	String payLoadXml = CoppaObjectFactory.getCoppaIIXml(coppaPerson.getIdentifier());
+    	Metadata mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.IDENTIFIED_PERSON.getName());
+    	String IdentifiedPersonsResultXml = broadcastCOPPA(payLoadXml, mData);
+    	List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(IdentifiedPersonsResultXml);
+		IdentifiedPerson identifiedPerson = null;
+		for(String identifiedPersonXml: identifiedPersons){
+			identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonXml);
+			if (identifiedPerson.getAssignedId().getRoot().equals("Cancer Therapy Evaluation Program Person Identifier")) {
+				ctepIdentifier = identifiedPerson.getPlayerIdentifier().getExtension();
+			}
+		}
+    	StudyInvestigator studyInvestigator = null;
+    	//if(ctepIdentifier != null && StringUtils.isNotEmpty(ctepIdentifier)){
+		studyInvestigator = new StudyInvestigator();
     	studyInvestigator.setStartDate(DateUtils.today());
-    	RemoteInvestigator remoteInvestigator = createRemoteInvestigator(coppaPerson, coppaPerson.getIdentifier().getExtension());
+    	RemoteInvestigator remoteInvestigator = createRemoteInvestigator(coppaPerson, ctepIdentifier);
         remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
         SiteInvestigator siteInvestigator = new SiteInvestigator();
         siteInvestigator.setStartDate(DateUtils.today());
@@ -651,11 +668,12 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         remoteInvestigator.addSiteInvestigator(siteInvestigator);
         studyInvestigator.setSiteInvestigator(siteInvestigator);
         studyInvestigator.setRoleCode(roleCode);
+    	//}
         return studyInvestigator;
     }
 	
 	
-	private RemoteInvestigator createRemoteInvestigator(Person coppaPerson,String nciIdentifier) {
+	private RemoteInvestigator createRemoteInvestigator(Person coppaPerson,String ctepIdentifier) {
 		RemoteInvestigator remoteInvestigator = new RemoteInvestigator();
 
 		Iterator<ENXP> enxpItr = coppaPerson.getName().getPart().iterator();
@@ -703,11 +721,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		remoteInvestigator.setLastName(lastName.trim());
 		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
 		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
-		//remoteInvestigator.setLoginId("loginid");
-		if (nciIdentifier != null) {
-			remoteInvestigator.setNciIdentifier(nciIdentifier);
-		}
-		
+		remoteInvestigator.setNciIdentifier(ctepIdentifier);
 		return remoteInvestigator;
 
 	}

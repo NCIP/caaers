@@ -163,15 +163,13 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         }
         
         InputField ncidIdField = null;
-        if (!remoteEntity) {
-        	if (configuration.getAuthenticationMode().equals("webSSO")) {
-        		ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", true);
-        	} else {
-        		ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
-        	}
-        } else {
+
+        if(command.getNciIdentifier() != null && StringUtils.isNotEmpty(command.getNciIdentifier())){
         	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Investigator number", false);
+        }else{
+        	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
         }
+
         InputFieldAttributes.setLabelProperty(ncidIdField, "investigator.nciIdentifier");
         investigatorFieldGroup.getFields().add(ncidIdField);
         
@@ -210,7 +208,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         investigatorFieldGroup.getFields().add(faxNumberField);
         
         InputField loginIdField = null;
-        if(command.getId() == null || (command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId()))){
+        if(command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId())){
         	loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
             InputFieldAttributes.setSize(loginIdField, 30);
         }else{
@@ -230,6 +228,42 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
                             final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 
         super.validate(command, commandBean, fieldGroups, errors);
+        
+        //Allowed to login checked
+        if(command.getAllowedToLogin()) {
+        	 //Create Mode
+        	if(command.getId() == null){
+            	if(command.getLoginId() != null && StringUtils.isNotEmpty(command.getLoginId())){
+            		boolean loginIdExists = csmUserRepository.loginIDInUse(command.getLoginId());
+                    if(loginIdExists){
+                   	 	errors.rejectValue("userName","USR_001");
+                    }
+            	}
+        	}
+        	//Edit Mode
+        	else{
+        		
+        	}
+        	if(command.getNciIdentifier() == null || StringUtils.isEmpty(command.getNciIdentifier())){
+        		errors.rejectValue("nciIdentifier","USR_012");
+        	}
+        	if(command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId())){
+        		errors.rejectValue("nciIdentifier","USR_013");
+        	}
+        	if(command.getNciIdentifier() != null && StringUtils.isNotEmpty(command.getNciIdentifier())){
+                InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+                investigatorQuery.filterByNciIdentifierExactMatch(command.getNciIdentifier());
+                List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
+                if(investigatorList.size() == 1 && command.getId() == null) {
+                	errors.rejectValue("nciIdentifier","USR_013");
+                }
+                if(investigatorList.size() > 1) {
+                	errors.rejectValue("nciIdentifier","USR_013");
+                }
+        	}
+        }
+        
+        /*
         
         if (command ==null || command.getId() == null) {
         	if(command.getAllowedToLogin()){
@@ -258,6 +292,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         if(investigatorList.size() == 1 && command.getId() == null){
         	errors.rejectValue("emailAddress", "USR_010");
         }
+       */
         
         List<SiteInvestigator> investigators = command.getSiteInvestigators();
         Date now = new Date();

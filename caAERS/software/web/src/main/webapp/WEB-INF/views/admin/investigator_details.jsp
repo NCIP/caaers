@@ -99,7 +99,7 @@ Object.extend(jsInvestigator.prototype, {
 	 }
 	},
 	sitePopulator: function(autocompleter, text) {
-    	createIND.restrictOrganization(text, function(values) {
+		createInvestigator.restrictOrganization(text, function(values) {
       	 autocompleter.setChoices(values)
       })
     },
@@ -131,7 +131,7 @@ Event.observe(window, "load", function() {
 				 displayRemoteInvestigator();
 		}
 
-		if(${(command.id) gt 0}){
+		if(${(command.id) gt 0} and not empty command.loginId){
 			$('allowedToLogin-row').style.display='none';
 		}
 
