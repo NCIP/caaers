@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -102,15 +101,11 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		log.info("Entering InvestigatorResolver.find()");
 		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
 		List<Object> remoteInvestigatorList = new ArrayList<Object>();
-		Organization org = null;
 		RemoteInvestigator tempRemoteInvestigator = null;
-		if(remoteInvestigatorExample.getSiteInvestigators() != null && remoteInvestigatorExample.getSiteInvestigators().size() > 0){
-			org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
-		}
+		Organization org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
 		
 		
-		
-		if (remoteInvestigatorExample.getNciIdentifier() != null && StringUtils.isNotEmpty(remoteInvestigatorExample.getNciIdentifier())) {
+		if (remoteInvestigatorExample.getNciIdentifier() != null) {
 			//get Identified Organization ... 
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
@@ -122,7 +117,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
 			try {
 				String resultXml = broadcastPersonGetById(iiXml);
-				tempRemoteInvestigator = loadInvestigatorForPersonResult(resultXml);
+				tempRemoteInvestigator = loadInvestigatorForPersonResult(resultXml,identifiedPerson);
 				remoteInvestigatorList.add(tempRemoteInvestigator);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -362,10 +357,10 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			logger.error(e.getMessage());
 		}
 		log.info("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
-		return loadInvestigatorForPersonResult(resultXml);
+		return loadInvestigatorForPersonResult(resultXml,null);
 	}
 	
-	public RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml) {
+	public RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml,IdentifiedPerson identifiedPerson) {
 		List<String> results = XMLUtil.getObjectsFromCoppaResponse(personResultXml);
 		List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList = null;
 		RemoteInvestigator remoteInvestigator = null;
@@ -374,7 +369,9 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		if (results.size() > 0) {
 			coppaPerson = CoppaObjectFactory.getCoppaPerson(results.get(0));
 			coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
-			IdentifiedPerson identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
+			if (identifiedPerson == null) {
+				identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
+			}
 			
 			if (identifiedPerson != null ) {
 				nciIdentifier = identifiedPerson.getAssignedId().getExtension();
