@@ -792,7 +792,7 @@ public class SearchStudyAjaxFacade {
             sText = textToken.nextToken();
             if (sType.equals("firstName")) {
                 investigatorQuery.filterByFirstName(sText);
-            } else if (sType.equals("nciInstituteCode")) {
+            } else if (sType.equals("nciIdentifier")) {
                 investigatorQuery.filterByNciIdentifier(sText);
             } else if (sType.equals("lastName")) {
                 investigatorQuery.filterByLastName(sText);
