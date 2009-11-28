@@ -30,7 +30,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -201,19 +201,17 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputField faxNumberField = null;
         if (!remoteEntity) {
-        	faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
-                FieldValidator.PHONE_VALIDATOR);
+        	faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", false);
         } else {
-        	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",
-                    FieldValidator.PHONE_VALIDATOR);
+        	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",false);
         }
         
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
         InputField loginIdField = null;
-        if(command.getId() == null){
-        	loginIdField =InputFieldFactory.createTextField("loginId", "Username", false);
+        if(command.getId() == null || (command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId()))){
+        	loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
             InputFieldAttributes.setSize(loginIdField, 30);
         }else{
         	loginIdField = InputFieldFactory.createLabelField("loginId", "Username", false);
