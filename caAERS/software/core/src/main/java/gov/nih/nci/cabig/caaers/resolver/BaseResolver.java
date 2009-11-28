@@ -19,7 +19,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iso._21090.II;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
@@ -37,6 +36,15 @@ public abstract class BaseResolver {
 	
 	public IdentifiedOrganization getIdentifiedOrganization(gov.nih.nci.coppa.po.Organization coppaOrganization){
 		if(coppaOrganization != null){
+			IdentifiedOrganization identifiedOrganization = null;
+			String iiXML = CoppaObjectFactory.getCoppaIIXml(coppaOrganization.getIdentifier());
+			Metadata mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
+			String identifiedOrgsResultXml = broadcastCOPPA(iiXML,mData);
+			List<String> results = XMLUtil.getObjectsFromCoppaResponse(identifiedOrgsResultXml);
+			if (results.size() > 0) {
+				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(results.get(0));
+			}
+			/*
 			//using coppa organization identier and previously obtained id of CTEP (hard coded in CoppaObjectFactory.getIIOfCTEP) get Identified organization 
 
 			IdentifiedOrganization identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaForCorrelation(coppaOrganization.getIdentifier());
@@ -50,7 +58,7 @@ public abstract class BaseResolver {
 			List<String> results = XMLUtil.getObjectsFromCoppaResponse(resultXml);
 			if (results.size() > 0) {
 				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(results.get(0));
-			}
+			}*/
 			return identifiedOrganization;
 		}
 		return null;
