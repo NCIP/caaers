@@ -1,5 +1,5 @@
 <dataset>
-    
+	
     <ORGANIZATIONS
         id="-1001"
         name="Cancer Therapy Evaluation Program"
@@ -307,7 +307,28 @@
         term_id="3010"
         grade_code="4"
         grade_text="On fire"/>
-   		
+		
+	<workflow_configuration
+		id="1000"
+		workflow_definition_name="reportingperiod_coordinating_center"
+		name="Evaluation Period Coordinating Center Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>
+
+	<workflow_configuration
+		id="2000"
+		workflow_definition_name="expedited_domestic"
+		name="Expedited Reporting Domestic Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>
+		
+	<task_configuration />
+	<wf_transition_configs />
+	<wf_transition_owners />
+	<wf_assignees />
+	   		
    	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
    	<studies />
     <investigational_new_drugs />
@@ -331,4 +352,5 @@
 	<ae_labs/>
 	<treatments/>
 	<terminologies/>
+	<study_site_wf_cfgs />	
 </dataset>
