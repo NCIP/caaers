@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,7 +39,8 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
         request.getSession().removeAttribute(InvestigatorAjaxFacade.CREATE_INVESTIGATOR_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         Investigator investigator = investigatorDao.getInvestigatorById(Integer.parseInt(request.getParameter("investigatorId")));
-
+        investigator.setWasLoginDisallowed(BooleanUtils.isFalse(investigator.getAllowedToLogin()));
+        investigator.setWasLoginIdNull(investigator.getLoginId() == null);
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Investigator :" + String.valueOf(investigator));
         }

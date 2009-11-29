@@ -45,6 +45,9 @@ public abstract class Investigator extends User {
 	protected List<Investigator> externalInvestigators = new ArrayList<Investigator>();
 	protected Boolean allowedToLogin = Boolean.TRUE;
 	
+	protected boolean wasLoginIdNull = true;
+	protected boolean wasLoginDisallowed = true;
+	
     public Investigator() {
         lazyListHelper = new LazyListHelper();
 
@@ -224,6 +227,21 @@ public abstract class Investigator extends User {
         }
         return false;
     }
-
-
+    
+    @Transient
+    public boolean getWasLoginIdNull() {
+		return wasLoginIdNull;
+	}
+    public void setWasLoginIdNull(boolean wasLoginIdNull) {
+		this.wasLoginIdNull = wasLoginIdNull;
+	}
+    
+    @Transient
+    public boolean getWasLoginDisallowed() {
+		return wasLoginDisallowed;
+	}
+    public void setWasLoginDisallowed(boolean wasLoginDisallowed) {
+		this.wasLoginDisallowed = wasLoginDisallowed;
+	}
+    
 }

@@ -43,6 +43,9 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
         siteInvestigator.setInvestigator(investigator);
         investigator.addSiteInvestigator(siteInvestigator);
         investigator.setAllowedToLogin(Boolean.TRUE);
+        investigator.setWasLoginDisallowed(true);
+        investigator.setWasLoginIdNull(true);
+        
         return investigator;
     }
     

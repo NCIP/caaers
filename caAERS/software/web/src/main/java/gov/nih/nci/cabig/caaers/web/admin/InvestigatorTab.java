@@ -203,7 +203,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         investigatorFieldGroup.getFields().add(faxNumberField);
         
         InputField loginIdField = null;
-        if(command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId())){
+        if(command.getWasLoginIdNull()){
         	loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
             InputFieldAttributes.setSize(loginIdField, 30);
         }else{
@@ -222,7 +222,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
      * Will validate the following when an investigator is allowed to login.
      *  1. UserName must be provided and should be unique.
      *  2. NCI identifier must be provided and should be unique. 
-     *  3. 
+     *  3. Start and End date validation
      */
     @Override
     protected void validate(final Investigator command, final BeanWrapper commandBean,

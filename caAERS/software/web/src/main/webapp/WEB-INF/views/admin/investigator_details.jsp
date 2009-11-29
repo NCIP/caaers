@@ -289,7 +289,16 @@ Event.observe(window, "load", function() {
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
                <tags:renderRow field="${field}"  />
             </c:forEach>
-			<tags:renderRow field="${fieldGroups.investigator.fields[4]}"/>
+            
+            <c:if test="${command.wasLoginDisallowed}">
+            	<tags:renderRow field="${fieldGroups.investigator.fields[4]}"/>
+            </c:if>
+            <c:if test="${!command.wasLoginDisallowed}">
+           	 <tags:renderRow field="${fieldGroups.investigator.fields[4]}">
+           	 	<jsp:attribute name="value">Yes</jsp:attribute>
+           	 </tags:renderRow>
+            </c:if>
+			
 		</div>
 		<div class="rightpanel">
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
