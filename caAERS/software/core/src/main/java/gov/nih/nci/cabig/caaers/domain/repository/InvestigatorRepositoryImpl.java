@@ -54,34 +54,31 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	public void save(Investigator investigator, String changeURL) {
 		MailException mailException = null;
 		if(investigator.getAllowedToLogin()){
-			boolean createMode = investigator.getId() == null;
-	    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
 	    	
 	    	if (investigator.getEmailAddress() == null) {
 	            throw new CaaersSystemException("Email address is required");
 	        }
-	    	/*loginId cannot be null in websso mode.
-	    	if(webSSOAuthentication && StringUtils.isBlank(investigator.getLoginId())){
-	    		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
-	    	}*/
-	    	//if this is a new one, add the default group, set the login id if websso mode
-	    	if(createMode){
+	    	
+	    	//note - to support allowLogin of investigators added via COPPA, we shoudld set the default groups if they do not exist
+	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.caaers_physician)){
 	    		investigator.addUserGroupType(UserGroupType.caaers_physician);
-	    		investigator.addUserGroupType(UserGroupType.caaers_user);
-	    		//login id should be email id , if it is non websso mode
-	    		//if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
 	    	}
-	    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(investigator.getLoginId())) {
-	    	//if(createMode && StringUtilities.isBlank(investigator.getLoginId())) {
+	    	
+	    	if(!investigator.getUserGroupTypes().contains(UserGroupType.caaers_user)){
+	    		investigator.addUserGroupType(UserGroupType.caaers_user);
+	    	}
+	    	
+	    	if(investigator.getId() == null &&  StringUtilities.isBlank(investigator.getLoginId())) {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}
 	    	
-		        try {
-					csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
-				} catch (MailException e) {
-					mailException = e;
-				}
+		    try {
+				csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+		    } catch (MailException e) {
+				mailException = e;
+			}
 		}
+		
 		investigator = investigatorDao.merge(investigator);
         if(mailException != null) throw mailException;
 	}

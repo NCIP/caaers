@@ -20,6 +20,12 @@ public class InvestigatorQuery extends AbstractQuery {
 
         super(queryString);
     }
+    
+    public void filterByDifferentInvestigatorId(Integer id){
+    	if(id == null) return;
+    	andWhere(" i.id != :iid");
+    	setParameter("iid", id);
+    }
 
     public void filterByFirstName(final String firstName) {
         String searchString = "%" + firstName.toLowerCase() + "%";

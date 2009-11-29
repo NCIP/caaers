@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -30,6 +31,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -93,7 +95,6 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     public Map<String, Object> referenceData(HttpServletRequest request, Investigator command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
-       // refdata.put("sitesRefData", getOrganizations());
 
         refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
         refdata.put("studySiteRoleCodeRefData", configMap.get("studySiteRoleCodeRefData"));
@@ -111,13 +112,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         RepeatingFieldGroupFactory rfgFactory = null;
 
         rfgFactory = new RepeatingFieldGroupFactory("main", "siteInvestigators");
-        //SRINI COMMENTED - Not sure why this options are initialized , this options is not used anywhere . Loading orgs here in unnecessary .
-        //Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        //options.put("", "Please select");
-        //List<Organization> organizations = getOrganizations();
-        //if (organizations != null) {
-          //  options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
-        //}
+        
         InputField orgInputField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
     	//InputFieldAttributes.enableAutoCompleterClearButton(orgInputField);
         rfgFactory.addField(orgInputField);
@@ -223,44 +218,42 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         return map;
     }
 
+    /**
+     * Will validate the following when an investigator is allowed to login.
+     *  1. UserName must be provided and should be unique.
+     *  2. NCI identifier must be provided and should be unique. 
+     *  3. 
+     */
     @Override
     protected void validate(final Investigator command, final BeanWrapper commandBean,
                             final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
-
-        super.validate(command, commandBean, fieldGroups, errors);
         
         //Allowed to login checked
         if(command.getAllowedToLogin()) {
-        	 //Create Mode
-        	if(command.getId() == null){
-            	if(command.getLoginId() != null && StringUtils.isNotEmpty(command.getLoginId())){
-            		boolean loginIdExists = csmUserRepository.loginIDInUse(command.getLoginId());
-                    if(loginIdExists){
-                   	 	errors.rejectValue("userName","USR_001");
-                    }
-            	}
+        	
+        	if(StringUtils.isEmpty(command.getLoginId())){
+        		errors.rejectValue("loginId", "USR_014", "User name must not be empty, while allowed to login.");
+        	}else{
+        		//login id should be unique. 
+        		User anotherUser = csmUserRepository.getUserByName(command.getLoginId());
+        		if(anotherUser != null && !ObjectUtils.equals(command.getId(), anotherUser.getId())){
+        			errors.rejectValue("loginId","USR_001", "The loginId is in use.");
+        		}
         	}
-        	//Edit Mode
-        	else{
-        		
-        	}
-        	if(command.getNciIdentifier() == null || StringUtils.isEmpty(command.getNciIdentifier())){
-        		errors.rejectValue("nciIdentifier","USR_012");
-        	}
-        	if(command.getLoginId() == null || StringUtils.isEmpty(command.getLoginId())){
-        		errors.rejectValue("nciIdentifier","USR_013");
-        	}
-        	if(command.getNciIdentifier() != null && StringUtils.isNotEmpty(command.getNciIdentifier())){
-                InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+        	
+        	if(StringUtils.isEmpty(command.getNciIdentifier())){
+        		errors.rejectValue("nciIdentifier","USR_012", "Investigator number must be provided");
+        	}else{
+        		InvestigatorQuery investigatorQuery = new InvestigatorQuery();
                 investigatorQuery.filterByNciIdentifierExactMatch(command.getNciIdentifier());
+                investigatorQuery.filterByDifferentInvestigatorId(command.getId());
                 List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
-                if(investigatorList.size() == 1 && command.getId() == null) {
-                	errors.rejectValue("nciIdentifier","USR_013");
-                }
-                if(investigatorList.size() > 1) {
-                	errors.rejectValue("nciIdentifier","USR_013");
+                if(investigatorList.size() > 1){
+                	errors.rejectValue("nciIdentifier", "USR_013", "Investigator number must be unique");
                 }
         	}
+        	
+        	
         }
         
         /*

@@ -17,6 +17,14 @@ public class InvestigatorQueryTest extends TestCase {
                         investigatorQuery.getQueryString());
 
     }
+    
+    public void testFilterByDifferentInvestigatorId(){
+    	InvestigatorQuery query = new InvestigatorQuery();
+    	assertEquals("SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si order by i.id",query.getQueryString());
+    	query.filterByDifferentInvestigatorId(null);
+    	query.filterByDifferentInvestigatorId(4);
+    	assertEquals("SELECT distinct i from Investigator i left join fetch i.siteInvestigatorsInternal si WHERE  i.id != :iid order by i.id", query.getQueryString());
+    }
 
     public void testFilterByName() throws Exception {
         InvestigatorQuery investigatorQuery = new InvestigatorQuery();

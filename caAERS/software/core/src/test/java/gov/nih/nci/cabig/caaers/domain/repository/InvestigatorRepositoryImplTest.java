@@ -42,33 +42,17 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-	public void testSaveWebSso_ValidLogiID() {
+	
+	public void testSave_NotAllowedToLogin() {
 		Investigator inv = Fixtures.createInvestigator("Joel");
-		inv.setLoginId("loginId");
+		inv.setAllowedToLogin(false);
 		Organization org = Fixtures.createOrganization("NCI");
 		String changeUrl = "/pages/url";
+		
 		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
-		repositoryImpl.setAuthenticationMode("webSSO");
+		
 		replayMocks();
 		repositoryImpl.save(inv, changeUrl);
 		verifyMocks();
-	}
-	public void testSaveWebSso() {
-		Investigator inv = Fixtures.createInvestigator("Joel");
-		Organization org = Fixtures.createOrganization("NCI");
-		String changeUrl = "/pages/url";
-		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
-		csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, changeUrl);
-		repositoryImpl.setAuthenticationMode("webSSO");
-		replayMocks();
-		try {
-			repositoryImpl.save(inv, changeUrl);
-			//Commented below statement. Login ID check is not done in InvestigatorRepositoryImpl.
-			//fail("should throw validation error");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-		}
-		
 	}
 }
