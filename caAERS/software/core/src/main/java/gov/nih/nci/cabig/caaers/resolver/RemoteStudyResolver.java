@@ -109,7 +109,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 				}
 			}
 		}catch(Exception e){
-			log.debug(e.getMessage());
+			log.error(e.getMessage());
 		}
 		log.info("Exiting RemoteStudyResolver.find()");
 		return remoteStudies;
@@ -618,7 +618,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         Metadata healthCareProviderMData = new Metadata(OperationNameEnum.getById.getName(), "extId", ServiceTypeEnum.HEALTH_CARE_PROVIDER.getName());
         String healthCareProviderResult  = broadcastCOPPA(coppaHealthCareProviderXml,healthCareProviderMData);
         List<String> healthCareProviderResults = XMLUtil.getObjectsFromCoppaResponse(healthCareProviderResult);
-        if(healthCareProviderResults != null && !"".equals(healthCareProviderResults)){
+        if(healthCareProviderResults.size() > 0){
         	return CoppaObjectFactory.getCoppaHealthCareProvider(healthCareProviderResults.get(0));
         }
         return null;

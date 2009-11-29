@@ -112,12 +112,13 @@ public class StudyRepository {
 		for(StudyOrganization studyOrg : remoteStudy.getStudyOrganizations()){
 			for(StudyInvestigator studyInv : studyOrg.getStudyInvestigatorsInternal()){
 				if(studyInv.getSiteInvestigator() != null && studyInv.getSiteInvestigator().getInvestigator() != null){
-					Investigator dbInv = investigatorDao.getByEmailAddress(studyInv.getSiteInvestigator().getInvestigator().getEmailAddress());
+					Investigator dbInv = investigatorDao.getByExternalId(studyInv.getSiteInvestigator().getInvestigator().getExternalId());
 					if(dbInv != null){
 						SiteInvestigator dbSiteInvestigator = dbInv.findSiteInvestigator(studyInv.getSiteInvestigator());
 						if(dbSiteInvestigator == null){
 							dbInv.addSiteInvestigator(studyInv.getSiteInvestigator());
 							investigatorDao.save(dbInv);
+							dbSiteInvestigator = studyInv.getSiteInvestigator();
 						}
 						studyInv.setSiteInvestigator(dbSiteInvestigator);
 					}else{

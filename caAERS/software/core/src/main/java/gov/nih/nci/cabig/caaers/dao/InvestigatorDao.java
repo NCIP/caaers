@@ -223,5 +223,21 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
         if(investigator != null) initialize(investigator);
         return investigator;
     }
+    
+    /**
+     * Get the user who has specified email address.
+     * 
+     * @param loginId
+     *                The loginId of the user.
+     * @return The user.
+     */
+    @SuppressWarnings("unchecked")
+	public Investigator getByExternalId(String externalId) {
+        List<Investigator> results = getHibernateTemplate().find(
+                        "from Investigator where externalId= ?", externalId);
+        Investigator investigator =  results.size() > 0 ? results.get(0) : null;
+        if(investigator != null) initialize(investigator);
+        return investigator;
+    }
 
 }
