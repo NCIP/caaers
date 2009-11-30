@@ -110,7 +110,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			//get Identified Organization ... 
 			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
 			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
-			if (identifiedPerson != null) {
+			if (identifiedPerson == null) {
 				log.info("Exiting InvestigatorResolver.find() - Identified person is NULL");
 				return remoteInvestigatorList;
 			}
