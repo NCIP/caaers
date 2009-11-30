@@ -214,6 +214,13 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
         return results.size() > 0 ? results.get(0) : null;
     }
     
+    @SuppressWarnings("unchecked")
+	public ResearchStaff getByExternalId(String externalId) {
+    	List<ResearchStaff> results = getHibernateTemplate().find("from ResearchStaff where lower(externalId)= ?", externalId.toLowerCase());
+        return results.size() > 0 ? results.get(0) : null;
+    }
+    
+    
 	public void setRemoteSession(RemoteSession remoteSession) {
 		this.remoteSession = remoteSession;
 	}

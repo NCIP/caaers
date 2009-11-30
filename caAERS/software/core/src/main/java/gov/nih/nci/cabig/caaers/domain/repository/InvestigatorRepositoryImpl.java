@@ -165,10 +165,9 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     private List<Investigator> merge(List<Investigator> localList , List<Investigator> remoteList) {
 		for (Investigator remoteInvestigator:remoteList) {
 			//Investigator inv = investigatorDao.getByEmailAddress(remoteInvestigator.getEmailAddress());
-			if (StringUtils.isBlank(remoteInvestigator.getNciIdentifier())) {
-				continue;
-			}
-			Investigator inv = investigatorDao.getByNciIdentfier(remoteInvestigator.getNciIdentifier());
+
+			Investigator inv = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
+			
     		if (inv == null ) {
     			try {
     				
@@ -192,7 +191,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     				remoteInvestigator.setSiteInvestigators(siDBList);
     				
     				save(remoteInvestigator,"URL");
-    				remoteInvestigator = investigatorDao.getByNciIdentfier(remoteInvestigator.getNciIdentifier());
+    				remoteInvestigator = investigatorDao.getByExternalId(remoteInvestigator.getExternalId());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}

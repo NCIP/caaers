@@ -68,7 +68,7 @@ public class ResearchStaffRepository {
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void save(ResearchStaff researchStaff, String changeURL) {
-    	
+
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
     	/*
@@ -283,10 +283,8 @@ public class ResearchStaffRepository {
     private List<SiteResearchStaff> mergeLocalSiteResearchStaffAndRemoteResearchStaff(List<SiteResearchStaff> localList , List<ResearchStaff> remoteList) {
 		for (ResearchStaff remoteResearchStaff:remoteList) {
 			//ResearchStaff rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
-			if (StringUtils.isBlank(remoteResearchStaff.getNciIdentifier())) {
-				continue;
-			}
-			ResearchStaff rs = researchStaffDao.getByNciIdentfier(remoteResearchStaff.getNciIdentifier());
+
+			ResearchStaff rs = researchStaffDao.getByExternalId(remoteResearchStaff.getExternalId());
     		if (rs == null ) {
     			try {
     				List<SiteResearchStaff> srList = remoteResearchStaff.getSiteResearchStaffs();
@@ -304,18 +302,19 @@ public class ResearchStaffRepository {
     	    			dbSR.setEmailAddress(remoteResearchStaff.getEmailAddress());
     	    			dbSR.setPhoneNumber(remoteResearchStaff.getPhoneNumber());
     	    			dbSR.setFaxNumber(remoteResearchStaff.getFaxNumber());
+    	    			/*
     	    			SiteResearchStaffRole srs = new SiteResearchStaffRole();
     	    			srs.setRoleCode("caaers_study_cd");
     	    			srs.setStartDate(DateUtils.today());
     	    			srs.setSiteResearchStaff(dbSR);
     	    			dbSR.addSiteResearchStaffRole(srs);
-    	    			//dbSR.addSiteResearchStaffRole(siteResearchStaffRole)
+    	    			*/
     	    			srDBList.add(dbSR);
     				}
     				remoteResearchStaff.getSiteResearchStaffs().clear();
     				remoteResearchStaff.setSiteResearchStaffs(srDBList);
     				save(remoteResearchStaff,"URL");
-    				remoteResearchStaff = researchStaffDao.getByNciIdentfier(remoteResearchStaff.getNciIdentifier());
+    				remoteResearchStaff = researchStaffDao.getByExternalId(remoteResearchStaff.getExternalId());
     			} catch (MailException e) {
     				e.printStackTrace();
     			}

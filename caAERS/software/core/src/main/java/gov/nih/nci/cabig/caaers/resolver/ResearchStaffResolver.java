@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.iso._21090.ENXP;
 import org.iso._21090.EntityNamePartType;
@@ -412,8 +410,12 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					}
 					//get Identified person .
 					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
+					String nciIdentifier = null;
+					if (ip != null ) {
+						nciIdentifier = ip.getAssignedId().getExtension();
+					}
 					if (ip != null  & orgsForPerson.size()>0) {
-						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, ip.getAssignedId().getExtension(), orgsForPerson);
+						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, nciIdentifier, orgsForPerson);
 						remoteResearchStaffList.add(tempRemoteResearchStaff);
 					}
 					
