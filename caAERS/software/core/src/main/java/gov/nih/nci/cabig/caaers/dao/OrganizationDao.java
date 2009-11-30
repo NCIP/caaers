@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -141,7 +142,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     	if(organization.getId() == null && organization instanceof LocalOrganization){
     		Organization searchCriteria = new RemoteOrganization();
     		searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
-    		List<Organization> remoteOrganizations = (List)remoteSession.find(searchCriteria);
+    		List<Organization> remoteOrganizations = new ArrayList<Organization>();
+			try {
+				remoteOrganizations = (List)remoteSession.find(searchCriteria);
+			} catch (Exception e) {
+				log.warn("Error obtaining organizations from COPPA",e);
+			}
+			
     		if(remoteOrganizations != null && remoteOrganizations.size() > 0){
     			logger.error("Organization exists in external system");
     			throw new RuntimeException("Organization exists in external system");
@@ -196,7 +203,12 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     
     @SuppressWarnings("unchecked")
 	public List<Organization> getRemoteOrganizations(Organization searchCriteria){
-    	return (List)remoteSession.find(searchCriteria);
+    	try {
+			return (List)remoteSession.find(searchCriteria);
+		} catch (Exception e) {
+			log.warn("Error obtaining organizations from COPPA",e);
+			return new ArrayList<Organization>();
+		}
     }
 
 	@Required
