@@ -8,10 +8,12 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.semanticbits.coppa.infrastructure.RemoteSession;
 
 public class RemoteInvestigatorDaoHelper {
-	
+	private Logger log = Logger.getLogger(RemoteInvestigatorDaoHelper.class);
 	private InvestigatorDao investigatorDao;
 	
 	private OrganizationDao organizationDao;
@@ -30,7 +32,12 @@ public class RemoteInvestigatorDaoHelper {
 		si.setOrganization(org);
 		searchCriteria.getSiteInvestigators().add(si);
 		
-    	List<Investigator> remoteInvestigators = (List)remoteSession.find(searchCriteria); 
+    	List<Investigator> remoteInvestigators = new ArrayList<Investigator>();
+		try {
+			remoteInvestigators = (List)remoteSession.find(searchCriteria);
+		} catch (Exception e) {
+			log.warn("Error while invoking COPPA services", e);
+		} 
     	
     	//check for these investigators in database and save if not available .
     	

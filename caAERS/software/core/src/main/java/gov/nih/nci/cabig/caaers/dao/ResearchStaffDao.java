@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -127,8 +128,12 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
      */
     @SuppressWarnings("unchecked")
 	public List<ResearchStaff> getRemoteResearchStaff(final ResearchStaff researchStaff){
-    	List<ResearchStaff> remoteResearchStaffs = null;
-    	remoteResearchStaffs = (List)remoteSession.find(researchStaff);
+    	List<ResearchStaff> remoteResearchStaffs = new ArrayList<ResearchStaff>();
+    	try {
+			remoteResearchStaffs = (List)remoteSession.find(researchStaff);
+		} catch (Exception e) {
+			log.warn("Error while invoking COPPA", e);
+		}
     	return remoteResearchStaffs;
     }
     

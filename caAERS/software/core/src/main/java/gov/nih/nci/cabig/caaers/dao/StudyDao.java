@@ -360,7 +360,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
      */
     @Transactional(readOnly = false)
 	public List<Study> getExternalStudiesByExampleFromResolver(Study exampleStudy) {
-		List<Object> objectList = remoteSession.find(exampleStudy);
+		List<Object> objectList = new ArrayList<Object>();
+		try {
+			objectList = remoteSession.find(exampleStudy);
+		} catch (Exception e) {
+			log.warn("Error while invoking COPPA",e);
+		}
 		List<Study> studyList = new ArrayList<Study>();
 
 		for (Object object : objectList) {
