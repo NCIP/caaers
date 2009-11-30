@@ -19,7 +19,7 @@
 <c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED') or (reportStatus eq 'WITHDRAW_FAILED') or (reportStatus eq 'AMENDED') }" />
 
 <c:if test="${detailsEnabled}">
-	<span class="${_statusCSS }"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u class="${_statusCSS }" >${lastVersion.statusAsString}</u></i></a></span>
+	<span class="${_statusCSS }">${lastVersion.statusAsString}</span> (<a href="javascript:showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')">View server response</a>)
 	<div id="_table${theReport.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
         <div id="_ctx_${theReport.id}">
         <c:choose>
@@ -42,5 +42,5 @@
 </c:if>
 
 <c:if test="${not detailsEnabled}">
-	<span class="${_statusCSS }"><i>${lastVersion.statusAsString}</i></span>
+	<span class="${_statusCSS }">${lastVersion.statusAsString}</span>
 </c:if>

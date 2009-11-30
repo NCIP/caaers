@@ -57,31 +57,47 @@
 		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
 		<tags:tabForm tab="${tab}" flow="${flow}">
 			<jsp:attribute name="singleFields">
-				<div style="text-align:right;">
-					<a id="export-menu" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all">
-					<span class="ui-icon ui-icon-triangle-1-s"></span>
-					Export</a>
-				</div>
-				
+				<div id="actions-${command.aeReport.id}" style="display:none;">
+    						<ul>
+     							<c:set var="exportOptionsCount" value="0"/>
+     							<c:if test="${command.study.caaersXMLType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=xml'/>"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
+									<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+     							</c:if>
+     							<c:if test="${command.study.adeersPDFType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=pdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
+    		 						<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+								</c:if>
+     							<c:if test="${command.study.medwatchPDFType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=medwatchpdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
+     								<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+								</c:if>
+   			  					<c:if test="${command.study.dcpSAEPDFType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=dcp'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
+     								<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+								</c:if>
+     							<c:if test="${command.study.ciomsPDFType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=cioms'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
+     								<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+								</c:if>
+     							<c:if test="${command.study.ciomsSaePDFType}">
+     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=ciomssae'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
+     								<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+								</c:if>
+ 							</ul>
+						</div>
+					<c:if test="${exportOptionsCount > 0}">
+						<div style="text-align:right;">
+							<a id="export-menu" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all">
+							<span class="ui-icon ui-icon-triangle-1-s"></span>
+							Export</a>
+						</div>
+					</c:if>
                 <c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
                     <c:if test="${status.index == command.reportIndex}">
                         <c:set var="reportId" value="${report.id}"/>
                         <div id="reportStatusRowId">
-                            <div id="reportNameId" class="row">
-                                <div class="label">
-                                    Report Name
-                                </div>
-                                <c:if test="${command.lastVersion.reportStatus == 'COMPLETED' or command.lastVersion.reportStatus == 'INPROCESS'}">
-                                    <div id="report-link" style="display:none" class="value">
-                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>"><img src="<chrome:imageUrl name="../edit.png"/>" alt=""/> edit</a>)
-                                    </div>
-                                </c:if>
-                                <c:if test="${command.lastVersion.reportStatus == 'FAILED' or command.lastVersion.reportStatus == 'WITHDRAW_FAILED'}">
-                                    <div id="report-link" class="value">
-                                        ${report.reportDefinition.label} (<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}&report=${report.id}"/>"><img src="<chrome:imageUrl name="../edit.png"/>" alt=""/> edit</a>)
-                                    </div>
-                                </c:if>
-                            </div>
+                           
                             <c:if test="${report.reportDefinition.amendable == true}">
                                 <div class="row">
                                     <div class="label">
@@ -120,30 +136,6 @@
                         </div>
                     </c:if>
                 </c:forEach>
-		
-    					<div id="actions-${command.aeReport.id}" style="display:none;">
-    						<ul>
-     					
-     							<c:if test="${command.study.caaersXMLType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=xml'/>"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
-     							</c:if>
-     							<c:if test="${command.study.adeersPDFType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=pdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
-    		 					</c:if>
-     							<c:if test="${command.study.medwatchPDFType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=medwatchpdf'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
-     							</c:if>
-   			  					<c:if test="${command.study.dcpSAEPDFType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=dcp'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
-     							</c:if>
-     							<c:if test="${command.study.ciomsPDFType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=cioms'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
-     							</c:if>
-     							<c:if test="${command.study.ciomsSaePDFType}">
-     								<li><a href="<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}&reportId=${reportId}&format=ciomssae'/>"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
-     							</c:if>
- 							</ul>
-						</div>
     			<input type="hidden" name="_finish"/>		
 			</jsp:attribute>
 			<jsp:attribute name="tabControls">

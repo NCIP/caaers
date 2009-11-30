@@ -760,9 +760,13 @@ div.row.instructions div.value {
 
 .reportsCompleted {
 	color:green;
+	font-weight:bolder;
+	font-style:italic;
 }
 .reportsFailed, .reportsOverdue {
 	color:red;
+	font-weight:bolder;
+	font-style:italic;
 }
 .rulesMessageBottom {
 	background-color:#DBDFEC;

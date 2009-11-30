@@ -16,31 +16,40 @@
 	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 		<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
 			<chrome:division collapsable="true" title="${report.reportDefinition.label}" id="division-${report.id}">
-				<div style="text-align:right;">
-					<a id="export-menu-${report.id}" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Export</a>
-				</div>
 				<div id="options-export-menu-${report.id}" style="display:none;">
 					<ul>
+						<c:set var="exportOptionsCount" value="0"/>
 	                    <c:if test="${command.study.caaersXMLType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 	                    <c:if test="${command.study.adeersPDFType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 	                    <c:if test="${command.study.medwatchPDFType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=medwatchpdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export MedWatch 3500A PDF</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 	                    <c:if test="${command.study.dcpSAEPDFType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=dcp'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP SAE PDF</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 	                    <c:if test="${command.study.ciomsPDFType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=cioms'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export CIOMS PDF</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 	                    <c:if test="${command.study.ciomsSaePDFType}">
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
-	                    </c:if>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 					</ul>
 				</div>
+				<c:if test="${exportOptionsCount > 0}">
+					<div style="text-align:right;">
+						<a id="export-menu-${report.id}" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Export</a>
+					</div>
+				</c:if>
 				<div class="row">
 					<div class="leftpanel">
                         <div class="row">
