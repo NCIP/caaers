@@ -652,7 +652,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		for(String identifiedPersonXml: identifiedPersons){
 			identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonXml);
 			if (identifiedPerson.getAssignedId().getRoot().equals("Cancer Therapy Evaluation Program Person Identifier")) {
-				ctepIdentifier = identifiedPerson.getPlayerIdentifier().getExtension();
+				ctepIdentifier = identifiedPerson.getAssignedId().getExtension();
 			}
 		}
     	StudyInvestigator studyInvestigator = null;
