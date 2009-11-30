@@ -111,6 +111,7 @@ public class EditInvestigatorController extends InvestigatorController<Investiga
         			getInvestigatorRepository().save(investigator, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         			statusMessage = "Successfully updated Investigator";
         		}catch(MailException e){
+        			statusMessage = "Successfully updated Investigator";
         			emailSendingErrorMessage = "Could not send email to user.";
                     logger.error("Could not send email to user.", e);
         		}
