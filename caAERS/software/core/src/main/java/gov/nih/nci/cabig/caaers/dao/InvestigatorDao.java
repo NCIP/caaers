@@ -184,8 +184,12 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
      */
     @SuppressWarnings("unchecked")
 	public List<Investigator> getRemoteInvestigators(final Investigator investigator) {
-    	List<Investigator> remoteInvestigators = null;
-    	remoteInvestigators = (List)remoteSession.find(investigator);
+    	List<Investigator> remoteInvestigators = new ArrayList<Investigator>();
+    	try {
+			remoteInvestigators = (List)remoteSession.find(investigator);
+		} catch (Exception e) {
+			log.warn("Error while obtaining result from COPPA",e);
+		}
     	return remoteInvestigators;
     }
     
