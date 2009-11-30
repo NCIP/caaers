@@ -202,8 +202,30 @@ a#help:hover { text-decoration: underline; }
 1st LEVEL TABS
 
 */
-
-
+ul#sections li a {
+	background-image:url(../images/blue/first-lvl-tab.png);
+	float:left;
+	height:45px;
+	margin-right:-10px;
+	padding:18px 0;
+	text-align:center;
+	width:133px;
+	color:#fff;
+	text-decoration:none;
+	font-weight:bolder;
+}
+ul#sections li a:hover {
+	background-position:0px -45px;
+}
+ul#sections li a:active {
+	background-position:0px -90px;
+	color:#ccc;
+	padding:20px 0;
+}
+ul#sections li.selected a {
+	background-position:0px -135px;
+}
+/*
 a#firstlevelnav_listAdverseEventsController {
 	background-image: url(../images/blue/adverseEvents_btn.png);
 	height: 0px;
@@ -296,7 +318,7 @@ a#firstlevelnav_advancedSearchController:link { background-position:0px 0px; }
 a#firstlevelnav_advancedSearchController:hover, a#firstlevelnav_advancedSearchController.fthover { background-position:0px -45px; }
 a#firstlevelnav_advancedSearchController:active { background-position:0px -90px; }
 .selected a#firstlevelnav_advancedSearchController { background-position:0px -135px; }
-
+*/
 
 #sso-form { display: none }
 #build-name {
