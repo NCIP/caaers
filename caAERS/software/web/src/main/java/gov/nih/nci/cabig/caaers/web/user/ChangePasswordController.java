@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
@@ -44,7 +45,13 @@ public class ChangePasswordController extends SimpleFormController {
         		errors.reject(vError.getCode(), vError.getReplacementVariables(), vError.getMessage());
         	}
             return modelAndView.addObject("change_pwd_error", e.getErrors());
-        } 
+        } catch(CaaersNoSuchUserException e){
+        	errors.rejectValue("userName", "USR_015" , new Object[]{cmd.getUserName()} , "Username is invalid.");
+        	return modelAndView;
+        } catch(CaaersSystemException e){
+        	errors.reject("USR_016", "Invalid token.");
+        	return modelAndView;
+        }
     }
     
     @Override
