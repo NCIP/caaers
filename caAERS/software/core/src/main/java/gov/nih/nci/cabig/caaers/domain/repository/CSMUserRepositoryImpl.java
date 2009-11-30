@@ -185,9 +185,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
                     + "The caAERS Notification System.\n");
         }
     }
+    
     private void sendUpdateAccountEmail(User user){
-    	sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
+    	if ("local".equals(getAuthenticationMode())) {
+    		sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
+    	}
     }
+    
     private gov.nih.nci.security.authorization.domainobjects.User updateCSMUser(final User user) {
         String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
