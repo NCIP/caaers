@@ -206,7 +206,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "Short Title", studySearchableAjaxableDomainObjects.get(0).getShortTitle());
         assertEquals("Wrong match", "Phase II Trial", studySearchableAjaxableDomainObjects.get(0).getPhaseCode());
         assertEquals("Wrong match", "Active - Trial is open to accrual", studySearchableAjaxableDomainObjects.get(0).getStatus());
-        assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
+        assertEquals("Wrong match", "National Cancer Institute", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         List<StudySiteAjaxableDomainObject> studySites = studySearchableAjaxableDomainObjects.get(0).getStudySites();
         assertEquals("Wrong number of study sites will be returend if you are searching by participant also", 1, studySites.size());
         assertEquals("must return id of study site not the id of organization", Integer.valueOf(-1000), studySites.get(0).getId());
@@ -224,7 +224,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "Short Title", studySearchableAjaxableDomainObjects.get(0).getShortTitle());
         assertEquals("Wrong match", "Phase II Trial", studySearchableAjaxableDomainObjects.get(0).getPhaseCode());
         assertEquals("Wrong match", "Active - Trial is open to accrual", studySearchableAjaxableDomainObjects.get(0).getStatus());
-        assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
+        assertEquals("Wrong match", "National Cancer Institute", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         assertEquals("query works if you are not filtering by participanst also", 2, studySearchableAjaxableDomainObjects.get(0).getStudySites().size());
 
         // Partial  Identifier Value
@@ -239,7 +239,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "Short Title", studySearchableAjaxableDomainObjects.get(0).getShortTitle());
         assertEquals("Wrong match", "Phase II Trial", studySearchableAjaxableDomainObjects.get(0).getPhaseCode());
         assertEquals("Wrong match", "Active - Trial is open to accrual", studySearchableAjaxableDomainObjects.get(0).getStatus());
-        assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
+        assertEquals("Wrong match", "National Cancer Institute", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         assertEquals("query works if you are not filtering by participanst also", 2, studySearchableAjaxableDomainObjects.get(0).getStudySites().size());
 
         // Partial  Identifier value
@@ -283,7 +283,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "5432", studySearchableAjaxableDomainObjects.get(0).getExternalId());
         
         assertEquals("Wrong match", "Active - Trial is open to accrual", studySearchableAjaxableDomainObjects.get(0).getStatus());
-        assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
+        assertEquals("Wrong match", "National Cancer Institute", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         assertEquals("query works if you are not filtering by participanst also", 2, studySearchableAjaxableDomainObjects.get(0).getStudySites().size());
 
         studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
