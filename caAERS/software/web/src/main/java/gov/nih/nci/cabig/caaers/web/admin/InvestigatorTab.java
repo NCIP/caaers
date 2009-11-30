@@ -239,7 +239,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 					//login id should be unique. 
 					User anotherUser = csmUserRepository.getUserByName(command.getLoginId());
 					if(anotherUser != null && !ObjectUtils.equals(command.getId(), anotherUser.getId())){
-						errors.rejectValue("loginId","USR_001", "The loginId is in use.");
+						errors.rejectValue("loginId","USR_001", new Object[]{command.getLoginId()},"The loginId is in use.");
 					}
 				} catch (CaaersNoSuchUserException e) {
 				}
