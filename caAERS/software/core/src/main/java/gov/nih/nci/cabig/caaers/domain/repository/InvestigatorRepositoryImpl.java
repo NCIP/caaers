@@ -143,7 +143,15 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 			si.setOrganization(this.organizationDao.getById(Integer.parseInt(organization)));
 			searchCriteria.addSiteInvestigator(si);
 		}
-		List<Investigator> remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
+		List<Investigator> remoteInvestigators = null;
+		try{
+			remoteInvestigators = investigatorDao.getRemoteInvestigators(searchCriteria);
+		}catch(Exception e){
+			logger.warn("Error searching Investiagators from PO -- " + e.getMessage());
+		}
+		if(remoteInvestigators == null){
+			return localInvestigators;
+		}
 		return merge(localInvestigators,remoteInvestigators);
 	}
 	

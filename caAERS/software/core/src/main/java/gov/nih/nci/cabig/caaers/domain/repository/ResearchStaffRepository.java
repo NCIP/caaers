@@ -271,9 +271,16 @@ public class ResearchStaffRepository {
         	sr.setOrganization(org);
         	searchCriteria.addSiteResearchStaff(sr);
         }
-
-    	List<ResearchStaff> remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
         
+        List<ResearchStaff> remoteResearchStaffs = null;
+        try{
+        	remoteResearchStaffs = researchStaffDao.getRemoteResearchStaff(searchCriteria);
+        }catch(Exception e){
+        	logger.warn("Error searching ResearchStaff from PO -- " + e.getMessage());
+        }
+        if(remoteResearchStaffs == null){
+        	return siteResearchStaffs;
+        }
     	//return (siteResearchStaffs);
         return mergeLocalSiteResearchStaffAndRemoteResearchStaff(siteResearchStaffs,remoteResearchStaffs);
     }
