@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
@@ -234,11 +235,14 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	if(StringUtils.isEmpty(command.getLoginId())){
         		errors.rejectValue("loginId", "USR_014", "User name must not be empty, while allowed to login.");
         	}else{
-        		//login id should be unique. 
-        		User anotherUser = csmUserRepository.getUserByName(command.getLoginId());
-        		if(anotherUser != null && !ObjectUtils.equals(command.getId(), anotherUser.getId())){
-        			errors.rejectValue("loginId","USR_001", "The loginId is in use.");
-        		}
+        		try {
+					//login id should be unique. 
+					User anotherUser = csmUserRepository.getUserByName(command.getLoginId());
+					if(anotherUser != null && !ObjectUtils.equals(command.getId(), anotherUser.getId())){
+						errors.rejectValue("loginId","USR_001", "The loginId is in use.");
+					}
+				} catch (CaaersNoSuchUserException e) {
+				}
         	}
         	
         	if(StringUtils.isEmpty(command.getNciIdentifier())){
