@@ -91,7 +91,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         String sType, sText;
         String firstName = "";
         String lastName = "";
-        String nciInstituteCode = "";
+        String nciIdentifier = "";
         String organization = "";
 
         while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
@@ -99,8 +99,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
             sText = textToken.nextToken();
             if (sType.equals("firstName")) {
                 firstName = sText;
-            } else if (sType.equals("nciInstituteCode")) {
-            	nciInstituteCode = sText;
+            } else if (sType.equals("nciIdentifier")) {
+            	nciIdentifier = sText;
             } else if (sType.equals("lastName")) {
                 lastName = sText;
             } else if (sType.equals("organization")) {
@@ -110,7 +110,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	
         if(StringUtils.isEmpty(firstName) &&
         		StringUtils.isEmpty(lastName) &&
-        			StringUtils.isEmpty(nciInstituteCode) &&
+        			StringUtils.isEmpty(nciIdentifier) &&
         				StringUtils.isEmpty(organization)){
         	
         	return localInvestigators;
@@ -122,7 +122,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	if(StringUtils.isNotEmpty(lastName) && lastName.indexOf("%") != -1){
     		return localInvestigators;
     	}
-    	if(StringUtils.isNotEmpty(nciInstituteCode) && nciInstituteCode.indexOf("%") != -1){
+    	if(StringUtils.isNotEmpty(nciIdentifier) && nciIdentifier.indexOf("%") != -1){
     		return localInvestigators;
     	}
 		
@@ -137,7 +137,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		RemoteInvestigator searchCriteria = new RemoteInvestigator(); 
 		searchCriteria.setFirstName(firstName);
 		searchCriteria.setLastName(lastName);
-		searchCriteria.setNciIdentifier(nciInstituteCode);
+		searchCriteria.setNciIdentifier(nciIdentifier);
 		if(StringUtils.isNotEmpty(organization)){
 			SiteInvestigator si = new SiteInvestigator();
 			si.setOrganization(this.organizationDao.getById(Integer.parseInt(organization)));
