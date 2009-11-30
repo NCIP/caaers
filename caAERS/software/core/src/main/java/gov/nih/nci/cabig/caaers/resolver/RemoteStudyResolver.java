@@ -656,7 +656,6 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			}
 		}
     	StudyInvestigator studyInvestigator = null;
-    	//if(ctepIdentifier != null && StringUtils.isNotEmpty(ctepIdentifier)){
 		studyInvestigator = new StudyInvestigator();
     	studyInvestigator.setStartDate(DateUtils.today());
     	RemoteInvestigator remoteInvestigator = createRemoteInvestigator(coppaPerson, ctepIdentifier);
@@ -668,7 +667,6 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         remoteInvestigator.addSiteInvestigator(siteInvestigator);
         studyInvestigator.setSiteInvestigator(siteInvestigator);
         studyInvestigator.setRoleCode(roleCode);
-    	//}
         return studyInvestigator;
     }
 	
@@ -721,7 +719,9 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		remoteInvestigator.setLastName(lastName.trim());
 		remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
 		remoteInvestigator.setAllowedToLogin(Boolean.FALSE);
-		remoteInvestigator.setNciIdentifier(ctepIdentifier);
+		if(StringUtils.isNotEmpty(ctepIdentifier)){
+			remoteInvestigator.setNciIdentifier(ctepIdentifier);
+		}
 		return remoteInvestigator;
 
 	}
