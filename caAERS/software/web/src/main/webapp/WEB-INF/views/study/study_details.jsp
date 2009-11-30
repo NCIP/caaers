@@ -103,10 +103,10 @@
 
 		//populate the name of the associated organization in sponsor & coordinating center field
 		<c:if test="${not empty command.study.primaryFundingSponsorOrganization.fullName}">
-		    $('study.primaryFundingSponsorOrganization-input').value = '${command.study.primaryFundingSponsorOrganization.fullName}';
+		    $('study.primaryFundingSponsorOrganization-input').value = "${command.study.primaryFundingSponsorOrganization.fullName}";
 		</c:if>
 		<c:if test="${not empty command.study.studyCoordinatingCenter.organization.fullName}">
-		    $('study.studyCoordinatingCenter.organization-input').value = '${command.study.studyCoordinatingCenter.organization.fullName}';
+		    $('study.studyCoordinatingCenter.organization-input').value = "${command.study.studyCoordinatingCenter.organization.fullName}";
 		</c:if>
 	});
 
