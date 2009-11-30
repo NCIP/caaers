@@ -82,9 +82,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/createInvestigator"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchInvestigator"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>       
         <entry key="/pages/admin/viewInvestigator"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/createResearchStaff"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchResearchStaff"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/viewResearchStaff"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
