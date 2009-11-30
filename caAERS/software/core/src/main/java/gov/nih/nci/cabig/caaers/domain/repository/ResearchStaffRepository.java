@@ -251,7 +251,7 @@ public class ResearchStaffRepository {
             }
         }
     	
-        if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName)){
+        if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(organization)){
         	return siteResearchStaffs;
         }
     	if(StringUtils.isNotEmpty(firstName) && firstName.indexOf("%") != -1){
