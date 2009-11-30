@@ -213,7 +213,8 @@ public abstract class ResearchStaff extends User {
     public Date getActiveDate() {
         SortedSet<Date> dates = new TreeSet<Date>();
         for (SiteResearchStaff srs : this.getSiteResearchStaffs()) {
-            dates.add(srs.getActiveDate());
+        	Date activeDate = srs.getActiveDate();
+        	if(activeDate != null) dates.add(activeDate);
         }
         if (dates.size() > 0) return dates.first(); else return null;
     }
