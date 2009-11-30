@@ -20,6 +20,7 @@
 		fireAction('removeStudyPersonnel',selected);
   	 }
      function fireAction(action, selectedPersonnel){
+    	AE.formFieldModified=false;
 	    if(action == 'addStudyPersonnel'){
 		  
 	    }else{

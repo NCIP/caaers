@@ -29,6 +29,7 @@
   }
 
   function fireAction(action, selectedInvestigator){
+	  AE.formFieldModified=false;
       if (action == 'addInv') {
 
       } else {
