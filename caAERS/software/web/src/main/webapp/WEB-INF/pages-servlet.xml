@@ -233,8 +233,8 @@
 	  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Configure caAERS" p:linkName="configurationController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="createInvestigatorController"/>
-	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Investigator" p:linkName="searchInvestigatorController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Research Staff" p:linkName="searchResearchStaffController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import" p:linkName="importController"/>
 		    <!--
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
