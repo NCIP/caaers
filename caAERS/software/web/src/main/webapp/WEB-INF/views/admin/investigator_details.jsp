@@ -131,16 +131,17 @@ Event.observe(window, "load", function() {
 				 displayRemoteInvestigator();
 		}
 
-		if(${(command.id) gt 0} and not empty command.loginId){
-			$('allowedToLogin-row').style.display='none';
-		}
 
 		toggelUserName(${command.allowedToLogin});
-		
-		$('allowedToLogin').observe('click',function(evt){
-			var element = Event.element(evt);
-			toggelUserName(element.checked);
+		var allowedLoginChkBox = $('allowedToLogin');
+		if(allowedLoginChkBox){
+			allowedLoginChkBox.observe('click',function(evt){
+				var element = Event.element(evt);
+				toggelUserName(element.checked);
 			});
+		}
+		
+	
 		
 	});
 
@@ -194,12 +195,14 @@ Event.observe(window, "load", function() {
 		}
 	}
 
+//---------------------------------------------------------------------
+//will show/hide the userName row.
 	function toggelUserName(checkBoxChecked){
 		if(checkBoxChecked){
-			$('loginId-row').style.display='';
+			$('loginId-row').show();
 			
 		}else{
-			$('loginId-row').style.display='none';
+			$('loginId-row').hide();
 		}
 	}
 	
@@ -304,7 +307,7 @@ Event.observe(window, "load", function() {
 		    <c:forEach begin="5" end="7" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow field="${field}" />
             </c:forEach>
-            <tags:renderRow field="${fieldGroups.investigator.fields[8]}"/>
+            <tags:renderRow field="${fieldGroups.investigator.fields[8]}" style="display:none;"/>
 		</div>
 		<br>
 		<br>
