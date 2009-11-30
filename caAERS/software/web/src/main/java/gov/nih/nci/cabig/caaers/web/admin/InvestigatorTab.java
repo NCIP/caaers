@@ -195,7 +195,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputField faxNumberField = null;
         if (!remoteEntity) {
-        	faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", false);
+        	faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax",false);
         } else {
         	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",false);
         }
