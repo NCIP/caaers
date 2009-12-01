@@ -67,34 +67,38 @@ public class StudyRepository {
      */
     @Transactional(readOnly = false)
     public List<Object[]> search(AbstractAjaxableDomainObjectQuery query,String type,String text){
-    	
-    	if(text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)){
-        	Study study = new RemoteStudy();
-        	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
-        	
-        	if("st".equals(type) && !"".equals(text)){
-        		study.setShortTitle(text);
+
+    	try{
+        	if(text.indexOf("%") == -1 && StringUtils.isNotEmpty(text)){
+            	Study study = new RemoteStudy();
+            	Organization nciOrg = organizationDao.getByNCIcode(INSTITUTE_CODE);
+            	
+            	if("st".equals(type) && !"".equals(text)){
+            		study.setShortTitle(text);
+            	}
+            	
+            	if("idtf".equals(type) && !"".equals(text)){
+            		OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
+                    orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
+                    orgAssignedIdentifier.setValue(text.toUpperCase());
+                    study.addIdentifier(orgAssignedIdentifier);
+            	}
+            	
+                //Fetch studies from COPPA matching shortTitle or Identifier
+            	List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
+            	
+            	if(remoteStudies != null & remoteStudies.size() > 0 ){
+            		for(Study remoteStudy : remoteStudies){
+            			remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
+            			verifyAndSaveOrganizations(remoteStudy);
+            			verifyAndSaveInvestigators(remoteStudy);
+            		}
+            		//Save the studies returned from COPPA
+            		studyDao.saveRemoteStudies(remoteStudies);
+            	}
         	}
-        	
-        	if("idtf".equals(type) && !"".equals(text)){
-        		OrganizationAssignedIdentifier orgAssignedIdentifier = new OrganizationAssignedIdentifier();
-                orgAssignedIdentifier.setType(CoppaConstants.NCI_ASSIGNED_IDENTIFIER);
-                orgAssignedIdentifier.setValue(text.toUpperCase());
-                study.addIdentifier(orgAssignedIdentifier);
-        	}
-        	
-            //Fetch studies from COPPA matching shortTitle or Identifier
-        	List<Study> remoteStudies = studyDao.getExternalStudiesByExampleFromResolver(study);
-        	
-        	if(remoteStudies != null & remoteStudies.size() > 0 ){
-        		for(Study remoteStudy : remoteStudies){
-        			remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
-        			verifyAndSaveOrganizations(remoteStudy);
-        			verifyAndSaveInvestigators(remoteStudy);
-        		}
-        		//Save the studies returned from COPPA
-        		studyDao.saveRemoteStudies(remoteStudies);
-        	}
+    	}catch(Exception e){
+    		log.error("Error saving Remote Studies -- " + e.getMessage());
     	}
 
         //Perform normal search on caAERS DB & return results. 
