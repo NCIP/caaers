@@ -324,7 +324,7 @@ public class ResearchStaffRepository {
     				save(remoteResearchStaff,"URL");
     				remoteResearchStaff = researchStaffDao.getByExternalId(remoteResearchStaff.getExternalId());
     			} catch (MailException e) {
-    				e.printStackTrace();
+    				logger.error("Mail send exception --" + e.getMessage());
     			}
     			localList.addAll(remoteResearchStaff.getSiteResearchStaffs());        		
         	} else {
@@ -367,7 +367,7 @@ public class ResearchStaffRepository {
 					}
 					save(rs,"URL");
 	        	} catch (MailException e) {
-					e.printStackTrace();
+	        		logger.error("Mail send exception --" + e.getMessage());
 				}
 				
 				
@@ -407,7 +407,7 @@ public class ResearchStaffRepository {
     				remoteResearchStaff.setSiteResearchStaffs(srDBList);
     				save(remoteResearchStaff,"URL");
     			} catch (MailException e) {
-    				e.printStackTrace();
+    				logger.error("Mail send exception --" + e.getMessage());
     			}
 
         		//rs = researchStaffDao.getByEmailAddress(remoteResearchStaff.getEmailAddress());
