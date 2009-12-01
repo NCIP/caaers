@@ -670,6 +670,7 @@ This applicationContext contains the definition of the DAOs
         <property name="organizationDao" ref="organizationDao"></property>
         <property name="organizationRepository" ref="organizationRepository" />
         <property name="investigatorDao" ref="investigatorDao" />
+        <property name="workflowConfigDao" ref="workflowConfigDao" />
     </bean>
 
 
