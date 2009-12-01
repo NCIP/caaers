@@ -9,11 +9,15 @@ import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SiteResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.util.StringUtilities;
 
@@ -65,7 +69,7 @@ public class ResearchStaffRepository {
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void save(ResearchStaff researchStaff, String changeURL) {
-
+    	//authenticationMode = "webSSO";
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
     	/*
@@ -324,7 +328,48 @@ public class ResearchStaffRepository {
     			}
     			localList.addAll(remoteResearchStaff.getSiteResearchStaffs());        		
         	} else {
-        		// if it exist in local list , remote interceptor would have loaded the rest of the details .
+        		// if it exist in local list , remote interceptor would have loaded the rest of the details .but need to add orgs manually 
+        		List<SiteResearchStaff> srList = remoteResearchStaff.getSiteResearchStaffs();
+				
+				for (SiteResearchStaff sr:srList) {
+					Organization remoteOrganization = sr.getOrganization();
+					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+	    			if (organization == null) {
+	    				organizationRepository.create(remoteOrganization);
+	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
+	    			} 
+	    			SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+	    			siteResearchStaff.setOrganization(organization);
+	    			siteResearchStaff.setResearchStaff(remoteResearchStaff);
+	    			siteResearchStaff.setEmailAddress(remoteResearchStaff.getEmailAddress());
+	    			siteResearchStaff.setPhoneNumber(remoteResearchStaff.getPhoneNumber());
+	    			siteResearchStaff.setFaxNumber(remoteResearchStaff.getFaxNumber());
+	    			/*
+	    			SiteResearchStaffRole srs = new SiteResearchStaffRole();
+	    			srs.setRoleCode("caaers_study_cd");
+	    			srs.setStartDate(DateUtils.today());
+	    			srs.setSiteResearchStaff(dbSR);
+	    			dbSR.addSiteResearchStaffRole(srs);
+	    			*/
+	    			List<SiteResearchStaff> siDBList = rs.getSiteResearchStaffs();
+	    			boolean exists = false;
+	    			for (SiteResearchStaff srsd:siDBList){
+	    				if (srsd.getOrganization().getNciInstituteCode().equals(organization.getNciInstituteCode())) {
+	    					exists = true;
+	    					break;
+	    				}
+	    			}
+	    			if (!exists) {
+	    				rs.addSiteResearchStaff(siteResearchStaff);
+	    			}
+	    			
+	    			//srDBList.add(dbSR);
+				}
+				save(rs,"URL");
+				//rs.getSiteResearchStaffs().clear();
+				//rs.setSiteResearchStaffs(srDBList);
+				
+				
         		// local search may not find some the existing remote records , we make sure they are added to local list .
         		List<SiteResearchStaff> rsList = rs.getSiteResearchStaffs();
         		for (SiteResearchStaff srs:rsList) {
