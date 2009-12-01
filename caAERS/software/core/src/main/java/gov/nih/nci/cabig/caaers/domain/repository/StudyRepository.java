@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -253,13 +254,15 @@ public class StudyRepository {
     	StudyQuery query = null;
     	List<Study> studies = null;
     	for(SiteResearchStaff siteResearchStaff : researchStaff.getSiteResearchStaffs()){
-    		query = new StudyQuery();
-    		query.joinStudyOrganization();
-    		query.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
-    		studies = studyDao.find(query);
-    		for(Study study : studies){
-    			study.syncStudyPersonnel(researchStaff);
-    			studyDao.save(study);	
+    		if(BooleanUtils.isTrue(siteResearchStaff.getAssociateAllStudies())){
+        		query = new StudyQuery();
+        		query.joinStudyOrganization();
+        		query.filterByOrganizationId(siteResearchStaff.getOrganization().getId());
+        		studies = studyDao.find(query);
+        		for(Study study : studies){
+        			study.syncStudyPersonnel(researchStaff);
+        			studyDao.save(study);	
+        		}
     		}
     	}
     }
