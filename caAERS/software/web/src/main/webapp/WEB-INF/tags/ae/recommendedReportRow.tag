@@ -21,7 +21,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 	 <span id="dc-${aeReportId}-override" ><a href="#report-dc-${aeReportId}" onclick="overrideRecommendedActions('recommended-reports-dc-${aeReportId}','applicable-reports-dc-${aeReportId}',${aeReportId})" >Override</a></span>
 	</div>
 </div>
-<br><br>
+
 <a name="report-dc-${aeReportId}"></a>
 <div id="recommended-reports-dc-${aeReportId}" class="recommended-reports" style="${ empty recommendedTableRows ? 'display:none;' : ''}">
 <table width="100%" class="tablecontent">
