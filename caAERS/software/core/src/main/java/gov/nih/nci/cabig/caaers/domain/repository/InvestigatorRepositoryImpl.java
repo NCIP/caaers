@@ -206,43 +206,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         		//this.investigatorDao.save(remoteInvestigator);
         		localList.add(remoteInvestigator);
         	} else {
-        		try {
-    				List<SiteInvestigator> siList = remoteInvestigator.getSiteInvestigators();
-    				
-    				for (SiteInvestigator si:siList) {
-    					Organization remoteOrganization = si.getOrganization();
-    					Organization organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			if (organization == null) {
-    	    				organizationRepository.create(remoteOrganization);
-    	    				organization = organizationDao.getByNCIcode(remoteOrganization.getNciInstituteCode());
-    	    			} 
-    	    			SiteInvestigator siteInvestigator = new SiteInvestigator();
-    	    			siteInvestigator.setOrganization(organization);
-    	    			siteInvestigator.setStartDate(DateUtils.today());
-    	    			siteInvestigator.setInvestigator(remoteInvestigator);
-    	    			List<SiteInvestigator> siDBList = inv.getSiteInvestigators();
-    	    			boolean exists = false;
-    	    			for (SiteInvestigator sid:siDBList){
-    	    				if (sid.getOrganization().getNciInstituteCode().equals(organization.getNciInstituteCode())) {
-    	    					exists = true;
-    	    					break;
-    	    				}
-    	    			}
-    	    			if (!exists) {
-    	    				inv.addSiteInvestigator(siteInvestigator);
-    	    			}
-    	    			
-    	    			//siDBList.add(dbSI);
-    	    			
-    				}
-    				//inv.getSiteInvestigators().clear();
-    				//inv.setSiteInvestigators(siDBList);
-    				
-    				save(inv,"URL");
-    				
-    			} catch (MailException e) {
-    				e.printStackTrace();
-    			}
         		// if it exist in local list , remote interceptor would have loaded the rest of the details .
         		if (!localList.contains(inv)) {
         			localList.add(inv);
