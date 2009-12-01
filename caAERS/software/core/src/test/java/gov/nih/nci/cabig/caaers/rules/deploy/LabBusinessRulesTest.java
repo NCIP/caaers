@@ -187,7 +187,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
 
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].baseline.date", "aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.value", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].recovery.date", "aeReport.labs[" + i + "].recovery.value", "aeReport.labs[" + i + "].lab-category");
     }
 
     /**
@@ -232,7 +232,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
 
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].baseline.date", "aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.value", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].recovery.date", "aeReport.labs[" + i + "].recovery.value", "aeReport.labs[" + i + "].lab-category");
 
     }
 
@@ -304,7 +304,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
 
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].baseline.date", "aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].nadir.value");
         
     }
 
@@ -375,7 +375,7 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
 
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].lab-category");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].baseline", "aeReport.labs[" + i + "].baseline.date", "aeReport.labs[" + i + "].baseline.value", "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].nadir.value", "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].recovery.date", "aeReport.labs[" + i + "].recovery.value", "aeReport.labs[" + i + "].lab-category");
 
     }
 
@@ -479,8 +479,9 @@ public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase
 
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].nadir", "aeReport.labs[" + i + "].recovery");
-        
+
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.labs[" + i + "].nadir",  "aeReport.labs[" + i + "].nadir.value",  "aeReport.labs[" + i + "].nadir.date", "aeReport.labs[" + i + "].recovery", "aeReport.labs[" + i + "].recovery.date", "aeReport.labs[" + i + "].recovery.value");
+
     }
 
     /**
