@@ -160,7 +160,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputField ncidIdField = null;
 
-        if(command.getNciIdentifier() != null && StringUtils.isNotEmpty(command.getNciIdentifier())){
+        if(remoteEntity){
         	ncidIdField = InputFieldFactory.createLabelField("nciIdentifier", "Investigator number", false);
         }else{
         	ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false);
@@ -174,33 +174,15 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         InputFieldAttributes.setLabelProperty(allowToLoginField, "investigator.allowedToLogin");
         investigatorFieldGroup.getFields().add(allowToLoginField);
         
-        InputField emailAddressField = null;
-        if (!remoteEntity) {
-        	emailAddressField = InputFieldFactory.createEmailField("emailAddress",
-                "Email address", true);
-        } else {
-        	emailAddressField = InputFieldFactory.createLabelField("emailAddress",
-                    "Email address", true);
-        }
+        InputField emailAddressField = emailAddressField = InputFieldFactory.createEmailField("emailAddress","Email address", true);
+        
         // InputFieldAttributes.setSize(emailAddressField, 30);
         investigatorFieldGroup.getFields().add(emailAddressField);
         
-        InputField phoneNumberField = null;
-        if (!remoteEntity) {
-        	phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
-        } else {
-        	phoneNumberField = InputFieldFactory.createLabelField("phoneNumber", "Phone", true);
-        }                
+        InputField phoneNumberField = phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", false);
         investigatorFieldGroup.getFields().add(phoneNumberField);
         
-        InputField faxNumberField = null;
-        if (!remoteEntity) {
-        	faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax",false);
-        } else {
-        	faxNumberField = InputFieldFactory.createLabelField("faxNumber", "Fax",false);
-        }
-        
-        // InputFieldAttributes.setSize(faxNumberField, 30);
+        InputField faxNumberField = faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax",false);
         investigatorFieldGroup.getFields().add(faxNumberField);
         
         InputField loginIdField = null;
@@ -245,16 +227,17 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 				}
         	}
         	
-        	if(StringUtils.isNotEmpty(command.getNciIdentifier())){
-        		InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-                investigatorQuery.filterByNciIdentifierExactMatch(command.getNciIdentifier());
-                investigatorQuery.filterByDifferentInvestigatorId(command.getId());
-                List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
-                if(investigatorList.size() > 1){
-                	errors.rejectValue("nciIdentifier", "USR_013", "Investigator number must be unique");
-                }
-        	}
-        	
+        	// Check if there is another investigator with same primary email-address.
+            InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+            investigatorQuery.filterByEmailAddress(command.getEmailAddress());
+            List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
+            
+            if(investigatorList.size() > 1)
+            	errors.rejectValue("emailAddress", "USR_010");
+            
+            if(investigatorList.size() == 1 && command.getId() == null){
+            	errors.rejectValue("emailAddress", "USR_010");
+            }
         	
         }
         
@@ -276,17 +259,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         	}
         }
         
-        // Check if there is another investigator with same primary email-address.
-        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-        investigatorQuery.filterByEmailAddress(command.getEmailAddress());
-        List<Investigator> investigatorList = investigatorRepository.searchInvestigator(investigatorQuery);
-        
-        if(investigatorList.size() > 1)
-        	errors.rejectValue("emailAddress", "USR_010");
-        
-        if(investigatorList.size() == 1 && command.getId() == null){
-        	errors.rejectValue("emailAddress", "USR_010");
-        }
+     
        */
         
         List<SiteInvestigator> investigators = command.getSiteInvestigators();
