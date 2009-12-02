@@ -54,4 +54,8 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
 	public boolean isAuthenticationModeLocal(){
 		return StringUtils.equalsIgnoreCase("local", authenticationMode);
 	}
+	
+	public boolean isAuthenticationModeWebSSO(){
+		return StringUtils.equalsIgnoreCase("webSSO", authenticationMode);
+	}
 }
