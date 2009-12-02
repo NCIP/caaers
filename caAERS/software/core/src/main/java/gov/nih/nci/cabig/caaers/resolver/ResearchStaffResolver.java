@@ -414,7 +414,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 					if (ip != null ) {
 						nciIdentifier = ip.getAssignedId().getExtension();
 					}
-					if (ip != null  & orgsForPerson.size()>0) {
+					if (orgsForPerson.size()>0) {
 						tempRemoteResearchStaff = populateRemoteResearchStaffWithIdentfiedOrgs(person, nciIdentifier, orgsForPerson);
 						remoteResearchStaffList.add(tempRemoteResearchStaff);
 					}
