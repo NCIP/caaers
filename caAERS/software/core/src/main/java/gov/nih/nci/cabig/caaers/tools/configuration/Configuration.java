@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperties;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.cabig.ctms.tools.configuration.DatabaseBackedConfiguration;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
 
@@ -48,5 +50,9 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
 
 	public void setAuthenticationMode(String authenticationMode) {
 		this.authenticationMode = authenticationMode;
+	}
+	public boolean isAuthenticationModeLocal(){
+		if(true) return true;
+		return StringUtils.equalsIgnoreCase("local", authenticationMode);
 	}
 }

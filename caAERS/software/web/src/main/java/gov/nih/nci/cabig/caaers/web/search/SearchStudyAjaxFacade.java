@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -47,6 +48,10 @@ import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
+import org.extremecomponents.table.limit.Limit;
+import org.extremecomponents.table.limit.LimitFactory;
+import org.extremecomponents.table.limit.TableLimit;
+import org.extremecomponents.table.limit.TableLimitFactory;
 import org.extremecomponents.table.view.CsvView;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -98,10 +103,14 @@ public class SearchStudyAjaxFacade {
         table.setTitle("");
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setSortable(true);
         table.setShowPagination(true);
         model.addTable(table);
 
@@ -156,11 +165,15 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
+
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Row row = model.getRowInstance();
@@ -191,11 +204,14 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Row row = model.getRowInstance();
@@ -241,11 +257,14 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Row row = model.getRowInstance();
@@ -295,9 +314,9 @@ public class SearchStudyAjaxFacade {
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(true);
+        
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -360,11 +379,14 @@ public class SearchStudyAjaxFacade {
         table.setShowExports(true);
         table.setOnInvokeAction("buildTable('searchForm')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -446,8 +468,12 @@ public class SearchStudyAjaxFacade {
         table.setTitle("");
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
         table.setShowPagination(true);
@@ -1064,11 +1090,7 @@ public class SearchStudyAjaxFacade {
         }
 
         TableModel model = new TableModelImpl(context);
-        // LimitFactory limitFactory = new TableLimitFactory(context);
-        // Limit limit = new TableLimit(limitFactory);
-        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
-        // model.setLimit(limit);
-
+        
         try {
             return buildInvestigator(model, investigators).toString();
         }
@@ -1306,11 +1328,12 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(true);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
