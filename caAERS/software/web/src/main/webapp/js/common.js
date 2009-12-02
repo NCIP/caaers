@@ -534,6 +534,7 @@ Object.extend(ListEditor.prototype, {
 function showTable(table) {
 	$('indicator').className='indicator'
 	document.getElementById('tableDiv').innerHTML=table;
+    hideCoppaSearchDisclaimer();
 }
 
 function copyValues(select,prop){
@@ -868,7 +869,7 @@ function showCoppaSearchDisclaimer(){
 			('coppa-search-disclaimer').show();
 		}
 	}catch(e){
-		
+
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------
@@ -876,6 +877,6 @@ function hideCoppaSearchDisclaimer(){
 	try{
 		('coppa-search-disclaimer').hide();
 	}catch(e){
-		
+
 	}
 }
