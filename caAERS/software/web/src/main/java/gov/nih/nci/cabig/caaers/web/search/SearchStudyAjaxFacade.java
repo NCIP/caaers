@@ -101,6 +101,7 @@ public class SearchStudyAjaxFacade {
         table.setVar("study");
         table.setAction(model.getContext().getContextPath() + "/pages/search/study");
         table.setTitle("");
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         //only support filtering & sorting in local authentication mode. 
@@ -111,7 +112,7 @@ public class SearchStudyAjaxFacade {
         }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        
         model.addTable(table);
 
         Export export = model.getExportInstance();
