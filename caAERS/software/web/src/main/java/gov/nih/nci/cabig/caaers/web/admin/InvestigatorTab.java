@@ -245,9 +245,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 				}
         	}
         	
-        	if(StringUtils.isEmpty(command.getNciIdentifier())){
-        		errors.rejectValue("nciIdentifier","USR_012", "Investigator number must be provided");
-        	}else{
+        	if(StringUtils.isNotEmpty(command.getNciIdentifier())){
         		InvestigatorQuery investigatorQuery = new InvestigatorQuery();
                 investigatorQuery.filterByNciIdentifierExactMatch(command.getNciIdentifier());
                 investigatorQuery.filterByDifferentInvestigatorId(command.getId());
