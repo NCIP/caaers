@@ -7,7 +7,8 @@
 <script>
 
 function buildTable(form) {
-	$('indicator').className=''
+	$('indicator').className='';
+	showCoppaSearchDisclaimer();
 	var type = "";
 	var text = "";
 
@@ -65,6 +66,7 @@ function buildTable(form) {
         	<div class="value">
         		<tags:button type="button" value="Search" color="blue" icon="search" onclick="buildTable('assembler');" size="small"/>
 	            <tags:indicator id="indicator" />
+	            <span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;"><caaers:message code="coppa.search.message" /></span>
         	</div>
            </div>
    </chrome:box>
