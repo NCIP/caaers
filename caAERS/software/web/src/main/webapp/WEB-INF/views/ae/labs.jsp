@@ -29,27 +29,27 @@
 		  	this.otherProperty = this.baseName + '.other';
 		  	this.categoryProperty = $(this.baseName + '.lab-category');
 		  	this.isTriggerOnLoad ;
-		  	
-		  	
-		  	if(this.categoryId){
-		  		for (i=0; i < this.categoryInput.options.length; i++){
-		  			if (this.categoryInput.options[i].value == this.categoryId){
-		  				this.categoryInput.options[i].selected=true;
-		  				
-		  				if (this.categoryInput.options[i].value == "105"){
-		  						AE.slideAndHide($('not-microbiology-'+index))
-		  						AE.slideAndShow($('microbiology-'+index))
-		  						
-		  					}else{		  						
-		  						
-		  					}		
-		  				break
-		  			}	
-		  		}
-		  	}
-		  	
-		  	
-		  	$(this.testName).observe("change",this.updateLabOther.bind(this))
+
+
+              if (this.categoryId) {
+                  for (i = 0; i < this.categoryInput.options.length; i++) {
+                      if (this.categoryInput.options[i].value == this.categoryId) {
+                          this.categoryInput.options[i].selected = true;
+
+                          if (this.categoryInput.options[i].value == "105") {
+                              AE.slideAndHide($('not-microbiology-' + index))
+                              AE.slideAndShow($('microbiology-' + index))
+                          } else {
+                              AE.slideAndShow($('not-microbiology-' + index))
+                              AE.slideAndHide($('microbiology-' + index))
+                          }
+                          break
+                      }
+                  }
+              }
+
+
+            $(this.testName).observe("change", this.updateLabOther.bind(this))
 		  	$(this.categoryInput).observe("change",this.updateTermDropDown.bind(this))
 		  	
 		  	AE.registerCalendarPopups("lab-" + this.index)
@@ -85,37 +85,55 @@
 		  	this.isTriggerOnLoad = (onload == true) ? true : false;
 		  	catId= $F(this.categoryProperty)
 		   	createAE.getLabTermsByCategory( catId ,this.populateTermDropDown.bind(this));
+              
 		  },
 		  
 		  updateLabOther: function() {
-		  	catId= $F(this.categoryProperty)
-		   	var isNOS = $(this.testName).options[1].selected 
-		   	if(isNOS){
-					$(this.testName).options[1].selected=true
-					AE.slideAndShow(this.otherProperty + "-row")
-		   	}else{
-					$(this.otherProperty).value="";
-					AE.slideAndHide(this.otherProperty + "-row")
-		   	}
-		   	if (catId == "105"){
-				AE.slideAndHide($('not-microbiology-'+this.index))
-				AE.slideAndShow($('microbiology-'+this.index))
-				$(this.baseName + '.units').options[0].selected=true
-				$(this.baseName + '.baseline.value').value=""
-				$(this.baseName + '.baseline.date').value=""
-				$(this.baseName + '.nadir.value').value=""
-				$(this.baseName + '.nadir.date').value=""
-				$(this.baseName + '.recovery.value').value=""
-				$(this.baseName + '.recovery.date').value=""
-			}else{
-				if ($('not-microbiology-'+this.index).style.display != ""){
-				$(this.baseName + '.site').value=""
-				$(this.baseName + '.labDate').value=""
-				$(this.baseName + '.infectiousAgent').value=""
-				AE.slideAndHide($('microbiology-'+this.index))
-				AE.slideAndShow($('not-microbiology-'+this.index))
-				}
-			}
+
+              catId = $F(this.categoryProperty)
+              var isNOS = $(this.testName).options[1].selected
+              if (isNOS) {
+                  $(this.testName).options[1].selected = true
+                  AE.slideAndShow(this.otherProperty + "-row")
+
+                  if (catId == 0) {
+/*
+                      AE.slideAndShow($('microbiology-' + this.index))
+                      AE.slideAndShow($('not-microbiology-' + this.index))
+*/
+                  }
+              } else {
+                  $(this.otherProperty).value = "";
+                  AE.slideAndHide(this.otherProperty + "-row")
+              }
+
+              // 105 - microbiology
+              if (catId > 0) {
+                  if (catId == "105") {
+                      AE.slideAndHide($('not-microbiology-' + this.index))
+                      AE.slideAndShow($('microbiology-' + this.index))
+                      $(this.baseName + '.units').options[0].selected = true
+                      $(this.baseName + '.baseline.value').value = ""
+                      $(this.baseName + '.baseline.date').value = ""
+                      $(this.baseName + '.nadir.value').value = ""
+                      $(this.baseName + '.nadir.date').value = ""
+                      $(this.baseName + '.recovery.value').value = ""
+                      $(this.baseName + '.recovery.date').value = ""
+                  } else {
+                      if ($('not-microbiology-' + this.index).style.display != "") {
+                          $(this.baseName + '.site').value = ""
+                          $(this.baseName + '.labDate').value = ""
+                          $(this.baseName + '.infectiousAgent').value = ""
+                          AE.slideAndHide($('microbiology-' + this.index))
+                          AE.slideAndShow($('not-microbiology-' + this.index))
+                      }
+                  }
+              } else {
+                  AE.slideAndShow($('microbiology-' + this.index))
+                  AE.slideAndShow($('not-microbiology-' + this.index))
+              }
+
+              // alert(catId);
 		  },
 		  
 		  initializeLabOrOther: function() {
