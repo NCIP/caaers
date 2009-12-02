@@ -21,16 +21,25 @@ import org.apache.commons.logging.LogFactory;
 import org.iso._21090.II;
 
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
+import com.semanticbits.coppasimulator.util.CoppaPAObjectFactory;
 
 public abstract class BaseResolver {
 	
 	private MessageBroadcastService messageBroadcastService;
+	private Integer personSearchLimitOffset;
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 
-	public String broadcastPersonSearch(String iiXml) throws Exception{
+	public String broadcastPersonSearch(String personXml) throws Exception{
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
-        Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.PERSON.getName());
-		return broadcastCOPPA(iiXml, mData);
+        Metadata mData = new Metadata("query",  "externalId", ServiceTypeEnum.PERSON.getName());
+        List<String> payLoads = new ArrayList<String>();
+        if (personSearchLimitOffset == null) {
+        	personSearchLimitOffset = 200;
+        }
+        String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(personSearchLimitOffset, 0);
+		payLoads.add(personXml);
+		payLoads.add(limitOffsetPayload);        
+		return broadcastCOPPA(payLoads, mData);
 
 	}
 	
@@ -188,6 +197,10 @@ public abstract class BaseResolver {
 	
 	public void setMessageBroadcastService(MessageBroadcastService messageBroadcastService) {
 		this.messageBroadcastService = messageBroadcastService;
+	}
+
+	public void setPersonSearchLimitOffset(Integer personSearchLimitOffset) {
+		this.personSearchLimitOffset = personSearchLimitOffset;
 	}
 	
 }
