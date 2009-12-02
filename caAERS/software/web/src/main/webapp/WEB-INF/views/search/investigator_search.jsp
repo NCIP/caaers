@@ -35,6 +35,7 @@
             var parameterMap = getParameterMap(form);
             search.getInvestigatorTable(parameterMap, type, text, showTable);
             $('bigSearch').show();
+            hideCoppaSearchDisclaimer();
         }
 
     </script>
