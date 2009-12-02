@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDo
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
@@ -93,11 +94,15 @@ public class SearchStudyAjaxFacade {
         table.setItems(studySearchableAjaxableDomainObjects);
         table.setAction(model.getContext().getContextPath() + "/assembler.run");
         table.setTitle("");
-        table.setShowPagination(true);
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(true);
-        table.setSortable(false);
+        //only support filtering & sorting in local authentication mode. 
+        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
+        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
+        	table.setRowsDisplayed(100);
+        }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
         table.setAutoIncludeParameters(false);
