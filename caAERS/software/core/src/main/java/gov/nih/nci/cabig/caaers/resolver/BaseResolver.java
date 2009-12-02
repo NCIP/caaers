@@ -26,21 +26,18 @@ import com.semanticbits.coppasimulator.util.CoppaPAObjectFactory;
 public abstract class BaseResolver {
 	
 	private MessageBroadcastService messageBroadcastService;
-	private Integer personSearchLimitOffset;
+
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 
 	public String broadcastPersonSearch(String personXml) throws Exception{
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
         Metadata mData = new Metadata("query",  "externalId", ServiceTypeEnum.PERSON.getName());
         List<String> payLoads = new ArrayList<String>();
-        if (personSearchLimitOffset == null) {
-        	personSearchLimitOffset = 200;
-        }
-        String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(personSearchLimitOffset, 0);
+        int limit = 500;
+        String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(limit, 0);
 		payLoads.add(personXml);
 		payLoads.add(limitOffsetPayload);        
 		return broadcastCOPPA(payLoads, mData);
-
 	}
 	
 	public IdentifiedOrganization getIdentifiedOrganization(gov.nih.nci.coppa.po.Organization coppaOrganization){
@@ -199,8 +196,5 @@ public abstract class BaseResolver {
 		this.messageBroadcastService = messageBroadcastService;
 	}
 
-	public void setPersonSearchLimitOffset(Integer personSearchLimitOffset) {
-		this.personSearchLimitOffset = personSearchLimitOffset;
-	}
 	
 }
