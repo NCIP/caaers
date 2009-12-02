@@ -48,6 +48,9 @@ AE.SESSION_TIME_OUT_WARNING = ${empty configuration.map.httpSessionWarning ? '10
 AE.SESSION_TIME_OUT_WAIT= ${empty configuration.map.httpSessionWarningWait ? '2' : configuration.map.httpSessionWarningWait} * 60;
 
 AE.UNSAVED_DATA_MESSAGE='${_unsavedInfoMsg}';
+
+AE.WEBSSO_AUTHENTICATION_MODE = ${configuration.authenticationModeWebSSO};
+
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
