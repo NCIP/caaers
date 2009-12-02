@@ -6,6 +6,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <html>
 <head>
