@@ -160,9 +160,9 @@ function removeSystemIdentifier(container, index) {
 </chrome:division>
 
 <chrome:division title="Demographic Information" collapsed="false" collapsable="false" id="DemoInfo">
-<table id="test2" class="single-fields" width="100%">
-    <tr >
-        <td>
+<div id="test2" class="single-fields row">
+
+        <div class="leftpanel">
             <c:if test="${!unidentifiedMode}">
 
 		    <ui:row path="participant.firstName">
@@ -202,8 +202,8 @@ function removeSystemIdentifier(container, index) {
                 <jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true"/></jsp:attribute>
             </ui:row>
             </c:if>
-        </td>
-        <td>
+        </div>
+        <div class="rightpanel">
             <div class="row" id="participant.dateOfBirth-row">
                 <div class="label"><tags:renderLabel field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
                 <div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[!unidentifiedMode ? 4 : 0]}"/></div>
@@ -214,9 +214,9 @@ function removeSystemIdentifier(container, index) {
             <c:forEach begin="${_start}" end="${_end}" items="${fieldGroups.participant.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
-        </td>
-    </tr>
-</table>
+        </div>
+
+</div>
 </chrome:division>
 
 <c:if test="${!unidentifiedMode}">
