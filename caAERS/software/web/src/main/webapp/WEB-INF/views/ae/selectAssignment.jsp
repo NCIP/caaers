@@ -18,9 +18,19 @@
         }
         
         #criteria-div{
-          width: 70%;
-          margin-left: 10em;
+          width: 80%;
+          margin-left: 8em;
         }
+		.selection {
+			background:#dbe9ff;
+			border:1px solid #6e8bb8;
+			color:#2a4876;
+			font-style:italic;
+			width:449px;
+			margin-top:5px;
+			margin-bottom:15px;
+			padding:3px;
+		}
     </style>
     
     <tags:dwrJavascriptLink objects="createAE,captureAE"/>
@@ -121,7 +131,7 @@
         		$('end-date-value').innerHTML = course.endDate;
         		$('cycle-number-value').innerHTML = course.cycleNumber;
         		$('treatment-assignment-value').innerHTML = course.tacCode;
-        		$('treatment-description-value').innerHTML = '<b>Treatment description</b>&nbsp;&nbsp;&nbsp;&nbsp;' + course.tacDescription;
+        		$('treatment-description-value').innerHTML = '<div class="label">Treatment description</div> <div class="value">' + course.tacDescription + '</div>';
         	});
         },
         
@@ -267,65 +277,87 @@
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
     <div class="autoclear" id="criteria-div">
-    	<chrome:box title="Select study" id="study-entry" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
-            <form:hidden path="study"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-			<a id="study-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            <tags:indicator id="study-indicator"/>
-            <tags:errors path="study"/>
-            <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">
-                You have selected the study <span id="study-selected-name"></span>.
-            </p>
-        </chrome:box>
+    	<chrome:box title="Select study, subject, and course/cycle" id="study-entry">
+    		<div class="row">
+	            <%--<tags:instructions code="instruction_ae_select_study"/>--%>
+	            <form:hidden path="study"/>
+				<div class="label">
+	            	<tags:requiredIndicator/> Study
+				</div>
+				<div class="value">
+		            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
+					<a id="study-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
+		            <tags:indicator id="study-indicator"/>
+		            <tags:errors path="study"/>
+		            <div id="study-choices" class="autocomplete"></div>
+				</div>
+	            <div class="value selection" id="study-selected" style="display: none">
 
-        <chrome:box title="Select subject" id="participant-entry" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_subject"/></p>
-            <form:hidden path="participant"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
-            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
-            <tags:indicator id="participant-indicator"/>
-            <div id="participant-choices" class="autocomplete"></div>
-            <tags:errors path="participant"/>
-            <p id="participant-selected" style="display: none">
-                You have selected the subject <span id="participant-selected-name"></span>.
-            </p>
-        </chrome:box>
-        
-        <chrome:box title="Select course/cycle" id="course-entry" autopad="true">
-			<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
-			<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
-        	<p><tags:instructions code="instruction_ae_select_course"/></p>
-        	<form:hidden path="adverseEventReportingPeriod" />
-        	<tags:requiredIndicator/>
-        	<select id="course-input" style="width:20em" class="required">
-				<option value="">Please select</option>
-			</select>
-            <tags:button id="edit_button" type="button" value="Edit" color="blue" icon="edit" size="small"/>
+	                	You have selected the study <span id="study-selected-name"></span>.
 
-            <div id="course-details" style="display:none">
-				<table width="100%">
-					<tr>
-						<td width="20%" align="right"><b>Start date</b></td>
-						<td width="30%" align="left" id="start-date-value"/>
-						<td width="15%" align="right"><b>End date</b></td>
-						<td width="35%" align="left" id="end-date-value"/>
-					</tr>
-					<tr>
-						<td width="15%" align="right"><b>Cycle #</b></td>
-						<td width="35%" align="left" id="cycle-number-value"/>
-						<td width="20%" align="right"><b>Treatment code</b></td>
-						<td width="30%" align="left" id="treatment-assignment-value"/>
-					</tr>
-					<tr>
-						<td width="100%" align="left" id="treatment-description-value" colspan="4"/>
-					</tr>
-				</table>
+				</div>
 			</div>
-			<tags:errors path="adverseEventReportingPeriod"/>
+			<div class="row">
+	            <%--<tags:instructions code="instruction_ae_select_subject"/>--%>
+	            <form:hidden path="participant"/>
+				<div class="label">
+	            	<tags:requiredIndicator/> Subject
+				</div>
+				<div class="value">
+		            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
+		            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
+		            <tags:indicator id="participant-indicator"/>
+		            <div id="participant-choices" class="autocomplete"></div>
+		            <tags:errors path="participant"/>
+				</div>
+			
+            <div class="value selection" id="participant-selected" style="display: none">
+
+            		You have selected the subject <span id="participant-selected-name"></span>.
+
+            </div>
+			</div>
+			<div class="row">
+				
+	        	<%--<tags:instructions code="instruction_ae_select_course"/>--%>
+	        	<form:hidden path="adverseEventReportingPeriod" />
+				<div class="label">
+	        		<tags:requiredIndicator/> Course/cycle
+				</div>
+				<div class="value">
+	        	<select id="course-input" style="width:20em" class="required">
+					<option value="">Please select</option>
+				</select>
+			
+	            <tags:button id="edit_button" type="button" value="Edit" color="blue" icon="edit" size="small"/>
+				<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
+				<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
+				</div>
+	            <div id="course-details" class="value selection" style="display:none">
+					<div class="row">
+							<div class="label">Start date</div>
+							<div class="value" id="start-date-value"></div>
+						</div>	
+						<div class="row">
+							<div class="label">End date</div>
+							<div class="value" id="end-date-value"></div>
+						</div>	
+						<div class="row">
+							<div class="label">Cycle #</div>
+							<div class="value" id="cycle-number-value"></div>
+						</div>	
+						<div class="row">
+							<div class="label">Treatment code</div>
+							<div class="value" id="treatment-assignment-value"></div>
+						</div>
+						<div class="row" id="treatment-description-value">
+
+						</div>
+					</div>
+				</div>
+				<tags:errors path="adverseEventReportingPeriod"/>
+				
+			</div>
         </chrome:box>
     </div>
     <c:choose>

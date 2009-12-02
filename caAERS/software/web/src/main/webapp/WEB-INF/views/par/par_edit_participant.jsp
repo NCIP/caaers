@@ -228,6 +228,7 @@ function removeSystemIdentifier(container, index) {
         <th class="tableHeader" width="20%"><tags:requiredIndicator />Identifier</th>
         <th class="tableHeader" width="20%"><tags:requiredIndicator />Identifier type</th>
         <th class="tableHeader" width="40%"><tags:requiredIndicator />Organization</th>
+		<th width="1%"> </th>
     </tr>
 
     <tbody id="addOrganizationIdentifierDiv">
@@ -258,6 +259,7 @@ function removeSystemIdentifier(container, index) {
         <th  class="tableHeader" width="20%"><tags:requiredIndicator />Identifier</th>
         <th  class="tableHeader" width="20%"><tags:requiredIndicator />Identifier type</th>
         <th  class="tableHeader" width="40%"><tags:requiredIndicator />System name</th>
+		<th width="1%"> </th>
     </tr>
 
     <tbody id="addSystemIdentifierDiv">
