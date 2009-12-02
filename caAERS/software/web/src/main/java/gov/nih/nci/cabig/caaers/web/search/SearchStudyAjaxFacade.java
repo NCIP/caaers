@@ -111,7 +111,7 @@ public class SearchStudyAjaxFacade {
         }
         table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
 
-        table.setShowPagination(true);
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -162,7 +162,7 @@ public class SearchStudyAjaxFacade {
         table.setItems(organization);
         table.setAction(model.getContext().getContextPath() + "/pages/admin/editOrganization");
         table.setTitle("");
-        table.setShowPagination(true);
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         //only support filtering & sorting in local authentication mode. 
@@ -201,7 +201,7 @@ public class SearchStudyAjaxFacade {
         table.setItems(investigators);
         table.setAction(model.getContext().getContextPath() + "/pages/admin/editInvestigator");
         table.setTitle("");
-        table.setShowPagination(true);
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         //only support filtering & sorting in local authentication mode. 
@@ -254,7 +254,7 @@ public class SearchStudyAjaxFacade {
         table.setItems(siteResearchStaffs);
         table.setAction(model.getContext().getContextPath() + "/pages/admin/editResearchStaff");
         table.setTitle("");
-        table.setShowPagination(true);
+        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         //only support filtering & sorting in local authentication mode. 
