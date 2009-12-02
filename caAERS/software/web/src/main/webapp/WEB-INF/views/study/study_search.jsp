@@ -33,6 +33,7 @@ function buildTable(form) {
 
 //		//showing indicator and hiding pervious results. (#10826)
 		$('indicator').className='';
+		showCoppaSearchDisclaimer();
 	//	$('assembler_table').hide();  //do not hide the results..becz filter string get disappear
         var parameterMap = getParameterMap(form);
 
@@ -87,6 +88,7 @@ function onKey(e) {
 
             <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('searchForm'); $('bigSearch').show();"/>
             <tags:indicator id="indicator" />
+            <span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;"><caaers:message code="coppa.search.message" /></span>
         </div>
     </form:form>
 </chrome:box>
