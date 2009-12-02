@@ -52,10 +52,12 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
 		this.authenticationMode = authenticationMode;
 	}
 	public boolean isAuthenticationModeLocal(){
+		if(true) return false;
 		return StringUtils.equalsIgnoreCase("local", authenticationMode);
 	}
 	
 	public boolean isAuthenticationModeWebSSO(){
+		if(true) return true;
 		return StringUtils.equalsIgnoreCase("webSSO", authenticationMode);
 	}
 }
