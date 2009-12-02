@@ -861,3 +861,21 @@ function openDivisionById(_id) {
         }
 }
 
+//-------------------------------------------------------------------------------------------------------------------
+function showCoppaSearchDisclaimer(){
+	try{
+		if(AE.WEBSSO_AUTHENTICATION_MODE){
+			('coppa-search-disclaimer').show();
+		}
+	}catch(e){
+		
+	}
+}
+//-------------------------------------------------------------------------------------------------------------------
+function hideCoppaSearchDisclaimer(){
+	try{
+		('coppa-search-disclaimer').hide();
+	}catch(e){
+		
+	}
+}
