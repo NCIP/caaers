@@ -80,7 +80,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			identifierValue = organizationAssignedIdentifier.getValue();
 		}
 		String paPayLoad = CoppaPAObjectFactory.getStudyProtocolSearchXML(remoteStudyExample.getShortTitle(), identifierValue, remoteStudyExample.getStatus());
-		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(5, 0);
+		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(100, 0);
 		List<String> payLoads = new ArrayList<String>();
 		List<Object> remoteStudies = new ArrayList<Object>();
 		payLoads.add(paPayLoad);
@@ -114,7 +114,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		log.info("Exiting RemoteStudyResolver.find()");
 		return remoteStudies;
 	}
-
+	
 	/**
 	 * This method is invoked by the Interceptor. It fetches the COPPA Study given the extension/externalId. 
 	 */
@@ -792,4 +792,67 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         t.setCtcVersion(v3);
         return t;
     }
+    
+    
+    /* Please DO NOT DELETE this commented block. Monish Dombla. 
+    public List<Object>  find(Object example){
+    	List<String> payLoads = null;
+    	List<Object> remoteStudies = new ArrayList<Object>();
+		RemoteStudy remoteStudyExample = (RemoteStudy)example;
+		//get by all other criteria
+		OrganizationAssignedIdentifier organizationAssignedIdentifier = remoteStudyExample.getNciAssignedIdentifier();
+		String identifierValue = null;
+		if(organizationAssignedIdentifier != null){
+			identifierValue = organizationAssignedIdentifier.getValue();
+		}
+		String paPayLoad = CoppaPAObjectFactory.getStudyProtocolSearchXML(remoteStudyExample.getShortTitle(), identifierValue, remoteStudyExample.getStatus());
+		Metadata mData = new Metadata(OperationNameEnum.search.getName(), "extId", ServiceTypeEnum.STUDY_PROTOCOL.getName());
+		String resultXml = "";
+		List< gov.nih.nci.coppa.services.pa.StudyProtocol> studyProtocols = null;
+		int noOfTries = 0;
+    	int limit = 10;
+    	int offset = 0;
+    	
+    	while (noOfTries <= 3 && offset >= 0){
+    		noOfTries = noOfTries + 1;
+    		try{
+	    		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(limit,offset);
+	    		payLoads = new ArrayList<String>();
+	    		payLoads.add(paPayLoad);
+	    		payLoads.add(limitOffsetPayload);
+    		
+    			resultXml = broadcastCOPPA(payLoads, mData);
+    			List<String> spResults = XMLUtil.getObjectsFromCoppaResponse(resultXml);
+    			studyProtocols = new ArrayList< gov.nih.nci.coppa.services.pa.StudyProtocol>();
+    			
+    			for (String result:spResults) {
+    				studyProtocols.add(CoppaPAObjectFactory.getStudyProtocolObject(result));
+    			}
+    			
+    			//Process study protocol's which have a processing status of "Abstracted" or "Abstraction Verified Response" or "Abstraction Verified No Response"
+    			for (gov.nih.nci.coppa.services.pa.StudyProtocol studyProtocol : studyProtocols) {
+    				if(preProcessValidation(studyProtocol)){
+    					RemoteStudy remoteStudy = getRemoteStudyFromStudyProtocol(studyProtocol);
+    					if (remoteStudy != null) {
+    						remoteStudies.add(remoteStudy);
+    					}
+    				}else{
+    					log.debug("Study Protocol " +studyProtocol.getAssignedIdentifier().getExtension()+ " not yet Abstracted");
+    				}
+    			}
+    		}catch(Exception e){
+    			log.error(e.getMessage());
+    		}
+    		if(studyProtocols.size() == limit){
+    			offset = offset + limit;
+    		}else{
+    			offset = -1;
+    		}
+    	}
+		log.info("Exiting RemoteStudyResolver.find()");
+		return remoteStudies;
+    }
+*/
+    
+    
 }
