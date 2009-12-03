@@ -463,7 +463,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			}
 		}
 		if(remoteOrganization.getNciInstituteCode() == null || StringUtils.isEmpty(remoteOrganization.getNciInstituteCode())){
-			remoteOrganization.setNciInstituteCode("*"+coppaOrganization.getIdentifier().getExtension());
+			remoteOrganization.setNciInstituteCode(coppaOrganization.getIdentifier().getExtension());
 		}
 		return remoteOrganization;
 	}
@@ -491,7 +491,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 					if (identifiedOrganization.getAssignedId() != null ) {
 						remoteOrganization.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
 					}else{
-						remoteOrganization.setNciInstituteCode("*"+coppaOrganization.getIdentifier().getExtension());
+						remoteOrganization.setNciInstituteCode(coppaOrganization.getIdentifier().getExtension());
 					}
 				}
     		}
