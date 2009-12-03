@@ -38,6 +38,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	
 	private static Logger logger = Logger.getLogger(InvestigatorResolver.class);
 	private static Log log = LogFactory.getLog(InvestigatorResolver.class);
+	private static String IDSEPERATOR = "-IDSEPERATOR-";
 
 	private RemoteInvestigator setInvestigatorDetails(Person coppaPerson,String nciIdentifier) {
 		RemoteInvestigator remoteInvestigator = new RemoteInvestigator();
@@ -135,17 +136,39 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
 			String results =broadcastCOPPA(payload, mData);//
 			List<String> resultObjects = XMLUtil.getObjectsFromCoppaResponse(results);
-			for (String resultObj:resultObjects) {
-				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
-				II organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
-		//		String iiXml = CoppaObjectFactory.getCoppaIIXml(organizationIdentifier);
-				//Get Organization based on player id of above.
-			//	mData = new Metadata(OperationNameEnum.getById.getName(),  "externalId", ServiceTypeEnum.ORGANIZATION.getName());
-				//String organizationResults = broadcastCOPPA(iiXml, mData);//
-				//List<String> organizationResultObjects = XMLUtil.getObjectsFromCoppaResponse(organizationResults);
-			//	for (String organizationResultObject:organizationResultObjects) {
-					//gov.nih.nci.coppa.po.Organization coppaOrganizationResult = CoppaObjectFactory.getCoppaOrganization(organizationResultObject);
-					//II ii = coppaOrganizationResult.getIdentifier();
+			String assignedId=null;
+			II organizationIdentifier=null;
+			String orgCoppaId = null;
+			if (resultObjects.size()>0) {
+				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObjects.get(0));
+				assignedId = coppaIdOrganization.getAssignedId().getExtension();
+				organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
+				orgCoppaId = organizationIdentifier.getExtension();
+			} else {
+				//if IDentified Org is not found , look in coppa org - use CTEP ID as coppa Id.
+				II ii = CoppaObjectFactory.getIISearchCriteria(org.getNciInstituteCode());
+				String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
+				mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.ORGANIZATION.getName());
+				String resultXml = broadcastCOPPA(iiXml, mData);
+				List<String> orgResults = XMLUtil.getObjectsFromCoppaResponse(resultXml);
+				if (orgResults.size()>0) {
+					gov.nih.nci.coppa.po.Organization coppaOrganization = CoppaObjectFactory.getCoppaOrganization(orgResults.get(0));
+					
+					organizationIdentifier = coppaOrganization.getIdentifier();
+					assignedId = organizationIdentifier.getExtension();
+					orgCoppaId = organizationIdentifier.getExtension();
+					
+				}
+			}
+			
+			if (organizationIdentifier==null || assignedId==null || orgCoppaId==null) {
+				return remoteInvestigatorList;
+			}
+			String orgsIdsForPerson = assignedId+this.IDSEPERATOR+orgCoppaId;
+			//for (String resultObj:resultObjects) {
+				//IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
+				//II organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
+
 					//above ii is the scoper if health care provider...
 					HealthCareProvider healthCareProvider = CoppaObjectFactory.getCoppaHealthCareProviderWithScoperIdAsSearchCriteria(organizationIdentifier);
 					String coppaHealthCareProviderXml = CoppaObjectFactory.getCoppaHealthCareProviderXml(healthCareProvider);
@@ -153,7 +176,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 					try {
 						sRolesXml = broadcastRoleSearch(coppaHealthCareProviderXml,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
 					} catch (CaaersSystemException e) {
-						System.out.print(e);
+						logger.error(e.getMessage());
 					}
 
 					List<String> sRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);	
@@ -176,17 +199,17 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 								if (identifiedPerson != null ) {
 									nciIdentifier = identifiedPerson.getAssignedId().getExtension();
 								}
-								tempRemoteInvestigator = populateRemoteInvestigator(person, nciIdentifier , coppaIdOrganization);
+								tempRemoteInvestigator = populateRemoteInvestigator(person, nciIdentifier , orgsIdsForPerson);
 								remoteInvestigatorList.add(tempRemoteInvestigator);
 							}
 							
 						} catch (CaaersSystemException e) {
-							System.out.print(e);
+							logger.error(e.getMessage());
 						}
 
 					}
 				//}
-			}
+			//}
 			log.info("Exiting InvestigatorResolver.find()");
 			return remoteInvestigatorList;
 		}
@@ -195,8 +218,9 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		String resultXml = "";
 		try {
 			resultXml = broadcastPersonSearch(personXml);
+			//System.out.println(resultXml);
 		} catch (Exception e) {
-			System.out.print(e);
+			logger.error(e.getMessage());
 		}
 		List<String> coppaPersons = XMLUtil.getObjectsFromCoppaResponse(resultXml);
 		
@@ -261,7 +285,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				try {
 					orgResultXml = broadcastOrganizationGetById(orgIiXml);
 				} catch (Exception e) {
-					System.out.print(e);
+					logger.error(e.getMessage());
 				}
 				List<String> orgForEachRoleResults = XMLUtil.getObjectsFromCoppaResponse(orgResultXml);
 
@@ -307,11 +331,13 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				//we ignore if there are no orgs .., 
 				if (orgs != null && orgs.size() > 0) {
 					//get Identifed Orgs based on org Id
-					List<gov.nih.nci.coppa.po.IdentifiedOrganization> orgsForPerson = new ArrayList<gov.nih.nci.coppa.po.IdentifiedOrganization>();
+					List<String> orgsIdsForPerson = new ArrayList<String>();//ctepId+coppaId
 					for (gov.nih.nci.coppa.po.Organization organization:orgs) {
 						gov.nih.nci.coppa.po.IdentifiedOrganization iorg = orgToIdentifiedOrgMap.get(organization.getIdentifier().getExtension());
 						if (iorg != null) {
-							orgsForPerson.add(iorg);
+							orgsIdsForPerson.add(iorg.getAssignedId().getExtension()+IDSEPERATOR+organization.getIdentifier().getExtension());
+						} else {
+							orgsIdsForPerson.add(organization.getIdentifier().getExtension()+IDSEPERATOR+organization.getIdentifier().getExtension());
 						}
 					}
 					//get Identified person .
@@ -320,8 +346,8 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 					if (ip != null ) {
 						nciIdentifier = ip.getAssignedId().getExtension();
 					}
-					if (orgsForPerson.size()>0) {
-						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, nciIdentifier, orgsForPerson);
+					if (orgs.size()>0) {
+						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, nciIdentifier, orgsIdsForPerson);
 						remoteInvestigatorList.add(tempRemoteInvestigator);
 					}
 					
@@ -334,11 +360,12 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	
 
 	
-	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, IdentifiedOrganization identifiedOrganization){		
+	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, String orgsIdsForPerson){
+		String[] splitids = orgsIdsForPerson.split(IDSEPERATOR);
 		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);		
 		Organization site = new RemoteOrganization();
-		site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
-		site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
+		site.setNciInstituteCode(splitids[0]);
+		site.setExternalId(splitids[1]);
 		SiteInvestigator si = new SiteInvestigator();
 		si.setOrganization(site);
 		si.setInvestigator(remoteInvestigator);
@@ -385,7 +412,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		return remoteInvestigator;		
 	}
 	
-	public RemoteInvestigator populateRemoteInvestigatorWithIdentfiedOrgs(Person coppaPerson, String nciIdentifier, List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList){		
+	public RemoteInvestigator populateRemoteInvestigatorWithIdentfiedOrgs(Person coppaPerson, String nciIdentifier, List<String> orgsIdsForPerson){		
 
 		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);	
 		/*
@@ -401,12 +428,13 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 */
 		Organization site = null;
 
-		if (identifiedCoppaOrganizationList != null && identifiedCoppaOrganizationList.size()>0){
+		if (orgsIdsForPerson != null && orgsIdsForPerson.size()>0){
 
-			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
+			for(String ids: orgsIdsForPerson){
+				String[] splitids = ids.split(IDSEPERATOR);
 				site = new RemoteOrganization();
-				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
-				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
+				site.setNciInstituteCode(splitids[0]);
+				site.setExternalId(splitids[1]);
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
 				si.setInvestigator(remoteInvestigator);
@@ -423,34 +451,40 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList){		
 
 		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);	
-		List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList = new ArrayList<IdentifiedOrganization>();
-
+		//List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList = new ArrayList<IdentifiedOrganization>();
+/*
 		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
 			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
 				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
 				identifiedCoppaOrganizationList.add(identifiedOrganization);
 			}
-		}
+		}*/
 		//Build HealthcareSite and HealthcareSiteInvestigator
 
 		Organization site = null;
 
-		if (identifiedCoppaOrganizationList != null && identifiedCoppaOrganizationList.size()>0){
-
-			for(gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization: identifiedCoppaOrganizationList){
+		//if (identifiedCoppaOrganizationList != null && identifiedCoppaOrganizationList.size()>0){
+		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
+			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
+				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
 				site = new RemoteOrganization();
-				site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
-				site.setExternalId(identifiedOrganization.getPlayerIdentifier().getExtension());
+				String assignedId = null;
+				if (identifiedOrganization != null){
+					assignedId = identifiedOrganization.getAssignedId().getExtension();
+				} else {
+					assignedId = coppaOrganization.getIdentifier().getExtension();
+				}
+				site.setNciInstituteCode(assignedId);
+				site.setExternalId(coppaOrganization.getIdentifier().getExtension());
+				
 				SiteInvestigator si = new SiteInvestigator();
 				si.setOrganization(site);
 				si.setStartDate(DateUtils.today());
 				si.setInvestigator(remoteInvestigator);
 				remoteInvestigator.addSiteInvestigator(si)	;
-				
-
 			}
-
 		}
+		//}
 
 		return remoteInvestigator;
 	}
@@ -459,48 +493,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/*
-	private List<gov.nih.nci.coppa.po.Organization> getOrganizationsForPerson(Person coppaPerson) {
-		List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
-
-		HealthCareProvider healthCareProvider = CoppaObjectFactory.getCoppaHealthCareProvider(coppaPerson.getIdentifier());
-		String coppaHealthCareProviderXml = CoppaObjectFactory.getCoppaHealthCareProviderXml(healthCareProvider);
-
-		String sRolesXml = "";
-		try {
-			sRolesXml = broadcastRoleSearch(coppaHealthCareProviderXml,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
-		} catch (CaaersSystemException e) {
-			System.out.print(e);
-		}
-
-		List<String> sRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);		
-
-		for(String sRole: sRoles){
-
-			String orgResultXml = "";
-
-			HealthCareProvider hcp = CoppaObjectFactory.getCoppaHealthCareProvider(sRole);
-			String orgIiXml = CoppaObjectFactory.getCoppaIIXml(hcp.getScoperIdentifier());
-			try {
-				orgResultXml = broadcastOrganizationGetById(orgIiXml);
-			} catch (Exception e) {
-				System.out.print(e);
-			}
-
-			List<String> orgResults = XMLUtil.getObjectsFromCoppaResponse(orgResultXml);
-			if (orgResults.size() > 0) {
-				coppaOrganizationList.add(CoppaObjectFactory.getCoppaOrganization(orgResults.get(0)));
-			}
-
-		}
-
-		return coppaOrganizationList;
-
-	}
-	*/
-
-
 
 
 }
