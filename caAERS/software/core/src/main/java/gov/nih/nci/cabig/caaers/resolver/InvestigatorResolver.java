@@ -249,6 +249,14 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 			for(String coppaPersonXml: coppaPersons){
 				coppaPerson = CoppaObjectFactory.getCoppaPerson(coppaPersonXml);
 				resultPersons.add(coppaPerson);
+				
+				//BJ : added for debugging
+				if(coppaPerson.getIdentifier() == null){
+					logger.warn("***NO_IDENTIFIER*****************");
+					logger.warn("personXML : " + personXml);
+					logger.warn("coppaPersonXml : " + coppaPersonXml );
+					
+				}
 				resultPersonIds.add(CoppaObjectFactory.getCoppaIIXml(coppaPerson.getIdentifier()));
 			}
 			//			get identified persons based on playerIds...
@@ -279,7 +287,13 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				//get orgnizations for each role... 
 				//******bottleneck , making call for each role , not method get by scoperIds on ORGS or IDENT-ORGS
 			    //role scoper id is org id .. so based on scoper id get org 
-
+				
+				//BJ: added for debugging
+				if(role.getScoperIdentifier() == null){
+					logger.warn("***NO_SCOPER_IDENTIFIER*****************");
+					logger.warn("coppaRoleXml :" + coppaRoleXml);
+					logger.warn("sRolesXml : " + sRolesXml );
+				}
 				String orgIiXml = CoppaObjectFactory.getCoppaIIXml(role.getScoperIdentifier());
 				String orgResultXml = "";
 				try {
