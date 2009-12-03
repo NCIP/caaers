@@ -63,10 +63,10 @@ public class OrganizationTab extends TabWithFields<Organization> {
 
         InputField nciInstituteField = null;
         if(command.getId() == null){
-        	nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode","CTEP Identifier", true);
+        	nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode","Assigned Identifier", true);
         }else{
         	/*remote entities will have an ID*/
-        	nciInstituteField = InputFieldFactory.createLabelField("nciInstituteCode","CTEP Identifier", true);
+        	nciInstituteField = InputFieldFactory.createLabelField("nciInstituteCode","Assigned Identifier", true);
         }
         
         InputFieldAttributes.setSize(nciInstituteField, 40);
