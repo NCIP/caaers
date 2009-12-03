@@ -883,3 +883,11 @@ a.export-button img {
 	font-weight:normal;
 	font-style:italic;
 }
+.coppa-search-disclaimer {
+	display:block;
+	margin-left:134px;
+	margin-top:10px;
+	padding:3px;
+	background:#DBE9FF none repeat scroll 0 0;
+	border:1px solid #6E8BB8;
+}
