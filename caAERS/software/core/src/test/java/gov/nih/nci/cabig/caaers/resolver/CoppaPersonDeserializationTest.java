@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.iso._21090.ENXP;
 import org.springframework.core.io.ClassPathResource;
 
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
@@ -25,14 +26,14 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 		Thread currentThread = Thread.currentThread();
 		
 		final List<Throwable> exceptions = new ArrayList<Throwable>();
-		
-		for(int i = 0; i < 30; i++ ){
+		int noOfThreads = 20;
+		for(int i = 0; i < noOfThreads; i++ ){
 			
 			if(currentThread.isInterrupted()) fail("The report serailzation failed, in child thread");
 			
 			DelayedSerializer delayedSeralizer = new DelayedSerializer(currentThread, xmlContent, "Serializer - " + i ,  1000, exceptions);
 			
-			if(i > 25)	delayedSeralizer.worker.join(); //make sure this thread waits for the others to complete
+			if(i > (noOfThreads - 5))	delayedSeralizer.worker.join(); //make sure this thread waits for the others to complete
 		}
 		
 		System.out.println("============ ************************* ++++++++++++++++");
@@ -69,10 +70,10 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 				Person coppaPerson;
 				for(String coppaPersonXml: coppaPersons){
 					coppaPerson = CoppaObjectFactory.getCoppaPerson(coppaPersonXml);
-					String personName = "null";
+					String personName = "";
 					if(coppaPerson.getName() != null){
-						if(coppaPerson.getName().getPart() != null && coppaPerson.getName().getPart().size() > 0){
-							personName = coppaPerson.getName().getPart().get(0).getValue();
+						for(ENXP part : coppaPerson.getName().getPart()){
+							personName += (" " + part.getValue());
 						}
 					}
 					System.out.println("==========================================================================================");
