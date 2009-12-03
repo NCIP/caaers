@@ -19,15 +19,15 @@
 <chrome:division id="single-fields">
       <div class="content">
             <div class="row">
-              <div class="label">Name:</div>
+              <div class="label">Name</div>
               <div class="value">${command.name}</div>
            </div>
            <div class="row">
-              <div class="label">Description:</div>
+              <div class="label">Description</div>
               <div class="value">${command.descriptionText}</div>
            </div>
            <div class="row">
-              <div class="label">NCI Institute Code:</div>
+              <div class="label">Assigned Identifier</div>
               <div class="value">${command.nciInstituteCode}</div>
            </div>
        </div>
