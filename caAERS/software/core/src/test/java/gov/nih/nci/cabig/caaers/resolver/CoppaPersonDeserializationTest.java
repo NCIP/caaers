@@ -22,14 +22,14 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 	}
 	
 	//Failed
-	public void testDeseralizeCoppaPerson() throws Exception{
+	public void testDeseralizeWrongCoppaPerson() throws Exception{
 		String  xmlContent = getTestXMLFile("CoppaPersonFailed.xml");
 		Person coppaPerson = CoppaObjectFactory.getCoppaPerson(xmlContent);
 		assertNotNull(coppaPerson);
 		assertNotNull(coppaPerson.getIdentifier());
 	}
 	
-	public void testDeSerializationOfCoppaPersonXML() throws Exception{
+	public void testDeserializationValidCoppaPerson() throws Exception{
 		String  xmlContent = getTestXMLFile("CoppaPersonSearchResult.xml");
 		Thread currentThread = Thread.currentThread();
 		
