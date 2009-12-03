@@ -58,7 +58,7 @@ function buildTable(form) {
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label">CTEP Identifier</div>
+		    	<div class="label">Assigned Identifier</div>
 		    	<div class="value"><input id="prop1" type="text" name="nciInstituteCode"/></div>
 		    </div>
 
