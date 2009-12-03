@@ -14,8 +14,10 @@ import java.io.FileReader;
 import java.io.Reader;
 
 import org.iso._21090.DSETII;
+import org.iso._21090.II;
 import org.springframework.core.io.ClassPathResource;
 
+import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 import com.semanticbits.coppasimulator.util.XMLUtilities;
 /**
  * 
@@ -48,6 +50,14 @@ public class HealthCareProviderDeserialzationTest extends AbstractTestCase {
 		assertNull(hp.getScoperIdentifier());
 	}
 	
+	//throws NPE from XMLUtilities 
+	public void testGetCoppaIIXML_WithNullAsInput() throws Exception {
+		try {
+			String orgIiXml = CoppaObjectFactory.getCoppaIIXml((II)null);
+		} catch (NullPointerException e) {
+		}
+	}
+	
 	//check to see that Idtransformer returns null, if input is null
 	public void testScoperIdentifierBeingNull(){
 		DSETIITransformer dsetIITransformer = DSETIITransformer.INSTANCE;
@@ -57,6 +67,8 @@ public class HealthCareProviderDeserialzationTest extends AbstractTestCase {
 		Id id = IdTransformer.INSTANCE.toXml(dsetIi.getItem().iterator().next());
 		assertNull(id);
 	}
+	
+	
 	
 	//load the xml file from classpath. 
 	 private Reader getTestXMLFile(String fileName) throws Exception {
