@@ -2174,117 +2174,31 @@
 		  			<fo:table-body>
 		  	      					
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Lab 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Baseline date
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			 Value
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Worst Date 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Value
-						  		</fo:block>      							
-      						</fo:table-cell>      						      						      						
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Recovery/Latest Date
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Value	
-						  		</fo:block>      							
-      						</fo:table-cell> 
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Microbiology Site
-						  		</fo:block>      							
-      						</fo:table-cell> 
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Date
-						  		</fo:block>      							
-      						</fo:table-cell> 
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Infectious Agent
-						  		</fo:block>      							
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Lab</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Baseline date</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Value</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Worst Date</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Value</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Recovery/Latest Date</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Value</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Microbiology Site</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Date</fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="label" >Infectious Agent</fo:block>
       						</fo:table-cell> 
 		  			    </fo:table-row>
 		  	
  					 <xsl:for-each select="AdverseEventReport/Lab"> 
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="labTerm/term"/>
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="baseline/date"/>
-			   						</xsl:call-template>						  			
-						  		</fo:block> 
-						  		     							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="baseline/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="nadir/date"/>
-			   						</xsl:call-template>						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="nadir/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
-						  		</fo:block>      							
-      						</fo:table-cell>      						      						      						      						
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="recovery/date"/>
-			   						</xsl:call-template>						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="recovery/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/>
-						  		</fo:block>      							
-      						</fo:table-cell>  
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell> 
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell> 
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell> 
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="labTerm/term"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="other"/></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="baseline/date"/></xsl:call-template></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="baseline/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="nadir/date"/></xsl:call-template></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="nadir/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="recovery/date"/></xsl:call-template></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="recovery/value"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="units"/></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="site"/></fo:block></fo:table-cell>
+      						<fo:table-cell><fo:block xsl:use-attribute-sets="normal" ></fo:block></fo:table-cell>
+                            <fo:table-cell><fo:block xsl:use-attribute-sets="normal" ><xsl:value-of select="infectiousAgent"/></fo:block></fo:table-cell>
 		  			    </fo:table-row>
 					</xsl:for-each>
 		  			</fo:table-body>
