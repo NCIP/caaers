@@ -55,6 +55,7 @@ public class HealthCareProviderDeserialzationTest extends AbstractTestCase {
 		try {
 			String orgIiXml = CoppaObjectFactory.getCoppaIIXml((II)null);
 		} catch (NullPointerException e) {
+			assertEquals(15, e.getStackTrace()[0].getLineNumber());
 		}
 	}
 	
