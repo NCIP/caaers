@@ -55,6 +55,8 @@ public class HealthCareProviderDeserialzationTest extends AbstractTestCase {
 		try {
 			String orgIiXml = CoppaObjectFactory.getCoppaIIXml((II)null);
 		} catch (NullPointerException e) {
+			//testing the stack trace.... 
+			//at com.semanticbits.coppasimulator.util.XMLUtilities.serializeObject(XMLUtilities.java:15)
 			assertEquals(15, e.getStackTrace()[0].getLineNumber());
 		}
 	}
