@@ -21,7 +21,15 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 		super.setUp();
 	}
 	
-	public void testSerializationOfCoppaPersonXML() throws Exception{
+	//Failed
+	public void testDeseralizeCoppaPerson() throws Exception{
+		String  xmlContent = getTestXMLFile("CoppaPersonFailed.xml");
+		Person coppaPerson = CoppaObjectFactory.getCoppaPerson(xmlContent);
+		assertNotNull(coppaPerson);
+		assertNotNull(coppaPerson.getIdentifier());
+	}
+	
+	public void testDeSerializationOfCoppaPersonXML() throws Exception{
 		String  xmlContent = getTestXMLFile("CoppaPersonSearchResult.xml");
 		Thread currentThread = Thread.currentThread();
 		
