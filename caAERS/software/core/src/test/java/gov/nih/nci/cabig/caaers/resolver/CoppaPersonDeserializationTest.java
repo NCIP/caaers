@@ -34,7 +34,7 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 		Thread currentThread = Thread.currentThread();
 		
 		final List<Throwable> exceptions = new ArrayList<Throwable>();
-		int noOfThreads = 20;
+		int noOfThreads = 30;
 		for(int i = 0; i < noOfThreads; i++ ){
 			
 			if(currentThread.isInterrupted()) fail("The report serailzation failed, in child thread");
