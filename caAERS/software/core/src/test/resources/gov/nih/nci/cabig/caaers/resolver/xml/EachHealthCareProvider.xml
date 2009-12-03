@@ -1,0 +1,42 @@
+<ns13:HealthCareProvider xmlns:ns13="http://po.coppa.nci.nih.gov">
+      <ns13:identifier>
+       <ns14:item displayable="true" extension="178630" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns14="uri:iso.org:21090"/>
+
+  </ns13:identifier>
+
+      <ns13:playerIdentifier displayable="true" extension="178623" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+      <ns13:scoperIdentifier displayable="true" extension="76865" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns13:postalAddress>
+       <ns15:item xmlns:ns15="uri:iso.org:21090">
+        <ns15:part type="AL" value="600 North Wolfe Street"/>
+
+        <ns15:part type="ADL" value="Neurology Phipps 113 115"/>
+
+        <ns15:part type="CTY" value="Baltimore"/>
+
+        <ns15:part type="STA" value="MD"/>
+
+        <ns15:part type="ZIP" value="21287"/>
+
+        <ns15:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+   </ns15:item>
+
+  </ns13:postalAddress>
+
+      <ns13:telecomAddress>
+       <ns16:item value="mailto:laterra@kennedykrieger.org" xmlns:ns16="uri:iso.org:21090"/>
+
+       <ns17:item value="x-text-fax:(410)-614-9569" xmlns:ns17="uri:iso.org:21090"/>
+
+       <ns18:item value="tel:(410)-614-3853" xmlns:ns18="uri:iso.org:21090"/>
+
+  </ns13:telecomAddress>
+
+      <ns13:status code="active"/>
+
+      <ns13:certificateLicenseText nullFlavor="NI"/>
+
+ </ns13:HealthCareProvider>
