@@ -14,14 +14,18 @@ import org.iso._21090.ENXP;
 import org.springframework.core.io.ClassPathResource;
 
 import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
-
+/**
+ * 
+ * @author Biju Joseph
+ *
+ */
 public class CoppaPersonDeserializationTest extends AbstractTestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 	}
 	
-	//Failed
+	//Failed - wrong xml input <Person> nesting... 
 	public void testDeseralizeWrongCoppaPerson() throws Exception{
 		String  xmlContent = getTestXMLFile("CoppaPersonFailed.xml");
 		Person coppaPerson = CoppaObjectFactory.getCoppaPerson(xmlContent);
@@ -29,6 +33,7 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 		assertNotNull(coppaPerson.getIdentifier());
 	}
 	
+	//valid xml, - running 30 threads and de-seralizing..
 	public void testDeserializationValidCoppaPerson() throws Exception{
 		String  xmlContent = getTestXMLFile("CoppaPersonSearchResult.xml");
 		Thread currentThread = Thread.currentThread();
