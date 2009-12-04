@@ -101,7 +101,6 @@ function onKey(e) {
 <div id="bigSearch" style="display:none;">
 <div class="endpanes" />
 <chrome:box title="Results">
-<p><tags:instructions code="study.search.results" /></p>
 <form:form id="assembler">
      <chrome:division id="single-fields">
         <div id="tableDiv">
