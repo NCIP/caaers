@@ -254,10 +254,11 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
                     // command.setRulesErrors(new HashMap<String, Boolean>());
                     WebUtils.rejectErrors(errors, vError);
                     WebUtils.populateErrorFieldNames(command.getRulesErrors(), vError.getFieldNames());
-                    WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
                 }
             }
         }
+        
+        WebUtils.populateErrorFieldNames(command.getRulesErrors(), errors);
     }
 
     public CompositeField createTimeField(String baseProperty, String displayName){
