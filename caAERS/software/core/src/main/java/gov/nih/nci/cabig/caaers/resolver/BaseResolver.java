@@ -33,7 +33,7 @@ public abstract class BaseResolver {
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
         Metadata mData = new Metadata("query",  "externalId", ServiceTypeEnum.PERSON.getName());
         List<String> payLoads = new ArrayList<String>();
-        int limit = 500;
+        int limit = 200;
         String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(limit, 0);
 		payLoads.add(personXml);
 		payLoads.add(limitOffsetPayload);        
