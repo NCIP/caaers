@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:Person xmlns:ns1="http://po.coppa.nci.nih.gov">
+ <ns1:identifier nullFlavor="NI"/>
+ <ns1:name>
+  <ns2:part value="Paul" type="GIV" xmlns:ns2="uri:iso.org:21090"/>
+ </ns1:name>
+ <ns1:postalAddress/>
+ <ns1:statusCode nullFlavor="NI"/>
+ <ns1:telecomAddress/>
+ <ns1:raceCode nullFlavor="NI"/>
+ <ns1:sexCode nullFlavor="NI"/>
+ <ns1:ethnicGroupCode nullFlavor="NI"/>
+ <ns1:birthDate nullFlavor="NI"/>
+</ns1:Person>
