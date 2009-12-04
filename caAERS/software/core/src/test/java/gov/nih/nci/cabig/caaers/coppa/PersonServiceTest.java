@@ -83,6 +83,8 @@ public class PersonServiceTest extends TestCase{
 		public PersonJobDetails pjDetail;
 		public PersonSearchJob(PersonJobDetails pjDetail){
 			this.pjDetail = pjDetail;
+			this.worker = new Thread(this, pjDetail.getName());
+			this.worker.start();
 		}
 		public void run() {
 			try {
