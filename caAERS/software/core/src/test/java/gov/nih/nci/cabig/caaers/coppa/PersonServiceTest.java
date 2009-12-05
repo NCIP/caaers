@@ -28,38 +28,22 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class PersonServiceTest extends TestCase{
 	
-//	public void testPerson_query() throws Exception{
-//		
-//		List<String> payLoads = new ArrayList<String>();
-//		String payLoad1 = getPayloadForFile("classpath*:gov/nih/nci/cabig/caaers/pa/testdata/PERSON_SEARCH.xml");
-//		payLoads.add(payLoad1);
-//		String payLoad2 = getPayloadForFile("classpath*:gov/nih/nci/cabig/caaers/pa/testdata/LIMIT_OFFSET.xml");
-//		payLoads.add(payLoad2);
-//		
-//		Metadata mData = new Metadata("query", "caAERS", ServiceTypeEnum.PERSON.getName());
-//		String paServiceResponse = sendMessage(payLoads,mData);
-//		assertNotNull(paServiceResponse);
-//		System.out.println("################### Person.query Start#################");
-//		System.out.println(paServiceResponse);
-//		System.out.println("################### Person.query End#################");
-//		System.out.print("");
-//	}
-//	
-//	
-//	public void testConcurrentPersonSearch(){
-//		ExecutorService threadExecutor = Executors.newFixedThreadPool(3);
-//		PersonSearchTask personSearchTask = null;
-//		List<PersonSearchTask> tasks = new ArrayList<PersonSearchTask>();
-//		for(int i=0; i<=4 ; i++){
-//			personSearchTask = new PersonSearchTask("Task - " + i);
-//			tasks.add(personSearchTask);
-//		}
-//		for(PersonSearchTask eachTask : tasks){
-//			threadExecutor.execute(eachTask);
-//		}
-//		threadExecutor.shutdown();
-//	}
-	
+	public void testPerson_query() throws Exception{
+		
+		List<String> payLoads = new ArrayList<String>();
+		String payLoad1 = getPayloadForFile("classpath*:gov/nih/nci/cabig/caaers/pa/testdata/PERSON_SEARCH.xml");
+		payLoads.add(payLoad1);
+		String payLoad2 = getPayloadForFile("classpath*:gov/nih/nci/cabig/caaers/pa/testdata/LIMIT_OFFSET.xml");
+		payLoads.add(payLoad2);
+		
+		Metadata mData = new Metadata("query", "caAERS", ServiceTypeEnum.PERSON.getName());
+		String paServiceResponse = sendMessage(payLoads,mData);
+		assertNotNull(paServiceResponse);
+		System.out.println("################### Person.query Start#################");
+		System.out.println(paServiceResponse);
+		System.out.println("################### Person.query End#################");
+		System.out.print("");
+	}
 	
 	//Will access the person query concurrently. 
 	public void testPersonQueryConcurrently() throws Exception{
