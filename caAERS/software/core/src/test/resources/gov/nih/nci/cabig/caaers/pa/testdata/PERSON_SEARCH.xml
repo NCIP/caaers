@@ -2,7 +2,7 @@
 <ns1:Person xmlns:ns1="http://po.coppa.nci.nih.gov">
  <ns1:identifier nullFlavor="NI"/>
  <ns1:name>
-  <ns2:part value="Paul" type="GIV" xmlns:ns2="uri:iso.org:21090"/>
+  <ns2:part value="a" type="GIV" xmlns:ns2="uri:iso.org:21090"/>
  </ns1:name>
  <ns1:postalAddress/>
  <ns1:statusCode nullFlavor="NI"/>
