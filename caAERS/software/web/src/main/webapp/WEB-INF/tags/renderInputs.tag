@@ -77,9 +77,7 @@
     </c:when>
 
     <c:when test="${field.categoryName == 'select'}">
-        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}"
-                     title="${field.displayName}"
-                     cssClass="${cssClass} ${field.validatorClassName} ${cssValue}"/>
+        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${readonly || disabled}" title="${field.displayName}" cssClass="${cssClass} ${field.validatorClassName} ${cssValue}"/>
     </c:when>
     <c:when test="${field.categoryName == 'composite'}">
         <c:forEach items="${field.attributes.subfields}" var="subfield">

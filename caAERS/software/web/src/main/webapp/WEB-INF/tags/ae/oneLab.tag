@@ -20,7 +20,7 @@
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                <select id="aeReport.labs[${index}].lab-category">
+                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0}">disabled</c:if>">
                     <option value="0">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
@@ -32,26 +32,18 @@
     </div>
 
     <div class="row">
-        <div class="label">
-            <tags:renderLabel field="${fieldGroup.fields[0]}"/>
-        </div>
-        <div class="value">
-            <tags:renderInputs field="${fieldGroup.fields[0]}"/>
-        </div>
+        <div class="label"><tags:renderLabel field="${fieldGroup.fields[0]}"/></div>
+        <div class="value"><tags:renderInputs field="${fieldGroup.fields[0]}" readonly="${lab.id > 0}"/></div>
     </div>
 
-    <c:set var="display">
-        <jsp:attribute name="value">
-            ${lab.name eq '' ? 'inline' : 'none'}
-        </jsp:attribute>
-    </c:set>
+    <c:set var="display"><jsp:attribute name="value">${lab.name eq '' ? 'inline' : 'none'}</jsp:attribute></c:set>
     <tags:renderRow field="${fieldGroup.fields[1]}"  style="display: ${display};">
         <jsp:attribute name="label">
             <label>${fieldGroup.fields[1].displayName}</label>
         </jsp:attribute>
     </tags:renderRow>
 
-	<div id="not-microbiology-${index}">
+	<div id="not-microbiology-${index}" style="display:none;">
     <tags:renderRow field="${fieldGroup.fields[2]}" />
  
     <c:forEach begin="3" end="8" step="2" var="i">
@@ -76,7 +68,7 @@
     </c:forEach>
     </div>
     
-    <div id="microbiology-${index}">
+    <div id="microbiology-${index}" style="display:none;">
         <tags:renderRow field="${fieldGroup.fields[9]}" />
         <tags:renderRow field="${fieldGroup.fields[10]}" />
         <tags:renderRow field="${fieldGroup.fields[11]}" />
@@ -95,7 +87,9 @@ function setTitleLab_${index}() {
     $(titleID).innerHTML = value;
 }
 
+/*
 Event.observe($("aeReport.labs[${index}].labTerm"), "change", function() {
     setTitleLab_${index}();
 });
+*/
 </script>

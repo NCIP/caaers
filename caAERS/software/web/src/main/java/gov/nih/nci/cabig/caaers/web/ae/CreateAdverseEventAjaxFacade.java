@@ -545,7 +545,9 @@ public class CreateAdverseEventAjaxFacade {
         model.addRow(row);
     }
 
-
+    /*
+        Given the category ID retrieves the terms having this category as the parent.
+    */
     public List<LabTerm> getLabTermsByCategory(Integer labCategoryId) {
         List<LabTerm> terms;
         if (labCategoryId == 0) {
@@ -559,6 +561,12 @@ public class CreateAdverseEventAjaxFacade {
             term.getCategory().getLabVersion().setCategories(null);
         }
         return terms;
+    }
+
+    public Integer getLabCategory(Integer labTermID) {
+        if (labTermID == 0) return null;
+        LabTerm lt = labTermDao.getById(labTermID);
+        if (lt != null) return lt.getCategory().getId(); else return null;
     }
 
     public List<LabCategory> getLabCategories() {
