@@ -337,7 +337,7 @@
     </target>
 	
 	<target name="backup">
-		<copy includeemptydirs="true" overwrite="false" todir="/Users/bijujoseph/backup/today">
+		<copy includeemptydirs="true" overwrite="false" todir="${user.home}/backup/today">
 			<fileset dir=".">
 				<include name="**/src/**/*.*"/>
 				<include name="**/ivy.xml"/>
