@@ -87,9 +87,9 @@ function setTitleLab_${index}() {
     $(titleID).innerHTML = value;
 }
 
-/*
+
 Event.observe($("aeReport.labs[${index}].labTerm"), "change", function() {
     setTitleLab_${index}();
 });
-*/
+
 </script>

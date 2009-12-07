@@ -94,35 +94,35 @@
               var isNOS = $(this.testName).options[1].selected;
               if (isNOS) {
                   AE.slideAndShow(this.otherProperty + "-row");
-                  $('titleOf_lab-0').innerHTML = "NOS ";
+                  // $('titleOf_lab-0').innerHTML = "NOS ";
               } else {
                   $(this.otherProperty).value = "";
                   AE.slideAndHide(this.otherProperty + "-row");
-                  $('titleOf_lab-0').innerHTML = "NOT NOS ";
+                  // $('titleOf_lab-0').innerHTML = "NOT NOS ";
               }
 
-              $('titleOf_lab-0').innerHTML += ("abc " + catId);
+              // $('titleOf_lab-0').innerHTML += ("abc " + catId);
               
               // 105 - microbiology
               if (catId == "105") {
                   AE.slideAndHide($('not-microbiology-' + this.index));
                   AE.slideAndShow($('microbiology-' + this.index));
                   
-                  $(this.baseName + '.units').options[0].selected = true;
-                  $(this.baseName + '.baseline.value').value = "";
-                  $(this.baseName + '.baseline.date').value = "";
-                  $(this.baseName + '.nadir.value').value = "";
-                  $(this.baseName + '.nadir.date').value = "";
-                  $(this.baseName + '.recovery.value').value = "";
-                  $(this.baseName + '.recovery.date').value = "";
+                  if ($(this.baseName + '.units')) $(this.baseName + '.units').options[0].selected = true;
+                  if ($(this.baseName + '.baseline.value')) $(this.baseName + '.baseline.value').value = "";
+                  if ($(this.baseName + '.baseline.date')) $(this.baseName + '.baseline.date').value = "";
+                  if ($(this.baseName + '.baseline.nadir.value')) $(this.baseName + '.nadir.value').value = "";
+                  if ($(this.baseName + '.baseline.nadir.date')) $(this.baseName + '.nadir.date').value = "";
+                  if ($(this.baseName + '.recovery.value')) $(this.baseName + '.recovery.value').value = "";
+                  if ($(this.baseName + '.recovery.date')) $(this.baseName + '.recovery.date').value = "";
               } else {
                       if (catId == 0 && isNOS) AE.slideAndShow($('microbiology-' + this.index));
                       else AE.slideAndHide($('microbiology-' + this.index));
                       AE.slideAndShow($('not-microbiology-' + this.index));
 
-                      $(this.baseName + '.site').value = "";
-                      $(this.baseName + '.labDate').value = "";
-                      $(this.baseName + '.infectiousAgent').value = "";
+                      if ($(this.baseName + '.site')) $(this.baseName + '.site').value = "";
+                      if ($(this.baseName + '.labDate')) $(this.baseName + '.labDate').value = "";
+                      if ($(this.baseName + '.infectiousAgent')) $(this.baseName + '.infectiousAgent').value = "";
               }
 
           },  
