@@ -21,7 +21,7 @@
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}">disabled</c:if>">
+                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}">disabled</c:if>>
                     <option value="0">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
