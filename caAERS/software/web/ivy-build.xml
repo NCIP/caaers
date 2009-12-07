@@ -65,7 +65,7 @@
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
 	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
 	 	
-	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}"
+	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
 	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
 	 	</war>
 	 	
