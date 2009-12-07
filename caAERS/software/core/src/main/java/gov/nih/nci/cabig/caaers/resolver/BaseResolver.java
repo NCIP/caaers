@@ -5,7 +5,9 @@ import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.coppa.po.ClinicalResearchStaff;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
@@ -26,6 +28,7 @@ import com.semanticbits.coppasimulator.util.CoppaPAObjectFactory;
 public abstract class BaseResolver {
 	
 	private MessageBroadcastService messageBroadcastService;
+	protected Configuration configuration;
 
 	private static Log log = LogFactory.getLog(BaseResolver.class);
 
@@ -33,7 +36,8 @@ public abstract class BaseResolver {
 		//build metadata with operation name and the external Id and pass it to the broadcast method.
         Metadata mData = new Metadata("query",  "externalId", ServiceTypeEnum.PERSON.getName());
         List<String> payLoads = new ArrayList<String>();
-        int limit = 500;
+        Integer configuredPOLimit = configuration.get(Configuration.PO_SEARCH_LIMIT);
+        int limit =  configuredPOLimit != null ? configuredPOLimit : 200;
         String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(limit, 0);
 		payLoads.add(personXml);
 		payLoads.add(limitOffsetPayload);        
@@ -196,5 +200,7 @@ public abstract class BaseResolver {
 		this.messageBroadcastService = messageBroadcastService;
 	}
 
-	
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 }

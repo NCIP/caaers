@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
 
-/**
+/** 
  * @author Rhett Sutphin
  */
 public class Configuration extends DatabaseBackedConfiguration implements InitializingBean{
@@ -35,7 +35,9 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> AUTO_COMPLETER_CHARS = PROPERTIES.add(new ConfigurationProperty.Text("autoCompleterChars"));
     public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WARNING = PROPERTIES.add(new ConfigurationProperty.Text("httpSessionWarning"));
     public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WAIT = PROPERTIES.add(new ConfigurationProperty.Text("httpSessionWarningWait"));
-
+    public static final ConfigurationProperty<Integer> PA_SEARCH_LIMIT = PROPERTIES.add(new ConfigurationProperty.Int("paLimit"));
+    public static final ConfigurationProperty<Integer> PO_SEARCH_LIMIT = PROPERTIES.add(new ConfigurationProperty.Int("poLimit"));
+    
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
     }

@@ -21,6 +21,7 @@ default-lazy-init="true">
 	
 	<bean id="baseResolver" abstract="true">
         <property name="messageBroadcastService" ref="messageBroadcastService" />
+        <property name="configuration" ref="configuration" />
     </bean>
 	
 	<bean id="organizationResolver" class="gov.nih.nci.cabig.caaers.resolver.OrganizationResolver" parent="baseResolver" />

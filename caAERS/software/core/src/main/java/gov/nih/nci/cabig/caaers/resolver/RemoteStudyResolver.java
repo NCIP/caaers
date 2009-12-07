@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.coppa.po.HealthCareProvider;
@@ -80,7 +81,8 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 			identifierValue = organizationAssignedIdentifier.getValue();
 		}
 		String paPayLoad = CoppaPAObjectFactory.getStudyProtocolSearchXML(remoteStudyExample.getShortTitle(), identifierValue, remoteStudyExample.getStatus());
-		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML(100, 0);
+		Integer configuredPALimit = configuration.get(Configuration.PO_SEARCH_LIMIT);
+		String limitOffsetPayload = CoppaPAObjectFactory.getLimitOffsetXML((configuredPALimit != null) ? configuredPALimit : 100 , 0);
 		List<String> payLoads = new ArrayList<String>();
 		List<Object> remoteStudies = new ArrayList<Object>();
 		payLoads.add(paPayLoad);
