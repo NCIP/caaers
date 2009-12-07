@@ -8,6 +8,7 @@
 <%@attribute name="lab" type="gov.nih.nci.cabig.caaers.domain.Lab" %>
 <%@attribute name="expanded" type="java.lang.Boolean" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="v" value="aeReport.labs[${index}]" />
 
@@ -20,7 +21,7 @@
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0}">disabled</c:if>">
+                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}">disabled</c:if>">
                     <option value="0">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
@@ -33,7 +34,7 @@
 
     <div class="row">
         <div class="label"><tags:renderLabel field="${fieldGroup.fields[0]}"/></div>
-        <div class="value"><tags:renderInputs field="${fieldGroup.fields[0]}" readonly="${lab.id > 0}"/></div>
+        <div class="value"><tags:renderInputs field="${fieldGroup.fields[0]}" readonly="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}"/></div>
     </div>
 
     <c:set var="display"><jsp:attribute name="value">${lab.name eq '' ? 'inline' : 'none'}</jsp:attribute></c:set>
