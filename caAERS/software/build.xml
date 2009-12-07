@@ -340,6 +340,10 @@
 		<copy includeemptydirs="true" overwrite="false" todir="/Users/bijujoseph/backup/today">
 			<fileset dir=".">
 				<include name="**/src/**/*.*"/>
+				<include name="**/ivy.xml"/>
+				<include name="**/ivy-build.xml"/>
+				<include name="**/build.xml"/>
+				<include name="**/ivy-settings*.xml"/>
 				<include name="**/webapp/**/*.*"/>
 				<exclude name=".svn"/>
 				<exclude name="*.jar"/>
