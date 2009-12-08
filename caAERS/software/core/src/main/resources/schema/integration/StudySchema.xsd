@@ -612,6 +612,7 @@
             <xs:enumeration value="C3D Identifier"/>
             <xs:enumeration value="Protocol Authority Identifier"/>
             <xs:enumeration value="Coordinating Center Identifier"/>
+            <xs:enumeration value="NCI Assigned Identifier"/>
         </xs:restriction>
     </xs:simpleType>
     
