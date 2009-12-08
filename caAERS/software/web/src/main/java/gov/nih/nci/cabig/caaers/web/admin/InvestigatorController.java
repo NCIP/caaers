@@ -38,8 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Saurabh
  */
-public abstract class InvestigatorController<C extends Investigator> extends
-	AutomaticSaveAjaxableFormController<C, Investigator, InvestigatorDao> {
+public abstract class InvestigatorController<C extends Investigator> extends AutomaticSaveAjaxableFormController<C, Investigator, InvestigatorDao> {
 
     private static final Log log = LogFactory.getLog(InvestigatorController.class);
 
@@ -150,13 +149,9 @@ public abstract class InvestigatorController<C extends Investigator> extends
         		investigator.setLastName(remoteInvtoSave.getLastFirst());
         		investigator.setPhoneNumber(remoteInvtoSave.getPhoneNumber());
         		investigator.setFaxNumber(remoteInvtoSave.getFaxNumber());
-        		investigatorRepository.save(remoteInvtoSave, ResetPasswordController.getURL(request
-                        .getScheme(), request.getServerName(), request.getServerPort(), request
-                        .getContextPath()));
+        		investigatorRepository.save(remoteInvtoSave, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         	}else{
-        		investigatorRepository.save(investigator, ResetPasswordController.getURL(request
-                        .getScheme(), request.getServerName(), request.getServerPort(), request
-                        .getContextPath()));
+        		investigatorRepository.save(investigator, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         	}
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";

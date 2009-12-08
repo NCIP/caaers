@@ -106,11 +106,11 @@ Object.extend(jsInvestigator.prototype, {
     siteSelector: function(organization) { 
         var image;            	
     	if(organization.externalId != null){
-                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>&nbsp;';
         } else {
                   image = '';
         }
-    	return organization.name + " (" + organization.nciInstituteCode + ")";
+    	return image + organization.name + " (" + organization.nciInstituteCode + ")";
     }
 	
    });

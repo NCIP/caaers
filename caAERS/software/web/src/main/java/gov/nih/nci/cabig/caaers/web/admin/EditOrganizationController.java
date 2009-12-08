@@ -31,8 +31,7 @@ public class EditOrganizationController extends OrganizationController<Organizat
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        Organization organization = organizationDao.getById(Integer.parseInt(request
-                        .getParameter("organizationId")));
+        Organization organization = organizationDao.getById(Integer.parseInt(request.getParameter("organizationId")));
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Organization :" + String.valueOf(organization));
@@ -87,8 +86,7 @@ public class EditOrganizationController extends OrganizationController<Organizat
     }
     
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
     	Organization organization = (Organization) command;
     	if("syncOrganization".equals(request.getParameter("_action"))){
     		//TODO: searching only on nci-id , shud be able to search by name or nci-id

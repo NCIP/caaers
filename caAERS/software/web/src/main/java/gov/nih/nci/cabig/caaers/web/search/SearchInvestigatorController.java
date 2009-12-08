@@ -18,8 +18,7 @@ public class SearchInvestigatorController extends SearchController {
     }
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         log.debug(" In initBinder " + isFormSubmission(request));
         if (!isFormSubmission(request)) {
