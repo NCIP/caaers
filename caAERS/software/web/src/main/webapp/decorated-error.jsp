@@ -206,7 +206,9 @@
                             <br/>
                             <pre>
                                              <%
-                                                 exception.printStackTrace(new PrintWriter(out));
+                                             	if(exception != null){
+                                                 	exception.printStackTrace(new PrintWriter(out));
+                                             	}
                                              %>
                                   </pre>
                         </td>
