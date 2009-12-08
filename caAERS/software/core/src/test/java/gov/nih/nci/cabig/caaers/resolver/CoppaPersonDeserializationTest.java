@@ -30,7 +30,7 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 		String  xmlContent = getTestXMLFile("CoppaPersonFailed.xml");
 		Person coppaPerson = CoppaObjectFactory.getCoppaPerson(xmlContent);
 		assertNotNull(coppaPerson);
-		assertNotNull(coppaPerson.getIdentifier());
+		assertNull(coppaPerson.getIdentifier());
 	}
 	
 	//valid xml, - running 30 threads and de-seralizing..
