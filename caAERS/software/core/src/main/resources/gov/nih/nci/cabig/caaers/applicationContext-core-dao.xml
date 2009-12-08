@@ -42,6 +42,11 @@ This applicationContext contains the definition of the DAOs
      </bean>    
 
     <!-- HIBERNATE CONFIGURATION -->
+     <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy">
+      <property name="uppercaseColumnNames">
+       <value>empty_empty</value>
+      </property>
+     </bean>
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
         <property name="mappingLocations">
@@ -51,9 +56,7 @@ This applicationContext contains the definition of the DAOs
             </list>
         </property>
         
-        <property name="namingStrategy">
-            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
-        </property>
+        <property name="namingStrategy" ref="wonderfulNamingStrategy" />
 
         <property name="annotatedClasses">
             <list>
@@ -209,12 +212,7 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig</value>
             </list>
         </property>
-        <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
         <property name="entityInterceptor">
-            <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
-          </bean>-->
-
-
             <ref local="chainedInterceptor"/>
         </property>
     </bean>
@@ -227,8 +225,7 @@ This applicationContext contains the definition of the DAOs
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
             </list>
         </property>
-        <property name="namingStrategy">
-            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
+        <property name="namingStrategy" ref="wonderfulNamingStrategy">
         </property>
         <property name="annotatedClasses">
             <list>
@@ -434,7 +431,6 @@ This applicationContext contains the definition of the DAOs
     <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
         <property name="dialectName">
             <value>s[hibernate.dialect]</value>
-            <!-- <value>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</value> -->
         </property>
         <property name="properties">
             <props>
@@ -512,9 +508,7 @@ This applicationContext contains the definition of the DAOs
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
             </list>
         </property>
-        <property name="namingStrategy">
-            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
-        </property>
+        <property name="namingStrategy" ref="wonderfulNamingStrategy" />
         <property name="annotatedClasses">
         	<list>
         		<value>gov.nih.nci.cabig.caaers.domain.ConverterOrganization</value>
@@ -706,10 +700,8 @@ This applicationContext contains the definition of the DAOs
         <property name="organizationDao" ref="organizationDao"/>
         <property name="organizationRepository" ref="organizationRepository"/>
         <property name="csmUserRepository" ref="csmUserRepository"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="researchStaffConverterDao" ref="researchStaffConverterDao"/>
-        <property name="organizationConverterDao" ref="organizationConverterDao"/>
         <property name="studyRepository" ref="studyRepository"/>
         <property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
     </bean>

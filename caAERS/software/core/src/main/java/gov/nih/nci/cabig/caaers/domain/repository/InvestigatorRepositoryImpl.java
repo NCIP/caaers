@@ -52,7 +52,6 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void save(Investigator investigator, String changeURL) {
-		MailException mailException = null;
 		if(investigator.getAllowedToLogin()){
 	    	
 	    	if (investigator.getEmailAddress() == null) {
@@ -71,16 +70,15 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	    	if(investigator.getId() == null &&  StringUtilities.isBlank(investigator.getLoginId())) {
 	    		investigator.setLoginId(investigator.getEmailAddress());
 	    	}
-	    	
-		    try {
-				csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
-		    } catch (MailException e) {
-				mailException = e;
-			}
 		}
 		
+		//save the details in caAERS
 		investigator = investigatorDao.merge(investigator);
-        if(mailException != null) throw mailException;
+	    
+		//create the csm entries
+		if(investigator.getAllowedToLogin()){
+			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+		}
 	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text){

@@ -62,8 +62,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
      * @throws CaaersSystemException
      */
     public void create(Organization site) throws CaaersSystemException {
-        createGroupForOrganization(site);
-        organizationDao.save(site);
+    	organizationDao.save(site);
+    	createGroupForOrganization(site);
     }
 
     private Group createGroupForOrganization(Organization organization)

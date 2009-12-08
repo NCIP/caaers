@@ -47,10 +47,8 @@ public class ResearchStaffRepository {
     private ResearchStaffDao researchStaffDao;
     private SiteResearchStaffDao siteResearchStaffDao;
     private ResearchStaffConverterDao researchStaffConverterDao;
-    private OrganizationConverterDao organizationConverterDao;
     private OrganizationRepository organizationRepository;
     private OrganizationDao organizationDao;
-    private UserProvisioningManager userProvisioningManager;
     private String authenticationMode;
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
     private StudyRepository studyRepository;
@@ -72,39 +70,31 @@ public class ResearchStaffRepository {
     	//authenticationMode = "webSSO";
     	boolean createMode = researchStaff.getId() == null;
     	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
-    	/*
-    	if( webSSOAuthentication && StringUtils.isBlank(researchStaff.getLoginId())){
-    		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
-    	}*/
+    	
     	//update the loginId to email address if this is not webSSO mode
     	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(researchStaff.getLoginId())) {
     		researchStaff.setLoginId(researchStaff.getEmailAddress());
     	}
-    	MailException mailException = null;
     	
-    	//RemoteResearchStaff fetched from PO will not have a loginId/Username.  
-    	if (researchStaff.getLoginId() != null && StringUtils.isNotEmpty(researchStaff.getLoginId())) {
-	    	try{
-	    		 csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
-	    	}catch(MailException e){
-	    		mailException = e;
-	    	}
-    	}
     	
     	try{
     		researchStaff = (ResearchStaff)researchStaffDao.merge(researchStaff);
     	}catch(Exception e){
-    		e.printStackTrace();
-			throw new CaaersSystemException("Failed to create researchstaff");
+    		logger.error("error while saving research staff", e);
+			throw new CaaersSystemException("Failed to create researchstaff", e);
 		}
 
 		try{
 			studyRepository.associateStudyPersonnel(researchStaff);
 		}catch(Exception e){
-			throw new CaaersSystemException("Failed to associte researchstaff to all studies");
+			throw new CaaersSystemException("Failed to associte researchstaff to all studies", e);
 		}
     	
-        if(mailException != null) throw mailException;
+		//create user groups  - Note : RemoteResearchStaff fetched from PO will not have a loginId/Username.  
+		if(StringUtils.isNotEmpty(researchStaff.getLoginId())){
+			csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+		}
+		
         
     }
     
@@ -449,11 +439,6 @@ public class ResearchStaffRepository {
     }
 
     @Required
-    public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
-        this.userProvisioningManager = userProvisioningManager;
-    }
-
-    @Required
     public String getAuthenticationMode() {
         return authenticationMode;
     }
@@ -466,12 +451,6 @@ public class ResearchStaffRepository {
 	public void setResearchStaffConverterDao(
 			ResearchStaffConverterDao researchStaffConverterDao) {
 		this.researchStaffConverterDao = researchStaffConverterDao;
-	}
-
-	@Required
-	public void setOrganizationConverterDao(
-			OrganizationConverterDao organizationConverterDao) {
-		this.organizationConverterDao = organizationConverterDao;
 	}
 
 	

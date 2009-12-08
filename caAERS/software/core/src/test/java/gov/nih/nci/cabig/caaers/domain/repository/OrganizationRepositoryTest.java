@@ -24,7 +24,8 @@ public class OrganizationRepositoryTest extends DaoNoSecurityTestCase<Organizati
 	public void testCreate(){
 		Organization organization = new LocalOrganization();
 		organization.setName("New Organization");
-		organization.setNciInstituteCode("New Code2");
+		String nciCode1 = String.format("A%d", System.currentTimeMillis());
+		organization.setNciInstituteCode(nciCode1);
 		organization.setCity("city");
 		organization.setCountry("country");
 		organizationRepository.create(organization);
