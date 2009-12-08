@@ -76,7 +76,7 @@ function buildTable(form) {
 
 
    </form:form>
-   <div style="margin-left:20px; margin-bottom:10px;"><tags:button value="Add Organization" color="blue" icon="add" markupWithTag="a" href="createOrganization" /></div>
+
      <div id="bigSearch" style="display:none;">
          <form:form id="assembler">
              <div>
