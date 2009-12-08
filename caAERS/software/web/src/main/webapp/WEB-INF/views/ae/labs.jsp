@@ -53,7 +53,6 @@
 		  	
 		  	AE.registerCalendarPopups("lab-" + this.index)
 		  	this.updateTermDropDown(true)
-		  	
 		  
 		  },
 		  
@@ -89,6 +88,20 @@
           updateCategory: function(value) {
               if (value > 0) {
                   catId = value;
+
+                  var titleID = $('titleOf_lab-' + this.index);
+                  var select = $("aeReport.labs[" + this.index + "].labTerm");
+                  var testTextValue = select.options[select.selectedIndex].text;
+
+                  // determine category
+                  var catIndex = -1;
+                  for (var i = 0; i<this.categoryProperty.options.length; i++) {
+                      var val = this.categoryProperty.options[i].value;
+                      if (val == value) catIndex = i;
+                  }
+                  if (catIndex >= 0) categoryTextValue = this.categoryProperty.options[catIndex].text; else categoryTextValue = "";
+                  $(titleID).innerHTML = categoryTextValue + " : " + testTextValue;
+
               } else catId = this.categoryProperty.value;
 
               var isNOS = $(this.testName).options[1].selected;

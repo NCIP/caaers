@@ -14,14 +14,20 @@
 
 <c:set var="fieldGroupName">lab${index}</c:set>
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
-<chrome:division title="&nbsp;${empty lab.labTerm.term ? (empty lab.other ? '' : lab.other) : lab.labTerm.term}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="${!empties[v] && !expanded}">
+
+<c:set var="_t" value="" />
+<c:if test="${not empty lab.labTerm.term}">
+    <c:set var="_t" value="${lab.labTerm.category.name} : ${lab.labTerm.term}" />
+</c:if>
+
+<chrome:division title="&nbsp;${empty lab.labTerm.term ? (empty lab.other ? '' : lab.other) : _t}" cssClass="lab" id="lab-${index}" style="${style}" collapsable="true" enableDelete="true" collapsed="${!empties[v] && !expanded}">
 
 	 <div class="row">
             <div class="label"><label for="aeReport.labs[${index}].lab-category">Lab category</label></div>
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}">disabled</c:if>>
+                  <select id="aeReport.labs[${index}].lab-category" <c:if test="${lab.id > 0 && (lab.labTerm != null || fn:trim(lab.other) != '')}">disabled</c:if>">
                     <option value="0">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
@@ -83,13 +89,13 @@
 <script>
 function setTitleLab_${index}() {
     var titleID = $('titleOf_lab-${index}');
-    var select = $("aeReport.labs[${index}].labTerm");
-    var value = select.options[select.selectedIndex].text;
+    var textField = $("aeReport.labs[${index}].other");
+    var value = textField.value;
     $(titleID).innerHTML = value;
 }
 
 
-Event.observe($("aeReport.labs[${index}].labTerm"), "change", function() {
+Event.observe($("aeReport.labs[${index}].other"), "change", function() {
     setTitleLab_${index}();
 });
 
