@@ -53,7 +53,7 @@
                                                 function(organization){
                                                     var image;
                                                     if(organization.externalId != null){
-                                                              image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>&nbsp';
+                                                              image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>&nbsp;';
                                                     } else {
                                                               image = '';
                                                     }
