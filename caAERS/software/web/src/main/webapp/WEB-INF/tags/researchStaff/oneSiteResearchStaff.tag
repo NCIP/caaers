@@ -88,7 +88,15 @@
                             </div>
 							<div class="row">
                                 <div class="label">Associate to all studies</div>
-                                <div class="value"><ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" disabled="${readOnly || command.researchStaff.siteResearchStaffs[index].associateAllStudies}"/></div>
+                                <div class="value">
+                                    <c:if test="${command.researchStaff.siteResearchStaffs[index].associateAllStudies}">Yes</c:if>
+                                    <c:if test="${!command.researchStaff.siteResearchStaffs[index].associateAllStudies}">
+                                        <c:if test="${readOnly}">No</c:if>
+                                        <c:if test="${!readOnly}">
+                                            <ui:checkbox path="researchStaff.siteResearchStaffs[${index}].associateAllStudies" />
+                                        </c:if>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                         <div class="rightpanel">
