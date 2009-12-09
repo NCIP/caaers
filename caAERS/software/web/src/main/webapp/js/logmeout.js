@@ -45,6 +45,12 @@ function timeoutSession() {
 // ----------------------------------------------------------------------------------------------------------------
 function logOutOKClicked(url){
 	Windows.closeAll();
+	
+	//ping the server so that session will not timeout.
+	new Ajax.Request(AE.APP_BASE_URL + 'images/buttons/button_icons/continue_icon.png', {
+        onSuccess: function(transport) {
+        }
+    });
 }
 
 
