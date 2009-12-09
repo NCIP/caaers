@@ -905,6 +905,7 @@ public class StudyConverter {
             if (sysIds != null) {
                 for (SystemAssignedIdentifier sid : sysIds) {
                     SystemAssignedIdentifierType o = new SystemAssignedIdentifierType();
+                    o.setType(StudyIdentifierType.fromValue(sid.getType()));
                     o.setSystemName(sid.getSystemName());
                     o.setValue(sid.getValue());
                     identifiers.getSystemAssignedIdentifier().add(o);
