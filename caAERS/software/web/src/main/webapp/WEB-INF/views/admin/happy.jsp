@@ -40,7 +40,7 @@
 </head>
 <body>
 
- <div class="tabpane">
+
      <div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
     <li id="thirdlevelnav" class="tab"><div>
@@ -53,18 +53,11 @@
 </div>
 
 
-<div id="main">
+
  		
-	<div class="pane">
-     <div class="box">
-		<div class="header"><div class="background-L"><div class="background-R">
-			<h2>caAERS Diagnostics</h2>
-		</div>
-	 </div>
-	</div>
-   <div class="division ">   
-      <div class="">  
-	      <div class=""><h3>Configuration</h3> </div>
+<chrome:box title="caAERS Diagnostics">
+<chrome:division title="Configuration">
+   <div class="row">
         	<div class="leftpanel">
         		<div class="row">
                 	<div class="label">PSC URL </div>
@@ -82,10 +75,10 @@
             	</div>            	
             </div>
 	  </div>
-  </div>
-  <div class="division ">   
-      <div class="content">  
-	      <div class="header"><h3>Email Configuration</h3> </div>
+  </chrome:division>
+  <chrome:division title="Email Configuration">
+
+	      <div class="row">
       
         	<div class="leftpanel">
         		<div class="row">
@@ -116,11 +109,10 @@
            	
             </div>
 	  </div>
-  </div>
+  </chrome:division>
 
-  <div class="division ">   
-      <div class="content">  
-	      <div class="header"><h3>ServiceMix Configuration</h3> </div>
+<chrome:division title="ServiceMix Configuration">
+   <div class="row">
       
         	<div class="leftpanel">
 
@@ -145,11 +137,11 @@
            	
             </div>
 	  </div>
-  </div>
-  
+  </chrome:division>
+  </chrome:box>
   <div class="content buttons autoclear"/>
 </div>
-        </div>
-    </div>
+
+
 </body>
 </html>

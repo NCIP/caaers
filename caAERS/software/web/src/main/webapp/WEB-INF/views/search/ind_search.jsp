@@ -70,7 +70,6 @@ function buildTable(form) {
 
 
         </form:form>
-		<div style="margin-left:20px; margin-bottom:10px;"><tags:button markupWithTag="a" value="Add IND" color="blue" icon="add" href="createIND" /></div>
         <div id="bigSearch" style="display:none;">
             <form:form id="assembler">
                 <div>
