@@ -50,7 +50,7 @@
         </jsp:attribute>
     </tags:renderRow>
 
-	<div id="not-microbiology-${index}" style="display:none;">
+	<div id="not-microbiology-${index}" style="<c:if test="${lab.id > 0 && empty lab.labTerm.term}">display:'';</c:if><c:if test="${empty lab.id || not empty lab.labTerm.term}">display:none;</c:if>">
     <tags:renderRow field="${fieldGroup.fields[2]}" />
  
     <c:forEach begin="3" end="8" step="2" var="i">
@@ -75,7 +75,7 @@
     </c:forEach>
     </div>
     
-    <div id="microbiology-${index}" style="display:none;">
+    <div id="microbiology-${index}" style="<c:if test="${lab.id > 0 && empty lab.labTerm.term}">display:'';</c:if><c:if test="${empty lab.id || not empty lab.labTerm.term}">display:none;</c:if>">
         <tags:renderRow field="${fieldGroup.fields[9]}" />
         <tags:renderRow field="${fieldGroup.fields[10]}" />
         <tags:renderRow field="${fieldGroup.fields[11]}" />
