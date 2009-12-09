@@ -1,6 +1,6 @@
 <ivysettings>
 	<settings defaultResolver="caaers-resolver" validate="false" />
-
+	<cache basedir="${user.home}/.ivy2/caAERS"/>
 	<resolvers>
 	 <chain name="caaers-resolver" returnFirst="true" dual="true">
 		<!--  Local Ivy repository -->
@@ -12,8 +12,8 @@
 		
 		<!-- Local Ivy Cache -->
 		<filesystem name="ivy-cache" local="true" >
-              <ivy pattern="${user.home}/.ivy2/cache/[organisation]/[module]/ivy-[revision].xml"/>
-              <artifact pattern="${user.home}/.ivy2/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
+              <ivy pattern="${user.home}/.ivy2/caAERS/cache/[organisation]/[module]/ivy-[revision].xml"/>
+              <artifact pattern="${user.home}/.ivy2/caAERS/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
       
       </chain>
