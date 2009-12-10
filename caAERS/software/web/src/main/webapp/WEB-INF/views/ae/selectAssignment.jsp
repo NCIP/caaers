@@ -22,6 +22,7 @@
           margin-left: 8em;
         }
 		.selection {
+			display:none;
 			background:#dbe9ff;
 			border:1px solid #6e8bb8;
 			color:#2a4876;
