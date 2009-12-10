@@ -36,7 +36,7 @@
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
 			
-			<SELECT style="width:100px;" id="actions-rp-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
+			<SELECT id="actions-rp-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}'/>', '${report.aeReport.id}', '${lastVersion.submissionUrl}')">
 		     	<OPTION selected value="none">Please select</OPTION>
 		     	<c:if test="${command.study.caaersXMLType}">
 		     		<OPTION value="xml">Export caAERS XML</OPTION>

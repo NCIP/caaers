@@ -39,7 +39,7 @@
 	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${reportingPeriod.dataEntryStatus}</td>
 	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');"><span class="${reportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : reportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : reportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : reportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${reportingPeriod.reportStatus}</span></td>
 	<td width="20%" align="center" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">
-		<SELECT style="width:100px;" id="actions-${reportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${reportingPeriod.id})" >
+        <SELECT style="" id="actions-${reportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${reportingPeriod.id})" >
 				<OPTION selected value="none">Please select</OPTION>
 		     	<OPTION value="editReportingPeriod">Edit Adverse Events</OPTION>
 		</SELECT>
