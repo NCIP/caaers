@@ -40,5 +40,6 @@ public class PhoneNumberValidatorTest extends TestCase {
 		assertFalse(pv.isValid("1-803---319-5334----"));
 		assertFalse(pv.isValid("1-803.319.5334)"));
 		assertFalse(pv.isValid("+++++18033195334)"));
+		assertTrue(pv.isValid("(212)-876-4460"));
 	}
 }
