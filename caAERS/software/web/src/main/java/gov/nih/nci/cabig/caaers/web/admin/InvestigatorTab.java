@@ -187,7 +187,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         
         InputField loginIdField = null;
         if(command.getWasLoginIdNull()){
-        	loginIdField = InputFieldFactory.createTextField("loginId", "Username", false);
+        	loginIdField = InputFieldFactory.createTextField("loginId", "Username", true);
             InputFieldAttributes.setSize(loginIdField, 30);
         }else{
         	loginIdField = InputFieldFactory.createLabelField("loginId", "Username", false);
