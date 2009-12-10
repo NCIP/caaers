@@ -139,6 +139,11 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
     public void save(final Organization organization) {
+
+    	if(StringUtils.isEmpty(organization.getName())){
+    		throw new RuntimeException("Organization name should not be empty");
+    	}
+    	
     	if(organization.getId() == null && organization instanceof LocalOrganization){
     		Organization searchCriteria = new RemoteOrganization();
     		searchCriteria.setNciInstituteCode(organization.getNciInstituteCode());
