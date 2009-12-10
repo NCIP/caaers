@@ -15,7 +15,7 @@ public class PhoneNumberValidator extends FieldValidator {
 	public boolean isValid(Object fieldValue) {
 		String strVal = stringValue(fieldValue);
 		if (StringUtils.isEmpty(strVal)) return true; // valid.
-		String regex = "^(\\+?\\d{10,11}|((\\+)?\\d[-\\.])?(((\\d{3}[-\\.]){2}\\d{4}))|((\\+)?\\d)?((\\(\\d{3}[\\)]\\d{3}[-\\.]?\\d{4})))(x\\d+)?$";
+		String regex = "^(\\+?\\d{10,11}|((\\+)?\\d[-\\.])?(((\\d{3}[-\\.]){2}\\d{4}))|((\\+)?\\d)?((\\(\\d{3}[\\)][-\\.]?\\d{3}[-\\.]?\\d{4})))(x\\d+)?$";
 		 Pattern p = Pattern.compile(regex);
 		 Matcher m = p.matcher(strVal);
 		 return m.matches();
