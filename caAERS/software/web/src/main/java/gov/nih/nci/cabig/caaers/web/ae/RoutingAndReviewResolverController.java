@@ -39,7 +39,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		
 		boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
 		String redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
-		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd)){
+		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
 			redirectUrl = "reviewEvaluationPeriod?adverseEventReportingPeriod=" + reportingPeriodId;
 		}
 		
@@ -51,7 +51,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		String reportId = request.getParameter("report");
 		String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;;
 		boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd)){
+		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
 			redirectUrl = "reviewAeReport?aeReport=" + aeReportId + "&report=" + reportId;
 		}
 		
