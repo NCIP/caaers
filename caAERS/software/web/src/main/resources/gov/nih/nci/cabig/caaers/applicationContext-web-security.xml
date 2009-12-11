@@ -121,7 +121,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
 		<!--========= SEARCH ========-->
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
@@ -171,7 +171,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 	</util:map>
 	
@@ -248,9 +248,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
 		<!--  Advanced search flow -->
-		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchViewTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchResultsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchViewTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchResultsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 
 		<!-- AE FLOW , UPDATE -->
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.CtcBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
