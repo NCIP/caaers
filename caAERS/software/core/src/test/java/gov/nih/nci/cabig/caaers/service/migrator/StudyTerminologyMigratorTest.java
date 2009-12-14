@@ -108,15 +108,13 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	}
 	
 	public void testMigrate_WithCorrectMeddraVersionName() {
-		AeTerminology ctcV3Terminology = Fixtures
-				.createCtcV3Terminology(xstreamStudy);
+		AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
 		List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
 		MeddraVersion otherMeddraVersion = new MeddraVersion();
 		otherMeddraVersion.setId(9);
 		otherMeddraVersion.setName("MedDRA v9");
 		mvs.add(otherMeddraVersion);
-		EasyMock.expect(
-				ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
+		EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
 		EasyMock.expect(meddraVersionDao.getMeddraByName("MedDRA v9")).andReturn(mvs).anyTimes();
 		
 		replayMocks();
@@ -130,15 +128,13 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	}
 	
 	public void testMigrate_WithInCorrectMeddraVersionName() {
-		AeTerminology ctcV3Terminology = Fixtures
-				.createCtcV3Terminology(xstreamStudy);
+		AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
 		List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
 		MeddraVersion otherMeddraVersion = new MeddraVersion();
 		otherMeddraVersion.setId(9);
 		otherMeddraVersion.setName("MedDRA v9");
 		mvs.add(otherMeddraVersion);
-		EasyMock.expect(
-				ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
+		EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
 		EasyMock.expect(meddraVersionDao.getMeddraByName("MedDRA v9")).andReturn(null).anyTimes();
 		
 		replayMocks();

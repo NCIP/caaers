@@ -28,16 +28,13 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
     private List<Message> messages = new ArrayList<Message>();
 
     private T importedDomainObject;
-
     private boolean isSavable = true;
 
-    public void ifNullObject(Object domainObject,
-                                Severity severity, String message) {
+    public void ifNullObject(Object domainObject, Severity severity, String message) {
         if (domainObject == null) {
             addErrorMessage(message, severity);
         }
     }
-
 
     public enum Severity {
         ERROR, WARNING

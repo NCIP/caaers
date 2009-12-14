@@ -38,7 +38,9 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
                 outcome.ifNullObject(ctc, DomainObjectImportOutcome.Severity.ERROR, "CTC is either Empty or Not Valid");
                 
             	if(source.getOtherMeddra() != null){
-                	MeddraVersion otherMeddraVersion = meddraVersionDao.getMeddraByName(source.getOtherMeddra().getName()).get(0);
+                    MeddraVersion otherMeddraVersion = null;
+                    List<MeddraVersion> meddraList = meddraVersionDao.getMeddraByName(source.getOtherMeddra().getName());  
+                	if (meddraList.size() > 0) otherMeddraVersion = meddraList.get(0);
                 	destination.setOtherMeddra(otherMeddraVersion);
                 	outcome.ifNullObject(otherMeddraVersion, DomainObjectImportOutcome.Severity.ERROR, "otherMeddraVersion is either Empty or Not Valid");
                 }
