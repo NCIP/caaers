@@ -39,6 +39,7 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
 	
 	public void testSaveRemoteOrg(){
 		Organization remoteOrg = new RemoteOrganization();
+		remoteOrg.setName("my remote org");
 		remoteOrg.setNciInstituteCode("Remote Code");
 		remoteOrg.setExternalId("externalId");
 		getDao().save(remoteOrg);
