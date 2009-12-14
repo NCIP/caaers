@@ -14,9 +14,11 @@ var today = '<tags:formatDate value="${today}"/>'
 var associatedSite = null;
 var associatedSiteClass = Class.create();
 Object.extend(associatedSiteClass.prototype, {
+    
 		initialize: function(){
 		},
-		addDetails : function(methodName,index,loc, options){
+
+        addDetails : function(methodName,index,loc, options) {
 			this.index=index;
 	 		var container = $(loc);
 	 		var paramHash = new Hash(); //parameters to post to server
@@ -28,13 +30,10 @@ Object.extend(associatedSiteClass.prototype, {
 	 		
 	 		var url = $('command').action + "?subview"; //make the ajax request
 	 		$('ajax_wait').removeClassName('indicator');
-			this.insertContent(container, url, paramHash, function(methodName)
-								 {
-				 					new jsInvestigator(this.index);
-				 					$('ajax_wait').addClassName('indicator');
-				 				}.bind(this))
+			this.insertContent(container, url, paramHash, function(methodName) { new jsInvestigator(this.index); $('ajax_wait').addClassName('indicator'); }.bind(this));
 		},
-		removeDetails :function(methodName,index, loc, options){
+    
+		removeDetails :function(methodName,index, loc, options) {
 	 		if(index < 0) return;
 
 			var confirmation = confirm("Do you really want to delete?");
@@ -53,23 +52,26 @@ Object.extend(associatedSiteClass.prototype, {
 	 		$('ajax_wait').removeClassName('indicator');
 			this.insertContent(container, url, paramHash.merge(sectionHash), function(){$('ajax_wait').addClassName('indicator');} );				
 		},
-		populateDeafultParameters : function(methodName, paramHash){
-		//will populate the default parameters, to support ajax communication
-		var page = ${tab.number};
-		var target = '_target' + ${tab.number}; 
-		paramHash.set('_page', page);
-		paramHash.set(target, page);
-		paramHash.set('_asynchronous', true);
-		paramHash.set('_asyncMethodName' , methodName);
-		paramHash.set('decorator', 'nullDecorator');
+
+		populateDeafultParameters : function(methodName, paramHash) {
+            //will populate the default parameters, to support ajax communication
+            var page = ${tab.number};
+            var target = '_target' + ${tab.number};
+            paramHash.set('_page', page);
+            paramHash.set(target, page);
+            paramHash.set('_asynchronous', true);
+            paramHash.set('_asyncMethodName' , methodName);
+            paramHash.set('decorator', 'nullDecorator');
 		},
-		insertContent : function(aContainer, url, params, onCompleteCallBack){
+
+		insertContent : function(aContainer, url, params, onCompleteCallBack) {
 			//helper method to insert content in a DIV
 			new Ajax.Updater(aContainer, url, {
 				parameters: params.toQueryString() , onComplete: onCompleteCallBack ,insertion: Insertion.Bottom, evalScripts : true
 			});
 		},
-		formElementsInSection : function(aContainer){
+
+		formElementsInSection : function(aContainer) {
 			return aContainer.select('input', 'select', 'textarea');	
 		}
 });
