@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import com.semanticbits.rules.utils.DateUtil;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
@@ -45,6 +47,7 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
         investigator.setAllowedToLogin(Boolean.TRUE);
         investigator.setWasLoginDisallowed(true);
         investigator.setWasLoginIdNull(true);
+        siteInvestigator.setStartDate(DateUtils.today());
         
         return investigator;
     }

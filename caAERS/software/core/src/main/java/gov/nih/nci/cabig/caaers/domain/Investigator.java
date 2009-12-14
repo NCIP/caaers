@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.util.*;
@@ -197,6 +198,7 @@ public abstract class Investigator extends User {
 		public SiteInvestigator create() {
 			SiteInvestigator siteInvestigator = new SiteInvestigator();
 			siteInvestigator.setInvestigator(investigator);
+            siteInvestigator.setStartDate(DateUtils.today());
 			return siteInvestigator;
 		}
     }
