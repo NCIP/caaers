@@ -2,16 +2,9 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.webservice.OrganizationType;
-import gov.nih.nci.cabig.caaers.webservice.PersonnelRoleCodeType;
-import gov.nih.nci.cabig.caaers.webservice.RoleCodeType;
-import gov.nih.nci.cabig.caaers.webservice.SiteInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.StatusType;
-import gov.nih.nci.cabig.caaers.webservice.StudyInvestigatorType;
-import gov.nih.nci.cabig.caaers.webservice.StudyPersonnelType;
-import gov.nih.nci.cabig.caaers.webservice.StudyPhaseType;
-import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
+import gov.nih.nci.cabig.caaers.webservice.*;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyInvestigators;
 import gov.nih.nci.cabig.caaers.webservice.StudySiteType.StudyPersonnels;
@@ -373,13 +366,13 @@ public class StudyConverterTest extends AbstractTestCase {
         SystemAssignedIdentifier sid1 = new SystemAssignedIdentifier();
         sid1.setSystemName("BAA_SYSTEM");
         sid1.setValue("BAA-jii7");
-        sid1.setType(SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        sid1.setType(StudyIdentifierType.GRID_IDENTIFIER.value());
         study.getIdentifiers().add(sid1);
 
         SystemAssignedIdentifier sid2 = new SystemAssignedIdentifier();
         sid2.setSystemName("GRADE_SYSTEM");
         sid2.setValue("GR-jjk11");
-        sid2.setType(SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        sid2.setType(StudyIdentifierType.GRID_IDENTIFIER.value());
         study.getIdentifiers().add(sid2);
 
         OrganizationAssignedIdentifier oid1 = new OrganizationAssignedIdentifier();
