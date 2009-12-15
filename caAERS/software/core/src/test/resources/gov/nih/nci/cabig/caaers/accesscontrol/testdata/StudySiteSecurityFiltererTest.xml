@@ -15,8 +15,8 @@
     <ORGANIZATIONS
             id="-1002"
             version="1"
-            name="CALGB"
-            description_text="CALGB"
+            name="DEFAULT"
+            description_text="DEFAULT"
             nci_institute_code="DEFAULT"
             />
 
@@ -43,7 +43,10 @@
     	id="-9001"
     	site_id="-1002"
     	researchstaff_id="-1000"/>    
-        
+    <SITE_RESEARCH_STAFFS
+    	id="-10001"
+    	site_id="-1003"
+    	researchstaff_id="-1000"/>        
         
     <RESEARCH_STAFFS
         id="-1001"
