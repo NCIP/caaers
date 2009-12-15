@@ -100,6 +100,19 @@ public class DiseaseTab extends StudyTab {
     }
 
     @Override
+    public void onBind(HttpServletRequest request, StudyCommand command, Errors errors) {
+        super.onBind(request, command, errors);
+        if (command.getPrimaryStudyDisease() == null) return;
+
+        if (command.getStudy().getCtepStudyDiseases() != null) {
+            for (byte i=0; i< command.getStudy().getCtepStudyDiseases().size(); i++) {
+                CtepStudyDisease d = command.getStudy().getCtepStudyDiseases().get(i);
+                d.setLeadDisease(i == command.getPrimaryStudyDisease().intValue());
+            }
+        }
+    }
+
+    @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         Study study = command.getStudy();
@@ -109,6 +122,13 @@ public class DiseaseTab extends StudyTab {
         for (StudyCondition studyCondition : study.getStudyConditions()) {
         	if(studyCondition.isRetired()) continue;
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
+        }
+
+        if (command.getStudy().getCtepStudyDiseases() != null) {
+            for (byte i=0; i< command.getStudy().getCtepStudyDiseases().size(); i++) {
+                CtepStudyDisease d = command.getStudy().getCtepStudyDiseases().get(i);
+                if (d.getLeadDisease() != null && d.getLeadDisease()) command.setPrimaryStudyDisease(new Integer(i));
+            }
         }
 
         String diseaseTerminology = "MEDDRA";

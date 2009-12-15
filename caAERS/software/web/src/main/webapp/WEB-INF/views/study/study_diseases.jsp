@@ -364,7 +364,7 @@ Event.observe(window, "load", function() {
     				<c:if test="${not studyDisease.retired}">
     				<tr>    				
             			<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
-            			<td align="center"><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
+            			<td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
             			<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             		</tr>
     				</c:if>

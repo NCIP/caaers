@@ -39,6 +39,8 @@ public class StudyCommand {
 
     private StudyRepository studyRepository;
 
+    private Integer primaryStudyDisease;
+    
     // ----------------------------------------------------------------------------------------------------------------
     
     public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
@@ -534,5 +536,13 @@ public class StudyCommand {
 
     public void setStudyRepository(StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
+    }
+
+    public Integer getPrimaryStudyDisease() {
+        return primaryStudyDisease;
+    }
+
+    public void setPrimaryStudyDisease(Integer primaryStudyDisease) {
+        this.primaryStudyDisease = primaryStudyDisease;
     }
 }
