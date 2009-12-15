@@ -50,7 +50,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(studies); 
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
-		assertEquals(filteredList.size(),3);
+		assertEquals(3,filteredList.size());
 	}
 
 	public void testFilterAsPhysician() {
@@ -58,7 +58,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		disableAuthorization();
 		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
 		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
-		assertEquals(studies.size(),3);
+		assertEquals(3,studies.size());
 		
 		//enable security 
 		enableAuthorization();		
@@ -68,7 +68,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(studies); 
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
-		assertEquals(filteredList.size(),3);
+		assertEquals(3,filteredList.size());
 	}
 	
 	public void testFilterAsAdverseEventCoordinator() {
@@ -76,7 +76,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		disableAuthorization();
 		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
 		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
-		assertEquals(studies.size(),3);
+		assertEquals(3,studies.size());
 		
 		//enable security 
 		enableAuthorization();		
@@ -86,7 +86,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(studies); 
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
-		assertEquals(filteredList.size(),1);		
+		assertEquals(1,filteredList.size());		
 	}
 	
 
@@ -95,7 +95,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		disableAuthorization();
 		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
 		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
-		assertEquals(studies.size(),3);
+		assertEquals(3,studies.size());
 		
 		//enable security 
 		enableAuthorization();		
@@ -107,7 +107,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
 		System.out.println(filteredList);
 		
-		assertEquals(filteredList.size(),0);		
+		assertEquals(0,filteredList.size());		
 	}
 	
 
@@ -116,7 +116,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		disableAuthorization();
 		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
 		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
-		assertEquals(studies.size(),3);
+		assertEquals(3,studies.size());
 		
 		//enable security 
 		enableAuthorization();		
@@ -128,7 +128,7 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
 		System.out.println(filteredList);
 		
-		assertEquals(filteredList.size(),0);		
+		assertEquals(0,filteredList.size());		
 	}
 	
 }
