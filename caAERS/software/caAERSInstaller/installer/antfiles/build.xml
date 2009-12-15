@@ -4,19 +4,12 @@
         certificate test
     </description>
 	<!-- set global properties for this build -->
-	<property url="http://demo.semanticbits.com/installer/caaers-online-properties.properties" />
 	<property file="${user.home}/.gridenv.properties" />
-	<property name="tomcat.download.url" value="http://www.eng.lsu.edu/mirrors/apache/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip" />
+	<property name="tomcat.download.url" value="@TOMCAT_DOWNLOAD_URL@" />
 	<property name="tomcat.file.name" value="apache-tomcat-5.5.27.zip" />
 	<property name="tomcat.version" value="apache-tomcat-5.5.27" />
-	<!--
-
-  <property name="caaers.download.url" value="http://download.bioinformatics.northwestern.edu/maven2/gov/nih/nci/cabig/caaers/caaers-web/0.7.1/caaers-web-0.7.1.war"/>
-
-  -->
-	<!--	<property name="caaers.download.url" value="http://74.93.192.33:8030/installer/caaers.war"/> -->
+	<property name="caaers.download.url" value="@CAAERS_DOWNLOAD_URL@"/>
 	<property name="caaers.file.name" value="caaers.war" />
-	<!--  <property name="caaers.version" value="0.10-SNAPSHOT"/> -->
 	<property name="caaers.core.jar" value="caaers-core-*.jar" />
 	<property name="temp.dir" value="${user.home}/caaers_temp" />
 	<property name="working.dir" value="${temp.dir}/caaers" />

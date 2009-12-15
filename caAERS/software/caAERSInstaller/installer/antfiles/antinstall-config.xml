@@ -1,21 +1,20 @@
 <?xml version="1.0"?>
 <!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.7.dtd">
 
-<installer ui="swing,text" verbose="false" lookAndFeel="org.jvnet.substance.skin.SubstanceFieldOfWheatLookAndFeel" name="caGrid Installer" windowIcon="/resources/gkmain_inv.png" defaultImageResource="/resources/caGrid.jpg" minJavaVersion="1.4">
+<installer ui="swing,text" verbose="true"
+ lookAndFeel="org.jvnet.substance.skin.SubstanceFieldOfWheatLookAndFeel"
+  name="caGrid Installer" 
+  windowIcon="/resources/gkmain_inv.png" 
+  defaultImageResource="/resources/caGrid.jpg" 
+  minJavaVersion="1.4">
 <!--  each page element represents a page of the installer -->
    
 			
-    <page type="input" name="P1" displayText="caAERS Installer " 
+    <page type="input" name="P1" displayText="caAERS Installer @CAAERS_INSTALLER_VERSION@" 
         		imageResource="/resources/caGrid.jpg">
-        		
-            
-	    
 	    <comment displayText="This installer will install and/or configure the following:" bold="true" />
-	    
-	    <comment displayText="		1) caAERS application" bold="true" />
+	    <comment displayText="		1) caAERS application version @CAAERS_VERSION@" bold="true" />
 	    <comment displayText="		2) Tomcat " bold="true" />
-	    
-	
     </page>
    
     

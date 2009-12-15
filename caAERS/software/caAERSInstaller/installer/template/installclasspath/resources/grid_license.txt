@@ -1,2 +1,2 @@
-The caAERS License, Version 0.6
+The caAERS License, version @CAAERS_VERSION@
 

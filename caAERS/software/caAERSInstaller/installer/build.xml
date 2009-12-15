@@ -32,13 +32,15 @@
   
   
   <target name="copyAntFiles" depends="init">
-   <copy todir="${basedir}/temp">
+  <filter filtersfile="${project.property.file}"/>
+   <copy todir="${basedir}/temp" filtering="true">
    	<fileset dir="${basedir}/antfiles"/>     
    </copy>
   </target>
   
   <target name="copyTemplate" depends="copyAntFiles">
-     <copy todir="${basedir}/temp">
+  	 <filter filtersfile="${project.property.file}"/>
+     <copy todir="${basedir}/temp" filtering="true">
      	<fileset dir="${basedir}/template"/>     
      </copy>
   </target>
