@@ -20,8 +20,10 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -37,9 +39,11 @@ import gov.nih.nci.cabig.caaers.webservice.adverseevent.Criteria;
 import gov.nih.nci.cabig.caaers.webservice.adverseevent.Response;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -51,6 +55,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
+import org.springframework.web.context.request.WebRequest;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 
@@ -68,8 +77,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	protected CtcTermDao ctcTermDao;
 	
 	private AdverseEventConverter adverseEventConverter;
-	//private AdverseEventEvaluationService adverseEventEvaluationService;
-	//private CaaersJavaMailSender caaersJavaMailSender;
+	private AdverseEventEvaluationService adverseEventEvaluationService;
+	private MailSender mailSender;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
 	
@@ -78,6 +87,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage,String operation) {
 		//boolean authorizationOnByDefault = enableAuthorization(false);
 		//switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+	//	WebRequest stubWebRequest = preProcess();
 		
 		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
 		Response adverseEventResponse = new Response();
@@ -165,6 +175,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		if (dbParticipant != null && dbStudy != null) {
 			// process adverse events ...
 			// check for assignment .
+			
 			assignment = studyParticipantAssignmentDao.getAssignment(dbParticipant, dbStudy);
 			if(assignment != null){
     			logger.info("Participant is  assigned to Study");
@@ -261,40 +272,71 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 
 				// FIRE SAE RULES ..
-				/*Study initializedStudy = studyDao.initialize(dbStudy);
+		//		Study initializedStudy = studyDao.initialize(dbStudy);
 				for (AdverseEvent ae:adverseEventReportingPeriod.getAdverseEvents()) {
+					String sae = "";
 					try {
-						String reportDefinition = adverseEventEvaluationService.assesAdverseEvent(ae, dbStudy);
-						messages.add(reportDefinition);
-
-						//notifyStudyPersonnel(assignment);
-
+						
+						sae = adverseEventEvaluationService.assesAdverseEvent(ae, dbStudy);
+						if (sae.equals("SERIOUS_ADVERSE_EVENT")) {
+							messages.add("Rules enabled for this study , Reporting required for exported Adverse Events");
+						}
+						
 					} catch (Exception e) {
 						messages.add("Error in firing SAE rules . "+e.getMessage());
 						adverseEventResponse.setMessage(messages);
 						caaersServiceResponse.setResponse(adverseEventResponse);
 						return caaersServiceResponse;
-					}
-				}*/
+					}	
+					/*
+					try {						
+						notifyStudyPersonnel(assignment);
+						messages.add("Email Sent ..");
+					} catch (MailException e) {
+						messages.add("Error sending email to Study Personnel . "+e.getMessage());
+						adverseEventResponse.setMessage(messages);
+						caaersServiceResponse.setResponse(adverseEventResponse);
+						return caaersServiceResponse;
+					}*/
+
+
+				}
 			adverseEventResponse.setMessage(messages);
 		}
+	//	postProcess(stubWebRequest);
         //enableAuthorization(authorizationOnByDefault);
 		//switchUser(null);
 		
 		caaersServiceResponse.setResponse(adverseEventResponse);
 		return caaersServiceResponse;
-	}/*
-	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws Exception {
+	}
+	
+	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws MailException {
 		List<String> emails = new ArrayList<String>();
+		MailException mailException = null;
 		List<StudyPersonnel> studyPersonnel = assignment.getStudySite().getStudyPersonnels();
 		for (StudyPersonnel sp:studyPersonnel) {
-			String email = sp.getResearchStaff().getEmailAddress();
+			String email = sp.getEmailAddress();
 			emails.add(email);
 		}
-		String content = "report email test ... ";
-		caaersJavaMailSender.sendMail(emails.toArray(new String[0]), "Reporting required for exported Adverse Events", content,new String[0]);
-		
-	}*/
+
+		try {
+			sendUserEmail(emails.toArray(new String[0]), "Reporting required for exported Adverse Events", "Reporting required for exported Adverse Events");
+		} catch (MailException e) {
+			mailException = e;
+		}
+		if(mailException != null) throw mailException;
+	}
+	
+    public void sendUserEmail(String[] emailAddress, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(emailAddress);
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
+
+    }
+    
 	private void deleteAdverseEvent(AdverseEvent adverseEvent,AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		List<AdverseEvent> dbAdverseEvents = adverseEventReportingPeriod.getAdverseEvents();
 	
@@ -687,7 +729,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         if(dbStudy == null){
         	return null;
         }
-        studyDao.evict(dbStudy);
+        //studyDao.evict(dbStudy);
 
 		return dbStudy;
 	}
@@ -752,14 +794,14 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			TreatmentAssignmentDao treatmentAssignmentDao) {
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
-/*
+
 	public void setAdverseEventEvaluationService(
 			AdverseEventEvaluationService adverseEventEvaluationService) {
 		this.adverseEventEvaluationService = adverseEventEvaluationService;
 	}
-	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
-		this.caaersJavaMailSender = caaersJavaMailSender;
-	}*/
+    public void setMailSender(final MailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 		
@@ -785,5 +827,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
+
+    
 
 }
