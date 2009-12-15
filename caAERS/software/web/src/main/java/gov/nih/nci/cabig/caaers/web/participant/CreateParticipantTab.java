@@ -121,7 +121,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Object isAjax = request.getAttribute("_isAjax");
         if (isAjax != null) return;
         command.getParticipant().getOrganizationIdentifiers().get(0).setOrganization(command.getOrganization());
-        super.onBind(request, command, errors); 
+        command.getParticipant().getOrganizationIdentifiers().get(0).setPrimaryIndicator(true);
+        super.onBind(request, command, errors);
     }
 
     @Override
