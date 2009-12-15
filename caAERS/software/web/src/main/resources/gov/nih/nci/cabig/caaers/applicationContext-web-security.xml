@@ -169,7 +169,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/participant/search" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 		<entry key="/pages/report/notImplemented" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
