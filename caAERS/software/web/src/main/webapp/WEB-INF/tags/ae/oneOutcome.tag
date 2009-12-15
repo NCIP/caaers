@@ -9,7 +9,7 @@
 <%@attribute name="index" required="true" description="The index of the AE for which the outcome needs to be printed"%>
 <%@attribute name="isRoutineFlow" type="java.lang.Boolean" description="Will be true, if this tag is used in context of routine flow" %>
 <c:set var="outcomeGroup" value="outcomes${index}" />
-<ui:row path="outcomes" >
+<ui:row path="adverseEvents[].outcomes" >
 	<jsp:attribute name="label">
 		Outcomes
 	</jsp:attribute>
