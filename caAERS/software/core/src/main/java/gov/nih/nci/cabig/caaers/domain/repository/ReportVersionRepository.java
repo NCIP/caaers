@@ -27,7 +27,6 @@ public class ReportVersionRepository {
 	    		}
 	    		if (submittedOrAmendedDate != null) {
 	    			long timeDiff = (nowFactory.getNowTimestamp().getTime() - rv.getSubmittedOn().getTime())/60000;
-	    			System.out.println(timeDiff);
 	    			if (timeDiff > 5) {
 	    				rv.setReportStatus(ReportStatus.FAILED);
 	    				rv.setSubmissionMessage("Submission failed for unknown reason , Please resubmit");

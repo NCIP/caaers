@@ -310,6 +310,7 @@ public class Fixtures {
             researchStaff.addUserGroupType(userGroupType);
         }
         SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
+        siteResearchStaff.setAddress(new Address());
         siteResearchStaff.setOrganization(organization);
         siteResearchStaff.setResearchStaff(researchStaff);
         researchStaff.getSiteResearchStaffs().add(siteResearchStaff);

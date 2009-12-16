@@ -69,6 +69,14 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     	getHibernateTemplate().saveOrUpdate(researchStaff);
     }
     
+    @Override
+    public ResearchStaff merge(ResearchStaff staff) {
+    	ResearchStaff mergedStaff =  super.merge(staff);
+    	//copy the user groups
+    	mergedStaff.setUserGroupTypes(staff.getUserGroupTypes());
+    	return mergedStaff;
+    }
+    
     /**
      * This method queries the caAERS DB to get all the matching ResearchStaff for the given query.
      * @param query

@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -132,22 +133,14 @@ public class ResearchStaffRepository {
         return researchStaffDao.searchResearchStaff(query);
     }
 
+    /**
+     * This method will populate the CSM roles associated to this research staff. 
+     * @param researchStaff
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
-/*
-        try {
-            gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
-            List<Group> groups = new ArrayList(userProvisioningManager.getGroups(String.valueOf(csmUser.getUserId())));
-            for (Group group : groups) {
-                UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(group.getGroupId()).intValue());
-                if (userGroupType != null) {
-                    researchStaff.addUserGroupType(userGroupType);
-                }
-            }
-        } catch (CSObjectNotFoundException e) {
-            throw new CaaersSystemException("Error while retriving research staff", e);
-        }
-*/
+        researchStaff.setUserGroupTypes(csmUserRepository.getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     

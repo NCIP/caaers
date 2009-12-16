@@ -244,30 +244,39 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             throw new CaaersSystemException("Couldn't save CSM user: ", e);
         }
     }
-
-    public User getUserByName(String userName) {
-    	User user = userDao.getByLoginId(userName);
-    	if(user == null){
-    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
-    	}
-    	
-    	//populate the UserGroupTypes
+    
+    /**
+     * Fetches the groups associated to users.  
+     * @param userName
+     * @return
+     */
+    public List<UserGroupType> getUserGroups(String userName) {
+    	List<UserGroupType> userGroups = new ArrayList<UserGroupType>();
     	try {
-			gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());
+			gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(userName);
 			if(csmUser != null){
 				Set groups = userProvisioningManager.getGroups(csmUser.getUserId().toString());
 				if(groups != null){
 					for(java.util.Iterator it = groups.iterator(); it.hasNext(); ){
 						Group group = (Group) it.next();
 						UserGroupType userGroupType = UserGroupType.getByCode(group.getGroupId().intValue());
-						if(userGroupType != null) user.addUserGroupType(userGroupType);
+						if(userGroupType != null) userGroups.add(userGroupType);
 					}
 				}
 			}
 		} catch (CSObjectNotFoundException e) {
-			log.warn("The groups for csmUser (" + user.getLoginId() + ") unable to fetch, something is wrong", e);
+			log.warn("The groups for csmUser (" + userName + ") unable to fetch, something is wrong", e);
 		}
-    	
+    	return userGroups;
+    }
+
+    public User getUserByName(String userName) {
+    	User user = userDao.getByLoginId(userName);
+    	if(user == null){
+    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
+    	}
+    	//populate user groups
+    	user.setUserGroupTypes(getUserGroups(userName));
         return user;
     }
 

@@ -227,7 +227,6 @@ public abstract class User extends Person implements Comparable<User>{
     }
 
     public void setUserGroupTypes(List<UserGroupType> userGroupTypes) {
-        // this.userGroupTypes = new HashSet<UserGroupType>();
         this.userGroupTypes = userGroupTypes;
     }
 

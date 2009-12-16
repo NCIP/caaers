@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -34,6 +36,13 @@ public interface CSMUserRepository {
      * @return
      */
     public User getUserByName(String userName);
+    
+    /**
+     * Fetches the groups associated to users.  
+     * @param userName
+     * @return
+     */
+    public List<UserGroupType> getUserGroups(String userName);
 
     public void userChangePassword(User user, String password, int maxHistorySize);
 

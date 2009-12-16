@@ -1,2 +1,10 @@
 <dataset>
+	<ORGANIZATIONS
+        id="-1004"
+        name="CTEP"
+        grid_id="CTEP"
+        nci_institute_code="CTEP"
+        type="LOCAL"
+    />
+	<site_research_staffs />
 </dataset>

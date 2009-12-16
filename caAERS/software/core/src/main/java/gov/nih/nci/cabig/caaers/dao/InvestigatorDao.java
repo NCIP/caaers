@@ -82,6 +82,13 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     	getHibernateTemplate().saveOrUpdate(investigator);
     }
     
+    @Override
+    public Investigator merge(Investigator inv) {
+    	Investigator mergedInv = super.merge(inv);
+    	mergedInv.setUserGroupTypes(inv.getUserGroupTypes());
+    	return mergedInv;
+    }
+    
     
     /**
      * Get the list of investigators matching the name fragments.

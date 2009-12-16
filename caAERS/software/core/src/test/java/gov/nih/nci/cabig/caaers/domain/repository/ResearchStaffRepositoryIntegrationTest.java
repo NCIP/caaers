@@ -1,7 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.Address;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
 
@@ -20,39 +29,102 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     private ResearchStaffRepository researchStaffRepository;
 
 
-    private OrganizationRepository organizationRepository;
-
     private UserProvisioningManager userProvisioningManager;
 
+    private OrganizationDao organizationDao;
+    
     private Organization organization;
 
-    private String name;
     private JdbcTemplate jdbcTemplate;
 
     CSMUserRepositoryImpl csmUserRepository;
+    
+    @Override
+    protected void setUp() throws Exception {
+    	super.setUp();
+    	jdbcTemplate = (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
+        userProvisioningManager = (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
+        researchStaffRepository = (ResearchStaffRepository) getApplicationContext().getBean("researchStaffRepository");
+        csmUserRepository = (CSMUserRepositoryImpl) getApplicationContext().getBean("csmUserRepository");
+        organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+        
+        //load the default organization
+        organization = organizationDao.getById(-1004);
+        assertNotNull(organization);
+    }
+    
+    public void testCreateResearchStaff(){
+    	
+    	String name = "" + System.currentTimeMillis();
+    	{
+    		List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+        	userGroupTypes.add(UserGroupType.caaers_super_user);
+        	userGroupTypes.add(UserGroupType.caaers_ae_cd);
+        	ResearchStaff staff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+        	staff.setLoginId(name);
+        	staff.setAddress(new Address());
+        	staff.setNciIdentifier(name);
 
-//    @Override
-//    protected void setUp() throws Exception {
-//        super.setUp();
-//        name = "" + Calendar.getInstance().getTime().getTime();
-//        name = name.substring(name.length() - 5, name.length() - 1);
-//
-//        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
-//                ("admin", "localhost", new Date(), "/pages/task"));
-//
-//        researchStaffRepository = (ResearchStaffRepository) getApplicationContext().getBean("researchStaffRepository");
-//        csmUserRepository = (CSMUserRepositoryImpl) getApplicationContext().getBean("csmUserRepository");
-//        // csmUserRepository.setMailSender(new );
-//        organizationRepository = (OrganizationRepository) getApplicationContext().getBean("organizationRepository");
-//        jdbcTemplate = (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
-//        userProvisioningManager = (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
-//        siteObjectIdGenerator = (CSMObjectIdGenerator) getApplicationContext().getBean("sitePrivilegeAndObjectIdGenerator");
-//        organization = Fixtures.createOrganization(name);
-//        organizationRepository.create(organization);
-//        assertNotNull(organization);
-//
-//
-//    }
+        	researchStaffRepository.save(staff, "test");
+    	}
+    	interruptSession();
+    	{
+    		ResearchStaffQuery query = new ResearchStaffQuery();
+    		query.filterByLoginId(name);
+    		
+    		//load the research staff
+    		ResearchStaff staff = researchStaffRepository.getResearchStaff(query).get(0);
+    		assertNotNull(staff);
+    		
+    		staff = researchStaffRepository.getById(staff.getId());
+    		
+    		assertNotNull(staff);
+    		List<UserGroupType> userGroupTypes = staff.getUserGroupTypes();
+    		assertNotNull(userGroupTypes);
+    		assertEquals(2, userGroupTypes.size());
+    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_ae_cd));
+    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_super_user));
+    	}
+    	
+    	
+    }
+    
+    public void testIntialize(){
+    	String name = "" + System.currentTimeMillis();
+    	{
+    		List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+        	userGroupTypes.add(UserGroupType.caaers_super_user);
+        	userGroupTypes.add(UserGroupType.caaers_ae_cd);
+        	ResearchStaff staff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+        	staff.setLoginId(name);
+        	staff.setAddress(new Address());
+        	staff.setNciIdentifier(name);
+
+        	researchStaffRepository.save(staff, "test");
+    	}
+    	interruptSession();
+    	{
+    		ResearchStaffQuery query = new ResearchStaffQuery();
+    		query.filterByLoginId(name);
+    		
+    		//load the research staff
+    		ResearchStaff staff = researchStaffRepository.getResearchStaff(query).get(0);
+    		assertNotNull(staff);
+    		assertTrue(staff.getUserGroupTypes().isEmpty());
+    		
+    		staff = researchStaffRepository.initialize(staff);
+    		
+    		assertNotNull(staff);
+    		List<UserGroupType> userGroupTypes = staff.getUserGroupTypes();
+    		assertNotNull(userGroupTypes);
+    		assertEquals(2, userGroupTypes.size());
+    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_ae_cd));
+    		assertTrue(userGroupTypes.contains(UserGroupType.caaers_super_user));
+    	}
+    }
+    
+//BJ: Who is the genius, that commented the below testcases ? 
+    
 //
 //    @Override
 //    protected void tearDown() throws Exception {
@@ -292,9 +364,6 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 ////        startNewTransaction();
 //    }
 
-    public void test(){
-    	return ;
 
-    }
 
 }
