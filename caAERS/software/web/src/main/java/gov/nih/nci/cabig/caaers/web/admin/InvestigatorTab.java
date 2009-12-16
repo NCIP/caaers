@@ -204,7 +204,6 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     /**
      * Will validate the following when an investigator is allowed to login.
      *  1. UserName must be provided and should be unique.
-     *  2. NCI identifier must be provided and should be unique. 
      *  3. Start and End date validation
      */
     @Override
