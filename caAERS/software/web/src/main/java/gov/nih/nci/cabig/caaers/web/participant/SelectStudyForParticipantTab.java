@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 //java imports
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -87,12 +88,6 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
     public void onBind(HttpServletRequest request, T command, Errors errors) {
         super.onBind(request, command, errors);
-    }
-
-    public void postProcess(HttpServletRequest request, T command, Errors errors) {
-        super.postProcess(request, command, errors);
-
-        // BACK BUTTON 
         if (command.getStudy() != null && command.getStudy().getId() != null) {
             ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
             StudySite studySite = studySiteDao.findByStudyAndOrganization(command.getStudy().getId(), command.getOrganization().getId());
@@ -100,6 +95,10 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             participantCommand.getAssignment().setParticipant(participantCommand.getParticipant());
             studySite.getStudy().getPrimaryIdentifier();
         }
+    }
+
+    public void postProcess(HttpServletRequest request, T command, Errors errors) {
+        super.postProcess(request, command, errors);
     }
 
     @Override
@@ -116,6 +115,21 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
             // this is because the previewsly selected study is not selected anymore in the radiobuttons, causing the error on continue
             command.setStudy(null);
+        }
+
+        Integer pID = command.getAssignment().getParticipant().getId();
+
+        StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
+        query.filterByStudySiteId(command.getAssignment().getStudySite().getId());
+        query.filterByStudySubjectIdentifier(command.getAssignment().getStudySubjectIdentifier());
+
+        if (pID != null) {
+            query.filterByParticipantExcluded(pID);
+        }
+
+        List l = studySiteDao.search(query);
+        if (l.size() > 0) {
+            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {command.getAssignment().getStudySubjectIdentifier(), command.getAssignment().getStudySite().getStudy().getShortTitle(), command.getAssignment().getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
         }
 
     }

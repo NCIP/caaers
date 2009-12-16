@@ -4,11 +4,8 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
@@ -171,6 +168,22 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
 
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
+
+        Integer pID = command.getParticipant().getId();
+        List<StudyParticipantAssignment> assignments = command.getAssignments();
+
+        for (StudyParticipantAssignment a : assignments) {
+            StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
+            query.filterByStudySiteId(a.getStudySite().getId());
+            query.filterByStudySubjectIdentifier(a.getStudySubjectIdentifier());
+            query.filterByParticipantExcluded(pID);
+
+            List l = studySiteDao.search(query);
+            if (l.size() > 0) {
+                errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {a.getStudySubjectIdentifier(), a.getStudySite().getStudy().getShortTitle(), a.getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
+            }
+        }
+
     }
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
