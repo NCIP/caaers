@@ -74,19 +74,6 @@ public class InvestigatorTabTest extends WebTestCase {
 	}
 	
 
-	public void testValidate_NoNciIdentifier() {
-		command.setEmailAddress("hello@ab.com");
-		command.setLoginId("abcd");
-		
-		EasyMock.expect(csmUserRepository.getUserByName("abcd")).andReturn(null).anyTimes();
-		
-		replayMocks();
-		tab.validate(command, commandWrapper, tab.createFieldGroups(command), errors);
-		assertTrue(errors.hasErrors());
-		assertTrue(errors.hasFieldErrors("nciIdentifier"));
-		verifyMocks();
-	}
-
 
 	
 
