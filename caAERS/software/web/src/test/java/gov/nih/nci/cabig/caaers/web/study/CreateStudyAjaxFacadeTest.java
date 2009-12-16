@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 
 import java.util.Arrays;
@@ -51,6 +52,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private ResearchStaffRepository researchStaffRepository;
     
     private StudyDao studyDao;
+    StudyRepository studyRepository;
 
     @Override
     protected void setUp() throws Exception {
@@ -59,15 +61,20 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
         investigatorRepository = this.registerMockFor(InvestigatorRepositoryImpl.class);
         researchStaffRepository = registerMockFor(ResearchStaffRepository.class);
+        studyRepository = registerMockFor(StudyRepository.class);
         
         facade = new CreateStudyAjaxFacade();
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
         facade.setInvestigatorRepository(investigatorRepository);
         facade.setResearchStaffRepository(researchStaffRepository);
+        facade.setStudyRepository(studyRepository);
+        
         
         studyDao = registerDaoMockFor(StudyDao.class);
         command = new StudyCommand(studyDao);
+        command.setStudyRepository(studyRepository);
+        command.setStudyDao(studyDao);
         study = new LocalStudy();
         command.setStudy(study);
         request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command", command);
@@ -120,7 +127,8 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     
     public void testOpenStudy(){
     	assertEquals("Inprogress", command.getDataEntryStatus());
-    	EasyMock.expect(studyDao.merge(command.getStudy())).andReturn(command.getStudy());
+    	
+    	EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(command.getStudy());
 		EasyMock.expect(studyDao.initialize(command.getStudy())).andReturn(command.getStudy());
 		replayMocks();
     	assertEquals("Complete", facade.openStudy());
