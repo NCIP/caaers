@@ -289,6 +289,9 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	private void syncResearchStaff(ResearchStaff xmlResearchStaff, ResearchStaff dbResearchStaff){
 		
 		//do the basic property sync
+		dbResearchStaff.setFirstName(xmlResearchStaff.getFirstName());
+		dbResearchStaff.setMiddleName(xmlResearchStaff.getMiddleName());
+		dbResearchStaff.setLastName(xmlResearchStaff.getLastName());
 		dbResearchStaff.setEmailAddress(xmlResearchStaff.getEmailAddress());
 		dbResearchStaff.setPhoneNumber(xmlResearchStaff.getPhoneNumber());
 		dbResearchStaff.setFaxNumber(xmlResearchStaff.getFaxNumber());

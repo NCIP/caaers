@@ -236,6 +236,9 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	
 	private void syncInvestigator(Investigator xmlInvestigator, Investigator dbInvestigator){
 		//do the basic property sync
+		dbInvestigator.setFirstName(xmlInvestigator.getFirstName());
+		dbInvestigator.setMiddleName(xmlInvestigator.getMiddleName());
+		dbInvestigator.setLastName(xmlInvestigator.getLastName());
 		dbInvestigator.setEmailAddress(xmlInvestigator.getEmailAddress());
 		dbInvestigator.setPhoneNumber(xmlInvestigator.getPhoneNumber());
 		dbInvestigator.setFaxNumber(xmlInvestigator.getFaxNumber());
