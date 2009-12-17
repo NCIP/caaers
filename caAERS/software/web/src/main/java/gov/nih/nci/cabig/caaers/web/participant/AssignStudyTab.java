@@ -101,7 +101,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 
         List l = studySiteDao.search(query);
         if (l.size() > 0) {
-            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER_", new Object[] {command.getStudySubjectIdentifier()}, "Duplicate Study Site identifier.");
+            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {command.getStudySubjectIdentifier(), command.getStudySite().getStudy().getShortTitle(), command.getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
         }
         
     }
