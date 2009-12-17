@@ -244,7 +244,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		}
         	
         		for(Report report : aeReport.getActiveReports()){
-        			command.getApplicableReportDefinitions().add(report.getReportDefinition());
+        			if(!command.getApplicableReportDefinitions().contains(report.getReportDefinition()))
+        				command.getApplicableReportDefinitions().add(report.getReportDefinition());
         		}
         		
         		//pre initialize all the report mandatory fields.
@@ -254,7 +255,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		
 
             	//if action is amend, keep a mock reviewResult in session. 
-            	if(StringUtils.equals(action, "amendReport")){
+            	if(StringUtils.equals(action, "amendReport")&& selectedReport.isSubmitted()){
             		command.getNewlySelectedReportDefinitions().add(selectedReport.getReportDefinition());
             		reviewResult = new ReviewAndReportResult();
             		reviewResult.getAmendList().add(selectedReport.getReportDefinition());
