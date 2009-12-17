@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
@@ -55,6 +56,14 @@ public class SubmitReportTabTest extends SubmitFlowTabTestCase {
 		assertEquals(1,command.getReportDeliveries().size());
 		verifyMocks();
 		
+	}
+	
+	//will test pressing of back button on submit page. 
+	public void testBackButtonOnSubmitPage(){
+		request.setParameter("_target1", "x");
+		replayMocks();
+		tab.postProcess(request, null, errors); //command is null (should not throw NPE)
+		verifyMocks();
 	}
 
 	@Override

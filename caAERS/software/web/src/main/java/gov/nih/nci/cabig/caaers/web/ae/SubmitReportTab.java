@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Map;
 
@@ -98,7 +99,9 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     @Override
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
     	
-    	if(cmd.getNextPage() < 2) return; //only process if we are moving forward.
+    	int targetPage = WebUtils.getTargetPage(request);
+    	
+    	if( targetPage < 2) return; //only process if we are moving forward.
     	
     	log.debug("In postProcess");
         SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) cmd;
