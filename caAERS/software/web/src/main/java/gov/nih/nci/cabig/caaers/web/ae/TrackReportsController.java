@@ -149,7 +149,9 @@ public class TrackReportsController extends SimpleFormController {
         		List<ReportVersion> rvs = new ArrayList<ReportVersion>();
         		if (reportId != null) {
         			ReportVersion rv = reportVersionDao.getById(reportId);
-        			rvs.add(rv);
+        			if (rv != null) {
+        				rvs.add(rv);
+        			}
         		} else {
         			errors.rejectValue("reportId", "ADM_IND_001", "reportId must not be empty");
         		}
