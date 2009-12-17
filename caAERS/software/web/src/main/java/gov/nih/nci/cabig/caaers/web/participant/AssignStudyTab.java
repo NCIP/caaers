@@ -92,20 +92,16 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
             return;
         }
 
-        // Checking Study-Subject identifiers, uniqueness per StudySite
+        // Checking Study-Subject identifiers, uniqueness for the selected StudySite
         Integer pID = command.getParticipant().getId();
-//        List<StudyParticipantAssignment> assignments = command.getAssignments();
+        StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
+        query.filterByStudySiteId(command.getStudySite().getId());
+        query.filterByStudySubjectIdentifier(command.getStudySubjectIdentifier());
+        query.filterByParticipantExcluded(pID);
 
-        for (StudyParticipantAssignment a : assignments) {
-            StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
-            query.filterByStudySiteId(a.getStudySite().getId());
-            query.filterByStudySubjectIdentifier(a.getStudySubjectIdentifier());
-            query.filterByParticipantExcluded(pID);
-
-            List l = studySiteDao.search(query);
-            if (l.size() > 0) {
-                errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER_", new Object[] {command.getStudySubjectIdentifier()}, "Duplicate Study Site identifier.");
-            }
+        List l = studySiteDao.search(query);
+        if (l.size() > 0) {
+            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER_", new Object[] {command.getStudySubjectIdentifier()}, "Duplicate Study Site identifier.");
         }
         
     }

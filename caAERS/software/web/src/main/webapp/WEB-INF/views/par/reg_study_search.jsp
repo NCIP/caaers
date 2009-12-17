@@ -83,10 +83,10 @@
                 return true
             } else {
 
-                if (removeSpaces($('studySubjectIdentifier').value) == '')
-                {
+//                if (removeSpaces($('studySubjectIdentifier').value) == '')
+//                {
                     $('studySubjectIdentifier').value = $('studySubjectIdentifierInput').value
-                }
+//                }
 
             }
             return flag;
