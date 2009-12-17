@@ -169,6 +169,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
 
+
+        // Checking Study-Subject identifiers, uniqueness per StudySite 
         Integer pID = command.getParticipant().getId();
         List<StudyParticipantAssignment> assignments = command.getAssignments();
 

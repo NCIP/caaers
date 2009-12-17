@@ -117,51 +117,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="csmExtentIdGenerator"
           class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator"/>
 
-    <aop:aspectj-autoproxy/>
-    <aop:spring-configured/>
-
-    <aop:config>
-        <!-- pointcuts -->
-        <aop:pointcut id="daoSaveOrUpdatePointcut"
-                      expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
-        || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
-        || execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.search*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.get*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository+.find*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))  
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService+.saveResearchStaff(..))   
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService+.saveInvestigator(..))   
-                              "/>
-
-        <!-- advisors -->
-
-
-        <!-- aspects -->
-        <!--
-              <aop:aspect id="assignDomainObjectOwnershipAspect"
-              ref="assignDomainObjectOwnershipBean">
-              <aop:after-returning
-              pointcut-ref="daoSaveOrUpdatePointcut"
-              method="assignOwner"
-              returning="domainObject" />
-              </aop:aspect>
-          -->
-
-        <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
-            <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
-        </aop:aspect>
-
-
-    </aop:config>
-
     <!--
          <bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
          <property name="csmAuthorizationManager" ref="csmUserProvisioningManager"/>

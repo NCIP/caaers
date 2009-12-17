@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -72,23 +73,41 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
+        List<StudyParticipantAssignment> assignments;
+        assignments = command.getParticipant().getAssignments();
+
         if (command.getStudySite() == null) {
             errors.rejectValue("assignment.studySite", "PT_008", "Select the Study Site");
         } else {
-            List<StudyParticipantAssignment> assignments;
-            assignments = command.getParticipant().getAssignments();
-
             for (StudyParticipantAssignment assignment : assignments) {
                 if (assignment.getStudySite().getId().intValue() == command.getStudySite().getId().intValue()) {
                     errors.reject("PT_009", new Object[]{command.getParticipant().getFullName(), command.getStudySite().getStudy().getShortTitle(), command.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
-                    break;
+                    return;
                 }
             }
         }
 
         if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
             errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
+            return;
         }
+
+        // Checking Study-Subject identifiers, uniqueness per StudySite
+        Integer pID = command.getParticipant().getId();
+//        List<StudyParticipantAssignment> assignments = command.getAssignments();
+
+        for (StudyParticipantAssignment a : assignments) {
+            StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
+            query.filterByStudySiteId(a.getStudySite().getId());
+            query.filterByStudySubjectIdentifier(a.getStudySubjectIdentifier());
+            query.filterByParticipantExcluded(pID);
+
+            List l = studySiteDao.search(query);
+            if (l.size() > 0) {
+                errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER_", new Object[] {command.getStudySubjectIdentifier()}, "Duplicate Study Site identifier.");
+            }
+        }
+        
     }
 
 /*
