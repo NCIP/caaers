@@ -136,10 +136,10 @@ public class StudyProtocolServiceTest extends TestCase {
         try {
         	CaXchangeMessageBroadcasterImpl broadCaster =  new CaXchangeMessageBroadcasterImpl();
         	//DEV1
-        	broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+//        	broadCaster.setCaXchangeURL("https://ncias-c278-v.nci.nih.gov:58445/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
         	
         	//DEV2
-//        	broadCaster.setCaXchangeURL("https://ncias-d282-v.nci.nih.gov:29543/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
+        	broadCaster.setCaXchangeURL("https://ncias-d282-v.nci.nih.gov:29543/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");
         	
         	//QA
 //        	broadCaster.setCaXchangeURL("https://ncias-q291-v.nci.nih.gov:28443/wsrf-caxchange/services/cagrid/CaXchangeRequestProcessor");

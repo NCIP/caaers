@@ -110,11 +110,11 @@
             	</c:if>
             	<div class="row">
                 	<div class="label">Multi institutional</div>
-                	<div class="value">${command.study.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
+                	<div class="value">${command.study.multiInstitutionIndicator == null ? '' : command.study.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
             	</div>
             	<div class="row">
                 	<div class="label">AdEERS reporting</div>
-                	<div class="value">${command.study.adeersReporting ? 'Yes' : 'No'} </div>
+                	<div class="value">${command.study.adeersReporting == null ? '' : command.study.adeersReporting ? 'Yes' : 'No'} </div>
             	</div>
             	
             	<div class="row">

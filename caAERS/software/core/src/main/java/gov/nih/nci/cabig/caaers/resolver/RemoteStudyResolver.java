@@ -6,7 +6,6 @@ import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
@@ -178,11 +177,6 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		remoteStudy.setExternalId(studyProtocol.getIdentifier().getExtension());
 		remoteStudy.setStatus(CoppaConstants.coppaMap.get(getStudyStatus(studyProtocol)));
 		
-		//NOT NULL Fields
-		remoteStudy.setMultiInstitutionIndicator(Boolean.TRUE);
-		remoteStudy.setAdeersReporting(Boolean.TRUE);
-		remoteStudy.setAeTerminology(createCtcV3Terminology(remoteStudy));
-		remoteStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		//Mapping StudyProtocol's Assigned Identifer as OrganizationAssignedIdentifer in caAERS.
 		//Assigned organization will be NCI.
 		String identifierValue = studyProtocol.getAssignedIdentifier().getExtension();
