@@ -846,7 +846,9 @@ function validate(aeReportId){
 		<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 		<chrome:accordion id="dc-section-${_aeReportId}" title="${empty _primaryAE ? '' : _primaryAE.adverseEventTerm.universalTerm}, Grade ${empty _primaryAE ? '' : _primaryAE.grade.code}: ${empty _primaryAE ? '' : _primaryAE.grade.displayName}" >
 			<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
-			<chrome:division title="Recommended Actions">
+			<caaers:message code="section.header.recomended.actions" var="_recomendedActionsHeader" text="Recommended Actions" />
+			<caaers:message code="section.header.available.actions" var="_availableActionsHeader" text="Available Actions" />
+			<chrome:division title="${command.evaluationResult.aeReportAlertMap[_aeReportId] ? _recomendedActionsHeader : _availableActionsHeader}">
 			<!--  Rules Message Top -->
 			 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}"  alertShown="${command.evaluationResult.aeReportAlertMap[_aeReportId]}"/>
 			
