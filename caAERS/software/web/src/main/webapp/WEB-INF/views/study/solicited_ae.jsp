@@ -137,42 +137,16 @@
       }
     }
     
-    function registerDeleteEpochIcons()
-    {
+    function registerDeleteEpochIcons() {
        var all_delete_epoch_links = $$('.'+'delete-epoch'); 
-       
-       for(var i = 0 ; i < all_delete_epoch_links.length; i++)
-       {
-         // img element do not have id -> which is target elment
-         // anchor element have id -> which is current target element
-         // but Event.element(event).id --> always refers to target elment which is img which do not have id
-         // bind function is used to interoperate with IE because event.currentTarget would not work in IE.
-         // event.currentTarget only works for all standard browsers.      
-         
-         // removing delete option for BaseLine Epoch
-         if (i == 0)
-             $(all_delete_epoch_links[i]).hide();
-         else    
+       for(var i = 0 ; i < all_delete_epoch_links.length; i++) {
              Event.observe($(all_delete_epoch_links[i]).id, 'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
        }
     }
     
-    function unRegisterDeleteEpochIcons()
-    {
+    function unRegisterDeleteEpochIcons() {
        var all_delete_epoch_links = $$('.'+'delete-epoch'); 
-       
-       for(var i = 0 ; i < all_delete_epoch_links.length; i++)
-       {
-         // img element do not have id -> which is target elment
-         // anchor element have id -> which is current target element
-         // but Event.element(event).id --> always refers to target elment which is img which do not have id
-         // bind function is used to interoperate with IE because event.currentTarget would not work in IE.
-         // event.currentTarget only works for all standard browsers.      
-         
-         // removing delete option for BaseLine Epoch
-         if( i == 0 )
-             $(all_delete_epoch_links[i]).hide();
-         else    
+       for(var i = 0 ; i < all_delete_epoch_links.length; i++) {
              Event.stopObserving($(all_delete_epoch_links[i]).id,'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
        }
     }

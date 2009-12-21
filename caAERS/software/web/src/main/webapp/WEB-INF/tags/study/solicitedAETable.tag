@@ -20,7 +20,7 @@
             <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.study.activeEpochs}">
                 <th align="center">
                     <c:if test="${!displayOnly}">
-                        <span ${(statusVar.index  == 0)?"style='display:none;'":""}><tags:button id="delete-epoch-${statusVar.index}" cssClass="delete-epoch" href="#jumhere" markupWithTag="a" color="red" icon="x" value="" size="small"/></span>
+                        <tags:button id="delete-epoch-${statusVar.index}" cssClass="delete-epoch" href="#jumhere" markupWithTag="a" color="red" icon="x" value="" size="small"/>
                     </c:if>
                 </th>
             </c:forEach>
