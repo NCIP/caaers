@@ -168,7 +168,7 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         		for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
         			Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
         			if (pID == null || pID.getValue() == null || !pID.getPrimaryIndicator()) return;
-        			if (sID.getValue().equals(pID.getValue()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
+        			if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
         				errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
         			}
         		}

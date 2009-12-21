@@ -13,8 +13,8 @@ public class StudyParticipantAssignmentQuery extends AbstractQuery {
     }
 
     public void filterByStudySubjectIdentifier(String s) {
-        andWhere("spa.studySubjectIdentifier = :SSI");
-        setParameter("SSI", s);
+        andWhere("lower(spa.studySubjectIdentifier) = :SSI");
+        setParameter("SSI", s.toLowerCase());
     }
 
     public void filterByStudySiteId(Integer i) {

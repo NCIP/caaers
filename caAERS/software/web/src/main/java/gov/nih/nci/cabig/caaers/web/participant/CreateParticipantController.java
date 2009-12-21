@@ -258,7 +258,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
                 Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
 
                 if (pID == null || pID.getValue() == null) continue;
-                if (sID.getValue().equals(pID.getValue())) {
+                if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase())) {
                     errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
             }
