@@ -54,7 +54,7 @@ public class ParticipantConverter {
 				participant.setDateOfBirth(dateOfBirth);
 			}else{
 				if(participantDto.getBirthYear() != null){
-					DateValue dateOfBirth = new DateValue(null,null,participantDto.getBirthYear().intValue());
+					DateValue dateOfBirth = new DateValue(null,participantDto.getBirthMonth().intValue(),participantDto.getBirthYear().intValue());
 					participant.setDateOfBirth(dateOfBirth);
 				}
 			}

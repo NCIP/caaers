@@ -20,14 +20,17 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType" />
-                    <xs:element name="lastName" type="CustomStringType" />
-                    <xs:element name="maidenName" type="xs:string"  minOccurs="0"/>
-                    <xs:element name="middleName" type="xs:string"  minOccurs="0"/>
+                    <xs:element name="firstName" type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="lastName"  type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="maidenName" type="MiddleAndMaidenNameType"  minOccurs="0"/>
+                    <xs:element name="middleName" type="MiddleAndMaidenNameType"  minOccurs="0"/>
                     
                     <xs:choice>
-                        <xs:element name="birthDate" type="xs:date"  />
-                        <xs:element name="birthYear" type="CustomDateType"   />
+                        <xs:element name="birthDate" type="xs:date" />
+                        <xs:sequence>
+                        	<xs:element name="birthMonth" type="CustomMonthType" minOccurs="1" maxOccurs="1"/>
+                        	<xs:element name="birthYear" type="CustomDateType" minOccurs="1" maxOccurs="1"/>
+                        </xs:sequence>	
                     </xs:choice>
                     <xs:element name="gender" type="GenderType"  minOccurs="1" maxOccurs="1" />
                     <xs:element name="race" type="RaceType"  minOccurs="1" maxOccurs="1"/>
@@ -216,12 +219,35 @@
         </xs:restriction>
     </xs:simpleType>
     
+    <xs:simpleType name="CustomMonthType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="((0[1-9])|(1[0-2]))"></xs:pattern>
+            <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>
+    
     <xs:simpleType name="CustomStringType">
         <xs:restriction base="xs:normalizedString">
             <xs:minLength value="1"/>
             <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
     </xs:simpleType>
+    
+    <xs:simpleType name="FirstAndLastNameType">
+        <xs:restriction base="xs:normalizedString">
+        	<xs:minLength value="1"/>
+        	<xs:pattern value="[a-zA-Z0-9_ ]*"></xs:pattern>
+            <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="MiddleAndMaidenNameType">
+        <xs:restriction base="xs:normalizedString">
+        	<xs:pattern value="[a-zA-Z0-9_ ]*"></xs:pattern>
+            <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>
+    
     
     <xs:simpleType name="RaceType">
         <xs:restriction base="xs:string">
