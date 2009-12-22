@@ -42,7 +42,7 @@
 		<property name="target"><ref local="registrationConsumerTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
+				<value>gridAutenticationInterceptor</value>
 				<value>registrationConsumerAuditInfoPopulatorInterceptor</value>
 				<value>hibernateInterceptor</value> 
 			</list> 
