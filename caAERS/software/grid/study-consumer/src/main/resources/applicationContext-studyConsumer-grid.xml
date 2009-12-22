@@ -39,7 +39,7 @@
 		<property name="target"><ref local="studyConsumerTarget"/></property> 
 		<property name="interceptorNames"> 
 			<list> 
-				<value>runAsAutenticationProviderInterceptor</value>
+				<value>gridAutenticationInterceptor</value>
 				<value>studyConsumerAuditInfoPopulatorInterceptor</value>
 				<value>hibernateInterceptor</value> 
 			</list> 
