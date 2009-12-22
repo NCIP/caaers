@@ -1,9 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -38,6 +36,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
     OrganizationRepository organizationRepository;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
+    private ParticipantDao participantDao;
 
     private static final String PARTICIPANT_FIELD_GROUP = "participant";
     private static final String SITE_FIELD_GROUP = "site";
@@ -136,6 +135,23 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "PT_010", "Incorrect Date Of Birth");
         }
+
+// CHECK Participant Identifiers
+        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(command.getOrganization().getId().intValue());
+        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
+            Identifier sID = sitePrimaryIdentifiers.get(i);
+            if (sID == null || sID.getValue() == null) continue;
+
+            for (int j=0; j<command.getParticipant().getIdentifiers().size(); j++) {
+                Identifier pID = command.getParticipant().getIdentifiers().get(j);
+
+                if (pID == null || pID.getValue() == null) continue;
+                if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase())) {
+                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+                }
+            }
+        }
+        
     }
 
     public OrganizationRepository getOrganizationRepository() {
@@ -236,5 +252,11 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         return modelAndView;
     }
 
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
 
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
+    }
 }

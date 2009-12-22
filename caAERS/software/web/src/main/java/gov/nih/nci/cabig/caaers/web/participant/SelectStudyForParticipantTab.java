@@ -99,6 +99,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
     public void postProcess(HttpServletRequest request, T command, Errors errors) {
         super.postProcess(request, command, errors);
+        command.getParticipant().addAssignment(command.getAssignment());
     }
 
     @Override

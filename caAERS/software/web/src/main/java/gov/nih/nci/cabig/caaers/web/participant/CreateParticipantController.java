@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -92,9 +93,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
 
         Participant participant = participantCommand.getParticipant();
-        participantCommand.getAssignment().setParticipant(participant);
-        participant.addAssignment(participantCommand.getAssignment());
-
         participantDao.save(participant);
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=create");
 
@@ -248,28 +246,12 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 
         if (isAjaxRequest(request) || cmd.getOrganization() == null) return;
         
-        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
-
-        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
-            Identifier sID = sitePrimaryIdentifiers.get(i);
-            if (sID == null || sID.getValue() == null) continue;
-
-            for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
-                Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
-
-                if (pID == null || pID.getValue() == null) continue;
-                if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase())) {
-                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
-                }
-            }
-        }
-
         // if the target tab is not the next to the crrent one
         if (getTargetPage(request, command, errors, page) - page > 1) {
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command 
             if (cmd.assignment == null || cmd.assignment.getId() == null)
                 if (getTab((ParticipantInputCommand) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
-                    errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study from the \"Details\" tab");
+                    errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study first.");
         }
 
     }
@@ -305,4 +287,11 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public void setInvestigatorDao(InvestigatorDao investigatorDao) {
         this.investigatorDao = investigatorDao;
     }
+
+    @Override
+    protected boolean shouldSave(HttpServletRequest request, ParticipantInputCommand command, Tab<ParticipantInputCommand> participantInputCommandTab) {
+        if (isAjaxRequest(request)) return false;
+        return (getCurrentPage(request) > 0 && getTargetPage(request, getCurrentPage(request)) > 0);
+    }
+
 }

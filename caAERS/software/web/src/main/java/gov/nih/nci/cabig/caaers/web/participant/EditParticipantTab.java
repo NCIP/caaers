@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 //java imports
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -39,6 +40,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     }
 
     private OrganizationDao organizationDao;
+    private ParticipantDao participantDao;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
 
@@ -170,6 +172,21 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
 
 
+        // CHECK Participant Identifiers
+        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(command.getOrganization().getId().intValue());
+        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
+            Identifier sID = sitePrimaryIdentifiers.get(i);
+            if (sID == null || sID.getValue() == null) continue;
+
+            for (int j=0; j<command.getParticipant().getIdentifiers().size(); j++) {
+                Identifier pID = command.getParticipant().getIdentifiers().get(j);
+                if (pID == null || pID.getValue() == null || !pID.getPrimaryIndicator()) return;
+                if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
+                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+                }
+            }
+        }
+
         // Checking Study-Subject identifiers, uniqueness per StudySite 
         Integer pID = command.getParticipant().getId();
         List<StudyParticipantAssignment> assignments = command.getAssignments();
@@ -285,7 +302,16 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     public void setStudySiteDao(StudySiteDao studySiteDao) {
 		this.studySiteDao = studySiteDao;
 	}
+
     public StudySiteDao getStudySiteDao() {
 		return studySiteDao;
 	}
+
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
+    }
 }
