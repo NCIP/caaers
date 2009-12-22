@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -222,7 +223,17 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 	private void saveInvestigator(Investigator investigator) throws CaaersSystemException {
 		try {
             logger.info("Begining of DefaultInvestigatorMigratorService : saveInvestigator");
-            investigatorRepository.save(investigator,"URL");
+            
+            String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
+            StringBuilder changePasswordUrl = new StringBuilder();
+            if(StringUtils.isNotEmpty(caAERSBaseUrl)){
+                changePasswordUrl.append(caAERSBaseUrl);
+                changePasswordUrl.append("/public/user/changePassword?");
+            }else{
+            	logger.info("caAERS base URL is not set");
+            }
+            
+            investigatorRepository.save(investigator,caAERSBaseUrl.toString());
 
             logger.info("Created the Investigator  :" + investigator.getId());
             logger.info("End of DefaultInvestigatorMigratorService : saveInvestigator");

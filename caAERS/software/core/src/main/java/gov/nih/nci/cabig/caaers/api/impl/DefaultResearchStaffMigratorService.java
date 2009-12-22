@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchSta
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -269,8 +270,16 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         try {
             logger.info("Begining of ResearchStaffMigrator : saveResearchStaff");             
             
+            String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
+            StringBuilder changePasswordUrl = new StringBuilder();
+            if(StringUtils.isNotEmpty(caAERSBaseUrl)){
+                changePasswordUrl.append(caAERSBaseUrl);
+                changePasswordUrl.append("/public/user/changePassword?");
+            }else{
+            	logger.info("caAERS base URL is not set");
+            }
             //save 
-            researchStaffRepository.save(researchStaff,"URL");
+            researchStaffRepository.save(researchStaff,changePasswordUrl.toString());
             logger.info("Created the research staff :" + researchStaff.getId());
             logger.info("End of ResearchStaffMigrator : saveResearchStaff");
 
