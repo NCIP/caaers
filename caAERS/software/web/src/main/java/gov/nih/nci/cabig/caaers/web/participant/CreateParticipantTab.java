@@ -145,7 +145,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
             for (int j=0; j<command.getParticipant().getIdentifiers().size(); j++) {
                 Identifier pID = command.getParticipant().getIdentifiers().get(j);
 
-                if (pID == null || pID.getValue() == null) continue;
+                if (pID == null || pID.getValue() == null || (pID.getId() != null && sID.getId() != null && pID.getId().intValue() == sID.getId().intValue())) continue;
                 if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase())) {
                     errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
