@@ -9,7 +9,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import org.globus.gsi.GlobusCredential;
 
-public class DorianAuthentication {
+public class GaardsAuthentication {
 	
 	/**
 	 * Authenticate to any Dorian and obtain proxy . 
@@ -19,7 +19,7 @@ public class DorianAuthentication {
 	 * @return
 	 * @throws Exception
 	 */
-	public static GlobusCredential authenticate(String dorianURL, String userId, String password) throws Exception {
+	public static GlobusCredential authenticate(String dorianURL, String authenticationServiceURL, String userId, String password) throws Exception {
 		
 			Credential credential = new Credential();
 			BasicAuthenticationCredential bac = new BasicAuthenticationCredential();
@@ -27,7 +27,7 @@ public class DorianAuthentication {
 			bac.setPassword(password);
 			credential.setBasicAuthenticationCredential(bac);
 			
-			AuthenticationClient client = new AuthenticationClient(dorianURL, credential);
+			AuthenticationClient client = new AuthenticationClient(authenticationServiceURL, credential);
 			SAMLAssertion saml = client.authenticate();
 
 			//Create a IFS Client for authorization
