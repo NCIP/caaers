@@ -9,7 +9,7 @@ import gov.nih.nci.cagrid.opensaml.SAMLAssertion;
 
 import org.globus.gsi.GlobusCredential;
 
-public class GridAuthentication {
+public class DorianAuthentication {
 	
 	/**
 	 * Authenticate to any Dorian and obtain proxy . 
