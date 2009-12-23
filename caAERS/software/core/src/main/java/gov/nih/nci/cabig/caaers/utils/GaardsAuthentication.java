@@ -54,6 +54,9 @@ public class GaardsAuthentication {
 
 			
 			return cred;
-	    }
+	}
+	public static GlobusCredential authenticate(String dorianURL, String userId, String password) throws Exception {
+		return authenticate(dorianURL,dorianURL,userId,password);
+	}
 
 }
