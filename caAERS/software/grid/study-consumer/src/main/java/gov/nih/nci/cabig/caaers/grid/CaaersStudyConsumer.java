@@ -598,8 +598,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 
         if (orgList == null || orgList.isEmpty()) {
-            logger.error("No organization exists  nciCode :" + nciCode);
-            throw new CaaersSystemException("No organization exist with nciCode :" + nciCode);
+            logger.error("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
+            throw new CaaersSystemException("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
+
         }
         if (orgList.size() > 1) {
             logger.error("Multiple organizations exist with same NCI code :" + nciCode);
