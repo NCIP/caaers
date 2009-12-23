@@ -405,8 +405,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
 
         if (orgList == null || orgList.isEmpty()) {
-            logger.error("No organization exists  nciCode :" + nciCode);
-            throw new CaaersSystemException("No organization exists with nciCode :" + nciCode);
+            logger.error("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
+            throw new CaaersSystemException("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
         }
         if (orgList.size() > 1) {
             logger.error("Multiple organizations exist in DB with same NCI code :" + nciCode);
