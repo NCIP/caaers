@@ -293,5 +293,4 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         if (isAjaxRequest(request)) return false;
         return (getCurrentPage(request) > 0 && getTargetPage(request, getCurrentPage(request)) > 0);
     }
-
 }
