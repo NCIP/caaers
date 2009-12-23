@@ -231,7 +231,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     // jf
   
 
-    private gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) {
+    public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) {
         return userProvisioningManager.getUser(userName);
     }
     

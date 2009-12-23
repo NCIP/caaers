@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+
+import java.util.List;
 
 /**
  * This service interface is used to manage user access to the caaers UI.
@@ -62,5 +62,7 @@ public interface CSMUserRepository {
      * @return
      */
     public boolean isSuperUser(String loginId);
+    
+    public gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName);
   
 }

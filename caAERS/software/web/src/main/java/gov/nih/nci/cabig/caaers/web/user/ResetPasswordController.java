@@ -42,7 +42,10 @@ public class ResetPasswordController extends SimpleFormController {
 
     	UserName userName = (UserName) command;
         User dbUser = userDao.getByLoginId(userName.getUserName());
+        
         if(dbUser==null) return modelAndView.addObject("noSuchUser", true);
+        if(csmUserRepository.getCSMUserByName(userName.getUserName())  == null) return modelAndView.addObject("noSuchUser", true);
+        
         // Srini Akkala , CAAERS-2356
         String userEmail = dbUser.getEmailAddress();
         //find the user object, preference given to researchstaff
