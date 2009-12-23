@@ -988,7 +988,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public boolean isPhysicianSignOffRequired(){
     	boolean physicianSignOffRequired = false;
     	for(Report report: getReports()){
-    		physicianSignOffRequired |= report.getReportDefinition().getPhysicianSignOff();
+    		if(report.isActive())
+    			physicianSignOffRequired |= report.getReportDefinition().getPhysicianSignOff();
     	}
     	return physicianSignOffRequired;
     }
