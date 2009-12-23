@@ -110,23 +110,29 @@
                     </c:when>
                     <c:otherwise>
                         <div class="row" style="margin-left:102px; background-color:#FFDFDF; padding:10px; width:500px;">
-                            <h3>
+                            <h3 style="border:none; color:black; font-size:1.1em;">
                                 Information remaining to complete
                             </h3>
                             
-                                <ul>
+                                
                                     <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
-                                        <li>
-                                            ${sectionEntry.key.displayName} section
-                                        </li>
+                                        
+                                            <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}">
+											<ul>
+												<c:forEach items="${sectionEntry.value}" var="msg">
+													<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
+	                                        	</c:forEach>
+											</ul>
+											</chrome:division>
+                                       
                                     </c:forEach>
-                                </ul>
+                                
                             
                         </div>
                     </c:otherwise>
                 </c:choose>
 				<div style="text-align:right;">
-					<img id="sliderWFAction-indicator-${report.id }" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+					
 					<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
