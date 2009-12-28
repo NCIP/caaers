@@ -197,18 +197,22 @@ Event.observe(window, "load", function() {
 		}
 	}
 
-//---------------------------------------------------------------------
-//will show/hide the userName row.
-	function toggelUserName(checkBoxChecked){
-		if(checkBoxChecked){
-			$('loginId-row').show();
-			
-		}else{
-			$('loginId-row').hide();
-		}
-	}
-	
+//----------------------------------------------------------------------------------------------------------------------
+
+function toggelUserName(checkBoxChecked) {
+    if (checkBoxChecked) {
+        $('loginId-row').show();
+        $('loginId').addClassName("required");
+        $('loginId').addClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+    } else {
+        $('loginId-row').hide();
+        $('loginId').removeClassName("required");
+        $('loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
+    }
+}
 </script>
+
+//----------------------------------------------------------------------------------------------------------------------
 
 </head>
 <body>
