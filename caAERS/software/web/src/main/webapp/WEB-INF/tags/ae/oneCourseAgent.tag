@@ -15,8 +15,17 @@
 		enableDelete="true" title="${agent.displayName}"
 		deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
-    
- <tags:renderRow field="${fieldGroup.fields[0]}"/>
+
+    <c:if test="${agent.displayName ne '[no agent]'}">
+        <div class="row">
+            <div class="label">Study Agent</div>
+            <div class="value">${agent.displayName}</div>
+        </div>
+    </c:if>
+    <c:if test="${agent.displayName eq '[no agent]'}">
+        <tags:renderRow field="${fieldGroup.fields[0]}"/>
+    </c:if>
+
  <tags:renderRow field="${fieldGroup.fields[1]}"/>
  <tags:renderRow field="${fieldGroup.fields[2]}"/>
  <tags:renderRow field="${fieldGroup.fields[3]}"/>
