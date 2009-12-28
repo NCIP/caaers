@@ -135,6 +135,7 @@ public class StudyConverter {
             
             populateDesignCodeDomain2Dto(studyDto, study);
             populateStudyTherapyDomain2Dto(studyDto, study);
+            populateStudyReportTypesDomain2Dto(studyDto, study);
             populateAeTerminologyDomain2Dto(studyDto, study);
             populateDiseaseTerminologyDomain2Dto(studyDto,study);
             populateFundingSponsorDomain2Dto(studyDto, study);
@@ -569,6 +570,15 @@ public class StudyConverter {
 		studyDto.setSurgeryTherapyType(study.hasTherapyOfType(StudyTherapyType.SURGERY));
 	}
 	
+	private void populateStudyReportTypesDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study){
+        studyDto.setReportTypeMedwatchPDF(study.getMedwatchPDFType());
+        studyDto.setReportTypeAdeersPDF(study.getAdeersPDFType());
+        studyDto.setReportTypeCaaersXML(study.getCaaersXMLType());
+        studyDto.setReportTypeCIOMSAEForm(study.getCiomsSaePDFType());
+        studyDto.setReportTypeCIOMSForm(study.getCiomsPDFType());
+        studyDto.setReportTypeDCPSAEForm(study.getDcpSAEPDFType());
+	}
+
 	private void populateAeTerminologyDomain2Dto(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 
         if (study.getAeTerminology() != null) {

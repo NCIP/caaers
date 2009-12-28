@@ -76,7 +76,6 @@ public class ImportTab extends Tab<ImportCommand>{
 
     @Override
     public void validate(ImportCommand command, Errors errors) {
-        System.out.println("Validating");
         boolean participantFile = command.getParticipantFile().isEmpty();
         boolean studyFile = command.getStudyFile().isEmpty();
         boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile().isEmpty();

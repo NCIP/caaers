@@ -206,6 +206,7 @@ default-lazy-init="true">
 	<bean id="studyDiseasesSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDiseasesSynchronizer"/>
 	<bean id="studyOrganizationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyOrganizationSynchronizer"/>
 	<bean id="studyTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyTherapySynchronizer"/>
+	<bean id="studyReportTypeSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyReportTypeSynchronizer"/>
 	<bean id="studyAgentsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyAgentsSynchronizer"/>
 	<bean id="studyEvaluationPeriodsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyEvaluationPeriodsSynchronizer"/>
 	
@@ -217,6 +218,7 @@ default-lazy-init="true">
 				<ref bean="studyDiseasesSynchronizer"/>
 				<ref bean="studyOrganizationSynchronizer"/>
 				<ref bean="studyTherapySynchronizer"/>
+				<ref bean="studyReportTypeSynchronizer"/>
 				<ref bean="studyAgentsSynchronizer"/>
 				<ref bean="studyEvaluationPeriodsSynchronizer"/>
 			</list>

@@ -58,7 +58,14 @@
                     <xs:element name="geneticTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
                     <xs:element name="dietarySupplementTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
                     <xs:element name="otherTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    
+
+                    <xs:element name="reportTypeCaaersXML" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="reportTypeAdeersPDF" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="reportTypeMedwatchPDF" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="reportTypeDCPSAEForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="reportTypeCIOMSForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="reportTypeCIOMSAEForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
+
                     <xs:element name="fundingSponsor" type="FundingSponsorType" />
                     <xs:element name="coordinatingCenter" type="CoordinatingCenterType"/>
                     
@@ -620,6 +627,7 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="2"/>
             <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
         </xs:restriction>
     </xs:simpleType>
     
@@ -686,7 +694,8 @@
  			</xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
-    
+
+
     <xs:simpleType name="DiseaseCodeType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="CTEP"/>
