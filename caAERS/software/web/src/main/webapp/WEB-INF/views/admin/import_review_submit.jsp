@@ -194,9 +194,9 @@
 				<td align="left"><c:out value="${item.importedDomainObject.firstName}" /></td>
    				<td align="left"><c:out value="${item.importedDomainObject.lastName}" /></td>
    				<td align="left"><c:out value="${item.importedDomainObject.nciIdentifier}" /></td>
-   				<td align="left"> color="red">
+   				<td align="left">
    					<c:forEach var='message' items='${item.messages}'>
-   						<font color="red">- <c:out value='${message.message}'/></font><br>
+   						- <font color="red"><c:out value='${message.message}'/></font><br>
    					</c:forEach>
    				</td>
    			</tr>
@@ -256,9 +256,9 @@
 									item.importedDomainObject.primaryIdentifierValue :  'NA'}" />
 				</td>
    				<td align="left"><c:out value="${item.importedDomainObject.shortTitle}" /></td>
-   				<td align="left" color="red">
+   				<td align="left">
    					<c:forEach var='message' items='${item.messages}'>
-   						- <c:out value='${message.message}'/><br>
+   						- <font color="red"><c:out value='${message.message}'/></font><br>
    					</c:forEach>
    				</td>
    			</tr>
@@ -348,9 +348,9 @@
 						<c:out value =" ) " />	 		
    					</c:forEach>
    				</td>
-   				<td align="left" color="red">
+   				<td align="left">
    					<c:forEach var='message' items='${item.messages}'>
-   						- <c:out value='${message.message}'/><br>
+   						- <font color="red"><c:out value='${message.message}'/></font><br>
    					</c:forEach>
    				</td>
    			</tr>
