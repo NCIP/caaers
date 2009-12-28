@@ -32,7 +32,7 @@
             	Element.addClassName($(mode.basename + "-input"), "validField");
             	$(mode.basename).value = selectedChoice.id;
             	$(mode.displayName).value = $(mode.basename + "-input").value;
-            	new Effect.Highlight(mode.basename + "-selected")
+            	//new Effect.Highlight(mode.basename + "-selected")
             	$(mode.basename + "-input").onblur = function() {
                 	if ($(mode.basename + "-input").hasClassName('validField')) {
                     	ValidationManager.setNormalState($(mode.basename + "-input"));
