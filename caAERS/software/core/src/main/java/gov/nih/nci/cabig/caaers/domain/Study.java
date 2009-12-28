@@ -7,9 +7,7 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -1249,4 +1247,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	return studyOrgsList;
     }
 
+    @Transient
+    public List<StudyOrganization> getUniqueStudyOrganizations() {
+        Set<Organization> set = new HashSet<Organization>();
+        List<StudyOrganization> list = new ArrayList<StudyOrganization>();
+        
+        for (StudyOrganization so : getStudyOrganizations()) {
+            if (set.add(so.getOrganization())) {
+                list.add(so);
+            }
+        }
+        return list;
+    }
 }

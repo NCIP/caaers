@@ -289,7 +289,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
+            <c:forEach items="${command.study.uniqueStudyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>
@@ -330,17 +330,28 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
-                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
+
+            <c:set var="orgIndex" />
+
+<%--
+            <c:forEach items="${command.study.uniqueStudyOrganizations}" var="studySite" >
+                ${studySite}
+            </c:forEach>
+--%>
+
+            <c:forEach items="${command.study.uniqueStudyOrganizations}" var="studySite" >
+                <c:set var="orgIndex" value="0" />
+                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="i">
+                    <c:if test="${not i.first}"><c:set var="orgIndex" value="1" /></c:if>
                     <tr class="results">
-                    
                         <td>
                             <c:if test="${studyPersonnel.siteResearchStaff.researchStaff.externalId != null}">
                                 <img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                             </c:if>
                                 ${studyPersonnel.siteResearchStaff.researchStaff.fullName}
                         </td>
-                        <td>${studyPersonnel.siteResearchStaff.organization}</td>
+                        <%-- orgIndex 0 means a new Organiation in the list and should be rendered, all are rendered now --%>
+                        <td><c:if test="${orgIndex >= 0}">${studyPersonnel.siteResearchStaff.organization}</c:if></td>
                         <td>${command.studyPersonnelRoles[studyPersonnel.roleCode]}</td>
                         <td>
                             <c:if test="${studyPersonnel.active}">Active</c:if>

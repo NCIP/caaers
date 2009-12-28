@@ -85,6 +85,7 @@ public class StudyOrganizationTest extends TestCase {
     	studyOrganization.deactivate();
     	assertFalse(studyOrganization.isActive());
     }
+
     public void testIsInactive(){
     	studyOrganization.activate();
     	assertFalse(studyOrganization.isInActive());
@@ -92,5 +93,19 @@ public class StudyOrganizationTest extends TestCase {
     	assertFalse(studyOrganization.isInActive());
     	studyOrganization.deactivate();
     	assertTrue(studyOrganization.isInActive());
+    }
+
+    public void testUniqueStudyOrganizations() {
+        Study study = new LocalStudy();
+        Organization org1 = new LocalOrganization(); org1.setNciInstituteCode("CODE_01");
+        Organization org2 = new LocalOrganization(); org2.setNciInstituteCode("CODE_02");
+        Organization org3 = new LocalOrganization(); org3.setNciInstituteCode("CODE_01");
+
+        StudySite ss1 = new StudySite(); ss1.setStudy(study); ss1.setOrganization(org1); study.addStudyOrganization(ss1);
+        StudySite ss2 = new StudySite(); ss2.setStudy(study); ss2.setOrganization(org2); study.addStudyOrganization(ss2);
+        StudySite ss3 = new StudySite(); ss3.setStudy(study); ss3.setOrganization(org3); study.addStudyOrganization(ss3);
+
+        assertEquals(3, study.getStudyOrganizations().size());
+        assertEquals(2, study.getUniqueStudyOrganizations().size());
     }
 }
