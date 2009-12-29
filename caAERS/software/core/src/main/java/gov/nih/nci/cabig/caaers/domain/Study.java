@@ -880,20 +880,20 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         }
         return null;
     }
-    
-    public void updateReportFormats(Boolean selected, ReportFormatType type){
-    	if(selected == null) return;
-    	ReportFormat reportFormat = getReportFormat(type);
-    	if(selected && reportFormat == null){
-    		ReportFormat adeersPDFReportFormat = new ReportFormat();
+
+    public void updateReportFormats(Boolean selected, ReportFormatType type) {
+        if (selected == null) return;
+        ReportFormat reportFormat = getReportFormat(type);
+        if (selected && reportFormat == null) {
+            ReportFormat adeersPDFReportFormat = new ReportFormat();
             adeersPDFReportFormat.setStudy(this);
             adeersPDFReportFormat.setReportFormatType(type);
             getReportFormats().add(adeersPDFReportFormat);
-    	}else if(!selected && reportFormat != null){
-    		getReportFormats().remove(reportFormat);
-    	}
+        } else if (!selected && reportFormat != null) {
+            getReportFormats().remove(reportFormat);
+        }
     }
-    
+
     @Transient
     public Boolean getAdeersPDFType() {
         return getReportFormat(ReportFormatType.ADEERSPDF) != null;
