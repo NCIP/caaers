@@ -138,6 +138,7 @@ default-lazy-init="true">
 		<property name="organizationRepository" ref="organizationRepository" />
 	</bean>
 	<bean id="studyTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTherapyMigrator" />
+	<bean id="studyReportFormatTypeMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyReportFormatTypeMigrator" />
 	<bean id="studyTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTerminologyMigrator">
 		<property name="meddraVersionDao" ref="meddraVersionDao" />
 		<property name="ctcDao" ref="ctcDao" />
@@ -171,6 +172,7 @@ default-lazy-init="true">
 		<property name="children">
 			<list>
 				<ref bean="studyTherapyMigrator"/>
+				<ref bean="studyReportFormatTypeMigrator"/>
 				<ref bean="studyTerminologyMigrator"/>
 				<ref bean="studyDiseaseTerminologyMigrator" />
 				<ref bean="studyOrganizationMigrator" />
@@ -183,6 +185,7 @@ default-lazy-init="true">
 			</list>
 		</property>
 	</bean>
+    
 	<bean id="studyParticipantAssignmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator">
 		<property name="studySiteDao" ref="studySiteDao" />
 		<property name="studyDao" ref="studyDao" />

@@ -91,8 +91,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
      *      java.lang.Object, org.springframework.validation.BindException)
      */
     @Override
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
-                    Object command, BindException errors) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
 
         String redirectTo = "redirectToSearchInStudyTab";
         ImportCommand cObject = (ImportCommand) command;

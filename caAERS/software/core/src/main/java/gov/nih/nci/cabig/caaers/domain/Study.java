@@ -870,8 +870,15 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     @Transient
-    public ReportFormat getReportFormat(final ReportFormatType reportFormatType) {
+    public void addReportFormatType(ReportFormatType reportFormatType) {
+        ReportFormat rf = new ReportFormat();
+        rf.setReportFormatType(reportFormatType);
+        rf.setStudy(this);
+        reportFormats.add(rf);
+    }
 
+    @Transient
+    public ReportFormat getReportFormat(final ReportFormatType reportFormatType) {
         for (ReportFormat reportFormat : reportFormats) {
             if (reportFormat.getReportFormatType().equals(reportFormatType)) {
                 return reportFormat;

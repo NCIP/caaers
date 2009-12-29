@@ -84,7 +84,6 @@ public class ImportTab extends Tab<ImportCommand>{
         
         logger.debug("Are files empty : " + participantFile + ":" + studyFile + " : " + routineAdverseEventReportFile + " : " + investigatorFile + " : " + researchStaffFile);
         if (participantFile && studyFile && routineAdverseEventReportFile && investigatorFile && researchStaffFile) errors.rejectValue("participantFile", "REQUIRED", "Please choose either a study or a participant file.");
-
     }
 
 

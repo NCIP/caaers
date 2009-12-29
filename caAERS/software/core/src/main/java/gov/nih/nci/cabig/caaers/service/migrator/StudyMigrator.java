@@ -13,7 +13,7 @@ public class StudyMigrator extends CompositeMigrator<Study> {
 	/**
 	 * Will copy the basic properties of the source Study to destination Study.
 	 */
-	public void preMigrate(Study src, Study dest,DomainObjectImportOutcome<Study> outcome) {
+	public void preMigrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
         dest.setShortTitle(StringUtils.isNotEmpty(src.getShortTitle()) ? src.getShortTitle() : "NA");
         dest.setLongTitle(src.getLongTitle());
         dest.setDescription(src.getDescription());

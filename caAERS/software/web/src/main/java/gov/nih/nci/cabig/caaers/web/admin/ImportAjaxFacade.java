@@ -66,11 +66,8 @@ public class ImportAjaxFacade {
     private AdverseEventEvaluationService adverseEventEvaluationService;// = new AdverseEventEvaluationServiceImpl();
 
     private ImportCommand getImportCommandFromSession(final HttpServletRequest request) {
-
-        ImportCommand importCommand = (ImportCommand) request.getSession().getAttribute(
-                        IMPORT_FORM_NAME);
+        ImportCommand importCommand = (ImportCommand) request.getSession().getAttribute(IMPORT_FORM_NAME);
         return importCommand;
-
     }
 
     private ImportCommand getImportCommand(final HttpServletRequest request) {

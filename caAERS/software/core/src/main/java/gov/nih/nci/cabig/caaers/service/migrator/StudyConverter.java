@@ -499,11 +499,11 @@ public class StudyConverter {
 	
 	private void populateStudyReportTypes(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		if (studyDto.isReportTypeAdeersPDF() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.ADEERSPDF);
-		if (studyDto.isReportTypeCaaersXML() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CAAERSXML);
-		if (studyDto.isReportTypeCIOMSAEForm() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CIOMSSAEFORM);
-		if (studyDto.isReportTypeCIOMSForm() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CIOMSFORM);
-		if (studyDto.isReportTypeDCPSAEForm() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.DCPSAEFORM);
-		if (studyDto.isReportTypeMedwatchPDF() != null && studyDto.isReportTypeAdeersPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.MEDWATCHPDF);
+		if (studyDto.isReportTypeCaaersXML() != null && studyDto.isReportTypeCaaersXML()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CAAERSXML);
+		if (studyDto.isReportTypeCIOMSAEForm() != null && studyDto.isReportTypeCIOMSAEForm()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CIOMSSAEFORM);
+		if (studyDto.isReportTypeCIOMSForm() != null && studyDto.isReportTypeCIOMSForm()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.CIOMSFORM);
+		if (studyDto.isReportTypeDCPSAEForm() != null && studyDto.isReportTypeDCPSAEForm()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.DCPSAEFORM);
+		if (studyDto.isReportTypeMedwatchPDF() != null && studyDto.isReportTypeMedwatchPDF()) study.updateReportFormats(Boolean.TRUE, ReportFormatType.MEDWATCHPDF);
 	}
 
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
