@@ -39,9 +39,11 @@
     <td style="border-left:none;">
     <c:set var="_staffStatusField" value="${fieldGroups[mainGroup].fields[2]}" />
         <c:set var="isActive"><jsp:attribute name="value"><caaers:value path="${_staffStatusField.propertyName}"/></jsp:attribute></c:set>
-        <c:if test="${isActive && isNew}">Pending</c:if>
-        <c:if test="${isActive && !isNew}">Active</c:if>
-        <c:if test="${!isActive}">Inactive</c:if>
+        <c:if test="${sp.id == null}">Pending</c:if>
+        <c:if test="${sp.id != null}">
+            <c:if test="${isActive}">Active</c:if>
+            <c:if test="${!isActive}">Inactive</c:if>
+        </c:if>
     </td>
 
 
