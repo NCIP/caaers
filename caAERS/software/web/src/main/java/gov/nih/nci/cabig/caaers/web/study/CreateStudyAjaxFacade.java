@@ -251,17 +251,6 @@ public class CreateStudyAjaxFacade {
 
     }
 
-    public String addTreatmentAssignment(final int index) {
-        HttpServletRequest request = getHttpServletRequest();
-        StudyCommand command = getStudyCommand(request);
-        command.getStudy().addTreatmentAssignment(new TreatmentAssignment());
-
-        setRequestAttributes(request, index, -1, "treatmentAssignmentSection");
-
-        String url = getCurrentPageContextRelative(WebContextFactory.get());
-        return getOutputFromJsp(url);
-    }
-
     public boolean deleteIdentifier(final int index) {
         StudyCommand command = getStudyCommand(getHttpServletRequest());
         return command.getStudy().getIdentifiersLazy().remove(index) != null;
@@ -348,6 +337,7 @@ public class CreateStudyAjaxFacade {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
             return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
         }
+        
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
             return new AjaxOutput("Unable to delete. Attempted to delete from an invalid index; " + indexToDelete + " < 0");
@@ -356,15 +346,10 @@ public class CreateStudyAjaxFacade {
         List<IndexChange> changes = new ArrayList<IndexChange>() ;
         Object o = null;
         
-        
         if(listProperty.equals("study.studyAgents")){
         	changes = createDeleteChangeList(indexToDelete, command.getStudy().getStudyAgents(), displayName, command.isDataEntryComplete());
         	command.deleteStudyAgentAtIndex(indexToDelete);
-        }else if(listProperty.equals("study.treatmentAssignments")){
-        	changes = createDeleteChangeList(indexToDelete, command.getStudy().getTreatmentAssignments(), displayName,command.isDataEntryComplete());
-        	command.deleteTreatmentAssignmentAtIndex(indexToDelete);
-        }else{
-        	
+        } else{
         	changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
         	o = list.remove(indexToDelete);
         }
