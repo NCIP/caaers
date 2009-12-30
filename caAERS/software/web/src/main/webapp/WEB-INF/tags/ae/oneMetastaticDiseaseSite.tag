@@ -45,7 +45,7 @@
             </jsp:attribute>
         </ui:autocompleter>
         &nbsp;
-            <span id="other_${index}" style="display:none;">
+            <span id="otherMetastaticDS_${index}" style="display:none;">
                     <%-- Other, Specify--%>
                     &nbsp;Other, specify: <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
             </span>
@@ -66,11 +66,11 @@
         var name = $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input");
         var value = name.value;
         if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
-            $('other_${index}').show();
+            $('otherMetastaticDS_${index}').show();
             value += ": " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value;
             $('showALL${index}').hide();
         } else {
-            $('other_${index}').hide();
+            $('otherMetastaticDS_${index}').hide();
             $('showALL${index}').show();
         }
         $(titleID).innerHTML = value;

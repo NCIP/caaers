@@ -23,7 +23,7 @@
     <jsp:attribute name="value">
         <ui:select options="${preExistingConditionOptions}" path="assignment.preExistingConditions[${index}].preExistingCondition"></ui:select>&nbsp;
             <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
-            <span id="other_${index}" style="display:none;">
+            <span id="otherPreExistingCondition_${index}" style="display:none;">
                 Other, specify <ui:text path="assignment.preExistingConditions[${index}].other"/>
             </span>
         <tags:errors path="assignment.preExistingConditions[${index}]"/>
@@ -35,9 +35,9 @@
 <script language="JavaScript">
     Event.observe("assignment.preExistingConditions[${index}].preExistingCondition", "change", function() {
         if (($('assignment.preExistingConditions[${index}].preExistingCondition').options[$('assignment.preExistingConditions[${index}].preExistingCondition').selectedIndex].value) == "")
-            $('other_${index}').show();
+            $('otherPreExistingCondition_${index}').show();
         else
-            $('other_${index}').hide();
+            $('otherPreExistingCondition_${index}').hide();
     })
 </script>
 

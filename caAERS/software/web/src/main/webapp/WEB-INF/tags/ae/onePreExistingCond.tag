@@ -35,7 +35,7 @@ deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}
         		   mandatory="${preCondField.attributes.mandatory}"
         		   required="${preCondField.required}" ></ui:select>&nbsp;
             <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
-            <span id="other_${index}" style="display:none;">
+            <span id="otherPreExistingCondition_${index}" style="display:none;">
                 <%-- Other, Specify--%>
                 <c:if test="${otherField.required or otherField.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;Other, specify <ui:text path="${otherField.propertyName}" mandatory="${otherField.attributes.mandatory}" />
             </span>
@@ -48,9 +48,9 @@ deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}
 <script language="JavaScript">
     Event.observe("aeReport.saeReportPreExistingConditions[${index}].preExistingCondition", "change", function() {
         if (($('aeReport.saeReportPreExistingConditions[${index}].preExistingCondition').options[$('aeReport.saeReportPreExistingConditions[${index}].preExistingCondition').selectedIndex].value) == "")
-            $('other_${index}').show();
+            $('otherPreExistingCondition_${index}').show();
         else
-            $('other_${index}').hide();
+            $('otherPreExistingCondition_${index}').hide();
     })
 </script>
 
