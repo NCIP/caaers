@@ -14,6 +14,7 @@
             populateAutocompleter('participant.organizationIdentifiers[0].organization', $('organization').options[$('organization').options.selectedIndex].text, $('organization').options[$('organization').options.selectedIndex].value);
         });
 */
+        $('participant.organizationIdentifiers[0].value').title = "Subject Identifier";
     })
 
     //---------------------------------------------------------------------------------------------------------------------
@@ -186,7 +187,7 @@ ${command.organization}
                     </ui:row>
 
                     <ui:row path="participant.organizationIdentifiers[0]">
-                        <jsp:attribute name="label"><ui:label path="participant.organizationIdentifiers[0]" text="Subject Identifier" required="true"/></jsp:attribute>
+                        <jsp:attribute name="label"><ui:label path="participant.organizationIdentifiers[0]" text="Subject Identifier" required="true" /></jsp:attribute>
                         <jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true"/></jsp:attribute>
                     </ui:row>
 
