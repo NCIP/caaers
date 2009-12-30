@@ -17,12 +17,11 @@ public class StudyMigratorIntegrationTest extends CaaersTestCase {
 		tearDownAuditing();
 	}
 	
-	
 	public void testLoad(){
 		StudyMigrator migrator = (StudyMigrator)getDeployedApplicationContext().getBean("studyMigrator");
 		List<Migrator<Study>> migrators = migrator.getChildren();
 		assertEquals(11, migrators.size());
-		assertTrue(migrator.getChildren().get(4) instanceof IdentifierMigrator);
+		assertTrue(migrator.getChildren().get(5) instanceof IdentifierMigrator);
 	}
 	
 	
