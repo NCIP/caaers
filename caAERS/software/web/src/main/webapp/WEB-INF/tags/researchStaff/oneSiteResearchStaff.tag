@@ -39,10 +39,10 @@
     <jsp:body>
                 <c:if test="${!readOnly && empty orgName}">
                         <div class="row">
-                            <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].organization" labelProperty="organization" text=""/></div>
+                            <div class="label"><ui:label path="researchStaff.siteResearchStaffs[${index}].organization" labelProperty="organization" text="" required="true"/></div>
                             <div class="value">
                                 <c:set var="initValue" value="${not empty orgName ? orgName : 'Begin typing here...'}"/>
-                                        <ui:autocompleter path="researchStaff.siteResearchStaffs[${index}].organization" initialDisplayValue="${initValue}">
+                                        <ui:autocompleter path="researchStaff.siteResearchStaffs[${index}].organization" initialDisplayValue="${initValue}" required="true" title="Organization name">
                                             <jsp:attribute name="embededJS"></jsp:attribute>
                                             <jsp:attribute name="populatorJS">
                                                 function(autocompleter, text) {
