@@ -21,7 +21,7 @@ public class StudyMigratorIntegrationTest extends CaaersTestCase {
 	public void testLoad(){
 		StudyMigrator migrator = (StudyMigrator)getDeployedApplicationContext().getBean("studyMigrator");
 		List<Migrator<Study>> migrators = migrator.getChildren();
-		assertEquals(10, migrators.size());
+		assertEquals(11, migrators.size());
 		assertTrue(migrator.getChildren().get(4) instanceof IdentifierMigrator);
 	}
 	
