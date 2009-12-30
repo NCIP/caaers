@@ -45,6 +45,7 @@ public class InPlaceEditableTab<C> extends WorkFlowTab<C> {
             value = (String) new DefaultObjectPropertyReader(command, pathToGet).getPropertyValueFromPath();
         }
 
+        if (value == null) value = "";
         map.put(getFreeTextModelName(), value);
         return new ModelAndView("", map);
     }

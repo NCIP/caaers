@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.logging.api.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -84,7 +85,8 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	List<String> listOfEpochNames = new ArrayList<String>();
 
         for (Epoch epoch : listOfEpochs) {
-            if (epoch.getName() == null || epoch.getName().equalsIgnoreCase("Enter name here"))
+            if (epoch.getName() == null) epoch.setName("NO TITLE");
+            if (StringUtils.isBlank(epoch.getName()) || epoch.getName().trim().equals("NO TITLE") || epoch.getName().equalsIgnoreCase("Enter name here"))
                 errors.reject("STU_015", "Each evaluation period type must have a valid title. Type the title or delete the evaluation period type.");
             listOfEpochNames.add(epoch.getName().toUpperCase());
         }
