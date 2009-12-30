@@ -42,15 +42,20 @@
                             		$('assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite').value = selectedChoice.id;
                             		if(selectedChoice.id == 110){
                             			AE.slideAndShow('assignment.diseaseHistory.metastaticDiseaseSites[${index}].other');
+                                        $('showALL${index}').hide();
                             		}else{
                             			$('assignment.diseaseHistory.metastaticDiseaseSites[${index}].other').hide();
                             			$('assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite').value='';
+                                        $('showALL${index}').show();
                             		}
                             	}
                             }
                          </jsp:attribute>
                       </ui:autocompleter>
+                    <span id="showALL${index}">
                       <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' id="_c2_${index}" onclick="showShowAllTable('_c2_${index}', 'assignmentDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')">Show All</a>
+                    </span>
+        
 					  <div id="assignment.diseaseHistory.metastaticDiseaseSites[${index}].other" style="display:none;">
 					   &nbsp;
 					   <ui:label path="assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" text=""></ui:label>

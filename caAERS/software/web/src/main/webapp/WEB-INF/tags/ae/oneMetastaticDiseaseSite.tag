@@ -49,7 +49,9 @@
                     <%-- Other, Specify--%>
                     &nbsp;Other, specify: <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
             </span>
-        <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
+        <span id="showALL${index}">
+            <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>
+        </span>
     </jsp:attribute>
 </ui:row>
         </c:if>
@@ -66,8 +68,10 @@
         if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
             $('other_${index}').show();
             value += ": " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value;
+            $('showALL${index}').hide();
         } else {
             $('other_${index}').hide();
+            $('showALL${index}').show();
         }
         $(titleID).innerHTML = value;
     }
