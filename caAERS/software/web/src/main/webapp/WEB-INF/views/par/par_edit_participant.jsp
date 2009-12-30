@@ -10,6 +10,12 @@
 
 //---------------------------------------------------------------------------------------------------------------------
 
+Event.observe(window, "load", function() {
+    $('participant.organizationIdentifiers[0].value').title = "Subject Identifier";
+})
+
+//---------------------------------------------------------------------------------------------------------------------
+
 function populateParameters(methodName, viewName) {
 
     var paramHash = new Hash();

@@ -9,11 +9,6 @@
     //---------------------------------------------------------------------------------------------------------------------
 
     Event.observe(window, "load", function() {
-/*
-        Event.observe($('organization'), "change", function() {
-            populateAutocompleter('participant.organizationIdentifiers[0].organization', $('organization').options[$('organization').options.selectedIndex].text, $('organization').options[$('organization').options.selectedIndex].value);
-        });
-*/
         $('participant.organizationIdentifiers[0].value').title = "Subject Identifier";
     })
 
