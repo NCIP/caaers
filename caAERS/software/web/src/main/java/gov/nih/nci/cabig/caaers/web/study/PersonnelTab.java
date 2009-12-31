@@ -113,7 +113,8 @@ class PersonnelTab extends StudyTab {
             StudyOrganization so = command.getStudy().getActiveStudyOrganizations().get(command.getStudySiteIndex());
             HashSet<String> hSet = new HashSet<String>();
             for (StudyPersonnel sp : so.getStudyPersonnels()) {
-                if (sp.isActive() && sp.getSiteResearchStaff() != null)
+//                if (sp.isActive() && sp.getSiteResearchStaff() != null)
+                if (sp.getSiteResearchStaff() != null)
                     if (!hSet.add(sp.getRoleCode() + sp.getSiteResearchStaff().getResearchStaff().getId().toString())) {
                         errors.reject("STU_012", new Object[] {sp.getSiteResearchStaff().getResearchStaff().getFullName()}, "Duplicate entry");
                     }
