@@ -67,7 +67,8 @@
                 <c:if test="${command.reportsSubmittable[report.id] and (reportStatus eq 'PENDING' or reportStatus eq 'FAILED') }">
                 	<OPTION value="submit">Submit</OPTION>
                 </c:if>
-				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED')}">
+                
+                <c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}">
                     <OPTION value="amend">Amend</OPTION>
                 </c:if>
 								
