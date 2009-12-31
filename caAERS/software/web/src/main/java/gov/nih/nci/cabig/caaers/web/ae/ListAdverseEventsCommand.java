@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
@@ -31,7 +33,10 @@ public class ListAdverseEventsCommand {
 
     private ReportValidationService reportValidationService;
     
-    public ListAdverseEventsCommand(ReportValidationService reportValidationService) {
+    private boolean amendAnOption;
+
+
+	public ListAdverseEventsCommand(ReportValidationService reportValidationService) {
         this.reportValidationService = reportValidationService;
         reportsSubmittable = new HashMap<Integer, Boolean>();
     }
@@ -47,6 +52,18 @@ public class ListAdverseEventsCommand {
                 reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
             }
         }
+    }
+    
+    public void updateOptions() {
+    	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
+    	if(isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , 
+    			UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_ae_cd,
+    				UserGroupType.caaers_participant_cd)){
+    		setAmendAnOption(true);
+    	} else {
+    		setAmendAnOption(false);
+    	}
+    	
     }
     public Map<Integer, Boolean> getReportsSubmittable() {
         return reportsSubmittable;
@@ -91,4 +108,13 @@ public class ListAdverseEventsCommand {
     public void setWorkflowEnabled(boolean workflowEnabled){
     	this.workflowEnabled = workflowEnabled;
     }
+
+	public boolean isAmendAnOption() {
+		return amendAnOption;
+	}
+
+	public void setAmendAnOption(boolean amendAnOption) {
+		this.amendAnOption = amendAnOption;
+	}
+
 }
