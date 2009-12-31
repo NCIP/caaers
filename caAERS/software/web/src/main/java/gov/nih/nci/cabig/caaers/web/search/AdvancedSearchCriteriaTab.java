@@ -94,7 +94,7 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 				Boolean validAttributeSelected = parameter.getAttributeName() != null && !parameter.getAttributeName().equals("") && !parameter.getAttributeName().equals("none");
 				Boolean validPredicateSelected = parameter.getPredicate() != null && !parameter.getPredicate().equals("") && !parameter.getPredicate().equals("none");
 				if( validAttributeSelected && parameter.getPredicate().equals("none")) 
-					errors.reject("ASC_003", "Incomplete criteirion, missing predicate");
+					errors.reject("ASC_003", "Incomplete criterion, missing predicate");
 				if(validAttributeSelected && validPredicateSelected && parameter.getValue() == null)
 					errors.reject("ASC_004", "Incomplete criterion, missing value");
 				if(validAttributeSelected && validPredicateSelected && parameter.getValue() != null && parameter.getValue().equals("none"))
