@@ -159,6 +159,8 @@ public class ListAdverseEventsController extends SimpleFormController {
         	//if there is no validation error, update the report submitability
         	listAECmd.updateSubmittability();
         	
+        	listAECmd.updateOptions();
+        	
         	//save the study/subject in session for future pre-selection
         	HttpSession session = request.getSession();
 			session.setAttribute(SELECTED_STUDY_ID, listAECmd.getStudy().getId());
