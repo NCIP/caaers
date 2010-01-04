@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -28,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +38,7 @@ import org.easymock.classextension.EasyMock;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @CaaersUseCases( { CREATE_STUDY })
 public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
@@ -72,7 +75,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         
         
         studyDao = registerDaoMockFor(StudyDao.class);
-        command = new StudyCommand(studyDao);
+        command = new StudyCommand(studyDao,investigationalNewDrugDao);
         command.setStudyRepository(studyRepository);
         command.setStudyDao(studyDao);
         study = new LocalStudy();
@@ -208,5 +211,63 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     	//verifyMocks();
     	
     	
+    }
+    
+    //will test deleting study agent with wrong index
+    public void testDeleteStudyAgents_WithWrongIndex() throws Exception{
+    	replayMocks();
+    	AjaxOutput output = facade.remove("study.studyAgents", 5, "Study Agents");
+    	assertTrue(output.getError());
+    	assertEquals("Unable to delete. Attempted to delete beyond the end; 5 >= 0", output.getErrorMessage());
+    	verifyMocks();
+    }
+    
+    //will test deleting study agent with correct index
+    public void testDeleteStudyAgentsCorrectIndex() throws Exception{
+    	replayMocks();
+    	study.addStudyAgent(Fixtures.createStudyAgent("test"));
+    	AjaxOutput output = facade.remove("study.studyAgents", 0, "Study Agents");
+    	assertFalse(output.getError());
+    	assertEquals(1, output.getChanges().size());
+    	assertEquals(new Integer(0), output.getChanges().get(0).getOriginal());
+    	assertEquals(null, output.getChanges().get(0).getCurrent());
+    	verifyMocks();
+    }
+    
+  //will test deleting study agent with correct index (hard delete)
+    public void testDeleteStudyAgents() throws Exception{
+    	replayMocks();
+    	study.addStudyAgent(Fixtures.createStudyAgent("test0"));
+    	study.addStudyAgent(Fixtures.createStudyAgent("test1"));
+    	study.addStudyAgent(Fixtures.createStudyAgent("test2"));
+    	AjaxOutput output = facade.remove("study.studyAgents", 1, "Study Agents");
+    	assertFalse(output.getError());
+    	assertEquals(2, output.getChanges().size());
+    	assertEquals(2, study.getStudyAgents().size());
+    	assertEquals(new Integer(2), output.getChanges().get(1).getOriginal());
+    	assertEquals(new Integer(1), output.getChanges().get(1).getCurrent());
+    	assertEquals(new Integer(1), output.getChanges().get(0).getOriginal());
+    	assertEquals(null, output.getChanges().get(0).getCurrent());
+    	verifyMocks();
+    }
+    
+  //will test deleting study agent with correct index (soft delete)
+    public void testDeleteStudyAgentsSoftDelete() throws Exception{
+    	replayMocks();
+    	study.addStudyAgent(Fixtures.createStudyAgent("test0"));
+    	study.addStudyAgent(Fixtures.createStudyAgent("test1"));
+    	study.addStudyAgent(Fixtures.createStudyAgent("test2"));
+    	for(StudyAgent agent : study.getStudyAgents()){
+    		agent.setId(33);
+    	}
+    	AjaxOutput output = facade.remove("study.studyAgents", 1, "Study Agents");
+    	assertFalse(output.getError());
+    	assertEquals(2, output.getChanges().size());
+    	assertEquals(3, study.getStudyAgents().size());
+    	assertEquals(new Integer(2), output.getChanges().get(1).getOriginal());
+    	assertEquals(new Integer(2), output.getChanges().get(1).getCurrent());
+    	assertEquals(new Integer(1), output.getChanges().get(0).getOriginal());
+    	assertEquals(new Integer(1), output.getChanges().get(0).getCurrent());
+    	verifyMocks();
     }
 }

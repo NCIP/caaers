@@ -55,7 +55,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
             log.debug("Retrieved Study :" + String.valueOf(study));
         }
 
-        StudyCommand command = new StudyCommand(studyDao);
+        StudyCommand command = new StudyCommand(studyDao, investigationalNewDrugDao);
 
         command.setStudy(study);
         command.setAllPersonnelRoles(configPropertyRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE));
@@ -147,25 +147,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final StudyCommand command, final Tab<StudyCommand> tab) {
-        // supress for ajax and delete requests
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) {
-            return false;
-        }
-
-        String action = (String) super.findInRequest(request, "_action");
-
-        if (StringUtils.equals(action, "removeSite")) return false;
-        if (StringUtils.equals(action, "removeInv")) return false;
-        if (StringUtils.equals(action, "removeStudyPersonnel")) return false;
-        if (StringUtils.equals(action, "removeIdentifier")) return false;
-
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-            return false;
-        }
-
-        return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it
-        // is overview page
+        return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it overview page
     }
 
     public Task getTask() {
@@ -176,19 +158,4 @@ public class EditStudyController extends StudyController<StudyCommand> {
         this.task = task;
     }
 
-    @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        String action = (String) super.findInRequest(request, "_action");
-
-        if (StringUtils.equals(action, "removeSite")) return true;
-        if (StringUtils.equals(action, "removeInv")) return true;
-        if (StringUtils.equals(action, "removeStudyPersonnel")) return true;
-        if (StringUtils.equals(action, "removeIdentifier")) return true;
-
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) {
-            return true;
-        }
-        return false;
-    }
 }

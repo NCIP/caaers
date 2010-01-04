@@ -20,16 +20,28 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         if (indicatorElement) indicatorElement.addClassName("indicator");
     },
 
+    /*
+     *itemType - The currentItem, eg: StudyAgent
+     *tabNumber - _page and _target attribute value
+     *insertionLocation - location to insert (eg:'Bottom', 'Top') 
+     *location - The ID of the container in which the insertion should happen
+     */
     _addItem: function(itemType, src, val, location, options, tabNumber, insertionLocation) {
         var container = $(location);
         var paramHash = new Hash();
         paramHash.set('task', 'add');
         paramHash.set('currentItem', itemType);
         paramHash.set(itemType, val);
+       
 
         this._populateDeafultParameters(itemType, paramHash, tabNumber);
+        
+        //now set the parameters present in options
+        if(options){
+        	if(options.index) paramHash.set('index', options.index)
+        }
 
-        var url = $('command').action + "?subview";
+        var url = this._generateSubmissionURL('command');
         this._showIndicator($(container.id + "_indicator"));
         this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this), insertionLocation);
     },
@@ -47,7 +59,7 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
         paramHash.set('currentItem', itemType);
         paramHash.set('index', index);
         this._populateDeafultParameters(itemType, paramHash, tabNumber);
-        var url = $('command').action + "?subview";
+        var url = this._generateSubmissionURL('command');
         var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
         this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
         }.bind(this));
@@ -68,6 +80,14 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
             }
         });
 
+    },
+    /*
+     * Will generate the URL for submission. 
+     */
+    _generateSubmissionURL:function(commandForm){
+    	var url = $(commandForm).action;
+    	if(url.indexOf('?') > 0) return url + '&subview';
+    	return url + '?subview';
     },
 
     _insertContent: function(container, url, params, onCompleteCallBack, insertionLocation) {

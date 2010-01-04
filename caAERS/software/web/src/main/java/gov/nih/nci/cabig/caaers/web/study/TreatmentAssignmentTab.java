@@ -27,6 +27,7 @@ import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * @author Saurabh Agrawal
+ * @author Ion Olaru
  */
 public class TreatmentAssignmentTab extends StudyTab {
 

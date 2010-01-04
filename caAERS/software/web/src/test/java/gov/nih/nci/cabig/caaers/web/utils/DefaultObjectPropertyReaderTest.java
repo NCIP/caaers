@@ -20,7 +20,7 @@ public class DefaultObjectPropertyReaderTest extends TestCase {
 		Epoch e2 = Fixtures.createEpoch(1, "test");
 		study.addEpoch(e1);
 		study.addEpoch(e2);
-		StudyCommand command = new StudyCommand(null);
+		StudyCommand command = new StudyCommand(null, null);
 		command.setStudy(study);
 		reader = new DefaultObjectPropertyReader(command, "study.activeEpochs[0].name");
 	}

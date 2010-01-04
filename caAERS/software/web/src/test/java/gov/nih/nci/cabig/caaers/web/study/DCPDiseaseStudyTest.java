@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ConditionDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Condition;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -27,13 +28,14 @@ public class DCPDiseaseStudyTest extends WebTestCase {
     private ConditionDao conditionDao;
     private Study study;
     private Errors errors;
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         studyDao = registerDaoMockFor(StudyDao.class);
         conditionDao = registerDaoMockFor(ConditionDao.class);
-
+        investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
         controller = new CreateStudyController();
         controller.setStudyDao(studyDao);
         controller.setConditionDao(conditionDao);
@@ -58,7 +60,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         EasyMock.expect(conditionDao.getById(5)).andReturn(condition);
         replayMocks();
 
-        StudyCommand command  = new StudyCommand(studyDao);
+        StudyCommand command  = new StudyCommand(studyDao, investigationalNewDrugDao);
         command.setStudy(study);
         command.setCondition("5");
 

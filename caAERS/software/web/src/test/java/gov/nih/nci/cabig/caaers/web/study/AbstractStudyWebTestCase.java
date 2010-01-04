@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -42,6 +43,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
     protected ConditionDao conditionDao;
     protected EpochDao epochDao;
     protected StudyDao studyDao;
+    protected InvestigationalNewDrugDao investigationalNewDrugDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -54,6 +56,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
         conditionDao = registerDaoMockFor(ConditionDao.class);
         epochDao = registerDaoMockFor(EpochDao.class);
         studyDao = registerDaoMockFor(StudyDao.class);
+        investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
 
         tab = createTab();
 
@@ -65,7 +68,7 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
     }
 
     protected StudyCommand createCommand(){
-    	 StudyCommand command = new StudyCommand(studyDao);
+    	 StudyCommand command = new StudyCommand(studyDao, investigationalNewDrugDao);
          Study study = new LocalStudy();
          command.setStudy(study);
 

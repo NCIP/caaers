@@ -55,7 +55,7 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         request.getSession().removeAttribute(CreateStudyAjaxFacade.CREATE_STUDY_FORM_NAME);
         
-        StudyCommand command = new StudyCommand(studyDao);
+        StudyCommand command = new StudyCommand(studyDao, investigationalNewDrugDao);
         Study study = new LocalStudy(); 
         study.setDataEntryStatus(false);
         command.setStudy(study);
@@ -101,44 +101,4 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         return mv;
     }
 
-    @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        String action = (String) super.findInRequest(request, "_action");
-        if (StringUtils.equals(action, "removeSite")) return true;
-        if (StringUtils.equals(action, "removeInv"))  return true;
-        if (StringUtils.equals(action, "removeStudyPersonnell"))  return true;
-        if (StringUtils.equals(action, "removeIdentifier"))  return true;
-
-        // supress validation when target page is less than current page.
-        int curPage = getCurrentPage(request);
-        int targetPage = getTargetPage(request, curPage);
-        if (targetPage < curPage) return true;
-
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) {
-            return true;
-        }
-
-        return super.suppressValidation(request, command);
-    }
-
-    @Override
-    protected boolean shouldSave(HttpServletRequest request, StudyCommand command, Tab<StudyCommand> studyCommandTab) {
-        // supress for ajax and delete requests
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null || isAjaxRequest(request)) return false;
-
-        String action = (String) super.findInRequest(request, "_action");
-        if (StringUtils.equals(action, "removeSite")) return false;
-        if (StringUtils.equals(action, "removeInv") )  return false;
-        if (StringUtils.equals(action, "removeStudyPersonnel") )  return false;
-        if (StringUtils.equals(action, "removeIdentifier"))  return false;
-
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-            return false;
-        }
-
-        // always save in the 
-        return true; 
-    }
 }

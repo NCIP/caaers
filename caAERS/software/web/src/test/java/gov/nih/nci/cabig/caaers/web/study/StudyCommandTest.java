@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -35,13 +36,13 @@ public class StudyCommandTest extends AbstractTestCase {
 	StudyCommand command;
 	StudyDao studyDao;
 	StudyRepository studyRepository;
-	
+	InvestigationalNewDrugDao investigationalNewDrugDao;
 	protected void setUp() throws Exception {
 		super.setUp();
 		studyDao = registerDaoMockFor(StudyDao.class);
 		studyRepository = registerMockFor(StudyRepository.class);
-		
-		command = new StudyCommand(studyDao);
+		investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
+		command = new StudyCommand(studyDao, investigationalNewDrugDao);
 		command.setStudyRepository(studyRepository);
 		
 		Study s = Fixtures.createStudy("test");

@@ -1,10 +1,40 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE;
+import gov.nih.nci.cabig.caaers.domain.Address;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Retireable;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
@@ -18,7 +48,13 @@ import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -256,48 +292,6 @@ public class CreateStudyAjaxFacade {
         return command.getStudy().getIdentifiersLazy().remove(index) != null;
     }
 
-    public String addStudyAgent(final int index) {
-        HttpServletRequest request = getHttpServletRequest();
-        StudyCommand command = getStudyCommand(request);
-        int newIndex = command.getStudy().getStudyAgents().size();
-        // pre-initialize the agent at index
-        command.getStudy().getStudyAgents().get(newIndex);
-        setRequestAttributes(request, newIndex, -1, "studyAgentSection");
-        String url = getCurrentPageContextRelative(WebContextFactory.get());
-        return getOutputFromJsp(url);
-    }
-    
-    
-
-    /**
-     * A row of IND is needed to display
-     */
-    public String addIND(final int index, final int indIndex, final int indType) {
-        HttpServletRequest request = getHttpServletRequest();
-        StudyCommand command = getStudyCommand(request);
-        StudyAgent sa = command.getStudy().getStudyAgents().get(index);
-        List<StudyAgentINDAssociation> aList = sa.getStudyAgentINDAssociations();
-        aList.clear(); // we are sure there is only 1 IND as of now
-        String html = "";
-
-        if (AgentsTab.IND_TYPE_CTEP == indType) {
-            InvestigationalNewDrug ind = investigationalNewDrugDao.fetchCtepInd();
-            aList.get(0).setInvestigationalNewDrug(ind);
-        } else if (AgentsTab.IND_TYPE_DCP_IND == indType) {
-            InvestigationalNewDrug ind = investigationalNewDrugDao.fetchDcpInd();
-            aList.get(0).setInvestigationalNewDrug(ind);
-        } else if (AgentsTab.IND_TYPE_OTHER == indType) {
-            AgentsTab agentTab = new AgentsTab();
-            // pre-initialize one IND
-            aList.get(0);
-            request.setAttribute("fieldGroups", agentTab.createFieldGroups(command));
-            request.setAttribute(AJAX_INDEX_PARAMETER, index);
-            request.setAttribute("indIndex", indIndex);
-            String url = "/pages/study/studyAgentIND";
-            html = getOutputFromJsp(url);
-        }
-        return html;
-    }
 
     public String addInvestigator(final int index) {
         HttpServletRequest request = getHttpServletRequest();
@@ -346,14 +340,8 @@ public class CreateStudyAjaxFacade {
         List<IndexChange> changes = new ArrayList<IndexChange>() ;
         Object o = null;
         
-        if(listProperty.equals("study.studyAgents")){
-        	changes = createDeleteChangeList(indexToDelete, command.getStudy().getStudyAgents(), displayName, command.isDataEntryComplete());
-        	command.deleteStudyAgentAtIndex(indexToDelete);
-        } else{
-        	changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
-        	o = list.remove(indexToDelete);
-        }
-        
+    	changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
+    	o = list.remove(indexToDelete);
         try {
             saveIfAlreadyPersistent(command.getStudy());
         } catch (DataIntegrityViolationException die) {
@@ -379,7 +367,7 @@ public class CreateStudyAjaxFacade {
     
     private List<IndexChange> createDeleteChangeList(int indexToDelete, List<? extends Retireable> list, String displayName, boolean softDeleted) {
         List<IndexChange> changes = new ArrayList<IndexChange>();
-        changes.add(new IndexChange(indexToDelete, null));
+        changes.add(new IndexChange(indexToDelete, softDeleted ? indexToDelete : null));
         int length = list.size();
         int j = indexToDelete;
         int k = (softDeleted)? 0 : 1;

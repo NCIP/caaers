@@ -1,17 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,9 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class AgentsTab extends StudyTab {
     @Deprecated
@@ -60,7 +60,26 @@ public class AgentsTab extends StudyTab {
 
     @Override
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
-        handleStudyAgentAction(command, request.getParameter("_action"), request.getParameter("_selected"), request.getParameter("_selectedInd"));
+    	
+        for(StudyAgent studyAgent : command.getStudy().getStudyAgents()){
+        	//IND should be initialized for CTEP and DCP.
+        	//IND should be cleared for NA
+        	if(studyAgent.getIndType() != null){
+        		switch (studyAgent.getIndType()){
+        		case CTEP_IND://associated with default CTEP IND
+        			studyAgent.getStudyAgentINDAssociations().get(0).setInvestigationalNewDrug(command.fetchDefaultInvestigationalNewDrugForCTEP());
+        			break;
+        		case DCP_IND://associate with default DCP IND
+        			studyAgent.getStudyAgentINDAssociations().get(0).setInvestigationalNewDrug(command.fetchDefaultInvestigationalNewDrugForDCP());
+        			break;
+        		case OTHER:
+        			break; //leave it.
+        		default:
+        			studyAgent.getStudyAgentINDAssociations().clear();
+            	}
+        	}
+        	
+        }
     }
 
     @Override
@@ -101,7 +120,6 @@ public class AgentsTab extends StudyTab {
         for (StudyAgent sa : command.getStudy().getStudyAgents()) {
             i++;
             InputFieldGroup fieldGrp = new DefaultInputFieldGroup("main" + i);
-            InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + i);
             
             List<InputField> fields = fieldGrp.getFields();
             InputField agentField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].agent", "Agent", false);
@@ -115,45 +133,128 @@ public class AgentsTab extends StudyTab {
 
             InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i + "].indType", "Enter IND information", indTypeMap);
             fields.add(indTypeField);
-            if (sa.getStudyAgentINDAssociations() != null) {
-                int j = -1;
-                for (StudyAgentINDAssociation saInd : sa.getStudyAgentINDAssociations()) {
-                    // dont show IND field for CTEP unspecified IND
-                    InvestigationalNewDrug ind = saInd.getInvestigationalNewDrug();
-                    if ((ind != null && ind.getIndNumber() != null && ind.getIndNumber() == InvestigationalNewDrug.CTEP_IND) || (ind != null && ind.getIndNumber() != null && ind.getIndNumber() == InvestigationalNewDrug.DCP_IND)){
-                        continue;
-                    }
-                    j++;
-                    
-                    InputField indField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].studyAgentINDAssociations[" + j + "].investigationalNewDrug", "IND #", false);
-                    indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
-                    InputFieldAttributes.setSize(indField, 41);
-                    indFieldGroup.getFields().add(indField);
-                }
-            }// ~if
+            
 
             InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "[" + i + "].partOfLeadIND", "Lead IND ?");
             fields.add(partOfLeadIND);
             map.addInputFieldGroup(fieldGrp);
-            map.addInputFieldGroup(indFieldGroup);
+            
+            //create the IND field group if necessary
+            if(sa.getIndType() != null && sa.getIndType().equals(INDType.OTHER)){
+            	map.addInputFieldGroup(createINDFieldGroup(command, i));
+            }
+            
             
         }
         return map;
     }
-
-    private void handleStudyAgentAction(final StudyCommand command, final String action, final String selected, final String selectedInd) {
-    	Study study = command.getStudy();
-    	
-        if ("addStudyAgent".equals(action)) {
-            StudyAgent studyAgent = new StudyAgent();
-            studyAgent.setAgent(new Agent());
-            study.addStudyAgent(studyAgent);
-        } else if ("removeInd".equals(action)) {
-            StudyAgent sa = study.getStudyAgents().get(Integer.parseInt(selected));
-            List<StudyAgentINDAssociation> sas = sa.getStudyAgentINDAssociations();
-            if (sas.size() > 0) {
-                sas.remove(Integer.parseInt(selectedInd));
-            }
-        }
+    
+    //creates the IND lookup field. 
+    private InputFieldGroup createINDFieldGroup(StudyCommand command, int studyAgentIndex){
+    	//based on the fact that UI only supports one IND field for an agent, by default one field will be created.
+    	 InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + studyAgentIndex);
+    	 InputField indField = InputFieldFactory.createAutocompleterField("study.studyAgents[" + studyAgentIndex + "].studyAgentINDAssociations[" + 0 + "].investigationalNewDrug", "IND #", false);
+         indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+         InputFieldAttributes.setSize(indField, 41);
+         indFieldGroup.getFields().add(indField);
+         return indFieldGroup;
     }
+    
+    @Override
+    public String getMethodName(HttpServletRequest request) {
+    	String currentItem = request.getParameter("currentItem");
+    	String task = request.getParameter("task");
+    	return task + currentItem;
+    }
+    
+    @Override
+    protected boolean methodInvocationRequest(HttpServletRequest request) {
+    	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
+    }
+    
+    /**
+     * This method will add a new study agent, and return the view consisting the details of the new agent. 
+     * @param request
+     * @param object
+     * @param errors
+     * @return
+     */
+    public ModelAndView addStudyAgent(HttpServletRequest request, Object object, Errors errors) {
+    	
+        StudyCommand command = (StudyCommand)object;
+        Study study = command.getStudy();
+        
+        int currentSize = study.getStudyAgents().size();
+        
+        StudyAgent studyAgent = new StudyAgent();
+        study.addStudyAgent(studyAgent);
+        
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentSection");
+        modelAndView.getModel().put("indexes", new Integer[]{currentSize});
+        modelAndView.getModel().put("addAgentFlow", true);
+        return modelAndView;
+        
+    }
+    
+    /**
+     * This method will remove a study agent, and return the view consisting of rest of the study agents
+     * @param request
+     * @param object
+     * @param errors
+     * @return
+     */
+    public ModelAndView removeStudyAgent(HttpServletRequest request, Object object, Errors errors) {
+
+        StudyCommand command = (StudyCommand)object;
+        Study study = command.getStudy();
+        
+        int size = study.getStudyAgents().size();
+        int index;
+ 
+        try {
+            index = Integer.parseInt(request.getParameter("index"));
+        } catch (NumberFormatException e) {
+            index = -1;
+            log.debug("Unable to delete study agents, INVALID INDEX ", e);
+        }
+        
+        //check if deletion is possible
+        if(index >= size || index <= 0){
+        	log.debug("Unable to delete study agents, INVALID INDEX :"  + index);
+        }else{
+        	command.deleteStudyAgentAtIndex(index);
+        }
+        
+        size = study.getStudyAgents().size(); //new size
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = i;
+    	}
+
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentSection");
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+        
+    }
+    
+    /**
+     * This method will add IND to the study agent. 
+     * @param request
+     * @param object
+     * @param errors
+     * @return
+     */
+    public ModelAndView addStudyAgentIND(HttpServletRequest request, Object object, Errors errors) {
+
+        StudyCommand command = (StudyCommand)object;
+        Integer studyAgentIndex = WebUtils.getIntParameter(request, "index");
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentINDSection");
+        modelAndView.getModel().put("indfields", createINDFieldGroup(command, studyAgentIndex));
+        modelAndView.getModel().put("index", studyAgentIndex);
+        
+        return modelAndView;
+    }
+    
 }

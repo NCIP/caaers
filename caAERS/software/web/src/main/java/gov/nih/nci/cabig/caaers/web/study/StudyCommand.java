@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -87,9 +88,12 @@ public class StudyCommand {
     private boolean workflowEnabled;
     
     private StudyDao studyDao;
+    
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
 
-    public StudyCommand(StudyDao studyDao) {
+    public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
+    	this.investigationalNewDrugDao = investigationalNewDrugDao;
         this.studyPersonnelRoles = new HashMap<String, String>();
         this.studyInvestigatorRoles = new HashMap<String, String>();
     }
@@ -362,12 +366,37 @@ public class StudyCommand {
 		this.studyDao = studyDao;
 	}
     
+    public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
+		return investigationalNewDrugDao;
+	}
+    
+    public void setInvestigationalNewDrugDao(
+			InvestigationalNewDrugDao investigationalNewDrugDao) {
+		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
+    
+    //will fetch the default IND for CTEP 
+    public InvestigationalNewDrug fetchDefaultInvestigationalNewDrugForCTEP(){
+    	return investigationalNewDrugDao.fetchCtepInd();
+    }
+    
+    //will fetch the default IND for DCP
+    public InvestigationalNewDrug fetchDefaultInvestigationalNewDrugForDCP(){
+    	return investigationalNewDrugDao.fetchDcpInd();
+    }
+    
     /**
      * Will delete or mark as retired the study agent object mentioned.
      * @param index
      */
     public void deleteStudyAgentAtIndex(int index){
-    	delete(study.getStudyAgents(), study.getActiveStudyAgents().get(index));
+    	StudyAgent studyAgent = getStudy().getStudyAgents().get(index);
+    	if(studyAgent.getId() == null) {
+    		getStudy().getStudyAgents().remove(index);
+    	}else{
+    		studyAgent.retire();
+    	}
+    	
     }
     
     /**
@@ -434,21 +463,27 @@ public class StudyCommand {
      * @param index
      */
     public void delete(List<? extends Retireable> source, int index){
-    	if(source.get(index).getId() != null){
-    		source.get(index).retire();
-    	}else{
-    		source.remove(index);
+    	int size = source.size();
+    	int actualIndex = index;
+    	
+    	for(int i = 0; i < size & actualIndex < size; i++){
+    		Retireable o = source.get(i);
+    		if(actualIndex == i){
+    			if(o.getId() == null) {
+    				source.remove(actualIndex);
+    			}else{
+    				o.retire();
+    			}
+    			return;
+    		}else{
+    			if(o.isRetired()) actualIndex++;
+    		}
+    		
     	}
+    	
     }
    
-    public void delete(List<? extends Retireable> source, Retireable obj){
-    	if(obj.getId() != null){
-    		obj.retire();
-    	}else{
-    		source.remove(obj);
-    	}
-    }
-    
+   
     public void reloadStudy(){
     	Integer oldStudyId = study.getId();
     	Study loaded = studyDao.getStudyDesignById(oldStudyId.intValue());

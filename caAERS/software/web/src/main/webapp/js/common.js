@@ -286,8 +286,12 @@ Object.extend(ListEditor.prototype, {
 				if((!after) || this.options.addOnTop){
 					after = this.options.addFirstAfter;
 				}
-				
-                new Insertion.After(after, html)
+				if(this.options.insertionCallback){
+					this.options.insertionCallback.call(this, html);
+				}else{
+					new Insertion.After(after, html)
+				}
+                
                 var newId = this.divisionClass + "-" + nextIndex;
                 AE.slideAndShow(newId)
                 this.updateFirstAndLast()
@@ -352,6 +356,9 @@ Object.extend(ListEditor.prototype, {
         }
 
         var indexToDelete = div.getAttribute("item-index");
+		if (this.options.deleteIndexCallback){
+			indexToDelete = this.options.deleteIndexCallback.call();
+		}
         if (!this.collectionProperty) {
             alert("collectionProperty must be specified for deleting to work")
             return;
@@ -477,7 +484,12 @@ Object.extend(ListEditor.prototype, {
                 var root = this.collectionProperty + "[" + change.original + "]";
                 var newRoot = this.collectionProperty + "[" + change.current + "]";
                 var rootRE = "^" + root.replace("[", "\\[").replace("]", "\\]")
-                
+				
+				var secId =  this.divisionClass + "-" + change.original
+				var secContentId =  "contentOf-" + this.divisionClass + "-" + change.original;
+				var secNewId =  this.divisionClass + "-" + change.current;
+				var secContentNewId =  "contentOf-" + this.divisionClass + "-" + change.current;
+				
                 if (elt.name && elt.name.match(rootRE)) {
                     var oldName = elt.name
                     elt.name = elt.name.replace(root, newRoot)
@@ -487,10 +499,20 @@ Object.extend(ListEditor.prototype, {
                         elt.checked = true
                     }
                 }
-                if (elt.id && elt.id.match(rootRE)) {
-                    elt.id = elt.id.replace(root, newRoot)
-                    matchedAndChanged = true
-                }
+				
+				if(elt.id){
+					if(elt.id.match(rootRE)){
+						elt.id = elt.id.replace(root, newRoot)
+                   		matchedAndChanged = true
+					}else if(elt.id == secId){
+						elt.id = secNewId;
+                    	matchedAndChanged = true
+					}else if(elt.id == secContentId){
+						elt.id = secContentNewId;
+                    	matchedAndChanged = true
+					}
+				}
+
                 if (elt.hasAttribute("for") && elt.getAttribute("for") && elt.getAttribute("for").match(rootRE)) {
                     elt.setAttribute("for", elt.getAttribute("for").replace(root, newRoot));
                     matchedAndChanged = true

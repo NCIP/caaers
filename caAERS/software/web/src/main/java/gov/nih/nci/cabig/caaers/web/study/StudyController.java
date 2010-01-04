@@ -51,7 +51,7 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private ResearchStaffDao researchStaffDao;
     private SiteResearchStaffDao siteResearchStaffDao;
     private CtcDao ctcDao;
-    private InvestigationalNewDrugDao investigationalNewDrugDao;
+    protected InvestigationalNewDrugDao investigationalNewDrugDao;
     private MeddraVersionDao meddraVersionDao;
     private ConditionDao conditionDao;
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
@@ -140,11 +140,14 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     @Override
     protected boolean suppressValidation(final HttpServletRequest request, final Object command) {
-        // supress for ajax and delete requests
+    	
+    	//suppress validation for AJAX requests
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
+        if (isAjax != null || isAjaxRequest(request)) {
             return true;
         }
+        
+        //suppress validation for request having sub-action
         String action = (String) findInRequest(request, "_action");
         if (StringUtils.isNotEmpty(action) && !StringUtils.containsIgnoreCase(action, "add")) {
             return true;
@@ -156,7 +159,18 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
 
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final C command, final Tab<C> tab) {
-        return super.shouldSave(request, command, tab) && findInRequest(request, "_isAjax") == null;
+    	//do not save if it is an AJAX request, 
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null || isAjaxRequest(request)) return false;
+
+        //do not save if there is a sub-action specified in the request
+        String action = (String) findInRequest(request, "_action");
+        if (StringUtils.isNotEmpty(action)) {
+            return false;
+        }
+        
+        // always save - otherwise 
+        return true; 
     }
 
     @Override
