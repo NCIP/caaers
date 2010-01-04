@@ -125,11 +125,11 @@
                                 </div>
                             </div>
                             <c:if test="${(command.lastVersion.reportStatus == 'PENDING') or (command.lastVersion.reportStatus == 'FAILED')}">
-                                <div style="float:right;">
+                                <div style="float:left;">
                                     <c:set var="href">
                                         <c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>
                                     </c:set>
-									<tags:button color="orange" value="Submit Again" icon="next" markupWithTag="a" href="${href}" />
+									<tags:button color="blue" value="Edit Report" icon="back" markupWithTag="a" href="${href}" />
                                 </div>
                                 <br style="clear:both;"/>
                             </c:if>
