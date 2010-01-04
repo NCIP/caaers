@@ -342,36 +342,56 @@
 			 
 			  <td width="50%">
 				<tags:renderRow field="${fieldGroups['general'].fields[0]}"/>
-				<ui:row path="${fieldGroups['participant'].fields[0].propertyName}">
-					<jsp:attribute name="label">
-						<tags:renderLabel field="${fieldGroups['participant'].fields[0]}" />
-					</jsp:attribute>
-					<jsp:attribute name="value">
-						<tags:renderInputs field="${fieldGroups['participant'].fields[0]}" />
-					</jsp:attribute>
-					<jsp:attribute name="embededJS">
-						Event.observe('aeReport.participantHistory.height.quantity','blur' ,findBSA);
-		   	    		Event.observe('aeReport.participantHistory.height.unit','change',findBSA);
-					</jsp:attribute>
-				</ui:row>
-				<ui:row path="${fieldGroups['participant'].fields[1].propertyName}">
-					<jsp:attribute name="label">
-						<tags:renderLabel field="${fieldGroups['participant'].fields[1]}" />
-					</jsp:attribute>
-					<jsp:attribute name="value">
-						<tags:renderInputs field="${fieldGroups['participant'].fields[1]}" />
-					</jsp:attribute>
-					<jsp:attribute name="embededJS">
-						Event.observe('aeReport.participantHistory.weight.quantity','blur',findBSA);
-		   	    		Event.observe('aeReport.participantHistory.weight.unit','change',findBSA);
-					</jsp:attribute>
-				</ui:row>
-				
-				<div class="row">
-			        <div class="label">Body surface area</div>
-			        <div class="value"><span id="bsa-value">  </span></div>
-			    </div>
-				
+
+                  <%--
+                        The next line is not working because of the composite field.
+                         In this particular case for N/A field DB stores:
+                         participantHistory.height: 0
+                         participantHistory.height.quantity: -1
+                         participantHistory.height.units: -1
+                         and we are passing to the renderManager participantHistory.height only by (${fieldGroups['participant'].fields[0].propertyName})
+                  --%>
+                  <%--<caaers:renderFilter elementID="${fieldGroups['participant'].fields[0].propertyName}">--%>
+                <caaers:renderFilter elementID="aeReport.participantHistory.height.quantity">
+                      <ui:row path="${fieldGroups['participant'].fields[0].propertyName}">
+                            <jsp:attribute name="label">
+                                <tags:renderLabel field="${fieldGroups['participant'].fields[0]}"/>
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <tags:renderInputs field="${fieldGroups['participant'].fields[0]}"/>
+                            </jsp:attribute>
+                            <jsp:attribute name="embededJS">
+                                Event.observe('aeReport.participantHistory.height.quantity','blur' ,findBSA);
+                                Event.observe('aeReport.participantHistory.height.unit','change',findBSA);
+                            </jsp:attribute>
+                      </ui:row>
+                  </caaers:renderFilter>
+
+                <%--<caaers:renderFilter elementID="${fieldGroups['participant'].fields[1].propertyName}">--%>
+                <caaers:renderFilter elementID="aeReport.participantHistory.weight.quantity">
+                    <ui:row path="${fieldGroups['participant'].fields[1].propertyName}">
+                        <jsp:attribute name="label">
+                            <tags:renderLabel field="${fieldGroups['participant'].fields[1]}" />
+                        </jsp:attribute>
+                        <jsp:attribute name="value">
+                            <tags:renderInputs field="${fieldGroups['participant'].fields[1]}" />
+                        </jsp:attribute>
+                        <jsp:attribute name="embededJS">
+                            Event.observe('aeReport.participantHistory.weight.quantity','blur',findBSA);
+                            Event.observe('aeReport.participantHistory.weight.unit','change',findBSA);
+                        </jsp:attribute>
+                    </ui:row>
+				</caaers:renderFilter>
+
+                <caaers:renderFilter elementID="aeReport.participantHistory.height.quantity">
+                <caaers:renderFilter elementID="aeReport.participantHistory.weight.quantity">
+                    <div class="row">
+                        <div class="label">Body surface area</div>
+                        <div class="value"><span id="bsa-value">  </span></div>
+                    </div>
+                </caaers:renderFilter>
+                </caaers:renderFilter>
+
 			</td>
 			<td>
 	    		<div class="row">
@@ -472,6 +492,7 @@
 
 
 
+<caaers:renderFilter elementID="diseaseHistory.metastaticDiseaseSites[].codedSite">
   <a name="anchorMetastaticDiseasesSection" />
   <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true" >
       <jsp:body>
@@ -495,12 +516,12 @@
 
       </jsp:body>
   </chrome:box>
+</caaers:renderFilter>
 
 
 
 
-
-
+<caaers:renderFilter elementID="aeReport.saeReportPreExistingConditions[].preExistingCondition">
   <chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-Existing Conditions" collapsable="true">
         <jsp:body>
             <p><tags:instructions code="instruction_ae_patientdetails_precond"/></p>
@@ -524,12 +545,12 @@
 
       </jsp:body>
   </chrome:box>
+</caaers:renderFilter>
 
 
 
 
-
-
+<caaers:renderFilter elementID="aeReport.concomitantMedications[].agentName">
   <chrome:box id="aeReport.concomitantMedications" title="Concomitant Medications" collapsable="true">
       <jsp:body>
 
@@ -555,11 +576,11 @@
           
       </jsp:body>
   </chrome:box>
+</caaers:renderFilter>
 
 
 
-
-
+<caaers:renderFilter elementID="aeReport.saeReportPriorTherapies[].priorTherapy">
 <chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
     <jsp:body>
 
@@ -595,6 +616,8 @@
 
     </jsp:body>
 </chrome:box>
+</caaers:renderFilter>
+
         <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
   <tags:tabControls flow="${flow}" tab="${tab}" />
 </form:form>
