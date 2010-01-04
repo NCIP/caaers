@@ -8,7 +8,9 @@
           width: 30em;
           margin: 0 auto;
       }
-      
+      a {
+      	color:#fff;
+      }
       .submit {
           float: right;
           margin-top: 1em;
@@ -84,7 +86,7 @@
 	<a href="/caaers/public/login"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
-    <h2>Password changed successfully.</h2><h2>You can now <a href="${login}">login</a>.</h2>
+    <h2>Password changed successfully.</h2><br/>You can now <a href="${login}">login</a>.
   </c:if>
   <c:if test="${not updated}">
       <c:url value="/public/user/changePassword" var="action"/>
