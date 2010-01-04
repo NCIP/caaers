@@ -1,0 +1,90 @@
+class AddCtcV2Terms extends edu.northwestern.bioinformatics.bering.Migration {
+    void up() {
+        // Have to break up the inserts so as not to exceed the java max method length
+        m0()
+        m1()
+        m2()
+    }
+
+    void m0() {
+        // all0 (25 terms)
+        insert('agents', [ id: 1306, nsc: 749268, name: "111In-CHX-A DTPA-cetuximab"], primaryKey: false)
+        insert('agents', [ id: 1307, nsc: 750394, name: "A6 Peptide"], primaryKey: false)
+        insert('agents', [ id: 1308, nsc: 750238, name: "ABT-263"], primaryKey: false)
+        insert('agents', [ id: 1309, nsc: 750009, name: "AMG 102"], primaryKey: false)
+        insert('agents', [ id: 1310, nsc: 751173, name: "AMG 386"], primaryKey: false)
+        insert('agents', [ id: 1311, nsc: 750008, name: "AMG 479"], primaryKey: false)
+        insert('agents', [ id: 1312, nsc: 749777, name: "AMG 655"], primaryKey: false)
+        insert('agents', [ id: 1313, nsc: 750832, name: "ARQ 197"], primaryKey: false)
+        insert('agents', [ id: 1314, nsc: 749712, name: "AT13387"], primaryKey: false)
+        insert('agents', [ id: 1315, nsc: 751083, name: "AZD8055 Fumarate"], primaryKey: false)
+        insert('agents', [ id: 1316, nsc: 751175, name: "Ad5f35CMVpp65 Adenoviral/EBV-specific Cord Blood-derived CTL"], primaryKey: false)
+        insert('agents', [ id: 1317, nsc: 751850, name: "Armodafinil (Nuvigil)"], primaryKey: false)
+        insert('agents', [ id: 1318, nsc: 138783, name: "Bendamustine hydrochloride"], primaryKey: false)
+        insert('agents', [ id: 1319, nsc: 750143, name: "Brivanib alaninate (BMS-582664)"], primaryKey: false)
+        insert('agents', [ id: 1320, nsc: 744565, name: "Brostallicin hydrochloride"], primaryKey: false)
+        insert('agents', [ id: 1321, nsc: 749267, name: "CHX-A DTPA-cetuximab"], primaryKey: false)
+        insert('agents', [ id: 1322, nsc: 750268, name: "CP 870,893"], primaryKey: false)
+        insert('agents', [ id: 1323, nsc: 749776, name: "Calcitriol"], primaryKey: false)
+        insert('agents', [ id: 1324, nsc: 751449, name: "Carbon-11 alpha-methyl-L-tryptophan (11C-AMT)"], primaryKey: false)
+        insert('agents', [ id: 1325, nsc: 751177, name: "Carvedilol phosphate (Coreg)"], primaryKey: false)
+        insert('agents', [ id: 1326, nsc: 127439, name: "Chitosan"], primaryKey: false)
+        insert('agents', [ id: 1327, nsc: 751505, name: "Chitosan glutamate (Protasan MLG 213)"], primaryKey: false)
+        insert('agents', [ id: 1328, nsc: 751675, name: "Choline Magnesium Trisalicylate (Trilisate)"], primaryKey: false)
+        insert('agents', [ id: 1329, nsc: 749682, name: "Copper-64 diacetyl-bis(N4-methylthiosemicarbazone) (64Cu-ATSM)"], primaryKey: false)
+        insert('agents', [ id: 1330, nsc: 749305, name: "DRA11"], primaryKey: false)
+    }
+
+    void m1() {
+        // all1 (25 terms)
+        insert('agents', [ id: 1331, nsc: 749306, name: "DRA9"], primaryKey: false)
+        insert('agents', [ id: 1332, nsc: 749307, name: "DRA9S"], primaryKey: false)
+        insert('agents', [ id: 1333, nsc: 751452, name: "Dextromethorphan"], primaryKey: false)
+        insert('agents', [ id: 1334, nsc: 174939, name: "Elesclomol"], primaryKey: false)
+        insert('agents', [ id: 1335, nsc: 749798, name: "Endoxifen"], primaryKey: false)
+        insert('agents', [ id: 1336, nsc: 749126, name: "Fluorine-18 Sodium Fluoride (18F-NaF)"], primaryKey: false)
+        insert('agents', [ id: 1337, nsc: 400639, name: "Glutathione"], primaryKey: false)
+        insert('agents', [ id: 1338, nsc: 749129, name: "IMC-3G3"], primaryKey: false)
+        insert('agents', [ id: 1339, nsc: 749571, name: "Kit for Radionuclide Labeling"], primaryKey: false)
+        insert('agents', [ id: 1340, nsc: 751787, name: "LV (MGMTP140K) Vector-Transduced CD34+ Autologous PBSC"], primaryKey: false)
+        insert('agents', [ id: 1341, nsc: 751176, name: "Lisinopril (Prinivil)"], primaryKey: false)
+        insert('agents', [ id: 1342, nsc: 750237, name: "MK-0646"], primaryKey: false)
+        insert('agents', [ id: 1343, nsc: 751084, name: "MK-1775"], primaryKey: false)
+        insert('agents', [ id: 1344, nsc: 749607, name: "MK-2206"], primaryKey: false)
+        insert('agents', [ id: 1345, nsc: 751448, name: "MLN 1202"], primaryKey: false)
+        insert('agents', [ id: 1346, nsc: 91485, name: "Metformin hydrochloride"], primaryKey: false)
+        insert('agents', [ id: 1347, nsc: 751451, name: "Midazolam hydrochloride"], primaryKey: false)
+        insert('agents', [ id: 1348, nsc: 751178, name: "Modafinil (Provigil)"], primaryKey: false)
+        insert('agents', [ id: 1349, nsc: 749428, name: "NTX-010 (SVV-001; Seneca Valley Virus)"], primaryKey: false)
+        insert('agents', [ id: 1350, nsc: 750183, name: "Naproxen"], primaryKey: false)
+        insert('agents', [ id: 1351, nsc: 751082, name: "OSI-906"], primaryKey: false)
+        insert('agents', [ id: 1352, nsc: 728209, name: "OSU-3012"], primaryKey: false)
+        insert('agents', [ id: 1353, nsc: 751450, name: "Omeprazole"], primaryKey: false)
+        insert('agents', [ id: 1354, nsc: 749005, name: "PF-02341066"], primaryKey: false)
+        insert('agents', [ id: 1355, nsc: 750424, name: "PU-H71"], primaryKey: false)
+    }
+
+    void m2() {
+        // all2 (16 terms)
+        insert('agents', [ id: 1356, nsc: 749715, name: "Phoenix-GALV (MGMTP140K) Retroviral Vector-Transduced CD34+ Autologous PBSC"], primaryKey: false)
+        insert('agents', [ id: 1357, nsc: 751156, name: "RO4858696 (R1507; huMAb IGF-1R)"], primaryKey: false)
+        insert('agents', [ id: 1358, nsc: 749225, name: "RO4929097"], primaryKey: false)
+        insert('agents', [ id: 1359, nsc: 749128, name: "Ramucirumab (IMC-1121B)"], primaryKey: false)
+        insert('agents', [ id: 1360, nsc: 113926, name: "Rifampin"], primaryKey: false)
+        insert('agents', [ id: 1361, nsc: 751081, name: "SCH 900105"], primaryKey: false)
+        insert('agents', [ id: 1362, nsc: 750505, name: "SCH 900776"], primaryKey: false)
+        insert('agents', [ id: 1363, nsc: 749710, name: "SGN-35"], primaryKey: false)
+        insert('agents', [ id: 1364, nsc: 749304, name: "Sterile HSA Formulation Buffer"], primaryKey: false)
+        insert('agents', [ id: 1365, nsc: 749303, name: "Sterile Sodium Acetate Buffer"], primaryKey: false)
+        insert('agents', [ id: 1366, nsc: 750236, name: "Tadalafil"], primaryKey: false)
+        insert('agents', [ id: 1367, nsc: 749127, name: "Technetium Tc 99m Medronate (99mTC-MDP)"], primaryKey: false)
+        insert('agents', [ id: 1368, nsc: 23813, name: "Tolbutamide"], primaryKey: false)
+        insert('agents', [ id: 1369, nsc: 750267, name: "VEGFR2: 775-783 Peptide"], primaryKey: false)
+        insert('agents', [ id: 1370, nsc: 727107, name: "pNGVL4a-CRT/E7 (detox)"], primaryKey: false)
+        insert('agents', [ id: 1371, nsc: 749711, name: "r-IGFBP7"], primaryKey: false)
+    }
+
+    void down() {
+        execute("DELETE * FROM agents")
+    }
+}

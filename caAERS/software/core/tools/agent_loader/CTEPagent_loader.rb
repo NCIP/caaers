@@ -19,13 +19,14 @@ $agents = { }
 # "726584","(H115D)VHL35 Peptide"
 
 def read()
-  # reader = CSV::Reader.create(File.open("CTEPagentlist.txt"))
-  reader = CSV::Reader.create(File.open("ctep_agent_list.txt"))
+  #reader = CSV::Reader.create(File.open("ctep_agent_list.txt"))
+  reader = CSV::Reader.create(File.open("ctep_agent_list_dec_09.txt"))
   # skip first two rows
   reader.shift
   reader.shift
   
-  id = 1
+  #id = 1
+  id=1306
   count = 1
   catIndex =1;
   catName = 'all0'
