@@ -31,8 +31,11 @@ $orgs = { }
 #$groupId = -6013
 #$pgpeid = 7013
 
-$groupId = -7013
-$pgpeid = 8013
+#$groupId = -7013
+#$pgpeid = 8013
+
+$groupId = -8013
+$pgpeid = 9013
 
 def read()
   #reader = CSV::Reader.create(File.open("org_codes_1"))
@@ -42,7 +45,8 @@ def read()
   #reader = CSV::Reader.create(File.open("org_codes_5"))
   #reader = CSV::Reader.create(File.open("org_codes_6"))
   #reader = CSV::Reader.create(File.open("org_codes_7"))
-  reader = CSV::Reader.create(File.open("org_codes_8"))
+  #reader = CSV::Reader.create(File.open("org_codes_8"))
+  reader = CSV::Reader.create(File.open("org_codes_9"))
   
   # skip first two rows
   reader.shift
@@ -55,7 +59,8 @@ def read()
   #id = 103998
   #id = 104998
   #id = 105998
-  id = 106998
+  #id = 106998
+  id = 107998
   count = 1
   catIndex =1;
   catName = 'all0'
