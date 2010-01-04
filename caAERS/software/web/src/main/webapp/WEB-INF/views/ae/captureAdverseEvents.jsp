@@ -30,7 +30,7 @@
             
             $H(selectedTerms).keys().each(function(termID) {
 
-                var re = new RegExp("other[,|\\s]+specify");
+                var re = new RegExp("other[,|\\s|(|)]+specify");
                 var otherTerm = selectedTerms.get(termID).toLowerCase();
                 // var otherSepcifyTerm = (otherTerm.indexOf('other') > 0 && otherTerm.indexOf('specify') > 0);
                 var otherSepcifyTerm = otherTerm.match(re);
