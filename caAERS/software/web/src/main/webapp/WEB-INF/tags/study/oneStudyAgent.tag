@@ -162,7 +162,7 @@
 
 <!--  end of IND fields -->
 
-<c:set var="_leadINDStyle" value="${(not(sa.indType eq INDType.NA || sa.indType eq INDType.NA_COMMERCIAL || sa.indType eq INDType.IND_EXEMPT)) ? '' : 'display:none;'}" />
+<c:set var="_leadINDStyle" value="${( (empty sa.indType) or (sa.indType eq INDType.NA) or (sa.indType eq INDType.NA_COMMERCIAL) or (sa.indType eq INDType.IND_EXEMPT) ) ? 'display:none' : ''}" />
 <ui:row path="${_leadINDField.propertyName}" style="_leadINDStyle">
 	<jsp:attribute name="label">
 		<ui:label path="${_leadINDField.propertyName}" text="${_leadINDField.displayName}" 
