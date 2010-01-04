@@ -162,7 +162,7 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
     @Transient
     public String getAgentName() {
         if (StringUtils.isNotEmpty(otherAgent)) return otherAgent;
-        if (agent != null) return agent.getName();
+        if (agent != null) return agent.getDisplayName();
         return "no-agent-name";
     }
 
@@ -172,6 +172,7 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
         int result = 1;
         result = prime * result + ((agent == null) ? 0 : agent.hashCode());
         result = prime * result + ((otherAgent == null) ? 0 : otherAgent.hashCode());
+        result = prime * result + (getId() == null ? 0 : getId().hashCode());
         return result;
     }
 
@@ -182,7 +183,6 @@ public class StudyAgent extends AbstractMutableRetireableDomainObject implements
         if (this == obj) return true;
         if (obj == null) return false;
         if (!(obj instanceof StudyAgent)) return false;
-        if (getClass() != obj.getClass()) return false;
         final StudyAgent other = (StudyAgent) obj;
         if(this.isRetired() || other.isRetired()) return false;
         if (agent == null) {

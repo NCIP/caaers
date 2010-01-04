@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -59,6 +60,9 @@ public class Agent extends AbstractMutableDomainObject {
     
     @Transient
     public String getDisplayName(){
+    	if(StringUtils.isNotEmpty(nscNumber)){
+    		return nscNumber + "::" + name;
+    	}
     	return name;
     }
     

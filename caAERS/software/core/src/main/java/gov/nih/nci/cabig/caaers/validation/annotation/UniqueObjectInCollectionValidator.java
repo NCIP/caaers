@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +18,20 @@ public class UniqueObjectInCollectionValidator implements Validator<UniqueObject
 
     private static Log logger = LogFactory.getLog(UniqueObjectInCollectionValidator.class);
 
+    /**
+     * Will return true if there is no duplicate
+     * Will return false if there is a duplicate
+     */
+    //BJ : Changed the orginal HashSet based implementation as some of the objects' hashCode and equals are not in sync.
     public boolean validate(final Object value) {
         logger.info("in the validate method of" + this.getClass().getName());
         if (value instanceof Collection) {
-            Set objects = new HashSet((Collection) value);
-            return objects.size() == ((Collection) value).size();
+        	Collection c = (Collection) value;
+        	ArrayList<Object> list = new ArrayList<Object>(c.size());
+        	for(Object o : c){
+        		if(list.contains(o)) return false;
+        		list.add(o);
+        	}
         }
         return true;
     }
