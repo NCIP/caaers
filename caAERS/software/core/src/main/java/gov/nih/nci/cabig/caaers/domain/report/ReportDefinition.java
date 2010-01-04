@@ -322,8 +322,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         result = PRIME * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
         result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
-        result = PRIME * result + ((getGroup() == null) ? 0 : getGroup().hashCode());
+        result = PRIME * result + ((getOrganization() == null || getOrganization().getId() == null) ? 0 : getOrganization().getId().hashCode());
+        result = PRIME * result + ((getGroup() == null || getGroup().getId() == null) ? 0 : getGroup().getId().hashCode());
         result = PRIME
                         * result
                         + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
