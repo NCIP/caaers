@@ -11,7 +11,7 @@
 <c:set var="mainGroup">metastatic${index}</c:set>
 <c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
 
-<chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, '_metastatic', {}" enableDelete="true" collapsed="false">
+<chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
 
     <jsp:attribute name="title">
         ${siteField.displayName}:&nbsp;
@@ -77,6 +77,7 @@
 
     Event.observe($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input"), "blur", function() {
         setTitleMDS_${index}();
+        $('aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite').value = "";
     });
     Event.observe($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite"), "change", function() {
         setTitleMDS_${index}();

@@ -479,20 +479,18 @@
 
           <div style="padding-left:20px;">
               <tags:button cssClass="foo" id="metastatic-diseases-btn" color="blue" value="Add" icon="Add" type="button" onclick="addMetastaticDisease();" size="small"/>
-          <div id="_metastatic">
-              <tags:indicator id="metastatic-diseases-btn-indicator" />
-
-              <!--<a name="anchorMetastaticDiseases"/>-->
-              <tags:indicator id="metastaticDiseaseSite-indicator"/>
-              <div id="anchorMetastaticDiseases">
-                  <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}"/>
-                  <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
-                      <c:set var="newIndex" value="${size - (status.index + 1)}"/>
-                      <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}"/>
-                      <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" otherSite="${mSite.otherSite}"/>
-                  </c:forEach>
+              <div>
+                          <tags:indicator id="metastatic-diseases-btn-indicator" />
+                          <tags:indicator id="metastaticDiseaseSite-indicator"/>
+                          <div id="anchorMetastaticDiseases">
+                              <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}"/>
+                              <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
+                                  <c:set var="newIndex" value="${size - (status.index + 1)}"/>
+                                  <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}"/>
+                                  <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" otherSite="${mSite.otherSite}"/>
+                              </c:forEach>
+                          </div>
               </div>
-          </div>
           </div>
 
       </jsp:body>
