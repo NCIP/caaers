@@ -122,6 +122,7 @@
 												<c:forEach items="${sectionEntry.value}" var="msg">
 													<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
 	                                        	</c:forEach>
+												<li><a href="">Go to this page ></a></li>
 											</ul>
 											</chrome:division>
                                        
