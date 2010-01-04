@@ -211,4 +211,31 @@ public class ReportDefinitionTest extends AbstractTestCase {
     	assertFalse(rd1.isOfSameReportTypeAndOrganization(rd3));
     	assertFalse(rd1.isOfSameReportTypeAndOrganization(rd4));
     }
+    
+    public void testHashCode(){
+    	//CAAERS-3467
+    	Organization org1 = Fixtures.createOrganization("test1");
+    	org1.setId(1);
+    	
+    	ConfigProperty cp1 = Fixtures.createConfigProperty("cp1");
+    	cp1.setId(1);
+    	
+    	ReportDefinition rd0 = Fixtures.createReportDefinition("rd0");
+    	rd0.setGroup(cp1);
+    	rd0.setOrganization(org1);
+    	rd0.setId(0);
+    	
+    	int hashCode = rd0.hashCode();
+    	assertTrue(hashCode != 0);
+    	
+    	rd0.getOrganization().setId(null);
+    	hashCode = rd0.hashCode();
+    	assertTrue(hashCode != 0);
+    	
+    	rd0.setOrganization(null);
+    	int anotherHashCode = rd0.hashCode();
+    	assertTrue(anotherHashCode != 0);
+    	assertTrue(anotherHashCode == hashCode);
+    	
+    }
 }
