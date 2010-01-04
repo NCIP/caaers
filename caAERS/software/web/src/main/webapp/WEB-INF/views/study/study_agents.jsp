@@ -42,13 +42,11 @@ function fireAction(action, index) {
 }
 
 function toggleAgentOrOther(index){
-	alert('toggle');
 	var agentRadioSelected = $("select-agent-" + index).checked
 	var idPrefix = 'study.studyAgents[' + index + '].';
 	var agentField = $(idPrefix + 'agent');
 	var agentField_Input = $(idPrefix + 'agent-input');
 	var otherField = $(idPrefix + 'otherAgent');
-	alert(agentRadioSelected);
 	if(agentRadioSelected){
 		if(agentField) agentField_Input.enable();
 		if(otherField){ otherField.clear(); otherField.disable(); }
