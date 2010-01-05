@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -52,8 +53,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
         if (user.getTokenTime().after(
                 new Timestamp(new Date().getTime()
                         - passwordPolicyService.getPasswordPolicy()
-                        .getTokenTimeout()))
-                && token.equals(user.getToken())) return true;
+                        .getTokenTimeout())) 
+                &&  StringUtils.equals(user.getToken(), token)) return true;
         throw new CaaersSystemException("Invalid token.");
     }
 
