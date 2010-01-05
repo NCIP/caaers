@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
 <html>
 <head>
   <title>Change Password</title>
@@ -100,31 +99,38 @@
 	  Your password must contain at least one lower case letter, one numeral, and one special character, and be at least 7 characters long.
 	  <br/><br/>
 	 <tags:hasErrorsMessage />
-	<div class="row">
-	<div class="label">Username</div>
-	<div class="value">
-	  <form:input path="userName"/>
-	</div>
-	</div>
-	<div class="row">
-	  <div class="label">New Password</div>
-	  <div class="value">
-	    <form:password path="passwordNew"/>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="label">Confirm Password</div>
-	  <div class="value">
-	    <form:password path="passwordConfirm"/>
-	  </div>
-	</div>
-	<div class="row">
+	 <ui:row path="userName">
+	 	<jsp:attribute name="label">
+	 		<ui:label path="userName" text="Username"  required="true" />
+	 	</jsp:attribute>
+	 	<jsp:attribute name="value">
+	 		<ui:text path="userName" required="true"  title="Username"/>
+	 	</jsp:attribute>
+	 </ui:row>
+	 <ui:row path="passwordNew">
+	 	<jsp:attribute name="label">
+	 		<ui:label path="passwordNew" text="New Password"  required="true" />
+	 	</jsp:attribute>
+	 	<jsp:attribute name="value">
+	 		<form:password path="passwordNew" cssClass="validate-NOTEMPTY" title="New Password" />
+	 	</jsp:attribute>
+	 </ui:row>
+	 <ui:row path="passwordConfirm">
+	 	<jsp:attribute name="label">
+	 		<ui:label path="passwordConfirm" text="Confirm Password"  required="true" />
+	 	</jsp:attribute>
+	 	<jsp:attribute name="value">
+	 		<form:password path="passwordConfirm" cssClass="validate-NOTEMPTY" title="Confirm Password" />
+	 	</jsp:attribute>
+	 </ui:row>
+
+	 <div class="row">
 	  <div class="submit">
 	    <tags:button type="submit" color="green" icon="save" value="Save"/>
 	  </div>
-	</div>
-	<form:hidden path="token"/>
-      </form:form>
+	 </div>
+		<form:hidden path="token"/>
+  	</form:form>
   </c:if>
 </body>
 </html>

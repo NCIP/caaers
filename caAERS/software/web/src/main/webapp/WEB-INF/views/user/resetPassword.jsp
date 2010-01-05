@@ -99,15 +99,19 @@
              </p>
          </c:if>
       <p class="errors">${reset_pwd_error}</p>
-      <div class="row">
-	<div class="label">Username</div>
-	<div class="value">
-	  <form:input path="userName"/>
-	</div>
-	<div class="submit">
-		<tags:button type="submit" color="green" icon="reset" value="Reset Password"/>
-	</div>
-      </div>
+      <ui:row path="userName">
+	 	<jsp:attribute name="label">
+	 		<ui:label path="userName" text="Username"  required="true" />
+	 	</jsp:attribute>
+	 	<jsp:attribute name="value">
+	 		<ui:text path="userName" required="true"  title="Username"/>
+	 	</jsp:attribute>
+	 </ui:row>
+     <div class="row">
+		<div class="submit">
+			<tags:button type="submit" color="green" icon="reset" value="Reset Password"/>
+		</div>
+     </div>
     </form:form>
 	
 </body>
