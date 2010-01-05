@@ -80,6 +80,11 @@
 	  .wide-header {
 	  	display:none;
 	  }
+	  .errors, div.errors, ul.errors {
+                color: #FFCC00;
+				border:none;
+				margin:0;
+            }
   </style>
 </head>
 <body>
@@ -91,7 +96,9 @@
   <c:if test="${not updated}">
       <c:url value="/public/user/changePassword" var="action"/>
       <form:form action="${action}">
-      <h2>Please enter your information</h2>
+      <h2>Please enter your new password</h2>
+	  Your password must contain at least one lower case letter, one numeral, and one special character, and be at least 7 characters long.
+	  <br/><br/>
 	 <tags:hasErrorsMessage />
 	<div class="row">
 	<div class="label">Username</div>

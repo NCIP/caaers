@@ -79,6 +79,9 @@
 	  .wide-header {
 	  	display:none;
 	  }
+	  .errors {
+                color: #FFCC00;
+            }
   </style>
 </head>
 <body>
@@ -86,7 +89,7 @@
   <h2>Please enter your username </h2>
   You will be sent an email to reset your password.
   <c:if test="${noSuchUser}">
-  <br><br><img src="/caaers/images/error-yellow.png" style="margin-right:10px"><font size=3 color="red">Invalid username</font>
+  <br><br><img src="/caaers/images/error-yellow.png" style="margin-right:10px"><span class="errors">Invalid username</span>
   </c:if>
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
