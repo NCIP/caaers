@@ -2,8 +2,9 @@
 <jsp:useBean id="today" class="java.util.Date" scope="request" /><c:set var="editMode" value="${command.researchStaff.id > 0}" /><jsp:useBean id="date" class="java.util.Date" />
 <html>
     <head>
-        <script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
-		<title>Research Staff</title>
+    	<title>Research Staff</title>
+        <tags:js name="ui/ajaxCRUD" />
+        <tags:js name="tabbedflow"/>
         <tags:dwrJavascriptLink objects="createStudy,searchStudy"/>
     </head>
     <body>
