@@ -20,7 +20,7 @@
     <jsp:attribute name="titleFragment">
         <c:if test="${not empty orgName}">
             <c:if test="${editMode}">
-                <span style="margin-left:420px; font-weight:normal;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
+                <div style="float:right;"><span style="font-weight:normal;">Active date:</span> <tags:formatDate value="${command.researchStaff.siteResearchStaffs[index].activeDate}"/>&nbsp;
                     <c:if test="${!readOnly}">
                         <c:if test="${command.researchStaff.siteResearchStaffs[index].active}">
                             <tags:button type="button"
@@ -32,6 +32,7 @@
                                          icon="${true ? 'x' : 'check'}"/>
                         </c:if>
                     </c:if>
+					</div>
                 </c:if>
         </c:if>
     </jsp:attribute>
