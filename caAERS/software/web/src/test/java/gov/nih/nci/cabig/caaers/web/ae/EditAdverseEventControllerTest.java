@@ -70,12 +70,14 @@ public class EditAdverseEventControllerTest extends WebTestCase {
 		EasyMock.expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		EasyMock.expect(studySite.getStudy()).andReturn(study).anyTimes();
 		request.setAttribute("gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController.PAGE.command", 9);
+		request.setParameter("_target10", "_target10");
 		replayMocks();
 		boolean supressValidation = controller.suppressValidation(request, command);
 		assertFalse(supressValidation);
 		
 		//for attribution it should be true
 		request.setAttribute("gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController.PAGE.command", 8);
+		request.setParameter("_target7", "_target7");
 		supressValidation = controller.suppressValidation(request, command);
 		assertTrue(supressValidation);
 		verifyMocks();
