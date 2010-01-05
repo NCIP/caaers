@@ -1,4 +1,10 @@
 <dataset>
+
+		<CONFIGURATION
+		key="caaersBaseUrl"
+		value="https://localhost:8443/caaers"
+		version="0"/>
+
         <ORGANIZATIONS
         id="-1001"
         version="1"
@@ -22,6 +28,7 @@
         description_text="CTEP"
         nci_institute_code="CTEP"
         grid_id="gridSite_3"/> 
+        
         <ind_holders/>
         <csm_user/>
         <investigators/>

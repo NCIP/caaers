@@ -1,4 +1,10 @@
 <dataset>
+
+		<CONFIGURATION
+		key="caaersBaseUrl"
+		value="https://localhost:8443/caaers"
+		version="0"/>
+
         <ORGANIZATIONS
         id="-1001"
         version="1"
@@ -24,8 +30,8 @@
         description_text="DCP"
         nci_institute_code="DCP"
         grid_id="gridSite_2"/>  
-        <SITE_INVESTIGATORS />
         
+        <SITE_INVESTIGATORS />
         <csm_user/>
         <research_staffs/>
         <site_research_staffs/>
