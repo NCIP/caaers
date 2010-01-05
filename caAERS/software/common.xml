@@ -677,8 +677,14 @@
          target: load-ajc
    ============================================================================= -->
     <target name="load-ajc" unless="loaded.ajc" description="--> define the ajc task">
+    	
+        <!-- 
+        	BUG : http://issues.apache.org/jira/browse/IVY-778 
+        	caAERS :http://jira.semanticbits.com/browse/CAAERS-3473
         <ivy:retrieve organisation="org.aspectj" module="aspectjtools" inline="true"
-                      pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" sync="true"/>
+                      pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" haltonfailure="false" settingsRef="caaers.ivy.instance" /> 
+        -->
+    	<get dest="${ivy.jar.dir}/aspectjtools-1.5.4.jar" src="${aspectj.jar.location}" usetimestamp="true"/>
         <taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
             <classpath>
                 <pathelement location="${ivy.jar.dir}/aspectjtools-1.5.4.jar"/>
