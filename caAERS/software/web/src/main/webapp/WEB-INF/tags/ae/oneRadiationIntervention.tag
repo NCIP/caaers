@@ -30,7 +30,7 @@
 
     <ui:row path="aeReport.radiationInterventions[${index}].lastTreatmentDate">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[3].propertyName}" text="${fieldGroup.fields[3].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:date path="${fieldGroup.fields[3].propertyName}" field="${fieldGroup.fields[3]}"/></jsp:attribute>
+         <jsp:attribute name="value"><ui:date path="${fieldGroup.fields[3].propertyName}" field="${fieldGroup.fields[3]}" title="${fieldGroup.fields[3].displayName}" validationJSClass="${fieldGroup.fields[3].validatorClassName}"/></jsp:attribute>
     </ui:row>
 
     <ui:row path="aeReport.radiationInterventions[${index}].fractionNumber">
