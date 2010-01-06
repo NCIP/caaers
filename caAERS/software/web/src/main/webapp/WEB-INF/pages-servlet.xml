@@ -276,6 +276,18 @@
 
   <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
+  <bean id="importerFactory" class="gov.nih.nci.cabig.caaers.web.admin.ImporterFactory">
+  	<property name="investigatorMigratorService" ref="investigatorMigratorService"/>
+	<property name="researchStaffMigratorService" ref="researchStaffMigratorService"/>
+  	<property name="studyProcessor" ref="studyProcessorImpl"/>
+	<property name="participantService" ref="participantServiceImpl"/>
+  	<property name="domainObjectValidator" ref="domainObjectValidator"/>
+  	<property name="participantDao" ref="participantDao"></property>
+  	<property name="studyRepository" ref="studyRepository"></property>
+  	<property name="researchStaffRepository" ref="researchStaffRepository"></property>
+  	<property name="investigatorRepository" ref="investigatorRepository"></property>
+  	<property name="organizationRepository" ref="organizationRepository"></property>
+  </bean> 
   
   <!-- Validators -->
 

@@ -63,6 +63,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");
         flow.addTab(new ImportTab("Import ", "Import ", "admin/import"));
         flow.addTab(new ImportReviewTab("Review & Submit", "Review & Submit","admin/import_review_submit"));
+        flow.addTab(new ImportSummaryTab("Import summary", "Import summary", "admin/import_summary"));
         setFlow(flow);
     }
 
@@ -105,8 +106,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             redirectTo = "redirectToSearchInParticipantTab";
         }
 
-        if (cObject.getType().startsWith("routineAeReport")) {
-            redirectTo = "redirectToAeList";
+        if (cObject.getType().startsWith("organization")) {
+            redirectTo = "redirectToSearchOrganizationTab";
         }
         
         if (cObject.getType().startsWith("investigator")) {

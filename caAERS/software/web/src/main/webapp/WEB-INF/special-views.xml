@@ -59,5 +59,10 @@
    <bean id="redirectToSearchInvestigatorTab" class="org.springframework.web.servlet.view.RedirectView">
         <property name="contextRelative"><value>true</value></property>
         <property name="url"><value>/pages/admin/searchInvestigator</value></property>
+   </bean>
+   
+   <bean id="redirectToSearchOrganizationTab" class="org.springframework.web.servlet.view.RedirectView">
+   		<property name="contextRelative"><value>true</value></property>
+   		<property name="url"><value>/pages/admin/searchOrganization</value></property>
    </bean>    
 </beans>

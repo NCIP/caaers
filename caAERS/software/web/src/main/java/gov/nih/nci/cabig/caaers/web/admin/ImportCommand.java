@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
@@ -17,15 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public class ImportCommand {
 
-    private MultipartFile participantFile;
-
-    private MultipartFile studyFile;
-
-    private MultipartFile routineAdverseEventReportFile;
-    
-    private MultipartFile investigatorFile;
-    
-    private MultipartFile researchStaffFile;
+    private MultipartFile dataFile;
 
     private String schemaValidationResult;
 
@@ -51,6 +44,9 @@ public class ImportCommand {
     
     private List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
     
+    private List<DomainObjectImportOutcome<Organization>> importableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+    
+    private List<DomainObjectImportOutcome<Organization>> updateableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
     
     //private List<DomainObjectImportOutcome<Study>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Study>>();
 
@@ -62,28 +58,12 @@ public class ImportCommand {
         this.type = type;
     }
 
-    public MultipartFile getParticipantFile() {
-        return participantFile;
+    public MultipartFile getDataFile() {
+        return dataFile;
     }
 
-    public void setParticipantFile(MultipartFile participantFile) {
-        this.participantFile = participantFile;
-    }
-
-    public MultipartFile getStudyFile() {
-        return studyFile;
-    }
-
-    public void setStudyFile(MultipartFile studyFile) {
-        this.studyFile = studyFile;
-    }
-
-    public MultipartFile getRoutineAdverseEventReportFile() {
-        return routineAdverseEventReportFile;
-    }
-
-    public void setRoutineAdverseEventReportFile(MultipartFile routineAeFile) {
-        this.routineAdverseEventReportFile = routineAeFile;
+    public void setDataFile(MultipartFile dataFile) {
+        this.dataFile = dataFile;
     }
 
     public List<DomainObjectImportOutcome<Study>> getNonImportableStudies() {
@@ -174,14 +154,6 @@ public class ImportCommand {
         this.schemaValidationResult = schemaValidationResult;
     }
 
-	public MultipartFile getInvestigatorFile() {
-		return investigatorFile;
-	}
-
-	public void setInvestigatorFile(MultipartFile investigatorFile) {
-		this.investigatorFile = investigatorFile;
-	}
-
 	public List<DomainObjectImportOutcome<Investigator>> getImportableInvestigators() {
 		return importableInvestigators;
 	}
@@ -216,14 +188,6 @@ public class ImportCommand {
 		this.nonImportableResearchStaff = nonImportableResearchStaff;
 	}
 
-	public MultipartFile getResearchStaffFile() {
-		return researchStaffFile;
-	}
-
-	public void setResearchStaffFile(MultipartFile researchStaffFile) {
-		this.researchStaffFile = researchStaffFile;
-	}
-	
 	public void addNonImportableResearchStaff(
             DomainObjectImportOutcome<ResearchStaff> domainObjectImportOutcome) {
 				getNonImportableResearchStaff().add(domainObjectImportOutcome);
@@ -242,6 +206,34 @@ public class ImportCommand {
 	public void addImportableInvestigator(
             DomainObjectImportOutcome<Investigator> domainObjectImportOutcome) {
 				getImportableInvestigators().add(domainObjectImportOutcome);
+	}
+	
+	 public List<DomainObjectImportOutcome<Organization>> getImportableOrganizations() {
+		 return importableOrganizations;
+	 }
+
+	 public void setImportableOrganizations(
+			List<DomainObjectImportOutcome<Organization>> importableOrganizations) {
+		this.importableOrganizations = importableOrganizations;
+	}
+
+	public List<DomainObjectImportOutcome<Organization>> getUpdateableOrganizations() {
+		return updateableOrganizations;
+	}
+
+	public void setUpdateableOrganizations(
+			List<DomainObjectImportOutcome<Organization>> updateableOrganizations) {
+		this.updateableOrganizations = updateableOrganizations;
+	}
+
+	public void addUpdateableOrganization(
+			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
+		getUpdateableOrganizations().add(domainObjectImportOutcome);
+	}
+
+	public void addImportableOrganization(
+			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
+		getImportableOrganizations().add(domainObjectImportOutcome);
 	}
 	
 }

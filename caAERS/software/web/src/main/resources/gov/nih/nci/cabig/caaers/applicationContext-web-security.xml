@@ -291,6 +291,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========= TODO ADMIN ========-->
 		<entry key="gov.nih.nci.cabig.caaers.web.admin.ImportTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.admin.ImportReviewTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.admin.ImportSummaryTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 				
 	</util:map>
 	

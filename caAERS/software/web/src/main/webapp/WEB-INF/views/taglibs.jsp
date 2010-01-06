@@ -26,3 +26,4 @@
 <%@taglib prefix="search" tagdir="/WEB-INF/tags/search" %>
 <%@taglib prefix="ruletags" tagdir="/WEB-INF/tags/rule"%>
 <%@taglib prefix="ctms" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
+<%@taglib prefix="admin" tagdir="/WEB-INF/tags/admin" %>
