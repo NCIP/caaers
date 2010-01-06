@@ -32,7 +32,8 @@
     	<jsp:invoke fragment="header" />
     	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
-            <chrome:flashMessage/><tags:tabFields tab="${tab}"/>
+            <chrome:flashMessage/>
+            <tags:tabFields tab="${tab}"/>
             <chrome:division id="single-fields">
                 <c:if test="${not empty instructions}">
                     <p class="instructions">

@@ -49,15 +49,12 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
     
     
     @Override
-    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
-                    throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         C command = (C) oCommand;
         Map refdata = super.referenceData(request, command, errors, page);
         WorkFlowTab<C> current = (WorkFlowTab<C>) getFlow(command).getTab(page);
         refdata.putAll(current.referenceData(request, (C) command));
-        
         populateSaveConfirmationMessage(refdata, request, oCommand, errors, page);
-        
         return refdata;
     }
     
@@ -71,7 +68,7 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
      */
     public void populateSaveConfirmationMessage( Map refdata, HttpServletRequest request, Object oCommand, Errors errors, int page){
     	   if(!errors.hasErrors() && !refdata.containsKey("flashMessage")){
-           	if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
+           	    if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
            }
     }
     

@@ -261,6 +261,10 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("unidentifiedMode", getUnidentifiedMode());
+        ParticipantInputCommand cmd = (ParticipantInputCommand) command;
+        if (cmd.getParticipant() == null || cmd.getParticipant().getId() == null) {
+            refdata.remove("flashMessage");
+        }
         return refdata;
     }
 
