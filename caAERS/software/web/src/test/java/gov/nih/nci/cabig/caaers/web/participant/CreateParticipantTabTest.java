@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
@@ -15,20 +16,18 @@ import java.util.Map;
 
 /**
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticipantTab, ParticipantInputCommand> {
 
     private CreateParticipantTab createParticipantTab;
-
     private ParticipantInputCommand newParticipantCommand;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
     }
-
 
     @Override
     protected CreateParticipantTab createTab() {
@@ -66,12 +65,11 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 				// TODO Auto-generated method stub
 				return null;
 			}
-
         	
         });
         createParticipantTab.setListValues(listValues);
         createParticipantTab.setConfigurationProperty(configProperty);
-
+        createParticipantTab.setParticipantDao((ParticipantDao)getDeployedApplicationContext().getBean("participantDao"));
         return createParticipantTab;
     }
 
@@ -79,7 +77,8 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     protected ParticipantInputCommand createCommand() {
         newParticipantCommand = new ParticipantInputCommand();
         newParticipantCommand.setParticipant(new Participant());
-
+        newParticipantCommand.setOrganization(new LocalOrganization());
+        newParticipantCommand.getOrganization().setId(-1);
         return newParticipantCommand;
     }
 
