@@ -168,6 +168,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		organizationConverterDao.save(conOrg);
 	}
  	
+ 	public List<Organization> getLocalOrganizations(final OrganizationQuery query){
+ 		return organizationDao.getLocalOrganizations(query);
+ 	}
+ 	
  	@SuppressWarnings("unchecked")
 	public List<Organization> searchRemoteOrganization(String coppaSearchText, String sType){
  		//List organizations =  organizationDao.getLocalOrganizations(query);
