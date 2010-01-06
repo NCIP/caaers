@@ -20,11 +20,8 @@ public class ListAdverseEventsCommandTest extends AbstractTestCase {
     private ListAdverseEventsCommand command;
 
     private StudyDao studyDao;
-
     private StudyParticipantAssignmentDao assignmentDao;
-
     private ParticipantDao participantDao;
-
     private ReportValidationService reportValidationService;
 
     @Override
@@ -34,7 +31,6 @@ public class ListAdverseEventsCommandTest extends AbstractTestCase {
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
         reportValidationService = registerMockFor(ReportValidationService.class);
-
         command = new ListAdverseEventsCommand(reportValidationService);
     }
 

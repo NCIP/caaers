@@ -20,14 +20,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ListAdverseEventsControllerTest extends WebTestCase {
+
     private ListAdverseEventsController controller;
-
     private ListAdverseEventsCommand mockCommand;
-
     private StudyParticipantAssignmentDao assignmentDao;
-
     private ParticipantDao participantDao;
-
     private StudyDao studyDao;
     
 
@@ -72,18 +69,23 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         Participant p = new Participant();
         Study s = new LocalStudy();
         String expectedGridId = "a-grid-id";
+
         request.setParameter("assignment", expectedGridId);
         expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
+        
         mockCommand.setAssignment(expectedAssignment);
         mockCommand.setAssignment(expectedAssignment);
         mockCommand.setParticipant(p);
         mockCommand.setStudy(s);
         mockCommand.updateSubmittability();
         mockCommand.setSubmitLinkRenderable(true);
+        mockCommand.updateOptions();
+
         expect(mockCommand.getStudy()).andReturn(s).anyTimes();
         expect(mockCommand.getParticipant()).andReturn(p).anyTimes();
         expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
         expect(assignmentDao.getAssignment(p, s)).andReturn(expectedAssignment).anyTimes();
+        
         replayMocks();
         controller.handleRequest(request, response);
         verifyMocks();
@@ -91,7 +93,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     
     //will test whether the security role is applied correctly.
     public void testDoSubmitAction() throws Exception{
-    	 mockCommand.setSubmitLinkRenderable(true);
+        mockCommand.setSubmitLinkRenderable(true);
     	replayMocks();
     	controller.doSubmitAction(mockCommand);
     	verifyMocks();
