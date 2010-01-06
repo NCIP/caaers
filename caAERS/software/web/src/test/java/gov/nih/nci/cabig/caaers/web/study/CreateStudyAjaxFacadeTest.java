@@ -214,7 +214,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     }
     
     //will test deleting study agent with wrong index
-    public void testDeleteStudyAgents_WithWrongIndex() throws Exception{
+    public void testRemove_WithWrongIndex() throws Exception{
     	replayMocks();
     	AjaxOutput output = facade.remove("study.studyAgents", 5, "Study Agents");
     	assertTrue(output.getError());
@@ -223,7 +223,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     }
     
     //will test deleting study agent with correct index
-    public void testDeleteStudyAgentsCorrectIndex() throws Exception{
+    public void testRemoveCorrectIndex() throws Exception{
     	replayMocks();
     	study.addStudyAgent(Fixtures.createStudyAgent("test"));
     	AjaxOutput output = facade.remove("study.studyAgents", 0, "Study Agents");
@@ -235,7 +235,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     }
     
   //will test deleting study agent with correct index (hard delete)
-    public void testDeleteStudyAgents() throws Exception{
+    public void testRemove() throws Exception{
     	replayMocks();
     	study.addStudyAgent(Fixtures.createStudyAgent("test0"));
     	study.addStudyAgent(Fixtures.createStudyAgent("test1"));
@@ -251,23 +251,4 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     	verifyMocks();
     }
     
-  //will test deleting study agent with correct index (soft delete)
-    public void testDeleteStudyAgentsSoftDelete() throws Exception{
-    	replayMocks();
-    	study.addStudyAgent(Fixtures.createStudyAgent("test0"));
-    	study.addStudyAgent(Fixtures.createStudyAgent("test1"));
-    	study.addStudyAgent(Fixtures.createStudyAgent("test2"));
-    	for(StudyAgent agent : study.getStudyAgents()){
-    		agent.setId(33);
-    	}
-    	AjaxOutput output = facade.remove("study.studyAgents", 1, "Study Agents");
-    	assertFalse(output.getError());
-    	assertEquals(2, output.getChanges().size());
-    	assertEquals(3, study.getStudyAgents().size());
-    	assertEquals(new Integer(2), output.getChanges().get(1).getOriginal());
-    	assertEquals(new Integer(2), output.getChanges().get(1).getCurrent());
-    	assertEquals(new Integer(1), output.getChanges().get(0).getOriginal());
-    	assertEquals(new Integer(1), output.getChanges().get(0).getCurrent());
-    	verifyMocks();
-    }
 }
