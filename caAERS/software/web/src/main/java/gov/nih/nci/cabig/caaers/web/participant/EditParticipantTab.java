@@ -48,7 +48,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     private static final String SITE_FIELD_GROUP = "site";
 
     @Override
-    public Map<String, Object> referenceData(final ParticipantInputCommand command) {
+    public Map<String, Object> referenceData(final T command) {
         Map<String, Object> refdata = referenceData();
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
         refdata.put("fieldGroups", groupMap);
@@ -61,8 +61,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         options.putAll(WebUtils.collectOptions(list, "code", "desc"));
         return options;
     }
-
-    public Map<String, InputFieldGroup> createFieldGroups(final ParticipantInputCommand command) {
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(final T command) {
 
         InputFieldGroup participantFieldGroup;
         Map<Object, Object> options = null;
@@ -150,7 +150,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         return map;
     }
    
-    @Override
+    
     public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
     	if(errors.hasErrors()) return;
 

@@ -12,8 +12,8 @@ public class CreateParticipantReviewParticipantTab<T extends ParticipantInputCom
     public CreateParticipantReviewParticipantTab() {
         super("Review and Submit", "Review", "par/par_confirmation");
     }
-
-    public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(T command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
     }

@@ -40,8 +40,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
     private static final String PARTICIPANT_FIELD_GROUP = "participant";
     private static final String SITE_FIELD_GROUP = "site";
-
-    public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(T command) {
         InputFieldGroup participantFieldGroup;
         InputFieldGroup siteFieldGroup;
         RepeatingFieldGroupFactory repeatingFieldGroupFactoryOrg = null;

@@ -38,7 +38,7 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
     }
 	
 	@Override
-    public Map<String, Object> referenceData(HttpServletRequest request, AdvancedSearchCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, T command) {
 		Map<String, Object> refdata = new HashMap<String, Object>();
 		
 		String ajaxAction = (String) findInRequest(request, AJAX_ACTION_PARAMETER);
@@ -104,7 +104,7 @@ public class AdvancedSearchCriteriaTab<T extends AdvancedSearchCommand> extends 
 		
     }
 	
-	@Override
+	
 	public void postProcess(HttpServletRequest request, AdvancedSearchCommand command, Errors errors) {
 		if (findInRequest(request, AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors())
 			return; //ignore if this is an ajax request

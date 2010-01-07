@@ -31,7 +31,7 @@ public class AdvancedSearchResultsTab<T extends AdvancedSearchCommand> extends W
     }
 
 	@Override
-    public Map<String, Object> referenceData(HttpServletRequest request, AdvancedSearchCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, T command) {
 		Map refdata = new HashMap<String, Object>();
 		String action = (String) findInRequest(request, "_action");
 		if(action != null && action.equals("nestedView")){
