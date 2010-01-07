@@ -65,9 +65,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 				// TODO Auto-generated method stub
 				return null;
 			}
-			@Override
-			public List<Organization> getLocalOrganizations(
-					OrganizationQuery query) {
+			public List<Organization> getLocalOrganizations(OrganizationQuery query) {
 				// TODO Auto-generated method stub
 				return null;
 			}
