@@ -17,7 +17,10 @@ default-lazy-init="true">
 		<property name="studyMigrator" ref="studyMigrator"/>
 		<property name="studyDao" ref="studyDao"/>
 	</bean>
-	<bean id="interoperationService" autowire="byType" class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
+	<bean id="interoperationService" class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl">
+		<property name="aeNotificationFactory" ref="aeNotificationFactory" />
+		<property name="messageBroadcastService" ref="webSSOmessageBroadcastService" />
+	</bean>
 	<bean id="adverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter"/>
 	<bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
 	<bean id="passwordPolicyService" class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
@@ -35,15 +38,21 @@ default-lazy-init="true">
 		<property name="coppaModeForAutoCompleters" ref="coppaModeForAutoCompleters"/>
 	</bean>
 	<bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
-	<bean id="messageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
+	
+	<bean id="webSSOmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
 		<property name="messageTypesMapping">
 			<map>
 				<entry key="aeNotification" value="SCHEDULE_MODIFICATION"/>
 			</map>
 		</property>
-		<property name="authenticationMode" value="s[authenticationMode]"/>
 		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
 	</bean>
+	
+	<bean id="localmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersNonGridCaXchangeMessageBroadcastServiceImpl">
+		<property name="clientFactory" ref="clientFactory"/>
+	</bean>
+	
+	
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://localhost:61616"/>
 	</bean>
@@ -359,5 +368,9 @@ default-lazy-init="true">
 			</list> 
 		</property> 
 	</bean>
+	
+	
+	
+	
  
 </beans>
