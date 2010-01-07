@@ -37,7 +37,7 @@
             <dependency org="org.openqa.selenium.client-drivers" name="selenium-java-client-driver" rev="0.9.2" conf="test->default(*)"/>
             <dependency org="ant-contrib" name="ant-contrib" rev="1.0b2" transitive="false"/>
             <dependency org="commons-logging" name="commons-logging" rev="1.1" conf="test->default(*)"/>
-           <dependency org="org.springframework" name="spring" rev="2.0.2" conf="test->default(*)"/>
+           <dependency org="org.springframework" name="spring" rev="2.0.6" conf="test->default(*)"/>
            <dependency org="ant" name="ant" rev="1.6.5" conf="test->master(*)"/>
            <!--  Spring and Spring Modules -->
 
