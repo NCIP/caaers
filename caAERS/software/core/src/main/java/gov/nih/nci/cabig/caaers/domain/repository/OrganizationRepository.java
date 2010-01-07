@@ -22,5 +22,6 @@ public interface OrganizationRepository {
     List<Organization> searchOrganization(final OrganizationQuery query);
     List<Organization> restrictBySubnames(final String[] subnames);
     List<Organization> getLocalOrganizations(final OrganizationQuery query);
+    List<Organization> getAllOrganizations();
     
 }

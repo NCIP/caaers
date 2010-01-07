@@ -4,7 +4,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <c:if test='${fn:length(command.importableOrganizations) > 0 }'>
-		<chrome:division title="Organization records got loaded" id="organization_load">
+		<chrome:division title="${fn:length(command.importableOrganizations)} Organization records got loaded" id="organization_load">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>

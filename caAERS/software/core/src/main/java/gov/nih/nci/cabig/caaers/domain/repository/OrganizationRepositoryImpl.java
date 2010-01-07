@@ -275,6 +275,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
 
-
-    
+	public List<Organization> getAllOrganizations() {
+		return organizationDao.getAll();
+	}
 }
