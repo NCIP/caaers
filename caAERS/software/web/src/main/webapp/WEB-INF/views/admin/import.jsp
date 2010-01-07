@@ -40,6 +40,7 @@
          			<form:option value="investigator">Investigator</form:option>
          			<form:option value="researchStaff">Research staff</form:option>
          			<form:option value="organization">Organization</form:option>
+         			<form:option value="agent">Agent</form:option>
          			<form:option value="medDRA">MedDRA</form:option>
         		</form:select>
         		<tags:errors path="type"/>

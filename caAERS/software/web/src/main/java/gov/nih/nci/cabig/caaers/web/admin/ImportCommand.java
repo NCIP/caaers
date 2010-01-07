@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -47,8 +48,10 @@ public class ImportCommand {
     private List<DomainObjectImportOutcome<Organization>> importableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
     
     private List<DomainObjectImportOutcome<Organization>> updateableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+
+    private List<DomainObjectImportOutcome<Agent>> importableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
     
-    //private List<DomainObjectImportOutcome<Study>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Study>>();
+    private List<DomainObjectImportOutcome<Agent>> updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
 
     public String getType() {
         return type;
@@ -234,6 +237,36 @@ public class ImportCommand {
 	public void addImportableOrganization(
 			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
 		getImportableOrganizations().add(domainObjectImportOutcome);
+	}
+
+	/**
+	 * @return the importableAgents
+	 */
+	public List<DomainObjectImportOutcome<Agent>> getImportableAgents() {
+		return importableAgents;
+	}
+
+	/**
+	 * @param importableAgents the importableAgents to set
+	 */
+	public void setImportableAgents(
+			List<DomainObjectImportOutcome<Agent>> importableAgents) {
+		this.importableAgents = importableAgents;
+	}
+
+	/**
+	 * @return the updateableAgents
+	 */
+	public List<DomainObjectImportOutcome<Agent>> getUpdateableAgents() {
+		return updateableAgents;
+	}
+
+	/**
+	 * @param updateableAgents the updateableAgents to set
+	 */
+	public void setUpdateableAgents(
+			List<DomainObjectImportOutcome<Agent>> updateableAgents) {
+		this.updateableAgents = updateableAgents;
 	}
 	
 }

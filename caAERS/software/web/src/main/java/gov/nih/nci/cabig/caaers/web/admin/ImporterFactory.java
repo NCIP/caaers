@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -28,6 +29,7 @@ public class ImporterFactory{
 	private static final String RESEARCH_STAFF_IMPORT = "researchStaff";
 	private static final String INVESTIGATOR_IMPORT = "investigator";
 	private static final String ORGANIZATION_IMPORT = "organization";
+	private static final String AGENT_IMPORT = "agent";
 	
 	private DomainObjectValidator domainObjectValidator;
 	private StudyProcessor studyProcessor;
@@ -39,6 +41,7 @@ public class ImporterFactory{
 	private ResearchStaffRepository researchStaffRepository;
 	private InvestigatorRepository investigatorRepository;
 	private OrganizationRepository organizationRepository;
+	private AgentDao agentDao;
 	
 	public Importer createImporterInstance(String type){
 		if(type.equals(STUDY_IMPORT)){
@@ -69,6 +72,10 @@ public class ImporterFactory{
 			OrganizationImporter organizationImporter = new OrganizationImporter();
 			organizationImporter.setOrganizationRepository(organizationRepository);
 			return organizationImporter;
+		}else if(type.equals(AGENT_IMPORT)){
+			AgentImporter agentImporter = new AgentImporter();
+			agentImporter.setAgentDao(agentDao);
+			return agentImporter;
 		}else return null;
 	}
 	
@@ -131,5 +138,9 @@ public class ImporterFactory{
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+	
+	public void setAgentDao(AgentDao agentDao){
+		this.agentDao = agentDao;
 	}
 }

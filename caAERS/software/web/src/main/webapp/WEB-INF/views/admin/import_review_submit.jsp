@@ -89,6 +89,9 @@
 	<c:if test="${command.type eq 'organization'}">
 		<admin:organizationImport/>
 	</c:if>
+	<c:if test="${command.type eq 'agent'}" }>
+		<admin:agentImport/>
+	</c:if>
 		
 	<c:if test='${command.schemaValidationResult != null  }'>
 		The provided xml is invalid, Fix the errors and try again.
