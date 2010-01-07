@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers;
 
+import java.security.Principal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -266,5 +267,30 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         public Object getSessionMutex() {
             return null;
         }
+
+		public String getContextPath() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public String getRemoteUser() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public Principal getUserPrincipal() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public boolean isSecure() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		public boolean isUserInRole(String arg0) {
+			// TODO Auto-generated method stub
+			return false;
+		}
     }
 }
