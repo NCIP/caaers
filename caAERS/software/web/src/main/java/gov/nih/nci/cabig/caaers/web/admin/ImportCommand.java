@@ -269,4 +269,15 @@ public class ImportCommand {
 		this.updateableAgents = updateableAgents;
 	}
 	
+	
+	public void addUpdateableAgent(
+			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
+		getUpdateableAgents().add(domainObjectImportOutcome);
+	}
+
+	public void addImportableAgent(
+			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
+		getImportableAgents().add(domainObjectImportOutcome);
+	}
+	
 }
