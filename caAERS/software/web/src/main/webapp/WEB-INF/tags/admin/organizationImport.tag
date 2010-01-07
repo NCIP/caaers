@@ -8,7 +8,7 @@
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
-    			<th scope="col" align="left"><b>NCI Identifier</b> </th>
+    			<th scope="col" align="left"><b>Assigned Identifier</b> </th>
     			<th scope="col" align="left"><b>Organization name</b> </th>
     		</tr>
     		<c:forEach var='item' items='${command.importableOrganizations}'>
@@ -17,9 +17,15 @@
 				<td align="left"><c:out value="${item.importedDomainObject.name}" /></td>
    			</tr>
    			</c:forEach>
-   			<c:if test='${fn:length(command.importableOrganizations) == 0 }'>
-   				<tr class="results"><td align="left"><i>None</i></td></tr> 
-   			</c:if>
    		</table>	
    		</chrome:division>
 	</c:if>
+	<c:if test='${fn:length(command.importableOrganizations) == 0 }'>
+		<chrome:division title="No Organization records to be loaded" id="organization_load">
+			<table id="test" width="100%" class="tablecontent">
+	   			<tr class="results">
+	   				<td align="left"><i>None</i></td>
+	   			</tr>
+	   		</table>	 
+   		</chrome:division>
+   	</c:if>
