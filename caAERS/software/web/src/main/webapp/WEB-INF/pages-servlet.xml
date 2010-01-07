@@ -287,7 +287,7 @@
   	<property name="researchStaffRepository" ref="researchStaffRepository"></property>
   	<property name="investigatorRepository" ref="investigatorRepository"></property>
   	<property name="organizationRepository" ref="organizationRepository"></property>
-  	<property name="agentdao" ref="agentDao"/>
+  	<property name="agentDao" ref="agentDao"/>
   </bean> 
   
   <!-- Validators -->
