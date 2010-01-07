@@ -246,6 +246,10 @@ public class AttributionTabTest extends AeTabTestCase {
         assertEquals("Concomitant medications", block.getDisplayName());
     }
 
+    public void testGetExpeditedReportSections(){
+        assertSame(tab.getExpeditedReportSections(), tab.section());
+    }
+
     @SuppressWarnings( { "unchecked" })
     private List<AttributionTab.AttributionBlock> getBlocks() {
         return (List<AttributionTab.AttributionBlock>) getTab().referenceData(request, command).get("blocks");

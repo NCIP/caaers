@@ -18,6 +18,22 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         AE.checkForModification = false;
 
+        //make a map of all the section and tab
+        var sectionTabHash = new Hash();
+        <c:forEach items="${flow.tabs}" var="aTab">
+            <c:forEach items="${aTab.expeditedReportSections}" var="aSection">
+            sectionTabHash.set('${aSection}', ${aTab.number});
+            </c:forEach>
+        </c:forEach>
+
+        //Will submit the page after setting target and page
+        function goToPage(_section){
+            $('_page').value = ${tab.number};
+            $('_target').name = '_target' + sectionTabHash.get(_section);
+            $('_finish').disable();
+            $('command').submit();
+        }
+
         function fireAction(action, selected) {
 
             document.getElementById('command')._target.name = '_noname';
@@ -260,7 +276,7 @@
         </c:if>
         <chrome:box title="${tab.shortTitle}" >
         <ae:submitReportValidation/>
-     	<input type="hidden" name="_finish"/>
+     	<input type="hidden" name="_finish" id="_finish"/>
 	
         </chrome:box>
 	<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />

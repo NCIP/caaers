@@ -234,6 +234,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     public abstract ExpeditedReportSection[] section();
 
+    public ExpeditedReportSection[] getExpeditedReportSections(){
+        return section();
+    }
+
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         command.setRulesErrors(new HashMap<String, Boolean>());
