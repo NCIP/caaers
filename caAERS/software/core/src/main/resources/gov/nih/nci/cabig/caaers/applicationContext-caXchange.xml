@@ -10,13 +10,13 @@
 			value="s[caExchangeNonGridUrl]" />
 		<property name="outInterceptors">
 			<list>
-				<ref bean="logOut" />
+
 				<bean class="org.apache.cxf.binding.soap.saaj.SAAJOutInterceptor" />
 				<ref bean="wss4jOutConfiguration" />
 			</list>
 		</property>
 	</bean>
-	<bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+
 	
 	<bean id="wss4jOutConfiguration" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
 		<property name="properties">
