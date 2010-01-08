@@ -9,7 +9,6 @@ import gov.nih.nci.caxchange.messaging.Message;
 import gov.nih.nci.caxchange.messaging.MessagePayload;
 import gov.nih.nci.caxchange.messaging.ObjectFactory;
 import gov.nih.nci.caxchange.messaging.Request;
-import gov.nih.nci.caxchange.messaging.Response;
 import gov.nih.nci.caxchange.messaging.TransactionControls;
 
 import java.io.ByteArrayInputStream;
@@ -20,10 +19,13 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 public class CaaersNonGridCaXchangeMessageBroadcastServiceImpl implements MessageBroadcastService {
 	private org.apache.cxf.jaxws.JaxWsProxyFactoryBean clientFactory;
+	private static final Log log = LogFactory.getLog(CaaersNonGridCaXchangeMessageBroadcastServiceImpl.class);
 	
 	public void broadcast(String message) throws BroadcastException {
 		// TODO Auto-generated method stub
@@ -33,30 +35,25 @@ public class CaaersNonGridCaXchangeMessageBroadcastServiceImpl implements Messag
 	public String broadcastCOPPA(List<String> messages, Metadata metaData) throws BroadcastException {
 		String operationName = metaData.getOperationName();
 		String serviceType = metaData.getServiceType();
-		//String caXchangeNonGridUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_URL);
+		//String caXchangeNonGridUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAEXCHANGE_NONGRID_URL);
 		//clientFactory.setAddress(caXchangeNonGridUrl);
 		//clientFactory.setAddress("https://ncias-c278-v.nci.nih.gov:8194/CaXchangeRequestService");
-
-		org.apache.cxf.jaxws.JaxWsProxyFactoryBean cf = getClientFactory();
+		gov.nih.nci.caxchange.messaging.ResponseMessage responseMessage = null;
+		try {
+			CaXchangeRequestPortType caXchangeRequestPortType = (CaXchangeRequestPortType) getClientFactory().create();
+			Message messageToCXFBC = buildMessageToCXFBC(serviceType, messages, operationName);
 		
-		CaXchangeRequestPortType caXchangeRequestPortType = (CaXchangeRequestPortType) cf.create();
-		Message messageToCXFBC = buildMessageToCXFBC(serviceType, messages, operationName);
-		
-		//synchronus
-		gov.nih.nci.caxchange.messaging.ResponseMessage _processRequest_return = caXchangeRequestPortType
-		.processRequest(messageToCXFBC);
+			//synchronus
+			responseMessage = caXchangeRequestPortType.processRequest(messageToCXFBC);
+		} catch (Exception e ) {
+			log.error("Error while broadcasting the message to COPPA", e);
+            throw new gov.nih.nci.cabig.caaers.esb.client.BroadcastException(e);
+		}
 		
 		ObjectFactory objectFactory = new ObjectFactory();
-		JAXBElement jaxbElement = objectFactory.createCaXchangeResponseMessage(_processRequest_return);
-		return XMLUtil.getXML(jaxbElement, "gov.nih.nci.caxchange.messaging");
-		/*
-		Response response = _processRequest_return.getResponse();
-		System.out.println("RESPONSE STATUS: "	+ response.getResponseStatus());
-		System.out.println("Error Code " + response.getCaXchangeError().getErrorDescription());
-
-
-		// TODO Auto-generated method stub
-		return null;*/
+		JAXBElement jaxbElement = objectFactory.createCaXchangeResponseMessage(responseMessage);
+		String responseString = XMLUtil.getXML(jaxbElement, "gov.nih.nci.caxchange.messaging");
+		return responseString;
 	}
 
 	/**
@@ -80,7 +77,7 @@ public class CaaersNonGridCaXchangeMessageBroadcastServiceImpl implements Messag
 			metadata.setCredentials(credentials);
 			*/
 			//metadata.setCaXchangeIdentifier("037068f0-23a8-11de-a5f1-d00caf9050fd");
-			metadata.setExternalIdentifier("myExternalIdentifier");
+			metadata.setExternalIdentifier("caExternalIdentifier");
 			metadata.setOperationName(new ObjectFactory().createMetadataOperationName(operationName));
 			metadata.setServiceType(serviceType);
 			requestMessageToESB.setMetadata(metadata);
@@ -108,7 +105,8 @@ public class CaaersNonGridCaXchangeMessageBroadcastServiceImpl implements Messag
 			requestMessageToESB.setRequest(request);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception building payload" + e);
+			//e.printStackTrace();
 		}
 
 		return requestMessageToESB;
