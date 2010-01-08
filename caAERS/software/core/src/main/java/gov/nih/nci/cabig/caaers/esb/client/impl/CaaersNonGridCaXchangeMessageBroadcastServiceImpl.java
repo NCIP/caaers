@@ -23,6 +23,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
+/**
+ * /**
+ * This implementation will broadcast messages to caXchange non grid interface.
+  * @author sakkala
+ *
+ */
 public class CaaersNonGridCaXchangeMessageBroadcastServiceImpl implements MessageBroadcastService {
 	private org.apache.cxf.jaxws.JaxWsProxyFactoryBean clientFactory;
 	private static final Log log = LogFactory.getLog(CaaersNonGridCaXchangeMessageBroadcastServiceImpl.class);
