@@ -148,6 +148,7 @@
 			</dependency>
 			<dependency org="org.opensaml" name="opensaml" rev="1.1" force="true" />
             <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2"  />
+            <dependency org="dom4j" name="dom4j" rev="1.6" />
 
 			<!-- JSRs -->
 			<dependency org="jsr94" name="jsr94" rev="1.1"  />
