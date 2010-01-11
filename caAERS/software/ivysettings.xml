@@ -24,27 +24,6 @@
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>
 	
-
-<!-- Semanticbits 10.10.10.2 repository [using http] this is temp , c3pr-esb-client shud be published to public repo --> 
-<!--  
-		<url name="semanticbits-dev-http">
-			<ivy pattern="http://10.10.10.2:8030/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
-  			<artifact pattern="http://10.10.10.2:8030/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
-		</url>
--->
-
-			
-		<!--  Semanticbits shared repository [using http] -->
-		<url name="semanticbits-grid-repo-http">
-			<ivy pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/ivy-[revision].xml" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
-		</url>
-		 
-	 
 	 <!--  Northwestern RHLCCC Bioinformatics  -->
 			<ibiblio name="maven2-northwestern" m2compatible="true"
 				root="http://download.bioinformatics.northwestern.edu/download/maven2"
@@ -72,6 +51,19 @@
 			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT" />
             <ibiblio name="download-java-net" m2compatible="true" root="http://download.java.net/maven/2" changingPattern=".*SNAPSHOT" />
             <ibiblio name="maven-repo2"  m2compatible="true" root="http://repo2.maven.org/maven2"	changingPattern=".*SNAPSHOT" />
+
+
+
+            <!--  Semanticbits shared caGRID repository [using http] -->
+            <url name="semanticbits-grid-repo-http">
+                <ivy pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/ivy-[revision].xml" />
+                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
+                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
+                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
+                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
+                  <artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
+            </url>
+		             
 			<!--  SemanticBits shared repository [using sftp] -->
 <!--
 	 		<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
