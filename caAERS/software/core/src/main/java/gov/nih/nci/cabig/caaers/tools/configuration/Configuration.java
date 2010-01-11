@@ -21,6 +21,9 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> LABVIEWER_BASE_URL = PROPERTIES.add(new ConfigurationProperty.Text("labViewerBaseUrl"));
     public static final ConfigurationProperty<String> ESB_URL = PROPERTIES.add(new ConfigurationProperty.Text("esbUrl"));
     public static final ConfigurationProperty<String> CAEXCHANGE_URL = PROPERTIES.add(new ConfigurationProperty.Text("caExchangeUrl"));
+    public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_URL = PROPERTIES.add(new ConfigurationProperty.Text("caExchangeNonGridUrl"));
+    public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_USERNAME = PROPERTIES.add(new ConfigurationProperty.Text("caExchangeNonGridUserName"));
+    public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_PASSWORD = PROPERTIES.add(new ConfigurationProperty.Text("caExchangeNonGridPassword"));
     public static final ConfigurationProperty<String> SMTP_ADDRESS = PROPERTIES.add(new ConfigurationProperty.Text("smtpAddress"));
     public static final ConfigurationProperty<Integer> SMTP_PORT = PROPERTIES.add(new ConfigurationProperty.Int("smtpPort"));
     public static final ConfigurationProperty<String> SMTP_USER = PROPERTIES.add(new ConfigurationProperty.Text("smtpUser"));
