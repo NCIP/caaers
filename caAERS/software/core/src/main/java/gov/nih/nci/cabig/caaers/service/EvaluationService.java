@@ -41,7 +41,7 @@ public interface EvaluationService {
      * @param reportDefinitions
      * @return All the mandatory sections for a given expedited report.
      */
-    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions);
+    Map<Integer, Collection<ExpeditedReportSection>> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions);
 
     /**
      * This method will find all the report definitions applicable to the Study

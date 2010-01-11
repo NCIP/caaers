@@ -50,15 +50,9 @@
 
 
 			<!--  caAERS other modules -->
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
-				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid">
 			</dependency>
-
-        	<!--  Spring framework -->
-			<dependency org="org.springframework" name="spring" rev="2.0.6" force="true"/>
-			<!--  <dependency org="org.springframework.ws" name="spring-ws" rev="1.5.1" />  -->
 
 			<!--  Apache Commons -->
         	<dependency org="commons-fileupload" name="commons-fileupload" rev="1.2" />

@@ -30,17 +30,13 @@
         <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
         	
 			<!--  caAERS jars -->
-			
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid"/>
-	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
-				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+
         	
         	<!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
-        	
-        	<!--  Spring framework -->
-        	<dependency org="org.springframework" name="spring" rev="2.0.6" force="true"/>
+
 			
         </dependencies>
 </ivy-module>

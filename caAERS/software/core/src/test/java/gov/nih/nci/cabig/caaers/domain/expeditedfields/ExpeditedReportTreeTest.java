@@ -33,6 +33,11 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertChildPropertiesExist(tree, ExpeditedAdverseEventReport.class);
     }
 
+    public void testInterventionSectionNode(){
+       TreeNode node =  tree.getNodeForSection(ExpeditedReportSection.STUDY_INTERVENTIONS);
+        System.out.println(node);
+    }
+
     @SuppressWarnings( { "RawUseOfParameterizedType" })
     private void assertChildPropertiesExist(TreeNode node, Class nodePropertyClass)
                     throws IntrospectionException {
@@ -42,6 +47,7 @@ public class ExpeditedReportTreeTest extends TestCase {
             if (childPropName == null) {
                 // this child does not map to a property -- push down
                 assertChildPropertiesExist(child, nodePropertyClass);
+
             } else {
                 if (childPropName.indexOf('[') >= 0) {
                     childPropName = childPropName.substring(0, childPropName.indexOf('['));

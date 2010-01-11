@@ -117,7 +117,7 @@ public class CreateExpeditedReporterTab extends AeTab{
 			command.instantiateNewlySelectedReports();
 			
 			// find the new mandatory sections
-	        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+	        command.setMandatorySectionMap(evaluationService.mandatorySections(command.getAeReport()));
 	        
 	        //initialize mandatory section fields
 	        command.initializeMandatorySectionFields();

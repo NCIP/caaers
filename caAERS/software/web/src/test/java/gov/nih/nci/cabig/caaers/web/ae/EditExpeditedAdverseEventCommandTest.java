@@ -41,9 +41,7 @@ import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 import org.easymock.classextension.EasyMock;
 
@@ -278,7 +276,9 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     public void testInitializeMandatorySectionFields(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
     	sections.add(ExpeditedReportSection.LABS_SECTION);
-    	command.setMandatorySections(sections);
+        Map<Integer, Collection<ExpeditedReportSection>> map = new HashMap<Integer, Collection<ExpeditedReportSection>>();
+        map.put(0, sections);
+    	command.setMandatorySectionMap(map);
     	
     	assertEquals(0, command.getAeReport().getLabs().size());
     	
@@ -294,7 +294,9 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     public void testInitializeMandatorySectionFieldsWhenAgentInterventionIsNotMandatory(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
     	sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
-    	command.setMandatorySections(sections);
+        Map<Integer, Collection<ExpeditedReportSection>> map = new HashMap<Integer, Collection<ExpeditedReportSection>>();
+        map.put(0, sections);
+    	command.setMandatorySectionMap(map);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     	command.getAeReport().getStudy().getStudyAgents().clear(); //emptyout the study agents
     	command.initializeMandatorySectionFields();
@@ -308,7 +310,9 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatory(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
     	sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
-    	command.setMandatorySections(sections);
+        Map<Integer, Collection<ExpeditedReportSection>> map = new HashMap<Integer, Collection<ExpeditedReportSection>>();
+        map.put(0, sections);
+    	command.setMandatorySectionMap(map);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     	command.getAeReport().getStudy().getStudyAgents().clear(); //emptyout the study agents
     	command.initializeMandatorySectionFields();
@@ -322,7 +326,9 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     public void testInitializeMandatorySectionFieldsWhenInterventionIsMandatoryAndStudyHasIND(){
     	List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
     	sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
-    	command.setMandatorySections(sections);
+        Map<Integer, Collection<ExpeditedReportSection>> map = new HashMap<Integer, Collection<ExpeditedReportSection>>();
+        map.put(0, sections);
+    	command.setMandatorySectionMap(map);
     	assertEquals(0, command.getAeReport().getTreatmentInformation().getCourseAgents().size());
     	
     	StudyAgent studyAgent = Fixtures.createStudyAgent("test");

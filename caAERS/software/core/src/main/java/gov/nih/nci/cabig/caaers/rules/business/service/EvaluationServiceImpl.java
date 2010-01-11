@@ -25,12 +25,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -447,11 +442,24 @@ public class EvaluationServiceImpl implements EvaluationService {
        return dto;
     }
 
-    public Collection<ExpeditedReportSection> mandatorySections( ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions) {
+    /**
+     * Will find the mandatory sections associated with the report definitions. 
+     * @param expeditedData
+     * @param reportDefinitions
+     * @return
+     */
+    public Map<Integer, Collection<ExpeditedReportSection>> mandatorySections( ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions) {
+        
+           Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap = new HashMap<Integer, Collection<ExpeditedReportSection>>();
         try {
-            Collection<ExpeditedReportSection> sections = adverseEventEvaluationService.mandatorySections(expeditedData, reportDefinitions);
-            if (log.isDebugEnabled()) log.debug("Mandatory sections: " + sections);
-            return sections;
+            
+            for(ReportDefinition reportDefinition : reportDefinitions ){
+               Collection<ExpeditedReportSection> sections = adverseEventEvaluationService.mandatorySections(expeditedData, reportDefinition);
+               mandatorySectionMap.put(reportDefinition.getId(), sections);
+            }
+
+            if (log.isDebugEnabled()) log.debug("Mandatory sections: " + mandatorySectionMap);
+            return mandatorySectionMap;
         } catch (Exception e) {
             throw new CaaersSystemException("Could not get mandatory sections", e);
         }

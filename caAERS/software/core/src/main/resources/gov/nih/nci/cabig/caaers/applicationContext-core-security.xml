@@ -434,10 +434,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="runAsAutenticationProviderInterceptor" class="gov.nih.nci.cabig.caaers.security.RunAsAuthenticationPopulatorIncerceptor">
 		<property name="runAsAuthenticationPopulator" ref="runAsAuthenticationPopulator" />
 	</bean>	
-
+    <!--
 	<bean id="gridAutenticationInterceptor" class="gov.nih.nci.cabig.caaers.security.GridAuthenticationInterceptor">
 		<property name="csmUserDetailsService" ref="csmUserDetailsService" />
-	</bean>
+	</bean>        -->
 		
 	<!-- ==== Authentication Related Stuff ================ -->
 	

@@ -77,7 +77,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     
     /**
      * This method will spawn the workflow for newly created reports
-     * @param newlyCreatedReports
+     * @param report
      */
     public void enactWorkflow(Report report){
     	adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);

@@ -25,6 +25,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
@@ -1489,7 +1490,35 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 
     }
 	
+    public void testMandatorySections() throws Exception{
+        ExpeditedAdverseEventReport aeReport1 = null;
+        ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",null, null);
+        rd1.setId(1);
+	    rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+		rd1.setDuration(1);
+		ReportDefinition rd2 = Fixtures.createReportDefinition("ctep-rd-2",null, null);
+		rd2.setTimeScaleUnitType(TimeScaleUnit.DAY);
+		rd2.setDuration(2);
+        rd2.setId(2);
 
+        ArrayList<ExpeditedReportSection> list1 = new ArrayList<ExpeditedReportSection>();
+        list1.add(ExpeditedReportSection.ADVERSE_EVENT_SECTION);
+        expect(adverseEventEvaluationService.mandatorySections(aeReport1, rd1)).andReturn(list1);
+
+        ArrayList<ExpeditedReportSection> list2 = new ArrayList<ExpeditedReportSection>();
+        list2.add(ExpeditedReportSection.ADVERSE_EVENT_SECTION);
+        list2.add(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
+        expect(adverseEventEvaluationService.mandatorySections(aeReport1, rd2)).andReturn(list2);
+
+        replayMocks();
+
+        Map<Integer, Collection<ExpeditedReportSection>> map = service.mandatorySections(aeReport1, rd1, rd2);
+        assertTrue(map.containsKey(rd1.getId()));
+        assertTrue(map.containsKey(rd2.getId()));
+        assertTrue(map.get(rd2.getId()).contains(ExpeditedReportSection.ADVERSE_EVENT_SECTION));
+        verifyMocks();
+
+    }
 
 	
 	public  ReportDefinitionWrapper getWrapper(Collection<ReportDefinitionWrapper> c , ReportDefinition def){

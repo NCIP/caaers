@@ -65,7 +65,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected ExpeditedAdverseEventReport aeReport;
 
     private Map<String, List<List<Attribution>>> attributionMap;
-    protected Collection<ExpeditedReportSection> mandatorySections;
+    protected Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap;
     protected MandatoryProperties mandatoryProperties;
     
     protected StudyParticipantAssignmentDao assignmentDao;
@@ -189,11 +189,22 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
 
     public Collection<ExpeditedReportSection> getMandatorySections() {
+        Set<ExpeditedReportSection> mandatorySections = new HashSet<ExpeditedReportSection>();
+        if(mandatorySectionMap != null && !mandatorySectionMap.isEmpty()){
+            for(Integer i : mandatorySectionMap.keySet()){
+                mandatorySections.addAll(mandatorySectionMap.get(i));
+            }
+        }
+
         return mandatorySections;
     }
 
-    public void setMandatorySections(Collection<ExpeditedReportSection> sections) {
-        this.mandatorySections = sections;
+    public Map<Integer, Collection<ExpeditedReportSection>> getMandatorySectionMap(){
+        return mandatorySectionMap;
+    }
+
+    public void setMandatorySectionMap(Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap){
+       this.mandatorySectionMap = mandatorySectionMap;
     }
    
     /**
@@ -201,8 +212,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
      */
     public void refreshMandatorySections(){
     	ReportDefinition[] selected = this.selectedReportDefinitions.toArray(new ReportDefinition[]{});
-        Collection<ExpeditedReportSection> mandatorySections = evaluationService.mandatorySections(aeReport, selected);
-        setMandatorySections(mandatorySections);
+        Map<Integer, Collection<ExpeditedReportSection>> map = evaluationService.mandatorySections(aeReport, selected);
+        setMandatorySectionMap(map);
     }
 
     /**
@@ -228,6 +239,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     @SuppressWarnings("unchecked")
     public void initializeMandatorySectionFields() {
+        Collection<ExpeditedReportSection> mandatorySections = getMandatorySections();
         if (mandatorySections == null || mandatorySections.isEmpty()) {
             log.info("No mandatory sections available, so no fields will be pre initialized");
             return;
@@ -451,6 +463,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	}
     
     public boolean isSectionMandatory(ExpeditedReportSection section) {
+        Collection<ExpeditedReportSection> mandatorySections = getMandatorySections();
     	if(mandatorySections == null || mandatorySections.isEmpty()) return false;
     	return mandatorySections.contains(section);
     }

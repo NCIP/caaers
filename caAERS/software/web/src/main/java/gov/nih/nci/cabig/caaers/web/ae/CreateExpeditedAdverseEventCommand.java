@@ -252,8 +252,6 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     
     /**
 	 * This will remove all unselected report definitions from the report, by calling delete on the repository 
-	 * @param aeReport
-	 * @param removedDefinitions
 	 */
 	public void removeUnselectedReports() {
 		 List<Report> nonWitdrawnReports = aeReport.getActiveReports();
