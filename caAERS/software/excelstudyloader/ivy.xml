@@ -41,8 +41,6 @@
         	
         	<!--  Spring framework -->
         	<dependency org="org.springframework" name="spring" rev="2.0.6" force="true"/>
-        	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
 			
         </dependencies>
 </ivy-module>
