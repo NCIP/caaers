@@ -79,6 +79,7 @@
 
 			<!--  Spring and Spring Modules -->
         	<dependency org="org.springframework" name="spring" rev="2.0.6" force="true" />
+            <dependency org="org.springframework" name="spring-aspects" rev="2.0.6" force="true" />
 			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3"  />
 			<dependency org="org.springmodules" name="spring-modules-jbpm31" rev="0.8a" >
 				<exclude conf="*" module="hibernate" />
