@@ -43,18 +43,19 @@
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
 			<exclude conf="dist,distGrid" module="jsp-api" />
         	<exclude conf="dist,distGrid" module="servlet-api"  />
-			<exclude conf="dist,distGrid" name="spring-aop"  />
-			<exclude conf="dist,distGrid" name="spring-beans"  />
-			<exclude conf="dist,distGrid" name="spring-context"  />
-			<exclude conf="dist,distGrid" name="spring-core"  />
-			<exclude conf="dist,distGrid" name="spring-dao"  />
-			<exclude conf="dist,distGrid" name="spring-hibernate3"  />
-			<exclude conf="dist,distGrid" name="spring-jdbc"  />
-			<exclude conf="dist,distGrid" name="spring-remoting"  />
-			<exclude conf="dist,distGrid" name="spring-support"  />
-			<exclude conf="dist,distGrid" name="spring-web"  />
-			<exclude conf="dist,distGrid" name="spring-webmvc"  />
-			<exclude conf="dist,distGrid" module="commons-codec"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-aop"  />
+            <exclude conf="runtime,dist,distGrid" name="spring-aspects"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-beans"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-context"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-core"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-dao"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-hibernate3"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-jdbc"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-remoting"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-support"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-web"  />
+			<exclude conf="runtime,dist,distGrid" name="spring-webmvc"  />
+			<exclude conf="runtime,dist,distGrid" module="commons-codec"  />
 			<exclude conf="dist,distGrid" module="hsqldb" />
 			<exclude conf="dist,distGrid" name="jta" />
 			<exclude conf="dist,distGrid" module="collection-setter-injector" />
@@ -65,7 +66,7 @@
 			<exclude conf="dist,distGrid" module="jgss" />
 			<exclude conf="dist,distGrid" module="jxl" />
 			<exclude conf="dist,distGrid" module="xom" />
-			<exclude conf="dist,distGrid" module="xmlParserAPIs" />
+			<exclude conf="runtime,dist,distGrid" module="xmlParserAPIs" rev="2.0.2"/>
 			<exclude conf="dist,distGrid" module="subject" />
 			<exclude conf="runtime,dist,distGrid" module="c3p0"/>
 
@@ -292,7 +293,7 @@
 
 			<!-- Test only dependencies -->
 			<dependency org="c3p0" name="c3p0" rev="0.8.5.2" conf="test->default(*)"/>
-			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />
+			<dependency org="org.springframework" name="spring-mock" rev="2.0.6" force="true" conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default"/>
