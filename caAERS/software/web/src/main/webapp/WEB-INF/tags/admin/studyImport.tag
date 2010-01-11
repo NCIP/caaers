@@ -2,9 +2,11 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 	<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0}'>
-		<chrome:division title="Study records will NOT be loaded" id="study_will_not_load">
+		<chrome:division id="study_will_not_load">
+			<caaers:message code='LBL_Study_Errors'/> <br> 
 			<table id="test" width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Study Identifier</b> </th>
@@ -32,6 +34,7 @@
    		</chrome:division>
 		
 		<chrome:division title="Study records will be loaded" id="study_will_load">
+			<caaers:message code='LBL_Study_No_Errors'/> <br> 
 			<table id="test" width="100%" class="tablecontent">
    		 		<tr>
    	 				<th scope="col" align="left"><b>Study Identifier</b> </th>

@@ -172,7 +172,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         ImportCommand ic = new ImportCommand();
         return ic;
     }
-
+    
     public StudyDao getStudyDao() {
         return studyDao;
     }

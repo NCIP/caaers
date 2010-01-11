@@ -2,10 +2,12 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:if test='${fn:length(command.importableInvestigators) > 0 || fn:length(command.nonImportableInvestigators) > 0 }'>
 		
-		<chrome:division title="Investigator records did NOT get loaded" id="investigator_not_load">
+		<chrome:division id="investigator_not_load">
+		<caaers:message code='LBL_Investigator_Errors'/> <br> 
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>First Name</b> </th>
@@ -32,8 +34,8 @@
    		</chrome:division>
 		
 		
-		<chrome:division title="Investigator records got loaded" id="investigator_load">
-		
+		<chrome:division id="investigator_load">
+		<caaers:message code='LBL_Investigator_No_Errors'/> <br> 
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>First Name</b> </th>

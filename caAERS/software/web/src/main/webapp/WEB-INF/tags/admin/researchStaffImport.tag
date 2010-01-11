@@ -2,10 +2,11 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:if test='${fn:length(command.importableResearchStaff) > 0 || fn:length(command.nonImportableResearchStaff) > 0 }'>
-		<chrome:division title="ResearchStaff records did NOT get loaded" id="research_staff_not_load">
-		
+		<chrome:division id="research_staff_not_load">
+		<caaers:message code='LBL_ResearchStaff_Errors'/> <br> 
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>First Name</b> </th>
@@ -32,8 +33,8 @@
    		</chrome:division>
 		
 		
-		<chrome:division title="ResearchStaff records got loaded" id="research_staff_load">
-		
+		<chrome:division id="research_staff_load">
+		<caaers:message code='LBL_ResearchStaff_No_Errors'/> <br> 
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>First Name</b> </th>

@@ -35,6 +35,9 @@
 			<c:if test="${command.type eq 'agent'}">
 				<admin:agentImport/>
 			</c:if>
+			<c:if test="${command.type eq 'medDRA'}">
+				<admin:meddraImportSummary />
+			</c:if>
 			
 			</jsp:attribute>
 			<jsp:attribute name="tabControls">

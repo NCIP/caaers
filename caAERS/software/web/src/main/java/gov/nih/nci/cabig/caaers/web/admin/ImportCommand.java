@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,44 +21,43 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportCommand {
 
     private MultipartFile dataFile;
-
     private String schemaValidationResult;
-
     private String type;
-
+    private MultipartFile socFile;
+    private MultipartFile hlgtFile;
+    private MultipartFile hltFile;
+    private MultipartFile lltFile;
+    private MultipartFile ptFile;
+    private MultipartFile socHlgtFile;
+    private MultipartFile hlgtHltFile;
+    private MultipartFile hltPtFile;
+    private String meddraVersionName;
     private List<DomainObjectImportOutcome<Study>> nonImportableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
-
     private List<DomainObjectImportOutcome<Study>> importableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
-
     private List<DomainObjectImportOutcome<Participant>> nonImportableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
-
     private List<DomainObjectImportOutcome<Participant>> importableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
-
     private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> nonImportableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
-
     private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
-
     private List<DomainObjectImportOutcome<Investigator>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
-    
     private List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
-    
     private List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
-    
     private List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
-    
     private List<DomainObjectImportOutcome<Organization>> importableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
-    
     private List<DomainObjectImportOutcome<Organization>> updateableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
-    
-    private List<DomainObjectImportOutcome<Organization>> nonImportableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
-
     private List<DomainObjectImportOutcome<Agent>> importableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
-    
-    private List<DomainObjectImportOutcome<Agent>> updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
-    
     private List<DomainObjectImportOutcome<Agent>> nonImportableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
-
-    public String getType() {
+    private List<DomainObjectImportOutcome<Organization>> nonImportableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+    private List<DomainObjectImportOutcome<Agent>> updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+    private String socDataFileName;
+    private String hlgtDataFileName;
+    private String socHlgtDataFileName;
+    private String hltDataFileName;
+    private String hlgtHltDataFileName;
+    private String ptDataFileName;
+    private String hltPtDataFileName;
+    private String lltDataFileName;
+    
+	public String getType() {
         return type;
     }
 
@@ -65,7 +65,71 @@ public class ImportCommand {
         this.type = type;
     }
 
-    public MultipartFile getDataFile() {
+    public MultipartFile getSocFile() {
+		return socFile;
+	}
+
+	public void setSocFile(MultipartFile socFile) {
+		this.socFile = socFile;
+	}
+
+	public MultipartFile getHlgtFile() {
+		return hlgtFile;
+	}
+
+	public void setHlgtFile(MultipartFile hlgtFile) {
+		this.hlgtFile = hlgtFile;
+	}
+
+	public MultipartFile getHltFile() {
+		return hltFile;
+	}
+
+	public void setHltFile(MultipartFile hltFile) {
+		this.hltFile = hltFile;
+	}
+
+	public MultipartFile getLltFile() {
+		return lltFile;
+	}
+
+	public void setLltFile(MultipartFile lltFile) {
+		this.lltFile = lltFile;
+	}
+
+	public MultipartFile getPtFile() {
+		return ptFile;
+	}
+
+	public void setPtFile(MultipartFile ptFile) {
+		this.ptFile = ptFile;
+	}
+
+	public MultipartFile getSocHlgtFile() {
+		return socHlgtFile;
+	}
+
+	public void setSocHlgtFile(MultipartFile socHlgtFile) {
+		this.socHlgtFile = socHlgtFile;
+	}
+
+	public MultipartFile getHlgtHltFile() {
+		return hlgtHltFile;
+	}
+
+	public void setHlgtHltFile(MultipartFile hlgtHltFile) {
+		this.hlgtHltFile = hlgtHltFile;
+	}
+
+	public MultipartFile getHltPtFile() {
+		return hltPtFile;
+	}
+
+	public void setHltPtFile(MultipartFile hltPtFile) {
+		this.hltPtFile = hltPtFile;
+	}
+
+	public MultipartFile getDataFile() {
         return dataFile;
     }
 
@@ -314,6 +378,11 @@ public class ImportCommand {
 	public void addImportableAgent(
 			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
 		getImportableAgents().add(domainObjectImportOutcome);
+		
+	}
+		
+	public String getMeddraVersionName(){
+		return meddraVersionName;
 	}
 	
 	public List<DomainObjectImportOutcome<Organization>> getNonImportableOrganizations() {
@@ -342,6 +411,74 @@ public class ImportCommand {
 	public void addNonImportableAgent(
 			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
 		getNonImportableAgents().add(domainObjectImportOutcome);
+	}
+	
+	public void setMeddraVersionName(String meddraVersionName){
+		this.meddraVersionName = meddraVersionName;
+	}
+
+	public String getSocDataFileName() {
+		return socDataFileName;
+	}
+
+	public void setSocDataFileName(String socDataFileName) {
+		this.socDataFileName = socDataFileName;
+	}
+
+	public String getHlgtDataFileName() {
+		return hlgtDataFileName;
+	}
+
+	public void setHlgtDataFileName(String hlgtDataFileName) {
+		this.hlgtDataFileName = hlgtDataFileName;
+	}
+
+	public String getSocHlgtDataFileName() {
+		return socHlgtDataFileName;
+	}
+
+	public void setSocHlgtDataFileName(String socHlgtDataFileName) {
+		this.socHlgtDataFileName = socHlgtDataFileName;
+	}
+
+	public String getHltDataFileName() {
+		return hltDataFileName;
+	}
+
+	public void setHltDataFileName(String hltDataFileName) {
+		this.hltDataFileName = hltDataFileName;
+	}
+
+	public String getHlgtHltDataFileName() {
+		return hlgtHltDataFileName;
+	}
+
+	public void setHlgtHltDataFileName(String hlgtHltDataFileName) {
+		this.hlgtHltDataFileName = hlgtHltDataFileName;
+	}
+
+	public String getPtDataFileName() {
+		return ptDataFileName;
+	}
+
+	public void setPtDataFileName(String ptDataFileName) {
+		this.ptDataFileName = ptDataFileName;
+	}
+
+	public String getHltPtDataFileName() {
+		return hltPtDataFileName;
+	}
+
+	public void setHltPtDataFileName(String hltPtDataFileName) {
+		this.hltPtDataFileName = hltPtDataFileName;
+	}
+
+	public String getLltDataFileName() {
+		return lltDataFileName;
+	}
+
+	public void setLltDataFileName(String lltDataFileName) {
+		this.lltDataFileName = lltDataFileName;
 	}
 	
 }

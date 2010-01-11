@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -57,10 +59,22 @@ public class ImportTab extends Tab<ImportCommand>{
 	
 	private static final Log logger = LogFactory.getLog(ImportTab.class);
 	private ImporterFactory importerFactory;
+	private MeddraVersionDao meddraVersionDao;
 	private static final String STUDY_IMPORT = "study";
 	private static final String SUBJECT_IMPORT = "participant";
 	private static final String RESEARCH_STAFF_IMPORT = "researchStaff";
 	private static final String INVESTIGATOR_IMPORT = "investigator";
+	private static final String ORGANIZATION_IMPORT = "organization";
+	private static final String AGENT_IMPORT = "agent";
+	private static final String MEDDRA_IMPORT = "medDRA";
+	private static final String SOC_EXPECTED_FILE = "soc.asc";
+	private static final String HLGT_EXPECTED_FILE = "hlgt.asc";
+	private static final String HLT_EXPECTED_FILE = "hlt.asc";
+	private static final String PT_EXPECTED_FILE = "pt.asc";
+	private static final String LLT_EXPECTED_FILE = "llt.asc";
+	private static final String SOC_HLGT_EXPECTED_FILE = "soc_hlgt.asc";
+	private static final String HLGT_HLT_EXPECTED_FILE = "hlgt_hlt.asc";
+	private static final String HLT_PT_EXPECTED_FILE = "hlt_pt.asc";
 	
 	public ImportTab(String longTitle, String shortTitle, String viewName){
 		super(longTitle, shortTitle, viewName);
@@ -77,25 +91,57 @@ public class ImportTab extends Tab<ImportCommand>{
     @Override
     public void validate(ImportCommand command, Errors errors) {
     	if(command.getType() == null || command.getType().equals("")){
-    		errors.rejectValue("type", "IMP_006");
-    		if(command.getDataFile() == null || command.getDataFile().isEmpty())
-    			errors.rejectValue("dataFile", "IMP_007");
+    		errors.rejectValue("type", "IMP_002");
+    		return;
     	}else{
-    		if(command.getType().equals(STUDY_IMPORT))
-    			if(command.getDataFile() == null || command.getDataFile().isEmpty())
-    				errors.rejectValue("dataFile", "IMP_001");
-    		if(command.getType().equals(SUBJECT_IMPORT))
-    			if(command.getDataFile() == null || command.getDataFile().isEmpty())
+    		if(!command.getType().equals(MEDDRA_IMPORT)){
+    			if(command.getDataFile() == null || command.getDataFile().isEmpty()){
     				errors.rejectValue("dataFile", "IMP_002");
-    		if(command.getType().equals(RESEARCH_STAFF_IMPORT))
-    			if(command.getDataFile() == null || command.getDataFile().isEmpty())
-    				errors.rejectValue("dataFile", "IMP_003");
-    		if(command.getType().equals(INVESTIGATOR_IMPORT))
-    			if(command.getDataFile() == null || command.getDataFile().isEmpty())
+    				return;
+    			}
+    		}else{
+    			if(fileInputMissing(command.getSocFile()) || fileInputMissing(command.getHlgtFile()) ||
+    					fileInputMissing(command.getHltFile()) || fileInputMissing(command.getPtFile()) ||
+    					fileInputMissing(command.getLltFile()) || fileInputMissing(command.getHlgtHltFile()) ||
+    					fileInputMissing(command.getHltPtFile()) || fileInputMissing(command.getSocHlgtFile())){
+    				errors.rejectValue("dataFile", "IMP_002");
+    				return;
+    			}
+    			
+    			// Check for duplicate
+    	        // Create a new meddra_version in meddra_versions table with name = meddra_name
+    	        // The id will come from the meddra_versions_id_seq next value.
+    			if(command.getMeddraVersionName() == null || command.getMeddraVersionName().equals("")){
+    				errors.rejectValue("dataFile", "IMP_002");
+    				return;
+    			}else{
+    				List<MeddraVersion> meddraVersionsList = new ArrayList<MeddraVersion>();
+    				meddraVersionsList = meddraVersionDao.getMeddraByName(command.getMeddraVersionName());
+    					if(meddraVersionsList.size() > 0)
+    						errors.rejectValue("dataFile", "IMP_003");
+    			}
+    			
+    			// Check for valid file names
+    			if(!command.getSocFile().getOriginalFilename().equals(SOC_EXPECTED_FILE) ||
+    					!command.getHlgtFile().getOriginalFilename().equals(HLGT_EXPECTED_FILE) ||
+    					!command.getHltFile().getOriginalFilename().equals(HLT_EXPECTED_FILE) ||
+    					!command.getPtFile().getOriginalFilename().equals(PT_EXPECTED_FILE) ||
+    					!command.getLltFile().getOriginalFilename().equals(LLT_EXPECTED_FILE) ||
+    					!command.getSocHlgtFile().getOriginalFilename().equals(SOC_HLGT_EXPECTED_FILE) ||
+    					!command.getHlgtHltFile().getOriginalFilename().equals(HLGT_HLT_EXPECTED_FILE) ||
+    					!command.getHltPtFile().getOriginalFilename().equals(HLT_PT_EXPECTED_FILE))
     				errors.rejectValue("dataFile", "IMP_004");
+    		}
     	}
     }
-
+    
+    private boolean fileInputMissing(MultipartFile file){
+    	if(file == null || file.isEmpty())
+    		return true;
+    	else
+    		return false;
+    }
+    
     @Override
     public void postProcess(HttpServletRequest request, ImportCommand command, Errors errors) {
         // TODO: see why the command variable type has a comma attached to it
@@ -110,7 +156,6 @@ public class ImportTab extends Tab<ImportCommand>{
             File xmlFile = File.createTempFile("file", "uploaded");
             FileCopyUtils.copy(command.getDataFile().getInputStream(),
                             new FileOutputStream(xmlFile));
-
             Importer importer = importerFactory.createImporterInstance(type);
         	importer.processEntities(xmlFile, command);
             
@@ -141,5 +186,13 @@ public class ImportTab extends Tab<ImportCommand>{
 	
 	public void setImporterFactory(ImporterFactory importerFactory){
 		this.importerFactory = importerFactory;
+	}
+	
+	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao){
+		this.meddraVersionDao = meddraVersionDao;
+	}
+	
+	public MeddraVersionDao getMeddraVersionDao(){
+		return meddraVersionDao;
 	}
 }

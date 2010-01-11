@@ -288,6 +288,8 @@
   	<property name="investigatorRepository" ref="investigatorRepository"></property>
   	<property name="organizationRepository" ref="organizationRepository"></property>
   	<property name="agentDao" ref="agentDao"/>
+  	<property name="medDRADao" ref="medDRADao"/>
+  	<property name="meddraVersionDao" ref="meddraVersionDao" />
   </bean> 
   
   <!-- Validators -->

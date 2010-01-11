@@ -2,9 +2,11 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 	<c:if test='${fn:length(command.nonImportableParticipants) > 0 || fn:length(command.importableParticipants) > 0 }'>
-		<chrome:division title="Subject records will NOT be loaded" id="particpant_will_not_load">
+		<chrome:division id="particpant_will_not_load">
+			<caaers:message code='LBL_Subject_Errors'/> <br> 
 			<table id="test" width="100%" class="tablecontent">
    	 			<tr>
    	 				<th scope="col" align="left"><b>Name</b> </th>
@@ -42,7 +44,8 @@
    				</c:if>
    			</table>	
    		</chrome:division>
-		<chrome:division title="Subject records will be loaded" id="particpant_will_load">
+		<chrome:division id="particpant_will_load">
+			<caaers:message code='LBL_Subject_No_Errors'/> <br> 
 			<table id="test" width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Name</b> </th>

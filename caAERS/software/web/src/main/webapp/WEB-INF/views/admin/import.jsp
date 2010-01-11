@@ -7,13 +7,18 @@
 	function selectType()
 	{
 		var type = $('select-type-id').value;
-		if(type == 'Please select'){
-			$('file-id').name = '';
-		}
-		if(type == 'Import MedDRA'){
-		
+		if(type == 'medDRA'){
+			$('meddra-import-id').style.display = '';
+			$('file-id').style.display = 'none';
+		}else{
+			$('meddra-import-id').style.display = 'none';
+			$('file-id').style.display = '';
 		}		
 	}
+	
+	Event.observe(window, "load", function() {
+		selectType();
+	});
 	
 </script>
 
@@ -21,7 +26,7 @@
 <body>
 
 <p id="instructions">
-        Import Studies/Protocols or Subjects into caAERS
+	<caaers:message code="LBL_import_instruction"/>
 </p>
     <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
@@ -33,7 +38,7 @@
 		<div class="row">
         	<div class="label"><ui:label path="type" text="Import" labelProperty="type" required="true"/></div>
 			<div class="value">
-				<form:select path="type" id="select-type-id">
+				<form:select path="type" id="select-type-id" onchange="javascript:selectType()">
 					<form:option value="">Please select</form:option>
          			<form:option value="study">Study / Protocol</form:option>
          			<form:option value="participant">Subject</form:option>
@@ -43,15 +48,99 @@
          			<form:option value="agent">Agent</form:option>
          			<form:option value="medDRA">MedDRA</form:option>
         		</form:select>
-        		<tags:errors path="type"/>
 			</div>
 		</div>
-		<div class="row">
-			<div class="label">File</div>
-			<div class="value">
-				<input id="file-id" type="file" name="dataFile" />
+		<div class="row" style="display:none" id="file-id">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_dataFile"/>
 			</div>
-			<tags:errors path="dataFile"/>
+			<div class="value" >
+				<input type="file" name="dataFile" id="file-input-id"/>
+			</div>
+		</div>
+		<div id="meddra-import-id" style="display:none">
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_meddraVersionName"/>
+			</div>
+			<div class="value">
+				<form:input id="meddraVersionName-id" path="meddraVersionName" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_socFile"/>
+			</div>
+			<div class="value">
+				<input id="socFile-id" type="file" name="socFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_hlgtFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="hlgtFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_socHlgtFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="socHlgtFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_hltFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="hltFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_hlgtHltFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="hlgtHltFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_ptFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="ptFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_hltPtFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="hltPtFile" />
+			</div>
+			</div>
+			<div class="row">
+			<div class="label">
+				<tags:requiredIndicator/>
+				<caaers:message code="LBL_lltFile"/>
+			</div>
+			<div class="value">
+				<input id="" type="file" name="lltFile" />
+			</div>
+			</div>
 		</div>
 
  		</jsp:attribute>

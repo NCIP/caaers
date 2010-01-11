@@ -59,24 +59,6 @@ public class MeddraAjaxFacade {
     
     private static final String MEDDRA_PT_TABLE = "meddra_pt";
 
-    public String handleMedDRADelete(final int version_id){
-    	// Transaction handling code
-    	DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-    	def.setName("deleteTransaction");
-    	def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-    	
-    	TransactionStatus status = transactionManager.getTransaction(def);
-    	try{
-    		meddraDao.deleteMeddraConcepts(version_id);
-    	}catch(Exception e){
-    		transactionManager.rollback(status);
-    		return "Failed";
-    	}
-    	transactionManager.commit(status);
-    	
-    	return "Success";
-    }
-    
     public String handleMedDRA(String path, int step, String meddra_name) {
         File theFile = getFile(path, step);
         List<String[]> al = new ArrayList<String[]>();

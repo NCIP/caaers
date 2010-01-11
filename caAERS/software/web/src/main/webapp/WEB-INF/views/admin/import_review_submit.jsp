@@ -28,23 +28,6 @@
 <tags:dwrJavascriptLink objects="importRoutineAe"/>
 <script language="JavaScript" type="text/JavaScript">
 	
-	function startImport(totalNumberOfRecords,barId,statusId,type,button){
-		$(button).disabled=true;
-		$(barId).style.display = 'block';
-		$(barId).style.visibility = 'visible';
-		$(statusId).update("Import In Progess .....")
-		importRoutineAe.saveObjectBlock(1, type, function(values){
-			returnValue = values;
-			$(barId).style.display = 'none';
-			$(barId).style.visibility = 'hidden';
-			//alert(returnValue);
-			if(returnValue == 'ERR'){
-				$(statusId).update("Import Incomplete, Please contact caAERS support");
-			}
-			$(statusId).update("Import complete , please press Save at the bottom of the screen to continue")
-		});
-	}
-	
 	function validatePage(){
 		return true;
 	}
@@ -57,11 +40,12 @@
 			document.studySiteForm.submit();
 		}
 	}
+	function submitForm(action){
+		var form = document.getElementById('command');
+		form._action.value = action;
+		form.submit();
+	}
 	
-	Event.observe(window, "load", function() {
-		      
-    	})
-
 </script>
 
 </head>
@@ -92,6 +76,9 @@
 	<c:if test="${command.type eq 'agent'}">
 		<admin:agentImport/>
 	</c:if>
+	<c:if test="${command.type eq 'medDRA'}">
+		<admin:meddraImportReview/>
+	</c:if>
 		
 	<c:if test='${command.schemaValidationResult != null  }'>
 		The provided xml is invalid, Fix the errors and try again.
@@ -103,10 +90,10 @@
       <div class="content buttons autoclear">
           <div class="flow-buttons">
               <span class="prev">
-              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back"/>
+              	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back" onclick="javascript:submitForm('back');"/>
 			  </span>
 				  <span class="next">
-					<tags:button type="submit" icon="Continue" color="green" id="flow-next" value="Continue"/>
+					<tags:button type="submit" icon="Continue" color="green" id="flow-next" value="Continue" onclick="javascript:submitForm('continue');"/>
 				  </span>
           </div>
       </div>
