@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="1.4">
-		
+
     	<info organisation="gov.nih.nci.cabig.caaers"
           	module="caaers-core"
           	status="integration" revision="${caaers.version}"/>
-        
+
         <configurations>
-        	<conf name="default" visibility="public" extends="publish,runtime" 
+        	<conf name="default" visibility="public" extends="publish,runtime"
         		description="Dependencies needed for default setting"  />
-        	<conf name="build" visibility="public" 
+        	<conf name="build" visibility="public"
         		description="Dependencies required for build time, all classpath should have this"/>
-        	<conf name="publish" visibility="public" 
+        	<conf name="publish" visibility="public"
         		description="Dependencies along with this module is published in repository" />
         	<conf name="distGrid" visibility="public"  extends="publish"
         		description="Dependencies that are required in grid distribution of this module" />
@@ -18,233 +18,285 @@
         		description="Dependencies needed for standalone distribution" />
         	<conf name="runtime" visibility="public"
         		description="The dependencies that are needed for runtime" extends="build" />
-        	<conf name="test" visibility="public" 
+        	<conf name="test" visibility="public"
         		description="Dependencies needed for testing purposes"/>
         </configurations>
-        
+
         <!--  Items to be published  -->
          <publications>
     		<artifact name="${ivy.module}" conf="publish" type="jar" ext="jar"/>
-			<artifact name="service-messages" cof="publish" type="properties" ext="properties" /> 
+			<artifact name="service-messages" cof="publish" type="properties" ext="properties" />
     		<artifact name="${ivy.module}-tests" conf="test" type="jar" ext="jar"/>
   		</publications>
-       
-       
-        <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->master(*),runtime(default);distGrid->master(*),runtime(default)"  >
+
+
+        <dependencies  defaultconfmapping="build->default(*);runtime->runtime(*),master(*); dist->default(*);distGrid->default(*)"  >
+
+            <!-- exclusion based on spring/hibernate/bering -->
 			<exclude conf="*" name="cglib" />
 			<exclude conf="*" name="asm-attrs" />
-			<exclude conf="*" name="asm-1*" />
 			<exclude conf="*" org="objectweb" module="asm"/>
-			
-			<dependency org="ehcache" name="ehcache" rev="1.2.3"/>
-			
+
+			<!-- exclusion based on class loading -->
+			<exclude conf="runtime,dist,distGrid" module="avalon-framework-api"  />
+			<exclude conf="runtime,dist,distGrid" module="avalon-framework-impl"  />
+			<exclude conf="runtime,dist,distGrid" name="logkit"  />
+			<exclude conf="dist,distGrid" module="jsp-api" />
+        	<exclude conf="dist,distGrid" module="servlet-api"  />
+			<exclude conf="dist,distGrid" name="spring-aop"  />
+			<exclude conf="dist,distGrid" name="spring-beans"  />
+			<exclude conf="dist,distGrid" name="spring-context"  />
+			<exclude conf="dist,distGrid" name="spring-core"  />
+			<exclude conf="dist,distGrid" name="spring-dao"  />
+			<exclude conf="dist,distGrid" name="spring-hibernate3"  />
+			<exclude conf="dist,distGrid" name="spring-jdbc"  />
+			<exclude conf="dist,distGrid" name="spring-remoting"  />
+			<exclude conf="dist,distGrid" name="spring-support"  />
+			<exclude conf="dist,distGrid" name="spring-web"  />
+			<exclude conf="dist,distGrid" name="spring-webmvc"  />
+			<exclude conf="dist,distGrid" module="commons-codec"  />
+			<exclude conf="dist,distGrid" module="hsqldb" />
+			<exclude conf="dist,distGrid" name="jta" />
+			<exclude conf="dist,distGrid" module="collection-setter-injector" />
+			<exclude conf="dist,distGrid" module="commons-beanutils-core" />
+			<exclude conf="dist,distGrid" module="commons-configuration" />
+			<exclude conf="dist,distGrid" org="cryptix"  />
+			<exclude conf="dist,distGrid" module="geronimo-spec-jta" />
+			<exclude conf="dist,distGrid" module="icu4j" />
+			<exclude conf="dist,distGrid" module="jgss" />
+			<exclude conf="dist,distGrid" module="jxl" />
+			<exclude conf="dist,distGrid" module="xom" />
+			<exclude conf="dist,distGrid" module="xmlParserAPIs" />
+			<exclude conf="dist,distGrid" module="subject" />
+			<exclude conf="runtime,dist,distGrid" module="c3p0"/>
+
 			<!-- caAERS module dependencies -->
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration"
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
-			
+
+			<!-- EhCache -->
+			<dependency org="ehcache" name="ehcache" rev="1.2.3" />
+
 			<!--  Spring and Spring Modules -->
-        	<dependency org="org.springframework" name="spring" rev="2.0.6" force="true"/>
-        	<!--<dependency org="org.springframework" name="spring-context" rev="2.0.2" force="true" />-->
-        	<dependency org="org.springframework" name="spring-dao" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-jdbc" rev="2.0.2" force="true" />
-        	<!--<dependency org="org.springframework" name="spring-support" rev="2.0.2" force="true" />-->
-        	<!--<dependency org="org.springframework" name="spring-remoting" rev="2.0.2" force="true" />-->
-        	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
-			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3" />
+        	<dependency org="org.springframework" name="spring" rev="2.0.6" force="true" />
+			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3"  />
 			<dependency org="org.springmodules" name="spring-modules-jbpm31" rev="0.8a" >
-			<exclude conf="*" name="hibernate" />
-			<exclude conf="*" name="spring-core" />
-			<exclude conf="*" name="spring-aop" />
-			<exclude name="spring*" conf="*" />
-			<exclude name="jbpm" conf="*" /><!-- explicity specified jbdl 3.2.3.sb -->
+				<exclude conf="*" module="hibernate" />
+				<exclude module="spring*" conf="*" />
+				<exclude module="jbpm" conf="*" /><!-- explicity specified jbdl 3.2.3.sb -->
+				<exclude module="xml-apis" conf="*" />
 			</dependency>
-			
+
 			<!--  JBPM - Workflow -->
-			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3.sb"/>
-			<dependency org="javax.jcr" name="jcr" rev="1.0" /> <!--  dependency at hibernate layer, by jbpm -->
+			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3.sb"  />
+			<dependency org="javax.jcr" name="jcr" rev="1.0"  /> <!--  dependency at hibernate layer, by jbpm -->
 
 			<!--  Commons Jar (Apache/NW) -->
-        	<dependency org="commons-collections" name="commons-collections" rev="3.2" />
-        	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
-        	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
-			<dependency org="net.sourceforge.collections" name="collections-generic" rev="4.01" />
-			<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" />
-			<dependency org="edu.northwestern.bioinformatics" name="core-commons" rev="77" />
-			<dependency org="commons-validator" name="commons-validator" rev="1.1.4" />
-			
+        	<dependency org="commons-collections" name="commons-collections" rev="3.2"  />
+			<dependency org="net.sourceforge.collections" name="collections-generic" rev="4.01"  />
+			<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0"  />
+			<dependency org="edu.northwestern.bioinformatics" name="core-commons" rev="77"   />
+			<dependency org="commons-validator" name="commons-validator" rev="1.1.4"  />
+
         	<!--  Hibernate/Supporting Jars -->
-        	<dependency org="org.hibernate" name="hibernate" rev="3.2.1.ga">
+        	<dependency org="org.hibernate" name="hibernate" rev="3.2.1.ga" >
         		<exclude conf="*" name="cglib" />
         		<exclude conf="*" name="asm" />
         		<exclude conf="*" name="asm-attrs" />
         	</dependency>
- 			<dependency  org="cglib" name="cglib-nodep" rev="2.1_3" />
  			<dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.1.ga" />
-			
+
 			<!--  XML supporting JARS -->
-			<dependency org="org.jibx"  name="jibx-run" rev="1.0.1" />
-        	<dependency org="org.jibx"  name="jibx-bind" rev="1.0.1" />
-        	<dependency org="org.jibx" name="xsd2jibx" rev="0.2a-hack"/>
-        	<dependency org="castor" name="castor" rev="0.9.9"/>
-        	<dependency org="jdom" name="jdom" rev="1.0" />
-        	<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93" />
-        	<dependency org="jaxen" name="jaxen" rev="1.1" />
-        	
-        	<!-- XStream dependencies -->
-			<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.2.1" />
-			<dependency org="xpp3" name="xpp3" rev="1.1.3.4.O" />
+        	<dependency org="castor" name="castor" rev="0.9.9"  />
+        	<dependency org="jdom" name="jdom" rev="1.0"  />
+        	<dependency org="jaxen" name="jaxen" rev="1.1"  />
+
+			<!-- PDF -->
+			<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93">
+				<exclude module="batik-awt-util" />
+				<exclude module="batik-dom" />
+				<exclude module="batik-extension" />
+				<exclude module="batik-gui-util" />
+				<exclude module="batik-parser" />
+				<exclude module="batik-script" />
+				<exclude module="batik-svg-dom" />
+				<exclude module="batik-transcoder" />
+				<exclude module="batik-xml" />
+			</dependency>
+			<dependency org="batik" name="batik-util" rev="1.6-1" force="true" />
 
 			<!-- Jaxb dependencies -->
 			<dependency org="javax.xml.bind" name="jaxb-api" rev="2.1">
 				<exclude org="jsr173" name="javax.xml"/>
 			</dependency>
 			<dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.1.3" />
-			<dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.1.3" />
+			<dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.1.3" conf="build->default(*);test->default(*)"/>
 			<dependency org="xjc-plugin" name="collection-setter-injector" rev="1.0"/>
-			
-			<!-- XFire Jars -->
-			<dependency org="org.codehaus.xfire" name="xfire-jaxb2" rev="1.2.6" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-aegis" rev="1.2.6" force="true"/>
-			<dependency org="org.codehaus.xfire" name="xfire-core" rev="1.2.6"  force="true"/>
-			<dependency org="xfire" name="xfire-jsr181-api" rev="1.0-M1" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-spring" rev="1.2.6" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-annotations" rev="1.2.6" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-xmlbeans" rev="1.2.6" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-java5" rev="1.2.6" force="true" />
-			<dependency org="org.codehaus.xfire" name="xfire-ws-security" rev="1.2.6" force="true" />
-			<dependency org="org.apache.xbean" name="xbean-spring" rev="2.8" force="true" />
-			<dependency org="com.sun.xml.stream" name="sjsxp" rev="1.0.1" force="true" />
-			<dependency org="org.apache.ws.security" name="wss4j" rev="1.5.4-osgi" force="true" />
-			<dependency org="org.opensaml" name="opensaml" rev="1.1" force="true" />			
 
-            <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2" />
+			<!-- XFire Jars & Webservices-->
+			<dependency org="org.codehaus.xfire" name="xfire-jaxb2" rev="1.2.6" force="true" />
+			<dependency org="org.codehaus.xfire" name="xfire-aegis" rev="1.2.6" force="true" />
+			<dependency org="org.codehaus.xfire" name="xfire-core" rev="1.2.6"  force="true" />
+			<dependency org="xfire" name="xfire-jsr181-api" rev="1.0-M1" force="true" />
+			<dependency org="org.codehaus.xfire" name="xfire-spring" rev="1.2.6" force="true"  />
+			<dependency org="org.codehaus.xfire" name="xfire-annotations" rev="1.2.6" force="true" />
+			<dependency org="org.codehaus.xfire" name="xfire-java5" rev="1.2.6" force="true" />
+			<dependency org="org.apache.xbean" name="xbean-spring" rev="2.8" force="true"  />
+			<dependency org="com.sun.xml.stream" name="sjsxp" rev="1.0.1" force="true" />
+			<dependency org="org.apache.ws.security" name="wss4j" rev="1.5.4-osgi" force="true" >
+				<exclude module="axis-ant" />
+				<exclude module="junit" />
+			</dependency>
+			<dependency org="org.opensaml" name="opensaml" rev="1.1" force="true" />
+            <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2"  />
 
 			<!-- JSRs -->
-			<dependency org="jsr94" name="jsr94" rev="1.1" />
-			<dependency org="javax.xml.bind" name="jsr173_api" rev="1.0" />
-        	
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-jms_1.1_spec" rev="1.1" />
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-activation_1.1_spec" rev="1.0.2" />
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-annotation_1.0_spec" rev="1.1.1" />
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-jaxws_2.1_spec" rev="1.0" />
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-stax-api_1.0_spec" rev="1.0.1" />
-        	<dependency org="org.apache.geronimo.specs"  name="geronimo-ws-metadata_2.0_spec" rev="1.1.2" />
-			
-			<dependency org="xml-resolver"  name="xml-resolver" rev="1.2" />
-			<dependency org="com.sun.xml.fastinfoset"  name="FastInfoset" rev="1.2.3" />
-			
-			<dependency org="org.apache.ws.commons.axiom"  name="axiom-api" rev="1.2.7" />
-			<dependency org="org.apache.ws.commons.axiom"  name="axiom-impl" rev="1.2.7" />
-			
-			
-			<dependency org="org.apache.cxf"  name="cxf" rev="2.2" />
-			<dependency org="gov.nih.nci.caxchange"  name="caXchange-cxf-stubs-jar" rev="2.0" />
-			
-			<!-- jsr311 -->
-			<dependency org="javax.ws.rs"  name="jsr311-api" rev="1.0" />
-			
-			<!-- neethi -->
-			<dependency org="org.apache.neethi"  name="neethi" rev="2.0.4" />
-        	
-        	<!-- saaj -->
-        	<dependency org="javax.xml.soap"  name="saaj-api" rev="1.3" />
-        	<dependency org="javax.xml.soap"  name="saaj-impl" rev="1.3.2" />
-        	
-        	<!-- wss4j -->
-        	<dependency org="org.apache.ws.security"  name="wss4j" rev="1.5.7" />
-        	<dependency org="com.ctc.wstx"  name="wstx-asl" rev="3.2.6" />
-        	<dependency org="org.apache.ws.commons.schema"  name="XmlSchema" rev="1.4.4" />
-        	
-        	<dependency org="jboss"  name="jboss-jsr77" rev="3.2.3" />
-        	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1" conf="build;runtime;dist" />
-        	<dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="2.1" force="true" /> 
-        	<dependency org="freemarker" name="freemarker" rev="2.3.4" />
-        	
+			<dependency org="jsr94" name="jsr94" rev="1.1"  />
+			<dependency org="javax.xml.bind" name="jsr173_api" rev="1.0"  />
+
+
+        	<!--dependency org="jboss"  name="jboss-jsr77" rev="3.2.3" /-->
+        	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1" conf="build->default(*);runtime->default(*);dist->default(*)" />
+        	<dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="2.1" force="true"  />
+        	<dependency org="freemarker" name="freemarker" rev="2.3.4"   />
+
         	<!--  Quartz modules -->
-        	<dependency org="opensymphony" name="quartz-all" rev="1.6.0" />
-        	
+        	<dependency org="opensymphony" name="quartz-all" rev="1.6.0"  />
 
 
-			<!--  DB related supporting JARS -->        	
+
+			<!--  DB related supporting JARS -->
         	<dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" >
-        		<exclude name="xml-apis" conf="*"/>
-        		<exclude name="xerces" conf="*"/>
+        		<exclude module="xml-apis" conf="*"/>
+        		<exclude module="xerces" conf="*"/>
         	</dependency>
-        	<dependency org="postgresql" name="postgresql" rev="8.2-504.jdbc3" />
-        	<dependency org="hsqldb" name="hsqldb" rev="1.8.0.7" />
-        	<dependency org="oracle" name="ojdbc14" rev="10.2.0.2" />
-        	
+        	<dependency org="postgresql" name="postgresql" rev="8.2-504.jdbc3"  />
+        	<dependency org="oracle" name="ojdbc14" rev="10.2.0.2"  />
+
         	 <!-- Groovy (used by bering) needs this version of asm, but hibernate is pulling in 1.5.3 -->
         	<dependency org="asm" name="asm" rev="2.2.3" />
-        	<dependency org="edu.northwestern.bioinformatics"  name="bering" rev="0.6.1">
-        		<exclude name="spring" conf="*" />
-        		<exclude name="spring-mock" conf="*" />
+        	<dependency org="edu.northwestern.bioinformatics"  name="bering" rev="0.6.1" >
+        		<exclude module="spring*" conf="*" />
         	</dependency>
-        	
-        	
+
+            <!-- Java Mail -->
         	<dependency org="javax.mail" name="mail" rev="1.4" />
-        	<dependency org="javax.activation" name="activation" rev="1.1" />
-        	
+        	<dependency org="javax.activation" name="activation" rev="1.1"   />
+
         	<!-- compile only dependencies -->
 			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
 
+			<!-- CSM & Security related -->
+			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" force="true"/>
+			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" force="true"/>
+
 			<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false"/>
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" />
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" />
-			
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" />
-			
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false" force="true"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false" force="true"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" force="true"/>
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-uctrace" rev="${ctms.version}" conf="build->default(*)" force="true"/>
+
 			<!-- Rules Jar -->
-			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.2" />
-			
+			<dependency org="com.semanticbits.rules" name="semanticbits-rules" rev="1.2.4"  conf="build->default;dist->dist;distGrid->distGrid" />
+			<dependency org="org.mvel" name="mvel" rev="1.2.22-java1.5" force="true"/>
+
 			<!--Home grown infrastructure jar for COPPA  -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.4.4" />	
-			
-			<!-- PO related jars -->
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.4.4" conf="build->default;dist->dist;distGrid->distGrid" />
+			<dependency org="gov.nih.nci.caxchange" name="coppa-commons" rev="1.2.3" conf="build->default;dist->dist;distGrid->distGrid" />
+
+			<!-- caXchange related jars -->
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-common" rev="1.2" />
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-stubs" rev="1.2" />
 			<dependency org="gov.nih.nci.caxchange" name="CoreServices-client" rev="1.2" />
-			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="1.2" />	
-			
+			<dependency org="gov.nih.nci.caxchange" name="CoreServices-service" rev="1.2" />
+            <dependency org="gov.nih.nci.caxchange"  name="caXchange-cxf-stubs-jar" rev="2.0" />
+
+<!-- ========================================================================================================================= -->
+            <!-- caXchange transitive dependencies -->
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-activation_1.1_spec" rev="1.0.2" />
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-annotation_1.0_spec" rev="1.1.1" />
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-jaxws_2.1_spec" rev="1.0" />
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-stax-api_1.0_spec" rev="1.0.1" />
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-ws-metadata_2.0_spec" rev="1.1.2" />
+
+            <dependency org="xml-resolver"  name="xml-resolver" rev="1.2" />
+            <dependency org="com.sun.xml.fastinfoset"  name="FastInfoset" rev="1.2.3" />
+
+            <dependency org="org.apache.ws.commons.axiom"  name="axiom-api" rev="1.2.7" />
+            <dependency org="org.apache.ws.commons.axiom"  name="axiom-impl" rev="1.2.7" />
+
+            <dependency org="org.apache.cxf"  name="cxf" rev="2.2" />
+
+            <!-- jsr311 -->
+            <dependency org="javax.ws.rs"  name="jsr311-api" rev="1.0" />
+
+            <!-- neethi -->
+            <dependency org="org.apache.neethi"  name="neethi" rev="2.0.4">
+                <exclude org="org.apache.ws.commons.axiom" conf="*"/> <!-- version number not properly mentioned in neethi -->
+                <exclude org="org.codehaus.woodstox" />
+            </dependency>
+
+            <!-- saaj -->
+            <dependency org="javax.xml.soap"  name="saaj-api" rev="1.3" />
+            <dependency org="javax.xml.soap"  name="saaj-impl" rev="1.3.2" />
+
+            <!-- wss4j -->
+            <dependency org="org.apache.ws.security"  name="wss4j" rev="1.5.7" />
+            <dependency org="com.ctc.wstx"  name="wstx-asl" rev="3.2.6" />
+            <dependency org="org.apache.ws.commons.schema"  name="XmlSchema" rev="1.4.4" />
+<!-- ========================================================================================================================= -->
+
+
 			<!-- PA related jars -->
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-common" rev="1.2" />
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-stubs" rev="1.2" />
 			<dependency org="gov.nih.nci.caxchange" name="PAServices-client" rev="1.2" />
-			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="1.2" />	
-			
-			<dependency org="gov.nih.nci.caxchange" name="coppa-commons" rev="1.2.3" />
-			
-			<!-- caXchange related jars -->
-			<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.2.2" /> 
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.2.2" />
-        	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-client" rev="1.2.2" />
-        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.4.0" />		
+			<dependency org="gov.nih.nci.caxchange" name="PAServices-service" rev="1.2" />
 
-        	<!-- TODO: Check if Grid -->
+			<!-- caGrid Dependencies -->
+			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2"/>
+			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2"/>
+			<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2"/>
+			<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11"/>
 
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-client" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-common" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2" />
-        	<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11" />
-        	<!-- TODO : Check if Grid END-->
-        				
+			<!-- C3PR esb client -->
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.4.0" >
+        		<exclude org="gov.nih.nci.cagrid" />
+				<exclude org="gov.nih.nci.caxchange" module="CoreServices*"/>
+				<exclude org="gov.nih.nci.caxchange" module="PAServices*"/>
+				<exclude org="org.apache.activemq" />
+				<exclude org="org.apache.geronimo.specs" />
+				<exclude module="ctms-commons-testing-uctrace" />
+				<exclude org="org.apache.geronimo.specs" />
+				<exclude module="asm" />
+				<exclude module="dbunit" />
+				<exclude module="jboss-jsr77" />
+				<exclude org="org.springframework" />
+				<exclude org="castor" />
+				<exclude module="fop" />
+				<exclude org="gov.nih.nci.cabig.ctms" />
+				<exclude org="gov.nih.nci.security.acegi" />
+				<exclude org="edu.northwestern.bioinformatics" />
+        	</dependency>
+
+
 			<!-- Apache POI dependencies -->
-			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>
-			
+			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL" >
+				<exclude module="log4j" />
+				<exclude module="commons-logging" />
+			</dependency>
+
 			<!-- Test/Runtime dependencies -->
-			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default;dist->default(*)"/>
-						
+			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default"/>
+
 			<!-- Test only dependencies -->
-			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />        	
+			<dependency org="c3p0" name="c3p0" rev="0.8.5.2" conf="test->default(*)"/>
+			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default"/>
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>
 			<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
-			
+
         </dependencies>
 </ivy-module>

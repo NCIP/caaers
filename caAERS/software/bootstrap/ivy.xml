@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="1.4">
-		
+
     	<info organisation="gov.nih.nci.cabig.caaers"
           	module="caaers-core-bootstrap"
           	status="integration"/>
-        
+
         <configurations>
-        	<conf name="default" visibility="public" extends="publish,runtime" 
+        	<conf name="default" visibility="public" extends="publish,runtime"
         		description="Dependencies needed for default setting"  />
         	<conf name="build" visibility="public"
         		description="Dependencies required for build time, all classpath should have this"/>
-        	<conf name="publish" visibility="public" 
+        	<conf name="publish" visibility="public"
         		description="Dependencies along with this module is published in repository" />
         	<conf name="distGrid" visibility="public" extends="publish"
         		description="Dependencies that are required in grid distribution of this module" />
@@ -18,42 +18,50 @@
         		description="Dependencies needed for standalone distribution" />
         	<conf name="runtime" visibility="public"
         		description="The dependencies that are needed for runtime" extends="build" />
-        	<conf name="test" visibility="public" 
+        	<conf name="test" visibility="public"
         		description="Dependencies needed for testing purposes"/>
         </configurations>
-        
+
         <!--  Items to be published  -->
          <publications>
     		<artifact name="${ivy.module}" conf="publish,dist,distGrid" type="jar"/>
     		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
   		</publications>
-        
+
         <!-- dependencies for the bootstrap module -->
         <dependencies>
-        	<!--dependency org="commons-io" name="commons-io" rev="1.3.1" conf="build->default(*)"/-->
-			<!--dependency org="log4j" name="log4j" rev="1.2.12" conf="build->default(*)"/-->
+
+			<!-- exclusions based on class loading -->
+			<exclude conf="runtime,dist,distGrid" module="avalon-framework"  />
+			<exclude conf="runtime,dist,distGrid" module="logkit"  />
+			<exclude conf="dist,distGrid" name="jsp-api" />
+        	<exclude conf="dist,distGrid" module="servlet-api"  />
+
+            <!-- Semanticbits Ant related tasks -->
 			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)"/>
-			<dependency org="org.springframework" name="spring" rev="2.0.6" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
+
+			<!--  Spring framework -->
+			<dependency org="org.springframework" name="spring" rev="2.0.6" force="true"
+				conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
         	<dependency org="commons-lang" name="commons-lang" rev="2.3" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-        	<dependency org="commons-logging" name="commons-logging" rev="1.1" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-			
-			
+
+
 			<!--  dependency on aspectJ -->
 			<dependency org="aspectj" name="aspectjrt" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
 			<dependency org="aspectj" name="aspectjweaver" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
-		
+
         	<!-- compile only dependencies -->
         	<dependency org="ant" name="ant" rev="1.6.5" conf="build->master(*)"/>
-        	
+
 			<!-- CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-					
+
 			<!-- Testing dependencies -->
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
         	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
-        	
+
         </dependencies>
 </ivy-module>
