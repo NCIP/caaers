@@ -5,11 +5,11 @@ import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,46 +21,57 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * @author Sameer Sawant
+ * This class provides methods to import Organizations from Organization_Codes.txt, This is available on the CTEP site. 
+ * http://ctep.cancer.gov/protocolDevelopment/docs/Organization_Codes.txt 
+ *
+ * @author Monish Dombla
  */
 public class OrganizationImporter extends Importer {
 
 	private OrganizationRepository organizationRepository;
 	private static Logger logger = Logger.getLogger(OrganizationImporter.class);
-	private List<String> ctepOrganizationRecords = new ArrayList<String>();
-	private List<Organization> allOrganizations = null;
+	Map<String,Organization> organizationMap = null;
 	
 	
+	/**
+	 * This method accepts the file selected by the user, which is Organization_Codes.txt file from CTEP and process each record.
+	 * 
+	 * @param File
+	 * @param ImportCommand
+	 */
 	public void processEntities(File ctepOrganizationsFile, ImportCommand command) {
 		
-		//Get all the Organizations from DB and store it in a Map.
-		Map<String,Organization> organizationMap = new HashMap<String,Organization>();
-		allOrganizations = organizationRepository.getAllOrganizations();
-		for(Organization eachOrg : allOrganizations){
-			organizationMap.put(eachOrg.getNciInstituteCode().trim(), eachOrg);
-		}
+		organizationMap = getOrganizationMap();
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(ctepOrganizationsFile));
 			String line = null;
+			
 			// skip first 6 lines
 			reader.readLine();reader.readLine();reader.readLine();
 			reader.readLine();reader.readLine();reader.readLine();
-			
+			int lineNumber = 6;
+
 			while ((line = reader.readLine()) != null) {
-				ctepOrganizationRecords.add(line);
-			}
-			reader.close();
-			
-			for(String eachRecord : ctepOrganizationRecords){
-				DomainObjectImportOutcome<Organization> organizationImportOutcome = processOrganization(eachRecord);
-				if (organizationImportOutcome != null && organizationImportOutcome.getImportedDomainObject() != null) {
-					Organization dbOrg = organizationMap.get(organizationImportOutcome.getImportedDomainObject().getNciInstituteCode());
-					if (dbOrg != null) {
-						organizationImportOutcome.setImportedDomainObject(dbOrg);
-						command.addUpdateableOrganization(organizationImportOutcome);
-					} else {
-						command.addImportableOrganization(organizationImportOutcome);
+				lineNumber = lineNumber + 1;
+				//Process each line. If Organization exists add it to updateable list else add it to Importable list.
+				DomainObjectImportOutcome<Organization> organizationImportOutcome = processOrganization(line,lineNumber);
+				if (organizationImportOutcome != null){
+					if(!organizationImportOutcome.isSavable()){
+						command.addNonImportableOrganization(organizationImportOutcome);
+					}else{
+						if (organizationImportOutcome.getImportedDomainObject() != null){
+							Organization dbOrg = organizationMap.get(organizationImportOutcome.getImportedDomainObject().getNciInstituteCode());
+							if (dbOrg != null) {
+								if (!StringUtils.equals(dbOrg.getName(), organizationImportOutcome.getImportedDomainObject().getName())) {
+									dbOrg.setName(organizationImportOutcome.getImportedDomainObject().getName());
+									organizationImportOutcome.setImportedDomainObject(dbOrg);
+									command.addUpdateableOrganization(organizationImportOutcome);
+								}
+							}else{
+								command.addImportableOrganization(organizationImportOutcome);
+							}
+						}
 					}
 				}
 			}
@@ -70,8 +81,21 @@ public class OrganizationImporter extends Importer {
 		}
 	}
 
+	/**
+	 * This method creates all the Organizations in ImportableOrganizations list in ImportCommand & also
+	 * updates all the Organizations in the UpdatableOrganizations list in ImportCommand.
+	 * The Organization is created as a LocalOrganization in caAERS.
+	 * 
+	 * @param ImportCommand
+	 * @param HttpServletRequest
+	 */
 	public void save(ImportCommand command, HttpServletRequest request) {
+		//Create new Organizations.
         for (DomainObjectImportOutcome<Organization> importOutcome : command.getImportableOrganizations()) {
+        	organizationRepository.createOrUpdate(importOutcome.getImportedDomainObject());
+        }
+        //Update existing Organizations.
+        for (DomainObjectImportOutcome<Organization> importOutcome : command.getUpdateableOrganizations()) {
         	organizationRepository.createOrUpdate(importOutcome.getImportedDomainObject());
         }
 	}
@@ -92,7 +116,7 @@ public class OrganizationImporter extends Importer {
 	* @param organizationString
 	* @return
 	*/
-	private DomainObjectImportOutcome<Organization> processOrganization(String organizationString){
+	protected DomainObjectImportOutcome<Organization> processOrganization(String organizationString,int lineNumber){
 		
 		DomainObjectImportOutcome<Organization> organizationImportOutcome = null;
 		LocalOrganization localOrganization = null;
@@ -116,32 +140,52 @@ public class OrganizationImporter extends Importer {
 	        
 	        //If there are 5 tokens as expected, process the record. Create a LocalOrganization object.
 	        if(st.hasMoreTokens() && st.countTokens() == 5) {
-	        organizationImportOutcome = new DomainObjectImportOutcome<Organization>();
-	        localOrganization = new LocalOrganization();
-	        
-	        institutionCode = StringUtils.removeStart(st.nextToken(), "\"").trim();
-	        institutionCode = StringUtils.removeEnd(institutionCode, "\"");
-	        institutionName = StringUtils.removeStart(st.nextToken(), "\"").trim();
-	        institutionName = StringUtils.removeEnd(institutionName, "\"");
-	        city = StringUtils.removeStart(st.nextToken(), "\"").trim();
-	        city = StringUtils.removeEnd(city, "\"");
-	        state = StringUtils.removeStart(st.nextToken(), "\"").trim();
-	        state = StringUtils.removeEnd(state, "\"");
-	        country = StringUtils.removeStart(st.nextToken(), "\"").trim();
-	        country = StringUtils.removeEnd(country, "\"");
-	        localOrganization.setName(institutionName);
-	        localOrganization.setNciInstituteCode(institutionCode);
-	        localOrganization.setCity(city);
-	        localOrganization.setState(state);
-	        localOrganization.setCountry(country);
-	       
-	        organizationImportOutcome.setImportedDomainObject(localOrganization);
-	        organizationImportOutcome.setSavable(Boolean.TRUE);
+		        organizationImportOutcome = new DomainObjectImportOutcome<Organization>();
+		        localOrganization = new LocalOrganization();
+		        
+		        institutionCode = StringUtils.removeStart(st.nextToken(), "\"").trim();
+		        institutionCode = StringUtils.removeEnd(institutionCode, "\"");
+		        institutionName = StringUtils.removeStart(st.nextToken(), "\"").trim();
+		        institutionName = StringUtils.removeEnd(institutionName, "\"");
+		        city = StringUtils.removeStart(st.nextToken(), "\"").trim();
+		        city = StringUtils.removeEnd(city, "\"");
+		        state = StringUtils.removeStart(st.nextToken(), "\"").trim();
+		        state = StringUtils.removeEnd(state, "\"");
+		        country = StringUtils.removeStart(st.nextToken(), "\"").trim();
+		        country = StringUtils.removeEnd(country, "\"");
+		        localOrganization.setName(institutionName);
+		        localOrganization.setNciInstituteCode(institutionCode);
+		        localOrganization.setCity(city);
+		        localOrganization.setState(state);
+		        localOrganization.setCountry(country);
+		       
+		        organizationImportOutcome.setImportedDomainObject(localOrganization);
+		        organizationImportOutcome.setSavable(Boolean.TRUE);
        
-        }else{
-        	logger.debug("Error in record -- >>> " + organizationString);
+	        }else{
+	        	logger.debug("Error in record -- >>> " + organizationString);
+	        	organizationImportOutcome = new DomainObjectImportOutcome<Organization>();
+	        	StringBuilder msgBuilder = new StringBuilder("Invalid organization record found at line ::: ");
+	        	msgBuilder.append(lineNumber);
+	        	organizationImportOutcome.addErrorMessage(msgBuilder.toString(), Severity.ERROR);
         }
 	  }
 		return organizationImportOutcome;
+	}
+
+	public Map<String, Organization> getOrganizationMap() {
+		if(organizationMap == null){
+			//Get all the Organizations from DB and store it in a Map. This is done to avoid the 8000+ DB calls to get an organization.
+			organizationMap = new HashMap<String,Organization>();
+			List<Organization> allOrganizations = organizationRepository.getAllOrganizations();
+			for(Organization eachOrg : allOrganizations){
+				organizationMap.put(eachOrg.getNciInstituteCode().trim(), eachOrg);
+			}
+		}
+		return organizationMap;
+	}
+
+	public void setOrganizationMap(Map<String, Organization> organizationMap) {
+		this.organizationMap = organizationMap;
 	}
 }

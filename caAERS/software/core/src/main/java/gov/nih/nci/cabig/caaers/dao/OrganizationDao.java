@@ -215,6 +215,14 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 			return new ArrayList<Organization>();
 		}
     }
+    
+    /**
+     * This method will return all the NCI Institute codes from organizations.
+     * @return
+     */
+    public List<String> getAllNciInstitueCodes(){
+    	return null;
+    }
 
 	@Required
 	public void setRemoteSession(RemoteSession remoteSession) {

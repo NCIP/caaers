@@ -278,4 +278,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	public List<Organization> getAllOrganizations() {
 		return organizationDao.getAll();
 	}
+
+	public List<Organization> getAllNciInstitueCodes() {
+		return null;
+	}
 }
