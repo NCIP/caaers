@@ -61,7 +61,6 @@
 			<exclude conf="dist,distGrid" module="commons-beanutils-core" />
 			<exclude conf="dist,distGrid" module="commons-configuration" />
 			<exclude conf="dist,distGrid" org="cryptix"  />
-			<exclude conf="dist,distGrid" module="geronimo-spec-jta" />
 			<exclude conf="dist,distGrid" module="icu4j" />
 			<exclude conf="dist,distGrid" module="jgss" />
 			<exclude conf="dist,distGrid" module="jxl" />
