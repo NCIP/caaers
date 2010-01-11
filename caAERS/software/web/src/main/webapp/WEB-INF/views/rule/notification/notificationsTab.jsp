@@ -14,7 +14,8 @@
             cursor: pointer;
 		}
 		#tsu_current{
-			background-color: #6E81A6;
+			background-color:#314993;
+			color:white;
 		}
 		.divider{
   			border-left-color: #ADC9EF;
@@ -112,7 +113,7 @@
 			selSub.selectedIndex = 0;
 			lastElement.focus();
 		}
-		function deleteNotification(index){
+		function fireAction(index){
 			var frm = $('command');
 			frm.elements['indexToDelete'].value = index;
 			frm.elements['_action'].value = 'delete';
@@ -128,7 +129,9 @@
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 <tr>
     	<td>
-    		<caaers:message code="header.reportdefinition.notifications" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
+    		<div class="summary">
+    			<caaers:message code="header.reportdefinition.notifications" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
+			</div>
     	  	<!-- This box contains the Scale -->
     		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
    				<p>

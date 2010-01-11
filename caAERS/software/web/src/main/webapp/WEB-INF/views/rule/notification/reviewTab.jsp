@@ -26,7 +26,9 @@
 
     <tags:tabForm tab="${tab}" flow="${flow}" >
     <jsp:attribute name="header">
-    	<caaers:message code="header.reportdefinition.review" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
+    	<div class="summary">
+    		<caaers:message code="header.reportdefinition.review" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
+		</div>
     </jsp:attribute>
     <jsp:attribute name="instructions">
     	<tags:instructions code="createrulereview" />

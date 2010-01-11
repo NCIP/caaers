@@ -68,8 +68,10 @@
     <chrome:division>
 	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="false">
 	   	 	<jsp:attribute name="header">
+	   	 		<div class="summary">
     			<caaers:message code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
-    		</jsp:attribute>
+    			</div>
+			</jsp:attribute>
 			<jsp:attribute name="singleFields">
 				<div id="rdd-tab-fields">
             	   <input type="hidden" name="lastPointOnScale" value=""/>
@@ -104,7 +106,7 @@
 					<br>
 				</jsp:attribute>
 				<jsp:attribute name="localButtons">
-					<tags:listEditorAddButton divisionClass="email" label="Add eMail"/>
+					<tags:listEditorAddButton divisionClass="email" label="Add e-mail"/>
 					<tags:listEditorAddButton divisionClass="role" label="Add Role"/>
 				</jsp:attribute>
 			</tags:section>

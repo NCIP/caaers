@@ -6,14 +6,14 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="pnf"  type="gov.nih.nci.cabig.caaers.domain.report.PlannedNotification" %>
 <%@attribute name="style"%>
-<chrome:minimizableBox title="Email Notification ${index + 1} " 
-id="nf-${index}" cssClass="nf-section" autopad="true">
+<chrome:division title="Email Notification ${index + 1} " collapsable="true" enableDelete="true" deleteParams="${index}"
+id="nf-${index}" cssClass="nf-section" >
 <div class="row">
  <div class="label"><label for="recipients">Recipients</label></div>
   <div class="value">
     <table border="0" cellspacing="2" cellpadding="0" width="90%">
       <tr align="middle">
-         <td width="49%"><tags:button color="blue" type="button" value="Add eMail" size="small" icon="add" onclick="javascript:insertRecipient('direct', ${index})"/></td>
+         <td width="49%"><tags:button color="blue" type="button" value="Add e-mail" size="small" icon="add" onclick="javascript:insertRecipient('direct', ${index})"/></td>
          <td rowspan="2" width="2%" class="divider">&nbsp;</td>
          <td><tags:button color="blue" type="button" value="Add Role" size="small" icon="add" onclick="javascript:insertRecipient('role',${index})"/></td>
       </tr>
@@ -73,9 +73,5 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
  <div class="label"><tags:requiredIndicator/><label for="message">Message</label></div>
  <div class="value"><form:textarea cssStyle="width:96%; height:300px"  path="emailNotifications[${index}].notificationBodyContent.body" onfocus="lastElement = this;"/></div>
 </div>
-<div class="content buttons autoclear">
-	<div class="local-buttons">
-        <tags:button color="blue" type="button" value="Delete" size="small" icon="x" onclick="javascript:deleteNotification(${index});"/>
-    </div>
-</div>
-</chrome:minimizableBox>
+
+</chrome:division>
