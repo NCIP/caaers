@@ -48,10 +48,14 @@ public class ImportCommand {
     private List<DomainObjectImportOutcome<Organization>> importableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
     
     private List<DomainObjectImportOutcome<Organization>> updateableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+    
+    private List<DomainObjectImportOutcome<Organization>> nonImportableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
 
     private List<DomainObjectImportOutcome<Agent>> importableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
     
     private List<DomainObjectImportOutcome<Agent>> updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+    
+    private List<DomainObjectImportOutcome<Agent>> nonImportableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
 
     public String getType() {
         return type;
@@ -210,30 +214,55 @@ public class ImportCommand {
             DomainObjectImportOutcome<Investigator> domainObjectImportOutcome) {
 				getImportableInvestigators().add(domainObjectImportOutcome);
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
 	 public List<DomainObjectImportOutcome<Organization>> getImportableOrganizations() {
 		 return importableOrganizations;
 	 }
 
+	 /**
+	  * 
+	  * @param importableOrganizations
+	  */
 	 public void setImportableOrganizations(
 			List<DomainObjectImportOutcome<Organization>> importableOrganizations) {
 		this.importableOrganizations = importableOrganizations;
 	}
 
+	
+	/**
+	 *  
+	 * @return
+	 */
 	public List<DomainObjectImportOutcome<Organization>> getUpdateableOrganizations() {
 		return updateableOrganizations;
 	}
-
+	
+	/**
+	 * 
+	 * @param updateableOrganizations
+	 */
 	public void setUpdateableOrganizations(
 			List<DomainObjectImportOutcome<Organization>> updateableOrganizations) {
 		this.updateableOrganizations = updateableOrganizations;
 	}
 
+	/**
+	 * 
+	 * @param domainObjectImportOutcome
+	 */
 	public void addUpdateableOrganization(
 			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
 		getUpdateableOrganizations().add(domainObjectImportOutcome);
 	}
 
+	/**
+	 * 
+	 * @param domainObjectImportOutcome
+	 */
 	public void addImportableOrganization(
 			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
 		getImportableOrganizations().add(domainObjectImportOutcome);
@@ -269,15 +298,50 @@ public class ImportCommand {
 		this.updateableAgents = updateableAgents;
 	}
 	
-	
+	/**
+	 * 
+	 * @param domainObjectImportOutcome
+	 */
 	public void addUpdateableAgent(
 			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
 		getUpdateableAgents().add(domainObjectImportOutcome);
 	}
-
+	
+	/**
+	 * 
+	 * @param domainObjectImportOutcome
+	 */
 	public void addImportableAgent(
 			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
 		getImportableAgents().add(domainObjectImportOutcome);
+	}
+	
+	public List<DomainObjectImportOutcome<Organization>> getNonImportableOrganizations() {
+		return nonImportableOrganizations;
+	}
+
+	public void setNonImportableOrganizations(
+			List<DomainObjectImportOutcome<Organization>> nonImportableOrganizations) {
+		this.nonImportableOrganizations = nonImportableOrganizations;
+	}
+
+	public List<DomainObjectImportOutcome<Agent>> getNonImportableAgents() {
+		return nonImportableAgents;
+	}
+
+	public void setNonImportableAgents(
+			List<DomainObjectImportOutcome<Agent>> nonImportableAgents) {
+		this.nonImportableAgents = nonImportableAgents;
+	}
+	
+	public void addNonImportableOrganization(
+			DomainObjectImportOutcome<Organization> domainObjectImportOutcome) {
+		getNonImportableOrganizations().add(domainObjectImportOutcome);
+	}
+	
+	public void addNonImportableAgent(
+			DomainObjectImportOutcome<Agent> domainObjectImportOutcome) {
+		getNonImportableAgents().add(domainObjectImportOutcome);
 	}
 	
 }

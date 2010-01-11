@@ -1,0 +1,19 @@
+
+08-JAN-10                                                                                                                         
+
+NSC, Agent Name                                                                                                                   
+
+"723227","(161-180)ESO-1 Peptide"                                                                                                 
+"726584","(H115D)VHL35 Peptide"                                                                                                   
+"726190","(R)-(-)-Gossypol acetic acid (Ascenta's AT-101)"                                                                        
+"722277","(S111I) VHL16 Peptide"
+"(34234) DFDF Oierrs"                                                                                                  
+"721380","(V166A) VHL14 Peptide"
+"54321","Viola"                                                                                                  
+"709919","0.9% Sodium Chloride"                                                                                                   
+"132313","1,2:5,6-Dianhydrogalactitol"                                                                                            
+"33419","1,3-Diamino-5-methylphenazinium chloride"
+"098765","Please Change Me"                                                                                
+"5416","1,9-Nonanediol"                                                                                                           
+"1026","1-Aminocyclopentane"
+"102326",

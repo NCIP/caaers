@@ -1,0 +1,16 @@
+
+08-JAN-10                                                                                                                         
+
+Institution Code,Institution Name,City,State,Country                                                                              
+
+"00000","Unknown",".","","USA"                                                                                                    
+"02001","Catedra De Oncologia Univ-Salvador","Buenos Aires","","Argentina"
+"4321","Hosp. Ramos Mejia, Sala 18"                                                        
+"02002","Hospital Militar Central","Buenos Aires","","Argentina"                                                                  
+"02003","Hospitales Privado Guemes","Buenos Aires","","Argentina"
+"65432","Hosp. Ramos Mejia, Sala 18"                                                                 
+"02004","Hosp. Rawson","Buenos Aires","","Argentina"                                                                              
+"02005","Hosp. Teodoro Alvarez","Buenos Aires","","Argentina"
+"ABCD01","Please Change Me","Alliance","OH","USA"
+"987654","Hosp. Ramos Mejia, Sala 18"                                                                     
+"02006","Hosp. Ramos Mejia, Sala 18","Buenos Aires","","Argentina"                                                                
