@@ -212,6 +212,7 @@
 
 <!-- ========================================================================================================================= -->
             <!-- caXchange transitive dependencies -->
+            <dependency org="org.apache.geronimo.specs"  name="geronimo-jms_1.1_spec" rev="1.1" />
             <dependency org="org.apache.geronimo.specs"  name="geronimo-activation_1.1_spec" rev="1.0.2" />
             <dependency org="org.apache.geronimo.specs"  name="geronimo-annotation_1.0_spec" rev="1.1.1" />
             <dependency org="org.apache.geronimo.specs"  name="geronimo-jaxws_2.1_spec" rev="1.0" />
