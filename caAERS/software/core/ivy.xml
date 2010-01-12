@@ -46,7 +46,6 @@
 			<exclude conf="runtime,dist,distGrid" name="spring-aop"  />
             <exclude conf="runtime,dist,distGrid" name="spring-aspects"  />
 			<exclude conf="runtime,dist,distGrid" name="spring-beans"  />
-			<exclude conf="runtime,dist,distGrid" name="spring-context"  />
 			<exclude conf="runtime,dist,distGrid" name="spring-core"  />
 			<exclude conf="runtime,dist,distGrid" name="spring-dao"  />
 			<exclude conf="runtime,dist,distGrid" name="spring-hibernate3"  />
