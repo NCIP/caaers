@@ -48,12 +48,11 @@
 			<!-- exclusion based on class loading -->
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
 
-
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration"
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid">
 			</dependency>
-
+            <dependency org="org.mvel" name="mvel" rev="1.2.22-java1.5" force="true"/>
 
 			<!--  Apache Commons -->
         	<dependency org="commons-fileupload" name="commons-fileupload" rev="1.2" />
