@@ -248,7 +248,7 @@ public class AttributionTabTest extends AeTabTestCase {
     }
 
     public void testGetExpeditedReportSections(){
-        assertSame(tab.getExpeditedReportSections(), tab.section());
+        assertSame(tab.getExpeditedReportSections()[0], tab.section()[0]);
     }
 
     @SuppressWarnings( { "unchecked" })
