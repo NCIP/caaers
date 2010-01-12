@@ -3,7 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
-	<chrome:division title="Sumary" id="agent_import_sumary">
+	<chrome:division title="Summary" id="agent_import_sumary">
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>Invalid records</b> </th>
@@ -21,7 +21,7 @@
 
 
 	<c:if test='${fn:length(command.nonImportableAgents) > 0 }'>
-		<chrome:division title="${fn:length(command.nonImportableAgents)} Invalid agent records found" id="agent_invalid">
+		<chrome:division title="${fn:length(command.nonImportableAgents)} Invalid agent records found" id="agent_invalid" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -37,7 +37,7 @@
 	</c:if>
 
 	<c:if test='${fn:length(command.importableAgents) > 0 }'>
-		<chrome:division title="${fn:length(command.importableAgents)} Agents to be added" id="agent_create">
+		<chrome:division title="${fn:length(command.importableAgents)} Agents to be added" id="agent_create" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -55,7 +55,7 @@
 	</c:if>
 	
 	<c:if test='${fn:length(command.updateableAgents) > 0 }'>
-		<chrome:division title="${fn:length(command.updateableAgents)} Agents to be updated" id="agent_update">
+		<chrome:division title="${fn:length(command.updateableAgents)} Agents to be updated" id="agent_update" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -71,13 +71,3 @@
    		</table>	
    		</chrome:division>
 	</c:if>
-	
-	<c:if test='${fn:length(command.importableAgents) == 0 }'>
-		<chrome:division title="No Agent records to be loaded" id="no_agents">
-			<table id="test" width="100%" class="tablecontent">
-	   			<tr class="results">
-	   				<td align="left"><i>None</i></td>
-	   			</tr>
-	   		</table>	 
-   		</chrome:division>
-   	</c:if>

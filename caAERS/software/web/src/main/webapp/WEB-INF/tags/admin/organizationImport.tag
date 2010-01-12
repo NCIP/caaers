@@ -3,7 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
-	<chrome:division title="Sumary" id="organization_import_sumary">
+	<chrome:division title="Summary" id="organization_import_sumary">
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>Invalid records</b> </th>
@@ -19,7 +19,7 @@
    	</chrome:division>
 
 	<c:if test='${fn:length(command.nonImportableOrganizations) > 0 }'>
-		<chrome:division title="${fn:length(command.nonImportableOrganizations)} Invalid Organization records found" id="organization_invalid">
+		<chrome:division title="${fn:length(command.nonImportableOrganizations)} Invalid Organization records found" id="organization_invalid"  collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -39,7 +39,7 @@
 	</c:if>
 
 	<c:if test='${fn:length(command.importableOrganizations) > 0 }'>
-		<chrome:division title="${fn:length(command.importableOrganizations)} Organizations to be added" id="organization_create">
+		<chrome:division title="${fn:length(command.importableOrganizations)} Organizations to be added" id="organization_create" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -57,7 +57,7 @@
 	</c:if>
 	
 	<c:if test='${fn:length(command.updateableOrganizations) > 0 }'>
-		<chrome:division title="${fn:length(command.updateableOrganizations)} Organizations to be updated" id="organization_update">
+		<chrome:division title="${fn:length(command.updateableOrganizations)} Organizations to be updated" id="organization_update" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -73,13 +73,3 @@
    		</table>	
    		</chrome:division>
 	</c:if>	
-	
-	<c:if test='${fn:length(command.importableOrganizations) == 0 }'>
-		<chrome:division title="No Organization records to be loaded" id="no_organizations">
-			<table id="test" width="100%" class="tablecontent">
-	   			<tr class="results">
-	   				<td align="left"><i>None</i></td>
-	   			</tr>
-	   		</table>	 
-   		</chrome:division>
-   	</c:if>
