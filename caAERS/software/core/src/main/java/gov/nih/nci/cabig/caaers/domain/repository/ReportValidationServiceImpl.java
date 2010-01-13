@@ -105,6 +105,14 @@ public class ReportValidationServiceImpl implements ReportValidationService{
                boolean sectionFilled = true;
                
                if(mandatorySecton.equals(ExpeditedReportSection.STUDY_INTERVENTIONS)){
+
+                 if(mandatorySections.contains(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
+                    mandatorySections.contains(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION) ||
+                    mandatorySections.contains(ExpeditedReportSection.SURGERY_INTERVENTION_SECTION) ||
+                    mandatorySections.contains(ExpeditedReportSection.MEDICAL_DEVICE_SECTION)){
+                     continue; 
+                 }
+
                  //special case - need to check at least one of its children is present instead.
                    sectionFilled = isElementPresentInSection(aeReport, ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
                                 isElementPresentInSection(aeReport, ExpeditedReportSection.RADIATION_INTERVENTION_SECTION) ||

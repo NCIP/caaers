@@ -23,7 +23,7 @@ import org.easymock.classextension.EasyMock;
  */
 
 
-public class ReportValidationServiceTest extends AbstractNoSecurityTestCase {
+public class ReportValidationServiceTest extends AbstractTestCase {
 	
 	private ReportValidationServiceImpl reportValidationService;
 	private ExpeditedReportTree expeditedReportTree;
@@ -121,12 +121,13 @@ public class ReportValidationServiceTest extends AbstractNoSecurityTestCase {
         verifyMocks();
     }
 
-    //case where Study Intervention is mandatory, but it is not provided
+    //case where Study Intervention & Agents is mandatory, but it is not provided
     public void testIsSubmittableInterventionsMandatory() throws Exception{
         Report report = createAttributionMandatoryReport();
         Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap = new HashMap<Integer, Collection<ExpeditedReportSection>>();
         ArrayList<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
         sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
+        sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
         mandatorySectionMap.put(new Integer(0), sections);
         EasyMock.expect(evaluationService.mandatorySections(expeditedData, report.getReportDefinition())).andReturn(mandatorySectionMap);
 
@@ -134,7 +135,7 @@ public class ReportValidationServiceTest extends AbstractNoSecurityTestCase {
         replayMocks();
         ReportSubmittability result =  reportValidationService.isSubmittable(report);
         assertFalse(result.isSubmittable()) ;
-        assertTrue(result.getMessages().get(ExpeditedReportSection.STUDY_INTERVENTIONS).get(0).getText().equals("The section 'Study Interventions' is mandatory for this report and cannot be empty"));
+        assertTrue(result.getMessages().get(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION).get(0).getText().equals("The section 'Agents' is mandatory for this report and cannot be empty"));
 
         verifyMocks();
     }
