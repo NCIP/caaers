@@ -66,7 +66,21 @@
 				<expression>factResolver.assertFact(adverseEvent,null,'expectedness','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Adverse Event " postfix="expected "/>	
 			</field>			
-						
+			<field name="participantAtRisk" display-uri="Participant at increased risk">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>select</input-type>
+				</field-value>
+				<valid-value value="true" display-uri="Yes" readable-text="is true"/>
+				<valid-value value="false" display-uri="No" readable-text="is false "/>
+				<operator name="==" display-uri="Equal To" readable-text=""/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(adverseEvent,null,'participantAtRisk','runTimeValue','runTimeOperator')</expression>	
+				<grammer prefix=" Does this Adverse Event place participant at higher risk ?  " postfix=" "/>	
+			</field>						
 			<field name="attributionSummary" display-uri="Attribution">
 				<field-value>
 					<method-call>
