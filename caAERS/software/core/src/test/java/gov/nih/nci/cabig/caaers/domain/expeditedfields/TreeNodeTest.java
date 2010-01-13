@@ -16,6 +16,7 @@ import org.springframework.beans.PropertyValues;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class TreeNodeTest extends TestCase {
     private TreeNode deepTree;
@@ -25,14 +26,36 @@ public class TreeNodeTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        deepTree = section(ExpeditedReportSection.BASICS_SECTION, property("r", property("a",
-                        property("a1"), property("a2")), section(
-                        ExpeditedReportSection.MEDICAL_INFO_SECTION, property("b", property("b1"),
-                                        property("b2"))), list("l", "Lambda", property("l7",
-                        property("l71"), property("l72"), property("l73")), property("L9")),
-                        property("duplicate", "Dup 0", property("duplicate", "Dup 1", property(
-                                        "duplicate", "Dup 2", property("duplicate", "Dup 3")))),
-                        codedOrOther("z", "Z", "oz", "Other")));
+        deepTree = section(ExpeditedReportSection.BASICS_SECTION,
+                            property("r",
+                                       property("a",
+                                                property("a1"),
+                                                property("a2")
+                                       ),
+                                       section(ExpeditedReportSection.MEDICAL_INFO_SECTION,
+                                               property("b",
+                                                       property("b1"),
+                                                       property("b2")
+                                               )
+                                       ),
+                                       list("l", "Lambda",
+                                             property("l7",
+                                                property("l71"),
+                                                property("l72"),
+                                                property("l73")
+                                             ),
+                                             property("L9")
+                                       ),
+                                       property("duplicate", "Dup 0",
+                                               property("duplicate", "Dup 1",
+                                                       property("duplicate", "Dup 2",
+                                                               property("duplicate", "Dup 3")
+                                                       )
+                                               )
+                                       ),
+                                       codedOrOther("z", "Z", "oz", "Other")
+                            )
+                );
 
         instance = new TestTree();
     }
@@ -218,6 +241,13 @@ public class TreeNodeTest extends TestCase {
         assertFalse(a.isAncestorOf(r));
         assertFalse(a.isAncestorOf(a));
         assertFalse(r.isAncestorOf(r));
+    }
+
+    public void testRecurcivelyCollectListNode(){
+        List<TreeNode> listNodes = new ArrayList<TreeNode>();
+        deepTree.recursivelyCollectListNodes(listNodes);
+        assertEquals(1, listNodes.size());
+        assertEquals("l", listNodes.get(0).getPropertyName());
     }
 
     private void assertSinglePropertyValue(String msg, String expectedName, Object expectedValue,

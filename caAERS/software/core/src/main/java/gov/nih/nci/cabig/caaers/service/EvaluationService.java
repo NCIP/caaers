@@ -52,7 +52,7 @@ public interface EvaluationService {
      * Runs through the Business rules set at "FundingSponsor" level, for the section.
      * 
      * @param aeReport
-     * @param sectionName
+     * @param sections
      * @return - {@link ValidationErrors}, that contains the errors.
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);

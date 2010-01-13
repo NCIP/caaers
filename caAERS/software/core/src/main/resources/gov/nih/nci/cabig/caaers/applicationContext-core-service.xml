@@ -320,7 +320,12 @@ default-lazy-init="true">
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
 	<bean id="freeMarkerService" class="gov.nih.nci.cabig.caaers.service.FreeMarkerService"/>
-	
+
+	<bean id="reportValidationService" class="gov.nih.nci.cabig.caaers.domain.repository.ReportValidationServiceImpl">
+		<property name="expeditedReportTree" ref="expeditedReportTree"/>
+        <property name="evaluationService" ref="evaluationService" />
+	</bean>
+    
 	<bean id="caaersRulesEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService">
 		<property name="ruleEngineService" ref="ruleEngineService"/>
 		<property name="ruleAuthoringService" ref="ruleAuthoringService"/>

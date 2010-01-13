@@ -726,10 +726,6 @@ This applicationContext contains the definition of the DAOs
 		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
     </bean>
 
-	<bean id="reportValidationService" class="gov.nih.nci.cabig.caaers.domain.repository.ReportValidationServiceImpl">
-		<property name="expeditedReportTree" ref="expeditedReportTree"/>
-	</bean>
-
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
         <property name="labLoadDao" ref="labLoadDao"></property>
     </bean>

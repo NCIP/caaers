@@ -1,13 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersError;
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -22,9 +16,11 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.MutablePropertyValues;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class ExpeditedReportTreeTest extends TestCase {
     private ExpeditedReportTree tree = new ExpeditedReportTree();
@@ -33,9 +29,28 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertChildPropertiesExist(tree, ExpeditedAdverseEventReport.class);
     }
 
-    public void testInterventionSectionNode(){
-       TreeNode node =  tree.getNodeForSection(ExpeditedReportSection.STUDY_INTERVENTIONS);
-        System.out.println(node);
+    public void testRecurcivelyCollectListNodes(){
+        List<TreeNode> nodes = new ArrayList();
+        tree.recursivelyCollectListNodes(nodes);
+        assertEquals("adverseEvents", nodes.get(0).getPropertyName());
+    }
+
+    public void testFetchListPropertyValue(){
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        AdverseEvent ae1 = Fixtures.createAdverseEvent(1, Grade.LIFE_THREATENING);
+        AdverseEvent ae2 = Fixtures.createAdverseEvent(2, Grade.LIFE_THREATENING);
+        aeReport.addAdverseEvent(ae1);
+        aeReport.addAdverseEvent(ae2);
+
+        TreeNode node = tree.getNodeForSection(ExpeditedReportSection.ADVERSE_EVENT_SECTION);
+        List<TreeNode> listNodes = new ArrayList<TreeNode>();
+
+        node.recursivelyCollectListNodes(listNodes);
+
+        TreeNode aListNode = listNodes.get(0);
+        MutablePropertyValues mpvs = aListNode.getPropertyValuesFrom(aeReport);
+        assertSame(ae2, mpvs.getPropertyValue("adverseEvents[1]").getValue());
+        assertSame(ae1, mpvs.getPropertyValue("adverseEvents[0]").getValue());
     }
 
     @SuppressWarnings( { "RawUseOfParameterizedType" })

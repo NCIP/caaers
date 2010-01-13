@@ -73,11 +73,8 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 
 		service = new EvaluationServiceImpl();
 
-		service
-				.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
 		service.setReportDefinitionDao(reportDefinitionDao);
 
-		service.setReportRepository(reportRepository);
 		service.setAdverseEventEvaluationService(adverseEventEvaluationService);
 
 	}

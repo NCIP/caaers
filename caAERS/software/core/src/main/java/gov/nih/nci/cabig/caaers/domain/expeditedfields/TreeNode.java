@@ -164,6 +164,19 @@ public abstract class TreeNode {
         return children;
     }
 
+    public void recursivelyCollectListNodes(List<TreeNode> nodes){
+
+        if(isLeaf()) return;
+        if(isList()){
+            nodes.add(this);
+        }else{
+          for(TreeNode node : children){
+            node.recursivelyCollectListNodes(nodes);
+          }  
+        }
+
+    }
+
     // //// OBJECT METHODS
 
     @Override

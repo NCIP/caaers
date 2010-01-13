@@ -26,7 +26,7 @@ public interface ReportValidationService{
      *
      * @return ErrorMessages, if any.
      */
-    ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
+    ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> expeditedReportSections, Collection<ExpeditedReportSection> mandatorySections);
     
     
 }

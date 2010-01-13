@@ -1,18 +1,9 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
@@ -20,18 +11,22 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import java.util.*;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+
+/**
+ *
+ * This class is a facade to the @{AdverseEventEvaluationService}, provides methods to evauate serious adverse events
+ *
+ * @author Srini Akkala
+ * @author Biju Joseph
+ */
 
 @Transactional(readOnly = true)
 public class EvaluationServiceImpl implements EvaluationService {
@@ -41,10 +36,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private ReportDefinitionDao reportDefinitionDao;
 
-    private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-
-    private ReportRepository reportRepository;
-    
     private OrganizationDao organizationDao;
     
     ReportDefinitionFilter reportDefinitionFilter;
@@ -489,14 +480,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.reportDefinitionDao = reportDefinitionDao;
     }
 
-    public void setExpeditedAdverseEventReportDao(
-                    ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-    }
-
-    public void setReportRepository(ReportRepository reportRepository) {
-        this.reportRepository = reportRepository;
-    }
 
     public void setAdverseEventEvaluationService(
                     AdverseEventEvaluationService adverseEventEvaluationService) {

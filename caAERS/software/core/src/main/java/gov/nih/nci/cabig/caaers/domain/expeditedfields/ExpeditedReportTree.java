@@ -75,7 +75,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		createPersonBlock("reporter"),
                                 createPersonBlock("physician")
                         ),
-                        section(RADIATION_INTERVENTION_SECTION, list("radiationInterventions","RadiationIntervention",
+                        section(RADIATION_INTERVENTION_SECTION,
+                              list("radiationInterventions","RadiationIntervention",
                                 property("administration","Type of radiation administration"),
                                 // TODO: these should be a component instead
                                 property("dosage", "Dosage"), 
@@ -177,7 +178,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                                  property("infectiousAgent","Infectious agent")
                            )
                         ),
-                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses", property("text", "Cause"))),
+                        section(OTHER_CAUSE_SECTION,
+                               list("otherCauses", "OtherCauses", property("text", "Cause")
+                               )
+                        ),
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
                         section(ADDITIONAL_INFO_SECTION,
                         		property("additionalInformation",
