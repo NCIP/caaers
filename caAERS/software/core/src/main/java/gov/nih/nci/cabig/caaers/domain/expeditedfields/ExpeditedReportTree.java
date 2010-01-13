@@ -64,6 +64,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("attributionSummary","Attribution to study intervention"),
                                         property("hospitalization","Hospitalization"),
                                         property("expected", "Expected"), 
+                                        property("participantAtRisk","Does this place participant at increased risk?"),
                                         property("eventLocation", "Where was the patient when the event occurred?"),
                                         property("eventApproximateTime.hourString","Time of event"),
                                         property("outcomes", "Outcomes"),
