@@ -90,20 +90,23 @@
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
 				<%-- Attribution --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
-                        <%-- Event Time --%>
-                            <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+                <%-- Event Time --%>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+                <%-- Hospitalization --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
             </div>
 			<div class="rightpanel">
 				<%-- End Date --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
 				<%-- Expected --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
-    				<%-- Location --%>
-                 <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+    			<%-- Location --%>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
+				<%-- Risk --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[9]}"/>
             </div>
 		</div>
-		  <%-- Hospitalization --%>
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+		  
 		<%-- Outcomes --%>
 		<ae:oneOutcome index="${index}" />
     </div>
