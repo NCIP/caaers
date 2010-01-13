@@ -116,6 +116,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     
     private Boolean reported;
     
+    private Boolean participantAtRisk;
+    
     public AdverseEvent() {
         solicited = false;
     }
@@ -917,4 +919,12 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	.append("}");
     	return sb.toString();
     }
+
+	public void setParticipantAtRisk(Boolean participantAtRisk) {
+		this.participantAtRisk = participantAtRisk;
+	}
+
+	public Boolean getParticipantAtRisk() {
+		return participantAtRisk;
+	}
 }
