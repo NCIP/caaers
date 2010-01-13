@@ -14,7 +14,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "MANDATORY_FIELD_DEFS")
+@Table(name = "AE_MANDATORY_FIELD_DEFS")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_mandatory_field_defs_id") })
 // TODO: why store field definitions for mandatory=false?
 public class AdverseEventMandatoryFieldDefinition extends AbstractMutableDomainObject implements Serializable {
