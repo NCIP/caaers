@@ -181,8 +181,8 @@ public class AdverseEventTest extends AbstractTestCase {
     
     public void testGetCurrentSignature(){
     	AdverseEvent ae = new AdverseEvent();
-    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$", ae.getCurrentSignature());
-    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getCurrentSignature());
+    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$$$", ae.getCurrentSignature());
+    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$true$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getCurrentSignature());
     }
     
     public void testInitializeGradedDate(){
