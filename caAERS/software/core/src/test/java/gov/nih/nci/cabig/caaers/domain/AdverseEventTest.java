@@ -29,6 +29,7 @@ public class AdverseEventTest extends AbstractTestCase {
     private String comments;
     private String detailsForOther;
     private Boolean expected;
+    private Boolean participantAtRisk;
     private Boolean requiresReporting;
     private Grade grade;
     private Attribution attributionSummary;
@@ -96,6 +97,7 @@ public class AdverseEventTest extends AbstractTestCase {
         serious = OutcomeType.DEATH;
         comments = "comments";
         expected = true;
+        participantAtRisk = true;
         solicited = true;
         eventLocation = "eventLocation";
         requiresReporting = true;
@@ -123,6 +125,7 @@ public class AdverseEventTest extends AbstractTestCase {
         adverseEvent.setComments(comments);
         adverseEvent.setDetailsForOther(detailsForOther);
         adverseEvent.setExpected(expected);
+        adverseEvent.setParticipantAtRisk(participantAtRisk);
         adverseEvent.setSolicited(solicited);
         adverseEvent.setEventLocation(eventLocation);
         adverseEvent.setRequiresReporting(requiresReporting);
@@ -146,6 +149,11 @@ public class AdverseEventTest extends AbstractTestCase {
     public void testDefaultExpectedness() throws Exception {
         adverseEvent = new AdverseEvent();
         assertNull(adverseEvent.getExpected());
+    }
+
+    public void testDefaultParticipantAtRisk() throws Exception {
+        adverseEvent = new AdverseEvent();
+        assertNull(adverseEvent.getParticipantAtRisk());
     }
     
     public void testGetStartDateAsString(){
