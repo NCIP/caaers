@@ -56,6 +56,8 @@ public abstract class BasicsTab extends AeTab {
         attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution.values()), "name", null));
         return attributionOptions;
     }
+    
+    
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
@@ -65,6 +67,7 @@ public abstract class BasicsTab extends AeTab {
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
         InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", false);
         InputFieldAttributes.setSize(otherVerbatimField, 30);
+        InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", false);
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
                 InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
@@ -74,7 +77,8 @@ public abstract class BasicsTab extends AeTab {
                 timeOfEventField,
                 InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
                 InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
-                exField);
+                exField,
+                riskField);
     }
 
     @Override
