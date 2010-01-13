@@ -35,7 +35,7 @@
     </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
 		  <tags:errors path="*"/>
-		  
+		  <%--
 		<!-- Basic Details -->
 		<chrome:division title="Basic Details">
 		 
@@ -43,9 +43,9 @@
 		    <rd:renderPair pair="${pair}" />
 		  </c:forEach>
 		</chrome:division>
-		
+		--%>
 		<!-- Delivery Details -->
-		<chrome:division title="Report Delivery Definition(s)">
+		<chrome:division title="Report Delivery Definitions">
 		  <table width="100%" class="tablecontent">
 			<tr>
 			<th width="5%" class="tableHeader">Recipient type</th>
@@ -94,7 +94,7 @@
 		   </table>
 		</chrome:division> 
 		<!-- Notification Details -->	
-		<chrome:division title="Notification(s)">
+		<chrome:division title="Notifications">
 		 <c:forEach items="${FIELDS.PENF}" var="entry">
 		 	<chrome:division title="${entry.key}" >
 		 		<c:forEach items="${entry.value}" var="pair">

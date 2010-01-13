@@ -5,9 +5,9 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <chrome:division id="meddra-id">
-	<p id="instructions">
-		<caaers:message code='LBL_Meddra_Review'/> <br>	
-	</p>
+
+		<tags:instructions code='LBL_Meddra_Review'/> 
+
 	 <table id="test" width="70%" class="tablecontent">
     	<tr>
     		<th scope="col" align="left"><b>Concept</b> </th>

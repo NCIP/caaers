@@ -25,14 +25,12 @@
 </head>
 <body>
 
-<p id="instructions">
-	<caaers:message code="LBL_import_instruction"/>
-</p>
     <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
 	<div>		
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
+		<tags:instructions code="LBL_import_instruction"/>
 	</div>
 
 		<div class="row">

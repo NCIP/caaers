@@ -483,12 +483,25 @@ ul.tabs li {
 	margin:0 4px 15px;
 	padding:20px;
 }
-.summary .tablecontent th, .summary .sae th.epoch, .summary .sae th.term, .summary .sae th.reportingperiod {
+.green-means-go{
+	background:#6af06a url(../images/blue/green_gradient.png) repeat-x top;
+	border:2px solid #888888;
+	margin:0 4px 15px;
+	padding:20px;
+}
+.red-means-stop {
+	background:#fe8c8c url(../images/blue/red_gradient.png) repeat-x top;
+	border:2px solid #888888;
+	margin:0 4px 15px;
+	padding:20px;
+}
+.summary .tablecontent th, .summary .sae th.epoch, .summary .sae th.term, .summary .sae th.reportingperiod,
+.green-means-go .tablecontent th, .red-means-stop .tablecontent th {
 	background-color:#333333;
 	border:1px solid #333333;
 	color:#ffffff;
 }
-.summary .tablecontent td {
+.summary .tablecontent td, .green-means-go .tablecontent td, .red-means-stop .tablecontent td  {
 border:1px solid #333;
 }
 .summary .division h3 {

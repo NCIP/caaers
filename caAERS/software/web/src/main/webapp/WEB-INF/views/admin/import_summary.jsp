@@ -44,21 +44,9 @@
 		    	<div class="content buttons autoclear">
           			<div class="flow-buttons">
 				  		<span class="next">
-				  			<c:if test="${command.type eq 'study'}">
-								<tags:button type="submit" icon="Study search" color="green" id="flow-next" value="Study search"/>
-							</c:if>
-							<c:if test="${command.type eq 'subject'}">
-								<tags:button type="submit" icon="Subject search" color="green" id="flow-next" value="Subject search"/>
-							</c:if>
-							<c:if test="${command.type eq 'researchStaff'}">
-								<tags:button type="submit" icon="Search research staff" color="green" id="flow-next" value="Search research staff"/>
-							</c:if>
-							<c:if test="${command.type eq 'investigator'}">
-								<tags:button type="submit" icon="Search investigator" color="green" id="flow-next" value="Search investigator"/>
-							</c:if>
-							<c:if test="${command.type eq 'organization'}">
-								<tags:button type="submit" icon="Search organization" color="green" id="flow-next" value="Search organization"/>
-							</c:if>
+
+								<tags:button type="submit" icon="Search organization" color="green" id="flow-next" value="Done"/>
+
 				  		</span>
           			</div>
       			</div>

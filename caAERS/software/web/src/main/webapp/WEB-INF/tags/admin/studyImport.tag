@@ -5,8 +5,35 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 	<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0}'>
-		<chrome:division id="study_will_not_load">
-			<caaers:message code='LBL_Study_Errors'/> <br> 
+		<chrome:division title="Records caAERS understands" id="study_will_load">
+			<tags:instructions code="admin.import.reviewSubmit.willImport"/>
+			<div class="green-means-go">
+			<table id="test" width="100%" class="tablecontent">
+   		 		<tr>
+   	 				<th scope="col" align="left"><b>Study Identifier</b> </th>
+   	 				<th scope="col" align="left"><b>Study Short Title</b> </th>
+   	 			</tr>
+   	 			<c:forEach var='item' items='${command.importableStudies}'>
+					<tr class="results">
+						<td align="left">
+							<c:out value="${item.importedDomainObject.primaryIdentifierValue != null ? 
+										item.importedDomainObject.primaryIdentifierValue :  'NA'}" />
+						</td>
+   						<td align="left"><c:out value="${item.importedDomainObject.shortTitle}" /></td>
+   						<td align="left" color="red">
+   							<c:forEach var='message' items='${item.messages}'>
+   								- <c:out value='${message.message}'/><br>
+   							</c:forEach>
+   						</td>
+   					</tr>
+   				</c:forEach>
+   			</table>	
+			</div>
+   		</chrome:division>
+		
+		<chrome:division id="study_will_not_load" title="Records that have a problem">
+			<tags:instructions code="admin.import.reviewSubmit.wontImport"/>
+			<div class="red-means-stop">
 			<table id="test" width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Study Identifier</b> </th>
@@ -31,30 +58,6 @@
    					<tr class="results"><td align="left"><i>None</i></td></tr> 
    				</c:if>
    			</table>	
-   		</chrome:division>
-		
-		<chrome:division title="Study records will be loaded" id="study_will_load">
-			<caaers:message code='LBL_Study_No_Errors'/> <br> 
-			<table id="test" width="100%" class="tablecontent">
-   		 		<tr>
-   	 				<th scope="col" align="left"><b>Study Identifier</b> </th>
-   	 				<th scope="col" align="left"><b>Study Short Title</b> </th>
-   	 				<th scope="col" align="left"><b>Possible Problem</b> </th>
-   	 			</tr>
-   	 			<c:forEach var='item' items='${command.importableStudies}'>
-					<tr class="results">
-						<td align="left">
-							<c:out value="${item.importedDomainObject.primaryIdentifierValue != null ? 
-										item.importedDomainObject.primaryIdentifierValue :  'NA'}" />
-						</td>
-   						<td align="left"><c:out value="${item.importedDomainObject.shortTitle}" /></td>
-   						<td align="left" color="red">
-   							<c:forEach var='message' items='${item.messages}'>
-   								- <c:out value='${message.message}'/><br>
-   							</c:forEach>
-   						</td>
-   					</tr>
-   				</c:forEach>
-   			</table>	
+			</div>
    		</chrome:division>
 	</c:if>

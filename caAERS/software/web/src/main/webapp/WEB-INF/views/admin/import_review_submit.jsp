@@ -93,7 +93,7 @@
               	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back" onclick="javascript:submitForm('back');"/>
 			  </span>
 				  <span class="next">
-					<tags:button type="submit" icon="Continue" color="green" id="flow-next" value="Continue" onclick="javascript:submitForm('continue');"/>
+					<tags:button type="submit" icon="check" color="green" id="flow-next" value="Import" onclick="javascript:submitForm('continue');"/>
 				  </span>
           </div>
       </div>
