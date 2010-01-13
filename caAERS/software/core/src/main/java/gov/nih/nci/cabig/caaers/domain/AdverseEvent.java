@@ -838,6 +838,10 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	}
     	
     	sb.append("$$");
+    	// risk CAAERS-3281
+    	sb.append(participantAtRisk == null ? "" : participantAtRisk);
+    	sb.append("$$");
+    	
     	
     	//startdate
     	sb.append(startDate == null ? "" : DateUtils.formatDate(startDate)).append("$$");
