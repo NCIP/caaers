@@ -62,6 +62,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
         assertEquals("Wrong term", 3012, (int) copiedAdverseEvent.getAdverseEventCtcTerm().getCtcTerm().getId());
         assertEquals("Wrong hosp.", Hospitalization.NONE, copiedAdverseEvent.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, copiedAdverseEvent.getExpected());
+        assertEquals("Wrong participantAtRisk", Boolean.TRUE, copiedAdverseEvent.getParticipantAtRisk());
         assertEquals("Wrong attrib summary", Attribution.POSSIBLE, copiedAdverseEvent.getAttributionSummary());
         assertEquals("Wrong comments", "That was some other big AE", copiedAdverseEvent.getComments());
         assertTrue("Wrong time zone", copiedAdverseEvent.getEventApproximateTime().isPM());
