@@ -16,6 +16,7 @@ class MigrateAeMandatoryDefinitions extends edu.northwestern.bioinformatics.beri
 			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].eventLocation', -1, s.id, null from studies s");
 			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].comments', -1, s.id, null from studies s");
 			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].participantAtRisk', -1, s.id, null from studies s");
+			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].eventApproximateTime.hourString', -1, s.id, null from studies s");
 			
 			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].outcomes', -1, s.id, null from studies s where s.adeers_reporting = true");
 			execute("INSERT INTO ae_mandatory_field_defs(version, field_path, mandatory, study_id, grid_id) select 0, 'adverseEvents[].outcomes', 0, s.id, null from studies s where s.adeers_reporting = false");
@@ -35,6 +36,7 @@ class MigrateAeMandatoryDefinitions extends edu.northwestern.bioinformatics.beri
 			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].eventLocation', -1, s.id, null from studies s");
 			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].comments', -1, s.id, null from studies s");
 			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].participantAtRisk', -1, s.id, null from studies s");
+			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].eventApproximateTime.hourString', -1, s.id, null from studies s");
 			
 			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].outcomes', -1, s.id, null from studies s where s.adeers_reporting = 1");
 			execute("INSERT INTO ae_mandatory_field_defs(id, version, field_path, mandatory, study_id, grid_id) select SEQ_AE_MANDATORY_FIELD_DEFS_ID.nextval, 0, 'adverseEvents[].outcomes', 0, s.id, null from studies s where s.adeers_reporting = 0");	
