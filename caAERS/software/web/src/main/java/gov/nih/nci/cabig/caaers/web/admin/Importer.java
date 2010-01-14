@@ -32,7 +32,7 @@ import org.xml.sax.SAXParseException;
 public abstract class Importer{
 	
 	static final String STUDY_IMPORT = "study";
-	static final String SUBJECT_IMPORT = "subject";
+	static final String SUBJECT_IMPORT = "participant";
 	static final String RESEARCH_STAFF_IMPORT = "researchStaff";
 	static final String INVESTIGATOR_IMPORT = "investigator";
 	

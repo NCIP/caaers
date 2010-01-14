@@ -145,6 +145,8 @@ public class ImportTab extends Tab<ImportCommand>{
     @Override
     public void postProcess(HttpServletRequest request, ImportCommand command, Errors errors) {
         // TODO: see why the command variable type has a comma attached to it
+    	// Need to initialize all the arraylists to NULL in order avoid duplicate records.
+    	command.initializeImportCommand();
     	if(!errors.hasErrors())
     		handleLoad(command, command.getType().replace(',', ' ').trim());
     }

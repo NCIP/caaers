@@ -53,6 +53,10 @@ public class StudyImporter extends Importer{
 	}
 	
 	public void processEntities(File xmlFile,ImportCommand command){
+		boolean valid = validateAgainstSchema(xmlFile , command, getXSDLocation(STUDY_IMPORT));
+        if (!valid) {
+        	return;
+        }
 		gov.nih.nci.cabig.caaers.webservice.Studies studies;
     	try {
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");

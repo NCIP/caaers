@@ -33,6 +33,10 @@ public class SubjectImporter extends Importer{
 	}
 	
 	public void processEntities(File xmlFile,ImportCommand command){
+		boolean valid = validateAgainstSchema(xmlFile , command, getXSDLocation(SUBJECT_IMPORT));
+        if (!valid) {
+        	return;
+        }
 		gov.nih.nci.cabig.caaers.webservice.participant.Participants participants;
     	try {
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");

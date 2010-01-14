@@ -278,6 +278,25 @@ public class ImportCommand {
             DomainObjectImportOutcome<Investigator> domainObjectImportOutcome) {
 				getImportableInvestigators().add(domainObjectImportOutcome);
 	}
+	
+	public void initializeImportCommand(){
+		nonImportableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
+	    importableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
+	    nonImportableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
+	    importableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
+	    nonImportableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
+	    importableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
+	    importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+	    nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+	    importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
+	    nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
+	    importableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+	    updateableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+	    importableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+	    nonImportableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+	    nonImportableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
+	    updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+	}
 
 	/**
 	 * 
