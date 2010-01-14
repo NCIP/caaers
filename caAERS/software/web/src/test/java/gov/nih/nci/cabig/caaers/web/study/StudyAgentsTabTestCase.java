@@ -136,5 +136,23 @@ public class StudyAgentsTabTestCase extends AbstractStudyWebTestCase {
         assertEquals(0, errors.getErrorCount());
     }
 
+    public void testRemoveStudyAgent(){
+        assertEquals(0, study.getStudyAgents().size());
+
+        StudyAgent studyAgent = new StudyAgent();
+        studyAgent.setAgent(new Agent());
+        study.addStudyAgent(studyAgent);
+        assertEquals(1, study.getStudyAgents().size());
+
+        replayMocks();
+        request.setParameter("_action", "removeStudyAgent");
+        request.setParameter("_selected", "0");
+        request.setParameter("index", "0");
+        ((AgentsTab)tab).removeStudyAgent(request, command, getErrors());
+        verifyMocks();
+
+        assertEquals(0, study.getStudyAgents().size());
+    }
+
   
 }

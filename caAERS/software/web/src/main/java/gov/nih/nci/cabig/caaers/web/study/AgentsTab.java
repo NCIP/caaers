@@ -219,7 +219,7 @@ public class AgentsTab extends StudyTab {
         }
         
         //check if deletion is possible
-        if(index >= size || index <= 0){
+        if(index >= size || index < 0){
         	log.debug("Unable to delete study agents, INVALID INDEX :"  + index);
         }else{
         	command.deleteStudyAgentAtIndex(index);
