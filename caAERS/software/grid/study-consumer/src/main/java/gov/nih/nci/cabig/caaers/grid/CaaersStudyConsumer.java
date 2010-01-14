@@ -38,6 +38,7 @@ import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -710,6 +711,26 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
         public Locale getLocale() {
             return null;
+        }
+
+        public String getContextPath() {
+            return null;
+        }
+
+        public String getRemoteUser() {
+            return null;
+        }
+
+        public Principal getUserPrincipal() {
+            return null;
+        }
+
+        public boolean isUserInRole(String role) {
+            return false;
+        }
+
+        public boolean isSecure() {
+            return false; 
         }
 
         public Object getAttribute(final String name, final int scope) {
