@@ -157,7 +157,7 @@
 
 
         	<!--dependency org="jboss"  name="jboss-jsr77" rev="3.2.3" /-->
-        	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1" conf="build->default(*);runtime->default(*);dist->default(*)" />
+        	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1"/>
         	<dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="2.1" force="true"  />
         	<dependency org="freemarker" name="freemarker" rev="2.3.4"   />
 
