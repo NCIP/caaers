@@ -81,8 +81,11 @@
 	</c:if>
 		
 	<c:if test='${command.schemaValidationResult != null  }'>
-		The provided xml is invalid, Fix the errors and try again.
-		<p><c:out value="${command.schemaValidationResult}" /></p>
+		<div class="red-means-stop">
+			The provided xml is invalid, Fix the errors and try again.
+			<p><c:out value="${command.schemaValidationResult}" /></p>
+		</div>
+		<c:set var="importDisabled" value="disabled" scope="request"/>
    	</c:if>
 		
 </jsp:attribute>
@@ -93,7 +96,7 @@
               	<tags:button type="submit" color="blue" icon="Back" id="flow-prev" cssClass="tab0" value="Back" onclick="javascript:submitForm('back');"/>
 			  </span>
 				  <span class="next">
-					<tags:button type="submit" icon="check" color="green" id="flow-next" value="Import" onclick="javascript:submitForm('continue');"/>
+					<tags:button type="submit"  disabled="${importDisabled}" icon="check" color="green" id="flow-next" value="Import" onclick="javascript:submitForm('continue');"/>
 				  </span>
           </div>
       </div>

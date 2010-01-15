@@ -6,6 +6,6 @@
 
 <chrome:division id="meddra-id">
 	<p id="instructions">
-		"${command.meddraVersionName}" &nbsp; <caaers:message code='LBL_Meddra_Success'/> <br>	
+		"${command.meddraVersionName}" <caaers:message code='LBL_Meddra_Success'/> <br>	
 	</p>
 </chrome:division>

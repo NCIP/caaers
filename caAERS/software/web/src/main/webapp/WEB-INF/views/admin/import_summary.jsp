@@ -18,16 +18,16 @@
 			</div>
 			
 			<c:if test="${command.type eq 'study'}">
-				<admin:studyImport/>
+				<admin:studyImportSummary/>
 			</c:if>
 			<c:if test="${command.type eq 'subject'}">
-				<admin:subjectImport/>
+				<admin:subjectImportSummary/>
 			</c:if>
 			<c:if test="${command.type eq 'researchStaff'}">
 				<admin:researchStaffImport/>
 			</c:if>
 			<c:if test="${command.type eq 'investigator'}">
-				<admin:investigatorImport/>
+				<admin:investigatorImportSummary/>
 			</c:if>
 			<c:if test="${command.type eq 'organization'}">
 				<admin:organizationImport/>
