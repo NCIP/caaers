@@ -5,14 +5,12 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -287,60 +285,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
         });
 
-    }
-    
-    /**
-     * This method saves all the RemoteStudies provided in the list.
-     * @param remoteStudies
-     */
-    @Transactional(readOnly = false)
-	public void saveRemoteStudies(List<Study> remoteStudies) {
-    	try{
-    		for (Study remoteStudy : remoteStudies) {
-    			if(remoteStudy != null){
-    				Study studyFromDatabase = getByExternalIdentifier(((RemoteStudy)remoteStudy).getExternalId());
-    				
-    				//If studyFromDatabase is not null then it already exists as a remoteStudy
-    				if (studyFromDatabase == null) {
-    					//If studyFromDatabase is null then it doesnt exists as a remoteStudy, hence save it.
-    					if(validateRemoteStudy((RemoteStudy)remoteStudy)){
-    						save((RemoteStudy)remoteStudy);
-    					}else{
-    						log.info("Study with ID "+ remoteStudy.getNciAssignedIdentifier() + " was not created in caAERS. Missing Coordinating Center or Funding Sponsor");
-    					}
-    				}
-    				getHibernateTemplate().flush();
-    			} else {
-    				log.error("Null Remote Study in the list");
-    			}
-    		}
-    	}catch(Exception ex){
-    		log.error(ex.getMessage());
-    	}
-	}
-    
-    /**
-     * This methods validates if study has Co-ordinating center & funding sponsor.
-     * @param remoteStudy
-     * @return
-     */
-    private boolean validateRemoteStudy(RemoteStudy remoteStudy){
-    	if(remoteStudy.getStudyCoordinatingCenters() != null){
-    		if(remoteStudy.getStudyCoordinatingCenters().size() == 0){
-    			return false;
-    		}
-    	}else{
-    		return false;
-    	}
-    	
-    	if(remoteStudy.getStudyFundingSponsors() != null){
-    		if(remoteStudy.getStudyFundingSponsors().size() == 0){
-    			return false;
-    		}
-    	}else{
-    		return false;
-    	}
-    	return true;
     }
     
 	/**Gets by the unique Identifier

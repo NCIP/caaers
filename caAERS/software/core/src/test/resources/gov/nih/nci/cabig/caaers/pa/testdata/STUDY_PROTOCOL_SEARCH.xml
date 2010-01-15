@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pa:StudyProtocol  xmlns:pa="http://pa.services.coppa.nci.nih.gov">
     <pa:identifier nullFlavor="NI"/>
-    <pa:publicTitle value="Bevacizumab"/>
 </pa:StudyProtocol>

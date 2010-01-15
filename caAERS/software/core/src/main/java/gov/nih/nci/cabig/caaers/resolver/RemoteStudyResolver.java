@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
@@ -29,6 +30,7 @@ import gov.nih.nci.coppa.po.IdentifiedOrganization;
 import gov.nih.nci.coppa.po.IdentifiedPerson;
 import gov.nih.nci.coppa.po.Organization;
 import gov.nih.nci.coppa.po.Person;
+import gov.nih.nci.coppa.services.pa.Arm;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
 import gov.nih.nci.coppa.services.pa.PlannedActivity;
 import gov.nih.nci.coppa.services.pa.StudyContact;
@@ -191,8 +193,33 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		populatePrincipalInvestigator(remoteStudy);
 		populateStudyTherapies(studyProtocol, remoteStudy);
 		reArrangeStudyIdentifers(remoteStudy);
+		populateArms(remoteStudy);
 		
 		return remoteStudy;
+	}
+	
+	/**
+	 * This method will fetch all the Arms from PA.
+	 * For each Arm a TreatmentAssignment object is created and added to the Study in caAERS.
+	 *
+	 * @param remoteStudy
+	 */
+	public void populateArms(RemoteStudy remoteStudy){
+		String armsPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(remoteStudy.getExternalId()));
+    	Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.ARM.getName());
+    	TreatmentAssignment treatmentAssignment = null;
+    	Arm arm = null;
+    	String armsResultXml = broadcastCOPPA(armsPayLoad,mData);
+		List<String> results = XMLUtil.getObjectsFromCoppaResponse(armsResultXml);
+		for (String result:results) {
+			arm = CoppaPAObjectFactory.getArm(result);
+			if(arm != null){
+				treatmentAssignment = new TreatmentAssignment();
+				treatmentAssignment.setCode(arm.getName().getValue());
+				treatmentAssignment.setDescription(arm.getDescriptionText().getValue());
+				remoteStudy.addTreatmentAssignment(treatmentAssignment);
+			}
+		}
 	}
 	
 	/**

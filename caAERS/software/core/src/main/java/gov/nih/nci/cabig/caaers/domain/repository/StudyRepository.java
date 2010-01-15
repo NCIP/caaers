@@ -94,7 +94,7 @@ public class StudyRepository {
             			verifyAndSaveInvestigators(remoteStudy);
             		}
             		//Save the studies returned from COPPA
-            		studyDao.saveRemoteStudies(remoteStudies);
+            		saveRemoteStudies(remoteStudies);
             	}
         	}
     	}catch(Exception e){
@@ -106,6 +106,59 @@ public class StudyRepository {
         return objectArray;
     }
     
+    
+    /**
+     * This method saves all the RemoteStudies provided in the list.
+     * @param remoteStudies
+     */
+    @Transactional(readOnly = false)
+	public void saveRemoteStudies(List<Study> remoteStudies) {
+    	try{
+    		for (Study remoteStudy : remoteStudies) {
+    			if(remoteStudy != null){
+    				Study studyFromDatabase = studyDao.getByExternalIdentifier(((RemoteStudy)remoteStudy).getExternalId());
+    				//If studyFromDatabase is not null then it already exists as a remoteStudy
+    				if (studyFromDatabase == null) {
+    					//If studyFromDatabase is null then it does'nt exists as a remoteStudy, hence save it.
+    					if(validateRemoteStudy((RemoteStudy)remoteStudy)){
+    						save((RemoteStudy)remoteStudy);
+    					}else{
+    						log.info("Study with ID "+ remoteStudy.getNciAssignedIdentifier() + " was not created in caAERS. Missing Coordinating Center or Funding Sponsor");
+    					}
+    				}
+    				studyDao.getHibernateTemplate().flush();
+    			} else {
+    				log.error("Null Remote Study in the list");
+    			}
+    		}
+    	}catch(Exception ex){
+    		log.error(ex.getMessage());
+    	}
+	}
+    
+    /**
+     * This methods validates if study has Co-ordinating center & funding sponsor.
+     * @param remoteStudy
+     * @return
+     */
+    private boolean validateRemoteStudy(RemoteStudy remoteStudy){
+    	if(remoteStudy.getStudyCoordinatingCenters() != null){
+    		if(remoteStudy.getStudyCoordinatingCenters().size() == 0){
+    			return false;
+    		}
+    	}else{
+    		return false;
+    	}
+    	
+    	if(remoteStudy.getStudyFundingSponsors() != null){
+    		if(remoteStudy.getStudyFundingSponsors().size() == 0){
+    			return false;
+    		}
+    	}else{
+    		return false;
+    	}
+    	return true;
+    }
     
     /**
      * This method checks if the Investigator already in caAERS. If exists it uses it else creates new investigator in caAERS
