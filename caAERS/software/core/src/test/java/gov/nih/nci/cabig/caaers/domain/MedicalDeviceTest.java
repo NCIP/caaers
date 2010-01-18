@@ -46,7 +46,8 @@ public class MedicalDeviceTest extends AbstractTestCase {
         other = DeviceOperator.OTHER;
         medicalDevice.setDeviceOperator(other);
         returned = Availability.RETURNED;
-        medicalDevice.setDeviceReprocessed(returned);
+
+        medicalDevice.setDeviceReprocessed(ReprocessedDevice.YES);
         deviceType = "device type";
         medicalDevice.setDeviceType(deviceType);
         evaluationAvailability = Availability.YES;
