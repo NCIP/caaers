@@ -98,7 +98,7 @@ public class MedicalDeviceTest extends AbstractTestCase {
         assertEquals(catalogNumber, device.getCatalogNumber());
         assertEquals(commonName, device.getCommonName());
         assertEquals(other, device.getDeviceOperator());
-        assertEquals(returned, device.getDeviceReprocessed());
+        assertEquals(ReprocessedDevice.YES, device.getDeviceReprocessed());
         assertEquals(deviceType, device.getDeviceType());
         assertEquals(evaluationAvailability, device.getEvaluationAvailability());
         assertEquals(expirationDate, device.getExpirationDate());
