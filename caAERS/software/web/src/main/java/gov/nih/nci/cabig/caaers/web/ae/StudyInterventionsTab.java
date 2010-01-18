@@ -5,16 +5,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelect
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextField;
 import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
@@ -160,7 +151,7 @@ public class StudyInterventionsTab extends AeTab {
         reprocessorName.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.reprocessorName");
         InputField reprocessorAddress = InputFieldFactory.createTextField("reprocessorAddress", " Reprocessor address", false);
         InputFieldAttributes.setSize(reprocessorAddress, 45);
-        InputField deviceReprocessedField = InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName", "Please select"));
+        InputField deviceReprocessedField = InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, WebUtils.collectOptions(Arrays.asList(ReprocessedDevice.values()), null, "displayName", "Please select"));
         deviceReprocessedField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.deviceReprocessed");
         InputField evaluationAvailabilityField = InputFieldFactory.createSelectField("evaluationAvailability", "Evaluation availability", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName", "Please select"));
         evaluationAvailabilityField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.evaluationAvailability");
