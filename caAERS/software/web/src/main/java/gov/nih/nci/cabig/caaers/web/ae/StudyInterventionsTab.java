@@ -150,7 +150,7 @@ public class StudyInterventionsTab extends AeTab {
         InputFieldAttributes.setSize(manName, 45);
         InputField manCity = InputFieldFactory.createTextField("manufacturerCity", "Manufacturer city", false);
         InputFieldAttributes.setSize(manCity, 45);
-        InputField manState = InputFieldFactory.createSelectField("manufacturerState", "Manufacturer state", false, WebUtils.collectOptions(configurationProperty.getMap().get("stateRefData"), "code", "desc", "Please Select"));
+        InputField manState = InputFieldFactory.createSelectField("manufacturerState", "Manufacturer state", false, WebUtils.collectOptions(configurationProperty.getMap().get("stateRefData"), "code", "desc", "Please select"));
         InputFieldAttributes.setSize(manState, 45);
         InputField modelNumber = InputFieldFactory.createTextField("modelNumber", "Model number", false);
         InputField otherDeviceOperator = InputFieldFactory.createTextField("otherDeviceOperator", "Other device operator", false);
@@ -160,9 +160,9 @@ public class StudyInterventionsTab extends AeTab {
         reprocessorName.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.reprocessorName");
         InputField reprocessorAddress = InputFieldFactory.createTextField("reprocessorAddress", " Reprocessor address", false);
         InputFieldAttributes.setSize(reprocessorAddress, 45);
-        InputField deviceReprocessedField = InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName"));
+        InputField deviceReprocessedField = InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName", "Please select"));
         deviceReprocessedField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.deviceReprocessed");
-        InputField evaluationAvailabilityField = InputFieldFactory.createSelectField("evaluationAvailability", "Evaluation availability", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName"));
+        InputField evaluationAvailabilityField = InputFieldFactory.createSelectField("evaluationAvailability", "Evaluation availability", false, WebUtils.collectOptions(Arrays.asList(Availability.values()), null, "displayName", "Please select"));
         evaluationAvailabilityField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.evaluationAvailability");
 
         creator.createRepeatingFieldGroup("medicalDevice", "medicalDevices", new SimpleNumericDisplayNameCreator("Medical device"),

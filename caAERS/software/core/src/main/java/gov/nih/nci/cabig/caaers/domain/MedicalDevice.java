@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -53,7 +54,7 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
 
     private Date explantedDate;
 
-    private Availability deviceReprocessed;
+    private ReprocessedDevice deviceReprocessed;
 
     private String reprocessorName;
 
@@ -92,12 +93,12 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
     }
 
     @Column(name = "device_reprocessed_code")
-    @Type(type = "availability")
-    public Availability getDeviceReprocessed() {
+    @Type(type = "deviceReprocessed")
+    public ReprocessedDevice getDeviceReprocessed() {
         return deviceReprocessed;
     }
 
-    public void setDeviceReprocessed(Availability deviceReprocessed) {
+    public void setDeviceReprocessed(ReprocessedDevice deviceReprocessed) {
         this.deviceReprocessed = deviceReprocessed;
     }
 

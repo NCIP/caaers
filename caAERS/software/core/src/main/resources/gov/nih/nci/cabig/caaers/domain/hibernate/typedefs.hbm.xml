@@ -80,4 +80,7 @@
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="configType">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ConfigPropertyType</param>
     </typedef>
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="deviceReprocessed">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReprocessedDevice</param>
+    </typedef>
 </hibernate-mapping>

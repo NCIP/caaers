@@ -619,7 +619,7 @@
     <field name="deviceOperator" type="gov.nih.nci.cabig.caaers.domain.DeviceOperator">
       <bind-xml name="DeviceOperator"/>
     </field>
-    <field name="deviceReprocessed" type="gov.nih.nci.cabig.caaers.domain.Availability">
+    <field name="deviceReprocessed" type="gov.nih.nci.cabig.caaers.domain.ReprocessedDevice">
       <bind-xml name="DeviceReprocessed"/>
     </field>
     <field name="evaluationAvailability" type="gov.nih.nci.cabig.caaers.domain.Availability">
@@ -639,6 +639,17 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.Availability" verify-constructable="false">
     <map-to xml="Availability"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName"/>
+    </field>
+  </class>
+
+
+  <class name="gov.nih.nci.cabig.caaers.domain.ReprocessedDevice" verify-constructable="false">
+    <map-to xml="ReprocessedDevice"/>
     <field name="code" type="integer">
       <bind-xml name="code" node="element"/>
     </field>
