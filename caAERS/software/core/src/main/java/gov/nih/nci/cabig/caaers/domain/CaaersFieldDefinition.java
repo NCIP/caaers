@@ -14,26 +14,28 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
-@Table(name = "AE_MANDATORY_FIELD_DEFS")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_mandatory_field_defs_id") })
+@Table(name = "CAAERS_FIELD_DEFS")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_caaers_field_defs_id") })
 // TODO: why store field definitions for mandatory=false?
-public class AdverseEventMandatoryFieldDefinition extends AbstractMutableDomainObject implements Serializable {
+public class CaaersFieldDefinition extends AbstractMutableDomainObject implements Serializable {
 
 
 	private static final long serialVersionUID = -3133021814678700402L;
 	private String fieldPath;
     private Mandatory mandatory;
+    private String tabName;
 
-    public AdverseEventMandatoryFieldDefinition() {
+    public CaaersFieldDefinition() {
     }
 
-    public AdverseEventMandatoryFieldDefinition(String fieldPath) {
-        this(fieldPath, Mandatory.OPTIONAL);
+    public CaaersFieldDefinition(String tabName, String fieldPath) {
+        this(tabName, fieldPath, Mandatory.OPTIONAL);
     }
 
-    public AdverseEventMandatoryFieldDefinition(String fieldPath, Mandatory mandatory) {
+    public CaaersFieldDefinition(String tabName, String fieldPath, Mandatory mandatory) {
         this.mandatory = mandatory;
         this.fieldPath = fieldPath;
+        this.tabName = tabName;
     }
 
     // @Transient
@@ -48,6 +50,15 @@ public class AdverseEventMandatoryFieldDefinition extends AbstractMutableDomainO
     public void setFieldPath(String fieldPath) {
         this.fieldPath = fieldPath;
     }
+    
+    public String getTabName(){
+    	return tabName;
+    }
+    
+    public void setTabName(String tabName){
+    	this.tabName = tabName;
+    }
+    
     @Type(type="mandatoryType")
     @Column(name="mandatory")
     public Mandatory getMandatory() {
@@ -60,6 +71,6 @@ public class AdverseEventMandatoryFieldDefinition extends AbstractMutableDomainO
 
     @Override
     public String toString() {
-        return "AdverseEventMandatoryFieldDefinition[" + fieldPath + ", " + mandatory.toString() + "]";
+        return "ReportMandatoryFieldDefinition[" + fieldPath + ", " + mandatory.toString() + "]";
     }
 }

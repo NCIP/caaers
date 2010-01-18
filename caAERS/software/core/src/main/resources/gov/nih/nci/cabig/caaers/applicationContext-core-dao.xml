@@ -84,7 +84,6 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
-                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMandatoryFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
@@ -137,6 +136,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
@@ -274,7 +274,6 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
-                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMandatoryFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
@@ -319,6 +318,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
@@ -612,6 +612,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyConditionDao"/>
 
     <bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
+    <bean id="caaersFieldDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CaaersFieldDefinitionDao"/>
     <bean id="preExistingConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
     <bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
     <bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao"/>

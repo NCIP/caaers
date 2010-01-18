@@ -97,7 +97,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
     protected List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
     protected List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
-    protected List<AdverseEventMandatoryFieldDefinition> mandatoryFields;
 
     // TODO move into Command Object
     // Investigators page)
@@ -1128,17 +1127,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.expectedAEMeddraTerms = expectedAEMeddraTerms;
     }
     
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<AdverseEventMandatoryFieldDefinition> getMandatoryFields() {
-        return mandatoryFields;
-    }
-
-    public void setMandatoryFields(List<AdverseEventMandatoryFieldDefinition> mandatoryFields) {
-        this.mandatoryFields = mandatoryFields;
-    }
-
     public void addExpectedAEMeddraLowLevelTerm(final ExpectedAEMeddraLowLevelTerm expectedAEMeddraLowLevelTerm) {
         expectedAEMeddraLowLevelTerm.setStudy(this);
         expectedAEMeddraTerms.add(expectedAEMeddraLowLevelTerm);
