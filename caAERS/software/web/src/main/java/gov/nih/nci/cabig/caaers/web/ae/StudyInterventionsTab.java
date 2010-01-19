@@ -166,7 +166,7 @@ public class StudyInterventionsTab extends AeTab {
                         InputFieldFactory.createDateField("expirationDate", "Expiration date", false),
                         InputFieldFactory.createTextField("serialNumber", "Serial number", false),
                         InputFieldFactory.createTextField("otherNumber", "Other number", false),
-                        InputFieldFactory.createSelectField("deviceOperator", "Device operator", false, WebUtils.collectOptions(Arrays.asList(DeviceOperator.values()),null, "displayName")),
+                        InputFieldFactory.createSelectField("deviceOperator", "Device operator", false, WebUtils.collectOptions(Arrays.asList(DeviceOperator.values()),null, "displayName", "Please select")),
                         otherDeviceOperator,
                         InputFieldFactory.createPastDateField("implantedDate", "If implanted, enter a date", false),
                         InputFieldFactory.createPastDateField("explantedDate", "IF explanted, enter a date", false),

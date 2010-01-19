@@ -103,7 +103,36 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 		assertFieldError("aeReport.radiationInterventions[1].dosage", "REQUIRED", "Invalid sign Total dose (to date)");
 		assertFieldError("aeReport.radiationInterventions[2].dosage", "REQUIRED", "Invalid Total dose (to date)");
 	}
-	
+
+
+    public void testDeviceFields(){
+        replayMocks();
+        assertFieldProperties("medicalDevice0", "aeReport.medicalDevices[0].brandName",
+                "aeReport.medicalDevices[0].commonName",
+                "aeReport.medicalDevices[0].deviceType",
+                "aeReport.medicalDevices[0].manufacturerName",
+                "aeReport.medicalDevices[0].manufacturerCity",
+                "aeReport.medicalDevices[0].manufacturerState",
+                "aeReport.medicalDevices[0].modelNumber",
+                "aeReport.medicalDevices[0].lotNumber",
+                "aeReport.medicalDevices[0].catalogNumber",
+                "aeReport.medicalDevices[0].expirationDate",
+                "aeReport.medicalDevices[0].serialNumber",
+                "aeReport.medicalDevices[0].otherNumber",
+                "aeReport.medicalDevices[0].deviceOperator",
+                "aeReport.medicalDevices[0].otherDeviceOperator",
+                "aeReport.medicalDevices[0].implantedDate",
+                "aeReport.medicalDevices[0].explantedDate",
+                "aeReport.medicalDevices[0].deviceReprocessed",
+                "aeReport.medicalDevices[0].reprocessorName" ,
+                "aeReport.medicalDevices[0].reprocessorAddress" ,
+                "aeReport.medicalDevices[0].evaluationAvailability" ,
+                "aeReport.medicalDevices[0].returnedDate" 
+
+
+
+                );
+    }
 	
 
 }
