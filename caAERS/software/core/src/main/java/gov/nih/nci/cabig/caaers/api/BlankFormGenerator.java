@@ -1,22 +1,12 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.Arm;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
 import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
 import gov.nih.nci.cabig.caaers.webservice.SystemAssignedIdentifierType;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +17,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -41,10 +32,10 @@ import org.apache.fop.apps.MimeConstants;
 public class BlankFormGenerator {
 
     protected final Log log = LogFactory.getLog(getClass());
-    private static String XMLFile = "d:/AE-Blank-Test.xml";
-    private static String PDFFile = "d:/AE-Blank-Test.pdf";
+    private static String XMLFile = "/home/dell/Desktop/generated.xml";
+    private static String PDFFile = "/home/dell/Desktop/AE-Blank-Test.pdf";
     private String XSLFile = "xslt/CALGB_AE_FORM.xslt";
-//    private String XSLFile = "C:\\.SemanticBits\\caAERS\\trunk\\caAERS\\software\\core\\src\\main\\resources\\xslt\\CALGB_AE_FORM.xslt";
+//    private String XSLFile = "/SB/caAERS/trunk/caAERS/software/core/src/main/resources/xslt/CALGB_AE_FORM.xslt";
 
     private JAXBContext jaxbContext = null;
     private Marshaller marshaller = null;
@@ -53,7 +44,7 @@ public class BlankFormGenerator {
     public BlankFormGenerator() {
     }
 
-    public synchronized void  generatePdf(String xml, String pdfOutFileName) throws Exception {
+    public synchronized void generatePdf(String xml, String pdfOutFileName) throws Exception {
         FopFactory fopFactory = FopFactory.newInstance();
 
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
@@ -69,11 +60,13 @@ public class BlankFormGenerator {
 
             // Setup XSLT
             TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(new StreamSource(BlankFormGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
-//            Transformer transformer = factory.newTransformer(new StreamSource(XSLFile));
+//            System.out.println(factory == null);
+
+//            Transformer transformer = factory.newTransformer(new StreamSource(BlankFormGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
+            Transformer transformer = factory.newTransformer(new StreamSource(XSLFile));
 
             // Set the value of a <param> in the stylesheet
-            transformer.setParameter("versionParam", "2.0");
+//            transformer.setParameter("versionParam", "2.0");
 
             // Setup XML String as input for XSLT transformation
             Source src = new StreamSource(new ByteArrayInputStream(xml.getBytes("UTF-8")));
@@ -153,6 +146,11 @@ public class BlankFormGenerator {
         s.setLongTitle("LT");
         s.setId(55588);
 
+        s.setIdentifiers(new ArrayList<Identifier>());
+        s.getIdentifiers().add(new OrganizationAssignedIdentifier());
+        s.getIdentifiers().get(0).setPrimaryIndicator(true);
+        s.getIdentifiers().get(0).setValue("VALUE");
+
         e = new Epoch();
         e.setName("PT");
         e.setDescriptionText("DT");
@@ -204,8 +202,8 @@ public class BlankFormGenerator {
     }
 
     public static void main(String[] args) {
-        // testXMLGenaration();
-        // testPDFgeneration();
+        testXMLGenaration();
+        testPDFgeneration();
     }
 
 }

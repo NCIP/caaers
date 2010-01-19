@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 
@@ -15,10 +16,12 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
@@ -35,16 +38,15 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     }
 	
 	private void generateOutput(String outFile,HttpServletResponse response,Integer reportId) throws Exception{
-		String tempDir = System.getProperty("java.io.tmpdir");
-		File file = new File(tempDir+File.separator+outFile);
+
+        String tempDir = System.getProperty("java.io.tmpdir");
+		File file = new File(tempDir + File.separator + outFile);
 		FileInputStream fileIn = new FileInputStream(file);
-		
 		response.setContentType( "application/x-download" );
 		response.setHeader( "Content-Disposition", "attachment; filename="+outFile );
 		response.setHeader("Content-length", String.valueOf(file.length()));
 		response.setHeader("Pragma", "private");
 		response.setHeader("Cache-control","private, must-revalidate");
-		
 		
 		OutputStream out = response.getOutputStream();
 		
@@ -62,85 +64,88 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
 	@Override
 	protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object arg2, BindException arg3) throws Exception {
-
 		
 		String tempDir = System.getProperty("java.io.tmpdir");
 		String strAeReportId = request.getParameter("aeReport");
 		String strReportId = request.getParameter("reportId");
 		String format = request.getParameter("format");
+        if (format == null) format = "xml";
 		
    		try {
-   				Integer aeReportId = Integer.parseInt(strAeReportId);
-   				Integer reportId = Integer.parseInt(strReportId);
-    			ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
-    			Report report = reportDao.getById(reportId);
+               Integer aeReportId = Integer.parseInt(strAeReportId);
+               Integer reportId = Integer.parseInt(strReportId);
+
+               ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
+               Report report = reportDao.getById(reportId);
+
+               //if report is completed xml should be obtained from saved data.
+               String xml = null;
+               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY);
+               
+               if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+                   ReportContent reportContent = null;
+                   // if the report is submitted and assigned with a ticket number , we need to populate that ticket number in XML , so generate new XML
+                   if (report.getAssignedIdentifer() == null) {
+                       //obtain the saved xml report
+                       reportContent = reportDao.getReportContent(report);
+                   }
+                   if (reportContent == null) {
+                       xml = adverseEventReportSerializer.serialize(aeReport, report);
+                   } else {
+                       xml = new String(reportContent.getContent());
+                   }
+               } else {
+                   //obtain newly generated caaers xml
+                   xml = adverseEventReportSerializer.serialize(aeReport, report);
+               }
     			
-    			//if report is completed xml should be obtained from saved data.
-    			String xml = null;
-    			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)){
-    				
-    				ReportContent reportContent = null;
-    				// if the report is submitted and assigned with a ticket number , we need to populate that ticket number in XML , so generate new XML 
-    				if (report.getAssignedIdentifer() == null ) {
-    					//obtain the saved xml report
-    					reportContent = reportDao.getReportContent(report);
-    				}
-    				if(reportContent == null){
-    					xml =  adverseEventReportSerializer.serialize(aeReport,report);
-    				}else{
-    					xml = new String(reportContent.getContent());
-    				}
-    			}else{
-    				//obtain newly generated caaers xml
-    				xml =  adverseEventReportSerializer.serialize(aeReport,report);
-    			}
-    			
-                
     			int reportVersionId = report.getLastVersion().getId();
     			if (format.equals("pdf")) {
-    			
 	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportVersionId+".pdf";
 	    	        // generate report and send ...
 	    			//AdeersReportGenerator gen = new AdeersReportGenerator();
 	    			adeersReportGenerator.generatePdf(xml,tempDir+File.separator+pdfOutFile);
-	    			
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("medwatchpdf")) {
- 
 	    			String pdfOutFile = "MedWatchReport-"+reportVersionId+".pdf";
-	    			
 	    			adeersReportGenerator.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
-	    			
 	    			generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("dcp")) {
     				String pdfOutFile = "dcp-"+reportVersionId+".pdf";
     				adeersReportGenerator.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
-    				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("cioms")) {
     				String pdfOutFile = "cioms-"+reportVersionId+".pdf";
     				adeersReportGenerator.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
-    				
     				generateOutput(pdfOutFile,response,aeReportId);
     			} else if (format.equals("ciomssae")) {
-    				String pdfOutFile = "ciomssae-"+reportVersionId+".pdf";
+    				String pdfOutFile = "ciomssae-"+reportVersionId + ".pdf";
     				adeersReportGenerator.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,aeReportId);
-    			} else  {
-	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportVersionId+".xml";
-	    			
+    			} else if (format.equals("customPDF")) {
+
+                    String xmlOutFile = "customPDF-" + reportVersionId + ".xml";
+                    BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir + File.separator + xmlOutFile));
+                    outw.write(xml);
+                    outw.close();
+
+                    String customPDFFile = "customPDF-" + reportVersionId + ".pdf";
+                    adeersReportGenerator.generateCustomPDF(xml, tempDir + File.separator + customPDFFile);
+                    generateOutput(customPDFFile, response, aeReportId);
+                    
+                } else  {
+	    			String xmlOutFile = "expeditedAdverseEventReport-" + reportVersionId + ".xml";
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);
 	    			outw.close();
-	    			
 	    			generateOutput(xmlOutFile,response,aeReportId);  				
     			}
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				throw new RemoteException ("Error generating PDF ",e);
+				// throw new RemoteException ("Error generating PDF ",e);
 			}
 
 		
@@ -179,7 +184,5 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
 		this.adeersReportGenerator = adeersReportGenerator;
 	}
-	
-	
    
 }

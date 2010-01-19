@@ -43,8 +43,18 @@
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 						</c:if>
+
+                        <%--
+                        DISPLAY ALL SUCTOME REPORTS ASSIATES TO DATA COLLECTION
+                        --%>
+
+	                    <c:if test="${report.reportDefinition.reportFormatType.code == 7}">
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Custom PDF :: ${report.reportDefinition}</a></li>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
 					</ul>
 				</div>
+
 				<c:if test="${exportOptionsCount > 0}">
 					<div style="text-align:right;">
 						<a id="export-menu-${report.id}" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Export</a>

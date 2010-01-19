@@ -11,11 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +54,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     private String name;
     private String label;
+    private String header;
+    private String footer;
     private String description;
     private Boolean amendable;
     private Integer duration;
@@ -77,7 +75,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     protected ReportDefinitionComparator comprator;
     protected boolean manuallySelected; //will store the manually selected indicator.
     protected Date baseDate; //will store the base date, (for new report creation)
-    
+    protected List<String> mandatoryFieldsForXML;
+
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class, new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
@@ -502,8 +501,55 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public boolean isManuallySelected() {
 		return manuallySelected;
 	}
+
 	public void setManuallySelected(boolean manuallySelected) {
 		this.manuallySelected = manuallySelected;
 	}
-	
+
+    @Transient
+    public List<ReportMandatoryFieldDefinition> getMandatoryFieldsForXMLByApplicability(Mandatory...types) {
+        List<ReportMandatoryFieldDefinition> fields = new LinkedList<ReportMandatoryFieldDefinition>();
+        if (getMandatoryFields() != null) {
+            for (ReportMandatoryFieldDefinition field : getMandatoryFields()) {
+                for (Mandatory m : types) {
+                    if (field.getMandatory().equals(m)) fields.add(field);
+                }
+            }
+        }
+        return fields;
+    }
+
+    @Transient
+    public void buildMandatoryFieldsForXML(Mandatory...types) {
+        for (ReportMandatoryFieldDefinition mf : getMandatoryFieldsForXMLByApplicability(types)) {
+            if (this.mandatoryFieldsForXML == null) this.mandatoryFieldsForXML = new ArrayList<String>();
+            this.mandatoryFieldsForXML.add(mf.getFieldPath());
+        }
+    }
+
+    @Transient
+    public List<String> getMandatoryFieldsForXML() {
+        return mandatoryFieldsForXML;
+    }
+
+    @Transient
+    public void setMandatoryFieldsForXML(List<String> mf) {
+        this.mandatoryFieldsForXML = mf;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public void setHeader(String header) {
+        this.header = header;
+    }
+
+    public String getFooter() {
+        return footer;
+    }
+
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
 }

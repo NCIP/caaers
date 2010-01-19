@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
@@ -12,30 +13,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
-public class AdeersReportGenerator {
+public class AdeersReportGenerator extends BasePDFGenerator {
 
     
     protected final Log log = LogFactory.getLog(getClass());
 
     // TO-DO set in spring config
     private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
-
     private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
-
     private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
-
     private String xslFODCPXsltFile = "xslt/Caaers2DCP-pdf-SAEForm.xslt";
-
     private String xslFOCIOMSTypeFormXsltFile = "xslt/Caaers2CIOMS-pdf-TypeForm.xslt";
-
     private String xslFOCIOMSXsltFile = "xslt/Caaers2CIOMS-pdf.xslt";
-
-//BJ : never globally share variables on a multi threaded env (this is a singleton bean).
-//    private String pdfOutFile = "/tmp/aeReport.pdf";
-
+    private String xslFOCustomXsltFile = "xslt/CaaersCustom.xslt";
+//    private String xslFOCustomXsltFile = "/SB/caAERS/trunk/caAERS/software/core/src/main/resources/xslt/CaaersCustom.xslt";
 
     protected  AdverseEventReportSerializer adverseEventReportSerializer;
-
 
 	public AdeersReportGenerator() {
 		//aeReportSerializer = new AdverseEventReportSerializer();
@@ -44,7 +37,6 @@ public class AdeersReportGenerator {
     public String getAdeersXml(String adverseEventReportXml) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         String transformedToAdeers = xsltTrans.toXml(adverseEventReportXml, xmlXsltFile);
-
         return transformedToAdeers;
     }
 
@@ -55,34 +47,38 @@ public class AdeersReportGenerator {
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOXsltFile);
     }
 
-
-
-    public void generateDcpSaeForm(String adverseEventReportXml, String pdfOutFileName)
-                    throws Exception {
-
+    public void generateDcpSaeForm(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFODCPXsltFile);
     }
 
-    public void generateCIOMSTypeForm(String adverseEventReportXml, String pdfOutFileName)
-                    throws Exception {
-
+    public void generateCIOMSTypeForm(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOCIOMSTypeFormXsltFile);
     }
 
-    public void generateCIOMS(String adverseEventReportXml, String pdfOutFileName) throws Exception {
+/*
+* This method generated the PDF file based on the given XML & XSL
+*
+* @author   Ion C . Olaru
+* @param    adverseEventReportXml   Serialized xml content
+* @param    pdfOutFileName          The generated PDF file path     
+*
+* */
+    public void generateCustomPDF(String adverseEventReportXml, String pdfOutFileName) throws Exception {
+        generatePdf(adverseEventReportXml, pdfOutFileName, xslFOCustomXsltFile, true);
+    }
 
+    public void generateCIOMS(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOCIOMSXsltFile);
     }
 
-    public void generateMedwatchPdf(String adverseEventReportXml, String pdfOutFileName)
-                    throws Exception {
-
+    public void generateMedwatchPdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
     }
+    
     /**
      * This method will generate the caAERS internal xml representation of the report.
      * @param aeReport
@@ -141,8 +137,7 @@ public class AdeersReportGenerator {
   
 
 	
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
+    public void testMedwatchPDF() {
         String str1 = "";
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
@@ -154,20 +149,54 @@ public class AdeersReportGenerator {
                 str1 = str1 + line;
                 line = bufRead.readLine();
             }
-            // System.out.println(str1);
-
+            
             aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-	public void setAdverseEventReportSerializer(
-			AdverseEventReportSerializer adverseEventReportSerializer) {
+	public void setAdverseEventReportSerializer(AdverseEventReportSerializer adverseEventReportSerializer) {
 		this.adverseEventReportSerializer = adverseEventReportSerializer;
 	}
 
+    /**
+     * This method is testting the PDF generation for the given XML & XSL file
+     *
+     * @author  Ion C. Olaru
+     * @return  generate the File
+     */
+    public static void testCustomPDFgeneration() {
 
+        String XMLFile = "/home/dell/Desktop/testAEReport.xml";
+        String PDFFile = "/home/dell/Desktop/testAEReport.pdf";
+
+        AdeersReportGenerator g = new AdeersReportGenerator();
+        StringBuffer s = new StringBuffer("");
+        try {
+            FileReader input = new FileReader(XMLFile);
+            BufferedReader bufRead = new BufferedReader(input);
+            String line = bufRead.readLine();
+
+            while (line != null) {
+                s.append(line);
+                line = bufRead.readLine();
+            }
+
+            String xml = s.toString();
+            g.generateCustomPDF(xml, PDFFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+/*
+        ExpeditedReportTree t = new ExpeditedReportTree();
+        System.out.println(t.getPropertyName());
+*/
+        testCustomPDFgeneration();
+    }
+   
 
 }

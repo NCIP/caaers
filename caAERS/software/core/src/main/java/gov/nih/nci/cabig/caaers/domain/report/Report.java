@@ -13,12 +13,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -429,6 +424,11 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         return map;
     }
 
+    /*
+    *
+    * This will return only the fields marked as mandatory (-1 in the DB) 
+    *
+    * */
     @Transient
     public List<String> getMandatoryFieldList() {
         List<String> fields = new LinkedList<String>();
@@ -440,6 +440,17 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         return fields;
     }
     
+    /*
+    *
+    * This will return only the request type fields 
+    *
+    * */
+    @Transient
+    public List<ReportMandatoryFieldDefinition> getFieldsByApplicability(Mandatory...types) {
+        List<ReportMandatoryFieldDefinition> fields = new LinkedList<ReportMandatoryFieldDefinition>();
+        return getReportDefinition().getMandatoryFieldsForXMLByApplicability(types);
+    }
+
     @Transient
     public  Boolean isSponsorReport(String nciInstituteCode){
     	if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode))

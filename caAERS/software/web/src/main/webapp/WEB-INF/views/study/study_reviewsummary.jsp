@@ -140,9 +140,7 @@
 		<![endif]-->
         <ul>
             <c:forEach items="${command.study.reportFormats}" var="report">
-                <li class="results">
-                        ${report.reportFormatType.displayName}
-                </li>
+                <li class="results">${report.reportFormatType.displayName}</li>
             </c:forEach>
         </ul>
 		

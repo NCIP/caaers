@@ -25,6 +25,7 @@ import junit.framework.TestCase;
 /** 
  * 
  * @author Biju Joseph
+ * @author Ion C. Olaru
  *
  */
 public class ReportTest extends AbstractNoSecurityTestCase {
@@ -33,7 +34,7 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		r = Fixtures.createReport("joel");
+		r = Fixtures.createReport("Report One");
 		aeReport = new ExpeditedAdverseEventReport();
 		aeReport.addReport(r);
 		
@@ -71,16 +72,16 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 		
 		rdd = Fixtures.createReportDeliveryDefinition(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL, ReportDeliveryDefinition.ENTITY_TYPE_PERSON);
 		ReportDelivery rd = rdd.createReportDelivery();
-		rd.setEndPoint("biju.joseph@semanticbits.com");
+		rd.setEndPoint("no-reply@no-email.com1");
 		r.addReportDelivery(rd);
 		
 		ReportVersion rv = new ReportVersion();
-		rv.setCcEmails("biju.joseph.padupurackal@gmail.com,, , biju@gmail.com,");
+		rv.setCcEmails("no-reply@no-email.com2,, , no-reply@no-email.com3,");
 		r.addReportVersion(rv);
 		
 		List<String> emails = r.getEmailRecipients();
 		System.out.println(emails);
-		assertEquals(3,emails.size());
+		assertEquals(3, emails.size());
 	}
 	/**
 	 * This method tests {@link Report#isActive()}
@@ -206,6 +207,34 @@ public class ReportTest extends AbstractNoSecurityTestCase {
 		assertEquals("xxxx", map.get("patientId"));
 		assertEquals(44, map.get("reportId"));
 		assertSame(r, map.get("report"));
-		
 	}
+
+    public void testFieldsApplicability() {
+        ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+        r.setReportDefinition(rd1);
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", Mandatory.MANDATORY));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", Mandatory.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", Mandatory.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", Mandatory.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", Mandatory.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", Mandatory.NA));
+
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", Mandatory.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", Mandatory.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", Mandatory.OPTIONAL));
+
+        List<ReportMandatoryFieldDefinition> l1 = r.getFieldsByApplicability(Mandatory.MANDATORY);
+        assertTrue(l1.size() == 1);
+        assertEquals("field.one", l1.get(0).getFieldPath());
+
+        List<ReportMandatoryFieldDefinition> l2 = r.getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+        assertEquals(5, l2.size());
+        assertEquals("field.two", l2.get(1).getFieldPath());
+        assertEquals("field.four", l2.get(3).getFieldPath());
+        assertEquals("field.ten", l2.get(4).getFieldPath());
+
+        List<ReportMandatoryFieldDefinition> l3 = r.getFieldsByApplicability(Mandatory.NA);
+        assertEquals(4, l3.size());
+        assertEquals("field.nine", l3.get(3).getFieldPath());
+    }
 }

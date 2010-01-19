@@ -5,10 +5,12 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.Unmarshaller;
@@ -71,9 +73,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 	 * @return
 	 * @throws Exception
 	 */
-	public ExpeditedAdverseEventReport generateExpeditedReport(String xmlFile) throws Exception{
-		
-		
+	public ExpeditedAdverseEventReport generateExpeditedReport(String xmlFile) throws Exception {
 		Mapping mapping = new Mapping();
 		mapping.loadMapping(ClassLoader.getSystemResource(serializer.getMappingFile()));
 		
@@ -120,5 +120,34 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 		}
 	}
 
+    public void testSerializerWithMandatoryFields() throws Exception {
 
+        String xmlFileName = "expedited_report_caaers_complete.xml";
+        ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
+
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one[].name", Mandatory.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[].two.name", Mandatory.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", Mandatory.OPTIONAL));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name[]", Mandatory.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five.name", Mandatory.MANDATORY));
+
+        aeReport.getReports().get(0).getReportDefinition().setHeader("THIS IS HEADER");
+        aeReport.getReports().get(0).getReportDefinition().setFooter("THIS IS FOOTER");
+
+        aeReport.getReports().get(0).getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY);
+        aeReport.getReports().get(0).getReportDefinition().setReportType(ReportType.REPORT);
+        aeReport.getReports().get(0).getReportDefinition().setDescription("Some Description");
+        aeReport.getReports().get(0).setAeReport(aeReport);
+
+        String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
+        System.out.println(xml);
+        assertTrue(xml.indexOf("<applicableField>") >= 0);
+        assertTrue(xml.indexOf("</applicableField>") >= 0);
+        assertTrue(xml.indexOf("field.one.name") >= 0);
+        assertTrue(xml.indexOf("field.two.name") >= 0);
+        assertTrue(xml.indexOf("field.three.name") == -1);
+        assertTrue(xml.indexOf("field.four.name") >= 0);
+        assertTrue(xml.indexOf("field.five.name") >= 0);
+
+    }
 }

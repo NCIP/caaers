@@ -42,11 +42,7 @@ import org.springframework.beans.BeanUtils;
  */
 @Entity
 @Table(name = "ae_reports")
-@GenericGenerator(name = "id-generator", strategy = "native",
-        parameters = {
-                @Parameter(name = "sequence", value = "seq_ae_reports_id")
-        }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_reports_id")})
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  Serializable{
    
 	private static final long serialVersionUID = -3747213703166595074L;

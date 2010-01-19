@@ -67,13 +67,6 @@ public class StudyCommand {
     private Boolean geneticTherapyType = Boolean.FALSE;
     private Boolean diaterySupplementTherapyType = Boolean.FALSE;
     private Boolean otherTherapyType = Boolean.FALSE;
-    
-    private Boolean caaersXMLType = Boolean.FALSE;
-    private Boolean adeersPDFType = Boolean.FALSE;
-    private Boolean medwatchPDFType = Boolean.FALSE;
-    private Boolean dcpSAEPDFType = Boolean.FALSE;
-    private Boolean ciomsPDFType = Boolean.FALSE;
-    private Boolean ciomsSaePDFType = Boolean.FALSE;
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     // Used to facilitate import of a coordinating center / funding sponsor
@@ -82,11 +75,8 @@ public class StudyCommand {
 
     // DCP specific properties
     private Design design;
-
     private List<Epoch> epochs=new ArrayList<Epoch>();
-    
     private boolean workflowEnabled;
-    
     private StudyDao studyDao;
     
     private InvestigationalNewDrugDao investigationalNewDrugDao;

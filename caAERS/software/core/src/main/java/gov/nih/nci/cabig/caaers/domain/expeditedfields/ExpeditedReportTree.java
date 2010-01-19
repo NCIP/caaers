@@ -267,13 +267,11 @@ public class ExpeditedReportTree extends PropertylessNode {
         return null;
     }
 
-    public List<UnsatisfiedProperty> verifyPropertiesPresent(String nodePropertyName,
-                    ExpeditedAdverseEventReport report) {
+    public List<UnsatisfiedProperty> verifyPropertiesPresent(String nodePropertyName, ExpeditedAdverseEventReport report) {
         return verifyPropertiesPresent(Collections.singleton(nodePropertyName), report);
     }
 
-    public List<UnsatisfiedProperty> verifyPropertiesPresent(Collection<String> nodePropertyNames,
-                    ExpeditedAdverseEventReport report) {
+    public List<UnsatisfiedProperty> verifyPropertiesPresent(Collection<String> nodePropertyNames, ExpeditedAdverseEventReport report) {
         List<TreeNode> propertyNodes = new LinkedList<TreeNode>();
         for (String propertyName : nodePropertyNames) {
             TreeNode node = find(propertyName);
@@ -284,8 +282,7 @@ public class ExpeditedReportTree extends PropertylessNode {
         return verifyNodesSatisfied(propertyNodes, report);
     }
 
-    public List<UnsatisfiedProperty> verifyNodesSatisfied(Collection<TreeNode> propertyNodes,
-                    ExpeditedAdverseEventReport report) {
+    public List<UnsatisfiedProperty> verifyNodesSatisfied(Collection<TreeNode> propertyNodes, ExpeditedAdverseEventReport report) {
         if (log.isDebugEnabled()) {
             log.debug("Examining report for satisfaction of " + propertyNodes);
         }
@@ -343,8 +340,7 @@ public class ExpeditedReportTree extends PropertylessNode {
     }
 
     private static TreeNode participantMeasure(String baseName) {
-        return property(baseName, StringUtils.capitalize(baseName),
-                        property("quantity",  "Quantity"), property("unit","Units"));
+        return property(baseName, StringUtils.capitalize(baseName), property("quantity",  "Quantity"), property("unit","Units"));
     }
 
     private static TreeNode dosage(String baseName, String displayName) {

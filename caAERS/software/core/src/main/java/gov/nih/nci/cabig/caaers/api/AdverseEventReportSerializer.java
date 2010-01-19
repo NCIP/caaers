@@ -1,50 +1,9 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.EventStatus;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
 import java.math.BigDecimal;
@@ -54,6 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+/*
+* @author Srini
+* @author Ion C. Olaru 
+*
+* */
 
 public class AdverseEventReportSerializer {
 
@@ -146,14 +111,14 @@ public class AdverseEventReportSerializer {
 		                }
 		        }
 		   }
-		   	   
-		   String xml = "";
-			XmlMarshaller marshaller = new XmlMarshaller();
-			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,reportId,notApplicableFieldPaths);
-			xml = marshaller.toXML(aer,getMappingFile());
-		
-			return xml;
-	   }
+
+           String xml = "";
+           XmlMarshaller marshaller = new XmlMarshaller();
+           ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject, reportId, notApplicableFieldPaths);
+           xml = marshaller.toXML(aer, getMappingFile());
+
+           return xml;
+       }
 	   
 	  
 
@@ -318,14 +283,24 @@ public class AdverseEventReportSerializer {
 	   		   
 		   return r;
 	   }
+
 	   private ReportDefinition getReportDefinition(ReportDefinition rd) throws Exception {
-		   
 		   ReportDefinition reportDefinition = new ReportDefinition();
 		   reportDefinition.setId(rd.getId());
 		   reportDefinition.setDuration(rd.getDuration());
-		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());   
+		   reportDefinition.setDescription(rd.getDescription());
+		   reportDefinition.setHeader(rd.getHeader());
+		   reportDefinition.setFooter(rd.getFooter());
+		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());
+		   reportDefinition.setMandatoryFieldsForXML(rd.getMandatoryFieldsForXML());
+
+           for (int i=0; i<reportDefinition.getMandatoryFieldsForXML().size(); i++) {
+               reportDefinition.getMandatoryFieldsForXML().set(i, reportDefinition.getMandatoryFieldsForXML().get(i).replace("[]", ""));
+           }
+
 		   return reportDefinition;
-	   }	   
+	   }
+    
 	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
 		   
 		   AdditionalInformation a = new AdditionalInformation();
@@ -609,7 +584,6 @@ public class AdverseEventReportSerializer {
 	    	try {
 		    	studyParticipantAssignment.setParticipant(getParticipant(spa.getParticipant()));
 		    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
-	
 		    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
 		    	studyParticipantAssignment.setStudySubjectIdentifier(spa.getStudySubjectIdentifier());
 
@@ -896,7 +870,7 @@ public class AdverseEventReportSerializer {
 //		public void setMappingFile(String mappingFile) {
 	//		this.mappingFile = mappingFile;
 		//}
-		
+
 		public static void main (String[] args) {
 			//
 			DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
@@ -904,39 +878,39 @@ public class AdverseEventReportSerializer {
 				ExpeditedAdverseEventReport e = new ExpeditedAdverseEventReport();
 				StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 
-				
+
 				AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
 				e.setReportingPeriod(reportingPeriod);
 				e.setAssignment(studyParticipantAssignment);
 				e.setId(1);
-				
+
 				ParticipantHistory ph = new ParticipantHistory();
 				Measure h = new Measure();
 				h.setQuantity(100.0);
 				h.setUnit("Inch");
-				
+
 				Measure w = new Measure();
 				w.setQuantity(150.0);
-				w.setUnit("Pound");	
-				
+				w.setUnit("Pound");
+
 				ph.setHeight(h);
 				ph.setWeight(w);
 				e.setParticipantHistory(ph);
-				
+
 				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
 				String xml = ser.serialize(e);
 				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
 				System.out.println(xml);
-				
-				
+
+
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			
-			
+
+
 		}
 
 }

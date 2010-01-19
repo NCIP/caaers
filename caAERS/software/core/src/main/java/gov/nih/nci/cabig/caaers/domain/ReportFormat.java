@@ -23,7 +23,6 @@ import org.hibernate.annotations.Type;
 public class ReportFormat extends AbstractMutableDomainObject implements StudyChild {
 
     private Study study;
-
     private ReportFormatType reportFormatType;
 
     public ReportFormat() {
