@@ -52,7 +52,7 @@ public class BasePDFGenerator {
 
             Transformer transformer = null;
             if (xslFromClassPath)
-                factory.newTransformer(new StreamSource(BasePDFGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
+                transformer = factory.newTransformer(new StreamSource(BasePDFGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
             else
                 transformer = factory.newTransformer(new StreamSource(XSLFile));
 

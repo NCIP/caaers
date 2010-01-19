@@ -3,8 +3,8 @@
 
   <xsl:output method="xml"/>
 
-  <xsl:attribute-set name="sub-head"><xsl:attribute name="height">10mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="font-weight">bold</xsl:attribute><xsl:attribute name="text-decoration">underline</xsl:attribute><xsl:attribute name="color">blue</xsl:attribute></xsl:attribute-set>
-  <xsl:attribute-set name="label"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="color">gray</xsl:attribute></xsl:attribute-set>
+  <xsl:attribute-set name="sub-head"><xsl:attribute name="height">10mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="font-weight">bold</xsl:attribute><xsl:attribute name="text-decoration">underline</xsl:attribute><xsl:attribute name="color">black</xsl:attribute></xsl:attribute-set>
+  <xsl:attribute-set name="label"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="color">black</xsl:attribute></xsl:attribute-set>
   <xsl:attribute-set name="value"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute><xsl:attribute name="font-weight">bold</xsl:attribute></xsl:attribute-set>
   <xsl:attribute-set name="normal"><xsl:attribute name="height">1mm</xsl:attribute><xsl:attribute name="font-family">arial</xsl:attribute><xsl:attribute name="font-size">8pt</xsl:attribute></xsl:attribute-set>
   <xsl:attribute-set name="tr-height-1"><xsl:attribute name="height">4mm</xsl:attribute><xsl:attribute name="color">green</xsl:attribute></xsl:attribute-set>
