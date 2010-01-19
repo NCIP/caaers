@@ -25,6 +25,9 @@
 		<fo:page-sequence master-reference="A4">
 
 		<fo:static-content flow-name="xsl-region-after">
+				<fo:block font-size="8pt" font-family="arial" text-align-last="center" >
+						<xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/footer" />
+				</fo:block>
 				<fo:block font-size="8pt" font-family="arial" text-align-last="right" >
 						Page <fo:page-number/> of <fo:page-number-citation ref-id="content_terminator"/>
 				</fo:block>
@@ -39,8 +42,7 @@
 				  <fo:table-row>
 				    <fo:table-cell><fo:block><!--<fo:external-graphic src="url(http://www.hhs.gov/images/system/hlogo.gif)" content-height="3em" content-width="3em"/>--></fo:block></fo:table-cell>
 				    <fo:table-cell>
-				      <fo:block font-weight="bold" font-size="12pt" font-family="arial" text-align-last="center" display-align="center"><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/header" /></fo:block>
-				      <fo:block space-before="5mm" font-weight="bold" font-size="8pt" font-family="arial" text-align-last="center" display-align="center"><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/footer" /></fo:block>
+				        <fo:block font-weight="bold" font-size="12pt" font-family="arial" text-align-last="center" display-align="center"><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/header" /></fo:block>
 				    </fo:table-cell>
 				    <fo:table-cell font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left"><fo:block></fo:block></fo:table-cell>
 				  </fo:table-row>
