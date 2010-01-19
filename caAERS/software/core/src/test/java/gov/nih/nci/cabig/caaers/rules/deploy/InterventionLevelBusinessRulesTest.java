@@ -523,6 +523,158 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[0].studyAgent");
         assertCorrectFieldNames(errors.getErrorAt(1), "aeReport.treatmentInformation.courseAgents[1].studyAgent");
     }
+
+
+    /**
+     * RuleName : SME_BR4_CHK, SME_BR5_CHK
+     * Rule : "Name of Reprocessor" cannot be given if IS_SINGLE_USE_DEVICE is not YES.
+     * : "Name of Reprocessor" should be given if IS_SINGLE_USE_DEVICE is "YES".
+     */
+    public void testReprocessorNameProvided() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors);
+    }
+
+
+
+    /**
+     * RuleName : SME_BR4_CHK, SME_BR5_CHK
+     * Rule : "Name of Reprocessor" cannot be given if IS_SINGLE_USE_DEVICE is not YES.
+     * : "Name of Reprocessor" should be given if IS_SINGLE_USE_DEVICE is "YES".
+     */
+    public void testReprocessorNameMissing() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR5_ERR");
+        assertSameErrorCount(errors, 1, "Name of Reprocessor should be given if reprocessed is YES");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[0].reprocessorName", errors.getErrorAt(0).getFieldNames()[0]);
+    }
+
+
+
+    /**
+     * RuleName : SME_BR4_CHK, SME_BR5_CHK
+     * Rule : "Name of Reprocessor" cannot be given if IS_SINGLE_USE_DEVICE is not YES.
+     * : "Name of Reprocessor" should be given if IS_SINGLE_USE_DEVICE is "YES".
+     */
+    public void testReprocessorNameMustNotBeProvided() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.NO);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR4_ERR");
+        assertSameErrorCount(errors, 1, "Name of Reprocessor should not be given if reprocessed is YES");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[0].reprocessorName", errors.getErrorAt(0).getFieldNames()[0]);
+
+    }
+
+
+    /**
+     * RuleName : SME_BR6_CHK,SME_BR7_CHK
+     * Rule : Address of Reprocessor' cannot be given if IS_SINGLE_USE_DEVICE is not 'Yes'
+     * : 'Address of Reprocessor' should be given if IS_SINGLE_USE_DEVICE is 'Yes'.
+     */
+    public void testReprocessorAddressProvided() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors);
+    }
+
+
+
+    /**
+     * RuleName : SME_BR6_CHK,SME_BR7_CHK
+     * Rule : Address of Reprocessor' cannot be given if IS_SINGLE_USE_DEVICE is not 'Yes'
+     * : 'Address of Reprocessor' should be given if IS_SINGLE_USE_DEVICE is 'Yes'.
+     */
+    public void testReprocessorAddressMissing() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR7_ERR");
+        assertSameErrorCount(errors, 1, "Address of Reprocessor should be given if reprocessed is YES");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[0].reprocessorAddress", errors.getErrorAt(0).getFieldNames()[0]);
+    }
+
+
+
+    /**
+     * RuleName : SME_BR6_CHK,SME_BR7_CHK
+     * Rule : Address of Reprocessor' cannot be given if IS_SINGLE_USE_DEVICE is not 'Yes'
+     * : 'Address of Reprocessor' should be given if IS_SINGLE_USE_DEVICE is 'Yes'.
+     */
+    public void testReprocessorAddressMustNotBeProvided() throws Exception{
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setDeviceReprocessed(ReprocessedDevice.NO);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR6_ERR");
+        assertSameErrorCount(errors, 1, "Address of Reprocessor should not be given if reprocessed is YES");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[0].reprocessorAddress", errors.getErrorAt(0).getFieldNames()[0]);
+
+    }
     
 }
 

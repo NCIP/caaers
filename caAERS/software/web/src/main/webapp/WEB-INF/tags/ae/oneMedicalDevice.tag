@@ -89,13 +89,31 @@
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].deviceReprocessed">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[16].propertyName}" text="${fieldGroup.fields[16].displayName}" required="false"/></jsp:attribute>
-                 <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[16].propertyName}" options="${fieldGroup.fields[16].attributes.options}" field="${fieldGroup.fields[16]}"/></jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:select path="${fieldGroup.fields[16].propertyName}" options="${fieldGroup.fields[16].attributes.options}" field="${fieldGroup.fields[16]}">
+                         <jsp:attribute name="embededJS">
+                             $('${fieldGroup.fields[16].propertyName}').observe("change", function(evt){
+                               if($('${fieldGroup.fields[16].propertyName}').value == 'YES'){
+                                  makeFieldMandatory('${fieldGroup.fields[17].propertyName}');
+                                  makeFieldMandatory('${fieldGroup.fields[18].propertyName}');
+                                  showFieldAndRow('${fieldGroup.fields[17].propertyName}');
+                                  showFieldAndRow('${fieldGroup.fields[18].propertyName}');
+                               }else{
+                                  hideFieldAndRow('${fieldGroup.fields[17].propertyName}');
+                                  hideFieldAndRow('${fieldGroup.fields[18].propertyName}');
+                                  makeFieldOptional('${fieldGroup.fields[17].propertyName}');
+                                  makeFieldOptional('${fieldGroup.fields[18].propertyName}');
+                               }
+                             });
+                         </jsp:attribute>
+                     </ui:select>
+                 </jsp:attribute>
             </ui:row>
-            <ui:row path="aeReport.medicalDevices[${index}].reprocessorName">
+            <ui:row path="aeReport.medicalDevices[${index}].reprocessorName" style="${device.deviceReprocessed eq 'YES' ? '' : 'display:none;'}">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[17].propertyName}" text="${fieldGroup.fields[17].displayName}" required="false"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[17].propertyName}"  field="${fieldGroup.fields[17]}"/></jsp:attribute>
             </ui:row>
-            <ui:row path="aeReport.medicalDevices[${index}].reprocessorAddress">
+            <ui:row path="aeReport.medicalDevices[${index}].reprocessorAddress" style="${device.deviceReprocessed eq 'YES' ? '' : 'display:none;'}">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[18].propertyName}" text="${fieldGroup.fields[18].displayName}" required="false"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[18].propertyName}" field="${fieldGroup.fields[18]}"/></jsp:attribute>
             </ui:row>
