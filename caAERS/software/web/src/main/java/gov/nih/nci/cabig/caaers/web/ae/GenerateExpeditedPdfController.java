@@ -80,7 +80,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
                //if report is completed xml should be obtained from saved data.
                String xml = null;
-               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY);
+               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
                
                if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
                    ReportContent reportContent = null;
