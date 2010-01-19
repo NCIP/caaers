@@ -38,8 +38,6 @@
 			<exclude conf="*" org="objectweb" module="asm"/>
 
 			<!-- exclusion based on class loading -->
-			<exclude conf="runtime,dist,distGrid" module="avalon-framework-api"  />
-			<exclude conf="runtime,dist,distGrid" module="avalon-framework-impl"  />
 			<exclude conf="runtime,dist,distGrid" name="logkit"  />
 			<exclude conf="dist,distGrid" module="jsp-api" />
         	<exclude conf="dist,distGrid" module="servlet-api"  />
