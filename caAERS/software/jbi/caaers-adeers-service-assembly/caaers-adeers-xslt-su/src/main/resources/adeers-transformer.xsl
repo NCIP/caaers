@@ -429,9 +429,12 @@
                     <xsl:when test="MedicalDevice/DeviceReprocessed = 'YES'">
                         <IS_SINGLE_USE_DEVICE>Yes</IS_SINGLE_USE_DEVICE>
                     </xsl:when>
-                    <xsl:otherwise>
+                    <xsl:when test="MedicalDevice/DeviceReprocessed = 'NO'">
                         <IS_SINGLE_USE_DEVICE>No</IS_SINGLE_USE_DEVICE>
-                    </xsl:otherwise>
+                    </xsl:when>                    
+                    <xsl:when test="MedicalDevice/DeviceReprocessed = 'UNKNOWN'">
+                        <IS_SINGLE_USE_DEVICE>Unknown</IS_SINGLE_USE_DEVICE>
+                    </xsl:when>
                 </xsl:choose>
 
                 <xsl:if test="MedicalDevice/reprocessorName != ''">
