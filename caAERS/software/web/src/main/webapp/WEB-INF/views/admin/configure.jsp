@@ -15,6 +15,26 @@
     </style>
 </head>
 <body>
+	<div class="tabpane">
+	    <div class="workflow-tabs2">
+    	    <ul id="" class="tabs autoclear">
+        	    <li id="thirdlevelnav" class="tab selected">
+           	    	<div>
+                    	<a href="configure"><caaers:message code="configure.menu.general"/></a>
+                	</div>
+            	</li>
+            	<li id="thirdlevelnav" class="tab">
+                	<div>
+                   		<a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a>
+                	</div>
+            	</li>
+            	<li id="thirdlevelnav" class="tab">
+                	<div>
+                   		<a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a>
+                	</div>
+            	</li>
+        	</ul>
+    	</div>
     <form:form action="${action}" cssClass="standard">
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
@@ -50,5 +70,6 @@
 
         <div class="row submit"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
     </form:form>
+    </div>
 </body>
 </html>

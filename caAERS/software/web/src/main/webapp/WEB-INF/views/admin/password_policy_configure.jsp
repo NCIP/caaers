@@ -1,3 +1,4 @@
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
@@ -45,7 +46,27 @@
     }
   </style>
 </head>
-<body> 
+<body>
+	<div class="tabpane">
+	<div class="workflow-tabs2">
+    	    <ul id="" class="tabs autoclear">
+        	    <li id="thirdlevelnav" class="tab">
+           	    	<div>
+                    	<a href="configure"><caaers:message code="configure.menu.general"/></a>
+                	</div>
+            	</li>
+            	<li id="thirdlevelnav" class="tab selected">
+                	<div>
+                   		<a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a>
+                	</div>
+            	</li>
+            	<li id="thirdlevelnav" class="tab">
+                	<div>
+                   		<a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a>
+                	</div>
+            	</li>
+        	</ul>
+    	</div> 
     <form:form action="${action}">
     <chrome:box title="Password Policy Configuration" autopad="true">
 
@@ -179,5 +200,6 @@
   </chrome:box>
     <div class="row submit" style="float: right;"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
     </form:form>
+    </div>
 </body>
 </html>

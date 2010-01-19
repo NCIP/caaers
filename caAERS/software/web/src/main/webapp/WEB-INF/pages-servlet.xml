@@ -246,9 +246,6 @@
 		    p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Track Reports" p:linkName="trackReportsController"/>	
-		  	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
-	    
 	    </list>
 	  </property>
 	</bean>
@@ -387,6 +384,10 @@
 	
   <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController">
     <property name="validator" ref="numInRangeValidator"/>
+  </bean>
+  
+  <bean name="/admin/mandatoryFields" id="mandatoryFieldsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MandatoryFieldsController">
+  	<property name="caaersFieldsTree" ref="caaersFieldsTree"></property>
   </bean>
 
   <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">

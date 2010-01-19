@@ -104,6 +104,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/passwordPolicyConfigure"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/mandatoryFields"
+        	   value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/trackReports"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>               
 
