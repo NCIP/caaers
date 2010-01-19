@@ -110,12 +110,20 @@
                  </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].reprocessorName" style="${device.deviceReprocessed eq 'YES' ? '' : 'display:none;'}">
-                 <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[17].propertyName}" text="${fieldGroup.fields[17].displayName}" required="false"/></jsp:attribute>
-                 <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[17].propertyName}"  field="${fieldGroup.fields[17]}"/></jsp:attribute>
+                 <jsp:attribute name="label">
+                     <ui:label path="${fieldGroup.fields[17].propertyName}" text="${fieldGroup.fields[17].displayName}" mandatory="${device.deviceReprocessed eq 'YES'}" />
+                 </jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:text path="${fieldGroup.fields[17].propertyName}"  field="${fieldGroup.fields[17]}" mandatory="${device.deviceReprocessed eq 'YES'}" />
+                 </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].reprocessorAddress" style="${device.deviceReprocessed eq 'YES' ? '' : 'display:none;'}">
-                 <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[18].propertyName}" text="${fieldGroup.fields[18].displayName}" required="false"/></jsp:attribute>
-                 <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[18].propertyName}" field="${fieldGroup.fields[18]}"/></jsp:attribute>
+                 <jsp:attribute name="label">
+                     <ui:label path="${fieldGroup.fields[18].propertyName}" text="${fieldGroup.fields[18].displayName}" mandatory="${device.deviceReprocessed eq 'YES'}" />
+                 </jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:text path="${fieldGroup.fields[18].propertyName}" field="${fieldGroup.fields[18]}"  mandatory="${device.deviceReprocessed eq 'YES'}" />
+                 </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].evaluationAvailability">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[19].propertyName}" text="${fieldGroup.fields[19].displayName}" required="false"/></jsp:attribute>
@@ -136,8 +144,12 @@
                  </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].returnedDate" style="${device.evaluationAvailability eq 'RETURNED' ? '' : 'display:none;'}">
-                 <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[20]}"/></jsp:attribute>
-                 <jsp:attribute name="value"><ui:date path="aeReport.medicalDevices[${index}].returnedDate" field="${fieldGroup.fields[20]}" /></jsp:attribute>
+                 <jsp:attribute name="label">
+                     <ui:label path="${fieldGroup.fields[20].propertyName}" text="${fieldGroup.fields[20].displayName}" mandatory="${device.evaluationAvailability eq 'RETURNED'}" />
+                 </jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:date path="aeReport.medicalDevices[${index}].returnedDate" field="${fieldGroup.fields[20]}" mandatory="${device.evaluationAvailability eq 'RETURNED'}"/>
+                 </jsp:attribute>
             </ui:row>
         </td>
     </tr>
