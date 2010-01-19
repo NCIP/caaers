@@ -986,9 +986,14 @@
 
                 <xsl:for-each select="DeviceAttribution">
                     <ATTRIBUTION_FOR_AE>
-                        <CAUSE_NAME>
-                            <xsl:value-of select="MedicalDevice/brandName"/>
-                        </CAUSE_NAME>
+                        	<xsl:choose>
+                        		<xsl:when test="MedicalDevice/commonName != '' ">
+                                	<CAUSE_NAME><xsl:value-of select="MedicalDevice/commonName"/></CAUSE_NAME>
+                            	</xsl:when>
+                        		<xsl:when test="MedicalDevice/brandName != '' ">
+                                	<CAUSE_NAME><xsl:value-of select="MedicalDevice/brandName"/></CAUSE_NAME>
+                            	</xsl:when>
+                        	</xsl:choose>
                         <TYPE_OF_CAUSE>DEVICE</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
                             <xsl:value-of select="substring(attribution, 4, 20)"/>
