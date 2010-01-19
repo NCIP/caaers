@@ -427,10 +427,10 @@
 
                 <xsl:choose>
                     <xsl:when test="MedicalDevice/DeviceReprocessed = 'YES'">
-                        <IS_SINGLE_USE_DEVICE>Yes</IS_SINGLE_USE_DEVICE>
+                        <IS_SINGLE_USE_DEVICE>No</IS_SINGLE_USE_DEVICE>
                     </xsl:when>
                     <xsl:otherwise>
-                        <IS_SINGLE_USE_DEVICE>No</IS_SINGLE_USE_DEVICE>
+                        <IS_SINGLE_USE_DEVICE>Yes</IS_SINGLE_USE_DEVICE>
                     </xsl:otherwise>
                 </xsl:choose>
 
