@@ -449,4 +449,74 @@
         </rhs>
     </rule>
 
+
+    <!-- ==========================================================================
+    RuleName : SME_BR8_CHK
+    Rule : 'Returned Date' cannot be given if DEVICE is not 'Returned'.     
+    Error Code : SME_BR8_ERR
+    Error Message : 'Returned Date' cannot be given if DEVICE is not 'Returned'.     .
+    ============================================================================= -->
+    <rule name="SME_BR8_CHK">
+        <lhs>
+            <pattern identifier="aeReport"
+                object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors"
+                object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(MedicalDevice device : aeReport.getMedicalDevices()){
+                      if(device.getEvaluationAvailability() != Availability.RETURNED){
+                        if(device.getReturnedDate() != null){
+                            errors.addValidationError("SME_BR8_ERR", "Returned date must only be specified when Evaluation availability is returned.").addFieldNames("aeReport.medicalDevices[" + i + "].returnedDate");
+                        }
+                      }
+
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+
+
+    <!-- ==========================================================================
+    RuleName : SME_BR9_CHK
+    Rule : 'Returned Date' should be given if DEVICE is not 'Returned'.
+    Error Code : SME_BR9_ERR
+    Error Message : 'Returned Date' should be given if DEVICE is not 'Returned'.     .
+    ============================================================================= -->
+    <rule name="SME_BR9_CHK">
+        <lhs>
+            <pattern identifier="aeReport"
+                object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors"
+                object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(MedicalDevice device : aeReport.getMedicalDevices()){
+                      if(device.getEvaluationAvailability() == Availability.RETURNED){
+                        if(device.getReturnedDate() == null){
+                            errors.addValidationError("SME_BR9_ERR", "Returned date must be specified when Evaluation availability is returned.").addFieldNames("aeReport.medicalDevices[" + i + "].returnedDate");
+                        }
+                      }
+
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>    
+
 </package>	

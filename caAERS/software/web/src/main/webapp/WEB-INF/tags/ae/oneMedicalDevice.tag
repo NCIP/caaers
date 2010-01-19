@@ -119,9 +119,23 @@
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].evaluationAvailability">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[19].propertyName}" text="${fieldGroup.fields[19].displayName}" required="false"/></jsp:attribute>
-                 <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[19].propertyName}" options="${fieldGroup.fields[19].attributes.options}" field="${fieldGroup.fields[19]}" /></jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:select path="${fieldGroup.fields[19].propertyName}" options="${fieldGroup.fields[19].attributes.options}" field="${fieldGroup.fields[19]}" >
+                         <jsp:attribute name="embededJS">
+                             $('${fieldGroup.fields[19].propertyName}').observe("change", function(evt){
+                               if($('${fieldGroup.fields[19].propertyName}').value == 'RETURNED'){
+                                  makeFieldMandatory('${fieldGroup.fields[20].propertyName}');
+                                  showFieldAndRow('${fieldGroup.fields[20].propertyName}');
+                               }else{
+                                  hideFieldAndRow('${fieldGroup.fields[20].propertyName}');
+                                  makeFieldOptional('${fieldGroup.fields[20].propertyName}');
+                               }
+                             });
+                         </jsp:attribute>
+                     </ui:select>
+                 </jsp:attribute>
             </ui:row>
-            <ui:row path="aeReport.medicalDevices[${index}].returnedDate">
+            <ui:row path="aeReport.medicalDevices[${index}].returnedDate" style="${device.evaluationAvailability eq 'RETURNED' ? '' : 'display:none;'}">
                  <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[20]}"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:date path="aeReport.medicalDevices[${index}].returnedDate" field="${fieldGroup.fields[20]}" /></jsp:attribute>
             </ui:row>

@@ -675,6 +675,81 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         assertEquals("aeReport.medicalDevices[0].reprocessorAddress", errors.getErrorAt(0).getFieldNames()[0]);
 
     }
+
+    /**
+     * RuleName : SME_BR9_CHK
+    Rule : 'Returned Date' should be given if DEVICE is not 'Returned'.
+    Error Code : SME_BR9_ERR
+    Error Message : 'Returned Date' should be given if DEVICE is not 'Returned'.  
+     * @throws Exception
+     */
+    public void testReturnedDateMissing() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setEvaluationAvailability(Availability.YES);
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+
+        device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setEvaluationAvailability(Availability.RETURNED);
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR9_ERR");
+        assertSameErrorCount(errors, 1, "Returned date should  be given if evaluation availability is returned");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[1].returnedDate", errors.getErrorAt(0).getFieldNames()[0]);
+    }
+
+    /**
+     * RuleName : SME_BR8_CHK
+    Rule : 'Returned Date' cannot be given if DEVICE is not 'Returned'.
+    Error Code : SME_BR8_ERR
+    Error Message : 'Returned Date' cannot be given if DEVICE is not 'Returned'.     
+     * @throws Exception
+     */
+    public void testReturnedDateMustNotBeProvided() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        aeReport.addMedicalDevice(device);
+
+        device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setReturnedDate(new Date());
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "SME_BR8_ERR");
+        assertSameErrorCount(errors, 1, "Returned date should not be given if evaluation availability is not returned");
+        assertNotNull(errors.getErrorAt(0).getFieldNames());
+        assertEquals("aeReport.medicalDevices[1].returnedDate", errors.getErrorAt(0).getFieldNames()[0]);
+    }
     
 }
 
