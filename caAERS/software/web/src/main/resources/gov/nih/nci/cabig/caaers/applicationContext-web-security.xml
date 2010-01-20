@@ -358,5 +358,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 <!--   The bean managing the rendering decision-->
   	<bean id="renderDecisionManagerBean" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManager" scope="session" lazy-init="true"/>
     <bean id="renderDecisionManager" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean" />
+    
+    <bean id="caaersFieldConfigurationManager" class="gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager" scope="session" lazy-init="true">
+    	<property name="caaersFieldDefinitionDao" ref="caaersFieldDefinitionDao" />
+    </bean>
+    <bean id="caaersFieldConfigurationManagerFactory" class="gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory" />
 	
 </beans>
