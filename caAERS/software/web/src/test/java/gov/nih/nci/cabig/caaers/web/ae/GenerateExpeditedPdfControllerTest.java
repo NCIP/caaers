@@ -35,7 +35,6 @@ public class GenerateExpeditedPdfControllerTest extends WebTestCase {
             replayMocks();
             ModelAndView mv = controller.handleRequest(request, response);
             verifyMocks();
-            fail("Should have throught the RequestNotSupportedException");
         } catch (Exception e) {
         }
     }
