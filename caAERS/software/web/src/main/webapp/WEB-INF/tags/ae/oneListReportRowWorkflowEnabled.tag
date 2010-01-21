@@ -69,7 +69,7 @@
                          <OPTION value="submit">Submit</OPTION>
                     </c:if>
                 </c:if>
-				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED')}">
+				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}">
                     <OPTION value="amend">Amend</OPTION>
                 </c:if>
 								
