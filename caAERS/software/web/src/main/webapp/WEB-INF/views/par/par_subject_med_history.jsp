@@ -41,7 +41,7 @@
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
-				this.insertContent(container, url, paramHash, function() {});
+				this.insertContent(container, url, paramHash, function() {}, false);
  	 		},
 
             removeAllAgents : function(itemType, src, val, loc, options) {
@@ -63,9 +63,7 @@
                     var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
                     var newLoc = replaceHtml($(loc) , '');
 
-                 this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
-                     // this.hideIndicator(itemType + "-indicator");
-                 }.bind(this));
+                 this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {}.bind(this), true);
 
              },
 
@@ -90,7 +88,7 @@
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
  	 	 		$(loc).innerHTML = '';
-				this.insertContent(container, url, paramHash.merge(sectionHash));				
+				this.insertContent(container, url, paramHash.merge(sectionHash), function(){}, true);
 				
  	 	 		
  	 		},
@@ -103,12 +101,21 @@
  				paramHash.set('_asynchronous', true);
  				paramHash.set('decorator', 'nullDecorator');
  			},
- 			insertContent : function(aContainer, url, params, onCompleteCallBack){
- 				//helper method to insert content in a DIV
- 				new Ajax.Updater(aContainer, url, {
- 					parameters: params.toQueryString() , onComplete: onCompleteCallBack ,insertion: Insertion.Top, evalScripts : true
- 				});
- 			},
+
+             insertContent : function(aContainer, url, params, onCompleteCallBack, replaceAllContent) {
+                  new Ajax.Request(url, {
+                         parameters : params.toQueryString(),
+                         onSuccess: function(transport) {
+                             if (replaceAllContent) {
+                                 $(aContainer).update(transport.responseText);
+                             }
+                             else {
+                                 Element.insert(aContainer, {'top' : transport.responseText});
+                             }
+                         }
+                  });
+              },
+             
  			formElementsInSection : function(aContainer){
  	 			return aContainer.select('input', 'select', 'textarea');	
  			}
