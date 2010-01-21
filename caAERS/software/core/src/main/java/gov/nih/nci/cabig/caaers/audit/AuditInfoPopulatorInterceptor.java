@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.audit;
 
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
 import java.util.Date;
@@ -29,7 +30,7 @@ public class AuditInfoPopulatorInterceptor implements MethodInterceptor {
 			 
 			 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			 	if(authentication != null){
-			 		String userName = authentication.getName();
+			 		String userName = SecurityUtils.getUserLoginName();
 			 		if(userName != null){
 			 			oldAuditInfo = (DataAuditInfo) DataAuditInfo.getLocal();
 			 			String url = fromUrl == null ? Thread.currentThread().getName() : fromUrl;

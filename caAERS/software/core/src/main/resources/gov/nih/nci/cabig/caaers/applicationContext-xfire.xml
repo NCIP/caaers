@@ -64,7 +64,6 @@
 		<property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />  
 		<property name="organizationRepository" ref="organizationRepository" />  
   </bean>
-  
   	
    <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
    		<property name="participantImportServiceImpl" ref="participantImportService" />
@@ -79,12 +78,11 @@
    </bean>
 
    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
-   
- 
      
 	<bean id="domInHandler" class="org.codehaus.xfire.util.dom.DOMInHandler" />
 	<bean id="validateUserTokenHandler" autowire="byType"  class="gov.nih.nci.cabig.caaers.utils.ValidateUserTokenHandler" />
     <bean id="xFireSchemaValidationHandler" class="gov.nih.nci.cabig.caaers.utils.XFireSchemaValidationHandler"/>
+    <bean id="auditInfoHandler" class="gov.nih.nci.cabig.caaers.utils.AuditInfoHandler"/>
 
 	<!-- caAERS Study WebService --> 
    <bean id="studyService" class="org.codehaus.xfire.spring.ServiceBean"> 
@@ -92,8 +90,9 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
- 		   <ref bean="domInHandler"/> 
-		   <ref bean="validateUserTokenHandler"/>        
+ 		   <ref bean="domInHandler"/>
+ 		   <ref bean="auditInfoHandler"/> 
+		   <ref bean="validateUserTokenHandler"/>
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
        </property>
@@ -110,7 +109,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
-		   <ref bean="domInHandler"/> 
+		   <ref bean="domInHandler"/>
+		   <ref bean="auditInfoHandler"/> 
 		   <ref bean="validateUserTokenHandler"/>        
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
@@ -128,7 +128,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
-		   <ref bean="domInHandler"/> 
+		   <ref bean="domInHandler"/>
+		   <ref bean="auditInfoHandler"/> 
 		   <ref bean="validateUserTokenHandler"/>  
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
@@ -151,7 +152,8 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
-		   <ref bean="domInHandler"/> 
+		   <ref bean="domInHandler"/>
+		   <ref bean="auditInfoHandler"/> 
 		   <ref bean="validateUserTokenHandler"/>  
            <ref bean="xFireSchemaValidationHandler"/>
          </list>
@@ -172,9 +174,10 @@
        <property name="serviceFactory" ref="jaxbServiceFactory"/>
        <property name="inHandlers">
          <list>
-		   <ref bean="domInHandler"/> 
+		   <ref bean="domInHandler"/>
+		   <ref bean="auditInfoHandler"/> 
 		   <ref bean="validateUserTokenHandler"/> 
-           <ref bean="xFireSchemaValidationHandler"/>           
+           <ref bean="xFireSchemaValidationHandler"/> 
          </list>
        </property>
        <property name="schemas">
