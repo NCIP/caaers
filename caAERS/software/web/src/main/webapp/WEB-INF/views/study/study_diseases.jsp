@@ -391,6 +391,7 @@ Event.observe(window, "load", function() {
     			<c:if test="${not meddraStudyDisease.retired}">
     			<tr>    				
             		<td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
+                    <td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
             		<td align="center"><div class="label">
                         <a href="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
                         </div>

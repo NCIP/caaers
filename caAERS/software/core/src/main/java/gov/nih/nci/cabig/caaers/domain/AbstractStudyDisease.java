@@ -39,6 +39,16 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends Abstr
 	private T term;
     private Study study;
 
+    private Boolean leadDisease;
+
+    public Boolean getLeadDisease() {
+        return leadDisease;
+    }
+
+    public void setLeadDisease(Boolean leadDisease) {
+        this.leadDisease = leadDisease;
+    }
+
     // //// BEAN PROPERTIES
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -18,15 +18,6 @@ public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
 
     
 	private static final long serialVersionUID = 7943849778109284695L;
-	private Boolean leadDisease;
-
-    public Boolean getLeadDisease() {
-        return leadDisease;
-    }
-
-    public void setLeadDisease(Boolean leadDisease) {
-        this.leadDisease = leadDisease;
-    }
 
     @ManyToOne
     @JoinColumn(name = "term_id")

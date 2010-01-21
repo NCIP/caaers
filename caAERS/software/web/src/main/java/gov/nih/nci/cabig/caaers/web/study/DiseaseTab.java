@@ -110,6 +110,12 @@ public class DiseaseTab extends StudyTab {
                 d.setLeadDisease(i == command.getPrimaryStudyDisease().intValue());
             }
         }
+        if (command.getStudy().getMeddraStudyDiseases() != null) {
+            for (byte i=0; i< command.getStudy().getMeddraStudyDiseases().size(); i++) {
+                MeddraStudyDisease d = command.getStudy().getMeddraStudyDiseases().get(i);
+                d.setLeadDisease(i == command.getPrimaryStudyDisease().intValue());
+            }
+        }
     }
 
     @Override
@@ -127,6 +133,13 @@ public class DiseaseTab extends StudyTab {
         if (command.getStudy().getCtepStudyDiseases() != null) {
             for (byte i=0; i< command.getStudy().getCtepStudyDiseases().size(); i++) {
                 CtepStudyDisease d = command.getStudy().getCtepStudyDiseases().get(i);
+                if (d.getLeadDisease() != null && d.getLeadDisease()) command.setPrimaryStudyDisease(new Integer(i));
+            }
+        }
+
+        if (command.getStudy().getMeddraStudyDiseases() != null) {
+            for (byte i=0; i< command.getStudy().getMeddraStudyDiseases().size(); i++) {
+                MeddraStudyDisease d = command.getStudy().getMeddraStudyDiseases().get(i);
                 if (d.getLeadDisease() != null && d.getLeadDisease()) command.setPrimaryStudyDisease(new Integer(i));
             }
         }
