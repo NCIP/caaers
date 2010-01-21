@@ -99,18 +99,11 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     }
 
     public void addStudyPersonnelId(Integer researchStaffId) {
-        if (getObjectById(getStudyPersonnelIds(), researchStaffId) == null) {
-        	getStudyPersonnelIds().add(researchStaffId);
+        if(!getStudyPersonnelIds().contains(researchStaffId)){
+            getStudyPersonnelIds().add(researchStaffId);
         }
     }
-    protected Integer getObjectById(List<Integer> studyPersonnelIds, Integer id) {
-        for (Integer object : studyPersonnelIds) {
-            if (object.equals(id)) {
-                return object;
-            }
-        }
-        return null;
-    }    
+   
 	public List<Integer> getStudyPersonnelIds() {
 		return studyPersonnelIds;
 	}

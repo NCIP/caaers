@@ -25,6 +25,7 @@
         <constructor-arg>
             <list>
                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+                <bean class="gov.nih.nci.cabig.caaers.web.security.HttpSessionPurgeLogoutHandler" />
             </list>
         </constructor-arg>
     </bean>
