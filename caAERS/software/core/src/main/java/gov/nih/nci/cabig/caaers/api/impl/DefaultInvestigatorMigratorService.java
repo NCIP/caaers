@@ -233,7 +233,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
             	logger.info("caAERS base URL is not set");
             }
             
-            investigatorRepository.save(investigator,caAERSBaseUrl.toString());
+            investigatorRepository.save(investigator,changePasswordUrl.toString());
 
             logger.info("Created the Investigator  :" + investigator.getId());
             logger.info("End of DefaultInvestigatorMigratorService : saveInvestigator");
