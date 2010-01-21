@@ -28,7 +28,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     public User requestToken(String userName) throws CaaersSystemException {
     	User user = userDao.getByLoginId(userName);
     	if(user == null){
-    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
+    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
         //get the token
     	csmUserRepository.userCreateToken(user);
@@ -41,7 +41,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     	User user = userDao.getByLoginId(userName);
     	
     	if(user == null){
-    		new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
+    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknown");
     	}
         validateToken(user, token);
         validateAndSetPassword(user, password);
