@@ -62,8 +62,8 @@ public class BlankFormGenerator {
             TransformerFactory factory = TransformerFactory.newInstance();
 //            System.out.println(factory == null);
 
-//            Transformer transformer = factory.newTransformer(new StreamSource(BlankFormGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
-            Transformer transformer = factory.newTransformer(new StreamSource(XSLFile));
+            Transformer transformer = factory.newTransformer(new StreamSource(BlankFormGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
+//            Transformer transformer = factory.newTransformer(new StreamSource(XSLFile));
 
             // Set the value of a <param> in the stylesheet
 //            transformer.setParameter("versionParam", "2.0");
