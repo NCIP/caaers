@@ -37,10 +37,7 @@
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
-				this.insertContent(container, url, paramHash, function() {
-						// src.enable();
-						// this.hideIndicator(src.id + "-indicator");
-						}.bind(this));
+				this.insertContent(container, url, paramHash, function() {}.bind(this), false);
  	 		},
 
              removeAllAgents : function(itemType, src, val, loc, options) {
@@ -49,8 +46,6 @@
                  var paramHash = new Hash(); //parameters to post to server
                     paramHash.set('task', 'remove');
                     paramHash.set('currentItem', "AllPriorTherapyAgents");
-
-//                  alert(itemType);
 
                  //add extra options to the parameter list
                     if(options){
@@ -62,10 +57,7 @@
                     var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
                     var newLoc = replaceHtml($(loc) , '');
 
-                 this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
-                     // this.hideIndicator(itemType + "-indicator");
-                 }.bind(this));
-                 
+                    this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {}.bind(this), true);
              },
 
              removeDetails :function(itemType, index, loc, options){
@@ -91,11 +83,8 @@
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
- 	 	 		var newLoc = replaceHtml($(loc) , '');
 
-                this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
-					// this.hideIndicator(itemType + "-indicator");
-				}.bind(this));
+                this.insertContent(loc, url, paramHash.merge(sectionHash), function () {}.bind(this), true);
  	 	 		
  	 		},
 
@@ -109,12 +98,24 @@
  				paramHash.set('decorator', 'nullDecorator');
  			},
 
-             insertContent : function(aContainer, url, params, onCompleteCallBack){
- 				//helper method to insert content in a DIV
-                 // alert(params.toQueryString());
-                 new Ajax.Updater(aContainer, url, {
+            insertContent : function(aContainer, url, params, onCompleteCallBack, replaceAllContent) {
+                 new Ajax.Request(url, {
+                        parameters : params.toQueryString(),
+                        onSuccess: function(transport) {
+                            if (replaceAllContent) {
+                                $(aContainer).update(transport.responseText);
+                            }
+                            else {
+                                Element.insert(aContainer, {'top' : transport.responseText});
+                            }
+                        }
+                 });
+
+/*
+                 new Ajax.Updater(url, {
  					parameters: params.toQueryString(), onComplete: onCompleteCallBack, insertion: Insertion.Top, evalScripts : true
  				});
+*/
  			},
              
              showIndicator :  function(name){
@@ -617,7 +618,6 @@
     </jsp:body>
 </chrome:box>
 </caaers:renderFilter>
-
         <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
   <tags:tabControls flow="${flow}" tab="${tab}" />
 </form:form>
