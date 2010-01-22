@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.validation.validator;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -34,13 +35,21 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception{
 		super.setUp();
+        SecurityTestUtils.switchToNoUser();
+
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 		adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		errors = new BindException(adverseEventReportingPeriod, "adverseEventReportingPeriod");
 		setupAdverseEventReportingPeriod();
 	}
-	
-	private void setupAdverseEventReportingPeriod(){
+
+    @Override
+    protected void tearDown() throws Exception {
+        SecurityTestUtils.switchToNoUser();
+        super.tearDown();
+    }
+
+    private void setupAdverseEventReportingPeriod(){
 		adverseEventReportingPeriod = Fixtures.createReportingPeriod();
 		adverseEventReportingPeriod.setStartDate(new Timestamp(100));
 		adverseEventReportingPeriod.setEndDate(new Timestamp(200));
