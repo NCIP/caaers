@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.security;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
@@ -106,8 +107,9 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
         inv.setLoginId(userName);
         inv.setEmailAddress(userName);
         expect(userDao.getByLoginId(userName)).andReturn(inv).anyTimes();
+        expect(userDao.getByLoginId("Invalid_user")).andReturn(null).anyTimes();
         userDao.save(inv);
-        expectLastCall().times(3);
+        expectLastCall().anyTimes();
         replayMocks();
         User user = passwordManagerService.requestToken(userName);
         passwordManagerService.setPassword(userName, "v@l1d_Password", user.getToken());
@@ -121,6 +123,12 @@ public class PasswordManagerServiceTest extends AbstractTestCase {
             passwordManagerService.setPassword(userName, "invalid_Password", user2.getToken());
             fail("Shouldn't accept invalid password.");
         } catch (CaaersSystemException e) { /* good */
+        }
+        try {
+            User user3 = passwordManagerService.requestToken(userName);
+            passwordManagerService.setPassword("Invalid_user", "v@l1d_Password", user3.getToken());
+            fail("No Such User");
+        } catch (CaaersNoSuchUserException e) { /* good */
         }
         verifyMocks();
     }
