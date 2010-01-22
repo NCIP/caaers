@@ -114,7 +114,7 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertEquals(2, command.getStudy().getCtepStudyDiseases().size());
 		assertFalse(command.getStudy().getCtepStudyDiseases().get(1).isRetired());
 		command.deleteCtepStudyDiseaseAtIndex(1);
-		assertEquals(1, command.getStudy().getCtepStudyDiseases().size());
+		assertEquals(2, command.getStudy().getCtepStudyDiseases().size());
 		assertFalse(command.getStudy().getCtepStudyDiseases().get(0).isRetired());
 	}
 
