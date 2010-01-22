@@ -1,28 +1,29 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-
-import org.springframework.validation.Errors;
-
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.Errors;
+
+import java.util.ArrayList;
+
 import static org.easymock.EasyMock.expect;
 
 
 /**
  * This class tests RoutingAndReviewAjaxFacade class.
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	private RoutingAndReviewAjaxFacade facade;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
-	
+	private MessageSource messageSource;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -31,6 +32,8 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		facade = new RoutingAndReviewAjaxFacade();
 		facade.setAdverseEventReportingPeriodDao(adverseEventReportingPeriodDao);
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
+        messageSource = (MessageSource) getDeployedApplicationContext().getBean("messageSource");
+        facade.setMessageSource(messageSource);
 	}
 		
 	/**
@@ -45,7 +48,7 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
 			public void validate(Object obj, Errors e) {
 				AdverseEventReportingPeriod adverseEventReportingPeriod = (AdverseEventReportingPeriod) obj;
-				e.reject("test error");
+				e.reject("CAE_007", "test error");
 			}
 		};
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
@@ -55,6 +58,7 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		assertNotNull("AjaxOutput not populated with errors", output);
 		ArrayList<String> errorList = (ArrayList<String>)output.getObjectContent();
 		assertEquals("Incorrect number of errors populated in the ajaxOutput object", 1, errorList.size());
+        assertEquals("All adverse events should be graded.", errorList.get(0));
 		verifyMocks();
 	}
 	

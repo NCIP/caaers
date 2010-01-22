@@ -4,30 +4,26 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.userdetails.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class RoutingAndReviewAjaxFacade {
 	
@@ -40,6 +36,7 @@ public class RoutingAndReviewAjaxFacade {
 	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 private ReportDao reportDao;
+     private MessageSource messageSource;
 	 
 	 protected Object extractCommand() {
 	    	
@@ -90,7 +87,7 @@ public class RoutingAndReviewAjaxFacade {
 				List<String> errorsList = new ArrayList<String>();
 				for(Object error: errors.getAllErrors()){
 					ObjectError objError = (ObjectError) error;
-					errorsList.add(objError.getCode());
+					errorsList.add(messageSource.getMessage(objError.getCode(), objError.getArguments(), objError.getDefaultMessage(), Locale.getDefault()));
 				}
 				output.setObjectContent(errorsList);
 			}
@@ -142,5 +139,8 @@ public class RoutingAndReviewAjaxFacade {
 	
 	public void setReportDao(ReportDao reportDao){
 		this.reportDao = reportDao;
+	}
+    public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 }
