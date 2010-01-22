@@ -21,6 +21,7 @@ import org.springframework.validation.Validator;
  * The end date for the course/reporting period must be <= the current date. 
  * 
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 
 public class AdverseEventReportingPeriodValidator implements Validator{

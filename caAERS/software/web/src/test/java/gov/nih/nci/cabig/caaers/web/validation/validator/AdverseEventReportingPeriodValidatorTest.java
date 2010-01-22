@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 /**
  * This class tests the AdverseEventReportingPeriodValidator class
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
 	private static final Log log = LogFactory.getLog(AdverseEventReportingPeriodValidator.class);
