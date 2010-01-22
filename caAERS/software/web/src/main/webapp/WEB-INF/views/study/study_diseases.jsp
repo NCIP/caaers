@@ -360,17 +360,15 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="10%" align="center"><b>Primary</b> </th>
     				<th scope="col" width="5%" align="center"></th>
     			</tr>
-    			 <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease" varStatus="status">
-    				<c:if test="${not studyDisease.retired}">
-    				<tr>    				
+    			 <c:forEach items="${command.study.activeStudyDiseases}" var="studyDisease" varStatus="status">
+    				<tr>
             			<td align="left"><div class="label">${studyDisease.term.ctepTerm}</div></td>
             			<td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
             			<td align="center"><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             		</tr>
-    				</c:if>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
-            	 	<td><div class="label"><i>No terms selected</i></div></td>
+            	 	<td colspan="3"><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
              </table>
              </center>
@@ -384,24 +382,21 @@ Event.observe(window, "load", function() {
             <center>
 			<table width="100%" class="tablecontent">
     			<tr>
-    				<th scope="col" align="left"><b>MedDRA disease term</b> </th>
+    				<th scope="col" align="left" colspan="2"><b>MedDRA disease term</b></th>
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
-    			<c:forEach items="${command.study.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
-    			<c:if test="${not meddraStudyDisease.retired}">
-    			<tr>    				
-            		<td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
-                    <td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
-            		<td align="center"><div class="label">
-                        <a href="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
-                        </div>
-                    </td>
-            	</tr>
-            	</c:if>
+
+    			<c:forEach items="${command.study.activeStudyDiseases}" var="meddraStudyDisease" varStatus="status">
+                    <tr>
+                        <td align="left"><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
+                        <td align="center"><div class="label"><form:radiobutton path="primaryStudyDisease" value="${status.index}"/></div></td>
+                        <td align="center"><div class="label"><a href="javascript:fireAction('removeMeddraStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+                    </tr>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
-            	 	<td><div class="label"><i>No terms selected</i></div></td>
-            	 </c:if>
+                
+                 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
+                    <td colspan="3"><div class="label"><i>No terms selected</i></div></td>
+                 </c:if>
             	
              </table>
              </center>
@@ -418,13 +413,11 @@ Event.observe(window, "load", function() {
     				<th scope="col" align="left"><b>Other Conditions</b> </th>
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
-    			<c:forEach items="${command.study.studyConditions}" var="studyConditions" varStatus="status">
-    			<c:if test="${not studyConditions.retired}">
-    			<tr>
-            		<td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
-            		<td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
-            	</tr>
-            	</c:if>
+    			<c:forEach items="${command.study.activeStudyConditions}" var="studyConditions" varStatus="status">
+                    <tr>
+                        <td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
+                        <td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+                    </tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.study.activeStudyDiseases) eq 0}" >
             	 	<tr><td colspan="2"><div class="label"><i>No terms selected</i></div></td></tr>

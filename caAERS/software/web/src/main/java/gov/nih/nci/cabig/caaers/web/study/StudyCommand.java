@@ -410,7 +410,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteCtepStudyDiseaseAtIndex(int index){
-    	delete(study.getCtepStudyDiseases(), index);
+    	delete(study.getActiveCtepStudyDiseases(), index);
     }
     
 
@@ -419,7 +419,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteMeddraStudyDiseaseAtIndex(int index){
-    	delete(study.getMeddraStudyDiseases(), index);
+    	delete(study.getActiveMeddraStudyDiseases(), index);
     }
 
     /**
@@ -427,7 +427,7 @@ public class StudyCommand {
      * @param index
      */
     public void deleteStudyConditionAtIndex(int index){
-    	delete(study.getStudyConditions(), index);
+    	delete(study.getActiveStudyConditions(), index);
     }
     
     /**

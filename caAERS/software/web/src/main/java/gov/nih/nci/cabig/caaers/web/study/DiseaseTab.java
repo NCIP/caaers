@@ -99,15 +99,10 @@ public class DiseaseTab extends StudyTab {
         super.onBind(request, command, errors);
         if (command.getPrimaryStudyDisease() == null) return;
 
-        if (command.getStudy().getCtepStudyDiseases() != null) {
-            for (byte i=0; i< command.getStudy().getCtepStudyDiseases().size(); i++) {
-                CtepStudyDisease d = command.getStudy().getCtepStudyDiseases().get(i);
-                d.setLeadDisease(i == command.getPrimaryStudyDisease().intValue());
-            }
-        }
-        if (command.getStudy().getMeddraStudyDiseases() != null) {
-            for (byte i=0; i< command.getStudy().getMeddraStudyDiseases().size(); i++) {
-                MeddraStudyDisease d = command.getStudy().getMeddraStudyDiseases().get(i);
+        List<? extends AbstractStudyDisease> ls = command.getStudy().getActiveStudyDiseases();
+        if (ls != null && ls.size() > 0) {
+            for (byte i=0; i< ls.size(); i++) {
+                AbstractStudyDisease d = ls.get(i);
                 d.setLeadDisease(i == command.getPrimaryStudyDisease().intValue());
             }
         }
