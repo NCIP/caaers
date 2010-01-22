@@ -3,18 +3,13 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.ConditionDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.Condition;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCondition;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -130,16 +125,13 @@ public class DiseaseTab extends StudyTab {
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
         }
 
-        if (command.getStudy().getCtepStudyDiseases() != null) {
-            for (byte i=0; i< command.getStudy().getCtepStudyDiseases().size(); i++) {
-                CtepStudyDisease d = command.getStudy().getCtepStudyDiseases().get(i);
-                if (d.getLeadDisease() != null && d.getLeadDisease()) command.setPrimaryStudyDisease(new Integer(i));
-            }
-        }
+        List<? extends AbstractStudyDisease> ls = null;
+        if (command.getStudy().getCtepStudyDiseases() != null) ls = command.getStudy().getCtepStudyDiseases();
+        if (command.getStudy().getMeddraStudyDiseases() != null) ls = command.getStudy().getMeddraStudyDiseases(); 
 
-        if (command.getStudy().getMeddraStudyDiseases() != null) {
-            for (byte i=0; i< command.getStudy().getMeddraStudyDiseases().size(); i++) {
-                MeddraStudyDisease d = command.getStudy().getMeddraStudyDiseases().get(i);
+        if (ls != null && ls.size() > 0) {
+            for (byte i=0; i< ls.size(); i++) {
+                AbstractStudyDisease d = ls.get(i);
                 if (d.getLeadDisease() != null && d.getLeadDisease()) command.setPrimaryStudyDisease(new Integer(i));
             }
         }
