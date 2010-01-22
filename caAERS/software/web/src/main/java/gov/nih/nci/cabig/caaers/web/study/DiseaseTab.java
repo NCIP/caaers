@@ -125,10 +125,7 @@ public class DiseaseTab extends StudyTab {
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
         }
 
-        List<? extends AbstractStudyDisease> ls = null;
-        if (command.getStudy().getCtepStudyDiseases() != null) ls = command.getStudy().getCtepStudyDiseases();
-        if (command.getStudy().getMeddraStudyDiseases() != null) ls = command.getStudy().getMeddraStudyDiseases(); 
-
+        List<? extends AbstractStudyDisease> ls = command.getStudy().getActiveStudyDiseases();
         if (ls != null && ls.size() > 0) {
             for (byte i=0; i< ls.size(); i++) {
                 AbstractStudyDisease d = ls.get(i);
