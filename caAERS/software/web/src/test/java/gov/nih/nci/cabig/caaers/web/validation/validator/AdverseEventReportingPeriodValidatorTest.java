@@ -23,7 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
  * This class tests the AdverseEventReportingPeriodValidator class
  * @author Sameer Sawant
  */
-public class AdverseEventReportingPeriodValidatorTest extends WebTestCase {
+public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
 	private static final Log log = LogFactory.getLog(AdverseEventReportingPeriodValidator.class);
 	
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
@@ -52,12 +52,46 @@ public class AdverseEventReportingPeriodValidatorTest extends WebTestCase {
 		aeCtcTerm.setCtcTerm(Fixtures.createCtcTerm("testTerm2", "testCode2"));
 		adverseEventReportingPeriod.getAdverseEvents().get(1).setAdverseEventCtcTerm(aeCtcTerm);
 	}
-	
+
+    //2nd observed ae not graded
 	public void testGradeNotNull(){
 		adverseEventReportingPeriod.getAdverseEvents().get(0).setGrade(Grade.NORMAL);
 		adverseEventReportingPeriodValidator.validate(adverseEventReportingPeriod, errors);
 		assertTrue(errors.hasErrors());
 		assertEquals("Grade Not Null validation not working.", 1, errors.getErrorCount());
+	}
+
+    // making sure that solicited can have grade not evaluated.
+    public void testGradeSolicitedHavingNotEvaluated(){
+		adverseEventReportingPeriod.getAdverseEvents().get(0).setGrade(Grade.NOT_EVALUATED);
+        adverseEventReportingPeriod.getAdverseEvents().get(0).setSolicited(true);
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setGrade(Grade.NORMAL);
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setSolicited(true);
+		adverseEventReportingPeriodValidator.validate(adverseEventReportingPeriod, errors);
+		assertFalse(errors.hasErrors());
+	}
+
+
+    // making sure that solicited not evaluated
+    public void testGradeSolicitedNotGraded(){
+		adverseEventReportingPeriod.getAdverseEvents().get(0).setGrade(null);
+        adverseEventReportingPeriod.getAdverseEvents().get(0).setSolicited(true);
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setGrade(Grade.NORMAL);
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setSolicited(true);
+		adverseEventReportingPeriodValidator.validate(adverseEventReportingPeriod, errors);
+		assertTrue(errors.hasErrors());
+	}
+
+
+    // making sure that retired ae can be not graded
+    public void testNotGradedRetiredAE(){
+		adverseEventReportingPeriod.getAdverseEvents().get(0).setGrade(null);
+        adverseEventReportingPeriod.getAdverseEvents().get(0).retire();
+
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setGrade(Grade.NORMAL);
+        adverseEventReportingPeriod.getAdverseEvents().get(1).setSolicited(true);
+		adverseEventReportingPeriodValidator.validate(adverseEventReportingPeriod, errors);
+		assertFalse(errors.hasErrors());
 	}
 	
 	public void testValidAttribution(){

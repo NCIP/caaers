@@ -35,14 +35,14 @@ public class AdverseEventReportingPeriodValidator implements Validator{
 	
 	/**
 	 * This method validates if all the AEs of the Reporting Period are graded. 
-	 * @param AdverseEventReportingPeriod
+	 * @param adverseEventReportingPeriod
 	 * @return boolean
 	 */
 	public boolean validGradeValues(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
 			if(ae.isRetired()) continue;
-			if(ae.getGrade() == null || ae.getGrade().equals(Grade.NOT_EVALUATED))
-				return false;
+            if(ae.getGrade() == null) return false;
+            if(ae.getGrade() == Grade.NOT_EVALUATED && (!ae.getSolicited()) ) return false;
 		}
 		return true;
 	}
