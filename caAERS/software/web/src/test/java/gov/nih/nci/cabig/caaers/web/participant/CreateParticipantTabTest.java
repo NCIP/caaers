@@ -2,11 +2,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 
@@ -27,6 +23,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     protected void setUp() throws Exception {
         super.setUp();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
+        newParticipantCommand.setStudy(new LocalStudy());
     }
 
     @Override
@@ -134,8 +131,138 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         doValidate();
         assertEquals("Wrong number of errors for " + "participant.identifiers", 0, errors.getFieldErrorCount("participant.identifiers"));
-        
     }
-  
+
+/*
+* The Participant has 2 organization identifiers with the same value, organization and type
+* This should throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness1() throws Exception {
+        OrganizationAssignedIdentifier i1 = new OrganizationAssignedIdentifier();
+        i1.setOrganization(new LocalOrganization());
+        i1.getOrganization().setNciInstituteCode("O1");
+        i1.setType("T1");
+        i1.setValue("V1");
+        
+        OrganizationAssignedIdentifier i2 = new OrganizationAssignedIdentifier();
+        i2.setOrganization(new LocalOrganization());
+        i2.getOrganization().setNciInstituteCode("O1");
+        i2.setType("T1");
+        i2.setValue("V1");
+
+        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+
+        doValidate();
+
+        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 1, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+    }
+
+/*
+* The Participant has 2 organization identifiers with the same value, organization and different type
+* This should not throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness2() throws Exception {
+        OrganizationAssignedIdentifier i1 = new OrganizationAssignedIdentifier();
+        i1.setOrganization(new LocalOrganization());
+        i1.getOrganization().setNciInstituteCode("O1");
+        i1.setType("T1");
+        i1.setValue("V1");
+
+        OrganizationAssignedIdentifier i2 = new OrganizationAssignedIdentifier();
+        i2.setOrganization(new LocalOrganization());
+        i2.getOrganization().setNciInstituteCode("O1");
+        i2.setType("T2");
+        i2.setValue("V1");
+
+        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+
+        doValidate();
+
+        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+    }
+
+/*
+* The Participant has 2 system identifiers with the same value, system and type
+* This should throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness3() throws Exception {
+        SystemAssignedIdentifier i1 = new SystemAssignedIdentifier();
+        i1.setSystemName("S1");
+        i1.setType("T1");
+        i1.setValue("V1");
+
+        SystemAssignedIdentifier i2 = new SystemAssignedIdentifier();
+        i2.setSystemName("S1");
+        i2.setType("T1");
+        i2.setValue("V1");
+
+        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+
+        doValidate();
+
+        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 1, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+    }
+
+/*
+* The Participant has 2 system identifiers with the same value, different system and teh same type
+* This should not throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness4() throws Exception {
+        SystemAssignedIdentifier i1 = new SystemAssignedIdentifier();
+        i1.setSystemName("S1");
+        i1.setType("T1");
+        i1.setValue("V1");
+
+        SystemAssignedIdentifier i2 = new SystemAssignedIdentifier();
+        i2.setSystemName("S2");
+        i2.setType("T1");
+        i2.setValue("V1");
+
+        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+
+        doValidate();
+
+        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+    }
+
+/*
+* The Participant has 3 identifiers
+* This should not throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness5() throws Exception {
+        SystemAssignedIdentifier i1 = new SystemAssignedIdentifier();
+        i1.setSystemName("S1");
+        i1.setType("T1");
+        i1.setValue("V1");
+
+        SystemAssignedIdentifier i2 = new SystemAssignedIdentifier();
+        i2.setSystemName("S2");
+        i2.setType("T1");
+        i2.setValue("V1");
+
+        OrganizationAssignedIdentifier i3 = new OrganizationAssignedIdentifier();
+        i3.setOrganization(new LocalOrganization());
+        i3.getOrganization().setNciInstituteCode("O3");
+        i3.setType("T1");
+        i3.setValue("V1");
+
+        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+        newParticipantCommand.getParticipant().getIdentifiers().add(i3);
+
+        doValidate();
+
+        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+    }
+
 
 }
