@@ -294,8 +294,11 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());
 		   reportDefinition.setMandatoryFieldsForXML(rd.getMandatoryFieldsForXML());
 
-           for (int i=0; i<reportDefinition.getMandatoryFieldsForXML().size(); i++) {
-               reportDefinition.getMandatoryFieldsForXML().set(i, reportDefinition.getMandatoryFieldsForXML().get(i).replace("[]", ""));
+           // the ReportDefinition.mandatoryFieldsForXML property is set by calling the ReportDefinition.buildMandatoryFieldsForXML which will bring only the needed fields.
+           if (reportDefinition.getMandatoryFieldsForXML() != null) {
+               for (int i=0; i<reportDefinition.getMandatoryFieldsForXML().size(); i++) {
+                   reportDefinition.getMandatoryFieldsForXML().set(i, reportDefinition.getMandatoryFieldsForXML().get(i).replace("[]", ""));
+               }
            }
 
 		   return reportDefinition;
