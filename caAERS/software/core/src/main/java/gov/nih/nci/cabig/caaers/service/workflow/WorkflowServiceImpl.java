@@ -157,7 +157,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 		User user = csmUserRepository.getUserByName(loginId);
 		
-		ArrayList<Transition> filteredTransitions = new ArrayList<Transition>();
+        Map<String, Transition> filteredTransitionMap = new HashMap<String, Transition>();
+
 		for(Transition transition : possibleTransitions){
 			TransitionConfig transitionConfig = taskConfig.findTransitionConfig(transition.getName());
 			if(transitionConfig == null) continue; //transition is not configured so no body can move it expect sysadmin
@@ -169,7 +170,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 				if(owner.isUser()){
 					PersonTransitionOwner personOwner = (PersonTransitionOwner) owner;
 					if(StringUtils.equals(personOwner.getUser().getLoginId(), loginId)) {
-						filteredTransitions.add(transition);
+                        if(!filteredTransitionMap.containsKey(transition.getName()) ){
+                           filteredTransitionMap.put(transition.getName(), transition);
+                        }
 					}
 				}else{
 					RoleTransitionOwner roleOwner = (RoleTransitionOwner) owner;
@@ -178,7 +181,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 					
 					for(UserGroupType userGroupType : user.getUserGroupTypes()){
 						if(ArrayUtils.contains(ownerGroupTypes, userGroupType)){
-							filteredTransitions.add(transition);
+							if(!filteredTransitionMap.containsKey(transition.getName()) ){
+                                filteredTransitionMap.put(transition.getName(), transition);
+                            }
 							break;
 						}
 					}
@@ -187,7 +192,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			}
 		}
 		
-		return filteredTransitions;
+		return new ArrayList<Transition>(filteredTransitionMap.values());
 		
 	}
 	
