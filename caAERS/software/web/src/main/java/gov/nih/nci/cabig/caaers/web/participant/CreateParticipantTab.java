@@ -16,10 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -151,7 +148,26 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
                 }
             }
         }
-        
+
+        Set<Identifier> set = new HashSet<Identifier>();
+
+        set.add(command.getParticipant().getOrganizationIdentifiers().get(0));
+        // Org Identifiers starts from 1 since there is always a default one already assigned
+        byte x = 1;
+        byte y = 0;
+
+        for (int i = 1; i < command.getParticipant().getIdentifiers().size(); i++) {
+            Identifier identifier = command.getParticipant().getIdentifiers().get(i);
+            if (!set.add(identifier)) {
+                if (identifier instanceof OrganizationAssignedIdentifier) {
+                    errors.rejectValue("participant.organizationIdentifiers[" + x++ + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
+                }
+
+                if (identifier instanceof SystemAssignedIdentifier) {
+                    errors.rejectValue("participant.systemAssignedIdentifiers[" + y++ + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
+                }
+            }
+        }
     }
 
     public OrganizationRepository getOrganizationRepository() {
