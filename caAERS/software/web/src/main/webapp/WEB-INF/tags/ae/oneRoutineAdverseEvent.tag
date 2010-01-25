@@ -82,19 +82,25 @@
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
 			<%-- Attribution --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
+			<%-- Event time --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
+			<%-- Hospitalization --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
 		</div>
 		<div class="rightpanel">
 			<%-- End Date --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
 			<%-- Expectedness --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
-			
+			<%-- Location --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[9 + indexCorrection]}" />
+			<%-- Risk --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
 		</div>
 	</div>
-	<%-- Hospitalization --%>
-	<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
+	
 	<%-- Outcome--%>
-	<ae:oneOutcome index="${index}" isRoutineFlow="true" />
+	<ae:oneOutcome index="${index}" isRoutineFlow="true" isMandatory="${outcomesMandatory && not adverseEvent.solicited}"/>
 		<!--  field to store the sig -->
 		<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>
 		<c:if test="${adverseEvent.submitted == true}">

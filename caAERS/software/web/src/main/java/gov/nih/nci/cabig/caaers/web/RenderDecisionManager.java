@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,22 @@ public class RenderDecisionManager {
 	 */
 	public void reveal(String... fieldNames){
 		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
+	}
+	
+	/**
+	 * Will mark the field, identified by the name as conceled (not renderable).
+	 * @param fieldNames
+	 */
+	public void conceal(List<String> fieldNamesList){
+		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
+	}
+	
+	/**
+	 * Will mark the field, identified by the name as renderable.
+	 * @param fieldNames
+	 */
+	public void reveal(List<String> fieldNamesList){
+		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
 	}
 	
 	

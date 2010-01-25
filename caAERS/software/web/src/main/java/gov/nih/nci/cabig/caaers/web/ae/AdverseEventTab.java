@@ -11,8 +11,15 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
@@ -24,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * 
@@ -39,6 +48,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	protected EvaluationService evaluationService;
 	protected ReportRepository reportRepository;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	protected CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
 	
 	static {
     	GRADES.addAll(Arrays.asList(Grade.values()));
@@ -83,6 +93,19 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         options.put(OutcomeType.OTHER_SERIOUS.name(), OutcomeType.OTHER_SERIOUS.getDisplayName());
         return options;
 	}
+	
+	public CompositeField createTimeField(String baseProperty, String displayName){
+    	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
+    	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
+    	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
+    	amPmOption.put("0", "AM");
+    	amPmOption.put("1", "PM");
+    	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
+    	InputFieldAttributes.setSize(hrField, 2);
+    	InputFieldAttributes.setSize(mmField, 2);
+
+    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
+    }
 	
 	
 	protected Map<Object, Object> createHospitalizationOptions() {
@@ -173,5 +196,10 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
     public void setExpeditedAdverseEventReportDao(
 			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
 		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+    
+    @Required
+	public void setCaaersFieldConfigurationManagerFactory(CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory){
+		this.caaersFieldConfigurationManagerFactory = caaersFieldConfigurationManagerFactory;
 	}
 }

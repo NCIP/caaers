@@ -67,7 +67,7 @@ public class CaaersFieldConfigurationManager{
 		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
 		if(fieldConfigMap != null){
 			for(String fieldPath: fieldConfigMap.keySet())
-				if(fieldConfigMap.get(fieldPath) != Mandatory.NA)
+				if(!fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
 					applicableFieldsList.add(fieldPath);
 		}
 		return applicableFieldsList;
@@ -81,7 +81,7 @@ public class CaaersFieldConfigurationManager{
 		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
 		if(fieldConfigMap != null){
 			for(String fieldPath: fieldConfigMap.keySet())
-				if(fieldConfigMap.get(fieldPath) == Mandatory.NA)
+				if(fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
 					notApplicableFieldsList.add(fieldPath);
 		}
 		return notApplicableFieldsList;
@@ -95,8 +95,8 @@ public class CaaersFieldConfigurationManager{
 	 */
 	public boolean isFieldMandatory(String tabName, String fieldPath){
 		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
-		if(fieldConfigMap != null){
-			if(fieldConfigMap.get(fieldPath) == Mandatory.MANDATORY)
+		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
+			if(fieldConfigMap.get(fieldPath).equals(Mandatory.MANDATORY))
 				return true;
 			else
 				return false;

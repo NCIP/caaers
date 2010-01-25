@@ -7,10 +7,14 @@
 
 <%@attribute name="style"%>
 <%@attribute name="index" required="true" description="The index of the AE for which the outcome needs to be printed"%>
+<%@attribute name="isMandatory" required="false" type="java.lang.Boolean" description="Flag that indicates if the outcomes field is mandatory"%>
 <%@attribute name="isRoutineFlow" type="java.lang.Boolean" description="Will be true, if this tag is used in context of routine flow" %>
 <c:set var="outcomeGroup" value="outcomes${index}" />
 <ui:row path="adverseEvents[].outcomes" >
 	<jsp:attribute name="label">
+		<c:if test="${isMandatory != null && isMandatory}">
+			<tags:requiredIndicator />
+		</c:if>
 		Outcomes
 	</jsp:attribute>
 	<jsp:attribute name="value">

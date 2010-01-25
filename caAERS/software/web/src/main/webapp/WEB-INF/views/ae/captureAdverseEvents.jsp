@@ -77,6 +77,8 @@
  	var rpCreator = null; 
  	Event.observe(window, "load", function(){
  	
+        ValidationManager.validate = false;
+ 	
 		//remove the query string from form url
 		removeQueryStringFromForm('command');
 		

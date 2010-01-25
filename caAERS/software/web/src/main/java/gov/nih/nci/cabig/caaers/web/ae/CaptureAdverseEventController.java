@@ -23,6 +23,8 @@ import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
@@ -79,6 +81,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private ReportRepository reportRepository;
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+	private CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
 	
 	private Configuration configuration;
 	
@@ -124,14 +127,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         
-        //hide DCP for only AdEERS reporting enabled studies
-        if(command.isNonAdeersStudy()){
-        	renderDecisionManager.reveal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime",
-        			"adverseEvents[].eventApproximateTime.hourString","adverseEvents[].eventApproximateTime.minuteString","adverseEvents[].eventApproximateTime.type");
-        }else{
-        	renderDecisionManager.conceal("outcomes","adverseEvents[].eventLocation","adverseEvents[].eventApproximateTime",
-        			"adverseEvents[].eventApproximateTime.hourString","adverseEvents[].eventApproximateTime.minuteString","adverseEvents[].eventApproximateTime.type");
-        }
+        CaaersFieldConfigurationManager caaersFieldConfigurationManager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
+        renderDecisionManager.reveal(caaersFieldConfigurationManager.getListOfApplicableFields(AdverseEventCaptureTab.class.getName()));
+        renderDecisionManager.conceal(caaersFieldConfigurationManager.getListOfNotApplicableFields(AdverseEventCaptureTab.class.getName()));
         
 		return referenceData;
 	}
@@ -502,5 +500,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setReportRepository(ReportRepository reportRepository) {
 		this.reportRepository = reportRepository;
 	}
-	
+
+	@Required
+	public void setCaaersFieldConfigurationManagerFactory(CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory){
+		this.caaersFieldConfigurationManagerFactory = caaersFieldConfigurationManagerFactory;
+	}
 }

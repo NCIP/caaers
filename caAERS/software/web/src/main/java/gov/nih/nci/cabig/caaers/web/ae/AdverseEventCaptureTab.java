@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -34,6 +35,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 	// The names of the field groups
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String OUTCOME_FIELD_GROUP ="outcomes";
+    private static final String TAB_NAME = AdverseEventCaptureTab.class.getName();
     
     //max characters allowed for Verbatim
     private static final Integer VERBATIM_MAX_SIZE = 65;
@@ -67,6 +69,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
         InputFieldGroupMap fieldGrpMap = new InputFieldGroupMap();
         MultipleFieldGroupFactory mainFieldFactory;
+        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
         
         if(cmd.getAdverseEventReportingPeriod() != null){
         	
@@ -94,37 +97,51 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
             	//verbatim - Is required when there is no other MedDRA
                 boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
-            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim",verbatimMandatory);
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", isFieldRequired(ae, "adverseEvents[].detailsForOther", manager));
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
                 //grade
-                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", !ae.getSolicited() & unRetired, createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", isFieldRequired(ae, "adverseEvents[].grade", manager), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
                 
                 //startDate
-                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", false & unRetired);
+                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", isFieldRequired(ae, "adverseEvents[].startDate", manager));
                 mainFieldFactory.addField(startDateField);
                 
                 //endDate
-                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", false & unRetired);
+                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", isFieldRequired(ae, "adverseEvents[].endDate", manager));
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false & unRetired, createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", isFieldRequired(ae, "adverseEvents[].attributionSummary", manager), createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false & unRetired, createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", isFieldRequired(ae, "adverseEvents[].hospitalization", manager), createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
-                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", false & unRetired, createExpectedOptions());
+                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", isFieldRequired(ae, "adverseEvents[].expected", manager), createExpectedOptions());
                 mainFieldFactory.addField(expectednessField);
                 
+                //Time of event
+                InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
+                mainFieldFactory.addField(timeOfEventField);
+                
+                //Participant at risk
+                InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", isFieldRequired(ae, "adverseEvents[].participantAtRisk", manager));
+                mainFieldFactory.addField(riskField);
+                
+                //Event location
+                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", isFieldRequired(ae, "adverseEvents[].eventLocation", manager));
+                mainFieldFactory.addField(eventLocationField);
+
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
                 mainFieldFactory.addFieldGroup(fieldGroup);
                 mainFieldFactory.clearFields();
+                
+                
                 
                 //now add the fields related to outcomes
                 InputFieldGroup outcomeFieldGrp = new DefaultInputFieldGroup(OUTCOME_FIELD_GROUP + i);
@@ -148,6 +165,14 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         
         return fieldGrpMap;
     }
+    
+    private boolean isFieldRequired(AdverseEvent ae, String fieldPath, CaaersFieldConfigurationManager manager){
+    	if(ae.getSolicited() || ae.isRetired())
+    		return false;
+    	else{
+    		return manager.isFieldMandatory(TAB_NAME, fieldPath);
+    	}
+    }
 
     @Override
     public void beforeBind(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
@@ -159,7 +184,19 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     public Map<String, Object> referenceData(CaptureAdverseEventInputCommand command) {
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
-    	return super.referenceData(command);
+        
+        Map<String, Object> refData = super.referenceData(command);
+        Boolean outcomesMandatory = false;
+        // Put a flag in the referenceData to mark Outcome as mandatory if configured so.
+        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
+        if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes")){
+        	outcomesMandatory = true;
+        }
+        
+        refData.put("outcomesMandatory", outcomesMandatory);
+        
+        //return super.referenceData(command);
+        return refData;
     }
 
 
@@ -264,6 +301,17 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             //		DateUtils.compareDate(command.getAdverseEventReportingPeriod().getStartDate(), ae.getStartDate()) > 0)
             //	errors.rejectValue("adverseEvents[" + i + "].startDate", "CAE_015");
             
+            // Special validation for outcomes as it cannot be validated through the fieldgroup framework.
+            CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
+            if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
+            	if(ae.getOutcomes() == null || ae.getOutcomes().isEmpty())
+            		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes");
+            }
+            
+            if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.hourString") && !ae.getSolicited()){
+            	if(ae.getEventApproximateTime() == null || ae.getEventApproximateTime().getHourString() == null)
+            		errors.rejectValue("adverseEvents[" + i + "].eventApproximateTime.hourString", "CAE_017", "Missing event time");
+            }
             i++;
         }
 
