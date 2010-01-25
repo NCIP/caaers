@@ -105,12 +105,11 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		var sbox = $(sboxId);
 		var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
 		var sboxIndicator = $(sboxIndicatorId);
-
-		sboxIndicator.style.display='';
 		this.ajaxFacade.retrieveNextTransitions(reportId, function(ajaxOutput){
 			this.updateSelectBoxContent(reportId, sbox, sboxIndicator, ajaxOutput.objectContent);
 		}.bind(this));
 	},
+	
 	updateSelectBoxContent : function(entityId , sb, sbIndicator, objectContent){
 		if(objectContent){
 			sb.innerHTML = '';
@@ -123,7 +122,6 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 				sb.insert(li);
 			}
 		}
-		sbIndicator.style.display='none';
 		if (typeof createDropDowns == 'function') {
 			createDropDowns();
 		}

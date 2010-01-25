@@ -127,12 +127,12 @@
                                 
                                     <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
                                         
-                                            <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}">
+                                            <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}-${report.id}">
 											<ul>
 												<c:forEach items="${sectionEntry.value}" var="msg">
 													<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
 	                                        	</c:forEach>
-												<li><a href="#" onclick="javascript:goToPage('${sectionEntry.key}')">Go to this page ></a></li>
+												<li><a href="javascript:goToPage('${sectionEntry.key}')">Go to this page ></a></li>
 											</ul>
 											</chrome:division>
                                        
@@ -149,7 +149,7 @@
                 <div id="options-actions-menu-${report.id}" style="display:none;">
 					<ul>
 						<c:if test="${command.workflowEnabled == true}">
-							<span id="sliderWFAction-${report.id }"></span>
+							<span id="sliderWFAction-${report.id }" style="width:100%; font-size:0;"></span>
 						</c:if>
 	                    <c:if test="${reportMessages[report.id].submittable}">
 	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">

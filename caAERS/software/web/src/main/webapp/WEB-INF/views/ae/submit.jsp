@@ -250,7 +250,27 @@
             margin: 0;
             margin-left: 1em;
         }
+		.fg-menu a:link, .fg-menu a:visited, .fg-menu a:hover, .fg-menu a:active {
+			font-size:10pt;
+		}
     </style>
+    <!--[if IE]>
+        <style>
+			* {
+				zoom:1;
+			}
+			#taskbar ul, #floatingTaskbar ul {
+				margin:0 0 0 -8px;
+			}
+			#floatingTaskbar li.lte4 a.gt18 {
+				top:0;
+				position:absolute;
+			}
+			#secondlevelnav_listNotificationController {
+				left:696px;
+			}
+        </style>
+    <![endif]-->
 </head>
 <body>
 		

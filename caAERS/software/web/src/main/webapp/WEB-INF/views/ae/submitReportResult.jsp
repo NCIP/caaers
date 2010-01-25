@@ -52,6 +52,23 @@
     }
 			
 	    </script>
+	<!--[if IE]>
+        <style>
+			* {
+				zoom:1;
+			}
+			#taskbar ul, #floatingTaskbar ul {
+				margin:0 0 0 -8px;
+			}
+			#floatingTaskbar li.lte4 a.gt18 {
+				top:0;
+				position:absolute;
+			}
+			#secondlevelnav_listNotificationController {
+				left:696px;
+			}
+        </style>
+    <![endif]-->
 	</head>
 	<body>
 		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>

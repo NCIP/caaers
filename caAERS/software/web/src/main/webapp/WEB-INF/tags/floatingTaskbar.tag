@@ -11,7 +11,7 @@
                         ['<c:out value="${section.displayName}" />', ${noOfTasks}, ${section == currentSection ? "true" : "false"},
                                 <c:forEach items="${section.tasks}" var="task" varStatus="index">
                                     <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                                       ['<c:out value="${task.displayName}" />', '<c:url value="${task.url}"/>', '/caaers/images/blue/icons/${task.linkName}_icon.png'] ${!index.last ? ", " : ""}
+                                       ['<c:out value="${task.displayName}" />', '<c:url value="${task.url}"/>', '/caaers/images/blue/icons/${task.linkName}_icon.png', 'secondlevelnav_<c:out value="${task.linkName}" />'] ${!index.last ? ", " : ""}
                                     </csmauthz:accesscontrol>
                                 </c:forEach>
                         ],
@@ -37,7 +37,7 @@
             var _string = "<ul id='secondLevelTaskbar'>";
             for (i=3; i<sz; i++) {
                 var _length = TASKS[index][i][0].length;
-                _string += "<li class='" + ((sz - 3 > 4) ? "gt4" : "lte4") + "'><a href='" + TASKS[index][i][1] + "' class='" + (_length > 21 ? "gt18" : "") + "'><img class='" + (_length > 21 ? "imagegt18" : "") + "' alt='' src='" + TASKS[index][i][2] + "'/><span class='spangt18'>" + TASKS[index][i][0] + "</span></a>";
+                _string += "<li class='" + ((sz - 3 > 4) ? "gt4" : "lte4") + "'><a href='" + TASKS[index][i][1] + "' id='" + TASKS[index][i][3] + "' class='" + (_length > 21 ? "gt18" : "") + "'><img class='" + (_length > 21 ? "imagegt18" : "") + "' alt='' src='" + TASKS[index][i][2] + "'/><span class='spangt18'>" + TASKS[index][i][0] + "</span></a>";
             }
             _string += "</ul>";
 
