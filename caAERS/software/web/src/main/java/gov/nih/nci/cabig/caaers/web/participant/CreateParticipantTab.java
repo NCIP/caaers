@@ -156,7 +156,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         byte x = 1;
         byte y = 0;
 
-        for (int i = 1; i < command.getParticipant().getIdentifiers().size(); i++) {
+        int size = command.getParticipant().getIdentifiers().size(); 
+        for (int i = 1; i < size; i++) {
             Identifier identifier = command.getParticipant().getIdentifiers().get(i);
             if (!set.add(identifier)) {
                 if (identifier instanceof OrganizationAssignedIdentifier) {
