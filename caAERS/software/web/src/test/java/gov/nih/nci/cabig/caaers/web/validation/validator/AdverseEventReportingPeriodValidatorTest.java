@@ -1,31 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.validation.validator;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.domain.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Grade;
+import java.sql.Timestamp;
 
 /**
  * This class tests the AdverseEventReportingPeriodValidator class
  * @author Sameer Sawant
  * @author Biju Joseph
  */
-public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
+public class AdverseEventReportingPeriodValidatorTest extends AbstractNoSecurityTestCase {
 	private static final Log log = LogFactory.getLog(AdverseEventReportingPeriodValidator.class);
 	
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
@@ -35,7 +24,6 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception{
 		super.setUp();
-        SecurityTestUtils.switchToNoUser();
 
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 		adverseEventReportingPeriod = new AdverseEventReportingPeriod();
@@ -45,7 +33,6 @@ public class AdverseEventReportingPeriodValidatorTest extends AbstractTestCase {
 
     @Override
     protected void tearDown() throws Exception {
-        SecurityTestUtils.switchToNoUser();
         super.tearDown();
     }
 
