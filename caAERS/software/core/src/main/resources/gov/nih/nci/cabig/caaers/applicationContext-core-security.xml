@@ -182,7 +182,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               map-class="java.util.LinkedHashMap">
 
         <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 
         <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Study))"
                value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
