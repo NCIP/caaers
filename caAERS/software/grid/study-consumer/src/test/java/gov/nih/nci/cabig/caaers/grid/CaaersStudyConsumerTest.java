@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.grid;
 
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ccts.domain.AddressType;
 import gov.nih.nci.cabig.ccts.domain.CoordinatingCenterStudyStatusType;
 import gov.nih.nci.cabig.ccts.domain.HealthcareSiteType;
@@ -16,31 +19,37 @@ import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyDataEntryStatusType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
 import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
-import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 
 import java.math.BigInteger;
 
+import org.easymock.classextension.EasyMock;
+
 public class CaaersStudyConsumerTest extends CaaersTestCase {
     CaaersStudyConsumer studyConsumer;
-
-    private String studyResourceName;
-
-    private String serviceUrl;
-
-    private String configLoction;
+    protected OrganizationRepository organizationRepository;
+    protected ConfigProperty configProperty;
+    protected StudyDao studyDao;
+    protected SiteInvestigatorDao siteInvestigatorDao;
+    protected AuditHistoryRepository auditHistoryRepository;
 
     protected void setUp() throws Exception {
         super.setUp();
-        // this.configLoction="/client-config.wsdd";
-        // this.studyResourceName = "/study.xml";
-
-        this.configLoction = "/client-config.wsdd";
-        this.studyResourceName = "/study.xml";
-
-        this.serviceUrl = "http://cbvapp-d1017.nci.nih.gov:18080/wsrf/services/cagrid/StudyConsumer";
-        studyConsumer = createStudyConsumer();
+        organizationRepository = (OrganizationRepository) getDeployedApplicationContext().getBean("organizationRepository");
+        configProperty = (ConfigProperty) getDeployedApplicationContext().getBean("configurationProperty");
+        studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
+        siteInvestigatorDao = (SiteInvestigatorDao) getDeployedApplicationContext().getBean("siteInvestigatorDao");
+        auditHistoryRepository = (AuditHistoryRepository) getDeployedApplicationContext().getBean("auditHistoryRepository");
+        studyConsumer = new CaaersStudyConsumer();
+        studyConsumer.setConfigurationProperty(configProperty);
+        studyConsumer.setOrganizationRepository(organizationRepository);
+        studyConsumer.setStudyDao(studyDao);
+        studyConsumer.setAuditHistoryRepository(auditHistoryRepository);
+        studyConsumer.setSiteInvestigatorDao(siteInvestigatorDao);
+        studyConsumer.setStudyConsumerGridServiceUrl("/pages/task");
+        studyConsumer.setRollbackInterval(1);
     }
-
+    
     protected void tearDown() throws Exception {
         super.tearDown();
     }
@@ -51,7 +60,6 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
             //studyConsumer.createStudy(study);
         } catch (Exception e) {
             e.printStackTrace();
-//            throw e;
         }
     }
 
@@ -62,25 +70,8 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
             //studyConsumer.rollback(study);
         } catch (Exception e) {
             e.printStackTrace();
-  //          throw e;
         }
 
-    }
-
-    public CaaersStudyConsumer createStudyConsumer() {
-        CaaersStudyConsumer consumer = new CaaersStudyConsumer();
-        consumer.setConfigurationProperty((ConfigProperty) getDeployedApplicationContext().getBean(
-                        "configurationProperty"));
-        consumer.setOrganizationRepository((OrganizationRepository) getDeployedApplicationContext().getBean(
-        "organizationRepository"));
-        consumer.setStudyDao((StudyDao) getDeployedApplicationContext().getBean("studyDao"));
-        consumer.setAuditHistoryRepository((AuditHistoryRepository) getDeployedApplicationContext()
-                        .getBean("auditHistoryRepository"));
-        consumer.setSiteInvestigatorDao((SiteInvestigatorDao) getDeployedApplicationContext()
-                        .getBean("siteInvestigatorDao"));
-        consumer.setStudyConsumerGridServiceUrl("/pages/task");
-        consumer.setRollbackInterval(1);
-        return consumer;
     }
 
     public Study obtainStudyDTO() throws Exception {
@@ -134,5 +125,111 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
 
         return s;
     }
+    
+    /**
+     * This test invokes studyConsumer.populateOrganization(HealthCareSiteType healthCareSiteType, Organization organization);
+     * Contents of HealthCareSiteType are mapped/copied to the Organization being passed.  
+     */
+	public void testPopulateOrganization(){
+		HealthcareSiteType healthCareSiteType = new HealthcareSiteType();
+		Organization organization = new RemoteOrganization();
+		healthCareSiteType.setGridId("54321");
+		healthCareSiteType.setName("ORG-FROM-C3PR");
+		healthCareSiteType.setNciInstituteCode("C3PR-001");
+		AddressType addressType = new AddressType();
+		addressType.setCity("Fairfax");
+		addressType.setStateCode("VA");
+		addressType.setCountryCode("USA");
+		healthCareSiteType.setAddress(addressType);
+		
+		studyConsumer.populateOrganization(healthCareSiteType, organization);
+		
+		assertEquals("54321", organization.getExternalId());
+		assertEquals("ORG-FROM-C3PR", organization.getName());
+		assertEquals("C3PR-001", organization.getNciInstituteCode());
+		assertEquals("Fairfax", organization.getCity());
+		assertEquals("VA", organization.getState());
+		assertEquals("USA", organization.getCountry());
+		
+		healthCareSiteType.setAddress(null);
+		organization = new RemoteOrganization();
+		studyConsumer.populateOrganization(healthCareSiteType, organization);
+		assertEquals("54321", organization.getExternalId());
+		assertEquals("ORG-FROM-C3PR", organization.getName());
+		assertEquals("C3PR-001", organization.getNciInstituteCode());
+		assertNull(organization.getCity());
+		assertNull(organization.getState());
+		assertNull(organization.getCountry());
+	}
+	
+	
+	/**
+	 * This test invokes studyConsumer.fetchOrganization(HealthcareSiteType healthCareSiteType)
+	 * HealthCareSiteType has a gridId, hence fetchOrganization should return a RemoteOrganization.
+	 */
+	public void testFetchOrganization_ReturnRemoteOrg(){
 
+		organizationRepository = registerMockFor(OrganizationRepository.class);
+		studyConsumer.setOrganizationRepository(organizationRepository);
+		expect(organizationRepository.searchOrganization((OrganizationQuery)EasyMock.anyObject())).andReturn(null);		
+		organizationRepository.create((Organization)EasyMock.anyObject());
+		
+		replayMocks();
+		
+		HealthcareSiteType healthCareSiteType = new HealthcareSiteType();
+		healthCareSiteType.setGridId("54321");
+		healthCareSiteType.setName("REMOTE-ORG-FROM-C3PR");
+		healthCareSiteType.setNciInstituteCode("C3PR-001");
+		AddressType addressType = new AddressType();
+		addressType.setCity("Fairfax");
+		addressType.setStateCode("VA");
+		addressType.setCountryCode("USA");
+		healthCareSiteType.setAddress(addressType);
+		
+		Organization organization = studyConsumer.fetchOrganization(healthCareSiteType);
+		
+		verifyMocks();
+		assertTrue(organization instanceof RemoteOrganization);
+		assertEquals("54321", organization.getExternalId());
+		assertEquals("REMOTE-ORG-FROM-C3PR", organization.getName());
+		assertEquals("C3PR-001", organization.getNciInstituteCode());
+		assertEquals("Fairfax", organization.getCity());
+		assertEquals("VA", organization.getState());
+		assertEquals("USA", organization.getCountry());
+	}
+	
+	
+	/**
+	 * This test invokes studyConsumer.fetchOrganization(HealthcareSiteType healthCareSiteType)
+	 * HealthCareSiteType does not have a gridId, hence fetchOrganization should return a LocalOrganization.
+	 */
+	public void testFetchOrganization_ReturnLocalOrg(){
+
+		organizationRepository = registerMockFor(OrganizationRepository.class);
+		studyConsumer.setOrganizationRepository(organizationRepository);
+		expect(organizationRepository.searchOrganization((OrganizationQuery)EasyMock.anyObject())).andReturn(null);		
+		organizationRepository.create((Organization)EasyMock.anyObject());
+		
+		replayMocks();
+		
+		HealthcareSiteType healthCareSiteType = new HealthcareSiteType();
+		healthCareSiteType.setName("LOCAL-ORG-FROM-C3PR");
+		healthCareSiteType.setNciInstituteCode("C3PR-002");
+		AddressType addressType = new AddressType();
+		addressType.setCity("Herndon");
+		addressType.setStateCode("VA");
+		addressType.setCountryCode("USA");
+		healthCareSiteType.setAddress(addressType);
+		
+		Organization organization = studyConsumer.fetchOrganization(healthCareSiteType);
+		
+		verifyMocks();
+		assertTrue(organization instanceof LocalOrganization);
+		assertNull(organization.getExternalId());
+		assertEquals("LOCAL-ORG-FROM-C3PR", organization.getName());
+		assertEquals("C3PR-002", organization.getNciInstituteCode());
+		assertEquals("Herndon", organization.getCity());
+		assertEquals("VA", organization.getState());
+		assertEquals("USA", organization.getCountry());
+	}
 }

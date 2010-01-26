@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
-<beans>
+<beans default-lazy-init="true">
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />

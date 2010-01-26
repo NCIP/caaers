@@ -1,15 +1,16 @@
 package gov.nih.nci.cabig.caaers.grid;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
@@ -23,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ccts.domain.HealthcareSiteType;
 import gov.nih.nci.cabig.ccts.domain.IdentifierType;
 import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
@@ -35,7 +37,6 @@ import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.ccts.grid.studyconsumer.common.StudyConsumerI;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
 import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
 import java.security.Principal;
@@ -48,11 +49,6 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -63,7 +59,6 @@ import org.oasis.wsrf.properties.GetResourcePropertyResponse;
 import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
 import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
 
 public class CaaersStudyConsumer implements StudyConsumerI {
@@ -194,16 +189,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	logger.error("Already a study with the same Coordinating Center Identifier ("
                                 + ccIdentifier
                                 + ") exists.Returning without processing the request.");
-            	/*
-            	 StudyCreationException exp = new StudyCreationException();
-                 exp
-                                 .setFaultReason("Already a study with the same Coordinating Center Identifier ("
-                                         + ccIdentifier
-                                         + ") exists.Returning without processing the request.");
-                 throw exp;*/
                  return;
-                 
-                
             }
             
             String coppaIdentifier = findCoppaIdentifier(studyDto);
@@ -341,7 +327,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             throw getStudyCreationException(message);
         }
         
-        //figureout the list of known identifiers
+        //figure out the list of known identifiers
         List<Lov> identifierLovs = configurationProperty.getMap().get("identifiersType");
         List<String> knownIdentifierTypes = new ArrayList<String>();
         for (Lov lov : identifierLovs) {
@@ -381,7 +367,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 id.setPrimaryIndicator(orgIdType.getPrimaryIndicator());
                 id.setType(orgIdType.getType());
                 id.setValue(orgIdType.getValue());
-                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
+                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite()));
  
                 if(StringUtils.equals(id.getType(),OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
             		ccIdentifier = id;
@@ -469,8 +455,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 throw getInvalidStudyException("Unknown StudyOrganizationType in grid Study ");
             }
 
-            studyOrganization.setOrganization(fetchOrganization(studyOrgType.getHealthcareSite(0)
-                            .getNciInstituteCode()));
+            studyOrganization.setOrganization(fetchOrganization(studyOrgType.getHealthcareSite(0)));
             studyOrganization.setStudy(study);
             studyOrganization.setGridId(studyOrgType.getGridId());
 
@@ -582,32 +567,57 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             studyOrganization.addStudyInvestigators(studyInvestigator);
         }
     }
-
+    
+    
     /**
-     * Fetches the organization from the DB
+     * Fetches the organization from the DB. If one does not exist an appropriate Organization is created and saved.
      * 
-     * @param nciCode
-     * @return
+     * @param HealthcareSiteType
+     * @return Organization
      */
-    Organization fetchOrganization(String nciCode) {
+    protected Organization fetchOrganization(HealthcareSiteType healthCareSiteType) {
+
+    	if(healthCareSiteType == null){
+    		return null;
+    	}
+    	//Check if an organization exists in caAERS for the given NCI CODE.
         OrganizationQuery orgQuery = new OrganizationQuery();
-
-        if (StringUtils.isNotEmpty(nciCode)) {
-            orgQuery.filterByNciCodeExactMatch(nciCode);
+        if (StringUtils.isNotEmpty(healthCareSiteType.getNciInstituteCode())) {
+            orgQuery.filterByNciCodeExactMatch(healthCareSiteType.getNciInstituteCode());
         }
-
         List<Organization> orgList = organizationRepository.searchOrganization(orgQuery);
-
+        Organization organization = null;
+        //If there is no Organization in caAERS with given NCI CODE then create an Organization in caAERS.
         if (orgList == null || orgList.isEmpty()) {
-            logger.error("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
-            throw new CaaersSystemException("User is not associated with this Organization (or) No organization exists with nciCode :" + nciCode);
-
+        	//if externalId is provided it means that Organization is Remote. (Fetched from COPPA)
+        	if (StringUtils.isNotEmpty(healthCareSiteType.getGridId())) {
+        		organization = new RemoteOrganization();
+        		populateOrganization(healthCareSiteType,organization);
+        	}else{
+        		organization = new LocalOrganization();
+        		populateOrganization(healthCareSiteType,organization);
+        	}
+        	organizationRepository.create(organization);
+        	return organization;
         }
-        if (orgList.size() > 1) {
-            logger.error("Multiple organizations exist with same NCI code :" + nciCode);
-        }
-
         return orgList.get(0);
+    }
+    
+    /**
+     * This method populates an Organization entity given a HealthcareSiteType
+     * @param HealthcareSiteType
+     * @param Organization
+     */
+    protected void populateOrganization(HealthcareSiteType healthCareSiteType, Organization organization){
+    	organization.setNciInstituteCode(healthCareSiteType.getNciInstituteCode());
+		organization.setName(healthCareSiteType.getName());
+		organization.setDescriptionText(healthCareSiteType.getDescriptionText());
+		organization.setExternalId(healthCareSiteType.getGridId());
+		if(healthCareSiteType.getAddress() != null){
+			organization.setCity(healthCareSiteType.getAddress().getCity());
+			organization.setState(healthCareSiteType.getAddress().getStateCode());
+			organization.setCountry(healthCareSiteType.getAddress().getCountryCode());
+		}
     }
 
     gov.nih.nci.cabig.caaers.domain.Study fetchStudy(String ccIdentifier, String identifierType) {
@@ -677,17 +687,17 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     }
 
 	public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(GetMultipleResourceProperties_Element params) throws RemoteException {
-		// TODO Auto-generated method stub
+		//Auto-generated method stub
 		return null;
 	}
 
 	public GetResourcePropertyResponse getResourceProperty(QName params) throws RemoteException {
-		// TODO Auto-generated method stub
+		//Auto-generated method stub
 		return null;
 	}
 
 	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
-		// TODO Auto-generated method stub
+		//Auto-generated method stub
 		return null;
 	}
 	@Required
@@ -696,7 +706,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		this.organizationRepository = organizationRepository;
 	}
 	
-    private static class StubWebRequest implements WebRequest {
+    @SuppressWarnings("unused")
+	private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
             return null;
         }
@@ -705,7 +716,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             return null;
         }
 
-        public Map getParameterMap() {
+        @SuppressWarnings("unchecked")
+		public Map getParameterMap() {
             return Collections.emptyMap();
         }
 

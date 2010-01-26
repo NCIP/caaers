@@ -48,6 +48,9 @@ public class CaaersContextLoader {
     private static String[] getConfigLocations() {
         return new String[] {
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
+            "classpath*:applicationContext-studyConsumer-grid.xml",
+            "classpath*:applicationContext-lab.xml",
+            "classpath*:applicationContext-grid.xml",
             "classpath*:applicationContext-test.xml"
         };
     }
