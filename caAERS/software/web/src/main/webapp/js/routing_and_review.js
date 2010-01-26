@@ -105,6 +105,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		var sbox = $(sboxId);
 		var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
 		var sboxIndicator = $(sboxIndicatorId);
+        if(sboxIndicator) sboxIndicator.show();
 		this.ajaxFacade.retrieveNextTransitions(reportId, function(ajaxOutput){
 			this.updateSelectBoxContent(reportId, sbox, sboxIndicator, ajaxOutput.objectContent);
 		}.bind(this));
@@ -122,6 +123,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 				sb.insert(li);
 			}
 		}
+        if(sboxIndicator) sboxIndicator.hide();
 		if (typeof createDropDowns == 'function') {
 			createDropDowns();
 		}
