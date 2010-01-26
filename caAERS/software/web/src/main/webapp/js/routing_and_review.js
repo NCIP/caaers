@@ -123,7 +123,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 				sb.insert(li);
 			}
 		}
-        if(sboxIndicator) sboxIndicator.hide();
+        if($(sbIndicator)) $(sbIndicator).hide();
 		if (typeof createDropDowns == 'function') {
 			createDropDowns();
 		}
