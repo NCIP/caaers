@@ -176,7 +176,7 @@
             	var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
                 var sboxIndicator = $(sboxIndicatorId);
                 var selected_sbox_value = value;
-                sboxIndicator.style.display = '';
+                if(sboxIndicator) sboxIndicator.show();
                 createAE.advanceWorkflow(reportId, value, function(ajaxOutput) {
                     var ajaxResult = ajaxOutput;
                     if (ajaxResult.error) {
