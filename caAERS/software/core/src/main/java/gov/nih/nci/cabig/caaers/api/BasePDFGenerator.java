@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.utils.CoreUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOUserAgent;
@@ -33,7 +34,7 @@ public class BasePDFGenerator {
 * @param    xslFromClassPath    If true, The XSL file is taken from inside the classpath of the context, otherwise it's taken from the given path  
 *
 * */
-    public synchronized void generatePdf(String xml, String pdfOutFileName, String XSLFile, boolean xslFromClassPath) throws Exception {
+    public synchronized void generatePdf(String xml, String pdfOutFileName, String XSLFile) throws Exception {
         FopFactory fopFactory = FopFactory.newInstance();
 
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
@@ -51,10 +52,7 @@ public class BasePDFGenerator {
             TransformerFactory factory = TransformerFactory.newInstance();
 
             Transformer transformer = null;
-            if (xslFromClassPath)
-                transformer = factory.newTransformer(new StreamSource(BasePDFGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
-            else
-                transformer = factory.newTransformer(new StreamSource(XSLFile));
+            transformer = factory.newTransformer(new StreamSource(CoreUtils.findFile(XSLFile)));
 
             // Set the value of a <param> in the stylesheet
             transformer.setParameter("versionParam", "2.0");

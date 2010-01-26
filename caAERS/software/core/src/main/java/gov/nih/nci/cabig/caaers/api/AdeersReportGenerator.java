@@ -66,7 +66,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 *
 * */
     public void generateCustomPDF(String adverseEventReportXml, String pdfOutFileName) throws Exception {
-        generatePdf(adverseEventReportXml, pdfOutFileName, xslFOCustomXsltFile, true);
+        generatePdf(adverseEventReportXml, pdfOutFileName, xslFOCustomXsltFile);
     }
 
     public void generateCIOMS(String adverseEventReportXml, String pdfOutFileName) throws Exception {
