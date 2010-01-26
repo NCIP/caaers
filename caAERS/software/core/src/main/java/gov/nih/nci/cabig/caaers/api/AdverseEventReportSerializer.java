@@ -113,7 +113,8 @@ public class AdverseEventReportSerializer {
 		        }
 		   }
 
-           report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+           if (report != null && report.getReportDefinition() != null)
+                report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
            
            String xml = "";
            XmlMarshaller marshaller = new XmlMarshaller();
