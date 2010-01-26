@@ -67,21 +67,22 @@ public class ReportSubmissionService {
     	//1. generate caaers xml
     	try {    		
     		context.caaersXML = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
-    		Tracker.logXmlGeneration(reportTracking, true, "",nowFactory.getNow());
+    		Tracker.logXmlGeneration(reportTracking, true, "", nowFactory.getNow());
     	} catch (Exception e ) {
     		Tracker.logXmlGeneration(reportTracking, false, e.getMessage(),nowFactory.getNow());
     		throw new RuntimeException(e);
     	}
-    	
-    	//2. generate pdf
-    	try{
-    		context.pdfReportPaths = adeersReportGenerator.generateExternalReports(report, context.caaersXML,report.getLastVersion().getId());  
-    		Tracker.logAttachmentGeneration(reportTracking, true, "",nowFactory.getNow());
-    	}catch(Exception exp){
-    		Tracker.logAttachmentGeneration(reportTracking, false, exp.getMessage() ,nowFactory.getNow());
-    		throw new RuntimeException(exp);
-    	}
+
+        //2. generate pdf
+        try {
+            context.pdfReportPaths = adeersReportGenerator.generateExternalReports(report, context.caaersXML, report.getLastVersion().getId());
+            Tracker.logAttachmentGeneration(reportTracking, true, "", nowFactory.getNow());
+        } catch (Exception exp) {
+            Tracker.logAttachmentGeneration(reportTracking, false, exp.getMessage(), nowFactory.getNow());
+            throw new RuntimeException(exp);
+        }
     }
+    
     /**
      * This method will do the pre submission initializations. 
      *  - Will generate the report deliveries
@@ -109,7 +110,6 @@ public class ReportSubmissionService {
     	context.report.getLastVersion().addReportTracking(reportTracking);
 
     	generateReportContent(context);
-    	
     }
     
     /**
@@ -176,7 +176,7 @@ public class ReportSubmissionService {
     	ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
     	
     	try {
-			//do Per-submission activities
+			//do Pre-submission activities
 			doPreSubmitReport(context);
 			
 			//update the reportVersion
@@ -197,6 +197,7 @@ public class ReportSubmissionService {
 			        report.setSubmissionMessage("Problem communicating with ESB <br> Please try to resubmit the report <br>" + e.getMessage());
 				}
 			}else{
+                
 				//notify email recipients
 				try {
 					notifyEmailRecipients(context);
@@ -263,7 +264,6 @@ public class ReportSubmissionService {
             		sid = identifier.getValue();
             	}
             }
-            
             
             String content = messageSource.getMessage("email.submission.content", new Object[]{report.getLabel(), firstName, lastName, pid, shortTitle, sid}, Locale.getDefault());
             String subjectLine = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());

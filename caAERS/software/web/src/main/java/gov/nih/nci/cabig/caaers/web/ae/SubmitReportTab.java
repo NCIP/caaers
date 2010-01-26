@@ -47,8 +47,7 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup ccReport = new DefaultInputFieldGroup("ccReport");
-        InputField cc = InputFieldFactory.createTextArea("aeReport.reports[" + reportIndex
-                        + "].lastVersion.ccEmails", "Cc");
+        InputField cc = InputFieldFactory.createTextArea("aeReport.reports[" + reportIndex + "].lastVersion.ccEmails", "Cc");
         InputFieldAttributes.setColumns(cc, 50);
         ccReport.getFields().add(cc);
         map.addInputFieldGroup(ccReport);
@@ -62,29 +61,21 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
         Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
     	submitCommand.refreshReportDeliveries(report);
     	return  super.referenceData(request, submitCommand);
-    	
     }
 
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
         Report report = command.getAeReport().getReports().get(Integer.parseInt(reportIndex));
-        
-        
         ReportVersion lastVersion = report.getLastVersion();
-        
         String emailString =lastVersion.getCcEmails();
 
         if (emailString != null) {
             String[] emails = emailString.split(",");
-
             for (String email : emails) {
-
                 if (!isEmailValid(email)) {
                     InputField field = fieldGroups.get("ccReport").getFields().get(0);
-                    errors.rejectValue(field.getPropertyName(), "SAE_007", new Object[]{field.getDisplayName()},"Not Valid "
-                                    + field.getDisplayName());
+                    errors.rejectValue(field.getPropertyName(), "SAE_007", new Object[]{field.getDisplayName()},"Not Valid " + field.getDisplayName());
                     break;
                 }
             }
@@ -100,7 +91,6 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
     	
     	int targetPage = WebUtils.getTargetPage(request);
-    	
     	if( targetPage < 2) return; //only process if we are moving forward.
     	
     	log.debug("In postProcess");

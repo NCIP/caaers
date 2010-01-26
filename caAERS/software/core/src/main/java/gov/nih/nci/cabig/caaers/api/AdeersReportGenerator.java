@@ -88,7 +88,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     }
 
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
-    	return adverseEventReportSerializer.serialize(aeReport,report );
+    	return adverseEventReportSerializer.serialize(aeReport, report);
     }
 
     public String generateCaaersWithdrawXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
@@ -102,13 +102,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
      * @return
      * @throws Exception
      */
-    public String[] generateExternalReports(Report report, String caaersXml,int reportIdOrReportVersionId) throws Exception {
+    public String[] generateExternalReports(Report report, String caaersXml, int reportIdOrReportVersionId) throws Exception {
     	assert report != null;
     	ReportFormatType formatType = report.getReportDefinition().getReportFormatType();
     	
-    	
     	String pdfOutFile = System.getProperty("java.io.tmpdir");
-    	
     	switch (formatType) {
 			case DCPSAEFORM:
 				pdfOutFile += "/dcpSAEForm-" + reportIdOrReportVersionId + ".pdf";
@@ -126,7 +124,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 				pdfOutFile += "/CIOMS-SAE-Form-" + reportIdOrReportVersionId + ".pdf";
 	        	this.generateCIOMSTypeForm(caaersXml, pdfOutFile);
 				break;
-			default: //adders /caaersxml (BJ)
+			case CUSTOM_REPORT:
+				pdfOutFile += "/CustomReport-" + reportIdOrReportVersionId + ".pdf";
+	        	this.generateCustomPDF(caaersXml, pdfOutFile);
+				break;
+			default: //adders
 				pdfOutFile  += "/expeditedAdverseEventReport-" + reportIdOrReportVersionId + ".pdf";
 				generatePdf(caaersXml, pdfOutFile);
 				break;

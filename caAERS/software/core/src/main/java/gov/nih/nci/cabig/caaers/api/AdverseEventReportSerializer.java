@@ -96,6 +96,7 @@ public class AdverseEventReportSerializer {
 		
 			return xml;		   
 	   }
+    
 	   public synchronized String serialize(ExpeditedAdverseEventReport adverseEventReportDataObject, Report report) throws Exception{
 		   int reportId = report == null ? 0 : report.getId();
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
@@ -112,6 +113,8 @@ public class AdverseEventReportSerializer {
 		        }
 		   }
 
+           report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+           
            String xml = "";
            XmlMarshaller marshaller = new XmlMarshaller();
            ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject, reportId, notApplicableFieldPaths);

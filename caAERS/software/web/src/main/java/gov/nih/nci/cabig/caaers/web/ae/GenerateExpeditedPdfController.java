@@ -80,7 +80,9 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
                //if report is completed xml should be obtained from saved data.
                String xml = null;
-               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+
+               // This method was moved the AdverseEventReportSerializer.serialize()
+               // report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
                
                if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
                    ReportContent reportContent = null;

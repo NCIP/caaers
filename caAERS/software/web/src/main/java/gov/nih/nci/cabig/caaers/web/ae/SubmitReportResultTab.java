@@ -31,16 +31,16 @@ public class SubmitReportResultTab extends TabWithFields<ExpeditedAdverseEventIn
 		return map;
 	}
 	
-	 @Override
+	@Override
 	public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand oCommand) {
-
 		 SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
 		 // Set the correct ReportVersion
 		 Report report = reportDao.getById(command.getAeReport().getReports().get(Integer.parseInt(command.getReportIndex())).getId());
 		 command.setLastVersion(report.getLastVersion());
 		 command.setReportSubmitted(true);
-	        
+   
 		 Map<String, Object> refdata = super.referenceData(request,command);
+         refdata.put("report", report);
 	     return refdata;
 	 }
 	 
