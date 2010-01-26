@@ -102,6 +102,8 @@ public class AdverseEventReportSerializer {
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
 		   
 		   if (report != null ) {
+               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+               
 			   ReportDefinition reportDefinition = report.getReportDefinition();
 			   List<ReportMandatoryFieldDefinition> mandatoryFields = reportDefinition.getMandatoryFields();
 			   //
@@ -113,9 +115,6 @@ public class AdverseEventReportSerializer {
 		        }
 		   }
 
-           if (report != null && report.getReportDefinition() != null)
-                report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
-           
            String xml = "";
            XmlMarshaller marshaller = new XmlMarshaller();
            ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject, reportId, notApplicableFieldPaths);
@@ -293,6 +292,7 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setId(rd.getId());
 		   reportDefinition.setDuration(rd.getDuration());
 		   reportDefinition.setDescription(rd.getDescription());
+		   reportDefinition.setLabel(rd.getLabel());
 		   reportDefinition.setHeader(rd.getHeader());
 		   reportDefinition.setFooter(rd.getFooter());
 		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());

@@ -54,7 +54,7 @@
 				      </fo:block>
 				    </fo:table-cell>
 
-				    <fo:table-cell><fo:block font-weight="bold" font-size="14pt" font-family="arial" text-align-last="center" display-align="center">Custom Report</fo:block></fo:table-cell>
+				    <fo:table-cell><fo:block font-weight="bold" font-size="14pt" font-family="arial" text-align-last="center" display-align="center"><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/label" /></fo:block></fo:table-cell>
 				  </fo:table-row>
 				</fo:table-body>
 

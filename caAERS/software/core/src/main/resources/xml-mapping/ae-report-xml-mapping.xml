@@ -135,6 +135,7 @@
     <field name="id" type="integer"><bind-xml name="id" node="element"/></field>
     <field name="duration" type="integer"><bind-xml name="duration" node="element"/></field>
     <field name="description" type="string"><bind-xml name="description" node="element"/></field>
+    <field name="label" type="string"><bind-xml name="label" node="element"/></field>
     <field name="header" type="string"><bind-xml name="header" node="element"/></field>
     <field name="footer" type="string"><bind-xml name="footer" node="element"/></field>
     <field name="timeScaleUnitType" type="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit"><bind-xml name="timeScaleUnitType"/></field>

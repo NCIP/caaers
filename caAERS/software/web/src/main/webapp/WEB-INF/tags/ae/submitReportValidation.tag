@@ -49,7 +49,7 @@
                         --%>
 
 	                    <c:if test="${report.reportDefinition.reportFormatType.code == 7}">
-	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Custom PDF :: ${report.reportDefinition}</a></li>
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> (Custom) ${report.reportDefinition.label}</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 						</c:if>
 					</ul>

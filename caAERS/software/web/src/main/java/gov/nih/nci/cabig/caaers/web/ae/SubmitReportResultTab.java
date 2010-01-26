@@ -40,7 +40,6 @@ public class SubmitReportResultTab extends TabWithFields<ExpeditedAdverseEventIn
 		 command.setReportSubmitted(true);
    
 		 Map<String, Object> refdata = super.referenceData(request,command);
-         refdata.put("report", report);
 	     return refdata;
 	 }
 	 

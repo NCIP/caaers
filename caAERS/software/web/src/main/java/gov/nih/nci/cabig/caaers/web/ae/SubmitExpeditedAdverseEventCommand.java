@@ -57,8 +57,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
         super.setAeReport(aeReport);
         if(aeReport != null){
         	getReportIndex();
-        	aeReport.getReports().get(((int) (Integer.parseInt(reportIndex)))).getLastVersion()
-                        .addSubmitter();
+        	aeReport.getReports().get(((int) (Integer.parseInt(reportIndex)))).getLastVersion().addSubmitter();
         }
     }
     
