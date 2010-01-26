@@ -180,7 +180,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <util:map id="joinPointObjectPrivilegeMap"
               map-class="java.util.LinkedHashMap">
-
+		<!-- CAAERS-3565 -->
         <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
                value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 
