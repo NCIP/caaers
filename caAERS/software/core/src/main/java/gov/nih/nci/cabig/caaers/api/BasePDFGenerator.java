@@ -52,7 +52,8 @@ public class BasePDFGenerator {
             TransformerFactory factory = TransformerFactory.newInstance();
 
             Transformer transformer = null;
-            transformer = factory.newTransformer(new StreamSource(CoreUtils.findFile(XSLFile)));
+
+            transformer = factory.newTransformer(new StreamSource(BasePDFGenerator.class.getClassLoader().getResourceAsStream(XSLFile)));
 
             // Set the value of a <param> in the stylesheet
             transformer.setParameter("versionParam", "2.0");
