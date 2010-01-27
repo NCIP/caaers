@@ -105,6 +105,23 @@ public class CaaersFieldConfigurationManager{
 	}
 	
 	/**
+	 * This method determines if a particular field is applicable
+	 * @param tabName
+	 * @param fieldPath
+	 * @return boolean
+	 */
+	public boolean isFieldApplicable(String tabName, String fieldPath){
+		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
+		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
+			if(fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * @return the caaersFieldDefinitionDao
 	 */
 	public CaaersFieldDefinitionDao getCaaersFieldDefinitionDao() {

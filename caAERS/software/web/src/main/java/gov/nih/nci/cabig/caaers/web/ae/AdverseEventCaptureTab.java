@@ -262,6 +262,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // STOP -> AE VALIDATION //
 
         boolean foundGrade5 = false;
+        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
         
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
@@ -286,15 +287,17 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             
             // If grade is greater than 2 then hospitalization cannot be null.
             if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
-                if (ae.getGrade() != null) {
-    				if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
-    					errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 2");
-    			}
+            	if(manager.isFieldApplicable(TAB_NAME, "adverseEvents[].hospitalization"))
+            		if (ae.getGrade() != null) {
+            			if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
+            				errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 2");
+            		}
             }
             
             // Check if end date is greater than the start date
-            if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)
-            	errors.rejectValue("adverseEvents[" + i + "].endDate" , "CAE_014", "The \"End date\" can not be before the \"Start date\". It should be either be the same day or later.");
+            if(manager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && manager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
+            	if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)
+            		errors.rejectValue("adverseEvents[" + i + "].endDate" , "CAE_014", "The \"End date\" can not be before the \"Start date\". It should be either be the same day or later.");
             
             // Check if start date of course is greater than the start date of the ae.
             //if(command.getAdverseEventReportingPeriod().getStartDate() != null && ae.getStartDate() != null &&
@@ -302,7 +305,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             //	errors.rejectValue("adverseEvents[" + i + "].startDate", "CAE_015");
             
             // Special validation for outcomes as it cannot be validated through the fieldgroup framework.
-            CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
+            
             if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
             	if(ae.getOutcomes() == null || ae.getOutcomes().isEmpty())
             		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes");
