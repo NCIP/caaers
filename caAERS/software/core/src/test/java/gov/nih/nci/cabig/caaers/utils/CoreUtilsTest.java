@@ -17,7 +17,6 @@ public class CoreUtilsTest extends AbstractTestCase {
     public void testFindFile() {
         File f = CoreUtils.findFile("xslt/CaaersCustom.xslt");
         assertNotNull(f);
-        assertEquals("CaaersCustom.xslt", f.getName());
     }
 
 }
