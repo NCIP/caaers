@@ -205,6 +205,7 @@ function toggelUserName(checkBoxChecked) {
         $('loginId').addClassName("required");
         $('loginId').addClassName("validate-NOTEMPTY&&MAXLENGTH2000");
     } else {
+    	$('loginId').value="";
         $('loginId-row').hide();
         $('loginId').removeClassName("required");
         $('loginId').removeClassName("validate-NOTEMPTY&&MAXLENGTH2000");
