@@ -139,7 +139,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
         aeReport.getReports().get(0).setAeReport(aeReport);
 
         String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
-        System.out.println(xml);
+        
         assertTrue(xml.indexOf("<applicableField>") >= 0);
         assertTrue(xml.indexOf("</applicableField>") >= 0);
         assertTrue(xml.indexOf("field.one.name") >= 0);
