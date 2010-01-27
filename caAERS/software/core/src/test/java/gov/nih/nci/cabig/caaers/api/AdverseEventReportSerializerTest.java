@@ -127,14 +127,13 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one[].name", Mandatory.MANDATORY));
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[].two.name", Mandatory.MANDATORY));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", Mandatory.OPTIONAL));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", Mandatory.NA));
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name[]", Mandatory.MANDATORY));
         aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five.name", Mandatory.MANDATORY));
 
         aeReport.getReports().get(0).getReportDefinition().setHeader("THIS IS HEADER");
         aeReport.getReports().get(0).getReportDefinition().setFooter("THIS IS FOOTER");
 
-        aeReport.getReports().get(0).getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY);
         aeReport.getReports().get(0).getReportDefinition().setReportType(ReportType.REPORT);
         aeReport.getReports().get(0).getReportDefinition().setDescription("Some Description");
         aeReport.getReports().get(0).setAeReport(aeReport);
