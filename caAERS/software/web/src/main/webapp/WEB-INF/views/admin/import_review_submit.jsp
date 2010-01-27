@@ -51,7 +51,7 @@
 </head>
 <body>
 
-    <tags:tabForm tab="${tab}" flow="${flow}" title="Review & Submit">
+    <tags:tabForm tab="${tab}" flow="${flow}" title="Review & Submit" formName="ImportReviewForm" enctype="multipart/form-data">
     <jsp:attribute name="singleFields">
 	<div>		
 		<input type="hidden" name="_action" value="">

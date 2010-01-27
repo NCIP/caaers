@@ -296,6 +296,7 @@ public class ImportCommand {
 	    nonImportableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
 	    nonImportableOrganizations = new ArrayList<DomainObjectImportOutcome<Organization>>();
 	    updateableAgents = new ArrayList<DomainObjectImportOutcome<Agent>>();
+	    setSchemaValidationResult(null);
 	}
 
 	/**
