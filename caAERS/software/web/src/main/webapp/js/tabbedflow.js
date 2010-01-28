@@ -11,7 +11,6 @@ AE.tabbedFlowUpdateTarget = function(evt) {
         }else{
         	if ($('command')._finish) $('command')._finish.disable()
         }
-        AE.checkForModification = false;
         showDWRLoadingIndicator();
     }else{
     	//stop the event.
@@ -23,7 +22,6 @@ AE.tabbedFlowUpdateTarget = function(evt) {
 AE.tabbedFlowDisableTarget = function(evt) {
 	if(!AE.SUBMISSION_INPROGRESS){
 		AE.SUBMISSION_INPROGRESS = true;
-		AE.checkForModification = false;
 	    showDWRLoadingIndicator();
 	}else{
     	//stop the event.

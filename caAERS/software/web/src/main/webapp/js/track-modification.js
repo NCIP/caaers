@@ -20,7 +20,7 @@ var ModificationTracker = Class.create({
                 
                 //observe submit on the form
                 this.form.observe('submit', function(){
-                	AE.formFieldModified=false;
+                	AE.checkForModification=false;
                 });
                 
                 window.onbeforeunload = this.checkForModificationsOnPage.bind(this);
@@ -44,3 +44,4 @@ var ModificationTracker = Class.create({
 Event.observe(document, "dom:loaded", function(){
 	new ModificationTracker();
 });
+
