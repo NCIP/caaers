@@ -563,6 +563,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             }
             
             studyInvestigator.setRoleCode(roleCode);
+            studyInvestigator.setStartDate(siteInvestigator.getStartDate());
             studyInvestigator.setSiteInvestigator(siteInvestigator);
             studyOrganization.addStudyInvestigators(studyInvestigator);
         }
