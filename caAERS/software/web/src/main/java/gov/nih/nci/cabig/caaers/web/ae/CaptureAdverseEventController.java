@@ -191,7 +191,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 				model.put("addReportingPeriodBinder", "true");
 				model.put("displayReportingPeriod", "true");
 				model.put("_page", "0");
-				model.put("_target2", "2");
+				model.put("_target1", "1");
 				modelAndView = new ModelAndView("redirectToCaptureAe", model);
 			}
 			
