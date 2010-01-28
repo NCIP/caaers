@@ -40,8 +40,6 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         return transformedToAdeers;
     }
 
-
-
     public void generatePdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOXsltFile);

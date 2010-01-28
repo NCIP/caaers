@@ -126,12 +126,12 @@ public class AdverseEventReportSerializer {
 	  
 
 	   /**
-	    *
 	    * @param hibernateAdverseEventReport
-	    * @return
+	    * @return This method is supposed to filter the AEReport based on the fields applicabilities from ReportDefinition
 	    * @throws Exception
+        * 
 	    */
-	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport, int reportId, List<String> notApplicableFieldPaths) throws Exception {
+	   private ExpeditedAdverseEventReport getAdverseEventReport(ExpeditedAdverseEventReport hibernateAdverseEventReport, int reportId, List<String> notApplicableFieldPaths) throws Exception {
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 		    AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
@@ -150,7 +150,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setPhysician(getPhysician(hibernateAdverseEventReport.getPhysician()));
 
 	    	//build AdverseEventResponseDescription
-	    	aer.setResponseDescription(getAdverseEventResponseDescription(hibernateAdverseEventReport.getResponseDescription(),notApplicableFieldPaths));
+	    	aer.setResponseDescription(getAdverseEventResponseDescription(hibernateAdverseEventReport.getResponseDescription(), notApplicableFieldPaths));
 
 	    	//build DiseaseHistory
 	    	aer.setDiseaseHistory(getDiseaseHistory(hibernateAdverseEventReport.getDiseaseHistory(),notApplicableFieldPaths));
@@ -163,8 +163,6 @@ public class AdverseEventReportSerializer {
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation(),notApplicableFieldPaths));
-
-	    	
 	    
 	    	//build MedicalDevices
 	    	List<MedicalDevice> medicalDeviceList = hibernateAdverseEventReport.getMedicalDevices();
@@ -434,7 +432,6 @@ public class AdverseEventReportSerializer {
 		   m.setDeviceOperator(medicalDevice.getDeviceOperator());
 		   m.setDeviceReprocessed(medicalDevice.getDeviceReprocessed());
 		   m.setEvaluationAvailability(medicalDevice.getEvaluationAvailability());
-		   
 		   return m;
 	   }
 	   
@@ -449,14 +446,12 @@ public class AdverseEventReportSerializer {
 			   radiationIntervention.setDaysElapsed(ri.getDaysElapsed());
 			   radiationIntervention.setAdjustment(ri.getAdjustment());
 			   radiationIntervention.setAdministration(ri.getAdministration());
-			   
-			   
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getRadiationIntervention() "+e.getMessage() , e);
 	    	}
-		   
-		   return radiationIntervention;
+		    return radiationIntervention;
 	   }
+    
 	   private Reporter getReporter(Reporter rptr) throws Exception {
 	    	Reporter reporter = new Reporter();
 	    	try {
@@ -522,8 +517,12 @@ public class AdverseEventReportSerializer {
 		    		
 		    	}
 		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
-		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
-		    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
+
+                if (!notApplicableFieldPaths.contains("responseDescription.recoveryDate"))
+                    adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
+
+                if (!notApplicableFieldPaths.contains("responseDescription.retreated"))
+		    	    adverseEventResponseDescription.setRetreated(aerd.getRetreated());
 		    	
 		    	adverseEventResponseDescription.setBlindBroken(aerd.getBlindBroken());
 		    	adverseEventResponseDescription.setStudyDrugInterrupted(aerd.getStudyDrugInterrupted());
@@ -559,15 +558,21 @@ public class AdverseEventReportSerializer {
 	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh,List<String> notApplicableFieldPaths) throws Exception {
 	    	DiseaseHistory diseaseHistory = new DiseaseHistory();
 	    	try {
-		    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
+
+                diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
 		    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
-		    	if (!notApplicableFieldPaths.contains("diseaseHistory.diagnosisDate")) {
+
+                if (!notApplicableFieldPaths.contains("diseaseHistory.diagnosisDate.year")) {
 		    		diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
 		    	}
+
 		    	if (dh.getCodedPrimaryDiseaseSite() != null && !notApplicableFieldPaths.contains("diseaseHistory.codedPrimaryDiseaseSite")) {
 		    		diseaseHistory.setCodedPrimaryDiseaseSite(getAnatomicSite(dh.getCodedPrimaryDiseaseSite()));
 		    	}
-		    	diseaseHistory.setAbstractStudyDisease(dh.getAbstractStudyDisease());
+
+                if (!notApplicableFieldPaths.contains("diseaseHistory.abstractStudyDisease"))
+		    	    diseaseHistory.setAbstractStudyDisease(dh.getAbstractStudyDisease());
+                
 		    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
 	
 		    	for (MetastaticDiseaseSite site: mdsList) {
@@ -813,14 +818,21 @@ public class AdverseEventReportSerializer {
 
 	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf,List<String> notApplicableFieldPaths) throws Exception {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
-	    	String field = "treatmentInformation";
+	    	// String field = "treatmentInformation";
 	    	
 	    	try {
 
-	    		treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
-		    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
-		    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
+                if (!notApplicableFieldPaths.contains("treatmentInformation.firstCourseDate"))
+	    		    treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
+
+                if (!notApplicableFieldPaths.contains("treatmentInformation.adverseEventCourse.date"))
+		    	    treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
+
+                if (!notApplicableFieldPaths.contains("treatmentInformation.totalCourses"))
+		    	    treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
+
 		    	treatmentInformation.setTreatmentDescription(trtInf.getTreatmentDescription());
+
 	    		if (!notApplicableFieldPaths.contains("treatmentInformation.investigationalAgentAdministered")) {	
 	    			treatmentInformation.setInvestigationalAgentAdministered(trtInf.getInvestigationalAgentAdministered());
 	    		}
@@ -842,22 +854,40 @@ public class AdverseEventReportSerializer {
 		    	for (CourseAgent ca: caList) {
 		    		CourseAgent ca1 = new CourseAgent();
 		    		ca1.setId(ca.getId());
-		    		ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
+
+                    if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].lastAdministeredDate")) {
+                        ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
+                    }
+                    
 		    		if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].administrationDelayAmount")) {
 		    			ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
 		    		} else {
 		    			ca1.setAdministrationDelayAmount(new BigDecimal(-1));
 		    		}
-		    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
+
+                    if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].administrationDelayUnits")) {
+		    		    ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
+                    }
+                    
 		    		ca1.setDose(ca.getDose());
 		    		//ca1.setModifiedDose(ca.getModifiedDose());
-		    		ca1.setAgentAdjustment(ca.getAgentAdjustment());
+
+                    if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].agentAdjustment")) {
+                        ca1.setAgentAdjustment(ca.getAgentAdjustment());
+                    }
+
 		    		if (ca.getStudyAgent() != null) {
 		    			ca1.setStudyAgent(getStudyAgent(ca.getStudyAgent()));
 		    		}
+                    
 		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
-		    		ca1.setFormulation(ca.getFormulation());
-		    		ca1.setLotNumber(ca.getLotNumber());
+
+                    ca1.setFormulation(ca.getFormulation());
+
+                    if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].lotNumber")) {
+		    		    ca1.setLotNumber(ca.getLotNumber());
+                    }
+
 		    		treatmentInformation.addCourseAgent(ca1);
 		    	}
 		    	

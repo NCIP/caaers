@@ -123,7 +123,6 @@ public class ReportSubmissionService {
         ReportVersion reportVersion = report.getLastVersion();
 
     	try {
-
             generateReportContent(context);
 
     		//clear off debris from previous submission.
@@ -171,7 +170,7 @@ public class ReportSubmissionService {
      *  2b. Notify email recipients
      *  3. Do post submit activities.
      */
-    public  void submitReport(Report report){
+    public void submitReport(Report report) {
     	//create the context
     	ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
     	
@@ -210,10 +209,7 @@ public class ReportSubmissionService {
 					report.setStatus(ReportStatus.FAILED);
 					report.setSubmissionMessage("Error  sending email " + e.getMessage());
 			     } 
-				 
 			}
-			
-
 		} catch (Exception e) {
 			log.error("Error while trying to submit report",e);
 			throw new CaaersSystemException("Unable to submit report", e);
@@ -309,7 +305,7 @@ public class ReportSubmissionService {
     	try {
     		messageBroadcastService.initialize();
     	} catch (Exception e) {
-    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error initilizing ESB broadcast",nowFactory.getNow());
+    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error initilizing ESB broadcast", nowFactory.getNow());
     		e.printStackTrace();
     		throw new Exception (e);
     	}
@@ -317,11 +313,11 @@ public class ReportSubmissionService {
     	try {
     		messageBroadcastService.broadcast(externalXml);
     	} catch (Exception e) {
-    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error Broadcasting to ESB",nowFactory.getNow());
+    		Tracker.logConnectionToESB(reportTracking, false, e.getMessage() + " Error Broadcasting to ESB", nowFactory.getNow());
     		e.printStackTrace();
     		throw new Exception (e);
     	}
-    	Tracker.logConnectionToESB(reportTracking, true, "",nowFactory.getNow());
+    	Tracker.logConnectionToESB(reportTracking, true, "", nowFactory.getNow());
     }
 
 	
