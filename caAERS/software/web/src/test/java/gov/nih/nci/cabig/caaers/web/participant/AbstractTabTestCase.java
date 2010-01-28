@@ -132,11 +132,9 @@ public abstract class AbstractTabTestCase<T extends Tab, C extends Object> exten
         InputFieldGroup actualGroup = getFieldGroup(fieldGroupName);
         assertNotNull("There's no group named " + fieldGroupName, actualGroup);
         List<InputField> actualFields = actualGroup.getFields();
-        assertEquals("Wrong number of fields in " + fieldGroupName, expectedProperties.length,
-                actualFields.size());
+        assertEquals("Wrong number of fields in " + fieldGroupName, expectedProperties.length, actualFields.size());
         for (int i = 0; i < expectedProperties.length; i++) {
-            assertEquals("Wrong property " + i, expectedProperties[i], actualFields.get(i)
-                    .getPropertyName());
+            assertEquals("Wrong property " + i, expectedProperties[i], actualFields.get(i).getPropertyName());
         }
     }
 

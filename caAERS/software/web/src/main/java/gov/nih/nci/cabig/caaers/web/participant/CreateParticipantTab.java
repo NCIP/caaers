@@ -151,22 +151,25 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
         Set<Identifier> set = new HashSet<Identifier>();
 
-        set.add(command.getParticipant().getOrganizationIdentifiers().get(0));
-        // Org Identifiers starts from 1 since there is always a default one already assigned
-        byte x = 1;
+        byte x = 0;
         byte y = 0;
 
         int size = command.getParticipant().getIdentifiers().size(); 
-        for (int i = 1; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             Identifier identifier = command.getParticipant().getIdentifiers().get(i);
-            if (!set.add(identifier)) {
-                if (identifier instanceof OrganizationAssignedIdentifier) {
-                    errors.rejectValue("participant.organizationIdentifiers[" + x++ + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
-                }
 
-                if (identifier instanceof SystemAssignedIdentifier) {
-                    errors.rejectValue("participant.systemAssignedIdentifiers[" + y++ + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
+            if (identifier instanceof OrganizationAssignedIdentifier) {
+                if (!set.add(identifier)) {
+                    errors.rejectValue("participant.organizationIdentifiers[" + x + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
                 }
+                x++;
+            }
+
+            if (identifier instanceof SystemAssignedIdentifier) {
+                if (!set.add(identifier)) {
+                    errors.rejectValue("participant.systemAssignedIdentifiers[" + y + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
+                }
+                y++;
             }
         }
     }

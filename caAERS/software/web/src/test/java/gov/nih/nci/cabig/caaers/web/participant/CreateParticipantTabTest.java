@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
+import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,6 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
 
     public void testValidateIdentifiers() throws Exception {
-    	// BJ:	 CAAERS-3293 - relaxed the primary identifier restriction.
         newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         doValidate();
         assertEquals("Wrong number of errors for " + "participant.identifiers", 0, errors.getFieldErrorCount("participant.identifiers"));
@@ -151,12 +151,27 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         i2.setType("T1");
         i2.setValue("V1");
 
-        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
-        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+        newParticipantCommand.getParticipant().addIdentifier(i1);
+        newParticipantCommand.getParticipant().addIdentifier(i2);
 
         doValidate();
 
-        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 1, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+        assertEquals(7, errors.getErrorCount());
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.firstName"));
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.lastName"));
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.gender"));
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.ethnicity"));
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.race"));
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+
+/*
+        System.out.println("err1=" + errors.getErrorCount());
+        for (Object err : errors.getAllErrors()) {
+            System.out.println(((FieldError)err).getField());
+        }
+*/
+
+        assertEquals("Wrong number of errors: ", 1, errors.getFieldErrorCount("participant.organizationIdentifiers[1].value"));
     }
 
 /*
@@ -182,7 +197,15 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 
         doValidate();
 
-        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+        assertEquals(6, errors.getErrorCount());
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.firstName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.lastName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.gender"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.ethnicity"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.race"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+        
+        assertEquals("Wrong number of errors: ", 0, errors.getFieldErrorCount("study.organizationIdentifiers[1].value"));
     }
 
 /*
@@ -201,12 +224,21 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         i2.setType("T1");
         i2.setValue("V1");
 
-        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
-        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+        newParticipantCommand.getParticipant().addIdentifier(i1);
+        newParticipantCommand.getParticipant().addIdentifier(i2);
 
         doValidate();
 
-        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 1, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+        assertEquals(7, errors.getErrorCount());
+
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.firstName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.lastName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.gender"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.ethnicity"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.race"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.systemAssignedIdentifiers[1].value"));
     }
 
 /*
@@ -225,12 +257,20 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         i2.setType("T1");
         i2.setValue("V1");
 
-        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
-        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
+        newParticipantCommand.getParticipant().addIdentifier(i1);
+        newParticipantCommand.getParticipant().addIdentifier(i2);
 
         doValidate();
 
-        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+        assertEquals(6, errors.getErrorCount());
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.firstName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.lastName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.gender"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.ethnicity"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.race"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+        
+        assertEquals("Wrong number of errors", 0, errors.getFieldErrorCount("participant.systemAssignedIdentifiers[1].value"));
     }
 
 /*
@@ -239,29 +279,39 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 *
 * */
     public void testValidateUniqueness5() throws Exception {
-        SystemAssignedIdentifier i1 = new SystemAssignedIdentifier();
-        i1.setSystemName("S1");
+
+        OrganizationAssignedIdentifier i1 = new OrganizationAssignedIdentifier();
+        i1.setOrganization(new LocalOrganization());
+        i1.getOrganization().setNciInstituteCode("O3");
         i1.setType("T1");
         i1.setValue("V1");
 
         SystemAssignedIdentifier i2 = new SystemAssignedIdentifier();
-        i2.setSystemName("S2");
+        i2.setSystemName("S1");
         i2.setType("T1");
         i2.setValue("V1");
 
-        OrganizationAssignedIdentifier i3 = new OrganizationAssignedIdentifier();
-        i3.setOrganization(new LocalOrganization());
-        i3.getOrganization().setNciInstituteCode("O3");
+        SystemAssignedIdentifier i3 = new SystemAssignedIdentifier();
+        i3.setSystemName("S2");
         i3.setType("T1");
         i3.setValue("V1");
 
-        newParticipantCommand.getParticipant().getIdentifiers().add(i1);
-        newParticipantCommand.getParticipant().getIdentifiers().add(i2);
-        newParticipantCommand.getParticipant().getIdentifiers().add(i3);
+        newParticipantCommand.getParticipant().addIdentifier(i1);
+        newParticipantCommand.getParticipant().addIdentifier(i2);
+        newParticipantCommand.getParticipant().addIdentifier(i3);
 
         doValidate();
 
-        assertEquals("Wrong number of errors for " + "study.identifiersLazy[1].type", 0, errors.getFieldErrorCount("study.identifiersLazy[1].type"));
+        assertEquals(6, errors.getErrorCount());
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.firstName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.lastName"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.gender"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.ethnicity"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.race"));
+        assertEquals("Wrong number of errors", 1, errors.getFieldErrorCount("participant.dateOfBirth"));
+        
+        assertEquals("Wrong number of errors", 0, errors.getFieldErrorCount("participant.systemAssignedIdentifiers[1].value"));
+        assertEquals("Wrong number of errors", 0, errors.getFieldErrorCount("participant.organizationAssignedIdentifiers[1].value"));
     }
 
 
