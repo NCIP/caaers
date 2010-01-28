@@ -117,6 +117,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         if (cObject.getType().startsWith("researchStaff")) {
             redirectTo = "redirectToSearchResearchStaffTab";
         }
+        
+        if (cObject.getType().startsWith("agent")) {
+            redirectTo = "redirectToImportTab";
+        }
+        
+        if (cObject.getType().startsWith("medDRA")) {
+            redirectTo = "redirectToImportTab";
+        }
+        
         System.out.println("Redirecting to : " + redirectTo);
         return new ModelAndView(redirectTo);
     }

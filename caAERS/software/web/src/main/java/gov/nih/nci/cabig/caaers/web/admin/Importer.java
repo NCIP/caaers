@@ -5,9 +5,12 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,6 +22,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -35,6 +39,12 @@ public abstract class Importer{
 	static final String SUBJECT_IMPORT = "participant";
 	static final String RESEARCH_STAFF_IMPORT = "researchStaff";
 	static final String INVESTIGATOR_IMPORT = "investigator";
+	
+	private MessageSource messageSource;
+	
+	public void setMessageSource(MessageSource messageSource){
+		this.messageSource = messageSource;
+	}
 	
 	private static Logger logger = Logger.getLogger(Importer.class);
 	
@@ -69,6 +79,7 @@ public abstract class Importer{
             // validate the DOM tree
 
             validator.validate(new DOMSource(document));
+            
             validXml = true;
             // return xmlFile;
         } catch (FileNotFoundException ex) {
@@ -87,6 +98,31 @@ public abstract class Importer{
         }
         return validXml;
     }
+	
+	public boolean validRootElement(Object importObject, String type, ImportCommand command) throws JAXBException{
+		if(type.equals(STUDY_IMPORT)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.webservice.Studies)){
+				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
+				return false;
+			}
+		}else if(type.equals(SUBJECT_IMPORT)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.webservice.participant.Participants)){
+				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
+				return false;
+			}
+		}else if(type.equals(INVESTIGATOR_IMPORT)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)){
+				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
+				return false;
+			}
+		}else if(type.equals(RESEARCH_STAFF_IMPORT)){
+			if( !(importObject instanceof gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)){
+				command.setSchemaValidationResult(messageSource.getMessage("ADM_IMP_001", null, "Missing root element.", Locale.getDefault()));
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	public Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

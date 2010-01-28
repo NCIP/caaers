@@ -20,11 +20,11 @@
 			<c:if test="${command.type eq 'study'}">
 				<admin:studyImportSummary/>
 			</c:if>
-			<c:if test="${command.type eq 'subject'}">
+			<c:if test="${command.type eq 'participant'}">
 				<admin:subjectImportSummary/>
 			</c:if>
 			<c:if test="${command.type eq 'researchStaff'}">
-				<admin:researchStaffImport/>
+				<admin:researchStaffImportSummary/>
 			</c:if>
 			<c:if test="${command.type eq 'investigator'}">
 				<admin:investigatorImportSummary/>

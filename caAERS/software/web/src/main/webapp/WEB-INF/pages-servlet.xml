@@ -287,6 +287,7 @@
   	<property name="agentDao" ref="agentDao"/>
   	<property name="medDRADao" ref="medDRADao"/>
   	<property name="meddraVersionDao" ref="meddraVersionDao" />
+  	<property name="messageSource" ref="messageSource" />
   </bean> 
   
   <!-- Validators -->

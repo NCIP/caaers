@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 
 
 /**
@@ -47,18 +48,21 @@ public class ImporterFactory{
 	private AgentDao agentDao;
 	private MeddraVersionDao meddraVersionDao;
 	private MedDRADao medDRADao;
+	private MessageSource messageSource;
 	
 	public Importer createImporterInstance(String type){
 		if(type.equals(STUDY_IMPORT)){
 			StudyImporter studyImporter = new StudyImporter();
 			studyImporter.setDomainObjectValidator(domainObjectValidator);
 			studyImporter.setStudyRepository(studyRepository);
+			studyImporter.setMessageSource(messageSource);
 			studyImporter.setStudyProcessorImpl((StudyProcessorImpl)studyProcessor);
 			return studyImporter;
 		}else if (type.equals(SUBJECT_IMPORT)){
 			SubjectImporter subjectImporter = new SubjectImporter();
 			subjectImporter.setDomainObjectValidator(domainObjectValidator);
 			subjectImporter.setParticipantDao(participantDao);
+			subjectImporter.setMessageSource(messageSource);
 			subjectImporter.setParticipantServiceImpl((ParticipantServiceImpl)participantService);
 			return subjectImporter;
 		}else if (type.equals(RESEARCH_STAFF_IMPORT)){
@@ -66,12 +70,14 @@ public class ImporterFactory{
 			researchStaffImporter.setDomainObjectValidator(domainObjectValidator);
 			researchStaffImporter.setResearchStaffMigratorService(researchStaffMigratorService);
 			researchStaffImporter.setResearchStaffRepository(researchStaffRepository);
+			researchStaffImporter.setMessageSource(messageSource);
 			return researchStaffImporter;
 		}else if (type.equals(INVESTIGATOR_IMPORT)){
 			InvestigatorImporter investigatorImporter = new InvestigatorImporter();
 			investigatorImporter.setDomainObjectValidator(domainObjectValidator);
 			investigatorImporter.setInvestigatorMigratorService(investigatorMigratorService);
 			investigatorImporter.setInvestigatorRepository(investigatorRepository);
+			investigatorImporter.setMessageSource(messageSource);
 			return investigatorImporter;
 		}else if(type.equals(ORGANIZATION_IMPORT)){
 			OrganizationImporter organizationImporter = new OrganizationImporter();
@@ -168,5 +174,13 @@ public class ImporterFactory{
 
 	public void setMedDRADao(MedDRADao medDRADao) {
 		this.medDRADao = medDRADao;
+	}
+	
+	public void setMessageSource(MessageSource messageSource){
+		this.messageSource = messageSource;
+	}
+	
+	public MessageSource getMessageSource(){
+		return messageSource;
 	}
 }

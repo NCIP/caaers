@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 
 /**
  * @author Sameer Sawant
@@ -62,7 +63,11 @@ public class StudyImporter extends Importer{
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 				
-			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
+			Object importObject = unmarshaller.unmarshal(xmlFile);
+			if(!validRootElement(importObject, STUDY_IMPORT, command))
+				return;
+			
+			studies = (gov.nih.nci.cabig.caaers.webservice.Studies) importObject;
 			if(studies != null){
 				for(gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()){
 					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.processStudy(studyDto);

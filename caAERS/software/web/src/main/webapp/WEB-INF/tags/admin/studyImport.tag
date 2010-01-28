@@ -35,12 +35,12 @@
 		   			</table>	
 					</div>
 		   		</chrome:division>
-			</c:when>
+			</c:when> 
 			<c:otherwise>
 				<c:set var="importDisabled" value="disabled" scope="request"/>
 			</c:otherwise>
-		</c:choose>
-		<c:if test="${not empty command.nonImportableStudiess}">
+		</c:choose> 
+		<c:if test="${not empty command.nonImportableStudies}">
 			<chrome:division id="study_will_not_load" title="Records that have a problem">
 				<tags:instructions code="admin.import.reviewSubmit.wontImport"/>
 				<div class="red-means-stop">

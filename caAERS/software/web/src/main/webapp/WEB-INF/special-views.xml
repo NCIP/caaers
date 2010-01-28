@@ -64,5 +64,10 @@
    <bean id="redirectToSearchOrganizationTab" class="org.springframework.web.servlet.view.RedirectView">
    		<property name="contextRelative"><value>true</value></property>
    		<property name="url"><value>/pages/admin/searchOrganization</value></property>
+   </bean>
+   
+   <bean id="redirectToImportTab" class="org.springframework.web.servlet.view.RedirectView">
+   		<property name="contextRelative"><value>true</value></property>
+   		<property name="url"><value>/pages/admin/import</value></property>
    </bean>    
 </beans>

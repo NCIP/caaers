@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 
 /**
  * @author Sameer Sawant
@@ -42,7 +43,11 @@ public class SubjectImporter extends Importer{
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 				
-			participants = (gov.nih.nci.cabig.caaers.webservice.participant.Participants)unmarshaller.unmarshal(xmlFile);
+			Object importObject = unmarshaller.unmarshal(xmlFile);
+			if(!validRootElement(importObject, SUBJECT_IMPORT, command))
+				return;
+				
+			participants = (gov.nih.nci.cabig.caaers.webservice.participant.Participants) importObject;
 			if(participants != null){
 				for(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto : participants.getParticipant()){
 					DomainObjectImportOutcome<Participant> participantImportOutcome  = participantServiceImpl.processParticipant(participantDto);
@@ -106,4 +111,5 @@ public class SubjectImporter extends Importer{
 	public void setParticipantDao(ParticipantDao participantDao){
 		this.participantDao = participantDao;
 	}
+	
 }

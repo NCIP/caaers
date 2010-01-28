@@ -61,7 +61,7 @@
 	<c:if test="${command.type eq 'study'}">
 		<admin:studyImport/>
 	</c:if>
-	<c:if test="${command.type eq 'subject'}">
+	<c:if test="${command.type eq 'participant'}">
 		<admin:subjectImport/>
 	</c:if>
 	<c:if test="${command.type eq 'researchStaff'}">

@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 
 /**
  * @author Sameer Sawant
@@ -65,7 +66,13 @@ public class InvestigatorImporter extends Importer{
 			//DefaultInvestigatorMigratorService svc = (DefaultInvestigatorMigratorService) getApplicationContext().getBean("investigatorMigratorService");
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff )unmarshaller.unmarshal(xmlFile);
+			
+			Object importObject = unmarshaller.unmarshal(xmlFile);
+			
+			if(!validRootElement(importObject, INVESTIGATOR_IMPORT, command))
+				return;
+			
+			gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff ) importObject;
 			for(InvestigatorType xmlInvestigator : staff.getInvestigator()){
 				DomainObjectImportOutcome<Investigator> investigatorOutcome = investigatorMigratorService.processInvestigator(xmlInvestigator);
 				List<String> errors = domainObjectValidator.validate(investigatorOutcome.getImportedDomainObject());
