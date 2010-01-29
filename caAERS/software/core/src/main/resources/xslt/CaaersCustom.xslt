@@ -1224,7 +1224,7 @@
     </fo:block>
     <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Event approximate time : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventApproximateTime/hour"/>:<xsl:value-of select="eventApproximateTime/minute"/></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Where was the patient when the event occured ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventLocation"/></fo:inline></fo:block></xsl:if>
-    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Wa participant at risk ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="participantAtRisk = 'true'">Yes</xsl:if><xsl:if test="participantAtRisk = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Was participant at risk ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="participantAtRisk = 'true'">Yes</xsl:if><xsl:if test="participantAtRisk = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
 </xsl:for-each>
 </xsl:if>
 <!--
