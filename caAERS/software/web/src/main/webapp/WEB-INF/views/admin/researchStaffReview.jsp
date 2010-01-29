@@ -3,6 +3,9 @@
 <html>
 <head>
     <title><caaers:message code="researchStaff.review.pageTitle"/></title>
+    <script type="text/javascript">
+        AE.PAGE_HELP_LINK = 'researchStaffDetails';
+    </script>
 </head>
 <body>
 

@@ -670,7 +670,11 @@ function dump(arr, level) {
 }
 
 function updateHelpLink(baseUrl, linkName){
-	$('help').href= baseUrl + "#" + linkName;
+    var _helpLink = linkName;
+    if(AE.PAGE_HELP_LINK) {
+        _helpLink =  AE.PAGE_HELP_LINK;
+    }
+	$('help').href= baseUrl + "#" + _helpLink;
 }
 
 

@@ -28,6 +28,8 @@
 			}
         </style>
         <script language="JavaScript">
+            
+            AE.PAGE_HELP_LINK = 'researchStaffDetails';
 
                             ajaxCRUD = new AJAX_CRUD_HELPER();
 

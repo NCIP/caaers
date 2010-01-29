@@ -37,6 +37,9 @@
 		  color: red;
 		}
 	</style>
+    <script type="text/javascript">
+        AE.PAGE_HELP_LINK = 'happy';
+    </script>
 </head>
 <body>
 

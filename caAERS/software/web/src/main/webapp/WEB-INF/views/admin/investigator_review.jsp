@@ -11,6 +11,7 @@
 </style>
 
 <script>
+AE.PAGE_HELP_LINK = 'investigatorDetails';
 function submitPage(s){
 	document.getElementById("nextView").value=s;
 	document.getElementById("command").submit();

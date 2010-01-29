@@ -23,7 +23,7 @@
 
     <tags:dwrJavascriptLink objects="createIND"/>
     <script type="text/javascript">
-
+    AE.PAGE_HELP_LINK = 'researchStaffDetails';
     var today = '<tags:formatDate value="${today}"/>'
     
     Event.observe(window, "load", function() {

@@ -8,7 +8,7 @@
 
 <tags:dwrJavascriptLink objects="createInvestigator,createIND" />
 <script language="JavaScript" type="text/JavaScript">
-
+AE.PAGE_HELP_LINK = 'investigatorDetails';
 var today = '<tags:formatDate value="${today}"/>'
 
 var associatedSite = null;

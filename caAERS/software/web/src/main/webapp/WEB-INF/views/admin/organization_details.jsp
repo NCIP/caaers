@@ -6,6 +6,7 @@
 
  	
  	<script type="text/javascript">
+        AE.PAGE_HELP_LINK = 'organizationDetails';
  		function displayRemoteOrgs(){
  			var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"remoteorg-popup-id", width:550,  height:200, top: 30, left: 300});
  			contentWin.setContent( 'display_remote_org' );

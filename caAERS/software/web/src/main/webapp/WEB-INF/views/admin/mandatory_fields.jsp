@@ -23,7 +23,10 @@
      		font-weight: bold;
      		font-size: 1.1em;
     	}
-	</style>  
+	</style>
+     <script type="text/javascript">
+      AE.PAGE_HELP_LINK = 'mandatoryFields';
+  </script>
 </head>
 <body>
 	<div class="tabpane">
