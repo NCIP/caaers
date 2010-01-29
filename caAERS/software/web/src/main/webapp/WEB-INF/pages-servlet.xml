@@ -559,8 +559,7 @@
     <entry key="IRB" value="IRB" />	
   </util:map>
 
-  <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
+  <bean name="/rule/notification/create" id="createNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
     <property name="roles" ref="roles" />
   </bean>
   

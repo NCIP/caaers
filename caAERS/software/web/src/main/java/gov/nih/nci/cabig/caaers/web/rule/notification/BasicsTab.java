@@ -66,16 +66,14 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         InputFieldAttributes.setColumns(descField, 50);
         fields.add(descField);
 
-        if (command.getReportDefinition().getReportFormatType() == null || command.getReportDefinition().getReportFormatType() == ReportFormatType.CUSTOM_REPORT) {
-            InputField headerField = InputFieldFactory.createTextArea("reportDefinition.header", "Header", false);
-            InputFieldAttributes.setColumns(headerField, 50);
-            fields.add(headerField);
+        InputField headerField = InputFieldFactory.createTextArea("reportDefinition.header", "Header", false);
+        InputFieldAttributes.setColumns(headerField, 50);
+        fields.add(headerField);
 
-            InputField footerField = InputFieldFactory.createTextArea("reportDefinition.footer", "Footer", false);
-            InputFieldAttributes.setColumns(footerField, 50);
-            fields.add(footerField);
-        }
-        
+        InputField footerField = InputFieldFactory.createTextArea("reportDefinition.footer", "Footer", false);
+        InputFieldAttributes.setColumns(footerField, 50);
+        fields.add(footerField);
+
         InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
         fields.add(amendableField);
 

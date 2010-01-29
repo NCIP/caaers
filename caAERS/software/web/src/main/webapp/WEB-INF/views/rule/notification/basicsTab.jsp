@@ -51,8 +51,30 @@
 		}
 	});
 
-   
-        
+
+     function toggleHeaderFooter() {
+         var s = $('reportDefinition.reportFormatType');
+         var show = s.options[s.selectedIndex].value == 'CUSTOM_REPORT';
+         
+         if (show) {
+             $('reportDefinition.header-row').show();
+             $('reportDefinition.footer-row').show();
+         } else {
+             $('reportDefinition.header-row').hide();
+             $('reportDefinition.header').value = '';
+             $('reportDefinition.footer-row').hide();
+             $('reportDefinition.footer').value = '';
+         }
+     }
+
+    // Hide Header & Footer if ReportFormatType = CUSTOM_REPORT
+     toggleHeaderFooter();
+
+     var s = $('reportDefinition.reportFormatType');
+     Event.observe(s, "change", function() {
+        toggleHeaderFooter();
+     });
+
  });
 
 //===================================================================================================
