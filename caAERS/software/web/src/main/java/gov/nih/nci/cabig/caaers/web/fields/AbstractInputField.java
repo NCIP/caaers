@@ -51,7 +51,7 @@ public abstract class AbstractInputField implements InputField {
         if (validators == null) return;
         for (FieldValidator validator : validators) {
             if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
-                errors.rejectValue(this.getPropertyName(), "REQUIRED", validator.getMessagePrefix() + " " + this.getDisplayName());
+                errors.rejectValue(this.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix() + ":</b> &quot;" + this.getDisplayName() +"&quot;");
                 return;
             }
         }

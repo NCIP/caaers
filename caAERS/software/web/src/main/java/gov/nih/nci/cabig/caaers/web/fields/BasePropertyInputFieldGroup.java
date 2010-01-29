@@ -62,7 +62,7 @@ public class BasePropertyInputFieldGroup extends AbstractInputFieldGroup {
                     String subFieldQualifiedPropertyName = baseProperty + "." + subField.getPropertyName();
                     for (FieldValidator validator : validators) {
                         if (!validator.isValid(commandBean.getPropertyValue(subFieldQualifiedPropertyName))) {
-                            errors.rejectValue(subFieldQualifiedPropertyName, "REQUIRED", validator.getMessagePrefix() + " " + subField.getDisplayName());
+                            errors.rejectValue(subFieldQualifiedPropertyName, "REQUIRED", "<b>" + validator.getMessagePrefix() + ":</b> &quot;" + subField.getDisplayName() + "&quot;");
                             return;
                         }
                     }

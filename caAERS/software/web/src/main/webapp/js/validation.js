@@ -74,11 +74,11 @@ var ValidationManager = {
     registeredInvokes: new Array(),
     ERROR_STRATEGY:"text",
     ERROR_HIGHTLIGHT_COLOR:"red",
-    ERROR_MSG_REQUIRED:"Missing ",
-    ERROR_MSG_PATTERN:"Invalid ",
+    ERROR_MSG_REQUIRED:"<b>Missing:</b> &quot;",
+    ERROR_MSG_PATTERN:"<b>Invalid:</b> &quot;",
     ERROR_MSG_MINLENGTH:"too short ",
     ERROR_MSG_MAXLENGTH:"too long ",
-    ERROR_MSG_PHONE:"Invalid ",
+    ERROR_MSG_PHONE:"<b>Invalid:</b>  &quot;",
 
     validateForm: function(submit) {
         Errors.clear();
@@ -165,9 +165,11 @@ var ValidationManager = {
             errorStrategy1 = strategies[i]
             if (errorStrategy1 == "text") {
                 var errorText = msg + element.title;
-                // alert(errorText);
+                if(msg.startsWith("<b>") > 0){
+                    errorText = errorText + "&quot;"
+                }
                 Errors.push(element.id, errorText);
-                new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + msg + element.title + "</li></ul>")
+                new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + errorText + "</li></ul>")
             }
             if (errorStrategy1 == "highlight") {
                 element.style._backgroundColor = element.style._backgroundColor ? element.style._backgroundColor : element.style.backgroundColor

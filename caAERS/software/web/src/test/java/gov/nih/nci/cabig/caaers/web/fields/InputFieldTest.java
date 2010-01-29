@@ -66,7 +66,7 @@ public class InputFieldTest extends AbstractTestCase {
         FieldError actualError = errors.getFieldError("name");
         assertNotNull("Error is on wrong property", actualError);
         assertEquals("Wrong key for error", "REQUIRED", actualError.getCode());
-        assertEquals("Wrong default message for error", "Missing Nomen", actualError
+        assertEquals("Wrong default message for error", "<b>Missing:</b> &quot;Nomen&quot;", actualError
                 .getDefaultMessage());
     }
 
