@@ -7,7 +7,7 @@
 <c:if test='${fn:length(command.importableInvestigators) > 0 || fn:length(command.nonImportableInvestigators) > 0 }'>
 	<c:choose> 
 		<c:when test="${not empty command.importableInvestigators}">
-			<chrome:division id="investigator_load" title="These records look good">
+			<chrome:division id="investigator_load" title="Valid records">
 			<tags:instructions code="admin.import.reviewSubmit.willImport"/>
 			<div class="green-means-go">
 			<table id="test" width="100%" class="tablecontent">
@@ -36,7 +36,7 @@
 	</c:choose>
 		
 		<c:if test="${not empty command.nonImportableInvestigators}">
-			<chrome:division id="investigator_not_load" title="These records have a problem">
+			<chrome:division id="investigator_not_load" title="Invalid records">
 				<tags:instructions code="admin.import.reviewSubmit.wontImport"/>
 				<div class="red-means-stop">
 				<table id="test" width="100%" class="tablecontent">

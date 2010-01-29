@@ -7,7 +7,7 @@
 	<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0}'>
 		<c:choose> 
 			<c:when test="${not empty command.importableStudies}">
-				<chrome:division title="Records caAERS understands" id="study_will_load">
+				<chrome:division title="Valid records" id="study_will_load">
 					<tags:instructions code="admin.import.reviewSubmit.willImport"/>
 					
 					<div class="green-means-go">
@@ -41,7 +41,7 @@
 			</c:otherwise>
 		</c:choose> 
 		<c:if test="${not empty command.nonImportableStudies}">
-			<chrome:division id="study_will_not_load" title="Records that have a problem">
+			<chrome:division id="study_will_not_load" title="Invalid records">
 				<tags:instructions code="admin.import.reviewSubmit.wontImport"/>
 				<div class="red-means-stop">
 				<table id="test" width="100%" class="tablecontent">

@@ -19,7 +19,7 @@
    	</chrome:division>
 
 	<c:if test='${fn:length(command.nonImportableOrganizations) > 0 }'>
-		<chrome:division title="${fn:length(command.nonImportableOrganizations)} Invalid Organization records found" id="organization_invalid"  collapsable="true" collapsed="true">
+		<chrome:division title="${fn:length(command.nonImportableOrganizations)} Invalid records" id="organization_invalid"  collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -39,7 +39,7 @@
 	</c:if>
 
 	<c:if test='${fn:length(command.importableOrganizations) > 0 }'>
-		<chrome:division title="${fn:length(command.importableOrganizations)} Organizations to be added" id="organization_create" collapsable="true" collapsed="true">
+		<chrome:division title="${fn:length(command.importableOrganizations)} Valid records" id="organization_create" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>

@@ -21,7 +21,7 @@
 
 
 	<c:if test='${fn:length(command.nonImportableAgents) > 0 }'>
-		<chrome:division title="${fn:length(command.nonImportableAgents)} Invalid agent records found" id="agent_invalid" collapsable="true" collapsed="true">
+		<chrome:division title="${fn:length(command.nonImportableAgents)} Invalid records" id="agent_invalid" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -37,7 +37,7 @@
 	</c:if>
 
 	<c:if test='${fn:length(command.importableAgents) > 0 }'>
-		<chrome:division title="${fn:length(command.importableAgents)} Agents to be added" id="agent_create" collapsable="true" collapsed="true">
+		<chrome:division title="${fn:length(command.importableAgents)} Valid records" id="agent_create" collapsable="true" collapsed="true">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>

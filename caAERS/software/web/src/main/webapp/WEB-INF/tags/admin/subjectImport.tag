@@ -7,7 +7,7 @@
 <c:if test='${fn:length(command.nonImportableParticipants) > 0 || fn:length(command.importableParticipants) > 0 }'>
 	<c:choose> 
 		<c:when test="${not empty command.importableParticipants}">
-			<chrome:division id="particpant_will_load" title="Records caAERS understands">
+			<chrome:division id="particpant_will_load" title="Valid records">
 			<tags:instructions code="admin.import.reviewSubmit.willImport"/>
 			<div class="green-means-go">
 				<table id="test" width="100%" class="tablecontent">
@@ -44,7 +44,7 @@
 	</c:choose>
 			
 	<c:if test="${not empty command.nonImportableParticipants}">
-		<chrome:division id="particpant_will_not_load" title="Records that have a problem">
+		<chrome:division id="particpant_will_not_load" title="Invalid records">
 		<tags:instructions code="admin.import.reviewSubmit.wontImport"/>
 		<div class="red-means-stop">
 			<table id="test" width="100%" class="tablecontent">
