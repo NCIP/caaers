@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.EnumHelper;
  * @author Biju Joseph
  */
 public enum UserGroupType implements CodedEnum<Integer> {
+	// check *SecurityFilterer classes and RoutingAndReviewResolverController when adding new group . Need to change those classes accordingly
     caaers_user(-2, "caaers_user"),
     caaers_admin(-1, "caaers_admin"), 
     caaers_super_user(-3,"caaers_super_user"), 
