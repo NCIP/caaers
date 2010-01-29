@@ -1203,7 +1203,105 @@
 					  </xsl:for-each>
 		  			</fo:table-body>
 		  		</fo:table>
-                  <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
+
+
+                  <!-- OTHER AE FIELDS-->
+
+<xsl:if test="
+        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation'] or
+        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString'] or
+        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']
+">
+<xsl:for-each select="AdverseEventReport/AdverseEvent">
+    <fo:block xsl:use-attribute-sets="value">AE:
+        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+        <xsl:if test="LowLevelTerm/fullName != ''">: <xsl:value-of select="LowLevelTerm/fullName"/></xsl:if>
+        <xsl:choose>
+        <xsl:when test="LowLevelTerm/fullName"></xsl:when>
+        <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+    </fo:block>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Event approximate time : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventApproximateTime/hour"/>:<xsl:value-of select="eventApproximateTime/minute"/></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Where was the patient when the event occured ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventLocation"/></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Wa participant at risk ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="participantAtRisk = 'true'">Yes</xsl:if><xsl:if test="participantAtRisk = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
+</xsl:for-each>
+</xsl:if>
+<!--
+                <fo:table>
+                    <fo:table-column column-width="40%"/>
+                    <fo:table-column column-width="5%"/>
+                    <fo:table-column column-width="55%"/>
+
+                    <fo:table-body>
+
+                        <fo:table-row>
+                              <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Event Time</fo:block></fo:table-cell>
+                              <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
+                        </fo:table-row>
+                
+                    </fo:table-body>
+                </fo:table>
+-->
+
+                <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
+
+              </xsl:if>
+<!-- ADVERSE EVENTS      END-->
+
+
+
+<!-- ADVERSE OUTCOMES      START-->              
+
+              <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.outcomes']">
+  				<fo:block xsl:use-attribute-sets="sub-head" >Adverse Events Outcomes</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block>
+
+		  		<fo:table>
+					<fo:table-column column-width="40%"/>
+					<fo:table-column column-width="5%"/>
+					<fo:table-column column-width="55%"/>
+
+		  			<fo:table-body>
+
+		  			    <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Edverse Event</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
+      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Outcomes</fo:block></fo:table-cell>
+		  			    </fo:table-row>
+
+ 					    <xsl:for-each select="AdverseEventReport/AdverseEvent">
+                            <fo:table-row>
+                                    <fo:table-cell>
+
+                                        <fo:block xsl:use-attribute-sets="value" >
+                                            <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                                            <xsl:if test="LowLevelTerm/fullName != ''">: <xsl:value-of select="LowLevelTerm/fullName"/></xsl:if>
+                                            <xsl:choose>
+                                                <xsl:when test="LowLevelTerm/fullName"></xsl:when>
+                                                <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
+                                            </xsl:choose>
+                                            <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+                                        </fo:block>
+
+                                    </fo:table-cell>
+
+                                    <fo:table-cell><fo:block /></fo:table-cell>
+
+                                    <fo:table-cell>
+                                        <xsl:for-each select="Outcome">
+                                            <fo:block xsl:use-attribute-sets="label"><xsl:value-of select="OutcomeType" /></fo:block>
+                                            <!--<xsl:if test="position() != last()">,<xsl:text disable-output-escaping="yes">&#160;&#160;</xsl:text></xsl:if>-->
+                                        </xsl:for-each>
+                                        <fo:block><xsl:text disable-output-escaping="yes">&#160;&#160;</xsl:text></fo:block>
+                                    </fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
+                          </fo:table-row>
+					  </xsl:for-each>
+		  			</fo:table-body>
+
+		  		</fo:table>
+                <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
 
               </xsl:if>
 <!-- ADVERSE EVENTS      END-->

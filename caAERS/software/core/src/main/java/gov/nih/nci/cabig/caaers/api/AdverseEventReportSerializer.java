@@ -261,7 +261,9 @@ public class AdverseEventReportSerializer {
 
 	    	return aer;
 	   }
-	   
+/*
+* 
+* */
 	   private Report getReport(Report report) throws Exception {
 		   
 		   Report r = new Report();
@@ -273,12 +275,7 @@ public class AdverseEventReportSerializer {
 
 		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
-		  // ReportVersion rv = new ReportVersion();
 
-		   
-		   
-		 //  rv.setAssignedIdentifer(report.getLastVersion().getAssignedIdentifer());
-		 //  rv.setReportVersionId(report.getLastVersion().getReportVersionId());
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
 		   r.setEmailAddresses(report.getEmailRecipients());
 	   		   
@@ -759,6 +756,7 @@ public class AdverseEventReportSerializer {
 		    	}
 		    	adverseEvent.setEventApproximateTime(ae.getEventApproximateTime());
 		    	adverseEvent.setEventLocation(ae.getEventLocation());
+		    	adverseEvent.setParticipantAtRisk(ae.getParticipantAtRisk());
 
 		    	List<Outcome> outcomes = ae.getOutcomes();
 		    	
