@@ -15,16 +15,21 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 /**
@@ -41,11 +46,15 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	ReportDefinitionDao reportDefinitionDao;
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
+	CaaersFieldConfigurationManager caaersFieldConfigurationManager;
+	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		tab = new AdverseEventCaptureTab();
 		
+		setupCaaersFieldConfigurationManager();
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
 		List<AdverseEvent> aeList = createAdverseEventList();
 		reportingPeriod.setAdverseEvents(aeList);
@@ -53,6 +62,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
+		caaersFieldConfigurationManagerFactory = registerMockFor(CaaersFieldConfigurationManagerFactory.class);
 		
 		command = new CaptureAdverseEventInputCommand(null, null, null, reportDefinitionDao, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
@@ -61,6 +71,30 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		errors = new BindException(command, "command");
 		
 		tab.setReportRepository(reportRepository);
+		tab.setCaaersFieldConfigurationManagerFactory(caaersFieldConfigurationManagerFactory);
+	}
+	
+	protected void setupCaaersFieldConfigurationManager(){
+		caaersFieldConfigurationManager = new CaaersFieldConfigurationManager();
+		Map<String, Mandatory> map = new HashMap<String, Mandatory>();
+		map.put("adverseEvents[]", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].grade", Mandatory.MANDATORY);
+		map.put("adverseEvents[].adverseEventCtcTerm", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].adverseEventCtcTerm.term", Mandatory.MANDATORY);
+		map.put("adverseEvents[].detailsForOther", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].startDate", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].endDate", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].attributionSummary", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].hospitalization", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].expected", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].eventLocation", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].comments", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].participantAtRisk", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].eventApproximateTime.hourString", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].outcomes", Mandatory.OPTIONAL);
+		Map<String, Map<String, Mandatory>> fieldMap = new HashMap<String, Map<String, Mandatory>>();
+		fieldMap.put(AdverseEventCaptureTab.class.getName(), map);
+		caaersFieldConfigurationManager.setFieldConfigurationMap(fieldMap);
 	}
 	
 	public List<AdverseEvent> createAdverseEventList(){
@@ -82,7 +116,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 
 	public void testCreateFieldGroupsCaptureAdverseEventInputCommand() {
 		command.initializeOutcomes();
+		EasyMock.expect(caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager()).andReturn(caaersFieldConfigurationManager);
+		replayMocks();
 		Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+		verifyMocks();
 		System.out.println(fieldMap);
 		assertCorrectOutcomeFieldNames(fieldMap.get("outcomes0"), 
 				"outcomes[0][" + DEATH.getCode() +"]",
@@ -118,7 +155,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"endDate",
 				"attributionSummary",
 				"hospitalization",
-				"expected");
+				"expected",
+				"eventApproximateTime",
+				"participantAtRisk",
+				"eventLocation");
 		
 		correctMainGroupFields(fieldMap.get("main1"), "adverseEvents[1].", "detailsForOther",
 				"grade",
@@ -126,7 +166,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"endDate",
 				"attributionSummary",
 				"hospitalization",
-				"expected");
+				"expected",
+				"eventApproximateTime",
+				"participantAtRisk",
+				"eventLocation");
 		
 		correctMainGroupFields(fieldMap.get("main2"), "adverseEvents[2].", "detailsForOther",
 				"grade",
@@ -134,7 +177,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"endDate",
 				"attributionSummary",
 				"hospitalization",
-				"expected");
+				"expected",
+				"eventApproximateTime",
+				"participantAtRisk",
+				"eventLocation");
 	}
 	
 	public void testPostprocess(){
