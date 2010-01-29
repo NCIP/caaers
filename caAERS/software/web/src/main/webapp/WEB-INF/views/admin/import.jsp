@@ -34,7 +34,7 @@
 	</div>
 
 		<div class="row">
-        	<div class="label"><ui:label path="type" text="Import" labelProperty="type" required="true"/></div>
+        	<div class="label"><tags:requiredIndicator/><caaers:message code="LBL_type"/></div>
 			<div class="value">
 				<form:select path="type" id="select-type-id" onchange="javascript:selectType()">
 					<form:option value="">Please select</form:option>

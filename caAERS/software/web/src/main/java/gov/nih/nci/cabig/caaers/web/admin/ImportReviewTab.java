@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.validation.Errors;
 
 import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 public class ImportReviewTab extends Tab<ImportCommand>{
@@ -27,8 +28,8 @@ public class ImportReviewTab extends Tab<ImportCommand>{
     public void postProcess(HttpServletRequest request, ImportCommand command, Errors errors) {
         // TODO: see why the command variable type has a comma attached to it
 
-    	String action = (String)findInRequest(request, "_action");
-    	if(!action.equals(BACK_ACTION)){
+    	int targetPage = WebUtils.getTargetPage(request);
+    	if(targetPage == 2){
     		Importer importer = importerFactory.createImporterInstance(command.getType());
     		importer.save(command, request);
     	}
