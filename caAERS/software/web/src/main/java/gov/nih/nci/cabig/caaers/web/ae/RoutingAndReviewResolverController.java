@@ -39,7 +39,12 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		
 		boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
 		String redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
-		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
+		//CAAERS-3308
+		//if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
+		// above logic works if user has only one role , if user has another which is authorized to write , based on the above logic the conrol is taking user to read view , 
+		// so checking with roles which excludes above roles  
+		if(!isSuperUser && !SecurityUtils.checkAuthorization(UserGroupType.caaers_user , UserGroupType.caaers_admin, UserGroupType.caaers_super_user,
+				UserGroupType.caaers_participant_cd,UserGroupType.caaers_ae_cd,UserGroupType.caaers_site_cd, UserGroupType.caaers_physician)){
 			redirectUrl = "reviewEvaluationPeriod?adverseEventReportingPeriod=" + reportingPeriodId;
 		}
 		
@@ -51,10 +56,14 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		String reportId = request.getParameter("report");
 		String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;;
 		boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-		if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
+		//CAAERS-3308
+		//if(!isSuperUser && SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_study_cd)){
+		// above logic works if user has only one role , if user has another which is authorized to write , based on the above logic the conrol is taking user to read view , 
+		// so checking with roles which excludes above roles  
+		if(!isSuperUser && !SecurityUtils.checkAuthorization(UserGroupType.caaers_user , UserGroupType.caaers_admin, UserGroupType.caaers_super_user,
+				UserGroupType.caaers_participant_cd,UserGroupType.caaers_ae_cd,UserGroupType.caaers_site_cd, UserGroupType.caaers_physician)){
 			redirectUrl = "reviewAeReport?aeReport=" + aeReportId + "&report=" + reportId;
 		}
-		
 		
 		ModelAndView mv = new ModelAndView(new RedirectView(redirectUrl));
 		return mv;
