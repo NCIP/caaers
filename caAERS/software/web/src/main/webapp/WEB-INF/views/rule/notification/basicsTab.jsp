@@ -68,7 +68,7 @@
      }
 
     // Hide Header & Footer if ReportFormatType = CUSTOM_REPORT
-     toggleHeaderFooter();
+    // toggleHeaderFooter();
 
      var s = $('reportDefinition.reportFormatType');
      Event.observe(s, "change", function() {
@@ -143,8 +143,24 @@ function fetchParentReportDefinitions(organizationID) {
 			<tags:renderRow field="${fieldGroups.reportDefinitionOrganization.fields[0]}" />
 			</div>
             <div id="ruleset-fields">
+
+                <%--${command.reportDefinition.reportFormatType.code == 7}--%>
                 <c:forEach items="${fieldGroups.reportDefinitionFieldGroup.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
+
+                        <c:choose>
+                            <c:when test="${field.propertyName eq 'reportDefinition.header' || field.propertyName eq 'reportDefinition.footer'}">
+                                <c:if test="${command.reportDefinition.reportFormatType.code == 7}">
+                                    <tags:renderRow field="${field}" />
+                                </c:if>
+                                <c:if test="${command.reportDefinition.reportFormatType.code != 7}">
+                                    <tags:renderRow field="${field}" style="display:none;"/>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <tags:renderRow field="${field}" />
+                            </c:otherwise>
+                    </c:choose>
+
                 </c:forEach>
                <input type="hidden" name="lastPointOnScale" value=""/>
                <input type="hidden" name="notificationType" value="EMAIL_NOTIFICATION" />
