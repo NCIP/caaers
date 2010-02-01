@@ -172,7 +172,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
 		EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getLastVersion().getId())).andReturn(new String[]{"testing"});
 		EasyMock.expect(reportRepository.findReportDeliveries(report)).andReturn(new ArrayList<ReportDelivery>());
-		assertTrue(report.getLastVersion().getReportedAdversEvents() == null);
+
+        assertTrue(report.getLastVersion().getReportedAdversEvents() != null);
 		assertTrue(report.getLastVersion().getContents() == null);
 		
 		replayMocks();
