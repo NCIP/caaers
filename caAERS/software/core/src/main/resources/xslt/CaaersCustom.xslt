@@ -1105,113 +1105,24 @@
 
 <!-- ADVERSE EVENTS      START-->              
 
-              <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term'] or
-                      /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.grade'] or
-                      /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.hospitalization'] or
-                      /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.startDate'] or
-                      /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.endDate'] or
-                      /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.comments']">
-  				<fo:block  xsl:use-attribute-sets="sub-head" >
-					<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">Adverse Events (CTCAE)</xsl:if>
-                    <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">Adverse Events (MedDRA)</xsl:if>
-		  		</fo:block>
-		  		<fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block>
-
-
-		  		<fo:table>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="5%"/>
-					<fo:table-column column-width="15%"/>
-					<fo:table-column column-width="10%"/>
-					<fo:table-column column-width="10%"/>
-					<fo:table-column column-width="10%"/>
-					<fo:table-column column-width="10%"/>
-
-		  			<fo:table-body>
-
-		  			    <fo:table-row>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term']">
-                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" ><xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">CTCAE CATEGORY</xsl:if></fo:block></fo:table-cell>
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Adverse Event</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.grade']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Grade</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.hospitalization']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Hospitalization/</fo:block><fo:block xsl:use-attribute-sets="label" >Prolongation of</fo:block><fo:block xsl:use-attribute-sets="label" >Hospitalization</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.startDate']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Start Date</fo:block><fo:block xsl:use-attribute-sets="label" >of AE</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.endDate']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >End Date</fo:block><fo:block xsl:use-attribute-sets="label" >of AE</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Is</fo:block><fo:block xsl:use-attribute-sets="label" >Primary</fo:block><fo:block xsl:use-attribute-sets="label" >AE?</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.comments']">
-      						    <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Comments</fo:block></fo:table-cell>
-                          </xsl:if>
-                          <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
-		  			    </fo:table-row>
-
- 					<xsl:for-each select="AdverseEventReport/AdverseEvent">
-                            <fo:table-row>
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term']">
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/></fo:block></fo:table-cell>
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" >
-                                            <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
-                                            <xsl:if test="LowLevelTerm/fullName != ''">: <xsl:value-of select="LowLevelTerm/fullName"/></xsl:if>
-                                            <xsl:choose>
-                                                <xsl:when test="LowLevelTerm/fullName"></xsl:when>
-                                                <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
-                                            </xsl:choose>
-                                            <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
-                                        </fo:block>
-                                    </fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.grade']">
-      						        <fo:table-cell><xsl:variable name="gradeVar0" select="grade"/><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="substring($gradeVar0,1,1)"/></fo:block></fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.hospitalization']">
-                                    <fo:table-cell>
-                                        <xsl:variable name="hospitalizationVar" select="hospitalization"/>
-                                        <fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="substring($hospitalizationVar, 4, 10)"/></fo:block>
-                                    </fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.startDate']">
-      						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="startDate"/></xsl:call-template></fo:block></fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.endDate']">
-      						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="endDate"/></xsl:call-template></fo:block></fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term']">
-      						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:choose><xsl:when test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">Yes</xsl:when><xsl:otherwise>No</xsl:otherwise></xsl:choose></fo:block></fo:table-cell>
-                                </xsl:if>
-
-                                <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.comments']">
-      						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="detailsForOther"/></fo:block></fo:table-cell>
-                                </xsl:if>
-                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
-                          </fo:table-row>
-					  </xsl:for-each>
-		  			</fo:table-body>
-		  		</fo:table>
-
-
-                  <!-- OTHER AE FIELDS-->
-
 <xsl:if test="
-        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation'] or
-        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString'] or
-        /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.grade'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.hospitalization'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.startDate'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.endDate'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.comments'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString'] or
+                /AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']
 ">
+
+    <fo:block  xsl:use-attribute-sets="sub-head" >
+      <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">Adverse Events (CTCAE)</xsl:if>
+      <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">Adverse Events (MedDRA)</xsl:if>
+    </fo:block>
+    <fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block>
+    
 <xsl:for-each select="AdverseEventReport/AdverseEvent">
     <fo:block xsl:use-attribute-sets="value">AE:
         <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
@@ -1220,33 +1131,28 @@
         <xsl:when test="LowLevelTerm/fullName"></xsl:when>
         <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
         </xsl:choose>
-        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>,
+        <xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:text disable-output-escaping="yes">&#160;</xsl:text> 
+        CATEGORY: <xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
     </fo:block>
+    
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.grade']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Grade : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:variable name="gradeVar0" select="grade"/><xsl:value-of select="substring($gradeVar0,1,1)"/></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.hospitalization']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Hospitalizatio / Prolongation of : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:variable name="hospitalizationVar" select="hospitalization"/><xsl:value-of select="substring($hospitalizationVar, 4, 10)"/></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.startDate']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Start Date of AE: </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:call-template name="standard_date"><xsl:with-param name="date" select="startDate"/></xsl:call-template></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.endDate']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">End Date of AE: </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:call-template name="standard_date"><xsl:with-param name="date" select="endDate"/></xsl:call-template></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.adverseEventCtcTerm.term']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Is Primary AE ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:choose><xsl:when test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">Yes</xsl:when><xsl:otherwise>No</xsl:otherwise></xsl:choose></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventApproximateTime.hourString']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Event approximate time : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventApproximateTime/hour"/>:<xsl:value-of select="eventApproximateTime/minute"/></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.eventLocation']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Where was the patient when the event occured ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventLocation"/></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.participantAtRisk']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Was participant at risk ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="participantAtRisk = 'true'">Yes</xsl:if><xsl:if test="participantAtRisk = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='adverseEvents.comments']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Comments : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="detailsForOther"/></fo:inline></fo:block></xsl:if>
+    
 </xsl:for-each>
+
+    <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
+
 </xsl:if>
-<!--
-                <fo:table>
-                    <fo:table-column column-width="40%"/>
-                    <fo:table-column column-width="5%"/>
-                    <fo:table-column column-width="55%"/>
 
-                    <fo:table-body>
 
-                        <fo:table-row>
-                              <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Event Time</fo:block></fo:table-cell>
-                              <fo:table-cell><fo:block xsl:use-attribute-sets="label" ></fo:block></fo:table-cell>
-                        </fo:table-row>
-                
-                    </fo:table-body>
-                </fo:table>
--->
-
-                <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
-
-              </xsl:if>
 <!-- ADVERSE EVENTS      END-->
 
 
