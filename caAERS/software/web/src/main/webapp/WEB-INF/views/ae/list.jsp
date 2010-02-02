@@ -4,13 +4,13 @@
 <head>
 <title>Manage Reports</title>
 <tags:dwrJavascriptLink objects="createAE,adverseEventHistory"/>
-<%-- <tags:slider renderComments="false" renderAlerts="true" display="">
+<tags:slider renderComments="false" renderAlerts="true" display="${command.assignment.labLoads != null and fn:length(command.assignment.labLoads) > 0 ? '' : 'none'}" workflowType="report">
     <jsp:attribute name="labs">
     	<div id="labs-id" style="display:none;">
     		<tags:labs labs="${command.assignment.labLoads}"/>
     	</div>
     </jsp:attribute>
-</tags:slider> --%>
+</tags:slider>
     <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>

@@ -3,8 +3,13 @@
 <html>
  <head>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
-    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" 
-    		display="none" workflowType="reportingPeriod" reportingPeriod="${command.adverseEventReportingPeriod }">
+    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="true" 
+    		display="${command.assignment.labLoads != null and fn:length(command.assignment.labLoads) > 0 ? '' : 'none'}" workflowType="reportingPeriod" reportingPeriod="${command.adverseEventReportingPeriod }">
+    	<jsp:attribute name="labs">
+    		<div id="labs-id" style="display:none;">
+    			<tags:labs labs="${command.assignment.labLoads}"/>
+    		</div>
+    	</jsp:attribute>
     </tags:slider>
 
  <script><!--
