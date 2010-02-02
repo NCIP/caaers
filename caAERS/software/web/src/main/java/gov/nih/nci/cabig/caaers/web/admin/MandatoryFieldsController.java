@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
 import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -43,7 +42,7 @@ public class MandatoryFieldsController extends SimpleFormController {
 
 	private CaaersFieldsTree caaersFieldsTree;
 	private CaaersFieldDefinitionDao caaersFieldDefinitionDao;
-	private CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
+	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
     public MandatoryFieldsController() {
         setFormView("admin/mandatory_fields");
@@ -69,7 +68,6 @@ public class MandatoryFieldsController extends SimpleFormController {
     		for(CaaersFieldDefinition cfd: command.getMandatoryFields())
     			caaersFieldDefinitionDao.save(cfd);
     		// reinitialize caaersFieldConfigurationManager
-    		CaaersFieldConfigurationManager caaersFieldConfigurationManager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
     		caaersFieldConfigurationManager.initializeConfigurationManager();
     	}
     	Map map = this.referenceData(request, command, errors);
@@ -175,7 +173,7 @@ public class MandatoryFieldsController extends SimpleFormController {
     }
     
     @Required 
-    public void setCaaersFieldConfigurationManagerFactory(CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory){
-    	this.caaersFieldConfigurationManagerFactory = caaersFieldConfigurationManagerFactory;
+    public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
+    	this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
     }
 }

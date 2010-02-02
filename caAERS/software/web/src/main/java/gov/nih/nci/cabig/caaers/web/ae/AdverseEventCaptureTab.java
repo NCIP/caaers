@@ -69,7 +69,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
         InputFieldGroupMap fieldGrpMap = new InputFieldGroupMap();
         MultipleFieldGroupFactory mainFieldFactory;
-        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
         
         if(cmd.getAdverseEventReportingPeriod() != null){
         	
@@ -97,32 +96,32 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
             	//verbatim - Is required when there is no other MedDRA
                 boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
-            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", isFieldRequired(ae, "adverseEvents[].detailsForOther", manager));
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", isFieldRequired(ae, "adverseEvents[].detailsForOther"));
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
                 //grade
-                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", isFieldRequired(ae, "adverseEvents[].grade", manager), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", isFieldRequired(ae, "adverseEvents[].grade"), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
                 
                 //startDate
-                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", isFieldRequired(ae, "adverseEvents[].startDate", manager));
+                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", isFieldRequired(ae, "adverseEvents[].startDate"));
                 mainFieldFactory.addField(startDateField);
                 
                 //endDate
-                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", isFieldRequired(ae, "adverseEvents[].endDate", manager));
+                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", isFieldRequired(ae, "adverseEvents[].endDate"));
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", isFieldRequired(ae, "adverseEvents[].attributionSummary", manager), createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", isFieldRequired(ae, "adverseEvents[].attributionSummary"), createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", isFieldRequired(ae, "adverseEvents[].hospitalization", manager), createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", isFieldRequired(ae, "adverseEvents[].hospitalization"), createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
-                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", isFieldRequired(ae, "adverseEvents[].expected", manager), createExpectedOptions());
+                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", isFieldRequired(ae, "adverseEvents[].expected"), createExpectedOptions());
                 mainFieldFactory.addField(expectednessField);
                 
                 //Time of event
@@ -130,11 +129,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(timeOfEventField);
                 
                 //Participant at risk
-                InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", isFieldRequired(ae, "adverseEvents[].participantAtRisk", manager));
+                InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", isFieldRequired(ae, "adverseEvents[].participantAtRisk"));
                 mainFieldFactory.addField(riskField);
                 
                 //Event location
-                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", isFieldRequired(ae, "adverseEvents[].eventLocation", manager));
+                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", isFieldRequired(ae, "adverseEvents[].eventLocation"));
                 mainFieldFactory.addField(eventLocationField);
 
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
@@ -166,11 +165,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         return fieldGrpMap;
     }
     
-    private boolean isFieldRequired(AdverseEvent ae, String fieldPath, CaaersFieldConfigurationManager manager){
+    private boolean isFieldRequired(AdverseEvent ae, String fieldPath){
     	if(ae.getSolicited() || ae.isRetired())
     		return false;
     	else{
-    		return manager.isFieldMandatory(TAB_NAME, fieldPath);
+    		return caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, fieldPath);
     	}
     }
 
@@ -188,8 +187,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         Map<String, Object> refData = super.referenceData(command);
         Boolean outcomesMandatory = false;
         // Put a flag in the referenceData to mark Outcome as mandatory if configured so.
-        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
-        if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes")){
+        if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes")){
         	outcomesMandatory = true;
         }
         
@@ -262,7 +260,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // STOP -> AE VALIDATION //
 
         boolean foundGrade5 = false;
-        CaaersFieldConfigurationManager manager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
         
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
@@ -287,7 +284,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             
             // If grade is greater than 2 then hospitalization cannot be null.
             if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
-            	if(manager.isFieldApplicable(TAB_NAME, "adverseEvents[].hospitalization"))
+            	if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].hospitalization"))
             		if (ae.getGrade() != null) {
             			if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
             				errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 2");
@@ -295,7 +292,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             }
             
             // Check if end date is greater than the start date
-            if(manager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && manager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
+            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
             	if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)
             		errors.rejectValue("adverseEvents[" + i + "].endDate" , "CAE_014", "The \"End date\" can not be before the \"Start date\". It should be either be the same day or later.");
             
@@ -306,12 +303,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             
             // Special validation for outcomes as it cannot be validated through the fieldgroup framework.
             
-            if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
+            if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
             	if(ae.getOutcomes() == null || ae.getOutcomes().isEmpty())
             		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes");
             }
             
-            if(manager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.hourString") && !ae.getSolicited()){
+            if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.hourString") && !ae.getSolicited()){
             	if(ae.getEventApproximateTime() == null || ae.getEventApproximateTime().getHourString() == null)
             		errors.rejectValue("adverseEvents[" + i + "].eventApproximateTime.hourString", "CAE_017", "Missing event time");
             }

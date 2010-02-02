@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -48,7 +48,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	protected EvaluationService evaluationService;
 	protected ReportRepository reportRepository;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	protected CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
+	protected CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
 	static {
     	GRADES.addAll(Arrays.asList(Grade.values()));
@@ -199,7 +199,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	}
     
     @Required
-	public void setCaaersFieldConfigurationManagerFactory(CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory){
-		this.caaersFieldConfigurationManagerFactory = caaersFieldConfigurationManagerFactory;
+	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
+		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
 }

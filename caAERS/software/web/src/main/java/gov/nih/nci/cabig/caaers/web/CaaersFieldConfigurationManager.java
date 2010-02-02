@@ -26,6 +26,8 @@ public class CaaersFieldConfigurationManager{
 	 * @return the fieldConfigurationMap
 	 */
 	public Map<String, Map<String, Mandatory>> getFieldConfigurationMap() {
+		if(fieldConfigurationMap == null)
+			initializeConfigurationManager();
 		return fieldConfigurationMap;
 	}
 
@@ -64,11 +66,12 @@ public class CaaersFieldConfigurationManager{
 	 */
 	public List<String> getListOfApplicableFields(String tabName){
 		List<String> applicableFieldsList = new ArrayList<String>();
-		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
+		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null){
-			for(String fieldPath: fieldConfigMap.keySet())
-				if(!fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
-					applicableFieldsList.add(fieldPath);
+			for(Map.Entry<String, Mandatory> entry: fieldConfigMap.entrySet()){
+				if(!entry.getValue().equals(Mandatory.NA))
+					applicableFieldsList.add(entry.getKey());
+			}
 		}
 		return applicableFieldsList;
 	}
@@ -78,11 +81,12 @@ public class CaaersFieldConfigurationManager{
 	 */
 	public List<String> getListOfNotApplicableFields(String tabName){
 		List<String> notApplicableFieldsList = new ArrayList<String>();
-		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
+		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null){
-			for(String fieldPath: fieldConfigMap.keySet())
-				if(fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
-					notApplicableFieldsList.add(fieldPath);
+			for(Map.Entry<String, Mandatory> entry: fieldConfigMap.entrySet()){
+				if(entry.getValue().equals(Mandatory.NA))
+					notApplicableFieldsList.add(entry.getKey());
+			}
 		}
 		return notApplicableFieldsList;
 	}
@@ -94,7 +98,7 @@ public class CaaersFieldConfigurationManager{
 	 * @return
 	 */
 	public boolean isFieldMandatory(String tabName, String fieldPath){
-		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
+		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
 			if(fieldConfigMap.get(fieldPath).equals(Mandatory.MANDATORY))
 				return true;
@@ -111,7 +115,7 @@ public class CaaersFieldConfigurationManager{
 	 * @return boolean
 	 */
 	public boolean isFieldApplicable(String tabName, String fieldPath){
-		Map<String, Mandatory> fieldConfigMap = fieldConfigurationMap.get(tabName);
+		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
 			if(fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
 				return false;

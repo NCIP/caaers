@@ -389,7 +389,7 @@
   
   <bean name="/admin/mandatoryFields" id="mandatoryFieldsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MandatoryFieldsController">
   	<property name="caaersFieldsTree" ref="caaersFieldsTree"></property>
-  	<property name="caaersFieldConfigurationManagerFactory" ref="caaersFieldConfigurationManagerFactory"></property>
+  	<property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"></property>
   </bean>
 
   <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">

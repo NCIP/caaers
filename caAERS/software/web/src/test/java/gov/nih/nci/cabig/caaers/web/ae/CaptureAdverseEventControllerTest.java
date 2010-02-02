@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import org.springframework.validation.BindException;
@@ -48,7 +48,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
     ReportRepository reportRepository;
 	
     RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
-    CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
+    CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
     Configuration configuration;
 
@@ -105,7 +105,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
         expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         reportRepository = registerMockFor(ReportRepository.class);
         renderDecisionManagerFactoryBean = registerMockFor(RenderDecisionManagerFactoryBean.class);
-        caaersFieldConfigurationManagerFactory = registerMockFor(CaaersFieldConfigurationManagerFactory.class);
+        caaersFieldConfigurationManager = registerMockFor(CaaersFieldConfigurationManager.class);
         configuration = registerMockFor(Configuration.class);
 
         controller = new CaptureAdverseEventController();
@@ -123,7 +123,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
         controller.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
         controller.setReportRepository(reportRepository);
         controller.setRenderDecisionManagerFactoryBean(renderDecisionManagerFactoryBean);
-        controller.setCaaersFieldConfigurationManagerFactory(caaersFieldConfigurationManagerFactory);
+        controller.setCaaersFieldConfigurationManager(caaersFieldConfigurationManager);
         controller.setConfiguration(configuration);
 
 

@@ -24,7 +24,6 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
@@ -81,7 +80,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private ReportRepository reportRepository;
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
-	private CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
+	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
 	private Configuration configuration;
 	
@@ -127,7 +126,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         
-        CaaersFieldConfigurationManager caaersFieldConfigurationManager = caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager();
         renderDecisionManager.reveal(caaersFieldConfigurationManager.getListOfApplicableFields(AdverseEventCaptureTab.class.getName()));
         renderDecisionManager.conceal(caaersFieldConfigurationManager.getListOfNotApplicableFields(AdverseEventCaptureTab.class.getName()));
         
@@ -502,7 +500,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	}
 
 	@Required
-	public void setCaaersFieldConfigurationManagerFactory(CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory){
-		this.caaersFieldConfigurationManagerFactory = caaersFieldConfigurationManagerFactory;
+	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
+		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
 }

@@ -19,7 +19,6 @@ import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManagerFactory;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -46,7 +45,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	ReportDefinitionDao reportDefinitionDao;
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
-	CaaersFieldConfigurationManagerFactory caaersFieldConfigurationManagerFactory;
 	CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 	
 	
@@ -62,7 +60,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
-		caaersFieldConfigurationManagerFactory = registerMockFor(CaaersFieldConfigurationManagerFactory.class);
 		
 		command = new CaptureAdverseEventInputCommand(null, null, null, reportDefinitionDao, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
@@ -71,7 +68,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		errors = new BindException(command, "command");
 		
 		tab.setReportRepository(reportRepository);
-		tab.setCaaersFieldConfigurationManagerFactory(caaersFieldConfigurationManagerFactory);
+		tab.setCaaersFieldConfigurationManager(caaersFieldConfigurationManager);
 	}
 	
 	protected void setupCaaersFieldConfigurationManager(){
@@ -116,11 +113,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 
 	public void testCreateFieldGroupsCaptureAdverseEventInputCommand() {
 		command.initializeOutcomes();
-		EasyMock.expect(caaersFieldConfigurationManagerFactory.getCaaersFieldConfigurationManager()).andReturn(caaersFieldConfigurationManager);
-		replayMocks();
 		Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
-		verifyMocks();
-		System.out.println(fieldMap);
 		assertCorrectOutcomeFieldNames(fieldMap.get("outcomes0"), 
 				"outcomes[0][" + DEATH.getCode() +"]",
 				"outcomes[0][" + HOSPITALIZATION.getCode() +"]",
