@@ -152,9 +152,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
    
     
     public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
+        System.out.println("postProcess");
+        System.out.println("assignment=" + command.getAssignment());
+        
     	if(errors.hasErrors()) return;
 
-        // BACK BUTTON
         if (command.getAssignment() != null) {
             StudySite site = studySiteDao.getById(command.getAssignment().getStudySite().getId());
             command.setStudy(site.getStudy());

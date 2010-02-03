@@ -123,5 +123,14 @@ public class DateUtilsTest extends TestCase {
 		assertFalse(DateUtils.between(d4, d2, d3));
 	}
 	
+    public void testValidationByString() {
+        assertFalse(DateUtils.isValidDate("13/12/2009"));
+        assertTrue(DateUtils.isValidDate("12/12/2009"));
+    }
+
+    public void testValidationByDateValue() {
+        assertTrue(DateUtils.isValidDate(new DateValue(11, 11, 2009)));
+        assertFalse(DateUtils.isValidDate(new DateValue(12, 13, 2009)));
+    }
 
 }

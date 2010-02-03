@@ -1,10 +1,14 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import sun.util.calendar.Gregorian;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateUtils {
 
@@ -132,10 +136,32 @@ public class DateUtils {
     		dv.setMonthString(dateParts[0]);
     		dv.setDayString(dateParts[1]);
    		 	dv.setYearString(dateParts[2]);
-    	}else {
+    	} else {
     		return null;
     	}
     	
     	return dv;
+    }
+
+    public static boolean isValidDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        Date testDate;
+        try {
+          testDate = sdf.parse(date);
+        }
+        catch (ParseException e) {
+          return false;
+        }
+
+        if (!sdf.format(testDate).equals(date)) {
+          return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isValidDate(DateValue d) {
+        return isValidDate(d.toString());
     }
 }

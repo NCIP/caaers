@@ -391,9 +391,17 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
     protected void validateDiseaseInformation(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	Date todaysDate = new Date();
-    	if(command.getAssignment().getDiseaseHistory() != null && command.getAssignment().getDiseaseHistory().getDiagnosisDate() != null)
-    		if(DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0)
+
+    	if(command.getAssignment().getDiseaseHistory() != null && command.getAssignment().getDiseaseHistory().getDiagnosisDate() != null) {
+            DateValue dv = command.getAssignment().getDiseaseHistory().getDiagnosisDate();
+
+            if (!DateUtils.isValidDate(dv)) {
+                errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_036");
+            }
+
+    		if (DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0)
     			errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_035");
+        }
     }
 
     
