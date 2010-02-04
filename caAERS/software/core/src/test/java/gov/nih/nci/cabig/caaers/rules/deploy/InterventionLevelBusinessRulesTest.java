@@ -750,6 +750,31 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         assertEquals("aeReport.medicalDevices[1].returnedDate", errors.getErrorAt(0).getFieldNames()[0]);
     }
-    
+
+    /**
+     * RuleName : SME_BR10_CHK
+     * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
+     * 
+     */
+    public void testDeviceOperatorNoOther() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
+        device.setOtherDeviceOperator("Some Other Device Operator");
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors);
+    }
+
+
 }
 
