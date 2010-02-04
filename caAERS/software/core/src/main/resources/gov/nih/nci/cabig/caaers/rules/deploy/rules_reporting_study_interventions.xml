@@ -529,13 +529,44 @@
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator(){
+            <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
                    for(MedicalDevice device : aeReport.getMedicalDevices()) {
-                        if (StringUtils.isNotBlank(device.otherDeviceOperator)) {
-                            if (device.DeviceOperator.code != DeviceOperator.OTHER) {
+                        if (StringUtils.isNotBlank(device.getOtherDeviceOperator())) {
+                            if (device.getDeviceOperator() != DeviceOperator.OTHER) {
                                 errors.addValidationError("SME_BR10_ERR", "DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'. ").addFieldNames("aeReport.medicalDevices[" + i + "].deviceOperator", "aeReport.medicalDevices[" + i + "].otherDeviceOperator");
+                            }
+                        }
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+
+    <!-- ==========================================================================
+    RuleName : SME_BR11_CHK
+    Rule : 'Returned Date' should be given if DEVICE is not 'Returned'.
+    Error Code : SME_BR11_ERR
+    Error Message : Device Operator Description" must be provided if "Device Operator" is 'Other' 
+    ============================================================================= -->
+    <rule name="SME_BR11_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(MedicalDevice device : aeReport.getMedicalDevices()) {
+                        if (device.getDeviceOperator() == DeviceOperator.OTHER) {
+                            if (StringUtils.isBlank(device.getOtherDeviceOperator())) {
+                                errors.addValidationError("SME_BR11_ERR", "Device Operator Description" must be provided if "Device Operator" is 'Other'").addFieldNames("aeReport.medicalDevices[" + i + "].deviceOperator", "aeReport.medicalDevices[" + i + "].otherDeviceOperator");
                             }
                         }
                       i++;

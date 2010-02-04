@@ -772,9 +772,83 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         device.setOtherDeviceOperator("Some Other Device Operator");
         aeReport.addMedicalDevice(device);
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors);
+        assertEquals(1, errors.getErrorCount());
+        assertEquals("aeReport.medicalDevices[0].deviceOperator", errors.getErrorAt(0).getFieldNames()[0]);
+        assertEquals("aeReport.medicalDevices[0].otherDeviceOperator", errors.getErrorAt(0).getFieldNames()[1]);
     }
 
+    /**
+     * RuleName : SME_BR11_CHK
+     * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
+     *
+     */
+    public void testDeviceOperatorOther() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
+        device.setOtherDeviceOperator("Some Other Device Operator");
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertEquals(1, errors.getErrorCount());
+        assertEquals("aeReport.medicalDevices[0].deviceOperator", errors.getErrorAt(0).getFieldNames()[0]);
+        assertEquals("aeReport.medicalDevices[0].otherDeviceOperator", errors.getErrorAt(0).getFieldNames()[1]);
+    }
+
+    /**
+     * RuleName : SME_BR11_CHK
+     * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
+     *
+     */
+    public void testDeviceOperatorOtherOK() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertEquals(0, errors.getErrorCount());
+    }
+
+    /**
+     * RuleName : SME_BR11_CHK
+     * Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
+     *
+     */
+    public void testDeviceOperatorOtherOK2() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        StudyTherapy deviceTherapy = new StudyTherapy();
+        deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+        aeReport.getStudy().addStudyTherapy(deviceTherapy);
+        MedicalDevice device = new MedicalDevice();
+        device.setBrandName("Brand Name");
+        device.setCommonName(null);
+        device.setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.OTHER);
+        device.setOtherDeviceOperator("SOME OTHER OPERATOR");
+        aeReport.addMedicalDevice(device);
+        ValidationErrors errors = fireRules(aeReport);
+        assertEquals(0, errors.getErrorCount());
+    }
 
 }
 
