@@ -521,7 +521,7 @@
     
     <!-- ==========================================================================
     RuleName : SME_BR10_CHK
-    Rule : 'Returned Date' should be given if DEVICE is not 'Returned'.
+    Rule : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
     Error Code : SME_BR10_ERR
     Error Message : DEVICE_OPERATOR_DESCRIPTION must not be provided if DEVICE_OPERATOR is not 'Other'
     ============================================================================= -->
@@ -552,7 +552,7 @@
 
     <!-- ==========================================================================
     RuleName : SME_BR11_CHK
-    Rule : 'Returned Date' should be given if DEVICE is not 'Returned'.
+    Rule : Device Operator Description" must be provided if "Device Operator" is 'Other'
     Error Code : SME_BR11_ERR
     Error Message : Device Operator Description" must be provided if "Device Operator" is 'Other' 
     ============================================================================= -->
