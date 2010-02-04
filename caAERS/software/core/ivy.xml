@@ -261,7 +261,7 @@
 			<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11"/>
 
 			<!-- C3PR esb client -->
-        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.7.4.0" >
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9_M2" >
         		<exclude org="gov.nih.nci.cagrid" />
 				<exclude org="gov.nih.nci.caxchange" module="CoreServices*"/>
 				<exclude org="gov.nih.nci.caxchange" module="PAServices*"/>
