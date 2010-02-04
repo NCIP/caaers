@@ -8,6 +8,7 @@
 <%@attribute name="style"%>
 <%@attribute name="device" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:set var="v" value="aeReport.medicalDevices[${index}]" />
 <ae:fieldGroupDivision fieldGroupFactoryName="medicalDevice" index="${index}" style="${style}" enableDelete="true" deleteParams="'device', ${index}, '_devices'" collapsed="${!empties[v]}">
@@ -20,7 +21,7 @@
 
 <table width="100%" border="0">
     <tr>
-        <td>
+        <td valign="top">
             <ui:row path="aeReport.medicalDevices[${index}].brandName">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="false"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[0].propertyName}" /></jsp:attribute>
@@ -66,7 +67,7 @@
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[10].propertyName}" field="${fieldGroup.fields[10]}" /></jsp:attribute>
             </ui:row>
         </td>
-        <td>
+        <td valign="top">
             <ui:row path="aeReport.medicalDevices[${index}].otherNumber">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[11].propertyName}" text="${fieldGroup.fields[11].displayName}" required="false"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[11].propertyName}" field="${fieldGroup.fields[11]}" /></jsp:attribute>
@@ -75,7 +76,12 @@
                  <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[12]}"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[12].propertyName}" options="${fieldGroup.fields[12].attributes.options}" field="${fieldGroup.fields[12]}"/></jsp:attribute>
             </ui:row>
-            <ui:row path="aeReport.medicalDevices[${index}].otherDeviceOperator">
+
+            <c:set var="_operator"><jsp:attribute name="value"><caaers:value path="${fieldGroup.fields[12].propertyName}" /></jsp:attribute></c:set>
+            <c:set var="_other_display" value="none" />
+            <c:if test="${_operator eq 'OTHER'}"><c:set var="_other_display" value="''" /></c:if>
+
+            <ui:row path="aeReport.medicalDevices[${index}].otherDeviceOperator" style="display: ${_other_display}">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[13].propertyName}" text="${fieldGroup.fields[13].displayName}" required="false"/></jsp:attribute>
                  <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[13].propertyName}" field="${fieldGroup.fields[13]}" /></jsp:attribute>
             </ui:row>
@@ -169,7 +175,6 @@
         if(fieldBrandName){
         	 brandNameValue = " (" + fieldBrandName.value + ")";
         }
-       
 
         var fieldCommonName = $("aeReport.medicalDevices[${index}].commonName");
         var commonNameValue = '';
@@ -192,4 +197,16 @@
         	setTitleDevice_${index}();
     	});
 	}
+
+    var dOperator = $('aeReport.medicalDevices[${index}].deviceOperator');
+    Event.observe(dOperator, "change", function() {
+        // alert(${index});
+        if (dOperator.options[dOperator.selectedIndex].value != 'OTHER') {
+            $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').hide();
+            $('aeReport.medicalDevices[${index}].otherDeviceOperator').value = '';
+        } else {
+            $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').show();
+        }
+
+    });
 </script>
