@@ -554,7 +554,7 @@
     RuleName : SME_BR11_CHK
     Rule : Device Operator Description" must be provided if "Device Operator" is 'Other'
     Error Code : SME_BR11_ERR
-    Error Message : Device Operator Description" must be provided if "Device Operator" is 'Other' 
+    Error Message : Device Operator Description must be provided if "Device Operator" is 'Other' 
     ============================================================================= -->
     <rule name="SME_BR11_CHK">
         <lhs>
@@ -566,7 +566,7 @@
                    for(MedicalDevice device : aeReport.getMedicalDevices()) {
                         if (device.getDeviceOperator() == DeviceOperator.OTHER) {
                             if (StringUtils.isBlank(device.getOtherDeviceOperator())) {
-                                errors.addValidationError("SME_BR11_ERR", "Device Operator Description" must be provided if "Device Operator" is 'Other'").addFieldNames("aeReport.medicalDevices[" + i + "].deviceOperator", "aeReport.medicalDevices[" + i + "].otherDeviceOperator");
+                                errors.addValidationError("SME_BR11_ERR", "'Device Operator Description' must be provided if 'Device Operator' is 'Other'").addFieldNames("aeReport.medicalDevices[" + i + "].deviceOperator", "aeReport.medicalDevices[" + i + "].otherDeviceOperator");
                             }
                         }
                       i++;
