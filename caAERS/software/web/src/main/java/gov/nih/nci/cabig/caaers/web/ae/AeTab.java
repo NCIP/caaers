@@ -267,6 +267,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     public CompositeField createTimeField(String baseProperty, String displayName){
+        return createTimeField(baseProperty, displayName, null);
+    }
+
+    public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty){
     	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
     	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
@@ -275,8 +279,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
     	InputFieldAttributes.setSize(hrField, 2);
     	InputFieldAttributes.setSize(mmField, 2);
-
-    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
+    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField), labelProperty);
     }
 
     public boolean isAssociatedToBusinessRules(){

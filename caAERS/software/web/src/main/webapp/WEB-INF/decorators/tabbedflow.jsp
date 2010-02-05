@@ -53,20 +53,20 @@
 		<c:if test="${not empty aesummary}">
 			<div class="pane summary" id="reporter-summary">
 			  <div class="row">
-			    <div class="summarylabel">Subject</div>
+			    <div class="summarylabel"><caaers:message code="LBL_Subject" /></div>
 			    <div class="summaryvalue">${aesummary['Participant']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel">Study</div>
+			    <div class="summarylabel"><caaers:message code="LBL_Study" /></div>
 			    <div class="summaryvalue">${aesummary['Study']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel">Course</div>
+			    <div class="summarylabel"><caaers:message code="LBL_CourseCycle" /></div>
 			    <div class="summaryvalue">${aesummary['Course']}</div>
 			  </div>
 			  <c:if test="${aesummary['Report Name'] != null}">
 			  	<div class="row">
-				  	<div class="summarylabel">Report</div>
+				  	<div class="summarylabel"><caaers:message code="LBL_Report" /></div>
 				  	<div class="summaryvalue">${aesummary['Report Name'] }</div>
 				</div>
 			  </c:if>
@@ -91,15 +91,15 @@
 		<c:if test="${not empty routineAeSummary}">
 			<div class="pane summary" id="ae-summary">
 			  <div class="row">
-			    <div class="summarylabel">Subject</div>
+			    <div class="summarylabel"><caaers:message code="LBL_Subject" /></div>
 			    <div class="summaryvalue">${routineAeSummary['Participant']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel">Study</div>
+			    <div class="summarylabel"><caaers:message code="LBL_Study" /></div>
 			    <div class="summaryvalue">${routineAeSummary['Study']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel">Course</div>
+			    <div class="summarylabel"><caaers:message code="LBL_CourseCycle" /></div>
 			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
 			  </div>
 			</div>

@@ -96,44 +96,44 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
             	//verbatim - Is required when there is no other MedDRA
                 boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
-            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", isFieldRequired(ae, "adverseEvents[].detailsForOther"));
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", "aeReport.adverseEvents.detailsForOther", isFieldRequired(ae, "adverseEvents[].detailsForOther"));
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
                 //grade
-                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", isFieldRequired(ae, "adverseEvents[].grade"), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
+                InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", "aeReport.adverseEvents.grade", isFieldRequired(ae, "adverseEvents[].grade"), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
                 
                 //startDate
-                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", isFieldRequired(ae, "adverseEvents[].startDate"));
+                InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", isFieldRequired(ae, "adverseEvents[].startDate"));
                 mainFieldFactory.addField(startDateField);
                 
                 //endDate
-                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", isFieldRequired(ae, "adverseEvents[].endDate"));
+                InputField endDateField = InputFieldFactory.createPastDateField("endDate", "End date", "aeReport.adverseEvents.endDate", isFieldRequired(ae, "adverseEvents[].endDate"));
                 mainFieldFactory.addField(endDateField);
                 
                 //attribution
-                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", isFieldRequired(ae, "adverseEvents[].attributionSummary"), createAttributionOptions());
+                InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", "aeReport.adverseEvents.attributionSummary", isFieldRequired(ae, "adverseEvents[].attributionSummary"), createAttributionOptions());
                 mainFieldFactory.addField(attributionField);
                 
                 //Hospitalization
-                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", isFieldRequired(ae, "adverseEvents[].hospitalization"), createHospitalizationOptions());
+                InputField hospitalizationField = InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", "aeReport.adverseEvents.hospitalization", isFieldRequired(ae, "adverseEvents[].hospitalization"), createHospitalizationOptions());
                 mainFieldFactory.addField(hospitalizationField);
                 
                 //expectedness
-                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", isFieldRequired(ae, "adverseEvents[].expected"), createExpectedOptions());
+                InputField expectednessField = InputFieldFactory.createSelectField("expected", "Expected", "aeReport.adverseEvents.expected", isFieldRequired(ae, "adverseEvents[].expected"), createExpectedOptions());
                 mainFieldFactory.addField(expectednessField);
                 
                 //Time of event
-                InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
+                InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time", "aeReport.adverseEvents.eventApproximateTime.hourString");
                 mainFieldFactory.addField(timeOfEventField);
                 
                 //Participant at risk
-                InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", isFieldRequired(ae, "adverseEvents[].participantAtRisk"));
+                InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", "aeReport.adverseEvents.participantAtRisk", isFieldRequired(ae, "adverseEvents[].participantAtRisk"));
                 mainFieldFactory.addField(riskField);
                 
                 //Event location
-                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", isFieldRequired(ae, "adverseEvents[].eventLocation"));
+                InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", "aeReport.adverseEvents.eventLocation", isFieldRequired(ae, "adverseEvents[].eventLocation"));
                 mainFieldFactory.addField(eventLocationField);
 
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);

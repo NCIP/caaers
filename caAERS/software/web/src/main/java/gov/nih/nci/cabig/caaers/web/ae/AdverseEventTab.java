@@ -94,7 +94,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         return options;
 	}
 	
-	public CompositeField createTimeField(String baseProperty, String displayName){
+	public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty){
     	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
     	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
@@ -104,7 +104,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
     	InputFieldAttributes.setSize(hrField, 2);
     	InputFieldAttributes.setSize(mmField, 2);
 
-    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
+    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField), labelProperty);
     }
 	
 	

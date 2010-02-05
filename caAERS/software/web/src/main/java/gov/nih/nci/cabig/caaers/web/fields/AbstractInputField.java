@@ -13,16 +13,12 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public abstract class AbstractInputField implements InputField {
+
     private String displayName;
-
     private String propertyName;
-
     private boolean required;
-
     private boolean mandatory;
-
     private Map<String, Object> attributes;
-
     private FieldValidator[] validators;
 
     protected AbstractInputField() {
@@ -30,18 +26,28 @@ public abstract class AbstractInputField implements InputField {
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
-        this();
-        this.displayName = displayName;
-        this.propertyName = propertyName;
-        if (required) this.validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR};
+        this(propertyName, displayName, null, required, (FieldValidator)null);
     }
 
-    protected AbstractInputField(String propertyName, String displayName,
-                                 FieldValidator... validators) {
+    protected AbstractInputField(String propertyName, String displayName, boolean required, String labelProperty) {
+        this(propertyName, displayName, labelProperty, required, (FieldValidator)null);
+    }
+
+    protected AbstractInputField(String propertyName, String displayName, FieldValidator... validators) {
+        this(propertyName, displayName, null, null, validators);
+    }
+
+    protected AbstractInputField(String propertyName, String displayName, String labelProperty, FieldValidator... validators) {
+        this(propertyName, displayName, labelProperty, null, validators);
+    }
+
+    protected AbstractInputField(String propertyName, String displayName, String labelProperty, Boolean required, FieldValidator... validators) {
         this();
         this.displayName = displayName;
         this.propertyName = propertyName;
-        this.validators = validators;
+        if (validators != null) this.validators = validators;
+        if (required != null) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
+        if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
     }
 
     /**

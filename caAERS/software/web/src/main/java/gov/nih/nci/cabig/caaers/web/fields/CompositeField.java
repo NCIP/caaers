@@ -23,10 +23,15 @@ public class CompositeField extends AbstractInputField {
     }
 
     public CompositeField(String propertyName, InputFieldGroup group) {
+        this(propertyName, group, null);
+    }
+
+    public CompositeField(String propertyName, InputFieldGroup group, String labelProperty) {
         super();
         setGroup(group);
         setPropertyName(propertyName);
         getAttributes().put(SUBFIELDS, createSubfields());
+        if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
     }
 
     @SuppressWarnings( { "unchecked" })

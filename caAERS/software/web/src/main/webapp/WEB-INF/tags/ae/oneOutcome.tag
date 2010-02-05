@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <%@attribute name="style"%>
 <%@attribute name="index" required="true" description="The index of the AE for which the outcome needs to be printed"%>
@@ -15,7 +16,7 @@
 		<c:if test="${isMandatory != null && isMandatory}">
 			<tags:requiredIndicator />
 		</c:if>
-		Outcomes
+		<caaers:message code="LBL_aeReport.adverseEvents.outcomes" />
 	</jsp:attribute>
 	<jsp:attribute name="value">
 	<div class="longselect" >

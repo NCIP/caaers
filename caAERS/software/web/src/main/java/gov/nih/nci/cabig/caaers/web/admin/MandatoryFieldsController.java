@@ -59,8 +59,7 @@ public class MandatoryFieldsController extends SimpleFormController {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                    Object cmd, BindException errors) throws Exception {
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
     	// If there are no binding errors then save the updated values of CaaersFieldDefinition
     	MandatoryFieldsCommand command = (MandatoryFieldsCommand) cmd;
     	// If there are no erros then save the CaaersFieldsDefinitions list
@@ -79,8 +78,7 @@ public class MandatoryFieldsController extends SimpleFormController {
     
     @SuppressWarnings("unchecked")
     @Override
-    protected Map referenceData(final HttpServletRequest request, final Object cmd,
-                    final Errors errors) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object cmd, final Errors errors) throws Exception {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         MandatoryFieldsCommand command = (MandatoryFieldsCommand) cmd;
         reconcileMandatoryFields(command.getMandatoryFields(), caaersFieldsTree.getNodeForTab(CaaersTab.CAPTURE_ADVERSE_EVENTS_TAB));

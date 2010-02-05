@@ -57,27 +57,26 @@ public abstract class BasicsTab extends AeTab {
         return attributionOptions;
     }
     
-    
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
 
-        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", false, createAttributionOptions());
-        InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
-        InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
-        InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", false);
+        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study intervention", "aeReport.adverseEvents.attributionSummary", false, createAttributionOptions());
+        InputField expectedField = InputFieldFactory.createBooleanSelectField("expected", "Expected", "aeReport.adverseEvents.expected", false);
+        InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time", "aeReport.adverseEvents.eventApproximateTime.hourString");
+        InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", "aeReport.adverseEvents.detailsForOther", false);
         InputFieldAttributes.setSize(otherVerbatimField, 30);
-        InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", false);
+        InputField riskField = InputFieldFactory.createBooleanSelectField("participantAtRisk", "Does this place participant at increased risk?", "aeReport.adverseEvents.participantAtRisk", false);
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
-                InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
-                InputFieldFactory.createPastDateField("startDate", "Start date", false),
-                InputFieldFactory.createPastDateField("endDate", "End date", false),
+                InputFieldFactory.createLongSelectField("grade", "Grade", "aeReport.adverseEvents.grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
+                InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", false),
+                InputFieldFactory.createPastDateField("endDate", "End date", "aeReport.adverseEvents.endDate", false),
                 attributionField,
                 timeOfEventField,
-                InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
-                InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
-                exField,
+                InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", "aeReport.adverseEvents.eventLocation"),
+                InputFieldFactory.createSelectField("hospitalization", "Did AE cause hospitalization?", "aeReport.adverseEvents.hospitalization", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
+                expectedField,
                 riskField);
     }
 

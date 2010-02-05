@@ -95,7 +95,6 @@ public class InputFieldFactoryTest extends AbstractTestCase {
         InputField field = InputFieldFactory.createNumberField("propertyName", "value", false);
         assertEquals("commons-validations.js need css validate-NUMERIC&&MAXLENGTH2000 class", "validate-NUMERIC&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
-
     }
 
     public void testCreateDateFieldIfDateFieldIsNotRequired() throws Exception {
@@ -104,8 +103,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade
-                    .getName());
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade.getName());
         }
     }
 
@@ -158,4 +156,41 @@ public class InputFieldFactoryTest extends AbstractTestCase {
                     .toString());
         }
     }
+
+    public void testCreateTextFieldWithLabelProperty() {
+        InputField field = InputFieldFactory.createTextField("fieldName", "fieldDisplayName", "LBL_fieldName", false);
+        assertEquals("LBL_fieldName", field.getAttributes().get("labelProperty"));
+    }
+
+    public void testCreateTextFieldWithLabelPropertyNullValidator() {
+        InputField field = InputFieldFactory.createTextField("fieldName", "fieldDisplayName", "LBL_fieldName", null);
+        assertEquals("LBL_fieldName", field.getAttributes().get("labelProperty"));
+    }
+
+    public void testCreateTextFieldWithoutLabelProperty() {
+        InputField field = InputFieldFactory.createTextField("fieldName", "fieldDisplayName", false);
+        assertNull(field.getAttributes().get("labelProperty"));
+    }
+
+    public void testFutureDateFieldWithoutLabelProperty() {
+        InputField field = InputFieldFactory.createFutureDateField("fieldName", "fieldDisplayName", false);
+        assertNull(field.getAttributes().get("labelProperty"));
+    }
+
+    public void testBoolean_02() {
+        InputField field = InputFieldFactory.createBooleanSelectField("fieldName", "fieldDisplayName", "LBL_01");
+        assertEquals("LBL_01", field.getAttributes().get("labelProperty"));
+    }
+
+    public void testSelectFieldWithLabelPropertyOnly() {
+        InputField field = InputFieldFactory.createSelectField("fieldName", "fieldDisplayName", "LBL_02", true, null);
+        assertEquals("LBL_02", field.getAttributes().get("labelProperty"));
+    }
+
+    public void testSelectFieldWithoutLabelProperty() {
+        InputField field = InputFieldFactory.createSelectField("fieldName", "fieldDisplayName", null, null);
+        assertNull(field.getAttributes().get("labelProperty"));
+    }
+
+
 }

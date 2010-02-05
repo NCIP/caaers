@@ -283,9 +283,7 @@
     		<div class="row">
 	            <%--<tags:instructions code="instruction_ae_select_study"/>--%>
 	            <form:hidden path="study"/>
-				<div class="label">
-	            	<tags:requiredIndicator/> Study
-				</div>
+				<div class="label"><tags:requiredIndicator/> <caaers:message code="LBL_Study" /></div>
 				<div class="value">
 		            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
 					<a id="study-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
@@ -302,9 +300,7 @@
 			<div class="row">
 	            <%--<tags:instructions code="instruction_ae_select_subject"/>--%>
 	            <form:hidden path="participant"/>
-				<div class="label">
-	            	<tags:requiredIndicator/> Subject
-				</div>
+				<div class="label"><tags:requiredIndicator/> <caaers:message code="LBL_Subject" /></div>
 				<div class="value">
 		            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
 		            <a id="participant-clear" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
@@ -323,9 +319,7 @@
 				
 	        	<%--<tags:instructions code="instruction_ae_select_course"/>--%>
 	        	<form:hidden path="adverseEventReportingPeriod" />
-				<div class="label">
-	        		<tags:requiredIndicator/> Course/cycle
-				</div>
+				<div class="label"><tags:requiredIndicator/> <caaers:message code="LBL_CourseCycle" /></div>
 				<div class="value">
 	        	<select id="course-input" style="width:20em" class="required">
 					<option value="">Please select</option>
