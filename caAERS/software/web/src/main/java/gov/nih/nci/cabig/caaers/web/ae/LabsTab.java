@@ -39,8 +39,7 @@ public class LabsTab extends AeTab {
     }
 
     private InputField createLabValueField(String propName, String displayName) {
-        return InputFieldFactory.createTextField(propName + ".value", displayName + " value",  new SignValidator(true), 
-        		FieldValidator.createPatternBasedValidator("[0-9]{1,6}([.][0-9]{1,4})?", "DECIMAL"));
+        return InputFieldFactory.createTextField(propName + ".value", displayName + " value",  new SignValidator(true), FieldValidator.createPatternBasedValidator("[0-9]{0,6}([.][0-9]{1,4})?", "DECIMAL"));
     }
 
     @Override

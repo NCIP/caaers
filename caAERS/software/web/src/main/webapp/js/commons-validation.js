@@ -301,19 +301,19 @@ function isCaAERSIdentifier(string, ignoreWhiteSpace) {
 }
 
 //checks whether the string is decimal
-function isDecimal(string , ignoreWhiteSpace){
-	try{
-	if(string && string.search){
-		if(ignoreWhiteSpace){
-			return (string.search(/^[\s]*-?\d+(\.\d+[\s]*)?$/) != -1);
-		}else{
-			return (string.search(/^-?\d+(\.\d+)?$/) != -1);
-		}
-	}
-	}catch(err){
-		return false;
-	}
-	return true;
+function isDecimal(string, ignoreWhiteSpace) {
+    try {
+        if (string && string.search) {
+            if (ignoreWhiteSpace) {
+                return (string.search(/^[\s]*-?\d*(\.\d+[\s]*)?$/) != -1);
+            } else {
+                return (string.search(/^-?\d*(\.\d+)?$/) != -1);
+            }
+        }
+    } catch(err) {
+        return false;
+    }
+    return true;
 }
 
 // Check that a string contains only numbers
