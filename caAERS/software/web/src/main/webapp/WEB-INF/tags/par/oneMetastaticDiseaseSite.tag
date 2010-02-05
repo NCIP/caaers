@@ -40,6 +40,8 @@
                           <jsp:attribute name="optionsJS"> {
                             	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             		$('assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite').value = selectedChoice.id;
+                                    ValidationManager.setValidState('assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input');
+                              
                             		if(selectedChoice.id == 110){
                             			AE.slideAndShow('assignment.diseaseHistory.metastaticDiseaseSites[${index}].other');
                                         $('showALL${index}').hide();
