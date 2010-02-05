@@ -27,5 +27,11 @@ public class ImporterFactoryTest extends WebTestCase {
 		
 		importer = factory.createImporterInstance("investigator");
 		assertTrue("Expected importer instance of type InvestigatorImporter", importer instanceof InvestigatorImporter);
+		
+		importer = factory.createImporterInstance("agent");
+		assertTrue("Expected importer instance of type AgentImporter", importer instanceof AgentImporter);
+		
+		importer = factory.createImporterInstance("organization");
+		assertTrue("Expected importer instance of type OrganizationImporter", importer instanceof OrganizationImporter);
 	}
 }

@@ -284,7 +284,7 @@
   	<property name="researchStaffRepository" ref="researchStaffRepository"></property>
   	<property name="investigatorRepository" ref="investigatorRepository"></property>
   	<property name="organizationRepository" ref="organizationRepository"></property>
-  	<property name="agentDao" ref="agentDao"/>
+  	<property name="agentRepository" ref="agentRepository"/>
   	<property name="medDRADao" ref="medDRADao"/>
   	<property name="meddraVersionDao" ref="meddraVersionDao" />
   	<property name="messageSource" ref="messageSource" />

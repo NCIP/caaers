@@ -36,8 +36,8 @@ public class OrganizationImporter extends Importer {
 	/**
 	 * This method accepts the file selected by the user, which is Organization_Codes.txt file from CTEP and process each record.
 	 * 
-	 * @param File
-	 * @param ImportCommand
+	 * @param ctepOrganizationsFile
+	 * @param command
 	 */
 	public void processEntities(File ctepOrganizationsFile, ImportCommand command) {
 		
@@ -75,6 +75,7 @@ public class OrganizationImporter extends Importer {
 					}
 				}
 			}
+			reader.close();
 		} catch (Exception e) {
 			throw new CaaersSystemException(
 					"There was an error, while importing Organizations from the file provided",e);
@@ -86,8 +87,8 @@ public class OrganizationImporter extends Importer {
 	 * updates all the Organizations in the UpdatableOrganizations list in ImportCommand.
 	 * The Organization is created as a LocalOrganization in caAERS.
 	 * 
-	 * @param ImportCommand
-	 * @param HttpServletRequest
+	 * @param command
+	 * @param request
 	 */
 	public void save(ImportCommand command, HttpServletRequest request) {
 		//Create new Organizations.
@@ -127,7 +128,7 @@ public class OrganizationImporter extends Importer {
 		String state;
 		String country;
 
-		if (organizationString != null && StringUtils.isNotEmpty(organizationString)) {
+		if (StringUtils.isNotEmpty(organizationString)) {
 	        
 	        logger.debug("Orginial line from file -- >>> " + organizationString);
 	        organizationString = organizationString.trim();
@@ -173,13 +174,17 @@ public class OrganizationImporter extends Importer {
 		return organizationImportOutcome;
 	}
 
+	/**
+	 * Return a HashMap of all the Organization in database. Key will be NCI Institute Code, Value will be Organization. 
+	 * @return
+	 */
 	public Map<String, Organization> getOrganizationMap() {
 		if(organizationMap == null){
 			//Get all the Organizations from DB and store it in a Map. This is done to avoid the 8000+ DB calls to get an organization.
 			organizationMap = new HashMap<String,Organization>();
 			List<Organization> allOrganizations = organizationRepository.getAllOrganizations();
 			for(Organization eachOrg : allOrganizations){
-				organizationMap.put(eachOrg.getNciInstituteCode().trim(), eachOrg);
+				organizationMap.put(eachOrg.getNciInstituteCode(), eachOrg);
 			}
 		}
 		return organizationMap;

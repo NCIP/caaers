@@ -97,17 +97,13 @@ public class OrganizationImporterTest extends WebTestCase {
 			assertEquals(3,command.getNonImportableOrganizations().size());
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			fail("No Exception is expected");
 		}
-		
 	}
-	
 	
 	private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
-	
-	
 }

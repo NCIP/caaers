@@ -93,7 +93,7 @@ public class AgentImporterTest extends WebTestCase {
 			assertEquals(2, command.getNonImportableAgents().size());
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail("No Exception is expected");
 		}
 	}
 	

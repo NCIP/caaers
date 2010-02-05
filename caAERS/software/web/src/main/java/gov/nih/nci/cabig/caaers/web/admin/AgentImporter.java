@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
@@ -30,21 +30,21 @@ import org.apache.log4j.Logger;
 public class AgentImporter extends Importer{
 	
 	private static Logger logger = Logger.getLogger(AgentImporter.class);
-	private AgentDao agentDao;
+	private AgentRepository agentRepository;
 	private Map<String,Agent> agentMap = null;
 	
 	/**
 	 * This method accepts the file selected by the user, which is agents.txt file from CTEP and process each record.
 	 * 
-	 * @param File
-	 * @param ImportCommand
+	 * @param ctepAgentsFile
+	 * @param command
 	 */
 	public void processEntities(File ctepAgentsFile,ImportCommand command){
 		
 		agentMap = getAgentMap();
-		
+		BufferedReader reader = null;
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(ctepAgentsFile));
+			reader = new BufferedReader(new FileReader(ctepAgentsFile));
 			String line = null;
 			// skip first 5 lines
 			reader.readLine();reader.readLine();reader.readLine();
@@ -74,6 +74,7 @@ public class AgentImporter extends Importer{
 					}
 				}
 			}
+			reader.close();
 		} catch (Exception e) {
 			throw new CaaersSystemException(
 					"There was an error, while importing Agents from the file provided",e);
@@ -87,6 +88,7 @@ public class AgentImporter extends Importer{
 	* It splits the string into 2 tokens and creates a Agent object.
 	* If the number of token are less than 2 the record/line is rejected.
 	* @param agentString
+	* @param lineNumber
 	* @return
 	*/	
 	protected DomainObjectImportOutcome<Agent> processAgent(String agentString,int lineNumber){
@@ -97,7 +99,7 @@ public class AgentImporter extends Importer{
 		String nscNumber;
 		String agentName;
 
-		if (agentString != null && StringUtils.isNotEmpty(agentString)) {
+		if (StringUtils.isNotEmpty(agentString)) {
 	        
 	        logger.debug("Orginial line from file -- >>> " + agentString);
 	        agentString = agentString.trim();
@@ -140,31 +142,31 @@ public class AgentImporter extends Importer{
 	 * This method creates all the Agents in ImportableAgentss list in ImportCommand & also
 	 * updates all the Agents in the UpdatableAgents list in ImportCommand.
 	 * 
-	 * @param ImportCommand
-	 * @param HttpServletRequest
+	 * @param command
+	 * @param request
 	 */
 	public void save(ImportCommand command, HttpServletRequest request){
 		//Create new agents.
         for (DomainObjectImportOutcome<Agent> importOutcome : command.getImportableAgents()) {
-        	agentDao.save(importOutcome.getImportedDomainObject());
+        	agentRepository.saveAgent(importOutcome.getImportedDomainObject());
         }
         //Update existing agents.
         for (DomainObjectImportOutcome<Agent> importOutcome : command.getUpdateableAgents()) {
-        	agentDao.save(importOutcome.getImportedDomainObject());
+        	agentRepository.saveAgent(importOutcome.getImportedDomainObject());
         }
 	}
 	
-	public void setAgentDao(AgentDao agentDao){
-		this.agentDao = agentDao;
-	}
-
+	/**
+	 * Returns a HashMap with all the agents existing in database. Key will be NSC Number and value will be the Agent itself.  
+	 * @return
+	 */
 	public Map<String, Agent> getAgentMap() {
 		if(agentMap == null){
 			//Get all the Agents from DB and store it in a Map.
 			agentMap = new HashMap<String,Agent>();
-			List<Agent> allAgents = agentDao.getAll();
+			List<Agent> allAgents = agentRepository.getAllAgents();
 			for(Agent eachAgent : allAgents){
-				agentMap.put(eachAgent.getNscNumber().trim(), eachAgent);
+				agentMap.put(eachAgent.getNscNumber(), eachAgent);
 			}
 		}
 		return agentMap;
@@ -173,4 +175,10 @@ public class AgentImporter extends Importer{
 	public void setAgentMap(Map<String, Agent> agentMap) {
 		this.agentMap = agentMap;
 	}
+	
+	public void setAgentRepository(AgentRepository agentRepository) {
+		this.agentRepository = agentRepository;
+	}
+
+	
 }

@@ -7,10 +7,10 @@ import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
@@ -45,7 +45,7 @@ public class ImporterFactory{
 	private ResearchStaffRepository researchStaffRepository;
 	private InvestigatorRepository investigatorRepository;
 	private OrganizationRepository organizationRepository;
-	private AgentDao agentDao;
+	private AgentRepository agentRepository;
 	private MeddraVersionDao meddraVersionDao;
 	private MedDRADao medDRADao;
 	private MessageSource messageSource;
@@ -85,7 +85,7 @@ public class ImporterFactory{
 			return organizationImporter;
 		}else if(type.equals(AGENT_IMPORT)){
 			AgentImporter agentImporter = new AgentImporter();
-			agentImporter.setAgentDao(agentDao);
+			agentImporter.setAgentRepository(agentRepository);
 			return agentImporter;
 		}else if(type.equals(MEDDRA_IMPORT)){
 			MeddraImporter meddraImporter = new MeddraImporter();
@@ -155,10 +155,6 @@ public class ImporterFactory{
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
 	}
-	
-	public void setAgentDao(AgentDao agentDao){
-		this.agentDao = agentDao;
-	}
 
 	public MeddraVersionDao getMeddraVersionDao() {
 		return meddraVersionDao;
@@ -182,5 +178,9 @@ public class ImporterFactory{
 	
 	public MessageSource getMessageSource(){
 		return messageSource;
+	}
+
+	public void setAgentRepository(AgentRepository agentRepository) {
+		this.agentRepository = agentRepository;
 	}
 }
