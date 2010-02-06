@@ -53,21 +53,21 @@
 		<c:if test="${not empty aesummary}">
 			<div class="pane summary" id="reporter-summary">
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_Subject" /></div>
-			    <div class="summaryvalue">${aesummary['Participant']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Participant']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_Study" /></div>
-			    <div class="summaryvalue">${aesummary['Study']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Study']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_CourseCycle" /></div>
-			    <div class="summaryvalue">${aesummary['Course']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Course']}</div>
 			  </div>
 			  <c:if test="${aesummary['Report Name'] != null}">
 			  	<div class="row">
-				  	<div class="summarylabel"><caaers:message code="LBL_Report" /></div>
-				  	<div class="summaryvalue">${aesummary['Report Name'] }</div>
+				  	<div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Report" /></div>
+				  	<div class="summaryvalue" style="margin-left:8em;">${aesummary['Report Name'] }</div>
 				</div>
 			  </c:if>
 			  <c:if test="${showReportContextMenu}">
@@ -91,16 +91,16 @@
 		<c:if test="${not empty routineAeSummary}">
 			<div class="pane summary" id="ae-summary">
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_Subject" /></div>
-			    <div class="summaryvalue">${routineAeSummary['Participant']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Participant']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_Study" /></div>
-			    <div class="summaryvalue">${routineAeSummary['Study']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Study']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="summarylabel"><caaers:message code="LBL_CourseCycle" /></div>
-			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
+			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
+			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Course']}</div>
 			  </div>
 			</div>
 		</c:if>
