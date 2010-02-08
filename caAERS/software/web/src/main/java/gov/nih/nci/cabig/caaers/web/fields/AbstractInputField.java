@@ -46,7 +46,7 @@ public abstract class AbstractInputField implements InputField {
         this.displayName = displayName;
         this.propertyName = propertyName;
         if (validators != null) this.validators = validators;
-        if (required != null) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
+        if (required != null && required) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
         if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
     }
 
