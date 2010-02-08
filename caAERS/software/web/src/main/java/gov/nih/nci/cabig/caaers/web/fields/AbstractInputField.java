@@ -26,11 +26,11 @@ public abstract class AbstractInputField implements InputField {
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
-        this(propertyName, displayName, null, required, (FieldValidator)null);
+        this(propertyName, displayName, null, required, (FieldValidator[])null);
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required, String labelProperty) {
-        this(propertyName, displayName, labelProperty, required, (FieldValidator)null);
+        this(propertyName, displayName, labelProperty, required, null);
     }
 
     protected AbstractInputField(String propertyName, String displayName, FieldValidator... validators) {
@@ -45,7 +45,7 @@ public abstract class AbstractInputField implements InputField {
         this();
         this.displayName = displayName;
         this.propertyName = propertyName;
-        if (validators != null) this.validators = validators;
+        if (validators != null && validators.length > 0) this.validators = validators;
         if (required != null && required) this.validators = new FieldValidator[] {FieldValidator.NOT_NULL_VALIDATOR};
         if (labelProperty != null) InputFieldAttributes.setLabelProperty(this, labelProperty);
     }
