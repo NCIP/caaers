@@ -1,14 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.AgentRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.easymock.EasyMock;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -26,6 +33,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  */
 public class AgentImporterTest extends WebTestCase {
 	
+	private AgentRepository agentRepository;
 	private AgentImporter importer;
 	private DomainObjectImportOutcome<Agent> agentImportOutcome;
 	private ImportCommand command;
@@ -35,6 +43,7 @@ public class AgentImporterTest extends WebTestCase {
 		super.setUp();
 		importer = new AgentImporter();
 		command = new ImportCommand();
+		agentRepository = registerMockFor(AgentRepositoryImpl.class);
 	}
 		
 	public void testProcessAgent_ValidRecord(){
@@ -96,6 +105,70 @@ public class AgentImporterTest extends WebTestCase {
 			fail("No Exception is expected");
 		}
 	}
+	
+	
+	public void testGetMap(){
+		
+		importer.setAgentRepository(agentRepository);
+		importer.setAgentMap(null);
+		List<Agent> agentList = new ArrayList<Agent>();
+		Agent agent1 = new Agent();
+		agent1.setNscNumber("54321");
+		agent1.setName("Viola");
+		Agent agent2 = new Agent();
+		agent2.setNscNumber("098765");
+		agent2.setName("Change me");
+		agentList.add(agent1);
+		agentList.add(agent2);
+		
+		expect(agentRepository.getAllAgents()).andReturn(agentList).anyTimes();
+		replayMocks();
+		agentMap = importer.getAgentMap();
+		verifyMocks();
+		assertNotNull(agentMap);
+		
+		agentMap = new HashMap<String,Agent>();
+		Map returnedMap = null; 
+		agentMap.put("54321", agent1);
+		agentMap.put("098765", agent2);
+		importer.setAgentMap(agentMap);
+		returnedMap = importer.getAgentMap();
+		
+	}
+	
+	public void testSave(){
+		
+		ImportCommand command = new ImportCommand();
+		
+		Agent agent1 = new Agent();
+		agent1.setNscNumber("54321");
+		agent1.setName("Viola");
+		
+		Agent agent2 = new Agent();
+		agent2.setNscNumber("098765");
+		agent2.setName("Change me");
+		
+		DomainObjectImportOutcome<Agent> importOutcome1 = new DomainObjectImportOutcome<Agent>();
+		importOutcome1.setImportedDomainObject(agent1);
+		importOutcome1.setSavable(true);
+		command.addImportableAgent(importOutcome1);
+		
+		DomainObjectImportOutcome<Agent> importOutcome2 = new DomainObjectImportOutcome<Agent>();
+		importOutcome2.setImportedDomainObject(agent2);
+		importOutcome2.setSavable(true);
+		command.addUpdateableAgent(importOutcome2);
+		
+		importer.setAgentRepository(agentRepository);
+		
+		agentRepository.saveAgent((Agent)EasyMock.anyObject());
+		expectLastCall().anyTimes();
+		
+		replayMocks();
+		importer.save(command, null);
+		verifyMocks();
+		
+	}
+	
 	
 	private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

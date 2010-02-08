@@ -1,19 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.easymock.EasyMock;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-
 
 /**
  *		Input String has to have 5 tokens.Valid samples as given below
@@ -30,6 +37,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  */
 public class OrganizationImporterTest extends WebTestCase {
 
+	private OrganizationRepository organizationRepository;
 	private OrganizationImporter importer;
 	private DomainObjectImportOutcome<Organization> organizationImportOutcome;
 	private Map<String,Organization> organizationMap = null;
@@ -39,6 +47,7 @@ public class OrganizationImporterTest extends WebTestCase {
 		super.setUp();
 		importer = new OrganizationImporter(); 
 		command = new ImportCommand();
+		organizationRepository = registerMockFor(OrganizationRepositoryImpl.class);
 	}
 		
 	public void testProcessOrganization_ValidRecord(){
@@ -100,6 +109,67 @@ public class OrganizationImporterTest extends WebTestCase {
 			fail("No Exception is expected");
 		}
 	}
+	
+	public void testGetMap(){
+		
+		//When Map is null.
+		importer.setOrganizationMap(null);
+		importer.setOrganizationRepository(organizationRepository);
+		Organization Org1 = Fixtures.createOrganization("LocalOrg-1", "1234");
+		Organization Org2 = Fixtures.createOrganization("RemoteOrg-1", "4321");
+		List<Organization> allOrganizations = new ArrayList<Organization>();
+		allOrganizations.add(Org1);
+		allOrganizations.add(Org2);
+		
+		expect(organizationRepository.getAllOrganizations()).andReturn(allOrganizations).anyTimes();
+		replayMocks();
+		organizationMap = importer.getOrganizationMap();
+		verifyMocks();
+		assertNotNull(organizationMap);
+		
+		//When Map is NOT null.
+		organizationMap = new HashMap<String,Organization>();
+		Map returnedMap = null;
+		organizationMap.put("1234", Org1);
+		organizationMap.put("4321", Org2);
+		importer.setOrganizationMap(organizationMap);
+		returnedMap = importer.getOrganizationMap();
+		assertNotNull(returnedMap);
+		
+	}
+	
+	public void testSave(){
+		ImportCommand command = new ImportCommand();
+		
+		LocalOrganization localOrg1 = new LocalOrganization();
+		localOrg1.setNciInstituteCode("ABCD01");
+		localOrg1.setName("Change Me");
+		
+		DomainObjectImportOutcome<Organization> importOutcome1 = new DomainObjectImportOutcome<Organization>();
+		importOutcome1.setImportedDomainObject(localOrg1);
+		importOutcome1.setSavable(true);
+		command.addImportableOrganization(importOutcome1);
+		
+		LocalOrganization localOrg2 = new LocalOrganization();
+		localOrg2.setNciInstituteCode("XYWER");
+		localOrg2.setName("Nothing");
+		DomainObjectImportOutcome<Organization> importOutcome2 = new DomainObjectImportOutcome<Organization>();
+		importOutcome2.setImportedDomainObject(localOrg2);
+		importOutcome2.setSavable(true);
+		command.addUpdateableOrganization(importOutcome2);
+		
+		importer.setOrganizationRepository(organizationRepository);
+		
+		organizationRepository.createOrUpdate((Organization)EasyMock.anyObject());
+		expectLastCall().anyTimes();
+		
+		replayMocks();
+		importer.save(command, null);
+		verifyMocks();
+		
+		
+	}
+	
 	
 	private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
