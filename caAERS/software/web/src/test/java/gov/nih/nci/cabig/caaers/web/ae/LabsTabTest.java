@@ -74,8 +74,8 @@ public class LabsTabTest extends AeTabTestCase {
     	l.getBaseline().setDate(new Date());
     	l.getBaseline().setValue("-99.99");
     	doValidate();
-    	assertFieldError("aeReport.labs[0].baseline.value", "REQUIRED", "Invalid sign Baseline value");
-    	assertFieldError("aeReport.labs[0].labTerm", "SAE_029", "Missing Lab Name");
+    	assertFieldError("aeReport.labs[0].baseline.value", "REQUIRED", "<b>Invalid sign:</b> &quot;Baseline value&quot;");
+    	assertFieldError("aeReport.labs[0].labTerm", "SAE_029", "<b>Missing:</b> &quot;Lab Name&quot;");
     }
     
     public void testValidate_LongBaseLine(){
@@ -83,7 +83,7 @@ public class LabsTabTest extends AeTabTestCase {
     	l.getBaseline().setDate(new Date());
     	l.getBaseline().setValue("94444444444444.99");
     	doValidate();
-    	assertFieldError("aeReport.labs[0].baseline.value", "REQUIRED", "Invalid Baseline value");
+    	assertFieldError("aeReport.labs[0].baseline.value", "REQUIRED", "<b>Invalid:</b> &quot;Baseline value&quot;");
     }
     
     public void testValidate_ValidBaseLineButRecoveryAndWorstGotHit(){
@@ -95,7 +95,7 @@ public class LabsTabTest extends AeTabTestCase {
     	l.getNadir().setDate(new Date());
     	l.getNadir().setValue("99.0009999999999999999");
     	doValidate();
-    	assertFieldError("aeReport.labs[0].recovery.value", "REQUIRED", "Invalid Recovery value");
-    	assertFieldError("aeReport.labs[0].nadir.value", "REQUIRED", "Invalid Worst value");
+    	assertFieldError("aeReport.labs[0].recovery.value", "REQUIRED", "<b>Invalid:</b> &quot;Recovery value&quot;");
+    	assertFieldError("aeReport.labs[0].nadir.value", "REQUIRED", "<b>Invalid:</b> &quot;Worst value&quot;");
     }
 }
