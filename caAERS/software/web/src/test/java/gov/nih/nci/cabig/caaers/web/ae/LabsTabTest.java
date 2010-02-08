@@ -75,7 +75,7 @@ public class LabsTabTest extends AeTabTestCase {
     	l.getBaseline().setValue("-99.99");
     	doValidate();
     	assertFieldError("aeReport.labs[0].baseline.value", "REQUIRED", "<b>Invalid sign:</b> &quot;Baseline value&quot;");
-    	assertFieldError("aeReport.labs[0].labTerm", "SAE_029", "<b>Missing:</b> &quot;Lab Name&quot;");
+    	assertFieldError("aeReport.labs[0].labTerm", "SAE_029", "Missing Lab Name");
     }
     
     public void testValidate_LongBaseLine(){

@@ -79,8 +79,8 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 		agent.getDose().setUnits("BVP");
 		
 		doValidate();
-		assertFieldError("aeReport.treatmentInformation.courseAgents[0].dose.amount", "REQUIRED", "Invalid Total dose administered this course");
-		assertFieldError("aeReport.treatmentInformation.courseAgents[1].dose.amount", "REQUIRED", "Invalid Total dose administered this course");
+		assertFieldError("aeReport.treatmentInformation.courseAgents[0].dose.amount", "REQUIRED", "<b>Invalid:</b> &quot;Total dose administered this course&quot;");
+		assertFieldError("aeReport.treatmentInformation.courseAgents[1].dose.amount", "REQUIRED", "<b>Invalid:</b> &quot;Total dose administered this course&quot;");
 	}
 	
 	
@@ -97,9 +97,9 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 		
 		doValidate();
 		
-		assertFieldError("aeReport.radiationInterventions[0].administration", "REQUIRED", "Missing Type of radiation administration");
-		assertFieldError("aeReport.radiationInterventions[1].administration", "REQUIRED", "Missing Type of radiation administration");
-		assertFieldError("aeReport.radiationInterventions[2].administration", "REQUIRED", "Missing Type of radiation administration");
+		assertFieldError("aeReport.radiationInterventions[0].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
+		assertFieldError("aeReport.radiationInterventions[1].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
+		assertFieldError("aeReport.radiationInterventions[2].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
 		assertFieldError("aeReport.radiationInterventions[1].dosage", "REQUIRED", "Invalid sign Total dose (to date)");
 		assertFieldError("aeReport.radiationInterventions[2].dosage", "REQUIRED", "Invalid Total dose (to date)");
 	}
