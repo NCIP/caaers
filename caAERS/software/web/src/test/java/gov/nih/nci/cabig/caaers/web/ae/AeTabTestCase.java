@@ -71,7 +71,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
     
     protected void assertFieldRequiredErrorRaised(String fieldName, String displayName) {
-    	assertFieldError(fieldName, "REQUIRED", "Missing " + displayName);
+    	assertFieldError(fieldName, "REQUIRED", "<b>Missing:</b> &quot;" + displayName + "&quot;");
     }
 
     protected void assertDisplayNameForFieldGroup(String expectedDisplayName, String groupName) {
