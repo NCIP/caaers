@@ -274,7 +274,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	public void setCoppaModeForAutoCompleters(boolean coppaModeForAutoCompleters) {
 		this.coppaModeForAutoCompleters = coppaModeForAutoCompleters;
 	}
-
+	
+	/**
+	 * This method will fetch all the organizations in caAERS database.
+	 */
 	public List<Organization> getAllOrganizations() {
 		return organizationDao.getAll();
 	}

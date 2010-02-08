@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 
 import java.util.List;
 
@@ -22,6 +21,10 @@ public interface OrganizationRepository {
     List<Organization> searchOrganization(final OrganizationQuery query);
     List<Organization> restrictBySubnames(final String[] subnames);
     List<Organization> getLocalOrganizations(final OrganizationQuery query);
+    
+	/**
+	 * This method will fetch all the organizations in caAERS database.
+	 */
     List<Organization> getAllOrganizations();
     List<Organization> getAllNciInstitueCodes();
 }
