@@ -205,8 +205,10 @@
 					<input-type>select</input-type>
 				</field-value>
 				
-				<valid-value value="false" display-uri="No" readable-text="No "/>				
+				<valid-value value="false" display-uri="No" readable-text="No "/>	
+				<valid-value value="true" display-uri="Yes" readable-text="Yes "/>				
 				<operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+				<operator name="==" display-uri="Is " readable-text="Is"/>
 				
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study Investigational new drug? " postfix="(Commercially Available Agent Only)"/>
