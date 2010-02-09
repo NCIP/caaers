@@ -62,15 +62,14 @@ public class ExpeditedReportTree extends PropertylessNode {
                                 createPersonBlock("physician")
                         ),
                         section(RADIATION_INTERVENTION_SECTION,
-                              list("radiationInterventions","RadiationIntervention",
-                                property("administration","Type of radiation administration"),
-                                // TODO: these should be a component instead
-                                property("dosage", "Dosage"), 
-                                property("dosageUnit","Dosage unit"),
-                                property("lastTreatmentDate", "Last treatment date"),
-                                property("fractionNumber", "Schedule number of fractions"),
-                                property("daysElapsed", "Elapsed days"), 
-                                property("adjustment", "Adjustment"))
+                              list("radiationInterventions", "RadiationIntervention",
+                                property("administration", getMessage("LBL_aeReport.radiationInterventions.administration", "Type of radiation administration")),
+                                property("dosage", getMessage("LBL_aeReport.radiationInterventions.dosage", "Total dose (to date)")), 
+                                property("dosageUnit", getMessage("LBL_aeReport.radiationInterventions.dosageUnit", "Unit of measure")),
+                                property("lastTreatmentDate", getMessage("LBL_aeReport.radiationInterventions.lastTreatmentDate", "Date of last treatment")),
+                                property("fractionNumber", getMessage("LBL_aeReport.radiationInterventions.fractionNumber", "Schedule number of fractions")),
+                                property("daysElapsed", getMessage("LBL_aeReport.radiationInterventions.daysElapsed", "Number of elapsed days")),
+                                property("adjustment", getMessage("LBL_aeReport.radiationInterventions.adjustment", "Adjustment")))
                         ),
                         section(SURGERY_INTERVENTION_SECTION, 
                         	list("surgeryInterventions",
@@ -301,20 +300,20 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     // //// TREE CONSTRUCTION HELPERS
 
-    private static TreeNode createPersonBlock(String person) {
+    private TreeNode createPersonBlock(String person) {
         return property(person, StringUtils.capitalize(person) + " details", 
-        		property("title", "Job title"),
-        		property("firstName", "First name"), 
-        		property("middleName", "Middle name"), 
-        		property("lastName", "Last name"), 
-        		contactField(ReportPerson.EMAIL, "E-mail address"),
-        		contactField(ReportPerson.PHONE), 
-        		contactField(ReportPerson.FAX),
-        		property("address","Address",
-        				property("street", "Street"),
-        				property("city", "City"),
-        				property("state","State"),
-        				property("zip", "Zip")));
+        		property("title", getMessage("LBL_aeReport." + person + ".title", "Position title")),
+        		property("firstName", getMessage("LBL_aeReport." + person + ".firstName", "First name")),
+        		property("middleName", getMessage("LBL_aeReport." + person + ".middleName", "Middle name")),
+        		property("lastName", getMessage("LBL_aeReport." + person + ".lastName", "Last name")),
+        		contactField(ReportPerson.EMAIL, getMessage("LBL_aeReport." + person + ".contactMechanisms[e-mail]", "E-mail address")),
+        		contactField(ReportPerson.PHONE, getMessage("LBL_aeReport." + person + ".contactMechanisms[phone]", "Phone")),
+        		contactField(ReportPerson.FAX, getMessage("LBL_aeReport." + person + ".contactMechanisms[fax]", "Fax")),
+        		property("address", getMessage("LBL_aeReport." + person + ".address", "Address"),
+        				property("street", getMessage("LBL_aeReport." + person + ".street", "Street")),
+        				property("city", getMessage("LBL_aeReport." + person + ".city", "City")),
+        				property("state", getMessage("LBL_aeReport." + person + ".state", "State")),
+        				property("zip", getMessage("LBL_aeReport." + person + ".zip", "Zip"))));
     }
 
     private static TreeNode contactField(String contactType) {
