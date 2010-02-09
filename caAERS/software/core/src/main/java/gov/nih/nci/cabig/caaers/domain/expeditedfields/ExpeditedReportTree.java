@@ -1,38 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADVERSE_EVENT_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.AGENTS_INTERVENTION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.BASICS_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.DESCRIPTION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.LABS_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_DEVICE_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_INFO_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OTHER_CAUSE_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OUTCOME_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRE_EXISTING_CONDITION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRIOR_THERAPIES_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.RADIATION_INTERVENTION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.REPORTER_INFO_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.STUDY_INTERVENTIONS;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SUBMIT_REPORT_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SURGERY_INTERVENTION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.TREATMENT_INFO_SECTION;
-
-import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-
-import java.util.*;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+
+import java.util.*;
+
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 
 /**
  * Tree representing most of the properties in the
@@ -42,15 +21,19 @@ import org.springframework.context.MessageSource;
  * property will be null.
  * 
  * @author Rhett Sutphin
+ * @author Ion C. Olaru
  */
 public class ExpeditedReportTree extends PropertylessNode {
     private Map<ExpeditedReportSection, TreeNode> sections;
     private MessageSource messageSource;
 
     public ExpeditedReportTree() {
-        // setMessageSource(messageSource);
-        // setMessageSource((MessageSource) CaaersContextLoader.getApplicationContext().getBean("messageSource"));
-        
+        this(null);
+    }
+
+    public ExpeditedReportTree(MessageSource messageSource) {
+        setMessageSource(messageSource);
+
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
                         section(BASICS_SECTION),
@@ -59,8 +42,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         // TODO: figure out how to handle the MedDRA alternative here
                                 list("adverseEvents",
                                         new AdverseEventsDisplayNameCreator(),
-//                                        property("grade", messageSource.getMessage("LBL_emailAddress", null, Locale.getDefault())),
-                                        property("grade", ""),
+                                        property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Some GRADE TEXT")),
                                         property("adverseEventCtcTerm", property("term", "CTC term")),
                                         property("detailsForOther","Verbatim"),
                                         property("startDate", "Start date"),
@@ -362,10 +344,18 @@ public class ExpeditedReportTree extends PropertylessNode {
         return messageSource;
     }
 
-    @Required
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
-        System.out.println("Setting message source..." + messageSource);
-        System.out.println(messageSource);
+        log.debug("Setting message source: " + messageSource);
+    }
+
+    public String getMessage(String label, String defaultMessage) {
+        if (messageSource == null) return defaultMessage;
+        try {
+            return messageSource.getMessage(label, null, Locale.getDefault());
+        } catch (NoSuchMessageException e) {
+            log.debug(e.getMessage());
+            return defaultMessage;
+        }
     }
 }
