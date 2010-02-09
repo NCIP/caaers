@@ -11,5 +11,7 @@
     <bean name="expeditedReportTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree">
         <constructor-arg ref="messageSource" />
     </bean>
-    <bean name="caaersFieldsTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersFieldsTree"/>
+    <bean name="caaersFieldsTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersFieldsTree">
+        <constructor-arg ref="messageSource" />
+    </bean>
 </beans>

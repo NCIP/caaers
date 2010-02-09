@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import org.springframework.context.MessageSource;
+
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersTab.CAPTURE_ADVERSE_EVENTS_TAB;
 
 import java.util.LinkedHashMap;
@@ -12,16 +14,14 @@ import java.util.Map;
  * Its used in the page under admin to configure the various fields to make it Mandatory/
  * Optional/Not applicable on the page.
  */
-public class CaaersFieldsTree extends TabNode{
+public class CaaersFieldsTree extends TabNode {
 	private Map<CaaersTab, TreeNode> tabs;
-	
 	private ExpeditedReportTree expeditedReportTree;
 	
-	public CaaersFieldsTree(){
+	public CaaersFieldsTree(MessageSource messageSource) {
 		tabs = new LinkedHashMap<CaaersTab, TreeNode>();
-		expeditedReportTree = new ExpeditedReportTree();
-		add(tab(CAPTURE_ADVERSE_EVENTS_TAB, 
-				expeditedReportTree.getNodeForSection(ExpeditedReportSection.ADVERSE_EVENT_SECTION)));
+		expeditedReportTree = new ExpeditedReportTree(messageSource);
+		add(tab(CAPTURE_ADVERSE_EVENTS_TAB, expeditedReportTree.getNodeForSection(ExpeditedReportSection.ADVERSE_EVENT_SECTION)));
 	}
 	
 	public void setTabs(Map<CaaersTab, TreeNode> tabs){

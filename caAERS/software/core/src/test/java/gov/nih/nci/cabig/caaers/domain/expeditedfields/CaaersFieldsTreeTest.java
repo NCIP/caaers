@@ -4,20 +4,34 @@ import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import junit.framework.TestCase;
 
 /**
  * This class tests CaaersFieldTree class.
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  */
-public class CaaersFieldsTreeTest extends TestCase{
-	private ExpeditedReportTree expeditedTree = new ExpeditedReportTree();
-	private CaaersFieldsTree tree = new CaaersFieldsTree();
-	
-	public void testRecurcivelyCollectListNodes(){
+public class CaaersFieldsTreeTest extends CaaersTestCase {
+	private CaaersFieldsTree tree;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        tree = (CaaersFieldsTree)getDeployedApplicationContext().getBean("caaersFieldsTree");
+    }
+
+    public void testRecurcivelyCollectListNodes(){
         List<TreeNode> nodes = new ArrayList();
         tree.recursivelyCollectListNodes(nodes);
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
     }
+
+    public void testMessages() {
+        assertNotNull(tree.getExpeditedReportTree().getMessageSource());
+        assertEquals("Street", tree.getExpeditedReportTree().getMessageSource().getMessage("LBL_street", null, Locale.getDefault()));
+    }
+
 }

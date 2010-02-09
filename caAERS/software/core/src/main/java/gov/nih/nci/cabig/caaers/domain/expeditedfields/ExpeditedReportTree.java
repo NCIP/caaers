@@ -42,19 +42,19 @@ public class ExpeditedReportTree extends PropertylessNode {
                         // TODO: figure out how to handle the MedDRA alternative here
                                 list("adverseEvents",
                                         new AdverseEventsDisplayNameCreator(),
-                                        property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Some GRADE TEXT")),
-                                        property("adverseEventCtcTerm", property("term", "CTC term")),
-                                        property("detailsForOther","Verbatim"),
-                                        property("startDate", "Start date"),
-                                        property("endDate", "End date"), 
-                                        property("attributionSummary","Attribution to study intervention"),
-                                        property("hospitalization","Hospitalization"),
-                                        property("expected", "Expected"), 
-                                        property("participantAtRisk","Does this place participant at increased risk?"),
-                                        property("eventLocation", "Where was the patient when the event occurred?"),
-                                        property("eventApproximateTime.hourString","Time of event"),
-                                        property("outcomes", "Outcomes"),
-                                        property("comments", "Comments")
+                                        property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Grade")),
+                                        property("adverseEventCtcTerm", property("term", getMessage("LBL_aeReport.adverseEvents.ctcTerm", "CTC term"))),
+                                        property("detailsForOther", getMessage("LBL_aeReport.adverseEvents.detailsForOther", "Verbatim")),
+                                        property("startDate", getMessage("LBL_aeReport.adverseEvents.startDate", "Start date")),
+                                        property("endDate", getMessage("LBL_aeReport.adverseEvents.endDate", "End date")), 
+                                        property("attributionSummary", getMessage("LBL_aeReport.adverseEvents.attributionSummary", "Attribution to study intervention")),
+                                        property("hospitalization", getMessage("LBL_aeReport.adverseEvents.hospitalization", "Hospitalization")),
+                                        property("expected", getMessage("LBL_aeReport.adverseEvents.expected", "Expected")),
+                                        property("participantAtRisk", getMessage("LBL_aeReport.adverseEvents.participantAtRisk", "Does this place participant at increased risk?")),
+                                        property("eventLocation", getMessage("LBL_aeReport.adverseEvents.eventLocation", "Where was the patient when the event occurred?")),
+                                        property("eventApproximateTime.hourString", getMessage("LBL_aeReport.adverseEvents.eventApproximateTime.hourString", "Time of event")),
+                                        property("outcomes", getMessage("LBL_aeReport.adverseEvents.outcomes", "Outcomes")),
+                                        property("comments", getMessage("LBL_aeReport.adverseEvents.comments", "Comments"))
                                  )
                         ),
                         section(REPORTER_INFO_SECTION, 
@@ -339,20 +339,19 @@ public class ExpeditedReportTree extends PropertylessNode {
         return property(baseName, displayName, property("value", "Value"), property("date", "Date"));
     }
 
-
     public MessageSource getMessageSource() {
         return messageSource;
     }
 
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
-        log.debug("Setting message source: " + messageSource);
     }
 
     public String getMessage(String label, String defaultMessage) {
-        if (messageSource == null) return defaultMessage;
+        if (getMessageSource() == null) return defaultMessage;
         try {
-            return messageSource.getMessage(label, null, Locale.getDefault());
+//            return getMessageSource().getMessage(label, null, Locale.getDefault());
+            return "&lt;" + getMessageSource().getMessage(label, null, Locale.getDefault()) + "&gt;";
         } catch (NoSuchMessageException e) {
             log.debug(e.getMessage());
             return defaultMessage;
