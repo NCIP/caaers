@@ -20,20 +20,19 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SUBMIT_REPORT_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SURGERY_INTERVENTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.TREATMENT_INFO_SECTION;
+
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.MessageSource;
 
 /**
  * Tree representing most of the properties in the
@@ -46,8 +45,12 @@ import org.springframework.beans.PropertyValues;
  */
 public class ExpeditedReportTree extends PropertylessNode {
     private Map<ExpeditedReportSection, TreeNode> sections;
+    private MessageSource messageSource;
 
     public ExpeditedReportTree() {
+        // setMessageSource(messageSource);
+        // setMessageSource((MessageSource) CaaersContextLoader.getApplicationContext().getBean("messageSource"));
+        
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
                         section(BASICS_SECTION),
@@ -56,7 +59,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                         // TODO: figure out how to handle the MedDRA alternative here
                                 list("adverseEvents",
                                         new AdverseEventsDisplayNameCreator(),
-                                        property("grade", "Grade"),
+//                                        property("grade", messageSource.getMessage("LBL_emailAddress", null, Locale.getDefault())),
+                                        property("grade", ""),
                                         property("adverseEventCtcTerm", property("term", "CTC term")),
                                         property("detailsForOther","Verbatim"),
                                         property("startDate", "Start date"),
@@ -351,5 +355,17 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     private static TreeNode labValue(String baseName, String displayName) {
         return property(baseName, displayName, property("value", "Value"), property("date", "Date"));
+    }
+
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    @Required
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+        System.out.println("Setting message source..." + messageSource);
+        System.out.println(messageSource);
     }
 }

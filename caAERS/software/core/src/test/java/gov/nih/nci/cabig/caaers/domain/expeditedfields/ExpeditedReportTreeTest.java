@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersError;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.beans.BeanInfo;
@@ -11,6 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -22,14 +24,21 @@ import org.springframework.beans.MutablePropertyValues;
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
-public class ExpeditedReportTreeTest extends TestCase {
-    private ExpeditedReportTree tree = new ExpeditedReportTree();
+public class ExpeditedReportTreeTest extends CaaersTestCase {
+    
+    private ExpeditedReportTree tree;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();    
+        tree = (ExpeditedReportTree)getDeployedApplicationContext().getBean("expeditedReportTree");
+    }
 
     public void testAllPropertiesImpliedByTreeExistInModel() throws Exception {
         assertChildPropertiesExist(tree, ExpeditedAdverseEventReport.class);
     }
 
-    public void testRecurcivelyCollectListNodes(){
+    public void testRecurcivelyCollectListNodes() {
         List<TreeNode> nodes = new ArrayList();
         tree.recursivelyCollectListNodes(nodes);
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
@@ -54,8 +63,7 @@ public class ExpeditedReportTreeTest extends TestCase {
     }
 
     @SuppressWarnings( { "RawUseOfParameterizedType" })
-    private void assertChildPropertiesExist(TreeNode node, Class nodePropertyClass)
-                    throws IntrospectionException {
+    private void assertChildPropertiesExist(TreeNode node, Class nodePropertyClass) throws IntrospectionException {
         BeanInfo beanInfo = Introspector.getBeanInfo(nodePropertyClass);
         for (TreeNode child : node.getChildren()) {
             String childPropName = child.getPropertyName();
@@ -260,21 +268,16 @@ public class ExpeditedReportTreeTest extends TestCase {
                         .find("diseaseHistory")));
     }
 
-    private void assertNoUnsatisfiedProperties(String msg, String expectedProp,
-                    ExpeditedAdverseEventReport report) {
+    private void assertNoUnsatisfiedProperties(String msg, String expectedProp, ExpeditedAdverseEventReport report) {
         assertUnsatisfiedProperties(msg, expectedProp, report);
     }
 
-    private void assertUnsatisfiedProperties(String msg, String expectedProp,
-                    ExpeditedAdverseEventReport report, String... expectedUnsatisfiedProperties) {
-        List<UnsatisfiedProperty> actualUnsatisfied = tree.verifyPropertiesPresent(expectedProp,
-                        report);
-        assertEquals(msg + ": Wrong number of unsatisfied props: " + actualUnsatisfied,
-                        expectedUnsatisfiedProperties.length, actualUnsatisfied.size());
+    private void assertUnsatisfiedProperties(String msg, String expectedProp, ExpeditedAdverseEventReport report, String... expectedUnsatisfiedProperties) {
+        List<UnsatisfiedProperty> actualUnsatisfied = tree.verifyPropertiesPresent(expectedProp, report);
+        assertEquals(msg + ": Wrong number of unsatisfied props: " + actualUnsatisfied, expectedUnsatisfiedProperties.length, actualUnsatisfied.size());
         for (int i = 0; i < expectedUnsatisfiedProperties.length; i++) {
             String expected = expectedUnsatisfiedProperties[i];
-            assertEquals(msg + ": Mismatched prop", expected, actualUnsatisfied.get(i)
-                            .getBeanPropertyName());
+            assertEquals(msg + ": Mismatched prop", expected, actualUnsatisfied.get(i).getBeanPropertyName());
         }
     }
 
@@ -309,4 +312,10 @@ public class ExpeditedReportTreeTest extends TestCase {
         }
         return names;
     }
+
+    public void testMessages() {
+        assertNotNull(tree.getMessageSource());
+        assertEquals("Street", tree.getMessageSource().getMessage("LBL_street", null, Locale.getDefault()));
+    }
+
 }

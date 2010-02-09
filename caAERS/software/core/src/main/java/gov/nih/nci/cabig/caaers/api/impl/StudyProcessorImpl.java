@@ -300,9 +300,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 						
 					}else{
 						studyServiceResponse.setResponsecode("1");
-						String errorDescription = messageSource.getMessage("WS_STU_001", 
-								new Object[]{anotherStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, 
-								"Another study is using the identifier provided", Locale.getDefault());
+						String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault());
 						studyServiceResponse.setDescription(errorDescription);
 						studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
 					}
