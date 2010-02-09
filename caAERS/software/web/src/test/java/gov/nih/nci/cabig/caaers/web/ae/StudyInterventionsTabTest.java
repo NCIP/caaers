@@ -100,8 +100,8 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 		assertFieldError("aeReport.radiationInterventions[0].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
 		assertFieldError("aeReport.radiationInterventions[1].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
 		assertFieldError("aeReport.radiationInterventions[2].administration", "REQUIRED", "<b>Missing:</b> &quot;Type of radiation administration&quot;");
-		assertFieldError("aeReport.radiationInterventions[1].dosage", "REQUIRED", "Invalid sign Total dose (to date)");
-		assertFieldError("aeReport.radiationInterventions[2].dosage", "REQUIRED", "Invalid Total dose (to date)");
+		assertFieldError("aeReport.radiationInterventions[1].dosage", "REQUIRED", "<b>Invalid sign:</b> &quot;Total dose (to date)&quot;");
+		assertFieldError("aeReport.radiationInterventions[2].dosage", "REQUIRED", "<b>Invalid:</b> &quot;Total dose (to date)&quot;");
 	}
 
 
