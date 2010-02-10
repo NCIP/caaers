@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Krikor Krumlian
+ * @author Sameer Sawant
+ * @author Monish Dombla
  */
 public class ImportCommand {
 
