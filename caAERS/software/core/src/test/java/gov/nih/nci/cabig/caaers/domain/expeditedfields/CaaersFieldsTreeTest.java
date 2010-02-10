@@ -29,9 +29,4 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
     }
 
-    public void testMessages() {
-        assertNotNull(tree.getExpeditedReportTree().getMessageSource());
-        assertEquals("Street", tree.getExpeditedReportTree().getMessageSource().getMessage("LBL_street", null, Locale.getDefault()));
-    }
-
 }

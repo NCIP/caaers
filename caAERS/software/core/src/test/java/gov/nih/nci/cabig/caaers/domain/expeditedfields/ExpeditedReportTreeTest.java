@@ -313,9 +313,4 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
         return names;
     }
 
-    public void testMessages() {
-        assertNotNull(tree.getMessageSource());
-        assertEquals("Street", tree.getMessageSource().getMessage("LBL_street", null, Locale.getDefault()));
-    }
-
 }
