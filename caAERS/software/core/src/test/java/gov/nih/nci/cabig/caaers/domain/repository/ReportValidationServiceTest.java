@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
-
-import java.util.*;
-
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -16,6 +11,10 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import org.easymock.classextension.EasyMock;
 
+import java.util.*;
+
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
+
 /**
  *  
  * @author Sameer Sawant
@@ -23,7 +22,7 @@ import org.easymock.classextension.EasyMock;
  */
 
 
-public class ReportValidationServiceTest extends AbstractTestCase {
+public class ReportValidationServiceTest extends CaaersTestCase {
 	
 	private ReportValidationServiceImpl reportValidationService;
 	private ExpeditedReportTree expeditedReportTree;
@@ -40,7 +39,7 @@ public class ReportValidationServiceTest extends AbstractTestCase {
 	@Override
     protected void setUp() throws Exception {
         super.setUp();
-        expeditedReportTree = new ExpeditedReportTree();
+        expeditedReportTree = (ExpeditedReportTree)getDeployedApplicationContext().getBean("expeditedReportTree");
         reportValidationService = new ReportValidationServiceImpl();
         
         reportValidationService.setExpeditedReportTree(expeditedReportTree);
@@ -54,8 +53,7 @@ public class ReportValidationServiceTest extends AbstractTestCase {
 	}
 	
 	private ReportSubmittability validateForAttribution() {
-        return reportValidationService.validate(createAttributionMandatoryReport(), Collections
-                .<ExpeditedReportSection>emptySet(), new ArrayList<ExpeditedReportSection>());
+        return reportValidationService.validate(createAttributionMandatoryReport(), Collections.<ExpeditedReportSection>emptySet(), new ArrayList<ExpeditedReportSection>());
     }
 	
 	private Report createAttributionMandatoryReport() {
@@ -94,10 +92,8 @@ public class ReportValidationServiceTest extends AbstractTestCase {
     
     private void assertInsuffientAttributionMessage(String assertionMessage,
             ReportSubmittability container) {
-    		assertTrue(assertionMessage + ": No attribution section messages", container.getMessages()
-    				.containsKey(ATTRIBUTION_SECTION));
-    		assertTrue(assertionMessage + ": No attribution section messages", container.getMessages()
-    				.get(ATTRIBUTION_SECTION).size() > 0);
+    		assertTrue(assertionMessage + ": No attribution section messages", container.getMessages().containsKey(ATTRIBUTION_SECTION));
+    		assertTrue(assertionMessage + ": No attribution section messages", container.getMessages().get(ATTRIBUTION_SECTION).size() > 0);
     		assertEquals(
     				assertionMessage + ": Wrong message",
     				"The adverse event "
@@ -174,13 +170,10 @@ public class ReportValidationServiceTest extends AbstractTestCase {
         report.getReportDefinition().setAttributionRequired(false);
         populateAgents(expeditedData);
 
-
-
         replayMocks();
         ReportSubmittability result =  reportValidationService.isSubmittable(report);
         assertFalse(result.isSubmittable()) ;
         assertTrue(result.getMessages().get(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION).get(0).getText().equals("The section 'Radiation' is mandatory for this report and cannot be empty"));
-
 
         verifyMocks();
     }
@@ -199,7 +192,6 @@ public class ReportValidationServiceTest extends AbstractTestCase {
         //soft delete all adverse events - validates the case where there are only retired elements.
         for(AdverseEvent ae : expeditedData.getAdverseEvents()) ae.retire();
         assertFalse(reportValidationService.isElementPresentInSection( expeditedData, ExpeditedReportSection.ADVERSE_EVENT_SECTION));
-
 
     }
 
