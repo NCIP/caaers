@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
@@ -163,7 +164,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
     }
 
     public void testCreateTextFieldWithLabelPropertyNullValidator() {
-        InputField field = InputFieldFactory.createTextField("fieldName", "fieldDisplayName", "LBL_fieldName", null);
+        InputField field = InputFieldFactory.createTextField("fieldName", "fieldDisplayName", "LBL_fieldName", (FieldValidator)null);
         assertEquals("LBL_fieldName", field.getAttributes().get("labelProperty"));
     }
 
@@ -188,7 +189,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
     }
 
     public void testSelectFieldWithoutLabelProperty() {
-        InputField field = InputFieldFactory.createSelectField("fieldName", "fieldDisplayName", null, null);
+        InputField field = InputFieldFactory.createSelectField("fieldName", "fieldDisplayName", null, (FieldValidator)null);
         assertNull(field.getAttributes().get("labelProperty"));
     }
 
