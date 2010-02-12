@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import junit.framework.TestCase;
 
 /**
@@ -7,12 +8,12 @@ import junit.framework.TestCase;
  * @author Biju Joseph
  *
  */
-public class UnsatisfiedPropertyTest extends TestCase {
+public class UnsatisfiedPropertyTest extends CaaersTestCase {
 	
 	ExpeditedReportTree tree;
 	protected void setUp() throws Exception {
 		super.setUp();
-		tree = new ExpeditedReportTree();
+		tree = (ExpeditedReportTree)getDeployedApplicationContext().getBean("expeditedReportTree");
 	}
 
 	public void testGetDisplayName() {
