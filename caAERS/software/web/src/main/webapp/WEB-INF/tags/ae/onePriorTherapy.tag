@@ -9,6 +9,7 @@
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="showNoPriorTherapy" type="java.lang.Boolean" %>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 
 <div>
@@ -76,7 +77,7 @@
 					<td colspan="2">
                         <table border="1" width="450px">
                          <tr>
-                        	<td align="left"><b color="#2E3257">Therapy agent(s)</b></td>
+                        	<td align="left"><b color="#2E3257"><caaers:message code="LBL_aeReport.saeReportPriorTherapies.priorTherapyAgents.chemoAgent-input" /></b></td>
                         	<td align="right">
                         		<tags:button cssClass="foo" id="priortherapy[${index}].agent-btn" color="blue" value="Add" icon="Add" type="button" onclick="AE.addPTAgents_${index}();" size="small"/>
                         	</td>

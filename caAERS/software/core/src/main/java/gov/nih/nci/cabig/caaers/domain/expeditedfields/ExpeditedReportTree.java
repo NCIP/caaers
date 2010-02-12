@@ -42,7 +42,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         // TODO: figure out how to handle the MedDRA alternative here
                                 list("adverseEvents",
                                         new AdverseEventsDisplayNameCreator(),
-                                        property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Grade")),
+                                        property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Grade_")),
                                         property("adverseEventCtcTerm", property("term", getMessage("LBL_aeReport.adverseEvents.ctcTerm", "CTC term"))),
                                         property("detailsForOther", getMessage("LBL_aeReport.adverseEvents.detailsForOther", "Verbatim")),
                                         property("startDate", getMessage("LBL_aeReport.adverseEvents.startDate", "Start date")),
@@ -195,30 +195,42 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(OUTCOME_SECTION),// TODO: just a space filler section
                 
                         section(PRIOR_THERAPIES_SECTION,
-                            	list("saeReportPriorTherapies","Prior Therapy", 
-                        				property("priorTherapy", "Prior therapy"),
-                                        property("other", "Comments (prior therapy)"),
-                                        property("startDate", "Therapy start date",
-                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")),
-                                        property("endDate", "Therapy end date",
-                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")),
-                                        list("priorTherapyAgents", "PriorTherapyAgent", property("chemoAgent", "Agent")
+                            	list("saeReportPriorTherapies", "Prior Therapy", 
+                        				property("priorTherapy", getMessage("LBL_aeReport.saeReportPriorTherapies.priorTherapy", "Prior therapy")),
+                                        property("other", getMessage("LBL_aeReport.saeReportPriorTherapies.other", "Comments (prior therapy)")),
+                                        property("startDate", getMessage("LBL_aeReport.saeReportPriorTherapies.startDate", "Therapy start date"),
+                                        		property("year", "Year"),
+                                                property("month", "Month"),
+                                                property("day", "Day")),
+                                        property("endDate", getMessage("LBL_aeReport.saeReportPriorTherapies.endDate", "Therapy end date"),
+                                        		property("year", "Year"),
+                                                property("month", "Month"),
+                                                property("day", "Day")),
+                                        list("priorTherapyAgents", "PriorTherapyAgent",
+                                                property("chemoAgent", getMessage("LBL_aeReport.saeReportPriorTherapies.priorTherapyAgents.chemoAgent-input", "Agent"))
                                         )
                                 )
                             ),
 
                         section(PRE_EXISTING_CONDITION_SECTION, 
-                        		list("saeReportPreExistingConditions","Pre-existing condition", codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)"))
+                        		list("saeReportPreExistingConditions", "Pre-existing condition",
+                                        codedOrOther("preExistingCondition", getMessage("LBL_aeReport.saeReportPreExistingConditions.preExistingCondition", "Pre-existing condition"),
+                                                "other", getMessage("LBL_aeReport.saeReportPreExistingConditions.other", "Other (pre-existing)")))
                         ),
+                // LBL_aeReport.saeReportPreExistingConditions.preExistingCondition
                 
                         section(CONCOMITANT_MEDICATION_SECTION, 
                         		list("concomitantMedications","Medication",
-                                        property("agentName", "Medication"),
-                                        property("stillTakingMedications","Continued?"),
-                                        property("startDate","Start date",
-                                        		property("year", "Year"), property("month", "Month"), property("day", "Day")),
-                                        property("endDate","End date",
-                                        		property("year", "Year"), property("month", "Month"), property("day", "Day"))
+                                        property("agentName", getMessage("LBL_aeReport.concomitantMedications.agentName", "Medication")),
+                                        property("stillTakingMedications", getMessage("LBL_aeReport.concomitantMedications.stillTakingMedications", "Continued?")),
+                                        property("startDate", getMessage("LBL_aeReport.concomitantMedications.startDate", "Start date"),
+                                        		property("year", "Year"),
+                                                property("month", "Month"),
+                                                property("day", "Day")),
+                                        property("endDate", getMessage("LBL_aeReport.concomitantMedications.endDate", "End date"),
+                                        		property("year", "Year"),
+                                                property("month", "Month"),
+                                                property("day", "Day"))
                                        
                                 )
                         ),
@@ -228,17 +240,19 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		 property("participantHistory",
                         				 participantMeasure("height"),
                                          participantMeasure("weight"),
-                        				 property("baselinePerformanceStatus","Baseline performance")
+                        				 property("baselinePerformanceStatus", getMessage("LBL_aeReport.participantHistory.baselinePerformanceStatus", "Baseline performance"))
                         		 ),
                         		//fields related to diseases history
                         		 property("diseaseHistory",
-                                         	codedOrOther("abstractStudyDisease", "Disease name","otherPrimaryDisease","Other (disease)"),
-                                         	codedOrOther("codedPrimaryDiseaseSite", "Primary site of disease", "otherPrimaryDiseaseSite", "Other (site of primary disease)"),
-                                         	property("diagnosisDate","Date of initial diagnosis",
-                                         			property("year", "Year"), property("month", "Month"), property("day", "Day")),
+                                         	codedOrOther("abstractStudyDisease", getMessage("LBL_aeReport.diseaseHistory.abstractStudyDisease", "Disease name"), "otherPrimaryDisease", getMessage("", "Other (disease)")),
+                                         	codedOrOther("codedPrimaryDiseaseSite", getMessage("LBL_aeReport.diseaseHistory.codedPrimaryDiseaseSite", "Primary site of disease"), "otherPrimaryDiseaseSite", getMessage("LBL_aeReport.diseaseHistory.otherPrimaryDiseaseSite", "Other (site of primary disease)")),
+                                         	property("diagnosisDate", getMessage("LBL_aeReport.diseaseHistory.diagnosisDate", "Date of initial diagnosis"),
+                                         			    property("year", "Year"),
+                                                        property("month", "Month"),
+                                                        property("day", "Day")),
 			                        		//fields related to metastatic diseases
-			                        		list("metastaticDiseaseSites","Metastatic disease site",
-			                        				codedOrOther("codedSite","Site name","otherSite","Other(site of metastatic disease)")
+			                        		list("metastaticDiseaseSites", "Metastatic disease site",
+			                        				codedOrOther("codedSite", getMessage("LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite", "Site name"), "otherSite", getMessage("LBL_aeReport.diseaseHistory.metastaticDiseaseSites.otherSite", "Other(site of metastatic disease)"))
 			                        		)
 			                    )
                         		

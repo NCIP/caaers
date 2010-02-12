@@ -71,7 +71,9 @@
 		   
 			<div class="half">
 			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION" />
-			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Date of initial diagnosis" heading="Date of initial diagnosis" tabular="true"/>
+
+                  <caaers:message var="x" code="LBL_aeReport.diseaseHistory.diagnosisDate" />
+			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~${x}" heading="${x}" tabular="true"/>
 			</div>
 			<div class="half">
 		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" tabular="true" />
@@ -89,18 +91,28 @@
 				  	</chrome:division>
 					</div>
 					<br style="clear:both;"/>
-		<div class="half">
+		            <div class="half">
 					<chrome:division title="Prior therapies">
+
 						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
-						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~Therapy start date" heading="Therapy start date" tabular="true"/>
-						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~Therapy end date" heading="Therapy end date" tabular="true" />
+
+                        <caaers:message var="x" code="LBL_aeReport.saeReportPriorTherapies.startDate" />
+						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~${x}" heading="${x}" tabular="true"/>
+
+                        <caaers:message var="x" code="LBL_aeReport.saeReportPriorTherapies.endDate" />
+						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys~${x}" heading="${x}" tabular="true" />
+                        
 					</chrome:division>
 					</div>
 				<div class="half">
 					<chrome:division title="Concomitant Medications">
 						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications" />
-						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~Start date" heading="Start date" tabular="true" />
-						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~End date" heading="End date" tabular="true"/>
+
+                        <caaers:message var="x" code="LBL_aeReport.concomitantMedications.startDate" />
+						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~${x}" heading="${x}" tabular="true" />
+
+                        <caaers:message var="x" code="LBL_aeReport.concomitantMedications.startDate" />
+						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~${x}" heading="${x}" tabular="true"/>
 					</chrome:division>
 </div>
 <br style="clear:both;"/>

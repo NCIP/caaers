@@ -7,6 +7,7 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
 <%@attribute name="otherSite" type="java.lang.String"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <c:set var="mainGroup">metastatic${index}</c:set>
 <c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
@@ -14,7 +15,7 @@
 <chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
 
     <jsp:attribute name="title">
-        ${siteField.displayName}:&nbsp;
+        <caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite" />:&nbsp;
 		${anatomicSite.name}
         <c:if test="${not empty otherSite}"> - ${otherSite}</c:if>
     </jsp:attribute>
@@ -45,7 +46,7 @@
         &nbsp;
             <span id="otherMetastaticDS_${index}" style="display:none;">
                     <%-- Other, Specify--%>
-                    &nbsp;Other, specify: <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
+                    &nbsp;<caaers:message code="LBL_aeReport.diseaseHistory.metastaticDiseaseSites.otherSite" /> <ui:text path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite" required="false"/>
             </span>
         <span id="showALL${index}">
             <a style='cursor:pointer; floating:right; color:blue; text-decoration:underline;' onClick="showShowAllTable('_c2_${index}', 'aeReportDOTdiseaseHistoryDOTmetastaticDiseaseSitesOPEN${index}CLOSEDOTcodedSite')" id="_c2_${index}">Show All</a>

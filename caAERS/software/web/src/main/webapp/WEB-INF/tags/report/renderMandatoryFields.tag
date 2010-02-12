@@ -4,7 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@attribute name="key" required="true" %>
+<%@attribute name="key" required="true" rtexprvalue="true" %>
 <%@attribute name="tabular" type="java.lang.Boolean" %>
 <%@attribute name="singleRow" type="java.lang.Boolean" %>
 <%@attribute name="startIndex" type="java.lang.Integer"%>
