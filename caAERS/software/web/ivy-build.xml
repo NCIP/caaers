@@ -64,7 +64,12 @@
 		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
 	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
-	 	
+
+         <!-- label.properties should be moved to WEB-INF for Reloadable messageSource -->
+         <move file="${war.dir}/WEB-INF/classes/label.properties" todir="${war.dir}/WEB-INF" />
+         <move file="${war.dir}/WEB-INF/classes/help.properties" todir="${war.dir}/WEB-INF" />
+         <move file="${war.dir}/WEB-INF/classes/error_messages.properties" todir="${war.dir}/WEB-INF" />
+
 	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
 	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
 	 	</war>
@@ -89,7 +94,14 @@
 		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
 		<mkdir dir="${main.src}/../webapp/WEB-INF/classes/META-INF" />
 		<mkdir dir="${main.src}/../webapp/WEB-INF/classes/META-INF/xfire" />
+
 		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes"  filter="false" />
+
+        <!-- label.properties should be moved to WEB-INF for Reloadable messageSource -->
+        <move file="${main.src}/../webapp/WEB-INF/classes/label.properties" todir="${main.src}/../webapp/WEB-INF" />
+        <move file="${main.src}/../webapp/WEB-INF/classes/help.properties" todir="${main.src}/../webapp/WEB-INF" />
+        <move file="${main.src}/../webapp/WEB-INF/classes/error_messages.properties" todir="${main.src}/../webapp/WEB-INF" />
+
 		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib"  filter="false" />
 		<copy-resources src="${webservice.xsd.src}" dest="${main.src}/../webapp/WEB-INF/classes/gov/nih/nci/cabig/caaers" filter="false"/>
 		<copy-resources src="${main.src.resources}/xfire" dest="${main.src}/../webapp/WEB-INF/classes/META-INF/xfire"  filter="false" />

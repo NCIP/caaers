@@ -29,17 +29,30 @@
                 	</div>
             	</li>
             	<li id="thirdlevelnav" class="tab">
-                	<div>
-                   		<a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a>
-                	</div>
+                	<div><a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a></div>
             	</li>
         	</ul>
     	</div>
+
+<script>
+    function reloadLabels() {
+        jQuery.ajax({
+            url: '<c:url value="/pages/admin/reload" />',
+            success: function(data) {
+                jQuery('#reloadedLabels').html("<a style='color:green; font-weight:bold;'>Labels reloaded successfully.</a>");
+            }
+        });
+    }
+</script>
+        
     <form:form action="${action}" cssClass="standard">
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
-            <c:url value="/pages/admin/configure" var="action"/>
 
+        <div class="row">
+            <div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
+            <div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
+        </div>
             <c:forEach items="${command.conf}" var="entry" varStatus="status">
                     <div class="row">
                         <div class="label"><form:label path="conf[${entry.key}].value">${entry.value.property.name}</form:label></div>

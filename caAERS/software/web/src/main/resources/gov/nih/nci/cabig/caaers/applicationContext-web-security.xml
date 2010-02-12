@@ -76,6 +76,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<!--========== TODO: ADMIN ===========-->
 		
+        <entry key="/pages/admin/reload"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/configure"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <entry key="/pages/admin/configure"

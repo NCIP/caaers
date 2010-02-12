@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
     >
-    <bean name="expeditedReportTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree">
+    <bean name="expeditedReportTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree" scope="prototype">
         <constructor-arg ref="messageSource" />
     </bean>
     <bean name="caaersFieldsTree" class="gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersFieldsTree">

@@ -48,13 +48,13 @@
         </property>
     </bean>
 	
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basenames">
 	    	<list>
-	    		<value>help</value>
-	    		<value>label</value>
-				<value>service-messages</value>
-				<value>error_messages</value>
+                <value>/WEB-INF/help</value>
+                <value>/WEB-INF/label</value>
+                <value>/WEB-INF/error_messages</value>
+                <value>service-messages</value>
 	    	</list>
 	    </property>
   </bean>

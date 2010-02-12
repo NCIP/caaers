@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
@@ -42,25 +43,30 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
     protected ConfigPropertyDao configPropertyDao;
 
     public AbstractReportDefinitionController() {
-        initFlow();
         super.setAllowDirtyBack(false);
         super.setAllowDirtyForward(false);
     }
 
-    // initializes the flow
-    protected void initFlow() {
-        setFlow(new Flow<ReportDefinitionCommand>(getFlowName()));
-        BasicsTab firstTab = new BasicsTab();
-        ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
-        ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
-        NotificationsTab secondTab = new NotificationsTab();
-        ReviewTab thirdTab = new ReviewTab();
+    @Override
+    public FlowFactory<ReportDefinitionCommand> getFlowFactory() {
+        return new FlowFactory<ReportDefinitionCommand>(){
+            public Flow<ReportDefinitionCommand> createFlow(ReportDefinitionCommand command) {
+                Flow<ReportDefinitionCommand> flow = new Flow<ReportDefinitionCommand>(getFlowName());
+                BasicsTab basicsTab = new BasicsTab();
+                ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
+                ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
+                NotificationsTab notificationsTab = new NotificationsTab();
+                ReviewTab reviewTab = new ReviewTab();
 
-        getFlow().addTab(firstTab);
-        getFlow().addTab(deliveryDefTab);
-        getFlow().addTab(mandatoryFieldTab);
-        getFlow().addTab(secondTab);
-        getFlow().addTab(thirdTab);
+                flow.addTab(basicsTab);
+                flow.addTab(deliveryDefTab);
+                flow.addTab(mandatoryFieldTab);
+                flow.addTab(notificationsTab);
+                flow.addTab(reviewTab);
+
+                return flow;
+            }
+        };
     }
 
     @Override
