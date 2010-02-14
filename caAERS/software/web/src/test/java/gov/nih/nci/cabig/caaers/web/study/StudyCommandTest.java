@@ -253,4 +253,52 @@ public class StudyCommandTest extends AbstractTestCase {
 		assertFalse(command.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE));
 		assertTrue(command.getStudy().hasTherapyOfType(StudyTherapyType.BEHAVIORAL));
 	}
+
+    //new study save.
+    public void testSave(){
+
+        Study s = Fixtures.createStudy("test");
+
+        EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(s);
+        EasyMock.expect(studyDao.initialize(s)).andReturn(s);
+        replayMocks();
+
+        command.getStudy().setAdeersPDFType(true);
+        command.getStudy().setCaaersXMLType(false);
+
+        command.save();
+
+        assertSame(s, command.getStudy());
+        assertTrue(command.getStudy().getAdeersPDFType());
+        assertFalse(command.getStudy().getCaaersXMLType());
+
+        verifyMocks();
+
+    }
+
+
+    //new study edit.
+    public void testSave_EditingStudy(){
+
+        Study s = Fixtures.createStudy("test");
+
+        command.getStudy().setId(5);
+        studyRepository.synchronizeStudyPersonnel(command.getStudy());
+        EasyMock.expect(studyRepository.merge(command.getStudy())).andReturn(s);
+        EasyMock.expect(studyDao.initialize(s)).andReturn(s);
+        replayMocks();
+
+        command.getStudy().setAdeersPDFType(true);
+        command.getStudy().setCaaersXMLType(false);
+
+        command.save();
+
+        assertSame(s, command.getStudy());
+        assertTrue(command.getStudy().getAdeersPDFType());
+        assertFalse(command.getStudy().getCaaersXMLType());
+
+        verifyMocks();
+
+    }
+
 }

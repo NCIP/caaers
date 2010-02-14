@@ -20,8 +20,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
 
 /**
- * User: Ion C. Olaru
+ * @author Ion C. Olaru
  * Date: Dec 22, 2008 - 10:44:55 AM
+ * @author Biju Joseph
  */
 
 public class StudyCommand {
@@ -484,10 +485,17 @@ public class StudyCommand {
      * This method will save a study into the DB
      */
     public void save(){
-    	
+
+         //synchronize research staff if study have a valid ID.
+         if(study.getId() != null ){
+             studyRepository.synchronizeStudyPersonnel(study);
+         }
+
+        //save the study by merging it.
          Study mergedStudy = studyRepository.merge(study);
          studyDao.initialize(mergedStudy);
 
+         // poperly set the  report formats
          mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
          mergedStudy.setCaaersXMLType(study.getCaaersXMLType());
          mergedStudy.setCiomsPDFType(study.getCiomsPDFType());

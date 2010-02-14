@@ -78,33 +78,6 @@ public class EditStudyController extends StudyController<StudyCommand> {
     }
 
     @Override
-    protected StudyCommand save(final StudyCommand cmd, final Errors errors) {
-        Study study = cmd.getStudy();
-
-        if (errors.hasErrors()) {
-            return cmd;
-        }
-
-        getStudyRepository().synchronizeStudyPersonnel(study);
-
-        Study mergedStudy = getDao().merge(study);
-        getDao().initialize(mergedStudy);
-
-        // update the studySiteIndex
-        // mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
-
-        mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
-        mergedStudy.setCaaersXMLType(study.getCaaersXMLType());
-        mergedStudy.setCiomsPDFType(study.getCiomsPDFType());
-        mergedStudy.setCiomsSaePDFType(study.getCiomsSaePDFType());
-        mergedStudy.setDcpSAEPDFType(study.getDcpSAEPDFType());
-        mergedStudy.setMedwatchPDFType(study.getMedwatchPDFType());
-
-        cmd.setStudy(mergedStudy);
-        return cmd;
-    }
-
-    @Override
     protected void layoutTabs(final Flow<StudyCommand> flow) {
     	/**
     	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 

@@ -328,7 +328,7 @@ public class StudyRepository {
      * This method will associate StudySites to the {@link AdverseEventReportingPeriod} and {@link ExpeditedAdverseEventReport} workflow.
      * The default assigned to {@link AdverseEventReportingPeriod} is <b>reportingperiod_coordinating_center</b>
      * The default assigned to {@link ExpeditedAdverseEventReport} is <b>expedited_domestic</b> 
-     * @param site
+     * @param sites - A list of {@link StudySite}
      */
     public void associateSiteToWorkflowConfig(List<StudySite> sites){
     	

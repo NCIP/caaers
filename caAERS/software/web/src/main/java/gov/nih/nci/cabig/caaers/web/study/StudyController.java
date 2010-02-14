@@ -231,6 +231,19 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     	if(StringUtils.isEmpty(request.getParameter("_action")))  	super.populateSaveConfirmationMessage(refdata, request, command, errors, page);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected C save(C command, Errors errors) {
+
+        if(!errors.hasErrors()){
+           command.save();
+        }
+        
+        return null;
+    }
+    
     // /BEAN PROPERTIES
 
     public AgentDao getAgentDao() {
