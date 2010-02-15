@@ -145,13 +145,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                         ),
                         section(TREATMENT_INFO_SECTION,
                             property("treatmentInformation",
-                                codedOrOther("treatmentAssignment", getMessage("LBL_aeReport.treatmentInformation.treatmentAssignment", "Treatment assignment code"), "treatmentDescription", getMessage("LBL_aeReport.treatmentInformation.treatmentAssignmentDescription", "Description of treatment assignment or dose level")),
-								property("firstCourseDate", getMessage("LBL_aeReport.treatmentInformation.firstCourseDate", "Start date of first course/cycle")),
-								property("adverseEventCourse",
-                                            property("date", getMessage("LBL_aeReport.treatmentInformation.adverseEventCourse.date", "Start date of this course/cycle")),
-                                            property("number", getMessage("LBL_aeReport.treatmentInformation.adverseEventCourse.number", "Course number on which event occurred")),
-                                            property("totalCourses", getMessage("LBL_aeReport.treatmentInformation.totalCourses", "Total number of courses to date"))
-							            )
+                                    codedOrOther("treatmentAssignment", getMessage("LBL_aeReport.treatmentInformation.treatmentAssignment", "Treatment assignment code"), "treatmentDescription", getMessage("LBL_aeReport.treatmentInformation.treatmentAssignmentDescription", "Description of treatment assignment or dose level")),
+                                    property("firstCourseDate", getMessage("LBL_aeReport.treatmentInformation.firstCourseDate", "Start date of first course/cycle")),
+                                    property("adverseEventCourse", property("date", getMessage("LBL_aeReport.treatmentInformation.adverseEventCourse.date", "Start date of this course/cycle")), property("number", getMessage("LBL_aeReport.treatmentInformation.adverseEventCourse.number", "Course number on which event occurred"))),
+                                    property("totalCourses", getMessage("LBL_aeReport.treatmentInformation.totalCourses", "Total number of courses to date"))
 						        )
                             ),
 						section(LABS_SECTION, 
