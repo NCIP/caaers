@@ -9,23 +9,20 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
-
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 /**
  * 
  * @author Biju Joseph
+ * @author Ion C. Olaru
  *
  */
 public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
@@ -389,7 +386,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         WebUtils.populateErrorFieldNames(command.getEmptyFieldNameMap(), errors);
     }
 
-    protected void validateDiseaseInformation(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    public void validateDiseaseInformation(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	Date todaysDate = new Date();
 
     	if(command.getAssignment().getDiseaseHistory() != null && command.getAssignment().getDiseaseHistory().getDiagnosisDate() != null) {
@@ -397,10 +394,12 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
             if (!DateUtils.isValidDate(dv)) {
                 errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_036");
+                return;
             }
 
-    		if (DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0)
+    		if (DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0) {
     			errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_035");
+            }
         }
     }
 

@@ -152,9 +152,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
    
     
     public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
-        System.out.println("postProcess");
-        System.out.println("assignment=" + command.getAssignment());
-        
     	if(errors.hasErrors()) return;
 
         if (command.getAssignment() != null) {
