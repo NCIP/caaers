@@ -1,3 +1,8 @@
+<%--
+	This page renders one Medical Device from AE Flow. 
+	Author : Ion C. Olaru
+--%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
@@ -186,21 +191,27 @@
     }
 
     setTitleDevice_${index}.defer();
-    if($("aeReport.medicalDevices[${index}].brandName")){
-    	Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
-        	setTitleDevice_${index}();
-    	});
+    if($("aeReport.medicalDevices[${index}].brandName")) {
+        if ($("aeReport.medicalDevices[${index}].brandName")) {
+            Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
+                setTitleDevice_${index}();
+            });
+        }
     }
 
-	if($("aeReport.medicalDevices[${index}].commonName")){
-    	Event.observe($("aeReport.medicalDevices[${index}].commonName"), "change", function() {
-        	setTitleDevice_${index}();
-    	});
+	if($("aeReport.medicalDevices[${index}].commonName")) {
+        if ($("aeReport.medicalDevices[${index}].commonName")) {
+            Event.observe($("aeReport.medicalDevices[${index}].commonName"), "change", function() {
+                setTitleDevice_${index}();
+            });
+        }
 	}
 
     var dOperator = $('aeReport.medicalDevices[${index}].deviceOperator');
     Event.observe(dOperator, "change", function() {
         // alert(${index});
+        if (!$('aeReport.medicalDevices[${index}].otherDeviceOperator-row')) return;
+        
         if (dOperator.options[dOperator.selectedIndex].value != 'OTHER') {
             $('aeReport.medicalDevices[${index}].otherDeviceOperator-row').hide();
             $('aeReport.medicalDevices[${index}].otherDeviceOperator').value = '';
