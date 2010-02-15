@@ -372,6 +372,7 @@ public class ExpeditedReportTree extends PropertylessNode {
     }
 
     public String getMessage(String label, String defaultMessage) {
+        if (getMessageSource() == null) return defaultMessage;
         return getMessageSource().getMessage(label, null, defaultMessage, Locale.getDefault());
     }
 }
