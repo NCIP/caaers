@@ -7,17 +7,26 @@
  * Biju Joseph
  */
 
-//will show a row
+/*
+* This will show the entire row by its id
+*
+* */
 function showRow(_rowId){
     if($(_rowId)) $(_rowId).show();
 }
 
-//will hide a row
+/*
+* This will hide the entire row by its id
+* 
+* */
 function hideRow(_rowId){
    if($(_rowId)) $(_rowId).hide();
 }
 
-//will clear the field and hide its row
+/*
+* This will hide the entire row with its children, label and value
+*
+* */
 function hideFieldAndRow(_fieldPath){
    if($(_fieldPath)) $(_fieldPath).clear();
    hideRow(_fieldPath + "-row")

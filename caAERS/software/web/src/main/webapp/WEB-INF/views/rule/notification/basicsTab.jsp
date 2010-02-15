@@ -57,12 +57,12 @@
          var show = s.options[s.selectedIndex].value == 'CUSTOM_REPORT';
          
          if (show) {
-             $('reportDefinition.header-row').show();
-             $('reportDefinition.footer-row').show();
+             showRow("reportDefinition.header-row");
+             showRow("reportDefinition.footer-row");
          } else {
-             $('reportDefinition.header-row').hide();
+             hideRow("reportDefinition.header-row");
              $('reportDefinition.header').value = '';
-             $('reportDefinition.footer-row').hide();
+             hideRow("reportDefinition.footer-row");
              $('reportDefinition.footer').value = '';
          }
      }
