@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static org.easymock.EasyMock.expect;
 
@@ -48,7 +49,7 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator(){
 			public void validate(Object obj, Errors e) {
 				AdverseEventReportingPeriod adverseEventReportingPeriod = (AdverseEventReportingPeriod) obj;
-				e.reject("CAE_007", "test error");
+				e.reject("CAE_007", "All adverse events should be graded." );
 			}
 		};
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
