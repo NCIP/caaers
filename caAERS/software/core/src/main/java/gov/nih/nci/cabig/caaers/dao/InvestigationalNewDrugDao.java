@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.INDHolder;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -117,5 +118,16 @@ public class InvestigationalNewDrugDao extends GridIdentifiableDao<Investigation
             };
 
         });
+    }
+    
+    /**
+     * Get the list of all InvestigationalNewDrugs.
+     * 
+     * @return return the list of InvestigationalNewDrugs.
+     */
+    @SuppressWarnings("unchecked")
+    public List<InvestigationalNewDrug> getAll() {
+    	List<InvestigationalNewDrug> indList = getHibernateTemplate().find("from InvestigationalNewDrug");
+    	return indList;
     }
 }

@@ -2,8 +2,12 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.resolver.RemoteStudyResolver;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.semanticbits.coppa.domain.annotations.RemoteEntity;
 import com.semanticbits.coppa.domain.annotations.RemoteProperty;
@@ -46,5 +50,20 @@ public class RemoteStudy extends Study{
     public String getStatus() {
         return status;
     }
+	
+	private List<InvestigationalNewDrug> investigationalNewDrugList = new ArrayList<InvestigationalNewDrug>();
 
+	@Transient
+	public List<InvestigationalNewDrug> getInvestigationalNewDrugList() {
+		return investigationalNewDrugList;
+	}
+
+	public void setInvestigationalNewDrugList(
+			List<InvestigationalNewDrug> investigationalNewDrugList) {
+		this.investigationalNewDrugList = investigationalNewDrugList;
+	}
+	
+	public void addInvestigationalNewDrug(InvestigationalNewDrug investigationalNewDrug){
+		getInvestigationalNewDrugList().add(investigationalNewDrug);
+	}
 }

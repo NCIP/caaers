@@ -41,7 +41,28 @@
     <ORGANIZATIONS
         id="-1001"
         name="New Site"
+        nci_institute_code="NOI"
         grid_id="gridSite"/>
+     
+    <ORGANIZATIONS
+		id="-1111"
+		name="Dummy Organization"
+		nci_institute_code="DUMMY"
+		grid_id="DummyNciGridSite"/>	
+
+	<INVESTIGATORS 
+		id="-1111" 
+		first_name="Dummy" 
+		last_name="Dummy" 
+		email_address="dummy@dummy.org" 
+		phone_number="000-000-0000"
+		nci_identifier="-1111"/> 
+
+	<SITE_INVESTIGATORS 
+		id="-1111" 
+		site_id="-1111" 
+		investigator_id="-1111"/>		       
+        
     <STUDIES
     	id="-2001"
     	multi_institution_indicator="0"

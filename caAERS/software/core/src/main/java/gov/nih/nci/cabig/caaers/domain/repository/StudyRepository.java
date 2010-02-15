@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
@@ -11,9 +12,13 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.INDHolder;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
@@ -56,6 +61,7 @@ public class StudyRepository {
     private OrganizationRepository organizationRepository;
     private InvestigatorDao investigatorDao;
     private WorkflowConfigDao workflowConfigDao;
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
     
     //nci_institute_code for National Cancer Institute. 
     private static final String INSTITUTE_CODE = "NCI"; 
@@ -92,6 +98,7 @@ public class StudyRepository {
             			remoteStudy.getNciAssignedIdentifier().setOrganization(nciOrg);
             			verifyAndSaveOrganizations(remoteStudy);
             			verifyAndSaveInvestigators(remoteStudy);
+            			verifyAndSaveIND((RemoteStudy)remoteStudy);
             		}
             		//Save the studies returned from COPPA
             		saveRemoteStudies(remoteStudies);
@@ -243,6 +250,34 @@ public class StudyRepository {
     }
     
     /**
+     * This method iterates the IND list in RemoteStudy and saves it in DB.
+     * @param remoteStudy
+     */
+    protected void verifyAndSaveIND(RemoteStudy remoteStudy){
+    	Organization dbOrg = null;
+    	Investigator dbInv = null;
+    	for(InvestigationalNewDrug indInvestigationalNewDrug : remoteStudy.getInvestigationalNewDrugList()){
+    		INDHolder holder = indInvestigationalNewDrug.getINDHolder() ;
+    		if(holder instanceof OrganizationHeldIND){
+    			dbOrg = organizationDao.getByNCIcode(((OrganizationHeldIND)holder).getOrganization().getNciInstituteCode());
+    			if(dbOrg == null){
+    				dbOrg = organizationDao.getByNCIcode(CoppaConstants.DUMMY_ORGANIZATION_IDENTIFIER);
+    			}
+    			((OrganizationHeldIND)holder).setOrganization(dbOrg);
+        		investigationalNewDrugDao.save(indInvestigationalNewDrug);
+    		}
+    		if(holder instanceof InvestigatorHeldIND){
+    			dbInv = investigatorDao.getByNciIdentfier(((InvestigatorHeldIND)holder).getInvestigator().getNciIdentifier());
+    			if(dbInv == null){
+    				dbInv = investigatorDao.getByNciIdentfier(CoppaConstants.DUMMY_INVESTIGATOR_IDENTIFIER);
+    			}
+    			((InvestigatorHeldIND)holder).setInvestigator(dbInv);
+    			investigationalNewDrugDao.save(indInvestigationalNewDrug);
+    		}
+    	}
+    }
+    
+    /**
      * Search using a sample populate Study object
      *
      * @param study the study object
@@ -368,5 +403,8 @@ public class StudyRepository {
 		this.workflowConfigDao = workflowConfigDao;
 	}
 
-	
+	public void setInvestigationalNewDrugDao(
+			InvestigationalNewDrugDao investigationalNewDrugDao) {
+		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
 }

@@ -7,10 +7,15 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.coppa.services.pa.StudyProtocol;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+
 
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.easymock.EasyMock;
 import org.iso._21090.II;
 /**
@@ -74,8 +79,6 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-	
-
 	//Will keep the same "Drug" and remove "Device"
 	public void testPopulateStudyTherapies_KeepDrugAndRemoveDevice() throws Exception{
 		
@@ -120,5 +123,48 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
+	public void testPopulateIND_NIH_NCI_CoppaResponse() throws Exception{
+		String xml =  IOUtils.toString(getClass().getResourceAsStream("indide_with_nci_nih_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), (Metadata)EasyMock.anyObject())).andReturn(xml);
+		replayMocks();
+		RemoteStudy remoteStudy = new RemoteStudy();
+		studyResolver.populateIND(studyProtocol, remoteStudy);
+		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
+		assertEquals(2, remoteStudy.getInvestigationalNewDrugList().size());
+		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
+			assertTrue(ind.getINDHolder() instanceof OrganizationHeldIND);
+			assertTrue(!StringUtils.equals(((OrganizationHeldIND)ind.getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		}
+		verifyMocks();
+	}
 	
+	public void testPopulateIND_Industry_Organization_CoppaResponse() throws Exception{
+		String xml =  IOUtils.toString(getClass().getResourceAsStream("indide_with_industry_org_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), (Metadata)EasyMock.anyObject())).andReturn(xml);
+		replayMocks();
+		RemoteStudy remoteStudy = new RemoteStudy();
+		studyResolver.populateIND(studyProtocol, remoteStudy);
+		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
+		assertEquals(2, remoteStudy.getInvestigationalNewDrugList().size());
+		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
+			assertTrue(ind.getINDHolder() instanceof OrganizationHeldIND);
+			assertTrue(StringUtils.equals(((OrganizationHeldIND)ind.getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		}
+		verifyMocks();
+	}
+	
+	public void testPopulateIND_Investigator_CoppaResponse() throws Exception{
+		String xml =  IOUtils.toString(getClass().getResourceAsStream("indide_with_investigator_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), (Metadata)EasyMock.anyObject())).andReturn(xml);
+		replayMocks();
+		RemoteStudy remoteStudy = new RemoteStudy();
+		studyResolver.populateIND(studyProtocol, remoteStudy);
+		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
+		assertEquals(1, remoteStudy.getInvestigationalNewDrugList().size());
+		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
+			assertTrue(ind.getINDHolder() instanceof InvestigatorHeldIND);
+			assertTrue(StringUtils.equals(((InvestigatorHeldIND)ind.getINDHolder()).getInvestigator().getNciIdentifier(), "-1111"));
+		}
+		verifyMocks();
+	}
 }

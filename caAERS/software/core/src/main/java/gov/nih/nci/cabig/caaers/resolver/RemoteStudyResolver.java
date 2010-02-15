@@ -7,7 +7,12 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
@@ -34,6 +39,7 @@ import gov.nih.nci.coppa.services.pa.Arm;
 import gov.nih.nci.coppa.services.pa.DocumentWorkflowStatus;
 import gov.nih.nci.coppa.services.pa.PlannedActivity;
 import gov.nih.nci.coppa.services.pa.StudyContact;
+import gov.nih.nci.coppa.services.pa.StudyIndlde;
 import gov.nih.nci.coppa.services.pa.StudyOverallStatus;
 import gov.nih.nci.coppa.services.pa.StudyProtocol;
 import gov.nih.nci.coppa.services.pa.StudySiteContact;
@@ -45,6 +51,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -814,6 +821,77 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         t.setTerm(Term.CTC);
         t.setCtcVersion(v3);
         return t;
+    }
+    
+    
+    /**
+     * This method fetches & creates IND in caAERS.
+     * @param studyProtocol
+     * @param remoteStudy
+     * @throws Exception
+     */
+    public void populateIND(StudyProtocol studyProtocol,RemoteStudy remoteStudy) throws Exception{
+    	
+    	StringTokenizer st = null;
+    	LocalOrganization localOrg = null;
+    	LocalInvestigator localInvestigator = null;
+    	InvestigationalNewDrug indInvestigationalNewDrug = null;
+    	//Fetch StudyIndIde from COPPA
+    	String paIdPayLoad = CoppaPAObjectFactory.getPAIdXML(CoppaPAObjectFactory.getPAId(studyProtocol.getIdentifier().getExtension()));
+    	Metadata mData = new Metadata(OperationNameEnum.getByStudyProtocol.getName(), "extId", ServiceTypeEnum.STUDY_IND_IDE.getName());
+    	String studyIndIdeResultXml = broadcastCOPPA(paIdPayLoad,mData);
+    	List<String> results = XMLUtil.getObjectsFromCoppaResponse(studyIndIdeResultXml);
+    	List<StudyIndlde> studyIndldeList = new ArrayList<StudyIndlde>();
+    	if(results != null){
+    		for (String result:results) {
+    			studyIndldeList.add(CoppaPAObjectFactory.getStudyIndIde(result));
+    		}
+    	}
+    	//Create IND in caAERS.
+    	//If HolderType is NCI or NIH then a valid Organization will exist.
+    	//If HolderType is Industry or Organization then we assign a DUMMY organization.
+    	//If HolderType is Investigator we assign IND to a Dummy Investigator.
+    	for(StudyIndlde studyIndlde : studyIndldeList){
+    		if("IND".equals(studyIndlde.getIndldeTypeCode().getCode())){
+    			if(CoppaConstants.HOLDER_TYPE_LIST.contains(studyIndlde.getHolderTypeCode().getCode())){
+        	        String orgIdentifier = "";
+        	        if("NCI".equals(studyIndlde.getHolderTypeCode().getCode())){
+        	        	orgIdentifier = studyIndlde.getNciDivProgHolderCode().getCode();
+        	        }
+        	        if("NIH".equals(studyIndlde.getHolderTypeCode().getCode())){
+        	        	String nihInstHolder = studyIndlde.getNihInstHolderCode().getCode();
+        	        	st = new StringTokenizer(nihInstHolder,"-");
+        	        	if(st.hasMoreTokens()){
+        	        		orgIdentifier = st.nextToken();
+        	        	}
+        	        }
+        	        if(CoppaConstants.HOLDER_TYPE_INV_OR_ORG.contains(studyIndlde.getHolderTypeCode().getCode())){
+        	        	orgIdentifier = CoppaConstants.DUMMY_ORGANIZATION_IDENTIFIER;
+        	        }
+        	        if(StringUtils.isNotEmpty(orgIdentifier)){
+            	        indInvestigationalNewDrug = new InvestigationalNewDrug();
+            	        localOrg = new LocalOrganization();
+            	        indInvestigationalNewDrug.setIndNumber(Integer.parseInt(studyIndlde.getIndldeNumber().getValue()));
+            	        localOrg.setNciInstituteCode(orgIdentifier);
+            	        OrganizationHeldIND holder = new OrganizationHeldIND();
+            	        holder.setOrganization(localOrg);
+            	        holder.setInvestigationalNewDrug(indInvestigationalNewDrug);
+            	        indInvestigationalNewDrug.setINDHolder(holder);
+            	        remoteStudy.addInvestigationalNewDrug(indInvestigationalNewDrug);
+        	        }
+    			}else if(CoppaConstants.HOLDER_TYPE_INVESTIGATOR.equals(studyIndlde.getHolderTypeCode().getCode())){
+    				indInvestigationalNewDrug = new InvestigationalNewDrug();
+    				localInvestigator = new LocalInvestigator();
+    				indInvestigationalNewDrug.setIndNumber(Integer.parseInt(studyIndlde.getIndldeNumber().getValue()));
+    				localInvestigator.setNciIdentifier(CoppaConstants.DUMMY_INVESTIGATOR_IDENTIFIER);
+    				InvestigatorHeldIND holder = new InvestigatorHeldIND();
+    				holder.setInvestigator(localInvestigator);
+    				holder.setInvestigationalNewDrug(indInvestigationalNewDrug);
+    				indInvestigationalNewDrug.setINDHolder(holder);
+    				remoteStudy.addInvestigationalNewDrug(indInvestigationalNewDrug);
+    			}
+    		}
+    	}
     }
     
     

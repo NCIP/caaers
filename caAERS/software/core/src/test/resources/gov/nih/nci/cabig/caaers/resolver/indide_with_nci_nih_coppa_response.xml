@@ -1,0 +1,65 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>extId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>9f0826c0-1a58-11df-8e75-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>STUDY_IND_IDE</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>getByStudyProtocol</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:StudyIndlde xmlns:ns1="http://pa.services.coppa.nci.nih.gov">
+      <ns1:identifier extension="27901" identifierName="NCI study ind ide entity identifier" root="2.16.840.1.113883.3.26.4.3.2"/>
+
+      <ns1:studyProtocolIdentifier extension="27876" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+
+      <ns1:expandedAccessStatusCode nullFlavor="NI"/>
+
+      <ns1:expandedAccessIndicator value="false"/>
+
+      <ns1:grantorCode code="CDER"/>
+
+      <ns1:holderTypeCode code="NCI"/>
+
+      <ns1:nihInstHolderCode nullFlavor="NI"/>
+
+      <ns1:nciDivProgHolderCode code="CTEP"/>
+
+      <ns1:indldeNumber value="46211"/>
+
+      <ns1:indldeTypeCode code="IND"/>
+
+ </ns1:StudyIndlde>
+
+     <ns2:StudyIndlde xmlns:ns2="http://pa.services.coppa.nci.nih.gov">
+      <ns2:identifier extension="29899" identifierName="NCI study ind ide entity identifier" root="2.16.840.1.113883.3.26.4.3.2"/>
+
+      <ns2:studyProtocolIdentifier extension="27876" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+
+      <ns2:expandedAccessStatusCode nullFlavor="NI"/>
+
+      <ns2:expandedAccessIndicator value="false"/>
+
+      <ns2:grantorCode code="CDER"/>
+
+      <ns2:holderTypeCode code="NIH"/>
+
+      <ns2:nihInstHolderCode code="NEI-National Eye Institute"/>
+
+      <ns2:nciDivProgHolderCode nullFlavor="NI"/>
+
+      <ns2:indldeNumber value="98765"/>
+
+      <ns2:indldeTypeCode code="IND"/>
+
+ </ns2:StudyIndlde>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>

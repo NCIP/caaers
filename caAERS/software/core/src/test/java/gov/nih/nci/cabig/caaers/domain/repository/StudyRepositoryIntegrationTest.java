@@ -1,15 +1,23 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
+import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
+import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +27,23 @@ import java.util.List;
  */
 public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
 
-    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-            "organizationDao");
+    private OrganizationDao organizationDao;
 
-    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
-            "participantDao");
+    private ParticipantDao participantDao;
+    
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
 
-    StudyRepository studyRepository = (StudyRepository) getApplicationContext().getBean("studyRepository");
+    StudyRepository studyRepository;
 
+    
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+		participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
+		investigationalNewDrugDao = (InvestigationalNewDrugDao) getApplicationContext().getBean("investigationalNewDrugDao");
+		studyRepository = (StudyRepository) getApplicationContext().getBean("studyRepository");
+	}
     public String getTestDataFileName() {
         String fileName = "testdata/StudyRepositoryTest.xml";
         return fileName;
@@ -139,5 +156,39 @@ public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
     		assertEquals("report", studies.get(0).getStudySites().get(0).getStudySiteWorkflowConfigs().get(1).getName());
     	}
     	
+    }
+  
+   
+	public void test_verifyandSaveIND(){
+    	
+    	RemoteStudy remoteStudy = new RemoteStudy();
+    	InvestigationalNewDrug indInvestigationalNewDrug = new InvestigationalNewDrug();
+    	LocalOrganization localOrg = new LocalOrganization();
+        indInvestigationalNewDrug.setIndNumber(Integer.parseInt("43210"));
+        localOrg.setNciInstituteCode("NCI");
+        OrganizationHeldIND holder = new OrganizationHeldIND();
+        holder.setOrganization(localOrg);
+        holder.setInvestigationalNewDrug(indInvestigationalNewDrug);
+        indInvestigationalNewDrug.setINDHolder(holder);
+        remoteStudy.addInvestigationalNewDrug(indInvestigationalNewDrug);
+        
+        InvestigationalNewDrug indInvestigationalNewDrug1 = new InvestigationalNewDrug();
+        LocalInvestigator localInvestigator = new LocalInvestigator();
+		indInvestigationalNewDrug1.setIndNumber(Integer.parseInt("876543"));
+		localInvestigator.setNciIdentifier(CoppaConstants.DUMMY_INVESTIGATOR_IDENTIFIER);
+		InvestigatorHeldIND holder1 = new InvestigatorHeldIND();
+		holder1.setInvestigator(localInvestigator);
+		holder1.setInvestigationalNewDrug(indInvestigationalNewDrug1);
+		indInvestigationalNewDrug1.setINDHolder(holder1);
+		remoteStudy.addInvestigationalNewDrug(indInvestigationalNewDrug1);
+		
+		studyRepository.verifyAndSaveIND(remoteStudy);
+		
+		interruptSession();
+		{
+			List<InvestigationalNewDrug> indList =  investigationalNewDrugDao.getAll();
+			assertNotNull(indList);
+			assertEquals(2, indList.size());
+		}
     }
 }

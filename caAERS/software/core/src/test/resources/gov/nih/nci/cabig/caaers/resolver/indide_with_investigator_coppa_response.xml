@@ -1,0 +1,43 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>extId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>9f0826c0-1a58-11df-8e75-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>STUDY_IND_IDE</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>getByStudyProtocol</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+
+     <ns6:StudyIndlde xmlns:ns6="http://pa.services.coppa.nci.nih.gov">
+      <ns6:identifier extension="29905" identifierName="NCI study ind ide entity identifier" root="2.16.840.1.113883.3.26.4.3.2"/>
+
+      <ns6:studyProtocolIdentifier extension="27876" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+
+      <ns6:expandedAccessStatusCode nullFlavor="NI"/>
+
+      <ns6:expandedAccessIndicator value="false"/>
+
+      <ns6:grantorCode code="CDER"/>
+
+      <ns6:holderTypeCode code="Investigator"/>
+
+      <ns6:nihInstHolderCode nullFlavor="NI"/>
+
+      <ns6:nciDivProgHolderCode nullFlavor="NI"/>
+
+      <ns6:indldeNumber value="53893"/>
+
+      <ns6:indldeTypeCode code="IND"/>
+
+ </ns6:StudyIndlde>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>

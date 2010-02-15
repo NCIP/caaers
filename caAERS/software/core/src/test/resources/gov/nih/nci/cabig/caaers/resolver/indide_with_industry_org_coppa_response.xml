@@ -1,0 +1,66 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>extId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>9f0826c0-1a58-11df-8e75-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>STUDY_IND_IDE</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>getByStudyProtocol</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+
+     <ns4:StudyIndlde xmlns:ns4="http://pa.services.coppa.nci.nih.gov">
+      <ns4:identifier extension="29903" identifierName="NCI study ind ide entity identifier" root="2.16.840.1.113883.3.26.4.3.2"/>
+
+      <ns4:studyProtocolIdentifier extension="27876" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+
+      <ns4:expandedAccessStatusCode nullFlavor="NI"/>
+
+      <ns4:expandedAccessIndicator value="false"/>
+
+      <ns4:grantorCode code="CDER"/>
+
+      <ns4:holderTypeCode code="Organization"/>
+
+      <ns4:nihInstHolderCode nullFlavor="NI"/>
+
+      <ns4:nciDivProgHolderCode nullFlavor="NI"/>
+
+      <ns4:indldeNumber value="76543"/>
+
+      <ns4:indldeTypeCode code="IND"/>
+
+ </ns4:StudyIndlde>
+
+     <ns5:StudyIndlde xmlns:ns5="http://pa.services.coppa.nci.nih.gov">
+      <ns5:identifier extension="29904" identifierName="NCI study ind ide entity identifier" root="2.16.840.1.113883.3.26.4.3.2"/>
+
+      <ns5:studyProtocolIdentifier extension="27876" identifierName="NCI study protocol entity identifier" root="2.16.840.1.113883.3.26.4.3"/>
+
+      <ns5:expandedAccessStatusCode nullFlavor="NI"/>
+
+      <ns5:expandedAccessIndicator value="false"/>
+
+      <ns5:grantorCode code="CDER"/>
+
+      <ns5:holderTypeCode code="Industry"/>
+
+      <ns5:nihInstHolderCode nullFlavor="NI"/>
+
+      <ns5:nciDivProgHolderCode nullFlavor="NI"/>
+
+      <ns5:indldeNumber value="871234"/>
+
+      <ns5:indldeTypeCode code="IND"/>
+
+ </ns5:StudyIndlde>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>

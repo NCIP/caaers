@@ -200,7 +200,7 @@
 			<dependency org="org.mvel" name="mvel" rev="1.2.22-java1.5" force="true"/>
 
 			<!--Home grown infrastructure jar for COPPA  -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.4.5" conf="build->default;dist->dist;distGrid->distGrid" />
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.4.7" conf="build->default;dist->dist;distGrid->distGrid" />
 			<dependency org="gov.nih.nci.caxchange" name="coppa-commons" rev="1.2.3" conf="build->default;dist->dist;distGrid->distGrid" />
 
 			<!-- caXchange related jars -->
