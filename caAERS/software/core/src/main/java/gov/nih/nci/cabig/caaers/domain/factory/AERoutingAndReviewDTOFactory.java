@@ -39,7 +39,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setStudy(rp.getStudy());
 		dto.setId(rp.getId());
 		dto.setEvaluationPeriodName(rp.getName());
-		dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
+        if(rp.getEpoch() != null) dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
 		dto.setReviewStatus(rp.getReviewStatus());
