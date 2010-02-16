@@ -52,10 +52,9 @@ public class ReportDefinitionConverter {
 	}
 
     /*
-    * @author King Kong
     * Converting the JAXB object to caAERS equivalent object
-    *
-    * @param reportDefinitionDao - JAXB object
+    * @author King Kong
+    * @param reportDefinitionDto - JAXB object
     * */
 	public ReportDefinition dtoToDomain(ReportDefinitionType reportDefinitionDto){
 		ReportDefinition reportDefinitionDomain = new ReportDefinition();
