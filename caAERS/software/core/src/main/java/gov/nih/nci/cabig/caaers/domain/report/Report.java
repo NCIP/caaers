@@ -447,7 +447,6 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     * */
     @Transient
     public List<ReportMandatoryFieldDefinition> getFieldsByApplicability(Mandatory...types) {
-        List<ReportMandatoryFieldDefinition> fields = new LinkedList<ReportMandatoryFieldDefinition>();
         return getReportDefinition().getMandatoryFieldsForXMLByApplicability(types);
     }
 

@@ -10,11 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.OutputStream;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.util.List;
 
@@ -22,12 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 public class GenerateExpeditedPdfController extends AbstractCommandController {
-	
+
+    private static final Log log = LogFactory.getLog(GenerateExpeditedPdfController.class);
+
 	private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
 	private AdverseEventReportSerializer adverseEventReportSerializer;
@@ -37,29 +37,47 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 		setCommandClass(GenerateExpeditedPdfCommand.class);
     }
 	
-	private void generateOutput(String outFile,HttpServletResponse response,Integer reportId) throws Exception{
-
+	private void generateOutput(String outFile,HttpServletResponse response,Integer reportId) throws IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
 		File file = new File(tempDir + File.separator + outFile);
-		FileInputStream fileIn = new FileInputStream(file);
-		response.setContentType( "application/x-download" );
-		response.setHeader( "Content-Disposition", "attachment; filename="+outFile );
-		response.setHeader("Content-length", String.valueOf(file.length()));
-		response.setHeader("Pragma", "private");
-		response.setHeader("Cache-control","private, must-revalidate");
-		
-		OutputStream out = response.getOutputStream();
-		
-		byte[] buffer = new byte[2048];
-		int bytesRead = fileIn.read(buffer);
-		while (bytesRead >= 0) {
-		  if (bytesRead > 0)
-		    out.write(buffer, 0, bytesRead);
-		    bytesRead = fileIn.read(buffer);
-		}
-		out.flush();
-		out.close();
-		fileIn.close();
+        FileInputStream fileIn = null;
+        OutputStream out = null;
+        
+        try {
+            fileIn = new FileInputStream(file);
+            response.setContentType( "application/x-download" );
+            response.setHeader( "Content-Disposition", "attachment; filename="+outFile );
+            response.setHeader("Content-length", String.valueOf(file.length()));
+            response.setHeader("Pragma", "private");
+            response.setHeader("Cache-control","private, must-revalidate");
+
+            out = response.getOutputStream();
+
+            byte[] buffer = new byte[2048];
+            int bytesRead = fileIn.read(buffer);
+            while (bytesRead >= 0) {
+              if (bytesRead > 0)
+                out.write(buffer, 0, bytesRead);
+                bytesRead = fileIn.read(buffer);
+            }
+        } catch (FileNotFoundException e) {
+            log.error("File not found: " + file);
+            log.error(e.getMessage(), e);
+            throw e;
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        } finally {
+            try {
+                if (out != null) {
+                    out.flush();
+                    out.close();
+                }
+                if (fileIn != null) fileIn.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
 	@Override
@@ -143,15 +161,13 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			outw.close();
 	    			generateOutput(xmlOutFile,response,aeReportId);  				
     			}
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				// throw new RemoteException ("Error generating PDF ",e);
-			}
 
-		
-		return null;
+           } catch (IOException e) {
+               log.error(e.getMessage(), e);
+               e.printStackTrace();
+           }
+
+        return null;
 	}
 
 	public ReportDao getReportDao() {

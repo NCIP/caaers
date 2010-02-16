@@ -521,8 +521,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     @Transient
     public void buildMandatoryFieldsForXML(Mandatory...types) {
-        for (ReportMandatoryFieldDefinition mf : getMandatoryFieldsForXMLByApplicability(types)) {
-            if (this.mandatoryFieldsForXML == null) this.mandatoryFieldsForXML = new ArrayList<String>();
+        List<ReportMandatoryFieldDefinition> list = getMandatoryFieldsForXMLByApplicability(types);
+        if (list.size() > 0 && this.mandatoryFieldsForXML == null) this.mandatoryFieldsForXML = new ArrayList<String>();
+        for (ReportMandatoryFieldDefinition mf : list) {
             this.mandatoryFieldsForXML.add(mf.getFieldPath());
         }
     }
