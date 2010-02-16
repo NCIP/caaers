@@ -201,6 +201,7 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 		populateStudyTherapies(studyProtocol, remoteStudy);
 		reArrangeStudyIdentifers(remoteStudy);
 		populateArms(remoteStudy);
+		populateIND(studyProtocol, remoteStudy);
 		
 		return remoteStudy;
 	}
