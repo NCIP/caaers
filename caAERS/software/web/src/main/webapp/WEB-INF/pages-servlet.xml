@@ -17,7 +17,7 @@
     		<value>/WEB-INF/help</value>
     		<value>/WEB-INF/label</value>
             <value>/WEB-INF/error_messages</value>
-			<value>service-messages</value>
+			<value>/WEB-INF/service-messages</value>
     	</list>
     </property>
   </bean>
