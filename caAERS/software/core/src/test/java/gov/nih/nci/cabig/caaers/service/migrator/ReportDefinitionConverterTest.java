@@ -11,6 +11,9 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+/*
+* @author Ion C. Olaru
+* */
 public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	
 	ReportDefinitionConverter reportDefinitionConverter;
@@ -42,7 +45,19 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		
 		
 	}
-	
+    
+    /*
+    * @author Ion C. Olaru
+    * Testing whether the importing procedure is working for the reports definitions marked as Custom Report Format Type
+    *
+    * */
+	public void testCustomDtoToDomain() throws Exception {
+		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/custom-report.xml"));
+		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
+		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
+		assertEquals("CUSTOM_REPORT", reportDefinitionDomain.getReportFormatType().getCode());
+	}
+
 	public void testdomainToDto() throws Exception {
 		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/ctep_24_hour_sae_notification.xml"));
 		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);

@@ -30,6 +30,9 @@ import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* @author Ion C. Olaru
+* */
 public class ReportDefinitionConverter {
 	
 	private OrganizationDao organizationDao;
@@ -48,6 +51,12 @@ public class ReportDefinitionConverter {
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
 
+    /*
+    * @author King Kong
+    * Converting the JAXB object to caAERS equivalent object
+    *
+    * @param reportDefinitionDao - JAXB object
+    * */
 	public ReportDefinition dtoToDomain(ReportDefinitionType reportDefinitionDto){
 		ReportDefinition reportDefinitionDomain = new ReportDefinition();
 		
@@ -108,7 +117,7 @@ public class ReportDefinitionConverter {
 		}else{
 			reportDefinitionDomain.setReportType(ReportType.valueOf(reportDefinitionDto.getReportType().name()));
 		}
-		
+
 		if("CAAERSXML".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CAAERSXML);
 		}
@@ -127,7 +136,10 @@ public class ReportDefinitionConverter {
 		if("CIOMSSAEFORM".equals(reportDefinitionDto.getReportFormat())){
 			reportDefinitionDomain.setReportFormatType(ReportFormatType.CIOMSSAEFORM);
 		}
-		
+		if("CUSTOM_REPORT".equals(reportDefinitionDto.getReportFormat())){
+			reportDefinitionDomain.setReportFormatType(ReportFormatType.CUSTOM_REPORT);
+		}
+
 		//Populate Delivery Details.
 		ReportDeliveryDefinition reportDeliveryDefinition = null;
 		
