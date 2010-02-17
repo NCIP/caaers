@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.workflow.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
@@ -20,6 +21,7 @@ import static org.easymock.EasyMock.expect;
 /**
  * This class tests - PhysicianReviewActionHandler class.
  * @author Sameer Sawant
+ * @author Biju Joseph
  *
  */
 public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
@@ -27,22 +29,23 @@ public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
 	PhysicianReviewActionHandler handler;
 	ExecutionContext context;
 	ProcessInstance pInstance;
-	ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	ReportDao reportDao;
 	ContextInstance cInstance;
 	Map<Object, Object> contextVariables;
+    
 	private static String VAR_WF_TYPE = "var_wf_type";
-	private static String VAR_EXPEDITED_REPORT_ID = "var_expedited_report_id";
+	private static String VAR_REPORT_ID = "var_report_id";
 	private static String PHYSICIAN_APPROVE_TRANSITION = "Approve Report";
 	private static String ADDITIONAL_INFO_NEEDED_TRANSITION = "Request Additional Information";
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		reportDao = registerDaoMockFor(ReportDao.class);
 		handler = new PhysicianReviewActionHandler();
 		context = registerMockFor(ExecutionContext.class);
 		pInstance = registerMockFor(ProcessInstance.class);
 		cInstance = registerMockFor(ContextInstance.class);
-		handler.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
+		handler.setReportDao(reportDao);
 		setUpContextVariables();
 	}
 	
@@ -59,12 +62,12 @@ public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
 		expect(pInstance.getContextInstance()).andReturn(cInstance);
 		expect(cInstance.getVariables()).andReturn(contextVariables);
 		expect(context.getTransition()).andReturn(transition).anyTimes();
-		expect(expeditedAdverseEventReportDao.getById(1)).andReturn(aeReport);
-		expeditedAdverseEventReportDao.save(aeReport);
+		expect(reportDao.getById(1)).andReturn(report);
+		reportDao.save(report);
 		replayMocks();
 		handler.execute(context);
 		verifyMocks();
-		assertTrue("Physician sign-off incorrectly set to false", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
+		assertNull("Physician sign-off incorrectly set to false", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
 		assertTrue("Physician sign-off incorrectly set to false", aeReport.getReports().get(1).getLastVersion().getPhysicianSignoff());
 	}
 	
@@ -81,18 +84,18 @@ public class PhysicianReviewActionHandlerTest extends AbstractTestCase{
 		expect(pInstance.getContextInstance()).andReturn(cInstance);
 		expect(cInstance.getVariables()).andReturn(contextVariables);
 		expect(context.getTransition()).andReturn(transition).anyTimes();
-		expect(expeditedAdverseEventReportDao.getById(1)).andReturn(aeReport);
-		expeditedAdverseEventReportDao.save(aeReport);
+		expect(reportDao.getById(1)).andReturn(report);
+		reportDao.save(report);
 		replayMocks();
 		handler.execute(context);
 		verifyMocks();
-		assertFalse("Physician sign-off incorrectly set to true", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
+		assertNull("Physician sign-off incorrectly set to true", aeReport.getReports().get(0).getLastVersion().getPhysicianSignoff());
 		assertFalse("Physician sign-off incorrectly set to true", aeReport.getReports().get(1).getLastVersion().getPhysicianSignoff());
 	}
 	
 	public void setUpContextVariables(){
-		contextVariables = new HashMap<Object, Object>();
-		contextVariables.put(VAR_WF_TYPE, ExpeditedAdverseEventReport.class.getName());
-		contextVariables.put(VAR_EXPEDITED_REPORT_ID, 1);
+	    contextVariables = new HashMap<Object, Object>();
+		contextVariables.put(VAR_WF_TYPE, Report.class.getName());
+		contextVariables.put(VAR_REPORT_ID, 1);
 	}
 }
