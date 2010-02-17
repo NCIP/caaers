@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.io.FileNotFoundException;
@@ -55,7 +56,7 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		reportDefinitions = (gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions) unmarshaller.unmarshal(createInputStream("testdata/custom-report.xml"));
 		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
-		assertEquals("CUSTOM_REPORT", reportDefinitionDomain.getReportFormatType().getCode());
+		assertEquals(ReportFormatType.CUSTOM_REPORT, reportDefinitionDomain.getReportFormatType().getCode());
 	}
 
 	public void testdomainToDto() throws Exception {
