@@ -24,6 +24,7 @@ public class RoleAssigneeTest extends TestCase {
 	public void testGetUserRole() {
 		ra.setUserRole(PersonRole.ADVERSE_EVENT_COORDINATOR);
 		assertSame(PersonRole.ADVERSE_EVENT_COORDINATOR, ra.getUserRole());
+        assertEquals("caaers_ae_cd", ra.getUserRole().getRoleCode());
 	}
 
 	public void testSetUserRole() {
