@@ -40,11 +40,11 @@
 				
 
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="StudyConsumer-client" rev="2.8" transitive="false" />
+					name="StudyConsumer-client" rev="2.9" transitive="false" />
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="StudyConsumer-common" rev="2.8" transitive="false" />
+					name="StudyConsumer-common" rev="2.9" transitive="false" />
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="StudyConsumer-stubs" rev="2.8" transitive="false" />	 	
+					name="StudyConsumer-stubs" rev="2.9" transitive="false" />	 	
         	
         	
         	<!-- CTMS commons dependencies -->

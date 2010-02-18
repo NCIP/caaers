@@ -1,33 +1,55 @@
 package gov.nih.nci.cabig.caaers.grid;
 
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ccts.domain.AddressType;
 import gov.nih.nci.cabig.ccts.domain.CoordinatingCenterStudyStatusType;
+import gov.nih.nci.cabig.ccts.domain.HealthcareSiteInvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.HealthcareSiteType;
+import gov.nih.nci.cabig.ccts.domain.InvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.ccts.domain.Study;
 import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyDataEntryStatusType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
+import gov.nih.nci.cabig.ccts.domain.StudyInvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
+import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.easymock.classextension.EasyMock;
 
+/**
+ * 
+ * @author Monish Dombla
+ *
+ */
 public class CaaersStudyConsumerTest extends CaaersTestCase {
     CaaersStudyConsumer studyConsumer;
     protected OrganizationRepository organizationRepository;
+    protected InvestigatorRepository investigatorRepository;
     protected ConfigProperty configProperty;
     protected StudyDao studyDao;
     protected SiteInvestigatorDao siteInvestigatorDao;
@@ -232,4 +254,239 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
 		assertEquals("VA", organization.getState());
 		assertEquals("USA", organization.getCountry());
 	}
+	
+	/**
+	 * This test invokes studyConsumer.CreateOrUpdateInvestigator(...)
+	 * InvestiagtorType has empty externalId. Hence we got to create a LocalInvestigator
+	 */
+	public void testCreateOrUpdateInvestigator_LocalInv(){
+		investigatorRepository = registerMockFor(InvestigatorRepository.class);
+		studyConsumer.setInvestigatorRepository(investigatorRepository);
+		investigatorRepository.save((Investigator)EasyMock.anyObject(),(String)EasyMock.anyObject());
+		replayMocks();
+		
+		Organization organization = new LocalOrganization();
+		organization.setName("Organization");
+		organization.setNciInstituteCode("1234");
+		
+		InvestigatorType[] invTypes = new InvestigatorType[1];
+		invTypes[0] = new InvestigatorType();
+		invTypes[0].setFirstName("first_name");
+		invTypes[0].setLastName("last_name");
+		invTypes[0].setPhoneNumber("000-000-0001");
+		invTypes[0].setFaxNumber("000-000-0002");
+		invTypes[0].setNciIdentifier("12345");
+		invTypes[0].setEmail("unknown@example.com");
+		
+		Investigator investigator = studyConsumer.createOrUpdateInvestigator(null, organization, invTypes[0]);
+		verifyMocks();
+		
+		assertNotNull(investigator);
+		assertTrue(investigator instanceof LocalInvestigator);
+		assertEquals("12345", investigator.getNciIdentifier());
+		assertEquals("unknown@example.com", investigator.getEmailAddress());
+		assertNotNull(investigator.getSiteInvestigators());
+		assertEquals(1, investigator.getSiteInvestigators().size());
+	}
+	
+	/**
+	 * This test invokes studyConsumer.CreateOrUpdateInvestigator(...)
+	 * InvestiagtorType has an externalId. Hence we got to create a RemoteInvestigator
+	 */
+	public void testCreateOrUpdateInvestigator_RemoteInv(){
+		investigatorRepository = registerMockFor(InvestigatorRepository.class);
+		studyConsumer.setInvestigatorRepository(investigatorRepository);
+		investigatorRepository.save((Investigator)EasyMock.anyObject(),(String)EasyMock.anyObject());
+		replayMocks();
+		
+		Organization organization = new LocalOrganization();
+		organization.setName("Organization");
+		organization.setNciInstituteCode("1234");
+		
+		InvestigatorType[] invTypes = new InvestigatorType[1];
+		invTypes[0] = new InvestigatorType();
+		invTypes[0].setFirstName("first_name");
+		invTypes[0].setLastName("last_name");
+		invTypes[0].setPhoneNumber("000-000-0001");
+		invTypes[0].setFaxNumber("000-000-0002");
+		invTypes[0].setNciIdentifier("12345");
+		invTypes[0].setExternalId("98765");
+		invTypes[0].setEmail("unknown@example.com");
+		
+		Investigator investigator = studyConsumer.createOrUpdateInvestigator(null, organization, invTypes[0]);
+		verifyMocks();
+		
+		assertNotNull(investigator);
+		assertTrue(investigator instanceof RemoteInvestigator);
+		assertEquals("12345", investigator.getNciIdentifier());
+		assertEquals("98765", investigator.getExternalId());
+		assertNotNull(investigator.getSiteInvestigators());
+		assertEquals(1, investigator.getSiteInvestigators().size());
+	}
+	
+	/**
+	 * This test invokes studyConsumer.CreateOrUpdateInvestigator(...)
+	 * InvestiagtorType has an empty externalId. Investigator is not associated to the site.
+	 * New SiteInvestigator must be created and associated to the investigator. 
+	 */
+	public void testCreateOrUpdateInvestigator_NewAssocaition(){
+		investigatorRepository = registerMockFor(InvestigatorRepository.class);
+		studyConsumer.setInvestigatorRepository(investigatorRepository);
+		investigatorRepository.save((Investigator)EasyMock.anyObject(),(String)EasyMock.anyObject());
+		replayMocks();
+
+		Investigator investigator = new LocalInvestigator();
+		investigator.setFirstName("first_name");
+		investigator.setLastName("last_name");
+		investigator.setPhoneNumber("000-000-0001");
+		investigator.setFaxNumber("000-000-0002");
+		investigator.setNciIdentifier("12345");
+		Organization organization1 = new LocalOrganization();
+		organization1.setName("Organization 1");
+		organization1.setNciInstituteCode("1234");
+		SiteInvestigator siteInvestigator = new SiteInvestigator();
+		siteInvestigator.setInvestigator(investigator);
+		siteInvestigator.setOrganization(organization1);
+		investigator.addSiteInvestigator(siteInvestigator);
+		
+		Organization organization2 = new LocalOrganization();
+		organization2.setName("Organization 2");
+		organization2.setNciInstituteCode("4321");
+		
+		InvestigatorType[] invTypes = new InvestigatorType[1];
+		invTypes[0] = new InvestigatorType();
+		invTypes[0].setFirstName("first_name");
+		invTypes[0].setLastName("last_name");
+		invTypes[0].setPhoneNumber("000-000-0001");
+		invTypes[0].setFaxNumber("000-000-0002");
+		invTypes[0].setNciIdentifier("12345");
+		invTypes[0].setEmail("unknown@example.com");
+		
+		investigator = studyConsumer.createOrUpdateInvestigator(investigator, organization2, invTypes[0]);
+		verifyMocks();
+		
+		assertNotNull(investigator);
+		assertTrue(investigator instanceof LocalInvestigator);
+		assertEquals("12345", investigator.getNciIdentifier());
+		assertNotNull(investigator.getSiteInvestigators());
+		assertEquals(2, investigator.getSiteInvestigators().size());
+
+	}
+	
+	/**
+	 * Investigator is not in caAERS. New Investigator must be created and assocaited to the Site/Org provided.
+	 */
+	public void testPopulateInvestigators_NewInvestigator(){
+		
+		investigatorRepository = registerMockFor(InvestigatorRepository.class);
+		studyConsumer.setInvestigatorRepository(investigatorRepository);
+		investigatorRepository.searchInvestigator((InvestigatorQuery)EasyMock.anyObject());
+		expectLastCall().andReturn(null);
+		investigatorRepository.save((Investigator)EasyMock.anyObject(),(String)EasyMock.anyObject());
+		replayMocks();
+		
+		StudyOrganization studyOrganization = new StudyFundingSponsor();
+		Organization organization1 = new LocalOrganization();
+		organization1.setName("Organization 1");
+		organization1.setNciInstituteCode("1234");
+		studyOrganization.setOrganization(organization1);
+
+		StudyInvestigatorType[] studyInvTypes = new StudyInvestigatorType[1];
+		studyInvTypes[0] = new StudyInvestigatorType();
+		studyInvTypes[0].setRoleCode("Principal Investigator");
+		studyInvTypes[0].setStatusCode("AC");
+		HealthcareSiteInvestigatorType hcsInvType = new HealthcareSiteInvestigatorType();
+		InvestigatorType[] invTypes = new InvestigatorType[1];
+		invTypes[0] = new InvestigatorType();
+		invTypes[0].setFirstName("first_name");
+		invTypes[0].setLastName("last_name");
+		invTypes[0].setPhoneNumber("000-000-0001");
+		invTypes[0].setFaxNumber("000-000-0002");
+		invTypes[0].setNciIdentifier("12345");
+		invTypes[0].setEmail("unknown@example.com");
+		
+		hcsInvType.setInvestigator(invTypes);
+		studyInvTypes[0].setHealthcareSiteInvestigator(hcsInvType);
+		
+		assertNotNull(studyInvTypes[0].getHealthcareSiteInvestigator().getInvestigator(0));
+		
+		try {
+			studyConsumer.populateInvestigators(studyOrganization, studyInvTypes);
+		} catch (StudyCreationException e) {
+			fail("No Exceptions are expected");
+		}
+		verifyMocks();
+		assertNotNull(studyOrganization.getStudyInvestigators());
+		assertEquals(1, studyOrganization.getStudyInvestigators().size());
+		assertNotNull(studyOrganization.getStudyInvestigators().get(0));
+		assertNotNull(studyOrganization.getStudyInvestigators().get(0).getSiteInvestigator());
+	}
+	
+	
+	/**
+	 * Investigator is available in caAERS, but not associted to the Site provide.
+	 * New SiteInvestigator must be created.
+	 */
+	public void testPopulateInvestigators_NewSite(){
+		
+		Organization organization1 = new LocalOrganization();
+		organization1.setName("Organization 1");
+		organization1.setNciInstituteCode("1234");
+		
+		StudyOrganization studyOrganization2 = new StudySite();
+		Organization organization2 = new LocalOrganization();
+		organization2.setName("Organization 2");
+		organization2.setNciInstituteCode("987654");
+		studyOrganization2.setOrganization(organization2);
+		
+		Investigator investigator = new LocalInvestigator();
+		investigator.setFirstName("first_name");
+		investigator.setLastName("last_name");
+		investigator.setPhoneNumber("000-000-0001");
+		investigator.setFaxNumber("000-000-0002");
+		investigator.setNciIdentifier("12345");
+		SiteInvestigator siteInvestigator = new SiteInvestigator();
+		siteInvestigator.setInvestigator(investigator);
+		siteInvestigator.setOrganization(organization1);
+		investigator.addSiteInvestigator(siteInvestigator);
+		
+		List<Investigator> invList = new ArrayList<Investigator>();
+		invList.add(investigator);
+		
+		investigatorRepository = registerMockFor(InvestigatorRepository.class);
+		studyConsumer.setInvestigatorRepository(investigatorRepository);
+		investigatorRepository.searchInvestigator((InvestigatorQuery)EasyMock.anyObject());
+		expectLastCall().andReturn(invList);
+		investigatorRepository.save((Investigator)EasyMock.anyObject(),(String)EasyMock.anyObject());
+		replayMocks();
+		
+		StudyInvestigatorType[] studyInvTypes = new StudyInvestigatorType[1];
+		studyInvTypes[0] = new StudyInvestigatorType();
+		studyInvTypes[0].setRoleCode("Principal Investigator");
+		studyInvTypes[0].setStatusCode("AC");
+		HealthcareSiteInvestigatorType hcsInvType = new HealthcareSiteInvestigatorType();
+		InvestigatorType[] invTypes = new InvestigatorType[1];
+		invTypes[0] = new InvestigatorType();
+		invTypes[0].setFirstName("first_name");
+		invTypes[0].setLastName("last_name");
+		invTypes[0].setPhoneNumber("000-000-0001");
+		invTypes[0].setFaxNumber("000-000-0002");
+		invTypes[0].setNciIdentifier("12345");
+		invTypes[0].setEmail("unknown@example.com");
+		
+		hcsInvType.setInvestigator(invTypes);
+		studyInvTypes[0].setHealthcareSiteInvestigator(hcsInvType);
+		
+		assertNotNull(studyInvTypes[0].getHealthcareSiteInvestigator().getInvestigator(0));
+		
+		try {
+			studyConsumer.populateInvestigators(studyOrganization2, studyInvTypes);
+		} catch (StudyCreationException e) {
+			fail("No Exceptions are expected");
+		}
+		verifyMocks();
+		assertNotNull(studyOrganization2.getStudyInvestigators());
+		assertEquals(1, studyOrganization2.getStudyInvestigators().size());
+	}
+	
 }

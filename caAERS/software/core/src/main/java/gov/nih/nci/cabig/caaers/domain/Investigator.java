@@ -212,6 +212,20 @@ public abstract class Investigator extends User {
 		}
 		return null;
 	}
+	
+	/**
+	 * This method return a siteInvestigator for a given Organization.
+	 * @param organization
+	 * @return
+	 */
+	public SiteInvestigator findSiteInvestigator(Organization organization){
+		for(SiteInvestigator siteInvestigator : getSiteInvestigators()){
+			if(siteInvestigator.getOrganization().equals(organization)){
+				return siteInvestigator;
+			}
+		}
+		return null;
+	}
     
     @Column(name = "allowed_to_login")
 	public Boolean getAllowedToLogin() {

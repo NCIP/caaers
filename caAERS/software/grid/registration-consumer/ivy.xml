@@ -40,11 +40,11 @@
 				
         	<!--  C3PR registration stubs/skeltons -->
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-client" rev="2.8" transitive="false" />
+					name="RegistrationConsumer-client" rev="2.9" transitive="false" />
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-common" rev="2.8" transitive="false" />
+					name="RegistrationConsumer-common" rev="2.9" transitive="false" />
 			<dependency org="gov.nih.nci.ccts.grid"
-					name="RegistrationConsumer-stubs" rev="2.8" transitive="false" />
+					name="RegistrationConsumer-stubs" rev="2.9" transitive="false" />
 
         	
         	

@@ -2,14 +2,18 @@ package gov.nih.nci.cabig.caaers.grid;
 
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -21,11 +25,14 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ccts.domain.HealthcareSiteType;
 import gov.nih.nci.cabig.ccts.domain.IdentifierType;
+import gov.nih.nci.cabig.ccts.domain.InvestigatorType;
 import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
 import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
@@ -61,6 +68,12 @@ import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.context.request.WebRequest;
 
+/**
+ * @author Srini
+ * @author Biju Joseph
+ * @author Monish Dombla
+ *
+ */
 public class CaaersStudyConsumer implements StudyConsumerI {
 
     private static Logger logger = Logger.getLogger(CaaersStudyConsumer.class);
@@ -68,6 +81,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     private OrganizationRepository organizationRepository;
 
     private SiteInvestigatorDao siteInvestigatorDao;
+    
+    private InvestigatorRepository investigatorRepository;
 
     private StudyDao studyDao;
 
@@ -309,8 +324,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         // populate study identifiers
         IdentifierType[] identifierTypes = studyDto.getIdentifier();
         populateIdentifiers(study, identifierTypes);
-
-     
     }
 
     /**
@@ -376,12 +389,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	}else{
             		orgIdentifiers.add(id);
             	}
-                
             } 
-            
-
         }
-        
 
         //if the sponsor identifier is not supplied, use coordinating center instead. 
         if(sponsorIdentifier == null){
@@ -401,8 +410,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         for (SystemAssignedIdentifier id : sysIdentifiers) {
             study.addIdentifier(id);
         }
-        
-        
     }
 
     private StudyCreationException getStudyCreationException(String message) {
@@ -480,66 +487,36 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         	logger.error("No investigators are available in the input message");
             return;
         }
-
+        
+        SiteInvestigator siteInvestigator = null;
+        InvestigatorQuery query = null;
+        Investigator dbInvestigator = null;
+        StudyInvestigator studyInvestigator = null;
+        
         for (StudyInvestigatorType invType : invTypes) {
-            String invNCICode = invType.getHealthcareSiteInvestigator().getInvestigator(0)
-                            .getNciIdentifier();
-
-            SiteInvestigator siteInvestigator = null;
-
+        	//Extract NCI IDENTIFIER of Investigator 
+            String invNCICode = invType.getHealthcareSiteInvestigator().getInvestigator(0).getNciIdentifier();
             if (StringUtils.isEmpty(invNCICode)) {
                 logger.error("Investigator details are missing!");
                 StudyCreationException exp = new StudyCreationException();
-                exp
-                                .setFaultReason("Missing investigator details in input : InvestigatorType.healthcareSiteInvesitagor.investigatorType[0].nciIdentifier");
+                exp.setFaultReason("Missing investigator details in input : InvestigatorType.healthcareSiteInvesitagor.investigatorType[0].nciIdentifier");
                 exp.setFaultString("Invalid input, missing investigator information");
                 throw exp;
             }
-
-            // find the study Investigator
-            List<SiteInvestigator> siteInvestigators = siteInvestigatorDao
-                            .getOrganizationInvestigators(studyOrganization.getOrganization());
-            if (siteInvestigators != null) {
-                // figure out the correct investigator
-                for (SiteInvestigator si : siteInvestigators) {
-                    if (StringUtils.equals(si.getInvestigator().getNciIdentifier(), invNCICode)) {
-                        siteInvestigator = si;
-                        break;
-                    }
-                }
+            query = new InvestigatorQuery();
+            query.filterByNciIdentifierExactMatch(invNCICode);
+            List<Investigator> investigators = investigatorRepository.searchInvestigator(query);
+            if(investigators == null){
+            	dbInvestigator = null;
+            }else{
+            	dbInvestigator = investigators.get(0);
             }
-
-            // check if we were able to fetch siteInvestigator
-            if (siteInvestigator == null) {
-                logger
-                                .error("Unable to associate investigators.No investigators are associated to organization :"
-                                                + studyOrganization.getOrganization().getName()
-                                                + " nciCode :"
-                                                + studyOrganization.getOrganization()
-                                                                .getNciInstituteCode());
-                StudyCreationException exp = new StudyCreationException();
-                exp
-                                .setFaultReason("Unable to associate the given investigaor {investigatorNCI code :"
-                                                + invNCICode
-                                                + "} to the site {"
-                                                + studyOrganization.getOrganization().getName()
-                                                + ", nciCode :"
-                                                + studyOrganization.getOrganization()
-                                                                .getNciInstituteCode()
-                                                + "}. The specified investigator should be associated to the organization.");
-                exp
-                                .setFaultReason("Missing SiteInvestigator (investigator NCI Code :"
-                                                + invNCICode
-                                                + ")details for the Organization {"
-                                                + studyOrganization.getOrganization().getName()
-                                                + ", nciCode : "
-                                                + studyOrganization.getOrganization()
-                                                                .getNciInstituteCode()
-                                                + "}. The specified investigator should be associated to the organization.");
-                throw exp;
-            }
-
-            StudyInvestigator studyInvestigator = new StudyInvestigator();
+            //Create or Update the Investigator as needed.
+            dbInvestigator = createOrUpdateInvestigator(dbInvestigator, studyOrganization.getOrganization(), invType.getHealthcareSiteInvestigator().getInvestigator(0));
+            //Extract the SiteInvestigator from the Investigator 
+            siteInvestigator = dbInvestigator.findSiteInvestigator(studyOrganization.getOrganization());
+            //Associate SiteInvestigator to Study.
+            studyInvestigator = new StudyInvestigator();
             studyInvestigator.setStudyOrganization(studyOrganization);
             String roleCode = null;
             PersonRole[] caaersRoles = new PersonRole[]{PersonRole.SITE_INVESTIGATOR, PersonRole.SITE_PRINCIPAL_INVESTIGATOR, PersonRole.PRINCIPAL_INVESTIGATOR};
@@ -548,7 +525,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	exp.setFaultReason("Investigator role is NULL in Study message");
             	throw exp;
             }
-            
     		for (PersonRole caaersRole:caaersRoles) {
     			if (caaersRole.getDisplayName().equals(invType.getRoleCode())) {
     				roleCode = caaersRole.getRoleCode();
@@ -561,7 +537,6 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	exp.setFaultReason("Supplied Investigator role "+ invType.getRoleCode() + " does not map with roles in caAERS");
             	throw exp;            	
             }
-            
             studyInvestigator.setRoleCode(roleCode);
             studyInvestigator.setStartDate(siteInvestigator.getStartDate());
             studyInvestigator.setSiteInvestigator(siteInvestigator);
@@ -569,6 +544,49 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         }
     }
     
+    /**
+     * This method creates an Investigator object and saves it if investigator is null.
+     * If investigator is not null & is not associated to the organization provided. A new SiteInvestigator object is created
+     * and associated to the investigator and saved. 
+     * @param investigator
+     * @param organization
+     * @param invType
+     * @return
+     */
+    protected Investigator createOrUpdateInvestigator(Investigator investigator, Organization organization, InvestigatorType invType){
+    	SiteInvestigator siteInvestigator = null;
+    	if(investigator != null){
+    		siteInvestigator = investigator.findSiteInvestigator(organization);
+    	}else{
+        	//If externalId is not empty create a RemoteInvestigator else create a LocalInvestigator
+        	if(StringUtils.isNotEmpty(invType.getExternalId())){
+        		investigator = new RemoteInvestigator();
+        	}else{
+        		investigator = new LocalInvestigator();
+        	}
+        	//Set all the basic values.
+        	investigator.setAllowedToLogin(Boolean.FALSE);
+        	investigator.setExternalId(invType.getExternalId());
+        	investigator.setFirstName(invType.getFirstName());
+        	investigator.setLastName(invType.getLastName());
+        	investigator.setNciIdentifier(invType.getNciIdentifier());
+        	investigator.setPhoneNumber(invType.getPhoneNumber());
+        	investigator.setFaxNumber(invType.getFaxNumber());
+        	investigator.setEmailAddress(invType.getEmail());
+    	}
+    	//Create Site,Investigator association.
+    	if(siteInvestigator == null){
+        	siteInvestigator = new SiteInvestigator();
+        	siteInvestigator.setStartDate(DateUtils.today());
+        	siteInvestigator.setInvestigator(investigator);
+        	siteInvestigator.setOrganization(organization);
+        	investigator.addSiteInvestigator(siteInvestigator);
+    	}
+    	//Save to the DB
+    	investigatorRepository.save(investigator, "");
+
+    	return investigator;
+    }
     
     /**
      * Fetches the organization from the DB. If one does not exist an appropriate Organization is created and saved.
@@ -701,10 +719,17 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		//Auto-generated method stub
 		return null;
 	}
+	
 	@Required
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
 		this.organizationRepository = organizationRepository;
+	}
+	
+	@Required
+	public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
 	}
 	
     @SuppressWarnings("unused")
