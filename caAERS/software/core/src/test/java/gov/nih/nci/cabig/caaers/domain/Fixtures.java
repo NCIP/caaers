@@ -207,6 +207,7 @@ public class Fixtures {
         rep.getLastVersion().setReportedAdversEvents(new ArrayList<ReportedAdverseEvent>());
         rep.getLastVersion().addReportTracking(new ReportTracking()); //initialize reportversions
         rep.getLastVersion().setId(10);
+        rep.setAeReport(createSavableExpeditedReport());
         return rep;
     }
     

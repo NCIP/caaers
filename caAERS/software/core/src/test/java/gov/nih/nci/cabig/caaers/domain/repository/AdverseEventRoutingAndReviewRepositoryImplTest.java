@@ -5,15 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
@@ -286,6 +278,10 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		report.setReviewComments(new ArrayList<ReportReviewComment>());
 		report.setWorkflowId(wfId);
 		List<String> transitions = new ArrayList<String>();
+
+        ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
+        EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(true);
+		EasyMock.expect(reportValidationService.isSubmittable(report)).andReturn(errorMessagesMock);
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
 		EasyMock.expect(reportDao.getById(id)).andReturn(report);
@@ -406,4 +402,48 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		assertEquals(2, filteredTransitions.size());
 	}
 
+    //test the transition,when physician do not have login.
+	public void testNextTransitionsForAeReportWithIncompleteReportsAndInvestigatorHasNoLogin() throws Exception{
+		Report report = Fixtures.createReport("testReport");
+        Investigator investigator = Fixtures.createInvestigator("tester");
+        investigator.setLoginId(null);
+        report.getPhysician().setUser(investigator);
+		report.setWorkflowId(1);
+		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
+		report.setStatus(ReportStatus.PENDING);
+		List<String> transitions = new ArrayList<String>();
+		transitions.add("test action");
+		transitions.add("Submit to Central Office Report Reviewer");
+        transitions.add("Send to Physician for Review");
+
+		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
+		EasyMock.expect(reportValidationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(false);
+		replayMocks();
+		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
+		verifyMocks();
+		assertEquals(1, filteredTransitions.size());
+	}
+
+    //test the transition, were the physician can login to the system.
+	public void testNextTransitionsForAeReportWithAnInvestigatorHavingLogin() throws Exception{
+		Report report = Fixtures.createReport("testReport");
+        Investigator investigator = Fixtures.createInvestigator("tester");
+        investigator.setLoginId("hai");
+        report.getPhysician().setUser(investigator);
+		report.setWorkflowId(1);
+		ReportSubmittability errorMessagesMock = registerMockFor(ReportSubmittability.class);
+		report.setStatus(ReportStatus.PENDING);
+		List<String> transitions = new ArrayList<String>();
+		transitions.add("test action");
+		transitions.add("Send to Physician for Review");
+
+		EasyMock.expect(wfService.nextTransitionNames(1, "SYSTEM_ADMIN")).andReturn(transitions);
+		EasyMock.expect(reportValidationService.isSubmittable(report)).andReturn(errorMessagesMock);
+		EasyMock.expect(errorMessagesMock.isSubmittable()).andReturn(true);
+		replayMocks();
+		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
+		verifyMocks();
+		assertEquals(2, filteredTransitions.size());
+	}
 }

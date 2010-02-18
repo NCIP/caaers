@@ -4,14 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
@@ -31,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -50,6 +44,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private WorkflowService workflowService;
 	
 	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office Report Reviewer";
+    private static final String SUBMIT_TO_PHYSICIAN = "Send to Physician for Review";
 	
 	
 	public AdverseEventRoutingAndReviewRepositoryImpl() {
@@ -295,41 +290,35 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	}
 	
 	/**
-	 * This method is specifically called for aeReport workflow. This was needed to do an extra step of filtering the transtions.
-	 * If all the reports in the aeReport are not in submittable state then, the CRA cannot submit the aeReport to the SAE coordinator
-	 * for review. This filtering is applied to the list of transition names returned from workflowService in this method.
-	 * First of all a check is made if such a filtering is needed, and if needed then the EvaulationService is called to check the 
-	 * submittablity of all the reports (in the aeReport in context)
-	 * @param workflowId
-	 * @param loginId
+	 * This method is specifically called for Report workflow.
+     * Only submittable reports should be allowed to send to Central Office SAE Coordinator review.
+	 * @param report - An active @{link Report}
+	 * @param loginId - The login name of the user
 	 * @return
 	 */
 	public List<String> nextTransitionNamesForReportWorkflow(Report report, String loginId){
 		List<String> nextTransitionNames = workflowService.nextTransitionNames(report.getWorkflowId(), loginId);
-		
-		Map<Integer, Boolean> reportsSubmittable = new HashMap<Integer, Boolean>();
-		reportsSubmittable.clear();
-        
-		if(report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED) || report.getStatus().equals(ReportStatus.COMPLETED)){
-			ReportSubmittability errorMessages = reportValidationService.isSubmittable(report);
-        	reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
+
+        boolean physicianHasLogin = false;
+
+        if(report.isActive()){
+           ReportSubmittability submittability = reportValidationService.isSubmittable(report);
+           if(!submittability.isSubmittable()){
+              nextTransitionNames.remove(SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR);
+           }
+
+           Physician physician = report.getPhysician();
+           if(physician != null){
+              User investigator = physician.getUser();
+              physicianHasLogin = ( (investigator != null) && StringUtils.isNotEmpty(investigator.getLoginId()));
+           }
         }
-        
-        Boolean removeSubmitToSAECoordinator = true;
-        for(Integer key: reportsSubmittable.keySet()){
-        	if(reportsSubmittable.get(key).equals(true))
-        		removeSubmitToSAECoordinator = false;
+
+        if(!physicianHasLogin){
+            nextTransitionNames.remove(SUBMIT_TO_PHYSICIAN);
         }
-        
-        List<String> filteredTransitionNames = new ArrayList<String>();
-        if(removeSubmitToSAECoordinator){
-        	for(String transitionName: nextTransitionNames){
-        		if(!transitionName.equals(SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR))
-        			filteredTransitionNames.add(transitionName);
-        	}
-        	return filteredTransitionNames;
-        }
-		return nextTransitionNames;
+
+	    return nextTransitionNames;
 	}
 
 	
