@@ -247,9 +247,6 @@ public class ReporterTab extends AeTab {
     		if(command.getAeReport().getReporter().getUser() == null){
     			errors.rejectValue("aeReport.reporter.user", "SAE_019","Reporter should be selected in the drop down");
     		}
-    		if(command.getAeReport().getPhysician().getUser() == null){
-    			errors.rejectValue("aeReport.physician.user", "SAE_020", "Physician should be selected in the drop down");
-    		}
     	}
     }
     
