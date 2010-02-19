@@ -10,8 +10,8 @@
 	<!--Working globus folder or file name-->
 	<property name="ccts.grid-services.working.globus.file" value="ws-core-4.0.3"/>
 	
-	<property name="registration.consumer.grid.service.dir" value="RegistrationConsumerGridService-caGrid13"/>
-	<property name="study.consumer.grid.service.dir" value="StudyConsumerGridService-caGrid13"/>
+	<property name="registration.consumer.grid.service.dir" value="RegistrationConsumerGridService-caGrid1.3.1"/>
+	<property name="study.consumer.grid.service.dir" value="StudyConsumerGridService-caGrid1.3.1"/>
 	<property name="lab.consumer.grid.service.dir" value="LabConsumerService-caGrid13"/>
 	
 	
