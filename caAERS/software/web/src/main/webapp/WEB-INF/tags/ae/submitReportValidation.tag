@@ -79,22 +79,21 @@
                             <h3 style="border:none; color:black; font-size:1.1em;">
                                 Information remaining to complete
                             </h3>
-                            
-                                
-                                    <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
-                                        
-                                            <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}-${report.id}">
-											<ul>
-												<c:forEach items="${sectionEntry.value}" var="msg">
-													<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-	                                        	</c:forEach>
-												<li><a href="javascript:goToPage('${sectionEntry.key}')">Go to this page ></a></li>
-											</ul>
-											</chrome:division>
-                                       
-                                    </c:forEach>
-                                
-                            
+                            <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
+                                    <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}-${report.id}">
+									<ul>
+										<c:forEach items="${sectionEntry.value}" var="msg">
+											<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
+                                    	</c:forEach>
+										<c:if test="${sectionEntry.key ne 'SUBMIT_REPORT_SECTION'}">
+											<li><a href="javascript:goToPage('${sectionEntry.key}')"> <img src="<chrome:imageUrl name="../buttons/button_icons/small/back_icon_small.png"/>" alt=""/> Go back to this page</a></li>
+										</c:if>
+										<c:if test="${sectionEntry.key eq 'SUBMIT_REPORT_SECTION'}">
+											<li><a href="#signoff">Scroll up <img src="<chrome:imageUrl name="../blue/up_icon_small.png"/>" alt=""/></a></li>
+										</c:if>
+									</ul>
+									</chrome:division>
+                            </c:forEach>
                         </div>
                     </c:otherwise>
                 </c:choose>
