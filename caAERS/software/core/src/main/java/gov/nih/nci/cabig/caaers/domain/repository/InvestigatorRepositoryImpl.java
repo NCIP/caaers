@@ -51,7 +51,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 	 * Will also update the corresponding features associated to the CSM groups
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-	public void save(Investigator investigator, String changeURL) {
+	public Investigator save(Investigator investigator, String changeURL) {
 		if(investigator.getAllowedToLogin()){
 	    	
 	    	if (investigator.getEmailAddress() == null) {
@@ -79,6 +79,8 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
 		if(investigator.getAllowedToLogin()){
 			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
 		}
+		
+		return investigator;
 	}
 	
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text){

@@ -14,7 +14,7 @@ public interface InvestigatorRepository {
    * @param investigator
    * @param changeURL
    */
-  public void save(Investigator  investigator, String changeURL);
+  public Investigator save(Investigator  investigator, String changeURL);
   public List<Investigator> searchInvestigator(final InvestigatorQuery query);
   public List<Investigator> searchInvestigator(final InvestigatorQuery query,String type,String text);
   public List<SiteInvestigator> getBySubnames(final String[] subnames,int siteId);

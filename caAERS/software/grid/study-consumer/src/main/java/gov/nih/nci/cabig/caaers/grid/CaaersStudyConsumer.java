@@ -508,11 +508,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             List<Investigator> investigators = investigatorRepository.searchInvestigator(query);
             if(investigators != null && investigators.size() > 0){
             	dbInvestigator = investigators.get(0);
-            }else{
-            	dbInvestigator = null;
             }
             //Create or Update the Investigator as needed.
             dbInvestigator = createOrUpdateInvestigator(dbInvestigator, studyOrganization.getOrganization(), invType.getHealthcareSiteInvestigator().getInvestigator(0));
+            
             //Extract the SiteInvestigator from the Investigator 
             siteInvestigator = dbInvestigator.findSiteInvestigator(studyOrganization.getOrganization());
             //Associate SiteInvestigator to Study.
@@ -537,6 +536,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	exp.setFaultReason("Supplied Investigator role "+ invType.getRoleCode() + " does not map with roles in caAERS");
             	throw exp;            	
             }
+            
             studyInvestigator.setRoleCode(roleCode);
             studyInvestigator.setStartDate(siteInvestigator.getStartDate());
             studyInvestigator.setSiteInvestigator(siteInvestigator);
@@ -557,6 +557,9 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     	SiteInvestigator siteInvestigator = null;
     	if(investigator != null){
     		siteInvestigator = investigator.findSiteInvestigator(organization);
+    		if(siteInvestigator != null){
+    			return investigator;
+    		}
     	}else{
         	//If externalId is not empty create a RemoteInvestigator else create a LocalInvestigator
         	if(StringUtils.isNotEmpty(invType.getExternalId())){
@@ -583,9 +586,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         	investigator.addSiteInvestigator(siteInvestigator);
     	}
     	//Save to the DB
-    	investigatorRepository.save(investigator, "");
-
-    	return investigator;
+    	return investigatorRepository.save(investigator, "");
     }
     
     /**
