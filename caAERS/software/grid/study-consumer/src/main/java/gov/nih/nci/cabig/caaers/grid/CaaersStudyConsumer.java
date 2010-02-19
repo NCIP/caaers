@@ -506,10 +506,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             query = new InvestigatorQuery();
             query.filterByNciIdentifierExactMatch(invNCICode);
             List<Investigator> investigators = investigatorRepository.searchInvestigator(query);
-            if(investigators == null){
-            	dbInvestigator = null;
-            }else{
+            if(investigators != null && investigators.size() > 0){
             	dbInvestigator = investigators.get(0);
+            }else{
+            	dbInvestigator = null;
             }
             //Create or Update the Investigator as needed.
             dbInvestigator = createOrUpdateInvestigator(dbInvestigator, studyOrganization.getOrganization(), invType.getHealthcareSiteInvestigator().getInvestigator(0));
