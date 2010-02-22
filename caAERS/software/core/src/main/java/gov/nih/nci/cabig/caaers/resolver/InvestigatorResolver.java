@@ -1,31 +1,21 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
-import edu.duke.cabig.c3pr.esb.Metadata;
-import edu.duke.cabig.c3pr.esb.OperationNameEnum;
-import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.coppa.po.CorrelationNode;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
-import gov.nih.nci.coppa.po.IdentifiedPerson;
 import gov.nih.nci.coppa.po.Person;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
 import org.iso._21090.ENXP;
 import org.iso._21090.EntityNamePartType;
 import org.iso._21090.II;
@@ -36,10 +26,114 @@ import com.semanticbits.coppasimulator.util.CoppaObjectFactory;
 
 public class InvestigatorResolver extends BaseResolver implements RemoteResolver {
 	
-	private static Logger logger = Logger.getLogger(InvestigatorResolver.class);
 	private static Log log = LogFactory.getLog(InvestigatorResolver.class);
-	private static String IDSEPERATOR = "-IDSEPERATOR-";
 
+	/**
+	 * 
+	 */
+	public List<Object> find(Object example) {
+		RemoteInvestigator remoteInvestigatorExample = (RemoteInvestigator)example;
+		if (remoteInvestigatorExample.getNciIdentifier() != null) {
+			return searchRoleBasedOnNciId(remoteInvestigatorExample.getNciIdentifier(),new HealthCareProvider());
+		}
+		
+		if(remoteInvestigatorExample.getSiteInvestigators().size() > 0 &&
+				remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization() != null && 
+				remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization().getNciInstituteCode() != null){
+         //search based on Organization
+         log.debug("Searching based on Organization");
+         return searchRoleBasedOnOrganization(remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization().getNciInstituteCode(),new HealthCareProvider());
+		} 
+		
+		return searchRoleBasedOnName(remoteInvestigatorExample.getFirstName(),remoteInvestigatorExample.getMiddleName(),remoteInvestigatorExample.getLastName(),new HealthCareProvider());
+	}
+
+	/* 
+	 * @see com.semanticbits.coppa.infrastructure.service.RemoteResolver#getRemoteEntityByUniqueId(java.lang.String)
+	 */
+	public Object getRemoteEntityByUniqueId(String externalId) {
+		log.debug("Entering getRemoteEntityByUniqueId() for:" + this.getClass() + " - ExtId: " +externalId);
+		
+		Person person = new Person();//CoppaObjectFactory.getCoppaPerson(null, null, null);
+		II ii = new II();
+		ii.setExtension(externalId);
+		ii.setRoot(PERSON_ROOT);
+		person.setIdentifier(ii);
+		
+		String correlationNodeXmlPayload = CoppaObjectFactory.getCorrelationNodePayload(new HealthCareProvider(), person, null);
+		List<CorrelationNode> correlationNodeList = getCorrelationNodesFromPayloadXml(correlationNodeXmlPayload);
+		List<Object> remoteInvestigatorList = getRemoteRolesFromCorrelationNodesList(correlationNodeList);
+		if(remoteInvestigatorList.size() > 0){
+			return remoteInvestigatorList.get(0);
+		}
+//		}
+		return null;
+	}
+	
+    @Override
+    public RemoteInvestigator populateRole(Person coppaPerson, String staffAssignedIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList,
+            Map<String, IdentifiedOrganization>    organizationIdToIdentifiedOrganizationsMap){
+    	RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,staffAssignedIdentifier);
+    	
+    	Organization healthcareSite = null;
+        if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
+            IdentifiedOrganization identifiedOrganization = null;
+            for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
+                identifiedOrganization = organizationIdToIdentifiedOrganizationsMap.get(coppaOrganization.getIdentifier().getExtension());
+                if(identifiedOrganization != null){
+                    healthcareSite = new RemoteOrganization();
+                    healthcareSite.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+                    healthcareSite.setName(CoppaObjectFactory.getName(coppaOrganization.getName()));
+                    healthcareSite.setExternalId(coppaOrganization.getIdentifier().getExtension());
+                    SiteInvestigator si = new SiteInvestigator();
+                    si.setOrganization(healthcareSite);
+                    si.setInvestigator(remoteInvestigator);
+                    si.setStartDate(DateUtils.today());
+            		remoteInvestigator.addSiteInvestigator(si)	;
+
+                } else {
+                    log.error("IdentifiedOrganization is null for Organization with coppaId: "+coppaOrganization.getIdentifier().getExtension());
+                }
+            }
+        } else {
+        	return null;
+        }
+    	
+    	
+    	return remoteInvestigator;
+    }
+    
+    /**
+     * Populate remote investigator. Populate remote research staff. Called from searchStaffByrganization() 
+     * Wont load HCSI if identifiedOrganization is passed in as null (for getRemoteEntityByUniqueId()).
+     * 
+     * @param coppaPerson the coppa person
+     * @param staffAssignedIdentifier the staff assigned identifier
+     * @param identifiedOrganization the identified organization
+     * @return the remote investigator
+     */
+    @Override
+    public RemoteInvestigator populateRole(Person coppaPerson, String staffAssignedIdentifier, IdentifiedOrganization identifiedOrganization){
+    	RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,staffAssignedIdentifier);
+
+            remoteInvestigator.setNciIdentifier(staffAssignedIdentifier);
+            remoteInvestigator.setExternalId(coppaPerson.getIdentifier().getExtension());
+            
+            //Build HealthcareSite
+            if(identifiedOrganization != null){
+            	Organization healthcareSite = new RemoteOrganization();
+            	healthcareSite.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+                
+            	 SiteInvestigator si = new SiteInvestigator();
+                 si.setOrganization(healthcareSite);
+                 si.setInvestigator(remoteInvestigator);
+                 si.setStartDate(DateUtils.today());
+         		remoteInvestigator.addSiteInvestigator(si)	;
+            }
+            return remoteInvestigator;
+        
+    }
+    
 	private RemoteInvestigator setInvestigatorDetails(Person coppaPerson,String nciIdentifier) {
 		RemoteInvestigator remoteInvestigator = new RemoteInvestigator();
 
@@ -94,413 +188,6 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		}
 		return remoteInvestigator;
 
-	}
-	
-	/**
-	 * Find By Organization
-	 */
-	public List<Object> find(Object example) {
-		log.info("Entering InvestigatorResolver.find()");
-		Investigator remoteInvestigatorExample = (RemoteInvestigator)example;
-		List<Object> remoteInvestigatorList = new ArrayList<Object>();
-		RemoteInvestigator tempRemoteInvestigator = null;
-		Organization org = remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization();
-		
-		
-		if (remoteInvestigatorExample.getNciIdentifier() != null && StringUtils.isNotEmpty(remoteInvestigatorExample.getNciIdentifier())) {
-			//get Identified Organization ... 
-			IdentifiedPerson identifiedPersonToSearch = CoppaObjectFactory.getCoppaIdentfiedPersonSearchCriteriaOnCTEPId(remoteInvestigatorExample.getNciIdentifier());
-			IdentifiedPerson identifiedPerson = getIdentifiedPerson(identifiedPersonToSearch);
-			if (identifiedPerson == null) {
-				log.info("Exiting InvestigatorResolver.find() - Identified person is NULL");
-				return remoteInvestigatorList;
-			}
-			II ii = identifiedPerson.getPlayerIdentifier();
-			String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
-			try {
-				String resultXml = broadcastPersonGetById(iiXml);
-				tempRemoteInvestigator = loadInvestigatorForPersonResult(resultXml,identifiedPerson);
-				remoteInvestigatorList.add(tempRemoteInvestigator);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			log.info("Exiting InvestigatorResolver.find()");
-			return remoteInvestigatorList;
-		}
-		
-		if (org != null){
-			//get Organization by ctepId 
-			IdentifiedOrganization identifiedOrganizationSearchCriteria = CoppaObjectFactory.getCoppaIdentfiedOrganizationSearchCriteriaOnCTEPId(org.getNciInstituteCode());
-			String payload = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrganizationSearchCriteria);
-			Metadata mData = new Metadata(OperationNameEnum.search.getName(),  "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-			String results =broadcastCOPPA(payload, mData);//
-			List<String> resultObjects = XMLUtil.getObjectsFromCoppaResponse(results);
-			String assignedId=null;
-			II organizationIdentifier=null;
-			String orgCoppaId = null;
-			if (resultObjects.size()>0) {
-				IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObjects.get(0));
-				assignedId = coppaIdOrganization.getAssignedId().getExtension();
-				organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
-				orgCoppaId = organizationIdentifier.getExtension();
-			} else {
-				//if IDentified Org is not found , look in coppa org - use CTEP ID as coppa Id.
-				II ii = CoppaObjectFactory.getIISearchCriteria(org.getNciInstituteCode());
-				String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
-				mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.ORGANIZATION.getName());
-				String resultXml = broadcastCOPPA(iiXml, mData);
-				List<String> orgResults = XMLUtil.getObjectsFromCoppaResponse(resultXml);
-				if (orgResults.size()>0) {
-					gov.nih.nci.coppa.po.Organization coppaOrganization = CoppaObjectFactory.getCoppaOrganization(orgResults.get(0));
-					
-					organizationIdentifier = coppaOrganization.getIdentifier();
-					assignedId = organizationIdentifier.getExtension();
-					orgCoppaId = organizationIdentifier.getExtension();
-					
-				}
-			}
-			
-			if (organizationIdentifier==null || assignedId==null || orgCoppaId==null) {
-				return remoteInvestigatorList;
-			}
-			String orgsIdsForPerson = assignedId+this.IDSEPERATOR+orgCoppaId;
-			//for (String resultObj:resultObjects) {
-				//IdentifiedOrganization coppaIdOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(resultObj);
-				//II organizationIdentifier = coppaIdOrganization.getPlayerIdentifier();
-
-					//above ii is the scoper if health care provider...
-					HealthCareProvider healthCareProvider = CoppaObjectFactory.getCoppaHealthCareProviderWithScoperIdAsSearchCriteria(organizationIdentifier);
-					String coppaHealthCareProviderXml = CoppaObjectFactory.getCoppaHealthCareProviderXml(healthCareProvider);
-					String sRolesXml = "";
-					try {
-						sRolesXml = broadcastRoleSearch(coppaHealthCareProviderXml,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
-					} catch (CaaersSystemException e) {
-						logger.error(e.getMessage());
-					}
-
-					List<String> sRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);	
-					
-					for(String sRole: sRoles){
-						HealthCareProvider hcp = CoppaObjectFactory.getCoppaHealthCareProvider(sRole);
-						II pid = hcp.getPlayerIdentifier();	
-						String idXml = CoppaObjectFactory.getCoppaIIXml(pid);
-						//above player id is the Id of a Person . 						
-						// now get  the Person by Id ... 
-						mData = new Metadata(OperationNameEnum.getById.getName(), "externalId", ServiceTypeEnum.PERSON.getName());
-						String personResultXml = "";
-						try {
-							personResultXml = broadcastCOPPA(idXml, mData);//
-							List<String> persons = XMLUtil.getObjectsFromCoppaResponse(personResultXml);	
-							for(String personXml: persons){
-								Person person = CoppaObjectFactory.getCoppaPerson(personXml);
-								IdentifiedPerson identifiedPerson = getIdentifiedPerson(person.getIdentifier());
-								String nciIdentifier = null;
-								if (identifiedPerson != null ) {
-									nciIdentifier = identifiedPerson.getAssignedId().getExtension();
-								}
-								tempRemoteInvestigator = populateRemoteInvestigator(person, nciIdentifier , orgsIdsForPerson);
-								remoteInvestigatorList.add(tempRemoteInvestigator);
-							}
-							
-						} catch (CaaersSystemException e) {
-							logger.error(e.getMessage());
-						}
-
-					}
-				//}
-			//}
-			log.info("Exiting InvestigatorResolver.find()");
-			return remoteInvestigatorList;
-		}
-		
-		String personXml = CoppaObjectFactory.getCoppaPersonXml(CoppaObjectFactory.getCoppaPerson(remoteInvestigatorExample.getFirstName(), remoteInvestigatorExample.getMiddleName(), remoteInvestigatorExample.getLastName()));
-		String resultXml = "";
-		try {
-			resultXml = broadcastPersonSearch(personXml);
-			//System.out.println(resultXml);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-		List<String> coppaPersons = XMLUtil.getObjectsFromCoppaResponse(resultXml);
-		
-		/*
-		Person coppaPerson = null;
-		if (coppaPersons != null){
-			for(String coppaPersonXml: coppaPersons){
-				coppaPerson = CoppaObjectFactory.getCoppaPerson(coppaPersonXml);
-				IdentifiedPerson identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
-				String nciIdentifier = null;
-				if (identifiedPerson != null ) {
-					nciIdentifier = identifiedPerson.getAssignedId().getExtension();
-				}
-				
-				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
-				tempRemoteInvestigator = populateRemoteInvestigator(coppaPerson, nciIdentifier, coppaOrganizationList);
-				remoteInvestigatorList.add(tempRemoteInvestigator);
-			}
-		}
-		*/
-		Person coppaPerson = null;
-		List<Person>  resultPersons = new ArrayList<Person>();
-		List<String> resultPersonIds = new ArrayList<String>();
-		Map<String,IdentifiedPerson> IdentifiedPersonMap = new HashMap<String,IdentifiedPerson>();
-		if (coppaPersons != null){
-			for(String coppaPersonXml: coppaPersons){
-				coppaPerson = CoppaObjectFactory.getCoppaPerson(coppaPersonXml);
-				resultPersons.add(coppaPerson);
-				
-				//BJ : added for debugging
-				if(coppaPerson.getIdentifier() == null){
-					logger.warn("***NO_IDENTIFIER*****************");
-					logger.warn("personXML : " + personXml);
-					logger.warn("coppaPersonXml : " + coppaPersonXml );
-					
-				}
-				resultPersonIds.add(CoppaObjectFactory.getCoppaIIXml(coppaPerson.getIdentifier()));
-			}
-			//			get identified persons based on playerIds...
-			Metadata mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.IDENTIFIED_PERSON.getName());
-			String IdentifiedPersonsResultXml = broadcastCOPPA(resultPersonIds, mData);
-			//System.out.println(IdentifiedPersonsResultXml);
-			List<String> identifiedPersons = XMLUtil.getObjectsFromCoppaResponse(IdentifiedPersonsResultXml);
-			IdentifiedPerson identifiedPerson = null;
-			for(String identifiedPersonXml: identifiedPersons){
-				identifiedPerson = CoppaObjectFactory.getCoppaIdentfiedPerson(identifiedPersonXml);
-				if (identifiedPerson.getAssignedId().getRoot().equals("Cancer Therapy Evaluation Program Person Identifier")) {
-					IdentifiedPersonMap.put(identifiedPerson.getPlayerIdentifier().getExtension(), identifiedPerson);
-				}
-			}
-			
-			//get roles based on playerIds...
-			mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.HEALTH_CARE_PROVIDER.getName());
-			String sRolesXml = broadcastCOPPA(resultPersonIds,mData);
-			List<String> coppaRoles = XMLUtil.getObjectsFromCoppaResponse(sRolesXml);	
-
-			HealthCareProvider role = null;
-			Map<String,List<gov.nih.nci.coppa.po.Organization>> roleToOrgMap = new HashMap<String,List<gov.nih.nci.coppa.po.Organization>>();
-			List<String>  coppaOrgsIdsForAllRoles = new ArrayList<String>();
-			for(String coppaRoleXml: coppaRoles){
-				role = CoppaObjectFactory.getCoppaHealthCareProvider(coppaRoleXml);
-				//roleMap.put(role.getPlayerIdentifier().getExtension(), role);
-				
-				//get orgnizations for each role... 
-				//******bottleneck , making call for each role , not method get by scoperIds on ORGS or IDENT-ORGS
-			    //role scoper id is org id .. so based on scoper id get org 
-				
-				//BJ: added for debugging
-				if(role.getScoperIdentifier() == null){
-					logger.warn("***NO_SCOPER_IDENTIFIER*****************");
-					logger.warn("coppaRoleXml :" + coppaRoleXml);
-					logger.warn("sRolesXml : " + sRolesXml );
-				}
-				String orgIiXml = CoppaObjectFactory.getCoppaIIXml(role.getScoperIdentifier());
-				String orgResultXml = "";
-				try {
-					orgResultXml = broadcastOrganizationGetById(orgIiXml);
-				} catch (Exception e) {
-					logger.error(e.getMessage());
-				}
-				List<String> orgForEachRoleResults = XMLUtil.getObjectsFromCoppaResponse(orgResultXml);
-
-				//get the roles for this player id from map .
-				List<gov.nih.nci.coppa.po.Organization>  coppaOrganizationForEachRoleList = roleToOrgMap.get(role.getPlayerIdentifier().getExtension());
-				if (coppaOrganizationForEachRoleList == null) {
-					coppaOrganizationForEachRoleList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
-				} 
-				
-				
-				if (orgForEachRoleResults.size() > 0) {
-					for(String orgXml:orgForEachRoleResults) {
-						gov.nih.nci.coppa.po.Organization organization =CoppaObjectFactory.getCoppaOrganization(orgXml) ;
-						coppaOrganizationForEachRoleList.add(organization);
-						coppaOrgsIdsForAllRoles.add(CoppaObjectFactory.getCoppaIIXml(organization.getIdentifier()));
-					}
-					
-				}
-				roleToOrgMap.put(role.getPlayerIdentifier().getExtension(), coppaOrganizationForEachRoleList);				
-			}
-			//get identified organizations for all collected orgs above ..
-			mData = new Metadata("getByPlayerIds", "externalId", ServiceTypeEnum.IDENTIFIED_ORGANIZATION.getName());
-			String identifiedOrgsResultXml = broadcastCOPPA(coppaOrgsIdsForAllRoles,mData);
-			List<String> identifiedOrgsResult = XMLUtil.getObjectsFromCoppaResponse(identifiedOrgsResultXml);
-			gov.nih.nci.coppa.po.IdentifiedOrganization identifiedOrganization = null;
-			Map<String,gov.nih.nci.coppa.po.IdentifiedOrganization> orgToIdentifiedOrgMap = new HashMap<String,gov.nih.nci.coppa.po.IdentifiedOrganization>();
-			for (String identifiedOrgsResult1:identifiedOrgsResult) {
-				identifiedOrganization = CoppaObjectFactory.getCoppaIdentfiedOrganization(identifiedOrgsResult1);
-				orgToIdentifiedOrgMap.put(identifiedOrganization.getPlayerIdentifier().getExtension(), identifiedOrganization);
-			}
-			
-			// we have three maps  ...
-			// IdentifiedPersonMap : identified-person-player-Id = person-id , obtain IP for each person from this map based on person Id
-			// roleToOrgMap : role-player-id = person-id , obtain list of organization for each person based on person id , these organizatios are derived using role .
-			// from above map orgs are no use , we need identified orgs , go for each org get identified org from next map
-			// orgToIdentifiedOrgMap : identified-org-playerId = org Id , get Identified org based on org id. 
-			
-			
-			// NOW USING ABOVE MAPS , POPULATE DATA...
-			// START FROM roleToOrgMap , beacuse we only care for person who has role of HEALTH_CARE_PROVIDER.
-			for(Person person: resultPersons){
-				List<gov.nih.nci.coppa.po.Organization> orgs = roleToOrgMap.get(person.getIdentifier().getExtension());
-				//we ignore if there are no orgs .., 
-				if (orgs != null && orgs.size() > 0) {
-					//get Identifed Orgs based on org Id
-					List<String> orgsIdsForPerson = new ArrayList<String>();//ctepId+coppaId
-					for (gov.nih.nci.coppa.po.Organization organization:orgs) {
-						gov.nih.nci.coppa.po.IdentifiedOrganization iorg = orgToIdentifiedOrgMap.get(organization.getIdentifier().getExtension());
-						if (iorg != null) {
-							orgsIdsForPerson.add(iorg.getAssignedId().getExtension()+IDSEPERATOR+organization.getIdentifier().getExtension());
-						} else {
-							orgsIdsForPerson.add(organization.getIdentifier().getExtension()+IDSEPERATOR+organization.getIdentifier().getExtension());
-						}
-					}
-					//get Identified person .
-					IdentifiedPerson ip = IdentifiedPersonMap.get(person.getIdentifier().getExtension());
-					String nciIdentifier = null;
-					if (ip != null ) {
-						nciIdentifier = ip.getAssignedId().getExtension();
-					}
-					if (orgs.size()>0) {
-						tempRemoteInvestigator = populateRemoteInvestigatorWithIdentfiedOrgs(person, nciIdentifier, orgsIdsForPerson);
-						remoteInvestigatorList.add(tempRemoteInvestigator);
-					}
-					
-				}
-			}
-		}
-		log.info("Exiting InvestigatorResolver.find()");
-		return remoteInvestigatorList;
-	}
-	
-
-	
-	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, String orgsIdsForPerson){
-		String[] splitids = orgsIdsForPerson.split(IDSEPERATOR);
-		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);		
-		Organization site = new RemoteOrganization();
-		site.setNciInstituteCode(splitids[0]);
-		site.setExternalId(splitids[1]);
-		SiteInvestigator si = new SiteInvestigator();
-		si.setOrganization(site);
-		si.setInvestigator(remoteInvestigator);
-		si.setStartDate(DateUtils.today());
-		remoteInvestigator.addSiteInvestigator(si)	;
-
-		return remoteInvestigator;
-	}
-
-	public Object getRemoteEntityByUniqueId(String externalId) {
-		log.info("Entering InvestigatorResolver.getRemoteEntityByUniqueId(externalId : " + externalId + ") ");
-		II ii = CoppaObjectFactory.getIISearchCriteriaForPerson(externalId);		
-
-		String iiXml = CoppaObjectFactory.getCoppaIIXml(ii);
-		String resultXml = "";
-		try {
-			resultXml = broadcastPersonGetById(iiXml);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-		log.info("Exiting InvestigatorResolver.getRemoteEntityByUniqueId()");
-		return loadInvestigatorForPersonResult(resultXml,null);
-	}
-	
-	public RemoteInvestigator loadInvestigatorForPersonResult(String personResultXml,IdentifiedPerson identifiedPerson) {
-		List<String> results = XMLUtil.getObjectsFromCoppaResponse(personResultXml);
-		List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList = null;
-		RemoteInvestigator remoteInvestigator = null;
-		Person coppaPerson = null;
-		String nciIdentifier = null;
-		if (results.size() > 0) {
-			coppaPerson = CoppaObjectFactory.getCoppaPerson(results.get(0));
-			coppaOrganizationList = getOrganizationsForPerson(coppaPerson,ServiceTypeEnum.HEALTH_CARE_PROVIDER);
-			if (identifiedPerson == null) {
-				identifiedPerson = getIdentifiedPerson(coppaPerson.getIdentifier());
-			}
-			
-			if (identifiedPerson != null ) {
-				nciIdentifier = identifiedPerson.getAssignedId().getExtension();
-			}
-			remoteInvestigator =  this.populateRemoteInvestigator(coppaPerson, nciIdentifier, coppaOrganizationList);
-		}
-
-		return remoteInvestigator;		
-	}
-	
-	public RemoteInvestigator populateRemoteInvestigatorWithIdentfiedOrgs(Person coppaPerson, String nciIdentifier, List<String> orgsIdsForPerson){		
-
-		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);	
-		/*
-		List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList = new ArrayList<IdentifiedOrganization>();
-
-		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
-			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
-				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
-				identifiedCoppaOrganizationList.add(identifiedOrganization);
-			}
-		}
-		//Build HealthcareSite and HealthcareSiteInvestigator
-*/
-		Organization site = null;
-
-		if (orgsIdsForPerson != null && orgsIdsForPerson.size()>0){
-
-			for(String ids: orgsIdsForPerson){
-				String[] splitids = ids.split(IDSEPERATOR);
-				site = new RemoteOrganization();
-				site.setNciInstituteCode(splitids[0]);
-				site.setExternalId(splitids[1]);
-				SiteInvestigator si = new SiteInvestigator();
-				si.setOrganization(site);
-				si.setInvestigator(remoteInvestigator);
-				si.setStartDate(DateUtils.today());
-				remoteInvestigator.addSiteInvestigator(si)	;
-				
-
-			}
-
-		}
-
-		return remoteInvestigator;
-	}
-	public RemoteInvestigator populateRemoteInvestigator(Person coppaPerson, String nciIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList){		
-
-		RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,nciIdentifier);	
-		//List<gov.nih.nci.coppa.po.IdentifiedOrganization> identifiedCoppaOrganizationList = new ArrayList<IdentifiedOrganization>();
-/*
-		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
-			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
-				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
-				identifiedCoppaOrganizationList.add(identifiedOrganization);
-			}
-		}*/
-		//Build HealthcareSite and HealthcareSiteInvestigator
-
-		Organization site = null;
-
-		//if (identifiedCoppaOrganizationList != null && identifiedCoppaOrganizationList.size()>0){
-		if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
-			for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
-				IdentifiedOrganization identifiedOrganization = getIdentifiedOrganization(coppaOrganization);
-				site = new RemoteOrganization();
-				String assignedId = null;
-				if (identifiedOrganization != null){
-					assignedId = identifiedOrganization.getAssignedId().getExtension();
-				} else {
-					assignedId = coppaOrganization.getIdentifier().getExtension();
-				}
-				site.setNciInstituteCode(assignedId);
-				site.setExternalId(coppaOrganization.getIdentifier().getExtension());
-				
-				SiteInvestigator si = new SiteInvestigator();
-				si.setOrganization(site);
-				si.setStartDate(DateUtils.today());
-				si.setInvestigator(remoteInvestigator);
-				remoteInvestigator.addSiteInvestigator(si)	;
-			}
-		}
-		//}
-
-		return remoteInvestigator;
 	}
 
 	public Object saveOrUpdate(Object arg0) {

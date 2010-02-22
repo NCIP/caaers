@@ -894,6 +894,18 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
     		}
     	}
     }
+
+	@Override
+	public Object populateRole(Person coppaPerson, String staffAssignedIdentifier, List<Organization> coppaOrganizationList, Map<String, IdentifiedOrganization> organizationIdToIdentifiedOrganizationsMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object populateRole(Person coppaPerson, String staffAssignedIdentifier, IdentifiedOrganization identifiedOrganization) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
     /* Please DO NOT DELETE this commented block. Monish Dombla. 
