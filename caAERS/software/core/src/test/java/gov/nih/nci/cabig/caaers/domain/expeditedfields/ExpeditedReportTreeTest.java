@@ -34,6 +34,13 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
         tree = (ExpeditedReportTree)getDeployedApplicationContext().getBean("expeditedReportTree");
     }
 
+    // makes sure that a single instance of the bean is loaded.
+    //http://jira.semanticbits.com/browse/CAAERS-3736
+    public void testSingletonBeanLoading(){
+      Object anotherTree =  getDeployedApplicationContext().getBean("expeditedReportTree");
+      assertSame(anotherTree, tree);
+    }
+
     public void testAllPropertiesImpliedByTreeExistInModel() throws Exception {
         assertChildPropertiesExist(tree, ExpeditedAdverseEventReport.class);
     }

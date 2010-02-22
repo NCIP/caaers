@@ -22,6 +22,7 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
  * 
  * @author Rhett Sutphin
  * @author Ion C. Olaru
+ * @author Biju Joseph
  */
 public class ExpeditedReportTree extends PropertylessNode {
     private Map<ExpeditedReportSection, TreeNode> sections;
@@ -33,7 +34,14 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     public ExpeditedReportTree(MessageSource messageSource) {
         setMessageSource(messageSource);
+        initialize();
 
+    }
+
+    /**
+     * Will initialize the fields in the tree, by recreating the sections. 
+     */
+    public void initialize(){
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
                         section(BASICS_SECTION),
@@ -46,7 +54,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("adverseEventCtcTerm", property("term", getMessage("LBL_aeReport.adverseEvents.ctcTerm", "CTC term"))),
                                         property("detailsForOther", getMessage("LBL_aeReport.adverseEvents.detailsForOther", "Verbatim")),
                                         property("startDate", getMessage("LBL_aeReport.adverseEvents.startDate", "Start date")),
-                                        property("endDate", getMessage("LBL_aeReport.adverseEvents.endDate", "End date")), 
+                                        property("endDate", getMessage("LBL_aeReport.adverseEvents.endDate", "End date")),
                                         property("attributionSummary", getMessage("LBL_aeReport.adverseEvents.attributionSummary", "Attribution to study intervention")),
                                         property("hospitalization", getMessage("LBL_aeReport.adverseEvents.hospitalization", "Hospitalization")),
                                         property("expected", getMessage("LBL_aeReport.adverseEvents.expected", "Expected")),
@@ -57,28 +65,28 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("comments", getMessage("LBL_aeReport.adverseEvents.comments", "Comments"))
                                  )
                         ),
-                        section(REPORTER_INFO_SECTION, 
+                        section(REPORTER_INFO_SECTION,
                         		createPersonBlock("reporter"),
                                 createPersonBlock("physician")
                         ),
                         section(RADIATION_INTERVENTION_SECTION,
                               list("radiationInterventions", "RadiationIntervention",
                                 property("administration", getMessage("LBL_aeReport.radiationInterventions.administration", "Type of radiation administration")),
-                                property("dosage", getMessage("LBL_aeReport.radiationInterventions.dosage", "Total dose (to date)")), 
+                                property("dosage", getMessage("LBL_aeReport.radiationInterventions.dosage", "Total dose (to date)")),
                                 property("dosageUnit", getMessage("LBL_aeReport.radiationInterventions.dosageUnit", "Unit of measure")),
                                 property("lastTreatmentDate", getMessage("LBL_aeReport.radiationInterventions.lastTreatmentDate", "Date of last treatment")),
                                 property("fractionNumber", getMessage("LBL_aeReport.radiationInterventions.fractionNumber", "Schedule number of fractions")),
                                 property("daysElapsed", getMessage("LBL_aeReport.radiationInterventions.daysElapsed", "Number of elapsed days")),
                                 property("adjustment", getMessage("LBL_aeReport.radiationInterventions.adjustment", "Adjustment")))
                         ),
-                        section(SURGERY_INTERVENTION_SECTION, 
+                        section(SURGERY_INTERVENTION_SECTION,
 //                        	list("surgeryInterventions", getMessage("LBL_aeReport.surgeryInterventions.title", "Surgeries"),
                         	list("surgeryInterventions", "SurgeryIntervention",
                                         property("interventionSite", getMessage("LBL_aeReport.surgeryInterventions.interventionSite", "Intervention site")),
                                         property("interventionDate", getMessage("LBL_aeReport.surgeryInterventions.interventionDate", "Date of intervention"))
                             )
                         ),
-                        section(MEDICAL_DEVICE_SECTION, 
+                        section(MEDICAL_DEVICE_SECTION,
 //                        	list("medicalDevices", getMessage("LBL_aeReport.medicalDevices.title", "MedicalDevice"),
                         	list("medicalDevices", "MedicalDevice",
                                         property("brandName", getMessage("LBL_aeReport.medicalDevices.brandName", "Brand name")),
@@ -151,15 +159,15 @@ public class ExpeditedReportTree extends PropertylessNode {
                                     property("totalCourses", getMessage("LBL_aeReport.treatmentInformation.totalCourses", "Total number of courses to date"))
 						        )
                             ),
-						section(LABS_SECTION, 
+						section(LABS_SECTION,
 							list("labs", new LabsDisplayNameCreator(),
                                  codedOrOther("labTerm", getMessage("LBL_aeReport.labs.labTerm", "Lab test name"), "other", getMessage("LBL_aeReport.labs.other", "Other test name")),
                                  property("units", getMessage("LBL_aeReport.labs.units", "Units")),
                                  labValue("baseline", "Baseline"),
                                  labValue("nadir", "Worst"),
-                                 labValue("recovery", "Recovery"), 
+                                 labValue("recovery", "Recovery"),
                                  property("site", getMessage("LBL_aeReport.labs.site", "Site")),
-                                 property("labDate", getMessage("LBL_aeReport.labs.labDate", "date")), 
+                                 property("labDate", getMessage("LBL_aeReport.labs.labDate", "date")),
                                  property("infectiousAgent", getMessage("LBL_aeReport.labs.infectiousAgent", "Infectious agent"))
                            )
                         ),
@@ -190,9 +198,9 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
 
                         section(OUTCOME_SECTION),// TODO: just a space filler section
-                
+
                         section(PRIOR_THERAPIES_SECTION,
-                            	list("saeReportPriorTherapies", "Prior Therapy", 
+                            	list("saeReportPriorTherapies", "Prior Therapy",
                         				property("priorTherapy", getMessage("LBL_aeReport.saeReportPriorTherapies.priorTherapy", "Prior therapy")),
                                         property("other", getMessage("LBL_aeReport.saeReportPriorTherapies.other", "Comments (prior therapy)")),
                                         property("startDate", getMessage("LBL_aeReport.saeReportPriorTherapies.startDate", "Therapy start date"),
@@ -209,14 +217,14 @@ public class ExpeditedReportTree extends PropertylessNode {
                                 )
                             ),
 
-                        section(PRE_EXISTING_CONDITION_SECTION, 
+                        section(PRE_EXISTING_CONDITION_SECTION,
                         		list("saeReportPreExistingConditions", "Pre-existing condition",
                                         codedOrOther("preExistingCondition", getMessage("LBL_aeReport.saeReportPreExistingConditions.preExistingCondition", "Pre-existing condition"),
                                                 "other", getMessage("LBL_aeReport.saeReportPreExistingConditions.other", "Other (pre-existing)")))
                         ),
                 // LBL_aeReport.saeReportPreExistingConditions.preExistingCondition
-                
-                        section(CONCOMITANT_MEDICATION_SECTION, 
+
+                        section(CONCOMITANT_MEDICATION_SECTION,
                         		list("concomitantMedications","Medication",
                                         property("agentName", getMessage("LBL_aeReport.concomitantMedications.agentName", "Medication")),
                                         property("stillTakingMedications", getMessage("LBL_aeReport.concomitantMedications.stillTakingMedications", "Continued?")),
@@ -228,10 +236,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         		property("year", "Year"),
                                                 property("month", "Month"),
                                                 property("day", "Day"))
-                                       
+
                                 )
                         ),
-                                
+
                         section(MEDICAL_INFO_SECTION,
                         		//fields - general
                         		 property("participantHistory",
@@ -252,7 +260,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 			                        				codedOrOther("codedSite", getMessage("LBL_aeReport.diseaseHistory.metastaticDiseaseSites.codedSite", "Site name"), "otherSite", getMessage("LBL_aeReport.diseaseHistory.metastaticDiseaseSites.otherSite", "Other(site of metastatic disease)"))
 			                        		)
 			                    )
-                        		
+
                         )
         );
     }

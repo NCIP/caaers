@@ -9,10 +9,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @author Sameer Sawant
+ *
  * This tree represents the fields (attributes) in various pages of tabs of the caAERS UI.
  * Its used in the page under admin to configure the various fields to make it Mandatory/
  * Optional/Not applicable on the page.
+ * @author Sameer Sawant
+ * @author Biju Joseph
+ * 
  */
 public class CaaersFieldsTree extends TabNode {
 	private Map<CaaersTab, TreeNode> tabs;
@@ -39,6 +42,13 @@ public class CaaersFieldsTree extends TabNode {
 	public ExpeditedReportTree getExpeditedReportTree(){
 		return expeditedReportTree;
 	}
+
+    /**
+     * Re-initializes the fields in the tree. 
+     */
+    public void initialize() {
+       if(expeditedReportTree != null) expeditedReportTree.initialize();
+    }
 	
 	@Override
     public TreeNode add(TreeNode... subnodes) {
