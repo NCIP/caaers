@@ -68,7 +68,7 @@ public class OrganizationResolverMockTest extends AbstractTestCase {
 		Organization orgResult = (Organization)organizationResolver.getRemoteEntityByUniqueId("13169");
 		assertEquals("HIVNCI",orgResult.getNciInstituteCode());
 		assertEquals("National Cancer Institute HIV/AIDS Malignancy Branch",orgResult.getName());
-		
+		assertEquals("13169",orgResult.getExternalId());
 	}
 	
 }
