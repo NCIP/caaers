@@ -1,0 +1,76 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>externalId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>122b9040-181c-11df-8e75-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>PO_BUSINESS</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>searchCorrelationsWithEntities</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:CorrelationNode xmlns:ns1="http://po.coppa.nci.nih.gov">
+      <ns1:player>
+       <ns1:Organization>
+        <ns1:identifier displayable="true" extension="13169" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:name>
+         <ns2:part value="National Cancer Institute HIV/AIDS Malignancy Branch" xmlns:ns2="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns3:part type="AL" value="9000 Rockville Pike" xmlns:ns3="uri:iso.org:21090"/>
+
+         <ns4:part type="CTY" value="Bethesda" xmlns:ns4="uri:iso.org:21090"/>
+
+         <ns5:part type="STA" value="MD" xmlns:ns5="uri:iso.org:21090"/>
+
+         <ns6:part type="ZIP" value="20892" xmlns:ns6="uri:iso.org:21090"/>
+
+         <ns7:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns7="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns8:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns8="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+   </ns1:Organization>
+
+  </ns1:player>
+
+      <ns1:scoper/>
+
+      <ns1:correlation>
+       <ns1:IdentifiedOrganization>
+        <ns1:identifier>
+         <ns9:item displayable="true" extension="13172" identifierName="Identified org identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.6" scope="OBJ" xmlns:ns9="uri:iso.org:21090"/>
+
+    </ns1:identifier>
+
+        <ns1:playerIdentifier displayable="true" extension="13169" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:scoperIdentifier displayable="true" extension="503" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:assignedId displayable="true" extension="HIVNCI" identifierName="CTEP ID" reliability="ISS" root="2.16.840.1.113883.3.26.6.2" scope="OBJ"/>
+
+        <ns1:status code="active"/>
+
+   </ns1:IdentifiedOrganization>
+
+  </ns1:correlation>
+
+ </ns1:CorrelationNode>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>
