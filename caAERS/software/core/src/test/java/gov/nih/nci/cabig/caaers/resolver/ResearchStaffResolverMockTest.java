@@ -4,8 +4,11 @@ package gov.nih.nci.cabig.caaers.resolver;
 import edu.duke.cabig.c3pr.esb.Metadata;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.MetadataMatcher;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 
 import java.util.List;
@@ -81,6 +84,49 @@ public class ResearchStaffResolverMockTest extends AbstractTestCase {
 		List<Object> list = researchStaffResolver.find(example);
 		assertEquals(list.size(),1);	
 	}
+	public void testSearchByOrganization() throws Exception {
+		String xml =  IOUtils.toString(getClass().getResourceAsStream("byorg_identifiedorg_coppa_response.xml"));
+		Metadata mData = new Metadata("search",  "externalId", "IDENTIFIED_ORGANIZATION");
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		mData = new Metadata("searchCorrelationsWithEntities",  "externalId", "PO_BUSINESS");
+		xml =  IOUtils.toString(getClass().getResourceAsStream("rs_byorg_correlation_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		mData = new Metadata("getByPlayerIds",  "externalId", "IDENTIFIED_PERSON");
+		xml =  IOUtils.toString(getClass().getResourceAsStream("byorg_identifiedperson_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		replayMocks();
+		ResearchStaff example = new RemoteResearchStaff();
+		SiteResearchStaff sr = new SiteResearchStaff();
+		Organization org = new RemoteOrganization();
+		org.setNciInstituteCode("KY082");
+		sr.setOrganization(org);
+		example.getSiteResearchStaffs().add(sr);
+		List<Object> list = researchStaffResolver.find(example);
+		assertEquals(list.size(),3);
+		
+	}	
 	
+	public void testSearchByExternalId() throws Exception {
+		String xml =  IOUtils.toString(getClass().getResourceAsStream("rs_byextid_correlation_coppa_response.xml"));
+		Metadata mData = new Metadata("searchCorrelationsWithEntities",  "externalId", "PO_BUSINESS");
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		mData = new Metadata("getByPlayerIds",  "externalId", "IDENTIFIED_ORGANIZATION");
+		xml =  IOUtils.toString(getClass().getResourceAsStream("byextid_identifiedorg_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		mData = new Metadata("getByPlayerIds",  "externalId", "IDENTIFIED_PERSON");
+		xml =  IOUtils.toString(getClass().getResourceAsStream("byextid_identifiedperson_coppa_response.xml"));
+		EasyMock.expect(messageBroadcastService.broadcastCOPPA((List<String>)EasyMock.anyObject(), MetadataMatcher.eqMetadata(mData))).andReturn(xml);
+		
+		replayMocks();
+		Object obj1 = researchStaffResolver.getRemoteEntityByUniqueId("1167533");
+		ResearchStaff obj = (RemoteResearchStaff)obj1;
+		assertEquals(obj.getExternalId(),"1167533");	
+		
+	}
 
 }
