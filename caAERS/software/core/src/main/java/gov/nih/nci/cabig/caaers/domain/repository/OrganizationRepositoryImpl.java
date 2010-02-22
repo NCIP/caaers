@@ -192,15 +192,14 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		// to get remote organizations ...
  		Organization searchCriteria = new RemoteOrganization();
  		Map<String, Object> queryParameterMap = query.getParameterMap();
-        for (String key : queryParameterMap.keySet()) {
-            Object value = queryParameterMap.get(key);
-            if (key.equals("name")) {
-				searchCriteria.setName(value.toString());
+ 		for(Map.Entry<String, Object> entry : queryParameterMap.entrySet()){
+ 			if (entry.getKey().equals("name")) {
+				searchCriteria.setName(entry.getValue().toString());
 			}
-			if (key.equals("nciInstituteCode")) {
-				searchCriteria.setNciInstituteCode(value.toString());
-			}	
-        }
+			if (entry.getKey().equals("nciInstituteCode")) {
+				searchCriteria.setNciInstituteCode(entry.getValue().toString());
+			}
+ 		}
 
 		List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
 		if (remoteOrganizations.size() > 0) {
@@ -213,7 +212,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	public List<Organization> restrictBySubnames(final String[] subnames) {
  		List<Organization> localOrganizations = organizationDao.getBySubnames(subnames);
  		//get organizations from remote service
- 		List<Organization> remoteOrganizations = new ArrayList<Organization>();;
+ 		List<Organization> remoteOrganizations = null;
  		if (coppaModeForAutoCompleters) {
 	    	Organization searchCriteria = new RemoteOrganization();
 	    	searchCriteria.setNciInstituteCode(subnames[0]);
