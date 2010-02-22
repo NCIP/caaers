@@ -1,0 +1,561 @@
+
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>externalId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>e1e669e0-1d99-11df-b655-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>PO_BUSINESS</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>searchCorrelationsWithEntities</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:CorrelationNode xmlns:ns1="http://po.coppa.nci.nih.gov">
+      <ns1:player>
+       <ns1:Person>
+        <ns1:identifier displayable="true" extension="1297075" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:name>
+         <ns2:part type="FAM" value="Ghadialy" xmlns:ns2="uri:iso.org:21090"/>
+
+         <ns3:part type="GIV" value="Abbas" xmlns:ns3="uri:iso.org:21090"/>
+
+         <ns4:part type="GIV" value="T." xmlns:ns4="uri:iso.org:21090"/>
+
+         <ns5:part type="PFX" value="Dr." xmlns:ns5="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns6:part type="AL" value="7373 West Lane" xmlns:ns6="uri:iso.org:21090"/>
+
+         <ns7:part type="ADL" value="Oncology Department" xmlns:ns7="uri:iso.org:21090"/>
+
+         <ns8:part type="CTY" value="Stockton" xmlns:ns8="uri:iso.org:21090"/>
+
+         <ns9:part type="STA" value="CA" xmlns:ns9="uri:iso.org:21090"/>
+
+         <ns10:part type="ZIP" value="95210" xmlns:ns10="uri:iso.org:21090"/>
+
+         <ns11:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns11="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns12:item value="mailto:abbas.t.ghadialy@kp.org" xmlns:ns12="uri:iso.org:21090"/>
+
+         <ns13:item value="x-text-fax:(209)-476-3392" xmlns:ns13="uri:iso.org:21090"/>
+
+         <ns14:item value="tel:(209)-476-2010" xmlns:ns14="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:raceCode nullFlavor="NI"/>
+
+        <ns1:sexCode nullFlavor="NI"/>
+
+        <ns1:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns1:birthDate nullFlavor="NI"/>
+
+   </ns1:Person>
+
+  </ns1:player>
+
+      <ns1:scoper>
+       <ns1:Organization>
+        <ns1:identifier displayable="true" extension="183996" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:name>
+         <ns15:part value="Kaiser Permanente-Stockton" xmlns:ns15="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns16:part type="AL" value="7373 West Lane" xmlns:ns16="uri:iso.org:21090"/>
+
+         <ns17:part type="CTY" value="Stockton" xmlns:ns17="uri:iso.org:21090"/>
+
+         <ns18:part type="STA" value="CA" xmlns:ns18="uri:iso.org:21090"/>
+
+         <ns19:part type="ZIP" value="95210" xmlns:ns19="uri:iso.org:21090"/>
+
+         <ns20:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns20="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns21:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns21="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+   </ns1:Organization>
+
+  </ns1:scoper>
+
+      <ns1:correlation>
+       <ns1:ClinicalResearchStaff>
+        <ns1:identifier>
+         <ns22:item displayable="true" extension="1297082" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns22="uri:iso.org:21090"/>
+
+    </ns1:identifier>
+
+        <ns1:playerIdentifier displayable="true" extension="1297075" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:scoperIdentifier displayable="true" extension="183996" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:postalAddress>
+         <ns23:item xmlns:ns23="uri:iso.org:21090">
+          <ns23:part type="AL" value="7373 West Lane"/>
+
+          <ns23:part type="ADL" value="Oncology Department"/>
+
+          <ns23:part type="CTY" value="Stockton"/>
+
+          <ns23:part type="STA" value="CA"/>
+
+          <ns23:part type="ZIP" value="95210"/>
+
+          <ns23:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns23:item>
+
+    </ns1:postalAddress>
+
+        <ns1:telecomAddress>
+         <ns24:item value="mailto:abbas.t.ghadialy@kp.org" xmlns:ns24="uri:iso.org:21090"/>
+
+         <ns25:item value="x-text-fax:(209)-476-3392" xmlns:ns25="uri:iso.org:21090"/>
+
+         <ns26:item value="tel:(209)-476-2010" xmlns:ns26="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:status code="active"/>
+
+        <ns1:certificateLicenseText nullFlavor="NI"/>
+
+   </ns1:ClinicalResearchStaff>
+
+  </ns1:correlation>
+
+ </ns1:CorrelationNode>
+
+     <ns27:CorrelationNode xmlns:ns27="http://po.coppa.nci.nih.gov">
+      <ns27:player>
+       <ns27:Person>
+        <ns27:identifier displayable="true" extension="2518907" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns27:name>
+         <ns28:part type="FAM" value="Khalil" xmlns:ns28="uri:iso.org:21090"/>
+
+         <ns29:part type="GIV" value="Abbas" xmlns:ns29="uri:iso.org:21090"/>
+
+         <ns30:part type="GIV" value="M." xmlns:ns30="uri:iso.org:21090"/>
+
+         <ns31:part type="PFX" value="Dr." xmlns:ns31="uri:iso.org:21090"/>
+
+    </ns27:name>
+
+        <ns27:postalAddress>
+         <ns32:part type="AL" value="825 West Market Street" xmlns:ns32="uri:iso.org:21090"/>
+
+         <ns33:part type="ADL" value="Suite 203" xmlns:ns33="uri:iso.org:21090"/>
+
+         <ns34:part type="CTY" value="Lima" xmlns:ns34="uri:iso.org:21090"/>
+
+         <ns35:part type="STA" value="OH" xmlns:ns35="uri:iso.org:21090"/>
+
+         <ns36:part type="ZIP" value="45805" xmlns:ns36="uri:iso.org:21090"/>
+
+         <ns37:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns37="uri:iso.org:21090"/>
+
+    </ns27:postalAddress>
+
+        <ns27:statusCode code="active"/>
+
+        <ns27:telecomAddress>
+         <ns38:item value="mailto:unknown@example.com" xmlns:ns38="uri:iso.org:21090"/>
+
+         <ns39:item value="x-text-fax:(419)-222-0864" xmlns:ns39="uri:iso.org:21090"/>
+
+         <ns40:item value="tel:(419)-222-0808" xmlns:ns40="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+        <ns27:raceCode nullFlavor="NI"/>
+
+        <ns27:sexCode nullFlavor="NI"/>
+
+        <ns27:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns27:birthDate nullFlavor="NI"/>
+
+   </ns27:Person>
+
+  </ns27:player>
+
+      <ns27:scoper>
+       <ns27:Organization>
+        <ns27:identifier displayable="true" extension="153111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns27:name>
+         <ns41:part value="Hematology and Oncology of Lima, Inc" xmlns:ns41="uri:iso.org:21090"/>
+
+    </ns27:name>
+
+        <ns27:postalAddress>
+         <ns42:part type="AL" value="825 West Market Street" xmlns:ns42="uri:iso.org:21090"/>
+
+         <ns43:part type="ADL" value="Suite 203" xmlns:ns43="uri:iso.org:21090"/>
+
+         <ns44:part type="CTY" value="Lima" xmlns:ns44="uri:iso.org:21090"/>
+
+         <ns45:part type="STA" value="OH" xmlns:ns45="uri:iso.org:21090"/>
+
+         <ns46:part type="ZIP" value="45805" xmlns:ns46="uri:iso.org:21090"/>
+
+         <ns47:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns47="uri:iso.org:21090"/>
+
+    </ns27:postalAddress>
+
+        <ns27:statusCode code="active"/>
+
+        <ns27:telecomAddress>
+         <ns48:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns48="uri:iso.org:21090"/>
+
+         <ns49:item value="tel:(419)-222-0808" xmlns:ns49="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+   </ns27:Organization>
+
+  </ns27:scoper>
+
+      <ns27:correlation>
+       <ns27:ClinicalResearchStaff>
+        <ns27:identifier>
+         <ns50:item displayable="true" extension="2518914" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns50="uri:iso.org:21090"/>
+
+    </ns27:identifier>
+
+        <ns27:playerIdentifier displayable="true" extension="2518907" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns27:scoperIdentifier displayable="true" extension="153111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns27:postalAddress>
+         <ns51:item xmlns:ns51="uri:iso.org:21090">
+          <ns51:part type="AL" value="825 West Market Street"/>
+
+          <ns51:part type="ADL" value="Suite 203"/>
+
+          <ns51:part type="CTY" value="Lima"/>
+
+          <ns51:part type="STA" value="OH"/>
+
+          <ns51:part type="ZIP" value="45805"/>
+
+          <ns51:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns51:item>
+
+    </ns27:postalAddress>
+
+        <ns27:telecomAddress>
+         <ns52:item value="x-text-fax:(419)-222-0864" xmlns:ns52="uri:iso.org:21090"/>
+
+         <ns53:item value="tel:(419)-222-0808" xmlns:ns53="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+        <ns27:status code="active"/>
+
+        <ns27:certificateLicenseText nullFlavor="NI"/>
+
+   </ns27:ClinicalResearchStaff>
+
+  </ns27:correlation>
+
+ </ns27:CorrelationNode>
+
+     <ns54:CorrelationNode xmlns:ns54="http://po.coppa.nci.nih.gov">
+      <ns54:player>
+       <ns54:Person>
+        <ns54:identifier displayable="true" extension="2740653" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns54:name>
+         <ns55:part type="FAM" value="Emami" xmlns:ns55="uri:iso.org:21090"/>
+
+         <ns56:part type="GIV" value="Abbas" xmlns:ns56="uri:iso.org:21090"/>
+
+         <ns57:part type="PFX" value="Dr." xmlns:ns57="uri:iso.org:21090"/>
+
+    </ns54:name>
+
+        <ns54:postalAddress>
+         <ns58:part type="AL" value="2401 Gillham Road" xmlns:ns58="uri:iso.org:21090"/>
+
+         <ns59:part type="ADL" value="Section of  Hematology &amp; Oncology" xmlns:ns59="uri:iso.org:21090"/>
+
+         <ns60:part type="CTY" value="Kansas City" xmlns:ns60="uri:iso.org:21090"/>
+
+         <ns61:part type="STA" value="MO" xmlns:ns61="uri:iso.org:21090"/>
+
+         <ns62:part type="ZIP" value="64108" xmlns:ns62="uri:iso.org:21090"/>
+
+         <ns63:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns63="uri:iso.org:21090"/>
+
+    </ns54:postalAddress>
+
+        <ns54:statusCode code="active"/>
+
+        <ns54:telecomAddress>
+         <ns64:item value="mailto:aemami@cmh.edu" xmlns:ns64="uri:iso.org:21090"/>
+
+         <ns65:item value="x-text-fax:(816)-855-1700" xmlns:ns65="uri:iso.org:21090"/>
+
+         <ns66:item value="tel:(816)-234-3265" xmlns:ns66="uri:iso.org:21090"/>
+
+    </ns54:telecomAddress>
+
+        <ns54:raceCode nullFlavor="NI"/>
+
+        <ns54:sexCode nullFlavor="NI"/>
+
+        <ns54:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns54:birthDate nullFlavor="NI"/>
+
+   </ns54:Person>
+
+  </ns54:player>
+
+      <ns54:scoper>
+       <ns54:Organization>
+        <ns54:identifier displayable="true" extension="162871" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns54:name>
+         <ns67:part value="The Childrens Mercy Hospital" xmlns:ns67="uri:iso.org:21090"/>
+
+    </ns54:name>
+
+        <ns54:postalAddress>
+         <ns68:part type="AL" value="2401 Gillham Road" xmlns:ns68="uri:iso.org:21090"/>
+
+         <ns69:part type="CTY" value="Kansas City" xmlns:ns69="uri:iso.org:21090"/>
+
+         <ns70:part type="STA" value="MO" xmlns:ns70="uri:iso.org:21090"/>
+
+         <ns71:part type="ZIP" value="64108" xmlns:ns71="uri:iso.org:21090"/>
+
+         <ns72:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns72="uri:iso.org:21090"/>
+
+    </ns54:postalAddress>
+
+        <ns54:statusCode code="active"/>
+
+        <ns54:telecomAddress>
+         <ns73:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns73="uri:iso.org:21090"/>
+
+    </ns54:telecomAddress>
+
+   </ns54:Organization>
+
+  </ns54:scoper>
+
+      <ns54:correlation>
+       <ns54:ClinicalResearchStaff>
+        <ns54:identifier>
+         <ns74:item displayable="true" extension="2740660" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns74="uri:iso.org:21090"/>
+
+    </ns54:identifier>
+
+        <ns54:playerIdentifier displayable="true" extension="2740653" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns54:scoperIdentifier displayable="true" extension="162871" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns54:postalAddress>
+         <ns75:item xmlns:ns75="uri:iso.org:21090">
+          <ns75:part type="AL" value="2401 Gillham Road"/>
+
+          <ns75:part type="ADL" value="Section of  Hematology &amp; Oncology"/>
+
+          <ns75:part type="CTY" value="Kansas City"/>
+
+          <ns75:part type="STA" value="MO"/>
+
+          <ns75:part type="ZIP" value="64108"/>
+
+          <ns75:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns75:item>
+
+    </ns54:postalAddress>
+
+        <ns54:telecomAddress>
+         <ns76:item value="mailto:aemami@cmh.edu" xmlns:ns76="uri:iso.org:21090"/>
+
+         <ns77:item value="x-text-fax:(816)-855-1700" xmlns:ns77="uri:iso.org:21090"/>
+
+         <ns78:item value="tel:(816)-234-3265" xmlns:ns78="uri:iso.org:21090"/>
+
+    </ns54:telecomAddress>
+
+        <ns54:status code="active"/>
+
+        <ns54:certificateLicenseText nullFlavor="NI"/>
+
+   </ns54:ClinicalResearchStaff>
+
+  </ns54:correlation>
+
+ </ns54:CorrelationNode>
+
+     <ns79:CorrelationNode xmlns:ns79="http://po.coppa.nci.nih.gov">
+      <ns79:player>
+       <ns79:Person>
+        <ns79:identifier displayable="true" extension="2811835" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns79:name>
+         <ns80:part type="FAM" value="Abbas" xmlns:ns80="uri:iso.org:21090"/>
+
+         <ns81:part type="GIV" value="Abbas" xmlns:ns81="uri:iso.org:21090"/>
+
+         <ns82:part type="GIV" value="El-Sayed" xmlns:ns82="uri:iso.org:21090"/>
+
+         <ns83:part type="PFX" value="Dr." xmlns:ns83="uri:iso.org:21090"/>
+
+    </ns79:name>
+
+        <ns79:postalAddress>
+         <ns84:part type="AL" value="410 West Tenth Avenue" xmlns:ns84="uri:iso.org:21090"/>
+
+         <ns85:part type="ADL" value="Division of Surgical Oncology N835 Doan Hall" xmlns:ns85="uri:iso.org:21090"/>
+
+         <ns86:part type="CTY" value="Columbus" xmlns:ns86="uri:iso.org:21090"/>
+
+         <ns87:part type="STA" value="OH" xmlns:ns87="uri:iso.org:21090"/>
+
+         <ns88:part type="ZIP" value="43210" xmlns:ns88="uri:iso.org:21090"/>
+
+         <ns89:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns89="uri:iso.org:21090"/>
+
+    </ns79:postalAddress>
+
+        <ns79:statusCode code="active"/>
+
+        <ns79:telecomAddress>
+         <ns90:item value="mailto:abbas.17@osu.edu" xmlns:ns90="uri:iso.org:21090"/>
+
+         <ns91:item value="x-text-fax:(614)-293-3453" xmlns:ns91="uri:iso.org:21090"/>
+
+         <ns92:item value="tel:(614)-293-4509" xmlns:ns92="uri:iso.org:21090"/>
+
+    </ns79:telecomAddress>
+
+        <ns79:raceCode nullFlavor="NI"/>
+
+        <ns79:sexCode nullFlavor="NI"/>
+
+        <ns79:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns79:birthDate nullFlavor="NI"/>
+
+   </ns79:Person>
+
+  </ns79:player>
+
+      <ns79:scoper>
+       <ns79:Organization>
+        <ns79:identifier displayable="true" extension="247111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns79:name>
+         <ns93:part value="Ohio State University Medical Center" xmlns:ns93="uri:iso.org:21090"/>
+
+    </ns79:name>
+
+        <ns79:postalAddress>
+         <ns94:part type="AL" value="410 West Tenth Street" xmlns:ns94="uri:iso.org:21090"/>
+
+         <ns95:part type="CTY" value="Columbus" xmlns:ns95="uri:iso.org:21090"/>
+
+         <ns96:part type="STA" value="OH" xmlns:ns96="uri:iso.org:21090"/>
+
+         <ns97:part type="ZIP" value="43210" xmlns:ns97="uri:iso.org:21090"/>
+
+         <ns98:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns98="uri:iso.org:21090"/>
+
+    </ns79:postalAddress>
+
+        <ns79:statusCode code="active"/>
+
+        <ns79:telecomAddress>
+         <ns99:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns99="uri:iso.org:21090"/>
+
+    </ns79:telecomAddress>
+
+   </ns79:Organization>
+
+  </ns79:scoper>
+
+      <ns79:correlation>
+       <ns79:ClinicalResearchStaff>
+        <ns79:identifier>
+         <ns100:item displayable="true" extension="2811842" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns100="uri:iso.org:21090"/>
+
+    </ns79:identifier>
+
+        <ns79:playerIdentifier displayable="true" extension="2811835" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns79:scoperIdentifier displayable="true" extension="247111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns79:postalAddress>
+         <ns101:item xmlns:ns101="uri:iso.org:21090">
+          <ns101:part type="AL" value="410 West Tenth Avenue"/>
+
+          <ns101:part type="ADL" value="Division of Surgical Oncology N835 Doan Hall"/>
+
+          <ns101:part type="CTY" value="Columbus"/>
+
+          <ns101:part type="STA" value="OH"/>
+
+          <ns101:part type="ZIP" value="43210"/>
+
+          <ns101:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns101:item>
+
+    </ns79:postalAddress>
+
+        <ns79:telecomAddress>
+         <ns102:item value="mailto:abbas.17@osu.edu" xmlns:ns102="uri:iso.org:21090"/>
+
+         <ns103:item value="x-text-fax:(614)-293-3453" xmlns:ns103="uri:iso.org:21090"/>
+
+         <ns104:item value="tel:(614)-293-4509" xmlns:ns104="uri:iso.org:21090"/>
+
+    </ns79:telecomAddress>
+
+        <ns79:status code="active"/>
+
+        <ns79:certificateLicenseText nullFlavor="NI"/>
+
+   </ns79:ClinicalResearchStaff>
+
+  </ns79:correlation>
+
+ </ns79:CorrelationNode>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>
+

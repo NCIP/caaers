@@ -1,0 +1,83 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>externalId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>415b3630-1d9a-11df-b655-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>IDENTIFIED_ORGANIZATION</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>getByPlayerIds</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:IdentifiedOrganization xmlns:ns1="http://po.coppa.nci.nih.gov">
+      <ns1:identifier>
+       <ns2:item displayable="true" extension="153115" identifierName="Identified org identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.6" scope="OBJ" xmlns:ns2="uri:iso.org:21090"/>
+
+  </ns1:identifier>
+
+      <ns1:playerIdentifier displayable="true" extension="153111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns1:scoperIdentifier displayable="true" extension="503" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns1:assignedId displayable="true" extension="OH310" identifierName="CTEP ID" reliability="ISS" root="2.16.840.1.113883.3.26.6.2" scope="OBJ"/>
+
+      <ns1:status code="active"/>
+
+ </ns1:IdentifiedOrganization>
+
+     <ns3:IdentifiedOrganization xmlns:ns3="http://po.coppa.nci.nih.gov">
+      <ns3:identifier>
+       <ns4:item displayable="true" extension="162874" identifierName="Identified org identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.6" scope="OBJ" xmlns:ns4="uri:iso.org:21090"/>
+
+  </ns3:identifier>
+
+      <ns3:playerIdentifier displayable="true" extension="162871" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns3:scoperIdentifier displayable="true" extension="503" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns3:assignedId displayable="true" extension="MO024" identifierName="CTEP ID" reliability="ISS" root="2.16.840.1.113883.3.26.6.2" scope="OBJ"/>
+
+      <ns3:status code="active"/>
+
+ </ns3:IdentifiedOrganization>
+
+     <ns5:IdentifiedOrganization xmlns:ns5="http://po.coppa.nci.nih.gov">
+      <ns5:identifier>
+       <ns6:item displayable="true" extension="183999" identifierName="Identified org identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.6" scope="OBJ" xmlns:ns6="uri:iso.org:21090"/>
+
+  </ns5:identifier>
+
+      <ns5:playerIdentifier displayable="true" extension="183996" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns5:scoperIdentifier displayable="true" extension="503" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns5:assignedId displayable="true" extension="CA470" identifierName="CTEP ID" reliability="ISS" root="2.16.840.1.113883.3.26.6.2" scope="OBJ"/>
+
+      <ns5:status code="active"/>
+
+ </ns5:IdentifiedOrganization>
+
+     <ns7:IdentifiedOrganization xmlns:ns7="http://po.coppa.nci.nih.gov">
+      <ns7:identifier>
+       <ns8:item displayable="true" extension="247114" identifierName="Identified org identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.6" scope="OBJ" xmlns:ns8="uri:iso.org:21090"/>
+
+  </ns7:identifier>
+
+      <ns7:playerIdentifier displayable="true" extension="247111" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns7:scoperIdentifier displayable="true" extension="503" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+      <ns7:assignedId displayable="true" extension="OH007" identifierName="CTEP ID" reliability="ISS" root="2.16.840.1.113883.3.26.6.2" scope="OBJ"/>
+
+      <ns7:status code="active"/>
+
+ </ns7:IdentifiedOrganization>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>
