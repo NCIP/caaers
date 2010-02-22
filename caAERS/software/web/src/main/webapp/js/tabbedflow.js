@@ -1,5 +1,8 @@
 AE.clickSrc;
 AE.tabbedFlowUpdateTarget = function(evt) {
+
+    AE.checkForModification = false;
+
     if(!AE.SUBMISSION_INPROGRESS){
     	AE.SUBMISSION_INPROGRESS = true;
     	var a = Event.element(evt)
@@ -20,6 +23,9 @@ AE.tabbedFlowUpdateTarget = function(evt) {
 
 
 AE.tabbedFlowDisableTarget = function(evt) {
+
+    AE.checkForModification = false;
+
 	if(!AE.SUBMISSION_INPROGRESS){
 		AE.SUBMISSION_INPROGRESS = true;
 	    showDWRLoadingIndicator();
