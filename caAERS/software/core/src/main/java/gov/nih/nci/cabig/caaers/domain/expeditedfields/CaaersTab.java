@@ -3,11 +3,13 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 /**
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  * This enum enlists all the tabs in the caaers UI, whose fields are configurable.
  */
-public enum CaaersTab{
-	CAPTURE_ADVERSE_EVENTS_TAB("CaptureAdverseEventTab", "Capture adverse events");
-	
+public enum CaaersTab {
+	CAPTURE_ADVERSE_EVENTS_TAB("CaptureAdverseEventTab", "Capture adverse events"),
+    COURSE_TAB("CourseCycleTab", "Create Course/Cycle");
+
 	private String displayName;
 	private String className;
 	

@@ -31,6 +31,10 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
     }
 
+    public void testSections() {
+        assertEquals(2, tree.getChildren().size());
+    }
+    
     //checks whether the call is properly getting delegated to expedited tree. 
     public void testInitialize(){
         ExpeditedReportTree reportTree = registerMockFor(ExpeditedReportTree.class);

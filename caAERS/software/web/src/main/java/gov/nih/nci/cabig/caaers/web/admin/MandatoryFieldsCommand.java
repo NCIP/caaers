@@ -15,8 +15,9 @@ import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
 /**
  * This is the command class for MandatoryFieldsController 
  * @author Sameer Sawant
+ * @author Ion C. Olaru
  */
-public class MandatoryFieldsCommand{
+public class MandatoryFieldsCommand {
 	private List<CaaersFieldDefinition> mandatoryFields;
 	private CaaersFieldDefinitionDao caaersFieldDefinitionDao;
 	private Map<String, Integer> mandatoryFieldMap;
@@ -25,21 +26,16 @@ public class MandatoryFieldsCommand{
 		return mandatoryFieldMap;
 	}
 
-
 	public void setMandatoryFieldMap(Map<String, Integer> mandatoryFieldMap) {
 		this.mandatoryFieldMap = mandatoryFieldMap;
 	}
 
-
 	public MandatoryFieldsCommand(CaaersFieldDefinitionDao caaersFieldDefinitionDao){
 		this.caaersFieldDefinitionDao = caaersFieldDefinitionDao;
-		mandatoryFields = caaersFieldDefinitionDao.getByTabName(AdverseEventCaptureTab.class.getName());
-		// Currently as we are supporting only the fields for only one tab, simply fetch
-		// all the caaersFieldDefinition entries and populate the list
+        mandatoryFields = caaersFieldDefinitionDao.getAll();
 	}
-	
-	
-	 public void initializeMandatoryFieldMap() {
+
+    public void initializeMandatoryFieldMap() {
 	        mandatoryFieldMap = new LinkedHashMap<String, Integer>();
 	        if(CollectionUtils.isNotEmpty(mandatoryFields)){
 	        	String path;

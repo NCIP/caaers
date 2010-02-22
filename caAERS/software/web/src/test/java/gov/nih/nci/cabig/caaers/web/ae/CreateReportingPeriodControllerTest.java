@@ -20,6 +20,8 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 
@@ -35,6 +37,7 @@ import org.springframework.validation.ObjectError;
 /**
  * 
  * @author Biju Joseph
+ * @author Ion C. Olaru
  *
  */
 public class CreateReportingPeriodControllerTest extends WebTestCase {
@@ -56,6 +59,9 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 	 AdverseEventReportingPeriod reportingPeriod;
 	 Configuration configuration;
 	 StudySite studySite;
+
+    RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+    CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 
     protected BindException errors;
     protected ReportingPeriodCommand command;
@@ -90,7 +96,9 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		controller.setWorkflowConfigDao(workflowConfigDao);
 		controller.setUserDao(userDao);
 		controller.setConfiguration(configuration);
-		
+
+        controller.setRenderDecisionManagerFactoryBean(registerMockFor(RenderDecisionManagerFactoryBean.class));
+        controller.setCaaersFieldConfigurationManager(registerMockFor(CaaersFieldConfigurationManager.class));
 		
 		errors = new BindException(new Object(){
 			public AdverseEventReportingPeriod getReportingPeriod(){
@@ -173,6 +181,8 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant);
+		expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse"));
+
 		replayMocks();
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, "edit");
@@ -615,6 +625,9 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
         expect(assignment.getParticipant()).andReturn(participant).anyTimes();
         expect(study.getEpochs()).andReturn(epochs).anyTimes();
         expect(study.getTreatmentAssignments()).andReturn(tas).anyTimes();
+//        expect(renderDecisionManagerFactoryBean.getRenderDecisionManager());
+        System.out.println(renderDecisionManagerFactoryBean);
+        System.out.println(renderDecisionManagerFactoryBean.getRenderDecisionManager());
 
         replayMocks();
 

@@ -32,44 +32,38 @@
 	<div class="tabpane">
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
-        	    <li id="thirdlevelnav" class="tab">
-           	    	<div>
-                    	<a href="configure"><caaers:message code="configure.menu.general"/></a>
-                	</div>
-            	</li>
-            	<li id="thirdlevelnav" class="tab">
-                	<div>
-                   		<a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a>
-                	</div>
-            	</li>
-            	<li id="thirdlevelnav" class="tab selected">
-                	<div>
-                   		<a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a>
-                	</div>
-            	</li>
+        	    <li id="thirdlevelnav" class="tab"><div><a href="configure"><caaers:message code="configure.menu.general"/></a></div></li>
+            	<li id="thirdlevelnav" class="tab"><div><a href="passwordPolicyConfigure"><caaers:message code="configure.menu.passwordPolicy"/></a></div></li>
+                <li id="thirdlevelnav" class="tab selected"><div><a href="mandatoryFields"><caaers:message code="configure.menu.mandatoryFields"/></a></div></li>
         	</ul>
     	</div>
     	<div class="content">
 			<form:form>
-			<caaers:message code="configure.menu.aefields.title" var="detailsSectionTitle"/>
+			    <caaers:message code="configure.menu.aefields.title" var="detailsSectionTitle"/>
         		<chrome:box title="${detailsSectionTitle}">
              			<tags:instructions code="admin.mandatory.fields.instruction" />
 						<tags:hasErrorsMessage hideErrorDetails="true"/>
             			<tags:jsErrorsMessage/>
-						<!--  JSP body here -->
 						<div id="captureAdverseEventsFields-id">
-			 				<rd:renderMandatoryFields key="CAPTURE_ADVERSE_EVENTS_TAB~ADVERSE_EVENT_SECTION~Adverse events"/>
-			 				<%-- <c:forEach var="field" items='${fieldGroups["CAPTURE_ADVERSE_EVENTS_TAB~ADVERSE_EVENT_SECTION~Adverse events"].fields}'>
-			 					${field }
-								<br><tags:renderLabel field="${field}" /><br>
-							</c:forEach>  --%>
+			 				<rd:renderMandatoryFields key="CAPTURE_AE_TAB_SECTION~Adverse events"/>
 						</div>
-						<c:if test="${updated}"><p class="updated">Settings saved</p></c:if>
     			</chrome:box>
+                
+                <caaers:message code="configure.menu.coursefields.title" var="detailsSectionTitle"/>
+                <chrome:box title="${detailsSectionTitle}">
+             			<tags:instructions code="admin.mandatory.fields.instruction" />
+						<tags:hasErrorsMessage hideErrorDetails="true"/>
+            			<tags:jsErrorsMessage/>
+						<div id="captureAdverseEventsFields-id">
+			 				<rd:renderMandatoryFields key="COURSE_CYCLE_SECTION" />
+						</div>
+    			</chrome:box>
+
+                <c:if test="${updated}"><p class="updated">Settings saved</p></c:if>
+
         		<div class="content buttons autoclear">
           			<div class="flow-buttons">
            				<span class="next">
-              				<!--  reset and save buttons -->
                				<tags:button type="submit" value="Save" color="green" icon="save" />
            				</span>
           			</div>

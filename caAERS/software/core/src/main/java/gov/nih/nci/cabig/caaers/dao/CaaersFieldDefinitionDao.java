@@ -38,7 +38,7 @@ public class CaaersFieldDefinitionDao extends CaaersDao<CaaersFieldDefinition>{
      */
     @SuppressWarnings("unchecked")
     public List<CaaersFieldDefinition> getByTabName(String tabName) {
-        return getHibernateTemplate().find("from CaaersFieldDefinition cfd where cfd.tabName=?", new String [] {tabName});
+        return getHibernateTemplate().find("from CaaersFieldDefinition cfd where cfd.tabName=? order by cfd.tabName, cfd.id", new String [] {tabName});
     }
     
     /**
@@ -48,6 +48,6 @@ public class CaaersFieldDefinitionDao extends CaaersDao<CaaersFieldDefinition>{
      */
     public List<CaaersFieldDefinition> getAll() {
     	HibernateTemplate template = getHibernateTemplate();
-        return getHibernateTemplate().find("from CaaersFieldDefinition");
+        return getHibernateTemplate().find("from CaaersFieldDefinition as cfd order by cfd.tabName, cfd.id");
     }
 }

@@ -20,10 +20,12 @@ public enum ExpeditedReportSection {
     ATTRIBUTION_SECTION("Attribution", true), 
     ADDITIONAL_INFO_SECTION("Additional Info"), 
     SUBMIT_REPORT_SECTION("Review & Submit", true), 
-    OUTCOME_SECTION("Outcome");
+    OUTCOME_SECTION("Outcome"),
+
+    CAPTURE_AE_TAB_SECTION("Capture AE"),
+    COURSE_CYCLE_SECTION("Course Cycle");
 
     private String displayName;
-
     private boolean associatedToBusinessRules;
 
     private ExpeditedReportSection(String displayName) {

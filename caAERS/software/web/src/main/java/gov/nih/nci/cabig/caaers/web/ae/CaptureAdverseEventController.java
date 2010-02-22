@@ -123,9 +123,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	referenceData.put("routineAeSummary", summary);
         }
         
-        
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-        
         renderDecisionManager.reveal(caaersFieldConfigurationManager.getListOfApplicableFields(AdverseEventCaptureTab.class.getName()));
         renderDecisionManager.conceal(caaersFieldConfigurationManager.getListOfNotApplicableFields(AdverseEventCaptureTab.class.getName()));
         

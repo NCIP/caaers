@@ -1,39 +1,28 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import gov.nih.nci.cabig.caaers.dao.CaaersFieldDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersFieldsTree;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersTab;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * @author Sameer Sawant
@@ -52,8 +41,6 @@ public class MandatoryFieldsController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	MandatoryFieldsCommand command = new MandatoryFieldsCommand(caaersFieldDefinitionDao);
-    	//reconcileMandatoryFields(command.getMandatoryFields(), caaersFieldsTree.getNodeForTab(CaaersTab.CAPTURE_ADVERSE_EVENTS_TAB));
-    	//command.initializeMandatoryFieldMap();
         return command;
     }
 
@@ -64,8 +51,10 @@ public class MandatoryFieldsController extends SimpleFormController {
     	MandatoryFieldsCommand command = (MandatoryFieldsCommand) cmd;
     	// If there are no erros then save the CaaersFieldsDefinitions list
     	if(!errors.hasErrors()){
-    		for(CaaersFieldDefinition cfd: command.getMandatoryFields())
+    		for(CaaersFieldDefinition cfd: command.getMandatoryFields()) {
+                // System.out.println("Saving..." + cfd.getFieldPath() + "=" + cfd.getMandatory());
     			caaersFieldDefinitionDao.save(cfd);
+            }
     		// reinitialize caaersFieldConfigurationManager
     		caaersFieldConfigurationManager.initializeConfigurationManager();
     	}
@@ -81,12 +70,12 @@ public class MandatoryFieldsController extends SimpleFormController {
     protected Map referenceData(final HttpServletRequest request, final Object cmd, final Errors errors) throws Exception {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         MandatoryFieldsCommand command = (MandatoryFieldsCommand) cmd;
-        reconcileMandatoryFields(command.getMandatoryFields(), caaersFieldsTree.getNodeForTab(CaaersTab.CAPTURE_ADVERSE_EVENTS_TAB));
     	command.initializeMandatoryFieldMap();
         
         Map<String, InputFieldGroup> fieldMap;
         fieldMap = new LinkedHashMap<String, InputFieldGroup>();
-        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForTab(CaaersTab.CAPTURE_ADVERSE_EVENTS_TAB));
+        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(ExpeditedReportSection.CAPTURE_AE_TAB_SECTION));
+        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(ExpeditedReportSection.COURSE_CYCLE_SECTION));
         refDataMap.put("fieldGroups", fieldMap);
         return refDataMap;
     }
@@ -157,7 +146,6 @@ public class MandatoryFieldsController extends SimpleFormController {
             for (TreeNode n : node.getChildren())
                 populateFieldMap(command, map, n);
         }
-
     }
 
     @Required

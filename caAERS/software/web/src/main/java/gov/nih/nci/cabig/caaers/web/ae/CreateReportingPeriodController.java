@@ -6,7 +6,10 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
@@ -63,6 +66,11 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private Configuration configuration;
     private static final String viewName = "ae/createReportingPeriod";
 
+    private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+    private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
+
+    private String TAB_NAME = "gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab";
+
     public CreateReportingPeriodController() {
         setFormView(viewName);
     }
@@ -103,7 +111,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
             }
         }
 
-
         return command;
     }
 
@@ -125,7 +132,12 @@ public class CreateReportingPeriodController extends SimpleFormController {
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
         populateHelpAttributeOnFields(groupMap);
 
+        RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
+        renderDecisionManager.reveal(caaersFieldConfigurationManager.getListOfApplicableFields(TAB_NAME));
+        renderDecisionManager.conceal(caaersFieldConfigurationManager.getListOfNotApplicableFields(TAB_NAME));
+        
         refDataMap.put("fieldGroups", groupMap);
+        refDataMap.put("reportingPeriod_treatmentAssignment_required", isFieldRequired("reportingPeriod.treatmentAssignment"));
         return refDataMap;
     }
 
@@ -138,18 +150,22 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course/cycle", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of this course/cycle", true));
-        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of this course/cycle", false);
-//        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course/cycle", isFieldRequired("assignment.startDateOfFirstCourse")));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of this course/cycle", isFieldRequired("reportingPeriod.startDate")));
+        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of this course/cycle", isFieldRequired("reportingPeriod.endDate"));
         reportingPeriodFieldGroup.getFields().add(endDateField);
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", false, createEpochOptions(command)));
-        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", false);
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", isFieldRequired("reportingPeriod.epoch"), createEpochOptions(command)));
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", isFieldRequired("reportingPeriod.cycleNumber"));
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
 
         fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
         return fieldMap;
+    }
+
+
+    private boolean isFieldRequired(String fieldPath){
+        return caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, fieldPath);
     }
 
     /**
@@ -172,22 +188,22 @@ public class CreateReportingPeriodController extends SimpleFormController {
             }
         }
 
-
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
         AdverseEventReportingPeriod rPeriod = rpCommand.getReportingPeriod();
         List<AdverseEventReportingPeriod> rPeriodList = rpCommand.getAssignment().getReportingPeriods();
 
-
         //check the treatment assignment.
-        if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
-            if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
-                errors.reject("CRP_001", "Select the Treatment Assignment.");
-                return;
-            }
-        } else {
-            if (rPeriod.getTreatmentAssignment().isRetired()) {
-                errors.reject("CRP_009", "Treatment assignment should be active");
-                return;
+        if (isFieldRequired("reportingPeriod.treatmentAssignment")) {
+            if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
+                if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
+                    errors.reject("CRP_001", "Select the Treatment Assignment.");
+                    return;
+                }
+            } else {
+                if (rPeriod.getTreatmentAssignment().isRetired()) {
+                    errors.reject("CRP_009", "Treatment assignment should be active");
+                    return;
+                }
             }
         }
 
@@ -291,7 +307,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
      * 3. No other existing reporting period start date should fall within the start date and end date of the new reporting period.
      * 4. Newly created start date should not fall within any of the existing reporting period start and end dates.
      *
-     * @param cmd
      * @return
      */
     protected void validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Errors errors) {
@@ -492,4 +507,20 @@ public class CreateReportingPeriodController extends SimpleFormController {
         return viewName;
     }
 
+    @Required
+    public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
+        this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
+    }
+
+    public CaaersFieldConfigurationManager getCaaersFieldConfigurationManager() {
+        return caaersFieldConfigurationManager;
+    }
+
+    public RenderDecisionManagerFactoryBean getRenderDecisionManagerFactoryBean() {
+        return renderDecisionManagerFactoryBean;
+    }
+
+    public void setRenderDecisionManagerFactoryBean(RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean) {
+        this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
+    }
 }
