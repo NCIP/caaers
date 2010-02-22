@@ -1,0 +1,424 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>externalId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>dc25c950-1fc0-11df-b655-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>PO_BUSINESS</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>searchCorrelationsWithEntities</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:CorrelationNode xmlns:ns1="http://po.coppa.nci.nih.gov">
+      <ns1:player>
+       <ns1:Person>
+        <ns1:identifier displayable="true" extension="1353853" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:name>
+         <ns2:part type="FAM" value="Harris" xmlns:ns2="uri:iso.org:21090"/>
+
+         <ns3:part type="GIV" value="Jason" xmlns:ns3="uri:iso.org:21090"/>
+
+         <ns4:part type="GIV" value="P." xmlns:ns4="uri:iso.org:21090"/>
+
+         <ns5:part type="PFX" value="Dr." xmlns:ns5="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns6:part type="AL" value="1401 Harrodsburg Road" xmlns:ns6="uri:iso.org:21090"/>
+
+         <ns7:part type="ADL" value="Suite A440" xmlns:ns7="uri:iso.org:21090"/>
+
+         <ns8:part type="CTY" value="Lexington" xmlns:ns8="uri:iso.org:21090"/>
+
+         <ns9:part type="STA" value="KY" xmlns:ns9="uri:iso.org:21090"/>
+
+         <ns10:part type="ZIP" value="40504" xmlns:ns10="uri:iso.org:21090"/>
+
+         <ns11:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns11="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns12:item value="mailto:unknown@example.com" xmlns:ns12="uri:iso.org:21090"/>
+
+         <ns13:item value="x-text-fax:(859)-277-6509" xmlns:ns13="uri:iso.org:21090"/>
+
+         <ns14:item value="tel:(859)-276-5262" xmlns:ns14="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:raceCode nullFlavor="NI"/>
+
+        <ns1:sexCode nullFlavor="NI"/>
+
+        <ns1:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns1:birthDate nullFlavor="NI"/>
+
+   </ns1:Person>
+
+  </ns1:player>
+
+      <ns1:scoper>
+       <ns1:Organization>
+        <ns1:identifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:name>
+         <ns15:part value="Saint Joseph Healthcare Research Center" xmlns:ns15="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns16:part type="AL" value="1401 Harrodsburg Road" xmlns:ns16="uri:iso.org:21090"/>
+
+         <ns17:part type="ADL" value="Suite A440" xmlns:ns17="uri:iso.org:21090"/>
+
+         <ns18:part type="CTY" value="Lexington" xmlns:ns18="uri:iso.org:21090"/>
+
+         <ns19:part type="STA" value="KY" xmlns:ns19="uri:iso.org:21090"/>
+
+         <ns20:part type="ZIP" value="40504" xmlns:ns20="uri:iso.org:21090"/>
+
+         <ns21:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns21="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns22:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns22="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+   </ns1:Organization>
+
+  </ns1:scoper>
+
+      <ns1:correlation>
+       <ns1:HealthCareProvider>
+        <ns1:identifier>
+         <ns23:item displayable="true" extension="1353860" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns23="uri:iso.org:21090"/>
+
+    </ns1:identifier>
+
+        <ns1:playerIdentifier displayable="true" extension="1353853" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:scoperIdentifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:postalAddress>
+         <ns24:item xmlns:ns24="uri:iso.org:21090">
+          <ns24:part type="AL" value="1401 Harrodsburg Road"/>
+
+          <ns24:part type="ADL" value="Suite A440"/>
+
+          <ns24:part type="CTY" value="Lexington"/>
+
+          <ns24:part type="STA" value="KY"/>
+
+          <ns24:part type="ZIP" value="40504"/>
+
+          <ns24:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns24:item>
+
+    </ns1:postalAddress>
+
+        <ns1:telecomAddress>
+         <ns25:item value="x-text-fax:(859)-277-6509" xmlns:ns25="uri:iso.org:21090"/>
+
+         <ns26:item value="tel:(859)-276-5262" xmlns:ns26="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:status code="active"/>
+
+        <ns1:certificateLicenseText nullFlavor="NI"/>
+
+   </ns1:HealthCareProvider>
+
+  </ns1:correlation>
+
+ </ns1:CorrelationNode>
+
+     <ns27:CorrelationNode xmlns:ns27="http://po.coppa.nci.nih.gov">
+      <ns27:player>
+       <ns27:Person>
+        <ns27:identifier displayable="true" extension="2341731" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns27:name>
+         <ns28:part type="FAM" value="Halpin" xmlns:ns28="uri:iso.org:21090"/>
+
+         <ns29:part type="GIV" value="Dermot" xmlns:ns29="uri:iso.org:21090"/>
+
+         <ns30:part type="GIV" value="P." xmlns:ns30="uri:iso.org:21090"/>
+
+         <ns31:part type="PFX" value="Dr." xmlns:ns31="uri:iso.org:21090"/>
+
+    </ns27:name>
+
+        <ns27:postalAddress>
+         <ns32:part type="AL" value="1401 Harrodsburg Road" xmlns:ns32="uri:iso.org:21090"/>
+
+         <ns33:part type="ADL" value="Suite A440" xmlns:ns33="uri:iso.org:21090"/>
+
+         <ns34:part type="CTY" value="Lexington" xmlns:ns34="uri:iso.org:21090"/>
+
+         <ns35:part type="STA" value="KY" xmlns:ns35="uri:iso.org:21090"/>
+
+         <ns36:part type="ZIP" value="40504" xmlns:ns36="uri:iso.org:21090"/>
+
+         <ns37:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns37="uri:iso.org:21090"/>
+
+    </ns27:postalAddress>
+
+        <ns27:statusCode code="active"/>
+
+        <ns27:telecomAddress>
+         <ns38:item value="mailto:unknown@example.com" xmlns:ns38="uri:iso.org:21090"/>
+
+         <ns39:item value="x-text-fax:(859)-313-3541" xmlns:ns39="uri:iso.org:21090"/>
+
+         <ns40:item value="tel:(859)-313-4459" xmlns:ns40="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+        <ns27:raceCode nullFlavor="NI"/>
+
+        <ns27:sexCode nullFlavor="NI"/>
+
+        <ns27:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns27:birthDate nullFlavor="NI"/>
+
+   </ns27:Person>
+
+  </ns27:player>
+
+      <ns27:scoper>
+       <ns27:Organization>
+        <ns27:identifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns27:name>
+         <ns41:part value="Saint Joseph Healthcare Research Center" xmlns:ns41="uri:iso.org:21090"/>
+
+    </ns27:name>
+
+        <ns27:postalAddress>
+         <ns42:part type="AL" value="1401 Harrodsburg Road" xmlns:ns42="uri:iso.org:21090"/>
+
+         <ns43:part type="ADL" value="Suite A440" xmlns:ns43="uri:iso.org:21090"/>
+
+         <ns44:part type="CTY" value="Lexington" xmlns:ns44="uri:iso.org:21090"/>
+
+         <ns45:part type="STA" value="KY" xmlns:ns45="uri:iso.org:21090"/>
+
+         <ns46:part type="ZIP" value="40504" xmlns:ns46="uri:iso.org:21090"/>
+
+         <ns47:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns47="uri:iso.org:21090"/>
+
+    </ns27:postalAddress>
+
+        <ns27:statusCode code="active"/>
+
+        <ns27:telecomAddress>
+         <ns48:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns48="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+   </ns27:Organization>
+
+  </ns27:scoper>
+
+      <ns27:correlation>
+       <ns27:HealthCareProvider>
+        <ns27:identifier>
+         <ns49:item displayable="true" extension="2341738" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns49="uri:iso.org:21090"/>
+
+    </ns27:identifier>
+
+        <ns27:playerIdentifier displayable="true" extension="2341731" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns27:scoperIdentifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns27:postalAddress>
+         <ns50:item xmlns:ns50="uri:iso.org:21090">
+          <ns50:part type="AL" value="1401 Harrodsburg Road"/>
+
+          <ns50:part type="ADL" value="Suite A440"/>
+
+          <ns50:part type="CTY" value="Lexington"/>
+
+          <ns50:part type="STA" value="KY"/>
+
+          <ns50:part type="ZIP" value="40504"/>
+
+          <ns50:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns50:item>
+
+    </ns27:postalAddress>
+
+        <ns27:telecomAddress>
+         <ns51:item value="x-text-fax:(859)-313-3541" xmlns:ns51="uri:iso.org:21090"/>
+
+         <ns52:item value="tel:(859)-313-4459" xmlns:ns52="uri:iso.org:21090"/>
+
+    </ns27:telecomAddress>
+
+        <ns27:status code="active"/>
+
+        <ns27:certificateLicenseText nullFlavor="NI"/>
+
+   </ns27:HealthCareProvider>
+
+  </ns27:correlation>
+
+ </ns27:CorrelationNode>
+
+     <ns53:CorrelationNode xmlns:ns53="http://po.coppa.nci.nih.gov">
+      <ns53:player>
+       <ns53:Person>
+        <ns53:identifier displayable="true" extension="3143314" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns53:name>
+         <ns54:part type="FAM" value="Pierce" xmlns:ns54="uri:iso.org:21090"/>
+
+         <ns55:part type="GIV" value="Scott" xmlns:ns55="uri:iso.org:21090"/>
+
+         <ns56:part type="GIV" value="T." xmlns:ns56="uri:iso.org:21090"/>
+
+         <ns57:part type="PFX" value="Dr." xmlns:ns57="uri:iso.org:21090"/>
+
+    </ns53:name>
+
+        <ns53:postalAddress>
+         <ns58:part type="AL" value="1401 Harrodsburg Road" xmlns:ns58="uri:iso.org:21090"/>
+
+         <ns59:part type="ADL" value="Suite A440" xmlns:ns59="uri:iso.org:21090"/>
+
+         <ns60:part type="CTY" value="Lexington" xmlns:ns60="uri:iso.org:21090"/>
+
+         <ns61:part type="STA" value="KY" xmlns:ns61="uri:iso.org:21090"/>
+
+         <ns62:part type="ZIP" value="40504" xmlns:ns62="uri:iso.org:21090"/>
+
+         <ns63:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns63="uri:iso.org:21090"/>
+
+    </ns53:postalAddress>
+
+        <ns53:statusCode code="active"/>
+
+        <ns53:telecomAddress>
+         <ns64:item value="mailto:unknown@example.com" xmlns:ns64="uri:iso.org:21090"/>
+
+         <ns65:item value="x-text-fax:(859)-313-3541" xmlns:ns65="uri:iso.org:21090"/>
+
+         <ns66:item value="tel:(859)-313-4459" xmlns:ns66="uri:iso.org:21090"/>
+
+    </ns53:telecomAddress>
+
+        <ns53:raceCode nullFlavor="NI"/>
+
+        <ns53:sexCode nullFlavor="NI"/>
+
+        <ns53:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns53:birthDate nullFlavor="NI"/>
+
+   </ns53:Person>
+
+  </ns53:player>
+
+      <ns53:scoper>
+       <ns53:Organization>
+        <ns53:identifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns53:name>
+         <ns67:part value="Saint Joseph Healthcare Research Center" xmlns:ns67="uri:iso.org:21090"/>
+
+    </ns53:name>
+
+        <ns53:postalAddress>
+         <ns68:part type="AL" value="1401 Harrodsburg Road" xmlns:ns68="uri:iso.org:21090"/>
+
+         <ns69:part type="ADL" value="Suite A440" xmlns:ns69="uri:iso.org:21090"/>
+
+         <ns70:part type="CTY" value="Lexington" xmlns:ns70="uri:iso.org:21090"/>
+
+         <ns71:part type="STA" value="KY" xmlns:ns71="uri:iso.org:21090"/>
+
+         <ns72:part type="ZIP" value="40504" xmlns:ns72="uri:iso.org:21090"/>
+
+         <ns73:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns73="uri:iso.org:21090"/>
+
+    </ns53:postalAddress>
+
+        <ns53:statusCode code="active"/>
+
+        <ns53:telecomAddress>
+         <ns74:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns74="uri:iso.org:21090"/>
+
+    </ns53:telecomAddress>
+
+   </ns53:Organization>
+
+  </ns53:scoper>
+
+      <ns53:correlation>
+       <ns53:HealthCareProvider>
+        <ns53:identifier>
+         <ns75:item displayable="true" extension="3143321" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns75="uri:iso.org:21090"/>
+
+    </ns53:identifier>
+
+        <ns53:playerIdentifier displayable="true" extension="3143314" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns53:scoperIdentifier displayable="true" extension="231984" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns53:postalAddress>
+         <ns76:item xmlns:ns76="uri:iso.org:21090">
+          <ns76:part type="AL" value="1401 Harrodsburg Road"/>
+
+          <ns76:part type="ADL" value="Suite A440"/>
+
+          <ns76:part type="CTY" value="Lexington"/>
+
+          <ns76:part type="STA" value="KY"/>
+
+          <ns76:part type="ZIP" value="40504"/>
+
+          <ns76:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns76:item>
+
+    </ns53:postalAddress>
+
+        <ns53:telecomAddress>
+         <ns77:item value="x-text-fax:(859)-313-3541" xmlns:ns77="uri:iso.org:21090"/>
+
+         <ns78:item value="tel:(859)-313-4459" xmlns:ns78="uri:iso.org:21090"/>
+
+    </ns53:telecomAddress>
+
+        <ns53:status code="active"/>
+
+        <ns53:certificateLicenseText nullFlavor="NI"/>
+
+   </ns53:HealthCareProvider>
+
+  </ns53:correlation>
+
+ </ns53:CorrelationNode>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>

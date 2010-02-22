@@ -1,0 +1,148 @@
+<ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
+ <ns1:responseMetadata>
+  <ns1:externalIdentifier>externalId</ns1:externalIdentifier>
+  <ns1:caXchangeIdentifier>25e8cd40-1fc0-11df-b655-82621f620908</ns1:caXchangeIdentifier>
+ </ns1:responseMetadata>
+ <ns1:response>
+  <ns1:responseStatus>SUCCESS</ns1:responseStatus>
+  <ns1:targetResponse>
+   <ns1:targetServiceIdentifier>PO_BUSINESS</ns1:targetServiceIdentifier>
+   <ns1:targetServiceOperation>searchCorrelationsWithEntities</ns1:targetServiceOperation>
+   <ns1:targetMessageStatus>RESPONSE</ns1:targetMessageStatus>
+   <ns1:targetBusinessMessage>
+    <ns1:xmlSchemaDefinition>http://pa.services.coppa.nci.nih.gov</ns1:xmlSchemaDefinition>
+    <soapenc:Array xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+     <ns1:CorrelationNode xmlns:ns1="http://po.coppa.nci.nih.gov">
+      <ns1:player>
+       <ns1:Person>
+        <ns1:identifier displayable="true" extension="1167533" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:name>
+         <ns2:part type="FAM" value="Jennings" xmlns:ns2="uri:iso.org:21090"/>
+
+         <ns3:part type="GIV" value="Scott" xmlns:ns3="uri:iso.org:21090"/>
+
+         <ns4:part type="GIV" value="B." xmlns:ns4="uri:iso.org:21090"/>
+
+         <ns5:part type="PFX" value="Dr." xmlns:ns5="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns6:part type="AL" value="BLDG 10, 10 CTR DR., MSC 1502" xmlns:ns6="uri:iso.org:21090"/>
+
+         <ns7:part type="ADL" value="SB/COP/DCT/NCI., RM 2B42" xmlns:ns7="uri:iso.org:21090"/>
+
+         <ns8:part type="CTY" value="Bethesda" xmlns:ns8="uri:iso.org:21090"/>
+
+         <ns9:part type="STA" value="MD" xmlns:ns9="uri:iso.org:21090"/>
+
+         <ns10:part type="ZIP" value="20892-1502" xmlns:ns10="uri:iso.org:21090"/>
+
+         <ns11:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns11="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns12:item value="mailto:unknown@example.com" xmlns:ns12="uri:iso.org:21090"/>
+
+         <ns13:item value="tel:(301)402-1963" xmlns:ns13="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:raceCode nullFlavor="NI"/>
+
+        <ns1:sexCode nullFlavor="NI"/>
+
+        <ns1:ethnicGroupCode nullFlavor="NI"/>
+
+        <ns1:birthDate nullFlavor="NI"/>
+
+   </ns1:Person>
+
+  </ns1:player>
+
+      <ns1:scoper>
+       <ns1:Organization>
+        <ns1:identifier displayable="true" extension="20206" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:name>
+         <ns14:part value="National Institutes of Health" xmlns:ns14="uri:iso.org:21090"/>
+
+    </ns1:name>
+
+        <ns1:postalAddress>
+         <ns15:part type="AL" value="9000 Rockville Pike" xmlns:ns15="uri:iso.org:21090"/>
+
+         <ns16:part type="CTY" value="Bethesda" xmlns:ns16="uri:iso.org:21090"/>
+
+         <ns17:part type="STA" value="MD" xmlns:ns17="uri:iso.org:21090"/>
+
+         <ns18:part type="ZIP" value="20892" xmlns:ns18="uri:iso.org:21090"/>
+
+         <ns19:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States" xmlns:ns19="uri:iso.org:21090"/>
+
+    </ns1:postalAddress>
+
+        <ns1:statusCode code="active"/>
+
+        <ns1:telecomAddress>
+         <ns20:item value="mailto:ncictepcoppaservices@mail.nih.gov" xmlns:ns20="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+   </ns1:Organization>
+
+  </ns1:scoper>
+
+      <ns1:correlation>
+       <ns1:HealthCareProvider>
+        <ns1:identifier>
+         <ns21:item displayable="true" extension="1167539" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns21="uri:iso.org:21090"/>
+
+    </ns1:identifier>
+
+        <ns1:playerIdentifier displayable="true" extension="1167533" identifierName="NCI person entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.1" scope="OBJ"/>
+
+        <ns1:scoperIdentifier displayable="true" extension="20206" identifierName="NCI organization entity identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.2" scope="OBJ"/>
+
+        <ns1:postalAddress>
+         <ns22:item xmlns:ns22="uri:iso.org:21090">
+          <ns22:part type="AL" value="BLDG 10, 10 CTR DR., MSC 1502"/>
+
+          <ns22:part type="ADL" value="SB/COP/DCT/NCI., RM 2B42"/>
+
+          <ns22:part type="CTY" value="Bethesda"/>
+
+          <ns22:part type="STA" value="MD"/>
+
+          <ns22:part type="ZIP" value="20892-1502"/>
+
+          <ns22:part code="USA" codeSystem="ISO 3166-1 alpha-3 code" type="CNT" value="United States"/>
+
+     </ns22:item>
+
+    </ns1:postalAddress>
+
+        <ns1:telecomAddress>
+         <ns23:item value="tel:(301)402-1963" xmlns:ns23="uri:iso.org:21090"/>
+
+    </ns1:telecomAddress>
+
+        <ns1:status code="active"/>
+
+        <ns1:certificateLicenseText nullFlavor="NI"/>
+
+   </ns1:HealthCareProvider>
+
+  </ns1:correlation>
+
+ </ns1:CorrelationNode>
+
+</soapenc:Array>
+   </ns1:targetBusinessMessage>
+  </ns1:targetResponse>
+ </ns1:response>
+</ns1:caXchangeResponseMessage>
