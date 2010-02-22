@@ -465,14 +465,18 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             studyOrganization.setOrganization(fetchOrganization(studyOrgType.getHealthcareSite(0)));
             studyOrganization.setStudy(study);
             studyOrganization.setGridId(studyOrgType.getGridId());
-
+            
             // populate investigators
             populateInvestigators(studyOrganization, studyOrgType.getStudyInvestigator());
 
             studyOrgList.add(studyOrganization);
         }// ~for
-
+        
         study.setStudyOrganizations(studyOrgList);
+        if (study.getStudyFundingSponsors() == null || study.getStudyFundingSponsors().size() == 0 ){
+        	logger.error("No StudyFundingSponsor available in the input message");
+        	throw getInvalidStudyException("No StudyFundingSponsor available in the input message");
+        }
     }
 
     /**
