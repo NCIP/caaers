@@ -131,10 +131,13 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		studyResolver.populateIND(studyProtocol, remoteStudy);
 		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
 		assertEquals(2, remoteStudy.getInvestigationalNewDrugList().size());
-		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
-			assertTrue(ind.getINDHolder() instanceof OrganizationHeldIND);
-			assertTrue(!StringUtils.equals(((OrganizationHeldIND)ind.getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
-		}
+		assertTrue(remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder() instanceof OrganizationHeldIND); 
+		assertTrue(remoteStudy.getInvestigationalNewDrugList().get(1).getINDHolder() instanceof OrganizationHeldIND);
+		assertTrue(!StringUtils.equals(((OrganizationHeldIND)remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		assertTrue(!StringUtils.equals(((OrganizationHeldIND)remoteStudy.getInvestigationalNewDrugList().get(1).getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		assertEquals(new Integer("46211"), remoteStudy.getInvestigationalNewDrugList().get(0).getIndNumber());
+		assertEquals(new Integer("98765"), remoteStudy.getInvestigationalNewDrugList().get(1).getIndNumber());
+		
 		verifyMocks();
 	}
 	
@@ -146,10 +149,13 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		studyResolver.populateIND(studyProtocol, remoteStudy);
 		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
 		assertEquals(2, remoteStudy.getInvestigationalNewDrugList().size());
-		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
-			assertTrue(ind.getINDHolder() instanceof OrganizationHeldIND);
-			assertTrue(StringUtils.equals(((OrganizationHeldIND)ind.getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
-		}
+		assertTrue(remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder() instanceof OrganizationHeldIND); 
+		assertTrue(remoteStudy.getInvestigationalNewDrugList().get(1).getINDHolder() instanceof OrganizationHeldIND);
+		assertTrue(StringUtils.equals(((OrganizationHeldIND)remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		assertTrue(StringUtils.equals(((OrganizationHeldIND)remoteStudy.getInvestigationalNewDrugList().get(1).getINDHolder()).getOrganization().getNciInstituteCode(), "DUMMY"));
+		assertEquals(new Integer("76543"), remoteStudy.getInvestigationalNewDrugList().get(0).getIndNumber());
+		assertEquals(new Integer("871234"), remoteStudy.getInvestigationalNewDrugList().get(1).getIndNumber());
+
 		verifyMocks();
 	}
 	
@@ -161,10 +167,10 @@ public class RemoteStudyResolverTest extends AbstractTestCase {
 		studyResolver.populateIND(studyProtocol, remoteStudy);
 		assertNotNull(remoteStudy.getInvestigationalNewDrugList());
 		assertEquals(1, remoteStudy.getInvestigationalNewDrugList().size());
-		for(InvestigationalNewDrug ind : remoteStudy.getInvestigationalNewDrugList()){
-			assertTrue(ind.getINDHolder() instanceof InvestigatorHeldIND);
-			assertTrue(StringUtils.equals(((InvestigatorHeldIND)ind.getINDHolder()).getInvestigator().getNciIdentifier(), "-1111"));
-		}
+		assertTrue(remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder() instanceof InvestigatorHeldIND);
+		assertTrue(StringUtils.equals(((InvestigatorHeldIND)remoteStudy.getInvestigationalNewDrugList().get(0).getINDHolder()).getInvestigator().getNciIdentifier(), "-1111"));
+		assertEquals(new Integer("53893"), remoteStudy.getInvestigationalNewDrugList().get(0).getIndNumber());
+		
 		verifyMocks();
 	}
 }

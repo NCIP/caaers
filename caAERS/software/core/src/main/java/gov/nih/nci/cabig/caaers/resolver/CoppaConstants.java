@@ -71,7 +71,7 @@ public class CoppaConstants {
 	public static final List<String> HOLDER_TYPE_LIST = Arrays.asList("NIH", "NCI", "Industry", "Organization");
 	public static final String HOLDER_TYPE_NCI = "NCI";
 	public static final String HOLDER_TYPE_NIH = "NIH";
-	public static final List<String> HOLDER_TYPE_INV_OR_ORG = Arrays.asList("Industry", "Organization");
+	public static final List<String> HOLDER_TYPE_INVESTIGATOR_OR_ORGANIZATION = Arrays.asList("Industry", "Organization");
 	public static final String HOLDER_TYPE_INVESTIGATOR = "Investigator";
 	public static final String DUMMY_ORGANIZATION_IDENTIFIER = "DUMMY";
 	public static final String DUMMY_INVESTIGATOR_IDENTIFIER = "-1111";

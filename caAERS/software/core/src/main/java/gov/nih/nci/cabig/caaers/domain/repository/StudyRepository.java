@@ -49,6 +49,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * @author Biju Joseph
+ * @author Monish Dombla
  */
 @Transactional(readOnly = true)
 public class StudyRepository {
@@ -265,8 +266,7 @@ public class StudyRepository {
     			}
     			((OrganizationHeldIND)holder).setOrganization(dbOrg);
         		investigationalNewDrugDao.save(indInvestigationalNewDrug);
-    		}
-    		if(holder instanceof InvestigatorHeldIND){
+    		}else if(holder instanceof InvestigatorHeldIND){
     			dbInv = investigatorDao.getByNciIdentfier(((InvestigatorHeldIND)holder).getInvestigator().getNciIdentifier());
     			if(dbInv == null){
     				dbInv = investigatorDao.getByNciIdentfier(CoppaConstants.DUMMY_INVESTIGATOR_IDENTIFIER);

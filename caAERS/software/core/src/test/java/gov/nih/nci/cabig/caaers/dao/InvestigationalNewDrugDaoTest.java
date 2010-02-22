@@ -110,4 +110,10 @@ public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNe
     	assertEquals("IND number should be same", new Integer(-222), nDrug.getIndNumber());
     }
     
+    public void testgetAll(){
+    	List<InvestigationalNewDrug> indList = getDao().getAll();
+    	assertNotNull(indList);
+    	assertEquals(6,indList.size());
+    }
+    
 }

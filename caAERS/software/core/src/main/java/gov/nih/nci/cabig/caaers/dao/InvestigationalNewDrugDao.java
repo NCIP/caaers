@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.INDHolder;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -21,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * This class implements the Data access related operations for the InvestigationalNewDrug domain
  * object.
+ * @author Biju Joseph
+ * @author Monish Dombla
  * 
  */
 @Transactional(readOnly = true)

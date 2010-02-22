@@ -170,8 +170,8 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
 	/**This method takes a interventionalStudyProtocol and converts it to a RemoteStudy which caAERS understands.
 	 * This is responsible for mapping all the attributes/associations that we fetch from COPPA.
 	 * 
-	 * @param interventionalStudyProtocol
-	 * @return
+	 * @param studyProtocol
+	 * @return RemoteStudy fully populated RemoteStudy object is returned.
 	 */
 	public RemoteStudy getRemoteStudyFromStudyProtocol(StudyProtocol studyProtocol) throws Exception {
 		RemoteStudy remoteStudy = new RemoteStudy();
@@ -827,6 +827,9 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
     
     /**
      * This method fetches & creates IND in caAERS.
+     * If HolderType is NCI or NIH then a valid Organization will exist.
+   	 * If HolderType is Industry or Organization then we assign a DUMMY organization.
+     * If HolderType is Investigator we assign IND to a Dummy Investigator.
      * @param studyProtocol
      * @param remoteStudy
      * @throws Exception
@@ -858,15 +861,13 @@ public class RemoteStudyResolver extends BaseResolver implements RemoteResolver{
         	        String orgIdentifier = "";
         	        if("NCI".equals(studyIndlde.getHolderTypeCode().getCode())){
         	        	orgIdentifier = studyIndlde.getNciDivProgHolderCode().getCode();
-        	        }
-        	        if("NIH".equals(studyIndlde.getHolderTypeCode().getCode())){
+        	        }else if("NIH".equals(studyIndlde.getHolderTypeCode().getCode())){
         	        	String nihInstHolder = studyIndlde.getNihInstHolderCode().getCode();
         	        	st = new StringTokenizer(nihInstHolder,"-");
         	        	if(st.hasMoreTokens()){
         	        		orgIdentifier = st.nextToken();
         	        	}
-        	        }
-        	        if(CoppaConstants.HOLDER_TYPE_INV_OR_ORG.contains(studyIndlde.getHolderTypeCode().getCode())){
+        	        }else if(CoppaConstants.HOLDER_TYPE_INVESTIGATOR_OR_ORGANIZATION.contains(studyIndlde.getHolderTypeCode().getCode())){
         	        	orgIdentifier = CoppaConstants.DUMMY_ORGANIZATION_IDENTIFIER;
         	        }
         	        if(StringUtils.isNotEmpty(orgIdentifier)){

@@ -13,12 +13,20 @@ import com.semanticbits.coppa.domain.annotations.RemoteEntity;
 import com.semanticbits.coppa.domain.annotations.RemoteProperty;
 import com.semanticbits.coppa.domain.annotations.RemoteUniqueId;
 
+/**
+ * 
+ * @author Monish Dombla
+ *
+ */
+
 @Entity
 @RemoteEntity(entityResolver=RemoteStudyResolver.class)
 @DiscriminatorValue("REMOTE")
 public class RemoteStudy extends Study{
 	
 	private static final long serialVersionUID = 1L;
+	
+	private List<InvestigationalNewDrug> investigationalNewDrugList = new ArrayList<InvestigationalNewDrug>();
 
 	@RemoteUniqueId
     @RemoteProperty
@@ -51,8 +59,6 @@ public class RemoteStudy extends Study{
         return status;
     }
 	
-	private List<InvestigationalNewDrug> investigationalNewDrugList = new ArrayList<InvestigationalNewDrug>();
-
 	@Transient
 	public List<InvestigationalNewDrug> getInvestigationalNewDrugList() {
 		return investigationalNewDrugList;
