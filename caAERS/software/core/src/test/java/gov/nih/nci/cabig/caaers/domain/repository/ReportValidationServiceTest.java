@@ -33,8 +33,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
 	private static final Attribution[] SUFFICIENT_ATTRIBUTIONS = new Attribution[]{
         Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE};
 
-	private static final Attribution[] INSUFFICENT_ATTRIBUTIONS = new Attribution[]{
-        Attribution.UNLIKELY, Attribution.UNRELATED};
+	private static final Attribution[] INSUFFICENT_ATTRIBUTIONS = new Attribution[]{ Attribution.UNLIKELY, Attribution.UNRELATED };
 	
 	@Override
     protected void setUp() throws Exception {

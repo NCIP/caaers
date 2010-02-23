@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import org.springframework.context.MessageSource;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TabSection.*;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class CaaersFieldsTree extends PropertylessNode {
 
-	private Map<ExpeditedReportSection, TreeNode> sections;
+	private Map<TabSection, TreeNode> sections;
     private MessageSource messageSource;
     private ExpeditedReportTree expeditedReportTree;
 
@@ -25,7 +25,7 @@ public class CaaersFieldsTree extends PropertylessNode {
         this.messageSource = messageSource;
         this.expeditedReportTree = expeditedReportTree;
         
-		sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
+		sections = new LinkedHashMap<TabSection, TreeNode>();
         add(
                 section(CAPTURE_AE_TAB_SECTION,
                                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
@@ -70,14 +70,18 @@ public class CaaersFieldsTree extends PropertylessNode {
     public TreeNode add(TreeNode... subnodes) {
         super.add(subnodes);
         for (TreeNode subnode : subnodes) {
-            if (subnode instanceof SectionNode) {
-                sections.put(((SectionNode) subnode).getSection(), subnode);
+            if (subnode instanceof TabSectionNode) {
+                sections.put(((TabSectionNode) subnode).getSection(), subnode);
             }
         }
         return this;
     }
 
-    public TreeNode getNodeForSection(ExpeditedReportSection section) {
+    public static TreeNode section(TabSection section, TreeNode... children) {
+        return new TabSectionNode(section).add(children);
+    }
+
+    public TreeNode getNodeForSection(TabSection section) {
         TreeNode node = sections.get(section);
         if (node == null && log.isDebugEnabled()) {
             log.debug("No node in the expedited report tree for " + section);

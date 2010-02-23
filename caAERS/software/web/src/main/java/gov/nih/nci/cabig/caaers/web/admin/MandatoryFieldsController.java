@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.CaaersFieldDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.CaaersFieldsTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TabSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
@@ -74,8 +75,8 @@ public class MandatoryFieldsController extends SimpleFormController {
         
         Map<String, InputFieldGroup> fieldMap;
         fieldMap = new LinkedHashMap<String, InputFieldGroup>();
-        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(ExpeditedReportSection.CAPTURE_AE_TAB_SECTION));
-        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(ExpeditedReportSection.COURSE_CYCLE_SECTION));
+        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(TabSection.CAPTURE_AE_TAB_SECTION));
+        populateFieldMap(command, fieldMap, caaersFieldsTree.getNodeForSection(TabSection.COURSE_CYCLE_SECTION));
         refDataMap.put("fieldGroups", fieldMap);
         return refDataMap;
     }
