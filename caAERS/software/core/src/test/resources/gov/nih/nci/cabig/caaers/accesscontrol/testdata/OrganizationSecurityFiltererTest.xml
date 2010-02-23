@@ -54,4 +54,6 @@
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />
+    <investigators/>
+    <site_investigators/>
 </dataset>
