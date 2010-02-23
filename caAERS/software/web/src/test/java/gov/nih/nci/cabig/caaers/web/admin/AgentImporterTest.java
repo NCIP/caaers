@@ -53,8 +53,6 @@ public class AgentImporterTest extends WebTestCase {
 		assertNotNull(agentImportOutcome);
 		Agent agent = agentImportOutcome.getImportedDomainObject();
 		assertNotNull(agent);
-		assertTrue(agent instanceof Agent);
-		
 		assertEquals("708478", agent.getNscNumber());
 		assertEquals("GM-CSF cDNA / gold (Plasmid Vector pWRG3218)", agent.getName());
 		
