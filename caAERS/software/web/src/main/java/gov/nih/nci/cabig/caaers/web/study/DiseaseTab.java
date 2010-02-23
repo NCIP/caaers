@@ -113,6 +113,8 @@ public class DiseaseTab extends StudyTab {
         Map<String, Object> refdata = super.referenceData(command);
         Study study = command.getStudy();
 
+        if (study.getDiseaseTerminology() == null || study.getDiseaseTerminology().getDiseaseCodeTerm() == null) return refdata;
+
         // this will hold the Study Conditions' IDs as keys
         conditionMap = new HashMap<String, Condition>();
         for (StudyCondition studyCondition : study.getStudyConditions()) {
