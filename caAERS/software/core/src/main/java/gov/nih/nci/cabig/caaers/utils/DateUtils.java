@@ -65,6 +65,10 @@ public class DateUtils {
      * @return 0 if same, -1 if d1 is less than d2.
      */
     public static int compareDate(Date d1, Date d2) {
+
+        if (d1 == null && d2 != null) return -1;
+        if (d1 != null && d2 == null) return 1;
+
         Calendar c1 = Calendar.getInstance();
         c1.setTime(d1);
 
