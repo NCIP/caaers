@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 import junit.framework.TestCase;
 /**
  * @author Biju Joseph
- * 
+ * @author Ion C. Olaru 
  */
 public class DateUtilsTest extends TestCase {
 
@@ -133,4 +133,11 @@ public class DateUtilsTest extends TestCase {
         assertFalse(DateUtils.isValidDate(new DateValue(12, 13, 2009)));
     }
 
+    public void testNullLeftSide() {
+        assertEquals(-1, DateUtils.compareDate(null, DateUtils.today()));
+    }
+
+    public void testNullRightSide() {
+        assertEquals(1, DateUtils.compareDate(DateUtils.today(), null));
+    }
 }
