@@ -106,6 +106,7 @@
 	</script>
 </head>
 <body>
+<chrome:flashMessage/>
 <c:if test="${!command.workflowEnabled}">
 	<p>
     	<tags:message key="routing_and_review_disabled"/>
@@ -114,6 +115,8 @@
 <c:if test="${command.workflowEnabled}">
 	<tags:instructions code="instruction_selectRoutingAndReview"/>
 	<form:form method="post" cssClass="standard autoclear">
+        <tags:jsErrorsMessage/>
+        <tags:hasErrorsMessage />
     	<tags:tabFields tab="${tab}"/>
 			<div id="criteria-div">
 				<chrome:box title="Search Criteria" id="search-criteria" autopad="true" >

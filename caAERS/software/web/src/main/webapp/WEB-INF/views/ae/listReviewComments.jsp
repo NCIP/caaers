@@ -17,6 +17,9 @@
 		}
 	</style>
 	<script>
+
+        AE.checkForModification = false;
+
 		function saveComment(){
 			var form = document.getElementById('command');
 			form.action.value = 'addPopupComment';
