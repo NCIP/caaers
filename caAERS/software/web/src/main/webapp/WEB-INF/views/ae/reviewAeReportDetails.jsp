@@ -3,7 +3,7 @@
 
 <html>
 <head>
- 	<tags:dwrJavascriptLink objects="reviewRP,createAE,reviewAeReport"/>
+ 	<tags:dwrJavascriptLink objects="reviewAeReport"/>
     <script>
 	    var routingHelper = new RoutingAndReviewHelper(reviewAeReport, 'reviewAeReport');
 	    
@@ -84,7 +84,7 @@
 </head>
 <body>
 	 <applet code="ch.randelshofer.pdf.EmbedPDFApplet" archive="<c:url value="/EmbedPDF3.jar"/>" width="100%" height="520">
-	 					    <param name="pdf" value="<c:url value="/pages/ae/generateExpeditedfPdf?format=pdf&aeReport=${command.aeReport.id }"/>"/>
+	 			    <param name="pdf" value="<c:url value="/pages/ae/generateExpeditedfPdf?format=pdf&aeReport=${command.aeReport.id }&reportId=${command.reportId}"/>"/>
    			     	<param name="codebase_lookup" value="false">
    			     	<param name="classloader_cache" value="false">
    			     	<param name="java_arguments" value="-Djnlp.packEnabled=true"/>
