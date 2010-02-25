@@ -327,7 +327,6 @@ public class Participant extends Person {
     @OneToMany
     @Cascade({CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
-    @UniqueIdentifierForParticipant
     @UniqueObjectInCollection(message = "Duplicate Identifier found in Identifiers list")
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
@@ -339,7 +338,6 @@ public class Participant extends Person {
     }
 
     @Transient
-    @UniqueIdentifierForParticipant
     public List<Identifier> getIdentifiersLazy() {
         return lazyListHelper.getLazyList(Identifier.class);
     }
@@ -361,14 +359,12 @@ public class Participant extends Person {
     }
 
     @Transient
-    @UniqueIdentifierForParticipant
     @UniqueObjectInCollection(message = "Duplicate SystemAssignedIdentifier found in Identifiers list")
     public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), SystemAssignedIdentifier.class);
     }                                
 
     @Transient
-    @UniqueIdentifierForParticipant
     @UniqueObjectInCollection(message = "Duplicate OrganizationAssignedIdentifer found in Identifiers list")
     public List<OrganizationAssignedIdentifier> getOrganizationIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), OrganizationAssignedIdentifier.class);  

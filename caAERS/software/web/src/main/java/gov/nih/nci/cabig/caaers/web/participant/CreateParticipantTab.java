@@ -134,9 +134,9 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         }
 
 // CHECK Participant Identifiers
-        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(command.getOrganization().getId().intValue());
-        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
-            Identifier sID = sitePrimaryIdentifiers.get(i);
+        List<Identifier> siteIdentifiers = participantDao.getSiteIdentifiers(command.getOrganization().getId().intValue());
+        for (int i=0; i<siteIdentifiers.size(); i++) {
+            Identifier sID = siteIdentifiers.get(i);
             if (sID == null || sID.getValue() == null) continue;
 
             for (int j=0; j<command.getParticipant().getIdentifiers().size(); j++) {
@@ -144,7 +144,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
                 if (pID == null || pID.getValue() == null || (pID.getId() != null && sID.getId() != null && pID.getId().intValue() == sID.getId().intValue())) continue;
                 if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase())) {
-                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+                    errors.reject("ERR_DUPLICATE_SITE_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
             }
         }

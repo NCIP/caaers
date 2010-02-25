@@ -18,8 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
  * 
  * Checks whether already a Participant with the given identifier exist.
  */
-public class UniqueIdentifierForParticipantValidator implements
-                Validator<UniqueIdentifierForParticipant> {
+public class UniqueIdentifierForParticipantValidator implements Validator<UniqueIdentifierForParticipant> {
 
     Log logger = LogFactory.getLog(UniqueIdentifierForParticipantValidator.class);
 

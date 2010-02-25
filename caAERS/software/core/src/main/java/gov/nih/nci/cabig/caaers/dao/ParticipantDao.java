@@ -117,6 +117,17 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
     }
 
   
+    /**
+     * Return the list of Identifiers for a given Site
+     *
+     * @param siteID The site ID for which to return the list of identifiers
+     * @return List<Identidier>
+     */
+    public List<Identifier> getSiteIdentifiers(int siteID) {
+        return getHibernateTemplate().find("FROM Identifier idt WHERE idt.organization.id = ?", new Object[]{siteID});
+    }
+
+
 
     /**
      * Gets the participant by id. This initialize the participant and load all the objects.
