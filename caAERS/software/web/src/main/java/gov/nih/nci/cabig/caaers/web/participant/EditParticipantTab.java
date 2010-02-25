@@ -149,11 +149,9 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         
         return map;
     }
-   
-    
-    public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
-    	if(errors.hasErrors()) return;
 
+    @Override
+    public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
         if (command.getAssignment() != null) {
             StudySite site = studySiteDao.getById(command.getAssignment().getStudySite().getId());
             command.setStudy(site.getStudy());
