@@ -67,6 +67,11 @@ public class DateValueTest extends TestCase {
         assertEquals("09/19/2002", dv.toString());
     }
     
+    public void testEmpty() {
+        DateValue dv = new DateValue(0, 0, 0);
+        assertTrue(dv.isEmpty());
+    }
+
     public void testToDate(){
     	Calendar c = Calendar.getInstance();
     	c.set(Calendar.YEAR, 2008);

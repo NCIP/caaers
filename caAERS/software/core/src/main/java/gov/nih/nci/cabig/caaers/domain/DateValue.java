@@ -213,4 +213,9 @@ public class DateValue implements Comparable<DateValue> {
     public boolean isNull() {
         return (this.getMonth() == null && this.getDay() == null && this.getDay() == null);
     }
+
+    @Transient
+    public boolean isEmpty() {
+        return (this.getMonth() == 0 && this.getDay() == 0 && this.getDay() == 0);
+    }
 }

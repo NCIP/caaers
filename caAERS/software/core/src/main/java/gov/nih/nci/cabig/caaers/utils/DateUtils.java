@@ -166,6 +166,7 @@ public class DateUtils {
     }
 
     public static boolean isValidDate(DateValue d) {
+        if (d.isNull() || d.isEmpty()) return true;
         return isValidDate(d.toString());
     }
 }
