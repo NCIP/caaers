@@ -267,7 +267,7 @@
    		         				<c:set var="j" value="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1 - i}"/>
 		            			<c:if test="${not command.adverseEventReportingPeriod.adverseEvents[j].solicited and not command.adverseEventReportingPeriod.adverseEvents[j].retired}">
         	    					<ae:oneRoutineAdverseEvent index="${j}" adverseEvent="${command.adverseEventReportingPeriod.adverseEvents[j]}" 
-        	    						collapsed="true" enableDelete="true" isSolicited="false" hasOtherMeddra="${study.otherMeddra != null}"/>
+        	    						collapsed="true" enableDelete="true" isSolicited="false" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
            		 				</c:if>
             				</c:forEach>
             			</c:if>
@@ -281,7 +281,7 @@
 							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             				<c:if test="${ae.solicited and not ae.retired}">
             					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" 
-            					enableDelete="false" isSolicited="true" hasOtherMeddra="${study.otherMeddra != null}"/>
+            					enableDelete="false" isSolicited="true" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
             				</c:if> 
             			</c:forEach>   
  						</chrome:box>

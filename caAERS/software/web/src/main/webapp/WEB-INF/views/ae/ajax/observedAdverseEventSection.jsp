@@ -5,6 +5,6 @@
 
 <tags:noform>
 	<c:forEach begin="${param.index}" items="${command.adverseEvents}" var="ae" varStatus="status">
-		<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="false" enableDelete="true" />
+		<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="false" enableDelete="true" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
 	</c:forEach>	
 </tags:noform>

@@ -96,7 +96,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
             	//verbatim - Is required when there is no other MedDRA
                 boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
-            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", "aeReport.adverseEvents.detailsForOther", isFieldRequired(ae, "adverseEvents[].detailsForOther"));
+                boolean verbatimApplicable = caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "aeReport.adverseEvents.detailsForOther");
+                boolean verbatimRequired =  verbatimApplicable && (verbatimMandatory || isFieldRequired(ae, "adverseEvents[].detailsForOther"));
+            	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", "aeReport.adverseEvents.detailsForOther", verbatimRequired);
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
