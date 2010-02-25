@@ -111,7 +111,7 @@
                         <caaers:message var="x" code="LBL_aeReport.concomitantMedications.startDate" />
 						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~${x}" heading="${x}" tabular="true" />
 
-                        <caaers:message var="x" code="LBL_aeReport.concomitantMedications.startDate" />
+                        <caaers:message var="x" code="LBL_aeReport.concomitantMedications.endDate" />
 						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications~${x}" heading="${x}" tabular="true"/>
 					</chrome:division>
 </div>
