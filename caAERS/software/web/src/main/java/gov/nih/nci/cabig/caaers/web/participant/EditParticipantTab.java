@@ -150,7 +150,9 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         return map;
     }
 
-    public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
+
+    @Override
+    public void postProcess(HttpServletRequest request, T command, Errors errors) {
         if (command.getAssignment() != null) {
             StudySite site = studySiteDao.getById(command.getAssignment().getStudySite().getId());
             command.setStudy(site.getStudy());
@@ -168,6 +170,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
 
 
+/*
         // CHECK Participant Identifiers
         List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(command.getOrganization().getId().intValue());
         for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
@@ -183,7 +186,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
             }
         }
 
-        // Checking Study-Subject identifiers, uniqueness per StudySite 
+*/
+        // Checking Study-Subject identifiers, uniqueness per StudySite
         Integer pID = command.getParticipant().getId();
         List<StudyParticipantAssignment> assignments = command.getAssignments();
 
