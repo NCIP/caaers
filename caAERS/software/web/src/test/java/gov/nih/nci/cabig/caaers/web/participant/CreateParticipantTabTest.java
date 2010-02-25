@@ -75,6 +75,10 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
 				// TODO Auto-generated method stub
 				return null;
 			}
+			public void saveImportedOrganization(Organization organization) {
+				// TODO Auto-generated method stub
+				
+			}
         });
         createParticipantTab.setListValues(listValues);
         createParticipantTab.setConfigurationProperty(configProperty);

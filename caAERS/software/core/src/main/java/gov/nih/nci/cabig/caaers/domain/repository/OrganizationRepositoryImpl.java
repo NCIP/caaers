@@ -16,7 +16,6 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +25,14 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * @author Srini Akala
+ * @author Monish Dombla
+ *
+ */
+
 @Transactional
 public class OrganizationRepositoryImpl implements OrganizationRepository {
 	private Logger log = Logger.getLogger(getClass());
@@ -65,7 +72,21 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     	organizationDao.save(site);
     	createGroupForOrganization(site);
     }
-
+    
+    /**
+     * This method is used in the Import Organizations flow. This will avoid calls to COPPA when importing Organization_Codes.txt from CTEP.
+     * @param organization
+     * @throws CaaersSystemException
+     */
+    public void saveImportedOrganization(Organization organization)  throws CaaersSystemException{
+        if (organization.getId() == null) {
+        	organizationDao.saveImportedOrganization(organization);
+        	createGroupForOrganization(organization);
+        } else {
+            organizationDao.saveImportedOrganization(organization);
+        }
+    }
+    
     private Group createGroupForOrganization(Organization organization)
                     throws CaaersSystemException {
         Group group = new Group();

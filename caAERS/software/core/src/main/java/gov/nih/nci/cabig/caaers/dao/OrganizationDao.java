@@ -29,6 +29,7 @@ import com.semanticbits.coppa.infrastructure.RemoteSession;
  * 
  * @author Padmaja Vedula
  * @author Rhett Sutphin
+ * @author Monish Dombla
  */
 @Transactional(readOnly = false)
 public class OrganizationDao extends GridIdentifiableDao<Organization> implements
@@ -170,6 +171,17 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     	getHibernateTemplate().saveOrUpdate(organization);
     }
 
+    /**
+     * This method is used in the Import Organizations flow. This will avoid calls to COPPA when importing Organization_Codes.txt from CTEP.
+     * @param organization
+     */
+    public void saveImportedOrganization(Organization organization){
+    	if(StringUtils.isEmpty(organization.getName())){
+    		throw new RuntimeException("Organization name should not be empty");
+    	}
+    	getHibernateTemplate().saveOrUpdate(organization);
+    }
+    
     /**
      * Get list of organizations having study sites.
      * 

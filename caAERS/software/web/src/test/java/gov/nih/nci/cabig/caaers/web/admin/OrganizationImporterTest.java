@@ -160,7 +160,7 @@ public class OrganizationImporterTest extends WebTestCase {
 		
 		importer.setOrganizationRepository(organizationRepository);
 		
-		organizationRepository.createOrUpdate((Organization)EasyMock.anyObject());
+		organizationRepository.saveImportedOrganization((Organization)EasyMock.anyObject());
 		expectLastCall().anyTimes();
 		
 		replayMocks();

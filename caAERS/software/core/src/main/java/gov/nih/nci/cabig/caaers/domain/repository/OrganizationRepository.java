@@ -27,4 +27,5 @@ public interface OrganizationRepository {
 	 */
     List<Organization> getAllOrganizations();
     List<Organization> getAllNciInstitueCodes();
+    void saveImportedOrganization(Organization organization);
 }

@@ -93,11 +93,11 @@ public class OrganizationImporter extends Importer {
 	public void save(ImportCommand command, HttpServletRequest request) {
 		//Create new Organizations.
         for (DomainObjectImportOutcome<Organization> importOutcome : command.getImportableOrganizations()) {
-        	organizationRepository.createOrUpdate(importOutcome.getImportedDomainObject());
+        	organizationRepository.saveImportedOrganization(importOutcome.getImportedDomainObject());
         }
         //Update existing Organizations.
         for (DomainObjectImportOutcome<Organization> importOutcome : command.getUpdateableOrganizations()) {
-        	organizationRepository.createOrUpdate(importOutcome.getImportedDomainObject());
+        	organizationRepository.saveImportedOrganization(importOutcome.getImportedDomainObject());
         }
 	}
 
