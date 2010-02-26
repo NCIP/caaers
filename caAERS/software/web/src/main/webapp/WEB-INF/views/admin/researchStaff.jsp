@@ -129,16 +129,8 @@
         <div class="tabpane">
             <div class="workflow-tabs2">
                 <ul id="" class="tabs autoclear">
-                    <li id="thirdlevelnav" class="tab selected">
-                        <div>
-                            <a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a>
-                        </div>
-                    </li>
-                    <li id="thirdlevelnav" class="tab">
-                        <div>
-                            <a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a>
-                        </div>
-                    </li>
+                    <li id="thirdlevelnav" class="tab selected"><div><a href="createResearchStaff"><caaers:message code="researchstaff.menu.createEditResearchStaff"/></a></div></li>
+                    <li id="thirdlevelnav" class=""><div><a href="searchResearchStaff"><caaers:message code="researchstaff.menu.searchResearchStaff"/></a></div></li>
                 </ul>
             </div>
             <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm" hideErrorDetails="false" hideBox="true">
