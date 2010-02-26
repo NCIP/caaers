@@ -239,7 +239,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
         assertEquals("Wrong match", "Short Title", studySearchableAjaxableDomainObjects.get(0).getShortTitle());
         assertEquals("Wrong match", "Phase II Trial", studySearchableAjaxableDomainObjects.get(0).getPhaseCode());
         assertEquals("Wrong match", "Active - Trial is open to accrual", studySearchableAjaxableDomainObjects.get(0).getStatus());
-        assertEquals("Wrong match", "National Cancer Institute", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
+        assertEquals("Wrong match", "NCI", studySearchableAjaxableDomainObjects.get(0).getPrimarySponsorCode());
         assertEquals("query works if you are not filtering by participanst also", 2, studySearchableAjaxableDomainObjects.get(0).getStudySites().size());
 
         // Partial  Identifier value
