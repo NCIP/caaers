@@ -11,6 +11,7 @@ import gov.nih.nci.coppa.po.ClinicalResearchStaff;
 import gov.nih.nci.coppa.po.CorrelationNode;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
 import gov.nih.nci.coppa.po.Person;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,8 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	
 	public List<Object> find(Object example) {
 		RemoteResearchStaff remoteResearchStaffExample = (RemoteResearchStaff)example;
-		if (remoteResearchStaffExample.getNciIdentifier() != null) {
+
+		if (!StringUtilities.isBlank( remoteResearchStaffExample.getNciIdentifier())) {
 			return this.searchRoleBasedOnNciId(remoteResearchStaffExample.getNciIdentifier(),new ClinicalResearchStaff());
 		}
 		

@@ -9,6 +9,7 @@ import gov.nih.nci.coppa.po.CorrelationNode;
 import gov.nih.nci.coppa.po.HealthCareProvider;
 import gov.nih.nci.coppa.po.IdentifiedOrganization;
 import gov.nih.nci.coppa.po.Person;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 	 */
 	public List<Object> find(Object example) {
 		RemoteInvestigator remoteInvestigatorExample = (RemoteInvestigator)example;
-		if (remoteInvestigatorExample.getNciIdentifier() != null) {
+		if (!StringUtilities.isBlank( remoteInvestigatorExample.getNciIdentifier())) {
 			return searchRoleBasedOnNciId(remoteInvestigatorExample.getNciIdentifier(),new HealthCareProvider());
 		}
 		
