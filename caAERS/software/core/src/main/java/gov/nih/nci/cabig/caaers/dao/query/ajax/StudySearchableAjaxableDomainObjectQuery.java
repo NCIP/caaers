@@ -13,9 +13,9 @@ import org.apache.commons.lang.StringUtils;
 public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
     private static String queryString = "Select study.id,study.shortTitle," +
             "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
-            "(select sfs.organization.name from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
+            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
             "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode, sirs.researchStaff.id," +
-            "(select scc.organization.name from StudyCoordinatingCenter scc  where scc.study.id =study.id) as coordinatingCenter, "+
+            "(select scc.organization.nciInstituteCode from StudyCoordinatingCenter scc  where scc.study.id =study.id) as coordinatingCenter, "+
             "study.externalId " +
             "from Study study " +
             "left join study.identifiers as identifier " +
