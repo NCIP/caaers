@@ -200,7 +200,7 @@
 			<dependency org="org.mvel" name="mvel" rev="1.2.22-java1.5" force="true"/>
 
 			<!--Home grown infrastructure jar for COPPA  -->
-			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="0.5" conf="build->default;dist->dist;distGrid->distGrid" />
+			<dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.0" conf="build->default;dist->dist;distGrid->distGrid" />
 			<dependency org="gov.nih.nci.caxchange" name="coppa-commons" rev="1.2.3" conf="build->default;dist->dist;distGrid->distGrid" />
 
 			<!-- caXchange related jars -->
@@ -261,7 +261,7 @@
 			<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11"/>
 
 			<!-- C3PR esb client -->
-        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9_M2" >
+        	<dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9_RC1" >
         		<exclude org="gov.nih.nci.cagrid" />
 				<exclude org="gov.nih.nci.caxchange" module="CoreServices*"/>
 				<exclude org="gov.nih.nci.caxchange" module="PAServices*"/>
