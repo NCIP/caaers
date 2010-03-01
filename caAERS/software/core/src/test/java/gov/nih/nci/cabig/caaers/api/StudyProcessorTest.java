@@ -516,7 +516,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 
     	 CaaersServiceResponse response = createStudy("studydata/CreateStudyTest_3.xml");
     	 assertEquals("1", response.getResponse().getResponsecode());
-    	 assertEquals("Another study with short title \"Study PCS\" is using same identifier, so cannot process \"A Study JBC 3\"",response.getResponse().getDescription());
+    	 assertEquals("Another study is using the identifier provided",response.getResponse().getDescription());
     }
 
     /**
