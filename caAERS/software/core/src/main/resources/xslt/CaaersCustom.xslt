@@ -313,6 +313,12 @@
 
 
 
+              <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.treatmentAssignment'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.firstCourseDate'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.adverseEventCourse.date'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.adverseEventCourse.number'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.totalCourses']">
+
               <!-- COURSE TABLE   START -->
 		  		<fo:block xsl:use-attribute-sets="sub-head" >Course Information</fo:block>
               
@@ -427,6 +433,7 @@
 
                 <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
 
+              </xsl:if>
               <!-- COURSE TABLE   END -->
 
 
@@ -543,6 +550,14 @@
 
 
 
+              <!-- RADIATION START -->
+              <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.administration'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.dosage'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.lastTreatmentDate'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.fractionNumber'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.daysElapsed'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='radiationInterventions.adjustment']
+              ">
 
   				<fo:block xsl:use-attribute-sets="sub-head">Radiation Intervention</fo:block>
 
@@ -643,7 +658,7 @@
 
 		  		</fo:table>
 
-
+             </xsl:if>
 
 
 
@@ -984,6 +999,15 @@
 
               <!-- AGENTS START -->
 
+              <xsl:if test="/AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.investigationalAgentAdministered'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.dose.amount'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.dose.units'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.lastAdministeredDate'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.comments'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.agentAdjustment'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.administrationDelayAmount'] or
+              /AdverseEventReport/Report/ReportDefinition[applicableField='treatmentInformation.courseAgents.administrationDelayUnits']">
+
   				<fo:block xsl:use-attribute-sets="sub-head">Protocol Agents</fo:block>
 		  		<fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block>
 		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code :<xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></fo:block>
@@ -1059,6 +1083,7 @@
 
                 <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
 
+              </xsl:if>
 
               <!-- AGENTS END -->
 
