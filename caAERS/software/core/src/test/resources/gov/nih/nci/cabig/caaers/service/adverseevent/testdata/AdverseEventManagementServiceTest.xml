@@ -283,5 +283,7 @@
 	<outcomes/>	
 	<ae_terms/> 
 	<disease_terminologies/>
+	<investigators/>
+	<site_investigators/>
 		  	
 </dataset>
