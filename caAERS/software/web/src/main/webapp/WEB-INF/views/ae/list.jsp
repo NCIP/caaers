@@ -313,7 +313,7 @@ color:#0033FF;
 
 
 <c:if test="${not empty configuration.map.pscBaseUrl}">
-    <p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="psc">study calendar</a>.</p>
+    <p>View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="_psc">study calendar</a>.</p>
 </c:if>
 
 <div class="eXtremeTable" >
