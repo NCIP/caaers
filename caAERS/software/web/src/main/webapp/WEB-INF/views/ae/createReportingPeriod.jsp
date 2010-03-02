@@ -22,7 +22,20 @@
          Event.observe(window, "load", function() {
             if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
-         })
+
+/*
+            Event.observe($('assignment.startDateOfFirstCourse'), "change", function() {
+                alert('Change.');
+            });
+*/
+         });
+
+         function editFirstCourseDate() {
+             if (confirm("<caaers:message code="LBL_change1tCourseDate" />")) {
+                 $('CRP_readOnlyField').hide();
+                 $('CRP_editField').show();
+             }
+         }
      </script>
     <%--<tags:javascriptLink name="prototype"/>--%>
 </head>
@@ -35,7 +48,18 @@
         <caaers:message code="LBL_assignment.startDateOfFirstCourse" var="x" />
         <ui:row path="assignment.startDateOfFirstCourse">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[0]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" field="${fieldGroups.ReportingPeriod.fields[0]}" title="${x}"/></jsp:attribute>
+             <jsp:attribute name="value">
+
+                 <c:set var="x"><jsp:attribute name="value"><caaers:value path="assignment.startDateOfFirstCourse" /></jsp:attribute></c:set>
+
+                 <div id="CRP_editField" style="display: ${(x eq '') ? 'block' : 'none'}">
+                        <ui:date path="assignment.startDateOfFirstCourse" field="${fieldGroups.ReportingPeriod.fields[0]}" title="${x}"/>
+                 </div>
+
+                 <div id="CRP_readOnlyField" style="display: ${(x ne '') ? 'block' : 'none'}">
+                     ${x} <a onclick="editFirstCourseDate()" style="cursor:pointer; color:blue;"><i><caaers:message code="LBL_ClickToEdit" /></i></a>
+                 </div>
+             </jsp:attribute>
         </ui:row>
 
         <caaers:message code="LBL_reportingPeriod.startDate" var="x" />
