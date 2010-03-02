@@ -18,8 +18,9 @@
 		}
 	</style>
      <script>
+         var countTA = ${fn:length(command.study.activeTreatmentAssignments)};
          Event.observe(window, "load", function() {
-            if ($('reportingPeriod.treatmentAssignmentDescription').value != '')
+            if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
          })
      </script>
@@ -75,7 +76,7 @@
                     </tr>
                 </c:forEach>
                 <tr bgcolor="white">
-                    <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA"/>&nbsp;Other
+                    <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA" />&nbsp;Other
                     <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea>
                 </tr>
             </table>
