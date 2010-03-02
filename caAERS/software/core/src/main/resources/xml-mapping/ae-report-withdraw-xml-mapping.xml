@@ -58,10 +58,18 @@
       <bind-xml name="id" node="element"/>
     </field>
     <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
-      <bind-xml name="Study"/>
+      <bind-xml auto-naming="deriveByClass"/>
     </field>
   </class>
 
+  	<class name="gov.nih.nci.cabig.caaers.domain.LocalStudy" extends="gov.nih.nci.cabig.caaers.domain.Study">
+	   <map-to xml="Study"/>  
+	</class>  
+	
+	<class name="gov.nih.nci.cabig.caaers.domain.RemoteStudy" extends="gov.nih.nci.cabig.caaers.domain.Study">
+	    <map-to xml="Study"/>
+	</class> 
+	
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
     <map-to xml="Study"/>
     <field name="id" type="integer">
