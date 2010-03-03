@@ -56,12 +56,8 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
             updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
             studyDao.delete(updatedStudy);
         }
-
     }
     
-    
-
-
     /**
      * Tests the update of attributes shortTitle,longTitle,percis,description,phaseCode,
      * status,design,multiInsitutionIndicator,adeersReporting,
@@ -138,8 +134,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 assertEquals("Comments3_Updated", treatmentAssignment.getComments());
             }
         }
-
-
     }
 
 
@@ -184,8 +178,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 assertEquals("Comments4", treatmentAssignment.getComments());
             }
         }
-
-
     }
 
 
@@ -200,7 +192,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml"));
 
         studyProcessor.updateStudy(studies);
-
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -223,7 +214,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 assertTrue(ctepStudyDisease.getLeadDisease());
             }
         }
-
     }
 
     /**
@@ -262,7 +252,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 assertFalse(ctepStudyDisease.getLeadDisease());
             }
         }
-
     }
 
 
@@ -285,9 +274,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
-
         assertEquals(3, updatedStudy.getMeddraStudyDiseases().size());
-
     }
 
 
@@ -299,9 +286,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteAdd.xml"));
-
 
         studyProcessor.updateStudy(studies);
 
@@ -314,8 +299,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         assertNotNull(updatedStudy);
 
         assertEquals(3, updatedStudy.getStudySites().size());
-
-
     }
 
 
@@ -327,9 +310,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml"));
-
 
         studyProcessor.updateStudy(studies);
 
@@ -362,7 +343,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
 
         studyProcessor.updateStudy(studies);
@@ -394,8 +374,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 }
             }
         }
-
-
     }
 
 
@@ -407,9 +385,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml"));
-
 
         studyProcessor.updateStudy(studies);
 
@@ -430,7 +406,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 }
             }
         }
-
     }
 
 
@@ -472,8 +447,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
                 }
             }
         }
-
-
     }
 
 
@@ -485,14 +458,11 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
         createStudy("studydata/CreateStudyTest.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentAdd.xml"));
-
 
         studyProcessor.updateStudy(studies);
 
         SecurityTestUtils.switchToSuperuser();
-
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
         assertNotNull(updatedStudy);
@@ -516,7 +486,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 
     	 CaaersServiceResponse response = createStudy("studydata/CreateStudyTest_3.xml");
     	 assertEquals("1", response.getResponse().getResponsecode());
-    	 assertEquals("Another study is using the identifier provided",response.getResponse().getDescription());
     }
 
     /**
@@ -563,12 +532,8 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 
     private CaaersServiceResponse createStudy(String studyXmlLocation) throws Exception {
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
-
         return studyProcessor.createStudy(studies);
-
-
     }
 
     private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
