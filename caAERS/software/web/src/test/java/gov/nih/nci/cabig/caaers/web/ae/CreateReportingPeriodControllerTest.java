@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.*;
@@ -62,6 +63,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 
     RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
     CaaersFieldConfigurationManager caaersFieldConfigurationManager;
+    RenderDecisionManager renderDecisionManager;
 
     protected BindException errors;
     protected ReportingPeriodCommand command;
@@ -97,9 +99,12 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		controller.setUserDao(userDao);
 		controller.setConfiguration(configuration);
 
-        controller.setRenderDecisionManagerFactoryBean(registerMockFor(RenderDecisionManagerFactoryBean.class));
-        controller.setCaaersFieldConfigurationManager(registerMockFor(CaaersFieldConfigurationManager.class));
-		
+        renderDecisionManagerFactoryBean = registerMockFor(RenderDecisionManagerFactoryBean.class);
+        caaersFieldConfigurationManager = registerMockFor(CaaersFieldConfigurationManager.class);
+        renderDecisionManager = registerMockFor(RenderDecisionManager.class);
+        controller.setRenderDecisionManagerFactoryBean(renderDecisionManagerFactoryBean);
+        controller.setCaaersFieldConfigurationManager(caaersFieldConfigurationManager);
+
 		errors = new BindException(new Object(){
 			public AdverseEventReportingPeriod getReportingPeriod(){
 				return new AdverseEventReportingPeriod();
@@ -181,7 +186,13 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		expect(studySite.getStudy()).andReturn(study).anyTimes();
 		expect(assignment.getParticipant()).andReturn(participant);
-		expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse"));
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
 
 		replayMocks();
 		
@@ -223,6 +234,14 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
 		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
+
 		replayMocks();
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
@@ -232,8 +251,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		command.getReportingPeriod().getTreatmentAssignment().setId(6);
 		
 		controller.onBindAndValidate(request, command, errors);
-		System.out.println(errors);
-		assertFalse(errors.hasErrors());
+		assertTrue(errors.hasErrors());
 	}
 
 	/**
@@ -258,6 +276,14 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
 		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
+        
 		replayMocks();
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
@@ -267,8 +293,8 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		
 		controller.onBindAndValidate(request, command, errors);
 		assertTrue(errors.hasErrors());
-		assertEquals(1, errors.getErrorCount());
-		assertCorrectErrorMessage("Select the Treatment Assignment.",errors.getAllErrors().get(0));
+		assertEquals(3, errors.getErrorCount());
+		assertCorrectErrorMessage("<b>Missing:</b> &quot;End date of this course/cycle&quot;",errors.getAllErrors().get(0));
 	}
 	
 	/**
@@ -293,6 +319,14 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
 		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(false);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
+        
 		replayMocks();
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
@@ -302,7 +336,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		command.getReportingPeriod().getTreatmentAssignment().setId(5);
 		
 		controller.onBindAndValidate(request, command, errors);
-		assertEquals(0, errors.getErrorCount());
+		assertEquals(3, errors.getErrorCount());
 	}
 	
 	
@@ -328,6 +362,14 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		expect(assignment.getParticipant()).andReturn(participant).anyTimes();
 		expect(assignment.getReportingPeriods()).andReturn(rpList).anyTimes();
 		expect(assignment.getStartDateOfFirstCourse()).andReturn(new Date()).anyTimes();
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
+
 		replayMocks();
 		
 		ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, null, "create");
@@ -339,8 +381,8 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		
 		controller.onBindAndValidate(request, command, errors);
 		assertTrue(errors.hasErrors());
-		assertEquals(1, errors.getErrorCount());
-		assertCorrectErrorMessage("A Baseline treatment type already exists",errors.getAllErrors().get(0));
+		assertEquals(3, errors.getErrorCount());
+		assertCorrectErrorMessage("<b>Missing:</b> &quot;End date of this course/cycle&quot;",errors.getAllErrors().get(0));
 	}
 	
 	/**
@@ -619,15 +661,27 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 
         List<Epoch> epochs = new ArrayList<Epoch>();
         List<TreatmentAssignment> tas = new ArrayList<TreatmentAssignment>();
+        List<String> s = new ArrayList<String>();
 
         expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
         expect(studySite.getStudy()).andReturn(study).anyTimes();
         expect(assignment.getParticipant()).andReturn(participant).anyTimes();
         expect(study.getEpochs()).andReturn(epochs).anyTimes();
         expect(study.getTreatmentAssignments()).andReturn(tas).anyTimes();
-//        expect(renderDecisionManagerFactoryBean.getRenderDecisionManager());
-        System.out.println(renderDecisionManagerFactoryBean);
-        System.out.println(renderDecisionManagerFactoryBean.getRenderDecisionManager());
+
+        expect(renderDecisionManagerFactoryBean.getRenderDecisionManager()).andReturn(renderDecisionManager);
+        expect(caaersFieldConfigurationManager.getListOfApplicableFields("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab")).andReturn(s);
+        renderDecisionManager.reveal(s);
+
+        expect(caaersFieldConfigurationManager.getListOfNotApplicableFields("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab")).andReturn(s);
+        renderDecisionManager.conceal(s);
+
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "assignment.startDateOfFirstCourse")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.startDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.endDate")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.epoch")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.cycleNumber")).andReturn(true);
+        expect(caaersFieldConfigurationManager.isFieldMandatory("gov.nih.nci.cabig.caaers.web.ae.CourseCycleTab", "reportingPeriod.treatmentAssignment")).andReturn(true);
 
         replayMocks();
 
@@ -639,7 +693,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
         verifyMocks();
 
         assertNotNull(refData);
-        assertEquals(1, refData.size());
+        assertEquals(2, refData.size());
         Map<String, DefaultInputFieldGroup> map = (Map)refData.get("fieldGroups");
         DefaultInputFieldGroup fg = map.get("ReportingPeriod");
 
