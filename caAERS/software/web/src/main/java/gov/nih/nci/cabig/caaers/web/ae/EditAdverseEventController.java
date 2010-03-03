@@ -280,6 +280,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(aeReport.getId() == null){
         	//present status. 
         	for(AdverseEvent ae : aeReport.getAdverseEvents()){
+                if (ae.getGrade() == null) return;
         		if(ae.getGrade().equals(Grade.DEATH)){
         			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         			break;

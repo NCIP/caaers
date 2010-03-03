@@ -223,7 +223,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     @Transient
     public List<AdverseEvent> getNonExpeditedAdverseEvents(){
     	List<AdverseEvent> unReportedAes = new ArrayList<AdverseEvent>();
-    	for(AdverseEvent ae : getGradedAdverseEvents()){
+    	for(AdverseEvent ae : getAdverseEvents()){
     		if(ae.getReport() == null)
     			unReportedAes.add(ae);
     	}

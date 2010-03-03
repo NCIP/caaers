@@ -877,7 +877,14 @@ function validate(aeReportId){
 	<c:set var ="_primaryAE" value="${command.evaluationResult.allAeMap[_aeReportId][0]}" />
 	<c:set var="_rulesMsgs" value="${command.rulesEngineMessageMap[_aeReportId]}" />
 	<div id="new-dc-section-0" style="${noOfAEReports gt 0 ? 'display:none;' : ''}">
-	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm}, Grade ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}" >
+    <c:set var="gradeText">
+        <jsp:attribute name="value">
+            <c:if test="${_primaryAE.grade != null}">
+                ,&nbsp;Grade:  ${_primaryAE.grade.code}: ${_primaryAE.grade.displayName}
+            </c:if>
+        </jsp:attribute>
+    </c:set>
+	<chrome:accordion  id="dc-section-0" title="${_primaryAE.adverseEventTerm.universalTerm} ${gradeText}">
 		<chrome:division title="Recommended Actions">
 		<!--  Rules Message Top -->
 		 <ae:rulesMessageTop rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" alertShown="${command.evaluationResult.aeReportAlertMap[_aeReportId]}"/>
