@@ -56,7 +56,4 @@ public abstract class SubjectFlowAbstractTabTest extends WebTestCase {
         return command.getAssignment();
     }
 
-    public void testTab() {
-        assertNull(command);
-    }
 }
