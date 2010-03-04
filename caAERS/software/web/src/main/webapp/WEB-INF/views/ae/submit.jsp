@@ -282,6 +282,7 @@
         <input type="hidden" name="_selected" value="">
 
 		<c:if test="${command.aeReport.physicianSignOffRequired}">
+			<a name="signoff"></a>
 			<chrome:box title="Physician signoff">
 			 	<div class="row">
    		     		<div class="label">
