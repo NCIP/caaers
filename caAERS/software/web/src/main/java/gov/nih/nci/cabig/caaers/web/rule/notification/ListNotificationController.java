@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitions;
@@ -14,6 +19,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -23,6 +29,8 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public class ListNotificationController extends SimpleFormController {
 
+	private static final String DISABLE_ACTION = "disable";
+	private static final String ENABLE_ACTION = "enable";
     protected ReportDefinitionDao reportDefinitionDao;
 	protected ReportDefinitionConverter reportDefinitionConverter;
 	protected ReportDefinitionSynchronizer reportDefinitionSynchronizer;
@@ -100,13 +108,63 @@ public class ListNotificationController extends SimpleFormController {
 	    return modelAndView;
 
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    protected Map referenceData(final HttpServletRequest request, final Object cmd,
+                    final Errors errors) throws Exception {
+        Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
+        ListNotificationCommand command = (ListNotificationCommand) cmd;
+        String rpDefIdObject = request.getParameter("repDefId");
+        Integer rpDefId = null;
+        if(rpDefIdObject != null)
+        	rpDefId = Integer.valueOf(rpDefIdObject);
+        String action = request.getParameter("action");
+        if(action != null && action.equals(DISABLE_ACTION) && rpDefId != null){
+        	for(ReportDefinition rd: command.getReportCalendarTemplateList()){
+        		if(rd.getId().equals(rpDefId)){
+        			rd.setEnabled(false);
+        			reportDefinitionDao.save(rd);
+        		}
+        	}
+        	initializeActiveInactiveLists(command);
+        	refDataMap.put("disabled", true);
+        }
+        if(action != null && action.equals(ENABLE_ACTION) && rpDefId != null){
+        	for(ReportDefinition rd: command.getReportCalendarTemplateList()){
+        		if(rd.getId().equals(rpDefId)){
+        			rd.setEnabled(true);
+        			reportDefinitionDao.save(rd);
+        		}
+        	}
+        	initializeActiveInactiveLists(command);
+        	refDataMap.put("enabled", true);
+        }
+        
+        return refDataMap;
+    }
 
     @Override
     public Object formBackingObject(HttpServletRequest request) {
     	ListNotificationCommand command = new ListNotificationCommand(reportDefinitionDao);
     	command.setReportCalendarTemplateList(reportDefinitionDao.getAll());
+    	initializeActiveInactiveLists(command);
     	command.setFolder(request.getParameter("importDir"));
         return command;
+    }
+    
+    public void initializeActiveInactiveLists(ListNotificationCommand command){
+    	List<ReportDefinition> activeReportDefinitionsList = new ArrayList<ReportDefinition>();
+    	List<ReportDefinition> inactiveReportDefinitionsList = new ArrayList<ReportDefinition>();
+    	
+    	for(ReportDefinition rd: command.getReportCalendarTemplateList()){
+    		if(rd.getEnabled())
+    			activeReportDefinitionsList.add(rd);
+    		else
+    			inactiveReportDefinitionsList.add(rd);
+    	}
+    	command.setActiveReportDefinitionsList(activeReportDefinitionsList);
+    	command.setInactiveReportDefinitionsList(inactiveReportDefinitionsList);
     }
     
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {

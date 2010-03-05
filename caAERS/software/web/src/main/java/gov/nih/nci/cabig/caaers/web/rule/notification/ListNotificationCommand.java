@@ -12,6 +12,8 @@ public class ListNotificationCommand {
 
     private List<ReportDefinition> reportDefinitionList;
     
+    private List<ReportDefinition> activeReportDefinitionsList;
+    private List<ReportDefinition> inactiveReportDefinitionsList;
     // Attributes for import report definition feature
     private String folder;
     private String message;
@@ -81,6 +83,36 @@ public class ListNotificationCommand {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+	/**
+	 * @return the activeReportDefinitionsList
+	 */
+	public List<ReportDefinition> getActiveReportDefinitionsList() {
+		return activeReportDefinitionsList;
+	}
+
+	/**
+	 * @param activeReportDefinitionsList the activeReportDefinitionsList to set
+	 */
+	public void setActiveReportDefinitionsList(
+			List<ReportDefinition> activeReportDefinitionsList) {
+		this.activeReportDefinitionsList = activeReportDefinitionsList;
+	}
+
+	/**
+	 * @return the inactiveReportDefinitionsList
+	 */
+	public List<ReportDefinition> getInactiveReportDefinitionsList() {
+		return inactiveReportDefinitionsList;
+	}
+
+	/**
+	 * @param inactiveReportDefinitionsList the inactiveReportDefinitionsList to set
+	 */
+	public void setInactiveReportDefinitionsList(
+			List<ReportDefinition> inactiveReportDefinitionsList) {
+		this.inactiveReportDefinitionsList = inactiveReportDefinitionsList;
+	}
     
     // Done with getters and setters of attributes for import report definition
 
