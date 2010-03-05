@@ -70,6 +70,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private ConfigProperty group;
     private ReportType reportType;
     private ReportDefinition parent;
+    private Boolean enabled;
     
     //PURE FABRICATED VARIABLES.
     protected ReportDefinitionComparator comprator;
@@ -553,4 +554,18 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public void setFooter(String footer) {
         this.footer = footer;
     }
+
+	/**
+	 * @return the enabled
+	 */
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	/**
+	 * @param enabled the enabled to set
+	 */
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 }
