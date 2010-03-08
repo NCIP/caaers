@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.RemoteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaffRole;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -13,6 +14,7 @@ import gov.nih.nci.coppa.po.IdentifiedOrganization;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.security.util.StringUtilities;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	
 	public List<Object> find(Object example) {
 		RemoteResearchStaff remoteResearchStaffExample = (RemoteResearchStaff)example;
-
+		
 		if (!StringUtilities.isBlank( remoteResearchStaffExample.getNciIdentifier())) {
 			return this.searchRoleBasedOnNciId(remoteResearchStaffExample.getNciIdentifier(),new ClinicalResearchStaff());
 		}
@@ -42,10 +44,16 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		if(remoteResearchStaffExample.getSiteResearchStaffs().size() > 0 &&
 				remoteResearchStaffExample.getSiteResearchStaffs().get(0).getOrganization() != null && 
 				remoteResearchStaffExample.getSiteResearchStaffs().get(0).getOrganization().getNciInstituteCode() != null){
-         //search based on Organization
-         logger.debug("Searching based on Organization");
-         return searchRoleBasedOnOrganization(remoteResearchStaffExample.getSiteResearchStaffs().get(0).getOrganization().getNciInstituteCode() ,new ClinicalResearchStaff());
-		} 
+	         //search based on Organization
+	         logger.debug("Searching based on Organization");
+	         List<Object> results = searchRoleBasedOnOrganization(remoteResearchStaffExample.getSiteResearchStaffs().get(0).getOrganization().getNciInstituteCode() ,new ClinicalResearchStaff());
+	         if (!StringUtilities.isBlank( remoteResearchStaffExample.getFirstName()) || 
+	        		 !StringUtilities.isBlank( remoteResearchStaffExample.getLastName())) {
+	        	 
+	        	 return this.filterByName(results, remoteResearchStaffExample.getFirstName(), remoteResearchStaffExample.getLastName());
+	         } 
+	 		 return results;
+         } 
 		
 		return searchRoleBasedOnName(remoteResearchStaffExample.getFirstName(),remoteResearchStaffExample.getMiddleName(),remoteResearchStaffExample.getLastName(),new ClinicalResearchStaff());
 	}
@@ -66,6 +74,40 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 		}
 
 		return null;
+	}
+	
+	private List<Object> filterByName(List<Object> results,String firstName,String lastName) {
+		List<Object> filteredList = new ArrayList<Object>();
+		if (!StringUtilities.isBlank(firstName) && !StringUtilities.isBlank(lastName)) {
+			for (int i=0 ; i<results.size(); i++) {
+				ResearchStaff obj = (RemoteResearchStaff)results.get(i);
+				if (obj.getFirstName().toLowerCase().indexOf(firstName.toLowerCase()) != -1 && obj.getLastName().toLowerCase().indexOf(lastName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}	
+			return filteredList;
+		}
+		if (!StringUtilities.isBlank(firstName)) {
+			 //filter by first name ...
+			for (int i=0 ; i<results.size(); i++) {
+				ResearchStaff obj = (RemoteResearchStaff)results.get(i);
+				if (obj.getFirstName().toLowerCase().indexOf(firstName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}
+			return filteredList;
+		 }
+		 if (!StringUtilities.isBlank(lastName)) {
+			 //filter by last name ...
+ 			for (int i=0 ; i<results.size(); i++) {
+				ResearchStaff obj = (RemoteResearchStaff)results.get(i);
+				if (obj.getLastName().toLowerCase().indexOf(lastName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}
+ 			return filteredList;
+		 }	
+		 return results;
 	}
 	
 	@Override
