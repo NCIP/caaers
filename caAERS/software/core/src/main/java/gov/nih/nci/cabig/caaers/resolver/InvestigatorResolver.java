@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.resolver;
 
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -11,6 +12,7 @@ import gov.nih.nci.coppa.po.IdentifiedOrganization;
 import gov.nih.nci.coppa.po.Person;
 import gov.nih.nci.security.util.StringUtilities;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +44,14 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 				remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization() != null && 
 				remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization().getNciInstituteCode() != null){
          //search based on Organization
-         log.debug("Searching based on Organization");
-         return searchRoleBasedOnOrganization(remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization().getNciInstituteCode(),new HealthCareProvider());
+	         log.debug("Searching based on Organization");
+	         List<Object> results =  searchRoleBasedOnOrganization(remoteInvestigatorExample.getSiteInvestigators().get(0).getOrganization().getNciInstituteCode(),new HealthCareProvider());
+	         if (!StringUtilities.isBlank( remoteInvestigatorExample.getFirstName()) || 
+	        		 !StringUtilities.isBlank( remoteInvestigatorExample.getLastName())) {
+	        	 
+	        	 return this.filterByName(results, remoteInvestigatorExample.getFirstName(), remoteInvestigatorExample.getLastName());
+	         } 
+	         return results;
 		} 
 		
 		return searchRoleBasedOnName(remoteInvestigatorExample.getFirstName(),remoteInvestigatorExample.getMiddleName(),remoteInvestigatorExample.getLastName(),new HealthCareProvider());
@@ -103,7 +111,41 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
     	
     	return remoteInvestigator;
     }
-    
+
+	private List<Object> filterByName(List<Object> results,String firstName,String lastName) {
+		List<Object> filteredList = new ArrayList<Object>();
+		if (!StringUtilities.isBlank(firstName) && !StringUtilities.isBlank(lastName)) {
+			for (int i=0 ; i<results.size(); i++) {
+				Investigator obj = (RemoteInvestigator)results.get(i);
+				if (obj.getFirstName().toLowerCase().indexOf(firstName.toLowerCase()) != -1 && obj.getLastName().toLowerCase().indexOf(lastName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}	
+			return filteredList;
+		}
+		if (!StringUtilities.isBlank(firstName)) {
+			 //filter by first name ...
+			for (int i=0 ; i<results.size(); i++) {
+				Investigator obj = (RemoteInvestigator)results.get(i);
+				if (obj.getFirstName().toLowerCase().indexOf(firstName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}
+			return filteredList;
+		 }
+		 if (!StringUtilities.isBlank(lastName)) {
+			 //filter by last name ...
+ 			for (int i=0 ; i<results.size(); i++) {
+ 				Investigator obj = (RemoteInvestigator)results.get(i);
+				if (obj.getLastName().toLowerCase().indexOf(lastName.toLowerCase()) != -1){
+					filteredList.add(obj);
+				}
+			}
+ 			return filteredList;
+		 }	
+		 return results;
+	}
+	
     /**
      * Populate remote investigator. Populate remote research staff. Called from searchStaffByrganization() 
      * Wont load HCSI if identifiedOrganization is passed in as null (for getRemoteEntityByUniqueId()).
