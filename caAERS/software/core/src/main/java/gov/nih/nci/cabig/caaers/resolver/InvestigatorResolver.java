@@ -79,38 +79,7 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
 		return null;
 	}
 	
-    @Override
-    public RemoteInvestigator populateRole(Person coppaPerson, String staffAssignedIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList,
-            Map<String, IdentifiedOrganization>    organizationIdToIdentifiedOrganizationsMap){
-    	RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,staffAssignedIdentifier);
-    	
-    	Organization healthcareSite = null;
-        if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
-            IdentifiedOrganization identifiedOrganization = null;
-            for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
-                identifiedOrganization = organizationIdToIdentifiedOrganizationsMap.get(coppaOrganization.getIdentifier().getExtension());
-                if(identifiedOrganization != null){
-                    healthcareSite = new RemoteOrganization();
-                    healthcareSite.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
-                    healthcareSite.setName(CoppaObjectFactory.getName(coppaOrganization.getName()));
-                    healthcareSite.setExternalId(coppaOrganization.getIdentifier().getExtension());
-                    SiteInvestigator si = new SiteInvestigator();
-                    si.setOrganization(healthcareSite);
-                    si.setInvestigator(remoteInvestigator);
-                    si.setStartDate(DateUtils.today());
-            		remoteInvestigator.addSiteInvestigator(si)	;
 
-                } else {
-                    log.error("IdentifiedOrganization is null for Organization with coppaId: "+coppaOrganization.getIdentifier().getExtension());
-                }
-            }
-        } else {
-        	return null;
-        }
-    	
-    	
-    	return remoteInvestigator;
-    }
 
 	private List<Object> filterByName(List<Object> results,String firstName,String lastName) {
 		List<Object> filteredList = new ArrayList<Object>();
@@ -175,6 +144,39 @@ public class InvestigatorResolver extends BaseResolver implements RemoteResolver
             }
             return remoteInvestigator;
         
+    }
+    
+    @Override
+    public RemoteInvestigator populateRole(Person coppaPerson, String staffAssignedIdentifier, List<gov.nih.nci.coppa.po.Organization> coppaOrganizationList,
+            Map<String, IdentifiedOrganization>    organizationIdToIdentifiedOrganizationsMap){
+    	RemoteInvestigator remoteInvestigator = setInvestigatorDetails(coppaPerson,staffAssignedIdentifier);
+    	
+    	Organization healthcareSite = null;
+        if(coppaOrganizationList != null && coppaOrganizationList.size()>0){
+            IdentifiedOrganization identifiedOrganization = null;
+            for(gov.nih.nci.coppa.po.Organization coppaOrganization: coppaOrganizationList){
+                identifiedOrganization = organizationIdToIdentifiedOrganizationsMap.get(coppaOrganization.getIdentifier().getExtension());
+                if(identifiedOrganization != null){
+                    healthcareSite = new RemoteOrganization();
+                    healthcareSite.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+                    healthcareSite.setName(CoppaObjectFactory.getName(coppaOrganization.getName()));
+                    healthcareSite.setExternalId(coppaOrganization.getIdentifier().getExtension());
+                    SiteInvestigator si = new SiteInvestigator();
+                    si.setOrganization(healthcareSite);
+                    si.setInvestigator(remoteInvestigator);
+                    si.setStartDate(DateUtils.today());
+            		remoteInvestigator.addSiteInvestigator(si)	;
+
+                } else {
+                    log.error("IdentifiedOrganization is null for Organization with coppaId: "+coppaOrganization.getIdentifier().getExtension());
+                }
+            }
+        } else {
+        	return null;
+        }
+    	
+    	
+    	return remoteInvestigator;
     }
     
 	private RemoteInvestigator setInvestigatorDetails(Person coppaPerson,String nciIdentifier) {
