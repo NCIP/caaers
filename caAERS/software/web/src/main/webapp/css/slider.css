@@ -278,9 +278,10 @@ a#maximize:active {
 
 /* Below is the css from livepipe for the scrollbar */
 #scrollbar_container {
+	height:185px;
+	overflow-y:scroll;
 	position:relative;
 	width:500px;
-	
 }
 
 #scrollbar_track {
