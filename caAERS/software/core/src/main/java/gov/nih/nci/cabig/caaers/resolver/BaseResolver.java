@@ -171,21 +171,28 @@ public abstract class BaseResolver {
         List<gov.nih.nci.coppa.po.Organization> listOfAllOrganizations = new ArrayList<gov.nih.nci.coppa.po.Organization>();
         List<Person> listOfAllPersons = new ArrayList<Person>();
         Person tempPerson = null;
-        gov.nih.nci.coppa.po.Organization tempOrganization  = null;
+        //gov.nih.nci.coppa.po.Organization tempOrganization  = null;
         for(CorrelationNode cNode: correlationNodeList){
             tempPerson = getCoppaPersonFromCorrelationNode(cNode);
-            tempOrganization = getCoppaOrganizationFromCorrelationNode(cNode);
+            List<gov.nih.nci.coppa.po.Organization> orgsFromCorrelation = getCoppaOrganizationFromCorrelationNode(cNode);
             
             //building a list of all organizations
-            listOfAllOrganizations.add(tempOrganization);
+            for (gov.nih.nci.coppa.po.Organization tempOrganization:orgsFromCorrelation) {
+            	listOfAllOrganizations.add(tempOrganization);
+            }
+            
 
             List<gov.nih.nci.coppa.po.Organization> organizationList = null;
             if(personIdToCoppaOrganizationsHashMap.containsKey(tempPerson.getIdentifier().getExtension())){
                 organizationList = personIdToCoppaOrganizationsHashMap.get(tempPerson.getIdentifier().getExtension());
-                organizationList.add(tempOrganization);
+                for (gov.nih.nci.coppa.po.Organization tempOrganization:orgsFromCorrelation) {
+                	organizationList.add(tempOrganization);
+                }
             } else {
                 organizationList = new ArrayList<gov.nih.nci.coppa.po.Organization>();
-                organizationList.add(tempOrganization);
+                for (gov.nih.nci.coppa.po.Organization tempOrganization:orgsFromCorrelation) {
+                	organizationList.add(tempOrganization);
+                }
                 personIdToCoppaOrganizationsHashMap.put(tempPerson.getIdentifier().getExtension(), organizationList);
                 //building a list of all persons. This is in the else loop because different correlationNodes can have the same person.
                 //So we only add when the personIdToCoppaOrganizationsHashMap does not contain the personId as the key.
@@ -311,16 +318,17 @@ public abstract class BaseResolver {
 	 * @param cNode the correlation node
 	 * @return the coppa organization associated to investigator from correlation node
 	 */
-	public Organization getCoppaOrganizationFromCorrelationNode(CorrelationNode cNode) {
+	public List<Organization> getCoppaOrganizationFromCorrelationNode(CorrelationNode cNode) {
 		Organization coppaOrganization = null;
+		List<Organization> orgList = new ArrayList<Organization>();
 		for(int i = 0; i < cNode.getScoper().getContent().size(); i++){
 			Object object = cNode.getScoper().getContent().get(i);
 			if(object instanceof Organization){
 				coppaOrganization = (Organization)object;
-				break;
+				orgList.add(coppaOrganization);
 			}
 		}
-		return coppaOrganization;
+		return orgList;
 	}
 	
 	/**
