@@ -36,7 +36,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 	
 	public List<Object> find(Object example) {
 		RemoteResearchStaff remoteResearchStaffExample = (RemoteResearchStaff)example;
-		
+
 		if (!StringUtilities.isBlank( remoteResearchStaffExample.getNciIdentifier())) {
 			return this.searchRoleBasedOnNciId(remoteResearchStaffExample.getNciIdentifier(),new ClinicalResearchStaff());
 		}
@@ -143,6 +143,7 @@ public class ResearchStaffResolver extends BaseResolver implements RemoteResolve
 				if(identifiedOrganization != null){
 					site = new RemoteOrganization();
 					site.setNciInstituteCode(identifiedOrganization.getAssignedId().getExtension());
+					site.setName(CoppaObjectFactory.getName(coppaOrganization.getName()));
 					site.setExternalId(coppaOrganization.getIdentifier().getExtension());
 					SiteResearchStaff siteResearchStaff = new SiteResearchStaff();
 					siteResearchStaff.setResearchStaff(remoteResearchStaff);
