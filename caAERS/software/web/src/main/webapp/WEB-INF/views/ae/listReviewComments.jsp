@@ -52,6 +52,9 @@
 			var form = document.getElementById('command');
 			form.comment.value = '';
 		}
+		function doneWithComments(){
+			window.parent.Windows.close(window.parent.curWin.getId());
+		}
 	</script>
 </head>
 <body>
@@ -65,7 +68,7 @@
 			<ui:row path="comment">
 				<jsp:attribute name="label">New comment</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:textarea path="comment" rows="6" cols="90" required="true">
+					<ui:textarea path="comment" rows="6" cols="90" required="true" title="comment">
 					</ui:textarea>
 				</jsp:attribute>
 			</ui:row>
@@ -110,6 +113,15 @@
 				</c:forEach>
 			</div>
 		</jsp:attribute>
+		<jsp:attribute name="navButtons">
+	      	<div class="content buttons autoclear">
+    	      <div class="flow-buttons">
+				  <span class="next">
+				  	<tags:button id="done-button" markupWithTag="a" href="javascript:doneWithComments()" value="Done" color="green" icon="check" />
+				  </span>
+          </div>
+      </div>
+  </jsp:attribute>
 	</tags:standardForm>
 
 </body>
