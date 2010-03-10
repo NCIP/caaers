@@ -77,6 +77,7 @@
 												<tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/>
 											</div>
 										</div>
+										<%-- Epoch will only be displayed if its not null --%>
 										<c:forEach items="${fieldGroups.reportingPeriodDetailsFG.fields}" var="field">
       										<tags:renderRow field="${field}" />
       									</c:forEach>
