@@ -92,7 +92,9 @@ public class ReviewEvaluationPeriodController extends SimpleFormController{
             treatmentAssignmentFieldGroup.getFields().add(firstCourseDateField);
 
             // add reportingPeriod details group
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type"));
+            // check if the epoch is not null
+            if(reportingPeriod.getEpoch() != null)
+            	reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle number"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.description", "Description"));
 
