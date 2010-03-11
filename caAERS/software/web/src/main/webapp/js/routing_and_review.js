@@ -60,17 +60,25 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	},
 	addComment:function(entityId){
 		var commentTextAreaId = 'enter-comment-text-' + entityId;
-		this.ajaxFacade.addReviewComment($(commentTextAreaId).value, entityId, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
-		}.bind(this));
+		var comment = $(commentTextAreaId).value;
+		if(comment == '')
+			alert('Missing comment');
+		else
+			this.ajaxFacade.addReviewComment($(commentTextAreaId).value, entityId, function(ajaxOutput){
+				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+			}.bind(this));
 	},
 	editComment:function(entityId){
 		var commentTextAreaId = 'enter-comment-text-' + entityId;
 		var editCommentId = 'edit_comment_id-' + entityId;
-		this.ajaxFacade.editReviewComment($(commentTextAreaId).value, $(editCommentId).value, entityId, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
-			this.disableEditMode(entityId);
-		}.bind(this));
+		var comment = $(commentTextAreaId).value;
+		if(comment == '')
+			alert('Missing comment');
+		else
+			this.ajaxFacade.editReviewComment($(commentTextAreaId).value, $(editCommentId).value, entityId, function(ajaxOutput){
+				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+				this.disableEditMode(entityId);
+			}.bind(this));
 	},
 	deleteComment:function(id, entityId){
 		this.ajaxFacade.deleteReviewComment(id, entityId, function(ajaxOutput){
