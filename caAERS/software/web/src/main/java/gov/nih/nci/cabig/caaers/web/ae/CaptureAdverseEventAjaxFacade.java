@@ -81,7 +81,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         	filteredTermIDs.add(id);
         }
 
-
+        //
         if(filteredTermIDs.isEmpty()) return ajaxOutput;
         
         boolean isMeddra = command.getAdverseEventReportingPeriod().getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
@@ -122,6 +122,45 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         return ajaxOutput;
     }
     
+    public AjaxOutput addObservedAEByVerbatim(String verbatim) {
+
+    	AjaxOutput ajaxOutput = new AjaxOutput();
+
+        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+        command.reassociate();
+        int index = command.getAdverseEvents().size();
+
+        boolean isMeddra = command.getAdverseEventReportingPeriod().getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+        
+        AdverseEvent ae = new AdverseEvent();
+        ae.setSolicited(false);
+        ae.setRequiresReporting(false);
+        ae.setDetailsForOther(verbatim);
+
+        if (isMeddra) {
+            // LowLevelTerm llt = new LowLevelTerm();
+            AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+            // aellt.setLowLevelTerm(llt);
+            ae.setAdverseEventMeddraLowLevelTerm(aellt);
+            aellt.setAdverseEvent(ae);
+        } else {
+            AdverseEventCtcTerm aeCtc = new AdverseEventCtcTerm();
+            ae.setAdverseEventCtcTerm(aeCtc);
+            aeCtc.setAdverseEvent(ae);
+        }
+
+        ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
+        command.getAdverseEvents().add(ae);
+
+        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
+    	params.put("index", Integer.toString(index));
+
+    	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
+    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+        return ajaxOutput;
+    }
+
     /**
      * Will delete (soft delete) the adverse event from course.
      * @param index

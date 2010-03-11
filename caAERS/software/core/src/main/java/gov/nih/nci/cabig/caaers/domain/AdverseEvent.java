@@ -316,6 +316,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     @Transient
+    public LowLevelTerm getMeddraTerm() {
+        if (this.adverseEventTerm == null) {
+            return null;
+        } else if (this.adverseEventTerm instanceof AdverseEventMeddraLowLevelTerm) {
+            return getAdverseEventMeddraLowLevelTerm().getLowLevelTerm();
+        } else {
+            throw new CaaersSystemException("Cannot Return a Meddra Term you are probably using a Terminology different than Ctc");
+        }
+    }
+
+    @Transient
+    public void setMeddraTerm(LowLevelTerm meddraTerm) {
+        getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(meddraTerm);
+    }
+
+    @Transient
     public AdverseEventCtcTerm getAdverseEventCtcTerm() {
         if (adverseEventTerm == null) {
             this.adverseEventTerm = new AdverseEventCtcTerm();
@@ -345,8 +361,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     @Transient
-    public void setAdverseEventMeddraLowLevelTerm(
-            AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
+    public void setAdverseEventMeddraLowLevelTerm(AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
         // this.adverseEventCtcTerm = adverseEventCtcTerm;
         setAdverseEventTerm(adverseEventMeddraLowLevelTerm);
     }

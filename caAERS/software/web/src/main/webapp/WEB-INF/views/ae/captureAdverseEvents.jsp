@@ -64,6 +64,12 @@
             
         },
 
+        addObservedAEByVerbatim : function(verbatim){
+            captureAE.addObservedAEByVerbatim(verbatim, function(ajaxOutput) {
+                $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
+            })
+        },
+
         deleteAdverseEvent:function(indx) {
 
         	 if (!confirm("Are you sure you want to delete this?"))
@@ -98,8 +104,16 @@
  	});
 
 
-    // ----------------------------------------------------------------------------------------------------------------
-    
+ // ----------------------------------------------------------------------------------------------------------------
+
+    function addByVerbatim() {
+        if ($('verbatim').value.trim() != '')
+            rpCreator.addObservedAEByVerbatim($('verbatim').value.trim());
+        $('verbatim').value = '';
+    }
+
+ // ----------------------------------------------------------------------------------------------------------------
+
     function deleteOrAmendAndSubmit(){
 		Windows.close('amend-popup-id');
 		var form = document.getElementById('command');
@@ -241,16 +255,29 @@
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
 				
-				
 					<%--  Begining Of Observed AE section --%>
 					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
                         <div align="right"><a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />"><img src="<c:url value='/images/pdf.gif'></c:url>" border="0">&nbsp;</a></div>
+
+                        <c:if test="${!command.study.verbatimFirst}">
 						<p>
                             <c:if test="${empty command.study.aeTerminology.meddraVersion}"><tags:instructions code="instruction_ae_oae"/></c:if>
                             <c:if test="${not empty command.study.aeTerminology.meddraVersion}"><tags:instructions code="instruction_ae_oae_meddra"/></c:if>
                             <div class="instructions row" style="position:relative; top:-20px;"><div class="label"></div><div class="value">${command.adverseEventReportingPeriod.epoch.descriptionText}</div></div>
 						</p>
+                        </c:if>
+                        
+                        <c:if test="${command.study.verbatimFirst}">
+                            <ui:row path="verbatim">
+                                <jsp:attribute name="label"><ui:label path="verbatim" text="" labelProperty="captureAdverseEventsVerbatim"></ui:label></jsp:attribute>
+                                <jsp:attribute name="value">
+                                    <ui:text path="verbatim"></ui:text>&nbsp;
+                                    <tags:button size="small" type="button" color="blue" icon="add" value="Add" id="addverbatim" onclick="addByVerbatim()"/>
+                                </jsp:attribute>
+                            </ui:row>
+                        </c:if>
 
+                        <c:if test="${!command.study.verbatimFirst}">
  						<tags:aeTermQuery
                        			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
                        			noBackground="true"
@@ -260,6 +287,7 @@
                        			version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
                        		title="">
             			</tags:aeTermQuery>
+                        </c:if>
 
             			<span id="observedBlankRow"></span>
             			<c:if test="${fn:length(command.adverseEventReportingPeriod.adverseEvents) > 0}">
@@ -273,7 +301,7 @@
             			</c:if>
 					</chrome:box>
 					<%-- End of Observed AE section --%>
-					
+
 					<%-- Begining of Solicited AE section --%>
 					<c:if test="${command.havingSolicitedAEs}">
 						<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID" autopad="true">

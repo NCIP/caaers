@@ -89,7 +89,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	private String reportingMethod;
 	protected HashMap<String, Boolean> errorsForFields;
-	
+	protected String verbatim;
 	
 	public CaptureAdverseEventInputCommand(){
 
@@ -1264,6 +1264,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		
     	}//aeReport 
     }
-    
-    
+
+    public String getVerbatim() {
+        return verbatim;
+    }
+
+    public void setVerbatim(String verbatim) {
+        this.verbatim = verbatim;
+    }
 }

@@ -80,12 +80,19 @@ public class DetailsTab extends StudyTab {
             fields.add(descField);
             fields.add(InputFieldFactory.createSelectField("study.phaseCode", "Phase", true, collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
             fields.add(InputFieldFactory.createSelectField("study.status", "Status", true, collectOptionsFromConfig("statusRefData", "code", "desc")));
+
             Map<Object, Object> options = new LinkedHashMap<Object, Object>();
             options.put("", "Please select");
             options.put(Boolean.FALSE, "No");
             options.put(Boolean.TRUE, "Yes");
+
+            Map<Object, Object> verbatimFirstOptions = new LinkedHashMap<Object, Object>();
+            verbatimFirstOptions.put(Boolean.FALSE, "No");
+            verbatimFirstOptions.put(Boolean.TRUE, "Yes");
+
             fields.add(InputFieldFactory.createSelectField("study.multiInstitutionIndicator", "Multi Institutional", true, options));
             fields.add(InputFieldFactory.createSelectField("study.adeersReporting", "AdEERS  reporting required", true, options));
+            fields.add(InputFieldFactory.createSelectField("study.verbatimFirst", "verbatimFirst", false, verbatimFirstOptions));
             fields.add(InputFieldFactory.createLabelField("dataEntryStatus", "Data Entry Status", false));
 
         }

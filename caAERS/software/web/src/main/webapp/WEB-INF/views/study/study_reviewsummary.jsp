@@ -116,7 +116,10 @@
                 	<div class="label">AdEERS reporting</div>
                 	<div class="value">${command.study.adeersReporting == null ? '' : command.study.adeersReporting ? 'Yes' : 'No'} </div>
             	</div>
-            	
+            	<div class="row">
+                	<div class="label"><caaers:message code="LBL_study.verbatimFirst" /></div>
+                	<div class="value">${command.study.verbatimFirst == null ? '' : command.study.verbatimFirst ? 'Yes' : 'No'}</div>
+            	</div>
             	<div class="row">
                 	<div class="label">Data Entry Status</div>
                 	<div id="data-entry-status-div" class="value">${command.dataEntryStatus} </div>

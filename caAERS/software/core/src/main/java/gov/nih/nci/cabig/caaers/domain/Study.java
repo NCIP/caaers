@@ -118,7 +118,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected List<Epoch> epochs=new ArrayList<Epoch>();
     
     protected Boolean dataEntryStatus;
-    
+    protected Boolean verbatimFirst;
+
   //Added for COPPA integration
     protected String externalId;
     
@@ -1270,5 +1271,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
             }
         }
         return list;
+    }
+
+    public Boolean getVerbatimFirst() {
+        return verbatimFirst;
+    }
+
+    public void setVerbatimFirst(Boolean verbatimFirst) {
+        this.verbatimFirst = verbatimFirst;
     }
 }

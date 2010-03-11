@@ -1,31 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
 /**
  * @author Biju Joseph
@@ -88,7 +76,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
                 //other MedDRA
         		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
-        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", true & unRetired);
+        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", true & unRetired);
         		//only add otherMedDRA on non MedDRA and otherRequired=true
                 if(ae.getAdverseEventTerm().isOtherRequired() && study.getOtherMeddra() != null){
                 	mainFieldFactory.addField(otherMeddraField);
@@ -177,12 +165,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     @Override
     public void beforeBind(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+        System.out.println("BeforeBind...");
         super.beforeBind(request, command);
+        
         command.reassociate();
     }
 
     @Override
     public Map<String, Object> referenceData(CaptureAdverseEventInputCommand command) {
+        System.out.println("refferenceData...");
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
         
@@ -200,11 +191,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     }
 
 
+    
 
     @Override
     public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
-        if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors())
-            return; //ignore if this is an ajax request
+        System.out.println("postprocess...");
+        if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors()) {
+            // init the meddra terms.
+            return; 
+        }
         
         //reset the reporting method and action
         command.set_action(null);
@@ -230,8 +225,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         List<String> aeStringList = new ArrayList<String>();
         
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-            if(ae.isRetired()) continue;
-            
+            if (ae.isRetired()) continue;
+
+            // to support Verbatim First
+            if (ae.getAdverseEventTerm().getTerm() == null) continue;
+
             StringBuffer key = new StringBuffer(String.valueOf(ae.getAdverseEventTerm().getTerm().getId()));
             
             if (ae.getAdverseEventTerm().isOtherRequired()) {
@@ -252,6 +250,14 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     @Override
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        System.out.println("Validate...");
+        short i = 0;
+        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+            if (ae.getAdverseEventCtcTerm() == null) {
+                errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_045", new Object[]{ae.getDetailsForOther()}, "");
+            }
+            i++;
+        }
 
         // START -> AE VALIDATION //
         AdverseEvent adverseEvent = checkAEsUniqueness(command);
@@ -263,7 +269,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
         boolean foundGrade5 = false;
         
-        short i = 0;
+        i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
         	if(ae.isRetired()){
         		i++;
@@ -320,6 +326,30 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         command.setErrorsForFields(new HashMap<String, Boolean>());
         WebUtils.populateErrorFieldNames(command.getErrorsForFields(), errors);
     }
+
+    @Override
+    protected boolean methodInvocationRequest(HttpServletRequest request) {
+    	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "ajax") && Boolean.parseBoolean(request.getParameter("ajax"));
+    }
     
+    @Override
+    public String getMethodName(HttpServletRequest request) {
+        System.out.println("getMethodName...");
+    	if (request.getParameter("action") != null) return request.getParameter("action");
+        return null;
+    }
+
+    public ModelAndView refreshGrades(HttpServletRequest request , Object cmd, Errors errors) {
+        System.out.println("refreshGrades...");
+        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)cmd;
+
+        String index = request.getParameter("index"); 
+    	ModelAndView modelAndView = new ModelAndView("ae/ajax/gradeFormSection");
+        modelAndView.getModel().put("index", index);
+        modelAndView.getModel().put("ae", command.getAdverseEvents().get(Integer.parseInt(index)));
+
+    	return modelAndView;
+    }
+
     
 }
