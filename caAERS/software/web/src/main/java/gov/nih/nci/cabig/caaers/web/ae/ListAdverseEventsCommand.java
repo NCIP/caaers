@@ -57,8 +57,7 @@ public class ListAdverseEventsCommand {
     public void updateOptions() {
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
     	if(isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.caaers_data_cd , 
-    			UserGroupType.caaers_central_office_sae_cd,UserGroupType.caaers_ae_cd,
-    				UserGroupType.caaers_participant_cd)){
+    			UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd)){
     		setAmendAnOption(true);
     	} else {
     		setAmendAnOption(false);
