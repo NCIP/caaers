@@ -240,6 +240,11 @@ public class SearchStudyAjaxFacade {
         columnNciInstituteCode.setTitle("Investigator number");
         model.addColumn(columnNciInstituteCode);
         
+        Column organizations = model.getColumnInstance();
+        organizations.setTitle("Organization(s)");
+        organizations.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorSiteDisplayCell");
+        model.addColumn(organizations);
+        
         Column columnStatus = model.getColumnInstance();
         columnStatus.setTitle("Status");
         model.addColumn(columnStatus);
@@ -249,10 +254,21 @@ public class SearchStudyAjaxFacade {
     }
 
     public Object buildResearchStaff(final TableModel model, final List<SiteResearchStaff> siteResearchStaffs) throws Exception {
+    	
+    	Map<Integer,ResearchStaff> rsMap = new HashMap<Integer,ResearchStaff>();
+    	if(siteResearchStaffs != null && siteResearchStaffs.size() > 0){
+    		for(SiteResearchStaff srs : siteResearchStaffs){
+    			if(! rsMap.containsKey(srs.getResearchStaff().getId())){
+    				rsMap.put(srs.getResearchStaff().getId(), srs.getResearchStaff());
+    			}
+    		}
+    	}
+    	List<ResearchStaff> rsList = new ArrayList<ResearchStaff>(rsMap.values());
+    	
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
         table.setForm("assembler");
-        table.setItems(siteResearchStaffs);
+        table.setItems(rsList);
         table.setAction(model.getContext().getContextPath() + "/pages/admin/editResearchStaff");
         table.setTitle("");
         table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
@@ -273,29 +289,27 @@ public class SearchStudyAjaxFacade {
         model.addRow(row);
 
         Column columnFirstName = model.getColumnInstance();
-        columnFirstName.setProperty("researchStaff.firstName");
+        columnFirstName.setProperty("firstName");
         columnFirstName.setTitle("First name");
         columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffLinkDisplayCell");
         model.addColumn(columnFirstName);
 
         Column columnMiddleName = model.getColumnInstance();
-        columnMiddleName.setProperty("researchStaff.middleName");
+        columnMiddleName.setProperty("middleName");
         columnMiddleName.setTitle("Middle name");
         model.addColumn(columnMiddleName);
 
         Column columnLastName = model.getColumnInstance();
-        columnLastName.setProperty("researchStaff.lastName");
+        columnLastName.setProperty("lastName");
         columnLastName.setTitle("Last name");
         model.addColumn(columnLastName);
 
-        Column columnOrganizationNameName = model.getColumnInstance();
-        columnOrganizationNameName.setProperty("organization.name");
-        columnOrganizationNameName.setTitle("Organization");
-        columnOrganizationNameName.setAlias("name");
-        model.addColumn(columnOrganizationNameName);
+        Column organizations = model.getColumnInstance();
+        organizations.setTitle("Organization(s)");
+        organizations.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffSiteDisplayCell");
+        model.addColumn(organizations);
 
         Column columnStatus = model.getColumnInstance();
-//        columnStatus.setProperty("active");
         columnStatus.setTitle("Status");
         columnStatus.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffStatusDisplayCell");
         model.addColumn(columnStatus);
