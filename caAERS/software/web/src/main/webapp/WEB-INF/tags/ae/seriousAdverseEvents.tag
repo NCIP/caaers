@@ -46,6 +46,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		      </td>
 		      <td class="${_cssClass}">
 		      	${ae.adverseEventTerm.universalTerm}
+                <c:if test="${ae.adverseEventTerm.universalTerm eq null}">${ae.detailsForOther}</c:if>
 		      	<c:if test="${empty ae.report}"><img src="<chrome:imageUrl name="../new_icon.png" />" /></c:if>
 		      	<c:if test="${ae.retired}"><img src="<chrome:imageUrl name="../deleted_icon.png" />" /></c:if>
 		        <c:if test="${ae.reported}"><img src="<chrome:imageUrl name="../reported_icon.png" />" /></c:if>

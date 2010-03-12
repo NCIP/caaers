@@ -110,6 +110,7 @@
 					int i = 0;
 					HashSet hSet = new HashSet();
 					for(AdverseEvent ae : aeReport.getAdverseEvents()){
+                        if (ae.getAdverseEventTerm().getCtcTerm() == null) continue;
 						if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm ){
 							if(!hSet.add(ae.getAdverseEventCtcTerm().getCtcTerm().getId())){
 							 errors.addValidationError("AER_UK_ERR","Adverse Events CTC must be unique", i, ae.getAdverseEventCtcTerm().getCtcTerm().getFullName());

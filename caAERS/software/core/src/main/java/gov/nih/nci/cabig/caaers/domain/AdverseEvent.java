@@ -585,7 +585,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @Transient
     public String getDisplayGrade() {
         if (grade == null) return "";
-
+        if (adverseEventTerm.getTerm() == null) return (grade.getCode() + ": " + grade.getName());
+        
         //MedDRA or CTC{not evaluated , normal}
         if (grade.getCode() <= 0 || ( adverseEventTerm != null && adverseEventTerm.isMedDRA()))
             return grade.getCode().intValue() + ":  " + grade.getDisplayName();

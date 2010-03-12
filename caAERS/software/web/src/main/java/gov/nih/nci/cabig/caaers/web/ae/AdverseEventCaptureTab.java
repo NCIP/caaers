@@ -165,7 +165,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     @Override
     public void beforeBind(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-        System.out.println("BeforeBind...");
         super.beforeBind(request, command);
         
         command.reassociate();
@@ -173,7 +172,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     @Override
     public Map<String, Object> referenceData(CaptureAdverseEventInputCommand command) {
-        System.out.println("refferenceData...");
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
         
@@ -195,7 +193,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     @Override
     public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
-        System.out.println("postprocess...");
         if (findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null || errors.hasErrors()) {
             // init the meddra terms.
             return; 
@@ -250,7 +247,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     @Override
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        System.out.println("Validate...");
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
             if (ae.getAdverseEventCtcTerm() == null) {
@@ -334,7 +330,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     @Override
     public String getMethodName(HttpServletRequest request) {
-        System.out.println("getMethodName...");
     	if (request.getParameter("action") != null) return request.getParameter("action");
         return null;
     }

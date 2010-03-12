@@ -91,8 +91,7 @@ public class AttributionTab extends AeTab {
 
             if (accessor.getDisplayName(causes.get(c)) == CauseAndAttributionAccessor.DEFAULT_NAME) continue;
             for (int a = 0; a < report.getAdverseEvents().size(); a++) {
-                newGroup.getFields().add(createAttributionField(" attribution for " + newGroup.getDisplayName() , 
-                		accessor.getKey(), a, c, report.isAttributionRequired()));
+                newGroup.getFields().add(createAttributionField(" attribution for " + newGroup.getDisplayName(), accessor.getKey(), a, c, report.isAttributionRequired()));
             }
             groups.add(newGroup);
         }
