@@ -140,9 +140,9 @@
 
 		<script>
 		<%-- 
-			Logic that selects the DEATH outcome when grade DEATH is checked. 
+			Logic that handles the grade changes 
 		--%>
-			Event.observe('${fieldGroups[mainGroup].fields[1 + indexCorrection].propertyName}-longselect','click', function(evt){
+			Event.observe('${fieldGroups[mainGroup].fields[1 + indexCorrection].propertyName}-longselect','click', function(evt) {
 				var val = evt.element().value;
 				var chkDeath = $('outcomes[' + ${index} + '][1]');
 				if(chkDeath){

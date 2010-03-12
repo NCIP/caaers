@@ -9,6 +9,9 @@
 
 <c:set var="indexCorrection" value="${ae.adverseEventTerm.otherRequired ? 1  : 0}" />
 <c:set var="mainGroup">main${index}</c:set>
+<c:set var="title_term">${ae.adverseEventTerm.medDRA ? ae.adverseEventTerm.term.meddraTerm : ae.adverseEventTerm.term.fullName}</c:set>
+<c:set var="title_otherMedDRA_term">${ae.lowLevelTerm.meddraTerm}</c:set>
+<c:set var="title_grade">${ae.grade.code}</c:set>
 
 <tags:noform>
 
@@ -40,3 +43,14 @@
     <tags:renderRow field="${fieldGroups[mainGroup].fields[1 + indexCorrection]}"/>
 </tags:noform>
 
+<script>
+    Event.observe('${fieldGroups[mainGroup].fields[1 + indexCorrection].propertyName}-longselect', 'click', function(evt) {
+        var val = evt.element().value;
+        var chkDeath = $('outcomes[' + ${index} + '][1]');
+        if(chkDeath){
+            chkDeath.checked = (val == 'DEATH');
+        }
+        //update the heading
+         $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term} Grade: " + grades.indexOf(val) + " <c:if test="${ae.detailsForOther ne ''}">Verbatim: ${ae.detailsForOther}</c:if>";
+    });
+</script>    

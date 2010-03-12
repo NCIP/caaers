@@ -335,13 +335,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     }
 
     public ModelAndView refreshGrades(HttpServletRequest request , Object cmd, Errors errors) {
-        System.out.println("refreshGrades...");
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)cmd;
 
         String index = request.getParameter("index"); 
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/gradeFormSection");
         modelAndView.getModel().put("index", index);
-        modelAndView.getModel().put("ae", command.getAdverseEvents().get(Integer.parseInt(index)));
+
+        AdverseEvent ae = command.getAdverseEvents().get(Integer.parseInt(index));
+        ae.setLowLevelTerm(null);
+
+        modelAndView.getModel().put("ae", ae);
 
     	return modelAndView;
     }
