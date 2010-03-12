@@ -149,7 +149,7 @@
 					chkDeath.checked = (val == 'DEATH');
 				}
 				//update the heading
-				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term}, Grade: " + grades.indexOf(val);
+				 $('titleOf_ae-section-${index}').innerHTML = "${title_term}${not empty title_otherMedDRA_term ? ':' : '' }${title_otherMedDRA_term} Grade: " + grades.indexOf(val) + " <c:if test="${adverseEvent.detailsForOther ne ''}">Verbatim: ${adverseEvent.detailsForOther}</c:if>";
 			});
 		</script>
 	<div class="row" style="margin-top:0;margin-bottom:0;">
