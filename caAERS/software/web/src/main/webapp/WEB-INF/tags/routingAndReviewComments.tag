@@ -35,6 +35,7 @@
 		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
 		<a href="javascript:saveEditedComment('${entity.id }');" id="edit-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" /></a>
 		<a href="javascript:cancelEdit('${entity.id }');" id="cancel-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" /></a>
+		<tags:indicator id="ajax_wait"/>
 	</div>
 </div>
 <div id="reportingPeriod-validation-errors-popup" style="display:none" >

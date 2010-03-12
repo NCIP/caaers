@@ -61,30 +61,40 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 	addComment:function(entityId){
 		var commentTextAreaId = 'enter-comment-text-' + entityId;
 		var comment = $(commentTextAreaId).value;
-		if(comment == '')
+		$('ajax_wait').removeClassName('indicator');
+		if(comment == ''){
+			$('ajax_wait').addClassName('indicator');
 			alert('Missing comment');
+		}
 		else
 			this.ajaxFacade.addReviewComment($(commentTextAreaId).value, entityId, function(ajaxOutput){
 				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+				$('ajax_wait').addClassName('indicator');
 			}.bind(this));
 	},
 	editComment:function(entityId){
 		var commentTextAreaId = 'enter-comment-text-' + entityId;
 		var editCommentId = 'edit_comment_id-' + entityId;
 		var comment = $(commentTextAreaId).value;
-		if(comment == '')
+		$('ajax_wait').removeClassName('indicator');
+		if(comment == ''){
+			$('ajax_wait').addClassName('indicator');
 			alert('Missing comment');
+		}
 		else
 			this.ajaxFacade.editReviewComment($(commentTextAreaId).value, $(editCommentId).value, entityId, function(ajaxOutput){
 				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
 				this.disableEditMode(entityId);
+				$('ajax_wait').addClassName('indicator');
 			}.bind(this));
 	},
 	deleteComment:function(id, entityId){
-		this.ajaxFacade.deleteReviewComment(id, entityId, function(ajaxOutput){
-			this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
-			this.disableEditMode(entityId);
-		}.bind(this));
+		if(confirm('Are you sure you want to delete this comment?')){
+			this.ajaxFacade.deleteReviewComment(id, entityId, function(ajaxOutput){
+				this.updateCommentElementContent(ajaxOutput.htmlContent, entityId);
+				this.disableEditMode(entityId);
+			}.bind(this));
+		}
 	},
 	retrieveReviewComments : function(entityId){
 		this.ajaxFacade.retrieveReviewComments(function(ajaxOutput){
