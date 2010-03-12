@@ -206,9 +206,9 @@
                 new Ajax.Request(url, {
                        parameters : paramHash.toQueryString(),
                        onSuccess: function(transport) {
-                           $('GRADES_AND_MEDDRA_' + index).innerHTML = transport.responseText;
-                           AE.resetAutocompleter('adverseEvents[${index}].lowLevelTerm');
-                       }
+                           $('GRADES_AND_MEDDRA_' + index).update(transport.responseText);
+                       },
+                       evalScripts : true
                 });
                 
             }
