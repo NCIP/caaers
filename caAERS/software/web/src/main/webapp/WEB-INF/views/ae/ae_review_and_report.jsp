@@ -893,8 +893,7 @@ function validate(aeReportId){
 		<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}" aeReportId="${_aeReportId}" />
 		</chrome:division>
 		<!--  Listing of adverse events -->
-		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
-			primaryAeId="${_primaryAE.id}" />
+		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" primaryAeId="${_primaryAE.id}" />
 		<!--  Rules Message Bottom -->
 		<div class="rulesMessageBottom">
 			<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="0" />

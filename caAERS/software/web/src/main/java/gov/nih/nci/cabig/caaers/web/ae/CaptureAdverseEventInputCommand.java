@@ -183,6 +183,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     }
     
     
+/*
     public void cleanEmptyAdverseEvents(){
     	List<AdverseEvent> adverseEvents = adverseEventReportingPeriod.getAdverseEvents();
     	List<AdverseEvent> unwantedAdverseEvents = new ArrayList<AdverseEvent>();
@@ -199,6 +200,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	save();
     }
     
+*/
     /**
      * This method will take care of initializing the lazy associations
      * This method will take care of
@@ -209,7 +211,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	//set the assignment into the command.
     	if(this.adverseEventReportingPeriod != null){
     		this.assignment = this.adverseEventReportingPeriod.getAssignment();
-    		cleanEmptyAdverseEvents();
+    		// cleanEmptyAdverseEvents();
     	}
     	if(adverseEventReportingPeriod != null){
     		Study study = adverseEventReportingPeriod.getStudy();

@@ -186,6 +186,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent>  getAllReportedAndReportableAdverseEvents(){
     	List<AdverseEvent> events = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getAdverseEvents()){
+            if (ae.getAdverseEventTerm().getTerm() == null) continue;
     		if(ae.isRetired()) continue;
     		//this is already associated with expedited report
     		if(ae.getReport() != null) {
@@ -209,8 +210,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getReportableAdverseEvents(){
     	List<AdverseEvent> reportableAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getGradedAdverseEvents()){
-    		//if(ae.getReport() == null || ae.isModified())
-    		reportableAdverseEvents.add(ae);
+    		if(ae.getAdverseEventTerm().getTerm() != null)
+    		    reportableAdverseEvents.add(ae);
     	}
     	return reportableAdverseEvents;
     }
@@ -224,7 +225,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getNonExpeditedAdverseEvents(){
     	List<AdverseEvent> unReportedAes = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae : getAdverseEvents()){
-    		if(ae.getReport() == null)
+    		if(ae.getReport() == null && ae.getAdverseEventTerm().getTerm() != null)
     			unReportedAes.add(ae);
     	}
     	
