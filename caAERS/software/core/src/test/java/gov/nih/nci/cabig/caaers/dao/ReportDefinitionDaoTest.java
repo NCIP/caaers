@@ -75,6 +75,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         definition.setAmendable(true);
         definition.setReportFormatType(ReportFormatType.ADEERSPDF);
         definition.setPhysicianSignOff(false);
+        definition.setEnabled(true);
 
         // create planned notifications
         List<PlannedNotification> pnlist = new ArrayList<PlannedNotification>();

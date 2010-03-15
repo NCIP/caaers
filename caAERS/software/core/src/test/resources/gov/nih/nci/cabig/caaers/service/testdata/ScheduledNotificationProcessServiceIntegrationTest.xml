@@ -437,6 +437,7 @@
      amendable="0"
      group_id="-1"
      report_type="2"
+     enabled="1"
     />
     <!-- Planned notifications for CTEP-222 -->
     <planned_notifications

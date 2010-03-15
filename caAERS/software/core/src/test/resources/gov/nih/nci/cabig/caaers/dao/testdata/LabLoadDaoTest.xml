@@ -185,6 +185,7 @@
         duration="8"
         time_scale_unit_code="4"
         amendable="0"
+        enabled="1"
         />
     <REPORT_SCHEDULES
         id="-41"

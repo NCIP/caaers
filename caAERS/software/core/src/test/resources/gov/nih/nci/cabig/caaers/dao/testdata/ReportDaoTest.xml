@@ -32,6 +32,7 @@
 		amendable="0"
 		group_id="-1" 
 		report_type="2"
+		enabled="1"
 		/>
 	
 	<planned_notifications 
@@ -63,6 +64,7 @@
 		amendable="0"
 		group_id="-2"
 		report_type="2"
+		enabled="1"
 		/>
 	
 	<planned_notifications 

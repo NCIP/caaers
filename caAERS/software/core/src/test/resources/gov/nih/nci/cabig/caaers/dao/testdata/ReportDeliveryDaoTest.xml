@@ -13,6 +13,7 @@
 		version="0"
 		org_id="-1001"
 		amendable="0"
+		enabled="1"
 		/>
 	    <report_schedules 
 		id="-223"

@@ -44,6 +44,7 @@
 		time_scale_unit_code="2"
 		version="0"
 		amendable="0"
+		enabled="1"
 		/>
 	
 	<planned_notifications 

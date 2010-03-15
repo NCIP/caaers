@@ -188,7 +188,7 @@
     <CONTACT_MECHANISMS person_id="-100" type="e-mail"
                         value="joltin@joe.com"/>
     <REPORT_CALENDAR_TEMPLATES id="-30" name="11-day"
-                               duration="8" time_scale_unit_code="4" amendable="0"/>
+                               duration="8" time_scale_unit_code="4" amendable="0" enabled="1"/>
     <REPORT_SCHEDULES id="-41" 
                        report_id="-1" rct_id="-30"/>
     <REPORT_SCHEDULES id="-40" 

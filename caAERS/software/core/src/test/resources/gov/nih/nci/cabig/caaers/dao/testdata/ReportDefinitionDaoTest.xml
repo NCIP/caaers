@@ -45,6 +45,7 @@
 		org_id="-1001"
 		amendable="0"
 		physician_signoff="0"
+		enabled="1"
 		/>
 	<report_calendar_templates 
 		id="-222"
@@ -56,6 +57,7 @@
 		org_id="-1001"
 		amendable="0"
 		physician_signoff="0"
+		enabled="1"
 		/>
 	
 	<planned_notifications 
@@ -92,4 +94,6 @@
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />	
+    <investigators/>
+    <site_investigators/>
 </dataset>
