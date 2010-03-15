@@ -202,7 +202,6 @@ public class AdverseEventManagementServiceTest extends CaaersDbNoSecurityTestCas
 		assertEquals("mt1",((AdverseEventMeddraLowLevelTerm)ae.getAdverseEventTerm()).getLowLevelTerm().getMeddraTerm());
 		assertEquals("YES",ae.getHospitalization().name());
 		assertEquals("3",ae.getGrade().getCode()+"");
-	
 	}
 
 	
