@@ -154,6 +154,22 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     }
     
     
+    /**
+	 * Supress the validation in the following cases.
+	 *   1 - When the current page is the final summary page.
+	 */
+	
+	@Override
+    protected boolean suppressValidation(final HttpServletRequest request) {
+
+        //check current page and next page
+        int currPage = getCurrentPage(request);
+
+        return currPage == 2;
+
+    }
+    
+    
     public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer) {
         log.debug("Checking for expedited AEs");
         Study study = raer.getStudy();
