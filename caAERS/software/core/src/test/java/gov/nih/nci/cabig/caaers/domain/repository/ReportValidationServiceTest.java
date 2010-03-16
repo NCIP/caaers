@@ -108,6 +108,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         ArrayList<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
         mandatorySectionMap.put(new Integer(0), sections);
         EasyMock.expect(evaluationService.mandatorySections(expeditedData, report.getReportDefinition())).andReturn(mandatorySectionMap);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
 
         report.getReportDefinition().setAttributionRequired(false);
         replayMocks();
@@ -125,6 +126,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         sections.add(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION);
         mandatorySectionMap.put(new Integer(0), sections);
         EasyMock.expect(evaluationService.mandatorySections(expeditedData, report.getReportDefinition())).andReturn(mandatorySectionMap);
+         evaluationService.evaluateMandatoryness(expeditedData, report);
 
         report.getReportDefinition().setAttributionRequired(false);
         replayMocks();
@@ -143,7 +145,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         sections.add(ExpeditedReportSection.STUDY_INTERVENTIONS);
         mandatorySectionMap.put(new Integer(0), sections);
         EasyMock.expect(evaluationService.mandatorySections(expeditedData, report.getReportDefinition())).andReturn(mandatorySectionMap);
-
+        evaluationService.evaluateMandatoryness(expeditedData, report);
 
         report.getReportDefinition().setAttributionRequired(false);
         populateAgents(expeditedData);
@@ -164,7 +166,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         sections.add(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION);
         mandatorySectionMap.put(new Integer(0), sections);
         EasyMock.expect(evaluationService.mandatorySections(expeditedData, report.getReportDefinition())).andReturn(mandatorySectionMap);
-
+        evaluationService.evaluateMandatoryness(expeditedData, report);
 
         report.getReportDefinition().setAttributionRequired(false);
         populateAgents(expeditedData);
