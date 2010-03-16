@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 /**
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
-public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
+public class ReportMandatoryFieldDefinitionTest extends AbstractTestCase {
     private ReportMandatoryFieldDefinition def;
 
     @Override
@@ -24,12 +24,12 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
 
     public void testIsMandatoryWithFalseMandatoryField() throws Exception {
         def.setMandatory(RequirednessIndicator.OPTIONAL);
-        assertFalse(def.getMandatory().equals(Mandatory.MANDATORY));
+        assertFalse(def.getMandatory().equals(RequirednessIndicator.MANDATORY));
     }
 
     public void testIsMandatoryWithTrueMandatoryField() throws Exception {
         def.setMandatory(RequirednessIndicator.MANDATORY);
-        assertTrue(def.getMandatory().equals(Mandatory.MANDATORY));
+        assertTrue(def.getMandatory().equals(RequirednessIndicator.MANDATORY));
     }
 
     public void testAssertCorrectPropertiesReturned(){
