@@ -39,7 +39,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant not found", participant);
-        assertEquals("Wrong last name", "Scott", participant.getLastName());
+        assertEquals("Wrong last name", "Sam", participant.getLastName());
         assertEquals("Wrong first name", "Dilbert", participant.getFirstName());
         assertEquals("Wrong number of identifiers", 2, participant.getIdentifiers().size());
     }
@@ -178,13 +178,13 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     }
 
     public void testGetBySubnameMatchesLastName() throws Exception {
-        List<Participant> matches = getDao().getBySubnames(new String[]{"cot"});
+        List<Participant> matches = getDao().getBySubnames(new String[]{"am"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -100, (int) matches.get(0).getId());
     }
 
     public void testGetBySubnameMatchesInstitutionalId() throws Exception {
-        List<Participant> matches = getDao().getBySubnames(new String[]{"P002"});
+        List<Participant> matches = getDao().getBySubnames(new String[]{"P003"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
@@ -205,7 +205,7 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
         matches = getDao().getBySubnames(new String[]{"Jor", "P001"});
         assertEquals("Should be no matches", 0, matches.size());
 
-        matches = getDao().getBySubnames(new String[]{"Jor", "P002"});
+        matches = getDao().getBySubnames(new String[]{"Jor", "P003"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
