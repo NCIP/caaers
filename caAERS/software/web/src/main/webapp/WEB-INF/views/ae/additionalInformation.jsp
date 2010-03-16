@@ -50,14 +50,12 @@
     	
     	</div>
         <div id="spacer" style="clear: both;"> </div>
-        <div class="row">
-         <div class="label"><tags:renderLabel field="${fieldGroups.desc.fields[12]}" /></div>
-         <div class="value">
-         	<tags:renderInputs field="${fieldGroups.desc.fields[12]}"/>
-         </div>
-
-        </div>
-		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+        <tags:renderRow field="${fieldGroups.desc.fields[12]}" />
+        <ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+        <c:if test="${empty requestScope.cntRF or (requestScope.cntRF lt 1)}">
+            <caaers:message code="LBL_aeReport.additionalInformation.noFields" text="Additional information is not applicable for this report." var="na" scope="request"/>
+            <chrome:warningMessage key="na"/>
+        </c:if>
     </jsp:attribute>
 </tags:tabForm>
 </body>

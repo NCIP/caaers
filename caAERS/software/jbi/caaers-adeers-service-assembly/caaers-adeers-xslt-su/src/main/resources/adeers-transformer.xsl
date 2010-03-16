@@ -1096,7 +1096,19 @@
                 </xsl:if>	
             </LAB_RESULT>
         </xsl:for-each>
-
+        <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.autopsyReport'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.consults'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.dischargeSummary'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.flowCharts'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.labReports'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.obaForm'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.pathologyReport'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.progressNotes'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.radiologyReports'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.referralLetters'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.irbReport'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.otherInformation'] or
+                     /AdverseEventReport/Report[applicableField='additionalInformation.other']">
         <xsl:if test="AdditionalInformation/autopsyReport = 'true'">
             <ADDITIONAL_INFORMATION>
                 <ADDITIONAL_INFO_NAME>Autopsy Report</ADDITIONAL_INFO_NAME>
@@ -1164,7 +1176,8 @@
         </xsl:if>
         <xsl:if test="AdditionalInformation/otherInformation != ''">
         	<EMAIL_RECIPIENTS><xsl:for-each select="Report/emailRecipient"><xsl:value-of select="."/>,</xsl:for-each></EMAIL_RECIPIENTS>    
-          </xsl:if>
+        </xsl:if>
+      </xsl:if>
 	 </xsl:otherwise>
 	 </xsl:choose>
     </xsl:template>
