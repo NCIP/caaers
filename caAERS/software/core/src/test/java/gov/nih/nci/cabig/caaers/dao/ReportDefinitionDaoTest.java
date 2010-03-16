@@ -155,7 +155,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 assertEquals("Mandatory fields size", 3, mfList.size());
                 ReportMandatoryFieldDefinition mfLoaded = mfList.get(1);
                 assertEquals("Path should be same", "biju.a2", mfLoaded.getFieldPath());
-                assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory().equals(Mandatory.MANDATORY));
+                assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory().equals(RequirednessIndicator.MANDATORY));
                 mfLoaded = mfList.get(1);
                 assertEquals("Path should be same", "biju.a3", mfLoaded.getFieldPath());
                 assertTrue(mfLoaded.getMandatory() == RequirednessIndicator.RULE);
