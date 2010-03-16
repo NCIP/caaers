@@ -337,7 +337,7 @@ public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 		if(ruleSet != null){
 			try{
 				String packageName = caaersRulesEngineService.constructPackageName("Sponsor", "Cancer Therapy Evaluation Program", null, null, "SAE Reporting Rules");
-				assertEquals("Incorrect package name constructed", "gov.nih.nci.cabig.caaers.rule.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules", packageName);
+				assertEquals("Incorrect package name constructed", "gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules", packageName);
 			}catch(Exception e){
 				fail("No exceptions are expected");
 			}

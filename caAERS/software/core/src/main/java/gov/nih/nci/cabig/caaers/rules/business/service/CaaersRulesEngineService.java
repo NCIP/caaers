@@ -1188,8 +1188,6 @@ public class CaaersRulesEngineService {
      * This method cpnstructs the package name based on the Command object
      */
     public String constructPackageName(String level, String sponsorName, String institutionName, String studyShortTitle, String ruleSetName) {
-        final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.sponsor";
-        final String INSTITUTION_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.institution";
 
         String packageName = null;
 
