@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -259,8 +260,7 @@ public class ReportTest extends AbstractNoSecurityTestCase {
         assertEquals("field.two", fields.get(1));
         assertEquals("field.three", fields.get(2));
         assertEquals("field.four", fields.get(3));
-        assertEquals("field.five", fields.get(4));
-        assertEquals("field.ten", fields.get(5));
+        assertEquals("field.ten", fields.get(4));
     }
 
     public void testGetNotApplicableFieldList(){
@@ -278,7 +278,7 @@ public class ReportTest extends AbstractNoSecurityTestCase {
        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
 
        Fixtures.updateMandatoryFields(rd1, r);
-        List<String> fields = r.getPathOfApplicableFields();
+        List<String> fields = r.getPathOfNotApplicableFields();
         assertEquals(4, fields.size());
         assertEquals("field.five", fields.get(0));
         assertEquals("field.six", fields.get(1));
