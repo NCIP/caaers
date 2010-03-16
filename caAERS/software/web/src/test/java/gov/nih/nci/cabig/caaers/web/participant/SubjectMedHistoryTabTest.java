@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Ion C. Olaru
  * 
  */
-public class SubjectMedHistoryTabTest extends SubjectFlowAbstractTabTest {
+public class SubjectMedHistoryTabTest extends SubjectFlowAbstractTabTestCase {
 
     protected SubjectMedHistoryTab createTab() {
         tab = new SubjectMedHistoryTab();

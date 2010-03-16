@@ -13,9 +13,9 @@ import java.util.ArrayList;
 /**
  * @author Ion C. Olaru
  */
-public abstract class SubjectFlowAbstractTabTest extends WebTestCase {
+public abstract class SubjectFlowAbstractTabTestCase extends WebTestCase {
 
-    private static final Log log = LogFactory.getLog(SubjectFlowAbstractTabTest.class);
+    private static final Log log = LogFactory.getLog(SubjectFlowAbstractTabTestCase.class);
     protected TabWithFields tab;
     protected Errors errors;
     protected ParticipantInputCommand command;
