@@ -104,8 +104,6 @@ public class StudySiteDao extends CaaersDao<StudySite> {
         query.joinStudyOrganizations();
         query.joinOrganizations();
         query.filterBySuperOrganizationCode(orgCodes);
-//        System.out.println("Q: " + query.getQueryString());
-//        this.getHibernateTemplate().get
         List<String> coordinatedOrganizationsCodes = this.getHibernateTemplate().find(query.getQueryString());
         return coordinatedOrganizationsCodes;
     }

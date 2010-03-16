@@ -7,7 +7,7 @@
         - tab: a gov.nih.nci.cabig.caaers.web.Tab instance for the current page
 --%>
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
+<c:set var="cntRF" value="${0}" scope="request" />
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

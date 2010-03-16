@@ -42,6 +42,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Kulasekaran
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
@@ -185,17 +186,6 @@ public class ReporterTab extends AeTab {
 	    	reviewResult.updateBaseDateOnCreateList(command.getNewlySelectedReportDefinitions());
 	    	reportRepository.processReports(command.getAeReport(), reviewResult.getReportsToAmmendList(), reviewResult.getReportsToUnAmendList(), 
 	    			reviewResult.getReportsToWithdraw(), command.getNewlySelectedReportDefinitions());
-	    	
-			//-enact workflow
-	    	// ****************************************************************************
-	    	// TODO: Sameer
-	    	// This has to change to call enactWorkflow with report object
-	    	// *****************************************************************************
-			//if(CollectionUtils.isNotEmpty(command.getNewlySelectedReportDefinitions()) && command.getWorkflowEnabled()){
-			//	command.enactWorkflow(command.getAeReport());
-			//}
-	    	
-			
     	}
     	
     }

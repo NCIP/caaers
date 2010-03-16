@@ -7,16 +7,13 @@ import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 
@@ -204,7 +201,7 @@ public class EvaluationResultDTO {
 		map.get(adverseEvent).add(theOne);
 	}
 	
-//	public Collection<ReportDefinition> getReportDefinitions(){
+//	public Collection<ReportDefinition> fetchReportDefinitions(){
 //		return reportDefAeIndexMap.keySet();
 //	}
 //	

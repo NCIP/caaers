@@ -64,4 +64,10 @@ public interface EvaluationService {
      */
 	EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod);
 
+   
+    /**
+     * Evaluate the mandatoryness of a specific report, the {@link gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField} will be populated in the Report. 
+     * @param report
+     */
+    void evaluateMandatoryness(ExpeditedAdverseEventReport aeReport, Report report);
 }

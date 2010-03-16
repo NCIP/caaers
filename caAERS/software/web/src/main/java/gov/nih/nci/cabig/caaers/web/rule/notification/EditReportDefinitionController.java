@@ -63,7 +63,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         List<PlannedNotification> pnfList = reportDefinition.getPlannedNotifications();
         PlannedNotification pnf = (pnfList.size() > 0) ? pnfList.get(0) : null;
         if (pnf != null) command.setPointOnScale("" + pnf.getIndexOnTimeScale());
-        
+        populateFieldRuleSet(command);
         return command;
 
     }
@@ -92,6 +92,17 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
             // these fields got removed (in new release)
             mfList.remove(mf);
         }
+
+       //remove duplicates
+       existingFieldMap.clear();
+       mfListNew.clear();
+       mfListNew.addAll(mfList);
+       for (ReportMandatoryFieldDefinition mf : mfListNew) {
+           if(existingFieldMap.containsKey(mf.getFieldPath())){
+               mfList.remove(mf);
+           }
+           existingFieldMap.put(mf.getFieldPath(), mf);
+       }
     }
 
     @Required

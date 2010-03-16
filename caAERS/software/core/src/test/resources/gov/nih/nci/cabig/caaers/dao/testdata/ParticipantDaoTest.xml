@@ -39,7 +39,7 @@
         id="-99"
         instituitional_patient_number="P001"
         institution="Hospital"
-        first_name="Dilbert"
+        first_name="John"
         last_name="Scott"
        	birth_day="02"
         birth_month="01"
@@ -52,13 +52,13 @@
         load_status="0" /> <!--  loadStatus = 0 means it is not comitted yet -->
     <PARTICIPANTS
         id="-100"
-        instituitional_patient_number="P001"
+        instituitional_patient_number="P002"
         institution="Hospital"
         first_name="Dilbert"
-        last_name="Scott"
+        last_name="Sam"
         birth_day="02"
         birth_month="01"
-        birth_year="2006"
+        birth_year="2007"
         gender="Female"
         ethnicity="ethnicity"
         race="race"
@@ -67,7 +67,7 @@
         load_status="1" />
     <PARTICIPANTS
         id="-101"
-        instituitional_patient_number="P002"
+        instituitional_patient_number="P003"
         institution="Hospital"
         first_name="Michael"
         last_name="Jordan"

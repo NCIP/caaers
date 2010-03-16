@@ -1,39 +1,23 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Submitter;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.io.Serializable;
-import java.util.*;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * A report sending schedule for an adverse event. The RuleExecutionService, evaluates pre-defined
@@ -71,6 +55,9 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     private Integer workflowId;
     
     private List<ReportReviewComment> reviewComments;
+
+    private List<ReportMandatoryField> mandatoryFields;
+    
     
     private  String _REGULAR_REPORT = "Regular report";
     private  String _24HR_NOTIFICATION = "24-hr notification";
@@ -426,28 +413,61 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
 
     /*
     *
-    * This will return only the fields marked as mandatory (-1 in the DB) 
-    *
-    * */
+    * This will return only the fields marked as mandatory 
+    */
     @Transient
-    public List<String> getMandatoryFieldList() {
+    public List<String> getPathOfMandatoryFields() {
         List<String> fields = new LinkedList<String>();
-        if (getReportDefinition().getMandatoryFields() != null) {
-            for (ReportMandatoryFieldDefinition field : getReportDefinition().getMandatoryFields()) {
-                if (field.getMandatory().equals(Mandatory.MANDATORY)) fields.add(field.getFieldPath());
-            }
+        for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY)){
+            fields.add(mandatoryField.getFieldPath());
+        }
+        return fields;
+    }
+
+    /**
+     * Will list all the fields that are applicable (ie. Mandatory and Optional)
+     * @return
+     */
+    @Transient
+    public List<String> getPathOfApplicableFields(){
+       List<String> fields = new LinkedList<String>();
+        for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL)){
+            fields.add(mandatoryField.getFieldPath());
+        }
+        return fields;
+    }
+
+    /**
+     * Will return the path of fields which are Not Applicable
+     * @return
+     */
+    @Transient
+    public List<String> getPathOfNotApplicableFields(){
+        List<String> fields = new LinkedList<String>();
+        for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.NA)){
+            fields.add(mandatoryField.getFieldPath());
         }
         return fields;
     }
     
     /*
-    *
-    * This will return only the request type fields 
-    *
-    * */
+    * Will find the list of mandatory fields, having the same Mandatory flag, mentioned
+    * in mandatory types. 
+    */
     @Transient
-    public List<ReportMandatoryFieldDefinition> getFieldsByApplicability(Mandatory...types) {
-        return getReportDefinition().getMandatoryFieldsForXMLByApplicability(types);
+    public List<ReportMandatoryField> getFieldsByApplicability(final Mandatory... mandatoryTypes) {
+        ArrayList<ReportMandatoryField> reportMandatoryFields = new ArrayList<ReportMandatoryField>();
+        if(getMandatoryFields() != null) reportMandatoryFields.addAll(getMandatoryFields());
+        CollectionUtils.filter(reportMandatoryFields, new Predicate<ReportMandatoryField>(){
+            //only applicable fields will be returned.
+            public boolean evaluate(ReportMandatoryField mField) {
+               for(Mandatory mandatoryType : mandatoryTypes){
+                  if(mandatoryType == mField.getMandatory()) return true;
+               }
+               return false;
+            }
+        });
+        return reportMandatoryFields;
     }
 
     @Transient
@@ -707,5 +727,14 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     
     public void setReviewStatus(ReviewStatus reviewStatus){
     	this.reviewStatus = reviewStatus;
+    }
+
+    @Transient
+    public List<ReportMandatoryField> getMandatoryFields() {
+        return mandatoryFields;
+    }
+
+    public void setMandatoryFields(List<ReportMandatoryField> mandatoryFields) {
+        this.mandatoryFields = mandatoryFields;
     }
 }

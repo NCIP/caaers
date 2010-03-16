@@ -1,30 +1,33 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
-import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
-import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.toStringHelper;
-import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
-public enum Mandatory implements CodedEnum<Integer> {
-		OPTIONAL(0, "Optional"),  MANDATORY(1,"Mandatory"), NA(-1 , "Not Applicable");
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.*;
+import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
+
+public enum RequirednessIndicator implements CodedEnum<Integer> {
+
+	OPTIONAL(0, "Optional"),
+    MANDATORY(1,"Mandatory"),
+    NA(-1 , "Not Applicable"),
+    RULE(2, "Rule based");
 
     private Integer code;
 
     private String displayName;
-    
-    Mandatory(int code) {
+
+    RequirednessIndicator(int code) {
         this(code, null);
     }
 
-    Mandatory(Integer code, String displayName) {
+    RequirednessIndicator(Integer code, String displayName) {
         this.code = code;
         this.displayName = displayName;
         register(this);
     }
 
-    public static Mandatory getByCode(int code) {
-        return getByClassAndCode(Mandatory.class, code);
+    public static RequirednessIndicator getByCode(int code) {
+        return getByClassAndCode(RequirednessIndicator.class, code);
     }
 
     public Integer getCode() {

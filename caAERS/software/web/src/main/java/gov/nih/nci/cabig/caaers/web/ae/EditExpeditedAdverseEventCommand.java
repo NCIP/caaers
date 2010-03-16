@@ -73,16 +73,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	return "aeReport";
     }
     
-  
-    
-    /**
-     * This method will spawn the workflow for newly created reports
-     * @param report
-     */
-    public void enactWorkflow(Report report){
-    	adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
-    	
-    }
 	/**
 	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
 	 * @return
@@ -139,8 +129,4 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		return null;
 	}
 
-    public EvaluationService getEvaluationService(){
-    	return evaluationService;
-    }
-    
 }

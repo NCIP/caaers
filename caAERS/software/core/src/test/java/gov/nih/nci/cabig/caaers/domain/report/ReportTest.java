@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -19,8 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.Submitter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 /** 
  * 
@@ -212,29 +208,103 @@ public class ReportTest extends AbstractNoSecurityTestCase {
     public void testFieldsApplicability() {
         ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
         r.setReportDefinition(rd1);
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", Mandatory.MANDATORY));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", Mandatory.OPTIONAL));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", Mandatory.OPTIONAL));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", Mandatory.OPTIONAL));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", Mandatory.NA));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", Mandatory.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
 
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", Mandatory.NA));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", Mandatory.NA));
-        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", Mandatory.OPTIONAL));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", RequirednessIndicator.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", RequirednessIndicator.NA));
+        rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
 
-        List<ReportMandatoryFieldDefinition> l1 = r.getFieldsByApplicability(Mandatory.MANDATORY);
+        Fixtures.updateMandatoryFields(rd1, r);
+
+        List<ReportMandatoryField> l1 = r.getFieldsByApplicability(Mandatory.MANDATORY);
         assertTrue(l1.size() == 1);
         assertEquals("field.one", l1.get(0).getFieldPath());
 
-        List<ReportMandatoryFieldDefinition> l2 = r.getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL);
+        List<ReportMandatoryField> l2 = r.getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL);
         assertEquals(5, l2.size());
         assertEquals("field.two", l2.get(1).getFieldPath());
         assertEquals("field.four", l2.get(3).getFieldPath());
         assertEquals("field.ten", l2.get(4).getFieldPath());
 
-        List<ReportMandatoryFieldDefinition> l3 = r.getFieldsByApplicability(Mandatory.NA);
+        List<ReportMandatoryField> l3 = r.getFieldsByApplicability(Mandatory.NA);
         assertEquals(4, l3.size());
         assertEquals("field.nine", l3.get(3).getFieldPath());
     }
+
+
+    public void testGetApplicableFieldList(){
+       ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+       r.setReportDefinition(rd1);
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
+
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
+
+       Fixtures.updateMandatoryFields(rd1, r);
+
+        List<String> fields = r.getPathOfApplicableFields();
+        assertEquals(5, fields.size());
+        assertEquals("field.one", fields.get(0));
+        assertEquals("field.two", fields.get(1));
+        assertEquals("field.three", fields.get(2));
+        assertEquals("field.four", fields.get(3));
+        assertEquals("field.five", fields.get(4));
+        assertEquals("field.ten", fields.get(5));
+    }
+
+    public void testGetNotApplicableFieldList(){
+        ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+       r.setReportDefinition(rd1);
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
+
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
+
+       Fixtures.updateMandatoryFields(rd1, r);
+        List<String> fields = r.getPathOfApplicableFields();
+        assertEquals(4, fields.size());
+        assertEquals("field.five", fields.get(0));
+        assertEquals("field.six", fields.get(1));
+        assertEquals("field.eight", fields.get(2));
+        assertEquals("field.nine", fields.get(3));
+    }
+
+    public void testGetPathOfMandatoryFields(){
+       ReportDefinition rd1 = Fixtures.createReportDefinition("rd1");
+       r.setReportDefinition(rd1);
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one", RequirednessIndicator.MANDATORY));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.two", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four", RequirednessIndicator.OPTIONAL));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.six", RequirednessIndicator.NA));
+
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.eight", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.nine", RequirednessIndicator.NA));
+       rd1.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.ten", RequirednessIndicator.OPTIONAL));
+
+       Fixtures.updateMandatoryFields(rd1, r);
+        List<String> fields = r.getPathOfMandatoryFields();
+        assertEquals(1, fields.size());
+        assertEquals("field.one", fields.get(0));
+
+    }
+
 }

@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Biju Joseph
+ */
+
 
 public class RenderDecisionManagerTest extends WebTestCase {
 
@@ -14,7 +17,6 @@ public class RenderDecisionManagerTest extends WebTestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-		// TODO Auto-generated method stub
 		super.setUp();
 		mgr = new RenderDecisionManager();
 	}
@@ -51,21 +53,27 @@ public class RenderDecisionManagerTest extends WebTestCase {
 		ReportDefinition rd1 = Fixtures.createReportDefinition("a");
 		ReportDefinition rd2 = Fixtures.createReportDefinition("b");
 		
-		mflistA.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", Mandatory.NA));
-		mflistA.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", Mandatory.OPTIONAL));
-		mflistA.add(Fixtures.createMandatoryField("c.k[" + 2 + "].x", Mandatory.MANDATORY));
+		mflistA.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", RequirednessIndicator.NA));
+		mflistA.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", RequirednessIndicator.OPTIONAL));
+		mflistA.add(Fixtures.createMandatoryField("c.k[" + 2 + "].x", RequirednessIndicator.MANDATORY));
 		rd1.setMandatoryFields(mflistA);
 
-		mflistB.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", Mandatory.NA));
-		mflistB.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", Mandatory.NA));
-		mflistB.add(Fixtures.createMandatoryField("b.k[" + 2 + "].x", Mandatory.NA));
-		mflistB.add(Fixtures.createMandatoryField("z.k[].x", Mandatory.NA));
+		mflistB.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", RequirednessIndicator.NA));
+		mflistB.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", RequirednessIndicator.NA));
+		mflistB.add(Fixtures.createMandatoryField("b.k[" + 2 + "].x", RequirednessIndicator.NA));
+		mflistB.add(Fixtures.createMandatoryField("z.k[].x", RequirednessIndicator.NA));
 		rd2.setMandatoryFields(mflistB);
-		
-		List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
-		rdList.add(rd1);
-		rdList.add(rd2);
-		
+
+        Report r1 = rd1.createReport();
+        Report r2 = rd2.createReport();
+        Fixtures.updateMandatoryFields(rd1, r1);
+        Fixtures.updateMandatoryFields(rd2, r2);
+
+		List<Report> rdList = new ArrayList<Report>();
+		rdList.add(r1);
+		rdList.add(r2);
+
+
 		mgr.updateRenderDecision(rdList);
 		
 		assertFalse(mgr.canRenderField("aeReport.a.k[1].xz", request, response));

@@ -9,13 +9,16 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import org.drools.spi.AgendaFilter;
 import org.easymock.classextension.EasyMock;
 
 import com.semanticbits.rules.api.BusinessRulesExecutionService;
@@ -71,6 +74,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 	 * This method test {@link AdverseEventEvaluationServiceImpl#mandatorySections(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport, gov.nih.nci.cabig.caaers.domain.report.ReportDefinition...)}
 	 */
 	public void testMandatorySections() throws Exception {
+        EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
 		EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
 		EasyMock.expect(study.getStudyOrganizations()).andReturn(new ArrayList<StudyOrganization>()).anyTimes();
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
@@ -94,6 +98,7 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 	 */
 	public void testMandatorySections_AllReportsActive() throws Exception{
 		EasyMock.expect(aeReport.getReports()).andReturn(reports);
+        EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
 		EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
 		EasyMock.expect(study.getStudyOrganizations()).andReturn(new ArrayList<StudyOrganization>()).anyTimes();
 		EasyMock.expect(aeReport.getAdverseEvents()).andReturn(aeList).anyTimes();
@@ -135,5 +140,34 @@ public class AdverseEventEvaluationServiceImplTest extends AbstractTestCase {
 		assertTrue(sections.isEmpty());
 		verifyMocks();
 	}
+
+    //optional when mandatory field has no rules information.
+    public void testEvaluateFieldLevelRules(){
+        EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
+        replayMocks();
+        ReportMandatoryFieldDefinition def1 = Fixtures.createMandatoryField("a", RequirednessIndicator.OPTIONAL);
+        assertEquals("OPTIONAL", impl.evaluateFieldLevelRules(aeReport, reports.get(0), def1));
+        verifyMocks();
+    }
+
+    //checks that agenda filter is created and passed in the input
+    public void testEvaluateFieldLevelRulesAgnedaFilterAvailable(){
+       impl.setBusinessRulesExecutionService(new BusinessRulesExecutionService(){
+           public List<Object> fireRules(String bindingURI, List<Object> objects) {
+               boolean hasAgendaFilter = false;
+               for(Object o : objects) hasAgendaFilter |= (o instanceof AgendaFilter);
+               if(!hasAgendaFilter) throw new RuntimeException("Agenda filter not present in input");
+               return null;
+           }
+       });
+       EasyMock.expect(aeReport.getTreatmentInformation()).andReturn(null).anyTimes();
+       EasyMock.expect(aeReport.getStudy()).andReturn(study).anyTimes();
+       replayMocks();
+       ReportMandatoryFieldDefinition def1 = Fixtures.createMandatoryField("a", RequirednessIndicator.OPTIONAL);
+       def1.setRuleBindURL("abc");
+       def1.setRuleName("a");
+       impl.evaluateFieldLevelRules(aeReport, reports.get(0), def1);
+       verifyMocks();
+    }
 
 }

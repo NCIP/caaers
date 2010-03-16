@@ -8,6 +8,7 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.dao.CaaersFieldDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 
 /**
  * This class holds the configuration of various fields on tabs basis. The datastructure
@@ -34,8 +35,7 @@ public class CaaersFieldConfigurationManager{
 	/**
 	 * @param fieldConfigurationMap the fieldConfigurationMap to set
 	 */
-	public void setFieldConfigurationMap(
-			Map<String, Map<String, Mandatory>> fieldConfigurationMap) {
+	public void setFieldConfigurationMap(Map<String, Map<String, Mandatory>> fieldConfigurationMap) {
 		this.fieldConfigurationMap = fieldConfigurationMap;
 	}
 
@@ -68,7 +68,7 @@ public class CaaersFieldConfigurationManager{
 		List<String> applicableFieldsList = new ArrayList<String>();
 		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null){
-			for(Map.Entry<String, Mandatory> entry: fieldConfigMap.entrySet()){
+			for(Map.Entry<String,Mandatory> entry: fieldConfigMap.entrySet()){
 				if(!entry.getValue().equals(Mandatory.NA))
 					applicableFieldsList.add(entry.getKey());
 			}
@@ -83,7 +83,7 @@ public class CaaersFieldConfigurationManager{
 		List<String> notApplicableFieldsList = new ArrayList<String>();
 		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null){
-			for(Map.Entry<String, Mandatory> entry: fieldConfigMap.entrySet()){
+			for(Map.Entry<String,Mandatory> entry: fieldConfigMap.entrySet()){
 				if(entry.getValue().equals(Mandatory.NA))
 					notApplicableFieldsList.add(entry.getKey());
 			}

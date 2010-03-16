@@ -26,4 +26,10 @@ public class ReportDefinitionQueryTest extends TestCase {
 		assertEquals( "select rd from ReportDefinition rd WHERE  rd.id <> :rdid" , query.getQueryString());
 	}
 
+    public void testRequecedQuery(){
+        query = new ReportDefinitionQuery(true);
+        query.filterOffReportDefinitionId(4);
+        assertEquals( "select new ReportDefinition(rd.id, rd.name, rd.label) from ReportDefinition rd WHERE  rd.id <> :rdid" , query.getQueryString());
+    }
+
 }

@@ -6,19 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportType;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.reportdefinition.GroupType;
 import gov.nih.nci.cabig.caaers.reportdefinition.ObjectFactory;
 import gov.nih.nci.cabig.caaers.reportdefinition.OrganizationType;
@@ -32,6 +20,7 @@ import java.util.List;
 
 /*
 * @author Ion C. Olaru
+* @author Biju Joseph
 * */
 public class ReportDefinitionConverter {
 	
@@ -168,17 +157,22 @@ public class ReportDefinitionConverter {
 		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
 		
 		for(gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition repoDefinition : reportDefinitionDto.getMandatoryField()){
-			reportMandatoryFieldDefinition = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
+			reportMandatoryFieldDefinition = new ReportMandatoryFieldDefinition("", RequirednessIndicator.OPTIONAL);
 			reportMandatoryFieldDefinition.setFieldPath(repoDefinition.getFieldPath());
 			if("OPTIONAL".equals(repoDefinition.getMandatory())){
-				reportMandatoryFieldDefinition.setMandatory(Mandatory.OPTIONAL);
+				reportMandatoryFieldDefinition.setMandatory(RequirednessIndicator.OPTIONAL);
 			}
 			if("MANDATORY".equals(repoDefinition.getMandatory())){
-				reportMandatoryFieldDefinition.setMandatory(Mandatory.MANDATORY);
+				reportMandatoryFieldDefinition.setMandatory(RequirednessIndicator.MANDATORY);
 			}
 			if("NA".equals(repoDefinition.getMandatory())){
-				reportMandatoryFieldDefinition.setMandatory(Mandatory.NA);
+				reportMandatoryFieldDefinition.setMandatory(RequirednessIndicator.NA);
 			}
+            if("RULE".equals(repoDefinition.getMandatory())){
+                reportMandatoryFieldDefinition.setMandatory(RequirednessIndicator.RULE);
+                reportMandatoryFieldDefinition.setRuleBindURL(repoDefinition.getRuleBindURL());
+                reportMandatoryFieldDefinition.setRuleName(repoDefinition.getRuleName());
+            }
 			mandatoryFields.add(reportMandatoryFieldDefinition);
 		}
 		reportDefinitionDomain.setMandatoryFields(mandatoryFields);
@@ -291,6 +285,8 @@ public class ReportDefinitionConverter {
 			rMFDDto = objectFactory.createReportMandatoryFieldDefinition();
 			rMFDDto.setFieldPath(repoMandatoryFieldDefinition.getFieldPath());
 			rMFDDto.setMandatory(repoMandatoryFieldDefinition.getMandatory().getName());
+            rMFDDto.setRuleBindURL(repoMandatoryFieldDefinition.getRuleBindURL());
+            rMFDDto.setRuleName(repoMandatoryFieldDefinition.getRuleName());
 			mandatoryFields.add(rMFDDto);
 			
 		}

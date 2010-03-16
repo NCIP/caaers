@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import com.semanticbits.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -13,6 +14,8 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -41,6 +44,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
     protected OrganizationDao organizationDao;
     protected ConfigPropertyRepositoryImpl configPropertyRepository;
     protected ConfigPropertyDao configPropertyDao;
+    private CaaersRulesEngineService caaersRulesEngineService;
 
     public AbstractReportDefinitionController() {
         super.setAllowDirtyBack(false);
@@ -132,6 +136,11 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         }
     }
 
+    protected void populateFieldRuleSet(ReportDefinitionCommand command){
+       RuleSet ruleSet =  caaersRulesEngineService.getFieldRuleSet(RuleType.FIELD_LEVEL_RULES.getName());
+       command.setRuleSet(ruleSet); 
+    }
+
     @Override
     protected ReportDefinitionDao getDao() {
         return reportDefinitionDao;
@@ -182,5 +191,13 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
 
     public void setConfigPropertyDao(ConfigPropertyDao configPropertyDao) {
         this.configPropertyDao = configPropertyDao;
+    }
+
+    public CaaersRulesEngineService getCaaersRulesEngineService() {
+        return caaersRulesEngineService;
+    }
+
+    public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
+        this.caaersRulesEngineService = caaersRulesEngineService;
     }
 }

@@ -9,11 +9,11 @@ import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -464,7 +464,57 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new CaaersSystemException("Error while evaluating business rules", e);
         }
     }
-    
+
+
+    /**
+     * Evaluate the mandatoryness of a specific report, the {@link gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField} will be populated in the Report.
+     * @param aeReport
+     * @param report
+     */
+    public void evaluateMandatoryness(final ExpeditedAdverseEventReport aeReport, final Report report) {
+        final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
+        final RequirednessEvaluator requirednessEvaluator = new RequirednessEvaluator() {
+
+            // evaluates the mandatory field definition against fixed and dynamic rules
+            public Mandatory evaluate(ReportMandatoryFieldDefinition def){
+                //evaluate static rules first
+                 if(def.getMandatory().equals(RequirednessIndicator.OPTIONAL)) return Mandatory.OPTIONAL;
+                 if(def.getMandatory().equals(RequirednessIndicator.MANDATORY)) return Mandatory.MANDATORY;
+                 if(def.getMandatory().equals(RequirednessIndicator.NA)) return Mandatory.NA;
+
+                //evaluate dynamic rules and cache if necessary.
+                 String key = def.getRuleBindURL() + ":" + def.getRuleName();
+                 Mandatory cachedRequiredness = rulesDecisionCache.get(key);
+                 if(cachedRequiredness != null) return cachedRequiredness;
+                 String decision = adverseEventEvaluationService.evaluateFieldLevelRules(aeReport, report, def);
+                 cachedRequiredness = translateRulesMandatorynessResult(decision);
+                 rulesDecisionCache.put(key, cachedRequiredness);
+                 return cachedRequiredness;
+            }
+        };
+
+        List<ReportMandatoryField> reportMandatoryFields = new ArrayList<ReportMandatoryField>();
+        for(ReportMandatoryFieldDefinition mandatoryFieldDef : report.getReportDefinition().getMandatoryFields()){
+            Mandatory mandatory = requirednessEvaluator.evaluate(mandatoryFieldDef);
+            ReportMandatoryField mandatoryField = new ReportMandatoryField(mandatoryFieldDef.getFieldPath(), mandatory );
+            reportMandatoryFields.add(mandatoryField);
+        }
+        report.setMandatoryFields(reportMandatoryFields);
+    }
+
+    protected Mandatory translateRulesMandatorynessResult(String decision){
+       if(StringUtils.isEmpty(decision)) return Mandatory.OPTIONAL;
+       String[] nameArray = StringUtils.split(decision,"||");
+       Set<Mandatory> set = new TreeSet<Mandatory>(new Comparator<Mandatory>(){
+           public int compare(Mandatory o1, Mandatory o2) {
+               return o1.ordinal() - o2.ordinal();
+           }
+       });
+       for(String s : nameArray) set.add(Mandatory.valueOf(s));
+       if(!set.isEmpty()) return set.iterator().next();
+       return Mandatory.OPTIONAL;
+    }
+
     /////move this else where
     private ReportDefinition findReportDefinition(List<ReportDefinition> rdList, ReportDefinition toFind){
     	if(toFind == null) return null;
@@ -493,5 +543,9 @@ public class EvaluationServiceImpl implements EvaluationService {
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
-}
 
+    interface RequirednessEvaluator {
+           Mandatory evaluate(ReportMandatoryFieldDefinition def);
+    }
+ 
+}

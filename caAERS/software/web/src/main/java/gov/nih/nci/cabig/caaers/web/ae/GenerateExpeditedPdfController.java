@@ -30,7 +30,6 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 
 	private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
-	private AdverseEventReportSerializer adverseEventReportSerializer;
 	private AdeersReportGenerator adeersReportGenerator;
 	
 	public GenerateExpeditedPdfController() {
@@ -110,13 +109,13 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
                        reportContent = reportDao.getReportContent(report);
                    }
                    if (reportContent == null) {
-                       xml = adverseEventReportSerializer.serialize(aeReport, report);
+                       xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
                    } else {
                        xml = new String(reportContent.getContent());
                    }
                } else {
                    //obtain newly generated caaers xml
-                   xml = adverseEventReportSerializer.serialize(aeReport, report);
+                   xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
                }
     			
     			int reportVersionId = report.getLastVersion().getId();
@@ -186,14 +185,6 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 		this.aeReportDao = aeReportDao;
 	}
 
-	public AdverseEventReportSerializer getAdverseEventReportSerializer() {
-		return adverseEventReportSerializer;
-	}
-
-	public void setAdverseEventReportSerializer(
-			AdverseEventReportSerializer adverseEventReportSerializer) {
-		this.adverseEventReportSerializer = adverseEventReportSerializer;
-	}
 
 	public AdeersReportGenerator getAdeersReportGenerator() {
 		return adeersReportGenerator;

@@ -369,7 +369,6 @@
   <bean name="/ae/reviewAeReport" id="reviewAeReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReviewAeReportController"/>
   <bean name="/ae/reviewResolver" id="reviewResolverController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewResolverController"/>	
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
-  <bean name="/ae/create" id="createAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController" p:task-ref="aeCreateTask"/>
   <bean name="/ae/submitReport" id="submitReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   <bean name="/ae/blankForm" id="generateBlankFormPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateBlankFormPdfController"/>
@@ -561,10 +560,12 @@
 
   <bean name="/rule/notification/create" id="createNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
     <property name="roles" ref="roles" />
+    <property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
   </bean>
   
   <bean name="/rule/notification/edit" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController">
     <property name="roles" ref="roles" />
+    <property name="caaersRulesEngineService" ref="caaersRulesEngineService" />
   </bean>
   
   <bean name="/rule/notification/list" id="listNotificationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController" />

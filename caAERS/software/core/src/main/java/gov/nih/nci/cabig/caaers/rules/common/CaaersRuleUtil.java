@@ -331,6 +331,39 @@ public class CaaersRuleUtil {
         return cat;
     }
 
+
+    public static Category getFieldRuleSpecificCategory(RuleAuthoringService authService, String ruleSetName) throws Exception {
+           Category cat = null;
+
+
+           String path = "/" + CategoryConfiguration.CAAERS_BASE.getPath() + "/" + RuleUtil.getStringWithoutSpaces(ruleSetName);
+           /**
+            * First check if the caAERS rule base exist
+            */
+           boolean baseExist = RuleUtil.categoryExist(authService, CategoryConfiguration.CAAERS_BASE.getPath());
+           /**
+            * If does not exist then go ahead and create it
+            */
+           if (!baseExist) {
+               RuleUtil.createCategory(authService, "/", CategoryConfiguration.CAAERS_BASE.getName(), CategoryConfiguration.CAAERS_BASE.getDescription());
+           }
+          
+           boolean sponsorSpecificRuleSetCategoryExist = RuleUtil.categoryExist(authService,path);
+
+           /**
+            * If it does not exist then go ahead and create it
+            */
+
+           if (!sponsorSpecificRuleSetCategoryExist) {
+               RuleUtil.createCategory(authService, "/" + CategoryConfiguration.CAAERS_BASE.getPath() ,RuleUtil.getStringWithoutSpaces(ruleSetName), ruleSetName);
+           }
+
+           cat = authService.getCategory(path);
+
+           return cat;
+       }
+
+
     public static String getStudySponsorSpecificPackageName(String prefix, String studyShortTitle,
                     String sponsorName, String ruleSetName) {
         String str = prefix + "." + RuleUtil.getStringWithoutSpaces(studyShortTitle) + "."

@@ -54,12 +54,15 @@ public class ReportValidationServiceImpl implements ReportValidationService{
      * @return ErrorMessages
      */
     public ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> reportSections, Collection<ExpeditedReportSection> mandatorySections) {
-        // TODO: should validate against complex rules
 
         ReportSubmittability messages = new ReportSubmittability();
-        List<String> mandatoryFields = report.getMandatoryFieldList();
         ExpeditedAdverseEventReport aeReport = report.getAeReport();
 
+        
+        //evaluate mandatoryness
+        evaluationService.evaluateMandatoryness(aeReport, report);
+
+        List<String> mandatoryFields = report.getPathOfMandatoryFields(); 
         for (ExpeditedReportSection section : reportSections) {
             if (section == null)
                 throw new NullPointerException("The mandatory sections collection must not contain nulls");

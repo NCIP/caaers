@@ -33,17 +33,7 @@ public class AdverseEventReportSerializer {
 	   //TO-DO set in spring config
 	   private String mappingFile = "xml-mapping/ae-report-xml-mapping.xml";
 	   
-	  
 
-	   /**
-	    *
-	    * @param adverseEventReportDataObject
-	    * @return
-	    * @throws Exception
-	    */
-	   public String serialize(ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
-		   return this.serialize(adverseEventReportDataObject, null);
-	   }
 	   
 	   public synchronized String serializeWithdrawXML (ExpeditedAdverseEventReport adverseEventReportDataObject,Report rpt) throws Exception{
 		    String xml = "";
@@ -96,23 +86,20 @@ public class AdverseEventReportSerializer {
 		
 			return xml;		   
 	   }
-    
+
+    /**
+     * Generates the XML representation of data collection, in the context of a specific report.
+     * @param adverseEventReportDataObject - A data collection
+     * @param report - A report
+     * @return
+     * @throws Exception
+     */
 	   public synchronized String serialize(ExpeditedAdverseEventReport adverseEventReportDataObject, Report report) throws Exception{
 		   int reportId = report == null ? 0 : report.getId();
 		   List<String> notApplicableFieldPaths = new ArrayList<String>();
-		   
+
 		   if (report != null ) {
-               report.getReportDefinition().buildMandatoryFieldsForXML(Mandatory.MANDATORY, Mandatory.OPTIONAL);
-               
-			   ReportDefinition reportDefinition = report.getReportDefinition();
-			   List<ReportMandatoryFieldDefinition> mandatoryFields = reportDefinition.getMandatoryFields();
-			   //
-			   
-			   for (ReportMandatoryFieldDefinition mandatoryField : mandatoryFields) {
-		                if (mandatoryField.getMandatory().equals(Mandatory.NA)) {
-		                	notApplicableFieldPaths.add(mandatoryField.getFieldPath());
-		                }
-		        }
+               notApplicableFieldPaths = report.getPathOfNotApplicableFields();
 		   }
 
            String xml = "";
@@ -278,6 +265,7 @@ public class AdverseEventReportSerializer {
 
 		   r.setReportDefinition(getReportDefinition(report.getReportDefinition()));
 		   r.setEmailAddresses(report.getEmailRecipients());
+           r.setMandatoryFields(report.getMandatoryFields());
 	   		   
 		   return r;
 	   }
@@ -291,15 +279,7 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setHeader(rd.getHeader());
 		   reportDefinition.setFooter(rd.getFooter());
 		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());
-		   reportDefinition.setMandatoryFieldsForXML(rd.getMandatoryFieldsForXML());
-
-           // the ReportDefinition.mandatoryFieldsForXML property is set by calling the ReportDefinition.buildMandatoryFieldsForXML which will bring only the needed fields.
-           if (reportDefinition.getMandatoryFieldsForXML() != null) {
-               for (int i=0; i<reportDefinition.getMandatoryFieldsForXML().size(); i++) {
-                   reportDefinition.getMandatoryFieldsForXML().set(i, reportDefinition.getMandatoryFieldsForXML().get(i).replace("[]", ""));
-               }
-           }
-
+		   
 		   return reportDefinition;
 	   }
     
@@ -772,7 +752,7 @@ public class AdverseEventReportSerializer {
 	    }
 	    /**
 	     * This method will return a copy of the CTCTerm from the given term
-	     * @param term
+	     * @param ctcTerm
 	     * @return
 	     */
 	    private CtcTerm getCtcTerm(CtcTerm ctcTerm){
@@ -933,9 +913,9 @@ public class AdverseEventReportSerializer {
 				e.setParticipantHistory(ph);
 
 				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
-				String xml = ser.serialize(e);
+//				String xml = ser.serialize(e);
 				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
-				System.out.println(xml);
+//				System.out.println(xml);
 
 
 

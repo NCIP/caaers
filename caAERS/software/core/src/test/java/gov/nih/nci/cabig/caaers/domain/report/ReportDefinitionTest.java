@@ -238,4 +238,12 @@ public class ReportDefinitionTest extends AbstractTestCase {
     	assertTrue(anotherHashCode == hashCode);
     	
     }
+
+    public void testFindReportMandatoryFieldDefinitionByPath(){
+        assertNull(def.findReportMandatoryFieldDefinitionByPath("bogus"));
+        def.addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("test"));
+        assertNull(def.findReportMandatoryFieldDefinitionByPath("bogus"));
+        assertEquals("test", def.findReportMandatoryFieldDefinitionByPath("test").getFieldPath());
+
+    }
 }

@@ -26,9 +26,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 
 import java.util.ArrayList;
@@ -42,6 +40,9 @@ import java.util.Set;
 
 import org.easymock.classextension.EasyMock;
 
+/**
+ * @author Biju Joseph
+ */
 public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 	
 	public static Integer ZERO = new Integer(0);
@@ -1524,4 +1525,111 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		}
 		return null;
 	}
+
+
+    public void testEvaluateMandatoryness(){
+
+        ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",null, null);
+        rd1.setId(1);
+        rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+        rd1.setDuration(1);
+
+        ReportMandatoryFieldDefinition rd1_m1 = Fixtures.createMandatoryField("a1", RequirednessIndicator.MANDATORY);
+        ReportMandatoryFieldDefinition rd1_m2 = Fixtures.createMandatoryField("a1", RequirednessIndicator.RULE);
+        rd1_m2.setRuleBindURL("xyz");
+        rd1_m2.setRuleName("abc");
+        rd1.addReportMandatoryFieldDefinition(rd1_m1);
+        rd1.addReportMandatoryFieldDefinition(rd1_m2);
+
+        ReportDefinition rd2 = Fixtures.createReportDefinition("ctep-rd-2",null, null);
+        rd2.setTimeScaleUnitType(TimeScaleUnit.DAY);
+        rd2.setDuration(2);
+        rd2.setId(2);
+        ReportMandatoryFieldDefinition rd2_m1 = Fixtures.createMandatoryField("a1", RequirednessIndicator.NA);
+        ReportMandatoryFieldDefinition rd2_m2 = Fixtures.createMandatoryField("a1", RequirednessIndicator.OPTIONAL);
+
+        rd2.addReportMandatoryFieldDefinition(rd2_m1);
+        rd2.addReportMandatoryFieldDefinition(rd2_m2);
+
+        Report r1 = Fixtures.createReport("test1");
+        r1.setReportDefinition(rd1);
+
+        Report r2 = Fixtures.createReport("test2");
+        r2.setReportDefinition(rd2);
+
+
+        ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
+		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+        expect(aeReport1.getActiveReports()).andReturn(Arrays.asList(new Report[]{r1, r2})).anyTimes();
+        expect(adverseEventEvaluationService.evaluateFieldLevelRules(aeReport1, r1, rd1_m2)).andReturn("NA");
+
+        replayMocks();
+
+        service.evaluateMandatoryness(aeReport1, r1);
+        service.evaluateMandatoryness(aeReport1, r2);
+        assertNotNull(r1.getMandatoryFields());
+        assertEquals(2, r1.getMandatoryFields().size());
+        assertEquals(Mandatory.MANDATORY, r1.getMandatoryFields().get(0).getMandatory());
+        assertEquals(Mandatory.NA, r1.getMandatoryFields().get(1).getMandatory());
+
+        assertNotNull(r2.getMandatoryFields());
+        assertEquals(2, r2.getMandatoryFields().size());
+        assertEquals(Mandatory.NA, r2.getMandatoryFields().get(0).getMandatory());
+        assertEquals(Mandatory.OPTIONAL, r2.getMandatoryFields().get(1).getMandatory());
+
+
+        verifyMocks();
+
+    }
+
+    //tests that rules engine is called only once for a specific rule. 
+    public void testEvaluateMandatoryness_RulesResultIsCached(){
+        ReportDefinition rd1 = Fixtures.createReportDefinition("ctep-rd-1",null, null);
+        rd1.setId(1);
+        rd1.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+        rd1.setDuration(1);
+
+        ReportMandatoryFieldDefinition rd1_m1 = Fixtures.createMandatoryField("a1", RequirednessIndicator.RULE);
+        rd1_m1.setRuleBindURL("xyz");
+        rd1_m1.setRuleName("abc");
+
+        ReportMandatoryFieldDefinition rd1_m2 = Fixtures.createMandatoryField("a1", RequirednessIndicator.RULE);
+        rd1_m2.setRuleBindURL("xyz");
+        rd1_m2.setRuleName("abc");
+
+        rd1.addReportMandatoryFieldDefinition(rd1_m1);
+        rd1.addReportMandatoryFieldDefinition(rd1_m2);
+
+        Report r1 = Fixtures.createReport("test1");
+        r1.setReportDefinition(rd1);
+
+        ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
+		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+        expect(aeReport1.getActiveReports()).andReturn(Arrays.asList(new Report[]{r1})).anyTimes();
+        expect(adverseEventEvaluationService.evaluateFieldLevelRules(aeReport1, r1, rd1_m1)).andReturn("NA");
+        
+        replayMocks();
+        service.evaluateMandatoryness(aeReport1, r1);
+        assertNotNull(r1.getMandatoryFields());
+        assertEquals(2, r1.getMandatoryFields().size());
+        assertEquals(Mandatory.NA, r1.getMandatoryFields().get(0).getMandatory());
+        assertEquals(Mandatory.NA, r1.getMandatoryFields().get(0).getMandatory());
+        verifyMocks();
+    }
+
+    public void testTranslateRulesMandatorynessResult(){
+        String rules1 ="MANDATORY||MANDATORY||OPTIONAL||NA||NA";
+        String rules2 ="MANDATORY";
+        String rules3 ="NA||OPTIONAL";
+
+        Mandatory m1 = service.translateRulesMandatorynessResult(rules1);
+        assertEquals(Mandatory.OPTIONAL, m1);
+        Mandatory m2 = service.translateRulesMandatorynessResult(rules2);
+        assertEquals(Mandatory.MANDATORY, m2);
+        Mandatory m3 = service.translateRulesMandatorynessResult(rules3);
+        assertEquals(Mandatory.OPTIONAL, m3);
+        assertEquals(Mandatory.NA, service.translateRulesMandatorynessResult("NA||NA"));
+        assertEquals(Mandatory.OPTIONAL, service.translateRulesMandatorynessResult(""));
+        assertEquals(Mandatory.OPTIONAL, service.translateRulesMandatorynessResult(null));
+    }
 }

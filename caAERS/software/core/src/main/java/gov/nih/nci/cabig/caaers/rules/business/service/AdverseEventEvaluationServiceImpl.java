@@ -1,15 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
@@ -28,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -476,32 +474,48 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
     }
 
+
+    /*
+     * Generate the input objects for the rules engine. 
+     */
+    private List<Object> generateInput(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition, AdverseEvent ae, Study study, Organization org){
+        List<Object> inputObjects = new ArrayList<Object>();
+
+        if(aeReport != null) inputObjects.add(aeReport);
+        if(reportDefinition != null) inputObjects.add(reportDefinition);
+        if(ae != null) inputObjects.add(ae);
+        if(study != null) inputObjects.add(study);
+        if(org != null) inputObjects.add(org);
+
+        //add treatment information
+        if(aeReport != null || ae != null){
+            TreatmentInformation ti = null;
+            if(aeReport != null){
+             ti = aeReport.getTreatmentInformation();
+            }else{
+              if(ae.getReport() != null) ti = ae.getReport().getTreatmentInformation();
+            }
+            if(ti != null) inputObjects.add(ti);
+        }
+        
+        //add a fact resolver by default
+        FactResolver f = new FactResolver();
+        inputObjects.add(f);
+
+        return inputObjects;
+    }
+
+
     private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study,
                     Organization organization, ReportDefinition reportDefinition, String bindURI,
                     ExpeditedAdverseEventReport aer) throws Exception {
         // holder for the returned object
         AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 
-        // add AE, Study, Organization, ReportDefinition, TreatmentInformation to the input
-        List<Object> inputObjects = new ArrayList<Object>();
-        inputObjects.add(ae);
-
-        // add expedited report
-        if (aer != null) {
-            inputObjects.add(aer);
-        }
-
-        FactResolver f = new FactResolver();
-        inputObjects.add(f);
-
-        if (study != null) inputObjects.add(study);
-        if (organization != null) inputObjects.add(organization);
-        if (reportDefinition != null) inputObjects.add(reportDefinition);
-        if (ae.getReport() != null && ae.getReport().getTreatmentInformation() != null) inputObjects
-                        .add(ae.getReport().getTreatmentInformation());
 
         // fire the rules and AdverseEventEvaluationResult from the output.
-        List<Object> outputObjects = fireRules(inputObjects, bindURI);
+        List<Object> outputObjects = fireRules(generateInput(aer, reportDefinition, ae, study, organization), bindURI);
+
         if (outputObjects == null) {
             // no_rules_found
             evaluationForSponsor.setMessage("no_rules_found");
@@ -549,6 +563,34 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         }
 
         return outputObjects;
+    }
+
+    /**
+     * Evaluate the mandatoryness of a specific report, the {@link gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField} will be populated in the Report.
+     */
+    public String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition) {
+        String result = "OPTIONAL";
+        String bindUrl = mandatoryFieldDefinition.getRuleBindURL();
+        String ruleNames = mandatoryFieldDefinition.getRuleName();
+
+        if(StringUtils.isNotEmpty(bindUrl) && StringUtils.isNotEmpty(ruleNames)) {
+            List<Object> inputObjects = generateInput(aeReport, report.getReportDefinition(), null,aeReport.getStudy(), null);
+            //add the rule name agenda.
+            inputObjects.add(RuleUtil.createRuleNameEqualsAgendaFilter(StringUtils.split(ruleNames, ',')));
+            List<Object> outputObjects = businessRulesExecutionService.fireRules(bindUrl, inputObjects);
+            if(outputObjects != null){
+               //populate the correct message.
+               for(Object o : outputObjects) {
+                  if (o instanceof RuleEvaluationResult){
+            	      result = ((RuleEvaluationResult)o).getMessage();
+            	      break;
+                 }
+              }
+            }
+
+        }
+
+        return result;
     }
 
     // /Object Methods

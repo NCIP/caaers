@@ -85,13 +85,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	
-    	
-    	 //remove the edit command from the session
-    	HttpSession session = request.getSession();
-    	session.removeAttribute(CreateAdverseEventController.class.getName() + ".FORM.command");
-    	session.removeAttribute(CreateAdverseEventController.class.getName() + ".FORM.command.to-replace");
-		   
-    	
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
     	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, 
     				assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
@@ -149,7 +142,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		//populate the reporting period.
         		AdverseEventReportingPeriod adverseEventReportingPeriod = adverseEventReportingPeriodDao.getById(reviewResult.getReportingPeriodId());
             	command.getAeReport().setReportingPeriod(adverseEventReportingPeriod);
-            	//command.reassociate();
         		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
         		
         		//initialize treatment information
@@ -294,8 +286,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }
         
         //will pre determine the display/render-ability of fields 
-        command.initializeNotApplicableFields();
-        command.refreshMandatoryProperties();
+        command.updateFieldMandatoryness();
       
     }
 
@@ -327,8 +318,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 		
 		//now refresh the not applicable/mandatory fields.
 		editCommand.refreshMandatorySections();
-		editCommand.initializeNotApplicableFields();
-		editCommand.refreshMandatoryProperties();
+		editCommand.updateFieldMandatoryness();
     }
 
 

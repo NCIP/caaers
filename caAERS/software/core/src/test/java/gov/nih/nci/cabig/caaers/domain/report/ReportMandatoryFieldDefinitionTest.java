@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
     private ReportMandatoryFieldDefinition def;
@@ -11,7 +12,9 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        def = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
+        def = new ReportMandatoryFieldDefinition("", RequirednessIndicator.OPTIONAL);
+        def.setRuleBindURL("some url");
+        def.setRuleName("some rule");
     }
 
     public void testIsMandatoryWithNullMandatoryField() throws Exception {
@@ -20,12 +23,18 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
     }
 
     public void testIsMandatoryWithFalseMandatoryField() throws Exception {
-        def.setMandatory(Mandatory.OPTIONAL);
+        def.setMandatory(RequirednessIndicator.OPTIONAL);
         assertFalse(def.getMandatory().equals(Mandatory.MANDATORY));
     }
 
     public void testIsMandatoryWithTrueMandatoryField() throws Exception {
-        def.setMandatory(Mandatory.MANDATORY);
+        def.setMandatory(RequirednessIndicator.MANDATORY);
         assertTrue(def.getMandatory().equals(Mandatory.MANDATORY));
     }
+
+    public void testAssertCorrectPropertiesReturned(){
+        assertEquals("some rule", def.getRuleName());
+        assertEquals("some url", def.getRuleBindURL());
+    }
+    
 }

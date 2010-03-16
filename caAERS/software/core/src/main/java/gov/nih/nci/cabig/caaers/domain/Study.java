@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.caaers.CollectionUtil;

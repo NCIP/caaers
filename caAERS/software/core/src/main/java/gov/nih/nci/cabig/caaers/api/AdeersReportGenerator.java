@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.io.BufferedReader;
@@ -29,16 +30,9 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 //    private String xslFOCustomXsltFile = "/SB/caAERS/trunk/caAERS/software/core/src/main/resources/xslt/CaaersCustom.xslt";
 
     protected  AdverseEventReportSerializer adverseEventReportSerializer;
+    protected EvaluationService evaluationService;
 
-	public AdeersReportGenerator() {
-		//aeReportSerializer = new AdverseEventReportSerializer();
-	};
 
-    public String getAdeersXml(String adverseEventReportXml) throws Exception {
-        XsltTransformer xsltTrans = new XsltTransformer();
-        String transformedToAdeers = xsltTrans.toXml(adverseEventReportXml, xmlXsltFile);
-        return transformedToAdeers;
-    }
 
     public void generatePdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
@@ -79,13 +73,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     
     /**
      * This method will generate the caAERS internal xml representation of the report.
-     * @param aeReport
+     * @param aeReport - A data collection
+     * @param report - A report
      */
-    public String generateCaaersXml(ExpeditedAdverseEventReport aeReport) throws Exception{
-    	return adverseEventReportSerializer.serialize(aeReport);
-    }
-
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,Report report) throws Exception{
+        evaluationService.evaluateMandatoryness(aeReport, report);
     	return adverseEventReportSerializer.serialize(aeReport, report);
     }
 
@@ -136,29 +128,15 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     }
   
 
-	
-    public void testMedwatchPDF() {
-        String str1 = "";
-        try {
-            AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-220.xml");
-            BufferedReader bufRead = new BufferedReader(input);
-            String line = bufRead.readLine();
 
-            while (line != null) {
-                str1 = str1 + line;
-                line = bufRead.readLine();
-            }
-            
-            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    ///OBJECT PROPERTIES
 	public void setAdverseEventReportSerializer(AdverseEventReportSerializer adverseEventReportSerializer) {
 		this.adverseEventReportSerializer = adverseEventReportSerializer;
 	}
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
 
     /**
      * This method is testting the PDF generation for the given XML & XSL file
@@ -166,7 +144,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
      * @author  Ion C. Olaru
      * @return  generate the File
      */
-    public static void testCustomPDFgeneration() {
+    public static void createCustomPDFTest() {
 
         String XMLFile = "/home/dell/Desktop/testAEReport.xml";
         String PDFFile = "/home/dell/Desktop/testAEReport.pdf";
@@ -195,8 +173,26 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         ExpeditedReportTree t = new ExpeditedReportTree();
         System.out.println(t.getPropertyName());
 */
-        testCustomPDFgeneration();
+        createCustomPDFTest();
     }
-   
+
+    public void createMedwatchPDFTest() {
+        String str1 = "";
+        try {
+            AdeersReportGenerator aeg = new AdeersReportGenerator();
+            FileReader input = new FileReader("/Users/sakkala/tech/adeers/new-schemas/expeditedAdverseEventReport-220.xml");
+            BufferedReader bufRead = new BufferedReader(input);
+            String line = bufRead.readLine();
+
+            while (line != null) {
+                str1 = str1 + line;
+                line = bufRead.readLine();
+            }
+
+            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/adeers/mw.pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

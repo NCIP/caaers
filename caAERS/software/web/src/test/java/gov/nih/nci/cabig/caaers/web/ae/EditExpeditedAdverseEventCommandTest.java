@@ -3,7 +3,6 @@
  */
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static org.easymock.EasyMock.expect;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
@@ -17,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -26,24 +24,19 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
+import gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.easymock.classextension.EasyMock;
 
 /**
  * @author Sameer Work
@@ -63,6 +56,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     protected StaticNowFactory nowFactory;
     private ReportRepository reportRepository;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    private EvaluationService evaluationService;
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -80,6 +74,11 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
 		nowFactory = new StaticNowFactory();
         nowFactory.setNowTimestamp(NOW);
+        evaluationService = new EvaluationServiceImpl(){
+            public void evaluateMandatoryness(ExpeditedAdverseEventReport aeReport, Report report) {
+                Fixtures.updateMandatoryFields(report.getReportDefinition(), report);
+            }
+        };
         
         command = createCommand();
 	}
@@ -207,10 +206,10 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     		Report report = new Report();
     		report.setId(i);
     		ReportDefinition reportDefinition = new ReportDefinition();
-    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].grade",Mandatory.MANDATORY));
-    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].startDate",Mandatory.MANDATORY));
-    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("responseDescription.presentStatus",Mandatory.MANDATORY));
-    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("treatmentInformation.treatmentAssignment",Mandatory.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].grade", RequirednessIndicator.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("adverseEvents[].startDate",RequirednessIndicator.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("responseDescription.presentStatus",RequirednessIndicator.MANDATORY));
+    		reportDefinition.addReportMandatoryFieldDefinition( new ReportMandatoryFieldDefinition("treatmentInformation.treatmentAssignment",RequirednessIndicator.MANDATORY));
     		
     		reportDefinition.setAmendable(false);
     		reportDefinition.setGroup(Fixtures.createConfigProperty("NOT_EXPEDITED"));
@@ -342,7 +341,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
         return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, 
-        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, null);
+        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, adverseEventRoutingAndReviewRepository, evaluationService);
     }
     
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
@@ -443,7 +442,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     /**
      * Test the scenario when all reports, are selected. 
      */
-    public void testRefreshMandatoryProperties(){
+    public void testUpdateFieldMandatoryness(){
     	addReportsToAeReport();
     	command.getAeReport().setId(5);
     	
@@ -452,13 +451,14 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(1).getReportDefinition());
     	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(2).getReportDefinition());
     	command.getSelectedReportDefinitions().add(command.getAeReport().getReports().get(3).getReportDefinition());
-    	
-    	command.refreshMandatoryProperties();
+
+    	command.updateFieldMandatoryness();
     	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
     	assertFalse(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
     }
-    
-    public void testRefreshMandatoryPropertiesWhenSomeReportsAreInactive(){
+
+    //test scenario where only one report is selected
+    public void testUpdateFieldMandatorynessWhenSomeReportsAreInactive(){
     	addReportsToAeReport();
     	command.getAeReport().setId(4);
     	command.getAeReport().getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
@@ -470,8 +470,8 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     	
     	
     	command.getAeReport().getReports().get(1).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("concomitantMedications[].agentName", 
-    			Mandatory.MANDATORY));
-    	command.refreshMandatoryProperties();
+    			RequirednessIndicator.MANDATORY));
+    	command.updateFieldMandatoryness();
     	assertTrue(command.getMandatoryProperties().isMandatory("adverseEvents[0].grade"));
     	assertTrue(command.getMandatoryProperties().isMandatory("concomitantMedications[].agentName"));
     }

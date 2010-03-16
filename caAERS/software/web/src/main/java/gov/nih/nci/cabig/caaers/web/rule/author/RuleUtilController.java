@@ -9,6 +9,11 @@ import org.springframework.web.servlet.mvc.AbstractCommandController;
 
 import com.semanticbits.rules.api.RulesEngineService;
 
+/**
+ * Used to delete the rule set.
+ * @author Srini
+ * @author Monish Dombla
+ */
 public class RuleUtilController extends AbstractCommandController {
 
     public RuleUtilController() {

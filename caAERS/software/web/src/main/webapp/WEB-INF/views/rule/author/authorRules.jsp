@@ -1,5 +1,4 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
-
 <html>
 <head>
 <tags:dwrJavascriptLink objects="authorRule,createAE" />
@@ -892,7 +891,7 @@ div#createNew h3, div.section h3 {
 							var spanId = newId + '.span';
 
 
-										
+
 							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
 										
 							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
@@ -1702,6 +1701,11 @@ div#createNew h3, div.section h3 {
                             <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
                           </c:forEach>
                           <form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
+                        </c:when>
+                        <c:when test="${command.ruleSetName eq 'Field Rules'}">
+                          <c:forEach var="mandatoryness" items="${command.mandatoryOptions}">
+                            <form:option value="${mandatoryness.name}">${mandatoryness.displayName}</form:option>
+                          </c:forEach>
                         </c:when>
                         <c:otherwise>
                           <form:option value="ROUTINE_AE">Assess as Routine AE</form:option>

@@ -127,7 +127,7 @@
     <field name="reportDefinition" type="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition"><bind-xml name="ReportDefinition"/></field>
     <field name="reportVersions" type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist"><bind-xml name="ReportVersion"/></field>   
     <field name="emailAddresses" type="string" collection="arraylist"><bind-xml name="emailRecipient"/></field>
-       
+    <field name="pathOfApplicableFields" type="string" collection="arraylist"><bind-xml name="applicableField"/></field>  
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
@@ -139,7 +139,6 @@
     <field name="header" type="string"><bind-xml name="header" node="element"/></field>
     <field name="footer" type="string"><bind-xml name="footer" node="element"/></field>
     <field name="timeScaleUnitType" type="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit"><bind-xml name="timeScaleUnitType"/></field>
-    <field name="mandatoryFieldsForXML" type="string" collection="arraylist"><bind-xml name="applicableField"/></field>
   </class>
 
 

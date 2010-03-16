@@ -116,7 +116,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class CreateAdverseEventAjaxFacade {
 
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
-    private static Class<?>[] CONTROLLERS = {EditAdverseEventController.class, CreateAdverseEventController.class};
+    private static Class<?>[] CONTROLLERS = {EditAdverseEventController.class};
 
     protected StudyDao studyDao;
     protected ParticipantDao participantDao;

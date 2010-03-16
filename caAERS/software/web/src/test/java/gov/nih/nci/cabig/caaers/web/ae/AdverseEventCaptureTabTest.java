@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.easymock.classextension.EasyMock;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 /**

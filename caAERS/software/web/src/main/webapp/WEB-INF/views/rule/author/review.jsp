@@ -40,47 +40,50 @@
 		<chrome:division title="Rule Set Details">
 		  
 		  <div class="content">
-			<div class="row " >
-   				 <div class="label">Rule Set Level</div>
-   				 <div class="value" >
-					${command.levelDescription}	
-    			</div>
-			</div>
- 			<div class="row " >
+            <div class="row " >
    				 <div class="label">Rule Set Name</div>
    				 <div class="value" >
-					${command.ruleSetName}		
+					${command.ruleSetName}
     			</div>
 			</div>
-			<div class="row " >
-   				 <div class="label">Organization Name</div>
+            <c:if test="${not empty command.level}">
+             <div class="row " >
+   				 <div class="label">Rule Set Level</div>
    				 <div class="value" >
-					${command.sponsorName}	
-					${command.institutionName}
+					${command.levelDescription}
     			</div>
 			</div>
-			<div class="row " >
-   				 <div class="label">Organization Role</div>
-   				 <div class="value" >
-   				 	<c:if test="${not empty command.sponsorName}">
-   				 		Sponsor
-   				 	</c:if>
-   				 	<c:if test="${not empty command.institutionName}">
-   				 		Institution
-   				 	</c:if>						
-    			</div>
-			</div>
-			
-			<c:if test="${not empty command.categoryIdentifier}">
-				<div class="row " >
-	   				 <div class="label">Study</div>
-	   				 <div class="value" >
-	   				 			${command.categoryIdentifier}
-	    			</div>
-				</div>	
-			</c:if>		
+            <div class="row " >
+                    <div class="label">Organization Name</div>
+                    <div class="value" >
+                    ${command.sponsorName}
+                    ${command.institutionName}
+                </div>
+            </div>
+            <div class="row " >
+                    <div class="label">Organization Role</div>
+                    <div class="value" >
+                        <c:if test="${not empty command.sponsorName}">
+                            Sponsor
+                        </c:if>
+                        <c:if test="${not empty command.institutionName}">
+                            Institution
+                        </c:if>
+                </div>
+            </div>
 
- 	</div>
+            <c:if test="${not empty command.categoryIdentifier}">
+                <div class="row " >
+                        <div class="label">Study</div>
+                        <div class="value" >
+                                    ${command.categoryIdentifier}
+                    </div>
+                </div>
+            </c:if>
+
+            </c:if>
+
+ 	    </div>
 
 		</chrome:division>
 			<c:forEach var="rule" items="${command.ruleSet.rule}">

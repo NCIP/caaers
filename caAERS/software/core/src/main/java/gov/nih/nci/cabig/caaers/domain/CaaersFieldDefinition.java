@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;

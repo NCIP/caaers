@@ -24,7 +24,15 @@
 	    	
 			function setRuleSetName(ruleSetElement)
     		{
-	    		$("hiddenRuleSetName").value=ruleSetElement.options[ruleSetElement.selectedIndex].value;    		
+                var ruleType = ruleSetElement.options[ruleSetElement.selectedIndex].value;
+	    		$("hiddenRuleSetName").value= ruleType;
+                if(ruleType == 'Field Rules'){
+                  $('ruleLevel').selectedIndex = 0;
+                  displayRuleTypeInput($('ruleLevel'));
+                  hideRow('ruleLevelDiv');
+                }else{
+                  showRow('ruleLevelDiv');
+                }
     		}
     		
     		function displayRuleTypeInput(level)
@@ -97,7 +105,7 @@
     		
     	</script>
 	</head>
-	<body onLoad="nextTab();">
+	<body>
 		<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" title="Select Rule Type">
     		<jsp:attribute name="singleFields">
     			<tags:instructions code="ruletype" /> 
@@ -108,12 +116,13 @@
                     			<option value="">Please select</option>
 				                <option value="SAE Reporting Rules">SAE Reporting Rules </option>
                 				<option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
+                                <option value="Field Rules">Field Rules</option>
 				            </select>
 				            <tags:errors path="ruleSetName"/>
         				</div>
         			</div>
 				
-    				<div class="row"  id="ruleLevelDiv">
+    				<div class="row"  id="ruleLevelDiv" style="display:none;">
             			<div class="label"><tags:requiredIndicator/>&nbsp;<label for="ruleLevelName">Level</label></div>
             			<div class="value">
             				<form:hidden path="level"/>

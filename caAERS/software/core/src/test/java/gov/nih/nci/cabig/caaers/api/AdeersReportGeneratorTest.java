@@ -34,9 +34,10 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
 	public void testGenerateCaaersXml() throws Exception {
 		String retValue = "hello biju";
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-		EasyMock.expect(mockSerializer.serialize(aeReport)).andReturn(retValue);
+        Report r = Fixtures.createReport("test");
+		EasyMock.expect(mockSerializer.serialize(aeReport, r)).andReturn(retValue);
 		replayMocks();
-		String caAERSXML = generator.generateCaaersXml(aeReport);
+		String caAERSXML = generator.generateCaaersXml(aeReport, r);
 		assertEquals(retValue, caAERSXML);
 		verifyMocks();
 	}

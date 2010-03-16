@@ -194,4 +194,11 @@ public class InputFieldFactoryTest extends AbstractTestCase {
     }
 
 
+    public void testCreateHiddenField(){
+        InputField field = InputFieldFactory.createHiddenField("fieldName");
+        assertEquals(field.getPropertyName(), "fieldName");
+        assertEquals(InputField.Category.HIDDEN, field.getCategory());
+    }
+
+
 }

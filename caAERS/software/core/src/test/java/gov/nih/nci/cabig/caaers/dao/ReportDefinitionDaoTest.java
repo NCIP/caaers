@@ -12,18 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
-import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,11 +109,17 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         org.addReportDefinition(definition);
 
         // add new mandatory fields.
-        ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", Mandatory.OPTIONAL);
-        ReportMandatoryFieldDefinition mf2 = new ReportMandatoryFieldDefinition("biju.a2", Mandatory.MANDATORY);
+        ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", RequirednessIndicator.OPTIONAL);
+        ReportMandatoryFieldDefinition mf2 = new ReportMandatoryFieldDefinition("biju.a2", RequirednessIndicator.MANDATORY);
+        ReportMandatoryFieldDefinition mf3 = new ReportMandatoryFieldDefinition("biju.a3", RequirednessIndicator.RULE);
+        mf3.setRuleBindURL("abcd");
+        mf3.setRuleName("xyz");
+        
         List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         mandatoryFields.add(mf1);
         mandatoryFields.add(mf2);
+        mandatoryFields.add(mf3);
+
         definition.setMandatoryFields(mandatoryFields);
 
         rctDao.save(definition);
@@ -157,11 +152,15 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 
                 // verify report mandatory fields.
                 List<ReportMandatoryFieldDefinition> mfList = rctLoaded.getMandatoryFields();
-                assertEquals("Mandatory fields size", 2, mfList.size());
+                assertEquals("Mandatory fields size", 3, mfList.size());
                 ReportMandatoryFieldDefinition mfLoaded = mfList.get(1);
                 assertEquals("Path should be same", "biju.a2", mfLoaded.getFieldPath());
                 assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory().equals(Mandatory.MANDATORY));
-
+                mfLoaded = mfList.get(1);
+                assertEquals("Path should be same", "biju.a3", mfLoaded.getFieldPath());
+                assertTrue(mfLoaded.getMandatory() == RequirednessIndicator.RULE);
+                assertTrue(mfLoaded.getRuleBindURL().equals("abcd"));
+                
                 // update the values.
                 nf.setIndexOnTimeScale(4);
                 nf.setSubjectLine("New Subject Line");
@@ -272,7 +271,13 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     	}
     	
     }
-    
+
+    public void testSearch_ReportDefinitionQueryReduced(){
+    	ReportDefinitionQuery query = new ReportDefinitionQuery(true);
+    	query.filterByOrganizationId(-1001);
+        System.out.println(getDao().search(query));
+    	assertEquals(2, getDao().search(query).size());
+    }
     public void testReassociate(){
     	 ReportDefinition rct = null;
     	 

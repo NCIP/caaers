@@ -189,33 +189,6 @@ public class RuleAjaxFacade {
 
         ruleSet.getRule().add(newRule);
 
-        Organization org = organizationDao.getByName(organizationName);
-
-        // get report defnitions
-        List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
-
-        // cut down objects for serialization
-        List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(
-                        reportDefinitions.size());
-        for (ReportDefinition reportDefinition : reportDefinitions) {
-            reducedReportDefinitions.add(reportDefinition);
-        }
-        
-        /**
-         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
-         * report definitions also . TEMP fix
-         */
-        
-        if (organizationName.equals("Division of Cancer Prevention")) {
-        	org = organizationDao.getByName("Cancer Therapy Evaluation Program");
-        	reportDefinitions = org.getReportDefinitions();
-            for (ReportDefinition reportDefinition : reportDefinitions) {
-                reducedReportDefinitions.add(reportDefinition);
-            }        	
-        } 
-        
-        // System.out.println("add rule create successfully ....");
-        
         // Set the name as the name field has been removed from UI.
         Integer ruleCount = ruleSet.getRule().size() - 1;
         Integer ruleNumber = ++ruleCount;
@@ -224,25 +197,18 @@ public class RuleAjaxFacade {
 
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         request.setAttribute("ruleCount", ruleSet.getRule().size() - 1);
-        request.setAttribute("reportDefinitions", reducedReportDefinitions);
         request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createRuleCommand);
 
         return getOutputFromJsp("/pages/rule/addRule");
     }
 
     public List<RuleAjaxObject> getAjaxObjects(String fieldName, String filterCrieteria) {
-        System.out.println(" in get ajax object ..");
+       CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
         List<RuleAjaxObject> ajaxObjects = new ArrayList<RuleAjaxObject>();
         if (fieldName.equals("reportDefinitionName")) {
-            Organization org = organizationDao.getByName(filterCrieteria);
-            List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
 
-            // cut down objects for serialization
-
-            for (ReportDefinition reportDefinition : reportDefinitions) {
-                ajaxObjects.add(new RuleAjaxObject(reportDefinition.getName(), reportDefinition
-                                .getName()));
-
+            for (ReportDefinition reportDefinition : createRuleCommand.getReportDefinitions()) {
+                ajaxObjects.add(new RuleAjaxObject(reportDefinition.getName(), reportDefinition.getName()));
             }
         }
 
@@ -258,9 +224,7 @@ public class RuleAjaxFacade {
             // cut down objects for serialization
 
             for (TreatmentAssignment treatmentAssignment : assignments) {
-                ajaxObjects.add(new RuleAjaxObject(treatmentAssignment.getCode(),
-                                treatmentAssignment.getCode()));
-
+                ajaxObjects.add(new RuleAjaxObject(treatmentAssignment.getCode(),treatmentAssignment.getCode()));
             }
         }
         /*

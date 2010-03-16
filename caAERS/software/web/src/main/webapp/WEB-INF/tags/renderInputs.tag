@@ -20,6 +20,7 @@
 <c:if test="${not empty fieldValue && (field.attributes.mandatory || field.required)}"><c:set var="cssValue" value="valueOK" /></c:if>
 
 <caaers:renderFilter elementID="${field.propertyName}">
+<c:set scope="request" var="cntRF" value="${requestScope.cntRF + 1}" />
 <c:choose>
     <c:when test="${field.categoryName == 'text'}">
         <c:if test="${readonly}"><caaers:value path="${field.propertyName}" /></c:if>
@@ -111,6 +112,9 @@
                 </label>
             </c:forEach>
         </div>
+    </c:when>
+    <c:when test="${field.categoryName == 'hidden'}">
+        <form:hidden path="${field.propertyName}" />
     </c:when>
 
     <c:otherwise>

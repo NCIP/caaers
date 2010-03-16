@@ -246,10 +246,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		
 		<!-- AE FLOW , CREATE (assumption : user with CREATE would automatically have UPDATE )-->	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReportBeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReviewAndReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
 		<!--  Advanced search flow -->
 		<entry key="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchCriteriaTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
@@ -261,7 +259,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.MeddraBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.TreatmentTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.DescriptionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.StudyInterventionsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.PatientDetailsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>

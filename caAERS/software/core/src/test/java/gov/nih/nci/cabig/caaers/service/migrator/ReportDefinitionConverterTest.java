@@ -4,7 +4,9 @@ import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -14,6 +16,7 @@ import javax.xml.bind.Unmarshaller;
 
 /*
 * @author Ion C. Olaru
+* @author Biju Joseph
 * */
 public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	
@@ -57,6 +60,14 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		gov.nih.nci.cabig.caaers.reportdefinition.ReportDefinitionType reportDefinitionDto = reportDefinitions.getReportDefinition().get(0);
 		ReportDefinition reportDefinitionDomain = reportDefinitionConverter.dtoToDomain(reportDefinitionDto);
 		assertEquals(ReportFormatType.CUSTOM_REPORT, reportDefinitionDomain.getReportFormatType());
+        assertNotNull(reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.diagnosisDate"));
+        assertEquals(RequirednessIndicator.RULE, reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.diagnosisDate").getMandatory());
+        assertEquals("testurl", reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.diagnosisDate").getRuleBindURL());
+        assertEquals("Hello,Tester", reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.diagnosisDate").getRuleName());
+        assertNotNull(reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.ctepStudyDisease"));
+        assertNull(reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.ctepStudyDisease").getRuleBindURL());
+        assertNull(reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.ctepStudyDisease").getRuleName());
+        assertEquals(RequirednessIndicator.MANDATORY, reportDefinitionDomain.findReportMandatoryFieldDefinitionByPath("diseaseHistory.ctepStudyDisease").getMandatory());
 	}
 
 	public void testdomainToDto() throws Exception {
@@ -80,6 +91,7 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 		assertEquals(reportDefinitionDomain.getPlannedNotifications().size(),reportDefinitionDto.getPlannedNotificaiton().size());
 		
 	}
+
 	
   private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
   InputStream testDataStream = ResourceRetriever.getResource(getClass().getPackage(), testDataFileName);

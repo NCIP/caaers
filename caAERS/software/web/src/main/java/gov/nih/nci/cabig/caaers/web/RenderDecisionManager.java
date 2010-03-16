@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,7 +56,7 @@ public class RenderDecisionManager {
 	
 	/**
 	 * Will mark the field, identified by the name as conceled (not renderable).
-	 * @param fieldNames
+	 * @param fieldNamesList
 	 */
 	public void conceal(List<String> fieldNamesList){
 		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
@@ -66,7 +64,7 @@ public class RenderDecisionManager {
 	
 	/**
 	 * Will mark the field, identified by the name as renderable.
-	 * @param fieldNames
+	 * @param fieldNamesList
 	 */
 	public void reveal(List<String> fieldNamesList){
 		for(String fieldName : fieldNamesList) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
@@ -86,21 +84,21 @@ public class RenderDecisionManager {
         if(correctedName.startsWith("aeReport.")) correctedName = correctedName.substring(9);
 		return correctedName;
 	}
-	
-	/**
-	 * This method will be called for expedited AE flow field renderability decision
-	 * @param rdList
-	 */
-	public void updateRenderDecision(Collection<ReportDefinition> rdList){
-		decisionCache.clear();
-		Map<String , Boolean> tempDecisionMap = new HashMap<String, Boolean>();
-		for(ReportDefinition rd : rdList){
-			for(ReportMandatoryFieldDefinition mfd : rd.getMandatoryFields()){
-				Boolean currentValue = tempDecisionMap.get(mfd.getFieldPath());
-				if(mfd.getMandatory() == Mandatory.NA){
-					tempDecisionMap.put(mfd.getFieldPath(), (currentValue == null)? true : currentValue && true);
+
+    /**
+     * Updates the renderability, based on the ReportMandatoryField in Report.
+     * @param reportList - A list of reports
+     */
+    public void updateRenderDecision(List<Report> reportList){
+       decisionCache.clear();
+       Map<String , Boolean> tempDecisionMap = new HashMap<String, Boolean>();
+		for(Report r : reportList){
+			for(ReportMandatoryField mf : r.getMandatoryFields()){
+				Boolean currentValue = tempDecisionMap.get(mf.getFieldPath());
+				if(mf.getMandatory() == Mandatory.NA){
+					tempDecisionMap.put(mf.getFieldPath(), (currentValue == null)? true : currentValue && true);
 				}else{
-					tempDecisionMap.put(mfd.getFieldPath(), false);
+					tempDecisionMap.put(mf.getFieldPath(), false);
 				}
 			}
 		}
@@ -108,6 +106,6 @@ public class RenderDecisionManager {
 			if(entry.getValue()) conceal(entry.getKey());
 			else reveal(entry.getKey());
 		}
-	}
-    
+    }
+
 }

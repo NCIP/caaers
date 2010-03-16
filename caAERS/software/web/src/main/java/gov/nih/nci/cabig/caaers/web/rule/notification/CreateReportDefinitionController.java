@@ -52,7 +52,7 @@ public class CreateReportDefinitionController extends AbstractReportDefinitionCo
         ReportDefinitionCommand command = new ReportDefinitionCommand(reportDefinition, reportDefinitionDao, configPropertyRepository);
         command.refreshParentOptions(null);
         command.refreshGroupOptions();
-        
+        populateFieldRuleSet(command);
         return command;
     }
 

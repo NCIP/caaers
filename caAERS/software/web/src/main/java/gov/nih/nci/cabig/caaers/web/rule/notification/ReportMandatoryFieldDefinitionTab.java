@@ -3,11 +3,10 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
@@ -55,12 +54,14 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
             if (StringUtils.isEmpty(path)) return;
             int index = command.getMandatoryFieldMap().get(path);
             if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
-            //fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["
-              //              + index + "].mandatory", displayName));
 
-            fields.add(InputFieldFactory.createSelectField("reportDefinition.mandatoryFields["+ index + "].mandatory", displayName, false, WebUtils.collectOptions(Arrays.asList(Mandatory.values()), "name", "displayName")));
-            
-
+            CompositeField field = new CompositeField("reportDefinition.mandatoryFields["+ index + "]",
+                    new DefaultInputFieldGroup(null, displayName)
+                        .addField(InputFieldFactory.createSelectField("mandatory", displayName, false, WebUtils.collectOptions(Arrays.asList(RequirednessIndicator.values()), "name", "displayName")))
+                        .addField(InputFieldFactory.createHiddenField("ruleBindURL"))
+                        .addField(InputFieldFactory.createHiddenField("ruleName"))
+                    );
+            fields.add(field);
             		
         } else {
             // add children of this node in the map
@@ -69,6 +70,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
         }
 
     }
+
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {

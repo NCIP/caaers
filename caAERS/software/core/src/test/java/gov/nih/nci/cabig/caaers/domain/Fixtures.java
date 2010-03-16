@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import com.semanticbits.rules.brxml.*;
+import com.semanticbits.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
@@ -16,6 +18,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -185,11 +188,9 @@ public class Fixtures {
         return def;
     }
     
-    public static ReportMandatoryFieldDefinition  createMandatoryField(String path, Mandatory m){
-    	ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
-    	mf.setFieldPath(path);
-    	mf.setMandatory(m);
-    	return mf;
+    public static ReportMandatoryFieldDefinition  createMandatoryField(String path, RequirednessIndicator m){
+    	return new ReportMandatoryFieldDefinition(path, m);
+    	
     }
 
     public static PlannedEmailNotification createPlannedEmailNotification() {
@@ -209,6 +210,14 @@ public class Fixtures {
         rep.getLastVersion().setId(10);
         rep.setAeReport(createSavableExpeditedReport());
         return rep;
+    }
+
+    //updates the mandatory fields in Report, based on Reportdefinition.
+    public static void updateMandatoryFields(ReportDefinition rd, Report r){
+        ArrayList<ReportMandatoryField> mfList = new ArrayList<ReportMandatoryField>();
+        for(ReportMandatoryFieldDefinition d : rd.getMandatoryFields())
+            mfList.add(new ReportMandatoryField(d.getFieldPath(), Mandatory.valueOf(d.getMandatory().name())));
+        r.setMandatoryFields(mfList);
     }
     
     public static ConfigProperty createConfigProperty(String code){
@@ -481,7 +490,7 @@ public class Fixtures {
 		
     }
     
-    public static StudyCondition createStudyCondition(Study s, Condition c){
+    public static StudyCondition createStudyCondition(Study s, gov.nih.nci.cabig.caaers.domain.Condition c){
     	StudyCondition sc = new StudyCondition();
     	sc.setTerm(c);
     	s.addStudyCondition(sc);
@@ -674,5 +683,49 @@ public class Fixtures {
 	  a.setGenericName(genericName);
 	  return a;
   }
-   
+
+  public static Rule createRule(Condition c){
+      Rule r = new Rule();
+      r.setCondition(c);
+      r.setMetaData(new MetaData());
+      return r;
+  }
+
+  public static Condition createCondition(String... columns) {
+      Condition c = new Condition();
+      List<Column> cols = new ArrayList<Column>();
+      for(String col : columns){
+          cols.add(createColumn(col));
+      }
+      c.setColumn(cols);
+      return c;
+  }
+
+  public static Column createColumn(String name){
+      Column c = new Column();
+      c.setExpression(name);
+      c.setObjectType(name);
+      c.setIdentifier(name);
+      c.setMarkedDelete(false);
+
+      c.setFieldConstraint(Arrays.asList(createFieldConstraint()));
+
+      return c;
+  }
+
+  public static FieldConstraint createFieldConstraint(){
+      FieldConstraint fc = new FieldConstraint();
+      fc.setDisplayUri("undefined");
+      fc.setFieldName("fldName");
+      fc.setGrammerPostfix("");
+      fc.setGrammerPrefix(" prefix ");
+
+      LiteralRestriction lr = new LiteralRestriction();
+      lr.setDisplayUri("is ");
+      lr.setEvaluator("==");
+      lr.setReadableValue("A");
+      lr.setReadableValue("B");
+      fc.setLiteralRestriction(Arrays.asList(lr));
+      return fc;
+  }
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import com.semanticbits.rules.utils.RuleUtil;
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
@@ -25,7 +26,7 @@ import com.semanticbits.rules.utils.RulesPropertiesFileLoader;
  * @author Biju Joseph
  *
  */
-public class CaaersRulesEngineServiceTest extends CaaersTestCase{
+public class CaaersRulesEngineServiceIntegrationTest extends CaaersTestCase{
 	
 	public static final String SPONSOR_LEVEL = "Sponsor";
     public static final String INSTITUTIONAL_LEVEL = "Institution";

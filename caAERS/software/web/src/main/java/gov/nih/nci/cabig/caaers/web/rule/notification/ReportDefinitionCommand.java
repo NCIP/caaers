@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import com.semanticbits.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -58,6 +59,7 @@ public class ReportDefinitionCommand {
     protected Map<Object, Object> parentOptions;
     
     protected Map<Object, Object> recipientRoleOptions;
+    private RuleSet ruleSet;
 
     public ReportDefinitionCommand(){
     }
@@ -278,5 +280,15 @@ public class ReportDefinitionCommand {
 
     public void setParentOptions(Map<Object, Object> parentOptions) {
         this.parentOptions = parentOptions;
+    }
+
+    public void setRuleSet(RuleSet ruleSet){
+        this.ruleSet = ruleSet;
+    }
+    public RuleSet getRuleSet(){
+        return ruleSet;
+    }
+    public boolean isFieldRulesAvailable(){
+        return (ruleSet != null && ruleSet.getRule().size() > 0 );
     }
 }

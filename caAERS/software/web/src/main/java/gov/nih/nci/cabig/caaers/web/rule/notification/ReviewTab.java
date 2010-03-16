@@ -131,49 +131,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         // Mandatory Field Definition Tab
         tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(2);
         fieldGroupMap = tab.createFieldGroups(command);
-
-        Map<String, List<Pair>> sectionMap = new LinkedHashMap<String, List<Pair>>();
-        Map<String, String> keyMap = new LinkedHashMap<String, String>();
-        keyMap.put("Adverse Events", "ADVERSE_EVENT_SECTION~Adverse events");
-        
-        keyMap.put("Reporter Details", "REPORTER_INFO_SECTION~Reporter details");
-        keyMap.put("Reporter Details - Address", "REPORTER_INFO_SECTION~Reporter details~Address");
-        keyMap.put("Physician details", "REPORTER_INFO_SECTION~Physician details");
-        keyMap.put("Physician details - Address", "REPORTER_INFO_SECTION~Physician details~Address");
-
-        keyMap.put("Treatment Information", "TREATMENT_INFO_SECTION");
-        keyMap.put("Treatment Information - Study agents", "TREATMENT_INFO_SECTION~Study Agents");
-        keyMap.put("Treatment Information - Study agents", "TREATMENT_INFO_SECTION~Study Agents~Modified dose");
-        
-        keyMap.put("Event and response description", "DESCRIPTION_SECTION");
-        
-        keyMap.put("Patient details", "MEDICAL_INFO_SECTION");
-        keyMap.put("Patient details - Weight", "MEDICAL_INFO_SECTION~Weight");
-        keyMap.put("Patient details - Height", "MEDICAL_INFO_SECTION~Height");
-        keyMap.put("Patient details - Metastatic disease sites", "MEDICAL_INFO_SECTION~Metastatic disease sites");
-        keyMap.put("Patient details - Prior Therapys", "PRIOR_THERAPIES_SECTION~Prior Therapys");
-        keyMap.put("Patient details - Pre-Existing Conditions", "PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions");
-        keyMap.put("Patient details - Concomitant Medications",  "CONCOMITANT_MEDICATION_SECTION~Medications");
-        
-        keyMap.put("Other contributing causes", "OTHER_CAUSE_SECTION~OtherCausess");
-        keyMap.put("Radiation intervention","RADIATION_INTERVENTION_SECTION~RadiationInterventions");
-        keyMap.put("Surgery intervention", "SURGERY_INTERVENTION_SECTION~SurgeryInterventions");
-        
-        keyMap.put("Medical devices", "MEDICAL_DEVICE_SECTION~MedicalDevices");
-        keyMap.put("Labs", "LABS_SECTION~Labs");
-        keyMap.put("Labs - Baseline", "LABS_SECTION~Labs~Baseline");
-        keyMap.put("Labs - Worst", "LABS_SECTION~Labs~Worst");
-        keyMap.put("Labs - Recovery", "LABS_SECTION~Labs~Recovery");
-
-        for (String key : keyMap.keySet()) {
-            InputFieldGroup fieldGrp = fieldGroupMap.get(keyMap.get(key));
-            if (sectionMap.containsKey(key)) {
-                sectionMap.get(key).addAll(fetchFieldValues(fieldGrp, wrappedCommand));
-            } else {
-                sectionMap.put(key, fetchFieldValues(fieldGrp, wrappedCommand));
-            }
-        }
-        map.put("mandatoryFields", sectionMap);
+        map.put("mandatoryFields", fieldGroupMap);
 
         // Notification details tab
         tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3);

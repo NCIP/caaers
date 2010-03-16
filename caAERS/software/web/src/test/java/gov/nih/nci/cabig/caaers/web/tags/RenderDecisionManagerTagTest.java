@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.web.tags;
 
 import junit.framework.TestCase;
 
+/**
+ * @author Biju Joseph
+ */
 public class RenderDecisionManagerTagTest extends TestCase {
 	RenderDecisionManagerTag tag; 
 	@Override

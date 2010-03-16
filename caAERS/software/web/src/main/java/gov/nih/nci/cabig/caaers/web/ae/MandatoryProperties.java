@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class MandatoryProperties {
     private static final Log log = LogFactory.getLog(MandatoryProperties.class);
@@ -35,12 +36,15 @@ public class MandatoryProperties {
         mandatoryNodes.add(node);
     }
 
-    public void add(ReportMandatoryFieldDefinition definition) {
-        if (definition.getMandatory().equals(Mandatory.MANDATORY)) {
-            TreeNode node = tree.find(definition.getFieldPath());
-            if (node != null) add(node);
-        }
+    /**
+     * Adds and ExpeditedReportTree node identified by the realPropery
+     * @param realProperty - a path to a node in the ExpeditedReportTree
+     */
+    public void addNode(String realProperty){
+       TreeNode node = tree.find(realProperty);
+       if(node != null) add(node);
     }
+
 
     public boolean isMandatory(String realProperty) {
         TreeNode node = tree.find(realProperty);

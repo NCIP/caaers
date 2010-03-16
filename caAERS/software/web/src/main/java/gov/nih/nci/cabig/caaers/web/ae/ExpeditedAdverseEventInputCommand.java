@@ -56,10 +56,6 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void setMandatorySectionMap(Map<Integer, Collection<ExpeditedReportSection>> mandatorySectionMap);
     boolean isSectionMandatory(ExpeditedReportSection section);
     
-    // TODO: the caller should use the equivalent method in report service.
-    @Deprecated
-    void refreshMandatoryProperties();
-
     /**
      * Pre-initalize the mandatory lazy added fields in mandatory sections. (This is a biz-rule)
      */

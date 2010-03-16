@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.ae.ReportingPeriodCommand;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -84,13 +86,17 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
 
     @Override
     public void validate(RuleInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-
         CreateRuleCommand command = (CreateRuleCommand) cmd;
-        if (command != null) {
-            String level = command.getLevel();
-            if(level == null || level.equals(""))
-            	errors.rejectValue("level", "RUL_014");
-            else{
+        String level = command.getLevel();
+        String ruleSetName = command.getRuleSetName();
+        
+        if(StringUtils.isEmpty(ruleSetName)){
+           errors.rejectValue("ruleSetName", "RUL_010");
+        }else if(!StringUtils.equals(ruleSetName, RuleType.FIELD_LEVEL_RULES.getName())){
+
+            if(level == null || level.equals("")){
+                errors.rejectValue("level", "RUL_014");
+            }else{
                 if (level.equals(RuleLevel.Sponsor.getName())) {
                     if (command.getSponsorName().trim().equals("")) {
                         errors.rejectValue("sponsorName", "RUL_011");
@@ -113,12 +119,11 @@ public class SelectRuleTypeTab extends TabWithFields<RuleInputCommand> {
                     if (command.getCategoryIdentifier().trim().equals("")) {
                         errors.rejectValue("categoryIdentifier", "RUL_012");
                     }
-                }
+               }
             }
-            if(command.getRuleSetName() == null || command.getRuleSetName().equals(""))
-            	errors.rejectValue("ruleSetName", "RUL_010");
-        }
 
+        }
     }
+    
 
 }

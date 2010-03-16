@@ -29,59 +29,8 @@ public class ReviewTab extends DefaultTab {
 
         CreateRuleCommand createRuleCommand = ((CreateRuleCommand) command);
 
-     // Retrieve RuleSet based on the one chosen by the user.
+        // Retrieve RuleSet based on the one chosen by the user.
         createRuleCommand.retrieveRuleSet();
-
-        RuleSet rs = createRuleCommand.getRuleSet();
-        
-        List<Rule> rules = new ArrayList<Rule>();
-
-        int count = 1;
-        for (Rule rule : rs.getRule()) {
-            if (!rule.isMarkedDelete()) {
-                ReadableRule readable = new ReadableRule();
-                List<String> line = new ArrayList<String>();
-
-                // add lines..
-                line.add("If");
-                for (Column column : rule.getCondition().getColumn()) {
-                    // skip rule type filters
-                    if (!column.getExpression().equals(
-                                    "getPrimaryFundingSponsorOrganization().getName()")
-                                    && !column
-                                                    .getObjectType()
-                                                    .equals(
-                                                                    "gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult")
-                                    && !column.isMarkedDelete()) {
-                        line.add("	" + RuleUtil.readableColumn(column));
-                        line.add("And");
-                    }
-
-                }
-                line.remove(line.size() - 1);
-                readable.setLine(line);
-
-                rule.getMetaData().setName("Rule-" + count);
-                rule.setReadableRule(readable);
-
-                List<String> readableActions = new ArrayList<String>();
-                if (rs.getDescription().equals("Mandatory Sections Rules")) {
-                    for (String action : rule.getAction()) {
-                        readableActions
-                                        .add(ExpeditedReportSection.valueOf(action)
-                                                        .getDisplayName());
-                    }
-                } else {
-                    readableActions = rule.getAction();
-                }
-
-                rule.setReadableAction(readableActions);
-                rules.add(rule);
-                count++;
-            }
-        }
-        rs.setRule(rules);
-        createRuleCommand.setRuleSet(rs);
 
         return super.referenceData(command);
 

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -160,7 +161,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	}
 	
 	/**
-	 * If the entry to capture adverse event is from Manage reports, we need to handle the invalid submit case, as it the isFormSubmission is flaged 'true'. 
+	 * If the entry to author rules from list rules page, at that point in time there is no command in session. 
 	 */
 	
 	@Override
@@ -193,35 +194,40 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     				rs = ruleSet;
     		}
     		if(rs != null){
-    			command.setRuleSetName(rs.getDescription());
-    			command.setCategoryIdentifier("");
-    			Organization org = organizationDao.getByName(rs.getOrganization());
-    			if(rs.getSubject().startsWith("Sponsor defined rules for a study")){
-    				command.setLevel(SPONSOR_DEFINED_STUDY_LEVEL);
-    				command.setCategoryIdentifier(rs.getStudy());
-    				command.setSponsorName(rs.getOrganization());
-    				if(org != null)
-    					command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
-    			}
-    			else if(rs.getSubject().startsWith("Sponsor rules")){
-    				command.setLevel(SPONSOR_LEVEL);
-    				command.setSponsorName(rs.getOrganization());
-    				if(org != null)
-    					command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
-    			}
-    			else if(rs.getSubject().startsWith("Institution rules")){
-    				command.setLevel(INSTITUTIONAL_LEVEL);
-    				command.setInstitutionName(rs.getOrganization());
-    				if(org != null)
-    					command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
-    			}
-    			else if(rs.getSubject().startsWith("Institution defined rules for a study")){
-    				command.setLevel(INSTITUTION_DEFINED_STUDY_LEVEL);
-    				command.setCategoryIdentifier(rs.getStudy());
-    				command.setInstitutionName(rs.getOrganization());
-    				if(org != null)
-    					command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
-    			}
+                command.setRuleSetName(rs.getDescription());
+                command.setCategoryIdentifier("");
+                if(StringUtils.equals(command.getRuleSetName(), RuleType.FIELD_LEVEL_RULES.getName())){
+
+                }else{
+
+                    Organization org = organizationDao.getByName(rs.getOrganization());
+                    if(rs.getSubject().startsWith("Sponsor defined rules for a study")){
+                        command.setLevel(SPONSOR_DEFINED_STUDY_LEVEL);
+                        command.setCategoryIdentifier(rs.getStudy());
+                        command.setSponsorName(rs.getOrganization());
+                        if(org != null)
+                            command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
+                    }
+                    else if(rs.getSubject().startsWith("Sponsor rules")){
+                        command.setLevel(SPONSOR_LEVEL);
+                        command.setSponsorName(rs.getOrganization());
+                        if(org != null)
+                            command.setSponsorNameInitialValue(command.getSponsorName() + " ( " + org.getNciInstituteCode() + " ) ");
+                    }
+                    else if(rs.getSubject().startsWith("Institution rules")){
+                        command.setLevel(INSTITUTIONAL_LEVEL);
+                        command.setInstitutionName(rs.getOrganization());
+                        if(org != null)
+                            command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
+                    }
+                    else if(rs.getSubject().startsWith("Institution defined rules for a study")){
+                        command.setLevel(INSTITUTION_DEFINED_STUDY_LEVEL);
+                        command.setCategoryIdentifier(rs.getStudy());
+                        command.setInstitutionName(rs.getOrganization());
+                        if(org != null)
+                            command.setInstitutionNameInitialValue(command.getInstitutionName() + " ( " + org.getNciInstituteCode() + " ) ");
+                    }
+                }
     		}
     	}
     	

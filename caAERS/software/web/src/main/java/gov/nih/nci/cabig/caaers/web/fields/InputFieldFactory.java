@@ -233,6 +233,15 @@ public class InputFieldFactory {
     }
 
     /**
+     * Will create an Hidden input field.
+     * @param propertyName
+     * @return
+     */
+    public static InputField createHiddenField(String propertyName){
+        return new DefaultInputField(InputField.Category.HIDDEN, propertyName, "");
+    }
+
+    /**
      * Intended mainly for testing.
      */
     public static InputField createInputField(InputField.Category category) {

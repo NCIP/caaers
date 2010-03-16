@@ -4,7 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.Collection;
@@ -45,4 +48,10 @@ public interface AdverseEventEvaluationService {
      * @throws Exception
      */
     ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
+
+    /**
+     * Evaluate the mandatoryness of a specific report, the {@link gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField} will be populated in the Report.
+     */
+    //why all arguments? due to hibernate lazy loading, we can't really predict all the associations can be obtained at runtime.
+    String evaluateFieldLevelRules(ExpeditedAdverseEventReport aeReport, Report report, ReportMandatoryFieldDefinition mandatoryFieldDefinition);
 }

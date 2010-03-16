@@ -74,6 +74,9 @@
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="mandatoryType">
     	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.Mandatory</param>
     </typedef>
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="requirednessType">
+    	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator</param>
+    </typedef>
         <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="personRoleType">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.PersonRole</param>
     </typedef>

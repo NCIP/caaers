@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -20,12 +21,12 @@ import org.exolab.castor.xml.Unmarshaller;
  * @author Biju Joseph
  *
  */
-public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase {
+public class AdverseEventReportSerializerTest extends AbstractTestCase {
 	AdverseEventReportSerializer serializer;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		serializer = (AdverseEventReportSerializer)this.getDeployedApplicationContext().getBean("adverseEventReportSerializer");
+		serializer = new AdverseEventReportSerializer();
 	}
 	
 	/**
@@ -112,7 +113,7 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
 			try {
 				SecurityTestUtils.switchToSuperuser();
 				Thread.sleep(sleep);
-				String xml = serializer.serialize(aeReport);
+				String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
 			}catch(Exception e) {
 				parentThread.interrupt(); //interrupt the parent thread so that we can stop testing. 
 				e.printStackTrace();
@@ -125,11 +126,11 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
         String xmlFileName = "expedited_report_caaers_complete.xml";
         ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
 
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one[].name", Mandatory.MANDATORY));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[].two.name", Mandatory.MANDATORY));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", Mandatory.NA));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name[]", Mandatory.MANDATORY));
-        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five.name", Mandatory.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one[].name", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field[].two.name", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.three.name", RequirednessIndicator.NA));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.four.name[]", RequirednessIndicator.MANDATORY));
+        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.five.name", RequirednessIndicator.MANDATORY));
 
         aeReport.getReports().get(0).getReportDefinition().setHeader("THIS IS HEADER");
         aeReport.getReports().get(0).getReportDefinition().setFooter("THIS IS FOOTER");
@@ -138,14 +139,17 @@ public class AdverseEventReportSerializerTest extends AbstractNoSecurityTestCase
         aeReport.getReports().get(0).getReportDefinition().setDescription("Some Description");
         aeReport.getReports().get(0).setAeReport(aeReport);
 
+        Fixtures.updateMandatoryFields(aeReport.getReports().get(0).getReportDefinition(),aeReport.getReports().get(0));
+
         String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
+        System.out.println(xml);
         
         assertTrue(xml.indexOf("<applicableField>") >= 0);
         assertTrue(xml.indexOf("</applicableField>") >= 0);
-        assertTrue(xml.indexOf("field.one.name") >= 0);
-        assertTrue(xml.indexOf("field.two.name") >= 0);
+        assertTrue(xml.indexOf("field.one[].name") >= 0);
+        assertTrue(xml.indexOf("field[].two.name") >= 0);
         assertTrue(xml.indexOf("field.three.name") == -1);
-        assertTrue(xml.indexOf("field.four.name") >= 0);
+        assertTrue(xml.indexOf("field.four.name[]") >= 0);
         assertTrue(xml.indexOf("field.five.name") >= 0);
 
     }

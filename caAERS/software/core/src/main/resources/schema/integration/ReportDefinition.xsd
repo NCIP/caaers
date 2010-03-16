@@ -62,6 +62,8 @@
       <xs:sequence>
          <xs:element name="fieldPath" type="xs:string"/>
          <xs:element name="mandatory" type="xs:string"/>
+         <xs:element name="ruleBindURL" type="xs:string" />
+         <xs:element name="ruleName"  type="xs:string" />
       </xs:sequence>
     </xs:complexType>
     

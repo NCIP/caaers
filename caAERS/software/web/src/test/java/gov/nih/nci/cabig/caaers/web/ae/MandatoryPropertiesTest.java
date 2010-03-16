@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
+ * @ahtor Biju Joseph
  */
 public class MandatoryPropertiesTest extends TestCase {
     private MandatoryProperties mandatory;
@@ -22,18 +24,11 @@ public class MandatoryPropertiesTest extends TestCase {
 
     public void testAddFieldFromDefinition() throws Exception {
         ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
-                        "participantHistory.baselinePerformanceStatus", Mandatory.MANDATORY);
-        mandatory.add(def);
+                        "participantHistory.baselinePerformanceStatus", RequirednessIndicator.MANDATORY);
+        mandatory.addNode(def.getFieldPath());
         assertEquals(1, mandatory.getMandatoryNodes().size());
         assertSame(tree.find("participantHistory.baselinePerformanceStatus"), mandatory
                         .getMandatoryNodes().iterator().next());
-    }
-
-    public void testAddFieldFromDefinitionWhenNotMandatory() throws Exception {
-        ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
-                        "participantHistory.baselinePerformanceStatus", Mandatory.OPTIONAL);
-        mandatory.add(def);
-        assertEquals(0, mandatory.getMandatoryNodes().size());
     }
 
     public void testIsMandatoryForMandatorySimpleField() throws Exception {

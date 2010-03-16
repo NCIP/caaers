@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
@@ -178,23 +179,6 @@ public class ExpeditedReportTree extends PropertylessNode {
 
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
 
-                        section(ADDITIONAL_INFO_SECTION,
-                        		property("additionalInformation",
-                        				property("autopsyReport", getMessage("LBL_aeReport.additionalInformation.autopsyReport", "Autopsy Report")),
-                        				property("pathologyReport", getMessage("LBL_aeReport.additionalInformation.pathologyReport", "Pathology Report")),
-                        				property("consults", getMessage("LBL_aeReport.additionalInformation.consults", "Consults")),
-                        				property("progressNotes", getMessage("LBL_aeReport.additionalInformation.progressNotes", "Progress Notes")),
-                        				property("dischargeSummary", getMessage("LBL_aeReport.additionalInformation.dischargeSummary", "Discharge Summary")),
-                        				property("radiologyReports", getMessage("LBL_aeReport.additionalInformation.radiologyReports", "Radiology Report")),
-                        				property("flowCharts", getMessage("LBL_aeReport.additionalInformation.flowCharts", "Flow Sheets/Case Report Forms")),
-                        				property("labReports", getMessage("LBL_aeReport.additionalInformation.labReports", "Laboratory Reports")),
-                        				property("irbReport", getMessage("LBL_aeReport.additionalInformation.irbReport", "Summary Report Sent to IRB")),
-                        				property("obaForm", getMessage("LBL_aeReport.additionalInformation.obaForm", "OBA Form")),
-                        				property("other", getMessage("LBL_aeReport.additionalInformation.other", "Other")),
-                        				property("otherInformation", getMessage("LBL_aeReport.additionalInformation.otherInformation", "Other Information"))
-                        		)
-                        ),// TODO: additional info section
-
                         section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
 
                         section(OUTCOME_SECTION),// TODO: just a space filler section
@@ -222,7 +206,6 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         codedOrOther("preExistingCondition", getMessage("LBL_aeReport.saeReportPreExistingConditions.preExistingCondition", "Pre-existing condition"),
                                                 "other", getMessage("LBL_aeReport.saeReportPreExistingConditions.other", "Other (pre-existing)")))
                         ),
-                // LBL_aeReport.saeReportPreExistingConditions.preExistingCondition
 
                         section(CONCOMITANT_MEDICATION_SECTION,
                         		list("concomitantMedications","Medication",
@@ -261,6 +244,25 @@ public class ExpeditedReportTree extends PropertylessNode {
 			                        		)
 			                    )
 
+                        ),
+                        section(ADDITIONAL_INFO_SECTION,
+                                property("additionalInformation",
+                                        property("autopsyReport",getMessage("LBL_aeReport.additionalInformation.autopsyReport","Autopsy report")),
+                                        property("consults",getMessage("LBL_aeReport.additionalInformation.consults","Consults")),
+                                        property("dischargeSummary",getMessage("LBL_aeReport.additionalInformation.dischargeSummary","Discharge summary")),
+                                        property("flowCharts",getMessage("LBL_aeReport.additionalInformation.flowCharts","Flow sheets/case report forms")),
+                                        property("labReports",getMessage("LBL_aeReport.additionalInformation.labReports","Laboratory reports")),
+                                        property("obaForm",getMessage("LBL_aeReport.additionalInformation.obaForm","OBA form")),
+                                        property("pathologyReport",getMessage("LBL_aeReport.additionalInformation.pathologyReport","Pathology report")),
+                                        property("progressNotes",getMessage("LBL_aeReport.additionalInformation.progressNotes","Progress notes")),
+                                        property("radiologyReports",getMessage("LBL_aeReport.additionalInformation.radiologyReports","Radiology report")),
+                                        property("referralLetters",getMessage("LBL_aeReport.additionalInformation.referralLetters","Referral letters")),
+                                        property("irbReport",getMessage("LBL_aeReport.additionalInformation.irbReport","Summary report sent to IRB")),
+                                        property("other",getMessage("LBL_aeReport.additionalInformation.other","Other")),
+                                        property("otherInformation",getMessage("LBL_aeReport.additionalInformation.otherInformation","Other information"))
+
+                                        
+                                )
                         )
         );
     }

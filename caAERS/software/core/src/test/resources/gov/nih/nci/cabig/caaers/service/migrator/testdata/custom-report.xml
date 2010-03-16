@@ -670,7 +670,9 @@
         </mandatoryField>
         <mandatoryField>
             <fieldPath>diseaseHistory.diagnosisDate</fieldPath>
-            <mandatory>OPTIONAL</mandatory>
+            <mandatory>RULE</mandatory>
+            <ruleName>Hello,Tester</ruleName>
+            <ruleBindURL>testurl</ruleBindURL>
         </mandatoryField>
         <plannedNotificaiton>
             <indexOnTimeScale>0</indexOnTimeScale>

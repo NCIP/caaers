@@ -95,15 +95,20 @@
               </c:forEach>
             </c:when>
             <c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
-              <c:forEach var="reportDefinition" items="${reportDefinitions}">
+              <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
                 <option value="${reportDefinition.name}">${reportDefinition.name}</option>
               </c:forEach>
               <option value="IGNORE">No Report Required (Study Level Exception Rule)</option>
             </c:when>
+            <c:when test="${command.ruleSetName eq 'Field Rules'}">
+              <c:forEach var="mandatoryness" items="${command.mandatoryOptions}">
+                 <option value="${mandatoryness.name}">${mandatoryness.displayName}</option>
+              </c:forEach>
+            </c:when>
             <c:otherwise>
               <option value="ROUTINE_AE">Assess as Routine AE</option>
               <option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>
-              <c:forEach var="reportDefinition" items="${reportDefinitions}">
+              <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
                 <option value="${reportDefinition.name}">${reportDefinition.name}</option>
               </c:forEach>
             </c:otherwise>

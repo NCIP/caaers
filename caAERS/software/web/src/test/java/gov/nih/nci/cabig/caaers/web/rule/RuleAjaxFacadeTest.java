@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule;
 import static org.easymock.EasyMock.expect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -134,5 +135,20 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 		assertEquals("Error in adding a new rule", 3, command.getRuleSet().getRule().size());
 		assertEquals("Incorrect rule name", "Rule-3", command.getRuleSet().getRule().get(2).getMetaData().getName());
 	}
+
+    //checks that report definition is comming out. 
+    public void testGetAjaxObjects(){
+        CreateRuleCommand command = setupCreateRuleCommand();
+        ReportDefinition rd1 = Fixtures.createReportDefinition("test");
+        rd1.setId(1);
+        command.setReportDefinitions(Arrays.asList(rd1));
+
+        replayMocks();
+        List<RuleAjaxObject> list = facade.getAjaxObjects("reportDefinitionName", "");
+        verifyMocks();
+
+        assertEquals(1, list.size());
+        assertEquals("test", list.get(0).getValue()); 
+    }
 	
 }

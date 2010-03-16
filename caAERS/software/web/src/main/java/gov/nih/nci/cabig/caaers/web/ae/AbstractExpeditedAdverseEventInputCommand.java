@@ -24,9 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -216,22 +214,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         setMandatorySectionMap(map);
     }
 
-    /**
-     * This method will populate the mandatory fields, based on the selected report definitions
-     */
-    public void refreshMandatoryProperties() {
-        mandatoryProperties = new MandatoryProperties(expeditedReportTree);
-        
-        for(ReportDefinition reportDef : selectedReportDefinitions){
-    		List<ReportMandatoryFieldDefinition> mFieldList = reportDef.getMandatoryFields();
-    		if(mFieldList != null){
-    			for (ReportMandatoryFieldDefinition field : mFieldList) {
-            		mandatoryProperties.add(field);
-    			}
-    		}
-    	}
-        
-    }
+
 
     /**
      * The repeating fields available in the mandatory sections will be pre-initialized here.
@@ -403,34 +386,44 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		this.workflowEnabled = workflowEnabled;
 	}
 	
-	 /**
-     * This method will intialize the render decision manager, with the field display status.
-     * @param reportDefs
-     */
-    public void initializeNotApplicableFields(Collection<ReportDefinition> reportDefs) {
-    	//find the list of report definitions associated to the existing AE report, and the ones that are newly selected.
-    	//Note:- Since there is a potential to throw LazyInit exception, we will use HashMap based logic to find the unique ReportDefinition.
-    	HashMap<Integer , ReportDefinition> map = new HashMap<Integer, ReportDefinition>();
-    	
-    	if(getSelectedReportDefinitions() != null){
-    		for(ReportDefinition rd : reportDefs){
-    			map.put(rd.getId(), rd);
-    		}
-    	}
-    	
-    	renderDecisionManager.updateRenderDecision(map.values());
-    	
-	}
+
     
     boolean isAdverseEventPresent(AdverseEvent ae){
     	return reportingPeriodDao.isAdverseEventPresent(ae);
     }
     
-    public void initializeNotApplicableFields(){
-    	initializeNotApplicableFields(this.getSelectedReportDefinitions());
+   
+
+    /**
+     * Will update the mandatory fields details.
+     *  1. Evaluate the mandatory-ness via EvaluationService
+     *  2. Update the mandatory properties.
+     *  3. Update the rendering decisions
+     */
+    public void updateFieldMandatoryness(){
+
+       //figureout the reports
+       List<Report> reportsToEvaluate = new ArrayList<Report>();
+       for(ReportDefinition rd : getSelectedReportDefinitions()){
+           reportsToEvaluate.add(rd.createReport());
+       }
+
+       mandatoryProperties = new MandatoryProperties(expeditedReportTree);
+
+       //evaluate the mandatoryness
+       for(Report reportToEvaluate : reportsToEvaluate){
+           evaluationService.evaluateMandatoryness(aeReport, reportToEvaluate);
+           for(ReportMandatoryField mf : reportToEvaluate.getMandatoryFields()){
+               if(mf.getMandatory() == Mandatory.MANDATORY){
+                   mandatoryProperties.addNode(mf.getFieldPath());
+               }
+           }
+       }
+
+       //update the render decision
+       renderDecisionManager.updateRenderDecision(reportsToEvaluate);
+
     }
-    
-    
     
     public void initializeTreatmentInformation(){
     	ExpeditedAdverseEventReport aeReport = getAeReport();

@@ -5,11 +5,13 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 
 /**
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 public class ReportMandatoryFieldDefinitionSynchronizerTest extends AbstractTestCase{
 	ReportDefinition xmlReportDefinition;
@@ -28,8 +30,8 @@ public class ReportMandatoryFieldDefinitionSynchronizerTest extends AbstractTest
 	}
 	
 	public void testMigrate(){
-		ReportMandatoryFieldDefinition rmfd1 = new ReportMandatoryFieldDefinition("fieldPath1", Mandatory.OPTIONAL);
-		ReportMandatoryFieldDefinition rmfd2 = new ReportMandatoryFieldDefinition("fieldPath2", Mandatory.MANDATORY);
+		ReportMandatoryFieldDefinition rmfd1 = new ReportMandatoryFieldDefinition("fieldPath1", RequirednessIndicator.OPTIONAL);
+		ReportMandatoryFieldDefinition rmfd2 = new ReportMandatoryFieldDefinition("fieldPath2", RequirednessIndicator.MANDATORY);
 		xmlReportDefinition.addReportMandatoryFieldDefinition(rmfd1);
 		xmlReportDefinition.addReportMandatoryFieldDefinition(rmfd2);
 		

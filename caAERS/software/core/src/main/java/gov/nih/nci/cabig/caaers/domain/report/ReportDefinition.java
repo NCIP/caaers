@@ -76,7 +76,6 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     protected ReportDefinitionComparator comprator;
     protected boolean manuallySelected; //will store the manually selected indicator.
     protected Date baseDate; //will store the base date, (for new report creation)
-    protected List<String> mandatoryFieldsForXML;
 
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
@@ -85,6 +84,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         attributionRequired = false;
         workflowEnabled = false;
         comprator = new ReportDefinitionComparator();
+    }
+
+    public ReportDefinition(Integer id, String name, String label){
+        this();
+        this.setId(id);
+        this.name = name;
+        this.label = label;
     }
 
     // //// LOGIC
@@ -119,13 +125,6 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         return plannedNotificaitons;
     }
-    
-    public PlannedNotification findPlannedNotificationById(Integer id){
-    	for(PlannedNotification pn : getPlannedNotifications()){
-    		if(pn.getId().equals(id)) return pn;
-    	}
-    	return null;
-    }
 
     /**
      * This method will add a PlannedNotification to the plannedNotifications list.
@@ -153,23 +152,17 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
 
     /**
-     * Returns the mandatory flag associated with the ReportMandatoryField, whose fieldPath matches
-     * with the parameter <param>fieldPath</param>
+     * Finds the ReportMandatoryFieldDefinition having the specified path. 
+     * @param fieldPath
+     * @return
      */
-    public boolean isFieldMandatory(String fieldPath) {
-        if (mandatoryFields == null) return false;
-        for (ReportMandatoryFieldDefinition mandatoryField : mandatoryFields) {
-            if (StringUtils.equals(fieldPath, mandatoryField.getFieldPath())) {
-                if (mandatoryField.getMandatory().equals(Mandatory.MANDATORY)) {
-                	return true;
-                }
-            	//return mandatoryField.getMandatory();
-            }
-        }
-
-        return false;
+    public ReportMandatoryFieldDefinition findReportMandatoryFieldDefinitionByPath(String fieldPath){
+      if(getMandatoryFields() == null || getMandatoryFields().isEmpty()) return null;
+      for(ReportMandatoryFieldDefinition mfd: getMandatoryFields()){
+          if(StringUtils.equals(mfd.getFieldPath(), fieldPath )) return mfd;
+      }
+      return null;
     }
-
     // //// BEAN PROPERTIES
 
     public String getName() {
@@ -507,38 +500,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		this.manuallySelected = manuallySelected;
 	}
 
-    @Transient
-    public List<ReportMandatoryFieldDefinition> getMandatoryFieldsForXMLByApplicability(Mandatory...types) {
-        List<ReportMandatoryFieldDefinition> fields = new LinkedList<ReportMandatoryFieldDefinition>();
-        if (getMandatoryFields() != null) {
-            for (ReportMandatoryFieldDefinition field : getMandatoryFields()) {
-                for (Mandatory m : types) {
-                    if (field.getMandatory().equals(m)) fields.add(field);
-                }
-            }
-        }
-        return fields;
-    }
-
-    @Transient
-    public void buildMandatoryFieldsForXML(Mandatory...types) {
-        List<ReportMandatoryFieldDefinition> list = getMandatoryFieldsForXMLByApplicability(types);
-        if (list.size() > 0 && this.mandatoryFieldsForXML == null) this.mandatoryFieldsForXML = new ArrayList<String>();
-        for (ReportMandatoryFieldDefinition mf : list) {
-            this.mandatoryFieldsForXML.add(mf.getFieldPath());
-        }
-    }
-
-    @Transient
-    public List<String> getMandatoryFieldsForXML() {
-        return mandatoryFieldsForXML;
-    }
-
-    @Transient
-    public void setMandatoryFieldsForXML(List<String> mf) {
-        this.mandatoryFieldsForXML = mf;
-    }
-
+   
     public String getHeader() {
         return header;
     }

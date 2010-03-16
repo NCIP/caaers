@@ -93,9 +93,9 @@ YAHOO.example.Data = {
     rsList: [
 <c:forEach items="${command.ruleSets}" var="rs" varStatus="status">
         {
-            rsLevel: "${rs.level}",
+            rsLevel: "${empty rs.level ? 'NA' : rs.level}",
             rsDescription: "${rs.description}",
-            rsOrganization: "${rs.organization}",
+            rsOrganization: "${empty rs.organization ? 'NA' : rs.organization}",
             rsStudyID: "${rs.study}",
             rsStatus: "<div id='status-${rs.id}'>${rs.coverage}</div>",
             rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.name}', 'status-${rs.id}')\">" +
