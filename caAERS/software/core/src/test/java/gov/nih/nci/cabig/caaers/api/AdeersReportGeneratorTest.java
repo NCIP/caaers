@@ -26,7 +26,7 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		generator = new AdeersReportGenerator();
+		generator = (AdeersReportGenerator)getDeployedApplicationContext().getBean("adeersReportGenerator");
 		mockSerializer = registerMockFor(AdverseEventReportSerializer.class);
 		generator.setAdverseEventReportSerializer(mockSerializer);
 	}
@@ -82,8 +82,7 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
         r.getReportDefinition().setReportFormatType(ReportFormatType.CUSTOM_REPORT);
         aeReport.addReport(r);
         
-        AdeersReportGenerator aeGenerator = (AdeersReportGenerator)getDeployedApplicationContext().getBean("adeersReportGenerator");
-        String xml = aeGenerator.generateCaaersWithdrawXml(aeReport, r);
+        String xml = generator.generateCaaersWithdrawXml(aeReport, r);
         
 		String data =  IOUtils.toString(getClass().getResourceAsStream("withdraw_aereport.xml"));
 
