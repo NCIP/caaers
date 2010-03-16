@@ -81,7 +81,6 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
         replayMocks();
         String[] s = generator.generateExternalReports(r, "", 77);
         assertEquals(System.getProperty("java.io.tmpdir") + "/CustomReport-77.pdf", s[0]);
-        verifyMocks();
 	}
 	public void testWithdrawXml() throws Exception {
 
@@ -113,7 +112,9 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
 
 		Report r = Fixtures.createReport("abc");
 		r.setId(1);
-        r.setReportDefinition(Fixtures.createReportDefinition("RD"));
+        ReportDefinition rd = Fixtures.createReportDefinition("RD");
+        rd.setMandatoryFields(createMandatoryFieldDefinitions());
+        r.setReportDefinition(rd);
         r.getReportDefinition().setReportFormatType(ReportFormatType.CUSTOM_REPORT);
         aeReport.addReport(r);
 
