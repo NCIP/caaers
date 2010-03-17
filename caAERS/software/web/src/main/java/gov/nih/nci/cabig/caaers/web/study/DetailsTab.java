@@ -273,7 +273,6 @@ public class DetailsTab extends StudyTab {
         }
 
         command.getStudyRepository().synchronizeStudyPersonnel(command.getStudy());
-
     }
 
     public CtcDao getCtcDao() {

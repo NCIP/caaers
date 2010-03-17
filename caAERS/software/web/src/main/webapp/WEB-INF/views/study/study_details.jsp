@@ -30,9 +30,9 @@
             if ($('study.aeTerminology.meddraVersion').options.selectedIndex == 0) $('study.aeTerminology.meddraVersion').addClassName("required"); else $('study.aeTerminology.meddraVersion').addClassName("valueOK");
             $('study.aeTerminology.ctcVersion').removeClassName("required");
         }
-        
+
         Event.observe("study.aeTerminology.term", "change", function() { showTerms(); })
-		
+
 		function showTerms(){
 			$('study.aeTerminology.meddraVersion-row').style.display="none";
 			$('study.aeTerminology.ctcVersion-row').style.display="none";
@@ -49,12 +49,12 @@
 				$('study.otherMeddra').options.selectedIndex = 0;
                 $('study.aeTerminology.ctcVersion').removeClassName("required");
                 $('study.aeTerminology.meddraVersion').addClassName("required");
-                
+
 			}
 		}
-		
+
 		Event.observe("study.diseaseTerminology.diseaseCodeTerm", "change", function(){ showDiseaseMeddraTerms(); })
-		
+
 		function showDiseaseMeddraTerms(){
 			var row = document.getElementById('diseaseMeddraOption');
 			if ($('study.diseaseTerminology.diseaseCodeTerm').options[1].selected){
@@ -66,29 +66,32 @@
         showDiseaseMeddraTerms();
 
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
-		AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
-			 function(autocompleter, text) {
-				createStudy.restrictOrganizations(text, function(values) {
-				  autocompleter.setChoices(values)
-				 })
-			 },
-			 function(organization) { 
-			 
-			 	    var image;            	
-	            	if(organization.externalId != null){
-	                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
-	                } else {
-	                          image = '';
-	                }
-	                
-				 var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-			   return image + "" +organization.name + nciInstituteCode 
+        if ($('study.primaryFundingSponsorOrganization')) {
+            AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
+                 function(autocompleter, text) {
+                    createStudy.restrictOrganizations(text, function(values) {
+                      autocompleter.setChoices(values)
+                     })
+                 },
+                 function(organization) {
 
-			 }
+                        var image;
+                        if(organization.externalId != null){
+                                  image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                        } else {
+                                  image = '';
+                        }
 
-		);
+                     var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+                   return image + "" +organization.name + nciInstituteCode
 
-        AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
+                 }
+
+            );
+        }
+
+        if ($('study.studyCoordinatingCenter.organization')) {
+            AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
                 function(autocompleter, text) {
                     createStudy.restrictOrganizations(text, function(values) {
                         autocompleter.setChoices(values)
@@ -97,19 +100,20 @@
                 },
 
                 function(organization) {
-                
-	                var image;            	
+
+	                var image;
 	            	if(organization.externalId != null){
 	                          image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
 	                } else {
 	                          image = '';
 	                }
-                
+
                     var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
 
-                    return image + "" +organization.name + nciInstituteCode 
+                    return image + "" +organization.name + nciInstituteCode
                 }
                 );
+        }
 
 		//populate the name of the associated organization in sponsor & coordinating center field
 		<c:if test="${not empty command.study.primaryFundingSponsorOrganization.fullName}">
@@ -121,14 +125,14 @@
 	});
 
 	</script>
-     
+
 </head>
 <body>
 <study:summary/>
 
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
   <jsp:attribute name="repeatingFields">
-      
+
         <p><tags:instructions code="study.study_details.study.top"/></p>
         <c:forEach items="${fieldGroups.studyDetails.fields}" var="field">
             <tags:renderRow field="${field}"/>
@@ -164,7 +168,7 @@
             </c:forEach>
         </div>
     </chrome:division>
-    
+
      <chrome:division title="Study method details">
          <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
              <tags:renderRow field="${field}"/>
@@ -176,17 +180,31 @@
              <tags:renderRow field="${field}"/>
          </c:forEach>
      </chrome:division>
-        
+
     <chrome:division title="Coordinating center details">
-        <c:forEach items="${fieldGroups.ccFieldGroup.fields}" var="field" varStatus="status">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
+        <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
+            <div class="row">
+                <div class="label"><ui:label path="${fieldGroups.ccFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.ccFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.ccFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.ccFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.ccFieldGroup.fields[0].required}"/></div>
+                <div class="value">${command.study.studyCoordinatingCenter.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="javascript:alert('1');" type="button"/></div>
+            </div>
+        </c:if>
+        <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
+            <tags:renderRow field="${fieldGroups.ccFieldGroup.fields[0]}" />
+        </c:if>
+        <tags:renderRow field="${fieldGroups.ccFieldGroup.fields[1]}" />
     </chrome:division>
 
-      <chrome:division title="Funding sponsor details">
-          <c:forEach items="${fieldGroups.fsFieldGroup.fields}" var="field" varStatus="status">
-              <tags:renderRow field="${field}"/>
-          </c:forEach>
+    <chrome:division title="Funding sponsor details">
+          <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
+              <div class="row">
+                  <div class="label"><ui:label path="${fieldGroups.fsFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.fsFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.fsFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.fsFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.fsFieldGroup.fields[0].required}"/></div>
+                  <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="javascript:alert('2');" type="button"/></div>
+              </div>
+          </c:if>
+          <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
+              <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[0]}" />
+          </c:if>
+          <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[1]}" />
       </chrome:division>
   </jsp:attribute>
 
