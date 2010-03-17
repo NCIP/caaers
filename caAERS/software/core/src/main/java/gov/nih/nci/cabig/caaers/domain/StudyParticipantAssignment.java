@@ -370,7 +370,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     * all other information which is not included in the equal rule.   
     * */
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
-
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
             StudyParticipantPriorTherapy spaPT = containsPriorTherapy(saeReportPriorTherapy);
 
@@ -386,7 +385,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
                 }
             }
         }
-
     }
     /**
      * Will return true, if the {@link ConcomitantMedication} is associated to this assignment via {@link StudyParticipantConcomitantMedication}

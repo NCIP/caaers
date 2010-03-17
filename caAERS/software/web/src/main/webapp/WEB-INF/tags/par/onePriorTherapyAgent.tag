@@ -10,12 +10,18 @@
 <%@attribute name="style"%>
 <%@attribute name="agent" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent" %>
 
+<%--
+<c:if test="${command.assignment.priorTherapies[parentIndex].priorTherapyAgents[index].chemoAgent == null}">
+</c:if>
+--%>
+
+<c:if test="${command.assignment.priorTherapies[parentIndex].priorTherapyAgents[index].chemoAgent != null}">
 <div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
   				<td width="99%">
                       <c:set var="initValue" value="${not empty agent.chemoAgent ? agent.chemoAgent.fullName : 'Begin typing here...'}"/>
-                      <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent" 
+                      <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"
                       	initialDisplayValue="${initValue}"
                         title="PriorTherapy agent"
                       	readonly="${not empty agent.chemoAgent}"
@@ -43,5 +49,6 @@
 					</a>
 				</td>
  			</tr>
-		</table> 
+		</table>
 </div>
+</c:if>    

@@ -182,20 +182,15 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
 
 
     public static SAEReportPriorTherapy createSAEReportPriorTherapy(StudyParticipantPriorTherapy studyParticipantPriorTherapy) {
-
         if (studyParticipantPriorTherapy != null) {
             SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(studyParticipantPriorTherapy);
-
             for (StudyParticipantPriorTherapyAgent priorTherapyAgent : studyParticipantPriorTherapy.getPriorTherapyAgents()) {
+                if (priorTherapyAgent.getChemoAgent() == null) continue;
                 saeReportPriorTherapy.addPriorTherapyAgent(PriorTherapyAgent.createSaeReportPriorTherapyAgent(priorTherapyAgent));
             }
-
-
             return saeReportPriorTherapy;
-
         }
         return null;
-
     }
 
     private static SAEReportPriorTherapy copyBasicProperties(Object object) {

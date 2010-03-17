@@ -497,6 +497,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
             Set agentsSet = new HashSet();
             for (StudyParticipantPriorTherapyAgent agent : agents) {
+                if (agent.getChemoAgent() == null) continue;
                 if (!agentsSet.add(agent.getChemoAgent().getName())) {
                     hasDuplicateAg = true;
                 }

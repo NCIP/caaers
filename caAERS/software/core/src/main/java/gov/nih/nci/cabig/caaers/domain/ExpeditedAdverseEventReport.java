@@ -827,8 +827,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
                 addSaeReportPriorTherapies(priorTherapy);
             }
         }
-
-
     }
 
 

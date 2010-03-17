@@ -94,11 +94,14 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     public void addUniquePriorTherapyAgent(StudyParticipantPriorTherapyAgent newAgent) {
+        if (newAgent == null || newAgent.getChemoAgent() == null) return;
+
         if (getPriorTherapyAgents() == null) {
             priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
         }
 
         for (StudyParticipantPriorTherapyAgent existingAgent : getPriorTherapyAgents()) {
+            if (existingAgent.getChemoAgent() == null) continue;
             if (existingAgent.getName().equals(newAgent.getName())) return;
         }
 
