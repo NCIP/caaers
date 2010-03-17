@@ -256,8 +256,20 @@ public class DetailsTab extends StudyTab {
 
     @Override
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
-
         super.postProcess(request, command, errors);
+
+        String action = request.getParameter("_action");
+
+        //
+        if (action != null && action.equals("deleteCS")) {
+
+        }
+
+        //
+        if (action != null && action.equals("deleteFS")) {
+
+        }
+
         if (errors.hasErrors()) {
             return;
         }

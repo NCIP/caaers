@@ -13,6 +13,18 @@
 
 	<script language="JavaScript">
 
+        function fireDelete(action) {
+            fireAction(action);
+        }
+        
+       function fireAction(action){
+             ValidationManager.validate = false; 
+             var form = document.getElementById('command')
+             form._target.name='_noname';
+             form._action.value=action;
+             form.submit();
+       }
+
 	Event.observe(window, "load", function() {
 
         if ($('study.aeTerminology.term').options[0].selected) {
@@ -132,7 +144,8 @@
 
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
   <jsp:attribute name="repeatingFields">
-
+    <input type="hidden" name="_action" value="">
+      
         <p><tags:instructions code="study.study_details.study.top"/></p>
         <c:forEach items="${fieldGroups.studyDetails.fields}" var="field">
             <tags:renderRow field="${field}"/>
@@ -185,7 +198,7 @@
         <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
             <div class="row">
                 <div class="label"><ui:label path="${fieldGroups.ccFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.ccFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.ccFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.ccFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.ccFieldGroup.fields[0].required}"/></div>
-                <div class="value">${command.study.studyCoordinatingCenter.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="javascript:alert('1');" type="button"/></div>
+                <div class="value">${command.study.studyCoordinatingCenter.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="fireDelete('deleteCS');" type="button"/></div>
             </div>
         </c:if>
         <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
@@ -198,7 +211,7 @@
           <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
               <div class="row">
                   <div class="label"><ui:label path="${fieldGroups.fsFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.fsFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.fsFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.fsFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.fsFieldGroup.fields[0].required}"/></div>
-                  <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="javascript:alert('2');" type="button"/></div>
+                  <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" type="submit" onclick="fireDelete('deleteFS');"/></div>
               </div>
           </c:if>
           <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
