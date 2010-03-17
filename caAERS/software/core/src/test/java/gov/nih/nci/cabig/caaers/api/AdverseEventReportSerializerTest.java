@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.exolab.castor.mapping.Mapping;
 import org.exolab.castor.xml.Unmarshaller;
@@ -56,7 +57,11 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 		reportingPeriod.addAeReport(aeReport);
 		//treatmentassignments
 		aeReport.getTreatmentInformation().getTreatmentAssignment().setStudy(study);
-		
+
+        Report r = Fixtures.createReport( "test");
+        r.setId(3);
+        r.getReportDefinition().setReportType(ReportType.NOTIFICATION);
+        aeReport.getReports().add(r);
 		
 		Thread currentThread = Thread.currentThread();
 		for(int i = 0; i < 30; i++ ){
@@ -113,7 +118,9 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 			try {
 				SecurityTestUtils.switchToSuperuser();
 				Thread.sleep(sleep);
-				String xml = serializer.serialize(aeReport, aeReport.getReports().get(0));
+                List<Report> reports = aeReport.getReports();
+                Report r =  reports.get(0);
+				String xml = serializer.serialize(aeReport,r);
 			}catch(Exception e) {
 				parentThread.interrupt(); //interrupt the parent thread so that we can stop testing. 
 				e.printStackTrace();
