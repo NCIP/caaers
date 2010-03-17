@@ -56,4 +56,16 @@ public class StateInfoInterceptor  extends HandlerInterceptorAdapter{
 		}
 		
 	}
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HttpSession session = request.getSession();
+        String requestUrl = request.getRequestURL().toString();
+        if (requestUrl.contains("studySubjectGridId")) {
+            session.removeAttribute(SELECTED_COURSE_ID);
+            session.removeAttribute(SELECTED_PARTICIPANT_ID);
+            session.removeAttribute(SELECTED_STUDY_ID);
+        }
+        return super.preHandle(request, response, handler);
+    }
 }
