@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Biju Joseph
  */
-public class SAEReportPriorTherapyTest extends CaaersTestCase {
+public class SAEReportPriorTherapyTest extends AbstractTestCase {
 
 
     private StudyParticipantPriorTherapy studyParticipantPriorTherapy;
@@ -100,8 +101,9 @@ public class SAEReportPriorTherapyTest extends CaaersTestCase {
 
     }
 
+    //will copy if chemo-agent is not null
     public void testCreateSAEReportPriorTherapyForAgent() {
-
+        studyParticipantPriorTherapy.getPriorTherapyAgents().get(0).setChemoAgent(new ChemoAgent());
         SAEReportPriorTherapy saeReportPriorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
 
         assertNotNull(saeReportPriorTherapy.getPriorTherapyAgents().size());
@@ -115,6 +117,15 @@ public class SAEReportPriorTherapyTest extends CaaersTestCase {
         for (PriorTherapyAgent studyParticipantPriorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgentsInternal()) {
             assertSame(saeReportPriorTherapy, studyParticipantPriorTherapyAgent.getSaeReportPriorTherapy());
         }
+
+
+    }
+
+    //will not copy if chemo-agent is  null
+    public void testCreateSAEReportPriorTherapyForAgentWhileChemoAgentIsNull() {
+        SAEReportPriorTherapy saeReportPriorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
+
+        assertEquals(0, saeReportPriorTherapy.getPriorTherapyAgents().size());
 
 
     }
