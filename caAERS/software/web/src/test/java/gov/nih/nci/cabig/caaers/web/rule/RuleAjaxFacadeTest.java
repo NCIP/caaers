@@ -125,7 +125,7 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 		ReportDefinition rDef = Fixtures.createReportDefinition("test Report Definition");
 		testOrg.addReportDefinition(rDef);
 		
-		expect(facade.getOrganizationDao().getByName("test Org")).andReturn(testOrg);
+		//expect(facade.getOrganizationDao().getByName("test Org")).andReturn(testOrg);
 		expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
 		
 		replayMocks();
