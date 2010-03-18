@@ -323,7 +323,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 	
 	
-	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, String userId){
+	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		
 		if(participant != null){
@@ -343,18 +343,26 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 		List<AdverseEventReportingPeriodDTO> reportingPeriodDTOs = new ArrayList<AdverseEventReportingPeriodDTO>();
 		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
-			if(reportingPeriod.getWorkflowId() != null && isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus)){
+			if(reportingPeriod.getWorkflowId() != null && isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus) && isReportingPeriodHavingReportsWithSpecifiedStatus(reportingPeriod, reportStatus)){
 				AdverseEventReportingPeriodDTO reportingPeriodDTO = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod, userId);
 				
 				//check the Reports
 				if(reportingPeriod.getAeReports() != null){
 					for(ExpeditedAdverseEventReport aeReport : reportingPeriod.getAeReports()){
-						if(!aeReport.hasWorkflowOnActiveReports()) continue; //this report is prior to workflow integration
+						if(!aeReportHasWorkflowOnActiveReports(aeReport)) continue; //this report is prior to workflow integration
 						ExpeditedAdverseEventReportDTO reportDTO = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
 						if(reportDTO.hasActionsToDo()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
 					}//aereport
 				}
 				
+				if(reportStatus != null){
+					// The search criteria involves reportStatus. So a check needs to be made incase if there are any reports
+					// in the reportingPeriodDTO. Otherwise the reportingPeriod shouldnt be displayed.
+					// Incase we dont do so and the person logged in has some routing actions to take for the course workflow,
+					// the reportingPeriod will be displayed in the results.
+					if(reportingPeriodDTO.getActiveAeReports() == null || reportingPeriodDTO.getActiveAeReports().isEmpty())
+						continue;
+				}
 				//only add the dto, if there is action to do.
 				if(reportingPeriodDTO.hasActionsToDo()) reportingPeriodDTOs.add(reportingPeriodDTO);	
 			}
@@ -363,6 +371,37 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		return reportingPeriodDTOs;
 	}
+	
+	/**
+	 * This method will return true if the dataCollection (aeReport) has workflow enabled on any active reports. Reports with status
+	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status 
+	 * 'Completed' is considered to be inactive reports.
+	 */
+	public boolean aeReportHasWorkflowOnActiveReports(ExpeditedAdverseEventReport aeReport){
+		boolean hasWorkflowOnActiveReports = false;
+    	for(Report r: getActiveReportsForAeReport(aeReport))
+    		if(r.getWorkflowId() != null)
+    			hasWorkflowOnActiveReports = true;
+    	return hasWorkflowOnActiveReports;
+	}
+	
+	/**
+	 * This method returns the list of active reports. Reports with status
+	 * other than (Withdrawn, Replaced or Amended) are considered to be active reports. In caAERS context even reports with status 
+	 * 'Completed' is considered to be inactive reports.
+	 * @param aeReport
+	 * @return
+	 */
+	private List<Report> getActiveReportsForAeReport(ExpeditedAdverseEventReport aeReport){
+		List<Report> reports = aeReport.getReports();
+        if (reports.isEmpty()) return reports;
+        List<Report> activeReports = new ArrayList<Report>();
+        for (Report report : reports) {
+            if (!report.isHavingStatus(ReportStatus.AMENDED, ReportStatus.WITHDRAWN, ReportStatus.REPLACED)) activeReports.add(report);
+        }
+        return activeReports;
+	}
+	
 	/**
 	 * Will return true, if the entity has the specified review status. 
 	 * @param rp - An {@link AdverseEventReportingPeriod}
@@ -382,6 +421,25 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			}
 		}
 		return false; //nor reporting period or report(s) has the status mentioned
+	}
+	
+	/**
+	 * Will return true, if the reportingPeriod has any report with the specified reportStatus
+	 * @param rp - An {@link AdverseEventReportingPeriod}
+	 * @param rs - A {@link ReportStatus}
+	 * @return - true if the reporting period has any report with the specified reportStatus
+	 */
+	protected boolean isReportingPeriodHavingReportsWithSpecifiedStatus(AdverseEventReportingPeriod rp, ReportStatus rs){
+		if(rs == null) return true;
+		if(rp.getActiveAeReports() != null){
+			for(ExpeditedAdverseEventReport aeReport : rp.getActiveAeReports()){
+				for(Report report: aeReport.getReports()){
+					if(report.getStatus() != null && report.getStatus().equals(rs))
+						return true; // there exists a report with the specified report status.
+				}
+			}
+		}
+		return false; // there are no reports with the specified report status
 	}
 	
 	/**

@@ -235,8 +235,9 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		Study study = Fixtures.createStudy("Hello");
 		StudySite studySite = new StudySite();
 		ReviewStatus reviewStatus = null;
+		ReportStatus reportStatus = null;
 		
-		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, studySite, reviewStatus, userId);
+		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, studySite, reviewStatus, reportStatus, userId);
 		
 		verifyMocks();
 		
@@ -248,7 +249,26 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		boolean result = impl.isReportingPeriodHavingSpecifiedReviewStatus(rp, null);
 		assertTrue(result);
-		
+	}
+	
+	public void testIsReportingPeriodHavingReportsWithSpecifiedStatusPositive() {
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.COMPLETED);
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.addReport(report);
+		rp.addAeReport(aeReport);
+		assertTrue(impl.isReportingPeriodHavingReportsWithSpecifiedStatus(rp, ReportStatus.COMPLETED));
+	}
+	
+	public void testIsReportingPeriodHavingReportsWithSpecifiedStatusNegative(){
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.INPROCESS);
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.addReport(report);
+		rp.addAeReport(aeReport);
+		assertFalse(impl.isReportingPeriodHavingReportsWithSpecifiedStatus(rp, ReportStatus.COMPLETED));
 	}
 
 	public void testIsEntityHavingSpecifiedReviewStatus() {
@@ -266,6 +286,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, report);
 		assertTrue(result);
 	}
+	
+	
 	
 	public void testAdvanceReportWorkflow(){
 		Integer id = 10;
@@ -445,5 +467,23 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		List<String> filteredTransitions = impl.nextTransitionNamesForReportWorkflow(report, "SYSTEM_ADMIN");
 		verifyMocks();
 		assertEquals(2, filteredTransitions.size());
+	}
+	
+	public void testAeReportHasWorkflowOnActiveReportsWithActiveReports(){
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.COMPLETED);
+		report.setWorkflowId(1);
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.addReport(report);
+		assertTrue("aeReportHasWorkflowOnActive reports should have returned true", impl.aeReportHasWorkflowOnActiveReports(aeReport));
+	}
+	
+	public void testAeReportHasWorkflowOnActiveReportsWithInactiveReports(){
+		Report report = Fixtures.createReport("test report");
+		report.setStatus(ReportStatus.AMENDED);
+		report.setWorkflowId(2);
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.addReport(report);
+		assertFalse("aeReportHasWorkflowOnActive reports should have returned false", impl.aeReportHasWorkflowOnActiveReports(aeReport));
 	}
 }
