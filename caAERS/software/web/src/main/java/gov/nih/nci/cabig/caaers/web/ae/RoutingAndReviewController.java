@@ -104,7 +104,7 @@ public class RoutingAndReviewController extends SimpleFormController{
 		String userId = SecurityUtils.getUserLoginName();
 		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
-    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), userId);
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), cmd.getReportStatus(), userId);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
         	processPaginationSubmission(request, cmd, modelAndView);
@@ -150,7 +150,6 @@ public class RoutingAndReviewController extends SimpleFormController{
     		newPageNumber = 1;
     	}
     	
-    	
     	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
 		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
 		if(endIndex > command.getSearchResultsDTO().getTotalResultCount())
@@ -178,18 +177,8 @@ public class RoutingAndReviewController extends SimpleFormController{
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
     	
-    	if(cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy() && !cmd.criteriaHasSite()){
-    		errors.reject("RAR_004", "Missing study or study site information");
-    		return;
-    	}
-    	
-    	if(cmd.criteriaHasSite() && !cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy()){
+    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy()){
     		errors.reject("RAR_005", "Missing study or subject information");
-    	}
-    	
-    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasSite() && !cmd.criteriaHasStudy()){
-    		errors.reject("RAR_006", "Missing study or subject or study site information");
-    		return;
     	}
     }
     
@@ -225,16 +214,14 @@ public class RoutingAndReviewController extends SimpleFormController{
     	this.studySiteDao = studySiteDao;
     }
     
-    
-    
     public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
 		return adverseEventRoutingAndReviewRepository;
 	}
+    
     public void setAdverseEventRoutingAndReviewRepository(
 			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
-    
     
     public void setConfiguration(Configuration configuration){
     	this.configuration = configuration;
