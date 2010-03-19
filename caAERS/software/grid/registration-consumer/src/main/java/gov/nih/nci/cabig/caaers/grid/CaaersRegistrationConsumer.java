@@ -66,7 +66,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
     private ConfigProperty configurationProperty;
 
-
     private AuthorizationSwitch authorizationSwitch;
 
     private StudyParticipantAssignmentAspect assignmentAspect;
@@ -117,8 +116,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                 throw exp;
             }
-            String siteNCICode = registration.getStudySite().getHealthcareSite(0)
-                            .getNciInstituteCode();
+            String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
             StudySite site = findStudySite(study, siteNCICode);
             if (site == null) {
                 String message = "The study '" + study.getShortTitle()
@@ -139,27 +137,22 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             }
 
             String mrn = findMedicalRecordNumber(registration.getParticipant());
-            Participant participant = fetchParticipant(mrn);
+            Participant participant = fetchParticipant(mrn,site);
 
+            if(participant != null && participant.isAssignedToStudySite(site)) {
+                StringBuilder message = new StringBuilder("Participant with MRN : ")
+                .append(mrn)
+                .append(", is already associated to the Study (Coordinating Center Identifier :")
+                .append(ccIdentifier).append(" )") ;
+                logger.error(message.toString());
+                RegistrationConsumptionException exp = getRegistrationConsumptionException(message.toString());
+                throw exp;
+            }
+            
             if (participant == null) {
                 participant = createParticipant(registration);
-                createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
-            } else {
-
-                logger.info("The participant identified by MRN :" + mrn
-                                + ", already available, so using existing participant");
-                if (participant.isAssignedToStudySite(site)) {
-                	logger.error  ("Already this participant is associated to the study, so throwing exception");
-                    String message = "Participant with MRN : "
-                                    + mrn
-                                    + ", is already associated to the Study (Coordinating Center Identifier :"
-                                    + ccIdentifier + ")";
-                    RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
-                    throw exp;
-                }
-                createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
-
             }
+            createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
             participantDao.save(participant);
             logger.info("End of registration-register");
             return registration;
@@ -187,72 +180,36 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
         logger.info("Begining of registration-rollback");
         try {
-
-            String mrn = findMedicalRecordNumber(registration.getParticipant());
-            Participant participant = fetchParticipant(mrn);
-            if (participant == null) {
-            	logger.error("Unable to find the participant with MRN :" + mrn);
-                return;
-            }
-
-            boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository
-                            .checkIfEntityWasCreatedByUrl(participant.getClass(), participant
-                                            .getId(), registrationConsumerGridServiceUrl);
-            if (!checkIfEntityWasCreatedByGridService) {
-            	logger.error("Participant was not created by the grid service url:"
-                                + registrationConsumerGridServiceUrl
-                                + " so can not rollback this registration:" + participant.getId());
-                return;
-            }
-
-            logger.info("Subject (id:" + participant.getId()
-                            + ") was created by the grid service url:"
-                            + registrationConsumerGridServiceUrl);
-
-            // check if this subject was created one minute before or not
+        	
             Calendar calendar = Calendar.getInstance();
-            boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository
-                            .checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant
-                                            .getClass(), participant.getId(), calendar,
-                                            rollbackInterval);
-            if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
-            	logger.error("Participant was not created one minute before the current time:"
-                                + calendar.getTime().toString()
-                                + " so can not rollback this registration:" + participant.getId());
-                return;
-
+            StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getByGridId(registration.getGridId());
+            if(assignment != null){
+            	boolean checkIfAssignmentWasCreatedOneMinuteBeforeCurrentTime = 
+        					auditHistoryRepository.checkIfEntityWasCreatedMinutesBeforeSpecificDate(
+																			    					assignment.getClass(),
+																			    					assignment.getId(),
+																			    					calendar,
+																			    					rollbackInterval);
+            	
+            	Participant participant = assignment.getParticipant();
+            	
+    			boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.checkIfEntityWasCreatedMinutesBeforeSpecificDate(
+    					participant.getClass(), 
+						participant.getId(),
+						calendar,
+						rollbackInterval);
+            	
+        		if(checkIfAssignmentWasCreatedOneMinuteBeforeCurrentTime && checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime){
+        			participantDao.delete(participant);
+        		}else if(checkIfAssignmentWasCreatedOneMinuteBeforeCurrentTime && !checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime){
+        			participant.getAssignments().remove(assignment);
+                    participantDao.save(participant);
+        		}else{
+        			logger.info("StudyParticipantAssignment was not created one minute before the current time:"
+                            + calendar.getTime().toString()
+                            + " so can not rollback this assignment:" + assignment.getId());
+        		}
             }
-            logger.info("Participant was created one minute before the current time:"
-                            + calendar.getTime().toString());
-
-            if (participant.getAssignments().size() <= 1) {
-                logger
-                                .info("The participant is assigned to only one study, so removing the participant");
-                participantDao.delete(participant);
-            } else {
-                logger.info("Removing only the assignment");
-
-                String ccIdentifier = findCoordinatingCenterIdentifier(registration);
-                Study study = fetchStudy(ccIdentifier,
-                                OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-
-                if (study == null) {
-                    String message = "Study identified by Coordinating Center Identifier '"
-                                    + ccIdentifier + "' doesn't exist";
-                    RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
-                    throw exp;
-                }
-
-                String siteNCICode = registration.getStudySite().getHealthcareSite(0)
-                                .getNciInstituteCode();
-                StudySite site = findStudySite(study, siteNCICode);
-
-                StudyParticipantAssignment assignment = participant
-                                .getStudyParticipantAssignment(site);
-                participant.getAssignments().remove(assignment);
-                participantDao.save(participant);
-            }
-
         } catch (Exception exp) {
             exp.printStackTrace();
             logger.error(exp);
@@ -428,10 +385,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         return study;
     }
 
-    Participant fetchParticipant(String mrn) {
+    Participant fetchParticipant(String mrn,StudySite site) {
         ParticipantQuery query = new ParticipantQuery();
         query.joinOnIdentifiers();
         query.filterByIdentifierValueExactMatch(mrn);
+        query.filterByStudySiteId(site.getId());
         List<Participant> participants = participantDao.searchParticipant(query);
         if (participants == null || participants.isEmpty()) return null;
         return participants.get(0);

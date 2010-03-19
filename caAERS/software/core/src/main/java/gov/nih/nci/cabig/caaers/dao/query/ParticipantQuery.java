@@ -87,7 +87,11 @@ public class ParticipantQuery extends AbstractQuery {
     public void excludeHavingEthnicity(final String ethnicity) {
         andWhere("p.ethnicity != :" + ETHNITICTY);
         setParameter(ETHNITICTY, ethnicity);
-
     }
-
+    
+    public void filterByStudySiteId(Integer studySiteId){
+    	andWhere("p.id in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id=:"
+                + STUDY_SITE_ID + ")");
+    	setParameter(STUDY_SITE_ID, studySiteId);
+    }
 }
