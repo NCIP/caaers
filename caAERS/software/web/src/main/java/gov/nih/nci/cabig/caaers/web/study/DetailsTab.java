@@ -258,6 +258,7 @@ public class DetailsTab extends StudyTab {
     public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
         super.postProcess(request, command, errors);
 
+/*
         String action = request.getParameter("_action");
 
         //
@@ -269,6 +270,7 @@ public class DetailsTab extends StudyTab {
         if (action != null && action.equals("deleteFS")) {
 
         }
+*/
 
         if (errors.hasErrors()) {
             return;

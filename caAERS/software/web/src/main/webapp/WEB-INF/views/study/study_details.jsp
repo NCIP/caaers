@@ -13,17 +13,16 @@
 
 	<script language="JavaScript">
 
-        function fireDelete(action) {
-            fireAction(action);
+        function _update(d) {
+            jQuery('#' + d + '_autocompleter').show();
+            jQuery('#' + d + '_readonly').hide();
         }
-        
-       function fireAction(action){
-             ValidationManager.validate = false; 
-             var form = document.getElementById('command')
-             form._target.name='_noname';
-             form._action.value=action;
-             form.submit();
-       }
+
+        function _cancel(d) {
+            jQuery('#' + d + '_autocompleter').hide();
+            jQuery('#' + d + '_readonly').show();
+        }
+
 
 	Event.observe(window, "load", function() {
 
@@ -78,7 +77,6 @@
         showDiseaseMeddraTerms();
 
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
-        if ($('study.primaryFundingSponsorOrganization')) {
             AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
                  function(autocompleter, text) {
                     createStudy.restrictOrganizations(text, function(values) {
@@ -100,9 +98,8 @@
                  }
 
             );
-        }
 
-        if ($('study.studyCoordinatingCenter.organization')) {
+
             AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
                 function(autocompleter, text) {
                     createStudy.restrictOrganizations(text, function(values) {
@@ -125,7 +122,7 @@
                     return image + "" +organization.name + nciInstituteCode
                 }
                 );
-        }
+
 
 		//populate the name of the associated organization in sponsor & coordinating center field
 		<c:if test="${not empty command.study.primaryFundingSponsorOrganization.fullName}">
@@ -194,31 +191,56 @@
          </c:forEach>
      </chrome:division>
 
+
+
+
+
+    <c:set var="hasCC" value="${command.study.studyCoordinatingCenter.organization != null}" />
+    <c:set var="hasFS" value="${command.study.primaryFundingSponsor.organization != null}" />
+
+    <c:set var="ccField" value="${fieldGroups.ccFieldGroup.fields[0]}" />
+    <c:set var="fsField" value="${fieldGroups.fsFieldGroup.fields[0]}" />
+
+
     <chrome:division title="Coordinating center details">
-        <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
-            <div class="row">
-                <div class="label"><ui:label path="${fieldGroups.ccFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.ccFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.ccFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.ccFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.ccFieldGroup.fields[0].required}"/></div>
-                <div class="value">${command.study.studyCoordinatingCenter.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" onclick="fireDelete('deleteCS');" type="button"/></div>
+        <c:if test="${hasCC}">
+            <div class="row" id="_cc_readonly">
+                <div class="label"><ui:label path="${ccField.propertyName}" labelProperty="${ccField.attributes.labelProperty}" text="${ccField.displayName}" mandatory="${ccField.attributes.mandatory}" required="${ccField.required}"/></div>
+                <div class="value">${command.study.studyCoordinatingCenter.organization}&nbsp;<tags:button icon="edit" size="small" value="Update" color="blue" onclick="_update('_cc');" type="button"/></div>
             </div>
         </c:if>
-        <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
-            <tags:renderRow field="${fieldGroups.ccFieldGroup.fields[0]}" />
-        </c:if>
+
+
+        <div class="row" style="display: ${hasCC ? 'none' : ''}" id="_cc_autocompleter">
+            <div class="label"><ui:label path="${ccField.propertyName}" labelProperty="${ccField.attributes.labelProperty}" text="${ccField.displayName}" mandatory="${ccField.attributes.mandatory}" required="${ccField.required}"/></div>
+            <div class="value"><ui:autocompleter path="${ccField.propertyName}" />&nbsp;<c:if test="${hasCC}"><tags:button icon="x" size="small" value="Cancel" color="blue" onclick="_cancel('_cc');" type="button"/></c:if></div>
+        </div>
+
         <tags:renderRow field="${fieldGroups.ccFieldGroup.fields[1]}" />
     </chrome:division>
 
     <chrome:division title="Funding sponsor details">
-          <c:if test="${command.study.studyCoordinatingCenter.organization != null}">
-              <div class="row">
-                  <div class="label"><ui:label path="${fieldGroups.fsFieldGroup.fields[0].propertyName}" labelProperty="${fieldGroups.fsFieldGroup.fields[0].attributes.labelProperty}" text="${fieldGroups.fsFieldGroup.fields[0].displayName}" mandatory="${fieldGroups.fsFieldGroup.fields[0].attributes.mandatory}" required="${fieldGroups.fsFieldGroup.fields[0].required}"/></div>
-                  <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="x" size="small" value="Delete" color="blue" type="submit" onclick="fireDelete('deleteFS');"/></div>
-              </div>
-          </c:if>
-          <c:if test="${command.study.studyCoordinatingCenter.organization == null}">
-              <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[0]}" />
-          </c:if>
-          <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[1]}" />
-      </chrome:division>
+
+        <c:if test="${hasFS}">
+            <div class="row" id="_fs_readonly">
+                <div class="label"><ui:label path="${ccField.propertyName}" labelProperty="${ccField.attributes.labelProperty}" text="${ccField.displayName}" mandatory="${ccField.attributes.mandatory}" required="${ccField.required}"/></div>
+                <div class="value">${command.study.primaryFundingSponsor.organization}&nbsp;<tags:button icon="edit" size="small" value="Update" color="blue" onclick="_update('_fs');" type="button"/></div>
+            </div>
+        </c:if>
+
+
+        <div class="row" style="display: ${hasFS ? 'none' : ''}" id="_fs_autocompleter">
+            <div class="label"><ui:label path="${fsField.propertyName}" labelProperty="${fsField.attributes.labelProperty}" text="${fsField.displayName}" mandatory="${fsField.attributes.mandatory}" required="${fsField.required}"/></div>
+            <div class="value"><ui:autocompleter path="${fsField.propertyName}" />&nbsp;<c:if test="${hasFS}"><tags:button icon="x" size="small" value="Cancel" color="blue" onclick="_cancel('_fs');" type="button"/></c:if></div>
+        </div>
+
+        <tags:renderRow field="${fieldGroups.fsFieldGroup.fields[1]}" />
+    </chrome:division>
+
+
+
+
+      
   </jsp:attribute>
 
 </tags:tabForm>
