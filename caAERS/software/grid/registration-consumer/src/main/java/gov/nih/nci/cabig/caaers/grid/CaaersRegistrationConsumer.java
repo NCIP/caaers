@@ -119,13 +119,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
             StudySite site = findStudySite(study, siteNCICode);
             if (site == null) {
-                String message = "The study '" + study.getShortTitle()
-                                + "', identified by Coordinating Center Identifier '"
-                                + ccIdentifier
-                                + "' is not associated to a site identified by NCI code :'"
-                                + siteNCICode + "'";
+                StringBuilder message = new StringBuilder("The study '")
+                        .append( study.getShortTitle())
+                        .append("', identified by Coordinating Center Identifier '")
+                        .append( ccIdentifier )
+                        .append("' is not associated to a site identified by NCI code :'" )
+                        .append(siteNCICode ).append("'");
 
-                throw getRegistrationConsumptionException(message);
+                throw getRegistrationConsumptionException(message.toString());
 
             }
             Boolean dataEntryStatus = study.getDataEntryStatus();
@@ -136,21 +137,29 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             	throw exp;
             }
 
-            String mrn = findMedicalRecordNumber(registration.getParticipant());
-            Participant participant = fetchParticipant(mrn,site);
+            //find the subject identifier.
+            IdentifierType subjectIdentifierType = findSubjectIdentifierType(registration.getParticipant().getIdentifier(), site);
+
+            //find the identifier to query on
+            String subjectIdValue = subjectIdentifierType == null ?
+                    findMedicalRecordNumber(registration.getParticipant()) : subjectIdentifierType.getValue();
+
+            //fetch the participant
+            Participant participant = fetchParticipant(subjectIdValue,site);
             
-            if(participant != null && participant.isAssignedToStudySite(site)) {
+            if(participant != null) {
+                //already assigned to study site.
                 StringBuilder message = new StringBuilder("Participant with MRN : ")
-                .append(mrn)
-                .append(", is already associated to the Study (Coordinating Center Identifier :")
-                .append(ccIdentifier).append(" )") ;
+                    .append(subjectIdValue)
+                    .append(", is already associated to the Study (Coordinating Center Identifier :")
+                    .append(ccIdentifier).append(" )") ;
                 logger.error(message.toString());
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message.toString());
                 throw exp;
             }
             
             if (participant == null) {
-                participant = createParticipant(registration);
+                participant = createParticipant(registration, createSubjectIdentifier(subjectIdValue, site));
             }
             createStudyParticipantAssignment(registration.getGridId(), participant, site, registration.getIdentifier());
             participantDao.save(participant);
@@ -230,7 +239,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         return e;
     }
 
-    Participant createParticipant(Registration registration) throws InvalidRegistrationException {
+    /**
+     * Will create a Participant object from the registration input. 
+     * @param registration
+     * @param subjectIdentifier
+     * @return
+     * @throws InvalidRegistrationException
+     */
+    Participant createParticipant(Registration registration, Identifier subjectIdentifier) throws InvalidRegistrationException {
         ParticipantType partBean = registration.getParticipant();
         Participant participant = new Participant();
 
@@ -242,6 +258,9 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         participant.setLastName(partBean.getLastName());
         participant.setRace(partBean.getRaceCode());
 
+        participant.addIdentifier(subjectIdentifier);
+
+        //add rest of the identifiers
         populateIdentifiers(participant, partBean.getIdentifier());
         List<Identifier> participantIdentifiers = participant.getIdentifiers();
         if (participantIdentifiers == null || participantIdentifiers.isEmpty()) {
@@ -253,8 +272,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         return participant;
     }
 
-    void populateIdentifiers(Participant participant, IdentifierType[] identifierTypes)
-                    throws InvalidRegistrationException {
+    /**
+     * Will populate the identifiers, based on the IdentifierType supplied in the message.
+     * @param participant
+     * @param identifierTypes
+     * @throws InvalidRegistrationException
+     */
+    void populateIdentifiers(Participant participant, IdentifierType[] identifierTypes) throws InvalidRegistrationException {
+
         if (identifierTypes == null) {
             logger.info("The participant has no identifiers.");
             return;
@@ -264,6 +289,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         for (Lov lov : identifierLovs) {
             knownIdentifierTypes.add(lov.getCode());
         }
+
+        knownIdentifierTypes.remove("Other");
 
         for (IdentifierType identifierType : identifierTypes) {
             if (!knownIdentifierTypes.contains(identifierType.getType())) {
@@ -300,43 +327,105 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         }
     }
 
+    /**
+     * Will return the identifier value, associated to identifier type MRN.
+     * @param participant
+     * @return
+     * @throws InvalidRegistrationException
+     */
     String findMedicalRecordNumber(ParticipantType participant) throws InvalidRegistrationException {
-        String pIdentifier = findIdentifierOfType(participant.getIdentifier(),
-                        SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        List<IdentifierType> identifierTypeList = findIdentifiersOfType(participant.getIdentifier(),SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE, null);
 
-        if (pIdentifier == null) {
+        if (identifierTypeList.isEmpty()) {
             logger.info("The participant has no identifiers.");
             throw getInvalidRegistrationException("There is no identifier associated to this participant, Medical Record Number(MRN) is needed to register this participant");
         }
-        return pIdentifier;
+
+        return identifierTypeList.get(0).getValue();
     }
 
     /*
      * Finds the coordinating center identifier for the sutdy
      */
-    String findCoordinatingCenterIdentifier(Registration registration)
-                    throws InvalidRegistrationException {
-        String ccIdentifier = findIdentifierOfType(registration.getStudyRef().getIdentifier(),
-                        OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+    String findCoordinatingCenterIdentifier(Registration registration) throws InvalidRegistrationException {
+        List<IdentifierType> identifierTypeList = findIdentifiersOfType(registration.getStudyRef().getIdentifier(),
+                        OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE, null);
 
-        if (ccIdentifier == null) {
+        if (identifierTypeList.isEmpty()) {
             String message = "In StudyRef-Identifiers, Coordinating Center Identifier is not available";
             throw getInvalidRegistrationException(message);
         }
-        return ccIdentifier;
+        return identifierTypeList.get(0).getValue();
 
     }
 
-    private String findIdentifierOfType(IdentifierType[] idTypes, String ofType) {
-        if (idTypes == null) return null;
-        for (IdentifierType idType : idTypes) {
-            if (idType instanceof OrganizationAssignedIdentifierType
-                            && StringUtils.equals(idType.getType(), ofType)) {
-                return idType.getValue();
+    /**
+     * Will find the subject identifier type from list of identifier type.
+     *
+     * @param idTypes - List of IdentifierType 
+     * @param studySite - A valid StudySite
+     * @return  - the IdentifierType which is the primary and assigned by the Site. 
+     */
+    private IdentifierType findSubjectIdentifierType(IdentifierType[] idTypes, StudySite studySite){
+       List<IdentifierType> existingIdentifierTypes = findIdentifiersOfType(idTypes,
+               "Other", studySite.getOrganization().getNciInstituteCode());
+        if(existingIdentifierTypes.isEmpty()) return null;
+        return existingIdentifierTypes.get(0);
+    }
+
+    /**
+     * Will create a subject identifier, which is the primary identifier of the subject.
+     * It should be of type Other, and assigned by the Organization to which this subject is registered.
+     * @param idTypeValue   - The value of this Identifier will be used.
+     * @param studySite - The organization of this study site will be used.
+     * @return - An organization assigned identifier. 
+     */
+    private OrganizationAssignedIdentifier createSubjectIdentifier(String idTypeValue, StudySite studySite){
+       OrganizationAssignedIdentifier orgIdentifier = new OrganizationAssignedIdentifier();
+       orgIdentifier.setOrganization(studySite.getOrganization());
+       orgIdentifier.setType("Other");
+       orgIdentifier.setPrimaryIndicator(true);
+       orgIdentifier.setValue(idTypeValue);
+       return orgIdentifier;
+    }
+
+    /**
+     * Will return all the organization identifiers matching a specific type. Will be further filtered by Organization
+     * holding the identifier if ofOrgNCICode is provided.
+     * @param idTypes - Identifiers to filter
+     * @param ofType  - Type to be used as filter (should not be null)
+     * @param ofOrgNCICode - A valid NCI code, if NULL, will not used for filtering.
+     * @return - a list of identifier types
+     */
+    private List<IdentifierType> findIdentifiersOfType(IdentifierType[] idTypes, String ofType, String ofOrgNCICode) {
+
+        ArrayList<IdentifierType> matchingIdTypes = new ArrayList<IdentifierType>();
+        
+        if(idTypes == null){
+            
+           for (IdentifierType idType : idTypes) {
+
+                //deal with only organization assigned identifiers
+                if(!(idType instanceof OrganizationAssignedIdentifierType)) continue;
+
+                OrganizationAssignedIdentifierType orgIdType = (OrganizationAssignedIdentifierType) idType;
+
+                //deal with identifier type, only if type code match
+                if(!StringUtils.equals(ofType, orgIdType.getType())) continue;
+
+                //deal with organization match when NCI code is provided
+                if(ofOrgNCICode != null && orgIdType.getHealthcareSite() != null){
+                    if(!StringUtils.equals(ofOrgNCICode, orgIdType.getHealthcareSite().getNciInstituteCode())) continue;
+                }
+
+                matchingIdTypes.add(idType);
             }
         }
-        return null;
+
+        return matchingIdTypes;
     }
+
+
 
     private StudySite findStudySite(Study study, String siteNCICode) {
         for (StudySite site : study.getStudySites()) {
@@ -384,10 +473,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         return study;
     }
 
-    Participant fetchParticipant(String mrn,StudySite site) {
+    Participant fetchParticipant(String idValue,StudySite site) {
         ParticipantQuery query = new ParticipantQuery();
         query.joinOnIdentifiers();
-        query.filterByIdentifierValueExactMatch(mrn);
+        query.filterByIdentifierValueExactMatch(idValue);
+        query.filterByIdentifierTypeExactMatch("Other");
         query.filterByOrganizationId(site.getOrganization().getId());
         List<Participant> participants = participantDao.searchParticipant(query);
         if (participants == null || participants.isEmpty()) return null;
