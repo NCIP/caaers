@@ -54,7 +54,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
-    private static final Log logger = LogFactory.getLog(CaaersRegistrationConsumer.class);
+	private static final Log logger = LogFactory.getLog(CaaersRegistrationConsumer.class);
 
     private OrganizationRepository organizationRepository;
 
@@ -138,7 +138,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn,site);
-
+            
             if(participant != null && participant.isAssignedToStudySite(site)) {
                 StringBuilder message = new StringBuilder("Participant with MRN : ")
                 .append(mrn)
@@ -164,7 +164,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             logger.error("Error while registering", e);
             throw new RemoteException("Error while registering", e);
         }
-
     }
 
     private RegistrationConsumptionException getRegistrationConsumptionException(String message) {
@@ -186,7 +185,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             if(assignment != null){
             	boolean checkIfAssignmentWasCreatedOneMinuteBeforeCurrentTime = 
         					auditHistoryRepository.checkIfEntityWasCreatedMinutesBeforeSpecificDate(
-																			    					assignment.getClass(),
+        																							StudyParticipantAssignment.class,
 																			    					assignment.getId(),
 																			    					calendar,
 																			    					rollbackInterval);
@@ -194,7 +193,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             	Participant participant = assignment.getParticipant();
             	
     			boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.checkIfEntityWasCreatedMinutesBeforeSpecificDate(
-    					participant.getClass(), 
+    					Participant.class, 
 						participant.getId(),
 						calendar,
 						rollbackInterval);
@@ -389,7 +388,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
         ParticipantQuery query = new ParticipantQuery();
         query.joinOnIdentifiers();
         query.filterByIdentifierValueExactMatch(mrn);
-        query.filterByStudySiteId(site.getId());
+        query.filterByOrganizationId(site.getOrganization().getId());
         List<Participant> participants = participantDao.searchParticipant(query);
         if (participants == null || participants.isEmpty()) return null;
         return participants.get(0);
