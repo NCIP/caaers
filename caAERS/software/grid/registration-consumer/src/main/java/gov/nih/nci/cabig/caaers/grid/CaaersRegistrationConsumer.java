@@ -401,7 +401,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
 
         ArrayList<IdentifierType> matchingIdTypes = new ArrayList<IdentifierType>();
         
-        if(idTypes == null){
+        if(idTypes != null){
             
            for (IdentifierType idType : idTypes) {
 
