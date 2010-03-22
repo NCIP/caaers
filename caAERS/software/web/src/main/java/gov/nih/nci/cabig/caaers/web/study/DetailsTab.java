@@ -2,12 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.Design;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -286,7 +281,20 @@ public class DetailsTab extends StudyTab {
             }
         }
 
+        if (!command.getPrevCC().equals(command.getStudy().getStudyCoordinatingCenter())) {
+            command.getStudyRepository().clearStudyPersonnel(command.getStudy().getStudyCoordinatingCenter());
+            command.getStudyRepository().clearStudyInvestigators(command.getStudy().getStudyCoordinatingCenter());
+            command.setPrevCC(command.getStudy().getStudyCoordinatingCenter());
+        }
+        
+        if (!command.getPrevFS().equals(command.getStudy().getPrimaryFundingSponsor())) {
+            command.getStudyRepository().clearStudyPersonnel(command.getStudy().getPrimaryFundingSponsor());
+            command.getStudyRepository().clearStudyInvestigators(command.getStudy().getPrimaryFundingSponsor());
+            command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
+        }
+        
         command.getStudyRepository().synchronizeStudyPersonnel(command.getStudy());
+
     }
 
     public CtcDao getCtcDao() {

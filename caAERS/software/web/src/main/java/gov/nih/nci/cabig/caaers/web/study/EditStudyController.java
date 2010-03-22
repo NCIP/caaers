@@ -73,6 +73,9 @@ public class EditStudyController extends StudyController<StudyCommand> {
         command.setOtherTherapyType(study.hasTherapyOfType(StudyTherapyType.OTHER));
         command.setRadiationTherapyType(study.hasTherapyOfType(StudyTherapyType.RADIATION));
         command.setSurgeryTherapyType(study.hasTherapyOfType(StudyTherapyType.SURGERY));
+
+        command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
+        command.setPrevCC(command.getStudy().getStudyCoordinatingCenter());
         
         return command;
     }

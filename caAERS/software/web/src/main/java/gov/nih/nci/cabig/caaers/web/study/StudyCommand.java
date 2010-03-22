@@ -82,6 +82,9 @@ public class StudyCommand {
     
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
+    protected StudyCoordinatingCenter prevCC;
+    protected StudyFundingSponsor prevFS;
+    
     public StudyCommand(StudyDao studyDao, InvestigationalNewDrugDao investigationalNewDrugDao) {
     	this.studyDao = studyDao;
     	this.investigationalNewDrugDao = investigationalNewDrugDao;
@@ -577,5 +580,21 @@ public class StudyCommand {
 
     public void setPrimaryStudyDisease(Integer primaryStudyDisease) {
         this.primaryStudyDisease = primaryStudyDisease;
+    }
+
+    public StudyCoordinatingCenter getPrevCC() {
+        return prevCC;
+    }
+
+    public void setPrevCC(StudyCoordinatingCenter prevCC) {
+        this.prevCC = prevCC;
+    }
+
+    public StudyFundingSponsor getPrevFS() {
+        return prevFS;
+    }
+
+    public void setPrevFS(StudyFundingSponsor prevFS) {
+        this.prevFS = prevFS;
     }
 }

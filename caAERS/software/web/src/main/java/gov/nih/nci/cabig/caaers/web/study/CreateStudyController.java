@@ -84,6 +84,10 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         command.setAllInvestigatorRoles(configPropertyRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE));
         command.populateRoleNamesMap();
         command.setStudyRepository(this.getStudyRepository());
+
+        command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
+        command.setPrevCC(command.getStudy().getStudyCoordinatingCenter());
+        
         return command;
     }
 

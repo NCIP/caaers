@@ -10,25 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.INDHolder;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
-import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
-import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
@@ -289,12 +271,22 @@ public class StudyRepository {
     }
 
     @Transactional(readOnly = false)
+    public void clearStudyPersonnel(StudyOrganization so) {
+        so.getStudyPersonnels().clear();
+    }
+
+    @Transactional(readOnly = false)
+    public void clearStudyInvestigators(StudyOrganization so) {
+        so.getStudyInvestigators().clear();
+    }
+
+    @Transactional(readOnly = false)
     public void synchronizeStudyPersonnel(Study study) {
         //Identify newly added StudyOrganizations to associate ResearchStaff
         //whose associateAllStudies flag is set to true.
         ResearchStaffQuery query = null;
         List<ResearchStaff> researchStaffs = null;
-        for(StudyOrganization studyOrganization : study.getStudyOrganizations()){
+        for(StudyOrganization studyOrganization : study.getStudyOrganizations()) {
             if (studyOrganization.getOrganization() == null) continue;
             researchStaffs = new ArrayList<ResearchStaff>();
             query= new ResearchStaffQuery();
