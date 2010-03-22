@@ -374,7 +374,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
        orgIdentifier.setOrganization(studySite.getOrganization());
        orgIdentifier.setType("Other");
        orgIdentifier.setPrimaryIndicator(true);
-       orgIdentifier.setValue(idTypeValue);
+       orgIdentifier.setValue(idTypeValue+"-caAERS");
        return orgIdentifier;
     }
 
@@ -465,7 +465,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
     Participant fetchParticipant(String idValue,StudySite site) {
         ParticipantQuery query = new ParticipantQuery();
         query.joinOnIdentifiers();
-        query.filterByIdentifierValueExactMatch(idValue);
+        query.filterByIdentifierValueExactMatch(idValue+"-caAERS");
         query.filterByIdentifierTypeExactMatch("Other");
         query.filterByOrganizationId(site.getOrganization().getId());
         List<Participant> participants = participantDao.searchParticipant(query);
