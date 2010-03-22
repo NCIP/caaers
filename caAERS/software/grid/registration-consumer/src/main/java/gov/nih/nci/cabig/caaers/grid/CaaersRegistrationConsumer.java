@@ -147,17 +147,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumerI {
             //fetch the participant
             Participant participant = fetchParticipant(subjectIdValue,site);
             
-            if(participant != null) {
-                //already assigned to study site.
-                StringBuilder message = new StringBuilder("Participant with MRN : ")
-                    .append(subjectIdValue)
-                    .append(", is already associated to the Study (Coordinating Center Identifier :")
-                    .append(ccIdentifier).append(" )") ;
-                logger.error(message.toString());
-                RegistrationConsumptionException exp = getRegistrationConsumptionException(message.toString());
-                throw exp;
-            }
-            
             if (participant == null) {
                 participant = createParticipant(registration, createSubjectIdentifier(subjectIdValue, site));
             }
