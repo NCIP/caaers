@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -179,7 +180,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
             for (int j=0; j<command.getParticipant().getIdentifiers().size(); j++) {
                 Identifier pID = command.getParticipant().getIdentifiers().get(j);
                 if (pID == null || pID.getValue() == null) return;
-                if (sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
+
+                if ( ( sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase()) && StringUtils.equals(sID.getType(), pID.getType()) ) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
                     errors.reject("ERR_DUPLICATE_SITE_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
             }
