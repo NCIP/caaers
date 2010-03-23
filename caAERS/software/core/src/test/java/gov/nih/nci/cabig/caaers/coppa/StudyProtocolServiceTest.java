@@ -21,30 +21,29 @@ import edu.duke.cabig.c3pr.esb.OperationNameEnum;
 import edu.duke.cabig.c3pr.esb.ServiceTypeEnum;
 import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
 import edu.emory.mathcs.backport.java.util.Arrays;
-import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
 public class StudyProtocolServiceTest extends TestCase {
 	
 	
-//	public void testStudyProtocol_search() throws Exception{
-//		List<String> payLoads = new ArrayList<String>();
-//		String limitOffSetXml = CoppaPAObjectFactory.getLimitOffsetXML(5, 0);
-//		String studyProtocolSearchXml = CoppaPAObjectFactory.getStudyProtocolSearchXML();
-//		payLoads.add(studyProtocolSearchXml);
-//		payLoads.add(limitOffSetXml);
-//		Metadata mData = new Metadata(OperationNameEnum.search.getName(), "caAERS", ServiceTypeEnum.STUDY_PROTOCOL.getName());
-//		String paServiceResponse = sendMessage(payLoads,mData);
-//		assertNotNull(paServiceResponse);
-//		System.out.println("################### StudyProtocolService.search Start#################");
-//		System.out.println(paServiceResponse);
-//		System.out.println("################### StudyProtocolService.search End#################");
-//		List<String> results = XMLUtil.getObjectsFromCoppaResponse(paServiceResponse);
-//		for (String result:results) {
-//			gov.nih.nci.coppa.services.pa.StudyProtocol studyProtocol = CoppaPAObjectFactory.getStudyProtocolObject(result);
-//			System.out.println(studyProtocol.getAssignedIdentifier().getExtension());
-//		}
-//	}
+	public void testStudyProtocol_search_() throws Exception{
+		List<String> payLoads = new ArrayList<String>();
+		String limitOffSetXml = CoppaPAObjectFactory.getLimitOffsetXML(5, 0);
+		String studyProtocolSearchXml = CoppaPAObjectFactory.getStudyProtocolSearchXML("getShortTitle", null, null);
+		payLoads.add(studyProtocolSearchXml);
+		payLoads.add(limitOffSetXml);
+		Metadata mData = new Metadata(OperationNameEnum.search.getName(), "caAERS", ServiceTypeEnum.STUDY_PROTOCOL.getName());
+		String paServiceResponse = sendMessage(payLoads,mData);
+		assertNotNull(paServiceResponse);
+		System.out.println("################### StudyProtocolService.search Start#################");
+		System.out.println(paServiceResponse);
+		System.out.println("################### StudyProtocolService.search End#################");
+		List<String> results = XMLUtil.getObjectsFromCoppaResponse(paServiceResponse);
+		for (String result:results) {
+			gov.nih.nci.coppa.services.pa.StudyProtocol studyProtocol = CoppaPAObjectFactory.getStudyProtocolObject(result);
+			System.out.println(studyProtocol.getAssignedIdentifier().getExtension());
+		}
+	}
 	
 	public void testStudyProtocol_search() throws Exception{
 		
