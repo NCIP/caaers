@@ -37,6 +37,11 @@
 			<include name="xmltask-v1.13.jar" />
 		</fileset>
 	</path>
+	<path id="dbunittaskdef.cp">
+		<fileset dir="${basedir}/resources/lib">
+			<include name="dbunit-2.1.jar" />
+		</fileset>
+	</path>
 	<path id="customlib.cp">
 		<fileset dir="${basedir}/resources/custom_libs">
 			<include name="**/*.jar" />
@@ -449,9 +454,7 @@
 		<migrate classpathRef="bering.classpath" driver="${datasource.driver}" dialect="${bering.dialect}" url="${datasource.url}" userid="${database.userid}" password="${database.password}" migrationsDir="${jar.extract.dir}/db/migrate" />
 	</target>
 	<target name="csm-init">
-		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
-			<classpath location="${extract.dir}/WEB-INF/lib/dbunit-2.1.jar" />
-		</taskdef>
+		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="dbunittaskdef.cp" />
 	</target>
 	<target name="insert-csm-policy" depends="csm-init,define-vars" if="should.run.csm.policy">
 		<dbunit driver="${datasource.driver}" url="${datasource.url}" userid="${database.userid}" password="${database.password}">
@@ -516,6 +519,7 @@
 
 	</target>
 	<target name="finished" description="clean up">
+		<delete dir="${temp.dir}" />
 		<echo message="System set up is complete " />
 	</target>
 </project>
