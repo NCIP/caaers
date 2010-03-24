@@ -68,7 +68,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/list"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/routingAndReview"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS" />
 		<entry key="/pages/ae/generateExpeditedfPdf"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 
