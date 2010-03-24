@@ -91,7 +91,7 @@
             <table width="100%" cellspacing="1" cellpadding="2" style="font-size:10pt;">
                 <tr bgcolor="#E4E4E4">
                     <th><b><ui:label path="reportingPeriod.cycleNumber" text="" labelProperty="reportingPeriod.treatmentAssignment" required="${reportingPeriod_treatmentAssignment_required}"/></b></th>
-                    <th><b>Description</b></th>
+                    <th><b><ui:label path="reportingPeriod.cycleNumber" text="" labelProperty="reportingPeriod.description" required="${reportingPeriod_treatmentAssignment_required}"/></b></th>
                 </tr>
                 <c:forEach items="${command.study.activeTreatmentAssignments}" var="ta">
                     <tr bgcolor="white">
