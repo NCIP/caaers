@@ -272,9 +272,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		
 		<!--  AE Flow, Submit -->
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SubmitReportResultTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
 		
         <!--========= RULES ========-->
 		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
