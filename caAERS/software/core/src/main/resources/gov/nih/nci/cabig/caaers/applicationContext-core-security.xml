@@ -197,19 +197,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.get*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.find*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.find*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.search*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
  
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
@@ -221,7 +221,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>  -->             
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS:READ"/>
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:ACCESS"/>
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.find(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
