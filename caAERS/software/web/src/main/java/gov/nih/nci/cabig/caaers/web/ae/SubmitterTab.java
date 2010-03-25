@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -42,17 +43,17 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
 
     private InputFieldGroup createPersonGroup(String person, String name) {
         String groupName = name == null ? person : name;
-        InputFieldGroup group = new DefaultInputFieldGroup(groupName, StringUtils
-                        .capitalize(person)
-                        + " details");
+        InputFieldGroup group = new DefaultInputFieldGroup(groupName, StringUtils.capitalize(person)+ " details");
         String base = "aeReport." + person + '.';
         group.getFields().add(InputFieldFactory.createTextField(base + "firstName", "First name", true));
         group.getFields().add(InputFieldFactory.createTextField(base + "middleName","Middle name", false));
         group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));
-        group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", true));
-        InputField phoneField = createContactField(base, ReportPerson.PHONE, "Phone", true);
+
+        group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", FieldValidator.EMAIL_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR));
+        InputField phoneField = createContactField(base, ReportPerson.PHONE, "Phone", FieldValidator.PHONE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
         phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
-        InputField faxField = createContactField(base, ReportPerson.FAX, "Fax", true);
+        InputField faxField = createContactField(base, ReportPerson.FAX, "Fax", FieldValidator.PHONE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
+
         faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         
         group.getFields().add(phoneField);
@@ -62,8 +63,8 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
     }
 
 
-    private InputField createContactField(String base, String contactType, String displayName, boolean required) {
-        return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']', displayName, required);
+    private InputField createContactField(String base, String contactType, String displayName, FieldValidator ... validator) {
+        return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']', displayName, validator);
     }
     
 
