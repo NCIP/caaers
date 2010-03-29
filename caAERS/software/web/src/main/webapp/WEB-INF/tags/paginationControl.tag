@@ -20,8 +20,9 @@
 <input type="hidden" name="paginationAction"/>
 <input type="hidden" name="study" value="${command.study.id }"/>
 <input type="hidden" name="participant" value="${command.participant.id}"/>
-<input type="hidden" name="studySite" value="${command.studySite.id }"/>
-<input type="hidden" name="reviewStatus" value="${command.reviewStatus.code }"/>
+<input type="hidden" name="organization" value="${command.organization.id }"/>
+<input type="hidden" name="reviewStatus" value="${command.reviewStatus }"/>
+<input type="hidden" name="reportStatus" value="${command.reportStatus }"/>
 <input type="hidden" name="numberOfResultsPerPage"/>
 <table class="toolbar" cellspacing="1" cellpadding="0" border="0">
 	<tbody>

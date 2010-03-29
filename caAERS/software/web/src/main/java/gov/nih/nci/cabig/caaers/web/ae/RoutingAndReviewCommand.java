@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author Sameer Sawant
@@ -23,7 +26,7 @@ public class RoutingAndReviewCommand{
 
     private Participant participant;
     
-    private StudySite studySite;
+    private Organization organization;
     
     private ReviewStatus reviewStatus;
     
@@ -33,16 +36,13 @@ public class RoutingAndReviewCommand{
     
     private HashMap<Object, Object> reviewStatusOptionsMap = new LinkedHashMap<Object, Object>();
     private HashMap<Object, Object> reportStatusOptionsMap = new LinkedHashMap<Object, Object>();
-    protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
+    
+    private List<ReviewStatus> reviewStatusList = new ArrayList<ReviewStatus>();
     protected static final Collection<ReportStatus> REPORT_STATUS = new ArrayList<ReportStatus>(8);
     
     private RoutingAndReviewSearchResultsDTO searchResultsDTO; 
     
     public RoutingAndReviewCommand() {
-    	REVIEW_STATUS.addAll(Arrays.asList(ReviewStatus.values()));
-    	reviewStatusOptionsMap.put("", "Please select");
-    	reviewStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REVIEW_STATUS, "name", "code", "displayName", ":  "));
-    	reviewStatusOptionsMap.putAll(WebUtils.collectOptions(REVIEW_STATUS, "name", "displayName"));
         REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));
         reportStatusOptionsMap.put("", "Please select");
         reportStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REPORT_STATUS, "name", "code", "displayName", ":  "));
@@ -65,14 +65,6 @@ public class RoutingAndReviewCommand{
 		this.participant = participant;
 	}
     
-    public StudySite getStudySite(){
-    	return studySite;
-    }
-    
-    public void setStudySite(StudySite studySite){
-    	this.studySite = studySite;
-    }
-    
     public ReviewStatus getReviewStatus(){
     	return reviewStatus;
     }
@@ -90,11 +82,15 @@ public class RoutingAndReviewCommand{
     }
     
     public boolean isSearchCriteriaStudyCentric(){
-    	return participant == null && study != null;
+    	return study != null;
     }
     
     public boolean isSearchCriteriaParticipantCentric() {
-    	return participant != null;
+    	return participant != null && study == null;
+    }
+    
+    public boolean isSearchCriteriaNeitherStudyNorParticipantCentric() {
+    	return study == null && participant == null;
     }
     
     public boolean criteriaHasParticipant() {
@@ -106,7 +102,7 @@ public class RoutingAndReviewCommand{
     }
     
     public boolean criteriaHasSite(){
-    	return studySite != null;
+    	return organization != null;
     }
     
     public boolean criteriaHasReviewStatus(){
@@ -158,4 +154,24 @@ public class RoutingAndReviewCommand{
     public void setWorkflowEnabled(boolean workflowEnabled){
     	this.workflowEnabled = workflowEnabled;
     }
+
+	public List<ReviewStatus> getReviewStatusList() {
+		return reviewStatusList;
+	}
+
+	public void setReviewStatusList(List<ReviewStatus> reviewStatusList) {
+		this.reviewStatusList = reviewStatusList;
+    	reviewStatusOptionsMap.put("", "Please select");
+    	reviewStatusOptionsMap.putAll(WebUtils.collectCustomOptions(reviewStatusList, "name", "code", "displayName", ":  "));
+    	reviewStatusOptionsMap.putAll(WebUtils.collectOptions(reviewStatusList, "name", "displayName"));
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+    
 }

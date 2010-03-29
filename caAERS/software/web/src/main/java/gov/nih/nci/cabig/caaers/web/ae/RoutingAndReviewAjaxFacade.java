@@ -3,11 +3,16 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
@@ -35,6 +40,8 @@ public class RoutingAndReviewAjaxFacade {
 	 private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	 private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator = new AdverseEventReportingPeriodValidator();
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	 private StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
+	 private OrganizationRepository organizationRepository;
 	 private ReportDao reportDao;
      private MessageSource messageSource;
 	 
@@ -95,6 +102,21 @@ public class RoutingAndReviewAjaxFacade {
 		return output;
 	}
 	
+	public List<StudySiteAjaxableDomainObject> matchSites(final String text, final Integer studyId){
+    	List<StudySiteAjaxableDomainObject> studySiteAjaxableList = new ArrayList<StudySiteAjaxableDomainObject>();
+    	List<Organization> organizations = organizationRepository.getApplicableOrganizationsFromStudySites(text, studyId);
+    	if(organizations != null){
+    		for(Organization org: organizations){
+    			StudySiteAjaxableDomainObject domainObject = new StudySiteAjaxableDomainObject();
+    			domainObject.setId(org.getId());
+    			domainObject.setName(org.getName());
+    			domainObject.setNciInstituteCode(org.getNciInstituteCode());
+    			studySiteAjaxableList.add(domainObject);
+    		}
+    	}
+    	return studySiteAjaxableList;
+    }
+	
 	protected WebContext getWebContext(){
     	return WebContextFactory.get();
     }
@@ -142,5 +164,22 @@ public class RoutingAndReviewAjaxFacade {
 	}
     public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
+	}
+
+	public StudySiteAjaxableDomainObjectRepository getStudySiteAjaxableDomainObjectRepository() {
+		return studySiteAjaxableDomainObjectRepository;
+	}
+
+	public void setStudySiteAjaxableDomainObjectRepository(
+			StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository) {
+		this.studySiteAjaxableDomainObjectRepository = studySiteAjaxableDomainObjectRepository;
+	}
+	
+	public void setOrganizationRepository(OrganizationRepository organizationRepository){
+		this.organizationRepository = organizationRepository;
+	}
+	
+	public OrganizationRepository getOrganizationRepository(){
+		return organizationRepository;
 	}
 }

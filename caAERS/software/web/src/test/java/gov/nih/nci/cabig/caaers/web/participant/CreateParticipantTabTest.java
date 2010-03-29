@@ -41,6 +41,9 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         	}
         	public List<Organization> getOrganizationsHavingStudySites() {
         		return new ArrayList<Organization>();
+        	} 
+        	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){
+        		return new ArrayList<Organization>();
         	}
 			public void convertToRemote(Organization localOrganization,
 					Organization remoteOrganization) {

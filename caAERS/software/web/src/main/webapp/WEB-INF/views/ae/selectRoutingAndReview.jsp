@@ -23,88 +23,9 @@
         }
 
     </style>
-    <tags:dwrJavascriptLink objects="createAE,createStudy"/>
-    <script type="text/javascript">
-        var participantAutocompleterProps = {
-            basename: "participant",
-            populator: function(autocompleter, text) {
-                createAE.matchParticipants(text, $('study').value, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-            valueSelector: function(obj) {
-                return obj.displayName
-            }
-        }
-
-        var studyAutocompleterProps = {
-            basename: "study",
-            populator: function(autocompleter, text) {
-                createAE.matchStudies(text, $('participant').value, ${command.ignoreCompletedStudy}, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-            valueSelector: function(obj) {
-                return obj.displayName;
-            }
-        }
-        
-        var siteAutocompleterProps = {
-        	basename: "studySite",
-        	populator: function(autocompleter, text){
-        		createAE.matchSites(text, $('study').value, function(values) {
-        			autocompleter.setChoices(values)
-        		})
-        	},
-        	valueSelector: function(obj) {
-        		return obj.displayName;
-        	}
-        }
-
-        function acPostSelect(mode, selectedChoice) {
-            Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
-            $(mode.basename).value = selectedChoice.id;
-            $(mode.basename + '-selected').show()
-            new Effect.Highlight(mode.basename + "-selected")
-        }
-
-        function updateSelectedDisplay(mode) {
-            if ($(mode.basename).value) {
-                Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-                $(mode.basename + '-selected').show()
-            }
-        }
-
-        function acCreate(mode) {
-            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-                    mode.populator, {
-                valueSelector: mode.valueSelector,
-                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                    acPostSelect(mode, selectedChoice)
-                },
-                indicator: mode.basename + "-indicator",
-                minChars : AE.autocompleterChars , 
-                frequency : AE.autocompleterDelay
-            })
-            Event.observe(mode.basename + "-clear", "click", function() {
-                $(mode.basename + "-selected").hide()
-                $(mode.basename).value = ""
-                $(mode.basename + "-input").value = ""
-            })
-        }
-/*
-        Event.observe(window, "load", function() {
-            acCreate(participantAutocompleterProps)
-            acCreate(studyAutocompleterProps)
-            acCreate(siteAutocompleterProps)
-            updateSelectedDisplay(participantAutocompleterProps)
-            updateSelectedDisplay(studyAutocompleterProps)
-            updateSelectedDisplay(siteAutocompleterProps)
-            initSearchField()
-        })
-*/  
-	</script>
-</head>
+    <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
+    
+        </head>
 <body>
 <chrome:flashMessage/>
 <c:if test="${!command.workflowEnabled}">
@@ -165,17 +86,17 @@
 					<jsp:attribute name="label">Study site
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="studySite"  initialDisplayValue="${empty command.studySite  ? 'Begin typing here...' : command.studySite.organization.fullName}" enableClearButton="true" size="50">
+						<ui:autocompleter path="organization"  initialDisplayValue="${empty command.organization  ? 'Begin typing here...' : command.organization.fullName}" enableClearButton="true" size="50">
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text){
-        							createStudy.matchSites(text, $('study').value, function(values) {
+        							routingAndReview.matchSites(text, $('study').value, function(values) {
         								autocompleter.setChoices(values)
         							})
         						}
 							</jsp:attribute>
 							<jsp:attribute name="selectorJS">
 								function(obj) {
-        							return obj.name;
+        							return obj.displayName;
         						}
 							</jsp:attribute>
 						</ui:autocompleter>			

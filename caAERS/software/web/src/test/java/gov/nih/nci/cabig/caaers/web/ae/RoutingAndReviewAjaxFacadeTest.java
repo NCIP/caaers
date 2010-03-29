@@ -2,6 +2,11 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
@@ -9,6 +14,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static org.easymock.EasyMock.expect;
@@ -25,14 +31,17 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
 	private MessageSource messageSource;
+	private OrganizationRepository organizationRepository;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
+		organizationRepository = registerMockFor(OrganizationRepositoryImpl.class);
 		facade = new RoutingAndReviewAjaxFacade();
 		facade.setAdverseEventReportingPeriodDao(adverseEventReportingPeriodDao);
 		facade.setAdverseEventReportingPeriodValidator(adverseEventReportingPeriodValidator);
+		facade.setOrganizationRepository(organizationRepository);
         messageSource = (MessageSource) getDeployedApplicationContext().getBean("messageSource");
         facade.setMessageSource(messageSource);
 	}
@@ -82,5 +91,18 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		AjaxOutput output = facade.validateTransition(1, "Submit to Data Coordinator");
 		assertNull("ObjectContent populated incorrectly when there were no errors", output.getObjectContent());
 		verifyMocks();
+	}
+	
+	public void testMatchSites() throws Exception{
+		Organization org1 = Fixtures.createOrganization("org1");
+		Organization org2 = Fixtures.createOrganization("org2");
+		List<Organization> orgList = new ArrayList<Organization>();
+		orgList.add(org1);
+		orgList.add(org2);
+		expect(organizationRepository.getApplicableOrganizationsFromStudySites("test", 1)).andReturn(orgList);
+		replayMocks();
+		List<StudySiteAjaxableDomainObject> list = facade.matchSites("test", 1);
+		verifyMocks();
+		assertEquals("Incorrect number of studySiteAjaxableDomainObjects", 2, list.size());
 	}
 }

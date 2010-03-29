@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -42,9 +45,13 @@ public class RoutingAndReviewController extends SimpleFormController{
     
     private StudySiteDao studySiteDao;
     
+    private OrganizationDao organizationDao;
+    
     private Configuration configuration;
     
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    
+    private WorkflowService workflowService;
     
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
@@ -67,6 +74,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	RoutingAndReviewCommand command = new RoutingAndReviewCommand();
     	command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+    	command.setReviewStatusList(workflowService.allowedReviewStatuses(SecurityUtils.getUserLoginName()));
         return command;
     }
     
@@ -75,9 +83,11 @@ public class RoutingAndReviewController extends SimpleFormController{
                     throws Exception {
         ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
-        ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
+        ControllerTools.registerGridDomainObjectEditor(binder, "organization", organizationDao);
+        //ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(ReviewStatus.class, new EnumByNameEditor(ReviewStatus.class));
+        binder.registerCustomEditor(ReportStatus.class, new EnumByNameEditor(ReportStatus.class));
     }
     
     /**
@@ -91,9 +101,12 @@ public class RoutingAndReviewController extends SimpleFormController{
         
     	boolean hasParticipant = paramNames.contains("participant");
         boolean hasStudy = paramNames.contains("study");
+        boolean hasSite = paramNames.contains("organization");
+        boolean hasReportStatus = paramNames.contains("reportStatus");
+        boolean hasReviewStatus = paramNames.contains("reviewStatus");
         String paginationAction = (String)findInRequest(request, PAGINATION_ACTION);
         
-        return hasParticipant || hasStudy || paginationAction != null;
+        return hasParticipant || hasStudy || hasSite || hasReportStatus || hasReviewStatus || paginationAction != null;
     }
     
    
@@ -104,8 +117,8 @@ public class RoutingAndReviewController extends SimpleFormController{
 		String userId = SecurityUtils.getUserLoginName();
 		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
-    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), cmd.getReportStatus(), userId);
-        	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getOrganization(), cmd.getReviewStatus(), cmd.getReportStatus(), userId);
+        	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.isSearchCriteriaParticipantCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
         	processPaginationSubmission(request, cmd, modelAndView);
         	
@@ -177,8 +190,8 @@ public class RoutingAndReviewController extends SimpleFormController{
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
     	
-    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy()){
-    		errors.reject("RAR_005", "Missing study or subject information");
+    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy() && !cmd.criteriaHasSite() && !cmd.criteriaHasReviewStatus() && !cmd.criteriaHasReportStatus()){
+    		errors.reject("RAR_004", "Missing search criterion");
     	}
     }
     
@@ -223,6 +236,14 @@ public class RoutingAndReviewController extends SimpleFormController{
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
     
+    public WorkflowService getWorkflowService(){
+    	return workflowService;
+    }
+    
+    public void setWorkflowService(WorkflowService workflowService){
+    	this.workflowService = workflowService;
+    }
+    
     public void setConfiguration(Configuration configuration){
     	this.configuration = configuration;
     }
@@ -230,4 +251,8 @@ public class RoutingAndReviewController extends SimpleFormController{
     public Configuration getConfiguration(){
     	return configuration;
     }
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
 }

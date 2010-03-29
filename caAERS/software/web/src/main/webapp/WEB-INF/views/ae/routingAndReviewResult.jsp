@@ -217,14 +217,16 @@ color:#0033FF;
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >
 	<c:if test="${command.searchResultsDTO.resultCount gt 0}">
-		<div class="row">
-			<div class="summarylabel">
-				${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}
-			</div>
-			<div class="summaryvalue">
-				${command.searchResultsDTO.header}
-			</div>
-   		</div>
+		<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
+			<div class="row">
+				<div class="summarylabel">
+					${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}
+				</div>
+				<div class="summaryvalue">
+					${command.searchResultsDTO.header}
+				</div>
+   			</div>
+   		</c:if>
     	<table width="100%" cellspacing="1" cellpadding="0" border="0">
 	   		<tr>
 				<td style="padding-top:15px;padding-left:15px;">
@@ -237,14 +239,36 @@ color:#0033FF;
 			<tr>
 				<td witdh="100%">
 					<c:forEach items="${command.searchResultsDTO.filteredResultMap}" var="resultEntry">
-						<div class="row" style="margin-top:30px; margin-bottom:0;">
-							<div class="summarylabel">
-								${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}
+						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
+							<div class="row" style="margin-top:30px; margin-bottom:0;">
+								<div class="summarylabel">
+									${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}
+								</div>
+								<div class="summaryvalue">
+									${resultEntry.value.header}
+								</div>
 							</div>
-							<div class="summaryvalue">
-								${resultEntry.value.header}
+						</c:if>
+						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == true}">
+							<c:if test="${resultEntry.value.groupHeader != null and resultEntry.value.groupHeader != ''}">
+								<div class="row">
+									<div class="summarylabel">
+										Study
+									</div>
+									<div class="summaryvalue">
+										${resultEntry.value.groupHeader}
+									</div>
+								</div>
+							</c:if>
+							<div class="row" style="margin-top:30px; margin-bottom:0;">
+								<div class="summarylabel">
+									Subject
+								</div>
+								<div class="summaryvalue">
+									${resultEntry.value.header}
+								</div>
 							</div>
-						</div>
+						</c:if>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
    	 						<thead>
       							<tr align="center" class="label">
