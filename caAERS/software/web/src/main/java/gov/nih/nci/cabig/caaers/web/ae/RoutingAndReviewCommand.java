@@ -44,6 +44,10 @@ public class RoutingAndReviewCommand{
     
     public RoutingAndReviewCommand() {
         REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));
+        REPORT_STATUS.remove(ReportStatus.AMENDED);
+        REPORT_STATUS.remove(ReportStatus.WITHDRAWN);
+        REPORT_STATUS.remove(ReportStatus.REPLACED);
+        REPORT_STATUS.remove(ReportStatus.WITHDRAW_FAILED);
         reportStatusOptionsMap.put("", "Please select");
         reportStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REPORT_STATUS, "name", "code", "displayName", ":  "));
         reportStatusOptionsMap.putAll(WebUtils.collectOptions(REPORT_STATUS, "name", "displayName"));
