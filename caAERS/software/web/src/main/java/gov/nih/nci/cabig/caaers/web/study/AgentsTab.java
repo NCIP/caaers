@@ -52,6 +52,7 @@ public class AgentsTab extends StudyTab {
     public AgentsTab() {
         super("Agents", "Agents", "study/study_agents");
         // setAutoPopulateHelpKey(true);
+        indTypeMap.put("", "Please select");
         for (INDType indType : INDType.values()) {
             indTypeMap.put(indType.name(), indType.getDisplayName());
         }
