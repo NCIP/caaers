@@ -3,7 +3,7 @@
 <html>
  <head>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
-    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="true" 
+    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="${command.associatedToLabAlerts}" 
     		display="${command.assignment.labLoads != null and fn:length(command.assignment.labLoads) > 0 ? '' : 'none'}" workflowType="reportingPeriod" reportingPeriod="${command.adverseEventReportingPeriod }">
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">

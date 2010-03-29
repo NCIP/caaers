@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -93,6 +94,13 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		assertFalse(command.isHavingSolicitedAEs());
 		
 	}
+	
+	public void testIsAssociatedToLabAlers(){
+		StudyParticipantAssignment assignment = Fixtures.createAssignment();
+		reportingPeriod.setAssignment(assignment);
+		assertFalse(command.isAssociatedToLabAlerts());
+	}
+	
 	public void testIsHavingSolicitedAEsYesOneSolicited(){
 		AdverseEvent ae1 = new AdverseEvent();
 		CtcTerm ctcTerm = Fixtures.createCtcTerm("abc", "ef");
