@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import org.apache.commons.lang.StringUtils;
+
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -190,6 +193,15 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     @SuppressWarnings("unchecked")
     public List<Organization> getOrganizationsHavingStudySites() {
         return getHibernateTemplate().find("select distinct ss.organization from StudySite ss order by ss.organization.name");
+    }
+    
+    /**
+     * get list of organization which are study sites based on text matching and study identifier
+     * @return The list of organizations
+     */
+    @SuppressWarnings("unchecked")
+    public List<Organization> getApplicableOrganizationsFromStudySites(final OrganizationFromStudySiteQuery query){
+    	return (List<Organization>) search(query);
     }
     
     /**

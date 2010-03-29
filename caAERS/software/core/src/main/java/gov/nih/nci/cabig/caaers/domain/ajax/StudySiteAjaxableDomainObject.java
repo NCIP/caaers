@@ -45,6 +45,17 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
         this.name = name;
     }
     
+    public String getDisplayName(){
+    	StringBuffer displayNameBuffer = new StringBuffer();
+    	displayNameBuffer.append(name);
+    	if(nciInstituteCode != null && !nciInstituteCode.equals("")){
+    		displayNameBuffer.append("(");
+    		displayNameBuffer.append(nciInstituteCode);
+    		displayNameBuffer.append(")");
+    	}
+    	return displayNameBuffer.toString();
+    }
+    
     public boolean equals(Object arg0) {
         if (arg0 == null) {
             return false;

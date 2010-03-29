@@ -6,6 +6,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
@@ -90,7 +91,7 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     
     public void testGetOrganizationsHavingStudySites(){
     	List<Organization> orgs = getDao().getOrganizationsHavingStudySites();
-    	assertEquals(0, orgs.size());
+    	assertEquals(1, orgs.size());
     }
     
     public void testGetBySubNames(){
@@ -98,4 +99,10 @@ public class OrganizationDaoTest extends DaoNoSecurityTestCase<OrganizationDao> 
     	assertEquals(0,orgs.size());
     }
     
+    public void testGetApplicableStudySites(){
+    	OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
+    	query.filterByOrganizationName("New");
+    	List<Organization> orgs = getDao().getApplicableOrganizationsFromStudySites(query);
+    	assertEquals(1, orgs.size());
+    }
 }

@@ -323,7 +323,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 	
 	
-	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId){
+	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		
 		if(participant != null){
@@ -334,8 +334,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			query.filterByStudy(study.getId());
 		}
 		
-		if(studySite != null){
-			query.filterByStudySite(studySite.getId());
+		if(organization != null){
+			query.filterByOrganization(organization.getId());
 		}
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = adverseEventReportingPeriodDao.findAdverseEventReportingPeriods(query);

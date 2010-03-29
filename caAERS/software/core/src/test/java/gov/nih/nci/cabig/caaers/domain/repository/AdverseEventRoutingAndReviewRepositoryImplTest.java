@@ -233,11 +233,11 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		Participant participant = Fixtures.createParticipant("Joel", "biju");
 		Study study = Fixtures.createStudy("Hello");
-		StudySite studySite = new StudySite();
+		Organization org = Fixtures.createOrganization("test org");
 		ReviewStatus reviewStatus = null;
 		ReportStatus reportStatus = null;
 		
-		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, studySite, reviewStatus, reportStatus, userId);
+		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, org, reviewStatus, reportStatus, userId);
 		
 		verifyMocks();
 		

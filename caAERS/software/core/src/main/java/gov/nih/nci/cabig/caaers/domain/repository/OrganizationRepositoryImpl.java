@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -205,6 +206,17 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  		}        
     	List<Organization> remoteOrganizations = organizationDao.getRemoteOrganizations(searchCriteria);
     	return remoteOrganizations;
+ 	}
+ 	
+ 	@SuppressWarnings("unchecked")
+ 	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){
+ 		OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
+ 		if(text != null && !text.equals(""))
+ 			query.filterByOrganizationName(text);
+ 		if(studyId != null)
+ 			query.filterByStudy(studyId);
+ 		List<Organization> organizations = organizationDao.getApplicableOrganizationsFromStudySites(query);
+ 		return organizations;
  	}
  	
  	@SuppressWarnings("unchecked")

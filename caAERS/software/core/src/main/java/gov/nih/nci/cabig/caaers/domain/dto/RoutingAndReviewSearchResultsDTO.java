@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.dto;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,26 +18,74 @@ public class RoutingAndReviewSearchResultsDTO {
 	private Study study;
 	private String header;
 	private boolean studyCentric;
+	private boolean participantCentric;
 	
 	
-	Map<Integer, RoutingAndReviewSearchResultDTO> resultMap;
-	Map<Integer, RoutingAndReviewSearchResultDTO> filteredResultMap;
+	Map<String, RoutingAndReviewSearchResultDTO> resultMap;
+	Map<String, RoutingAndReviewSearchResultDTO> filteredResultMap;
+	Map<Integer, List<AdverseEventReportingPeriodDTO>> studyToDTOListMap;
 
-	public RoutingAndReviewSearchResultsDTO(boolean studyCentric, Participant participant, Study study, List<AdverseEventReportingPeriodDTO> list) {
+	public RoutingAndReviewSearchResultsDTO(boolean studyCentric, boolean participantCentric, Participant participant, Study study, List<AdverseEventReportingPeriodDTO> list) {
 		super();
 		this.participant = participant;
 		this.study = study;
 		this.studyCentric = studyCentric;
+		this.participantCentric = participantCentric;
 		
 		if(studyCentric){
 			this.header = "(" + study.getPrimaryIdentifierValue() + ") " + study.getShortTitle() ;
-		}else{
+		}else if(participantCentric){
 			this.header = "(" + participant.getPrimaryIdentifierValue() + ") " + participant.getFullName() ;
 		}
 		
-		resultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
-		filteredResultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		resultMap = new LinkedHashMap<String, RoutingAndReviewSearchResultDTO>();
+		filteredResultMap = new LinkedHashMap<String, RoutingAndReviewSearchResultDTO>();
+		studyToDTOListMap = new LinkedHashMap<Integer, List<AdverseEventReportingPeriodDTO>>();
 		populateResults(list);
+		if(!studyCentric && !participantCentric)
+			populateNeitherStudyNorParticipantCentricResults(list);
+	}
+	
+	public void populateNeitherStudyNorParticipantCentricResults(List<AdverseEventReportingPeriodDTO> list){
+		//First populate a map with
+		for(AdverseEventReportingPeriodDTO rpDTO:list){
+			RoutingAndReviewSearchResultDTO resultDTO = null;
+			if(studyToDTOListMap.containsKey(rpDTO.getStudy().getId())){
+				List<AdverseEventReportingPeriodDTO> searchResultList = studyToDTOListMap.get(rpDTO.getStudy().getId());
+				searchResultList.add(rpDTO);
+			}else{
+				List<AdverseEventReportingPeriodDTO> searchResultList = new ArrayList<AdverseEventReportingPeriodDTO>();
+				searchResultList.add(rpDTO);
+				studyToDTOListMap.put(rpDTO.getStudy().getId(), searchResultList);
+			}
+		}
+		// Now populate the resultMap from studyToDTOListMap
+		for(Integer id: studyToDTOListMap.keySet()){
+			List<AdverseEventReportingPeriodDTO> subList = studyToDTOListMap.get(id);
+			// This flag is to keep a check if the groupHeader is populated for the first record.
+			// Set the group header only for the first item. groupHeaderAdded flag is used to track this.
+			boolean groupHeaderAdded = false;
+			for(AdverseEventReportingPeriodDTO rpDTO: subList){
+				Participant groupedParticipant = rpDTO.getParticipant();
+				Study groupedStudy = rpDTO.getStudy();
+				RoutingAndReviewSearchResultDTO resultDto = null;
+				String combinedId = groupedStudy.getId() + "-" + groupedParticipant.getId();
+				if(resultMap.containsKey(combinedId)){
+					resultDto = resultMap.get(combinedId);
+				}else{
+					resultDto = new RoutingAndReviewSearchResultDTO();
+					String participantHeader = "(" + groupedParticipant.getPrimaryIdentifierValue() + ") " + groupedParticipant.getFullName();
+					resultDto.setHeader(participantHeader);
+					String studyHeader = "(" + groupedStudy.getPrimaryIdentifierValue() + ") " + groupedStudy.getShortTitle();
+					if(!groupHeaderAdded){
+						resultDto.setGroupHeader(studyHeader);
+						groupHeaderAdded = true;
+					}
+					resultMap.put(combinedId, resultDto);
+				}
+				resultDto.addResult(rpDTO);
+			}
+		}
 	}
 	
 	public void populateResults(List<AdverseEventReportingPeriodDTO> list){
@@ -45,26 +94,26 @@ public class RoutingAndReviewSearchResultsDTO {
 				//group by participant
 				Participant groupedParticipant = rpDTO.getParticipant();
 				RoutingAndReviewSearchResultDTO resultDto = null;
-				if(resultMap.containsKey(groupedParticipant.getId())){
-					resultDto = resultMap.get(groupedParticipant.getId());
+				if(resultMap.containsKey(groupedParticipant.getId().toString())){
+					resultDto = resultMap.get(groupedParticipant.getId().toString());
 				}else {
 					resultDto = new RoutingAndReviewSearchResultDTO();
 					String strHeader = "(" + groupedParticipant.getPrimaryIdentifierValue() + ") " + groupedParticipant.getFullName();
 					resultDto.setHeader(strHeader);
-					resultMap.put(groupedParticipant.getId(), resultDto); //add it to the map
+					resultMap.put(groupedParticipant.getId().toString(), resultDto); //add it to the map
 				}
 				resultDto.addResult(rpDTO);
-			}else {
+			}else if(participantCentric){
 				//group by study
 				Study groupedStudy = rpDTO.getStudy();
 				RoutingAndReviewSearchResultDTO resultDto = null;
-				if(resultMap.containsKey(groupedStudy.getId())){
-					resultDto = resultMap.get(groupedStudy.getId());
+				if(resultMap.containsKey(groupedStudy.getId().toString())){
+					resultDto = resultMap.get(groupedStudy.getId().toString());
 				}else{
 					resultDto = new RoutingAndReviewSearchResultDTO();
 					String strHeader =  "(" + groupedStudy.getPrimaryIdentifierValue() + ") " + groupedStudy.getShortTitle() ;
 					resultDto.setHeader(strHeader);
-					resultMap.put(groupedStudy.getId(), resultDto); //add it to the map
+					resultMap.put(groupedStudy.getId().toString(), resultDto); //add it to the map
 				}
 				
 				resultDto.addResult(rpDTO);
@@ -82,9 +131,9 @@ public class RoutingAndReviewSearchResultsDTO {
 	 */
 	public void filterResultMap(int startIndex, int endIndex){
 		int i = 0;
-		filteredResultMap = new LinkedHashMap<Integer, RoutingAndReviewSearchResultDTO>();
+		filteredResultMap = new LinkedHashMap<String, RoutingAndReviewSearchResultDTO>();
 		
-		for(Integer id: resultMap.keySet()){
+		for(String id: resultMap.keySet()){
 			RoutingAndReviewSearchResultDTO resultsDto = resultMap.get(id);
 			
 			for(AdverseEventReportingPeriodDTO dto : resultsDto.getResults()){
@@ -96,6 +145,7 @@ public class RoutingAndReviewSearchResultsDTO {
 					}else {
 						filteredResultDto = new RoutingAndReviewSearchResultDTO();
 						filteredResultDto.setHeader(resultsDto.getHeader());
+						filteredResultDto.setGroupHeader(resultsDto.getGroupHeader());
 						filteredResultMap.put(id, filteredResultDto); //add it to the map
 					}
 					filteredResultDto.addResult(dto);
@@ -138,20 +188,28 @@ public class RoutingAndReviewSearchResultsDTO {
 		this.studyCentric = studyCentric;
 	}
     
-	public Map<Integer, RoutingAndReviewSearchResultDTO> getResultMap() {
+	public Map<String, RoutingAndReviewSearchResultDTO> getResultMap() {
 		return resultMap;
 	}
 	public void setResultMap(
-			Map<Integer, RoutingAndReviewSearchResultDTO> resultMap) {
+			Map<String, RoutingAndReviewSearchResultDTO> resultMap) {
 		this.resultMap = resultMap;
 	}
 	
-	public Map<Integer, RoutingAndReviewSearchResultDTO> getFilteredResultMap(){
+	public Map<String, RoutingAndReviewSearchResultDTO> getFilteredResultMap(){
 		return filteredResultMap;
 	}
 	
-	public void setFilteredResultMap(Map<Integer, RoutingAndReviewSearchResultDTO> filteredResultMap){
+	public void setFilteredResultMap(Map<String, RoutingAndReviewSearchResultDTO> filteredResultMap){
 		this.filteredResultMap = filteredResultMap;
+	}
+	
+	public Map<Integer, List<AdverseEventReportingPeriodDTO>> getStudyToDTOListMap(){
+		return studyToDTOListMap;
+	}
+	
+	public void setStudyToDTOListMap(Map<Integer, List<AdverseEventReportingPeriodDTO>> studyToDTOListMap){
+		this.studyToDTOListMap = studyToDTOListMap;
 	}
 	
 	public int getResultCount(){
@@ -161,7 +219,7 @@ public class RoutingAndReviewSearchResultsDTO {
 	public int getTotalResultCount(){
 		int totalNumberOfResult = 0;
 		if(resultMap != null){
-			for(Integer id: resultMap.keySet()){
+			for(String id: resultMap.keySet()){
 				totalNumberOfResult += resultMap.get(id).getResults().size();
 			}
 		}

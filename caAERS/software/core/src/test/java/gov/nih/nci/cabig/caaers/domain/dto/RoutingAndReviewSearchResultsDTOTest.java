@@ -23,28 +23,41 @@ public class RoutingAndReviewSearchResultsDTOTest extends TestCase {
 		Study study = Fixtures.createStudy("test study");
 		Participant participant = Fixtures.createParticipant("fName", "lName");
 		Boolean studyCentric = true;
+		Boolean participantCentric = false;
 		List<AdverseEventReportingPeriodDTO> list = createStudyCentricList(study);
-		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participant, study, list);
+		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participantCentric, participant, study, list);
 		assertEquals("Incorrect number of entries in resultMap", 4, dto.getResultCount());
 		assertEquals("Incorrect number of AdverseEventReportingPeriodDTO entered in resultMap", 20, dto.getTotalResultCount());
 	}
 	
 	public void testPopulateResultsParticipantCentric() throws Exception{
-		Study study = Fixtures.createStudy("test study");
+		//Study study = Fixtures.createStudy("test study");
 		Participant participant = Fixtures.createParticipant("fName", "lName");
 		Boolean studyCentric = false;
+		Boolean participantCentric = true;
 		List<AdverseEventReportingPeriodDTO> list = createParticipantCentricList(participant);
-		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participant, study, list);
+		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participantCentric, participant, null, list);
 		assertEquals("Incorrect number of entries in resultMap", 4, dto.getResultCount());
 		assertEquals("Incorrect number of AdverseEventReportingPeriodDTO entered in resultMap", 20, dto.getTotalResultCount());
+	}
+	
+	public void testPopulateNeitherStudyNorParticipantCentricResults() throws Exception{
+		Boolean studyCentric = false;
+		Boolean participantCentric = false;
+		List<AdverseEventReportingPeriodDTO> list = createNeitherStudyNorParticipantCentricStudy();
+		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participantCentric, null, null, list);
+		assertEquals("Incorrect number of entries in studyToDTOListMap", 4, dto.getStudyToDTOListMap().keySet().size());
+		assertEquals("Incorrect number of entries in resultMap", 16, dto.getResultCount());
+		assertEquals("Incorrect number of AdverseEventReportingPeriodDTO entered in resultMap", 80, dto.getTotalResultCount());
 	}
 	
 	public void testFilterResultMap() throws Exception{
 		Study study = Fixtures.createStudy("test study");
 		Participant participant = Fixtures.createParticipant("fName", "lName");
 		Boolean studyCentric = true;
+		Boolean participantCentric = false;
 		List<AdverseEventReportingPeriodDTO> list = createStudyCentricList(study);
-		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participant, study, list);
+		RoutingAndReviewSearchResultsDTO dto = new RoutingAndReviewSearchResultsDTO(studyCentric, participantCentric, participant, study, list);
 		dto.filterResultMap(5, 12);
 		assertEquals("filteredResultsMap created incorrectly", 2, dto.getFilteredResultMap().size());
 	}
@@ -70,6 +83,17 @@ public class RoutingAndReviewSearchResultsDTOTest extends TestCase {
 			study.setId(j);
 			List<AdverseEventReportingPeriodDTO> subList = createList(study, participant, i, i + 5);
 			i = i + 6;
+			list.addAll(subList);
+		}
+		return list;
+	}
+	
+	private List<AdverseEventReportingPeriodDTO> createNeitherStudyNorParticipantCentricStudy(){
+		List<AdverseEventReportingPeriodDTO> list = new ArrayList<AdverseEventReportingPeriodDTO>();
+		for(int j = 1; j < 5; j++){
+			Study study = Fixtures.createStudy("title - " + j);
+			study.setId(j);
+			List<AdverseEventReportingPeriodDTO> subList = createStudyCentricList(study);
 			list.addAll(subList);
 		}
 		return list;

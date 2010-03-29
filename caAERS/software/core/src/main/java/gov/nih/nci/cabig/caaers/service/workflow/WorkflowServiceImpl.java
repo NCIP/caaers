@@ -196,6 +196,44 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 	}
 	
+	public List<ReviewStatus> allowedReviewStatuses(String loginId){
+		Map<ReviewStatus, Boolean> allowedReviewStatusMap = new HashMap<ReviewStatus, Boolean>();
+		
+
+		Boolean isSuperUser = csmUserRepository.isSuperUser(loginId);
+		if(isSuperUser){
+			for(ReviewStatus rs: ReviewStatus.values())
+				allowedReviewStatusMap.put(rs, true);
+		}else{
+			User user = csmUserRepository.getUserByName(loginId);
+			//first fetch all the possible workflow configs.
+			List<WorkflowConfig> workflowConfigList = workflowConfigDao.getAllWorkflowConfigs();
+			for(WorkflowConfig wc : workflowConfigList){
+				for(TaskConfig tc: wc.getTaskConfigs()){
+					for(Assignee assignee: tc.getAssignees()){
+						if(assignee.isUser()){
+							PersonAssignee personAssignee = (PersonAssignee) assignee;
+							if(personAssignee.getUser().getLoginId().equals(user.getLoginId())){
+								allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
+							}
+						}else if(assignee.isRole()){
+							RoleAssignee roleAssignee = (RoleAssignee) assignee;
+							PersonRole role = roleAssignee.getUserRole();
+							for(UserGroupType type: user.getUserGroupTypes()){
+								if(ArrayUtils.contains(role.getUserGroups(), type)){
+									allowedReviewStatusMap.put(ReviewStatus.valueOf(tc.getStatusName()), true);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		List<ReviewStatus> allowedReviewStatusList = new ArrayList<ReviewStatus>(allowedReviewStatusMap.keySet());
+		return allowedReviewStatusList;
+	}
+	
 	
 	public List<String> nextTransitionNames(Integer workflowId, String loginId) {
 		List<Transition> transitions = nextTransitions(workflowId, loginId);

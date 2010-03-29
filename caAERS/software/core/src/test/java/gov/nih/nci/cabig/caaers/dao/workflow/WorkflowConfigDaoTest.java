@@ -74,5 +74,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 		assertEquals(WorkflowConfig.class, getDao().domainClass());
 	}
 		
-	
+	public void testGetAllWorkflowConfigs() {
+		assertEquals("Incorrect number of workflow configs", 2, getDao().getAllWorkflowConfigs().size());
+	}
 }

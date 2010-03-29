@@ -132,6 +132,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getApplicableOrganizationsFromStudySites*(java.lang.String,java.lang.Integer))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
@@ -214,6 +215,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getOrganizationsHavingStudySites*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
                
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.getApplicableOrganizationsFromStudySites*(java.lang.String,java.lang.Integer))"
+               value="gov.nih.nci.cabig.caaers.domain.Organization:ACCESS"/>
+               
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
         <!--                                    
@@ -274,6 +278,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getOrganizationsHavingStudySites=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getApplicableOrganizationsFromStudySites=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK

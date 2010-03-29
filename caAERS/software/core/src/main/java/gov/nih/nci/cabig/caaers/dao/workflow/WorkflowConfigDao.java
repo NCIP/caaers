@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.workflow;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -37,5 +38,14 @@ implements MutableDomainObjectDao<WorkflowConfig>{
         return (results == null || results.size() < 1) ? null : results.get(0);
     }
     
+    /**
+     * Get the list of all workflow configs.
+     *
+     * @return return the list of workflow configs.
+     */
+    @SuppressWarnings("unchecked")
+    public List<WorkflowConfig> getAllWorkflowConfigs() {
+        return getHibernateTemplate().find("from WorkflowConfig");
+    }
 
 }

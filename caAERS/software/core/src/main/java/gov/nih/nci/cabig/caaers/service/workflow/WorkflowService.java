@@ -133,5 +133,11 @@ public interface WorkflowService{
 	 */
 	public void notifiyTaskAssignees(String message, String taskNodeName,List<User> recipients);
 
+	/**
+	 * This method is used to get the list of possible review status that a person/role can see.
+	 * @param loginId
+	 * @return
+	 */
+	public List<ReviewStatus> allowedReviewStatuses(String loginId);
 
 }

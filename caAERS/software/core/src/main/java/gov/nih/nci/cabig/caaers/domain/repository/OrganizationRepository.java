@@ -14,6 +14,7 @@ public interface OrganizationRepository {
     void create(Organization organization);
     void createOrUpdate(Organization organization);
     List<Organization> getOrganizationsHavingStudySites();
+    List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId);
     void convertToRemote(Organization localOrganization, Organization remoteOrganization);
     
 

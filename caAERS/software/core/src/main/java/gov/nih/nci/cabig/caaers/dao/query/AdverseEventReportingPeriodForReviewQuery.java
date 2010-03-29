@@ -8,13 +8,14 @@ public class AdverseEventReportingPeriodForReviewQuery extends AbstractQuery {
 	 private static String queryString = "select rp from AdverseEventReportingPeriod rp " +
 	 		" join rp.assignment as spa " +
 	 		" join spa.studySite as ss " +
+	 		" join ss.organization as org " +
 	 		" join ss.study as s " + 
 	 		" join spa.participant as p " +
 	 		"order by rp.id";
 	 
 	 private static final String PARTICIPANT = "participantId";
 	 private static final String STUDY = "studyId";
-	 private static final String STUDY_SITE = "studySiteId";
+	 private static final String ORGANIZATION = "organizationId";
 	 
 	 public AdverseEventReportingPeriodForReviewQuery() {
 		super(queryString);
@@ -25,9 +26,9 @@ public class AdverseEventReportingPeriodForReviewQuery extends AbstractQuery {
 		 setParameter(STUDY , studyId);
 	 }
 	 
-	 public void filterByStudySite(Integer studySiteId){
-		 andWhere("ss.id =:" + STUDY_SITE);
-		 setParameter(STUDY_SITE, studySiteId);
+	 public void filterByOrganization(Integer organizationId){
+		 andWhere("org.id =:" + ORGANIZATION);
+		 setParameter(ORGANIZATION, organizationId);
 	 }
 	 
 	 public void filterByParticipant(Integer participantId){

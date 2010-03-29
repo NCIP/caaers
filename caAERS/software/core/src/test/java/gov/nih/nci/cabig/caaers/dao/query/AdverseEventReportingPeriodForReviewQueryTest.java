@@ -17,31 +17,31 @@ public class AdverseEventReportingPeriodForReviewQueryTest extends TestCase {
 	public void testFilterByStudy() {
 		query.filterByStudy(5);
 		assertEquals("select rp from AdverseEventReportingPeriod rp  " +
-				"join rp.assignment as spa  join spa.studySite as ss  join ss.study as s  " +
+				"join rp.assignment as spa  join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
 				"join spa.participant as p WHERE s.id =:studyId order by rp.id" , query.getQueryString());
 	}
 
 	public void testFilterByStudySite() {
-		query.filterByStudySite(6);
+		query.filterByOrganization(5);
 		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa " +
-				" join spa.studySite as ss  join ss.study as s  " +
-				"join spa.participant as p WHERE ss.id =:studySiteId order by rp.id",query.getQueryString());
+				" join spa.studySite as ss  join ss.organization as org  join ss.study as s  " +
+				"join spa.participant as p WHERE org.id =:organizationId order by rp.id",query.getQueryString());
 	}
 
 	public void testFilterByParticipant() {
 		query.filterByParticipant(7);
 		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa  " +
-				"join spa.studySite as ss  join ss.study as s  join spa.participant as p " +
+				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
 				"WHERE p.id =:participantId order by rp.id",query.getQueryString());
 	}
 	
 	public void testFilterByAll(){
 		query.filterByParticipant(7);
-		query.filterByStudySite(6);
+		query.filterByOrganization(5);
 		query.filterByStudy(5);
 		assertEquals("select rp from AdverseEventReportingPeriod rp  join rp.assignment as spa  " +
-				"join spa.studySite as ss  join ss.study as s  join spa.participant as p " +
-				"WHERE p.id =:participantId AND ss.id =:studySiteId AND s.id =:studyId order by rp.id",query.getQueryString());
+				"join spa.studySite as ss  join ss.organization as org  join ss.study as s  join spa.participant as p " +
+				"WHERE p.id =:participantId AND org.id =:organizationId AND s.id =:studyId order by rp.id",query.getQueryString());
 	}
 	
 }
