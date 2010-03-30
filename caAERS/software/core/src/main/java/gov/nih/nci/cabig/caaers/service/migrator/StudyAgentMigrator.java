@@ -86,10 +86,6 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 				}
 			}
 			if (target.getIndType() == INDType.OTHER) {
-				outcome.ifNullObject(studyAgent.getPartOfLeadIND(),	DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
-				target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
-				outcome.ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(),DomainObjectImportOutcome.Severity.ERROR,
-								"With the selected IND Type it is required to provide an investigational new drug ");
 
 				for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
 					String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
@@ -109,7 +105,6 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 
 			destination.addStudyAgent(target);
 			// TODO: ADD error handling with user interaction
-
 		}
 	}
 	

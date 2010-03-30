@@ -139,7 +139,23 @@ public class StudyAgentMigratorTest extends AbstractTestCase {
 		System.out.println(outcome.getMessages());
 		assertEquals("Incorrect number of study agents", 1,dest.getStudyAgents().size());
 		assertTrue(outcome.getMessages().isEmpty());
-	}	
+	}
 	
+	
+	public void testMigrate_OtherIND(){
+		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+		sa.setIndType(INDType.OTHER);
+		
+		List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
+		studyAgents.add(sa);
+		Agent agent = Fixtures.createAgent("abcd", studyAgents);
+		xstreamStudy.addStudyAgent(sa);
+		
+		EasyMock.expect(agentDao.getByName("abcd")).andReturn(agent);
+		replayMocks();
+		migrator.migrate(xstreamStudy, dest, outcome);
+		verifyMocks();
+		assertTrue(outcome.getMessages().isEmpty());
+	}
 
 }
