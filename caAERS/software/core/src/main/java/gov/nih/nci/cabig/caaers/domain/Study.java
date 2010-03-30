@@ -871,6 +871,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     @Transient
     public void addReportFormat(final ReportFormat reportFormat) {
+    	reportFormat.setStudy(this);
         reportFormats.add(reportFormat);
     }
 
