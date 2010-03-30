@@ -42,6 +42,26 @@
                 return obj.name;
              }
             </jsp:attribute>
+            <jsp:attribute name="optionsJS"> {
+                    afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                        var propertyName = "aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite";
+                        $(propertyName).value = selectedChoice.id;
+                        ValidationManager.setValidState($(propertyName + '-input'));
+
+                        setTitleMDS_${index}();
+                        if ($("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].codedSite").value == 110) {
+                            $('otherMetastaticDS_${index}').show();
+                            value += " - " + $("aeReport.diseaseHistory.metastaticDiseaseSites[${index}].otherSite").value + "";
+                            $('showALL${index}').hide();
+                        } else {
+                            $('otherMetastaticDS_${index}').hide();
+                            $('showALL${index}').show();
+                        }
+
+                    }
+                }
+            </jsp:attribute>
+
         </ui:autocompleter>
         &nbsp;
             <span id="otherMetastaticDS_${index}" style="display:none;">
