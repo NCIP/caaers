@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -114,9 +115,19 @@ public class AttributionTab extends AeTab {
     public ExpeditedReportSection[] section() {
         return new ExpeditedReportSection[] {ExpeditedReportSection.ATTRIBUTION_SECTION};
     }
-    
-    
-    
+
+    @Override
+    public boolean hasMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
+        command.getAeReport().getReports().get(0).getReportDefinition().getAttributionRequired();
+        if (command instanceof AbstractExpeditedAdverseEventInputCommand) {
+            List<ReportDefinition> rds = ((AbstractExpeditedAdverseEventInputCommand)command).getSelectedReportDefinitions();
+            for (ReportDefinition rd : rds) {
+                if (!rd.getAttributionRequired()) return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command,HttpServletRequest request) {
     	boolean hasEmptyFields = super.hasEmptyMandatoryFields(command, request);

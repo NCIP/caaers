@@ -17,7 +17,7 @@
     <c:set var="selected" value="${atab.number == tab.number}"/>
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
      <c:if test="${fn:contains(mandatoryTabs, atab.shortTitle)}"><span class="required-indicator">*</span></c:if>
-        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle)?'incomplete':'complete'):''}">
+        <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (fn:contains(unfilledTabs, atab.shortTitle) ? 'incomplete' : 'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">
 					<c:if test="${(!fn:contains(unfilledTabs, atab.shortTitle) ) and fn:contains(mandatoryFieldedTabs, atab.shortTitle)}">
