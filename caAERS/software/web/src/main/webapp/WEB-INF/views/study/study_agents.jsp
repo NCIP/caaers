@@ -30,14 +30,18 @@ ajaxCRUD = new AJAX_CRUD_HELPER();
 function fireAction(action, index) {
     if (action == 'removeStudyAgent') {
         ajaxCRUD._deleteItem('StudyAgent', index, '_SA', ${tab.number});
-    }else if(action == 'addStudyAgent'){
-    	ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
-    }else if (action == 'addIND'){
+    } else if (action == 'addStudyAgent') {
+        ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Bottom');
+    } else if (action == 'addIND') {
         var containerID = '_SA-IND-' + index;
-    	ajaxCRUD._addItem('StudyAgentIND', null, null,containerID , {'index':index}, ${tab.number}, 'Bottom');
-    }else if (action = 'removeIND'){
+        var opts = new Hash();
+        opts.set("index", index);
+        ajaxCRUD._addItem('StudyAgentIND', null, null, containerID, opts, ${tab.number}, 'Bottom');
+    } else if (action = 'removeIND') {
         var children = $('_SA-IND-' + index).childElements();
-        $A(children).each(function(el){el.remove();});
+        $A(children).each(function(el) {
+            el.remove();
+        });
     }
 }
 

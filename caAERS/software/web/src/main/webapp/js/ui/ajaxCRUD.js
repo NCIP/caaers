@@ -21,12 +21,13 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
     },
 
     /*
-     *itemType - The currentItem, eg: StudyAgent
-     *tabNumber - _page and _target attribute value
-     *insertionLocation - location to insert (eg:'Bottom', 'Top') 
-     *location - The ID of the container in which the insertion should happen
+     * itemType - The currentItem, eg: StudyAgent
+     * tabNumber - _page and _target attribute value
+     * insertionLocation - location to insert (eg:'Bottom', 'Top')
+     * location - The ID of the container in which the insertion should happen
+     * opts - some other key/value additional data you might want to pass to the request 
      */
-    _addItem: function(itemType, src, val, location, options, tabNumber, insertionLocation) {
+    _addItem: function(itemType, src, val, location, opts, tabNumber, insertionLocation) {
         var container = $(location);
         var paramHash = new Hash();
         paramHash.set('task', 'add');
@@ -35,12 +36,11 @@ Object.extend(AJAX_CRUD_HELPER.prototype, {
        
 
         this._populateDeafultParameters(itemType, paramHash, tabNumber);
-        
-        //now set the parameters present in options
-        if(options){
-        	if(options.index) paramHash.set('index', options.index)
+        if (opts) {
+                opts.each(function(pair) {
+                    paramHash.set(pair.key, pair.value);
+                });
         }
-
         var url = this._generateSubmissionURL('command');
         this._showIndicator($(container.id + "_indicator"));
         this._insertContent(container, url, paramHash, function() {this._hideIndicator($(container.id + "_indicator")); AE.registerCalendarPopups();}.bind(this), insertionLocation);
