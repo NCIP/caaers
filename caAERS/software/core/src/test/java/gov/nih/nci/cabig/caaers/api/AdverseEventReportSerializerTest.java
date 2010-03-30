@@ -153,10 +153,10 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         
         assertTrue(xml.indexOf("<applicableField>") >= 0);
         assertTrue(xml.indexOf("</applicableField>") >= 0);
-        assertTrue(xml.indexOf("field.one[].name") >= 0);
-        assertTrue(xml.indexOf("field[].two.name") >= 0);
+        assertTrue(xml.indexOf("field.one.name") >= 0);
+        assertTrue(xml.indexOf("field.two.name") >= 0);
         assertTrue(xml.indexOf("field.three.name") == -1);
-        assertTrue(xml.indexOf("field.four.name[]") >= 0);
+        assertTrue(xml.indexOf("field.four.name") >= 0);
         assertTrue(xml.indexOf("field.five.name") >= 0);
 
     }

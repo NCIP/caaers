@@ -432,7 +432,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public List<String> getPathOfApplicableFields(){
        List<String> fields = new LinkedList<String>();
         for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL)){
-            fields.add(mandatoryField.getFieldPath());
+            fields.add(mandatoryField.getFieldPath().replace("[]", ""));
         }
         return fields;
     }
