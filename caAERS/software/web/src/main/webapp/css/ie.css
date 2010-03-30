@@ -111,3 +111,8 @@ select.required {
 #ajax-loading-indictor #spinning-logo {
     margin: auto -9%;
 }
+
+input[type="text"].required, input[type="password"].required, select.required, textarea.required {
+    border:1px #F05757 solid;
+    background-color:#FEC7C7;
+}
