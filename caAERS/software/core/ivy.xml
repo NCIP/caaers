@@ -286,6 +286,10 @@
 				<exclude module="log4j" />
 				<exclude module="commons-logging" />
 			</dependency>
+			
+			<!-- Xstream  dependencies-->
+			<dependency org="xpp3" name="xpp3_min" rev="1.1.4c"/>
+			<dependency org="xstream" name="xstream" rev="1.3.1"/>
 
 			<!-- Test/Runtime dependencies -->
 			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default"/>
