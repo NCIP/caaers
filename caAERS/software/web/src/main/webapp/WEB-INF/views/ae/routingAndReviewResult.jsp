@@ -160,12 +160,14 @@ color:#0033FF;
 					if(output.objectContent){
 						var i = 0;
 						var popupContent = '';
+						popupContent = '<table id="validation-table" width="100%" height="100%">';
 						for(i = 0; i< output.objectContent.length; i++){
 							var error = output.objectContent[i];
 							popupContent = popupContent + '<tr><td width="10%"/><td width="80%" align="left">' + error + '</td><td width="10%"/></tr>';
 						}
 						popupContent = popupContent + '<tr><tr><tr><td width="10%"/><td align="left" width="80%"><font color="red">Note: Please save if you have unsaved data.</font></td><td width="10%"/></tr>';
-						$('validation-table').innerHTML = popupContent;
+						popupContent = popupContent + '</table>';
+						$('validation-div').innerHTML = popupContent;
 						var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"validation-popup-id", width:500,  height:230, top: 330, left: 500});
        		 			contentWin.setContent( 'reportingPeriod-validation-errors-popup' );
       	 	 			contentWin.showCenter(true);
@@ -298,8 +300,8 @@ color:#0033FF;
 		<table width="100%" height="100%">
 			<tr>
 				<td align="center" style="vertical-align:middle">
-					<table id="validation-table" width="100%" height="100%">
-					</table>
+					<div id="validation-div">
+					</div>
 				</td>
 			</tr>
 		</table>
