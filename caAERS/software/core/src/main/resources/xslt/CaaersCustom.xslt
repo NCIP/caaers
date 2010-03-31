@@ -128,6 +128,28 @@
                                               </xsl:if>
                                               <fo:table-cell><fo:block /></fo:table-cell>
                                       </fo:table-row>
+
+                                          <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.street'] or
+                                          /AdverseEventReport/Report[applicableField='reporter.address.zip'] or
+                                          /AdverseEventReport/Report[applicableField='reporter.address.state'] or
+                                          /AdverseEventReport/Report[applicableField='reporter.address.city']">
+                                        <fo:table-row>
+                                              <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.street']">
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Street :</fo:block></fo:table-cell>
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Reporter/address/street"></xsl:value-of></fo:block></fo:table-cell>
+                                              </xsl:if>
+                                              <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.city'] or /AdverseEventReport/Report[applicableField='reporter.address.state'] ">
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >City, State :</fo:block></fo:table-cell>
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Reporter/address/city"></xsl:value-of></fo:block><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/Reporter/address/state"></xsl:value-of></fo:block></fo:table-cell>
+                                              </xsl:if>
+                                              <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.zip']">
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Zip :</fo:block></fo:table-cell>
+                                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Reporter/address/zip"></xsl:value-of></fo:block></fo:table-cell>
+                                              </xsl:if>
+                                              <fo:table-cell><fo:block /></fo:table-cell>
+                                      </fo:table-row>
+                                          </xsl:if>
+
                                       <fo:table-row><fo:table-cell><fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block></fo:table-cell></fo:table-row>
 
                                       <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.lastName']">
@@ -153,7 +175,27 @@
                                             </xsl:if>
                                             <fo:table-cell><fo:block /></fo:table-cell>
                                     </fo:table-row>
-
+                              
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.street'] or
+                              /AdverseEventReport/Report[applicableField='reporter.address.zip'] or
+                              /AdverseEventReport/Report[applicableField='reporter.address.state'] or
+                              /AdverseEventReport/Report[applicableField='reporter.address.city']">
+                            <fo:table-row>
+                                  <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.street']">
+                                        <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Street :</fo:block></fo:table-cell>
+                                        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Reporter/address/street"></xsl:value-of></fo:block></fo:table-cell>
+                                  </xsl:if>
+                                  <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.city'] or /AdverseEventReport/Report[applicableField='reporter.address.state'] ">
+                                        <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >City, State :</fo:block></fo:table-cell>
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/Reporter/address/city"></xsl:value-of></fo:block><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/Reporter/address/state"></xsl:value-of></fo:block></fo:table-cell>
+                                  </xsl:if>
+                                  <xsl:if test="/AdverseEventReport/Report[applicableField='reporter.address.zip']">
+                                        <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Zip :</fo:block></fo:table-cell>
+                                        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Reporter/address/zip"></xsl:value-of></fo:block></fo:table-cell>
+                                  </xsl:if>
+                                  <fo:table-cell><fo:block /></fo:table-cell>
+                          </fo:table-row>
+                              </xsl:if>
                                     <fo:table-row><fo:table-cell><fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block></fo:table-cell></fo:table-row>
                           </xsl:if>
                           <!--REPORTER DATA    END -->
@@ -188,6 +230,28 @@
                                               </xsl:if>
                                               <fo:table-cell><fo:block /></fo:table-cell>
                                       </fo:table-row>
+
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='physician.address.street'] or
+                              /AdverseEventReport/Report[applicableField='physician.address.zip'] or
+                              /AdverseEventReport/Report[applicableField='physician.address.state']
+                              /AdverseEventReport/Report[applicableField='physician.address.city']">
+                            <fo:table-row>
+                                <xsl:if test="/AdverseEventReport/Report[applicableField='physician.address.street']">
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Street :</fo:block></fo:table-cell>
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Physician/address/street"></xsl:value-of></fo:block></fo:table-cell>
+                                </xsl:if>
+                                <xsl:if test="/AdverseEventReport/Report[applicableField='physician.address.city'] or /AdverseEventReport/Report[applicableField='reporter.address.state'] ">
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >City, State :</fo:block></fo:table-cell>
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Physician/address/city"></xsl:value-of></fo:block><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/Physician/address/state"></xsl:value-of></fo:block></fo:table-cell>
+                                </xsl:if>
+                                <xsl:if test="/AdverseEventReport/Report[applicableField='physician.address.zip']">
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Zip :</fo:block></fo:table-cell>
+                                      <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="AdverseEventReport/Physician/address/zip"></xsl:value-of></fo:block></fo:table-cell>
+                                </xsl:if>
+                                  <fo:table-cell><fo:block /></fo:table-cell>
+                          </fo:table-row>
+                              </xsl:if>
+
                                       <fo:table-row><fo:table-cell><fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block></fo:table-cell></fo:table-row>
                           </xsl:if>
                           <!--PHYSICIAN DATA    END -->
@@ -442,21 +506,25 @@
 
               <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.eventDescription'] or
               /AdverseEventReport/Report[applicableField='responseDescription.recoveryDate'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.primaryTreatmentApproximateTime.hourString'] or
               /AdverseEventReport/Report[applicableField='responseDescription.presentStatus'] or
               /AdverseEventReport/Report[applicableField='responseDescription.retreated'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.eventReappear'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.daysNotGiven'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.reducedDose'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.blindBroken'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.reducedDate'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.eventAbate'] or
               /AdverseEventReport/Report[applicableField='responseDescription.dateRemovedFromProtocol'] or
-              /AdverseEventReport/Report[applicableField='responseDescription.causeOfDeath'] or
+              /AdverseEventReport/Report[applicableField='responseDescription.studyDrugInterrupted'] or
               /AdverseEventReport/Report[applicableField='responseDescription.causeOfDeath'] or
               /AdverseEventReport/Report[applicableField='responseDescription.autopsyPerformed']
               ">
 				<fo:block xsl:use-attribute-sets="sub-head" >Description of Event</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text> </fo:block>
 		  		<fo:table>
-					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
-
+					<fo:table-column column-width="40%"/>
+					<fo:table-column column-width="60%"/>
 
 		  			<fo:table-body>
                           <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.eventDescription']">
@@ -466,27 +534,28 @@
                                 </fo:table-row>
                           </xsl:if>
 
-                          <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate'] or /AdverseEventReport/Report[applicableField='responseDescription.presentStatus']">
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.presentStatus']">
                             <fo:table-row>
-                                <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.presentStatus']">
                                 <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Present Status :</fo:block></fo:table-cell>
                                 <fo:table-cell>
                                     <fo:block xsl:use-attribute-sets="value" >
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
+                                        <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
                                     </fo:block>
                                 </fo:table-cell>
-                                </xsl:if>
-                                <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate']">
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Date of Recovery or Death :</fo:block></fo:table-cell>
-                                    <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/></xsl:call-template></fo:block></fo:table-cell>
-                                </xsl:if>
                             </fo:table-row>
                           </xsl:if>
+
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate']">
+                        <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Date of Recovery or Death :</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/></xsl:call-template></fo:block></fo:table-cell>
+                        </fo:table-row>
+                        </xsl:if>
 
                           <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.retreated']">
                               <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Retreated :</fo:block></fo:table-cell>
@@ -494,6 +563,28 @@
                                       <fo:block xsl:use-attribute-sets="value">
                                           <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'false'">No</xsl:if>
                                           <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.studyDrugInterrupted']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Study Drug Interrupted :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/studyDrugInterrupted = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/studyDrugInterrupted = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.eventReappear']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Did event reappear? :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'NO'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'YES'">Yes</xsl:if>
                                       </fo:block>
                                   </fo:table-cell>
                               </fo:table-row>
@@ -510,6 +601,8 @@
                                         </xsl:choose>
                                     </fo:block>
                                 </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
                                 <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Date Removed from Protocol Treatment :</fo:block></fo:table-cell>
                                 <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/></xsl:call-template></fo:block></fo:table-cell>
                             </fo:table-row>
@@ -522,22 +615,51 @@
                             </fo:table-row>
                         </xsl:if>
 
-                      <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate'] or /AdverseEventReport/Report[applicableField='responseDescription.autopsyPerformed']">
-		  			    <fo:table-row>
-                            <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate']">
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.daysNotGiven']">
+                            <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Days not given (if interrupted) :</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/daysNotGiven"/></fo:block></fo:table-cell>
+                            </fo:table-row>
+                        </xsl:if>
+
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.reducedDose']">
+                            <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">New Dose :</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/reducedDose"/></fo:block></fo:table-cell>
+                            </fo:table-row>
+                        </xsl:if>
+
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.reducedDate']">
+                            <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Date New Dose :</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/reducedDate"/></fo:block></fo:table-cell>
+                            </fo:table-row>
+                        </xsl:if>
+
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.eventAbate']">
+                            <fo:table-row>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Did Event Abate ? :</fo:block></fo:table-cell>
+                                <fo:table-cell><fo:block xsl:use-attribute-sets="value"><xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventAbate"/></fo:block></fo:table-cell>
+                            </fo:table-row>
+                        </xsl:if>
+
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.recoveryDate']">
+                            <fo:table-row>
                                 <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Death Date :</fo:block></fo:table-cell>
                                 <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'"><xsl:call-template name="standard_date"><xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/></xsl:call-template></xsl:if></fo:block></fo:table-cell>
-                            </xsl:if>
-                            <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.autopsyPerformed']">
-                                <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Autopsy Performed :</fo:block></fo:table-cell><fo:table-cell>
-                                    <fo:block xsl:use-attribute-sets="value" >
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'false'">No</xsl:if>
-                                        <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'true'">Yes</xsl:if>
-                                    </fo:block>
-                                </fo:table-cell>
-                            </xsl:if>
-		  			  </fo:table-row>
-                      </xsl:if>
+                            </fo:table-row>
+                        </xsl:if>
+                          
+                        <xsl:if test="/AdverseEventReport/Report[applicableField='responseDescription.autopsyPerformed']">
+                            <fo:table-row>
+                            <fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm" >Autopsy Performed :</fo:block></fo:table-cell><fo:table-cell>
+                                <fo:block xsl:use-attribute-sets="value" >
+                                    <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'false'">No</xsl:if>
+                                    <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'true'">Yes</xsl:if>
+                                </fo:block>
+                            </fo:table-cell>
+                            </fo:table-row>
+                        </xsl:if>
 
                       <fo:table-row><fo:table-cell><fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block></fo:table-cell></fo:table-row>
 	  			</fo:table-body>
@@ -1004,6 +1126,8 @@
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.dose.units'] or
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lastAdministeredDate'] or
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.comments'] or
+              /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lotNumber'] or
+              /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.formulation'] or
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.agentAdjustment'] or
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.administrationDelayAmount'] or
               /AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.administrationDelayUnits']">
@@ -1013,10 +1137,12 @@
 		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code :<xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></fo:block>
 
 		  		<fo:table>
-					<fo:table-column column-width="15%"/>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
@@ -1032,6 +1158,12 @@
                               </xsl:if>
                               <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lastAdministeredDate']">
       						        <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Last Administered Date</fo:block></fo:table-cell>
+                              </xsl:if>
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lotNumber']">
+      						        <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Lot Number</fo:block></fo:table-cell>
+                              </xsl:if>
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.formulation']">
+      						        <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Formulation</fo:block></fo:table-cell>
                               </xsl:if>
                               <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.comments']">
       						        <fo:table-cell><fo:block xsl:use-attribute-sets="label" >Comments</fo:block></fo:table-cell>
@@ -1056,6 +1188,12 @@
                               </xsl:if>
                               <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lastAdministeredDate']">
       						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:variable name="trimmedlastAdministeredDate"><xsl:call-template name="trim"><xsl:with-param name="s" select="lastAdministeredDate"/></xsl:call-template></xsl:variable><xsl:call-template name="standard_date"><xsl:with-param name="date" select="$trimmedlastAdministeredDate"/></xsl:call-template></fo:block></fo:table-cell>
+                              </xsl:if>
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.lotNumber']">
+      						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="lotNumber"/></fo:block></fo:table-cell>
+                              </xsl:if>
+                              <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.formulation']">
+      						        <fo:table-cell><fo:block xsl:use-attribute-sets="label" ><xsl:value-of select="formulation"/></fo:block></fo:table-cell>
                               </xsl:if>
                               <xsl:if test="/AdverseEventReport/Report[applicableField='treatmentInformation.courseAgents.comments']">
       						        <fo:table-cell><fo:block xsl:use-attribute-sets="value" ><xsl:value-of select="comments"/></fo:block></fo:table-cell>
@@ -1138,6 +1276,8 @@
                 /AdverseEventReport/Report[applicableField='adverseEvents.endDate'] or
                 /AdverseEventReport/Report[applicableField='adverseEvents.comments'] or
                 /AdverseEventReport/Report[applicableField='adverseEvents.eventLocation'] or
+                /AdverseEventReport/Report[applicableField='adverseEvents.expected'] or
+                /AdverseEventReport/Report[applicableField='adverseEvents.attributionSummary'] or
                 /AdverseEventReport/Report[applicableField='adverseEvents.eventApproximateTime.hourString'] or
                 /AdverseEventReport/Report[applicableField='adverseEvents.participantAtRisk']
 ">
@@ -1168,7 +1308,9 @@
     <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.adverseEventCtcTerm.term']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Is Primary AE ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:choose><xsl:when test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">Yes</xsl:when><xsl:otherwise>No</xsl:otherwise></xsl:choose></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.eventApproximateTime.hourString']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Event approximate time : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventApproximateTime/hour"/>:<xsl:value-of select="eventApproximateTime/minute"/></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.eventLocation']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Where was the patient when the event occured ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="eventLocation"/></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.attributionSummary']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Attribution to study intervention : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="attributionSummary"/></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.participantAtRisk']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Was participant at risk ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="participantAtRisk = 'true'">Yes</xsl:if><xsl:if test="participantAtRisk = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
+    <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.expected']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Expected ? : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:if test="expected = 'true'">Yes</xsl:if><xsl:if test="expected = 'false'">No</xsl:if></fo:inline></fo:block></xsl:if>
     <xsl:if test="/AdverseEventReport/Report[applicableField='adverseEvents.comments']"><fo:block margin-left="20mm"><fo:inline xsl:use-attribute-sets="label">Comments : </fo:inline><fo:inline xsl:use-attribute-sets="value"><xsl:value-of select="detailsForOther"/></fo:inline></fo:block></xsl:if>
     
 </xsl:for-each>
@@ -1446,7 +1588,186 @@
 		  		</xsl:if>
 		  		</xsl:if>
     <!-- LABS      END-->
+
+
+
+              <!--  ADDITIONAL INFO    START-->
+
+              <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.labReports'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.obaForm'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.pathologyReport'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.progressNotes'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.radiologyReports'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.referralLetters'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.irbReport'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.other'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.otherInformation'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.autopsyReporte'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.consults'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.dischargeSummaryl'] or
+              /AdverseEventReport/Report[applicableField='additionalInformation.flowChart']
+                ">
+                <fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text> </fo:block>
+				<fo:block xsl:use-attribute-sets="sub-head" >Additional Information</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&#160;</xsl:text> </fo:block>
+		  		<fo:table>
+					<fo:table-column column-width="40%"/>
+					<fo:table-column column-width="60%"/>
+
+		  			<fo:table-body>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.autopsyReport']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Autopsy report :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/autopsyReport = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/autopsyReport = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.consults']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Consults :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/consults = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/consults = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.dischargeSummary']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Discharge Summary :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/dischargeSummary = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/dischargeSummary = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.flowCharts']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Flow sheets/case report forms :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/flowCharts = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/flowCharts = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.labReports']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Laboratory reports :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/labReports = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/labReports = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.obaForm']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">OBA forms :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/obaForm = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/obaForm = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.pathologyReport']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Pathology report :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/pathologyReport = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/pathologyReport = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.progressNotes']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Progress notes :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/progressNotes = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/progressNotes = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.radiologyReports']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Radiology report :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/radiologyReports = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/radiologyReports = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.referralLetters']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Referral letters :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/referralLetters = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/referralLetters = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.irbReport']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Summary report sent to IRB :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/irbReport = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/irbReport = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.other']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Other :</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value">
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/other = 'false'">No</xsl:if>
+                                          <xsl:if test="AdverseEventReport/AdditionalInformation/other = 'true'">Yes</xsl:if>
+                                      </fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                          <xsl:if test="/AdverseEventReport/Report[applicableField='additionalInformation.otherInformation']">
+                              <fo:table-row><fo:table-cell><fo:block xsl:use-attribute-sets="label" margin-left="2mm">Other information:</fo:block></fo:table-cell>
+                                  <fo:table-cell>
+                                      <fo:block xsl:use-attribute-sets="value"><xsl:value-of select="/AdverseEventReport/AdditionalInformation/otherInformation" /></fo:block>
+                                  </fo:table-cell>
+                              </fo:table-row>
+                          </xsl:if>
+
+                      <fo:table-row><fo:table-cell><fo:block><xsl:text disable-output-escaping="yes">&#160;</xsl:text></fo:block></fo:table-cell></fo:table-row>
+	  			</fo:table-body>
+		  		</fo:table>
+
+		  		<!--<fo:block break-after="page"/>-->
+                <!-- EVENT DESCRIPTION TABLE   END -->
+                  <fo:block><fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.5px"/></fo:block>
+                </xsl:if>
               
+              <!--  ADDITIONAL INFO    END-->
+
+
   			  <fo:block id="content_terminator"/>
 		  </fo:flow>
 		</fo:page-sequence>
