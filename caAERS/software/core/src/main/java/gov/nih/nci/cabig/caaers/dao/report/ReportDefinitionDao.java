@@ -124,7 +124,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
      *                the domain object instance that is to be reassociated
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void reassociate(ReportDefinition o) {
         getHibernateTemplate().lock(o, LockMode.NONE);
     }
