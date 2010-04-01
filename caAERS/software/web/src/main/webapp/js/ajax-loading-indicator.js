@@ -10,23 +10,27 @@ function handleDWRError(err){
 //----------------------------------------------------------------------------------------------------------------------
 //will show indicator for DWR method calls. 
 function showDWRLoadingIndicator(){
+/*
     try {
      var elIndicator =  $('ajax-loading-indictor');
 	 if(elIndicator)
 	 	elIndicator.show();
     } catch(e) {
     }
+*/
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 //will hide indicator for DWR method calls. 
 function hideDWRLoadingIndicator(){
+/*
     try {
         var elIndicator =  $('ajax-loading-indictor');
 		if(elIndicator)
 			elIndicator.hide();
     } catch(e) {
     }
+*/
 }
 
 //---------------------------------------------------------------------------------------------------------
