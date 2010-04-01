@@ -34,6 +34,7 @@
         <xs:element name="reportFormat" type="xs:string"/>
         <xs:element name="parent" type="parentType" minOccurs="0" maxOccurs="1" />
         <xs:element name="workflowEnabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="enabled" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
         <xs:element name="deliveryDefinition" type="ReportDeliveryDefinition" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element name="mandatoryField" type="ReportMandatoryFieldDefinition" minOccurs="0" maxOccurs="unbounded"/>
         <xs:element name="plannedNotificaiton" type="PlannedNotification" minOccurs="0" maxOccurs="unbounded"/> 
