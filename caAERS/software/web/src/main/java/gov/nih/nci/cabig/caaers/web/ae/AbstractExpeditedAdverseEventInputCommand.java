@@ -151,11 +151,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
     
     public void reassociate() {
-        for (ReportDefinition definition : selectedReportDefinitions) {
-            reportDefinitionDao.reassociate(definition);
-        }
-        
-        if (getAeReport().getId() != null) {
+    	if (getAeReport().getId() != null) {
             ExpeditedAdverseEventReport merged = reportDao.merge(getAeReport());
             setAeReport(merged);
         }
