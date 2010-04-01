@@ -107,9 +107,10 @@
  // ----------------------------------------------------------------------------------------------------------------
 
     function addByVerbatim() {
-        if ($('verbatim').value.trim() != '')
-            rpCreator.addObservedAEByVerbatim($('verbatim').value.trim());
-        $('verbatim').value = '';
+        var value = jQuery.trim(jQuery('#verbatim').val());
+        if (value != '')
+            rpCreator.addObservedAEByVerbatim(value);
+        jQuery('#verbatim').val('');
     }
 
  // ----------------------------------------------------------------------------------------------------------------
