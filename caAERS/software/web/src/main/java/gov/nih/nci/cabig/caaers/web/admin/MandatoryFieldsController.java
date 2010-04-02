@@ -138,7 +138,10 @@ public class MandatoryFieldsController extends SimpleFormController {
             String displayName = node.getDisplayName();
             String path = node.getPropertyPath();
             if (StringUtils.isEmpty(path)) return;
-            int index = command.getMandatoryFieldMap().get(path);
+            Integer pathIndex = command.getMandatoryFieldMap().get(path);
+            if (pathIndex == null) return;
+            
+            int index = pathIndex.intValue();
             if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
 
             fields.add(InputFieldFactory.createSelectField("mandatoryFields["+ index + "].mandatory", displayName, false, WebUtils.collectOptions(Arrays.asList(Mandatory.values()), "name", "displayName")));
