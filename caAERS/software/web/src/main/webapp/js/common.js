@@ -8,7 +8,7 @@ AE.SUBMISSION_INPROGRESS=false;
 AE.INDICATOR_REF_COUNTS = { };
 AE.hash = new Hash();
 // This flag determins whether to check for modification, pages can override this to false.
-AE.checkForModification = true; 
+AE.checkForModification = false; 
 
 //True if the form fields are modified
 AE.formFieldModified=false;
