@@ -45,7 +45,7 @@
 						<tags:hasErrorsMessage hideErrorDetails="true"/>
             			<tags:jsErrorsMessage/>
 						<div id="captureAdverseEventsFields-id">
-			 				<rd:renderMandatoryFields key="CAPTURE_AE_TAB_SECTION~Adverse events"/>
+			 				<admin:renderCaaersMandatoryFields key="CAPTURE_AE_TAB_SECTION~Adverse events"/>
 						</div>
     			</chrome:box>
                 
@@ -55,7 +55,7 @@
 						<tags:hasErrorsMessage hideErrorDetails="true"/>
             			<tags:jsErrorsMessage/>
 						<div id="captureAdverseEventsFields-id">
-			 				<rd:renderMandatoryFields key="COURSE_CYCLE_SECTION" />
+			 				<admin:renderCaaersMandatoryFields key="COURSE_CYCLE_SECTION" />
 						</div>
     			</chrome:box>
 
