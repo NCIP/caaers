@@ -7,13 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Person;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -272,11 +266,10 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
         assertEquals(1, all.size());
     }
     
-    
-    /*public void testSS() throws Exception{
-    	String s = "From gov.nih.nci.cabig.caaers.domain.Participant where dateOfBirth.day < 06 AND dateOfBirth.month < 06 AND dateOfBirth.year < 2005";
-    	String s1 = "From gov.nih.nci.cabig.caaers.domain.Participant as xxTargetAliasxx where xxTargetAliasxx.dateOfBirth.id in (select id From gov.nih.nci.cabig.caaers.domain.DateValue where lower(day) < lower('06') AND lower(month) < lower('06') AND lower(year) < lower('2005'))";
-    	List<Participant> pList = getDao().search(new HQLQuery(s));
-    	assertEquals("Incorrect number of participant fetched", 1, pList.size());
-    }*/
+    public void testGetSiteIdentifiers() {
+        List<Identifier> identifiers = getDao().getSiteIdentifiers(-1001);
+        assertEquals(3, identifiers.size());
+        assertEquals(gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier.class, identifiers.get(1).getClass());
+        assertEquals(-1001, ((OrganizationAssignedIdentifier)identifiers.get(1)).getOrganization().getId().intValue());
+    }
 }

@@ -33,6 +33,10 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
+/*
+* @author Ion C. Olaru
+* 
+* */
 public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 	private StudySiteDao studySiteDao;
 	
@@ -160,6 +164,10 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
     }
 
+    /**
+     * Validate the Participant info
+     * The participant identifiers should be unique per subject's site.
+     */
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         DateValue dob = command.getParticipant().getDateOfBirth();
