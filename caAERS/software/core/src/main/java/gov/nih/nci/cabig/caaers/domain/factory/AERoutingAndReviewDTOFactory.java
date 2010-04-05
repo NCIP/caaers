@@ -82,6 +82,7 @@ public class AERoutingAndReviewDTOFactory {
 	protected List<ReportDTO> createReportDTOs(ExpeditedAdverseEventReport aeReport, String userId){
 		ArrayList<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
 		for(Report report : aeReport.getReports()){
+			if(report.getWorkflowId() == null) continue;
 			ReportDTO dto = new ReportDTO();
 			dto.setId(report.getId());
 			dto.setName(report.getName());
