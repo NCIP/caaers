@@ -269,7 +269,5 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     public void testGetSiteIdentifiers() {
         List<Identifier> identifiers = getDao().getSiteIdentifiers(-1001);
         assertEquals(3, identifiers.size());
-        assertEquals(gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier.class, identifiers.get(1).getClass());
-        assertEquals(-1001, ((OrganizationAssignedIdentifier)identifiers.get(1)).getOrganization().getId().intValue());
     }
 }
