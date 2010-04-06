@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.tools.editors.DateEditor;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.editors.GridIdentifiableDaoBasedEditor;
 
@@ -25,13 +27,12 @@ public class ControllerTools {
 
     // TODO: make date format externally configurable
     public static PropertyEditor getDateEditor(boolean required) {
-        // note that date formats are not threadsafe, so we have to create a new one each time
-        return new CustomDateEditor(createDateFormat(), !required);
+        return new DateEditor();
     }
 
     // TODO: make date format externally configurable
     public static DateFormat createDateFormat() {
-        return new SimpleDateFormat("MM/dd/yyyy");
+        return new SimpleDateFormat(DateUtils.DATE_PATTERN);
     }
 
     public static String formatDate(Date date) {

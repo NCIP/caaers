@@ -1,16 +1,21 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import org.apache.commons.lang.StringUtils;
 import sun.util.calendar.Gregorian;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+
 public class DateUtils {
+
+    public static final String DATE_PATTERN= "MM/dd/yyyy";
 
 	/**
 	 * Checks whether the given d, is greater than or equal to startDate and less than or equal to endDate.
@@ -101,9 +106,59 @@ public class DateUtils {
     	return 0;
     }
     
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     public static String formatDate(Date d){
-    	return dateFormat.format(d);
+        //BJ: date formats are not thread safe. 
+    	return new SimpleDateFormat(DATE_PATTERN).format(d);
+    }
+
+    public static Date parseDate(String strDate) throws ParseException{
+        return parseDate(strDate, "MM/dd/yyyy","MM/dd/yy","M/dd/yyyy", "M/dd/yy","M/d/yyyy","M/d/yy","MM/d/yy","MM/d/yyyy");
+    }
+
+    public static Date parseDate(String dateStr, String... parsePatterns) throws ParseException{
+        
+        if (dateStr == null || parsePatterns == null) {
+            throw new IllegalArgumentException("Date and Patterns must not be null");
+        }
+
+        String strDate = dateStr;
+       //do year correction. (partial year >=50 will be 1999 and <50 will be 2000)
+       String[] parts = StringUtils.split(dateStr, '/');
+       int len = parts.length;
+
+       if(len != 3 || parts[0].length() > 2 || parts[1].length() > 2) throw new ParseException("Unable to parse the date "+strDate, -1);
+
+       String yStr = parts[2];
+
+       if(!(yStr.length() == 4 || yStr.length() == 2)) throw new ParseException("Unable to parse the date "+ strDate , -1);
+       if(yStr.length() == 2 && StringUtils.isNumeric(yStr)){
+
+           if(Integer.parseInt(yStr) < 50)
+               yStr = "20"+yStr;
+           else
+               yStr = "19" + yStr;
+
+           parts[2] = yStr;
+           strDate = StringUtils.join(parts,'/');
+       }
+
+        //BJ: date formats are not thread save, so we need to create one each time.
+        SimpleDateFormat parser = null;
+        ParsePosition pos = new ParsePosition(0);
+        for (int i = 0; i < parsePatterns.length; i++) {
+            if (i == 0) {
+                parser = new SimpleDateFormat(parsePatterns[0]);
+            } else {
+                parser.applyPattern(parsePatterns[i]);
+            }
+            pos.setIndex(0);
+
+            Date date = parser.parse(strDate, pos);
+            if (date != null && pos.getIndex() == strDate.length()) {
+                return date;
+            }
+        }
+        throw new ParseException("Unable to parse the date: " + strDate, -1);
     }
     
     public static DateValue parseDateString(String dateString){
@@ -148,7 +203,7 @@ public class DateUtils {
     }
 
     public static boolean isValidDate(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
 
         Date testDate;
         try {
