@@ -183,7 +183,7 @@ ${command.organization}
 
                     <ui:row path="participant.organizationIdentifiers[0]">
                         <jsp:attribute name="label"><ui:label path="participant.organizationIdentifiers[0]" text="Subject Identifier" required="true" /></jsp:attribute>
-                        <jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true"/></jsp:attribute>
+                        <jsp:attribute name="value"><ui:text path="participant.organizationIdentifiers[0].value" required="true" validationJSClass="validate-IDENTIFIER"/></jsp:attribute>
                     </ui:row>
 
             </c:if>
