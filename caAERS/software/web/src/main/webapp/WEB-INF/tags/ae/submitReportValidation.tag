@@ -145,7 +145,7 @@
 								<li><a href="#" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
 	                    	</c:if>
 	                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-	                            <c:if test="${!command.workflowEnabled || isSuperUser}">
+	                            <c:if test="${renderSubmitLink[report.id]}">
 	                            	<li><a class="submitter-green" href="#" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>
 	                            </c:if>
 	                        </c:if>

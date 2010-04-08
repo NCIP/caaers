@@ -4,10 +4,5 @@
 <%@attribute name="index" type="java.lang.Integer" description="The index of the expedited adverse event"%>
 <%@attribute name="aeReport" type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" description="The expedited adverse event report that is printed by this row." %>
 <c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
-	<c:if test="${command.workflowEnabled}">
-		<ae:oneListReportRowWorkflowEnabled report="${report}" rpIndex="${rStatus.index}" />
-	</c:if>
-	<c:if test="${!command.workflowEnabled}">
-		<ae:oneListReportRowWorkflowDisabled report="${report}" rpIndex="${rStatus.index}"/>
-	</c:if>
+	<ae:oneListReportRow report="${report }" rpIndex="${rStatus.index }"/>
 </c:forEach>

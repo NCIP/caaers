@@ -1,6 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -30,6 +35,8 @@ import org.springframework.validation.Errors;
  */
 public class ViewReportTab extends AeTab {
 
+	private ResearchStaffDao researchStaffDao;
+	
     public ViewReportTab() {
         super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(),"ae/submit");
     }
@@ -55,7 +62,6 @@ public class ViewReportTab extends AeTab {
             for (ValidationError vError : validationErrors.getErrors()) {
             	if(command.isErrorApplicable(vError.getFieldNames())){
             		commonReportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
-
             	}
             }
         }
@@ -78,12 +84,74 @@ public class ViewReportTab extends AeTab {
         }
         refdata.put("reportMessages", reportMessages);
         
-        
+        Map<Integer, Boolean> renderSubmitLink = initializeRenderSubmitLinkMap(command);
+        refdata.put("renderSubmitLink", renderSubmitLink);
         
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
     	refdata.put("isSuperUser", isSuperUser);
     	
         return refdata;
+    }
+    
+    private Map<Integer, Boolean> initializeRenderSubmitLinkMap(ExpeditedAdverseEventInputCommand command){
+    	Map<Integer, Boolean> renderSubmitLink = new HashMap<Integer, Boolean>();
+    	
+    	String loginId = SecurityUtils.getUserLoginName();
+    	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
+    	
+    	//First of all initialize renderSubmitLink map with the values based on the report status
+    	for(Report report: command.getAeReport().getActiveReports()){
+    		renderSubmitLink.put(report.getId(), report.getStatus().equals(ReportStatus.PENDING) || report.getStatus().equals(ReportStatus.FAILED));
+    	}
+    	
+    	// If the logged in person is superUser then he is allowed to submit all the reports based on whether its complete/incomplete
+    	// so simply return in this case
+    	if(isSuperUser) return renderSubmitLink;
+    	
+    	boolean canLoggedInUserSubmit = SecurityUtils.checkAuthorization(UserGroupType.caaers_ae_cd,
+				UserGroupType.caaers_participant_cd,UserGroupType.caaers_central_office_sae_cd);
+    	
+    	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
+    	if(command.getWorkflowEnabled()){
+    		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
+    		boolean isSAECoordinatorAtCC = false;
+			//now check if the sae coordinator is associated to the coordinaoting center
+			if(isSAECoordinator && command.getStudy() != null){
+				Organization ccOrg = command.getStudy().getStudyCoordinatingCenter().getOrganization();
+				ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
+				if(researchStaff != null && ccOrg != null){
+			    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
+			    		if(siteRs.getOrganization().getId().equals(ccOrg.getId())){
+			    			isSAECoordinatorAtCC = true;
+			    			break;
+			    		}
+			    	}
+				}
+			}
+    		
+    		// Now we have to check again whether the worklow is enabled for each individual report
+			// If the workflow is disabled for a report then canLoggedInUserSubmit will determine the reportSubmittability
+			// else if the workflow is enabled for a report then only SAE Coordinator at the coordinating center can submit
+			// the report
+    		for(Report report: command.getAeReport().getActiveReports()){
+    			if(report.getWorkflowId() != null){
+    				// This implies the report is in a workflow
+    		   			boolean canSubmit = renderSubmitLink.get(report.getId());
+    		   			renderSubmitLink.put(report.getId(), canSubmit && isSAECoordinatorAtCC);
+    			}else{
+    				// This implies that the report is not in a workflow
+    		   			boolean canSubmit = renderSubmitLink.get(report.getId());
+    		   			renderSubmitLink.put(report.getId(), canSubmit && canLoggedInUserSubmit);
+    			}
+    		}
+    	}else{
+    		// Update reportSubmittablity based on whether the logged in person can submit
+    		for(Integer id: renderSubmitLink.keySet()){
+    			boolean canSubmit = renderSubmitLink.get(id);
+    			renderSubmitLink.put(id, canSubmit && canLoggedInUserSubmit);
+    		}
+    	}
+    	return renderSubmitLink;
     }
 
     private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action,String selected) {
@@ -116,5 +184,12 @@ public class ViewReportTab extends AeTab {
     }
 
     // //// CONFIGURATION
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
+    	this.researchStaffDao = researchStaffDao;
+    }
+    
+    public ResearchStaffDao getResearchStaffDao(){
+    	return researchStaffDao;
+    }
     
 }

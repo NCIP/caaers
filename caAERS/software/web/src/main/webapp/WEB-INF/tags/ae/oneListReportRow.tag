@@ -29,7 +29,7 @@
 		            	</c:if>
 		<td width="10%">${report.aeReport.numberOfAes}</td>
 		<td width="20%" align="left">
-			${command.reportsSubmittable[report.id] ? 'Complete' : 'In-progress'}
+			${command.dataEntryStatus[report.id] ? 'Complete' : 'In-progress'}
 		</td>
 		<td width="20%" id="status${report.id}" align="left">
 			<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/>
@@ -64,10 +64,8 @@
 					<OPTION value="withdraw">Withdraw</OPTION>
 				</c:if>
 
-                <c:if test="${command.reportsSubmittable[report.id] and (reportStatus eq 'PENDING' or reportStatus eq 'FAILED') }">
-                    <c:if test="${command.submitLinkRenderable}">
+                <c:if test="${command.reportsSubmittable[report.id]}">
                          <OPTION value="submit">Submit</OPTION>
-                    </c:if>
                 </c:if>
 				<c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}">
                     <OPTION value="amend">Amend</OPTION>

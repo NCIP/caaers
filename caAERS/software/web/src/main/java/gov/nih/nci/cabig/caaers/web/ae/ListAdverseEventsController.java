@@ -68,7 +68,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	request.getSession().removeAttribute(ACTION_PARAMETER);
-    	ListAdverseEventsCommand command = new ListAdverseEventsCommand(reportValidationService);
+    	ListAdverseEventsCommand command = new ListAdverseEventsCommand(reportValidationService, researchStaffDao);
     	command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
     	
 
@@ -158,7 +158,7 @@ public class ListAdverseEventsController extends SimpleFormController {
         if(!errors.hasErrors()){
         	//if there is no validation error, update the report submitability
         	listAECmd.updateSubmittability();
-        	
+        	listAECmd.updateSubmittabilityBasedOnReportStatus();
         	listAECmd.updateOptions();
         	
         	//save the study/subject in session for future pre-selection
@@ -183,39 +183,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     @Override
     protected void doSubmitAction(Object command) throws Exception {
     	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
-    	String loginId = SecurityUtils.getUserLoginName();
-    	
-    	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-    	
-    	boolean canRenderSubmitReportLink = isSuperUser;
-    	
-    	if(!isSuperUser){
-    		
-    		if(listAECmd.getWorkflowEnabled()){
-    			
-    			//only cenrtal office sae coordinator of the Coordinating center is allowed to submit.
-    			boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
-
-    			//now check if the sae coordinator is associated to the coordinaoting center
-    			if(isSAECoordinator && listAECmd.getStudy() != null){
-    				Organization ccOrg = listAECmd.getStudy().getStudyCoordinatingCenter().getOrganization();
-    				ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
-    				if(researchStaff != null && ccOrg != null){
-    			    	for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
-    			    		canRenderSubmitReportLink = siteRs.getOrganization().getId().equals(ccOrg.getId());
-    			    	}
-    				}
-    			}
-    			  
-    			  
-        	}else{
-        		canRenderSubmitReportLink = SecurityUtils.checkAuthorization(UserGroupType.caaers_ae_cd,
-        				UserGroupType.caaers_participant_cd,UserGroupType.caaers_central_office_sae_cd);
-        	}
-    	}
-    	
-    	listAECmd.setSubmitLinkRenderable(canRenderSubmitReportLink);
-    	
+    	listAECmd.updateSubmittabilityBasedOnWorkflow();
     }
 
     // //// CONFIGURATION
