@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import com.semanticbits.rules.brxml.*;
+import com.semanticbits.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -42,8 +40,11 @@ import com.semanticbits.rules.utils.RuleUtil;
 import com.semanticbits.rules.utils.XMLUtil;
 
 /**
+ * 
  * This is the interface/facade to rules engine. 
  * @author Biju Joseph
+ * @author Ion C. Olaru
+ * 
  */
 public class CaaersRulesEngineService {
 
@@ -202,20 +203,17 @@ public class CaaersRulesEngineService {
 
     }
 
-    public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName,
-                    String subject, String state) throws Exception {
+    public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName, String subject, String state) throws Exception {
         // TODO Auto-generated method stub
 
-        Category cat = CaaersRuleUtil.getInstitutionSpecificCategory(ruleAuthoringService,
-                        institutionName, ruleSetName);
+        Category cat = CaaersRuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
 
         RuleSet ruleSet = new RuleSet();
         // This name should be unique
         // String packageName =
         // "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 
-        String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE
-                        .getPackagePrefix(), institutionName, ruleSetName);
+        String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
         // System.out.println(packageName);
         ruleSet.setName(packageName);
         ruleSet.setStatus("Draft");
@@ -1303,7 +1301,67 @@ public class CaaersRulesEngineService {
 
         return fieldName;
     }
-    
+
+   /*
+    *
+    * @author Ion C. Olaru
+    * Get the fields involved in this particular ruleSet
+    * @param rs - the RuleSet to be evaluated
+    * @param objectIdentifier - object type to consider, ex: adverseEvent
+    * @return - List of String containin the field involved in this ruleSet
+    *  
+    */
+    public List<String> getRuleableFields(RuleSet rs, String objectIdentifier) {
+
+        List<String> fields = new ArrayList<String>();
+        if (rs == null) return fields;
+
+        log.debug(String.format("Get the ruleable fields from RuleSet: %s", rs.getName()));
+        // System.out.println(String.format("Get the ruleable fields from RuleSet: %s", rs.getName()));
+
+        for (Rule r : rs.getRule()) {
+            Condition condition = r.getCondition();
+            for (Column c : condition.getColumn()) {
+                if (c.getIdentifier().equals(objectIdentifier)) {
+                    for (FieldConstraint fc : c.getFieldConstraint()) {
+                        fields.add(fc.getFieldName());
+                    }
+                }
+            }
+        }
+        return fields;
+    }
+
+    /*
+     *
+     * @author Ion C. Olaru
+     * Get the fields involved in the ruleSets of this AEReport
+     * @param Rs - the ruleSet to be evaluated
+     * @param objectIdentifier - object type to consider, ex: adverseEvent
+     * @return - List of String containin the field involved in this ruleSet
+     *
+     */
+    public List<String> getRuleableFieldsForAE(ExpeditedAdverseEventReport r) throws Exception {
+
+        List<String> fields = new ArrayList<String>();
+        Study s = r.getStudy();
+
+        // evaluate Study organization level rules
+        // System.out.println(s.getActiveStudySites());
+        for (StudySite ss : s.getActiveStudySites()) {
+            RuleSet rs = getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), ss.getOrganization().getName());
+            fields.addAll(getRuleableFields(rs, "adverseEvent"));
+        }
+        
+        // System.out.println("ss:" +fields);
+        // evaluate sponsor if organization has no rules
+        if (fields.size() == 0) {
+            RuleSet rs = getRuleSetForSponsor(RuleType.REPORT_SCHEDULING_RULES.getName(), s.getPrimaryFundingSponsor().getOrganization().getName());
+            fields.addAll(getRuleableFields(rs, "adverseEvent"));
+        }
+
+        return fields;
+    }
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
         this.reportDefinitionDao = reportDefinitionDao;

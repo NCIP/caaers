@@ -104,7 +104,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private String screenFlowSource;
     
     protected EvaluationService evaluationService;
-    
+
+    // cache for ruleable fields
+    List<String> ruleableFields = null;
+
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
     }
@@ -592,5 +595,12 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     			selectedReportsAssociatedToWorkflow.add(r);
     	return selectedReportsAssociatedToWorkflow;
     }
-    
+
+    public List<String> getRuleableFields() {
+        return ruleableFields;
+    }
+
+    public void setRuleableFields(List<String> ruleableFields) {
+        this.ruleableFields = ruleableFields;
+    }
 }

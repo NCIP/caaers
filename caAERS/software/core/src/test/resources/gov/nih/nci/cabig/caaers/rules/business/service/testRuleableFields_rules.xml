@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ruleSet xmlns="http://semanticbits.com/rules/brxml">
+    <id>06e6ac1f-ea66-4bf1-9641-2caedcd0c5d3</id>
+    <name>gov.nih.nci.cabig.caaers.rules.sponsor.aalborg_university_hospital.sae_reporting_rules</name>
+    <description>SAE Reporting Rules</description>
+    <subject>Sponsor rules||Aalborg University Hospital</subject>
+    <coverage>Enabled</coverage>
+    <import>gov.nih.nci.cabig.caaers.domain.*</import>
+    <rule id="3301f5d9-64ec-4e08-9a1d-bee372ea4de1">
+        <condition>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix="" grammer-prefix=" Severity " display-uri="undefined"
+                                  field-name="grade">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>2</value>
+                        <readable-value>Grade 2</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix="expected " grammer-prefix=" Adverse Event " display-uri="undefined"
+                                  field-name="expectedness">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>true</value>
+                        <readable-value>is</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,null,'expectedness','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix="" grammer-prefix=" Hospitalization or Prolonged Hospitalization "
+                                  display-uri="undefined" field-name="hospitalization">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix=" "
+                                  grammer-prefix=" Does this Adverse Event place participant at higher risk ?  "
+                                  display-uri="undefined" field-name="participantAtRisk">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>true</value>
+                        <readable-value>is true</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,null,'participantAtRisk','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix="" grammer-prefix=" Attribution " display-uri="undefined"
+                                  field-name="attributionSummary">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>UNLIKELY</value>
+                        <readable-value>Unlikely,</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Attribution','name','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
+                    identifier="adverseEvent">
+                <field-constraint grammer-postfix="" grammer-prefix=" Outcome Identifier " display-uri="undefined"
+                                  field-name="outcomeIdentifier">
+                    <literal-restriction display-uri="is " evaluator="==">
+                        <value>2</value>
+                        <readable-value>life-threatening,</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>
+                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.OutcomeType','code','runTimeValue','runTimeOperator')
+                </expression>
+            </column>
+        </condition>
+        <action>IGNORE</action>
+        <readableAction>IGNORE</readableAction>
+        <metaData checkinComment="Initial Version"
+                  packageName="gov.nih.nci.cabig.caaers.rules.sponsor.aalborg_university_hospital.sae_reporting_rules"
+                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-1">
+            <category>
+                <path>CAAERS_BASE/SPONSOR/aalborg_university_hospital</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Severity is 'Grade 2'</line>
+            <line>And</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Adverse Event is 'is ' expected</line>
+            <line>And</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Hospitalization or Prolonged Hospitalization is 'Yes'</line>
+            <line>And</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Does this Adverse Event place participant at higher risk ? is 'is
+                true'
+            </line>
+            <line>And</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Attribution is 'Unlikely'</line>
+            <line>And</line>
+            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp; Outcome Identifier is 'life-threatening'</line>
+        </readableRule>
+    </rule>
+</ruleSet>

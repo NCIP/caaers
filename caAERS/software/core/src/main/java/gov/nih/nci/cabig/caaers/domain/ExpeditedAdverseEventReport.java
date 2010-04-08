@@ -39,6 +39,8 @@ import org.springframework.beans.BeanUtils;
  *
  * @author Rhett Sutphin
  * @author Biju Joseph
+ * @author Ion C. Olaru
+ * 
  */
 @Entity
 @Table(name = "ae_reports")
@@ -239,7 +241,23 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return adverseEvents;
     }
     
-    
+    /**
+     * @author Ion C. Olaru
+     * This method will return all the adverse events, which have at least one ruleable field modified
+     *
+     */
+    @Transient
+    public List<AdverseEvent> getModifiedAdverseEvents(List<String> ruleableFields) {
+        List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getAdverseEvents()){
+    		if (ae.isRuleableFieldsModified(ruleableFields)) {
+    			adverseEvents.add(ae);
+    		}
+    	}
+    	return adverseEvents;
+    }
+
+
     public void addLab(Lab lab) {
         getLabsInternal().add(lab);
         if (lab != null) lab.setReport(this);

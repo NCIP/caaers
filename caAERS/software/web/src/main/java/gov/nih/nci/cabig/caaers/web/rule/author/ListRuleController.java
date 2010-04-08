@@ -46,8 +46,7 @@ public class ListRuleController extends SimpleFormController {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
-                    throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("pageTitle", "Manage Rules: Select Rule to Update");
         return refdata;
@@ -69,8 +68,7 @@ public class ListRuleController extends SimpleFormController {
                 List<String> rds = caaersRulesEngineService.importRules(ruleSetFile1.getAbsolutePath());
                 if (rds.size() > 0) {
 
-                    sb
-                                    .append("Following report definitions are created with basic information.<br/>");
+                    sb.append("Following report definitions are created with basic information.<br/>");
                     sb.append("Please update these report definitions<br/>");
                     for (String rd : rds) {
                         sb.append(rd + "<br/>");

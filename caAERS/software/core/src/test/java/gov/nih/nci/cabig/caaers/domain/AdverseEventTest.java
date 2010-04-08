@@ -22,6 +22,8 @@ import java.util.List;
 
 /**
  * @author Biju Joseph
+ * @author Ion C. Olaru
+ * 
  */
 @CaaersUseCases({AE_DATA_COLLECTION})
 public class AdverseEventTest extends AbstractTestCase {
@@ -178,13 +180,75 @@ public class AdverseEventTest extends AbstractTestCase {
     	
     }
     
-    
-    public void testGetCurrentSignature(){
+   /*
+    *
+    * get the signature of an AE
+    * 
+    **/
+    public void testGetCurrentSignature() {
     	AdverseEvent ae = new AdverseEvent();
-    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$$$", ae.getCurrentSignature());
-    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$true$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$",adverseEvent.getCurrentSignature());
+    	assertEquals("$$$$$$$$$$$$$$$$$$$$$$$$$$$$", ae.getCurrentSignature());
+    	assertEquals("detailsForOther$$DEATH$$POSSIBLE$$YES$$true$$$$true$$11/02/2008$$11/03/2008$$03$$02$$eventLocation$$$$DISABILITYDEATH$$", adverseEvent.getCurrentSignature());
     }
     
+    public void testSigantureFieldValueFullSignature() {
+        String s = adverseEvent.getCurrentSignature(); 
+    	assertEquals("DEATH", adverseEvent.signatureFieldValue("grade", s));
+    	assertEquals("true", adverseEvent.signatureFieldValue("expectedness", s));
+    	assertEquals("POSSIBLE", adverseEvent.signatureFieldValue("attributionSummary", s));
+    	assertEquals("YES", adverseEvent.signatureFieldValue("hospitalization", s));
+    	assertEquals("true", adverseEvent.signatureFieldValue("participantAtRisk", s));
+    	assertEquals("DISABILITYDEATH", adverseEvent.signatureFieldValue("outcomeIdentifier", s));
+    }
+
+    public void testSigantureFieldValueEmptySignature() {
+        AdverseEvent ae = new AdverseEvent();
+        String s = ae.getCurrentSignature();
+    	assertEquals("", adverseEvent.signatureFieldValue("grade", s));
+    	assertEquals("", adverseEvent.signatureFieldValue("expectedness", s));
+    	assertEquals("", adverseEvent.signatureFieldValue("attributionSummary", s));
+    	assertEquals("", adverseEvent.signatureFieldValue("hospitalization", s));
+    	assertEquals("", adverseEvent.signatureFieldValue("participantAtRisk", s));
+    	assertEquals("", adverseEvent.signatureFieldValue("outcomeIdentifier", s));
+    }
+
+    public void testSigantureFieldValueEmptySignatureOneField() {
+        String s = "comments$$v1$$$$$$$$$$$$$$$$$$";
+    	assertEquals("v1", adverseEvent.signatureFieldValue("grade", s));
+        assertEquals("", adverseEvent.signatureFieldValue("expectedness", s));
+        assertEquals("", adverseEvent.signatureFieldValue("attributionSummary", s));
+        assertEquals("", adverseEvent.signatureFieldValue("hospitalization", s));
+        assertEquals("", adverseEvent.signatureFieldValue("participantAtRisk", s));
+        assertEquals("", adverseEvent.signatureFieldValue("outcomeIdentifier", s));
+    }
+
+    public void testIsRuleableFieldsModifiedChangeARuleableField() {
+        List<String> ruleableFields = new ArrayList<String>();
+        ruleableFields.add("grade");
+        
+        adverseEvent.setGrade(Grade.MILD);
+        String s = adverseEvent.getCurrentSignature();
+
+        adverseEvent.setSignature(s);
+        assertFalse(adverseEvent.isRuleableFieldsModified(ruleableFields));
+
+        adverseEvent.setGrade(Grade.NORMAL);
+        assertTrue(adverseEvent.isRuleableFieldsModified(ruleableFields));
+    }
+
+    public void testIsRuleableFieldsModifiedChangeANonRuleableField() {
+        List<String> ruleableFields = new ArrayList<String>();
+        ruleableFields.add("grade");
+
+        adverseEvent.setHospitalization(Hospitalization.YES);
+        String s = adverseEvent.getCurrentSignature();
+        adverseEvent.setSignature(s);
+        assertFalse(adverseEvent.isRuleableFieldsModified(ruleableFields));
+
+        adverseEvent.setHospitalization(Hospitalization.NO);
+        assertFalse(adverseEvent.isRuleableFieldsModified(ruleableFields));
+    }
+
     public void testInitializeGradedDate(){
     	AdverseEvent ae = new AdverseEvent();
     	assertNull(ae.getGradedDate());
@@ -410,13 +474,11 @@ public class AdverseEventTest extends AbstractTestCase {
     }
     
     public void testGetDisplayName(){
-    	
     	AdverseEvent ae = Fixtures.createAdverseEvent(1, Grade.DEATH);
     	ae.getAdverseEventCtcTerm().getTerm().setOtherRequired(true);
     	assertEquals("abcd", ae.getDisplayName());
     	ae.setDetailsForOther("hello");
     	assertEquals("abcd, hello", ae.getDisplayName());
-    	
     }
 
 }

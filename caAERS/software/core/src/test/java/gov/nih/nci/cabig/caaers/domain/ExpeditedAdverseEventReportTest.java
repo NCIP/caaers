@@ -1351,4 +1351,32 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
     	aeReport.addReport(r1);
     	assertTrue("An active report is in workflow." ,aeReport.hasWorkflowOnActiveReports());
     }
+
+    public void testModifiedAEForRuleableFields() {
+        List<String> ruleableFields = new ArrayList<String>();
+        ruleableFields.add("grade");
+
+        adverseEvent.setGrade(Grade.NORMAL);
+        report.updateSignatureOfAdverseEvents();
+
+        assertNotNull(report.getModifiedAdverseEvents(ruleableFields));
+        assertEquals(0, report.getModifiedAdverseEvents(ruleableFields).size());
+
+        adverseEvent.setGrade(Grade.MODERATE);
+        assertEquals(1, report.getModifiedAdverseEvents(ruleableFields).size());
+    }
+
+    public void testModifiedAEForRuleableFieldsNoRuleable() {
+        List<String> ruleableFields = new ArrayList<String>();
+        ruleableFields.add("grade");
+        ruleableFields.add("expectedness");
+
+        adverseEvent.setHospitalization(Hospitalization.NONE);
+        report.updateSignatureOfAdverseEvents();
+
+        assertEquals(0, report.getModifiedAdverseEvents(ruleableFields).size());
+
+        adverseEvent.setHospitalization(Hospitalization.YES);
+        assertEquals(0, report.getModifiedAdverseEvents(ruleableFields).size());
+    }
 }

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
+import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -47,6 +48,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     protected ExpeditedReportTree expeditedReportTree;
     protected ReportRepository reportRepository;
     protected EvaluationService evaluationService;
+    protected CaaersRulesEngineService caaersRulesEngineService;
     protected SchedulerService schedulerService;
     protected ReportValidationService reportValidationService;
     protected HashMap<String, Boolean> emptyFieldNameMap;
@@ -90,13 +92,33 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     
     /**
      * Check if adverse event is modified, if so, generate warning message.
-     * @param command
-     * @return
+     * @param   command
+     * @return  String
+     * 
      */
-    public String generateWarningMessage(ExpeditedAdverseEventInputCommand command){
-    	if(!command.getAeReport().getModifiedAdverseEvents().isEmpty()){
-    		return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId().toString(), command.getParticipant().getId().toString(), command.getAdverseEventReportingPeriod().getId().toString()});
-    	}
+    public String generateWarningMessage(ExpeditedAdverseEventInputCommand command) {
+        try {
+            List<String> ruleableFields = command.getRuleableFields();
+            if (ruleableFields == null) {
+                ruleableFields = caaersRulesEngineService.getRuleableFieldsForAE(command.getAeReport());
+                command.setRuleableFields(ruleableFields);
+            }
+            
+            logger.debug(String.format("I: Found %d ruleable fields for this AEReport", ruleableFields.size()));
+
+            if (!command.getAeReport().getModifiedAdverseEvents(ruleableFields).isEmpty()) {
+                return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId().toString(), command.getParticipant().getId().toString(), command.getAdverseEventReportingPeriod().getId().toString()});
+            }
+            
+        } catch (Exception e) {
+            logger.error("Error while trying to retrieve the ruleable fields.", e);
+
+            if(!command.getAeReport().getModifiedAdverseEvents().isEmpty()){
+                return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId().toString(), command.getParticipant().getId().toString(), command.getAdverseEventReportingPeriod().getId().toString()});
+            }
+            
+        }
+
     	return null;
     }
     
@@ -422,5 +444,13 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         public String createDisplayName(int index) {
             return new StringBuilder(heading).append(' ').append(index + 1).toString();
         }
+    }
+
+    public CaaersRulesEngineService getCaaersRulesEngineService() {
+        return caaersRulesEngineService;
+    }
+
+    public void setCaaersRulesEngineService(CaaersRulesEngineService caaersRulesEngineService) {
+        this.caaersRulesEngineService = caaersRulesEngineService;
     }
 }

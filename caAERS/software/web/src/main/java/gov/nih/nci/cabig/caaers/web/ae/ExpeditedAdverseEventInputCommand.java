@@ -75,5 +75,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void saveReportingPeriod();
     boolean isErrorApplicable(String... fields);
     public HashMap<String, Boolean> getRulesErrors();
-    public void setRulesErrors(HashMap<String, Boolean> rulesErrors);    
+    public void setRulesErrors(HashMap<String, Boolean> rulesErrors);
+    
+    public List<String> getRuleableFields();
+    public void setRuleableFields(List<String> fields);
 }

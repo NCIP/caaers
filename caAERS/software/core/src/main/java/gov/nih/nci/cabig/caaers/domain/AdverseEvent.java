@@ -48,6 +48,8 @@ import org.hibernate.annotations.Where;
  *
  * @author Rhett Sutphin
  * @author Biju Joseph
+ * @author Ion C. Olaru
+ *
  */
 
 @Entity
@@ -820,27 +822,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @Transient
     public String getCurrentSignature(){
     	StringBuffer sb = new StringBuffer("");
-    	// verbatim value
+
+        // verbatim value
     	sb.append(detailsForOther == null ? "" : detailsForOther.toString());
-    	
     	sb.append("$$");
     	
     	// grade value
     	sb.append(grade == null ? "" : grade.getName()); // grade value
-    	
     	sb.append("$$");
     	
     	// attribution value
     	sb.append(attributionSummary == null ? "" : attributionSummary.getName());
-    	
     	sb.append("$$");
     	
     	// hospitalization value
-    	if(hospitalization == null)
-    		sb.append("");
-    	else
+    	if(hospitalization != null)
     		sb.append(hospitalization.getName().equals("NONE") ? "" : hospitalization.getName());
-    	
     	sb.append("$$");
     	
     	// expected
@@ -852,12 +849,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     			sb.append(lowLevelTerm == null ? "" : lowLevelTerm.getFullName());
     		}
     	}
-    	
     	sb.append("$$");
+        
     	// risk CAAERS-3281
     	sb.append(participantAtRisk == null ? "" : participantAtRisk);
     	sb.append("$$");
-    	
     	
     	//startdate
     	sb.append(startDate == null ? "" : DateUtils.formatDate(startDate)).append("$$");
@@ -877,15 +873,74 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	sb.append(eventLocation == null ? "" : eventLocation ).append("$$");
     	
     	//retired indicator
-    	if(isRetired()){
-    		sb.append("deleted").append("$$");
+    	if (isRetired()){
+    		sb.append("deleted");
     	}
+        sb.append("$$");
     	
-    	
-    	return sb.toString();
+        sb.append(getOutcomesSignature()).append("$$");    	
+
+        return sb.toString();
     }
-    
-    
+
+    /*
+    *
+    * @author Ion C. Olaru
+    * Rerurn the value of the field from the signature
+    * @param field - field we look fo
+    * @param signature - the AE siganture
+    * @return value of the field or empty string if not found
+    * 
+    * */
+    @Transient
+    public String signatureFieldValue(String field, String signature) {
+        String[] s = signature.split("(\\$\\$){1}");
+
+        if (s.length == 0) return "";
+
+        if (field.equals("grade")) {
+            if (s.length < 2) return ""; else return s[1];
+        }
+
+        if (field.equals("attributionSummary")) {
+            if (s.length < 3) return ""; else return s[2];
+        }
+
+        if (field.equals("hospitalization")) {
+            if (s.length < 4) return ""; else return s[3];
+        }
+
+        if (field.equals("expectedness")) {
+            if (s.length < 5) return ""; else return s[4];
+        }
+
+        if (field.equals("participantAtRisk")) {
+            if (s.length < 7) return ""; else return s[6];
+        }
+
+        if (field.equals("outcomeIdentifier")) {
+            if (s.length < 14) return ""; else return s[13];
+        }
+
+        return "";
+    }
+
+    /*
+    *
+    * @author Ion C. Olaru
+    * Rerurn true if any of the ruleable fields has a modified value
+    * @param fields - list of ruleable fields
+    *  
+    * */
+    @Transient
+    public boolean isRuleableFieldsModified(List<String> fields) {
+        String currentSignature = getCurrentSignature();
+        for (String f : fields) {
+            if (!signatureFieldValue(f, signature).equals(signatureFieldValue(f, currentSignature))) return true;
+        }
+        return false;
+    }
+
     public String getSignature() {
 		return signature;
 	}
@@ -893,7 +948,6 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	
 	
 	public Boolean getReported() {
 		return reported;
@@ -947,4 +1001,14 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	public Boolean getParticipantAtRisk() {
 		return participantAtRisk;
 	}
+
+    @Transient
+    public String getOutcomesSignature() {
+        StringBuffer sb = new StringBuffer("");
+        for (Outcome o : getOutcomes()) {
+            sb.append(o.getOutcomeType().getName());
+        }
+        return sb.toString();
+    }
+
 }
