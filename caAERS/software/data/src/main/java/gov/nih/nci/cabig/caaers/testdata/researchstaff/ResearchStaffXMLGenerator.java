@@ -26,6 +26,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class ResearchStaffXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "researchstaff_template.xml";
+	public static int researchStaffPerSite = 10;
 	
 	private ObjectFactory objectFactory;
 	
@@ -74,7 +75,7 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 		Staff loadedStaff = objectFactory.createStaff();
 		int staffCounter = 1;
 		for(String nciCode : ORGANIZATION_LIST){
-			for(int index=1;index<=10;index++){
+			for(int index=1;index<=researchStaffPerSite;index++){
 				ResearchStaffType rsType = changeValues(getTemplateResearchStaff(),nciCode,staffCounter);
 				loadedStaff.getResearchStaff().add(rsType);
 				staffCounter++;

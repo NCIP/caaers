@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 public class InvestigatorXMLGenerator extends XMLGenerator{
 	
 	public static String templateXML = "investigator_template.xml";
+	public static int investigatorsPerSite = 3;
 	
 	private ObjectFactory objectFactory;
 	
@@ -74,7 +75,7 @@ public class InvestigatorXMLGenerator extends XMLGenerator{
 		Staff loadedStaff = objectFactory.createStaff();
 		int invCounter = 1;
 		for(String nciCode : ORGANIZATION_LIST){
-			for(int index=1;index<=10;index++){
+			for(int index=1;index<=investigatorsPerSite;index++){
 				InvestigatorType invType = changeValues(getTemplateInvestigator(),nciCode,invCounter);
 				loadedStaff.getInvestigator().add(invType);
 				invCounter++;
