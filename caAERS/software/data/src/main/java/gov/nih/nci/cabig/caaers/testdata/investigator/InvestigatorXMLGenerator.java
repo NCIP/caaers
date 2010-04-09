@@ -101,20 +101,10 @@ public class InvestigatorXMLGenerator extends XMLGenerator{
 	 * @throws Exception
 	 */
 	private void modifyDates(InvestigatorType invType) throws Exception{
-		
-		DatatypeFactory df = DatatypeFactory.newInstance();
-		Calendar gcNow = GregorianCalendar.getInstance();
-		int year = gcNow.get(Calendar.YEAR); 
-		int month = gcNow.get(Calendar.MONTH)+1;
-		int day = gcNow.get(Calendar.DAY_OF_MONTH);
-		int tz = DatatypeConstants.FIELD_UNDEFINED;
-		
-		XMLGregorianCalendar currXmlCal = df.newXMLGregorianCalendarDate(year, month, day, tz);
-		XMLGregorianCalendar furXmlCal = df.newXMLGregorianCalendarDate(year+1, month, day, tz);
-		
+
 		for(SiteInvestigatorType siType : invType.getSiteInvestigator()){
-			siType.setStartDate(currXmlCal);
-			siType.setEndDate(furXmlCal);
+			siType.setStartDate(toDay());
+			siType.setEndDate(nextYear());
 		}
 	}
 		

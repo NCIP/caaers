@@ -100,16 +100,7 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 	 * @throws Exception
 	 */
 	private void modifyDates(ResearchStaffType rsType) throws Exception{
-		
-		DatatypeFactory df = DatatypeFactory.newInstance();
-		Calendar gcNow = GregorianCalendar.getInstance();
-		int year = gcNow.get(Calendar.YEAR); 
-		int month = gcNow.get(Calendar.MONTH)+1;
-		int day = gcNow.get(Calendar.DAY_OF_MONTH);
-		int tz = DatatypeConstants.FIELD_UNDEFINED;
-		
-		XMLGregorianCalendar currXmlCal = df.newXMLGregorianCalendarDate(year, month, day, tz);
-		XMLGregorianCalendar furXmlCal = df.newXMLGregorianCalendarDate(year+1, month, day, tz);
+
 		
 		List<SiteResearchStaffType> siteRsTypeList;
 		List<SiteResearchStaffRoleType> siteRsRoleTypeList;
@@ -117,8 +108,8 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 		for(SiteResearchStaffType sRsType : siteRsTypeList){
 			siteRsRoleTypeList = sRsType.getSiteResearchStaffRoles().getSiteResearchStaffRole();
 			for(SiteResearchStaffRoleType sRsRoleType : siteRsRoleTypeList){
-				sRsRoleType.setStartDate(currXmlCal);
-				sRsRoleType.setEndDate(furXmlCal);
+				sRsRoleType.setStartDate(toDay());
+				sRsRoleType.setEndDate(nextYear());
 			}
 		}
 	}
