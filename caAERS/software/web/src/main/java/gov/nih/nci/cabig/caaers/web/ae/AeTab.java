@@ -113,10 +113,13 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         } catch (Exception e) {
             logger.error("Error while trying to retrieve the ruleable fields.", e);
 
+/*
+
             if(!command.getAeReport().getModifiedAdverseEvents().isEmpty()){
                 return getMessage("instruction_ae_modification_detected", "Adverse events modified, please got to reveiwe and report page", new Object[]{command.getStudy().getId().toString(), command.getParticipant().getId().toString(), command.getAdverseEventReportingPeriod().getId().toString()});
             }
             
+*/
         }
 
     	return null;
