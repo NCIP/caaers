@@ -1348,7 +1348,7 @@ public class CaaersRulesEngineService {
 
         // evaluate Study organization level rules
         // System.out.println(s.getActiveStudySites());
-        for (StudySite ss : s.getActiveStudySites()) {
+        for (StudyOrganization ss : s.getStudyOrganizations()) {
             RuleSet rs = getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), ss.getOrganization().getName());
             fields.addAll(getRuleableFields(rs, "adverseEvent"));
         }
