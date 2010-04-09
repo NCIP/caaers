@@ -121,5 +121,4 @@ public class SubjectXMLGenerator extends XMLGenerator{
 			e.printStackTrace();
 		}
 	}
-	
 }
