@@ -14,8 +14,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -29,13 +27,19 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "researchstaff_template.xml";
 	
-	private JAXBContext jaxbContext = null;
-	private Unmarshaller unmarshaller = null;
-	private static Marshaller marshaller = null;
 	private ObjectFactory objectFactory;
 	
 	private static final List<String> ORGANIZATION_LIST = Arrays.asList(
-			"02001","02002","02003","02004","02005","02006","02007","02008","02009","02010"
+			"02001","02002","02003","02004","02005","02006","02007","02008","02009","02010",
+			"02011","02012","02013","02014","02015","02016","02017","02018","02019","02020",
+			"02021","02022","03001","03002","03003","03004","03005","03006","03007","03008",
+			"03009","03010","03011","03012","03013","03014","03015","03016","03017","03018",
+			"03019","03020","03021","03022","03023","03024","03025","03026","03027","03028",
+			"03029","03030","03031","03032","03033","03035","03036","03037","03038","03039",
+			"03040","03041","03044","03045","03046","03048","03049","03050","03051","03052",
+			"03053","03055","03056","03057","03058","03059","03060","03061","03062","03064",
+			"03065","03066","03067","03068","03069","03070","03071","03072","03073","03074",
+			"03075","03076","03077","03078","03079","03080","03081","03082","03083","03084"
 			);
 	
 	/**
@@ -129,8 +133,6 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 		}
 	}
 
-	
-	
 	/**
 	 * Main method
 	 * @param args
@@ -146,6 +148,4 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 			e.printStackTrace();
 		}
 	}
-
-
 }
