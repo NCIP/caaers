@@ -121,7 +121,7 @@ public class StudyXMLGenerator extends XMLGenerator {
     }
 
     /**
-     *
+     *  Will return a collection of Study engulfed in Studies object
      * @return
      */
     public Studies createStudies(int start, int end) throws Exception {
