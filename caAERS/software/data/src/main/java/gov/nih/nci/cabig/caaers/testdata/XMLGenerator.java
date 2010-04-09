@@ -50,7 +50,7 @@ public abstract class XMLGenerator {
 			if(!file.isDirectory()){
 				file.mkdir();
 			}
-			sb.append("/").append(fileName).append(DateUtils.today()).append(".xml");
+			sb.append("/").append(fileName).append("_").append(DateUtils.today()).append(".xml");
 			marshaller.marshal(object, new File(sb.toString()));
 		}catch(Exception e){
 			throw e;
