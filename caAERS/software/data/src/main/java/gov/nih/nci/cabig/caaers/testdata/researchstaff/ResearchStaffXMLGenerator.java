@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchSta
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.testdata.XMLGenerator;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
