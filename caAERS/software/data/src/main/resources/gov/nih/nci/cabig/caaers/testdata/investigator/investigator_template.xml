@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:staff xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+    xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns1:investigator>
+        <firstName>John</firstName>
+        <lastName>Doe</lastName>
+        <middleName>H</middleName>
+        <emailAddress>jd@nci.org</emailAddress>
+        <faxNumber>870-098-0989</faxNumber>
+        <nciIdentifier>sr-1</nciIdentifier>
+        <phoneNumber>908-098-0099</phoneNumber>
+        <allowedToLogin>false</allowedToLogin>
+		<loginId>l1</loginId>
+        <ns1:siteInvestigator>
+           <emailAddress>jb@nci.gov</emailAddress>
+            <statusCode>ACT</statusCode>        
+			<ns2:organizationRef>
+                <nciInstituteCode>NCI</nciInstituteCode>
+            </ns2:organizationRef>
+            <startDate>2009-01-01</startDate>
+            <endDate>2010-01-01</endDate>
+        </ns1:siteInvestigator>
+    </ns1:investigator>
+</ns1:staff>
