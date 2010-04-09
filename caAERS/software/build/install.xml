@@ -650,7 +650,7 @@ $HeadURL: http://gforge.nci.nih.gov/svnroot/automation/trunk/software/bda-build-
 		
 		<switch value="${database.type}">
 			<case value="oracle">
-				<copy file="${caAERS-templates.dir.dist}/oracle.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
+				<copy file="${caAERS-templates.dir.dist}/oracle/oracle.datasource.properties" tofile="${tomcat.home}/conf/caaers/datasource.properties" overwrite="true" />
 				<copy file="${caAERS-templates.dir.dist}/oracle/oracle.csm_jaas.config" tofile="${tomcat.home}/conf/caaers/caaers_csm_jaas.config" overwrite="true" />
 			</case>
 			<case value="postgresql">
