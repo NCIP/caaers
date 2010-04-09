@@ -142,8 +142,7 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 		try{
 			ResearchStaffXMLGenerator rsXmlGenerator = new ResearchStaffXMLGenerator();
 			Staff staff = rsXmlGenerator.getLoadedStaff();
-			System.out.print(staff.getResearchStaff().size());
-			marshaller.marshal(staff, new File("/Users/Moni/Misc/ResearchStaffData.xml"));
+			marshal(staff, "ResearchStaffData");
 			System.out.print("Done");
 		}catch(Exception e){
 			e.printStackTrace();

@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigator
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.testdata.XMLGenerator;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -139,9 +138,8 @@ public class InvestigatorXMLGenerator extends XMLGenerator{
 		try{
 			InvestigatorXMLGenerator invXmlGenerator = new InvestigatorXMLGenerator();
 			Staff staff = invXmlGenerator.getLoadedStaff();
-			System.out.print(staff.getInvestigator().size());
-			marshaller.marshal(staff, new File("/Users/Moni/Misc/InvestigatorData.xml"));
-			System.out.println("Done");
+			marshal(staff, "InvestigatorData");
+			System.out.print("Done");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
