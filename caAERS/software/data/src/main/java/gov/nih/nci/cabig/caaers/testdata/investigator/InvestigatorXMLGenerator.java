@@ -92,13 +92,13 @@ public class InvestigatorXMLGenerator extends XMLGenerator{
 	 */
 	private InvestigatorType changeValues(InvestigatorType invType,String nciCode,int index) throws Exception{
 		
-		String key = nciCode + "-INV" + index;
+		String key = nciCode + ".INV" + index;
 		invType.setLoginId(key);
-		invType.setFirstName(key+"-FN");
-		invType.setLastName(key+ "-LN");
+		invType.setFirstName(key+".FN");
+		invType.setLastName(key+ ".LN");
 		invType.setEmailAddress(key+"@example.com");
 		invType.setNciIdentifier(key);
-		invType.getSiteInvestigator().get(0).setEmailAddress(key+"@example.com");
+		invType.getSiteInvestigator().get(0).setEmailAddress(key+"@null.net");
 		invType.getSiteInvestigator().get(0).getOrganizationRef().setNciInstituteCode(nciCode);
 		modifyDates(invType);
 		return invType;

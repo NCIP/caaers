@@ -91,13 +91,13 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 	 */
 	private ResearchStaffType changeValues(ResearchStaffType rsType,String nciCode,int index) throws Exception{
 		
-		String key = nciCode + "-RS" + index;
+		String key = nciCode + ".RS" + index;
 		rsType.setLoginId(key);
-		rsType.setFirstName(key+"-FN");
-		rsType.setLastName(key+ "-LN");
-		rsType.setEmailAddress(key+"@example.com");
+		rsType.setFirstName(key+".FN");
+		rsType.setLastName(key+ ".LN");
+		rsType.setEmailAddress(key+"@null.net");
 		rsType.setNciIdentifier(key);
-		rsType.getSiteResearchStaffs().getSiteResearchStaff().get(0).setEmailAddress(key+"@example.com");
+		rsType.getSiteResearchStaffs().getSiteResearchStaff().get(0).setEmailAddress(key+"@null.net");
 		rsType.getSiteResearchStaffs().getSiteResearchStaff().get(0).getOrganizationRef().setNciInstituteCode(nciCode);
 		modifyDates(rsType);
 		return rsType;
