@@ -16,7 +16,7 @@ import javax.xml.bind.JAXBContext;
  * @author Monish
  *
  */
-public class SubjectXMLGenerator extends XMLGenerator {
+public class ParticipantXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "subject_template.xml";
 	public static int subjectsPerSite = 80;
@@ -28,20 +28,20 @@ public class SubjectXMLGenerator extends XMLGenerator {
 	 * Default Constructor which initializes JaxbContext,Unmarshaller, Marshaller & ObjectFactory  
 	 * @throws Exception
 	 */
-	public SubjectXMLGenerator() throws Exception{
+	public ParticipantXMLGenerator() throws Exception{
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();
 	}
-	
-	/**
+
+    /**
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	private ParticipantType getTemplateParticipant() throws Exception{
-		Participants templateParticipants = (Participants)unmarshaller.unmarshal(createInputStream(SubjectXMLGenerator.class.getPackage(),templateXML));
+		Participants templateParticipants = (Participants)unmarshaller.unmarshal(createInputStream(ParticipantXMLGenerator.class.getPackage(),templateXML));
 		return templateParticipants.getParticipant().get(0);
 	}
 	
@@ -107,7 +107,7 @@ public class SubjectXMLGenerator extends XMLGenerator {
             int studyStartIndex = 1;
             int studyEndIndex = 100;
 
-            SubjectXMLGenerator sXmlGenerator = new SubjectXMLGenerator();
+            ParticipantXMLGenerator sXmlGenerator = new ParticipantXMLGenerator();
 
             for(int i =studyStartIndex; i <=studyEndIndex; i++ ){
                 for(String siteNCICode : NCICode.ORGANIZATION_LIST){
