@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:participants xmlns:p="http://webservice.caaers.cabig.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
+  <p:participant>
+    <firstName>Richard</firstName>
+    <lastName>Herd</lastName>
+    <maidenName>maidenName</maidenName>
+    <middleName>Leing</middleName>
+    <birthDate>1970-01-01</birthDate>
+    <gender>Male</gender>
+    <race>White</race>
+    <ethnicity>Not Hispanic or Latino</ethnicity>
+    <identifiers>
+      <p:organizationAssignedIdentifier>
+        <type>Other</type>
+        <value>SI</value>
+        <primaryIndicator>true</primaryIndicator>
+        <p:organization>
+          <name>Name deduced from NCICode</name>
+          <nciInstituteCode>AZ073</nciInstituteCode>
+        </p:organization>
+      </p:organizationAssignedIdentifier>
+    </identifiers>
+    <assignments>
+      <p:assignment>
+      	<studySubjectIdentifier>AZ073.C5876.SSI</studySubjectIdentifier>
+        <p:studySite>
+          <p:study>
+            <identifiers>
+              <identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>C5876.1</value>
+              </identifier>
+            </identifiers>
+          </p:study>
+          <p:organization>
+            <name>Name deduced from NCICode</name>
+            <nciInstituteCode>AZ073</nciInstituteCode>
+          </p:organization>
+        </p:studySite>
+      </p:assignment>
+    </assignments>
+  </p:participant>
+</p:participants>
