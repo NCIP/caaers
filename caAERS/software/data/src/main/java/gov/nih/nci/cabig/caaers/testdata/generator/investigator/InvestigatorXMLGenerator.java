@@ -98,19 +98,23 @@ public class InvestigatorXMLGenerator extends XMLGenerator{
 			siType.setEndDate(nextYear());
 		}
 	}
-		
-	
-	/**
+
+    @Override
+    public void generate() throws Exception {
+        for(String nciCode : NCICode.ORGANIZATION_LIST){
+			    Staff staff = getLoadedInvestigator(nciCode);
+			    marshal(staff, TestDataFileUtils.getInvestigatorTestDataFolder(), "inv_"+nciCode+".xml");
+            }
+    }
+
+    /**
 	 * Main method
 	 * @param args
 	 */
 	public static void main(String args[]){
 		try{
 			InvestigatorXMLGenerator invXmlGenerator = new InvestigatorXMLGenerator();
-            for(String nciCode : NCICode.ORGANIZATION_LIST){
-			    Staff staff = invXmlGenerator.getLoadedInvestigator(nciCode);
-			    marshal(staff, TestDataFileUtils.getInvestigatorTestDataFolder(), "inv_"+nciCode+".xml");
-            }
+            invXmlGenerator.generate();
 			System.out.print("Done");
 		}catch(Exception e){
 			e.printStackTrace();

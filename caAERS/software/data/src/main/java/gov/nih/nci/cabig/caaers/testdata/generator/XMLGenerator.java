@@ -79,6 +79,6 @@ public abstract class XMLGenerator {
 
 	}
 
-
+   public abstract void generate() throws Exception;
 
 }

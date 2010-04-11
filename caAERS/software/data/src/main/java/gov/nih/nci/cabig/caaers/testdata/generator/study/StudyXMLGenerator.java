@@ -132,23 +132,25 @@ public class StudyXMLGenerator extends XMLGenerator {
         return studies;
     }
 
+    @Override
+    public void generate() throws Exception {
+       int start = 1;
+       int end = 100;
+       for(int i =start ; i<=end; i++) {
+          Studies studies = createStudies(i);
+          marshal(studies, TestDataFileUtils.getStudyTestDataFolder(), i + ".xml");
+       }
 
-	/**
+    }
+
+    /**
 	 * Main method
 	 * @param args
 	 */
 	public static void main(String args[]){
 		try{
 			StudyXMLGenerator generator = new StudyXMLGenerator();
-            int start = 1;
-            int end = 100;
-            for(int i =start ; i<=end; i++) {
-               Studies studies = generator.createStudies(i);
-               marshal(studies, TestDataFileUtils.getStudyTestDataFolder(), i + ".xml");
-            }
-
-
-            
+            generator.generate();
 	        System.out.print("Done");
 		}catch(Exception e){
 			e.printStackTrace();

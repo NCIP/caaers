@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchSta
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.SiteResearchStaffType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
-import gov.nih.nci.cabig.caaers.testdata.generator.NCICode;
+import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 
 import java.util.List;
@@ -108,18 +108,23 @@ public class ResearchStaffXMLGenerator extends XMLGenerator {
 		}
 	}
 
-	/**
+    @Override
+    public void generate() throws Exception {
+        for(String nciCode : NCICode.ORGANIZATION_LIST){
+            Staff staff = getLoadedStaff(nciCode);
+            marshal(staff, TestDataFileUtils.getResearchStaffTestDataFolder(), "rs_" + nciCode + ".xml");
+         }
+
+    }
+
+    /**
 	 * Main method
 	 * @param args
 	 */
 	public static void main(String args[]){
 		try{
 			ResearchStaffXMLGenerator rsXmlGenerator = new ResearchStaffXMLGenerator();
-            for(String nciCode : NCICode.ORGANIZATION_LIST){
-                Staff staff = rsXmlGenerator.getLoadedStaff(nciCode);
-                marshal(staff, TestDataFileUtils.getResearchStaffTestDataFolder(), "rs_" + nciCode + ".xml");
-            }
-
+            rsXmlGenerator.generate();
             System.out.print("Done");
 		}catch(Exception e){
 			e.printStackTrace();

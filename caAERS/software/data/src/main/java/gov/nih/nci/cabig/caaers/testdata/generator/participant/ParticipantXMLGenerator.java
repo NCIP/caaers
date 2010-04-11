@@ -98,31 +98,38 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		return pType;
 		
 	}
-	
-	/**
+
+    @Override
+    public void generate() throws Exception {
+         String studyPrimaryIDPattern = "C5876";
+         int studyStartIndex = 1;
+         int studyEndIndex = 100;
+
+        for(int i =studyStartIndex; i <=studyEndIndex; i++ ){
+            for(String siteNCICode : NCICode.ORGANIZATION_LIST){
+                String studyPrimaryID = studyPrimaryIDPattern + "." +i;
+
+                System.out.println("Generating for [" + studyPrimaryID +"].");
+
+                Participants participants = getLoadedParticipants(studyPrimaryID,siteNCICode );
+                String fileName = "sub_" + studyPrimaryID + "_" + siteNCICode + ".xml" ;
+                marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);
+            }
+        }
+    }
+
+    /**
 	 * Main method
 	 * @param args
 	 */
 	public static void main(String args[]){
 		try{
 
-            String studyPrimaryIDPattern = "C5876";
-            int studyStartIndex = 1;
-            int studyEndIndex = 100;
+
 
             ParticipantXMLGenerator sXmlGenerator = new ParticipantXMLGenerator();
+            sXmlGenerator.generate();
 
-            for(int i =studyStartIndex; i <=studyEndIndex; i++ ){
-                for(String siteNCICode : NCICode.ORGANIZATION_LIST){
-                    String studyPrimaryID = studyPrimaryIDPattern + "." +i;
-
-                    System.out.println("Generating for [" + studyPrimaryID +"].");
-
-                    Participants participants = sXmlGenerator.getLoadedParticipants(studyPrimaryID,siteNCICode );
-                    String fileName = "sub_" + studyPrimaryID + "_" + siteNCICode + ".xml" ;
-                    marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);
-                }
-            }
             System.out.print("Done...........");
 		}catch(Exception e){
 			e.printStackTrace();

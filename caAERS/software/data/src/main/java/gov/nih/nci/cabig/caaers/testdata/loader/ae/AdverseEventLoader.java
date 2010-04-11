@@ -19,6 +19,9 @@ public class AdverseEventLoader extends DataLoader{
 
     AdverseEventManagementServiceImpl service;
 
+    public AdverseEventLoader(ApplicationContext appContext) throws Exception {
+        this(appContext, TestDataFileUtils.getAdverseEventTestDataFolder().getPath());
+    }
     public AdverseEventLoader(ApplicationContext appContext, String loc ) throws Exception {
         super(appContext, loc, "gov.nih.nci.cabig.caaers.webservice.adverseevent");
         service = (AdverseEventManagementServiceImpl) appContext.getBean("adverseEventManagementServiceImpl") ;

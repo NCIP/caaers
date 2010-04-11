@@ -91,6 +91,15 @@ public class TestDataFileUtils {
     }
 
     /**
+     * Delete a folder
+     * @param folder
+     * @throws Exception
+     */
+    public static void deleteDirectory(File folder) throws Exception{
+        if(folder.exists() && folder.isDirectory()) FileUtils.deleteDirectory(folder);
+    }
+
+    /**
      * Returns a file object representation of the fileName
      * @param folder
      * @param fileName

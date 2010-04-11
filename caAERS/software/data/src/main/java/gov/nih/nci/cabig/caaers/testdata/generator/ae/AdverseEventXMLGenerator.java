@@ -70,7 +70,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator{
     }
 
 
-    public static void main(String[] args){
+    public void generate() throws Exception{
 
         int particpantIndexStart = 1;
         int participantIndexEnd = 80;
@@ -80,9 +80,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator{
 
         List<String> siteNCICodes = NCICode.ORGANIZATION_LIST;
         String studyPrimaryIdPattern ="C5876";
-        try{
-            AdverseEventXMLGenerator generator = new AdverseEventXMLGenerator();
-            File dataFolder = TestDataFileUtils.getAdverseEventTestDataFolder();
+        File dataFolder = TestDataFileUtils.getAdverseEventTestDataFolder();
             for(int i = studyIndexStart ; i <= studyIndexEnd; i++){
                 String studyPrimaryId = studyPrimaryIdPattern + "." + i;
 
@@ -92,12 +90,19 @@ public class AdverseEventXMLGenerator extends XMLGenerator{
 
                         for(String courseTemplate : COURSE_FILE_TEMPLATES){
                             System.out.println("Generating ... [" + subjectPrimaryId +  " : "  + courseTemplate + "]....");
-                            generator.generateAdverseEventFile(studyPrimaryId, subjectPrimaryId, courseTemplate, dataFolder);
+                            generateAdverseEventFile(studyPrimaryId, subjectPrimaryId, courseTemplate, dataFolder);
 
                         }
                     }
                 }
             }
+    }
+
+    public static void main(String[] args){
+
+        try{
+            AdverseEventXMLGenerator generator = new AdverseEventXMLGenerator();
+            generator.generate();
 
             System.out.println("Done..........");
             
