@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.testdata.loader.subject;
+package gov.nih.nci.cabig.caaers.testdata.loader.participant;
 
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
