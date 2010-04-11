@@ -43,7 +43,7 @@ public class StudyLoader extends DataLoader {
        boolean loadStatus = true;
        for(Study s : studies.getStudy()){
            DomainObjectImportOutcome<gov.nih.nci.cabig.caaers.domain.Study> outcome =  processor.processStudy(s);
-           loadStatus |= outcome.hasErrors();
+           loadStatus &= outcome.hasErrors();
            if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
        }    
 

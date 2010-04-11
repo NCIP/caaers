@@ -38,7 +38,7 @@ public class InvestigatorLoader extends DataLoader{
        boolean loadStatus = true;
        for(InvestigatorType rs : staff.getInvestigator()){
            DomainObjectImportOutcome<Investigator> outcome =  service.processInvestigator(rs);
-           loadStatus |= outcome.hasErrors();
+           loadStatus &= outcome.hasErrors();
            if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
        }
 

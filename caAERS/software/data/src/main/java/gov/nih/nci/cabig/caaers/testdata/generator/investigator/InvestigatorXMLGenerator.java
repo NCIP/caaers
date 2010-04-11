@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.ObjectFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
-import gov.nih.nci.cabig.caaers.testdata.generator.NCICode;
+import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 
 import javax.xml.bind.JAXBContext;

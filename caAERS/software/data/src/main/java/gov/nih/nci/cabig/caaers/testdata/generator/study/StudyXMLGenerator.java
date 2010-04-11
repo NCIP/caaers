@@ -1,18 +1,18 @@
 package gov.nih.nci.cabig.caaers.testdata.generator.study;
 
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
-import gov.nih.nci.cabig.caaers.testdata.generator.NCICode;
+import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 import gov.nih.nci.cabig.caaers.webservice.*;
 
 import javax.xml.bind.JAXBContext;
 
-public class ParticipantXMLGenerator extends XMLGenerator {
+public class StudyXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "exportedstudy_5876.xml";
 	private ObjectFactory objectFactory;
 
-    public ParticipantXMLGenerator() throws Exception{
+    public StudyXMLGenerator() throws Exception{
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
@@ -26,7 +26,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 	 * @throws Exception
 	 */
 	private Study getTemplateStudy() throws Exception{
-		Studies template = (Studies)unmarshaller.unmarshal(createInputStream(ParticipantXMLGenerator.class.getPackage(),templateXML));
+		Studies template = (Studies)unmarshaller.unmarshal(createInputStream(StudyXMLGenerator.class.getPackage(),templateXML));
 		return template.getStudy().get(0);
 	}
 
@@ -139,7 +139,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 	 */
 	public static void main(String args[]){
 		try{
-			ParticipantXMLGenerator generator = new ParticipantXMLGenerator();
+			StudyXMLGenerator generator = new StudyXMLGenerator();
             int start = 1;
             int end = 100;
             for(int i =start ; i<=end; i++) {

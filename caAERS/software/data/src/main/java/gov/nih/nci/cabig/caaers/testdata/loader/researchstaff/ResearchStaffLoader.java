@@ -38,7 +38,7 @@ public class ResearchStaffLoader  extends DataLoader{
        boolean loadStatus = true;
        for(ResearchStaffType rs : staff.getResearchStaff()){
            DomainObjectImportOutcome<ResearchStaff> outcome =  service.processResearchStaff(rs);
-           loadStatus |= outcome.hasErrors();
+           loadStatus &= outcome.hasErrors();
            if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
        }
 

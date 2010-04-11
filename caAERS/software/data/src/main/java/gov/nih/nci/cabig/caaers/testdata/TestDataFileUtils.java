@@ -62,6 +62,14 @@ public class TestDataFileUtils {
         File f = new File(getTestDataFolderPath() +"/researchstaff");
         return createFolder(f);
     }
+     /**
+     * A file representing the test data folder for adverse events
+     * @return
+     */
+    public static File getAdverseEventTestDataFolder(){
+        File f = new File(getTestDataFolderPath() +"/ae");
+        return createFolder(f);
+    }
 
     /**
      * Return the content of the file

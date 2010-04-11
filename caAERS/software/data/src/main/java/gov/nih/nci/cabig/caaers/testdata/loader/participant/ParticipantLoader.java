@@ -44,7 +44,7 @@ public class ParticipantLoader extends DataLoader {
         Participants participants = getParticipants(f);
         for(ParticipantType p : participants.getParticipant()){
             DomainObjectImportOutcome<Participant> outcome = service.processParticipant(p);
-            loadStatus |= outcome.hasErrors();
+            loadStatus &= outcome.hasErrors();
             if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
         }
 

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.testdata.generator.participant;
 
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
-import gov.nih.nci.cabig.caaers.testdata.generator.NCICode;
+import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 import gov.nih.nci.cabig.caaers.webservice.participant.ObjectFactory;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBContext;
  * This class generates an XML file which can be used to import Subject/Participant 
  * into caAERS for load / performance testing purposes.
  * @author Monish
+ * @author Biju Joseph
  *
  */
 public class ParticipantXMLGenerator extends XMLGenerator {
@@ -80,15 +81,17 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		//Last name 	: LNx
 		//Maiden Name 	: MDNx
 		//Middle Name 	: MNx
-		//Subject Identifier : SIx
-		//Study Subject Identifier : NCICode.StudyPrimaryID.SSIx
+		//Subject Identifier : NCICode_studyPrimaryId_SIx
+		//Study Subject Identifier : NCICode_StudyPrimaryID_SSIx
 		//(Note:- x is a running number)
-		StringBuilder studySubjectId = new StringBuilder(nciCode).append(".").append(studyPrimaryId).append(".SSI").append(index);
+
+        String idPattern = nciCode + "_" + studyPrimaryId +"_" ;
+		StringBuilder studySubjectId = new StringBuilder(idPattern).append("_SSI").append(index);
 		pType.setFirstName("FN"+index);
 		pType.setLastName("LN"+index);
 		pType.setMaidenName("MDN"+index);
 		pType.setMiddleName("MN"+index);
-		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).setValue("SI"+index);
+		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).setValue(idPattern + "_SI"+index);
 		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).getOrganization().setNciInstituteCode(nciCode);
 		pType.getAssignments().getAssignment().get(0).getStudySite().getOrganization().setNciInstituteCode(nciCode);
 		pType.getAssignments().getAssignment().get(0).setStudySubjectIdentifier(studySubjectId.toString());
@@ -112,12 +115,15 @@ public class ParticipantXMLGenerator extends XMLGenerator {
             for(int i =studyStartIndex; i <=studyEndIndex; i++ ){
                 for(String siteNCICode : NCICode.ORGANIZATION_LIST){
                     String studyPrimaryID = studyPrimaryIDPattern + "." +i;
+
+                    System.out.println("Generating for [" + studyPrimaryID +"].");
+
                     Participants participants = sXmlGenerator.getLoadedParticipants(studyPrimaryID,siteNCICode );
                     String fileName = "sub_" + studyPrimaryID + "_" + siteNCICode + ".xml" ;
                     marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);
                 }
             }
-            System.out.print("Done");
+            System.out.print("Done...........");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
