@@ -8,8 +8,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.Study;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;

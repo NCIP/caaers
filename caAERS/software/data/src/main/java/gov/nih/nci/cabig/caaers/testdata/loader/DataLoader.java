@@ -9,6 +9,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 /**
+ * TemplateMethod for all loaders
  * @author: Biju Joseph
  */
 public abstract class DataLoader {
@@ -26,6 +27,11 @@ public abstract class DataLoader {
         jaxbContext = JAXBContext.newInstance(jaxbPackageUrl);
     }
 
+    /**
+     * Will load each file and prints the status.
+     * The actual saving of the entity in the file is done by the subclasses. 
+     * @throws Exception
+     */
     public final void load() throws Exception{
         File filesToLoad[] = new File(dataFileLocation).listFiles();
         for(File f : filesToLoad){

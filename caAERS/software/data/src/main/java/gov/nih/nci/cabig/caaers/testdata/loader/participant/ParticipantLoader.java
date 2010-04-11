@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.testdata.loader.participant;
 
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
@@ -8,7 +9,6 @@ import gov.nih.nci.cabig.caaers.utils.XmlValidator;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import org.springframework.context.ApplicationContext;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 
 import java.io.File;
 import java.io.FileInputStream;

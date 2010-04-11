@@ -5,14 +5,10 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
-import gov.nih.nci.cabig.caaers.webservice.ObjectFactory;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
 import gov.nih.nci.cabig.caaers.webservice.Study;
-import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationContext;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileInputStream;
 
