@@ -7,12 +7,12 @@ import gov.nih.nci.cabig.caaers.webservice.*;
 
 import javax.xml.bind.JAXBContext;
 
-public class StudyXMLGenerator extends XMLGenerator {
+public class ParticipantXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "exportedstudy_5876.xml";
 	private ObjectFactory objectFactory;
 
-    public StudyXMLGenerator() throws Exception{
+    public ParticipantXMLGenerator() throws Exception{
         jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
@@ -20,13 +20,13 @@ public class StudyXMLGenerator extends XMLGenerator {
     }
 
 
-	/**
+    /**
 	 *
 	 * @return StudyType, template read from the file. 
 	 * @throws Exception
 	 */
 	private Study getTemplateStudy() throws Exception{
-		Studies template = (Studies)unmarshaller.unmarshal(createInputStream(StudyXMLGenerator.class.getPackage(),templateXML));
+		Studies template = (Studies)unmarshaller.unmarshal(createInputStream(ParticipantXMLGenerator.class.getPackage(),templateXML));
 		return template.getStudy().get(0);
 	}
 
@@ -139,7 +139,7 @@ public class StudyXMLGenerator extends XMLGenerator {
 	 */
 	public static void main(String args[]){
 		try{
-			StudyXMLGenerator generator = new StudyXMLGenerator();
+			ParticipantXMLGenerator generator = new ParticipantXMLGenerator();
             int start = 1;
             int end = 100;
             for(int i =start ; i<=end; i++) {
