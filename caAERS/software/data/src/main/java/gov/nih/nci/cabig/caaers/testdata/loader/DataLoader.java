@@ -22,9 +22,9 @@ public abstract class DataLoader {
     public DataLoader(ApplicationContext appContext, String loc, String jaxbPackageUrl) throws Exception {
         this.appContext = appContext;
         this.dataFileLocation = loc;
-        unmarshaller = jaxbContext.createUnmarshaller();
         objectFactory = new ObjectFactory();
         jaxbContext = JAXBContext.newInstance(jaxbPackageUrl);
+        unmarshaller = jaxbContext.createUnmarshaller();
     }
 
     /**
