@@ -28,7 +28,7 @@ public class StudyLoader extends DataLoader {
 
     public StudyLoader(ApplicationContext appContext, String loc) throws Exception{
         super(appContext, loc, "gov.nih.nci.cabig.caaers.webservice");
-        processor = (StudyProcessorImpl) appContext.getBean("studyProcessor");
+        processor = (StudyProcessorImpl) appContext.getBean("studyProcessorImpl");
     }
 
     /**
