@@ -31,8 +31,8 @@ public class InvestigatorLoader extends DataLoader{
     @Override
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
           //validate file.
-       boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/Investigator.xsd", detailsBuffer);
-       if(!valid) return false;
+      // boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/Investigator.xsd", detailsBuffer);
+      // if(!valid) return false;
 
        Staff staff = getInvestigator(f);
        boolean loadStatus = true;

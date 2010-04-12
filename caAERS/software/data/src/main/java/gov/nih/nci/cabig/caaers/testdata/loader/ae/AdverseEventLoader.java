@@ -31,8 +31,8 @@ public class AdverseEventLoader extends DataLoader{
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
 
         //validate
-        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ManageAdverseEventsSchema.xsd", detailsBuffer);
-        if(!valid) return false;
+//        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ManageAdverseEventsSchema.xsd", detailsBuffer);
+//        if(!valid) return false;
 
         boolean loadStatus = true;
         CaaersServiceResponse caaersResponse = service.createAdverseEvent(getAdverseEventInput(f));

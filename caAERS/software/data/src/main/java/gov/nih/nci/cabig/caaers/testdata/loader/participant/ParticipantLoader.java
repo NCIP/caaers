@@ -37,8 +37,8 @@ public class ParticipantLoader extends DataLoader {
 
 
         //validate the xml
-        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ParticipantSchema.xsd" , detailsBuffer);
-        if(!valid) return false;
+//        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ParticipantSchema.xsd" , detailsBuffer);
+//        if(!valid) return false;
 
         boolean loadStatus = true;
         Participants participants = getParticipants(f);
