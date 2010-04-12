@@ -1335,10 +1335,9 @@ public class CaaersRulesEngineService {
     /*
      *
      * @author Ion C. Olaru
-     * Get the fields involved in the ruleSets of this AEReport
-     * @param Rs - the ruleSet to be evaluated
-     * @param objectIdentifier - object type to consider, ex: adverseEvent
-     * @return - List of String containin the field involved in this ruleSet
+     * Get the fields involved in the list of ruleSets of this AEReport
+     * @param r - the aeReport to be evaluated
+     * @return - List of String containin the field involved in the ruleSets
      *
      */
     public List<String> getRuleableFieldsForAE(ExpeditedAdverseEventReport r) throws Exception {
@@ -1369,6 +1368,18 @@ public class CaaersRulesEngineService {
         return fields;
     }
 
+
+    /*
+     *
+     * @author Ion C. Olaru
+     * Get the List of rulSets applicable for an AEReport
+     * The result should contain Sponsor level + Institution level RuleSets
+     * Sponsor level RuleSet contains either Sponsor Study specific rules if available, otherwise it takes Sponsor rules
+     * Institution level RuleSet contains either Institution Study specific rules if available, otherwise it takes Institution rules
+     * @param r - the aeReport to be evaluated
+     * @return - List of RuleSets
+     *
+     */
     public List<RuleSet> getRuleSets(ExpeditedAdverseEventReport r) throws Exception {
         List<RuleSet> rs = new ArrayList<RuleSet>();
 
