@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.testdata.loader.investigator;
 
 import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
-import gov.nih.nci.cabig.caaers.utils.XmlValidator;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
@@ -30,18 +28,16 @@ public class InvestigatorLoader extends DataLoader{
 
     @Override
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
-          //validate file.
-      // boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/Investigator.xsd", detailsBuffer);
-      // if(!valid) return false;
-
+     
        Staff staff = getInvestigator(f);
        boolean loadStatus = true;
-       for(InvestigatorType rs : staff.getInvestigator()){
-           DomainObjectImportOutcome<Investigator> outcome =  service.processInvestigator(rs);
-           loadStatus &= outcome.hasErrors();
-           if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
-       }
 
+       CaaersServiceResponse response = service.saveInvestigator(staff);
+       for(WsError wsError : response.getServiceResponse().getWsError()){
+            loadStatus=false;
+            detailsBuffer.append(wsError.getErrorDesc()).append("\n");
+        }
+      
        return loadStatus;
     }
 

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
+import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import org.springframework.context.ApplicationContext;
@@ -34,18 +35,11 @@ public class ParticipantLoader extends DataLoader {
     @Override
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
 
-
-
-        //validate the xml
-//        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ParticipantSchema.xsd" , detailsBuffer);
-//        if(!valid) return false;
-
         boolean loadStatus = true;
-        Participants participants = getParticipants(f);
-        for(ParticipantType p : participants.getParticipant()){
-            DomainObjectImportOutcome<Participant> outcome = service.processParticipant(p);
-            loadStatus &= outcome.hasErrors();
-            if(outcome.hasErrors()) detailsBuffer.append(outcome.toString()).append("\n");
+        CaaersServiceResponse response = service.createParticipant(getParticipants(f));
+        for(String wsError : response.getResponse().getMessage()){
+            loadStatus=false;
+            detailsBuffer.append(wsError).append("\n");
         }
 
         return loadStatus;

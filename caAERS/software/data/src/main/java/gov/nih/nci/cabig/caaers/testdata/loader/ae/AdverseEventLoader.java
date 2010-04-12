@@ -36,6 +36,9 @@ public class AdverseEventLoader extends DataLoader{
 
         boolean loadStatus = true;
         CaaersServiceResponse caaersResponse = service.createAdverseEvent(getAdverseEventInput(f));
+        for(String wsError : caaersResponse.getResponse().getMessage()){
+            detailsBuffer.append(wsError).append("\n");
+        }
         if(StringUtils.isNotEmpty(caaersResponse.getResponse().getResponsecode())) loadStatus = false;
         return loadStatus;
 
