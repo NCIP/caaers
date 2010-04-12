@@ -240,12 +240,21 @@ public abstract class Organization extends AbstractMutableDomainObject {
         
         //id if same they are same, they are equal
         if(getId() != null && other.getId() != null){
-        	if(getId().equals(other.getId())) return true;
+        	if(getId().equals(other.getId())){
+                return true;
+            } else {
+                return false;
+            }
         }
         
         //nci code same, they are same, they are equal
         if(getNciInstituteCode() != null && other.getNciInstituteCode() != null){
-    	   if(getNciInstituteCode().equals(other.getNciInstituteCode())) return true;
+
+    	   if(getNciInstituteCode().equals(other.getNciInstituteCode())){
+               return true;
+           }else{
+               return false;
+           }
         }
     	   
         

@@ -34,7 +34,7 @@
         <reportTypeCIOMSAEForm>false</reportTypeCIOMSAEForm>
         <fundingSponsor>
             <organizationAssignedIdentifier>
-                <value>C5876</value>
+                <value>FS5876</value>
             </organizationAssignedIdentifier>
             <ns2:studyFundingSponsor>
                 <ns2:organization>
@@ -49,7 +49,7 @@
         </fundingSponsor>
         <coordinatingCenter>
             <organizationAssignedIdentifier>
-                <value>C0261</value>
+                <value>C5876</value>
             </organizationAssignedIdentifier>
             <ns2:studyCoordinatingCenter>
                 <ns2:organization>

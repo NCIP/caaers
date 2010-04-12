@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.testdata.loader.study.StudyLoader;
  */
 public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
 
+
     /**
      * Generate and load investigator
      */
