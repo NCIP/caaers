@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,5 +67,39 @@ public class AdverseEventReportingPeriodDTOTest extends TestCase {
 		dto.addAdverseEventAeReportDTO(aeReport2);
 		assertEquals("getAeReports returned incorrect list of aeReports", 2, dto.getAeReports().size());
 		assertEquals("getActiveAeReports returned incorrect list of aeReports", 1, dto.getActiveAeReports().size());
+	}
+	
+	public void testHasReportWorkflowEnded_WhenNotEnded(){
+		ExpeditedAdverseEventReportDTO aeReport1 = new ExpeditedAdverseEventReportDTO();
+		ReportDTO report1 = new ReportDTO();
+		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		aeReport1.addReportDTO(report1);
+		ReportDTO report2 = new ReportDTO();
+		report2.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_ADDITIONAL_INFO);
+		aeReport1.addReportDTO(report2);
+		dto.addAdverseEventAeReportDTO(aeReport1);
+		ExpeditedAdverseEventReportDTO aeReport2 = new ExpeditedAdverseEventReportDTO();
+		report1 = new ReportDTO();
+		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		aeReport2.addReportDTO(report1);
+		dto.addAdverseEventAeReportDTO(aeReport2);
+		assertFalse("hasReportWorkflowEnded should have returned false", dto.hasReportWorkflowEnded());
+	}
+	
+	public void testHasReportWorkflowEnded_WhenEnded(){
+		ExpeditedAdverseEventReportDTO aeReport1 = new ExpeditedAdverseEventReportDTO();
+		ReportDTO report1 = new ReportDTO();
+		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		aeReport1.addReportDTO(report1);
+		ReportDTO report2 = new ReportDTO();
+		report2.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_ADDITIONAL_INFO);
+		aeReport1.addReportDTO(report2);
+		dto.addAdverseEventAeReportDTO(aeReport1);
+		ExpeditedAdverseEventReportDTO aeReport2 = new ExpeditedAdverseEventReportDTO();
+		report1 = new ReportDTO();
+		report1.setReviewStatus(ReviewStatus.SUBMIT_TO_SPONSOR);
+		aeReport2.addReportDTO(report1);
+		dto.addAdverseEventAeReportDTO(aeReport2);
+		assertTrue("hasReportWorkflowEnded should have returned true", dto.hasReportWorkflowEnded());
 	}
 }

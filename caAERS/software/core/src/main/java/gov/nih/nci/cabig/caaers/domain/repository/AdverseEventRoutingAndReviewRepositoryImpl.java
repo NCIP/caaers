@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -325,6 +326,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, Organization organization, ReviewStatus reviewStatus, ReportStatus reportStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+		boolean isSAECoordinator = SecurityUtils.checkAuthorization(UserGroupType.caaers_central_office_sae_cd); 
 		
 		if(participant != null){
 			query.filterByParticipant(participant.getId());
@@ -352,6 +354,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 						if(!aeReportHasWorkflowOnActiveReports(aeReport)) continue; //this report is prior to workflow integration
 						ExpeditedAdverseEventReportDTO reportDTO = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
 						if(reportDTO.hasActionsToDo()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
+						if(isSAECoordinator && reportDTO.hasWorkflowEnded()) reportingPeriodDTO.addAdverseEventAeReportDTO(reportDTO);
 					}//aereport
 				}
 				
@@ -364,7 +367,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 						continue;
 				}
 				//only add the dto, if there is action to do.
-				if(reportingPeriodDTO.hasActionsToDo()) reportingPeriodDTOs.add(reportingPeriodDTO);	
+				if(reportingPeriodDTO.hasActionsToDo()) reportingPeriodDTOs.add(reportingPeriodDTO);
+				if(isSAECoordinator && reportingPeriodDTO.hasReportWorkflowEnded()) reportingPeriodDTOs.add(reportingPeriodDTO);
 			}
 			
 		}

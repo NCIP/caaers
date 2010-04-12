@@ -186,4 +186,14 @@ public class AdverseEventReportingPeriodDTO {
 		}
 		return hasActions;
 	}
+	
+	public boolean hasReportWorkflowEnded(){
+		boolean reportWorkflowEnded = false;
+		if(aeReports != null && !aeReports.isEmpty()){
+			for(ExpeditedAdverseEventReportDTO aeReportDTO : aeReports){
+				reportWorkflowEnded |= aeReportDTO.hasWorkflowEnded();
+			}
+		}
+		return reportWorkflowEnded;
+	}
 }

@@ -103,4 +103,8 @@ public class ReportDTO {
 	public boolean hasActionsToDo(){
 		return possibleActions != null && possibleActions.size() > 0;
 	}
+	
+	public boolean hasWorkflowEnded(){
+		return this.reviewStatus.equals(ReviewStatus.SUBMIT_TO_SPONSOR);
+	}
 }

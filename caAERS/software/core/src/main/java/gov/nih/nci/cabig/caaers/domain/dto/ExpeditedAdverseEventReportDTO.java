@@ -99,4 +99,14 @@ public class ExpeditedAdverseEventReportDTO {
 		return hasActionsToDo;
 	}
 	
+	public boolean hasWorkflowEnded(){
+		boolean hasWorkflowEnded = false;
+		if(reports != null && !reports.isEmpty())
+			for(ReportDTO reportDTO: reports){
+				if(reportDTO.hasWorkflowEnded())
+					hasWorkflowEnded = true;
+			}
+		return hasWorkflowEnded;
+	}
+	
 }
