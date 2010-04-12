@@ -32,7 +32,7 @@ public class ResearchStaffLoader  extends DataLoader{
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
 
         //validate file.
-       boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd", detailsBuffer);
+       boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ResearchStaff.xsd", detailsBuffer);
        if(!valid) return false;
        Staff staff = getResearchStaff(f);
        boolean loadStatus = true;

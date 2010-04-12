@@ -37,7 +37,7 @@ public class ParticipantLoader extends DataLoader {
 
 
         //validate the xml
-        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd" , detailsBuffer);
+        boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/ParticipantSchema.xsd" , detailsBuffer);
         if(!valid) return false;
 
         boolean loadStatus = true;

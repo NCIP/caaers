@@ -37,7 +37,7 @@ public class StudyLoader extends DataLoader {
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception{
 
         //validate file.
-       boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd", detailsBuffer);
+       boolean valid = XmlValidator.validateAgainstSchema(TestDataFileUtils.getContent(f), "classpath:schema/integration/StudySchema.xsd", detailsBuffer);
        if(!valid) return false;
        Studies studies = getStudies(f);
        boolean loadStatus = true;
