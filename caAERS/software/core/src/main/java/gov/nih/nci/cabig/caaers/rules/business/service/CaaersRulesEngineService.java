@@ -1346,10 +1346,15 @@ public class CaaersRulesEngineService {
         List<String> fields = new ArrayList<String>();
         Study s = r.getStudy();
 
+        for (RuleSet rs : getRuleSets(r)) {
+            fields.addAll(getRuleableFields(rs, "adverseEvent"));
+        }
+        
+/*
         // evaluate Study organization level rules
         // System.out.println(s.getActiveStudySites());
         for (StudyOrganization ss : s.getStudyOrganizations()) {
-            RuleSet rs = getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), ss.getOrganization().getName());
+            RuleSet rs = getRuleSe tForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), ss.getOrganization().getName());
             fields.addAll(getRuleableFields(rs, "adverseEvent"));
         }
         
@@ -1359,8 +1364,43 @@ public class CaaersRulesEngineService {
             RuleSet rs = getRuleSetForSponsor(RuleType.REPORT_SCHEDULING_RULES.getName(), s.getPrimaryFundingSponsor().getOrganization().getName());
             fields.addAll(getRuleableFields(rs, "adverseEvent"));
         }
+*/
 
         return fields;
+    }
+
+    public List<RuleSet> getRuleSets(ExpeditedAdverseEventReport r) throws Exception {
+        List<RuleSet> rs = new ArrayList<RuleSet>();
+
+        RuleSet r1;
+        String ruleName = RuleType.REPORT_SCHEDULING_RULES.getName();  
+
+        // lookup the Sponsor Study level Rules
+        r1 = getRuleSetForSponsorDefinedStudy(ruleName, r.getStudy().getShortTitle(), r.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+
+        // if there is not Sponsor Study level RuleSet, check Sponsor level Rules
+        if (r1 == null) {
+            r1 = getRuleSetForSponsor(ruleName, r.getStudy().getPrimaryFundingSponsor().getOrganization().getName());
+        }
+        if (r1 != null) rs.add(r1);
+
+
+        StudySite assignmentStudySite = r.getReportingPeriod().getAssignment().getStudySite();
+        for (StudyOrganization so : r.getStudy().getStudyOrganizations()) {
+
+            // IGNORE the StudySite
+            // IF the organization is a studySite AND its not the site to which the assignment belongs
+            if (so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId())) continue;
+
+            r1 = getRuleSetForInstitutionDefinedStudy(ruleName, r.getStudy().getShortTitle(), so.getOrganization().getName());
+            // if there is not Institution Study RuleSet, check Institution level Rules
+            if (r1 == null) {
+                r1 = getRuleSetForInstitution(ruleName, so.getOrganization().getName());
+            }
+        }
+        if (r1 != null) rs.add(r1);
+        
+        return rs;
     }
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
@@ -1380,8 +1420,7 @@ public class CaaersRulesEngineService {
         return getRuleSetForInstitution(ruleSetName, institutionName, true);
     }
 
-    public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle,
-                    String sponsorName) throws Exception {
+    public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
         return getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName, true);
     }
 

@@ -110,11 +110,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             // TO-DO get orgs like FDA, CALGB and add to this list (BJ: this comment was there before refactoring)
             for (StudyOrganization so : study.getStudyOrganizations()) {
             	//If the organization is a studySite and its not the site to which the assignment belongs, ignore it.
-            	if(so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId()))
-            		continue;
-            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,
-                        RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
-            	 reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
+            	if(so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId())) continue;
+            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
+            	reportDefinitionNames.addAll(CaaersRuleUtil.parseRulesResult(message));
             }
         }
 
@@ -210,8 +208,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study,
-                        reportDefinition, ruleTypeName, aer);
+        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study, reportDefinition, ruleTypeName, aer);
 
         // if study level rule exist and null message...
         if (sponsor_define_study_level_evaluation == null) {
@@ -219,10 +216,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (sponsor_define_study_level_evaluation.equals("no_rules_found")) {
-            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, ruleTypeName,
-                            aer);
+            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, ruleTypeName, aer);
             final_result = sponsor_level_evaluation;
-
             // if study level rules exist and returned a message..
         } else {
             final_result = sponsor_define_study_level_evaluation;
@@ -246,8 +241,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study,
-                        organization, reportDefinition, ruleTypeName, aer);
+        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study, organization, reportDefinition, ruleTypeName, aer);
 
         // if study level rule exist and null message...
         if (institution_define_study_level_evaluation == null) {
@@ -255,10 +249,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (institution_define_study_level_evaluation.equals("no_rules_found")) {
-            institution_level_evaluation = institutionLevelRules(ae, study, organization,
-                            reportDefinition, ruleTypeName, aer);
+            institution_level_evaluation = institutionLevelRules(ae, study, organization, reportDefinition, ruleTypeName, aer);
             final_result = institution_level_evaluation;
-
             // if study level rules exist and returned a message..
         } else {
             final_result = institution_define_study_level_evaluation;
@@ -334,10 +326,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 
         try {
-            evaluationForSponsor = this
-                            .getEvaluationObject(ae, study, study
-                                            .getPrimaryFundingSponsorOrganization(),
-                                            reportDefinition, bindURI, aer);
+            evaluationForSponsor = this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             throw new Exception(e.getMessage(), e);
@@ -357,9 +346,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
                         .getShortTitle(), CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE,
                         ruleTypeName);
 
-        RuleSet ruleSetForSponsorDefinedStudy = caaersRulesEngineService
-                        .getRuleSetForSponsorDefinedStudy(ruleTypeName, study.getShortTitle(),
-                                        study.getPrimaryFundingSponsorOrganization().getName());
+        RuleSet ruleSetForSponsorDefinedStudy = caaersRulesEngineService.getRuleSetForSponsorDefinedStudy(ruleTypeName, study.getShortTitle(), study.getPrimaryFundingSponsorOrganization().getName());
         if (ruleSetForSponsorDefinedStudy == null) {
             return "no_rules_found";
             // throw new Exception("There are no rules configured for adverse event assesment for
@@ -395,9 +382,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         String bindURI = getBindURI(organizationName, studyShortTitle,
                         CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE, ruleTypeName);
 
-        RuleSet ruleSetForInstitutionDefinedStudy = caaersRulesEngineService
-                        .getRuleSetForInstitutionDefinedStudy(ruleTypeName, studyShortTitle,
-                                        organizationName);
+        RuleSet ruleSetForInstitutionDefinedStudy = caaersRulesEngineService.getRuleSetForInstitutionDefinedStudy(ruleTypeName, studyShortTitle, organizationName);
         if (ruleSetForInstitutionDefinedStudy == null) {
             return "no_rules_found";
             // throw new Exception("There are no rules configured for adverse event assesment for
@@ -426,10 +411,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         String message = null;
 
         String organizationName = organization.getName();
-        String bindURI = getBindURI(organizationName, "", CategoryConfiguration.INSTITUTION_BASE,
-                        ruleTypeName);
-        RuleSet ruleSetForInstiution = caaersRulesEngineService.getRuleSetForInstitution(ruleTypeName,
-                        organizationName);
+        String bindURI = getBindURI(organizationName, "", CategoryConfiguration.INSTITUTION_BASE, ruleTypeName);
+        RuleSet ruleSetForInstiution = caaersRulesEngineService.getRuleSetForInstitution(ruleTypeName, organizationName);
 
         if (ruleSetForInstiution == null) {
             return "no_rules_found";
