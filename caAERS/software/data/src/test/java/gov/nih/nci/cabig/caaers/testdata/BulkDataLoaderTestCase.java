@@ -81,7 +81,7 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
    public void testLoadParticipantForSubsequentStudy(){
     try{
           TestDataFileUtils.deleteDirectory(TestDataFileUtils.getSubjectTestDataFolder());
-          new GeneratorExecuter(new ParticipantXMLGenerator(2,100), "Participant").execute();
+          new GeneratorExecuter(new ParticipantXMLGenerator(2,10), "Participant").execute();
           new DataLoadExecuter(new ParticipantLoader(getDeployedApplicationContext(), true), "Participant").execute();
       }catch(Exception e){
         e.printStackTrace();

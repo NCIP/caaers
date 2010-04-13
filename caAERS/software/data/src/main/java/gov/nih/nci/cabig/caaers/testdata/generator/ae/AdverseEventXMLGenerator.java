@@ -138,10 +138,10 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 	public void generate() throws Exception {
 
 		int particpantIndexStart = 1;
-		int participantIndexEnd = 80;
+		int participantIndexEnd = 40;
 
 		int studyIndexStart = 1;
-		int studyIndexEnd = 100;
+		int studyIndexEnd = 10;
 
 		List<String> siteNCICodes = NCICode.ORGANIZATION_LIST;
 		String studyPrimaryIdPattern = "C5876";

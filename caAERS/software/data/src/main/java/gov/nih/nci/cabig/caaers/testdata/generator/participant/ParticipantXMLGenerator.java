@@ -20,7 +20,7 @@ import javax.xml.bind.JAXBContext;
 public class ParticipantXMLGenerator extends XMLGenerator {
 	
 	public static String templateXML = "subject_template.xml";
-	public static int subjectsPerSite = 80;
+	public static int subjectsPerSite = 40;
 	private ObjectFactory objectFactory;
 
     private int startStudyIndex = 1;
