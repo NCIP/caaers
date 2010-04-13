@@ -4,7 +4,7 @@
 	<ns1:adverseEvents>
 		<ns1:adverseEvent>
 			<grade>3</grade>
-			<hospitalization>NONE</hospitalization>
+			<hospitalization>NO</hospitalization>
 			<expected>true</expected>
 			<adverseEventCtcTerm>
 				<ctep-term>Burn</ctep-term>
@@ -15,9 +15,9 @@
 		<participantIdentifier>008</participantIdentifier>
 		<studyIdentifier>009</studyIdentifier>
 		<course>
-			<startDateOfFirstCourse>2009-03-29</startDateOfFirstCourse>
-			<startDateOfThisCourse>2009-04-23</startDateOfThisCourse>
-			<endDateOfThisCourse>2009-04-25</endDateOfThisCourse>
+			<startDateOfFirstCourse>2001-01-01</startDateOfFirstCourse>
+			<startDateOfThisCourse>2009-05-01</startDateOfThisCourse>
+			<endDateOfThisCourse>2009-06-01</endDateOfThisCourse>
 			<treatmentType>Treatment</treatmentType>
 			<cycleNumber>1</cycleNumber>
 			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
