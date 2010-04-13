@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.testdata.loader.investigator.InvestigatorLoader;
 import gov.nih.nci.cabig.caaers.testdata.loader.participant.ParticipantLoader;
 import gov.nih.nci.cabig.caaers.testdata.loader.researchstaff.ResearchStaffLoader;
 import gov.nih.nci.cabig.caaers.testdata.loader.study.StudyLoader;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
  * Has methods to generate and load data.
@@ -63,15 +65,29 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
     /**
      * Generate and load subject
      */
-    public void testLoadParticipant(){
+    public void testLoadParticipantForFirstStudy(){
      try{
            TestDataFileUtils.deleteDirectory(TestDataFileUtils.getSubjectTestDataFolder());
            new GeneratorExecuter(new ParticipantXMLGenerator(), "Participant").execute();
-           new DataLoadExecuter(new ParticipantLoader(getDeployedApplicationContext()), "Participant").execute();
+           new DataLoadExecuter(new ParticipantLoader(getDeployedApplicationContext(), false), "Participant").execute();
        }catch(Exception e){
          e.printStackTrace();
        }
     }
+
+    /**
+     * Generate and load subject
+     */
+   public void testLoadParticipantForSubsequentStudy(){
+    try{
+          TestDataFileUtils.deleteDirectory(TestDataFileUtils.getSubjectTestDataFolder());
+          new GeneratorExecuter(new ParticipantXMLGenerator(2,100), "Participant").execute();
+          new DataLoadExecuter(new ParticipantLoader(getDeployedApplicationContext(), true), "Participant").execute();
+      }catch(Exception e){
+        e.printStackTrace();
+      }
+   }
+
 
     /**
      * Generate and load adverse events

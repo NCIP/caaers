@@ -22,6 +22,9 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 	public static String templateXML = "subject_template.xml";
 	public static int subjectsPerSite = 80;
 	private ObjectFactory objectFactory;
+
+    private int startStudyIndex = 1;
+    private int endStudyIndex = 1;
 	
 
 
@@ -35,6 +38,17 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();
 	}
+
+    /**
+	 * calls the default constructor
+	 * @throws Exception
+	 */
+	public ParticipantXMLGenerator(int startStudyIndex, int endStudyIndex) throws Exception{
+		this();
+        this.startStudyIndex = startStudyIndex;
+        this.endStudyIndex = endStudyIndex;
+	}
+
 
     /**
 	 * 
@@ -81,7 +95,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		//Last name 	: LNx
 		//Maiden Name 	: MDNx
 		//Middle Name 	: MNx
-		//Subject Identifier : NCICode_studyPrimaryId_SIx
+		//Subject Identifier : NCICode_SIx
 		//Study Subject Identifier : NCICode_StudyPrimaryID_SSIx
 		//(Note:- x is a running number)
 
@@ -91,7 +105,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		pType.setLastName("LN"+index);
 		pType.setMaidenName("MDN"+index);
 		pType.setMiddleName("MN"+index);
-		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).setValue(idPattern + "_SI"+index);
+		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).setValue(nciCode + "_SI"+index);
 		pType.getIdentifiers().getOrganizationAssignedIdentifier().get(0).getOrganization().setNciInstituteCode(nciCode);
 		pType.getAssignments().getAssignment().get(0).getStudySite().getOrganization().setNciInstituteCode(nciCode);
 		pType.getAssignments().getAssignment().get(0).setStudySubjectIdentifier(studySubjectId.toString());
@@ -102,10 +116,8 @@ public class ParticipantXMLGenerator extends XMLGenerator {
     @Override
     public void generate() throws Exception {
          String studyPrimaryIDPattern = "C5876";
-         int studyStartIndex = 1;
-         int studyEndIndex = 100;
 
-        for(int i =studyStartIndex; i <=studyEndIndex; i++ ){
+        for(int i =startStudyIndex; i <=endStudyIndex; i++ ){
             for(String siteNCICode : NCICode.ORGANIZATION_LIST){
                 String studyPrimaryID = studyPrimaryIDPattern + "." +i;
 

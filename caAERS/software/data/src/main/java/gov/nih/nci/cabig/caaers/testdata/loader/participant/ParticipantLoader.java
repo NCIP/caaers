@@ -22,21 +22,23 @@ import java.io.FileInputStream;
 public class ParticipantLoader extends DataLoader {
 
     ParticipantServiceImpl service;
+    boolean updateMode;
 
-    public ParticipantLoader(ApplicationContext appContext) throws Exception {
-        this(appContext, TestDataFileUtils.getSubjectTestDataFolder().getPath());
+    public ParticipantLoader(ApplicationContext appContext, boolean updateMode) throws Exception {
+        this(appContext, TestDataFileUtils.getSubjectTestDataFolder().getPath(), updateMode);
     }
 
-    public ParticipantLoader(ApplicationContext appContext, String loc) throws Exception {
+    public ParticipantLoader(ApplicationContext appContext, String loc, boolean updateMode) throws Exception {
         super(appContext, loc, "gov.nih.nci.cabig.caaers.webservice.participant");
         service = (ParticipantServiceImpl) appContext.getBean("participantServiceImpl");
+        this.updateMode = updateMode;
     }
 
     @Override
     public boolean loadFile(File f, StringBuffer detailsBuffer) throws Exception {
 
         boolean loadStatus = true;
-        CaaersServiceResponse response = service.createParticipant(getParticipants(f));
+        CaaersServiceResponse response = updateMode ? service.updateParticipant(getParticipants(f)) : service.createParticipant(getParticipants(f));
         for(String wsError : response.getResponse().getMessage()){
             loadStatus=false;
             detailsBuffer.append(wsError).append("\n");

@@ -151,8 +151,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 
 			for (String siteNCICode : siteNCICodes) {
 				for (int j = particpantIndexStart; j <= participantIndexEnd; j++) {
-					String subjectPrimaryId = siteNCICode + "_"
-							+ studyPrimaryId + "_SI" + j;
+					String subjectPrimaryId = siteNCICode  + "_SI" + j;
 
 					for (String courseTemplate : COURSE_FILE_TEMPLATES) {
 						System.out.println("Generating ... ["
