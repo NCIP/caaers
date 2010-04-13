@@ -345,7 +345,8 @@ public class StudyRepository {
         		studies = studyDao.find(query);
         		for(Study study : studies){
         			study.syncStudyPersonnel(researchStaff);
-        			studyDao.save(study);	
+        			studyDao.save(study);
+                    studyDao.flush();
         		}
     		}
     	}
