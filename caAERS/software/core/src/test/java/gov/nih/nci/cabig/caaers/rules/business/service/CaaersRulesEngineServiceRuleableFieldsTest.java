@@ -21,7 +21,7 @@ import java.util.List;
  * @author Ion C. Olaru 
  *
  */
-public class CaaersRulesEngineServiceRuleableFieldsTest extends CaaersTestCase{
+public class CaaersRulesEngineServiceRuleableFieldsTest extends CaaersTestCase {
 
 	public static final String SPONSOR_LEVEL = "Sponsor";
     public static final String INSTITUTIONAL_LEVEL = "Institution";
@@ -57,12 +57,23 @@ public class CaaersRulesEngineServiceRuleableFieldsTest extends CaaersTestCase{
 		if(xmlInputDataStream != null){
 			ruleSet = (RuleSet) unmarshaller.unmarshal(xmlInputDataStream);
 		}
+        try {
+            List<RuleSet> ruleSetListBeforeDelete = rulesEngineService.getAllRuleSets();
+            for (RuleSet ruleSet : ruleSetListBeforeDelete){
+                rulesEngineService.deleteRuleSet(ruleSet.getName());
+            }
+            List<RuleSet> ruleSetListAfterDelete = rulesEngineService.getAllRuleSets();
+            assertEquals(1, ruleSetListAfterDelete.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 	}
 
     public void testGetRuleableFieldsForAE() throws Exception {
 
         String ruleSetName = "sae_reporting_rules";
-        String sponsorName = "Aalborg University Hospital";
+        String sponsorName = "Cancer Therapy Evaluation Program";
         String subject = "Sponsor rules";
         String state = "Draft";
 
@@ -73,6 +84,7 @@ public class CaaersRulesEngineServiceRuleableFieldsTest extends CaaersTestCase{
         r.setAssignment(new StudyParticipantAssignment());
         r.getAssignment().setStudySite(new StudySite());
         r.getAssignment().getStudySite().setStudy(new LocalStudy());
+        r.getAssignment().getStudySite().getStudy().setShortTitle("Study Short Title");
         Organization o = new LocalOrganization();
         o.setName(sponsorName);
         r.getAssignment().getStudySite().setOrganization(o);
