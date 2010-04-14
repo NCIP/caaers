@@ -78,7 +78,8 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         mockCommand.setParticipant(p);
         mockCommand.setStudy(s);
         mockCommand.updateSubmittability();
-        mockCommand.setSubmitLinkRenderable(true);
+        mockCommand.updateSubmittabilityBasedOnReportStatus();
+        mockCommand.updateSubmittabilityBasedOnWorkflow();
         mockCommand.updateOptions();
 
         expect(mockCommand.getStudy()).andReturn(s).anyTimes();
@@ -93,7 +94,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     
     //will test whether the security role is applied correctly.
     public void testDoSubmitAction() throws Exception{
-        mockCommand.setSubmitLinkRenderable(true);
+        mockCommand.updateSubmittabilityBasedOnWorkflow();
     	replayMocks();
     	controller.doSubmitAction(mockCommand);
     	verifyMocks();
