@@ -60,23 +60,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		return templateParticipants.getParticipant().get(0);
 	}
 	
-	/**
-	 * For each organization in ORGANIZATION_LIST. 80 Participants will be assigned.
-	 * @return
-	 * @throws Exception
-	 */
-	public Participants getLoadedParticipants(String studyPrimaryId, String siteNCICode) throws Exception{
-		
-		Participants loadedParticipants = objectFactory.createParticipants();
-		int subjectCounter = 1;
-        for(int index=1;index<=subjectsPerSite;index++){
-			ParticipantType pType = changeValues(getTemplateParticipant(), studyPrimaryId,siteNCICode,subjectCounter);
-			loadedParticipants.getParticipant().add(pType);
-			subjectCounter++;
-	    }
-		
-		return loadedParticipants;
-	}
+
 	
 	/**
 	 * This method changes certain values in the ParticipantType object and return it.
@@ -100,7 +84,7 @@ public class ParticipantXMLGenerator extends XMLGenerator {
 		//(Note:- x is a running number)
 
         String idPattern = nciCode + "_" + studyPrimaryId +"_" ;
-		StringBuilder studySubjectId = new StringBuilder(idPattern).append("_SSI").append(index);
+		StringBuilder studySubjectId = new StringBuilder(idPattern).append("SSI").append(index);
 		pType.setFirstName("FN"+index);
 		pType.setLastName("LN"+index);
 		pType.setMaidenName("MDN"+index);
@@ -121,11 +105,15 @@ public class ParticipantXMLGenerator extends XMLGenerator {
             for(String siteNCICode : NCICode.ORGANIZATION_LIST){
                 String studyPrimaryID = studyPrimaryIDPattern + "." +i;
 
-                System.out.println("Generating for [" + studyPrimaryID +"].");
-
-                Participants participants = getLoadedParticipants(studyPrimaryID,siteNCICode );
-                String fileName = "sub_" + studyPrimaryID + "_" + siteNCICode + ".xml" ;
-                marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);
+                System.out.println("Generating participants for " + siteNCICode +".");
+                for(int k = 1; k <= subjectsPerSite; k++){
+                   Participants participants = objectFactory.createParticipants();
+                   ParticipantType pType = changeValues(getTemplateParticipant(), studyPrimaryID,siteNCICode,k);
+                   participants.getParticipant().add(pType);
+                   String fileName = "sub_" + studyPrimaryID + "_" + siteNCICode + "_" + k +".xml" ;
+                   marshal(participants, TestDataFileUtils.getSubjectTestDataFolder(), fileName);
+                }
+                
             }
         }
     }
