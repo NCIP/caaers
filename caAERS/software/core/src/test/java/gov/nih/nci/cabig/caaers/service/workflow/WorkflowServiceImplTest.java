@@ -18,12 +18,14 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.FreeMarkerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.ArrayList;
@@ -36,9 +38,11 @@ import org.jbpm.JbpmException;
 import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
+import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
+import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
 /**
@@ -53,6 +57,8 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	WorkflowConfig wfConfig;
 	UserDao userDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
+	PossibleTransitionsResolver possibleTransitionsResolver;
+	CSMUserRepository csmUserRepository;
 	StudyDao studyDao;
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
@@ -95,6 +101,10 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		wfService.setFreeMarkerService(new FreeMarkerService());
 		configuration = registerMockFor(Configuration.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
+		possibleTransitionsResolver = registerMockFor(PossibleTransitionsResolver.class);
+		csmUserRepository = registerMockFor(CSMUserRepository.class);
+		wfService.setPossibleTransitionsResolver(possibleTransitionsResolver);
+		wfService.setCsmUserRepository(csmUserRepository);
 		
 		wfService.setStudyDao(studyDao);
 		wfService.setConfiguration(configuration);
@@ -233,7 +243,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		CreateTaskJbpmCallback callback = new CreateTaskJbpmCallback(executionContext, taskAssigneesList);
 		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
 		EasyMock.expect(template.execute(callback)).andReturn(null);
-		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
+		//caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
 		//expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
 		replayMocks();
 		wfService.setCaaersJavaMailSender(caaersJavaMailSender);
@@ -278,4 +288,76 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	}
 	
 
+	public void testNextTransitionWithSystemAdmin(){
+		ProcessInstance pInstance = new ProcessInstance();
+		pInstance.setProcessDefinition(new ProcessDefinition());
+		pInstance.getProcessDefinition().setName("test Definition");
+		WorkflowConfig wConfig = new WorkflowConfig();
+		List<Transition> transitionList = new ArrayList<Transition>();
+		transitionList.add(new Transition("t1"));
+		transitionList.add(new Transition("t2"));
+		expect(template.findProcessInstance(new Long(1))).andReturn(pInstance);
+		expect(wfConfigDao.getByWorkflowDefinitionName("test Definition")).andReturn(wConfig);
+		expect(possibleTransitionsResolver.fetchNextTransitions(wConfig, pInstance)).andReturn(transitionList);
+		expect(csmUserRepository.isSuperUser("SYSTEM_ADMIN")).andReturn(true);
+		replayMocks();
+		List<Transition> transitions = wfService.nextTransitions(1, "SYSTEM_ADMIN");
+		verifyMocks();
+		assertEquals("Incorrect Number of transitions", 2, transitions.size());
+	}
+	
+	
+	public void testNextTransitionWithValidUser(){
+		ProcessInstance pInstance = new ProcessInstance();
+		pInstance.setProcessDefinition(new ProcessDefinition());
+		pInstance.getProcessDefinition().setName("test Definition");
+		WorkflowConfig wConfig = new WorkflowConfig();
+		List<Transition> transitionList = new ArrayList<Transition>();
+		transitionList.add(new Transition("t1"));
+		transitionList.add(new Transition("t2"));
+		pInstance.setRootToken(new Token());
+		pInstance.getRootToken().setNode(new Node("token_node"));
+		TaskConfig tConfig = new TaskConfig();
+		tConfig.setTaskName("token_node");
+		wConfig.addTaskConfigs(tConfig);
+		TaskInstance tInstance = new TaskInstance();
+		tInstance.setName("token_node");
+		tInstance.setPooledActors(new String[]{"valid_user"});
+		pInstance.getTaskMgmtInstance().addTaskInstance(tInstance);
+		expect(template.findProcessInstance(new Long(1))).andReturn(pInstance);
+		expect(wfConfigDao.getByWorkflowDefinitionName("test Definition")).andReturn(wConfig);
+		expect(possibleTransitionsResolver.fetchNextTransitions(wConfig, pInstance)).andReturn(transitionList);
+		expect(csmUserRepository.isSuperUser("valid_user")).andReturn(false);
+		replayMocks();
+		List<Transition> transitions = wfService.nextTransitions(1, "valid_user");
+		verifyMocks();
+		assertEquals("Incorrect Number of transitions", 2, transitions.size());
+	}
+	
+	public void testNextTransitionWithInvalidUser(){
+		ProcessInstance pInstance = new ProcessInstance();
+		pInstance.setProcessDefinition(new ProcessDefinition());
+		pInstance.getProcessDefinition().setName("test Definition");
+		WorkflowConfig wConfig = new WorkflowConfig();
+		List<Transition> transitionList = new ArrayList<Transition>();
+		transitionList.add(new Transition("t1"));
+		transitionList.add(new Transition("t2"));
+		pInstance.setRootToken(new Token());
+		pInstance.getRootToken().setNode(new Node("token_node"));
+		TaskConfig tConfig = new TaskConfig();
+		tConfig.setTaskName("token_node");
+		wConfig.addTaskConfigs(tConfig);
+		TaskInstance tInstance = new TaskInstance();
+		tInstance.setName("token_node");
+		tInstance.setPooledActors(new String[]{"valid_user"});
+		pInstance.getTaskMgmtInstance().addTaskInstance(tInstance);
+		expect(template.findProcessInstance(new Long(1))).andReturn(pInstance);
+		expect(wfConfigDao.getByWorkflowDefinitionName("test Definition")).andReturn(wConfig);
+		expect(possibleTransitionsResolver.fetchNextTransitions(wConfig, pInstance)).andReturn(transitionList);
+		expect(csmUserRepository.isSuperUser("invalid_user")).andReturn(false);
+		replayMocks();
+		List<Transition> transitions = wfService.nextTransitions(1, "invalid_user");
+		verifyMocks();
+		assertEquals("Incorrect Number of transitions", 0, transitions.size());
+	}
 }

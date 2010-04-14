@@ -38,9 +38,11 @@ import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -51,7 +53,9 @@ import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
+import org.jbpm.taskmgmt.exe.PooledActor;
 import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
 import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,45 +159,30 @@ public class WorkflowServiceImpl implements WorkflowService {
 		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
 		if(taskConfig == null )  return possibleTransitions; // task is not configured
 		
-		User user = csmUserRepository.getUserByName(loginId);
+		// For the current task iterate through the pooled actors to determine if the loginId (logged in person)
+		// is one of the pooled actors. If yes, then return the possibleTransitions.
+        TaskMgmtInstance tMgmtInstance = processInstance.getTaskMgmtInstance();
+        if(tMgmtInstance.getTaskInstances() != null){
+        	Iterator iterator = tMgmtInstance.getTaskInstances().iterator();
+        	while(iterator.hasNext()){
+        		TaskInstance tInstance = (TaskInstance)iterator.next();
+        		if(tInstance.getName().equals(taskConfig.getTaskName())){
+        			Map<String, Boolean> actorsMap = new HashMap<String, Boolean>();
+        			if(tInstance.getPooledActors() != null){
+        				Iterator actorIter = tInstance.getPooledActors().iterator();
+        				while(actorIter.hasNext()){
+        					PooledActor pActor = (PooledActor) actorIter.next();
+        					actorsMap.put(pActor.getActorId(), true);
+        				}
+        			}
+        			
+        			if(actorsMap.containsKey(loginId))
+        				return possibleTransitions;
+        		}
+        	}
+        }
 		
-        Map<String, Transition> filteredTransitionMap = new HashMap<String, Transition>();
-
-		for(Transition transition : possibleTransitions){
-			TransitionConfig transitionConfig = taskConfig.findTransitionConfig(transition.getName());
-			if(transitionConfig == null) continue; //transition is not configured so no body can move it expect sysadmin
-			
-			List<TransitionOwner> owners = transitionConfig.getOwners();
-			if(owners == null) continue; //no body owns the transition
-			
-			for(TransitionOwner owner : owners){
-				if(owner.isUser()){
-					PersonTransitionOwner personOwner = (PersonTransitionOwner) owner;
-					if(StringUtils.equals(personOwner.getUser().getLoginId(), loginId)) {
-                        if(!filteredTransitionMap.containsKey(transition.getName()) ){
-                           filteredTransitionMap.put(transition.getName(), transition);
-                        }
-					}
-				}else{
-					RoleTransitionOwner roleOwner = (RoleTransitionOwner) owner;
-					PersonRole ownerRole = roleOwner.getUserRole();
-					UserGroupType[] ownerGroupTypes = ownerRole.getUserGroups();
-					
-					for(UserGroupType userGroupType : user.getUserGroupTypes()){
-						if(ArrayUtils.contains(ownerGroupTypes, userGroupType)){
-							if(!filteredTransitionMap.containsKey(transition.getName()) ){
-                                filteredTransitionMap.put(transition.getName(), transition);
-                            }
-							break;
-						}
-					}
-					
-				}
-			}
-		}
-		
-		return new ArrayList<Transition>(filteredTransitionMap.values());
-		
+        return new ArrayList<Transition>();
 	}
 	
 	public List<ReviewStatus> allowedReviewStatuses(String loginId){
@@ -330,8 +319,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 			
 			// Send Notifications
 			try {
-			
-				notifiyTaskAssignees(taskDescription, createTaskCallback.getTaskName(),  createTaskCallback.getTaskAssigneesList());
+				if(taskDescription != null)
+					notifiyTaskAssignees(taskDescription, createTaskCallback.getTaskName(),  createTaskCallback.getTaskAssigneesList());
 			
 			} catch (CaaersSystemException e) {
 				log.error("Workflow Service : Error while sending email to task assignees", e);
@@ -414,8 +403,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	public String generateTaskDescription(String workflowDefinitionName,String taskNodeName, Map<Object, Object> contextVariables){
 		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
-		String message = freeMarkerService.applyRuntimeReplacementsForReport(taskConfig.getMessage(), contextVariables);
-		return message;
+		if(taskConfig.getMessage() != null && !taskConfig.getMessage().equals("")){
+			String message = freeMarkerService.applyRuntimeReplacementsForReport(taskConfig.getMessage(), contextVariables);
+			return message;
+		}else
+			return null;
 	}
 	
 	
