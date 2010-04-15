@@ -21,6 +21,12 @@ import java.util.List;
  */
 public class AdverseEventXMLGenerator extends XMLGenerator {
 
+    private int studyStart =1;
+    private int studyEnd = 10;
+
+    private int participantStart =1 ;
+    private int participantEnd = 40;
+
 	private ObjectFactory objectFactory;
 	private static final String[] COURSE_FILE_TEMPLATES = {
 			"adverse_event_course_1.xml", "adverse_event_course_2.xml",
@@ -33,28 +39,108 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 	 * '%Specify%'
 	 */
 
-	private static final String[] CTEP_TERMS = { "Hypersensitivity",
-			"Allergic rhinitis", "Autoimmune disorder", "Serum sickness",
-			"Vasculitis", "Hearing test abnormal", "Hearing loss",
-			"External ear inflammation", "Middle ear inflammation", "Tinnitus",
-			"Bone marrow hypocellular", "CD4 lymphocytes decreased",
-			"Haptoglobin decreased", "Hemoglobin decreased", "Hemolysis",
-			"Iron increased", "Leukopenia", "Lymphopenia", "Myelodysplasia",
-			"Neutrophil count decreased", "Platelet count decreased",
-			"Spleen disorder", "Atrioventricular block first degree",
-			"Mobitz type I", "Mobitz (type) II atrioventricular block",
-			"Atrioventricular block complete", "Asystole",
-			"Conduction disorder", "Sick sinus syndrome",
-			"Stokes-Adams syndrome", "Wolff-Parkinson-White syndrome",
-			"Palpitations", "Electrocardiogram QTc interval prolonged",
-			"Atrial fibrillation", "Atrial flutter", "Atrial tachycardia",
-			"Nodal arrhythmia", "Sinus arrhythmia", "Sinus bradycardia",
-			"Sinus tachycardia", "Arrhythmia supraventricular",
-			"Supraventricular extrasystoles", "Supraventricular tachycardia",
-			"Syncope vasovagal", "Ventricular bigeminy",
-			"Rhythm idioventricular", "Premature ventricular contractions",
-			"Torsade de pointes", "Ventricular trigeminy",
-			"Ventricular arrhythmia", };
+	private static final String[] CTEP_TERMS = {
+            "Portal vein flow",
+            "Peripheral arterial ischemia",
+            "Acute vascular leak syndrome",
+            "Flu-like syndrome",
+            "Orgasmic dysfunction",
+            "Gynecomastia",
+            "Renal failure",
+            "Prolapse of stoma, GU",
+            "Incontinence, urinary",
+            "Cystitis",
+            "Bladder spasms",
+            "Pneumothorax",
+            "Hypoxia",
+            "Hiccoughs (hiccups, singultus)",
+            "FEV(1)",
+            "Edema, larynx",
+            "Dyspnea (shortness of breath)",
+            "Chylothorax",
+            "Aspiration",
+            "Watery eye (epiphora, tearing)",
+            "Vitreous hemorrhage",
+            "Vision-photophobia",
+            "Vision-blurred vision",
+            "Uveitis",
+            "Retinopathy",
+            "Retinal detachment",
+            "Optic disc edema",
+            "Ocular surface disease",
+            "Nystagmus",
+            "Eyelid dysfunction",
+            "Dry eye syndrome",
+            "Cataract",
+            "Tremor",
+            "Syncope (fainting)",
+            "Phrenic nerve dysfunction",
+            "Myelitis",
+            "Mental status",
+            "Memory impairment",
+            "Hydrocephalus",
+            "Encephalopathy",
+            "Dizziness",
+            "Confusion",
+            "Ataxia (incoordination)",
+            "Seroma",
+            "Osteoporosis",
+            "Osteonecrosis (avascular necrosis)",
+            "Lumbar spine-range of motion",
+            "Joint-function",
+            "Joint-effusion",
+            "Fracture",
+            "Fibrosis-deep connective tissue",
+            "Extremity-upper (function)",
+            "Sodium, serum-high (hypernatremia)",
+            "Potassium, serum-low (hypokalemia)",
+            "Creatinine",
+            "Calcium, serum-low (hypocalcemia)",
+            "Bilirubin (hyperbilirubinemia)",
+            "Bicarbonate, serum-low",
+            "Amylase",
+            "Alkalosis (metabolic or respiratory)",
+            "Alkaline phosphatase",
+            "Acidosis (metabolic or respiratory)",
+            "Lymphocele",
+            "Cholecystitis",
+            "Hemorrhage, CNS",
+            "Hematoma",
+            "Prolapse of stoma, GI",
+            "Proctitis",
+            "Incontinence, anal",
+            "Esophagitis",
+            "Diarrhea",
+            "Colitis",
+            "Ascites (non-malignant)",
+            "Anorexia",
+            "Thyroid function, low (hypothyroidism)",
+            "Masculinization of female",
+            "Feminization of male",
+            "Adrenal insufficiency",
+            "Urticaria (hives, welts, wheals)",
+            "Ulceration",
+            "Nail changes",
+            "Dry skin",
+            "Obesity",
+            "Insomnia",
+            "Hypothermia",
+            "Fatigue (asthenia, lethargy, malaise)",
+            "PTT (Partial Thromboplastin Time)",
+            "Restrictive cardiomyopathy",
+            "Pericarditis",
+            "Pericardial effusion (non-malignant)",
+            "Left ventricular diastolic dysfunction",
+            "Hypertension",
+            "Myelodysplasia",
+            "Lymphopenia",
+            "Iron overload",
+            "Hemoglobin",
+            "Bone marrow cellularity",
+            "Otitis, middle ear (non-infectious)",
+            "Vasculitis"
+            
+    };
 
 	public AdverseEventXMLGenerator() throws Exception {
 		jaxbContext = JAXBContext
@@ -62,6 +148,15 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();
+	}
+
+
+    public AdverseEventXMLGenerator(int studyStart, int studyEnd, int participantStart, int participantEnd) throws Exception {
+		this();
+        this.studyEnd = studyEnd;
+        this.studyStart = studyStart;
+        this.participantEnd = participantEnd;
+        this.participantStart = participantStart;
 	}
 
 	/**
@@ -137,11 +232,11 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 
 	public void generate() throws Exception {
 
-		int particpantIndexStart = 1;
-		int participantIndexEnd = 40;
+		int particpantIndexStart = participantStart;
+		int participantIndexEnd = participantEnd;
 
-		int studyIndexStart = 1;
-		int studyIndexEnd = 10;
+		int studyIndexStart = studyStart;
+		int studyIndexEnd = studyEnd;
 
 		List<String> siteNCICodes = NCICode.ORGANIZATION_LIST;
 		String studyPrimaryIdPattern = "C5876";

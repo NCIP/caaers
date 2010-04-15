@@ -19,7 +19,7 @@
 			<startDateOfThisCourse>2009-09-01</startDateOfThisCourse>
 			<endDateOfThisCourse>2009-10-01</endDateOfThisCourse>
 			<treatmentType>Treatment</treatmentType>
-			<cycleNumber>1</cycleNumber>
+			<cycleNumber>5</cycleNumber>
 			<otherTreatmentAssignmentDescription>TAC1X</otherTreatmentAssignmentDescription>
 		</course>
 	</ns1:criteria>
