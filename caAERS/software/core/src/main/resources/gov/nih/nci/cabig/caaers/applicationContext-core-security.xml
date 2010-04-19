@@ -489,10 +489,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	 
 	 <bean id="queryCacheManager" class="com.semanticbits.security.contentfilter.cache.QueryCacheManager">
         <property name="domainObjectCachableFetchersMap" ref="domainObjectCachableFetchersMap"/>
-        <property name="remoteCachePreferenceHolder" ref="remoteCachePreferenceHolder"/>
     </bean>
 
-	 <bean id="remoteCachePreferenceHolder" class="com.semanticbits.security.contentfilter.cache.RemoteCachePreferenceHolder"/>
+<!--	 <bean id="remoteCachePreferenceHolder" class="com.semanticbits.security.contentfilter.cache.RemoteCachePreferenceHolder"/>-->
         
     <util:map id="domainObjectCachableFetchersMap"
               map-class="java.util.LinkedHashMap">
