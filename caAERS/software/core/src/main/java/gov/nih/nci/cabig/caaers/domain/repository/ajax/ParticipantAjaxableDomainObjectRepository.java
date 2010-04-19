@@ -2,15 +2,12 @@ package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjaxableDomainObject> extends AbstractAjaxableDomainObjectRepository {
     
+	public List<Object[]> getDataForFiltering(ParticipantAjaxableDomainObjectQuery query) {
+    	return super.find(query);
+    }
+    
 	public List<T> findParticipants(ParticipantAjaxableDomainObjectQuery query) {
+		
+		System.out.println(query.getQueryString());
+		
         List<Object[]> objects = super.find(query);
         Map<Integer,T> existingParticipantsMap = new LinkedHashMap<Integer, T>();
         for (Object[] o : objects) {
@@ -40,8 +44,8 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                     participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
                 }
 
-                participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[20]);
-                addAdditionalProperties(participantAjaxableDomainObject, o);
+                participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[8]);
+               // addAdditionalProperties(participantAjaxableDomainObject, o);
                 existingParticipantsMap.put(participantAjaxableDomainObject.getId(),participantAjaxableDomainObject);
                 
 
@@ -58,13 +62,13 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     	if (o[7] != null && (Boolean) o[7]) {
             participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
         }
-        participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[20]);
+        participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[8]);
     	//updateParticipantStudySite(participantAjaxableDomainObject, o);
-    	updateStudy(participantAjaxableDomainObject, o);
+    	//updateStudy(participantAjaxableDomainObject, o);
 
 
     }
-
+/*
     protected void addAdditionalProperties(T participantAjaxableDomainObject, Object[] o) {
     	//updateParticipantStudySite(participantAjaxableDomainObject, o);
     	updateStudy(participantAjaxableDomainObject, o);
@@ -127,7 +131,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
             
         }
     }  
-    
+    */
     protected Class getObjectClass() {
         return ParticipantAjaxableDomainObject.class;
     }
