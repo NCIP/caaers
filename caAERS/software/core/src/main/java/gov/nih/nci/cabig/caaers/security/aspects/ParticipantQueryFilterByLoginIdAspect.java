@@ -42,12 +42,13 @@ public class ParticipantQueryFilterByLoginIdAspect extends BaseSecurityFilterer{
 	    	
 	 		List participantIds = idFetcher.fetch(userName);
 	 		System.out.println(participantIds.size());
+	 		/*
 	 		if (participantIds.size() == 0) {
 	 			// dummy negetive query , not to return any results .. 
 	 			qry.filterByAnyAnd("1=2");
 	 		} else {
 	 			qry.filterByParticipantsINQuery(participantIds);
-	 		}
+	 		}*/
 	 	}
 		return new Object[] {qry};	
     }
