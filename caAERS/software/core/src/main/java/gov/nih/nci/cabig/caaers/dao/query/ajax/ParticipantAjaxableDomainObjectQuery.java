@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query.ajax;
 
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,7 +12,38 @@ import org.apache.commons.lang.StringUtils;
 public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
 
     private static String queryString = 
+    	"Select " +
+	        "participant.id," +
+	        "participant.firstName," +
+	        "participant.lastName, "+
+	        "participant.gender," +
+	        "participant.race," +
+	        "participant.ethnicity, " +
+	        "identifier.value, " +
+	        "identifier.primaryIndicator, " +
+	        "spa.studySubjectIdentifier " +
+	    "from Participant participant "+
+	        "left join participant.identifiers as identifier "+
+	        "left join participant.assignments as spa " +
+        "order by participant.firstName ";
     	
+
+    
+    
+    /*
+    		
+    		"Select " +
+                    "participant.id" 
+            "from Participant participant "+
+                    "left join participant.assignments as spa " +
+                    "join spa.studySite as ss "+
+                    "join ss.study as study "+
+                    "join study.studyOrganizations as studyOrgs "+
+                    "left join studyOrgs.studyPersonnelsInternal as stper " +
+                    "left join stper.siteResearchStaff as siteResearchStaff " +
+            " where  siteResearchStaff.id = -1000";
+    				
+    		
     		"Select " +
                     "participant.id," +
                     "participant.firstName," +
@@ -36,7 +66,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
                     "ss.organization.name as assignedSite, " +
                     "ss.organization.nciInstituteCode as assignedSiteCode, " +
                     "spa.studySubjectIdentifier " +
-            "from Participant participant "+
+            "from Participant participant , ParticipantIndex pi "+
                     "left join participant.identifiers as identifier "+
                     "left join participant.assignments as spa " +
                     "join spa.studySite as ss "+
@@ -45,7 +75,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
                     "join study.studyOrganizations as studyOrgs "+
                     "left join studyOrgs.studyPersonnelsInternal as stper " +
                     "left join stper.siteResearchStaff as siteResearchStaff " +
-            "order by participant.firstName ";
+            "order by participant.firstName ";*/
 
     private static final String IDENTIFIER_VALUE = "identifierValue";
     private static final String STUDY_IDENTIFIER_VALUE = "studyIdentifierValue";
@@ -67,11 +97,19 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
 
     public ParticipantAjaxableDomainObjectQuery() {
         super(queryString);
-
-
     }
+    
     public void filterByPrimaryIdentifiers() {
             andWhere("identifier.primaryIndicator is true and sIdentifier.primaryIndicator is true");
+    }
+    
+    public void filterByParticipantsINQuery(List ids){
+    		andWhere("participant.id IN (:ids)");
+    		setParameter("ids", ids);
+    }
+    
+    public void filterByAnyAnd(String clause) {
+    	andWhere(clause);
     }
     
     public void filterParticipantsWithMatchingText(String text) {
@@ -89,7 +127,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         setParameter(STUDY_SUBJECT_IDENTIFIER, searchString);
 
     }
-    
+    /*   
     public void filterByStudyIdentifierValue(final String value) {
         if (!StringUtils.isBlank(value)) {
             String searchString = "%" + value.toLowerCase() + "%";
@@ -98,7 +136,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             setParameter(STUDY_IDENTIFIER_VALUE, searchString);
         }
     }
-
+ 
     public void filterByStudyShortTitle(final String value) {
         if (!StringUtils.isBlank(value)) {
             String searchString = "%" + value.toLowerCase() + "%";
@@ -106,7 +144,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             setParameter(SHORT_TITLE, searchString);
         }
     }
-    
+
     public void filterStudiesWithShortTitle(String text) {
         if (!StringUtils.isBlank(text)) {
 
@@ -116,7 +154,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
                     , SHORT_TITLE));
             setParameter(SHORT_TITLE, searchString);
         }
-    }
+    }*/
     
     public void filterParticipants(final Map props) throws ParseException {
 		
@@ -131,6 +169,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (props.get("participantLastName") != null) {
             this.filterByLastName(props.get("participantLastName").toString());
         }
+        /*
         if (props.get("participantEthnicity") != null) {
             this.filteryByEthnicity(props.get("participantEthnicity").toString());
         }
@@ -141,10 +180,10 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (props.get("participantDateOfBirth") != null) {
         	DateValue dob = DateValue.stringToDateValue(props.get("participantDateOfBirth").toString());
             this.filterByDateOfBirth(dob);
-        }
+        }*/
 		
 	}
-    
+/*    
     public void filterByDateOfBirth(DateValue dateOfBirth) {
         if (dateOfBirth != null && !dateOfBirth.isNull()) {
         	
@@ -164,11 +203,10 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         }
 
     }
-    
+ */  
     public void filterByFirstName(final String firstName) {
         if (!StringUtils.isBlank(firstName)) {
             String searchString = "%" + firstName.toLowerCase() + "%";
-//            andWhere("lower(participant.firstName) LIKE :" + FIRST_NAME + " OR participant.firstName IS NULL");
             andWhere("lower(participant.firstName) LIKE :" + FIRST_NAME);
             setParameter(FIRST_NAME, searchString);
         }
@@ -179,7 +217,6 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (!StringUtils.isBlank(lastName)) {
             String searchString = "%" + lastName.toLowerCase() + "%";
             andWhere("lower(participant.lastName) LIKE :" + LAST_NAME);
-//            andWhere("lower(participant.lastName) LIKE :" + LAST_NAME + " OR participant.lastName IS NULL");
             setParameter(LAST_NAME, searchString);
         }
     }
@@ -187,14 +224,12 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     public void filterByParticipantIdentifierValue(final String value) {
         if (!StringUtils.isBlank(value)) {
             String searchString = "%" + value.toLowerCase() + "%";
-            //leftJoin("participant.identifiers as pIdentifier");
-//            andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " OR identifier.value IS NULL");
             andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE + " or lower(spa.studySubjectIdentifier) LIKE :" + IDENTIFIER_VALUE);
             setParameter(IDENTIFIER_VALUE, searchString);
         }
     }
 
-
+/*
     public void filterByHavingRace(final String race) {
         if (!StringUtils.isBlank(race)) {
             andWhere("participant.gender = :" + RACE);
@@ -208,12 +243,12 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             setParameter(ETHNITICTY, ethnicity);
         }
     }
-
+*/
     
     public void filterByStudy(Integer studyId) {
         if (studyId != null) {
-
-            //leftJoin("participant.assignments as spa join spa.studySite as ss join ss.study as study");
+            join("spa.studySite as ss");
+        	join("ss.study as study");
             andWhere("study.id =:" + STUDY_ID);
             setParameter(STUDY_ID, studyId);
         }
