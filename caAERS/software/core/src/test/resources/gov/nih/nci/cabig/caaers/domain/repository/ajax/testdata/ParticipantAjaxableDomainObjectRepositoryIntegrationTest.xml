@@ -140,6 +140,21 @@
             study_site_id="-3001"
             load_status="1"/>
 
+    <PARTICIPANT_ASSIGNMENTS
+            id="-12"
+            date_of_enrollment="2006-12-12"
+            participant_id="-101"
+            study_site_id="-3001"
+            load_status="1"/>
+            
+    <PARTICIPANT_ASSIGNMENTS
+            id="-13"
+            date_of_enrollment="2006-12-12"
+            participant_id="-99"
+            study_site_id="-3001"
+            load_status="1"/>
+            
+            
     <!-- stu_id="-999" to overcome metadata on first row issue -->
     <IDENTIFIERS
             id="-200"
@@ -225,4 +240,10 @@
     <SPA_PRIOR_THERAPIES/>
     <SPA_CONCOMITANT_MEDICATIONS/>
     <SPA_PRE_EXISTING_CONDS/>
+    
+    <participant_index
+    	id="-1"
+    	login_id="1000@def.com"
+    	participant_id="-101"
+    />
 </dataset>
