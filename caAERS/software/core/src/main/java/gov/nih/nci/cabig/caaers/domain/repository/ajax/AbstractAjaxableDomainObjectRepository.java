@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery
 import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,11 @@ public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDa
                 // hiberanteQuery.setMaxResults(null);
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
-                    hiberanteQuery.setParameter(key, value);
+                    if (value instanceof List) {
+                    	hiberanteQuery.setParameterList(key, (List) value);
+                    } else {
+                    	hiberanteQuery.setParameter(key, value);
+                    }
                 }
                 return hiberanteQuery.list();
             }
