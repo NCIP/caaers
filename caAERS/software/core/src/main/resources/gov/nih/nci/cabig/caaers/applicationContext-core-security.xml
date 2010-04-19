@@ -391,8 +391,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               map-class="java.util.LinkedHashMap">
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
                value-ref="studySiteSecurityFilterer"/>
+        <!--
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
-               value-ref="participantSiteSecurityFilterer"/>   
+               value-ref="participantSiteSecurityFilterer"/>  
+        --> 
         <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
                value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
@@ -475,4 +477,31 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 	<!-- Cached Manager -->
 	 <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
+	 
+	 
+	<!-- QUERY ASPECTS -->
+	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.security.aspects.ParticipantQueryFilterByLoginIdAspect">
+    	<property name="idFetcher" ref="participantIdFetcher"/>
+    </bean>
+	
+	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	 
+
+	 
+	 <bean id="queryCacheManager" class="com.semanticbits.security.contentfilter.cache.QueryCacheManager">
+        <property name="domainObjectCachableFetchersMap" ref="domainObjectCachableFetchersMap"/>
+        <property name="remoteCachePreferenceHolder" ref="remoteCachePreferenceHolder"/>
+    </bean>
+
+	 <bean id="remoteCachePreferenceHolder" class="com.semanticbits.security.contentfilter.cache.RemoteCachePreferenceHolder"/>
+        
+    <util:map id="domainObjectCachableFetchersMap"
+              map-class="java.util.LinkedHashMap">
+        <entry key="participantIdFetcher" value-ref="participantIdFetcher"/>
+    </util:map>
+    
+    <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
+	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" autowire="byType"  />
+    
+    
+    
 </beans>
