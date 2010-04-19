@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -30,6 +29,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,6 +65,9 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         return rsList.get(0);
     }
 
+	/**
+	 * This method processes an Investigator xml imported from UI
+	 */
 	public DomainObjectImportOutcome<Investigator> processInvestigator(InvestigatorType investigatorType){
     	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
     	Investigator xmlInvestigator = null;
@@ -111,6 +114,9 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		return "ALL_ORGS_AUTH";
 	}
 	
+	/**
+	 * This method creates or updates an Investigator (Called from WebService)
+	 */
     public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
     	
@@ -177,6 +183,11 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     	return caaersServiceresponse;
     }
     
+    /**
+     * This method creates a new Investigator object and populates values from the XML.
+     * @param investigatorDto
+     * @return
+     */
     private Investigator buildInvestigator(InvestigatorType investigatorDto) {
 		try {
             logger.info("Begining of DefaultInvestigatorMigratorService : buildInvestigator");
@@ -244,7 +255,11 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         }	
 	}
 	
-	
+	/**
+	 * This method updates the values of Investigator. It will update the existing Investigators values with the values from the Xml.
+	 * @param xmlInvestigator
+	 * @param dbInvestigator
+	 */
 	private void syncInvestigator(Investigator xmlInvestigator, Investigator dbInvestigator){
 		//do the basic property sync
 		dbInvestigator.setFirstName(xmlInvestigator.getFirstName());
@@ -253,7 +268,10 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		dbInvestigator.setEmailAddress(xmlInvestigator.getEmailAddress());
 		dbInvestigator.setPhoneNumber(xmlInvestigator.getPhoneNumber());
 		dbInvestigator.setFaxNumber(xmlInvestigator.getFaxNumber());
-		
+		dbInvestigator.setNciIdentifier(xmlInvestigator.getNciIdentifier());
+		if(BooleanUtils.isFalse(dbInvestigator.getAllowedToLogin())){
+			dbInvestigator.setAllowedToLogin(xmlInvestigator.getAllowedToLogin());
+		}
 		//do the site research staff sync
 		if(CollectionUtils.isEmpty(xmlInvestigator.getSiteInvestigators())) return;  //nothing provided in xml input
 		
@@ -273,7 +291,14 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
 		}
 	}
 	
-	
+	/**
+	 * This method validates the Investigator values. 
+	 * @param investigator
+	 * @param investigatorImportOutcome
+	 * @param wsErrors
+	 * @param isExisting
+	 * @throws CaaersSystemException
+	 */
 	private void validateInvestigator(Investigator investigator,DomainObjectImportOutcome<Investigator> investigatorImportOutcome, List<WsError> wsErrors, boolean isExisting) throws CaaersSystemException{
         List<SiteInvestigator> investigators = investigator.getSiteInvestigators();
         Date now = new Date();
