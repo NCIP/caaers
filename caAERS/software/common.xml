@@ -70,7 +70,7 @@
 		<attribute name="confs"/>
 		<attribute name="resolveId"/>
 		<sequential>
-			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance" keep="true"/>
 			<ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 		</sequential>
 	</macrodef>
@@ -149,8 +149,13 @@
 		<pathelement path="${test.classes.dir}" />
 		<path refid="test.classpath" />
 	</path>
-	
-	
+
+	<!-- Path used for XJC -->
+	<path  id="xjc.task.path">
+        <fileset dir="${lib.dir}">
+			<include name="**/*xjc*.jar" />
+		</fileset>
+    </path>
 	
 	<!-- refers to project root dir -->
 	<dirname file="${ant.file.common}" property="proj.root.dir"/>
