@@ -740,6 +740,10 @@ This applicationContext contains the definition of the DAOs
     	<property name="reportValidationService" ref="reportValidationService" />
     	<property name="reportDao" ref="reportDao" />
     </bean>
+    
+    <bean id="ajaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.AjaxableDomainObjectRepository"/>
+
+    
     <!-- Repository beans end here-->
 
 
