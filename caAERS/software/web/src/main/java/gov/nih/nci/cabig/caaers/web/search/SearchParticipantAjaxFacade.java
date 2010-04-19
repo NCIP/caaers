@@ -141,8 +141,8 @@ public class SearchParticipantAjaxFacade {
         
         try {
 			query.filterParticipants(propValue);
-			query.filterByStudyIdentifierValue(propValue.get("studyIdentifier"));
-			query.filterByStudyShortTitle(propValue.get("studyShortTitle"));
+//			query.filterByStudyIdentifierValue(propValue.get("studyIdentifier"));
+//			query.filterByStudyShortTitle(propValue.get("studyShortTitle"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException("Query Parsing Error : constructExecuteParticipantQuery", e);
