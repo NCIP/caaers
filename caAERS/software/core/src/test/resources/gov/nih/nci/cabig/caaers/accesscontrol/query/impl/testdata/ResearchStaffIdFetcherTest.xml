@@ -1,0 +1,81 @@
+<dataset>
+     <ORGANIZATIONS
+            id="-1000"
+            version="1"
+            name="NCI"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />  
+     <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="DCP"
+            description_text="DCP"
+            nci_institute_code="DCP"
+            /> 
+    <RESEARCH_STAFFS
+        id="-1000"
+        version="1"
+        first_name="Bill"
+        last_name="Gates"
+        email_address="1000@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        login_id="1000@def.com"
+        />
+
+     <SITE_RESEARCH_STAFFS
+    	id="-9001"
+    	site_id="-1000"
+    	researchstaff_id="-1000"/> 
+        
+    <RESEARCH_STAFFS
+        id="-1001"
+        version="1"
+        first_name="George"
+        last_name="Bush"
+        email_address="abc2@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"/>
+     
+    <SITE_RESEARCH_STAFFS
+    	id="-9002"
+    	site_id="-1001"
+    	researchstaff_id="-1001"/>   
+        
+    <RESEARCH_STAFFS
+        id="-1002"
+        version="1"
+        first_name="Benjamin"
+        last_name="Franklin"
+        email_address="abc3@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"/>
+        
+    <SITE_RESEARCH_STAFFS
+    	id="-9003"
+    	site_id="-1000"
+    	researchstaff_id="-1002"/>        
+        
+    <RESEARCH_STAFFS
+        id="-1003"
+        version="1"
+        first_name="JF"
+        last_name="Kennedy"
+        email_address="abc4@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"/>
+        
+    <SITE_RESEARCH_STAFFS
+    	id="-9004"
+    	site_id="-1000"
+    	researchstaff_id="-1003"/>        
+        
+        
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />    
+    <ind_holders />		
+	<investigators/>
+    <site_investigators/>
+        
+</dataset>
