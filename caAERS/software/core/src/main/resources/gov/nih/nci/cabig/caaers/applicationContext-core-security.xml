@@ -159,6 +159,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <aop:aspect id="daoSecurityInterceptorAspect" ref="daoSecurityInterceptorAspectBean">
             <aop:around pointcut-ref="daoSaveOrUpdatePointcut" method="advise"/>
         </aop:aspect>
+        
+        <aop:aspect ref="participantQueryFilterByLoginIdAspect">		
+			<aop:pointcut id="executionOfParticipantQueryFilter"
+                    expression="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.findParticipants(gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery))
+                    and args(qry)"/>
+            <aop:before pointcut-ref="executionOfParticipantQueryFilter" method="applyLoginFilter"/>			
+		</aop:aspect>
+		
 
 
     </aop:config>
@@ -480,27 +488,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	 
 	 
 	<!-- QUERY ASPECTS -->
-	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.security.aspects.ParticipantQueryFilterByLoginIdAspect">
+	<bean id="participantQueryFilterByLoginIdAspect" class="gov.nih.nci.cabig.caaers.accesscontrol.aspects.ParticipantQueryFilterByLoginIdAspect">
     	<property name="idFetcher" ref="participantIdFetcher"/>
     </bean>
 	
 	<bean id="fetcherUtils" class="gov.nih.nci.cabig.caaers.utils.FetcherUtils"/>	 
 
-	 
-	 <bean id="queryCacheManager" class="com.semanticbits.security.contentfilter.cache.QueryCacheManager">
-        <property name="domainObjectCachableFetchersMap" ref="domainObjectCachableFetchersMap"/>
-    </bean>
-
-<!--	 <bean id="remoteCachePreferenceHolder" class="com.semanticbits.security.contentfilter.cache.RemoteCachePreferenceHolder"/>-->
-        
-    <util:map id="domainObjectCachableFetchersMap"
-              map-class="java.util.LinkedHashMap">
-        <entry key="participantIdFetcher" value-ref="participantIdFetcher"/>
-    </util:map>
     
     <!-- PLUGGABLE ID FETCHER IMPLEMENTATIONS -->
 	<bean id="participantIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersParticipantIdFetcherImpl" autowire="byType"  />
-    
-    
     
 </beans>
