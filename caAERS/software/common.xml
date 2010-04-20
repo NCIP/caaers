@@ -153,7 +153,7 @@
 	<!-- Path used for XJC -->
 	<path  id="xjc.task.path">
         <fileset dir="${lib.dir}">
-			<include name="**/*xjc*.jar" />
+			<include name="**/*.jar" />
 		</fileset>
     </path>
 	
